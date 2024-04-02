@@ -17,8 +17,8 @@
  */
 package org.moeaframework.problem.WFG;
 
-import org.junit.Assert;
-import org.junit.Assume;
+import org.moeaframework.Assert;
+import org.moeaframework.Assume;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.NondominatedPopulation.DuplicateMode;

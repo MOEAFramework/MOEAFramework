@@ -19,10 +19,9 @@ package org.moeaframework.problem;
 
 import java.util.function.Consumer;
 
-import org.junit.Assert;
-import org.junit.Assume;
+import org.moeaframework.Assert;
+import org.moeaframework.Assume;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
@@ -92,7 +91,7 @@ public abstract class ProblemTest {
 		if (expectReferenceSet) {
 			NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet(problemName);
 			Assert.assertNotNull(referenceSet);
-			Assert.assertTrue(referenceSet.size() > 0);
+			Assert.assertNotEmpty(referenceSet);
 			Assert.assertEquals(expectedNumberOfObjectives, referenceSet.get(0).getNumberOfObjectives());
 		}
 	}
@@ -107,7 +106,7 @@ public abstract class ProblemTest {
 		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet(problemName);
 		
 		Assert.assertNotNull(referenceSet);
-		Assert.assertTrue(referenceSet.size() > 0);
+		Assert.assertNotEmpty(referenceSet);
 		
 		for (Solution solution : referenceSet) {
 			assertion.accept(solution);
@@ -254,12 +253,12 @@ public abstract class ProblemTest {
 	 */
 	protected void compare(Solution solutionA, Solution solutionB, boolean exactConstraints) {
 		for (int i = 0; i < solutionA.getNumberOfObjectives(); i++) {
-			TestUtils.assertEquals(solutionA.getObjective(i), solutionB.getObjective(i));
+			Assert.assertEquals(solutionA.getObjective(i), solutionB.getObjective(i));
 		}
 		
 		for (int i = 0; i < solutionA.getNumberOfConstraints(); i++) {
 			if (exactConstraints) {
-				TestUtils.assertEquals(solutionA.getConstraint(i), solutionB.getConstraint(i));
+				Assert.assertEquals(solutionA.getConstraint(i), solutionB.getConstraint(i));
 			} else {
 				// only check if constraints are feasible (== 0) or infeasible (!= 0)
 				Assert.assertEquals(solutionA.getConstraint(i) != 0, solutionB.getConstraint(i) != 0);

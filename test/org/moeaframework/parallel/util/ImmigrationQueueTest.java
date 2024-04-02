@@ -20,9 +20,8 @@ package org.moeaframework.parallel.util;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Solution;
 import org.moeaframework.mock.MockSolution;
 
@@ -45,7 +44,7 @@ public class ImmigrationQueueTest {
 		
 		Solution copy = queue.pop();
 		Assert.assertNotNull(copy);
-		Assert.assertTrue(TestUtils.equals(original, copy));
+		Assert.assertEquals(original, copy);
 		Assert.assertNotSame(original, copy);
 		Assert.assertEquals(0, queue.size());
 		Assert.assertTrue(queue.isEmpty());

@@ -22,9 +22,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.EpsilonBoxEvolutionaryAlgorithm;
 import org.moeaframework.core.NondominatedPopulation;

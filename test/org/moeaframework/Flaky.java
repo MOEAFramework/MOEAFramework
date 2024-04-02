@@ -17,10 +17,10 @@
  */
 package org.moeaframework;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * Annotation for identifying flaky unit tests on CI builds.  The test still runs but failures only appear as warnings

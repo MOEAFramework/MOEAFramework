@@ -17,8 +17,6 @@
  */
 package org.moeaframework;
 
-import org.junit.Assert;
-
 /**
  * Compares floating-point numbers allowing a small absolute error when determining equality.
  */
@@ -40,8 +38,8 @@ public class AbsoluteError implements FloatingPointError {
 	}
 
 	@Override
-	public void assertEquals(double d1, double d2) {
-		Assert.assertEquals(d1, d2, epsilon);
+	public void assertEquals(final double expected, final double actual) {
+		Assert.assertEquals(expected, actual, epsilon);
 	}
 
 }

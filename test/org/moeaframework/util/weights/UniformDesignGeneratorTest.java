@@ -18,8 +18,8 @@
 package org.moeaframework.util.weights;
 
 import org.apache.commons.math3.primes.Primes;
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 
 public class UniformDesignGeneratorTest extends AbstractWeightGeneratorTest<UniformDesignGenerator> {
 	

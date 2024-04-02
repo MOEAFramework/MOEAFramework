@@ -17,8 +17,8 @@
  */
 package org.moeaframework.core.operator.program;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.AbstractProgramOperatorTest;
@@ -65,7 +65,7 @@ public class SubtreeCrossoverTest extends AbstractProgramOperatorTest<SubtreeCro
 			Program result = (Program)offspring[0].getVariable(0);
 			
 			Assert.assertTrue(result.isValid());
-			Assert.assertTrue(result.getMaximumHeight() <= 5);
+			Assert.assertLessThanOrEqual(result.getMaximumHeight(), 5);
 			Assert.assertEquals(program1.getArgument(fixedArgument).getClass(),
 					result.getArgument(fixedArgument).getClass());
 		}

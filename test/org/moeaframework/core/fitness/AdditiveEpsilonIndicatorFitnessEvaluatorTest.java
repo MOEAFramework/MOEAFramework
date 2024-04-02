@@ -18,9 +18,9 @@
 package org.moeaframework.core.fitness;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.mock.MockSolution;

@@ -17,8 +17,8 @@
  */
 package org.moeaframework.problem.misc;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.problem.ProblemTest;

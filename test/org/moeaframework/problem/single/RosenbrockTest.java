@@ -17,8 +17,8 @@
  */
 package org.moeaframework.problem.single;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Settings;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.ProblemTest;
@@ -30,8 +30,8 @@ public class RosenbrockTest extends ProblemTest {
 		Rosenbrock problem = new Rosenbrock();
 		
 		Assert.assertEquals(0.0, MockSolution.of(problem).at(1.0, 1.0).evaluate().getObjective(0), Settings.EPS);
-		Assert.assertTrue(MockSolution.of(problem).at(1.1, 1.1).evaluate().getObjective(0) > 0.0);
-		Assert.assertTrue(MockSolution.of(problem).at(0.9, 0.9).evaluate().getObjective(0) > 0.0);
+		Assert.assertGreaterThan(MockSolution.of(problem).at(1.1, 1.1).evaluate().getObjective(0), 0.0);
+		Assert.assertGreaterThan(MockSolution.of(problem).at(0.9, 0.9).evaluate().getObjective(0), 0.0);
 	}
 	
 	@Test

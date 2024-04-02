@@ -17,9 +17,9 @@
  */
 package org.moeaframework.algorithm;
 
-import org.junit.Assert;
-import org.junit.Assume;
 import org.moeaframework.Analyzer;
+import org.moeaframework.Assert;
+import org.moeaframework.Assume;
 import org.moeaframework.Executor;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.AlgorithmFactory;

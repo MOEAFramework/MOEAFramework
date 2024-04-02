@@ -17,8 +17,8 @@
  */
 package org.moeaframework.problem.CDTLZ;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;

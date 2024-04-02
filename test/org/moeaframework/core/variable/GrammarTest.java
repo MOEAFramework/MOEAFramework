@@ -19,14 +19,13 @@ package org.moeaframework.core.variable;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.TestUtils;
 
 @RunWith(CIRunner.class)
 public class GrammarTest {
@@ -115,11 +114,12 @@ public class GrammarTest {
 	@Test
 	public void testCopy() {
 		Grammar copy = grammar.copy();
-		Assert.assertTrue(copy.equals(grammar));
+		Assert.assertNotSame(grammar, copy);
+		Assert.assertEquals(grammar, copy);
 
 		copy.set(1, 0);
 		Assert.assertFalse(copy.equals(grammar));
-		Assert.assertFalse(grammar.equals(copy));
+		Assert.assertNotEquals(grammar, copy);
 	}
 
 	@Test
@@ -266,7 +266,7 @@ public class GrammarTest {
 		}
 		
 		for (int j = 0; j < grammar.size(); j++) {
-			TestUtils.assertUniformDistribution(0, grammar.getMaximumValue()-1, valueStats[j]);
+			Assert.assertUniformDistribution(0, grammar.getMaximumValue()-1, valueStats[j]);
 		}
 	}
 

@@ -19,8 +19,8 @@ package org.moeaframework.core.operator;
 
 import java.util.Arrays;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;

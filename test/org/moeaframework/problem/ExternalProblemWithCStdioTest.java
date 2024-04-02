@@ -23,12 +23,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.moeaframework.Assert;
+import org.moeaframework.Assume;
+import org.moeaframework.Make;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
@@ -49,7 +50,7 @@ public class ExternalProblemWithCStdioTest {
 	
 	@Before
 	public void setUp() throws IOException {
-		TestUtils.assumeMakeExists();
+		Assume.assumeMakeExists();
 		
 		if (new File("src/test/resources").exists()) {
 			file = new File("src/test/resources/org/moeaframework/problem/test_stdio.exe");
@@ -59,10 +60,10 @@ public class ExternalProblemWithCStdioTest {
 		
 		//attempt to run make if the file does not exist
 		if (!file.exists()) {
-			TestUtils.runMake(file.getParentFile());
+			Make.runMake(file.getParentFile());
 		}
 
-		TestUtils.assumeFileExists(file);
+		Assume.assumeFileExists(file);
 		
 		//start the process separately to intercept the error (debug) data
 		Process process = new ProcessBuilder(file.toString()).start();

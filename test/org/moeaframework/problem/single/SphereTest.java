@@ -17,8 +17,8 @@
  */
 package org.moeaframework.problem.single;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Settings;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.ProblemTest;

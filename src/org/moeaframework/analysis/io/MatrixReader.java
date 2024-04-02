@@ -109,6 +109,20 @@ public class MatrixReader implements Iterable<double[]>, Iterator<double[]>, Clo
 		this.reader = CommentedLineReader.wrap(reader);		
 		this.numberOfColumns = numberOfColumns;
 	}
+	
+	/**
+	 * Loads the content of the file into a matrix.
+	 * 
+	 * @param file the file containing the matrix
+	 * @return the matrix
+	 * @throws FileNotFoundException if the file was not found
+	 * @throws IOException if an I/O error occurred while reading the file
+	 */
+	public static double[][] load(File file) throws FileNotFoundException, IOException {
+		try (MatrixReader reader = new MatrixReader(file)) {
+			return reader.readAll();
+		}
+	}
 
 	@Override
 	public Iterator<double[]> iterator() {

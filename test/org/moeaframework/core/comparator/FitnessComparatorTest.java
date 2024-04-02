@@ -18,9 +18,9 @@
 package org.moeaframework.core.comparator;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.FitnessEvaluator;
 import org.moeaframework.core.Solution;
 

@@ -19,8 +19,8 @@ package org.moeaframework.algorithm;
 
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.mock.MockSolution;
@@ -188,8 +188,8 @@ public class ReferencePointNondominatedSortingPopulationTest {
 		population.truncate(2);
 		
 		Assert.assertEquals(2, population.size());
-		Assert.assertTrue(population.contains(solutions[0]));
-		Assert.assertTrue(population.contains(solutions[1]));
+		Assert.assertContains(population, solutions[0]);
+		Assert.assertContains(population, solutions[1]);
 	}
 	
 	@Test
@@ -207,8 +207,8 @@ public class ReferencePointNondominatedSortingPopulationTest {
 		population.truncate(2);
 		
 		Assert.assertEquals(2, population.size());
-		Assert.assertTrue(population.contains(solutions[1]));
-		Assert.assertTrue(population.contains(solutions[2]));
+		Assert.assertContains(population, solutions[1]);
+		Assert.assertContains(population, solutions[2]);
 	}
 
 }

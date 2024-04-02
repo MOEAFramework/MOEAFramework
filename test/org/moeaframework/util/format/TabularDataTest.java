@@ -22,13 +22,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.tuple.Triple;
 import org.junit.Before;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
+import org.moeaframework.TempFiles;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.RealVariable;
@@ -69,7 +72,7 @@ public class TabularDataTest {
 		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			 PrintStream ps = new PrintStream(baos)) {
 			data.display(ps);
-			TestUtils.assertEqualsNormalized(expectedOutput, baos.toString());
+			Assert.assertEqualsNormalized(expectedOutput, baos.toString());
 		}
 	}
 	
@@ -94,7 +97,7 @@ public class TabularDataTest {
 		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			 PrintStream ps = new PrintStream(baos)) {
 			data.display(ps);
-			TestUtils.assertEqualsNormalized(expectedOutput, baos.toString());
+			Assert.assertEqualsNormalized(expectedOutput, baos.toString());
 		}
 	}
 	
@@ -102,15 +105,15 @@ public class TabularDataTest {
 	public void testCsv() throws IOException {
 		try (StringWriter writer = new StringWriter()) {
 			data.toCSV(writer);
-			TestUtils.assertEqualsNormalized(expectedCsv, writer.toString());
+			Assert.assertEqualsNormalized(expectedCsv, writer.toString());
 		}
 	}
 	
 	@Test
 	public void testCsvFile() throws IOException {
-		File tempFile = TestUtils.createTempFile();
+		File tempFile = TempFiles.createFile();
 		data.saveCSV(tempFile);
-		TestUtils.assertEqualsNormalized(expectedCsv, TestUtils.loadText(tempFile));
+		Assert.assertEqualsNormalized(expectedCsv, Files.readString(tempFile.toPath(), StandardCharsets.UTF_8));
 	}
 
 }

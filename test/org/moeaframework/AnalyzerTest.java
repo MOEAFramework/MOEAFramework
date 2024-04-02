@@ -21,9 +21,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.file.Files;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -102,7 +102,7 @@ public class AnalyzerTest {
 	@Test
 	public void testAll() throws IOException {
 		Analyzer analyzer = generate();
-		File tempFile = TestUtils.createTempFile();
+		File tempFile = TempFiles.createFile();
 		
 		try (ByteArrayOutputStream expected = new ByteArrayOutputStream();
 				PrintStream ps = new PrintStream(expected)) {
@@ -112,12 +112,12 @@ public class AnalyzerTest {
 			analyzer.clear();
 			analyzer.loadData(tempFile.getParentFile(), tempFile.getName(), ".dat");
 			
-			File actualFile = TestUtils.createTempFile();
+			File actualFile = TempFiles.createFile();
 			analyzer.saveAnalysis(actualFile);
 			
 			//20 closes from generate(), 2 from saveData, 2 from loadData, 1 from printAnalysis, 1 from saveAnalysis
 			Assert.assertEquals(26, problemFactory.getCloseCount());
-			Assert.assertArrayEquals(expected.toByteArray(), TestUtils.loadBytes(actualFile));
+			Assert.assertArrayEquals(expected.toByteArray(), Files.readAllBytes(actualFile.toPath()));
 		}
 	}
 	
@@ -156,7 +156,7 @@ public class AnalyzerTest {
 		NondominatedPopulation expected = new EpsilonBoxDominanceArchive(0.01, Population.loadObjectives(
 				new File("./pf/DTLZ2.2D.pf")));
 		
-		TestUtils.assertEquals(expected, actual);
+		Assert.assertEquals(expected, actual);
 	}
 	
 	@Test
@@ -168,7 +168,7 @@ public class AnalyzerTest {
 		NondominatedPopulation expected = new EpsilonBoxDominanceArchive(0.01, Population.loadObjectives(
 				new File("./pf/DTLZ1.2D.pf")));
 		
-		TestUtils.assertEquals(expected, actual);
+		Assert.assertEquals(expected, actual);
 	}
 
 }

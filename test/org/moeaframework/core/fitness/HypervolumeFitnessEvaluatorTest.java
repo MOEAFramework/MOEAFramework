@@ -17,9 +17,9 @@
  */
 package org.moeaframework.core.fitness;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.FitnessEvaluator;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Settings;
@@ -70,7 +70,7 @@ public class HypervolumeFitnessEvaluatorTest {
 		
 		fitness.evaluate(population);
 		
-		Assert.assertTrue(FitnessEvaluator.getFitness(population.get(0)) <
+		Assert.assertLessThan(FitnessEvaluator.getFitness(population.get(0)),
 				FitnessEvaluator.getFitness(population.get(1)));
 	}
 	

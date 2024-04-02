@@ -20,10 +20,9 @@ package org.moeaframework.util;
 import org.apache.commons.math3.linear.LUDecomposition;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.util.CombinatoricsUtils;
-import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.AbsoluteError;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Settings;
 
 public class RotationMatrixBuilderTest {
@@ -42,7 +41,7 @@ public class RotationMatrixBuilderTest {
 		LUDecomposition lu = new LUDecomposition(rm);
 		
 		Assert.assertEquals(1.0, lu.getDeterminant(), Settings.EPS);
-		TestUtils.assertEquals(rm.transpose(), lu.getSolver().getInverse(), new AbsoluteError(0.05));
+		Assert.assertEquals(rm.transpose(), lu.getSolver().getInverse(), new AbsoluteError(0.05));
 	}
 	
 	/**

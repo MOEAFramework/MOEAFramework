@@ -18,8 +18,8 @@
 package org.moeaframework.util.statistics;
 
 import org.apache.commons.math3.stat.inference.TestUtils;
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 
 public class SingleSampleTTestTest {
 

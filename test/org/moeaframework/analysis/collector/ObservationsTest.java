@@ -20,9 +20,9 @@ package org.moeaframework.analysis.collector;
 import java.util.NoSuchElementException;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.Assert;
 
 public class ObservationsTest {
 	
@@ -49,13 +49,13 @@ public class ObservationsTest {
 	
 	@Test
 	public void test() {
-		Assert.assertEquals(1, observations.keys().size());
-		Assert.assertTrue(observations.keys().contains("test"));
+		Assert.assertSize(1, observations.keys());
+		Assert.assertContains(observations.keys(), "test");
 		
 		Assert.assertNotEquals(observations.first(), observations.last());
 		
-		Assert.assertEquals(2, observations.size());
-		Assert.assertFalse(observations.isEmpty());
+		Assert.assertSize(2, observations);
+		Assert.assertNotEmpty(observations);
 		
 		for (Observation observation : observations) {
 			if (observation.getNFE() == 100) {
@@ -72,9 +72,9 @@ public class ObservationsTest {
 	public void testEmptyObservations() {
 		Observations observations = new Observations();
 		
-		Assert.assertEquals(0, observations.keys().size());
-		Assert.assertEquals(0, observations.size());
-		Assert.assertTrue(observations.isEmpty());
+		Assert.assertSize(0, observations.keys());
+		Assert.assertSize(0, observations);
+		Assert.assertEmpty(observations);
 		
 		Assert.assertFalse(observations.iterator().hasNext());
 		

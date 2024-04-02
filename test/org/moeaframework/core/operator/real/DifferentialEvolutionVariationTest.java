@@ -17,9 +17,9 @@
  */
 package org.moeaframework.core.operator.real;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;

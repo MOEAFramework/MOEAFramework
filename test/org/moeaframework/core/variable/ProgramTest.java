@@ -18,9 +18,9 @@
 package org.moeaframework.core.variable;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.util.tree.Environment;
 import org.moeaframework.util.tree.Get;
 import org.moeaframework.util.tree.Rules;

@@ -15,10 +15,10 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework;
+package org.moeaframework.mock;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
@@ -28,7 +28,6 @@ import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.core.variable.Subset;
-import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 
 @SuppressWarnings("resource")
@@ -46,9 +45,9 @@ public class MockSolutionTest {
 		Assert.assertArrayEquals(new double[] { 0.0, 1.0 }, mockSolution.getObjectives(), Settings.EPS);
 		Assert.assertArrayEquals(new double[] { 1.0 }, mockSolution.getConstraints(), Settings.EPS);
 		
-		TestUtils.assertEquals(mockSolution, mockSolution.build());
-		TestUtils.assertEquals(mockSolution, mockSolution.copy());
-		TestUtils.assertEquals(mockSolution, mockSolution.deepCopy());
+		Assert.assertEquals(mockSolution, mockSolution.build());
+		Assert.assertEquals(mockSolution, mockSolution.copy());
+		Assert.assertEquals(mockSolution, mockSolution.deepCopy());
 	}
 	
 	@Test

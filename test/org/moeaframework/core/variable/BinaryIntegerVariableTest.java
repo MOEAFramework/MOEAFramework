@@ -19,11 +19,10 @@ package org.moeaframework.core.variable;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.TestUtils;
 
 public class BinaryIntegerVariableTest {
 
@@ -73,12 +72,13 @@ public class BinaryIntegerVariableTest {
 	@Test
 	public void testCopy() {
 		BinaryIntegerVariable copy = variable.copy();
-		Assert.assertTrue(copy.equals(variable));
+		Assert.assertNotSame(variable, copy);
+		Assert.assertEquals(variable, copy);
 		Assert.assertEquals(variable.getBitSet(), copy.getBitSet());
 
 		copy.setValue(9);
 		Assert.assertEquals(7, variable.getValue());
-		Assert.assertFalse(copy.equals(variable));
+		Assert.assertNotEquals(variable, copy);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -122,7 +122,7 @@ public class BinaryIntegerVariableTest {
 			stats.addValue(variable.getValue());
 		}
 		
-		TestUtils.assertUniformDistribution(variable.getLowerBound(), variable.getUpperBound(), stats);
+		Assert.assertUniformDistribution(variable.getLowerBound(), variable.getUpperBound(), stats);
 	}
 
 }

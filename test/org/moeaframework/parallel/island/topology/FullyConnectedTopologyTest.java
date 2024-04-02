@@ -19,8 +19,8 @@ package org.moeaframework.parallel.island.topology;
 
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.parallel.island.Island;
 
 public class FullyConnectedTopologyTest extends AbstractTopologyTest<FullyConnectedTopology> {
@@ -36,28 +36,28 @@ public class FullyConnectedTopologyTest extends AbstractTopologyTest<FullyConnec
 		List<Island> islands = createIslands(4);
 		
 		List<Island> neighbors = topology.getNeighbors(islands.get(0), islands);
-		Assert.assertEquals(3, neighbors.size());
-		Assert.assertTrue(neighbors.contains(islands.get(1)));
-		Assert.assertTrue(neighbors.contains(islands.get(2)));
-		Assert.assertTrue(neighbors.contains(islands.get(3)));
+		Assert.assertSize(3, neighbors);
+		Assert.assertContains(neighbors, islands.get(1));
+		Assert.assertContains(neighbors, islands.get(2));
+		Assert.assertContains(neighbors, islands.get(3));
 		
 		neighbors = topology.getNeighbors(islands.get(1), islands);
-		Assert.assertEquals(3, neighbors.size());
-		Assert.assertTrue(neighbors.contains(islands.get(0)));
-		Assert.assertTrue(neighbors.contains(islands.get(2)));
-		Assert.assertTrue(neighbors.contains(islands.get(3)));
+		Assert.assertSize(3, neighbors);
+		Assert.assertContains(neighbors, islands.get(0));
+		Assert.assertContains(neighbors, islands.get(2));
+		Assert.assertContains(neighbors, islands.get(3));
 		
 		neighbors = topology.getNeighbors(islands.get(2), islands);
-		Assert.assertEquals(3, neighbors.size());
-		Assert.assertTrue(neighbors.contains(islands.get(0)));
-		Assert.assertTrue(neighbors.contains(islands.get(1)));
-		Assert.assertTrue(neighbors.contains(islands.get(3)));
+		Assert.assertSize(3, neighbors);
+		Assert.assertContains(neighbors, islands.get(0));
+		Assert.assertContains(neighbors, islands.get(1));
+		Assert.assertContains(neighbors, islands.get(3));
 		
 		neighbors = topology.getNeighbors(islands.get(3), islands);
-		Assert.assertEquals(3, neighbors.size());
-		Assert.assertTrue(neighbors.contains(islands.get(0)));
-		Assert.assertTrue(neighbors.contains(islands.get(1)));
-		Assert.assertTrue(neighbors.contains(islands.get(2)));
+		Assert.assertSize(3, neighbors);
+		Assert.assertContains(neighbors, islands.get(0));
+		Assert.assertContains(neighbors, islands.get(1));
+		Assert.assertContains(neighbors, islands.get(2));
 	}
 
 }

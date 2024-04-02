@@ -20,9 +20,9 @@ package org.moeaframework.core;
 import java.util.Map;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.mock.MockSolution;
 
@@ -267,7 +267,7 @@ public class SolutionTest {
 		
 		Solution copy = solution.deepCopy();
 		
-		Assert.assertTrue(array != copy.getAttribute("key"));
+		Assert.assertNotSame(array, copy.getAttribute("key"));
 	}
 
 	@Test

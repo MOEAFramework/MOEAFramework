@@ -17,8 +17,8 @@
  */
 package org.moeaframework.problem.LSMOP;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.problem.ProblemTest;
 
 public class LSMOPProblemProviderTest extends ProblemTest {

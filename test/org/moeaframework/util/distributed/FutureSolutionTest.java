@@ -21,10 +21,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import org.junit.Assert;
+
 import org.junit.Before;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
@@ -81,7 +81,7 @@ public class FutureSolutionTest {
 		TestableFutureSolution solution = new TestableFutureSolution(unevaluatedSolution);
 		solution.setFuture(futureSolution);
 		
-		TestUtils.assertEquals(solution, evaluatedSolution);
+		Assert.assertEquals(solution, evaluatedSolution);
 		Assert.assertTrue(solution.isUpdated);
 	}
 	
@@ -95,7 +95,7 @@ public class FutureSolutionTest {
 			TestableFutureSolution solution = new TestableFutureSolution(unevaluatedSolution);
 			problem.evaluate(solution);
 			
-			TestUtils.assertEquals(solution, evaluatedSolution);
+			Assert.assertEquals(solution, evaluatedSolution);
 			Assert.assertTrue(solution.isUpdated);
 		} finally {
 			executor.shutdown();
@@ -131,7 +131,7 @@ public class FutureSolutionTest {
 			solution.update();
 			long endTime = System.currentTimeMillis();
 			
-			Assert.assertTrue((endTime - startTime) > 1000);
+			Assert.assertGreaterThan((endTime - startTime), 1000);
 		} finally {
 			executor.shutdown();
 		}
@@ -178,7 +178,7 @@ public class FutureSolutionTest {
 		copy = solution.copy();
 		Assert.assertTrue(solution.isUpdated);
 		Assert.assertNotEquals(solution, copy);
-		TestUtils.assertEquals(solution, copy);
+		Assert.assertEquals(solution, copy);
 	}
 	
 	@Test
@@ -188,16 +188,16 @@ public class FutureSolutionTest {
 		
 		Solution copy = solution.deepCopy();
 		Assert.assertTrue(solution.isUpdated);
-		Assert.assertTrue(copy instanceof FutureSolution);
-		Assert.assertNotEquals(solution, copy);
+		Assert.assertInstanceOf(FutureSolution.class, copy);
+		Assert.assertNotSame(solution, copy);
 		Assert.assertFalse(copy.hasAttribute("foo"));
 		
 		solution.setFuture(futureSolution);
 		copy = solution.deepCopy();
 		Assert.assertTrue(solution.isUpdated);
-		Assert.assertTrue(copy instanceof FutureSolution);
-		Assert.assertNotEquals(solution, copy);
-		TestUtils.assertEquals(solution, copy);
+		Assert.assertInstanceOf(FutureSolution.class, copy);
+		Assert.assertNotSame(solution, copy);
+		Assert.assertEquals(solution, copy);
 		Assert.assertTrue(copy.hasAttribute("foo"));
 	}
 	

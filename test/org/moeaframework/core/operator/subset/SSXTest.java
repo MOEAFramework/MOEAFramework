@@ -21,8 +21,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.operator.AbstractSubsetOperatorTest;

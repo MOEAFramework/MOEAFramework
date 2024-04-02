@@ -28,15 +28,14 @@ import org.apache.commons.math3.ml.clustering.Cluster;
 import org.apache.commons.math3.ml.clustering.DoublePoint;
 import org.apache.commons.math3.ml.clustering.KMeansPlusPlusClusterer;
 import org.apache.commons.math3.stat.correlation.Covariance;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.AbsoluteError;
+import org.moeaframework.Assert;
+import org.moeaframework.CIRunner;
 import org.moeaframework.RelativeError;
 import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.TestUtils;
-import org.moeaframework.CIRunner;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.ParentCentricVariationTest;
 import org.moeaframework.core.variable.EncodingUtils;
@@ -91,7 +90,7 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest<AdaptiveM
 				{ 0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0003, -0.0003 },
 				{ 0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0003 }});
 
-		TestUtils.assertEquals(expected, actual, new AbsoluteError(0.0001));
+		Assert.assertEquals(expected, actual, new AbsoluteError(0.0001));
 	}
 
 	@Test
@@ -175,7 +174,7 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest<AdaptiveM
 		List<CentroidCluster<DoublePoint>> clusters = clusterer.cluster(points);
 
 		for (CentroidCluster<DoublePoint> cluster : clusters) {
-			TestUtils.assertEquals(getCovariance(cluster), getCovariance(parents, jumpRateCoefficient), 
+			Assert.assertEquals(getCovariance(cluster), getCovariance(parents, jumpRateCoefficient), 
 					new RelativeError(0.1));
 		}
 	}

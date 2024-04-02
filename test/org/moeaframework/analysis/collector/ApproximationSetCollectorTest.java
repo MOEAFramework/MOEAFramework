@@ -17,7 +17,7 @@
  */
 package org.moeaframework.analysis.collector;
 
-import org.junit.Assert;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.NondominatedPopulation;
 
@@ -28,7 +28,7 @@ public class ApproximationSetCollectorTest extends AbstractCollectorTest<Approxi
 		NondominatedPopulation approximationSet = ApproximationSetCollector.getApproximationSet(observation);
 		
 		Assert.assertNotNull(approximationSet);
-		Assert.assertTrue(approximationSet.size() > 0);
+		Assert.assertNotEmpty(approximationSet);
 	}
 	
 	@Override

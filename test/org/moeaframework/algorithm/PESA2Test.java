@@ -20,9 +20,9 @@ package org.moeaframework.algorithm;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Counter;
 import org.moeaframework.Retryable;
@@ -56,9 +56,10 @@ public class PESA2Test extends JMetalAlgorithmTest {
 		
 		for (List<Solution> list : map.values()) {
 			if (list.size() == 1) {
-				Assert.assertTrue(list.contains(solution2));
+				Assert.assertContains(list, solution2);
 			} else {
-				Assert.assertTrue(list.contains(solution1) && list.contains(solution3));
+				Assert.assertContains(list, solution1);
+				Assert.assertContains(list, solution3);
 			}
 		}
 	}

@@ -27,10 +27,10 @@ import java.util.stream.Collectors;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.ParseException;
-import org.junit.Assert;
-import org.junit.Assume;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
+import org.moeaframework.Assume;
+import org.moeaframework.TempFiles;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
@@ -87,7 +87,7 @@ public class SolveTest {
 		Assert.assertEquals(20.9, realVariable.getUpperBound(), Settings.EPS);
 		
 		BinaryVariable binaryVariable = (BinaryVariable)variables.get(1);
-		TestUtils.assertEquals(10, binaryVariable.getNumberOfBits());
+		Assert.assertEquals(10, binaryVariable.getNumberOfBits());
 		
 		BinaryIntegerVariable binaryIntegerVariable = (BinaryIntegerVariable)variables.get(2);
 		Assert.assertEquals(-5, binaryIntegerVariable.getLowerBound());
@@ -107,7 +107,7 @@ public class SolveTest {
 
 	@Test
 	public void testInternalProblem() throws Exception {
-		File outputFile = TestUtils.createTempFile();
+		File outputFile = TempFiles.createFile();
 		
 		Solve.main(new String[] {
 				"-a", "NSGAII",
@@ -120,8 +120,8 @@ public class SolveTest {
 	
 	@Test
 	public void testExternalProblemWithLowerAndUpperBounds() throws Exception {
-		Assume.assumeTrue(new File("./examples/dtlz2_stdio.exe").exists());
-		File outputFile = TestUtils.createTempFile();
+		Assume.assumeFileExists(new File("./examples/dtlz2_stdio.exe"));
+		File outputFile = TempFiles.createFile();
 		
 		Solve.main(new String[] {
 				"-a", "NSGAII",
@@ -137,8 +137,8 @@ public class SolveTest {
 	
 	@Test
 	public void testExternalProblemWithVariables() throws Exception {
-		Assume.assumeTrue(new File("./examples/dtlz2_stdio.exe").exists());
-		File outputFile = TestUtils.createTempFile();
+		Assume.assumeFileExists(new File("./examples/dtlz2_stdio.exe"));
+		File outputFile = TempFiles.createFile();
 		
 		Solve.main(new String[] {
 				"-a", "NSGAII",
@@ -174,7 +174,7 @@ public class SolveTest {
 		
 		try (ResultFileReader reader = new ResultFileReader(problem, outputFile)) {
 			while (reader.hasNext()) {
-				Assert.assertTrue(reader.next().getPopulation().size() > 0);
+				Assert.assertNotEmpty(reader.next().getPopulation());
 				count++;
 			}
 		}

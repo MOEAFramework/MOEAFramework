@@ -27,10 +27,10 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
+import org.moeaframework.TempFiles;
 import org.moeaframework.analysis.io.ResultFileWriter.ResultFileWriterSettings;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
@@ -102,7 +102,7 @@ public class ResultFileWriterTest {
 	
 	@Test
 	public void testSpecialCharactersInProperties() throws IOException {
-		File file = TestUtils.createTempFile();
+		File file = TempFiles.createFile();
 		
 		NondominatedPopulation population = new NondominatedPopulation();
 
@@ -120,7 +120,7 @@ public class ResultFileWriterTest {
 
 	@Test
 	public void testNullProperties() throws IOException {
-		File file = TestUtils.createTempFile();
+		File file = TempFiles.createFile();
 		
 		NondominatedPopulation population = new NondominatedPopulation();
 		TypedProperties properties = new TypedProperties();
@@ -136,7 +136,7 @@ public class ResultFileWriterTest {
 
 	@Test
 	public void testEmptyProperties() throws IOException {
-		File file = TestUtils.createTempFile();
+		File file = TempFiles.createFile();
 		
 		NondominatedPopulation population = new NondominatedPopulation();
 		TypedProperties properties = new TypedProperties();
@@ -152,7 +152,7 @@ public class ResultFileWriterTest {
 	
 	@Test
 	public void testNormal() throws IOException {
-		File file = TestUtils.createTempFile();
+		File file = TempFiles.createFile();
 
 		NondominatedPopulation population = new NondominatedPopulation();
 		population.add(solution1);
@@ -167,14 +167,14 @@ public class ResultFileWriterTest {
 		
 		try (ResultFileReader reader = ResultFileReader.open(problem, file)) {
 			ResultEntry entry = reader.next();
-			TestUtils.assertEquals(population, entry.getPopulation());
+			Assert.assertEquals(population, entry.getPopulation());
 			Assert.assertEquals(properties, entry.getProperties());
 		}
 	}
 	
 	@Test
 	public void testNoVariables() throws IOException {
-		File file = TestUtils.createTempFile();
+		File file = TempFiles.createFile();
 
 		NondominatedPopulation population = new NondominatedPopulation();
 		population.add(solution1);
@@ -194,14 +194,14 @@ public class ResultFileWriterTest {
 		
 		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
 			ResultEntry entry = reader.next();
-			TestUtils.assertEquals(population, entry.getPopulation());
+			Assert.assertEquals(population, entry.getPopulation());
 			Assert.assertEquals(properties, entry.getProperties());
 		}
 	}
 	
 	@Test
 	public void testConstrainedSolution() throws IOException {
-		File file = TestUtils.createTempFile();
+		File file = TempFiles.createFile();
 
 		NondominatedPopulation population = new NondominatedPopulation();
 		population.add(solution3);
@@ -222,7 +222,7 @@ public class ResultFileWriterTest {
 
 	@Test
 	public void testAppend() throws IOException {
-		File file = TestUtils.createTempFile();
+		File file = TempFiles.createFile();
 
 		NondominatedPopulation population = new NondominatedPopulation();
 		population.add(solution1);
@@ -249,17 +249,17 @@ public class ResultFileWriterTest {
 
 			Assert.assertTrue(reader.hasNext());
 			entry = reader.next();
-			TestUtils.assertEquals(population, entry.getPopulation());
+			Assert.assertEquals(population, entry.getPopulation());
 			Assert.assertEquals(properties, entry.getProperties());
 			
 			Assert.assertTrue(reader.hasNext());
 			entry = reader.next();
-			TestUtils.assertEquals(population, entry.getPopulation());
+			Assert.assertEquals(population, entry.getPopulation());
 			Assert.assertEquals(properties, entry.getProperties());
 			
 			Assert.assertTrue(reader.hasNext());
 			entry = reader.next();
-			TestUtils.assertEquals(population, entry.getPopulation());
+			Assert.assertEquals(population, entry.getPopulation());
 			Assert.assertEquals(properties, entry.getProperties());
 			
 			Assert.assertFalse(reader.hasNext());
@@ -268,7 +268,7 @@ public class ResultFileWriterTest {
 	
 	@Test
 	public void testOverwrite() throws IOException {
-		File file = TestUtils.createTempFile();
+		File file = TempFiles.createFile();
 
 		NondominatedPopulation population = new NondominatedPopulation();
 		population.add(solution1);
@@ -293,7 +293,7 @@ public class ResultFileWriterTest {
 		try (ResultFileReader reader = ResultFileReader.open(problem, file)) {
 			Assert.assertTrue(reader.hasNext());
 			ResultEntry entry = reader.next();
-			TestUtils.assertEquals(population, entry.getPopulation());
+			Assert.assertEquals(population, entry.getPopulation());
 			Assert.assertEquals(properties, entry.getProperties());
 			
 			Assert.assertFalse(reader.hasNext());
@@ -302,7 +302,7 @@ public class ResultFileWriterTest {
 	
 	@Test
 	public void testUnsupportedDecisionVariable() throws IOException {
-		File file = TestUtils.createTempFile();
+		File file = TempFiles.createFile();
 		
 		problem = new AbstractProblem(2, 2, 1) {
 
@@ -343,7 +343,7 @@ public class ResultFileWriterTest {
 	
 	@Test
 	public void testEncode() throws IOException {
-		File file = TestUtils.createTempFile();
+		File file = TempFiles.createFile();
 		
 		try (ResultFileWriter writer = ResultFileWriter.append(problem, file)) {
 			RealVariable rv = new RealVariable(0.5, 0.0, 1.0);
@@ -386,8 +386,7 @@ public class ResultFileWriterTest {
 	
 	@Test
 	public void testFileTimestamp() throws IOException, InterruptedException {
-		File file = TestUtils.createTempFile();
-		file.delete();
+		File file = TempFiles.createFile();
 
 		NondominatedPopulation population = new NondominatedPopulation();
 		population.add(solution1);

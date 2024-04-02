@@ -17,8 +17,8 @@
  */
 package org.moeaframework.analysis.collector;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.Instrumenter;
 import org.moeaframework.algorithm.DefaultAlgorithms;
 import org.moeaframework.core.Algorithm;

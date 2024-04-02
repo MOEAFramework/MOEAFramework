@@ -17,12 +17,12 @@
  */
 package org.moeaframework.util.sequence;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moeaframework.Assert;
+import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.CIRunner;
 
 @RunWith(CIRunner.class)
 @Retryable

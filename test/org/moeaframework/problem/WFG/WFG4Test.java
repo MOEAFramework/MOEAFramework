@@ -17,8 +17,8 @@
  */
 package org.moeaframework.problem.WFG;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Problem;
 
 public class WFG4Test extends WFGTest {

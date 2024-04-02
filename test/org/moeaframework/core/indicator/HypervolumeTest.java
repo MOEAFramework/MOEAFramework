@@ -17,9 +17,9 @@
  */
 package org.moeaframework.core.indicator;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
@@ -71,13 +71,13 @@ public class HypervolumeTest {
 			}
 			
 			Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
-			Assert.assertTrue(expectedType.isInstance(hypervolume.instance));
+			Assert.assertInstanceOf(expectedType, hypervolume.instance);
 			
 			hypervolume = new Hypervolume(problem, referenceSet, refPt);
-			Assert.assertTrue(expectedType.isInstance(hypervolume.instance));
+			Assert.assertInstanceOf(expectedType, hypervolume.instance);
 			
 			hypervolume = new Hypervolume(problem, idealPt, refPt);
-			Assert.assertTrue(expectedType.isInstance(hypervolume.instance));
+			Assert.assertInstanceOf(expectedType, hypervolume.instance);
 		}
 	}
 

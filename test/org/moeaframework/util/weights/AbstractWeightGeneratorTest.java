@@ -17,13 +17,11 @@
  */
 package org.moeaframework.util.weights;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import java.util.List;
 
 import org.apache.commons.math3.stat.StatUtils;
-import org.moeaframework.TestUtils;
+import org.junit.Test;
+import org.moeaframework.Assert;
 
 /**
  * Abstract class for testing implementations of {@link WeightGenerator}.
@@ -95,10 +93,10 @@ public abstract class AbstractWeightGeneratorTest<T extends WeightGenerator> {
 			Assert.assertEquals(D, weight.length);
 
 			for (int j = 0; j < D; j++) {
-				Assert.assertTrue((weight[j] >= 0.0) && (weight[j] <= 1.0));
+				Assert.assertBetween(0.0, 1.0, weight[j]);
 			}
 			
-			TestUtils.assertEquals(1.0, StatUtils.sum(weight));
+			Assert.assertEquals(1.0, StatUtils.sum(weight));
 		}
 	}
 

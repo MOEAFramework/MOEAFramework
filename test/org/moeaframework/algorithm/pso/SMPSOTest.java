@@ -18,8 +18,8 @@
 package org.moeaframework.algorithm.pso;
 
 import org.junit.runner.RunWith;
-import org.moeaframework.Retryable;
 import org.moeaframework.CIRunner;
+import org.moeaframework.Retryable;
 import org.moeaframework.algorithm.JMetalAlgorithmTest;
 
 @RunWith(CIRunner.class)

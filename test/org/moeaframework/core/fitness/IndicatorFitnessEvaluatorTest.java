@@ -17,9 +17,8 @@
  */
 package org.moeaframework.core.fitness;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
 import org.moeaframework.core.FitnessEvaluator;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
@@ -54,7 +53,7 @@ public class IndicatorFitnessEvaluatorTest {
 		Assert.assertEquals(expectedPopulation.size(), population.size());
 		
 		for (int i = 0; i < population.size(); i++) {
-			TestUtils.assertEquals(FitnessEvaluator.getFitness(population.get(i)),
+			Assert.assertEquals(FitnessEvaluator.getFitness(population.get(i)),
 					FitnessEvaluator.getFitness(expectedPopulation.get(i)));
 		}
 	}

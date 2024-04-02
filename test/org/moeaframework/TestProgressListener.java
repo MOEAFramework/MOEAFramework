@@ -17,7 +17,6 @@
  */
 package org.moeaframework;
 
-import org.junit.Assert;
 import org.moeaframework.util.progress.ProgressEvent;
 import org.moeaframework.util.progress.ProgressListener;
 

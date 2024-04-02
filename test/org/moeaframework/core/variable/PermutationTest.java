@@ -21,14 +21,13 @@ import java.io.IOException;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.TestUtils;
 
 @RunWith(CIRunner.class)
 public class PermutationTest {
@@ -108,11 +107,11 @@ public class PermutationTest {
 	@Test
 	public void testCopy() {
 		Permutation copy = permutation.copy();
-		Assert.assertTrue(copy.equals(permutation));
+		Assert.assertNotSame(permutation, copy);
+		Assert.assertEquals(permutation, copy);
 
 		copy.swap(2, 3);
-		Assert.assertFalse(copy.equals(permutation));
-		Assert.assertFalse(permutation.equals(copy));
+		Assert.assertNotEquals(permutation, copy);
 	}
 
 	@Test
@@ -129,16 +128,16 @@ public class PermutationTest {
 	@Test
 	public void testInsert() {
 		permutation.insert(4, 0);
-		Assert.assertTrue(permutation.equals(new Permutation(new int[] { 4, 0, 1, 2, 3 })));
+		Assert.assertEquals(permutation, new Permutation(new int[] { 4, 0, 1, 2, 3 }));
 
 		permutation.insert(0, 4);
-		Assert.assertTrue(permutation.equals(new Permutation(new int[] { 0, 1, 2, 3, 4 })));
+		Assert.assertEquals(permutation, new Permutation(new int[] { 0, 1, 2, 3, 4 }));
 
 		permutation.insert(2, 2);
-		Assert.assertTrue(permutation.equals(new Permutation(new int[] { 0, 1, 2, 3, 4 })));
+		Assert.assertEquals(permutation, new Permutation(new int[] { 0, 1, 2, 3, 4 }));
 
 		permutation.insert(2, 3);
-		Assert.assertTrue(permutation.equals(new Permutation(new int[] { 0, 1, 3, 2, 4 })));
+		Assert.assertEquals(permutation, new Permutation(new int[] { 0, 1, 3, 2, 4 }));
 	}
 
 	@Test
@@ -210,7 +209,7 @@ public class PermutationTest {
 		}
 		
 		for (int j = 0; j < permutation.size(); j++) {
-			TestUtils.assertUniformDistribution(0, permutation.size()-1, positionStats[j]);
+			Assert.assertUniformDistribution(0, permutation.size()-1, positionStats[j]);
 		}
 	}
 

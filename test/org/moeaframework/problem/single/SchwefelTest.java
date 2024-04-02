@@ -17,8 +17,8 @@
  */
 package org.moeaframework.problem.single;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.ProblemTest;
 
@@ -29,8 +29,8 @@ public class SchwefelTest extends ProblemTest {
 		Schwefel problem = new Schwefel();
 		
 		Assert.assertEquals(0.0, MockSolution.of(problem).fill(420.9687).evaluate().getObjective(0), 0.0001);
-		Assert.assertTrue(MockSolution.of(problem).fill(420.97).evaluate().getObjective(0) > 0.0);
-		Assert.assertTrue(MockSolution.of(problem).fill(420.96).evaluate().getObjective(0) > 0.0);
+		Assert.assertGreaterThan(MockSolution.of(problem).fill(420.97).evaluate().getObjective(0), 0.0);
+		Assert.assertGreaterThan(MockSolution.of(problem).fill(420.96).evaluate().getObjective(0), 0.0);
 	}
 	
 	@Test

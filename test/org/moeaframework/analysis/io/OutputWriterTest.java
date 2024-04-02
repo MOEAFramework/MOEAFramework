@@ -20,57 +20,54 @@ package org.moeaframework.analysis.io;
 import java.io.File;
 import java.io.IOException;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
+import org.moeaframework.TempFiles;
 
 public class OutputWriterTest {
 
 	@Test
 	public void testReplaceDestinationNotExists() throws IOException {
-		File source = TestUtils.createTempFile("foo");
-		
-		File destination = TestUtils.createTempFile();
-		destination.delete();
+		File source = TempFiles.createFileWithContent("foo");
+		File destination = TempFiles.createFile();
 		
 		Assert.assertTrue(OutputWriter.replace(source, destination));
 		
-		Assert.assertFalse(source.exists());
-		Assert.assertTrue(destination.exists());
-		Assert.assertEquals("foo", TestUtils.loadText(destination));
+		Assert.assertFileNotExists(source);
+		Assert.assertFileExists(destination);
+		Assert.assertFileWithContent("foo", destination);
 	}
 	
 	@Test
 	public void testReplaceDestinationIsIdentical() throws IOException {
-		File source = TestUtils.createTempFile("foo");
-		File destination = TestUtils.createTempFile("foo");
+		File source = TempFiles.createFileWithContent("foo");
+		File destination = TempFiles.createFileWithContent("foo");
 		long lastModified = destination.lastModified();
 		
 		Assert.assertFalse(OutputWriter.replace(source, destination));
 		
-		Assert.assertFalse(source.exists());
-		Assert.assertTrue(destination.exists());
-		Assert.assertEquals("foo", TestUtils.loadText(destination));
+		Assert.assertFileNotExists(source);
+		Assert.assertFileExists(destination);
+		Assert.assertFileWithContent("foo", destination);
 		Assert.assertEquals(lastModified, destination.lastModified());
 	}
 	
 	@Test
 	public void testReplaceDestinationIsDifferent() throws IOException {
-		File source = TestUtils.createTempFile("foo");
-		File destination = TestUtils.createTempFile("bar");
+		File source = TempFiles.createFileWithContent("foo");
+		File destination = TempFiles.createFileWithContent("bar");
 		
 		Assert.assertTrue(OutputWriter.replace(source, destination));
 		
-		Assert.assertFalse(source.exists());
-		Assert.assertTrue(destination.exists());
-		Assert.assertEquals("foo", TestUtils.loadText(destination));
+		Assert.assertFileNotExists(source);
+		Assert.assertFileExists(destination);
+		Assert.assertFileWithContent("foo", destination);
 	}
 	
 	@Test(expected = IOException.class)
 	public void testReplaceSourceNotFound() throws IOException {
-		File source = TestUtils.createTempFile();
-		File destination = TestUtils.createTempFile("bar");
-		source.delete();
+		File source = TempFiles.createFile();
+		File destination = TempFiles.createFileWithContent("bar");
 		
 		OutputWriter.replace(source, destination);
 	}

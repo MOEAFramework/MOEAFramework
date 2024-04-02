@@ -17,10 +17,10 @@
  */
 package org.moeaframework;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * Annotation for ignoring unit tests on CI builds.  This can be used to ignore tests that frequently fail due to their

@@ -21,11 +21,10 @@ import java.io.IOException;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.Settings;
 
 public class RealVariableTest {
@@ -79,11 +78,12 @@ public class RealVariableTest {
 	@Test
 	public void testCopy() {
 		RealVariable copy = variable.copy();
-		Assert.assertTrue(copy.equals(variable));
+		Assert.assertNotSame(variable, copy);
+		Assert.assertEquals(variable, copy);
 
 		copy.setValue(0.75);
 		Assert.assertEquals(0.5, variable.getValue(), Settings.EPS);
-		Assert.assertFalse(copy.equals(variable));
+		Assert.assertNotEquals(variable, copy);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -133,7 +133,7 @@ public class RealVariableTest {
 			stats.addValue(variable.getValue());
 		}
 		
-		TestUtils.assertUniformDistribution(variable.getLowerBound(), variable.getUpperBound(), stats);
+		Assert.assertUniformDistribution(variable.getLowerBound(), variable.getUpperBound(), stats);
 	}
 
 }

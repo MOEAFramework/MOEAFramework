@@ -17,8 +17,8 @@
  */
 package org.moeaframework.problem.CEC2009;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.problem.ProblemTest;
 
 public class CEC2009ProblemProviderTest extends ProblemTest {

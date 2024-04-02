@@ -17,9 +17,9 @@
  */
 package org.moeaframework.algorithm.single;
 
-import org.junit.Assert;
-import org.junit.Assume;
 import org.junit.Test;
+import org.moeaframework.Assert;
+import org.moeaframework.Assume;
 import org.moeaframework.algorithm.AlgorithmTest;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
@@ -42,15 +42,15 @@ public abstract class AbstractSingleObjectiveAlgorithmTest<T extends Algorithm &
 		
 		if (algorithm instanceof SingleObjectiveEvolutionaryAlgorithm soAlgorithm) {
 			Assert.assertEquals("linear", properties.getString("method"));
-			Assert.assertTrue(soAlgorithm.getComparator() instanceof LinearDominanceComparator);
+			Assert.assertInstanceOf(LinearDominanceComparator.class, soAlgorithm.getComparator());
 			
 			properties.setString("method", "min-max");
 			algorithm.applyConfiguration(properties);
-			Assert.assertTrue(soAlgorithm.getComparator() instanceof MinMaxDominanceComparator);
+			Assert.assertInstanceOf(MinMaxDominanceComparator.class, soAlgorithm.getComparator());
 			
 			properties.setString("method", "angle");
 			algorithm.applyConfiguration(properties);
-			Assert.assertTrue(soAlgorithm.getComparator() instanceof VectorAngleDistanceScalingComparator);
+			Assert.assertInstanceOf(VectorAngleDistanceScalingComparator.class, soAlgorithm.getComparator());
 		} else {
 			Assume.assumeTrue("algorithm is not SingleObjectiveEvolutionaryAlgorithm, skipping test", false);
 		}

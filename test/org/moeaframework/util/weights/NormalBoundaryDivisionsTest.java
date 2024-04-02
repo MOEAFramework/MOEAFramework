@@ -17,8 +17,8 @@
  */
 package org.moeaframework.util.weights;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.util.TypedProperties;
 
 public class NormalBoundaryDivisionsTest {

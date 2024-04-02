@@ -20,9 +20,9 @@ package org.moeaframework.algorithm;
 import java.io.File;
 import java.io.IOException;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
+import org.moeaframework.TempFiles;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 import org.moeaframework.mock.MockRealProblem;
@@ -193,15 +193,14 @@ public class AbstractAlgorithmTest {
 
 	@Test
 	public void testResumable() throws IOException {
-		File file = TestUtils.createTempFile();
-		file.delete();
+		File file = TempFiles.createFile();
 		
 		Checkpoints checkpoints = new Checkpoints(new TestAbstractAlgorithm(), file, 0);
 		Assert.assertEquals(0, checkpoints.getNumberOfEvaluations());
 		
 		checkpoints.step();
 		checkpoints.step();
-		Assert.assertTrue(file.exists() && file.length() > 0);
+		Assert.assertFileWithContent(file);
 		
 		checkpoints = new Checkpoints(new TestAbstractAlgorithm(), file, 0);
 		Assert.assertEquals(200, checkpoints.getNumberOfEvaluations());

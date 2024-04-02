@@ -19,8 +19,8 @@ package org.moeaframework.core.configuration;
 
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.algorithm.NSGAIII;
 import org.moeaframework.core.FrameworkException;
@@ -63,12 +63,12 @@ public class ConfigurationTest {
 		Assert.assertEquals(expectedProperties.getInt("populationSize"), algorithm.getInitialPopulationSize());
 		
 		Variation variation = algorithm.getVariation();
-		Assert.assertTrue(variation instanceof CompoundVariation);
+		Assert.assertInstanceOf(CompoundVariation.class, variation);
 		
 		List<Variation> operators = ((CompoundVariation)variation).getOperators();
-		Assert.assertTrue(operators.get(0) instanceof HUX);
+		Assert.assertInstanceOf(HUX.class, operators.get(0));
 		Assert.assertEquals(expectedProperties.getDouble("hux.rate"), ((HUX)operators.get(0)).getProbability(), Settings.EPS);
-		Assert.assertTrue(operators.get(1) instanceof BitFlip);
+		Assert.assertInstanceOf(BitFlip.class, operators.get(1));
 		Assert.assertEquals(expectedProperties.getDouble("bf.rate"), ((BitFlip)operators.get(1)).getProbability(), Settings.EPS);
 	}
 	
@@ -198,7 +198,7 @@ public class ConfigurationTest {
 		// setting proeprty name works
 		properties.setInt("foo", 5);
 		configurable.applyConfiguration(properties);
-		Assert.assertTrue(properties.getUnaccessedProperties().isEmpty());
+		Assert.assertEmpty(properties.getUnaccessedProperties());
 		
 		properties = configurable.getConfiguration();
 		Assert.assertTrue(properties.contains("foo"));
@@ -210,7 +210,7 @@ public class ConfigurationTest {
 		properties.clear();
 		properties.setInt("bar", 10);
 		configurable.applyConfiguration(properties);
-		Assert.assertTrue(properties.getUnaccessedProperties().isEmpty());
+		Assert.assertEmpty(properties.getUnaccessedProperties());
 		
 		properties = configurable.getConfiguration();
 		Assert.assertTrue(properties.contains("foo"));
@@ -222,7 +222,7 @@ public class ConfigurationTest {
 		properties.clear();
 		properties.setInt("value", 15);
 		configurable.applyConfiguration(properties);
-		Assert.assertFalse(properties.getUnaccessedProperties().isEmpty());
+		Assert.assertNotEmpty(properties.getUnaccessedProperties());
 		
 		properties = configurable.getConfiguration();
 		Assert.assertTrue(properties.contains("foo"));
@@ -235,7 +235,7 @@ public class ConfigurationTest {
 		properties.setInt("foo", 20);
 		properties.setInt("bar", 25);
 		configurable.applyConfiguration(properties);
-		Assert.assertFalse(properties.getUnaccessedProperties().isEmpty());
+		Assert.assertNotEmpty(properties.getUnaccessedProperties());
 		
 		properties = configurable.getConfiguration();
 		Assert.assertTrue(properties.contains("foo"));

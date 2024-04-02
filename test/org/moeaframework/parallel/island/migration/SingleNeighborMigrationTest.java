@@ -19,9 +19,8 @@ package org.moeaframework.parallel.island.migration;
 
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.mock.MockSolution;
@@ -52,7 +51,7 @@ public class SingleNeighborMigrationTest extends AbstractIslandModelTest {
 		migration.migrate(neighbor, List.of(current));
 		Assert.assertEquals(1, neighbor.getPopulation().size());
 		Assert.assertEquals(0, neighbor.getImmigrationQueue().size());
-		Assert.assertTrue(TestUtils.equals(solution1, neighbor.getPopulation().get(0)));
+		Assert.assertEquals(solution1, neighbor.getPopulation().get(0));
 		
 		// then migrate a non-dominated solution, which randomly enters the neighboring population
 		current.getImmigrationQueue().popAll();
@@ -66,8 +65,8 @@ public class SingleNeighborMigrationTest extends AbstractIslandModelTest {
 		migration.migrate(neighbor, List.of(current));
 		Assert.assertEquals(1, neighbor.getPopulation().size());
 		Assert.assertEquals(0, neighbor.getImmigrationQueue().size());
-		Assert.assertTrue(TestUtils.equals(solution1, neighbor.getPopulation().get(0)) ||
-				TestUtils.equals(solution3, neighbor.getPopulation().get(0)));
+		Assert.any(() -> Assert.assertEquals(solution1, neighbor.getPopulation().get(0)),
+				() -> Assert.assertEquals(solution3, neighbor.getPopulation().get(0)));
 	}
 
 }

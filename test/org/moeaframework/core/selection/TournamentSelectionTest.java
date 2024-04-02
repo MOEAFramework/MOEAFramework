@@ -20,9 +20,9 @@ package org.moeaframework.core.selection;
 import java.util.List;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.algorithm.single.LinearDominanceComparator;
 import org.moeaframework.core.Population;
@@ -65,17 +65,17 @@ public class TournamentSelectionTest {
 		TournamentSelection selection = new TournamentSelection(2);
 		Assert.assertEquals(2, selection.getSize());
 		Assert.assertNotNull(selection.getComparator());
-		Assert.assertTrue(selection.getComparator() instanceof ParetoDominanceComparator);
+		Assert.assertInstanceOf(ParetoDominanceComparator.class, selection.getComparator());
 		
 		selection.setSize(3);
 		Assert.assertEquals(3, selection.getSize());
 		Assert.assertNotNull(selection.getComparator());
-		Assert.assertTrue(selection.getComparator() instanceof ParetoDominanceComparator);
+		Assert.assertInstanceOf(ParetoDominanceComparator.class, selection.getComparator());
 		
 		selection.setComparator(new LinearDominanceComparator());
 		Assert.assertEquals(3, selection.getSize());
 		Assert.assertNotNull(selection.getComparator());
-		Assert.assertTrue(selection.getComparator() instanceof LinearDominanceComparator);
+		Assert.assertInstanceOf(LinearDominanceComparator.class, selection.getComparator());
 	}
 
 	@Test

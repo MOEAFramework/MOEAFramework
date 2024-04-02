@@ -17,8 +17,8 @@
  */
 package org.moeaframework.core.comparator;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Solution;
 
 public class ChainedComparatorTest {

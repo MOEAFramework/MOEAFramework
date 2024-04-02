@@ -21,8 +21,8 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.NoSuchElementException;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 

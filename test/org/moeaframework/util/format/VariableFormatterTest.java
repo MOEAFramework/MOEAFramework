@@ -19,8 +19,9 @@ package org.moeaframework.util.format;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Assert;
+
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.BinaryVariable;

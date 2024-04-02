@@ -18,9 +18,9 @@
 package org.moeaframework.core;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.mock.MockSolution;
 
 public class EpsilonBoxDominanceArchiveTest {
@@ -49,7 +49,7 @@ public class EpsilonBoxDominanceArchiveTest {
 		Assert.assertEquals(1, archive.size());
 		Assert.assertEquals(0, archive.getNumberOfDominatingImprovements());
 		Assert.assertEquals(1, archive.getNumberOfImprovements());
-		Assert.assertTrue(archive.get(0) == solution1);
+		Assert.assertSame(archive.get(0), solution1);
 	}
 
 	@Test
@@ -64,7 +64,7 @@ public class EpsilonBoxDominanceArchiveTest {
 		Assert.assertEquals(1, archive.size());
 		Assert.assertEquals(2, archive.getNumberOfDominatingImprovements());
 		Assert.assertEquals(3, archive.getNumberOfImprovements());
-		Assert.assertTrue(archive.get(0) == solution3);
+		Assert.assertSame(archive.get(0), solution3);
 	}
 
 	@Test

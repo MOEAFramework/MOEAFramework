@@ -20,9 +20,9 @@ package org.moeaframework.analysis.io;
 import java.io.IOException;
 import java.io.StringReader;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
+import org.moeaframework.TempFiles;
 import org.moeaframework.core.Settings;
 
 public class ParameterFileTest {
@@ -90,22 +90,22 @@ public class ParameterFileTest {
 
 	@Test
 	public void testFileComplete() throws IOException {
-		validateComplete(new ParameterFile(TestUtils.createTempFile(COMPLETE)));
+		validateComplete(new ParameterFile(TempFiles.createFileWithContent(COMPLETE)));
 	}
 
 	@Test(expected = IOException.class)
 	public void testFileMissingEntry() throws IOException {
-		new ParameterFile(TestUtils.createTempFile(MISSING_ENTRY));
+		new ParameterFile(TempFiles.createFileWithContent(MISSING_ENTRY));
 	}
 
 	@Test(expected = IOException.class)
 	public void testFileMissingLine() throws IOException {
-		new ParameterFile(TestUtils.createTempFile(MISSING_LINE));
+		new ParameterFile(TempFiles.createFileWithContent(MISSING_LINE));
 	}
 
 	@Test(expected = NumberFormatException.class)
 	public void testFileInvalidEntry() throws IOException {
-		new ParameterFile(TestUtils.createTempFile(INVALID_ENTRY));
+		new ParameterFile(TempFiles.createFileWithContent(INVALID_ENTRY));
 	}
 
 }

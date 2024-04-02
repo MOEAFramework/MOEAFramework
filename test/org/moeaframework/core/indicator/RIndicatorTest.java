@@ -20,8 +20,8 @@ package org.moeaframework.core.indicator;
 import java.io.File;
 import java.io.IOException;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.mock.MockRealProblem;
 

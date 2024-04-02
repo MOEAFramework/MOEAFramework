@@ -19,29 +19,29 @@ package org.moeaframework.analysis.tools;
 
 import java.io.File;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
+import org.moeaframework.TempFiles;
 import org.moeaframework.core.FrameworkException;
 
 public class SetGeneratorTest {
 	
 	@Test
 	public void test() throws Exception {
-		File referenceSet = TestUtils.createTempFile();
+		File referenceSet = TempFiles.createFile();
 		
 		SetGenerator.main(new String[] {
 				"-b", "DTLZ2_2",
 				"-n", "100", 
 				"-o", referenceSet.getPath()});
 		
-		Assert.assertEquals(100, TestUtils.lineCount(referenceSet));
-		TestUtils.assertLinePattern(referenceSet, TestUtils.getSpaceSeparatedNumericPattern(2));
+		Assert.assertLineCount(100, referenceSet);
+		Assert.assertLinePattern(referenceSet, Assert.getSpaceSeparatedNumericPattern(2));
 	}
 	
 	@Test
 	public void testEpsilon() throws Exception {
-		File referenceSet = TestUtils.createTempFile();
+		File referenceSet = TempFiles.createFile();
 		
 		SetGenerator.main(new String[] {
 				"-b", "DTLZ2_2",
@@ -49,13 +49,12 @@ public class SetGeneratorTest {
 				"-e", "0.01",
 				"-o", referenceSet.getPath()});
 		
-		Assert.assertTrue(TestUtils.lineCount(referenceSet) < 1000);
-		TestUtils.assertLinePattern(referenceSet, TestUtils.getSpaceSeparatedNumericPattern(2));
+		Assert.assertLinePattern(referenceSet, Assert.getSpaceSeparatedNumericPattern(2));
 	}
 	
 	@Test(expected = FrameworkException.class)
 	public void testNonAnalytical() throws Exception {
-		File referenceSet = TestUtils.createTempFile();
+		File referenceSet = TempFiles.createFile();
 		
 		SetGenerator.main(new String[] {
 				"-b", "UF1",

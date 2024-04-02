@@ -28,7 +28,7 @@ import java.util.function.Function;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.Assert;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.BinaryVariable;
@@ -72,8 +72,7 @@ public class MockExternalProblem extends ExternalProblem {
 					String line = null;
 	
 					while (!thread.isInterrupted() && (line = reader.readLine()) != null) {
-						System.out.println(line);
-						Assert.assertTrue(pattern.matcher(line).matches());
+						Assert.assertMatches(line, pattern);
 	
 						writer.println(callback.apply(line));
 						writer.flush();

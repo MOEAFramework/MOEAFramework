@@ -23,7 +23,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import org.junit.Before;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assume;
+import org.moeaframework.Make;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.BinaryVariable;
@@ -35,8 +36,8 @@ public class ExternalProblemWithCSocketTest extends ExternalProblemWithCStdioTes
 	@Before
 	public void setUp() throws IOException {
 		//skip this test if the machine is not POSIX compliant
-		TestUtils.assumePOSIX();
-		TestUtils.assumeMakeExists();
+		Assume.assumePOSIX();
+		Assume.assumeMakeExists();
 		
 		if (new File("src/test/resources").exists()) {
 			file = new File("src/test/resources/org/moeaframework/problem/test_socket.exe");
@@ -46,10 +47,10 @@ public class ExternalProblemWithCSocketTest extends ExternalProblemWithCStdioTes
 		
 		//attempt to run make if the file does not exist
 		if (!file.exists()) {
-			TestUtils.runMake(file.getParentFile());
+			Make.runMake(file.getParentFile());
 		}
 		
-		TestUtils.assumeFileExists(file);
+		Assume.assumeFileExists(file);
 		
 		//start the process separately to intercept the error (debug) data
 		Process process = new ProcessBuilder(file.toString()).start();

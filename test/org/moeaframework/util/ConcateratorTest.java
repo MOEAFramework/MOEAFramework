@@ -21,8 +21,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 
 public class ConcateratorTest {
 	

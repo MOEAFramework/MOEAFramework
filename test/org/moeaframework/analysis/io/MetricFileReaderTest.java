@@ -20,9 +20,9 @@ package org.moeaframework.analysis.io;
 import java.io.IOException;
 import java.io.StringReader;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
+import org.moeaframework.TempFiles;
 import org.moeaframework.core.Settings;
 
 public class MetricFileReaderTest {
@@ -69,28 +69,28 @@ public class MetricFileReaderTest {
 
 	@Test
 	public void testFileComplete() throws IOException {
-		try (MetricFileReader reader = new MetricFileReader(TestUtils.createTempFile(COMPLETE))) {
+		try (MetricFileReader reader = new MetricFileReader(TempFiles.createFileWithContent(COMPLETE))) {
 			validateComplete(reader);
 		}
 	}
 
 	@Test
 	public void testFileMissingEntry() throws IOException {
-		try (MetricFileReader reader = new MetricFileReader(TestUtils.createTempFile(MISSING_ENTRY))) {
+		try (MetricFileReader reader = new MetricFileReader(TempFiles.createFileWithContent(MISSING_ENTRY))) {
 			validateIncomplete(reader);
 		}
 	}
 
 	@Test
 	public void testFileMissingLine() throws IOException {
-		try (MetricFileReader reader = new MetricFileReader(TestUtils.createTempFile(MISSING_LINE))) {
+		try (MetricFileReader reader = new MetricFileReader(TempFiles.createFileWithContent(MISSING_LINE))) {
 			validateIncomplete(reader);
 		}
 	}
 
 	@Test
 	public void testFileInvalidEntry() throws IOException {
-		try (MetricFileReader reader = new MetricFileReader(TestUtils.createTempFile(INVALID_ENTRY))) {
+		try (MetricFileReader reader = new MetricFileReader(TempFiles.createFileWithContent(INVALID_ENTRY))) {
 			validateIncomplete(reader);
 		}
 	}

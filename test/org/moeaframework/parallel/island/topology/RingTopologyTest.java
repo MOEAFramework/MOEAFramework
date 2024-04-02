@@ -19,8 +19,8 @@ package org.moeaframework.parallel.island.topology;
 
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.parallel.island.Island;
 
 public class RingTopologyTest extends AbstractTopologyTest<RingTopology> {
@@ -36,24 +36,24 @@ public class RingTopologyTest extends AbstractTopologyTest<RingTopology> {
 		List<Island> islands = createIslands(4);
 		
 		List<Island> neighbors = topology.getNeighbors(islands.get(0), islands);
-		Assert.assertEquals(2, neighbors.size());
-		Assert.assertTrue(neighbors.contains(islands.get(3)));
-		Assert.assertTrue(neighbors.contains(islands.get(1)));
+		Assert.assertSize(2, neighbors);
+		Assert.assertContains(neighbors, islands.get(3));
+		Assert.assertContains(neighbors, islands.get(1));
 		
 		neighbors = topology.getNeighbors(islands.get(1), islands);
-		Assert.assertEquals(2, neighbors.size());
-		Assert.assertTrue(neighbors.contains(islands.get(0)));
-		Assert.assertTrue(neighbors.contains(islands.get(2)));
+		Assert.assertSize(2, neighbors);
+		Assert.assertContains(neighbors, islands.get(0));
+		Assert.assertContains(neighbors, islands.get(2));
 		
 		neighbors = topology.getNeighbors(islands.get(2), islands);
-		Assert.assertEquals(2, neighbors.size());
-		Assert.assertTrue(neighbors.contains(islands.get(1)));
-		Assert.assertTrue(neighbors.contains(islands.get(3)));
+		Assert.assertSize(2, neighbors);
+		Assert.assertContains(neighbors, islands.get(1));
+		Assert.assertContains(neighbors, islands.get(3));
 		
 		neighbors = topology.getNeighbors(islands.get(3), islands);
-		Assert.assertEquals(2, neighbors.size());
-		Assert.assertTrue(neighbors.contains(islands.get(0)));
-		Assert.assertTrue(neighbors.contains(islands.get(2)));
+		Assert.assertSize(2, neighbors);
+		Assert.assertContains(neighbors, islands.get(0));
+		Assert.assertContains(neighbors, islands.get(2));
 	}
 	
 	@Test
@@ -76,20 +76,20 @@ public class RingTopologyTest extends AbstractTopologyTest<RingTopology> {
 		List<Island> islands = createIslands(4);
 		
 		List<Island> neighbors = topology.getNeighbors(islands.get(0), islands);
-		Assert.assertEquals(1, neighbors.size());
-		Assert.assertTrue(neighbors.contains(islands.get(1)));
+		Assert.assertSize(1, neighbors);
+		Assert.assertContains(neighbors, islands.get(1));
 		
 		neighbors = topology.getNeighbors(islands.get(1), islands);
-		Assert.assertEquals(1, neighbors.size());
-		Assert.assertTrue(neighbors.contains(islands.get(2)));
+		Assert.assertSize(1, neighbors);
+		Assert.assertContains(neighbors, islands.get(2));
 		
 		neighbors = topology.getNeighbors(islands.get(2), islands);
-		Assert.assertEquals(1, neighbors.size());
-		Assert.assertTrue(neighbors.contains(islands.get(3)));
+		Assert.assertSize(1, neighbors);
+		Assert.assertContains(neighbors, islands.get(3));
 		
 		neighbors = topology.getNeighbors(islands.get(3), islands);
-		Assert.assertEquals(1, neighbors.size());
-		Assert.assertTrue(neighbors.contains(islands.get(0)));
+		Assert.assertSize(1, neighbors);
+		Assert.assertContains(neighbors, islands.get(0));
 	}
 
 }

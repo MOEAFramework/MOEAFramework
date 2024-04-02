@@ -22,9 +22,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
+import org.moeaframework.TempFiles;
 
 public class TimingTest {
 	
@@ -62,14 +62,14 @@ public class TimingTest {
 	@Test
 	public void testDisplay() throws IOException {
 		Timing.clear();
-		Assert.assertEquals(2, TestUtils.lineCount(saveDisplayToFile()));
+		Assert.assertLineCount(2, saveDisplayToFile());
 		
 		Timing.startTimer("timer1");
 		Timing.stopTimer("timer1");
 		Timing.startTimer("timer2");
 		Timing.stopTimer("timer2");
 		
-		Assert.assertEquals(4, TestUtils.lineCount(saveDisplayToFile()));
+		Assert.assertLineCount(4, saveDisplayToFile());
 	}
 	
 	@Test
@@ -101,7 +101,7 @@ public class TimingTest {
 	}
 	
 	private File saveDisplayToFile() throws IOException {
-		File file = TestUtils.createTempFile();
+		File file = TempFiles.createFile();
 		
 		try (PrintStream ps = new PrintStream(new FileOutputStream(file))) {	
 			Timing.display(ps);

@@ -17,9 +17,9 @@
  */
 package org.moeaframework.algorithm;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
 import org.moeaframework.core.Problem;
@@ -45,7 +45,7 @@ public class IBEATest extends JMetalAlgorithmTest {
 		
 		algorithm.applyConfiguration(TypedProperties.withProperty("indicator", "epsilon"));
 		
-		Assert.assertTrue(algorithm.getFitnessEvaluator() instanceof AdditiveEpsilonIndicatorFitnessEvaluator);
+		Assert.assertInstanceOf(AdditiveEpsilonIndicatorFitnessEvaluator.class, algorithm.getFitnessEvaluator());
 		Assert.assertEquals("epsilon", algorithm.getConfiguration().getString("indicator"));
 	}
 	

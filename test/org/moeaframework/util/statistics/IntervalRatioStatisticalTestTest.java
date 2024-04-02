@@ -18,11 +18,12 @@
 package org.moeaframework.util.statistics;
 
 import java.util.List;
+import java.util.stream.DoubleStream;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.Assert;
 
 public class IntervalRatioStatisticalTestTest {
 
@@ -71,18 +72,8 @@ public class IntervalRatioStatisticalTestTest {
 	 * @param a2 the second array
 	 */
 	public void testArraysMatch(double[] a1, double[] a2) {
-		for (int i = 0; i < a1.length; i++) {
-			boolean found = false;
-
-			for (int j = 0; j < a2.length; j++) {
-				if (a1[i] == a2[j]) {
-					found = true;
-					a2[j] = Double.NaN;
-				}
-			}
-
-			Assert.assertTrue(found);
-		}
+		Assert.assertTrue("The two arrays contain different elements", 
+				DoubleStream.of(a1).sorted().boxed().toList().equals(DoubleStream.of(a2).sorted().boxed().toList()));
 	}
 
 	/**

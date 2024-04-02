@@ -20,9 +20,9 @@ package org.moeaframework.algorithm;
 import java.io.File;
 import java.io.IOException;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
+import org.moeaframework.TempFiles;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
@@ -57,7 +57,7 @@ public class AbstractEvolutionaryAlgorithmTest {
 
 	@Test
 	public void testResumable() throws IOException {
-		File file = TestUtils.createTempFile();
+		File file = TempFiles.createFile();
 		NondominatedPopulation lastResult = new NondominatedPopulation();
 		NondominatedPopulation lastArchive = new NondominatedPopulation();
 		Population lastPopulation = new Population();
@@ -70,9 +70,9 @@ public class AbstractEvolutionaryAlgorithmTest {
 			checkpoints = new Checkpoints(algorithm, file, 0);
 
 			Assert.assertEquals(lastNFE, checkpoints.getNumberOfEvaluations());
-			TestUtils.assertEquals(lastResult, checkpoints.getResult());
-			TestUtils.assertEquals(lastArchive, algorithm.getArchive());
-			TestUtils.assertEquals(lastPopulation, algorithm.getPopulation());
+			Assert.assertEquals(lastResult, checkpoints.getResult());
+			Assert.assertEquals(lastArchive, algorithm.getArchive());
+			Assert.assertEquals(lastPopulation, algorithm.getPopulation());
 
 			checkpoints.step();
 

@@ -22,10 +22,10 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
+import org.moeaframework.TempFiles;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
@@ -255,35 +255,35 @@ public class ResultFileReaderTest {
 
 	@Test
 	public void testReaderComplete() throws IOException {
-		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(COMPLETE))) {
+		try (ResultFileReader reader = new ResultFileReader(problem, TempFiles.createFileWithContent(COMPLETE))) {
 			validateComplete(reader);
 		}
 	}
 	
 	@Test
 	public void testReaderCompleteWhitespace() throws IOException {
-		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(COMPLETE_WHITESPACE))) {
+		try (ResultFileReader reader = new ResultFileReader(problem, TempFiles.createFileWithContent(COMPLETE_WHITESPACE))) {
 			validateComplete(reader);
 		}
 	}
 	
 	@Test
 	public void testReaderCompleteNoVariables() throws IOException {
-		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(COMPLETE_NOVARIABLES))) {
+		try (ResultFileReader reader = new ResultFileReader(problem, TempFiles.createFileWithContent(COMPLETE_NOVARIABLES))) {
 			validateCompleteNoVariables(reader);
 		}
 	}
 
 	@Test
 	public void testReaderCompleteNoHeader() throws IOException {
-		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(COMPLETE_NOHEADER))) {
+		try (ResultFileReader reader = new ResultFileReader(problem, TempFiles.createFileWithContent(COMPLETE_NOHEADER))) {
 			validateComplete(reader);
 		}
 	}
 	
 	@Test
 	public void testReaderMultipound() throws IOException {
-		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(MULTIPOUND))) {
+		try (ResultFileReader reader = new ResultFileReader(problem, TempFiles.createFileWithContent(MULTIPOUND))) {
 			validateComplete(reader);
 		}
 	}
@@ -294,7 +294,7 @@ public class ResultFileReaderTest {
 		properties.setString("foo", "bar");
 		properties.setString("answer", "42");
 
-		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(COMPLETE_PROPERTIES))) {
+		try (ResultFileReader reader = new ResultFileReader(problem, TempFiles.createFileWithContent(COMPLETE_PROPERTIES))) {
 			validateProperties(reader, properties);
 		}
 	}
@@ -303,7 +303,7 @@ public class ResultFileReaderTest {
 	public void testReaderNoProperties() throws IOException {
 		TypedProperties properties = new TypedProperties();
 
-		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(NO_PROPERTIES))) {
+		try (ResultFileReader reader = new ResultFileReader(problem, TempFiles.createFileWithContent(NO_PROPERTIES))) {
 			validateProperties(reader, properties);
 		}
 	}
@@ -312,7 +312,7 @@ public class ResultFileReaderTest {
 	public void testReaderEmptyProperties() throws IOException {
 		TypedProperties properties = new TypedProperties();
 
-		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(EMPTY_PROPERTIES))) {
+		try (ResultFileReader reader = new ResultFileReader(problem, TempFiles.createFileWithContent(EMPTY_PROPERTIES))) {
 			validateProperties(reader, properties);
 		}
 	}
@@ -322,63 +322,63 @@ public class ResultFileReaderTest {
 		TypedProperties properties = new TypedProperties();
 		properties.setString("foo", "");
 
-		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(OLDSTYLE_PROPERTIES))) {
+		try (ResultFileReader reader = new ResultFileReader(problem, TempFiles.createFileWithContent(OLDSTYLE_PROPERTIES))) {
 			validateProperties(reader, properties);
 		}
 	}
 
 	@Test
 	public void testReaderEmptyFile() throws IOException {
-		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(EMPTY))) {
+		try (ResultFileReader reader = new ResultFileReader(problem, TempFiles.createFileWithContent(EMPTY))) {
 			validateEmpty(reader);
 		}
 	}
 
 	@Test
 	public void testReaderEmptyEntry() throws IOException {
-		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(EMPTY_ENTRY))) {
+		try (ResultFileReader reader = new ResultFileReader(problem, TempFiles.createFileWithContent(EMPTY_ENTRY))) {
 			validateEmptyEntry(reader);
 		}
 	}
 
 	@Test
 	public void testReaderOnlyHeader() throws IOException {
-		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(ONLY_HEADER))) {
+		try (ResultFileReader reader = new ResultFileReader(problem, TempFiles.createFileWithContent(ONLY_HEADER))) {
 			validateEmpty(reader);
 		}
 	}
 
 	@Test
 	public void testReaderMissingPound() throws IOException {
-		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(INCOMPLETE_MISSING_POUND))) {
+		try (ResultFileReader reader = new ResultFileReader(problem, TempFiles.createFileWithContent(INCOMPLETE_MISSING_POUND))) {
 			validateIncomplete(reader);
 		}
 	}
 
 	@Test
 	public void testReaderEmptyLine() throws IOException {
-		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(INCOMPLETE_EMPTY_LINE))) {
+		try (ResultFileReader reader = new ResultFileReader(problem, TempFiles.createFileWithContent(INCOMPLETE_EMPTY_LINE))) {
 			validateIncomplete(reader);
 		}
 	}
 
 	@Test
 	public void testReaderMissingData() throws IOException {
-		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(INCOMPLETE_MISSING_DATA))) {
+		try (ResultFileReader reader = new ResultFileReader(problem, TempFiles.createFileWithContent(INCOMPLETE_MISSING_DATA))) {
 			validateIncomplete(reader);
 		}
 	}
 	
 	@Test
 	public void testReaderUnparseable() throws IOException {
-		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(INCOMPLETE_UNPARSEABLE))) {
+		try (ResultFileReader reader = new ResultFileReader(problem, TempFiles.createFileWithContent(INCOMPLETE_UNPARSEABLE))) {
 			validateIncomplete(reader);
 		}
 	}
 	
 	@Test(expected = NoSuchElementException.class)
 	public void testNextAfterEndOfFile() throws IOException {
-		try (ResultFileReader reader = new ResultFileReader(problem, TestUtils.createTempFile(COMPLETE))) {
+		try (ResultFileReader reader = new ResultFileReader(problem, TempFiles.createFileWithContent(COMPLETE))) {
 			validateComplete(reader);
 			reader.next();
 		}
@@ -386,9 +386,9 @@ public class ResultFileReaderTest {
 
 	private void validateComplete(ResultFileReader reader) throws IOException {
 		Assert.assertTrue(reader.hasNext());
-		TestUtils.assertEquals(population, reader.next().getPopulation());
+		Assert.assertEquals(population, reader.next().getPopulation());
 		Assert.assertTrue(reader.hasNext());
-		TestUtils.assertEquals(population, reader.next().getPopulation());
+		Assert.assertEquals(population, reader.next().getPopulation());
 		Assert.assertFalse(reader.hasNext());
 		Assert.assertFalse(reader.hasNext());
 	}
@@ -399,9 +399,9 @@ public class ResultFileReaderTest {
 		population.add(MockSolution.of().withObjectives(1.0, 0.0));
 		
 		Assert.assertTrue(reader.hasNext());
-		TestUtils.assertEquals(population, reader.next().getPopulation());
+		Assert.assertEquals(population, reader.next().getPopulation());
 		Assert.assertTrue(reader.hasNext());
-		TestUtils.assertEquals(population, reader.next().getPopulation());
+		Assert.assertEquals(population, reader.next().getPopulation());
 		Assert.assertFalse(reader.hasNext());
 		Assert.assertFalse(reader.hasNext());
 	}
@@ -413,18 +413,18 @@ public class ResultFileReaderTest {
 
 	private void validateEmptyEntry(ResultFileReader reader) throws IOException {
 		Assert.assertTrue(reader.hasNext());
-		TestUtils.assertEquals(population, reader.next().getPopulation());
+		Assert.assertEquals(population, reader.next().getPopulation());
 		Assert.assertTrue(reader.hasNext());
 		Assert.assertEquals(0, reader.next().getPopulation().size());
 		Assert.assertTrue(reader.hasNext());
-		TestUtils.assertEquals(population, reader.next().getPopulation());
+		Assert.assertEquals(population, reader.next().getPopulation());
 		Assert.assertFalse(reader.hasNext());
 		Assert.assertFalse(reader.hasNext());
 	}
 
 	private void validateIncomplete(ResultFileReader reader) throws IOException {
 		Assert.assertTrue(reader.hasNext());
-		TestUtils.assertEquals(population, reader.next().getPopulation());
+		Assert.assertEquals(population, reader.next().getPopulation());
 		Assert.assertFalse(reader.hasNext());
 		Assert.assertFalse(reader.hasNext());
 	}
@@ -437,7 +437,7 @@ public class ResultFileReaderTest {
 	
 	@Test
 	public void testDecode() throws IOException {
-		File file = TestUtils.createTempFile();
+		File file = TempFiles.createFileWithContent("");
 		
 		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
 			RealVariable rv = new RealVariable(0.0, 1.0);

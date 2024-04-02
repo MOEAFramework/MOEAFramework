@@ -21,9 +21,9 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.cli.ParseException;
-import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
+import org.moeaframework.TempFiles;
 import org.moeaframework.analysis.io.MetricFileWriter.MetricFileWriterSettings;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
@@ -35,7 +35,7 @@ public class MetricFileWriterTest {
 
 	@Test
 	public void testAppend() throws IOException {
-		File file = TestUtils.createTempFile();
+		File file = TempFiles.createFile();
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 		Indicators indicators = Indicators.standard(problem, referenceSet);
@@ -74,7 +74,7 @@ public class MetricFileWriterTest {
 	
 	@Test
 	public void testOverwrite() throws IOException {
-		File file = TestUtils.createTempFile();
+		File file = TempFiles.createFile();
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 		Indicators indicators = Indicators.standard(problem, referenceSet);
@@ -118,8 +118,7 @@ public class MetricFileWriterTest {
 	
 	@Test
 	public void testFileTimestamp() throws IOException, InterruptedException {
-		File file = TestUtils.createTempFile();
-		file.delete();
+		File file = TempFiles.createFile();
 		
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");

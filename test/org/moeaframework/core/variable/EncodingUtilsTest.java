@@ -21,8 +21,8 @@ import java.util.BitSet;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;

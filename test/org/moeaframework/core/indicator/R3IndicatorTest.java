@@ -20,8 +20,8 @@ package org.moeaframework.core.indicator;
 import java.io.File;
 import java.io.IOException;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
@@ -62,7 +62,7 @@ public class R3IndicatorTest extends AbstractIndicatorTest<R3Indicator> {
 		NondominatedPopulation population2 = new NondominatedPopulation();
 		population2.add(MockSolution.of().withObjectives(0.5, 0.5));
 		
-		Assert.assertTrue(indicator.evaluate(population1) < indicator.evaluate(population2));
+		Assert.assertLessThan(indicator.evaluate(population1), indicator.evaluate(population2));
 	}
 
 	@Test

@@ -17,7 +17,7 @@
  */
 package org.moeaframework.analysis.collector;
 
-import org.junit.Assert;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.EvolutionaryAlgorithm;
 
@@ -25,10 +25,10 @@ public class PopulationSizeCollectorTest extends AbstractCollectorTest<Populatio
 	
 	@Override
 	public void validate(Observation observation) {
-		Assert.assertTrue(PopulationSizeCollector.getPopulationSize(observation) > 0);
+		Assert.assertGreaterThan(PopulationSizeCollector.getPopulationSize(observation), 0);
 		
 		if (observation.keys().contains("Archive Size")) {
-			Assert.assertTrue(PopulationSizeCollector.getArchiveSize(observation) > 0);
+			Assert.assertGreaterThan(PopulationSizeCollector.getArchiveSize(observation), 0);
 		}
 	}
 	

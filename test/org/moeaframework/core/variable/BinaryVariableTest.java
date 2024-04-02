@@ -22,14 +22,13 @@ import java.util.BitSet;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.TestUtils;
 
 @RunWith(CIRunner.class)
 public class BinaryVariableTest {
@@ -118,11 +117,12 @@ public class BinaryVariableTest {
 	@Test
 	public void testCopy() {
 		BinaryVariable copy = variable.copy();
-		Assert.assertTrue(copy.equals(variable));
+		Assert.assertNotSame(variable, copy);
+		Assert.assertEquals(variable, copy);
 
 		copy.set(1, false);
 		Assert.assertTrue(variable.get(1));
-		Assert.assertFalse(copy.equals(variable));
+		Assert.assertNotEquals(variable, copy);
 	}
 
 	@Test
@@ -221,7 +221,7 @@ public class BinaryVariableTest {
 		}
 				
 		for (int j = 0; j < variable.getNumberOfBits(); j++) {
-			TestUtils.assertUniformDistribution(0, 1, bitStats[j]);
+			Assert.assertUniformDistribution(0, 1, bitStats[j]);
 		}
 	}
 	

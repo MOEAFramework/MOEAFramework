@@ -18,14 +18,16 @@
 package org.moeaframework.analysis.tools;
 
 import java.io.File;
-import java.nio.file.Files;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.lang.reflect.Method;
 import java.nio.file.Paths;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
+import org.moeaframework.TempFiles;
 import org.moeaframework.analysis.io.MetricFileWriter;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.AlgorithmFactoryTestWrapper;
@@ -72,8 +74,8 @@ public class IntegrationTest {
 	@Test
 	public void test() throws Exception {
 		//create the sample file
-		File parameterDescriptionFile = TestUtils.createTempFile(PARAMETER_FILE);
-		File parameterFile = TestUtils.createTempFile();
+		File parameterDescriptionFile = TempFiles.createFileWithContent(PARAMETER_FILE);
+		File parameterFile = TempFiles.createFile();
 		
 		SampleGenerator.main(new String[] { 
 				"-n", "10", 
@@ -81,12 +83,12 @@ public class IntegrationTest {
 				"-m", "la",
 				"-o", parameterFile.getPath() });
 		
-		Assert.assertEquals(10, TestUtils.lineCount(parameterFile));
-		TestUtils.assertLinePattern(parameterFile, TestUtils.getSpaceSeparatedNumericPattern(2));
+		Assert.assertLineCount(10, parameterFile);
+		Assert.assertLinePattern(parameterFile, Assert.getSpaceSeparatedNumericPattern(2));
 		
 		//evaluate two MOEAs
-		File resultFile1 = TestUtils.createTempFile();
-		File resultFile2 = TestUtils.createTempFile();
+		File resultFile1 = TempFiles.createFile();
+		File resultFile2 = TempFiles.createFile();
 		
 		Evaluator.main(new String[] { 
 				"-p", parameterDescriptionFile.getPath(),
@@ -102,11 +104,11 @@ public class IntegrationTest {
 				"-a", "eMOEA",
 				"-b", "DTLZ2_2" });
 
-		Assert.assertTrue(TestUtils.lineCount(resultFile1) > 0);
-		Assert.assertTrue(TestUtils.lineCount(resultFile2) > 0);
+		Assert.assertFileWithContent(resultFile1);
+		Assert.assertFileWithContent(resultFile2);
 		
 		//count the number of entries in the result files
-		File resultInfoFile = TestUtils.createTempFile();
+		File resultInfoFile = TempFiles.createFile();
 		
 		ResultFileInfo.main(new String[] {
 				"-b", "DTLZ2_2",
@@ -114,10 +116,10 @@ public class IntegrationTest {
 				resultFile1.getPath(),
 				resultFile2.getPath() });
 				
-		TestUtils.assertLinePattern(resultInfoFile, "^.* 10$");
+		Assert.assertLinePattern(resultInfoFile, "^.* 10$");
 		
 		//combine their results into a combined reference set
-		File combinedFile = TestUtils.createTempFile();
+		File combinedFile = TempFiles.createFile();
 		
 		ResultFileMerger.main(new String[] {
 				"-b", "DTLZ2_2",
@@ -125,18 +127,18 @@ public class IntegrationTest {
 				resultFile1.getPath(),
 				resultFile2.getPath() });
 		
-		Assert.assertTrue(TestUtils.lineCount(combinedFile) > 0);
+		Assert.assertFileWithContent(combinedFile);
 		
 		//evaluate the combined set hypervolume
-		File setHypervolumeOutput = TestUtils.createTempFile();
+		File setHypervolumeOutput = TempFiles.createFile();
 		
-		TestUtils.pipeCommandLine(setHypervolumeOutput, SetHypervolume.class, combinedFile.getPath());
+		pipeCommandLine(setHypervolumeOutput, SetHypervolume.class, combinedFile.getPath());
 		
-		Assert.assertEquals(1, TestUtils.lineCount(setHypervolumeOutput));
-		TestUtils.assertLinePattern(setHypervolumeOutput, "^.+ [0-9]*(?:.[0-9]+)?$");
+		Assert.assertLineCount(1, setHypervolumeOutput);
+		Assert.assertLinePattern(setHypervolumeOutput, "^.+ [0-9]*(?:.[0-9]+)?$");
 		
 		//test the seed merger
-		File seedMerger = TestUtils.createTempFile();
+		File seedMerger = TempFiles.createFile();
 		
 		ResultFileSeedMerger.main(new String[] {
 				"-b", "DTLZ2_2",
@@ -144,11 +146,11 @@ public class IntegrationTest {
 				resultFile1.getPath(),
 				resultFile2.getPath() });
 		
-		Assert.assertTrue(TestUtils.lineCount(seedMerger) > 0);
+		Assert.assertFileWithContent(seedMerger);
 		
 		//evaluate the results using the combined reference set
-		File metricFile1 = TestUtils.createTempFile();
-		File metricFile2 = TestUtils.createTempFile();
+		File metricFile1 = TempFiles.createFile();
+		File metricFile2 = TempFiles.createFile();
 		
 		ResultFileEvaluator.main(new String[] {
 				"-b", "DTLZ2_2",
@@ -162,15 +164,15 @@ public class IntegrationTest {
 				"-o", metricFile2.getPath(),
 				"-r", combinedFile.getPath() });
 		
-		Assert.assertEquals(11, TestUtils.lineCount(metricFile1));
-		Assert.assertEquals(11, TestUtils.lineCount(metricFile2));
-		TestUtils.assertLinePattern(metricFile1, TestUtils.getSpaceSeparatedNumericPattern(
+		Assert.assertLineCount(11, metricFile1);
+		Assert.assertLineCount(11, metricFile2);
+		Assert.assertLinePattern(metricFile1, Assert.getSpaceSeparatedNumericPattern(
 				MetricFileWriter.NUMBER_OF_METRICS));
-		TestUtils.assertLinePattern(metricFile2, TestUtils.getSpaceSeparatedNumericPattern(
+		Assert.assertLinePattern(metricFile2, Assert.getSpaceSeparatedNumericPattern(
 				MetricFileWriter.NUMBER_OF_METRICS));
 		
 		//compute the average metric value
-		File averageMetrics = TestUtils.createTempFile();
+		File averageMetrics = TempFiles.createFile();
 		
 		SimpleStatistics.main(new String[] {
 				"-m", "av",
@@ -178,12 +180,12 @@ public class IntegrationTest {
 				metricFile1.getPath(),
 				metricFile2.getPath() });
 		
-		Assert.assertEquals(10, TestUtils.lineCount(averageMetrics));
-		TestUtils.assertLinePattern(averageMetrics, TestUtils.getSpaceSeparatedNumericPattern(
+		Assert.assertLineCount(10, averageMetrics);
+		Assert.assertLinePattern(averageMetrics, Assert.getSpaceSeparatedNumericPattern(
 				MetricFileWriter.NUMBER_OF_METRICS));
 		
 		//perform the analysis
-		File analysisFile = TestUtils.createTempFile();
+		File analysisFile = TempFiles.createFile();
 		
 		Analysis.main(new String[] {
 				"-p", parameterDescriptionFile.getPath(),
@@ -192,7 +194,7 @@ public class IntegrationTest {
 				"-o", analysisFile.getPath(),
 				averageMetrics.getPath() });
 		
-		Assert.assertEquals(3, TestUtils.lineCount(analysisFile));
+		Assert.assertLineCount(3, analysisFile);
 		
 		Analysis.main(new String[] {
 				"-p", parameterDescriptionFile.getPath(),
@@ -202,7 +204,7 @@ public class IntegrationTest {
 				"-o", analysisFile.getPath(),
 				averageMetrics.getPath() });
 		
-		Assert.assertEquals(5, TestUtils.lineCount(analysisFile));
+		Assert.assertLineCount(5, analysisFile);
 	}
 	
 	/**
@@ -211,8 +213,8 @@ public class IntegrationTest {
 	@Test
 	public void testSensitivity() throws Exception {
 		//create the sample file
-		File parameterDescriptionFile = TestUtils.createTempFile(PARAMETER_FILE);
-		File parameterFile = TestUtils.createTempFile();
+		File parameterDescriptionFile = TempFiles.createFileWithContent(PARAMETER_FILE);
+		File parameterFile = TempFiles.createFile();
 		
 		SampleGenerator.main(new String[] { 
 				"-n", "10", 
@@ -220,11 +222,11 @@ public class IntegrationTest {
 				"-m", "sa",
 				"-o", parameterFile.getPath() });
 		
-		Assert.assertEquals(60, TestUtils.lineCount(parameterFile));
-		TestUtils.assertLinePattern(parameterFile, TestUtils.getSpaceSeparatedNumericPattern(2));
+		Assert.assertLineCount(60, parameterFile);
+		Assert.assertLinePattern(parameterFile, Assert.getSpaceSeparatedNumericPattern(2));
 		
 		//evaluate MOEA
-		File metricFile = TestUtils.createTempFile();
+		File metricFile = TempFiles.createFile();
 
 		Evaluator.main(new String[] { 
 				"-p", parameterDescriptionFile.getPath(),
@@ -234,13 +236,13 @@ public class IntegrationTest {
 				"-b", "DTLZ2_2",
 				"-m" });
 		
-		Assert.assertEquals(61, TestUtils.lineCount(metricFile));
-		TestUtils.assertLinePattern(metricFile, TestUtils.getSpaceSeparatedNumericPattern(
+		Assert.assertLineCount(61, metricFile);
+		Assert.assertLinePattern(metricFile, Assert.getSpaceSeparatedNumericPattern(
 				MetricFileWriter.NUMBER_OF_METRICS));
 
 		//compute sensitivity results
-		File analysisFile1 = TestUtils.createTempFile();
-		File analysisFile2 = TestUtils.createTempFile();
+		File analysisFile1 = TempFiles.createFile();
+		File analysisFile2 = TempFiles.createFile();
 		
 		SobolAnalysis.main(new String[] {
 				"-p", parameterDescriptionFile.getPath(),
@@ -255,32 +257,32 @@ public class IntegrationTest {
 				"-o", analysisFile2.getPath(),
 				"-s" });
 		
-		Assert.assertEquals(9, TestUtils.lineCount(analysisFile1));
-		Assert.assertEquals(4, TestUtils.lineCount(analysisFile2));
+		Assert.assertLineCount(9, analysisFile1);
+		Assert.assertLineCount(4, analysisFile2);
 	}
 	
 	@Test
 	public void testMerger() throws Exception {
 		//test reference set merger
-		File mergerOutput = TestUtils.createTempFile();
-		File mergedFile = TestUtils.createTempFile();
+		File mergerOutput = TempFiles.createFile();
+		File mergedFile = TempFiles.createFile();
 		
-		TestUtils.pipeCommandLine(mergerOutput, ReferenceSetMerger.class,
+		pipeCommandLine(mergerOutput, ReferenceSetMerger.class,
 				"-o", mergedFile.getPath(),
 				"pf/DTLZ2.2D.pf", "pf/DTLZ3.2D.pf", "pf/DTLZ4.2D.pf");
 		
-		Assert.assertEquals(3, TestUtils.lineCount(mergerOutput));
-		TestUtils.assertLinePattern(mergerOutput, "^.+ [0-9]+ / [0-9]+$");
+		Assert.assertLineCount(3, mergerOutput);
+		Assert.assertLinePattern(mergerOutput, "^.+ [0-9]+ / [0-9]+$");
 		
 		//test set contribution
-		File setContributionOutput = TestUtils.createTempFile();
+		File setContributionOutput = TempFiles.createFile();
 		
-		TestUtils.pipeCommandLine(setContributionOutput, SetContribution.class, 
+		pipeCommandLine(setContributionOutput, SetContribution.class, 
 				"-r", mergedFile.getPath(),
 				"pf/DTLZ2.2D.pf", "pf/DTLZ3.2D.pf", "pf/DTLZ4.2D.pf");
 		
-		Assert.assertEquals(3, TestUtils.lineCount(setContributionOutput));
-		TestUtils.assertLinePattern(mergerOutput, "^.+ [0-9]*(?:.[0-9]+)?$");
+		Assert.assertLineCount(3, setContributionOutput);
+		Assert.assertLinePattern(mergerOutput, "^.+ [0-9]*(?:.[0-9]+)?$");
 	}
 	
 	/**
@@ -290,8 +292,8 @@ public class IntegrationTest {
 	@Test
 	public void testClosedAndTerminated() throws Exception {
 		//create the sample file
-		File parameterDescriptionFile = TestUtils.createTempFile(PARAMETER_FILE);
-		File parameterFile = TestUtils.createTempFile();
+		File parameterDescriptionFile = TempFiles.createFileWithContent(PARAMETER_FILE);
+		File parameterFile = TempFiles.createFile();
 		
 		SampleGenerator.main(new String[] { 
 				"-n", "10", 
@@ -300,7 +302,7 @@ public class IntegrationTest {
 				"-o", parameterFile.getPath() });
 
 		//evaluate MOEA
-		File resultFile = TestUtils.createTempFile();
+		File resultFile = TempFiles.createFile();
 		
 		Evaluator.main(new String[] { 
 				"-p", parameterDescriptionFile.getPath(),
@@ -310,7 +312,7 @@ public class IntegrationTest {
 				"-b", "DTLZ2_2" });
 
 		//count the number of entries in the result files
-		File resultInfoFile = TestUtils.createTempFile();
+		File resultInfoFile = TempFiles.createFile();
 		
 		ResultFileInfo.main(new String[] {
 				"-b", "DTLZ2_2",
@@ -318,7 +320,7 @@ public class IntegrationTest {
 				resultFile.getPath() });
 
 		//combine the results into a combined reference set
-		File combinedFile = TestUtils.createTempFile();
+		File combinedFile = TempFiles.createFile();
 		
 		ResultFileMerger.main(new String[] {
 				"-b", "DTLZ2_2",
@@ -326,7 +328,7 @@ public class IntegrationTest {
 				resultFile.getPath()});
 		
 		//run the seed merger
-		File seedMerger = TestUtils.createTempFile();
+		File seedMerger = TempFiles.createFile();
 		
 		ResultFileSeedMerger.main(new String[] {
 				"-b", "DTLZ2_2",
@@ -334,7 +336,7 @@ public class IntegrationTest {
 				resultFile.getPath()});
 
 		//evaluate the results using the combined reference set
-		File metricFile = TestUtils.createTempFile();
+		File metricFile = TempFiles.createFile();
 		
 		ResultFileEvaluator.main(new String[] {
 				"-b", "DTLZ2_2",
@@ -343,7 +345,7 @@ public class IntegrationTest {
 				"-r", combinedFile.getPath()});
 		
 		//generate a reference set
-		File referenceFile = TestUtils.createTempFile();
+		File referenceFile = TempFiles.createFile();
 		
 		SetGenerator.main(new String[] {
 				"-b", "DTLZ2_2",
@@ -356,8 +358,8 @@ public class IntegrationTest {
 
 	@Test
 	public void testARFFConverter() throws Exception {
-		File resultFile = TestUtils.createTempFile();
-		File arffFile = TestUtils.createTempFile();
+		File resultFile = TempFiles.createFile();
+		File arffFile = TempFiles.createFile();
 		
 		Solve.main(new String[] {
 				"-a", "NSGAII",
@@ -370,14 +372,13 @@ public class IntegrationTest {
 				"-i", resultFile.getPath(),
 				"-o", arffFile.getPath() });
 		
-		TestUtils.assertLinePattern(arffFile, "^([@%].*)|(" +
-				TestUtils.getCommaSeparatedNumericPattern(13) + ")$");
+		Assert.assertLinePattern(arffFile, "^([@%].*)|(" + Assert.getCommaSeparatedNumericPattern(13) + ")$");
 	}
 	
 	@Test
 	public void testRuntimeEvaluator() throws Exception {
-		File parameterDescriptionFile = TestUtils.createTempFile("sbx.rate 0.0 1.0");
-		File parameterFile = TestUtils.createTempFile();
+		File parameterDescriptionFile = TempFiles.createFileWithContent("sbx.rate 0.0 1.0");
+		File parameterFile = TempFiles.createFile();
 		
 		SampleGenerator.main(new String[] { 
 				"-n", "10", 
@@ -385,7 +386,7 @@ public class IntegrationTest {
 				"-m", "la",
 				"-o", parameterFile.getPath() });
 		
-		File resultFolder = Files.createTempDirectory("results").toFile();
+		File resultFolder = TempFiles.createDirectory();
 		
 		RuntimeEvaluator.main(new String[] { 
 				"-p", parameterDescriptionFile.getPath(),
@@ -399,19 +400,28 @@ public class IntegrationTest {
 		Assert.assertEquals(10, resultFolder.listFiles().length);
 		
 		for (File file : resultFolder.listFiles()) {
-			File resultInfoFile = TestUtils.createTempFile();
+			File resultInfoFile = TempFiles.createFile();
 			
 			ResultFileInfo.main(new String[] {
 					"-b", "DTLZ2_2",
 					"-o", resultInfoFile.getPath(),
 					file.getPath() });
 			
-			TestUtils.assertLinePattern(resultInfoFile, "^.* 100$");
-			
-			Files.deleteIfExists(file.toPath());
+			Assert.assertLinePattern(resultInfoFile, "^.* 100$");
 		}
+	}
+	
+	private static void pipeCommandLine(File output, Class<?> tool, String... args) throws Exception {
+		PrintStream oldOut = System.out;
 		
-		Files.deleteIfExists(resultFolder.toPath());
+		try (PrintStream newOut = new PrintStream(new FileOutputStream(output))) {
+			System.setOut(newOut);
+		
+			Method mainMethod = tool.getMethod("main", String[].class);
+			mainMethod.invoke(null, (Object)args);
+		} finally {
+			System.setOut(oldOut);
+		}
 	}
 	
 }

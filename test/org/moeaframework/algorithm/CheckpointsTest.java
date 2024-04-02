@@ -20,16 +20,16 @@ package org.moeaframework.algorithm;
 import java.io.File;
 import java.io.IOException;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
+import org.moeaframework.TempFiles;
 import org.moeaframework.mock.MockRealProblem;
 
 public class CheckpointsTest {
 
 	@Test
 	public void testInvalidStateFileSuppressesError() throws IOException {
-		File file = TestUtils.createTempFile("foo");
+		File file = TempFiles.createFileWithContent("foo");
 		Checkpoints checkpoints = new Checkpoints(new NSGAII(new MockRealProblem(2)), file, 100);
 		
 		Assert.assertNotNull(checkpoints);

@@ -17,13 +17,11 @@
  */
 package org.moeaframework.analysis;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
@@ -32,13 +30,12 @@ public class EpsilonHelperTest {
 	
 	@Test
 	public void test() {
-		Assert.assertTrue(EpsilonHelper.getEpsilons(new DTLZ2(3)).get(0) > EpsilonHelper.DEFAULT);
+		Assert.assertGreaterThan(EpsilonHelper.getEpsilons(new DTLZ2(3)).get(0), EpsilonHelper.DEFAULT);
 	}
 	
 	@Test
 	public void testUndefinedProblem() {
-		Assert.assertEquals(EpsilonHelper.getEpsilons(new MockRealProblem()).get(0), EpsilonHelper.DEFAULT,
-				Settings.EPS);
+		Assert.assertEquals(EpsilonHelper.getEpsilons(new MockRealProblem()).get(0), EpsilonHelper.DEFAULT);
 	}
 	
 	@Test
@@ -47,8 +44,8 @@ public class EpsilonHelperTest {
 		EpsilonBoxDominanceArchive expected = new EpsilonBoxDominanceArchive(0.1, referenceSet);
 		EpsilonBoxDominanceArchive actual = EpsilonHelper.convert(referenceSet, Epsilons.of(0.1));
 		
-		TestUtils.assertEquals(expected, actual);
-		TestUtils.assertEquals(0.1, actual.getComparator().getEpsilons().get(0));
+		Assert.assertEquals(expected, actual);
+		Assert.assertEquals(0.1, actual.getComparator().getEpsilons().get(0));
 	}
 	
 	@Test
@@ -58,7 +55,7 @@ public class EpsilonHelperTest {
 		EpsilonBoxDominanceArchive actual = EpsilonHelper.convert(population, Epsilons.of(0.25));
 		
 		Assert.assertNotSame(actual, population);
-		TestUtils.assertEquals(0.25, actual.getComparator().getEpsilons().get(0));
+		Assert.assertEquals(0.25, actual.getComparator().getEpsilons().get(0));
 	}
 	
 	@Test
@@ -68,7 +65,7 @@ public class EpsilonHelperTest {
 		EpsilonBoxDominanceArchive actual = EpsilonHelper.convert(population, Epsilons.of(0.1));
 		
 		Assert.assertSame(actual, population);
-		TestUtils.assertEquals(0.1, actual.getComparator().getEpsilons().get(0));
+		Assert.assertEquals(0.1, actual.getComparator().getEpsilons().get(0));
 	}
 	
 }

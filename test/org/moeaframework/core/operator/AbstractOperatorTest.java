@@ -17,10 +17,9 @@
  */
 package org.moeaframework.core.operator;
 
-import org.junit.Assert;
-import org.junit.Assume;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
+import org.moeaframework.Assume;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
@@ -93,7 +92,7 @@ public abstract class AbstractOperatorTest<T extends Variation, S extends Variab
 
 		// the parents remain unchanged
 		for (int i = 0; i < parents.length; i++) {
-			Assert.assertTrue(TestUtils.equals(parents[i], parentClones[i]));
+			Assert.assertEquals(parents[i], parentClones[i]);
 		}
 	}
 

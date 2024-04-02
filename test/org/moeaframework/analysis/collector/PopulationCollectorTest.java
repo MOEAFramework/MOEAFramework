@@ -17,7 +17,7 @@
  */
 package org.moeaframework.analysis.collector;
 
-import org.junit.Assert;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.EvolutionaryAlgorithm;
 import org.moeaframework.core.Population;
@@ -29,7 +29,7 @@ public class PopulationCollectorTest extends AbstractCollectorTest<PopulationCol
 		Population population = PopulationCollector.getPopulation(observation);
 		
 		Assert.assertNotNull(population);
-		Assert.assertTrue(population.size() > 0);
+		Assert.assertNotEmpty(population);
 	}
 	
 	@Override

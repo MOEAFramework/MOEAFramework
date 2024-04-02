@@ -17,14 +17,14 @@
  */
 package org.moeaframework.analysis.collector;
 
-import org.junit.Assert;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Algorithm;
 
 public class ElapsedTimeCollectorTest extends AbstractCollectorTest<ElapsedTimeCollector> {
 	
 	@Override
 	public void validate(Observation observation) {
-		Assert.assertTrue(ElapsedTimeCollector.getElapsedTime(observation) >= 0.0);
+		Assert.assertGreaterThanOrEqual(ElapsedTimeCollector.getElapsedTime(observation), 0.0);
 	}
 	
 	@Override

@@ -17,9 +17,9 @@
  */
 package org.moeaframework.util.statistics;
 
-import org.junit.Assert;
 import org.apache.commons.math3.stat.inference.TestUtils;
 import org.junit.Test;
+import org.moeaframework.Assert;
 
 public class OneWayANOVATest {
 	

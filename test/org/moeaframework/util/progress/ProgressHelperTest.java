@@ -20,8 +20,8 @@ package org.moeaframework.util.progress;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 
 public class ProgressHelperTest {
 	

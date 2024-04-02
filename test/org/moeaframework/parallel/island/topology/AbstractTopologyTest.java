@@ -19,8 +19,8 @@ package org.moeaframework.parallel.island.topology;
 
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.parallel.island.AbstractIslandModelTest;
 import org.moeaframework.parallel.island.Island;
 

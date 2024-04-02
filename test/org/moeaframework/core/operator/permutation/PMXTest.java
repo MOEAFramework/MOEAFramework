@@ -17,8 +17,8 @@
  */
 package org.moeaframework.core.operator.permutation;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.operator.AbstractPermutationOperatorTest;
 import org.moeaframework.core.variable.Permutation;
 

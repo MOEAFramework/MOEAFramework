@@ -17,9 +17,9 @@
  */
 package org.moeaframework.algorithm;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
 import org.moeaframework.IgnoreOnCI;
 import org.moeaframework.core.Problem;
@@ -81,11 +81,11 @@ public class CMAESTest extends AlgorithmTest {
 		Assert.assertEquals("crowding", algorithm.getConfiguration().getString("indicator"));
 		
 		algorithm.applyConfiguration(TypedProperties.withProperty("indicator", "epsilon"));
-		Assert.assertTrue(algorithm.getFitnessEvaluator() instanceof AdditiveEpsilonIndicatorFitnessEvaluator);
+		Assert.assertInstanceOf(AdditiveEpsilonIndicatorFitnessEvaluator.class, algorithm.getFitnessEvaluator());
 		Assert.assertEquals("epsilon", algorithm.getConfiguration().getString("indicator"));
 		
 		algorithm.applyConfiguration(TypedProperties.withProperty("indicator", "hypervolume"));
-		Assert.assertTrue(algorithm.getFitnessEvaluator() instanceof HypervolumeFitnessEvaluator);
+		Assert.assertInstanceOf(HypervolumeFitnessEvaluator.class, algorithm.getFitnessEvaluator());
 		Assert.assertEquals("hypervolume", algorithm.getConfiguration().getString("indicator"));
 		
 		algorithm.applyConfiguration(TypedProperties.withProperty("indicator", "crowding"));

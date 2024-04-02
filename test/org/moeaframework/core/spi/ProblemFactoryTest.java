@@ -18,8 +18,8 @@
 package org.moeaframework.core.spi;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.mock.MockRealProblem;
@@ -89,8 +89,8 @@ public class ProblemFactoryTest extends AbstractFactoryTest<ProblemProvider, Pro
 		
 		Assert.assertNotNull(factory.getProblem("testProblem"));
 		Assert.assertNull(factory.getReferenceSet("testProblem"));
-		Assert.assertTrue(factory.getAllRegisteredProblems().contains("testProblem"));
-		Assert.assertTrue(factory.getAllDiagnosticToolProblems().contains("testProblem"));	
+		Assert.assertContains(factory.getAllRegisteredProblems(), "testProblem");
+		Assert.assertContains(factory.getAllDiagnosticToolProblems(), "testProblem");	
 	}
 	
 	@Test
@@ -103,7 +103,7 @@ public class ProblemFactoryTest extends AbstractFactoryTest<ProblemProvider, Pro
 			
 			NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet(name);
 			Assert.assertNotNull(referenceSet);
-			Assert.assertTrue(referenceSet.size() > 0);
+			Assert.assertNotEmpty(referenceSet);
 
 			Assert.assertEquals(problem.getNumberOfObjectives(), referenceSet.get(0).getNumberOfObjectives());
 			

@@ -20,8 +20,8 @@ package org.moeaframework.util.format;
 import java.util.List;
 import java.util.Locale;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 
 public class NumberFormatterTest {
 	

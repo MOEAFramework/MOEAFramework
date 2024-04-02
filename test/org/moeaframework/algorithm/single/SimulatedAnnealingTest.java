@@ -17,8 +17,8 @@
  */
 package org.moeaframework.algorithm.single;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Problem;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
@@ -38,11 +38,11 @@ public class SimulatedAnnealingTest extends AbstractSingleObjectiveAlgorithmTest
 		TypedProperties properties = algorithm.getConfiguration();
 		
 		Assert.assertEquals("linear", properties.getString("method"));
-		Assert.assertTrue(algorithm.getComparator() instanceof LinearDominanceComparator);
+		Assert.assertInstanceOf(LinearDominanceComparator.class, algorithm.getComparator());
 		
 		properties.setString("method", "min-max");
 		algorithm.applyConfiguration(properties);
-		Assert.assertTrue(algorithm.getComparator() instanceof MinMaxDominanceComparator);
+		Assert.assertInstanceOf(MinMaxDominanceComparator.class, algorithm.getComparator());
 	}
 
 }

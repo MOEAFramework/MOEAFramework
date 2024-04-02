@@ -18,8 +18,11 @@
 package org.moeaframework.problem;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.net.URISyntaxException;
 
@@ -27,12 +30,13 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import org.junit.Assert;
-import org.junit.Assume;
+import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moeaframework.Assert;
+import org.moeaframework.Assume;
 import org.moeaframework.CIRunner;
-import org.moeaframework.TestUtils;
+import org.moeaframework.TempFiles;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
@@ -46,18 +50,14 @@ public class ScriptedProblemTest {
 	@SuppressWarnings("resource")
 	@Test(expected = ScriptException.class)
 	public void testNoExtension() throws ScriptException, IOException {
-		File file = File.createTempFile("test", "");
-		file.deleteOnExit();
-
+		File file = TempFiles.createFileWithContent("", "");
 		new ScriptedProblem(file);
 	}
 	
 	@SuppressWarnings("resource")
 	@Test(expected = ScriptException.class)
 	public void testNoEngineForExtension() throws ScriptException, IOException {
-		File file = File.createTempFile("test", ".noscriptinglang");
-		file.deleteOnExit();
-
+		File file = TempFiles.createFileWithContent("", ".noscriptinglang");
 		new ScriptedProblem(file);
 	}
 	
@@ -71,7 +71,7 @@ public class ScriptedProblemTest {
 	public void testJavascriptFile() throws ScriptException, IOException, URISyntaxException {
 		ignoreIfScriptingNotAvailbale();
 		
-		File file = TestUtils.extractResource(RESOURCE_JAVASCRIPT);
+		File file = extractResource(RESOURCE_JAVASCRIPT);
 		
 		try (Problem problem = new ScriptedProblem(file)) {
 			test(problem);
@@ -108,6 +108,38 @@ public class ScriptedProblemTest {
 		problem.evaluate(solution);
 		
 		Assert.assertEquals(variable.getValue(), solution.getObjective(0), Settings.EPS);
+	}
+	
+	/**
+	 * Extracts the data stored in a resource, saving its contents to a temporary file.  If the resource name contains
+	 * an extension, the file will be created with the extension.
+	 * 
+	 * @param resource the name of the resource to extract
+	 * @return the temporary file containing the resource data
+	 * @throws IOException if an I/O error occurred
+	 */
+	public static File extractResource(String resource) throws IOException {
+		byte[] buffer = new byte[Settings.BUFFER_SIZE];
+		int len = -1;
+		
+		//determine the file extension, if any
+		String extension = FilenameUtils.getExtension(resource);
+		File file = TempFiles.createFileWithExtension(extension);
+		
+		//copy the resource contents to the file
+		try (InputStream input = ScriptedProblemTest.class.getResourceAsStream(resource)) {
+			if (input == null) {
+				throw new IOException("resource not found: " + resource);
+			}
+			
+			try (OutputStream output = new FileOutputStream(file)) {
+				while ((len = input.read(buffer)) != -1) {
+					output.write(buffer, 0, len);
+				}
+			}
+		}
+		
+		return file;
 	}
 
 }

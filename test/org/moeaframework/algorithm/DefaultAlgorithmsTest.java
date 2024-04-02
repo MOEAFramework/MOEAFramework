@@ -22,10 +22,10 @@ import java.io.IOException;
 import java.util.List;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
+import org.moeaframework.TempFiles;
 import org.moeaframework.algorithm.continuation.EpsilonProgressContinuation;
 import org.moeaframework.algorithm.sa.AMOSA;
 import org.moeaframework.analysis.EpsilonHelper;
@@ -331,7 +331,7 @@ public class DefaultAlgorithmsTest {
 			Assert.assertTrue((algorithm.getNumberOfEvaluations() - NFE) < 200);
 		}
 		
-		Assert.assertTrue(algorithm.getResult().size() > 0);
+		Assert.assertNotEmpty(algorithm.getResult());
 		Assert.assertTrue(algorithm.isTerminated());
 	}
 	
@@ -360,7 +360,7 @@ public class DefaultAlgorithmsTest {
 		NondominatedPopulation secondResult = algorithm.getResult();
 		
 		// comparison
-		TestUtils.assertEquals(firstResult, secondResult);
+		Assert.assertEquals(firstResult, secondResult);
 	}
 	
 	private void testResumable(String name, Problem problem) throws IOException {		
@@ -377,7 +377,7 @@ public class DefaultAlgorithmsTest {
 		NondominatedPopulation normalResult = algorithm.getResult();
 		
 		// second, run the algorithm using checkpoints
-		File file = TestUtils.createTempFile();
+		File file = TempFiles.createFile();
 		Checkpoints checkpoints = null;
 		PRNG.setSeed(seed);
 
@@ -389,7 +389,7 @@ public class DefaultAlgorithmsTest {
 		NondominatedPopulation checkpointResult = checkpoints.getResult();
 		
 		// finally, compare the two results
-		TestUtils.assertEquals(normalResult, checkpointResult);
+		Assert.assertEquals(normalResult, checkpointResult);
 	}
 	
 	private void testInstrumentedResumable(String algorithmName) throws IOException {
@@ -410,7 +410,7 @@ public class DefaultAlgorithmsTest {
 		Observations normalResult = instrumentedAlgorithm.getObservations();
 		
 		// second, run the algorithm using checkpoints
-		File file = TestUtils.createTempFile();
+		File file = TempFiles.createFile();
 		Checkpoints checkpoints = null;
 		PRNG.setSeed(seed);
 

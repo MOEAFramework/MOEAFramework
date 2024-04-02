@@ -17,8 +17,8 @@
  */
 package org.moeaframework.core.indicator;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
@@ -69,7 +69,7 @@ public class SpacingTest extends AbstractIndicatorTest<Spacing> {
 		approximationSet.add(MockSolution.of(problem).withObjectives(0.0, 1.0));
 		approximationSet.add(MockSolution.of(problem).withObjectives(0.25, 0.75));
 		approximationSet.add(MockSolution.of(problem).withObjectives(1.0, 0.0));
-		Assert.assertTrue(indicator.evaluate(approximationSet) > 0.0);
+		Assert.assertGreaterThan(indicator.evaluate(approximationSet), 0.0);
 	}
 
 }

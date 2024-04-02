@@ -19,6 +19,7 @@ package org.moeaframework.snippet;
 
 import java.io.File;
 import java.io.IOException;
+
 import org.junit.Test;
 import org.moeaframework.Analyzer;
 import org.moeaframework.Executor;

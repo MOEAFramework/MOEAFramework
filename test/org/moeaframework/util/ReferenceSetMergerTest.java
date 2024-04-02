@@ -17,12 +17,10 @@
  */
 package org.moeaframework.util;
 
-import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
 import org.moeaframework.analysis.tools.ReferenceSetMerger;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
@@ -45,21 +43,23 @@ public class ReferenceSetMergerTest {
 		merger.add("population1", population1);
 		merger.add("population2", population2);
 		
-		Assert.assertTrue(merger.getSources().containsAll(Arrays.asList("population1", "population2")));
+		Assert.assertContains(merger.getSources(), "population1");
+		Assert.assertContains(merger.getSources(), "population2");
 
-		Assert.assertEquals(1, merger.getContributionFrom("population1").size());
-		Assert.assertEquals(2, merger.getContributionFrom("population2").size());
-		Assert.assertEquals(0, merger.getContributionFrom("population3").size());
-		Assert.assertEquals(3, merger.getCombinedPopulation().size());
+		Assert.assertSize(1, merger.getContributionFrom("population1"));
+		Assert.assertSize(2, merger.getContributionFrom("population2"));
+		Assert.assertSize(0, merger.getContributionFrom("population3"));
+		Assert.assertSize(3, merger.getCombinedPopulation());
 		
-		Assert.assertTrue(merger.getContributionFrom("population1").contains(solution2));
-		Assert.assertTrue(merger.getContributionFrom("population2").containsAll(
-				new Solution[] { solution4, solution5 }));
-		Assert.assertTrue(merger.getCombinedPopulation().containsAll(
-				new Solution[] { solution2, solution4, solution5 }));
+		Assert.assertContains(merger.getContributionFrom("population1"), solution2);
+		Assert.assertContains(merger.getContributionFrom("population2"), solution4);
+		Assert.assertContains(merger.getContributionFrom("population2"), solution5);
+		Assert.assertContains(merger.getCombinedPopulation(), solution2);
+		Assert.assertContains(merger.getCombinedPopulation(), solution4);
+		Assert.assertContains(merger.getCombinedPopulation(), solution5);
 		
-		TestUtils.assertEquals(merger.getPopulation("population1"), population1);
-		TestUtils.assertEquals(merger.getPopulation("population2"), population2);
+		Assert.assertEquals(merger.getPopulation("population1"), population1);
+		Assert.assertEquals(merger.getPopulation("population2"), population2);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)

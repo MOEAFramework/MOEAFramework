@@ -25,7 +25,6 @@ import java.util.Set;
 import java.util.Stack;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.analysis.collector.AttachPoint;
@@ -169,8 +168,7 @@ public class InstrumenterTest {
 	@Test
 	public void testInstrumentNull() {
 		new Instrumenter().attach(collector).instrument(null);
-		
-		Assert.assertEquals(0, collector.getInstrumentedObjects().size());
+		Assert.assertSize(0, collector.getInstrumentedObjects());
 	}
 	
 	@Test
@@ -179,8 +177,8 @@ public class InstrumenterTest {
 		new Instrumenter().attach(collector).instrument(algorithm);
 		
 		Set<Object> instrumentedObjects = collector.getInstrumentedObjects();
-		Assert.assertEquals(1, instrumentedObjects.size());
-		Assert.assertTrue(instrumentedObjects.contains(algorithm));
+		Assert.assertSize(1, instrumentedObjects);
+		Assert.assertContains(instrumentedObjects, algorithm);
 	}
 	
 	@Test
@@ -190,12 +188,12 @@ public class InstrumenterTest {
 		
 		Set<Object> instrumentedObjects = collector.getInstrumentedObjects();
 		
-		Assert.assertEquals(7, instrumentedObjects.size());
-		Assert.assertTrue(instrumentedObjects.contains(algorithm));
-		Assert.assertTrue(instrumentedObjects.contains(algorithm.variation));
-		Assert.assertTrue(instrumentedObjects.contains(algorithm.selection));
-		Assert.assertTrue(instrumentedObjects.contains(algorithm.selection.getComparator()));
-		Assert.assertTrue(instrumentedObjects.contains(algorithm.problem));
+		Assert.assertSize(7, instrumentedObjects);
+		Assert.assertContains(instrumentedObjects, algorithm);
+		Assert.assertContains(instrumentedObjects, algorithm.variation);
+		Assert.assertContains(instrumentedObjects, algorithm.selection);
+		Assert.assertContains(instrumentedObjects, algorithm.selection.getComparator());
+		Assert.assertContains(instrumentedObjects, algorithm.problem);
 	}
 	
 	@Test
@@ -207,8 +205,8 @@ public class InstrumenterTest {
 		new Instrumenter().attach(collector).instrument(algorithm);
 		
 		Set<Object> instrumentedObjects = collector.getInstrumentedObjects();
-		Assert.assertEquals(1, instrumentedObjects.size());
-		Assert.assertTrue(instrumentedObjects.contains(algorithm));
+		Assert.assertSize(1, instrumentedObjects);
+		Assert.assertContains(instrumentedObjects, algorithm);
 	}
 	
 	@Test
@@ -218,7 +216,7 @@ public class InstrumenterTest {
 		
 		Set<Object> instrumentedObjects = collector.getInstrumentedObjects();
 		
-		Assert.assertEquals(0, instrumentedObjects.size());
+		Assert.assertSize(0, instrumentedObjects);
 	}
 	
 	@Test
@@ -237,7 +235,7 @@ public class InstrumenterTest {
 		
 		Observations observations = instrumenter.getObservations();
 		
-		Assert.assertEquals(13, observations.keys().size());
+		Assert.assertSize(13, observations.keys());
 	}
 	
 }

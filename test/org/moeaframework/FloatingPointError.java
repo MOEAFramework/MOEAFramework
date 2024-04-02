@@ -27,9 +27,10 @@ public interface FloatingPointError {
 	 * Asserts that the two floating-point values are equal, throwing an {@code AssertionError} if they are not
 	 * considered equal.
 	 * 
-	 * @param d1 the first floating-point value
-	 * @param d2 the second floating-point value
+	 * @param expected the expected floating-point value
+	 * @param actual the actual floating-point value
+	 * @throws AssertionError if the two values are not equal
 	 */
-	public void assertEquals(double d1, double d2);
+	public void assertEquals(double expected, double actual);
 
 }

@@ -17,10 +17,9 @@
  */
 package org.moeaframework.problem.BBOB2016;
 
-import org.junit.Assert;
-import org.junit.Assume;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
+import org.moeaframework.Assume;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.ProblemFactory;
@@ -114,7 +113,7 @@ public class BBOB2016Test {
 				moeaProblem.evaluate(solution1);
 				cocoProblem.evaluate(solution2);
 
-				TestUtils.assertEquals(solution1, solution2);
+				Assert.assertEquals(solution1, solution2);
 			}
 		}
 

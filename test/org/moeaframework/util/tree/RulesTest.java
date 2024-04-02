@@ -19,8 +19,8 @@ package org.moeaframework.util.tree;
 
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.PRNG;
 
 public class RulesTest {

@@ -17,8 +17,8 @@
  */
 package org.moeaframework.problem.single;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Settings;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.ProblemTest;
@@ -30,8 +30,8 @@ public class BealeTest extends ProblemTest {
 		Beale problem = new Beale();
 		
 		Assert.assertEquals(0.0, MockSolution.of(problem).at(3.0, 0.5).evaluate().getObjective(0), Settings.EPS);
-		Assert.assertTrue(MockSolution.of(problem).at(3.1, 0.6).evaluate().getObjective(0) > 0.0);
-		Assert.assertTrue(MockSolution.of(problem).at(2.9, 0.4).evaluate().getObjective(0) > 0.0);
+		Assert.assertGreaterThan(MockSolution.of(problem).at(3.1, 0.6).evaluate().getObjective(0), 0.0);
+		Assert.assertGreaterThan(MockSolution.of(problem).at(2.9, 0.4).evaluate().getObjective(0), 0.0);
 	}
 	
 	@Test

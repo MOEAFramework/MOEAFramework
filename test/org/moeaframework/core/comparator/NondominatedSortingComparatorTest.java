@@ -17,13 +17,13 @@
  */
 package org.moeaframework.core.comparator;
 
-import static org.moeaframework.core.FastNondominatedSorting.CROWDING_ATTRIBUTE;
-import static org.moeaframework.core.FastNondominatedSorting.RANK_ATTRIBUTE;
+import static org.moeaframework.core.NondominatedSorting.CROWDING_ATTRIBUTE;
+import static org.moeaframework.core.NondominatedSorting.RANK_ATTRIBUTE;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Solution;
 
 public class NondominatedSortingComparatorTest {

@@ -19,12 +19,11 @@ package org.moeaframework.algorithm;
 
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.FitnessEvaluator;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
@@ -55,15 +54,15 @@ public class SPEA2Test extends JMetalAlgorithmTest {
 		
 		double[][] distances = spea2.computeDistanceMatrix(population);
 		
-		TestUtils.assertEquals(0.0, distances[0][0]);
-		TestUtils.assertEquals(0.0, distances[1][1]);
-		TestUtils.assertEquals(0.0, distances[2][2]);
-		TestUtils.assertEquals(Math.sqrt(2), distances[0][1]);
-		TestUtils.assertEquals(Math.sqrt(2), distances[1][0]);
-		TestUtils.assertEquals(Math.sqrt(0.5), distances[0][2]);
-		TestUtils.assertEquals(Math.sqrt(0.5), distances[2][0]);
-		TestUtils.assertEquals(Math.sqrt(0.5), distances[1][2]);
-		TestUtils.assertEquals(Math.sqrt(0.5), distances[2][1]);
+		Assert.assertEquals(0.0, distances[0][0]);
+		Assert.assertEquals(0.0, distances[1][1]);
+		Assert.assertEquals(0.0, distances[2][2]);
+		Assert.assertEquals(Math.sqrt(2), distances[0][1]);
+		Assert.assertEquals(Math.sqrt(2), distances[1][0]);
+		Assert.assertEquals(Math.sqrt(0.5), distances[0][2]);
+		Assert.assertEquals(Math.sqrt(0.5), distances[2][0]);
+		Assert.assertEquals(Math.sqrt(0.5), distances[1][2]);
+		Assert.assertEquals(Math.sqrt(0.5), distances[2][1]);
 	}
 	
 	@Test
@@ -80,10 +79,10 @@ public class SPEA2Test extends JMetalAlgorithmTest {
 		spea2.getFitnessEvaluator().evaluate(population);
 		Population result = spea2.truncate(population, 2);
 		
-		Assert.assertEquals(2, result.size());
-		Assert.assertTrue(result.contains(solution1));
-		Assert.assertTrue(result.contains(solution2));
-		Assert.assertFalse(result.contains(solution3));
+		Assert.assertSize(2, result);
+		Assert.assertContains(result, solution1);
+		Assert.assertContains(result, solution2);
+		Assert.assertNotContains(result, solution3);
 	}
 	
 	@Test
@@ -100,9 +99,9 @@ public class SPEA2Test extends JMetalAlgorithmTest {
 		spea2.getFitnessEvaluator().evaluate(population);
 		Population result = spea2.truncate(population, 1);
 		
-		Assert.assertEquals(1, result.size());
-		Assert.assertTrue(result.contains(solution1) || result.contains(solution2));
-		Assert.assertFalse(result.contains(solution3));
+		Assert.assertSize(1, result);
+		Assert.any(() -> Assert.assertContains(result, solution1), () -> Assert.assertContains(result, solution2));
+		Assert.assertNotContains(result, solution3);
 	}
 	
 	@Test

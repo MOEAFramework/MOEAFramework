@@ -18,8 +18,9 @@
 package org.moeaframework.problem;
 
 import java.util.function.Function;
-import org.junit.Assert;
+
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;

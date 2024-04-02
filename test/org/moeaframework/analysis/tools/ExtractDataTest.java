@@ -21,9 +21,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
+import org.moeaframework.TempFiles;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
@@ -68,8 +68,8 @@ public class ExtractDataTest {
 	
 	@Test
 	public void testComplete() throws Exception {
-		File input = TestUtils.createTempFile(COMPLETE);
-		File output = TestUtils.createTempFile();
+		File input = TempFiles.createFileWithContent(COMPLETE);
+		File output = TempFiles.createFile();
 		
 		ExtractData.main(new String[] {
 			"--problem", "DTLZ2_2",
@@ -90,8 +90,8 @@ public class ExtractDataTest {
 		ProblemFactoryTestWrapper problemFactory = new ProblemFactoryTestWrapper();
 		ProblemFactory.setInstance(problemFactory);
 		
-		File input = TestUtils.createTempFile(COMPLETE);
-		File output = TestUtils.createTempFile();
+		File input = TempFiles.createFileWithContent(COMPLETE);
+		File output = TempFiles.createFile();
 		
 		ExtractData.main(new String[] {
 			"--problem", "DTLZ2_2",
@@ -105,8 +105,8 @@ public class ExtractDataTest {
 	
 	@Test
 	public void testMetrics() throws Exception {
-		File input = TestUtils.createTempFile(COMPLETE);
-		File output = TestUtils.createTempFile();
+		File input = TempFiles.createFileWithContent(COMPLETE);
+		File output = TempFiles.createFile();
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 		
@@ -143,8 +143,8 @@ public class ExtractDataTest {
 	@Test
 	public void testContributionWithEpsilon() throws Exception {
 		double epsilon = 0.1;
-		File input = TestUtils.createTempFile(COMPLETE);
-		File output = TestUtils.createTempFile();
+		File input = TempFiles.createFileWithContent(COMPLETE);
+		File output = TempFiles.createFile();
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 		
@@ -174,8 +174,8 @@ public class ExtractDataTest {
 	
 	@Test
 	public void testContributionWithoutEpsilon() throws Exception {
-		File input = TestUtils.createTempFile(COMPLETE);
-		File output = TestUtils.createTempFile();
+		File input = TempFiles.createFileWithContent(COMPLETE);
+		File output = TempFiles.createFile();
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 		

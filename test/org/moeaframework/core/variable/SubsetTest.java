@@ -20,9 +20,9 @@ package org.moeaframework.core.variable;
 import java.util.Arrays;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
@@ -179,12 +179,12 @@ public class SubsetTest {
 	public void testCopy() {
 		Subset subset = new Subset(5, 10);
 		Subset copy = subset.copy();
-		Assert.assertTrue(copy.equals(subset));
+		Assert.assertNotSame(subset, copy);
+		Assert.assertEquals(subset, copy);
 
 		// Modify the copy and make sure the original is unchanged
 		copy.replace(copy.randomMember(), copy.randomNonmember());
-		Assert.assertFalse(copy.equals(subset));
-		Assert.assertFalse(subset.equals(copy));
+		Assert.assertNotEquals(subset, copy);
 	}
 	
 	@Test
@@ -209,7 +209,7 @@ public class SubsetTest {
 		
 		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
 			int member = subset.randomMember();
-			Assert.assertTrue(subset.getSet().contains(member));
+			Assert.assertContains(subset.getSet(), member);
 		}
 	}
 	

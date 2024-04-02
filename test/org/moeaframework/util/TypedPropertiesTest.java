@@ -21,9 +21,9 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.configuration.ConfigurationException;

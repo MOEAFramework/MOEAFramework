@@ -17,8 +17,8 @@
  */
 package org.moeaframework.algorithm.single;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Solution;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.util.Vector;
@@ -33,17 +33,17 @@ public class VectorAngleDistanceScalingComparatorTest {
 	public void testCalculateFitness() {
 		double[] weights = Vector.normalize(new double[] { 1.0, 1.0 });
 		
-		Assert.assertTrue(calculate(MockSolution.of().withObjectives(1.0, 1.0), weights) ==
+		Assert.assertEquals(calculate(MockSolution.of().withObjectives(1.0, 1.0), weights),
 				calculate(MockSolution.of().withObjectives(1.0, 1.0), weights));
-		Assert.assertTrue(calculate(MockSolution.of().withObjectives(1.0, 1.0), weights) >
+		Assert.assertGreaterThan(calculate(MockSolution.of().withObjectives(1.0, 1.0), weights),
 				calculate(MockSolution.of().withObjectives(0.5, 0.5), weights));
-		Assert.assertTrue(calculate(MockSolution.of().withObjectives(1.0, 1.0), weights) <
+		Assert.assertLessThan(calculate(MockSolution.of().withObjectives(1.0, 1.0), weights),
 				calculate(MockSolution.of().withObjectives(1.5, 1.5), weights));
-		Assert.assertTrue(calculate(MockSolution.of().withObjectives(1.0, 1.0), weights) <
+		Assert.assertLessThan(calculate(MockSolution.of().withObjectives(1.0, 1.0), weights),
 				calculate(MockSolution.of().withObjectives(1.0, 0.0), weights));
-		Assert.assertTrue(calculate(MockSolution.of().withObjectives(0.5, 0.0), weights) <
+		Assert.assertLessThan(calculate(MockSolution.of().withObjectives(0.5, 0.0), weights),
 				calculate(MockSolution.of().withObjectives(1.0, 0.0), weights));
-		Assert.assertTrue(calculate(MockSolution.of().withObjectives(0.75, 0.35), weights) <
+		Assert.assertLessThan(calculate(MockSolution.of().withObjectives(0.75, 0.35), weights),
 				calculate(MockSolution.of().withObjectives(0.75, 0.25), weights));
 	}
 

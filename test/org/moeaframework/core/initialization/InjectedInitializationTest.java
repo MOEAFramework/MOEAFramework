@@ -17,9 +17,8 @@
  */
 package org.moeaframework.core.initialization;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.mock.MockRealProblem;
@@ -34,16 +33,7 @@ public class InjectedInitializationTest {
 		InjectedInitialization initialization = new InjectedInitialization(problem, solution);
 		
 		Solution[] solutions = initialization.initialize(100);
-		boolean found = false;
-		
-		for (Solution s : solutions) {
-			if (TestUtils.equals(s, solution)) {
-				found = true;
-				break;
-			}
-		}
-		
-		Assert.assertTrue(found);
+		Assert.assertContains(solutions, solution);
 	}
 
 }

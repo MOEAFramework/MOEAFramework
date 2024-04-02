@@ -21,9 +21,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
+import org.moeaframework.TempFiles;
 import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.util.PropertyScope;
 
@@ -44,7 +44,7 @@ public class SettingsTest {
 
 	@Test
 	public void testHypervolumeDelta() {
-		Assert.assertTrue(Settings.getHypervolumeDelta() >= 0.0);
+		Assert.assertGreaterThanOrEqual(Settings.getHypervolumeDelta(), 0.0);
 	}
 
 	@Test
@@ -59,20 +59,20 @@ public class SettingsTest {
 	
 	@Test
 	public void testDiagnosticToolAlgorithmsDefault() {
-		Assert.assertTrue(Settings.getDiagnosticToolAlgorithms().size() > 0);
+		Assert.assertGreaterThan(Settings.getDiagnosticToolAlgorithms().size(), 0);
 	}
 	
 	@Test
 	public void testDiagnosticToolProblemsDefault() {
-		Assert.assertTrue(Settings.getDiagnosticToolProblems().size() > 0);
+		Assert.assertGreaterThan(Settings.getDiagnosticToolProblems().size(), 0);
 	}
 	
 	@Test
 	public void testDiagnosticToolAlgorithmsOverride() {
 		try (PropertyScope scope = Settings.createScope().with(Settings.KEY_DIAGNOSTIC_TOOL_ALGORITHMS, "foo")) {
 			Set<String> result = Settings.getDiagnosticToolAlgorithms();
-			Assert.assertTrue(result.size() == 1);
-			Assert.assertTrue(result.contains("foo"));
+			Assert.assertSize(1, result);
+			Assert.assertContains(result, "foo");
 		}
 	}
 	
@@ -80,8 +80,8 @@ public class SettingsTest {
 	public void testDiagnosticToolProblemsOverride() {
 		try (PropertyScope scope = Settings.createScope().with(Settings.KEY_DIAGNOSTIC_TOOL_PROBLEMS, "bar")) {
 			Set<String> result = Settings.getDiagnosticToolProblems();
-			Assert.assertTrue(result.size() == 1);
-			Assert.assertTrue(result.contains("bar"));
+			Assert.assertSize(1, result);
+			Assert.assertContains(result, "bar");
 		}
 	}
 	
@@ -138,7 +138,7 @@ public class SettingsTest {
 	public void testPropertiesFile() throws IOException {
 		Assert.assertFalse(Settings.PROPERTIES.contains("org.moeaframework.test.test_property_in_file"));
 		
-		File file = TestUtils.createTempFile("org.moeaframework.test.test_property_in_file=foo");
+		File file = TempFiles.createFileWithContent("org.moeaframework.test.test_property_in_file=foo");
 		System.setProperty(Settings.KEY_CONFIGURATION_FILE, file.getAbsolutePath());
 		Settings.reload();
 		

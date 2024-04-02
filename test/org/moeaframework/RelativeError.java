@@ -17,7 +17,6 @@
  */
 package org.moeaframework;
 
-import org.junit.Assert;
 import org.moeaframework.core.Settings;
 
 /**
@@ -25,12 +24,12 @@ import org.moeaframework.core.Settings;
  * allows better scaling across floating-point values of varying magnitudes.
  */
 public class RelativeError implements FloatingPointError {
-	
+
 	/**
 	 * The maximum relative error permitted when considering if two floating-point numbers are equal.
 	 */
 	private final double relativeError;
-	
+
 	/**
 	 * Creates a comparator of floating-point values allowing a small relative error when determining equality.
 	 * 
@@ -42,20 +41,25 @@ public class RelativeError implements FloatingPointError {
 	}
 
 	@Override
-	public void assertEquals(final double d1, final double d2) {
-	    if (Math.abs(d1 - d2) > Settings.EPS) {
-	    	double error = 0.0;
-	    	
-	    	if (Math.abs(d1) > Math.abs(d2)) {
-	    		error = Math.abs((d1 - d2) / d1);
-	    	} else {
-	    		error = Math.abs((d1 - d2) / d2);
-	    	}
+	public void assertEquals(final double expected, final double actual) {
+		if (Math.abs(expected - actual) > Settings.EPS) {
+			double error = 0.0;
 
-	    	if (error > relativeError) {
-	    		Assert.fail("values " + d1 + " " + d2 + " differ by more than " + (relativeError*100.0) + "% error");
-	    	}
-	    }
+			if (Math.abs(expected) > Math.abs(actual)) {
+				error = Math.abs((expected - actual) / expected);
+			} else {
+				error = Math.abs((expected - actual) / actual);
+			}
+
+			if (error > relativeError) {
+				//relative error breaks down when the values approach 0; this is an attempt to correct using
+				//absolute difference
+				if (((expected != 0.0) && (actual != 0.0)) || (Math.abs(expected - actual) > relativeError)) {
+					Assert.fail("values " + expected + " and " + actual + " differ by more than " +
+							(relativeError*100.0) + "% error");
+				}
+			}
+		}
 	}
 
 }

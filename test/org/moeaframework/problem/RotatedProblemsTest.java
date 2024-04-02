@@ -17,10 +17,9 @@
  */
 package org.moeaframework.problem;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
@@ -33,7 +32,7 @@ public class RotatedProblemsTest {
 	
 	@Test
 	public void testReferenceSet() {
-		TestUtils.assertEquals(
+		Assert.assertEquals(
 				ProblemFactory.getInstance().getReferenceSet("DTLZ2_2"),
 				ProblemFactory.getInstance().getReferenceSet("ROT_DTLZ2_2"));
 	}
@@ -118,7 +117,7 @@ public class RotatedProblemsTest {
 	}
 	
 	private void assertBoundsEquals(Problem problemA, Problem problemB) {
-		TestUtils.assertEquals(problemA.newSolution(), problemB.newSolution());
+		Assert.assertEquals(problemA.newSolution(), problemB.newSolution());
 	}
 	
 	private void assertEquals(Problem problemA, Problem problemB) {
@@ -131,8 +130,8 @@ public class RotatedProblemsTest {
 			problemA.evaluate(solutionA);
 			problemB.evaluate(solutionB);
 			
-			TestUtils.assertEquals(solutionA, solutionB);
-			Assert.assertTrue(solutionA.violatesConstraints() == solutionB.violatesConstraints());
+			Assert.assertEquals(solutionA, solutionB);
+			Assert.assertEquals(solutionA.violatesConstraints(), solutionB.violatesConstraints());
 		}
 	}
 	
@@ -146,7 +145,7 @@ public class RotatedProblemsTest {
 			problemA.evaluate(solutionA);
 			problemB.evaluate(solutionB);
 			
-			Assert.assertTrue(solutionA.euclideanDistance(solutionB) > Settings.EPS);
+			Assert.assertGreaterThan(solutionA.euclideanDistance(solutionB), Settings.EPS);
 		}
 	}
 	

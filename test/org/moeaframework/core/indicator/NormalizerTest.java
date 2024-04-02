@@ -17,9 +17,8 @@
  */
 package org.moeaframework.core.indicator;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Settings;
 import org.moeaframework.mock.MockSolution;
@@ -36,9 +35,9 @@ public class NormalizerTest {
 		Normalizer normalizer = new Normalizer(new ProblemStub(2), population);
 		NondominatedPopulation result = normalizer.normalize(population);
 		
-		Assert.assertTrue(population != result);
-		Assert.assertFalse(population.contains(result.get(0)));
-		Assert.assertFalse(population.contains(result.get(1)));
+		Assert.assertNotSame(population, result);
+		Assert.assertNotContains(population, result.get(0));
+		Assert.assertNotContains(population, result.get(1));
 	}
 	
 	@Test
@@ -49,7 +48,7 @@ public class NormalizerTest {
 		
 		Normalizer normalizer = new Normalizer(new ProblemStub(2), population);
 		
-		TestUtils.assertEquals(population, normalizer.normalize(population));
+		Assert.assertEquals(population, normalizer.normalize(population));
 	}
 	
 	@Test
@@ -66,7 +65,7 @@ public class NormalizerTest {
 		expected.add(MockSolution.of().withObjectives(1.0, 0.0));
 		expected.add(MockSolution.of().withObjectives(0.5, 0.5));
 		
-		TestUtils.assertEquals(expected, normalizer.normalize(population));
+		Assert.assertEquals(expected, normalizer.normalize(population));
 	}
 	
 	@Test
@@ -83,7 +82,7 @@ public class NormalizerTest {
 		expected.add(MockSolution.of().withObjectives(0.5, 0.0));
 		expected.add(MockSolution.of().withObjectives(0.25, 0.3333333));
 		
-		TestUtils.assertEquals(expected, normalizer.normalize(population));
+		Assert.assertEquals(expected, normalizer.normalize(population));
 	}
 	
 	@Test
@@ -100,7 +99,7 @@ public class NormalizerTest {
 		expected.add(MockSolution.of().withObjectives(0.5, 0.25));
 		expected.add(MockSolution.of().withObjectives(0.25, 0.5));
 		
-		TestUtils.assertEquals(expected, normalizer.normalize(population));
+		Assert.assertEquals(expected, normalizer.normalize(population));
 	}
 	
 	@Test(expected=IllegalArgumentException.class)

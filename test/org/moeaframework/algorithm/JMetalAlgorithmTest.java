@@ -19,9 +19,7 @@ package org.moeaframework.algorithm;
 
 import java.io.IOException;
 
-import org.junit.Assume;
 import org.junit.Test;
-import org.moeaframework.core.spi.AlgorithmFactory;
 
 /**
  * Methods for comparing against the JMetal implementation.  This performs a statistical comparison of the algorithms
@@ -42,14 +40,6 @@ public abstract class JMetalAlgorithmTest extends AlgorithmTest {
 		super();
 		this.algorithmName = algorithmName;
 		this.allowBetterPerformance = allowBetterPerformance;
-	}
-	
-	/**
-	 * Call from any test to skip if JMetal does not exist.
-	 */
-	public void assumeJMetalExists() {
-		Assume.assumeTrue("JMetal-Plugin required to run test", 
-				AlgorithmFactory.getInstance().hasProvider("org.moeaframework.algorithm.jmetal.JMetalAlgorithms"));
 	}
 	
 	@Test

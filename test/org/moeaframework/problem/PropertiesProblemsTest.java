@@ -17,8 +17,8 @@
  */
 package org.moeaframework.problem;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProviderNotFoundException;

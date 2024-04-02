@@ -20,8 +20,8 @@ package org.moeaframework.util.io;
 import java.io.IOException;
 import java.io.StringReader;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 
 public class CommentedLineReaderTest {
 

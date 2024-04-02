@@ -19,7 +19,6 @@ package org.moeaframework;
 
 import java.util.Locale;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.util.Localization;
 

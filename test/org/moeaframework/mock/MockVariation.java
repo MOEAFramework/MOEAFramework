@@ -19,7 +19,7 @@ package org.moeaframework.mock;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.junit.Assert;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 

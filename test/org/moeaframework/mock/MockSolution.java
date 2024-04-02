@@ -23,8 +23,7 @@ import java.util.Optional;
 import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.reflect.TypeUtils;
-import org.junit.Assert;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
@@ -398,7 +397,7 @@ public class MockSolution extends Solution {
 	}
 
 	public void assertEquals(Solution other) {
-		TestUtils.assertEquals(this, other);
+		Assert.assertEquals(this, other);
 	}
 
 	private void throwIfProblemNotSet() {

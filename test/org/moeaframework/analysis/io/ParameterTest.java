@@ -17,9 +17,8 @@
  */
 package org.moeaframework.analysis.io;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
 
 public class ParameterTest {
 
@@ -27,9 +26,9 @@ public class ParameterTest {
 	public void testScale() {
 		Parameter parameter = new Parameter("foo", 100, 1000);
 		
-		TestUtils.assertEquals(100, parameter.scale(0.0));
-		TestUtils.assertEquals(1000, parameter.scale(1.0));
-		TestUtils.assertEquals(550, parameter.scale(0.5));
+		Assert.assertEquals(100, parameter.scale(0.0));
+		Assert.assertEquals(1000, parameter.scale(1.0));
+		Assert.assertEquals(550, parameter.scale(0.5));
 	}
 	
 	@Test

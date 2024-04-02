@@ -26,10 +26,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.math3.analysis.MultivariateFunction;
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.TestUtils;
+import org.moeaframework.TempFiles;
 import org.moeaframework.util.sequence.Saltelli;
 
 public class SobolAnalysisTest {
@@ -182,9 +182,9 @@ public class SobolAnalysisTest {
 		double[][] input = new Saltelli().generate(1000*8, 3);
 		double[] output = evaluate(function, input);
 		
-		File outputFile = TestUtils.createTempFile();
-		File parameterFile = TestUtils.createTempFile();
-		File inputFile = TestUtils.createTempFile();
+		File outputFile = TempFiles.createFile();
+		File parameterFile = TempFiles.createFile();
+		File inputFile = TempFiles.createFile();
 		
 		createParameterFile(parameterFile, 3);
 		save(inputFile, output);
@@ -237,8 +237,8 @@ public class SobolAnalysisTest {
 	protected double getEntryValue(File file, String key, int skip) throws IOException {
 		String line = null;
 		Pattern pattern = Pattern.compile("^\\s*" + key + "\\s+" + 
-				TestUtils.getSpaceSeparatedNumericPattern(1) + "\\s+\\[" + 
-				TestUtils.getSpaceSeparatedNumericPattern(1) + "\\]\\s*$");
+				Assert.getSpaceSeparatedNumericPattern(1) + "\\s+\\[" + 
+				Assert.getSpaceSeparatedNumericPattern(1) + "\\]\\s*$");
 		
 		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 			while ((line = reader.readLine()) != null) {

@@ -19,11 +19,10 @@ package org.moeaframework.algorithm;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.TestUtils;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
@@ -99,14 +98,14 @@ public class EpsilonMOEATest {
 
 		for (int i=0; i<10; i++) {
 			algorithm.addToPopulation(solutionC);
-			TestUtils.assertEquals(solutionB, population.lastRemovedSolution);
+			Assert.assertEquals(solutionB, population.lastRemovedSolution);
 		}
 		
 		population.lastRemovedIndex = -1;
 		
 		for (int i=0; i<10; i++) {
 			algorithm.addToPopulation(solutionC);
-			TestUtils.assertEquals(-1, population.lastRemovedIndex);
+			Assert.assertEquals(-1, population.lastRemovedIndex);
 		}
 	}
 	
@@ -125,7 +124,7 @@ public class EpsilonMOEATest {
 			statistics.addValue(population.lastRemovedIndex);
 		}
 		
-		TestUtils.assertUniformDistribution(0, population.size()-1, statistics);
+		Assert.assertUniformDistribution(0, population.size()-1, statistics);
 	}
 	
 	@Test

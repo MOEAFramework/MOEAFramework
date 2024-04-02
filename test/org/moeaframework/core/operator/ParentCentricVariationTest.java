@@ -23,7 +23,7 @@ import java.util.List;
 import org.apache.commons.math3.ml.clustering.CentroidCluster;
 import org.apache.commons.math3.ml.clustering.DoublePoint;
 import org.apache.commons.math3.ml.clustering.KMeansPlusPlusClusterer;
-import org.junit.Assert;
+import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
@@ -67,7 +67,7 @@ public abstract class ParentCentricVariationTest<T extends Variation> extends Di
 				}
 			}
 
-			Assert.assertTrue(match);
+			Assert.assertTrue("Failed to find cluster near solution", match);
 		}
 	}
 

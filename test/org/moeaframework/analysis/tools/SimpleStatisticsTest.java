@@ -18,19 +18,21 @@
 package org.moeaframework.analysis.tools;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
+import org.moeaframework.TempFiles;
 import org.moeaframework.core.FrameworkException;
 
 public class SimpleStatisticsTest {
 	
 	@Test
 	public void testNormal() throws Exception {
-		File input1 = TestUtils.createTempFile("0.0 0.0 0.0\n1.0 1.0 1.0");
-		File input2 = TestUtils.createTempFile("0.0 0.0 0.0\n0.0 0.5 1.0\n");
-		File output = TestUtils.createTempFile();
+		File input1 = TempFiles.createFileWithContent("0.0 0.0 0.0\n1.0 1.0 1.0");
+		File input2 = TempFiles.createFileWithContent("0.0 0.0 0.0\n0.0 0.5 1.0\n");
+		File output = TempFiles.createFile();
 		
 		SimpleStatistics.main(new String[] {
 				"-m", "av",
@@ -38,7 +40,7 @@ public class SimpleStatisticsTest {
 				input1.getPath(),
 				input2.getPath()});
 		
-		String[] actual = TestUtils.loadText(output).split("\\s+");
+		String[] actual = Files.readString(output.toPath(), StandardCharsets.UTF_8).split("\\s+");
 		String[] expected = new String[] { "0.0", "0.0", "0.0", "0.5", "0.75", "1.0" };
 		
 		Assert.assertArrayEquals(expected, actual);
@@ -46,9 +48,9 @@ public class SimpleStatisticsTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testMissingEntries() throws Exception {
-		File input1 = TestUtils.createTempFile("0.0 0.0 0.0\n1.0 1.0 1.0");
-		File input2 = TestUtils.createTempFile("0.0 0.0\n0.0 0.5 1.0\n");
-		File output = TestUtils.createTempFile();
+		File input1 = TempFiles.createFileWithContent("0.0 0.0 0.0\n1.0 1.0 1.0");
+		File input2 = TempFiles.createFileWithContent("0.0 0.0\n0.0 0.5 1.0\n");
+		File output = TempFiles.createFile();
 		
 		SimpleStatistics.main(new String[] {
 				"-m", "av",
@@ -59,9 +61,9 @@ public class SimpleStatisticsTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testEmptyFile() throws Exception {
-		File input1 = TestUtils.createTempFile("0.0 0.0 0.0\n1.0 1.0 1.0");
-		File input2 = TestUtils.createTempFile("");
-		File output = TestUtils.createTempFile();
+		File input1 = TempFiles.createFileWithContent("0.0 0.0 0.0\n1.0 1.0 1.0");
+		File input2 = TempFiles.createFileWithContent("");
+		File output = TempFiles.createFile();
 		
 		SimpleStatistics.main(new String[] {
 				"-m", "av",
@@ -72,9 +74,9 @@ public class SimpleStatisticsTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testMissingRows() throws Exception {
-		File input1 = TestUtils.createTempFile("0.0 0.0 0.0\n1.0 1.0 1.0");
-		File input2 = TestUtils.createTempFile("0.0 0.0 0.0\n");
-		File output = TestUtils.createTempFile();
+		File input1 = TempFiles.createFileWithContent("0.0 0.0 0.0\n1.0 1.0 1.0");
+		File input2 = TempFiles.createFileWithContent("0.0 0.0 0.0\n");
+		File output = TempFiles.createFile();
 		
 		SimpleStatistics.main(new String[] {
 				"-m", "av",
@@ -85,7 +87,7 @@ public class SimpleStatisticsTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testNoInputs() throws Exception {
-		File output = TestUtils.createTempFile();
+		File output = TempFiles.createFile();
 		
 		SimpleStatistics.main(new String[] {
 				"-m", "av",
@@ -94,9 +96,9 @@ public class SimpleStatisticsTest {
 	
 	@Test(expected = FrameworkException.class)
 	public void testInvalidEntry() throws Exception {
-		File input1 = TestUtils.createTempFile("0.0 0.0 0.0\n1.0 1.0 1.0");
-		File input2 = TestUtils.createTempFile("0.0 foo 0.0\n0.0 0.5 1.0");
-		File output = TestUtils.createTempFile();
+		File input1 = TempFiles.createFileWithContent("0.0 0.0 0.0\n1.0 1.0 1.0");
+		File input2 = TempFiles.createFileWithContent("0.0 foo 0.0\n0.0 0.5 1.0");
+		File output = TempFiles.createFile();
 		
 		SimpleStatistics.main(new String[] {
 				"-m", "av",
@@ -107,9 +109,9 @@ public class SimpleStatisticsTest {
 	
 	@Test
 	public void testInfinityAndNaN() throws Exception {
-		File input1 = TestUtils.createTempFile("0.0 0.0 0.0\n1.0 Infinity 1.0");
-		File input2 = TestUtils.createTempFile("0.0 0.0 NaN\n0.0 0.5 1.0\n");
-		File output = TestUtils.createTempFile();
+		File input1 = TempFiles.createFileWithContent("0.0 0.0 0.0\n1.0 Infinity 1.0");
+		File input2 = TempFiles.createFileWithContent("0.0 0.0 NaN\n0.0 0.5 1.0\n");
+		File output = TempFiles.createFile();
 		
 		SimpleStatistics.main(new String[] {
 				"-m", "av",
@@ -117,7 +119,7 @@ public class SimpleStatisticsTest {
 				input1.getPath(),
 				input2.getPath()});
 		
-		String[] actual = TestUtils.loadText(output).split("\\s+");
+		String[] actual = Files.readString(output.toPath(), StandardCharsets.UTF_8).split("\\s+");
 		String[] expected = new String[] { "0.0", "0.0", "NaN", "0.5", "NaN", "1.0" };
 		
 		Assert.assertArrayEquals(expected, actual);
@@ -125,9 +127,9 @@ public class SimpleStatisticsTest {
 	
 	@Test
 	public void testInfinityAndNaNIgnoring() throws Exception {
-		File input1 = TestUtils.createTempFile("0.0 0.0 0.0\n1.0 Infinity 1.0");
-		File input2 = TestUtils.createTempFile("0.0 0.0 NaN\n0.0 0.5 1.0\n");
-		File output = TestUtils.createTempFile();
+		File input1 = TempFiles.createFileWithContent("0.0 0.0 0.0\n1.0 Infinity 1.0");
+		File input2 = TempFiles.createFileWithContent("0.0 0.0 NaN\n0.0 0.5 1.0\n");
+		File output = TempFiles.createFile();
 		
 		SimpleStatistics.main(new String[] {
 				"-m", "av",
@@ -136,7 +138,7 @@ public class SimpleStatisticsTest {
 				input1.getPath(),
 				input2.getPath()});
 		
-		String[] actual = TestUtils.loadText(output).split("\\s+");
+		String[] actual = Files.readString(output.toPath(), StandardCharsets.UTF_8).split("\\s+");
 		String[] expected = new String[] { "0.0", "0.0", "0.0", "0.5", "0.5", "1.0" };
 		
 		Assert.assertArrayEquals(expected, actual);
@@ -144,9 +146,9 @@ public class SimpleStatisticsTest {
 	
 	@Test
 	public void testInfinityMaximum() throws Exception {
-		File input1 = TestUtils.createTempFile("0.0 0.0 0.0\n1.0 Infinity 1.0");
-		File input2 = TestUtils.createTempFile("0.0 0.0 0.0\n0.0 0.5 1.0\n");
-		File output = TestUtils.createTempFile();
+		File input1 = TempFiles.createFileWithContent("0.0 0.0 0.0\n1.0 Infinity 1.0");
+		File input2 = TempFiles.createFileWithContent("0.0 0.0 0.0\n0.0 0.5 1.0\n");
+		File output = TempFiles.createFile();
 		
 		SimpleStatistics.main(new String[] {
 				"-m", "av",
@@ -155,7 +157,7 @@ public class SimpleStatisticsTest {
 				input1.getPath(),
 				input2.getPath()});
 		
-		String[] actual = TestUtils.loadText(output).split("\\s+");
+		String[] actual = Files.readString(output.toPath(), StandardCharsets.UTF_8).split("\\s+");
 		String[] expected = new String[] { "0.0", "0.0", "0.0", "0.5", "0.75", "1.0" };
 		
 		Assert.assertArrayEquals(expected, actual);

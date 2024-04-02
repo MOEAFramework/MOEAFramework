@@ -18,18 +18,20 @@
 package org.moeaframework.analysis.tools;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
+import org.moeaframework.TempFiles;
+import org.moeaframework.analysis.io.MatrixReader;
 
 public class NegaterTest {
     
     @Test
     public void testSingleNegation() throws Exception {
-        File file = TestUtils.createTempFile("0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 -5.12e10 0.5 0.000001");
+        File file = TempFiles.createFileWithContent("0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 -5.12e10 0.5 0.000001");
         
         Negater.main(new String[] {
                "-d", "1,1,0,1",
@@ -37,15 +39,15 @@ public class NegaterTest {
         });
         
         double[][] expected = { { 0.0, -0.1, -0.1, 0.1}, {-5.12e-10, 5.12e10, 0.5, -0.000001} };
-        double[][] actual = TestUtils.loadMatrix(file);
+        double[][] actual = MatrixReader.load(file);
         
-        TestUtils.assertEquals(expected, actual);
+        Assert.assertEquals(expected, actual);
     }
     
     @Test
     public void testDoubleNegation() throws Exception {
-        File file = TestUtils.createTempFile("0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 -5.12e10 0.5 0.000001");
-        File copy = TestUtils.createTempFile();
+        File file = TempFiles.createFileWithContent("0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 -5.12e10 0.5 0.000001");
+        File copy = TempFiles.createFile();
         
         Files.copy(file.toPath(), copy.toPath(), StandardCopyOption.REPLACE_EXISTING);
         
@@ -59,13 +61,13 @@ public class NegaterTest {
                 file.getPath()
         });
         
-        TestUtils.assertEquals(TestUtils.loadMatrix(copy), TestUtils.loadMatrix(file));
+        Assert.assertEquals(MatrixReader.load(copy), MatrixReader.load(file));
     }
     
     @Test
     public void testNoOverwriteOnError1() throws Exception {
-        File file = TestUtils.createTempFile("0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 -5.12e10 0.5");
-        File copy = TestUtils.createTempFile();
+        File file = TempFiles.createFileWithContent("0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 -5.12e10 0.5");
+        File copy = TempFiles.createFile();
         
         Files.copy(file.toPath(), copy.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
@@ -74,13 +76,14 @@ public class NegaterTest {
                file.getPath()
         });
         
-        Assert.assertEquals(TestUtils.loadText(copy), TestUtils.loadText(file));
+        Assert.assertEquals(Files.readString(copy.toPath(), StandardCharsets.UTF_8),
+        		Files.readString(file.toPath(), StandardCharsets.UTF_8));
     }
 
     @Test
     public void testNoOverwriteOnError2() throws Exception {
-        File file = TestUtils.createTempFile("0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 0,1,2 0.5 0.000001");
-        File copy = TestUtils.createTempFile();
+        File file = TempFiles.createFileWithContent("0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 0,1,2 0.5 0.000001");
+        File copy = TempFiles.createFile();
         
         Files.copy(file.toPath(), copy.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
@@ -89,7 +92,8 @@ public class NegaterTest {
                file.getPath()
         });
         
-        Assert.assertEquals(TestUtils.loadText(copy), TestUtils.loadText(file));
+        Assert.assertEquals(Files.readString(copy.toPath(), StandardCharsets.UTF_8),
+        		Files.readString(file.toPath(), StandardCharsets.UTF_8));
     }
 
 }

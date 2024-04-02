@@ -18,8 +18,8 @@
 package org.moeaframework;
 
 import java.io.IOException;
+
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.core.FrameworkException;
@@ -56,7 +56,7 @@ public class ExecutorTest {
 				.withProperty("maxEvaluations", 1000)
 				.distributeOnAllCores()
 				.checkpointEveryIteration()
-				.withCheckpointFile(TestUtils.createTempFile())
+				.withCheckpointFile(TempFiles.createFile())
 				.run();
 		
 		Assert.assertEquals(1, algorithmFactory.getTerminateCount());
@@ -75,7 +75,7 @@ public class ExecutorTest {
 				.withProperty("maxEvaluations", 1000)
 				.distributeOnAllCores()
 				.checkpointEveryIteration()
-				.withCheckpointFile(TestUtils.createTempFile())
+				.withCheckpointFile(TempFiles.createFile())
 				.runSeeds(10).size());
 		
 		Assert.assertEquals(10, algorithmFactory.getTerminateCount());

@@ -22,10 +22,10 @@ import java.io.StringReader;
 import java.util.NoSuchElementException;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
+import org.moeaframework.TempFiles;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.TypedProperties;
 
@@ -76,7 +76,7 @@ public class SampleReaderTest {
 
 	@Before
 	public void setUp() throws IOException {
-		parameterFile = new ParameterFile(TestUtils.createTempFile(PARAMETER_FILE));
+		parameterFile = new ParameterFile(TempFiles.createFileWithContent(PARAMETER_FILE));
 	}
 
 	@After
@@ -116,42 +116,42 @@ public class SampleReaderTest {
 
 	@Test
 	public void testFileComplete() throws IOException {
-		try (SampleReader reader = new SampleReader(TestUtils.createTempFile(COMPLETE), parameterFile)) {
+		try (SampleReader reader = new SampleReader(TempFiles.createFileWithContent(COMPLETE), parameterFile)) {
 			validateComplete(reader);
 		}
 	}
 
 	@Test(expected = FrameworkException.class)
 	public void testFileMissingEntry() throws IOException {
-		try (SampleReader reader = new SampleReader(TestUtils.createTempFile(INVALID_MISSING_ENTRY), parameterFile)) {
+		try (SampleReader reader = new SampleReader(TempFiles.createFileWithContent(INVALID_MISSING_ENTRY), parameterFile)) {
 			validateInvalid(reader);
 		}
 	}
 
 	@Test(expected = FrameworkException.class)
 	public void testFileEmptyLine() throws IOException {
-		try (SampleReader reader = new SampleReader(TestUtils.createTempFile(INVALID_EMPTY_LINE), parameterFile)) {
+		try (SampleReader reader = new SampleReader(TempFiles.createFileWithContent(INVALID_EMPTY_LINE), parameterFile)) {
 			validateInvalid(reader);
 		}
 	}
 
 	@Test(expected = FrameworkException.class)
 	public void testFileUnparseable() throws IOException {
-		try (SampleReader reader = new SampleReader(TestUtils.createTempFile(INVALID_UNPARSEABLE), parameterFile)) {
+		try (SampleReader reader = new SampleReader(TempFiles.createFileWithContent(INVALID_UNPARSEABLE), parameterFile)) {
 			validateInvalid(reader);
 		}
 	}
 
 	@Test(expected = FrameworkException.class)
 	public void testFileOutOfBounds1() throws IOException {
-		try (SampleReader reader = new SampleReader(TestUtils.createTempFile(INVALID_OUT_OF_BOUNDS_1), parameterFile)) {
+		try (SampleReader reader = new SampleReader(TempFiles.createFileWithContent(INVALID_OUT_OF_BOUNDS_1), parameterFile)) {
 			validateInvalid(reader);
 		}
 	}
 
 	@Test(expected = FrameworkException.class)
 	public void testFileOutOfBounds2() throws IOException {
-		try (SampleReader reader = new SampleReader(TestUtils.createTempFile(INVALID_OUT_OF_BOUNDS_2), parameterFile)) {
+		try (SampleReader reader = new SampleReader(TempFiles.createFileWithContent(INVALID_OUT_OF_BOUNDS_2), parameterFile)) {
 			validateInvalid(reader);
 		}
 	}
@@ -200,7 +200,7 @@ public class SampleReaderTest {
 	
 	@Test(expected = NoSuchElementException.class)
 	public void testNextAfterEndOfFile() throws IOException {
-		try (SampleReader reader = new SampleReader(TestUtils.createTempFile(COMPLETE), parameterFile)) {
+		try (SampleReader reader = new SampleReader(TempFiles.createFileWithContent(COMPLETE), parameterFile)) {
 			validateComplete(reader);
 			reader.next();
 		}

@@ -18,14 +18,13 @@
 package org.moeaframework.builder;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
-import org.moeaframework.util.io.RedirectStream;
+import org.moeaframework.Assert;
+import org.moeaframework.Assume;
+import org.moeaframework.Make;
+import org.moeaframework.TempFiles;
 
 public class BuildProblemTest {
 
@@ -43,7 +42,7 @@ public class BuildProblemTest {
 	public void testFortran() throws Exception {
 		test("fortran");
 	}
-	
+
 	@Test
 	public void testJava() throws Exception {
 		test("java");
@@ -53,10 +52,10 @@ public class BuildProblemTest {
 	public void testExternal() throws Exception {
 		test("external");
 	}
-	
+
 	@Test(expected = Exception.class)
 	public void testDisallowExample() throws Exception {
-		Path directory = Files.createTempDirectory("test");
+		File directory = TempFiles.createDirectory();
 
 		BuildProblem.main(new String[] {
 				"--problemName", "Example",
@@ -65,12 +64,10 @@ public class BuildProblemTest {
 				"--numberOfObjectives", "2",
 				"--directory", directory.toString()
 		});
-		
-		BuildProblem.deleteDirectory(directory);
 	}
 
 	private void test(String language) throws Exception {		
-		Path directory = Files.createTempDirectory("test");
+		File directory = TempFiles.createDirectory();
 
 		BuildProblem.main(new String[] {
 				"--problemName", "Test",
@@ -81,27 +78,18 @@ public class BuildProblemTest {
 				"--classpath", System.getProperty("java.class.path") + File.pathSeparator + "."
 		});
 
-		try {
-			TestUtils.assumeMakeExists();
-	
-			ProcessBuilder processBuilder = new ProcessBuilder("make");
-			processBuilder.directory(directory.resolve("Test").toFile());
-			RedirectStream.invoke(processBuilder);
-	
-			processBuilder = new ProcessBuilder("make", "run");
-			processBuilder.directory(directory.resolve("Test").toFile());
-			String output = RedirectStream.capture(processBuilder);
-			
-			System.out.println(output);
-			
-			List<String> lines = output.lines().skip(1).toList(); // first line the the java command
-			Assert.assertEquals(3, lines.size());
-			TestUtils.assertLineMatches(lines.get(0), "(\\bVar[0-9]+\\b\\s*){10}(\\bObj[0-9]+\\b\\s*){2}");
-			TestUtils.assertLineMatches(lines.get(1), "([\\-]+\\s*){12}");
-			TestUtils.assertLineMatches(lines.get(2), "(\\-?[0-9]+\\.[0-9]+\\b\\s*){12}");
-		} finally {
-			BuildProblem.deleteDirectory(directory);
-		}
+		Assume.assumeMakeExists();
+
+		Make.runMake(new File(directory, "Test"));
+		String output = Make.runMake(new File(directory, "Test"), "run");
+
+		System.out.println(output);
+
+		List<String> lines = output.lines().skip(1).toList(); // first line the the java command
+		Assert.assertEquals(3, lines.size());
+		Assert.assertMatches(lines.get(0), "(\\bVar[0-9]+\\b\\s*){10}(\\bObj[0-9]+\\b\\s*){2}");
+		Assert.assertMatches(lines.get(1), "([\\-]+\\s*){12}");
+		Assert.assertMatches(lines.get(2), "(\\-?[0-9]+\\.[0-9]+\\b\\s*){12}");
 	}
 
 }

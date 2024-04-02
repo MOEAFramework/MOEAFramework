@@ -19,8 +19,8 @@ package org.moeaframework.util.distributed;
 
 import java.util.concurrent.Executors;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
@@ -111,7 +111,7 @@ public class DistributedProblemTest {
 				population.get(i).getConstraint(0);
 			}
 	
-			Assert.assertTrue(Math.abs(1000 * N / (double)P - (System.currentTimeMillis() - startTime)) < 1000);
+			Assert.assertLessThan(Math.abs(1000 * N / (double)P - (System.currentTimeMillis() - startTime)), 1000);
 		}
 	}
 	

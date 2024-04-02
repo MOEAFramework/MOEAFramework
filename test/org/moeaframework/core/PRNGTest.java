@@ -20,16 +20,16 @@ package org.moeaframework.core;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moeaframework.TestThresholds;
-import org.moeaframework.TestUtils;
-import org.moeaframework.Retryable;
+import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
+import org.moeaframework.Retryable;
+import org.moeaframework.TestThresholds;
 
 @RunWith(CIRunner.class)
 @Retryable
@@ -45,7 +45,7 @@ public class PRNGTest {
 			statistics.addValue(PRNG.nextFloat());
 		}
 
-		TestUtils.assertUniformDistribution(0.0, 1.0, statistics);
+		Assert.assertUniformDistribution(0.0, 1.0, statistics);
 	}
 
 	@Test
@@ -56,7 +56,7 @@ public class PRNGTest {
 			statistics.addValue(PRNG.nextFloat(15.0f, 20.0f));
 		}
 
-		TestUtils.assertUniformDistribution(15.0, 20.0, statistics);
+		Assert.assertUniformDistribution(15.0, 20.0, statistics);
 	}
 
 	@Test
@@ -67,7 +67,7 @@ public class PRNGTest {
 			statistics.addValue(PRNG.nextDouble());
 		}
 
-		TestUtils.assertUniformDistribution(0.0, 1.0, statistics);
+		Assert.assertUniformDistribution(0.0, 1.0, statistics);
 	}
 
 	@Test
@@ -78,7 +78,7 @@ public class PRNGTest {
 			statistics.addValue(PRNG.nextDouble(15.0, 20.0));
 		}
 
-		TestUtils.assertUniformDistribution(15.0, 20.0, statistics);
+		Assert.assertUniformDistribution(15.0, 20.0, statistics);
 	}
 
 	@Test
@@ -120,7 +120,7 @@ public class PRNGTest {
 			statistics.addValue(PRNG.nextInt(15));
 		}
 
-		TestUtils.assertUniformDistribution(0, 14, statistics);
+		Assert.assertUniformDistribution(0, 14, statistics);
 	}
 
 	@Test
@@ -131,7 +131,7 @@ public class PRNGTest {
 			statistics.addValue(PRNG.nextInt(15, 20));
 		}
 
-		TestUtils.assertUniformDistribution(15, 20, statistics);
+		Assert.assertUniformDistribution(15, 20, statistics);
 	}
 
 	@Test
@@ -142,7 +142,7 @@ public class PRNGTest {
 			statistics.addValue(PRNG.nextBoolean() ? 1 : 0);
 		}
 
-		TestUtils.assertUniformDistribution(0, 1, statistics);
+		Assert.assertUniformDistribution(0, 1, statistics);
 	}
 
 	@Test
@@ -189,7 +189,7 @@ public class PRNGTest {
 		}
 
 		for (int i = 0; i < P; i++) {
-			TestUtils.assertUniformDistribution(0, P - 1, statistics.get(i));
+			Assert.assertUniformDistribution(0, P - 1, statistics.get(i));
 		}
 	}
 
@@ -289,7 +289,7 @@ public class PRNGTest {
 		}
 
 		for (int i = 0; i < P; i++) {
-			TestUtils.assertUniformDistribution(0, 1, statistics[i]);
+			Assert.assertUniformDistribution(0, 1, statistics[i]);
 		}
 	}
 
@@ -333,7 +333,7 @@ public class PRNGTest {
 		}
 
 		for (int i = 0; i < size; i++) {
-			TestUtils.assertUniformDistribution(0, size - 1, statistics[i]);
+			Assert.assertUniformDistribution(0, size - 1, statistics[i]);
 		}
 	}
 
@@ -371,7 +371,7 @@ public class PRNGTest {
 				}
 			}
 
-			Assert.assertTrue(found);
+			Assert.assertTrue("Not a valid permutation: " + Arrays.toString(array), found);
 		}
 	}
 

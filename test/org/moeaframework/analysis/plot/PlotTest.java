@@ -25,13 +25,13 @@ import java.util.stream.IntStream;
 
 import javax.swing.JFrame;
 
-import org.junit.Assert;
-import org.junit.Assume;
 import org.junit.Test;
 import org.moeaframework.Analyzer;
+import org.moeaframework.Assert;
+import org.moeaframework.Assume;
 import org.moeaframework.Executor;
 import org.moeaframework.Instrumenter;
-import org.moeaframework.TestUtils;
+import org.moeaframework.TempFiles;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.core.NondominatedPopulation;
 
@@ -142,34 +142,30 @@ public class PlotTest {
 	
 	@Test
 	public void testSavePNG() throws IOException {
-		File tempFile = File.createTempFile("test", ".png");
-		tempFile.deleteOnExit();
+		File tempFile = TempFiles.createFileWithExtension(".png");
 		
 		new Plot()
 			.scatter("Points", new double[] { 0, 1, 2 }, new double[] { 0, 1, 2 })
 			.save(tempFile);
 		
-		Assert.assertTrue(tempFile.exists());
-		Assert.assertTrue(tempFile.length() > 0);
+		Assert.assertFileWithContent(tempFile);
 	}
 	
 	@Test
 	public void testSaveSVG() throws IOException {
 		Assume.assumeTrue("Skipping test as JFreeSVG library is not found", Plot.supportsSVG());
 		
-		File tempFile = File.createTempFile("test", ".svg");
-		tempFile.deleteOnExit();
+		File tempFile = TempFiles.createFileWithExtension(".svg");
 			
 		new Plot()
 			.scatter("Points", new double[] { 0, 1, 2 }, new double[] { 0, 1, 2 })
 			.save(tempFile);
 			
-		Assert.assertTrue(tempFile.exists());
-		Assert.assertTrue(tempFile.length() > 0);
+		Assert.assertFileWithContent(tempFile);
 	}
 	
 	public void runTest(Plot plot) {
-		if (TestUtils.isJUnitTest()) {
+		if (isJUnitTest()) {
 			Assume.assumeTrue("Skipping test as the system has no display", hasDisplay());
 			
 			JFrame frame = plot.show();
@@ -177,6 +173,18 @@ public class PlotTest {
 		} else {
 			plot.showDialog();
 		}
+	}
+
+	public static boolean isJUnitTest() {
+	    StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+	    
+	    for (StackTraceElement element : stackTrace) {
+	        if (element.getClassName().startsWith("org.junit.")) {
+	            return true;
+	        }           
+	    }
+	    
+	    return false;
 	}
 	
 	public static void main(String[] args) {

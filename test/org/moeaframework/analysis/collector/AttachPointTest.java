@@ -19,9 +19,9 @@ package org.moeaframework.analysis.collector;
 
 import java.util.Stack;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.Assert;
 
 public class AttachPointTest {
 	

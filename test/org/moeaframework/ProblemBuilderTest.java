@@ -20,7 +20,6 @@ package org.moeaframework;
 import java.io.File;
 import java.io.IOException;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.FrameworkException;
@@ -118,7 +117,7 @@ public class ProblemBuilderTest {
 		NondominatedPopulation expected = new EpsilonBoxDominanceArchive(0.01, Population.loadObjectives(
 				new File("./pf/DTLZ2.2D.pf")));
 		
-		TestUtils.assertEquals(expected, actual);
+		Assert.assertEquals(expected, actual);
 	}
 	
 	@Test
@@ -131,7 +130,7 @@ public class ProblemBuilderTest {
 		
 		NondominatedPopulation expected = NondominatedPopulation.loadReferenceSet(new File("./pf/DTLZ1.2D.pf"));
 		
-		TestUtils.assertEquals(expected, actual);
+		Assert.assertEquals(expected, actual);
 	}
 	
 	@Test
@@ -143,7 +142,7 @@ public class ProblemBuilderTest {
 				.withReferenceSet(expected)
 				.getReferenceSet();
 		
-		TestUtils.assertEquals(expected, actual);
+		Assert.assertEquals(expected, actual);
 	}
 	
 	@Test

@@ -17,13 +17,13 @@
  */
 package org.moeaframework.util.sequence;
 
-import org.junit.Assert;
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+import org.moeaframework.Assert;
+import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.CIRunner;
 
 /**
  * Abstract class for testing implementation of {@link Sequence}.
@@ -81,7 +81,7 @@ public abstract class AbstractSequenceTest<T extends Sequence> {
 			Assert.assertEquals(D, points[i].length);
 
 			for (int j = 0; j < D; j++) {
-				Assert.assertTrue((points[i][j] >= 0.0) && (points[i][j] <= 1.0));
+				Assert.assertBetween(0.0, 1.0, points[i][j]);
 			}
 		}
 	}

@@ -17,8 +17,8 @@
  */
 package org.moeaframework.core.configuration;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.mock.MockConstraintProblem;

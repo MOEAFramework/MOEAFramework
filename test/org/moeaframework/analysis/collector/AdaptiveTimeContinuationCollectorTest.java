@@ -17,7 +17,7 @@
  */
 package org.moeaframework.analysis.collector;
 
-import org.junit.Assert;
+import org.moeaframework.Assert;
 import org.moeaframework.algorithm.continuation.AdaptiveTimeContinuation;
 import org.moeaframework.core.Algorithm;
 
@@ -25,7 +25,7 @@ public class AdaptiveTimeContinuationCollectorTest extends AbstractCollectorTest
 	
 	@Override
 	public void validate(Observation observation) {
-		Assert.assertTrue(AdaptiveTimeContinuationCollector.getNumberOfRestarts(observation) >= 0);
+		Assert.assertGreaterThanOrEqual(AdaptiveTimeContinuationCollector.getNumberOfRestarts(observation), 0);
 	}
 	
 	@Override

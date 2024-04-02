@@ -19,9 +19,9 @@ package org.moeaframework.core.operator.real;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.CIRunner;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.MeanCentricVariationTest;
 

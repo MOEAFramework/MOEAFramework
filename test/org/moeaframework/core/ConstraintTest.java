@@ -17,8 +17,8 @@
  */
 package org.moeaframework.core;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 
 public class ConstraintTest {
 	

@@ -22,9 +22,8 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Selection;
@@ -80,7 +79,7 @@ public class BasicIslandExecutorTest extends AbstractIslandModelTest {
 				expectedResult.addAll(island.getAlgorithm().getResult());
 			}
 			
-			TestUtils.assertEquals(expectedResult, result);
+			Assert.assertEquals(expectedResult, result);
 		}
 	}
 	

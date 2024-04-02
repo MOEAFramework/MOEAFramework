@@ -21,9 +21,9 @@ import java.util.Random;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.CIRunner;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.ParentCentricVariationTest;

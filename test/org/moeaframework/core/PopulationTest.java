@@ -26,11 +26,11 @@ import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.TestUtils;
+import org.moeaframework.TempFiles;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Grammar;
@@ -165,17 +165,17 @@ public class PopulationTest {
 
 		});
 
-		Assert.assertEquals(1, population.size());
+		Assert.assertSize(1, population);
 		Assert.assertEquals(1.0, population.get(0).getObjective(0), Settings.EPS);
 	}
 	
 	@Test
 	public void testAsTabularData() throws IOException {
-		File tempFile = TestUtils.createTempFile();
+		File tempFile = TempFiles.createFile();
 		TabularData<Solution> data = population.asTabularData();
 		
 		data.saveCSV(tempFile);
-		Assert.assertEquals(population.size() + 1, TestUtils.lineCount(tempFile));
+		Assert.assertLineCount(population.size() + 1, tempFile);
 	}
 	
 	@Test
@@ -202,7 +202,7 @@ public class PopulationTest {
 
 	@Test
 	public void testSaveLoadObjectives() throws IOException {
-		File file = TestUtils.createTempFile();
+		File file = TempFiles.createFile();
 
 		population.saveObjectives(file);
 		Population population2 = Population.loadObjectives(file);
@@ -228,16 +228,16 @@ public class PopulationTest {
 		population.clear();
 		population.addAll(List.of(s1, s2));
 
-		File file = TestUtils.createTempFile();
+		File file = TempFiles.createFile();
 		population.save(file);
 		
 		Population population2 = Population.load(file);
-		TestUtils.assertEquals(population, population2);
+		Assert.assertEquals(population, population2);
 	}
 	
 	@Test
 	public void testReadWhitespace() throws IOException {
-		File file = TestUtils.createTempFile("0   1 \t 2\n\t   3 4 5 \t\n");
+		File file = TempFiles.createFileWithContent("0   1 \t 2\n\t   3 4 5 \t\n");
 		Population population = Population.loadObjectives(file);
 		
 		Assert.assertArrayEquals(new double[] {0.0, 1.0, 2.0}, population.get(0).getObjectives(), Settings.EPS);

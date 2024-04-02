@@ -19,8 +19,8 @@ package org.moeaframework.algorithm;
 
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
@@ -110,8 +110,8 @@ public class ReferenceVectorGuidedPopulationTest {
 		
 		List<List<Solution>> members = population.associateToReferencePoint(population);
 		
-		Assert.assertTrue(members.get(0).contains(s2));
-		Assert.assertTrue(members.get(1).contains(s3));
+		Assert.assertContains(members.get(0), s2);
+		Assert.assertContains(members.get(1), s3);
 	}
 	
 	/**
@@ -134,9 +134,9 @@ public class ReferenceVectorGuidedPopulationTest {
 		population.addAll(solutions);
 		population.truncate();
 		
-		Assert.assertTrue(population.size() == 2);
-		Assert.assertTrue(population.contains(s1));
-		Assert.assertTrue(population.contains(s2) || population.contains(s3));		
+		Assert.assertSize(2, population);
+		Assert.assertContains(population, s1);
+		Assert.any(() -> Assert.assertContains(population, s2), () -> Assert.assertContains(population, s3));		
 	}
 	
 	/**
@@ -159,9 +159,9 @@ public class ReferenceVectorGuidedPopulationTest {
 		population.setScalingFactor(1.0);
 		population.truncate();
 		
-		Assert.assertTrue(population.size() == 2);
-		Assert.assertTrue(population.contains(s2));
-		Assert.assertTrue(population.contains(s3));		
+		Assert.assertSize(2, population);
+		Assert.assertContains(population, s2);
+		Assert.assertContains(population, s3);		
 	}
 	
 	/**
@@ -180,7 +180,7 @@ public class ReferenceVectorGuidedPopulationTest {
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 1.0 }, population.weights.get(0), Settings.EPS);
 		Assert.assertArrayEquals(new double[] { 1.0, 0.0 }, population.weights.get(2), Settings.EPS);
-		Assert.assertTrue(population.weights.get(1)[0] <= population.weights.get(1)[1]);
+		Assert.assertLessThanOrEqual(population.weights.get(1)[0], population.weights.get(1)[1]);
 	}
 
 }

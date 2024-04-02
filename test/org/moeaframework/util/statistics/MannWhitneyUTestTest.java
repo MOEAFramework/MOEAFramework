@@ -17,8 +17,8 @@
  */
 package org.moeaframework.util.statistics;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Settings;

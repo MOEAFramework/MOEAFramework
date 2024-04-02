@@ -17,8 +17,8 @@
  */
 package org.moeaframework.core.operator.grammar;
 
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.AbstractGrammarOperatorTest;

@@ -19,9 +19,9 @@ package org.moeaframework.analysis.tools;
 
 import java.io.File;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.TestUtils;
+import org.moeaframework.Assert;
+import org.moeaframework.TempFiles;
 import org.moeaframework.analysis.io.MetricFileReader;
 import org.moeaframework.core.FrameworkException;
 
@@ -47,8 +47,8 @@ public class ResultFileEvaluatorTest {
 	
 	@Test
 	public void testComplete() throws Exception {
-		File input = TestUtils.createTempFile(COMPLETE);
-		File output = TestUtils.createTempFile();
+		File input = TempFiles.createFileWithContent(COMPLETE);
+		File output = TempFiles.createFile();
 		
 		ResultFileEvaluator.main(new String[] {
 			"--problem", "DTLZ2_2",
@@ -67,8 +67,8 @@ public class ResultFileEvaluatorTest {
 	
 	@Test
 	public void testEmpty() throws Exception {
-		File input = TestUtils.createTempFile(EMPTY);
-		File output = TestUtils.createTempFile();
+		File input = TempFiles.createFileWithContent(EMPTY);
+		File output = TempFiles.createFile();
 		
 		ResultFileEvaluator.main(new String[] {
 			"--problem", "DTLZ2_2",
@@ -83,8 +83,8 @@ public class ResultFileEvaluatorTest {
 	
 	@Test(expected = FrameworkException.class)
 	public void testIncorrectNumberOfObjectives() throws Exception {
-		File input = TestUtils.createTempFile(COMPLETE);
-		File output = TestUtils.createTempFile();
+		File input = TempFiles.createFileWithContent(COMPLETE);
+		File output = TempFiles.createFile();
 		
 		ResultFileEvaluator.main(new String[] {
 			"--problem", "DTLZ2_2",
