@@ -76,7 +76,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	
 	<target name="download-junit">
 		<secure-get src="${junit.url}" dest="lib/junit-${junit.version}.jar" sha1="${junit.sha1}" />
-		<secure-get src="${hamcrest-core.url}" dest="lib/hamcrest-core-${hamcrest-core.version}.jar" sha1="${hamcrest-core.sha1}" />
+		<secure-get src="${hamcrest.url}" dest="lib/hamcrest-${hamcrest.version}.jar" sha1="${hamcrest.sha1}" />
 	</target>
 	
 	<target name="download-jfreesvg">

@@ -19,7 +19,7 @@ in Eclipse.  If you choose to use a different IDE, you might need to install the
 > 
 > **JUnit 4** for running tests.  Due to licensing differences, JUnit is not provided alongside the MOEA Framework and
 > must be downloaded separately.  Visit https://github.com/junit-team/junit4/wiki/Download-and-Install and download
-> `junit.jar` and `hamcrest-core.jar` to the `lib/` folder.
+> `junit.jar` and `hamcrest.jar` to the `lib/` folder.
 
 ### Checklist
 
@@ -41,13 +41,8 @@ If everything looks good, we will approve and merge the changes for you.  Thank 
 ## Versioning
 
 We use [semantic versioning](https://semver.org/) following the pattern `{major}.{minor}`.  Two versions with the
-same `{major}` number are expected to be backwards compatible, for example allowing one to upgrade from `3.0` to
-`3.2` without difficulty.  
-
-### Preview Features
-
-In some instances, especially when working directly from the Git default branch, new code is being actively developed.
-These packages and classes should include the `@preview` tag to indicate they are subject to change.
+same `{major}` number are expected to be backwards compatible, for example allowing one to upgrade from `4.0` to
+`4.2` without difficulty.  
 
 ### Supported Java Versions
 
@@ -73,6 +68,18 @@ All algorithms and operators are expected to be configurable.  This means adding
 as well as using the configuration API.  The configuration API uses reflections to dynamically discover and
 get/set an algorithm's configuration.  The only requirement is adding the `@Property` annotation to each
 setter method.
+
+## Writing Tests
+
+Given our target audience is the scientific community, testing is key for assuring the correctness and accuracy of this
+software.  However, given the stochastic nature of MOEAs, writing reliable unit tests has challenges.  To assist in
+writing tests, we have two constants, `TestThresholds.LOW_PRECISION` and `TestThresholds.HIGH_PRECISION`,
+that standardize the accuracy of tests.  Prefer using `HIGH_PRECISION` whenever possible.
+
+Despite our best efforts, some tests will occasionally fail due to randomness.  For such tests, we encourage adding
+the `@Retryable` attribute, which re-runs the test several times if it fails.  Be sure to also include
+`@RunWith(CIRunner.class)` on the test class.  Tests marked with `@Flaky` fail too frequently for inclusion in
+CI, but can still run manually.
 
 ## Building, Testing, and Packaging
 
