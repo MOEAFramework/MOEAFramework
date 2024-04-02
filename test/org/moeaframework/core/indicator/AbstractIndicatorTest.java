@@ -19,12 +19,12 @@ package org.moeaframework.core.indicator;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Indicator;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.spi.ProblemFactory;
@@ -58,7 +58,8 @@ public abstract class AbstractIndicatorTest<T extends Indicator> {
 	@Test
 	public void testEmptyApproximationSet() {
 		Indicator indicator = createInstance(new MockRealProblem(2), getDefaultReferenceSet());
-		Assert.assertEquals(getWorstValue(), indicator.evaluate(new NondominatedPopulation()), Settings.EPS);
+		Assert.assertEquals(getWorstValue(), indicator.evaluate(new NondominatedPopulation()),
+				TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -70,7 +71,7 @@ public abstract class AbstractIndicatorTest<T extends Indicator> {
 		approximationSet.add(solution);
 
 		Indicator indicator = createInstance(problem, getDefaultReferenceSet());
-		Assert.assertEquals(getWorstValue(), indicator.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(getWorstValue(), indicator.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
 	}
 	
 	/**

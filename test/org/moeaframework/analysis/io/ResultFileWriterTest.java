@@ -31,10 +31,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.analysis.io.ResultFileWriter.ResultFileWriterSettings;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Grammar;
@@ -336,7 +336,7 @@ public class ResultFileWriterTest {
 			ResultEntry entry = reader.next();
 			Assert.assertEquals(1, entry.getPopulation().size());
 			Assert.assertArrayEquals(solution.getObjectives(), entry.getPopulation().get(0).getObjectives(),
-					Settings.EPS);
+					TestThresholds.HIGH_PRECISION);
 			Assert.assertEquals(solution.getVariable(0), entry.getPopulation().get(0).getVariable(0));
 		}
 	}

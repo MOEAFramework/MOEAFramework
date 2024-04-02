@@ -65,8 +65,8 @@ public class DifferentialEvolutionVariationTest extends MeanCentricVariationTest
 		Solution offspring = de.evolve(parents)[0];
 		
 		// the offspring will be centered at s4 and offset in the direction (s2 - s3), resulting in the point (6, 5)
-		Assert.assertEquals(6.0, EncodingUtils.getReal(offspring.getVariable(0)), TestThresholds.VARIATION_EPS);
-		Assert.assertEquals(5.0, EncodingUtils.getReal(offspring.getVariable(1)), TestThresholds.VARIATION_EPS);
+		Assert.assertEquals(6.0, EncodingUtils.getReal(offspring.getVariable(0)), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(5.0, EncodingUtils.getReal(offspring.getVariable(1)), TestThresholds.LOW_PRECISION);
 	}
 
 }

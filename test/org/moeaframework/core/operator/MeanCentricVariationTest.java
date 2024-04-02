@@ -29,7 +29,7 @@ public abstract class MeanCentricVariationTest<T extends Variation> extends Dist
 
 	@Override
 	protected void checkDistribution(Solution[] parents, Solution[] offspring) {
-		Assert.assertArrayEquals(average(parents), average(offspring), TestThresholds.VARIATION_EPS);
+		Assert.assertArrayEquals(average(parents), average(offspring), TestThresholds.LOW_PRECISION);
 	}
 
 }

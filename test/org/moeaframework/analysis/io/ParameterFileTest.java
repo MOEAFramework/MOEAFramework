@@ -23,7 +23,7 @@ import java.io.StringReader;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
-import org.moeaframework.core.Settings;
+import org.moeaframework.TestThresholds;
 
 public class ParameterFileTest {
 
@@ -56,16 +56,16 @@ public class ParameterFileTest {
 		Assert.assertEquals(3, pf.size());
 
 		Assert.assertEquals("entry1", pf.get(0).getName());
-		Assert.assertEquals(0.0, pf.get(0).getLowerBound(), Settings.EPS);
-		Assert.assertEquals(1.0, pf.get(0).getUpperBound(), Settings.EPS);
+		Assert.assertEquals(0.0, pf.get(0).getLowerBound(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, pf.get(0).getUpperBound(), TestThresholds.HIGH_PRECISION);
 
 		Assert.assertEquals("entry2", pf.get(1).getName());
-		Assert.assertEquals(100, pf.get(1).getLowerBound(), Settings.EPS);
-		Assert.assertEquals(10000, pf.get(1).getUpperBound(), Settings.EPS);
+		Assert.assertEquals(100, pf.get(1).getLowerBound(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(10000, pf.get(1).getUpperBound(), TestThresholds.HIGH_PRECISION);
 
 		Assert.assertEquals("entry3", pf.get(2).getName());
-		Assert.assertEquals(0.0, pf.get(2).getLowerBound(), Settings.EPS);
-		Assert.assertEquals(1.0, pf.get(2).getUpperBound(), Settings.EPS);
+		Assert.assertEquals(0.0, pf.get(2).getLowerBound(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, pf.get(2).getUpperBound(), TestThresholds.HIGH_PRECISION);
 	}
 
 	@Test

@@ -37,6 +37,7 @@ import org.moeaframework.Assert;
 import org.moeaframework.Assume;
 import org.moeaframework.CIRunner;
 import org.moeaframework.TempFiles;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
@@ -107,7 +108,7 @@ public class ScriptedProblemTest {
 		variable.setValue(Math.PI / 10);
 		problem.evaluate(solution);
 		
-		Assert.assertEquals(variable.getValue(), solution.getObjective(0), Settings.EPS);
+		Assert.assertEquals(variable.getValue(), solution.getObjective(0), TestThresholds.HIGH_PRECISION);
 	}
 	
 	/**

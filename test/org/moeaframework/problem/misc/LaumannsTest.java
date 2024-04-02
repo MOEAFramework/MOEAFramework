@@ -19,8 +19,8 @@ package org.moeaframework.problem.misc;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Settings;
 import org.moeaframework.problem.ProblemTest;
 
 public class LaumannsTest extends ProblemTest {
@@ -31,15 +31,15 @@ public class LaumannsTest extends ProblemTest {
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 4.0 }, 
 				evaluateAt(problem, 0.0, 0.0).getObjectives(),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 5000.0, 4804.0 }, 
 				evaluateAt(problem, -50.0, -50.0).getObjectives(),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 5000.0, 5204.0 }, 
 				evaluateAt(problem, 50.0, 50.0).getObjectives(),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 	}
 
 }

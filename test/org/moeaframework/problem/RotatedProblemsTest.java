@@ -22,7 +22,6 @@ import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.spi.ProblemFactory;
@@ -145,7 +144,7 @@ public class RotatedProblemsTest {
 			problemA.evaluate(solutionA);
 			problemB.evaluate(solutionB);
 			
-			Assert.assertGreaterThan(solutionA.euclideanDistance(solutionB), Settings.EPS);
+			Assert.assertGreaterThan(solutionA.euclideanDistance(solutionB), TestThresholds.HIGH_PRECISION);
 		}
 	}
 	

@@ -36,14 +36,11 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.moeaframework.core.Population;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.util.io.CommentedLineReader;
 
 public class Assert extends org.junit.Assert {
-	
-	public static FloatingPointError EPSILON = new AbsoluteError(Settings.EPS);
-	
+
 	private Assert() {
 		super();
 	}
@@ -58,11 +55,11 @@ public class Assert extends org.junit.Assert {
 	}
 	
 	public static void assertEquals(RealMatrix expected, RealMatrix actual) {
-		assertEquals(expected, actual, EPSILON);
+		assertEquals(expected, actual, new AbsoluteError(TestThresholds.HIGH_PRECISION));
 	}
 	
 	public static void assertEquals(double expected, double actual) {
-		assertEquals(expected, actual, EPSILON);
+		assertEquals(expected, actual, TestThresholds.HIGH_PRECISION);
 	}
 	
 	public static void assertEquals(double expected, double actual, FloatingPointError epsilon) {
@@ -125,12 +122,12 @@ public class Assert extends org.junit.Assert {
 
 		for (int i = 0; i < expected.getNumberOfObjectives(); i++) {
 			assertEquals("Solutions have different objective values at index " + i + ":",
-					expected.getObjective(i), actual.getObjective(i), TestThresholds.SOLUTION_EPS);
+					expected.getObjective(i), actual.getObjective(i), TestThresholds.LOW_PRECISION);
 		}
 
 		for (int i = 0; i < expected.getNumberOfConstraints(); i++) {
 			assertEquals("Solutions have different constraint values at index " + i + ":",
-					expected.getConstraint(i), actual.getConstraint(i), TestThresholds.SOLUTION_EPS);
+					expected.getConstraint(i), actual.getConstraint(i), TestThresholds.LOW_PRECISION);
 		}
 		
 		// We do not check attributes here because (1) attributes are generally specific to a solution and can differ
@@ -208,7 +205,7 @@ public class Assert extends org.junit.Assert {
 	}
 	
 	public static void assertUniformDistribution(double min, double max, DescriptiveStatistics statistics) {
-		FloatingPointError epsilon = new RelativeError(TestThresholds.STATISTICS_EPS);
+		FloatingPointError epsilon = new RelativeError(0.05);
 		
 		assertEquals((min + max) / 2.0, statistics.getMean(), epsilon);
 		assertEquals(Math.pow(max - min, 2.0) / 12.0, statistics.getVariance(), epsilon);
@@ -220,7 +217,7 @@ public class Assert extends org.junit.Assert {
 
 	// Note: It's important to use the integer version for discrete values to ensure we offset the range by 1.
 	public static void assertUniformDistribution(int min, int max, DescriptiveStatistics statistics) {
-		FloatingPointError epsilon = new RelativeError(TestThresholds.STATISTICS_EPS);
+		FloatingPointError epsilon = new RelativeError(0.05);
 		int n = max - min + 1;
 		int nn = n * n;
 

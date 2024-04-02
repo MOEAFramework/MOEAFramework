@@ -21,6 +21,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.ProblemStub;
 
@@ -92,8 +93,8 @@ public class AdaptiveGridArchiveTest {
 		archive.add(MockSolution.of(problem).withObjectives(0.8, 0.1));
 
 		Assert.assertArrayEquals(new int[] { 0, 3, 1, 0 }, archive.density);
-		Assert.assertArrayEquals(new double[] { 0.0, 0.1 }, archive.minimum, Settings.EPS);
-		Assert.assertArrayEquals(new double[] { 0.8, 1.0 }, archive.maximum, Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 0.0, 0.1 }, archive.minimum, TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 0.8, 1.0 }, archive.maximum, TestThresholds.HIGH_PRECISION);
 	}
 
 	@Test

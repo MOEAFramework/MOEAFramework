@@ -20,9 +20,9 @@ package org.moeaframework.core.fitness;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.core.FitnessEvaluator;
 import org.moeaframework.core.Population;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockSolution;
@@ -41,7 +41,7 @@ public class HypervolumeFitnessEvaluatorTest {
 		Solution solution1 = MockSolution.of().withObjectives(0.5, 0.5);
 		Solution solution2 = MockSolution.of().withObjectives(0.5, 0.5);
 
-		Assert.assertEquals(0.0, fitness.calculateIndicator(solution1, solution2), Settings.EPS);
+		Assert.assertEquals(0.0, fitness.calculateIndicator(solution1, solution2), TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -49,8 +49,8 @@ public class HypervolumeFitnessEvaluatorTest {
 		Solution solution1 = MockSolution.of().withObjectives(0.0, 0.0);
 		Solution solution2 = MockSolution.of().withObjectives(1.0, 1.0);
 
-		Assert.assertEquals(-0.75, fitness.calculateIndicator(solution1, solution2), Settings.EPS);
-		Assert.assertEquals(0.75, fitness.calculateIndicator(solution2, solution1), Settings.EPS);
+		Assert.assertEquals(-0.75, fitness.calculateIndicator(solution1, solution2), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.75, fitness.calculateIndicator(solution2, solution1), TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -58,8 +58,8 @@ public class HypervolumeFitnessEvaluatorTest {
 		Solution solution1 = MockSolution.of().withObjectives(1.0, 0.0);
 		Solution solution2 = MockSolution.of().withObjectives(0.0, 1.0);
 
-		Assert.assertEquals(0.25, fitness.calculateIndicator(solution1, solution2), Settings.EPS);
-		Assert.assertEquals(0.25, fitness.calculateIndicator(solution2, solution1), Settings.EPS);
+		Assert.assertEquals(0.25, fitness.calculateIndicator(solution1, solution2), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.25, fitness.calculateIndicator(solution2, solution1), TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -83,7 +83,7 @@ public class HypervolumeFitnessEvaluatorTest {
 		fitness.evaluate(population);
 		
 		Assert.assertEquals(FitnessEvaluator.getFitness(population.get(0)),
-				FitnessEvaluator.getFitness(population.get(1)), Settings.EPS);
+				FitnessEvaluator.getFitness(population.get(1)), TestThresholds.HIGH_PRECISION);
 	}
 	
 }

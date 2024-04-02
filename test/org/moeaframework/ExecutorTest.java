@@ -26,6 +26,8 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.spi.AlgorithmFactoryTestWrapper;
 import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
 import org.moeaframework.mock.MockMultiTypeProblem;
+import org.moeaframework.util.progress.ProgressEvent;
+import org.moeaframework.util.progress.ProgressListener;
 
 public class ExecutorTest {
 
@@ -151,6 +153,50 @@ public class ExecutorTest {
 			.withProperty("operator", "2x")
 			.withMaxEvaluations(1000)
 			.run();
+	}
+	
+	private static class TestProgressListener implements ProgressListener {
+
+		private int seedCount = 0;
+		
+		private int callCount = 0;
+		
+		private ProgressEvent lastEvent = null;
+		
+		@Override
+		public void progressUpdate(ProgressEvent event) {
+			if (event.isSeedFinished()) {
+				Assert.assertNull(event.getCurrentAlgorithm());
+				Assert.assertTrue(event.getCurrentSeed() >= 0);
+				Assert.assertTrue(event.getCurrentNFE() == 0);
+				seedCount++;
+			} else {
+				Assert.assertNotNull(event.getCurrentAlgorithm());
+				Assert.assertTrue(event.getCurrentSeed() >= 0 && event.getCurrentSeed() <= event.getTotalSeeds());
+				Assert.assertTrue(event.getCurrentNFE() >= 0);
+			}
+			
+			Assert.assertNotNull(event.getExecutor());
+			Assert.assertTrue(event.getElapsedTime() >= 0.0);
+			Assert.assertTrue(event.getRemainingTime() >= 0.0 || Double.isNaN(event.getRemainingTime()));
+			Assert.assertTrue(event.getMaxTime() == -1.0); // Will be negative if not set
+			
+			callCount++;
+			lastEvent = event;
+		}
+		
+		public int getSeedCount() {
+			return seedCount;
+		}
+		
+		public int getCallCount() {
+			return callCount;
+		}
+		
+		public ProgressEvent getLastEvent() {
+			return lastEvent;
+		}
+
 	}
 	
 }

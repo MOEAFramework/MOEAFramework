@@ -23,7 +23,7 @@ import java.util.function.Consumer;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.Settings;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 
@@ -153,7 +153,7 @@ public class EncodingUtilsTest {
 			EncodingUtils.encode(doubleVariable, binaryVariable);
 			EncodingUtils.decode(binaryVariable, doubleVariable);
 
-			Assert.assertEquals(value, doubleVariable.getValue(), Settings.EPS);
+			Assert.assertEquals(value, doubleVariable.getValue(), TestThresholds.HIGH_PRECISION);
 		}
 	}
 	
@@ -264,25 +264,25 @@ public class EncodingUtilsTest {
 		solution.setVariable(2, EncodingUtils.newReal(-1.0, 1.0));
 		
 		EncodingUtils.setReal(solution, new double[] { 0.5, 3.0, 0.0 });
-		Assert.assertArrayEquals(new double[] { 0.5, 3.0, 0.0 }, EncodingUtils.getReal(solution), Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 0.5, 3.0, 0.0 }, EncodingUtils.getReal(solution), TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { 3.0, 0.0 }, EncodingUtils.getReal(solution, 1, 3), Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 3.0, 0.0 }, EncodingUtils.getReal(solution, 1, 3), TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { 3.0 }, EncodingUtils.getReal(solution, 1, 2), Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 3.0 }, EncodingUtils.getReal(solution, 1, 2), TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[0], EncodingUtils.getReal(solution, 1, 1), Settings.EPS);
+		Assert.assertArrayEquals(new double[0], EncodingUtils.getReal(solution, 1, 1), TestThresholds.HIGH_PRECISION);
 		
 		EncodingUtils.setReal(solution, 1, 3, new double[] { 2.0, -1.0 });
 		
-		Assert.assertArrayEquals(new double[] { 0.5, 2.0, -1.0 }, EncodingUtils.getReal(solution), Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 0.5, 2.0, -1.0 }, EncodingUtils.getReal(solution), TestThresholds.HIGH_PRECISION);
 		
 		EncodingUtils.setReal(solution, 2, 3, new double[] { 1.0 });
 		
-		Assert.assertArrayEquals(new double[] { 0.5, 2.0, 1.0 }, EncodingUtils.getReal(solution), Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 0.5, 2.0, 1.0 }, EncodingUtils.getReal(solution), TestThresholds.HIGH_PRECISION);
 		
 		EncodingUtils.setReal(solution, 2, 2, new double[0]);
 		
-		Assert.assertArrayEquals(new double[] { 0.5, 2.0, 1.0 }, EncodingUtils.getReal(solution), Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 0.5, 2.0, 1.0 }, EncodingUtils.getReal(solution), TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test

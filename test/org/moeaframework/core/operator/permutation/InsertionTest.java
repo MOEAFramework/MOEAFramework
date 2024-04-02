@@ -58,7 +58,7 @@ public class InsertionTest extends AbstractPermutationOperatorTest<Insertion> {
 			}
 		}
 
-		Assert.assertEquals((double)count / TestThresholds.SAMPLES, probability, TestThresholds.VARIATION_EPS);
+		Assert.assertEquals((double)count / TestThresholds.SAMPLES, probability, TestThresholds.LOW_PRECISION);
 	}
 
 	/**

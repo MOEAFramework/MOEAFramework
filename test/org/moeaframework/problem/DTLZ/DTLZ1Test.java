@@ -70,7 +70,7 @@ public class DTLZ1Test extends ProblemTest {
 	
 	protected static void assertParetoFrontSolution(Solution solution) {
 		double sum = StatUtils.sum(solution.getObjectives());
-		Assert.assertEquals(0.5, sum, TestThresholds.SOLUTION_EPS);
+		Assert.assertEquals(0.5, sum, TestThresholds.LOW_PRECISION);
 	}
 
 }

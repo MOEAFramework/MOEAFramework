@@ -56,7 +56,7 @@ public class GrammarMutationTest extends AbstractGrammarOperatorTest<GrammarMuta
 			count += check((Grammar)original.getVariable(0), (Grammar)mutated.getVariable(0));
 		}
 
-		Assert.assertEquals((double)count / (5 * TestThresholds.SAMPLES), probability, TestThresholds.VARIATION_EPS);
+		Assert.assertEquals((double)count / (5 * TestThresholds.SAMPLES), probability, TestThresholds.LOW_PRECISION);
 	}
 
 	/**

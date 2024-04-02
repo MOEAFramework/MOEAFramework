@@ -19,8 +19,8 @@ package org.moeaframework.problem.misc;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Settings;
 import org.moeaframework.problem.ProblemTest;
 
 public class Binh3Test extends ProblemTest {
@@ -31,11 +31,11 @@ public class Binh3Test extends ProblemTest {
 		
 		Assert.assertArrayEquals(new double[] { 1e-6-1e6, -1e-6, 1e-12-2.0 }, 
 				evaluateAt(problem, 1e-6, 1e-6).getObjectives(),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 1e6-2e-6, 1e12-2.0 }, 
 				evaluateAt(problem, 1e6, 1e6).getObjectives(),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 	}
 
 }

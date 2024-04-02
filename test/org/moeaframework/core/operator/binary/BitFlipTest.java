@@ -54,7 +54,7 @@ public class BitFlipTest extends AbstractBinaryOperatorTest<BitFlip> {
 			sum += original.hammingDistance(mutated);
 		}
 
-		Assert.assertEquals((sum / TestThresholds.SAMPLES) / 100, probability, TestThresholds.VARIATION_EPS);
+		Assert.assertEquals((sum / TestThresholds.SAMPLES) / 100, probability, TestThresholds.LOW_PRECISION);
 	}
 
 }

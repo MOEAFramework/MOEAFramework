@@ -31,9 +31,9 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
 import org.moeaframework.TempFiles;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
@@ -57,8 +57,8 @@ public class SolveTest {
 		for (int i = 0; i < 3; i++) {
 			RealVariable realVariable = (RealVariable)variables.get(i);
 			
-			Assert.assertEquals(lowerBounds[i], realVariable.getLowerBound(), Settings.EPS);
-			Assert.assertEquals(upperBounds[i], realVariable.getUpperBound(), Settings.EPS);
+			Assert.assertEquals(lowerBounds[i], realVariable.getLowerBound(), TestThresholds.HIGH_PRECISION);
+			Assert.assertEquals(upperBounds[i], realVariable.getUpperBound(), TestThresholds.HIGH_PRECISION);
 		}
 	}
 	
@@ -83,8 +83,8 @@ public class SolveTest {
 		Assert.assertEquals(4, variables.size());
 		
 		RealVariable realVariable = (RealVariable)variables.get(0);
-		Assert.assertEquals(-10.1, realVariable.getLowerBound(), Settings.EPS);
-		Assert.assertEquals(20.9, realVariable.getUpperBound(), Settings.EPS);
+		Assert.assertEquals(-10.1, realVariable.getLowerBound(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(20.9, realVariable.getUpperBound(), TestThresholds.HIGH_PRECISION);
 		
 		BinaryVariable binaryVariable = (BinaryVariable)variables.get(1);
 		Assert.assertEquals(10, binaryVariable.getNumberOfBits());

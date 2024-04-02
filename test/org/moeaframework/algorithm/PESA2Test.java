@@ -88,9 +88,9 @@ public class PESA2Test extends JMetalAlgorithmTest {
 		// 25% of time, pick from grid 1 (containing solutions 1 and 2)
 		// 50% of time, pick both grids, favor grid 2 due to better density
 		// when grid 1 is selected, each solution as 50% chance of selection
-		Assert.assertEquals(0.75, counter.get(solution2) / (2.0*TestThresholds.SAMPLES), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(0.125, counter.get(solution1) / (2.0*TestThresholds.SAMPLES), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(0.125, counter.get(solution3) / (2.0*TestThresholds.SAMPLES), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(0.75, counter.get(solution2) / (2.0*TestThresholds.SAMPLES), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(0.125, counter.get(solution1) / (2.0*TestThresholds.SAMPLES), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(0.125, counter.get(solution3) / (2.0*TestThresholds.SAMPLES), TestThresholds.LOW_PRECISION);
 	}
 	
 	@Test

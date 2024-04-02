@@ -26,7 +26,6 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Population;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.selection.UniformSelection;
 import org.moeaframework.mock.MockSolution;
@@ -74,8 +73,8 @@ public class AdaptiveMultimethodVariationTest {
 		
 		Assert.assertEquals(3, variation.getArity());
 		
-		Assert.assertEquals(3.0/5.0, variation.getOperatorProbability(0), Settings.EPS);
-		Assert.assertEquals(2.0/5.0, variation.getOperatorProbability(1), Settings.EPS);
+		Assert.assertEquals(3.0/5.0, variation.getOperatorProbability(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(2.0/5.0, variation.getOperatorProbability(1), TestThresholds.HIGH_PRECISION);
 		
 		assertActualSelectionProbabilities(variation, 3.0/5.0, 2.0/5.0);
 	}
@@ -91,8 +90,8 @@ public class AdaptiveMultimethodVariationTest {
 			solution.removeAttribute(AdaptiveMultimethodVariation.OPERATOR_ATTRIBUTE);
 		}
 		
-		Assert.assertEquals(0.5, variation.getOperatorProbability(0), Settings.EPS);
-		Assert.assertEquals(0.5, variation.getOperatorProbability(1), Settings.EPS);
+		Assert.assertEquals(0.5, variation.getOperatorProbability(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.5, variation.getOperatorProbability(1), TestThresholds.HIGH_PRECISION);
 		
 		assertActualSelectionProbabilities(variation, 0.5, 0.5);
 	}
@@ -116,7 +115,7 @@ public class AdaptiveMultimethodVariationTest {
 			int count = ((MockVariation)variation.getOperator(i)).getCallCount();
 			
 			Assert.assertEquals(probabilities[i], count / (double)TestThresholds.SAMPLES,
-					TestThresholds.STATISTICS_EPS);
+					TestThresholds.LOW_PRECISION);
 		}
 	}
 	

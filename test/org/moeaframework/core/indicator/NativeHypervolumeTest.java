@@ -22,6 +22,7 @@ import java.io.IOException;
 import org.apache.commons.lang3.SystemUtils;
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
@@ -49,13 +50,13 @@ public class NativeHypervolumeTest {
 		
 		NativeHypervolume.invert(problem, solution);
 		
-		Assert.assertArrayEquals(new double[] { 1.0, 0.0, 0.5 }, solution.getObjectives(), Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 1.0, 0.0, 0.5 }, solution.getObjectives(), TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test
 	public void testInvokeNativeProcess() throws IOException {
 		double value = NativeHypervolume.invokeNativeProcess(getCommand());
-		Assert.assertEquals(0.75, value, Settings.EPS);
+		Assert.assertEquals(0.75, value, TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test(expected = FrameworkException.class)
@@ -69,7 +70,7 @@ public class NativeHypervolumeTest {
 	public void testEvaluate() {
 		try (PropertyScope scope = Settings.createScope().with(Settings.KEY_HYPERVOLUME, getCommand())) {
 			double value = NativeHypervolume.evaluate(new MockRealProblem(2), new NondominatedPopulation());
-			Assert.assertEquals(0.75, value, Settings.EPS);
+			Assert.assertEquals(0.75, value, TestThresholds.HIGH_PRECISION);
 		}
 	}
 	

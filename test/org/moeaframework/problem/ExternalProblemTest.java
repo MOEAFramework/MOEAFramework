@@ -21,8 +21,8 @@ import java.util.function.Function;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.mock.MockExternalProblem;
 
@@ -69,9 +69,9 @@ public class ExternalProblemTest {
 				Solution solution = problem.newSolution();
 				problem.evaluate(solution);
 				
-				Assert.assertEquals(0.2, solution.getObjective(0), Settings.EPS);
-				Assert.assertEquals(0.8, solution.getObjective(1), Settings.EPS);
-				Assert.assertEquals(0.5, solution.getConstraint(0), Settings.EPS);
+				Assert.assertEquals(0.2, solution.getObjective(0), TestThresholds.HIGH_PRECISION);
+				Assert.assertEquals(0.8, solution.getObjective(1), TestThresholds.HIGH_PRECISION);
+				Assert.assertEquals(0.5, solution.getConstraint(0), TestThresholds.HIGH_PRECISION);
 			}
 			
 			Assert.assertEquals(100, problem.getCallCount());

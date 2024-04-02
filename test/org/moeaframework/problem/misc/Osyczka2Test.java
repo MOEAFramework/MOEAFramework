@@ -19,8 +19,8 @@ package org.moeaframework.problem.misc;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Settings;
 import org.moeaframework.problem.ProblemTest;
 
 public class Osyczka2Test extends ProblemTest {
@@ -36,19 +36,19 @@ public class Osyczka2Test extends ProblemTest {
 		
 		Assert.assertArrayEquals(new double[] { -120.0, 2.0 }, 
 				evaluateAt(problem, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0).getObjectives(),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { -2.0, 0.0, 0.0, 0.0, 0.0, 0.0 }, 
 				evaluateAt(problem, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0).getConstraints(),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { -1700.0, 386.0 }, 
 				evaluateAt(problem, 10.0, 10.0, 5.0, 6.0, 5.0, 10.0).getObjectives(),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, -14.0, 0.0, 0.0, -6.0, 0.0 }, 
 				evaluateAt(problem, 10.0, 10.0, 5.0, 6.0, 5.0, 10.0).getConstraints(),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 	}
 
 }

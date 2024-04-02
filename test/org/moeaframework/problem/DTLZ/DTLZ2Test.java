@@ -74,7 +74,7 @@ public class DTLZ2Test extends ProblemTest {
 			sum += Math.pow(solution.getObjective(j), 2.0);
 		}
 
-		Assert.assertEquals(1.0, Math.sqrt(sum), TestThresholds.SOLUTION_EPS);
+		Assert.assertEquals(1.0, Math.sqrt(sum), TestThresholds.LOW_PRECISION);
 	}
 
 }

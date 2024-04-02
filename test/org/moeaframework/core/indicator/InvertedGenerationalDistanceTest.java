@@ -19,10 +19,10 @@ package org.moeaframework.core.indicator;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockSolution;
@@ -48,20 +48,20 @@ public class InvertedGenerationalDistanceTest extends AbstractIndicatorTest<Inve
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
 		
 		approximationSet.add(MockSolution.of(problem).withObjectives(0.0, 1.0));
-		Assert.assertEquals(Math.sqrt(2.0)/2.0, indicator.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(Math.sqrt(2.0)/2.0, indicator.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
 		
 		approximationSet.clear();
 		approximationSet.add(MockSolution.of(problem).withObjectives(1.0, 1.0));
-		Assert.assertEquals(2.0/2.0, indicator.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(2.0/2.0, indicator.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
 		
 		approximationSet.clear();
 		approximationSet.add(MockSolution.of(problem).withObjectives(2.0, 2.0));
-		Assert.assertEquals(2.0*Math.sqrt(5.0)/2.0, indicator.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(2.0*Math.sqrt(5.0)/2.0, indicator.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
 
 		approximationSet.clear();
 		approximationSet.add(MockSolution.of(problem).withObjectives(1.0, 0.0));
 		approximationSet.add(MockSolution.of(problem).withObjectives(0.0, 1.0));
-		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -71,7 +71,7 @@ public class InvertedGenerationalDistanceTest extends AbstractIndicatorTest<Inve
 		NondominatedPopulation approximationSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 		
 		Indicator indicator = createInstance(problem, referenceSet);
-		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
 	}
 
 }

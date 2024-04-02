@@ -19,8 +19,8 @@ package org.moeaframework.algorithm;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProviderNotFoundException;
 import org.moeaframework.mock.MockRealProblem;
@@ -66,12 +66,12 @@ public class RVEATest {
 		RVEA algorithm = new RVEA(problem, 100);
 		
 		TypedProperties properties = algorithm.getConfiguration();
-		Assert.assertEquals(algorithm.getPopulation().getAlpha(), properties.getDouble("alpha"), Settings.EPS);
+		Assert.assertEquals(algorithm.getPopulation().getAlpha(), properties.getDouble("alpha"), TestThresholds.HIGH_PRECISION);
 		
 		properties.setDouble("alpha", 0.5);
 		algorithm.applyConfiguration(properties);
 		
-		Assert.assertEquals(0.5, algorithm.getPopulation().getAlpha(), Settings.EPS);
+		Assert.assertEquals(0.5, algorithm.getPopulation().getAlpha(), TestThresholds.HIGH_PRECISION);
 	}
 
 }

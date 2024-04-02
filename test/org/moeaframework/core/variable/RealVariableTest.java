@@ -48,15 +48,15 @@ public class RealVariableTest {
 
 	@Test
 	public void testGetValue() {
-		Assert.assertEquals(0.5, variable.getValue(), Settings.EPS);
-		Assert.assertEquals(0.0, variable.getLowerBound(), Settings.EPS);
-		Assert.assertEquals(1.0, variable.getUpperBound(), Settings.EPS);
+		Assert.assertEquals(0.5, variable.getValue(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, variable.getLowerBound(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, variable.getUpperBound(), TestThresholds.HIGH_PRECISION);
 	}
 
 	@Test
 	public void testSetValue() {
 		variable.setValue(0.75);
-		Assert.assertEquals(0.75, variable.getValue(), Settings.EPS);
+		Assert.assertEquals(0.75, variable.getValue(), TestThresholds.HIGH_PRECISION);
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class RealVariableTest {
 		Assert.assertEquals(variable, copy);
 
 		copy.setValue(0.75);
-		Assert.assertEquals(0.5, variable.getValue(), Settings.EPS);
+		Assert.assertEquals(0.5, variable.getValue(), TestThresholds.HIGH_PRECISION);
 		Assert.assertNotEquals(variable, copy);
 	}
 
@@ -115,7 +115,7 @@ public class RealVariableTest {
 	public void testEncodeDecode() {
 		RealVariable newVariable = new RealVariable(0.0, 1.0);
 		newVariable.decode(variable.encode());
-		Assert.assertEquals(variable.getValue(), newVariable.getValue(), Settings.EPS);
+		Assert.assertEquals(variable.getValue(), newVariable.getValue(), TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test(expected = NumberFormatException.class)

@@ -23,7 +23,7 @@ import java.io.StringReader;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
-import org.moeaframework.core.Settings;
+import org.moeaframework.TestThresholds;
 
 public class MetricFileReaderTest {
 
@@ -53,16 +53,16 @@ public class MetricFileReaderTest {
 
 	private void validateComplete(MetricFileReader reader) {
 		Assert.assertTrue(reader.hasNext());
-		Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1, 1.0, -1.0, 1E-5 }, reader.next(), Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1, 1.0, -1.0, 1E-5 }, reader.next(), TestThresholds.HIGH_PRECISION);
 		Assert.assertTrue(reader.hasNext());
-		Assert.assertArrayEquals(new double[] { 0, 10, 100, 1000, -10, -100 }, reader.next(), Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 0, 10, 100, 1000, -10, -100 }, reader.next(), TestThresholds.HIGH_PRECISION);
 		Assert.assertFalse(reader.hasNext());
 		Assert.assertFalse(reader.hasNext());
 	}
 
 	private void validateIncomplete(MetricFileReader reader) {
 		Assert.assertTrue(reader.hasNext());
-		Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1, 1.0, -1.0, 1E-5 }, reader.next(), Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1, 1.0, -1.0, 1E-5 }, reader.next(), TestThresholds.HIGH_PRECISION);
 		Assert.assertFalse(reader.hasNext());
 		Assert.assertFalse(reader.hasNext());
 	}

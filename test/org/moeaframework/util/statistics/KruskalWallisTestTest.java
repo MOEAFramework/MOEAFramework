@@ -39,7 +39,7 @@ public class KruskalWallisTestTest {
 		kw.addAll(new double[] { 12, 13, 14, 15, 16, 17 }, 2);
 
 		Assert.assertTrue(kw.test(0.05));
-		Assert.assertEquals(11.56, kw.H(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(11.56, kw.H(), TestThresholds.LOW_PRECISION);
 	}
 
 	/**

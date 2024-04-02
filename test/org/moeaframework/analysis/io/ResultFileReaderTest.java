@@ -26,9 +26,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Grammar;
@@ -442,7 +442,7 @@ public class ResultFileReaderTest {
 		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
 			RealVariable rv = new RealVariable(0.0, 1.0);
 			reader.decode(rv, "0.5");
-			Assert.assertEquals(0.5, rv.getValue(), Settings.EPS);
+			Assert.assertEquals(0.5, rv.getValue(), TestThresholds.HIGH_PRECISION);
 			
 			BinaryVariable bv = new BinaryVariable(5);
 			reader.decode(bv, "00100");

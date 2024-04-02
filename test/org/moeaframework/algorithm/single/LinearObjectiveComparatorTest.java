@@ -33,13 +33,13 @@ public class LinearObjectiveComparatorTest {
 	public void testCalculateFitness() {
 		double[] weights = new double[] { 1.0, 1.0 };
 		
-		Assert.assertEquals(calculate(MockSolution.of().withObjectives(0.0, 1.0), weights), 1.0, TestThresholds.SOLUTION_EPS);
-		Assert.assertEquals(calculate(MockSolution.of().withObjectives(1.0, 0.0), weights), 1.0, TestThresholds.SOLUTION_EPS);
-		Assert.assertEquals(calculate(MockSolution.of().withObjectives(-1.0, 0.0), weights), -1.0, TestThresholds.SOLUTION_EPS);
-		Assert.assertEquals(calculate(MockSolution.of().withObjectives(0.0, -1.0), weights), -1.0, TestThresholds.SOLUTION_EPS);
-		Assert.assertEquals(calculate(MockSolution.of().withObjectives(1.0, 1.0), weights), 2.0, TestThresholds.SOLUTION_EPS);
-		Assert.assertEquals(calculate(MockSolution.of().withObjectives(1.0, -1.0), weights), 0.0, TestThresholds.SOLUTION_EPS);
-		Assert.assertEquals(calculate(MockSolution.of().withObjectives(0.0, 0.0), weights), 0.0, TestThresholds.SOLUTION_EPS);
+		Assert.assertEquals(calculate(MockSolution.of().withObjectives(0.0, 1.0), weights), 1.0, TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(calculate(MockSolution.of().withObjectives(1.0, 0.0), weights), 1.0, TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(calculate(MockSolution.of().withObjectives(-1.0, 0.0), weights), -1.0, TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(calculate(MockSolution.of().withObjectives(0.0, -1.0), weights), -1.0, TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(calculate(MockSolution.of().withObjectives(1.0, 1.0), weights), 2.0, TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(calculate(MockSolution.of().withObjectives(1.0, -1.0), weights), 0.0, TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(calculate(MockSolution.of().withObjectives(0.0, 0.0), weights), 0.0, TestThresholds.LOW_PRECISION);
 	}
 	
 	@Test

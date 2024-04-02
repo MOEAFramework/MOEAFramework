@@ -91,7 +91,7 @@ public class TournamentSelectionTest {
 
 		for (int i = 0; i < 3; i++) {
 			Assert.assertEquals(getPressure(3, 3, i + 1), counts[i] / (double)TestThresholds.SAMPLES,
-					TestThresholds.SELECTION_EPS);
+					TestThresholds.LOW_PRECISION);
 		}
 	}
 
@@ -108,7 +108,7 @@ public class TournamentSelectionTest {
 
 		for (int i = 0; i < 3; i++) {
 			Assert.assertEquals(getPressure(3, 2, i + 1), counts[i] / (double)TestThresholds.SAMPLES,
-					TestThresholds.SELECTION_EPS);
+					TestThresholds.LOW_PRECISION);
 		}
 	}
 
@@ -125,7 +125,7 @@ public class TournamentSelectionTest {
 
 		for (int i = 0; i < 3; i++) {
 			Assert.assertEquals(getPressure(3, 1, i + 1), counts[i] / (double)TestThresholds.SAMPLES,
-					TestThresholds.SELECTION_EPS);
+					TestThresholds.LOW_PRECISION);
 		}
 	}
 
@@ -154,7 +154,7 @@ public class TournamentSelectionTest {
 
 		for (int i = 0; i < populationSize; i++) {
 			Assert.assertEquals(getPressure(populationSize, tournamentSize, i + 1),
-					counts[i] / (double)TestThresholds.SAMPLES, TestThresholds.SELECTION_EPS);
+					counts[i] / (double)TestThresholds.SAMPLES, TestThresholds.LOW_PRECISION);
 		}
 	}
 

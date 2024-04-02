@@ -60,8 +60,8 @@ public class SSXTest extends AbstractSubsetOperatorTest<SSX> {
 			countSwapped(s1, s2, s1copy, s2copy, stats1, stats2);
 		}
 		
-		Assert.assertEquals(0.5, stats1.getMean(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(0.5, stats1.getMean(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(0.5, stats1.getMean(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(0.5, stats1.getMean(), TestThresholds.LOW_PRECISION);
 	}
 	
 	@Test
@@ -96,8 +96,8 @@ public class SSXTest extends AbstractSubsetOperatorTest<SSX> {
 			countSwapped(s1, s2, s1copy, s2copy, stats1, stats2);
 		}
 		
-		Assert.assertEquals(0.5, stats1.getMean(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(0.5, stats1.getMean(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(0.5, stats1.getMean(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(0.5, stats1.getMean(), TestThresholds.LOW_PRECISION);
 	}
 	
 	/**

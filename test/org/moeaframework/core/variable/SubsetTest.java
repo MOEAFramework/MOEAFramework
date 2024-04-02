@@ -259,7 +259,7 @@ public class SubsetTest {
 		}
 		
 		for (int j = 0; j < subset.getL(); j++) {
-			Assert.assertEquals(0.2, valueStats[j].getMean(), TestThresholds.STATISTICS_EPS);
+			Assert.assertEquals(0.2, valueStats[j].getMean(), TestThresholds.LOW_PRECISION);
 		}
 	}
 	

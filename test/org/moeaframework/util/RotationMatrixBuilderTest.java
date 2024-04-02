@@ -23,7 +23,7 @@ import org.apache.commons.math3.util.CombinatoricsUtils;
 import org.junit.Test;
 import org.moeaframework.AbsoluteError;
 import org.moeaframework.Assert;
-import org.moeaframework.core.Settings;
+import org.moeaframework.TestThresholds;
 
 public class RotationMatrixBuilderTest {
 	
@@ -40,7 +40,7 @@ public class RotationMatrixBuilderTest {
 	public void testRotationMatrix(RealMatrix rm) {
 		LUDecomposition lu = new LUDecomposition(rm);
 		
-		Assert.assertEquals(1.0, lu.getDeterminant(), Settings.EPS);
+		Assert.assertEquals(1.0, lu.getDeterminant(), TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(rm.transpose(), lu.getSolver().getInverse(), new AbsoluteError(0.05));
 	}
 	
@@ -53,9 +53,9 @@ public class RotationMatrixBuilderTest {
 		for (int i=0; i<rm.getRowDimension(); i++) {
 			for (int j=0; j<rm.getColumnDimension(); j++) {
 				if (i == j) {
-					Assert.assertEquals(1.0, rm.getEntry(i, j), Settings.EPS);
+					Assert.assertEquals(1.0, rm.getEntry(i, j), TestThresholds.HIGH_PRECISION);
 				} else {
-					Assert.assertEquals(0.0, rm.getEntry(i, j), Settings.EPS);
+					Assert.assertEquals(0.0, rm.getEntry(i, j), TestThresholds.HIGH_PRECISION);
 				}
 			}
 		}

@@ -19,8 +19,8 @@ package org.moeaframework.problem.misc;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Settings;
 import org.moeaframework.problem.ProblemTest;
 
 public class TanakaTest extends ProblemTest {
@@ -36,15 +36,15 @@ public class TanakaTest extends ProblemTest {
 		
 		Assert.assertArrayEquals(new double[] { 0.1, 0.1 }, 
 				evaluateAt(problem, 0.1, 0.1).getObjectives(),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 1.08, 0.0 }, 
 				evaluateAt(problem, 0.1, 0.1).getConstraints(),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { Math.PI, Math.PI }, 
 				evaluateAt(problem, Math.PI, Math.PI).getObjectives(),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 13.456 }, 
 				evaluateAt(problem, Math.PI, Math.PI).getConstraints(),

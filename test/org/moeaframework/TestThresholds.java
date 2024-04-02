@@ -17,6 +17,8 @@
  */
 package org.moeaframework;
 
+import org.moeaframework.core.Settings;
+
 /**
  * Thresholds to use when comparing floating-point values and when sampling statistics.
  */
@@ -30,33 +32,18 @@ public class TestThresholds {
 	}
 
 	/**
-	 * The number of samples or trials to run when collecting statistical data.
+	 * The number of samples or trials to use in testing.
 	 */
 	public static final int SAMPLES = 10000;
 
 	/**
-	 * The floating-point threshold when checking selection statistical results.
+	 * The floating-point threshold for low precision / low fidelity comparisons.  
 	 */
-	public static final double SELECTION_EPS = 0.05;
-
-	/**
-	 * The floating-point threshold when checking variation statistical results.
-	 */
-	public static final double VARIATION_EPS = 0.05;
-
-	/**
-	 * The floating-point threshold when checking statistical results.
-	 */
-	public static final double STATISTICS_EPS = 0.05;
-
-	/**
-	 * The floating-point threshold when comparing solutions.
-	 */
-	public static final double SOLUTION_EPS = 0.05;
+	public static final double LOW_PRECISION = 0.05;
 	
 	/**
-	 * The floating-point threshold when comparing performance indicators.
+	 * The floating-point threshold for high precision / high fidelity comparisons.
 	 */
-	public static final double INDICATOR_EPS = 0.0001;
+	public static final double HIGH_PRECISION = Settings.EPS;
 
 }

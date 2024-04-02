@@ -21,8 +21,8 @@ import java.util.List;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.util.Vector;
@@ -36,7 +36,7 @@ public class ReferenceVectorGuidedPopulationTest {
 				ReferenceVectorGuidedPopulation.cosine(
 						Vector.normalize(new double[] { 2.0, 2.0 }),
 						new double[] { 0.0, 3.0 }),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertEquals(1.0,
 				ReferenceVectorGuidedPopulation.cosine(
@@ -51,7 +51,7 @@ public class ReferenceVectorGuidedPopulationTest {
 				ReferenceVectorGuidedPopulation.acosine(
 						Vector.normalize(new double[] { 2.0, 2.0 }),
 						new double[] { 0.0, 3.0 }),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertEquals(0.0,
 				ReferenceVectorGuidedPopulation.acosine(
@@ -70,8 +70,8 @@ public class ReferenceVectorGuidedPopulationTest {
 		
 		population.calculateIdealPoint();
 		
-		Assert.assertEquals(0.0, population.idealPoint[0], Settings.EPS);
-		Assert.assertEquals(0.5, population.idealPoint[1], Settings.EPS);
+		Assert.assertEquals(0.0, population.idealPoint[0], TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.5, population.idealPoint[1], TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -88,8 +88,8 @@ public class ReferenceVectorGuidedPopulationTest {
 		double[] objectives = (double[])population.get(0).getAttribute(
 				ReferencePointNondominatedSortingPopulation.NORMALIZED_OBJECTIVES);
 		
-		Assert.assertEquals(0.5, objectives[0], Settings.EPS);
-		Assert.assertEquals(0.0, objectives[1], Settings.EPS);
+		Assert.assertEquals(0.5, objectives[0], TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, objectives[1], TestThresholds.HIGH_PRECISION);
 	}
 
 	@Test
@@ -178,8 +178,8 @@ public class ReferenceVectorGuidedPopulationTest {
 
 		population.adapt();
 		
-		Assert.assertArrayEquals(new double[] { 0.0, 1.0 }, population.weights.get(0), Settings.EPS);
-		Assert.assertArrayEquals(new double[] { 1.0, 0.0 }, population.weights.get(2), Settings.EPS);
+		Assert.assertArrayEquals(new double[] { 0.0, 1.0 }, population.weights.get(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 1.0, 0.0 }, population.weights.get(2), TestThresholds.HIGH_PRECISION);
 		Assert.assertLessThanOrEqual(population.weights.get(1)[0], population.weights.get(1)[1]);
 	}
 

@@ -31,7 +31,6 @@ import org.moeaframework.Assume;
 import org.moeaframework.Make;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Initialization;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
@@ -132,8 +131,8 @@ public class ExternalProblemWithCStdioTest {
 			problem.evaluate(solution);
 			
 			//check objectives and constraints
-			Assert.assertArrayEquals(new double[] { i+1, 1e-10/(i+1) }, solution.getObjectives(), Settings.EPS);
-			Assert.assertArrayEquals(new double[] { 1e10*(i+1) }, solution.getConstraints(), Settings.EPS);
+			Assert.assertArrayEquals(new double[] { i+1, 1e-10/(i+1) }, solution.getObjectives(), TestThresholds.HIGH_PRECISION);
+			Assert.assertArrayEquals(new double[] { 1e10*(i+1) }, solution.getConstraints(), TestThresholds.HIGH_PRECISION);
 			
 			//check the debug stream
 			String debugLine = debugReader.readLine();
@@ -144,7 +143,7 @@ public class ExternalProblemWithCStdioTest {
 			
 			for (int j=0; j<2; j++) {
 				Assert.assertEquals(((RealVariable)solution.getVariable(j)).getValue(), 
-						Double.parseDouble(debugTokens[j]), Settings.EPS);
+						Double.parseDouble(debugTokens[j]), TestThresholds.HIGH_PRECISION);
 			}
 			
 			BinaryVariable bv = ((BinaryVariable)solution.getVariable(2));

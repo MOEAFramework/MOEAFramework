@@ -19,6 +19,7 @@ package org.moeaframework.core;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.TestThresholds;
 
 public class ConstraintTest {
 	
@@ -28,109 +29,109 @@ public class ConstraintTest {
 	
 	@Test
 	public void testEqual() {
-		Assert.assertEquals(0.0, Constraint.equal(5.0, 5.0), Settings.EPS);
-		Assert.assertEquals(0.1, Constraint.equal(5.0, 5.1), Settings.EPS);
-		Assert.assertEquals(0.1, Constraint.equal(5.0, 4.9), Settings.EPS);
+		Assert.assertEquals(0.0, Constraint.equal(5.0, 5.0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.1, Constraint.equal(5.0, 5.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.1, Constraint.equal(5.0, 4.9), TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertEquals(0.0, Constraint.equal(5.0, 5.0, 0.1), Settings.EPS);
-		Assert.assertEquals(0.0, Constraint.equal(5.0, 5.1, 0.1), Settings.EPS);
-		Assert.assertEquals(0.0, Constraint.equal(5.0, 4.9, 0.1), Settings.EPS);
-		Assert.assertEquals(0.2, Constraint.equal(5.0, 5.2, 0.1), Settings.EPS);
-		Assert.assertEquals(0.2, Constraint.equal(5.0, 4.8, 0.1), Settings.EPS);
+		Assert.assertEquals(0.0, Constraint.equal(5.0, 5.0, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Constraint.equal(5.0, 5.1, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Constraint.equal(5.0, 4.9, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.2, Constraint.equal(5.0, 5.2, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.2, Constraint.equal(5.0, 4.8, 0.1), TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test
 	public void testNotEqual() {
-		Assert.assertEquals(1.0, Constraint.notEqual(5.0, 5.0), Settings.EPS);
-		Assert.assertEquals(0.0, Constraint.notEqual(5.0, 5.1), Settings.EPS);
-		Assert.assertEquals(0.0, Constraint.notEqual(5.0, 4.9), Settings.EPS);
+		Assert.assertEquals(1.0, Constraint.notEqual(5.0, 5.0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Constraint.notEqual(5.0, 5.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Constraint.notEqual(5.0, 4.9), TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertEquals(1.0, Constraint.notEqual(5.0, 5.0, 0.1), Settings.EPS);
-		Assert.assertEquals(1.0, Constraint.notEqual(5.0, 5.1, 0.1), Settings.EPS);
-		Assert.assertEquals(1.0, Constraint.notEqual(5.0, 4.9, 0.1), Settings.EPS);
-		Assert.assertEquals(0.0, Constraint.notEqual(5.0, 5.2, 0.1), Settings.EPS);
-		Assert.assertEquals(0.0, Constraint.notEqual(5.0, 4.8, 0.1), Settings.EPS);
+		Assert.assertEquals(1.0, Constraint.notEqual(5.0, 5.0, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, Constraint.notEqual(5.0, 5.1, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, Constraint.notEqual(5.0, 4.9, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Constraint.notEqual(5.0, 5.2, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Constraint.notEqual(5.0, 4.8, 0.1), TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test
 	public void testLessThanOrEqual() {
-		Assert.assertEquals(0.0, Constraint.lessThanOrEqual(5.0, 5.0), Settings.EPS);
-		Assert.assertEquals(0.1, Constraint.lessThanOrEqual(5.1, 5.0), Settings.EPS);
-		Assert.assertEquals(0.0, Constraint.lessThanOrEqual(4.9, 5.0), Settings.EPS);
+		Assert.assertEquals(0.0, Constraint.lessThanOrEqual(5.0, 5.0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.1, Constraint.lessThanOrEqual(5.1, 5.0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Constraint.lessThanOrEqual(4.9, 5.0), TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertEquals(0.0, Constraint.lessThanOrEqual(5.0, 5.0, 0.1), Settings.EPS);
-		Assert.assertEquals(0.0, Constraint.lessThanOrEqual(5.1, 5.0, 0.1), Settings.EPS);
-		Assert.assertEquals(0.0, Constraint.lessThanOrEqual(4.9, 5.0, 0.1), Settings.EPS);
-		Assert.assertEquals(0.2, Constraint.lessThanOrEqual(5.2, 5.0, 0.1), Settings.EPS);
-		Assert.assertEquals(0.0, Constraint.lessThanOrEqual(4.8, 5.0, 0.1), Settings.EPS);
+		Assert.assertEquals(0.0, Constraint.lessThanOrEqual(5.0, 5.0, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Constraint.lessThanOrEqual(5.1, 5.0, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Constraint.lessThanOrEqual(4.9, 5.0, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.2, Constraint.lessThanOrEqual(5.2, 5.0, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Constraint.lessThanOrEqual(4.8, 5.0, 0.1), TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test
 	public void testGreaterThanOrEqual() {
-		Assert.assertEquals(0.0, Constraint.greaterThanOrEqual(5.0, 5.0), Settings.EPS);
-		Assert.assertEquals(0.0, Constraint.greaterThanOrEqual(5.1, 5.0), Settings.EPS);
-		Assert.assertEquals(-0.1, Constraint.greaterThanOrEqual(4.9, 5.0), Settings.EPS);
+		Assert.assertEquals(0.0, Constraint.greaterThanOrEqual(5.0, 5.0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Constraint.greaterThanOrEqual(5.1, 5.0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(-0.1, Constraint.greaterThanOrEqual(4.9, 5.0), TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertEquals(0.0, Constraint.greaterThanOrEqual(5.0, 5.0, 0.1), Settings.EPS);
-		Assert.assertEquals(0.0, Constraint.greaterThanOrEqual(5.1, 5.0, 0.1), Settings.EPS);
-		Assert.assertEquals(0.0, Constraint.greaterThanOrEqual(4.9, 5.0, 0.1), Settings.EPS);
-		Assert.assertEquals(0.0, Constraint.greaterThanOrEqual(5.2, 5.0, 0.1), Settings.EPS);
-		Assert.assertEquals(-0.2, Constraint.greaterThanOrEqual(4.8, 5.0, 0.1), Settings.EPS);
+		Assert.assertEquals(0.0, Constraint.greaterThanOrEqual(5.0, 5.0, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Constraint.greaterThanOrEqual(5.1, 5.0, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Constraint.greaterThanOrEqual(4.9, 5.0, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Constraint.greaterThanOrEqual(5.2, 5.0, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(-0.2, Constraint.greaterThanOrEqual(4.8, 5.0, 0.1), TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test
 	public void testLessThan() {
-		Assert.assertEquals(Math.nextUp(0.0), Constraint.lessThan(5.0, 5.0), Settings.EPS);
-		Assert.assertEquals(0.1, Constraint.lessThan(5.1, 5.0), Settings.EPS);
-		Assert.assertEquals(0.0, Constraint.lessThan(4.9, 5.0), Settings.EPS);
+		Assert.assertEquals(Math.nextUp(0.0), Constraint.lessThan(5.0, 5.0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.1, Constraint.lessThan(5.1, 5.0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Constraint.lessThan(4.9, 5.0), TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertEquals(Math.nextUp(0.0), Constraint.lessThan(5.0, 5.0, 0.1), Settings.EPS);
-		Assert.assertEquals(0.1, Constraint.lessThan(5.1, 5.0, 0.1), Settings.EPS);
-		Assert.assertEquals(0.1, Constraint.lessThan(4.9, 5.0, 0.1), Settings.EPS);
-		Assert.assertEquals(0.2, Constraint.lessThan(5.2, 5.0, 0.1), Settings.EPS);
-		Assert.assertEquals(0.0, Constraint.lessThan(4.8, 5.0, 0.1), Settings.EPS);
+		Assert.assertEquals(Math.nextUp(0.0), Constraint.lessThan(5.0, 5.0, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.1, Constraint.lessThan(5.1, 5.0, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.1, Constraint.lessThan(4.9, 5.0, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.2, Constraint.lessThan(5.2, 5.0, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Constraint.lessThan(4.8, 5.0, 0.1), TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test
 	public void testGreaterThan() {
-		Assert.assertEquals(Math.nextDown(0.0), Constraint.greaterThan(5.0, 5.0), Settings.EPS);
-		Assert.assertEquals(0.0, Constraint.greaterThan(5.1, 5.0), Settings.EPS);
-		Assert.assertEquals(-0.1, Constraint.greaterThan(4.9, 5.0), Settings.EPS);
+		Assert.assertEquals(Math.nextDown(0.0), Constraint.greaterThan(5.0, 5.0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Constraint.greaterThan(5.1, 5.0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(-0.1, Constraint.greaterThan(4.9, 5.0), TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertEquals(Math.nextDown(0.0), Constraint.greaterThan(5.0, 5.0, 0.1), Settings.EPS);
-		Assert.assertEquals(-0.1, Constraint.greaterThan(5.1, 5.0, 0.1), Settings.EPS);
-		Assert.assertEquals(-0.1, Constraint.greaterThan(4.9, 5.0, 0.1), Settings.EPS);
-		Assert.assertEquals(0.0, Constraint.greaterThan(5.2, 5.0, 0.1), Settings.EPS);
-		Assert.assertEquals(-0.2, Constraint.greaterThan(4.8, 5.0, 0.1), Settings.EPS);
+		Assert.assertEquals(Math.nextDown(0.0), Constraint.greaterThan(5.0, 5.0, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(-0.1, Constraint.greaterThan(5.1, 5.0, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(-0.1, Constraint.greaterThan(4.9, 5.0, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Constraint.greaterThan(5.2, 5.0, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(-0.2, Constraint.greaterThan(4.8, 5.0, 0.1), TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test
 	public void testBetween() {
-		Assert.assertEquals(0.0, Constraint.between(5.0, 5.0, 5.0), Settings.EPS);
-		Assert.assertEquals(0.0, Constraint.between(4.0, 5.0, 6.0), Settings.EPS);
-		Assert.assertEquals(-0.1, Constraint.between(4.0, 3.9, 6.0), Settings.EPS);
-		Assert.assertEquals(0.1, Constraint.between(4.0, 6.1, 6.0), Settings.EPS);
+		Assert.assertEquals(0.0, Constraint.between(5.0, 5.0, 5.0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Constraint.between(4.0, 5.0, 6.0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(-0.1, Constraint.between(4.0, 3.9, 6.0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.1, Constraint.between(4.0, 6.1, 6.0), TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertEquals(0.0, Constraint.between(5.0, 5.0, 5.0, 0.1), Settings.EPS);
-		Assert.assertEquals(0.0, Constraint.between(4.0, 3.91, 6.0, 0.1), Settings.EPS);
-		Assert.assertEquals(0.0, Constraint.between(4.0, 6.09, 6.0, 0.1), Settings.EPS);
-		Assert.assertEquals(-0.2, Constraint.between(4.0, 3.8, 6.0, 0.1), Settings.EPS);
-		Assert.assertEquals(0.2, Constraint.between(4.0, 6.2, 6.0, 0.1), Settings.EPS);
+		Assert.assertEquals(0.0, Constraint.between(5.0, 5.0, 5.0, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Constraint.between(4.0, 3.91, 6.0, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Constraint.between(4.0, 6.09, 6.0, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(-0.2, Constraint.between(4.0, 3.8, 6.0, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.2, Constraint.between(4.0, 6.2, 6.0, 0.1), TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test
 	public void testOutside() {
-		Assert.assertEquals(Math.nextUp(0.0), Constraint.outside(5.0, 5.0, 5.0), Settings.EPS);
-		Assert.assertEquals(0.5, Constraint.outside(4.0, 4.5, 6.0), Settings.EPS);
-		Assert.assertEquals(-0.5, Constraint.outside(4.0, 5.5, 6.0), Settings.EPS);
-		Assert.assertEquals(0.0, Constraint.outside(4.0, 3.9, 6.0), Settings.EPS);
-		Assert.assertEquals(0.0, Constraint.outside(4.0, 6.1, 6.0), Settings.EPS);
+		Assert.assertEquals(Math.nextUp(0.0), Constraint.outside(5.0, 5.0, 5.0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.5, Constraint.outside(4.0, 4.5, 6.0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(-0.5, Constraint.outside(4.0, 5.5, 6.0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Constraint.outside(4.0, 3.9, 6.0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Constraint.outside(4.0, 6.1, 6.0), TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertEquals(Math.nextUp(0.0), Constraint.outside(5.0, 5.0, 5.0, 0.1), Settings.EPS);
-		Assert.assertEquals(0.09, Constraint.outside(4.0, 3.91, 6.0, 0.1), Settings.EPS);
-		Assert.assertEquals(-0.09, Constraint.outside(4.0, 6.09, 6.0, 0.1), Settings.EPS);
-		Assert.assertEquals(0.0, Constraint.outside(4.0, 3.8, 6.0, 0.1), Settings.EPS);
-		Assert.assertEquals(0.0, Constraint.outside(4.0, 6.2, 6.0, 0.1), Settings.EPS);
+		Assert.assertEquals(Math.nextUp(0.0), Constraint.outside(5.0, 5.0, 5.0, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.09, Constraint.outside(4.0, 3.91, 6.0, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(-0.09, Constraint.outside(4.0, 6.09, 6.0, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Constraint.outside(4.0, 3.8, 6.0, 0.1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Constraint.outside(4.0, 6.2, 6.0, 0.1), TestThresholds.HIGH_PRECISION);
 	}
 
 }

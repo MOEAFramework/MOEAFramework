@@ -21,7 +21,6 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Settings;
 
 public class MannWhitneyUTestTest {
 
@@ -62,7 +61,7 @@ public class MannWhitneyUTestTest {
 		}
 
 		Assert.assertTrue(test.test(0.05));
-		Assert.assertEquals(100, test.lastU, TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(100, test.lastU, TestThresholds.LOW_PRECISION);
 	}
 	
 	/**
@@ -89,7 +88,7 @@ public class MannWhitneyUTestTest {
 				new org.apache.commons.math3.stat.inference.MannWhitneyUTest();
 		double u2 = test2.mannWhitneyU(d1, d2);
 		
-		Assert.assertEquals(100*100 - u2, u1, Settings.EPS);
+		Assert.assertEquals(100*100 - u2, u1, TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test

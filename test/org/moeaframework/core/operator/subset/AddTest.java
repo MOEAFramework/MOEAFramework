@@ -73,7 +73,7 @@ public class AddTest extends AbstractSubsetOperatorTest<Add> {
 		}
 
 		Assert.assertEquals(probability, (double)count / (TestThresholds.SAMPLES - skipped),
-				TestThresholds.VARIATION_EPS);
+				TestThresholds.LOW_PRECISION);
 	}
 
 	/**

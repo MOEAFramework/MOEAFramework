@@ -19,8 +19,8 @@ package org.moeaframework.problem.misc;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Settings;
 import org.moeaframework.problem.ProblemTest;
 
 public class SchafferTest extends ProblemTest {
@@ -36,11 +36,11 @@ public class SchafferTest extends ProblemTest {
 		
 		Assert.assertArrayEquals(new double[] {0.0, 4.0 }, 
 				evaluateAt(problem, 0.0).getObjectives(),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 4.0, 0.0 }, 
 				evaluateAt(problem, 2.0).getObjectives(),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 	}
 
 }

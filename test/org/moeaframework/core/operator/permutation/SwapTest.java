@@ -58,7 +58,7 @@ public class SwapTest extends AbstractPermutationOperatorTest<Swap> {
 			}
 		}
 
-		Assert.assertEquals((double)count / TestThresholds.SAMPLES, probability, TestThresholds.VARIATION_EPS);
+		Assert.assertEquals((double)count / TestThresholds.SAMPLES, probability, TestThresholds.LOW_PRECISION);
 	}
 
 	/**

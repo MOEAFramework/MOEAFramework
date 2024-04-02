@@ -57,7 +57,7 @@ public abstract class ParentCentricVariationTest<T extends Variation> extends Di
 				double[] parent = EncodingUtils.getReal(solution);
 
 				for (int j = 0; j < parent.length; j++) {
-					if (Math.abs(parent[j] - centroid[j]) > TestThresholds.VARIATION_EPS) {
+					if (Math.abs(parent[j] - centroid[j]) > TestThresholds.LOW_PRECISION) {
 						allEqual = false;
 					}
 				}

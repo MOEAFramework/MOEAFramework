@@ -69,7 +69,7 @@ public class ReplaceTest extends AbstractSubsetOperatorTest<Replace> {
 			}
 		}
 
-		Assert.assertEquals(probability, (double)count / TestThresholds.SAMPLES, TestThresholds.VARIATION_EPS);
+		Assert.assertEquals(probability, (double)count / TestThresholds.SAMPLES, TestThresholds.LOW_PRECISION);
 	}
 
 	/**

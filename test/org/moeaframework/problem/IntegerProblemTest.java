@@ -19,8 +19,8 @@ package org.moeaframework.problem;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.single.Rosenbrock;
@@ -64,7 +64,7 @@ public class IntegerProblemTest {
 		
 		Solution solution = algorithm.getResult().get(0);
 		Assert.assertArrayEquals(new int[] { 1, 1 }, EncodingUtils.getInt(solution));
-		Assert.assertEquals(0, solution.getObjective(0), Settings.EPS);
+		Assert.assertEquals(0, solution.getObjective(0), TestThresholds.HIGH_PRECISION);
 	}
 
 }

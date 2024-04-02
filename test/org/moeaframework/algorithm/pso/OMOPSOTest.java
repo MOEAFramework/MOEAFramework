@@ -22,9 +22,9 @@ import org.junit.runner.RunWith;
 import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.algorithm.JMetalAlgorithmTest;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.util.TypedProperties;
@@ -51,25 +51,25 @@ public class OMOPSOTest extends JMetalAlgorithmTest {
 		
 		Assert.assertArrayEquals(algorithm.getArchive().getComparator().getEpsilons().toArray(),
 				algorithm.getConfiguration().getDoubleArray("epsilon"),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 		
 		algorithm.applyConfiguration(TypedProperties.withProperty("epsilon", "0.1"));
 		Assert.assertArrayEquals(new double[] { 0.1 },
 				algorithm.getArchive().getComparator().getEpsilons().toArray(),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 0.1 },
 				algorithm.getConfiguration().getDoubleArray("epsilon"),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 
 		algorithm.applyConfiguration(TypedProperties.withProperty("epsilon", "0.1, 0.2"));
 		Assert.assertArrayEquals(new double[] { 0.1, 0.2 },
 				algorithm.getArchive().getComparator().getEpsilons().toArray(),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 0.1, 0.2 },
 				algorithm.getConfiguration().getDoubleArray("epsilon"),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 	}
 
 }

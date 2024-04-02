@@ -106,10 +106,10 @@ public class PRNGTest {
 			}
 		}
 
-		Assert.assertEquals(N / 2.0, lessThanEqualZero, TestThresholds.STATISTICS_EPS * N / 2.0);
-		Assert.assertEquals(N / 2.0, greaterThanZero, TestThresholds.STATISTICS_EPS * N / 2.0);
-		Assert.assertEquals(N / 4.0, lessThanHalfNegative, TestThresholds.STATISTICS_EPS * N / 4.0);
-		Assert.assertEquals(N / 4.0, greaterThanHalfPositive, TestThresholds.STATISTICS_EPS * N / 4.0);
+		Assert.assertEquals(N / 2.0, lessThanEqualZero, TestThresholds.LOW_PRECISION * N / 2.0);
+		Assert.assertEquals(N / 2.0, greaterThanZero, TestThresholds.LOW_PRECISION * N / 2.0);
+		Assert.assertEquals(N / 4.0, lessThanHalfNegative, TestThresholds.LOW_PRECISION * N / 4.0);
+		Assert.assertEquals(N / 4.0, greaterThanHalfPositive, TestThresholds.LOW_PRECISION * N / 4.0);
 	}
 
 	@Test
@@ -346,10 +346,10 @@ public class PRNGTest {
 	 * @param statistics the captures statistics of a sampled distribution
 	 */
 	private void testGaussianDistribution(double mu, double sigma, DescriptiveStatistics statistics) {
-		Assert.assertEquals(mu, statistics.getMean(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(sigma * sigma, statistics.getVariance(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(0.0, statistics.getSkewness(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(0.0, statistics.getKurtosis(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(mu, statistics.getMean(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(sigma * sigma, statistics.getVariance(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(0.0, statistics.getSkewness(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(0.0, statistics.getKurtosis(), TestThresholds.LOW_PRECISION);
 	}
 
 	/**

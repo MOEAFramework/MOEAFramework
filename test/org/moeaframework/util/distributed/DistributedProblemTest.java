@@ -21,11 +21,11 @@ import java.util.concurrent.Executors;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.mock.MockConstraintProblem;
 import org.moeaframework.mock.MockRealProblem;
@@ -120,8 +120,8 @@ public class DistributedProblemTest {
 		double bestSingle = getResultFromStochasticRun(1);
 		double bestQuad = getResultFromStochasticRun(4);
 		double bestSixteen = getResultFromStochasticRun(16);
-		Assert.assertEquals(bestSingle, bestQuad, Settings.EPS);
-		Assert.assertEquals(bestQuad, bestSixteen, Settings.EPS);
+		Assert.assertEquals(bestSingle, bestQuad, TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(bestQuad, bestSixteen, TestThresholds.HIGH_PRECISION);
 	}
 	
 	private double getResultFromStochasticRun(int numThreads) {

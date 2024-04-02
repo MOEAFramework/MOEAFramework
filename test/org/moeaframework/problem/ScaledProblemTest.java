@@ -22,9 +22,9 @@ import java.io.IOException;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 
@@ -52,7 +52,7 @@ public class ScaledProblemTest {
 		problem.evaluate(solution);
 		scaledProblem.evaluate(scaledSolution);
 		
-		Assert.assertArrayEquals(solution.getObjectives(), scaledSolution.getObjectives(), Settings.EPS);
+		Assert.assertArrayEquals(solution.getObjectives(), scaledSolution.getObjectives(), TestThresholds.HIGH_PRECISION);
 	}
 
 }

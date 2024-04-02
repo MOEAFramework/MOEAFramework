@@ -27,7 +27,6 @@ import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.CompoundVariation;
@@ -134,25 +133,25 @@ public class EpsilonMOEATest {
 		
 		Assert.assertArrayEquals(algorithm.getArchive().getComparator().getEpsilons().toArray(),
 				algorithm.getConfiguration().getDoubleArray("epsilon"),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 		
 		algorithm.applyConfiguration(TypedProperties.withProperty("epsilon", "0.1"));
 		Assert.assertArrayEquals(new double[] { 0.1 },
 				algorithm.getArchive().getComparator().getEpsilons().toArray(),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 0.1 },
 				algorithm.getConfiguration().getDoubleArray("epsilon"),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 
 		algorithm.applyConfiguration(TypedProperties.withProperty("epsilon", "0.1, 0.2"));
 		Assert.assertArrayEquals(new double[] { 0.1, 0.2 },
 				algorithm.getArchive().getComparator().getEpsilons().toArray(),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 0.1, 0.2 },
 				algorithm.getConfiguration().getDoubleArray("epsilon"),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 	}
 
 }

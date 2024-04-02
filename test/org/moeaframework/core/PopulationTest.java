@@ -29,8 +29,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
 import org.moeaframework.TempFiles;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Grammar;
@@ -166,7 +166,7 @@ public class PopulationTest {
 		});
 
 		Assert.assertSize(1, population);
-		Assert.assertEquals(1.0, population.get(0).getObjective(0), Settings.EPS);
+		Assert.assertEquals(1.0, population.get(0).getObjective(0), TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -211,7 +211,7 @@ public class PopulationTest {
 
 		for (int i = 0; i < population.size(); i++) {
 			Assert.assertArrayEquals(population.get(i).getObjectives(), population2.get(i).getObjectives(),
-					TestThresholds.SOLUTION_EPS);
+					TestThresholds.LOW_PRECISION);
 		}
 	}
 
@@ -240,8 +240,8 @@ public class PopulationTest {
 		File file = TempFiles.createFileWithContent("0   1 \t 2\n\t   3 4 5 \t\n");
 		Population population = Population.loadObjectives(file);
 		
-		Assert.assertArrayEquals(new double[] {0.0, 1.0, 2.0}, population.get(0).getObjectives(), Settings.EPS);
-		Assert.assertArrayEquals(new double[] {3.0, 4.0, 5.0}, population.get(1).getObjectives(), Settings.EPS);
+		Assert.assertArrayEquals(new double[] {0.0, 1.0, 2.0}, population.get(0).getObjectives(), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] {3.0, 4.0, 5.0}, population.get(1).getObjectives(), TestThresholds.HIGH_PRECISION);
 	}
 
 }

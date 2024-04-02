@@ -19,7 +19,7 @@ package org.moeaframework.problem.single;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.Settings;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.ProblemTest;
 
@@ -29,7 +29,7 @@ public class AckleyTest extends ProblemTest {
 	public void test() {		
 		Ackley problem = new Ackley();
 		
-		Assert.assertEquals(0.0, MockSolution.of(problem).at(0.0, 0.0).evaluate().getObjective(0), Settings.EPS);
+		Assert.assertEquals(0.0, MockSolution.of(problem).at(0.0, 0.0).evaluate().getObjective(0), TestThresholds.HIGH_PRECISION);
 		Assert.assertGreaterThan(MockSolution.of(problem).at(0.1, 0.1).evaluate().getObjective(0), 0.0);
 		Assert.assertGreaterThan(MockSolution.of(problem).at(-0.1, -0.1).evaluate().getObjective(0), 0.0);
 	}

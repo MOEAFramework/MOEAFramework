@@ -23,6 +23,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.mock.MockSolution;
 
 public class NondominatedSortingTest {
@@ -72,9 +73,9 @@ public class NondominatedSortingTest {
 		Assert.assertEquals(0, NondominatedSorting.getRank(solution1));
 		Assert.assertEquals(0, NondominatedSorting.getRank(solution2));
 		Assert.assertEquals(0, NondominatedSorting.getRank(solution3));
-		Assert.assertEquals(Double.POSITIVE_INFINITY, NondominatedSorting.getCrowding(solution1), Settings.EPS);
-		Assert.assertEquals(2.0, NondominatedSorting.getCrowding(solution2), Settings.EPS);
-		Assert.assertEquals(Double.POSITIVE_INFINITY, NondominatedSorting.getCrowding(solution3), Settings.EPS);
+		Assert.assertEquals(Double.POSITIVE_INFINITY, NondominatedSorting.getCrowding(solution1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(2.0, NondominatedSorting.getCrowding(solution2), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(Double.POSITIVE_INFINITY, NondominatedSorting.getCrowding(solution3), TestThresholds.HIGH_PRECISION);
 	}
 
 	@Test
@@ -93,7 +94,7 @@ public class NondominatedSortingTest {
 		Assert.assertEquals(0, NondominatedSorting.getRank(solution3));
 		
 		Assert.assertTrue(Double.isInfinite(NondominatedSorting.getCrowding(solution1)));
-		Assert.assertEquals(0.0, NondominatedSorting.getCrowding(solution3), Settings.EPS);
+		Assert.assertEquals(0.0, NondominatedSorting.getCrowding(solution3), TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test

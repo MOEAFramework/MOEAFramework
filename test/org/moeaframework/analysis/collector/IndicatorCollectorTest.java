@@ -18,16 +18,16 @@
 package org.moeaframework.analysis.collector;
 
 import org.moeaframework.Assert;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.Settings;
 
 public class IndicatorCollectorTest extends AbstractCollectorTest<IndicatorCollector> {
 	
 	@Override
 	public void validate(Observation observation) {
-		Assert.assertEquals(1.0, IndicatorCollector.getIndicatorValue(observation, MockIndicator.class), Settings.EPS);
+		Assert.assertEquals(1.0, IndicatorCollector.getIndicatorValue(observation, MockIndicator.class), TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Override

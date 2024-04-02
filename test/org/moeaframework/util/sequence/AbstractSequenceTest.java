@@ -112,12 +112,12 @@ public abstract class AbstractSequenceTest<T extends Sequence> {
 	 * @param statistics the collected statistics
 	 */
 	public void testUniformDistribution(double min, double max, DescriptiveStatistics statistics) {
-		Assert.assertEquals((min + max) / 2.0, statistics.getMean(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(Math.pow(max - min, 2.0) / 12.0, statistics.getVariance(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(0.0, statistics.getSkewness(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(-6.0 / 5.0, statistics.getKurtosis(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(min, statistics.getMin(), TestThresholds.STATISTICS_EPS);
-		Assert.assertEquals(max, statistics.getMax(), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals((min + max) / 2.0, statistics.getMean(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(Math.pow(max - min, 2.0) / 12.0, statistics.getVariance(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(0.0, statistics.getSkewness(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(-6.0 / 5.0, statistics.getKurtosis(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(min, statistics.getMin(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(max, statistics.getMax(), TestThresholds.LOW_PRECISION);
 	}
 
 }

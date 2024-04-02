@@ -71,7 +71,7 @@ public class HUXTest extends AbstractBinaryOperatorTest<HUX> {
 			sum += (double)changedBits1 / differingBits;
 		}
 
-		Assert.assertEquals(sum / TestThresholds.SAMPLES, 0.5, TestThresholds.VARIATION_EPS);
+		Assert.assertEquals(sum / TestThresholds.SAMPLES, 0.5, TestThresholds.LOW_PRECISION);
 	}
 
 }

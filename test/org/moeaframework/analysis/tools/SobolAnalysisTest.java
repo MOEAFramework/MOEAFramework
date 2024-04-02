@@ -28,8 +28,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.math3.analysis.MultivariateFunction;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
 import org.moeaframework.TempFiles;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.util.sequence.Saltelli;
 
 public class SobolAnalysisTest {
@@ -209,7 +209,7 @@ public class SobolAnalysisTest {
 	 * @throws IOException if an I/O error occurred
 	 */
 	protected void assertEntryEquals(File file, String key, int skip, double expected) throws IOException {
-		Assert.assertEquals(expected, getEntryValue(file, key, skip), TestThresholds.STATISTICS_EPS);
+		Assert.assertEquals(expected, getEntryValue(file, key, skip), TestThresholds.LOW_PRECISION);
 	}
 	
 	/**
@@ -222,7 +222,7 @@ public class SobolAnalysisTest {
 	 * @throws IOException if an I/O error occurred
 	 */
 	protected void assertEntryNotEquals(File file, String key, int skip, double expected) throws IOException {
-		Assert.assertTrue(Math.abs(expected - getEntryValue(file, key, skip)) > TestThresholds.STATISTICS_EPS);
+		Assert.assertTrue(Math.abs(expected - getEntryValue(file, key, skip)) > TestThresholds.LOW_PRECISION);
 	}
 	
 	/**

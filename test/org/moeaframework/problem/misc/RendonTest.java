@@ -19,8 +19,8 @@ package org.moeaframework.problem.misc;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Settings;
 import org.moeaframework.problem.ProblemTest;
 
 public class RendonTest extends ProblemTest {
@@ -31,15 +31,15 @@ public class RendonTest extends ProblemTest {
 		
 		Assert.assertArrayEquals(new double[] { 1.0, 1.0 }, 
 				evaluateAt(problem, 0.0, 0.0).getObjectives(),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 1.0/19.0, 37.0 }, 
 				evaluateAt(problem, -3.0, -3.0).getObjectives(),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 1.0/19.0, 37.0 }, 
 				evaluateAt(problem, 3.0, 3.0).getObjectives(),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 	}
 
 }

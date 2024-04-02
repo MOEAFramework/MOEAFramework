@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.Settings;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
@@ -33,32 +33,32 @@ public class ReferencePointNondominatedSortingPopulationTest {
 		Assert.assertEquals(0.0,
 				ReferencePointNondominatedSortingPopulation.pointLineDistance(
 						new double[] { 0.5, 0.5 }, new double[] { 0.5, 0.5 }),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertEquals(Math.sqrt(2.0)/2.0,
 				ReferencePointNondominatedSortingPopulation.pointLineDistance(
 						new double[] { 0.5, 0.5 }, new double[] { 0.0, 1.0 }),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertEquals(Math.sqrt(2.0)/2.0,
 				ReferencePointNondominatedSortingPopulation.pointLineDistance(
 						new double[] { 0.5, 0.5 }, new double[] { 1.0, 0.0 }),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertEquals(0.0,
 				ReferencePointNondominatedSortingPopulation.pointLineDistance(
 						new double[] { 1.0, 1.0 }, new double[] { 0.5, 0.5 }),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertEquals(0.0,
 				ReferencePointNondominatedSortingPopulation.pointLineDistance(
 						new double[] { 1.0, 1.0, 1.0 }, new double[] { 0.5, 0.5, 0.5 }),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertEquals(Math.sqrt(2.0),
 				ReferencePointNondominatedSortingPopulation.pointLineDistance(
 						new double[] { 0.0, 0.0, 1.0 }, new double[] { 1.0, 1.0, 1.0 }),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -95,8 +95,8 @@ public class ReferencePointNondominatedSortingPopulationTest {
 		
 		population.updateIdealPoint();
 		
-		Assert.assertEquals(0.0, population.idealPoint[0], Settings.EPS);
-		Assert.assertEquals(0.5, population.idealPoint[1], Settings.EPS);
+		Assert.assertEquals(0.0, population.idealPoint[0], TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.5, population.idealPoint[1], TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -113,8 +113,8 @@ public class ReferencePointNondominatedSortingPopulationTest {
 		double[] objectives = (double[])population.get(0).getAttribute(
 				ReferencePointNondominatedSortingPopulation.NORMALIZED_OBJECTIVES);
 		
-		Assert.assertEquals(0.5, objectives[0], Settings.EPS);
-		Assert.assertEquals(0.0, objectives[1], Settings.EPS);
+		Assert.assertEquals(0.5, objectives[0], TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, objectives[1], TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -134,8 +134,8 @@ public class ReferencePointNondominatedSortingPopulationTest {
 		double[] objectives = (double[])population.get(0).getAttribute(
 				ReferencePointNondominatedSortingPopulation.NORMALIZED_OBJECTIVES);
 		
-		Assert.assertEquals(1.0, objectives[0], Settings.EPS);
-		Assert.assertEquals(0.0, objectives[1], Settings.EPS);
+		Assert.assertEquals(1.0, objectives[0], TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, objectives[1], TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -170,8 +170,8 @@ public class ReferencePointNondominatedSortingPopulationTest {
 		// the points are (0.0, 0.5) and (0.5, 0.0) after translation
 		double[] intercepts = population.calculateIntercepts();
 		
-		Assert.assertEquals(0.5, intercepts[0], Settings.EPS);
-		Assert.assertEquals(0.5, intercepts[1], Settings.EPS);
+		Assert.assertEquals(0.5, intercepts[0], TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.5, intercepts[1], TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test

@@ -63,7 +63,7 @@ public class GrammarCrossoverTest extends AbstractGrammarOperatorTest<GrammarCro
 		}
 
 		Assert.assertEquals((double)count / TestThresholds.SAMPLES,
-				probability, TestThresholds.VARIATION_EPS);
+				probability, TestThresholds.LOW_PRECISION);
 	}
 
 	/**

@@ -19,7 +19,7 @@ package org.moeaframework.problem.single;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.Settings;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.ProblemTest;
 
@@ -29,11 +29,11 @@ public class SphereTest extends ProblemTest {
 	public void test() {		
 		Sphere problem = new Sphere();
 		
-		Assert.assertEquals(0.0, MockSolution.of(problem).at(0.0, 0.0).evaluate().getObjective(0), Settings.EPS);
-		Assert.assertEquals(2.0, MockSolution.of(problem).at(1.0, 1.0).evaluate().getObjective(0), Settings.EPS);
-		Assert.assertEquals(2.0, MockSolution.of(problem).at(-1.0, -1.0).evaluate().getObjective(0), Settings.EPS);
-		Assert.assertEquals(8.0, MockSolution.of(problem).at(2.0, 2.0).evaluate().getObjective(0), Settings.EPS);
-		Assert.assertEquals(8.0, MockSolution.of(problem).at(-2.0, -2.0).evaluate().getObjective(0), Settings.EPS);
+		Assert.assertEquals(0.0, MockSolution.of(problem).at(0.0, 0.0).evaluate().getObjective(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(2.0, MockSolution.of(problem).at(1.0, 1.0).evaluate().getObjective(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(2.0, MockSolution.of(problem).at(-1.0, -1.0).evaluate().getObjective(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(8.0, MockSolution.of(problem).at(2.0, 2.0).evaluate().getObjective(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(8.0, MockSolution.of(problem).at(-2.0, -2.0).evaluate().getObjective(0), TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test

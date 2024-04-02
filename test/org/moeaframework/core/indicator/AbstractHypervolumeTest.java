@@ -19,6 +19,7 @@ package org.moeaframework.core.indicator;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
@@ -89,32 +90,32 @@ public abstract class AbstractHypervolumeTest<T extends Indicator> extends Abstr
 	private void testDefaultBounds(Indicator hypervolume) {
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
 		
-		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
 		
 		approximationSet.add(MockSolution.of().withObjectives(0.5, 0.5));
-		Assert.assertEquals(0.25, hypervolume.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(0.25, hypervolume.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
 		
 		approximationSet.clear();
 		approximationSet.add(MockSolution.of().withObjectives(0.0, 0.0));
-		Assert.assertEquals(1.0, hypervolume.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(1.0, hypervolume.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
 		
 		approximationSet.clear();
 		approximationSet.add(MockSolution.of().withObjectives(1.0, 1.0));
-		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
 		
 		approximationSet.clear();
 		approximationSet.add(MockSolution.of().withObjectives(2.0, 2.0));
-		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
 		
 		approximationSet.clear();
 		approximationSet.add(MockSolution.of().withObjectives(-0.5, -0.5));
 		Assert.assertEquals(includesBetterSolutions() ? 2.25 : 1.0, hypervolume.evaluate(approximationSet),
-				Settings.EPS);
+				TestThresholds.HIGH_PRECISION);
 		
 		approximationSet.clear();
 		approximationSet.add(MockSolution.of().withObjectives(0.5, 0.0));
 		approximationSet.add(MockSolution.of().withObjectives(0.0, 0.5));
-		Assert.assertEquals(0.75, hypervolume.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(0.75, hypervolume.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
 	}
 	
 	/**
@@ -123,23 +124,23 @@ public abstract class AbstractHypervolumeTest<T extends Indicator> extends Abstr
 	private void testExpandedBounds(Indicator hypervolume) {
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
 		
-		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
 		
 		// target value is 1.5^2 / 2^2
 		approximationSet.add(MockSolution.of().withObjectives(0.5, 0.5));
-		Assert.assertEquals(0.5625, hypervolume.evaluate(approximationSet),Settings.EPS);
+		Assert.assertEquals(0.5625, hypervolume.evaluate(approximationSet),TestThresholds.HIGH_PRECISION);
 		
 		approximationSet.clear();
 		approximationSet.add(MockSolution.of().withObjectives(0.0, 0.0));
-		Assert.assertEquals(1.0, hypervolume.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(1.0, hypervolume.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
 		
 		approximationSet.clear();
 		approximationSet.add(MockSolution.of().withObjectives(1.0, 1.0));
-		Assert.assertEquals(0.25, hypervolume.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(0.25, hypervolume.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
 		
 		approximationSet.clear();
 		approximationSet.add(MockSolution.of().withObjectives(2.0, 2.0));
-		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), Settings.EPS);
+		Assert.assertEquals(0.0, hypervolume.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
 	}
 	
 	private void testWellKnownSet(String problemName, double expectedHypervolume) {

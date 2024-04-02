@@ -21,7 +21,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.Settings;
+import org.moeaframework.TestThresholds;
 
 public class OrdinalStatisticalTestTest {
 
@@ -78,7 +78,7 @@ public class OrdinalStatisticalTestTest {
 	public void checkRank(double value, double rank) {
 		for (RankedObservation observation : test.data) {
 			if (observation.getValue() == value) {
-				Assert.assertEquals(rank, observation.getRank(), Settings.EPS);
+				Assert.assertEquals(rank, observation.getRank(), TestThresholds.HIGH_PRECISION);
 			}
 		}
 	}
