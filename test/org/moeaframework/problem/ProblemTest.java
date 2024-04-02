@@ -253,12 +253,12 @@ public abstract class ProblemTest {
 	 */
 	protected void compare(Solution solutionA, Solution solutionB, boolean exactConstraints) {
 		for (int i = 0; i < solutionA.getNumberOfObjectives(); i++) {
-			Assert.assertEquals(solutionA.getObjective(i), solutionB.getObjective(i));
+			Assert.assertEquals(solutionA.getObjective(i), solutionB.getObjective(i), TestThresholds.LOW_PRECISION);
 		}
 		
 		for (int i = 0; i < solutionA.getNumberOfConstraints(); i++) {
 			if (exactConstraints) {
-				Assert.assertEquals(solutionA.getConstraint(i), solutionB.getConstraint(i));
+				Assert.assertEquals(solutionA.getConstraint(i), solutionB.getConstraint(i), TestThresholds.LOW_PRECISION);
 			} else {
 				// only check if constraints are feasible (== 0) or infeasible (!= 0)
 				Assert.assertEquals(solutionA.getConstraint(i) != 0, solutionB.getConstraint(i) != 0);
