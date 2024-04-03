@@ -199,9 +199,8 @@ Problem | # of Vars | # of Objs | # of Constrs | Type
 
 ### BBOB-2016
 
-Contains the 55 bi-objective problems as part of the "bbob-biobj" test suite along with the extended "bbob-biobj-ext"
-problems from the BBOB workshop hosted at GECCO 2016 [^finck15].  These bi-objective problems are formed by combining
-two single-objective functions.
+Contains the 55 bi-objective problems as part of the "bbob-biobj" test suite from the BBOB workshop hosted at GECCO
+2016 [^finck15].  These bi-objective problems are formed by combining two single-objective functions.
 
 The easiest way to construct a BBOB 2016 problem instance is from its name.  Each single-objective function is defined
 by its (1) test function number, (2) instance number, and (3) dimension, given as:
@@ -219,6 +218,8 @@ Here's an example:
 ```java
 Problem problem = ProblemFactory.getInstance().getProblem("bbob-biobj(bbob_f1_i2_d5,bbob_f21_i2_d5)");
 ```
+
+For more details on the specific problem instances, see http://numbbo.github.io/coco-doc/bbob-biobj/functions/.
 
 ## Individual Problems
 
@@ -261,7 +262,8 @@ objectives, the objective values are negated.
 
 ## Problem Wrappers
 
-These wrappers add to or modify existing problems:
+Problem wrappers modify or add some extra functionality to existing problems, typically in an effort to make the
+problem more challenging.
 
 ### Scaled Problems
 
@@ -293,7 +295,8 @@ Problem problem = new RotatedProblem(new DTLZ2(2), builder.create());
 
 ### Timings
 
-The `TimingProblem` wrapper is used to measure the total time spent performing function evaluations:
+The `TimingProblem` wrapper is used to measure the total time spent performing function evaluations.  This can
+capture up to a nanoseconds resolution, as long as the system supports that level of accuracy.
 
 <!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [74:76] -->
 
