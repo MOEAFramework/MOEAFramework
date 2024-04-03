@@ -211,7 +211,7 @@ bbob_f<val>_i<val>_d<val>
 ```
 
 For example, `bbob_f1_i2_d5` would use the function `1` (Sphere), instance `2`, and `5` decision variables.  Then,
-to construct the two-objective version, we simply combined two of these single-objective functions with a comma.
+to construct the two-objective version, we simply combine two of these single-objective functions with a comma.
 Here's an example:
 
 <!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [55:55] -->
@@ -296,9 +296,7 @@ Problem problem = new RotatedProblem(new DTLZ2(2), builder.create());
 
 The `TimingProblem` wrapper is used to measure the total time spent performing function evaluations:
 
-.
 <!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [74:76] -->
-
 
 ```java
 TimingProblem problem = new TimingProblem(new DTLZ2(2));
