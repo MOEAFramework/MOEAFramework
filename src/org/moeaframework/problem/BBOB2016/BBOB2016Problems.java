@@ -180,7 +180,7 @@ public class BBOB2016Problems extends ProblemProvider {
 	
 				BBOBFunction problem = new Rosenbrock(dimension);
 				problem = new TransformVariablesShift(problem, minusOne);
-				problem = new TransformVariablesScale(problem, Math.max(1.0, Math.sqrt(dimension / 8.0)));
+				problem = new TransformVariablesScale(problem, Math.max(1.0, Math.sqrt(dimension) / 8.0));
 				problem = new TransformVariablesShift(problem, xopt);
 				problem = new TransformObjectiveShift(problem, fopt);
 				yield problem;
