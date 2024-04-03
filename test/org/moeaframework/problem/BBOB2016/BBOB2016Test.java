@@ -118,7 +118,18 @@ public class BBOB2016Test {
 				moeaProblem.evaluate(solution);
 				cocoProblem.evaluate(cocoSolution);
 
-				Assert.assertEquals(solution, cocoSolution);
+				try {
+					Assert.assertEquals(solution, cocoSolution);
+				} catch (AssertionError e) {
+					System.out.println("  > Variables: " + Arrays.toString(EncodingUtils.getReal(solution)) + " / " +
+							Arrays.toString(EncodingUtils.getReal(cocoSolution)));
+					System.out.println("  > Objectives: " + Arrays.toString(solution.getObjectives()) + " / " +
+							Arrays.toString(cocoSolution.getObjectives()));
+					System.out.println("  > Constraints: " + Arrays.toString(solution.getConstraints()) + " / " +
+							Arrays.toString(cocoSolution.getConstraints()));
+					
+					throw e;
+				}
 			}
 		}
 
