@@ -37,6 +37,7 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.io.CommentedLineReader;
 
 public class Assert extends org.junit.Assert {
@@ -103,6 +104,26 @@ public class Assert extends org.junit.Assert {
 		
 		assertEquals("The actual population contains solutions not found in the expected population:",
 				actual.size(), actualMatches.cardinality());
+	}
+	
+	public static void assertNoNaN(Solution solution) {
+		for (int i = 0; i < solution.getNumberOfVariables(); i++) {
+			if (solution.getVariable(i) instanceof RealVariable realVariable && Double.isNaN(realVariable.getValue())) {
+				fail("Solution has NaN for decision variable at index " + i);
+			}
+		}
+		
+		for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
+			if (Double.isNaN(solution.getObjective(i))) {
+				fail("Solution has NaN for objective value at index " + i);
+			}
+		}
+		
+		for (int i = 0; i < solution.getNumberOfConstraints(); i++) {
+			if (Double.isNaN(solution.getConstraint(i))) {
+				fail("Solution has NaN for constraint value at index " + i);
+			}
+		}
 	}
 	
 	public static void assertEquals(Solution expected, Solution actual) {

@@ -29,21 +29,6 @@ import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.variable.EncodingUtils;
 
 public class BBOB2016Test {
-	
-	@Test
-	public void testCase() {
-		Problem problem = ProblemFactory.getInstance().getProblem("bbob-biobj(bbob_f001_i02_d10__bbob_f008_i04_d10)");
-		Solution solution = problem.newSolution();
-		
-		EncodingUtils.setReal(solution, new double[] { -3.9727892007482257, 3.315355721707702, 1.5658263604153628, -4.471651228244495, 1.889537317520153, 1.5763823841230895, -1.957839527991152, 2.0199723308321698, -4.743821646118134, 0.809474435344633 });
-
-		problem.evaluate(solution);
-		
-		System.out.println(Arrays.toString(solution.getObjectives()));
-		
-		
-		//[junit]   > Objectives: [624.7531325122511, 208049.53714464564] / [624.7531325122511, 142863.76006608657]
-	}
 
 	@Test
 	public void test() {
@@ -132,10 +117,14 @@ public class BBOB2016Test {
 
 				moeaProblem.evaluate(solution);
 				cocoProblem.evaluate(cocoSolution);
+				
+				Assert.assertNoNaN(solution);;
+				Assert.assertNoNaN(cocoSolution);
 
 				try {
 					Assert.assertEquals(solution, cocoSolution);
 				} catch (AssertionError e) {
+					System.out.println("Detected difference (MOEA Framework / Coco):");
 					System.out.println("  > Variables: " + Arrays.toString(EncodingUtils.getReal(solution)) + " / " +
 							Arrays.toString(EncodingUtils.getReal(cocoSolution)));
 					System.out.println("  > Objectives: " + Arrays.toString(solution.getObjectives()) + " / " +
@@ -143,7 +132,7 @@ public class BBOB2016Test {
 					System.out.println("  > Constraints: " + Arrays.toString(solution.getConstraints()) + " / " +
 							Arrays.toString(cocoSolution.getConstraints()));
 					
-					//throw e;
+					throw e;
 				}
 			}
 		}

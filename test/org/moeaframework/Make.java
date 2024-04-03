@@ -46,7 +46,7 @@ public class Make {
 	 */
 	public static boolean verifyMakeExists() {
 		try {
-			runMake(new File("."));
+			runMake(new File("."), "--version");
 			return true;
 		} catch (IOException e) {
 			System.err.println(e);
