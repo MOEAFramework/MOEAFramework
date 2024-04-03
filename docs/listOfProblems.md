@@ -265,9 +265,8 @@ These wrappers add to or modify existing problems:
 
 ### Scaled Problems
 
-Many test problems are defined with similar ranges of objective values.  Algorithms that assume similar ranges could
-favor such problems.  To counteract this bias, we can apply a scaling factor to each objective.  In this example, we
-will scale the i-th objective by $2^i$.,
+Many test problems are defined with similar ranges for objective values.  To counteract any bias, we can apply a
+scaling factor to each objective.  In this example, we will scale the i-th objective by $2^i$:
 
 <!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [61:61] -->
 
@@ -275,7 +274,7 @@ will scale the i-th objective by $2^i$.,
 Problem problem = new ScaledProblem(new DTLZ2(2), 2.0);
 ```
 
-### Rotated Problem
+### Rotated Problems
 
 Algorithms can also take advantage when each decision variable is independent.  We can counteract this by rotating
 the problem in decision variable space, creating a linear relationship between the variables.  We first define a
