@@ -41,6 +41,10 @@ public class TempFiles {
 	}
 
 	public static File createFileWithExtension(String extension) throws IOException {
+		if (extension != null && extension.length() > 0 && extension.charAt(0) != '.') {
+			extension = "." + extension;
+		}
+		
 		File file = File.createTempFile("test", extension);
 		file.delete(); // remove the empty file
 		deleteOnExit(file);
