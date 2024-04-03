@@ -1,5 +1,47 @@
 # List of Problems
 
+## Contents
+
+* [ZDT](#zdt)
+* [DTLZ](#dtlz)
+* [LZ](#lz)
+* [CEC2009](#cec2009)
+* [WFG](#wfg)
+* [CDTLZ](#cdtlz)
+* [LSMOP](#lsmop)
+* [ZCAT](#zcat)
+* [BBOB 2016](#bbob-2016)
+* [Individual Problems](#individual-problems)
+* [Problem Wrappers](#problem-wrappers)
+
+## Instantiating a Problem
+
+We can create an instance of any problem by calling its constructor:
+
+<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [39:39] -->
+
+```java
+Problem problem = new UF1();
+```
+
+Several of these problems can be scaled in terms of the number of decision variables or objectives.  We can call the
+relevant constructor to configure the problem.  For example, here we create the two-objective DTLZ2 problem:
+
+<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [44:44] -->
+
+```java
+Problem problem = new DTLZ2(3);
+```
+
+We can also construct problems by name using the `ProblemFactory`.  This is primarily used when
+[running large-scale experiments](runningExperiments.md).
+
+<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [49:49] -->
+
+```java
+Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_3");
+```
+
 ## Test Suites
 
 ### ZDT
@@ -124,6 +166,9 @@ Problem | # of Vars | # of Objs | # of Constrs | Type
 `LSMOP8_N` | ??? | N | 0 | Real
 `LSMOP9_N` | ??? | N | 0 | Real
 
+The number of decision variables depends on the how the problem is configured.  Use
+`problem.getNumberOfVariables()` to lookup the exact values.
+
 ### ZCAT
 
 Set of challenging test problems for multi- and many-objective optimization [^zapotecas23].  These problems are
@@ -154,40 +199,25 @@ Problem | # of Vars | # of Objs | # of Constrs | Type
 
 ### BBOB-2016
 
-Contains the 55 bi-objective problems as part of the "bbob-biobj" test suite from the BBOB workshop hosted at
-GECCO 2016 [^finck15].  These bi-objective problems are formed by combining two single-objective functions.
-Additionally, each problem is further customizable by the dimension (number of decision variables) and instance
-number (which varies the location of the optimum point).
+Contains the 55 bi-objective problems as part of the "bbob-biobj" test suite along with the extended "bbob-biobj-ext"
+problems from the BBOB workshop hosted at GECCO 2016 [^finck15].  These bi-objective problems are formed by combining
+two single-objective functions.
 
-The MOEA Framework uses a special name format for these problems.  Each single-objective function has a unique
-name in the form `bbob_f<N>_i<N>_d<N>` where `f`, `i`, and `d` represent the test function number, instance,
-and dimension, respectively.  The `<N>` is replaced by a specific value for each.  For example, `bbob_f1_i2_d5`
-represents the first BBOB function (the Sphere function), instance `2`, with five decision variables.
+The easiest way to construct a BBOB 2016 problem instance is from its name.  Each single-objective function is defined
+by its (1) test function number, (2) instance number, and (3) dimension, given as:
 
-Next, two of these single-objective functions are combined to get the bi-objective problem name, separating the
-names by a comma.  For example, `bbob_f1_i2_d5,bbob_f21_i2_d5` would produce the $(f_1, f_{21})$ bi-objective
-problem with five decision variables.
+```
+bbob_f([0-9]+)_i([0-9]+)_d([0-9]+)
+```
 
-To recreate the bbob-biobj test suite from the BBOB workshop, we can enumerate the set of problems using:
+For example, `bbob_f1_i2_d5` would use the Sphere function, instance `2`, with `5` decision variables.  Then,
+to construct the two-objective version, we simply combined two of these single-objective functions with a comma.
+Here's an example:
+
+<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [55:55] -->
 
 ```java
-
-int[] functions = new int[] { 1, 2, 6, 8, 13, 14, 15, 17, 20, 21 };
-int[] instances = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
-int[] dimensions = new int[] { 2, 3, 5, 10, 20, 40 };
-
-List<String> bbob_biobj_names = new ArrayList<String>();
-
-for (int i = 0; i < functions.length; i++) {
-    for (int j = i; j < functions.length; j++) {
-        for (int instance : instances) {
-            for (int dimension : dimensions) {
-            	bbob_biobj_names.add(String.format("bbob_f%d_i%d_d%d,bbob_f%d_i%d_d%d",
-            			functions[i], instance, dimension, functions[j], instance, dimension));
-            }
-        }
-    }
-}
+Problem problem = ProblemFactory.getInstance().getProblem("bbob-biobj(bbob_f1_i2_d5,bbob_f21_i2_d5)");
 ```
 
 ## Individual Problems
@@ -229,34 +259,51 @@ Viennet4 | 2 | 3 | 3 | Real
 Problems marked with $\dagger$ have maximized objectives.  Since the MOEA Framework only works with minimized
 objectives, the objective values are negated.
 
-## Special Problem Classes
+## Problem Wrappers
 
-### Rotated Problems
+These wrappers add to or modify existing problems:
 
-In many test problems, there is a direct relationship between decision variables and objectives, often to the point
-where once can tweak each variable independently to find the optimum.  Any real-valued problem can be rotated in
-decision variable space to remove this independence and create a linear relationship between the variables.  This
-is accomplished by prepending one of the following to the problem name:
+### Scaled Problems
 
-* `ROT_` - Rotates all decision variables by 45 degrees
-* `ROT(X)_` - Rotates all decision variables by `X` degrees.  Replace `X` with `RAND` to randomly rotated each axis.
-* `ROT(K,X)_` - Makes K rotatations along random planes.  Replace `K` with `ALL` to rotate all axes.
+Many test problems are defined with similar ranges of objective values.  Algorithms that assume similar ranges could
+favor such problems.  To counteract this bias, we can apply a scaling factor to each objective.  In this example, we
+will scale the i-th objective by $2^i$.,
 
-For example:
+<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [61:61] -->>
+
+```javaa
+````
+
+### Rotated Problem
+
+Algorithms can also take advantage when each decision variable is independent.  We can counteract this by rotating
+the problem in decision variable space, creating a linear relationship between the variables.  We first define a
+rotation matrix using the `RotationMatrixBuilder`.  We can fully customize the rotation matrix, but here we
+demonstrate applying a 45-degree rotation to each axis:
+
+<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [66:69] -->
+
 
 ```java
-NondominatedPopulation results = new Executor()
-    .withProblem("ROT_DTLZ2_2")
-    .withAlgorithm("NSGA-II")
-    .withProperty("populationSize", 250)
-    .withMaxEvaluations(10000)
-    .run();
+RotationMatrixBuilder builder = new RotationMatrixBuilder(11);
+builder.rotateAll().withThetas(Math.toRadians(45));
+
+Problem problem = new RotatedProblem(new DTLZ2(2), builder.create());
 ```
 
-### Scripted or External Problems
+### Timings
 
-The MOEA Framework also has the capability to execute problems written in a scripting language (using the appropriate
-Java plugin) or external, compiled programs.  Refer to `ScriptedProblem` and `ExternalProblem` for details.
+The `TimingProblem` wrapper is used to measure the total time spent performing function evaluations:
+
+.
+<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [74:76] -->
+
+
+```java
+TimingProblem problem = new TimingProblem(new DTLZ2(2));
+
+System.out.println(problem.getNFE() + " evaluations took " + problem.getSeconds() + " sec.");
+```
 
 [^cheng17]: Cheng et al. "Test problems for large-scale multiobjective and many-objective optimization." IEEE Transactions on Cybernetics, 7(12): 4108-4121, 2017.
 [^deb01]: Deb et al.  "Scalable Test Problems for Evolutionary Multi-Objective Optimization."  TIK-Technical Report No 112, 2001.

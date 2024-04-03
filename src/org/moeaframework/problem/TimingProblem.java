@@ -17,6 +17,7 @@
  */
 package org.moeaframework.problem;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.moeaframework.core.Problem;
@@ -34,6 +35,11 @@ public class TimingProblem extends ProblemWrapper {
 	private AtomicLong time;
 	
 	/**
+	 * The number of times the function was evaluated.
+	 */
+	private AtomicInteger counter;
+	
+	/**
 	 * Decorates the specified problem to collecting objective function evaluation timing data.
 	 * 
 	 * @param problem the problem to decorate
@@ -42,6 +48,7 @@ public class TimingProblem extends ProblemWrapper {
 		super(problem);
 		
 		time = new AtomicLong();
+		counter = new AtomicInteger();
 	}
 
 	@Override
@@ -51,6 +58,7 @@ public class TimingProblem extends ProblemWrapper {
 		long end = System.nanoTime();
 		
 		time.addAndGet(end - start);
+		counter.incrementAndGet();
 	}
 	
 	/**
@@ -76,6 +84,15 @@ public class TimingProblem extends ProblemWrapper {
 	 */
 	public double getSeconds() {
 		return time.get() / 1e9;
+	}
+	
+	/**
+	 * Returns the number of times the objective function was evaluated.
+	 * 
+	 * @return the number of times the objective function was evaluated
+	 */
+	public int getNFE() {
+		return counter.get();
 	}
 
 }
