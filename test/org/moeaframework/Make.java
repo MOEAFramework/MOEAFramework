@@ -27,7 +27,8 @@ public class Make {
 		command.add("make");
 		command.addAll(Arrays.asList(args));
 		
-		System.out.println("Running '" + command.stream().collect(Collectors.joining(" ")) + "' from folder " + folder);
+		System.out.println("Running '" + command.stream().collect(Collectors.joining(" ")) + "' from folder '" +
+				folder + "'");
 		
 		try {
 			ProcessBuilder processBuilder = new ProcessBuilder(command);

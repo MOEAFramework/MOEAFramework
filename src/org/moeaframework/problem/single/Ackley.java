@@ -51,8 +51,8 @@ public class Ackley extends AbstractSingleObjectiveProblem {
 	@Override
 	public Solution newSolution() {
 		Solution solution = new Solution(2, 1);
-		solution.setVariable(0, EncodingUtils.newReal(-10, 10));
-		solution.setVariable(1, EncodingUtils.newReal(-10, 10));
+		solution.setVariable(0, EncodingUtils.newReal(-32, 32));
+		solution.setVariable(1, EncodingUtils.newReal(-32, 32));
 		return solution;
 	}
 	

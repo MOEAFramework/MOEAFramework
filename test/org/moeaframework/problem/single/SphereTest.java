@@ -33,6 +33,9 @@ public class SphereTest extends ProblemTest {
 				Assert.assertEquals(0.0, solution.getObjective(0), TestThresholds.HIGH_PRECISION);
 				Assert.assertGreaterThan(MockSolution.of(solution).addNoise(0.1).evaluate(problem).getObjective(0), 0.0);
 			}
+			
+			Assert.assertEquals(200.0, MockSolution.of(problem).atLowerBounds().evaluate().getObjective(0), 0.0000001);
+			Assert.assertEquals(200.0, MockSolution.of(problem).atUpperBounds().evaluate().getObjective(0), 0.0000001);
 		}
 	}
 	
