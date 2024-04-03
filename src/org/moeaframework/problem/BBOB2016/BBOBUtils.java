@@ -132,7 +132,7 @@ class BBOBUtils {
 	}
 
 	public static double computeFOpt(int function, int instance) {
-		int rseed, rrseed;
+		long rseed, rrseed;
 
 		rseed = switch (function) {
 			case 4 -> 3;
