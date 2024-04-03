@@ -25,7 +25,7 @@ Problem problem = new UF1();
 ```
 
 Several of these problems can be scaled in terms of the number of decision variables or objectives.  We can call the
-relevant constructor to configure the problem.  For example, here we create the two-objective DTLZ2 problem:
+relevant constructor to configure the problem.  For example, here we create the three-objective DTLZ2 problem:
 
 <!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [44:44] -->
 
@@ -34,7 +34,7 @@ Problem problem = new DTLZ2(3);
 ```
 
 We can also construct problems by name using the `ProblemFactory`.  This is primarily used when
-[running large-scale experiments](runningExperiments.md).
+[running large-scale experiments](runningExperiments.md).  Here we create the same three-objective DTLZ2 problem:
 
 <!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [49:49] -->
 
@@ -69,9 +69,9 @@ Problem | # of Vars | # of Objs | # of Constrs | Type
 `DTLZ2_N` | `9+N` | N | 0 | Real
 `DTLZ3_N` | `9+N` | N | 0 | Real
 `DTLZ4_N` | `9+N` | N | 0 | Real
+`DTLZ5_N` | `9+N` | N | 0 | Real
+`DTLZ6_N` | `9+N` | N | 0 | Real
 `DTLZ7_N` | `19+N` | N | 0 | Real
-
-Note that `DTLZ5` and `DTLZ6` are not included as they are degenerate at higher dimensions.
 
 ### LZ
 
@@ -207,10 +207,10 @@ The easiest way to construct a BBOB 2016 problem instance is from its name.  Eac
 by its (1) test function number, (2) instance number, and (3) dimension, given as:
 
 ```
-bbob_f([0-9]+)_i([0-9]+)_d([0-9]+)
+bbob_f<val>_i<val>_d<val>
 ```
 
-For example, `bbob_f1_i2_d5` would use the Sphere function, instance `2`, with `5` decision variables.  Then,
+For example, `bbob_f1_i2_d5` would use the function `1` (Sphere), instance `2`, and `5` decision variables.  Then,
 to construct the two-objective version, we simply combined two of these single-objective functions with a comma.
 Here's an example:
 
@@ -269,10 +269,11 @@ Many test problems are defined with similar ranges of objective values.  Algorit
 favor such problems.  To counteract this bias, we can apply a scaling factor to each objective.  In this example, we
 will scale the i-th objective by $2^i$.,
 
-<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [61:61] -->>
+<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [61:61] -->
 
-```javaa
-````
+```java
+Problem problem = new ScaledProblem(new DTLZ2(2), 2.0);
+```
 
 ### Rotated Problem
 
