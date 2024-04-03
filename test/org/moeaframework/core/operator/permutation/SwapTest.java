@@ -58,41 +58,41 @@ public class SwapTest extends AbstractPermutationOperatorTest<Swap> {
 			}
 		}
 
-		Assert.assertEquals((double)count / TestThresholds.SAMPLES, probability, TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(probability, (double)count / TestThresholds.SAMPLES, TestThresholds.LOW_PRECISION);
 	}
 
 	/**
-	 * Returns {@code true} if {@code v2} is the result of a swap from {@code v1}; {@code false} otherwise. Also checks
+	 * Returns {@code true} if {@code p2} is the result of a swap from {@code p1}; {@code false} otherwise. Also checks
 	 * if the swap is valid.
 	 * 
-	 * @param v1 the first permutation
-	 * @param v2 the second permutation
-	 * @return {@code true} if {@code v2} is the result of a swap from {@code v1}; {@code false} otherwise
+	 * @param p1 the first permutation
+	 * @param p2 the second permutation
+	 * @return {@code true} if {@code p2} is the result of a swap from {@code p1}; {@code false} otherwise
 	 */
-	protected boolean testSwap(Permutation v1, Permutation v2) {
+	protected boolean testSwap(Permutation p1, Permutation p2) {
 		int index1 = -1;
 		int index2 = -1;
 
-		for (int i = 0; i < v1.size(); i++) {
-			if (v1.get(i) != v2.get(i)) {
+		for (int i = 0; i < p1.size(); i++) {
+			if (p1.get(i) != p2.get(i)) {
 				if (index1 == -1) {
 					index1 = i;
 				} else if (index2 == -1) {
 					index2 = i;
 				} else {
-					Assert.fail();
+					Assert.fail("Permutations differ in more than two indices, which is not a valid swap");
 				}
 			}
 		}
 
 		if ((index1 != -1) && (index2 != -1)) {
-			Assert.assertEquals(v1.get(index1), v2.get(index2));
-			Assert.assertEquals(v1.get(index2), v2.get(index1));
+			Assert.assertEquals(p1.get(index1), p2.get(index2));
+			Assert.assertEquals(p1.get(index2), p2.get(index1));
 			return true;
 		} else if ((index1 == -1) && (index2 == -1)) {
 			return false;
 		} else {
-			Assert.fail();
+			Assert.fail("Permutations differ in only one index, which is not a valid swap");
 			return false;
 		}
 	}

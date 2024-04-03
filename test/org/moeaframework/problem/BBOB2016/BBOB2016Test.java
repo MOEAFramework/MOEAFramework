@@ -24,6 +24,7 @@ import org.moeaframework.Assert;
 import org.moeaframework.Assume;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.variable.EncodingUtils;
 
@@ -108,22 +109,16 @@ public class BBOB2016Test {
 			Assert.assertEquals(cocoProblem.getNumberOfVariables(), moeaProblem.getNumberOfVariables());
 			Assert.assertEquals(cocoProblem.getNumberOfObjectives(), moeaProblem.getNumberOfObjectives());
 			Assert.assertEquals(cocoProblem.getNumberOfConstraints(), moeaProblem.getNumberOfConstraints());
+			
+			Solution[] solutions = new RandomInitialization(moeaProblem).initialize(100);
 
-			for (int i = 0; i < 100; i++) {
-				Solution solution1 = moeaProblem.newSolution();
-				Solution solution2 = solution1.copy();
+			for (Solution solution : solutions) {
+				Solution cocoSolution = solution.copy();
 
-				moeaProblem.evaluate(solution1);
-				cocoProblem.evaluate(solution2);
-				
-				System.out.println("Variables: " + Arrays.toString(EncodingUtils.getReal(solution1)) + " <=> " + Arrays.toString(EncodingUtils.getReal(solution2)));
-				System.out.println("Objectives: " + Arrays.toString(solution1.getObjectives()) + " <=> " + Arrays.toString(solution2.getObjectives()));
-				
-				try {
-					Assert.assertEquals(solution1, solution2);
-				} catch (AssertionError e) {
-					System.out.println(e.getMessage());
-				}
+				moeaProblem.evaluate(solution);
+				cocoProblem.evaluate(cocoSolution);
+
+				Assert.assertEquals(solution, cocoSolution);
 			}
 		}
 
