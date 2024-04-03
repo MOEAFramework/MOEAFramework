@@ -63,7 +63,6 @@ public class UMTest extends DistributionVariationTest<UM> {
 
 		for (int i = 0; i < parent.getNumberOfVariables(); i++) {
 			RealVariable v = (RealVariable)parent.getVariable(i);
-
 			Assert.assertEquals((v.getLowerBound() + v.getUpperBound()) / 2.0, average[i],
 					TestThresholds.LOW_PRECISION);
 		}

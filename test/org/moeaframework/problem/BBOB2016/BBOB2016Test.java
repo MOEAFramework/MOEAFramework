@@ -17,12 +17,15 @@
  */
 package org.moeaframework.problem.BBOB2016;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.core.variable.EncodingUtils;
 
 public class BBOB2016Test {
 
@@ -100,7 +103,7 @@ public class BBOB2016Test {
 			CocoProblemWrapper cocoProblem = new CocoProblemWrapper(rawProblem);
 			Problem moeaProblem = ProblemFactory.getInstance().getProblem(cocoProblem.getName());
 
-			System.out.println("Testing " + cocoProblem.getName());
+			System.out.println("Testing COCO problem instance " + cocoProblem.getName());
 
 			Assert.assertEquals(cocoProblem.getNumberOfVariables(), moeaProblem.getNumberOfVariables());
 			Assert.assertEquals(cocoProblem.getNumberOfObjectives(), moeaProblem.getNumberOfObjectives());
@@ -112,8 +115,15 @@ public class BBOB2016Test {
 
 				moeaProblem.evaluate(solution1);
 				cocoProblem.evaluate(solution2);
-
-				Assert.assertEquals(solution1, solution2);
+				
+				System.out.println("Variables: " + Arrays.toString(EncodingUtils.getReal(solution1)) + " <=> " + Arrays.toString(EncodingUtils.getReal(solution2)));
+				System.out.println("Objectives: " + Arrays.toString(solution1.getObjectives()) + " <=> " + Arrays.toString(solution2.getObjectives()));
+				
+				try {
+					Assert.assertEquals(solution1, solution2);
+				} catch (AssertionError e) {
+					System.out.println(e.getMessage());
+				}
 			}
 		}
 

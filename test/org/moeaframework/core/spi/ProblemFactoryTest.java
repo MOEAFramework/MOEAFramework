@@ -96,7 +96,7 @@ public class ProblemFactoryTest extends AbstractFactoryTest<ProblemProvider, Pro
 	@Test
 	public void testDiagnosticToolProblems() {
 		for (String name : ProblemFactory.getInstance().getAllDiagnosticToolProblems()) {
-			System.out.println("Testing " + name);
+			System.out.println("Testing ProblemFactory on " + name);
 			
 			Problem problem = ProblemFactory.getInstance().getProblem(name);
 			Assert.assertNotNull(problem);

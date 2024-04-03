@@ -63,7 +63,7 @@ public class AlgorithmFactoryTest extends AbstractFactoryTest<AlgorithmProvider,
 	@Test
 	public void testDiagnosticToolAlgorithms() {
 		for (String name : createFactory().getAllDiagnosticToolAlgorithms()) {
-			System.out.println("Testing " + name);
+			System.out.println("Testing AlgorithmFactory on " + name);
 			Assert.assertNotNull(AlgorithmFactory.getInstance().getAlgorithm(name, new MockRealProblem(2)));
 			
 			String swapCaseName = StringUtils.swapCase(name);

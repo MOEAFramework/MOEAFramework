@@ -52,7 +52,7 @@ public class OperatorFactoryTest extends AbstractFactoryTest<OperatorProvider, O
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		
 		for (String operator : new DefaultOperators().getRegisteredOperators()) {
-			System.out.println("Testing " + operator);
+			System.out.println("Testing OperatorFactory on " + operator);
 			
 			try {
 				Variation variation = createFactory().getVariation(operator, new TypedProperties(), problem);
