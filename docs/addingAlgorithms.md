@@ -24,7 +24,6 @@ public static class RandomWalker extends AbstractEvolutionaryAlgorithm {
 
     @Override
     protected void iterate() {
-
         NondominatedSortingPopulation population = (NondominatedSortingPopulation)getPopulation();
 
         int index = PRNG.nextInt(population.size());

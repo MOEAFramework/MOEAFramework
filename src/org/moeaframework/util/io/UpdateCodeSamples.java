@@ -773,13 +773,13 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			return switch (this) {
 				case Java, C -> {
 					// Remove C-style // comments
-					content = content.replaceAll("//[^\\n]*", "");                              
+					content = content.replaceAll("(?<=[\\r\\n])[\\t ]*\\/\\/[^\\n]*\\r?\\n", "");
+					content = content.replaceAll("[\\t ]*\\/\\/[^\\n]*", "");
 					
-					// Remove C-style /* */ comments
-					content = content.replaceAll("/\\*[^*]*\\*+(?:[^/*][^*]*\\*+)*/", "");
+					// Remove C-style /* */ and Javadoc /** */ comments
+					content = content.replaceAll("(?<=[\\r\\n])[\\t ]*\\/\\*[^*]*\\*+(?:[^\\/*][^*]*\\*+)*\\/[\\t ]*\\r?\\n", "");
+					content = content.replaceAll("[\\t ]*\\/\\*[^*]*\\*+(?:[^\\/*][^*]*\\*+)*\\/", "");
 					
-					 // Replace multiple blank lines with just one
-					content = content.replaceAll("(?:\\s*\\r?\\n){2,}", System.lineSeparator() + System.lineSeparator());
 					yield content;
 				}
 				case Text, Bash, Help, Output -> content;
