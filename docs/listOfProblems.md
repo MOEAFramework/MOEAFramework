@@ -216,8 +216,8 @@ objective values are negated!
 
 ## BBOB-2016
 
-Contains the 55 bi-objective problems as part of the "bbob-biobj" test suite from the BBOB workshop hosted at GECCO
-2016 [^finck15].  These bi-objective problems are formed by combining two single-objective functions.  The easiest
+Contains the 55 bi-objective problems from the "bbob-biobj" test suite presented at the GECCO 2016 BBOB
+workshop [^finck15].  These bi-objective problems are formed by combining two single-objective functions.  The easiest
 way to construct a BBOB 2016 problem instance is from its name.  Each single-objective function is defined
 by its (1) test function number, (2) instance number, and (3) dimension, given as:
 
@@ -225,7 +225,7 @@ by its (1) test function number, (2) instance number, and (3) dimension, given a
 bbob_f<val>_i<val>_d<val>
 ```
 
-For example, `bbob_f1_i2_d5` would use the function `1` (Sphere), instance `2`, and `5` decision variables.  Then,
+For example, `bbob_f1_i2_d5` would use function `1` (Sphere), instance `2`, and `5` decision variables.  Then,
 to construct the two-objective version, we simply combine two of these single-objective functions with a comma.
 Here's an example:
 
@@ -239,12 +239,13 @@ For more details on the specific problem instances, see http://numbbo.github.io/
 
 ## Problem Wrappers
 
-Problem wrappers modify or extend an existing problems, typically in an effort to make the problem more challenging.
+Problem wrappers modify or extend existing problems, typically in an effort to make the problem more challenging.
 
-### Scaled Problems
+### Scaling Objectives
 
-Many test problems are defined with similar ranges for objective values.  To counteract any bias, we can apply a
-scaling factor to each objective.  In this example, we will scale the i-th objective by $2^i$:
+The `ScaledProblem` wrapper applies a scaling factor to each objective by multipling the i-th objecive
+value by $b^i$, where $b=2$ in the example below.  This helps avoid any bias caused by assuming all objectives
+have similar ranges.
 
 <!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [58:58] -->
 
@@ -252,15 +253,14 @@ scaling factor to each objective.  In this example, we will scale the i-th objec
 Problem problem = new ScaledProblem(new DTLZ2(2), 2.0);
 ```
 
-### Rotated Problems
+### Rotating Decision Variables
 
-Algorithms can also take advantage when each decision variable is independent.  We can counteract this by rotating
-the problem in decision variable space, creating a linear relationship between the variables.  We first define a
-rotation matrix using the `RotationMatrixBuilder`.  We can fully customize the rotation matrix, but here we
-demonstrate applying a 45-degree rotation to each axis:
+The `RotatedProblem` wrapper applies a rotation to the decision variables.  This is useful when decision variables
+are independent, as it creates a linear relationship between the variables.  We can customize the rotation, selecting
+all or a subset of decision variables, by constructing the `RotationMatrixBuilder`.  In the example below, we apply
+a 45 degree rotation to each axis.
 
 <!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [63:66] -->
-
 
 ```java
 RotationMatrixBuilder builder = new RotationMatrixBuilder(11);
