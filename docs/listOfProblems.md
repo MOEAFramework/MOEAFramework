@@ -1,19 +1,5 @@
 # List of Problems
 
-## Contents
-
-* [ZDT](#zdt)
-* [DTLZ](#dtlz)
-* [LZ](#lz)
-* [CEC2009](#cec2009)
-* [WFG](#wfg)
-* [CDTLZ](#cdtlz)
-* [LSMOP](#lsmop)
-* [ZCAT](#zcat)
-* [BBOB 2016](#bbob-2016)
-* [Individual Problems](#individual-problems)
-* [Problem Wrappers](#problem-wrappers)
-
 ## Instantiating a Problem
 
 We can create an instance of any problem by calling its constructor:
@@ -33,138 +19,128 @@ relevant constructor to configure the problem.  For example, here we create the 
 Problem problem = new DTLZ2(3);
 ```
 
-We can also construct problems by name using the `ProblemFactory`.  This is primarily used when
-[running large-scale experiments](runningExperiments.md).  Here we create the same three-objective DTLZ2 problem:
-
-<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [49:49] -->
-
-```java
-Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_3");
-```
-
 ## Test Suites
 
 ### ZDT
 
 Contains five real-valued and one binary problem [^zitzler00].
 
-Problem | # of Vars | # of Objs | # of Constrs | Type 
-:------ | :-------: | :-------: | :----------: | :---
-`ZDT1` | 30 | 2 | 0 | Real
-`ZDT2` | 30 | 2 | 0 | Real
-`ZDT3` | 30 | 2 | 0 | Real
-`ZDT4` | 10 | 2 | 0 | Real
-`ZDT5` | 80 | 2 | 0 | Binary
-`ZDT6` | 10 | 2 | 0 | Real
+Problem | # of Vars | # of Objs | # of Constrs | Type | Constructor | Pareto Front
+:------ | :-------: | :-------: | :----------: | :--- | :---------- | ------------
+ZDT1 | 30 | 2 | 0 | Real | `new ZDT1()` | <img src="imgs/ZDT1.png" width="100" />
+ZDT2 | 30 | 2 | 0 | Real | `new ZDT2()` | <img src="imgs/ZDT2.png" width="100" />
+ZDT3 | 30 | 2 | 0 | Real | `new ZDT3()` | <img src="imgs/ZDT3.png" width="100" />
+ZDT4 | 10 | 2 | 0 | Real | `new ZDT4()` | <img src="imgs/ZDT4.png" width="100" />
+ZDT5 | 80 | 2 | 0 | Binary | `new ZDT5()` | <img src="imgs/ZDT5.png" width="100" />
+ZDT6 | 10 | 2 | 0 | Real | `new ZDT6()` | <img src="imgs/ZDT6.png" width="100" />
 
 ### DTLZ
 
-Contains five unconstrained real-valued problems [^deb01] [^deb02].  These problems are scalable in the number of
-objectives.  Control this by replacing `N` in the name.  For example, `DTLZ2_2` creates the 2-objective DTLZ2
-instance.
+Contains unconstrained real-valued problems that are scalable in the number of objectives [^deb01] [^deb02].
+These problems are scalable in the number of objectives, controlled by passing the value `N` to the constructor.
 
-Problem | # of Vars | # of Objs | # of Constrs | Type 
-:------ | :-------: | :-------: | :----------: | :---
-`DTLZ1_N` | `4+N` | N | 0 | Real
-`DTLZ2_N` | `9+N` | N | 0 | Real
-`DTLZ3_N` | `9+N` | N | 0 | Real
-`DTLZ4_N` | `9+N` | N | 0 | Real
-`DTLZ5_N` | `9+N` | N | 0 | Real
-`DTLZ6_N` | `9+N` | N | 0 | Real
-`DTLZ7_N` | `19+N` | N | 0 | Real
+Problem | # of Vars | # of Objs | # of Constrs | Type | Constructor | Pareto Front
+:------ | :-------: | :-------: | :----------: | :--- | :---------- | ------------
+DTLZ1 | `4+N` | `N` | 0 | Real | `new DTLZ1(N)` | <img src="imgs/DTLZ1.2D.png" width="100" /> <img src="imgs/DTLZ1.3D.png" width="100" />
+DTLZ2 | `9+N` | `N` | 0 | Real | `new DTLZ2(N)` | <img src="imgs/DTLZ2.2D.png" width="100" /> <img src="imgs/DTLZ2.3D.png" width="100" />
+DTLZ3 | `9+N` | `N` | 0 | Real | `new DTLZ3(N)` | <img src="imgs/DTLZ3.2D.png" width="100" /> <img src="imgs/DTLZ3.3D.png" width="100" />
+DTLZ4 | `9+N` | `N` | 0 | Real | `new DTLZ4(N)` | <img src="imgs/DTLZ4.2D.png" width="100" /> <img src="imgs/DTLZ4.3D.png" width="100" />
+DTLZ5 | `9+N` | `N` | 0 | Real | `new DTLZ5(N)` | <img src="imgs/DTLZ5.2D.png" width="100" /> <img src="imgs/DTLZ5.3D.png" width="100" />
+DTLZ6 | `9+N` | `N` | 0 | Real | `new DTLZ6(N)` | <img src="imgs/DTLZ6.2D.png" width="100" /> <img src="imgs/DTLZ6.3D.png" width="100" />
+DTLZ7 | `19+N` | `N` | 0 | Real | `new DTLZ7(N)` | <img src="imgs/DTLZ7.2D.png" width="100" /> <img src="imgs/DTLZ7.3D.png" width="100" />
 
 ### LZ
 
 Contains nine real-valued test problems designed to have complicated Pareto sets [^li09].
 
-Problem | # of Vars | # of Objs | # of Constrs | Type 
-:------ | :-------: | :-------: | :----------: | :---
-`LZ1` | 30 | 2 | 0 | Real
-`LZ2` | 30 | 2 | 0 | Real
-`LZ3` | 30 | 2 | 0 | Real
-`LZ4` | 30 | 2 | 0 | Real
-`LZ5` | 30 | 2 | 0 | Real
-`LZ6` | 10 | 3 | 0 | Real
-`LZ7` | 10 | 2 | 0 | Real
-`LZ8` | 10 | 2 | 0 | Real
-`LZ9` | 30 | 2 | 0 | Real
+Problem | # of Vars | # of Objs | # of Constrs | Type | Constructor | Pareto Front
+:------ | :-------: | :-------: | :----------: | :--- | :---------- | ------------
+LZ1 | 30 | 2 | 0 | Real | `new LZ1()` | <img src="imgs/LZ09_F1.png" width="100" />
+LZ2 | 30 | 2 | 0 | Real | `new LZ2()` | <img src="imgs/LZ09_F2.png" width="100" />
+LZ3 | 30 | 2 | 0 | Real | `new LZ3()` | <img src="imgs/LZ09_F3.png" width="100" />
+LZ4 | 30 | 2 | 0 | Real | `new LZ4()` | <img src="imgs/LZ09_F4.png" width="100" />
+LZ5 | 30 | 2 | 0 | Real | `new LZ5()` | <img src="imgs/LZ09_F5.png" width="100" />
+LZ6 | 10 | 3 | 0 | Real | `new LZ6()` | <img src="imgs/LZ09_F6.png" width="100" />
+LZ7 | 10 | 2 | 0 | Real | `new LZ7()` | <img src="imgs/LZ09_F7.png" width="100" />
+LZ8 | 10 | 2 | 0 | Real | `new LZ8()` | <img src="imgs/LZ09_F8.png" width="100" />
+LZ9 | 30 | 2 | 0 | Real | `new LZ9()` | <img src="imgs/LZ09_F9.png" width="100" />
 
 ### CEC2009
 
 Constrained (CF) and unconstrained (UF) test problems used for the CEC 2009 special session and competition [^zhang09].
 
-Problem | # of Vars | # of Objs | # of Constrs | Type 
-:------ | :-------: | :-------: | :----------: | :---
-`CF1` | 10 | 2 | 1 | Real
-`CF2` | 10 | 2 | 1 | Real
-`CF3` | 10 | 2 | 1 | Real
-`CF4` | 10 | 2 | 1 | Real
-`CF5` | 10 | 2 | 1 | Real
-`CF6` | 10 | 2 | 2 | Real
-`CF7` | 10 | 2 | 2 | Real
-`CF8` | 10 | 3 | 1 | Real
-`CF9` | 10 | 3 | 1 | Real
-`CF10` | 10 | 3 | 1 | Real
-`UF1` | 30 | 2 | 0 | Real
-`UF2` | 30 | 2 | 0 | Real
-`UF3` | 30 | 2 | 0 | Real
-`UF4` | 30 | 2 | 0 | Real
-`UF5` | 30 | 2 | 0 | Real
-`UF6` | 30 | 2 | 0 | Real
-`UF7` | 30 | 2 | 0 | Real
-`UF8` | 30 | 3 | 0 | Real
-`UF9` | 30 | 3 | 0 | Real
-`UF10` | 30 | 3 | 0 | Real
-`UF11` | 30 | 5 | 0 | Real
-`UF12` | 30 | 5 | 0 | Real
-`UF13` | 30 | 5 | 0 | Real
+Problem | # of Vars | # of Objs | # of Constrs | Type | Constructor | Pareto Front
+:------ | :-------: | :-------: | :----------: | :--- | :---------- | ------------
+CF1 | 10 | 2 | 1 | Real | `new CF1()` | <img src="imgs/CF1.png" width="100" />
+CF2 | 10 | 2 | 1 | Real | `new CF2()` | <img src="imgs/CF2.png" width="100" />
+CF3 | 10 | 2 | 1 | Real | `new CF3()` | <img src="imgs/CF3.png" width="100" />
+CF4 | 10 | 2 | 1 | Real | `new CF4()` | <img src="imgs/CF4.png" width="100" />
+CF5 | 10 | 2 | 1 | Real | `new CF5()` | <img src="imgs/CF5.png" width="100" />
+CF6 | 10 | 2 | 2 | Real | `new CF6()` | <img src="imgs/CF6.png" width="100" />
+CF7 | 10 | 2 | 2 | Real | `new CF7()` | <img src="imgs/CF7.png" width="100" />
+CF8 | 10 | 3 | 1 | Real | `new CF8()` | <img src="imgs/CF8.png" width="100" />
+CF9 | 10 | 3 | 1 | Real | `new CF9()` | <img src="imgs/CF9.png" width="100" />
+CF10 | 10 | 3 | 1 | Real | `new CF10()` | <img src="imgs/CF10.png" width="100" />
+UF1 | 30 | 2 | 0 | Real | `new UF1()` | <img src="imgs/UF1.png" width="100" />
+UF2 | 30 | 2 | 0 | Real | `new UF2()` | <img src="imgs/UF2.png" width="100" />
+UF3 | 30 | 2 | 0 | Real | `new UF3()` | <img src="imgs/UF3.png" width="100" />
+UF4 | 30 | 2 | 0 | Real | `new UF4()` | <img src="imgs/UF4.png" width="100" />
+UF5 | 30 | 2 | 0 | Real | `new UF5()` | <img src="imgs/UF5.png" width="100" />
+UF6 | 30 | 2 | 0 | Real | `new UF6()` | <img src="imgs/UF6.png" width="100" />
+UF7 | 30 | 2 | 0 | Real | `new UF7()` | <img src="imgs/UF7.png" width="100" />
+UF8 | 30 | 3 | 0 | Real | `new UF8()` | <img src="imgs/UF8.png" width="100" />
+UF9 | 30 | 3 | 0 | Real | `new UF9()` | <img src="imgs/UF9.png" width="100" />
+UF10 | 30 | 3 | 0 | Real | `new UF10()` | <img src="imgs/UF10.png" width="100" />
+UF11 | 30 | 5 | 0 | Real | `new UF11()` | Not Available
+UF12 | 30 | 5 | 0 | Real | `new UF12()` | Not Available
+UF13 | 30 | 5 | 0 | Real | `new UF13()` | Not Available
 
 ### WFG
 
 Contains nine scalable, real-valued problems by the walking fish group (WFG) [^huband05] [^huband07].
 
-Problem | # of Vars | # of Objs | # of Constrs | Type 
-:------ | :-------: | :-------: | :----------: | :---
-`WFG1_N` | `9+N` | N | 0 | Real
-`WFG2_N` | `9+N` | N | 0 | Real
-`WFG3_N` | `9+N` | N | 0 | Real
-`WFG4_N` | `9+N` | N | 0 | Real
-`WFG5_N` | `9+N` | N | 0 | Real
-`WFG6_N` | `9+N` | N | 0 | Real
-`WFG7_N` | `9+N` | N | 0 | Real
-`WFG8_N` | `9+N` | N | 0 | Real
-`WFG9_N` | `9+N` | N | 0 | Real
+Problem | # of Vars | # of Objs | # of Constrs | Type | Constructor | Pareto Front
+:------ | :-------: | :-------: | :----------: | :--- | :---------- | ------------
+WFG1 | `9+N` | `N` | 0 | Real | `new WFG1(N)` | <img src="imgs/WFG1.2D.png" width="100" /> <img src="imgs/WFG1.3D.png" width="100" />
+WFG2 | `9+N` | `N` | 0 | Real | `new WFG2(N)` | <img src="imgs/WFG2.2D.png" width="100" /> <img src="imgs/WFG2.3D.png" width="100" />
+WFG3 | `9+N` | `N` | 0 | Real | `new WFG3(N)` | <img src="imgs/WFG3.2D.png" width="100" /> <img src="imgs/WFG3.3D.png" width="100" />
+WFG4 | `9+N` | `N` | 0 | Real | `new WFG4(N)` | <img src="imgs/WFG4.2D.png" width="100" /> <img src="imgs/WFG4.3D.png" width="100" />
+WFG5 | `9+N` | `N` | 0 | Real | `new WFG5(N)` | <img src="imgs/WFG5.2D.png" width="100" /> <img src="imgs/WFG5.3D.png" width="100" />
+WFG6 | `9+N` | `N` | 0 | Real | `new WFG6(N)` | <img src="imgs/WFG6.2D.png" width="100" /> <img src="imgs/WFG6.3D.png" width="100" />
+WFG7 | `9+N` | `N` | 0 | Real | `new WFG7(N)` | <img src="imgs/WFG7.2D.png" width="100" /> <img src="imgs/WFG7.3D.png" width="100" />
+WFG8 | `9+N` | `N` | 0 | Real | `new WFG8(N)` | <img src="imgs/WFG8.2D.png" width="100" /> <img src="imgs/WFG8.3D.png" width="100" />
+WFG9 | `9+N` | `N` | 0 | Real | `new WFG9(N)` | <img src="imgs/WFG9.2D.png" width="100" /> <img src="imgs/WFG9.3D.png" width="100" />
 
 ### CDTLZ
 
-A constrained version of the DTLZ problem suite [^deb14] [^jain14].  These problems are scalable in the number of
-objectives.  Control this by replacing `N` in the name.
+A constrained version of the DTLZ problem suite [^deb14] [^jain14].  These problems are scalable in the number of objectives,
+controlled by passing the value `N` to the constructor.
 
-Problem | # of Vars | # of Objs | # of Constrs | Type 
-:------ | :-------: | :-------: | :----------: | :---
-`C1_DTLZ1_N` | `4+N` | N | 1 | Real
-`C1_DTLZ3_N` | `9+N` | N | 1 | Real
-`C2_DTLZ2_N` | `9+N` | N | 1 | Real
-`C3_DTLZ1_N` | `4+N` | N | N | Real
-`C3_DTLZ4_N` | `9+N` | N | N | Real
-`Convex_C2_DTLZ2_N` | `9+N` | N | 1 | Real
+Problem | # of Vars | # of Objs | # of Constrs | Type | Constructor | Pareto Front
+:------ | :-------: | :-------: | :----------: | :--- | :---------- | ------------
+C1_DTLZ1 | `4+N` | `N` | 1 | Real | `new C1_DTLZ1(N)` | <img src="imgs/C1_DTLZ1.2D.png" width="100" /> <img src="imgs/C1_DTLZ1.3D.png" width="100" />
+C1_DTLZ3 | `9+N` | `N` | 1 | Real | `new C1_DTLZ3(N)` | <img src="imgs/C1_DTLZ3.2D.png" width="100" /> <img src="imgs/C1_DTLZ3.3D.png" width="100" />
+C2_DTLZ2 | `9+N` | `N` | 1 | Real | `new C2_DTLZ2(N)` | <img src="imgs/C2_DTLZ2.2D.png" width="100" /> <img src="imgs/C2_DTLZ2.3D.png" width="100" />
+C3_DTLZ1 | `4+N` | `N` | N | Real | `new C3_DTLZ1(N)` | <img src="imgs/C3_DTLZ1.2D.png" width="100" /> <img src="imgs/C3_DTLZ1.3D.png" width="100" />
+C3_DTLZ4 | `9+N` | `N` | N | Real | `new C3_DTLZ4(N)` | <img src="imgs/C3_DTLZ4.2D.png" width="100" /> <img src="imgs/C3_DTLZ4.3D.png" width="100" />
+Convex_C2_DTLZ2 | `9+N` | `N` | 1 | Real | `new ConvexC2_DTLZ2(N)` | <img src="imgs/Convex_C2_DTLZ2.2D.png" width="100" /> <img src="imgs/Convex_C2_DTLZ2.3D.png" width="100" />
 
 ### LSMOP
 
-Large-scale multi- and many-objective problem test suite [^cheng17].  These problems are scalable in the number of
-objectives.  Control this by replacing `N` in the name.
+Large-scale multi- and many-objective problem test suite [^cheng17].  These problems are scalable in the number of objectives,
+controlled by passing the value `N` to the constructor.
 
-Problem | # of Vars | # of Objs | # of Constrs | Type 
-:------ | :-------: | :-------: | :----------: | :---
-`LSMOP1_N` | ??? | N | 0 | Real
-`LSMOP2_N` | ??? | N | 0 | Real
-`LSMOP3_N` | ??? | N | 0 | Real
-`LSMOP4_N` | ??? | N | 0 | Real
-`LSMOP5_N` | ??? | N | 0 | Real
-`LSMOP6_N` | ??? | N | 0 | Real
-`LSMOP7_N` | ??? | N | 0 | Real
-`LSMOP8_N` | ??? | N | 0 | Real
-`LSMOP9_N` | ??? | N | 0 | Real
+Problem | # of Vars | # of Objs | # of Constrs | Type | Constructor | Pareto Front
+:------ | :-------: | :-------: | :----------: | :--- | :---------- | ------------
+LSMOP1 | ??? | `N` | 0 | Real | `new LSMOP1(N)` | <img src="imgs/LSMOP1.2D.png" width="100" />
+LSMOP2 | ??? | `N` | 0 | Real | `new LSMOP2(N)` | <img src="imgs/LSMOP2.2D.png" width="100" />
+LSMOP3 | ??? | `N` | 0 | Real | `new LSMOP3(N)` | <img src="imgs/LSMOP3.2D.png" width="100" />
+LSMOP4 | ??? | `N` | 0 | Real | `new LSMOP4(N)` | <img src="imgs/LSMOP4.2D.png" width="100" />
+LSMOP5 | ??? | `N` | 0 | Real | `new LSMOP5(N)` | <img src="imgs/LSMOP5.2D.png" width="100" />
+LSMOP6 | ??? | `N` | 0 | Real | `new LSMOP6(N)` | <img src="imgs/LSMOP6.2D.png" width="100" />
+LSMOP7 | ??? | `N` | 0 | Real | `new LSMOP7(N)` | <img src="imgs/LSMOP7.2D.png" width="100" />
+LSMOP8 | ??? | `N` | 0 | Real | `new LSMOP8(N)` | <img src="imgs/LSMOP8.2D.png" width="100" />
+LSMOP9 | ??? | `N` | 0 | Real | `new LSMOP9(N)` | <img src="imgs/LSMOP9.2D.png" width="100" />
 
 The number of decision variables depends on the how the problem is configured.  Use
 `problem.getNumberOfVariables()` to lookup the exact values.
@@ -172,37 +148,77 @@ The number of decision variables depends on the how the problem is configured.  
 ### ZCAT
 
 Set of challenging test problems for multi- and many-objective optimization [^zapotecas23].  These problems are
-scalable in the number of objectives.  Control this by replacing `N` in the name.
+scalable in the number of objectives, controlled by passing the value `N` to the constructor.
 
-Problem | # of Vars | # of Objs | # of Constrs | Type 
-:------ | :-------: | :-------: | :----------: | :---
-`ZCAT1_N` | 10*N | N | 0 | Real
-`ZCAT2_N` | 10*N | N | 0 | Real
-`ZCAT3_N` | 10*N | N | 0 | Real
-`ZCAT4_N` | 10*N | N | 0 | Real
-`ZCAT5_N` | 10*N | N | 0 | Real
-`ZCAT6_N` | 10*N | N | 0 | Real
-`ZCAT7_N` | 10*N | N | 0 | Real
-`ZCAT8_N` | 10*N | N | 0 | Real
-`ZCAT9_N` | 10*N | N | 0 | Real
-`ZCAT10_N` | 10*N | N | 0 | Real
-`ZCAT11_N` | 10*N | N | 0 | Real
-`ZCAT12_N` | 10*N | N | 0 | Real
-`ZCAT13_N` | 10*N | N | 0 | Real
-`ZCAT14_N` | 10*N | N | 0 | Real
-`ZCAT15_N` | 10*N | N | 0 | Real
-`ZCAT16_N` | 10*N | N | 0 | Real
-`ZCAT17_N` | 10*N | N | 0 | Real
-`ZCAT18_N` | 10*N | N | 0 | Real
-`ZCAT19_N` | 10*N | N | 0 | Real
-`ZCAT20_N` | 10*N | N | 0 | Real
+Problem | # of Vars | # of Objs | # of Constrs | Type | Constructor | Pareto Front
+:------ | :-------: | :-------: | :----------: | :--- | :---------- | ------------
+ZCAT1 | `10*N` | `N` | 0 | Real | `new ZCAT1(N)` | <img src="imgs/ZCAT1.2D.png" width="100" /> <img src="imgs/ZCAT1.3D.png" width="100" />
+ZCAT2 | `10*N` | `N` | 0 | Real | `new ZCAT2(N)` | <img src="imgs/ZCAT2.2D.png" width="100" /> <img src="imgs/ZCAT2.3D.png" width="100" />
+ZCAT3 | `10*N` | `N` | 0 | Real | `new ZCAT3(N)` | <img src="imgs/ZCAT3.2D.png" width="100" /> <img src="imgs/ZCAT3.3D.png" width="100" />
+ZCAT4 | `10*N` | `N` | 0 | Real | `new ZCAT4(N)` | <img src="imgs/ZCAT4.2D.png" width="100" /> <img src="imgs/ZCAT4.3D.png" width="100" />
+ZCAT5 | `10*N` | `N` | 0 | Real | `new ZCAT5(N)` | <img src="imgs/ZCAT5.2D.png" width="100" /> <img src="imgs/ZCAT5.3D.png" width="100" />
+ZCAT6 | `10*N` | `N` | 0 | Real | `new ZCAT6(N)` | <img src="imgs/ZCAT6.2D.png" width="100" /> <img src="imgs/ZCAT6.3D.png" width="100" />
+ZCAT7 | `10*N` | `N` | 0 | Real | `new ZCAT7(N)` | <img src="imgs/ZCAT7.2D.png" width="100" /> <img src="imgs/ZCAT7.3D.png" width="100" />
+ZCAT8 | `10*N` | `N` | 0 | Real | `new ZCAT8(N)` | <img src="imgs/ZCAT8.2D.png" width="100" /> <img src="imgs/ZCAT8.3D.png" width="100" />
+ZCAT9 | `10*N` | `N` | 0 | Real | `new ZCAT9(N)` | <img src="imgs/ZCAT9.2D.png" width="100" /> <img src="imgs/ZCAT9.3D.png" width="100" />
+ZCAT10 | `10*N` | `N` | 0 | Real | `new ZCAT10(N)` | <img src="imgs/ZCAT10.2D.png" width="100" /> <img src="imgs/ZCAT10.3D.png" width="100" />
+ZCAT11 | `10*N` | `N` | 0 | Real | `new ZCAT11(N)` | <img src="imgs/ZCAT11.2D.png" width="100" /> <img src="imgs/ZCAT11.3D.png" width="100" />
+ZCAT12 | `10*N` | `N` | 0 | Real | `new ZCAT12(N)` | <img src="imgs/ZCAT12.2D.png" width="100" /> <img src="imgs/ZCAT12.3D.png" width="100" />
+ZCAT13 | `10*N` | `N` | 0 | Real | `new ZCAT13(N)` | <img src="imgs/ZCAT13.2D.png" width="100" /> <img src="imgs/ZCAT13.3D.png" width="100" />
+ZCAT14 | `10*N` | `N` | 0 | Real | `new ZCAT14(N)` | <img src="imgs/ZCAT14.2D.png" width="100" /> <img src="imgs/ZCAT14.3D.png" width="100" />
+ZCAT15 | `10*N` | `N` | 0 | Real | `new ZCAT15(N)` | <img src="imgs/ZCAT15.2D.png" width="100" /> <img src="imgs/ZCAT15.3D.png" width="100" />
+ZCAT16 | `10*N` | `N` | 0 | Real | `new ZCAT16(N)` | <img src="imgs/ZCAT16.2D.png" width="100" /> <img src="imgs/ZCAT16.3D.png" width="100" />
+ZCAT17 | `10*N` | `N` | 0 | Real | `new ZCAT17(N)` | <img src="imgs/ZCAT17.2D.png" width="100" /> <img src="imgs/ZCAT17.3D.png" width="100" />
+ZCAT18 | `10*N` | `N` | 0 | Real | `new ZCAT18(N)` | <img src="imgs/ZCAT18.2D.png" width="100" /> <img src="imgs/ZCAT18.3D.png" width="100" />
+ZCAT19 | `10*N` | `N` | 0 | Real | `new ZCAT19(N)` | <img src="imgs/ZCAT19.2D.png" width="100" /> <img src="imgs/ZCAT19.3D.png" width="100" />
+ZCAT20 | `10*N` | `N` | 0 | Real | `new ZCAT20(N)` | <img src="imgs/ZCAT20.2D.png" width="100" /> <img src="imgs/ZCAT20.3D.png" width="100" />
 
-### BBOB-2016
+## Miscellaneous Problems
+
+Individual problems found throughout the literature that do not belong to a specific test suite.
+
+Problem | # of Vars | # of Objs | # of Constrs | Type | Constructor | Pareto Front
+:------ | :-------: | :-------: | :----------: | :--- | :---------- | ------------
+Belegundu | 2 | 2 | 2 | Real | `new Belegundu()` | <img src="imgs/Belegundu.png" width="100" />
+Binh | 2 | 2 | 0 | Real | `new Binh()` | <img src="imgs/Binh.png" width="100" />
+Binh2 | 2 | 2 | 2 | Real | `new Binh2()` | <img src="imgs/Binh2.png" width="100" />
+Binh3 | 2 | 3 | 0 | Real | `new Binh3()` | <img src="imgs/Binh3.png" width="100" />
+Binh4 | 2 | 3 | 2 | Real | `new Binh4()` | <img src="imgs/Binh4.png" width="100" />
+Fonseca | 2 | 2 | 0 | Real | `new Fonseca()` | <img src="imgs/Fonseca.png" width="100" />
+Fonseca2 | 3 | 2 | 0 | Real | `new Fonseca2()` | <img src="imgs/Fonseca2.png" width="100" />
+Jimenez (Maximized) | 2 | 2 | 4 | Real | `new Jimenez()` | <img src="imgs/Jimenez.png" width="100" />
+Kita (Maximized) | 2 | 2 | 3 | Real | `new Kita()` | <img src="imgs/Kita.png" width="100" />
+Kursawe | 3 | 2 | 0 | Real | `new Kursawe()` | <img src="imgs/Kursawe.png" width="100" />
+Laumanns | 2 | 2 | 0 | Real | `new Laumanns()` | <img src="imgs/Laumanns.png" width="100" />
+Lis | 2 | 2 | 0 | Real | `new Lis()` | <img src="imgs/Lis.png" width="100" />
+Murata | 2 | 2 | 0 | Real | `new Murata()` | <img src="imgs/Murata.png" width="100" />
+Obayashi (Maximized) | 2 | 2 | 1 | Real | `new Obayashi()` | <img src="imgs/Obayashi.png" width="100" />
+OKA1 | 2 | 2 | 0 | Real | `new OKA1()` | <img src="imgs/OKA1.png" width="100" />
+OKA2 | 3 | 2 | 0 | Real | `new OKA2()` | <img src="imgs/OKA2.png" width="100" />
+Osyczka | 2 | 2 | 2 | Real | `new Osyczka()` | <img src="imgs/Osyczka.png" width="100" />
+Osyczka2 | 6 | 2 | 6 | Real | `new Osyczka2()` | <img src="imgs/Osyczka2.png" width="100" />
+Poloni (Maximized) | 2 | 2 | 0 | Real | `new Poloni()` | <img src="imgs/Poloni.png" width="100" />
+Quagliarella | 16 | 2 | 0 | Real | `new Quagliarella()` | <img src="imgs/Quagliarella.png" width="100" />
+Rendon | 2 | 2 | 0 | Real | `new Rendon()` | <img src="imgs/Rendon.png" width="100" />
+Rendon2 | 2 | 2 | 0 | Real | `new Rendon2()` | <img src="imgs/Rendon2.png" width="100" />
+Schaffer | 1 | 2 | 0 | Real | `new Schaffer()` | <img src="imgs/Schaffer.png" width="100" />
+Schaffer2 | 1 | 2 | 0 | Real | `new Schaffer2()` | <img src="imgs/Schaffer2.png" width="100" />
+Srinivas | 2 | 2 | 2 | Real | `new Srinivas()` | <img src="imgs/Srinivas.png" width="100" />
+Tamaki (Maximized) | 3 | 3 | 1 | Real | `new Tamaki()` | <img src="imgs/Tamaki.png" width="100" />
+Tanaka | 2 | 2 | 2 | Real | `new Tanaka()` | <img src="imgs/Tanaka.png" width="100" />
+Viennet | 2 | 3 | 0 | Real | `new Viennet()` | <img src="imgs/Viennet.png" width="100" />
+Viennet2 | 2 | 3 | 0 | Real | `new Viennet2()` | <img src="imgs/Viennet2.png" width="100" />
+Viennet3 | 2 | 3 | 0 | Real | `new Viennet3()` | <img src="imgs/Viennet3.png" width="100" />
+Viennet4 | 2 | 3 | 3 | Real | `new Viennet4()` | <img src="imgs/Viennet4.png" width="100" />
+
+Note that several of these problems are maximized.  Since the MOEA Framework only supports minimization, the
+objective values are negated!
+
+## BBOB-2016
 
 Contains the 55 bi-objective problems as part of the "bbob-biobj" test suite from the BBOB workshop hosted at GECCO
-2016 [^finck15].  These bi-objective problems are formed by combining two single-objective functions.
-
-The easiest way to construct a BBOB 2016 problem instance is from its name.  Each single-objective function is defined
+2016 [^finck15].  These bi-objective problems are formed by combining two single-objective functions.  The easiest
+way to construct a BBOB 2016 problem instance is from its name.  Each single-objective function is defined
 by its (1) test function number, (2) instance number, and (3) dimension, given as:
 
 ```
@@ -221,49 +237,9 @@ Problem problem = ProblemFactory.getInstance().getProblem("bbob-biobj(bbob_f1_i2
 
 For more details on the specific problem instances, see http://numbbo.github.io/coco-doc/bbob-biobj/functions/.
 
-## Individual Problems
-
-Problem | # of Vars | # of Objs | # of Constrs | Type 
-:------ | :-------: | :-------: | :----------: | :---
-Belegundu | 2 | 2 | 2 | Real
-Binh | 2 | 2 | 0 | Real
-Binh2 | 2 | 2 | 2 | Real
-Binh3 | 2 | 3 | 0 | Real
-Binh4 | 2 | 3 | 2 | Real
-Fonseca | 2 | 2 | 0 | Real
-Fonseca2 | 3 | 2 | 0 | Real
-Jimenez $\dagger$ | 2 | 2 | 4 | Real
-Kita $\dagger$ | 2 | 2 | 3 | Real
-Kursawe | 3 | 2 | 0 | Real
-Laumanns | 2 | 2 | 0 | Real
-Lis | 2 | 2 | 0 | Real
-Murata | 2 | 2 | 0 | Real
-Obayashi $\dagger$ | 2 | 2 | 1 | Real
-OKA1 | 2 | 2 | 0 | Real
-OKA2 | 3 | 2 | 0 | Real
-Osyczka | 2 | 2 | 2 | Real
-Osyczka2 | 6 | 2 | 6 | Real
-Poloni $\dagger$ | 2 | 2 | 0 | Real
-Quagliarella | 16 | 2 | 0 | Real
-Rendon | 2 | 2 | 0 | Real
-Rendon2 | 2 | 2 | 0 | Real
-Schaffer | 1 | 2 | 0 | Real
-Schaffer2 | 1 | 2 | 0 | Real
-Srinivas | 2 | 2 | 2 | Real
-Tamaki $\dagger$ | 3 | 3 | 1 | Real
-Tanaka | 2 | 2 | 2 | Real
-Viennet | 2 | 3 | 0 | Real
-Viennet2 | 2 | 3 | 0 | Real
-Viennet3 | 2 | 3 | 0 | Real
-Viennet4 | 2 | 3 | 3 | Real
-
-Problems marked with $\dagger$ have maximized objectives.  Since the MOEA Framework only works with minimized
-objectives, the objective values are negated.
-
 ## Problem Wrappers
 
-Problem wrappers modify or add some extra functionality to existing problems, typically in an effort to make the
-problem more challenging.
+Problem wrappers modify or extend an existing problems, typically in an effort to make the problem more challenging.
 
 ### Scaled Problems
 
