@@ -173,28 +173,28 @@ The number of decision variables depends on the how the problem is configured.  
 Set of challenging test problems for multi- and many-objective optimization [^zapotecas23].  These problems are
 scalable in the number of objectives.  Control this by replacing `N` in the name.
 
-Problem | # of Vars | # of Objs | # of Constrs | Type 
-:------ | :-------: | :-------: | :----------: | :---
-`ZCAT1_N` | 10*N | N | 0 | Real
-`ZCAT2_N` | 10*N | N | 0 | Real
-`ZCAT3_N` | 10*N | N | 0 | Real
-`ZCAT4_N` | 10*N | N | 0 | Real
-`ZCAT5_N` | 10*N | N | 0 | Real
-`ZCAT6_N` | 10*N | N | 0 | Real
-`ZCAT7_N` | 10*N | N | 0 | Real
-`ZCAT8_N` | 10*N | N | 0 | Real
-`ZCAT9_N` | 10*N | N | 0 | Real
-`ZCAT10_N` | 10*N | N | 0 | Real
-`ZCAT11_N` | 10*N | N | 0 | Real
-`ZCAT12_N` | 10*N | N | 0 | Real
-`ZCAT13_N` | 10*N | N | 0 | Real
-`ZCAT14_N` | 10*N | N | 0 | Real
-`ZCAT15_N` | 10*N | N | 0 | Real
-`ZCAT16_N` | 10*N | N | 0 | Real
-`ZCAT17_N` | 10*N | N | 0 | Real
-`ZCAT18_N` | 10*N | N | 0 | Real
-`ZCAT19_N` | 10*N | N | 0 | Real
-`ZCAT20_N` | 10*N | N | 0 | Real
+Problem | # of Vars | # of Objs | # of Constrs | Type | Constructor | Pareto Front
+:------ | :-------: | :-------: | :----------: | :--- | :---------- | ------------
+ZCAT1 | `10*N` | `N` | 0 | Real | `new ZCAT1(N)` | <img src="imgs/ZCAT1.2D.png" width="100" />
+ZCAT2 | `10*N` | `N` | 0 | Real | `new ZCAT2(N)` | <img src="imgs/ZCAT2.2D.png" width="100" />
+ZCAT3 | `10*N` | `N` | 0 | Real | `new ZCAT3(N)` | <img src="imgs/ZCAT3.2D.png" width="100" />
+ZCAT4 | `10*N` | `N` | 0 | Real | `new ZCAT4(N)` | <img src="imgs/ZCAT4.2D.png" width="100" />
+ZCAT5 | `10*N` | `N` | 0 | Real | `new ZCAT5(N)` | <img src="imgs/ZCAT5.2D.png" width="100" />
+ZCAT6 | `10*N` | `N` | 0 | Real | `new ZCAT6(N)` | <img src="imgs/ZCAT6.2D.png" width="100" />
+ZCAT7 | `10*N` | `N` | 0 | Real | `new ZCAT7(N)` | <img src="imgs/ZCAT7.2D.png" width="100" />
+ZCAT8 | `10*N` | `N` | 0 | Real | `new ZCAT8(N)` | <img src="imgs/ZCAT8.2D.png" width="100" />
+ZCAT9 | `10*N` | `N` | 0 | Real | `new ZCAT9(N)` | <img src="imgs/ZCAT9.2D.png" width="100" />
+ZCAT10 | `10*N` | `N` | 0 | Real | `new ZCAT10(N)` | <img src="imgs/ZCAT10.2D.png" width="100" />
+ZCAT11 | `10*N` | `N` | 0 | Real | `new ZCAT11(N)` | <img src="imgs/ZCAT11.2D.png" width="100" />
+ZCAT12 | `10*N` | `N` | 0 | Real | `new ZCAT12(N)` | <img src="imgs/ZCAT12.2D.png" width="100" />
+ZCAT13 | `10*N` | `N` | 0 | Real | `new ZCAT13(N)` | <img src="imgs/ZCAT13.2D.png" width="100" />
+ZCAT14 | `10*N` | `N` | 0 | Real | `new ZCAT14(N)` | <img src="imgs/ZCAT14.2D.png" width="100" />
+ZCAT15 | `10*N` | `N` | 0 | Real | `new ZCAT15(N)` | <img src="imgs/ZCAT15.2D.png" width="100" />
+ZCAT16 | `10*N` | `N` | 0 | Real | `new ZCAT16(N)` | <img src="imgs/ZCAT16.2D.png" width="100" />
+ZCAT17 | `10*N` | `N` | 0 | Real | `new ZCAT17(N)` | <img src="imgs/ZCAT17.2D.png" width="100" />
+ZCAT18 | `10*N` | `N` | 0 | Real | `new ZCAT18(N)` | <img src="imgs/ZCAT18.2D.png" width="100" />
+ZCAT19 | `10*N` | `N` | 0 | Real | `new ZCAT19(N)` | <img src="imgs/ZCAT19.2D.png" width="100" />
+ZCAT20 | `10*N` | `N` | 0 | Real | `new ZCAT20(N)` | <img src="imgs/ZCAT20.2D.png" width="100" />
 
 ### BBOB-2016
 
@@ -222,39 +222,39 @@ For more details on the specific problem instances, see http://numbbo.github.io/
 
 ## Individual Problems
 
-Problem | # of Vars | # of Objs | # of Constrs | Type 
-:------ | :-------: | :-------: | :----------: | :---
-Belegundu | 2 | 2 | 2 | Real
-Binh | 2 | 2 | 0 | Real
-Binh2 | 2 | 2 | 2 | Real
-Binh3 | 2 | 3 | 0 | Real
-Binh4 | 2 | 3 | 2 | Real
-Fonseca | 2 | 2 | 0 | Real
-Fonseca2 | 3 | 2 | 0 | Real
-Jimenez $\dagger$ | 2 | 2 | 4 | Real
-Kita $\dagger$ | 2 | 2 | 3 | Real
-Kursawe | 3 | 2 | 0 | Real
-Laumanns | 2 | 2 | 0 | Real
-Lis | 2 | 2 | 0 | Real
-Murata | 2 | 2 | 0 | Real
-Obayashi $\dagger$ | 2 | 2 | 1 | Real
-OKA1 | 2 | 2 | 0 | Real
-OKA2 | 3 | 2 | 0 | Real
-Osyczka | 2 | 2 | 2 | Real
-Osyczka2 | 6 | 2 | 6 | Real
-Poloni $\dagger$ | 2 | 2 | 0 | Real
-Quagliarella | 16 | 2 | 0 | Real
-Rendon | 2 | 2 | 0 | Real
-Rendon2 | 2 | 2 | 0 | Real
-Schaffer | 1 | 2 | 0 | Real
-Schaffer2 | 1 | 2 | 0 | Real
-Srinivas | 2 | 2 | 2 | Real
-Tamaki $\dagger$ | 3 | 3 | 1 | Real
-Tanaka | 2 | 2 | 2 | Real
-Viennet | 2 | 3 | 0 | Real
-Viennet2 | 2 | 3 | 0 | Real
-Viennet3 | 2 | 3 | 0 | Real
-Viennet4 | 2 | 3 | 3 | Real
+Problem | # of Vars | # of Objs | # of Constrs | Type | Constructor | Pareto Front
+:------ | :-------: | :-------: | :----------: | :--- | :---------- | ------------
+Belegundu | 2 | 2 | 2 | Real | `new Belegundu()` | <img src="imgs/Belegundu.png" width="100" />
+Binh | 2 | 2 | 0 | Real | `new Binh()` | <img src="imgs/Binh.png" width="100" />
+Binh2 | 2 | 2 | 2 | Real | `new Binh2()` | <img src="imgs/Binh2.png" width="100" />
+Binh3 | 2 | 3 | 0 | Real | `new Binh3()` | <img src="imgs/Binh3.png" width="100" />
+Binh4 | 2 | 3 | 2 | Real | `new Binh4()` | <img src="imgs/Binh4.png" width="100" />
+Fonseca | 2 | 2 | 0 | Real | `new Fonseca()` | <img src="imgs/Fonseca.png" width="100" />
+Fonseca2 | 3 | 2 | 0 | Real | `new Fonseca2()` | <img src="imgs/Fonseca2.png" width="100" />
+Jimenez $\dagger$ | 2 | 2 | 4 | Real | `new Jimenez()` | <img src="imgs/Jimenez.png" width="100" />
+Kita $\dagger$ | 2 | 2 | 3 | Real | `new Kita()` | <img src="imgs/Kita.png" width="100" />
+Kursawe | 3 | 2 | 0 | Real | `new Kursawe()` | <img src="imgs/Kursawe.png" width="100" />
+Laumanns | 2 | 2 | 0 | Real | `new Laumanns()` | <img src="imgs/Laumanns.png" width="100" />
+Lis | 2 | 2 | 0 | Real | `new Lis()` | <img src="imgs/Lis.png" width="100" />
+Murata | 2 | 2 | 0 | Real | `new Murata()` | <img src="imgs/Murata.png" width="100" />
+Obayashi $\dagger$ | 2 | 2 | 1 | Real | `new Obayashi()` | <img src="imgs/Obyashi.png" width="100" />
+OKA1 | 2 | 2 | 0 | Real | `new OKA1()` | <img src="imgs/OKA1.png" width="100" />
+OKA2 | 3 | 2 | 0 | Real | `new OKA2()` | <img src="imgs/OKA2.png" width="100" />
+Osyczka | 2 | 2 | 2 | Real | `new Osyczka()` | <img src="imgs/Osyczka.png" width="100" />
+Osyczka2 | 6 | 2 | 6 | Real | `new Osyczka2()` | <img src="imgs/Osyczka2.png" width="100" />
+Poloni $\dagger$ | 2 | 2 | 0 | Real | `new Poloni()` | <img src="imgs/Poloni.png" width="100" />
+Quagliarella | 16 | 2 | 0 | Real | `new Quagliarella()` | <img src="imgs/Quagliarella.png" width="100" />
+Rendon | 2 | 2 | 0 | Real | `new Rendon()` | <img src="imgs/Rendon.png" width="100" />
+Rendon2 | 2 | 2 | 0 | Real | `new Rendon2()` | <img src="imgs/Rendon2.png" width="100" />
+Schaffer | 1 | 2 | 0 | Real | `new Schaffer()` | <img src="imgs/Schaffer.png" width="100" />
+Schaffer2 | 1 | 2 | 0 | Real | `new Schaffer2()` | <img src="imgs/Schaffer2.png" width="100" />
+Srinivas | 2 | 2 | 2 | Real | `new Srinivas()` | <img src="imgs/Srinivas.png" width="100" />
+Tamaki $\dagger$ | 3 | 3 | 1 | Real | `new Tamaki()` | <img src="imgs/Tamaki.png" width="100" />
+Tanaka | 2 | 2 | 2 | Real | `new Tanaka()` | <img src="imgs/Tanaka.png" width="100" />
+Viennet | 2 | 3 | 0 | Real | `new Viennet()` | <img src="imgs/Viennet.png" width="100" />
+Viennet2 | 2 | 3 | 0 | Real | `new Viennet2()` | <img src="imgs/Viennet2.png" width="100" />
+Viennet3 | 2 | 3 | 0 | Real | `new Viennet3()` | <img src="imgs/Viennet3.png" width="100" />
+Viennet4 | 2 | 3 | 3 | Real | `new Viennet4()` | <img src="imgs/Viennet4.png" width="100" />
 
 Problems marked with $\dagger$ have maximized objectives.  Since the MOEA Framework only works with minimized
 objectives, the objective values are negated.
