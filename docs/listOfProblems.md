@@ -141,12 +141,12 @@ objectives.  Control this by replacing `N` in the name.
 
 Problem | # of Vars | # of Objs | # of Constrs | Type | Constructor | Pareto Front
 :------ | :-------: | :-------: | :----------: | :--- | :---------- | ------------
-C1_DTLZ1 | `4+N` | `N` | 1 | Real | `new C1_DTLZ1(N)` |
-C1_DTLZ3 | `9+N` | `N` | 1 | Real | `new C1_DTLZ3(N)` |
-C2_DTLZ2 | `9+N` | `N` | 1 | Real | `new C2_DTLZ2(N)` |
-C3_DTLZ1 | `4+N` | `N` | N | Real | `new C3_DTLZ1(N)` |
-C3_DTLZ4 | `9+N` | `N` | N | Real | `new C3_DTLZ4(N)` |
-Convex_C2_DTLZ2 | `9+N` | `N` | 1 | Real | `new ConvexC2_DTLZ2(N)` |
+C1_DTLZ1 | `4+N` | `N` | 1 | Real | `new C1_DTLZ1(N)` | <img src="imgs/C1_DTLZ1.2D.png" width="100" /> <img src="imgs/C1_DTLZ1.3D.png" width="100" />
+C1_DTLZ3 | `9+N` | `N` | 1 | Real | `new C1_DTLZ3(N)` | <img src="imgs/C1_DTLZ3.2D.png" width="100" /> <img src="imgs/C1_DTLZ3.3D.png" width="100" />
+C2_DTLZ2 | `9+N` | `N` | 1 | Real | `new C2_DTLZ2(N)` | <img src="imgs/C2_DTLZ2.2D.png" width="100" /> <img src="imgs/C2_DTLZ2.3D.png" width="100" />
+C3_DTLZ1 | `4+N` | `N` | N | Real | `new C3_DTLZ1(N)` | <img src="imgs/C3_DTLZ1.2D.png" width="100" /> <img src="imgs/C3_DTLZ1.3D.png" width="100" />
+C3_DTLZ4 | `9+N` | `N` | N | Real | `new C3_DTLZ4(N)` | <img src="imgs/C3_DTLZ4.2D.png" width="100" /> <img src="imgs/C3_DTLZ4.3D.png" width="100" />
+Convex_C2_DTLZ2 | `9+N` | `N` | 1 | Real | `new ConvexC2_DTLZ2(N)` | <img src="imgs/Convex_C2_DTLZ2.2D.png" width="100" /> <img src="imgs/Convex_C2_DTLZ2.3D.png" width="100" />
 
 ### LSMOP
 
@@ -175,26 +175,26 @@ scalable in the number of objectives.  Control this by replacing `N` in the name
 
 Problem | # of Vars | # of Objs | # of Constrs | Type | Constructor | Pareto Front
 :------ | :-------: | :-------: | :----------: | :--- | :---------- | ------------
-ZCAT1 | `10*N` | `N` | 0 | Real | `new ZCAT1(N)` | <img src="imgs/ZCAT1.2D.png" width="100" />
-ZCAT2 | `10*N` | `N` | 0 | Real | `new ZCAT2(N)` | <img src="imgs/ZCAT2.2D.png" width="100" />
-ZCAT3 | `10*N` | `N` | 0 | Real | `new ZCAT3(N)` | <img src="imgs/ZCAT3.2D.png" width="100" />
-ZCAT4 | `10*N` | `N` | 0 | Real | `new ZCAT4(N)` | <img src="imgs/ZCAT4.2D.png" width="100" />
-ZCAT5 | `10*N` | `N` | 0 | Real | `new ZCAT5(N)` | <img src="imgs/ZCAT5.2D.png" width="100" />
-ZCAT6 | `10*N` | `N` | 0 | Real | `new ZCAT6(N)` | <img src="imgs/ZCAT6.2D.png" width="100" />
-ZCAT7 | `10*N` | `N` | 0 | Real | `new ZCAT7(N)` | <img src="imgs/ZCAT7.2D.png" width="100" />
-ZCAT8 | `10*N` | `N` | 0 | Real | `new ZCAT8(N)` | <img src="imgs/ZCAT8.2D.png" width="100" />
-ZCAT9 | `10*N` | `N` | 0 | Real | `new ZCAT9(N)` | <img src="imgs/ZCAT9.2D.png" width="100" />
-ZCAT10 | `10*N` | `N` | 0 | Real | `new ZCAT10(N)` | <img src="imgs/ZCAT10.2D.png" width="100" />
-ZCAT11 | `10*N` | `N` | 0 | Real | `new ZCAT11(N)` | <img src="imgs/ZCAT11.2D.png" width="100" />
-ZCAT12 | `10*N` | `N` | 0 | Real | `new ZCAT12(N)` | <img src="imgs/ZCAT12.2D.png" width="100" />
-ZCAT13 | `10*N` | `N` | 0 | Real | `new ZCAT13(N)` | <img src="imgs/ZCAT13.2D.png" width="100" />
-ZCAT14 | `10*N` | `N` | 0 | Real | `new ZCAT14(N)` | <img src="imgs/ZCAT14.2D.png" width="100" />
-ZCAT15 | `10*N` | `N` | 0 | Real | `new ZCAT15(N)` | <img src="imgs/ZCAT15.2D.png" width="100" />
-ZCAT16 | `10*N` | `N` | 0 | Real | `new ZCAT16(N)` | <img src="imgs/ZCAT16.2D.png" width="100" />
-ZCAT17 | `10*N` | `N` | 0 | Real | `new ZCAT17(N)` | <img src="imgs/ZCAT17.2D.png" width="100" />
-ZCAT18 | `10*N` | `N` | 0 | Real | `new ZCAT18(N)` | <img src="imgs/ZCAT18.2D.png" width="100" />
-ZCAT19 | `10*N` | `N` | 0 | Real | `new ZCAT19(N)` | <img src="imgs/ZCAT19.2D.png" width="100" />
-ZCAT20 | `10*N` | `N` | 0 | Real | `new ZCAT20(N)` | <img src="imgs/ZCAT20.2D.png" width="100" />
+ZCAT1 | `10*N` | `N` | 0 | Real | `new ZCAT1(N)` | <img src="imgs/ZCAT1.2D.png" width="100" /> <img src="imgs/ZCAT1.3D.png" width="100" />
+ZCAT2 | `10*N` | `N` | 0 | Real | `new ZCAT2(N)` | <img src="imgs/ZCAT2.2D.png" width="100" /> <img src="imgs/ZCAT2.3D.png" width="100" />
+ZCAT3 | `10*N` | `N` | 0 | Real | `new ZCAT3(N)` | <img src="imgs/ZCAT3.2D.png" width="100" /> <img src="imgs/ZCAT3.3D.png" width="100" />
+ZCAT4 | `10*N` | `N` | 0 | Real | `new ZCAT4(N)` | <img src="imgs/ZCAT4.2D.png" width="100" /> <img src="imgs/ZCAT4.3D.png" width="100" />
+ZCAT5 | `10*N` | `N` | 0 | Real | `new ZCAT5(N)` | <img src="imgs/ZCAT5.2D.png" width="100" /> <img src="imgs/ZCAT5.3D.png" width="100" />
+ZCAT6 | `10*N` | `N` | 0 | Real | `new ZCAT6(N)` | <img src="imgs/ZCAT6.2D.png" width="100" /> <img src="imgs/ZCAT6.3D.png" width="100" />
+ZCAT7 | `10*N` | `N` | 0 | Real | `new ZCAT7(N)` | <img src="imgs/ZCAT7.2D.png" width="100" /> <img src="imgs/ZCAT7.3D.png" width="100" />
+ZCAT8 | `10*N` | `N` | 0 | Real | `new ZCAT8(N)` | <img src="imgs/ZCAT8.2D.png" width="100" /> <img src="imgs/ZCAT8.3D.png" width="100" />
+ZCAT9 | `10*N` | `N` | 0 | Real | `new ZCAT9(N)` | <img src="imgs/ZCAT9.2D.png" width="100" /> <img src="imgs/ZCAT9.3D.png" width="100" />
+ZCAT10 | `10*N` | `N` | 0 | Real | `new ZCAT10(N)` | <img src="imgs/ZCAT10.2D.png" width="100" /> <img src="imgs/ZCAT10.3D.png" width="100" />
+ZCAT11 | `10*N` | `N` | 0 | Real | `new ZCAT11(N)` | <img src="imgs/ZCAT11.2D.png" width="100" /> <img src="imgs/ZCAT11.3D.png" width="100" />
+ZCAT12 | `10*N` | `N` | 0 | Real | `new ZCAT12(N)` | <img src="imgs/ZCAT12.2D.png" width="100" /> <img src="imgs/ZCAT12.3D.png" width="100" />
+ZCAT13 | `10*N` | `N` | 0 | Real | `new ZCAT13(N)` | <img src="imgs/ZCAT13.2D.png" width="100" /> <img src="imgs/ZCAT13.3D.png" width="100" />
+ZCAT14 | `10*N` | `N` | 0 | Real | `new ZCAT14(N)` | <img src="imgs/ZCAT14.2D.png" width="100" /> <img src="imgs/ZCAT14.3D.png" width="100" />
+ZCAT15 | `10*N` | `N` | 0 | Real | `new ZCAT15(N)` | <img src="imgs/ZCAT15.2D.png" width="100" /> <img src="imgs/ZCAT15.3D.png" width="100" />
+ZCAT16 | `10*N` | `N` | 0 | Real | `new ZCAT16(N)` | <img src="imgs/ZCAT16.2D.png" width="100" /> <img src="imgs/ZCAT16.3D.png" width="100" />
+ZCAT17 | `10*N` | `N` | 0 | Real | `new ZCAT17(N)` | <img src="imgs/ZCAT17.2D.png" width="100" /> <img src="imgs/ZCAT17.3D.png" width="100" />
+ZCAT18 | `10*N` | `N` | 0 | Real | `new ZCAT18(N)` | <img src="imgs/ZCAT18.2D.png" width="100" /> <img src="imgs/ZCAT18.3D.png" width="100" />
+ZCAT19 | `10*N` | `N` | 0 | Real | `new ZCAT19(N)` | <img src="imgs/ZCAT19.2D.png" width="100" /> <img src="imgs/ZCAT19.3D.png" width="100" />
+ZCAT20 | `10*N` | `N` | 0 | Real | `new ZCAT20(N)` | <img src="imgs/ZCAT20.2D.png" width="100" /> <img src="imgs/ZCAT20.3D.png" width="100" />
 
 ### BBOB-2016
 
