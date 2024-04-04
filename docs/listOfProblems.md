@@ -1,19 +1,5 @@
 # List of Problems
 
-## Contents
-
-* [ZDT](#zdt)
-* [DTLZ](#dtlz)
-* [LZ](#lz)
-* [CEC2009](#cec2009)
-* [WFG](#wfg)
-* [CDTLZ](#cdtlz)
-* [LSMOP](#lsmop)
-* [ZCAT](#zcat)
-* [BBOB 2016](#bbob-2016)
-* [Individual Problems](#individual-problems)
-* [Problem Wrappers](#problem-wrappers)
-
 ## Instantiating a Problem
 
 We can create an instance of any problem by calling its constructor:
@@ -31,15 +17,6 @@ relevant constructor to configure the problem.  For example, here we create the 
 
 ```java
 Problem problem = new DTLZ2(3);
-```
-
-We can also construct problems by name using the `ProblemFactory`.  This is primarily used when
-[running large-scale experiments](runningExperiments.md).  Here we create the same three-objective DTLZ2 problem:
-
-<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [49:49] -->
-
-```java
-Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_3");
 ```
 
 ## Test Suites
@@ -196,6 +173,45 @@ ZCAT18 | `10*N` | `N` | 0 | Real | `new ZCAT18(N)` | <img src="imgs/ZCAT18.2D.pn
 ZCAT19 | `10*N` | `N` | 0 | Real | `new ZCAT19(N)` | <img src="imgs/ZCAT19.2D.png" width="100" /> <img src="imgs/ZCAT19.3D.png" width="100" />
 ZCAT20 | `10*N` | `N` | 0 | Real | `new ZCAT20(N)` | <img src="imgs/ZCAT20.2D.png" width="100" /> <img src="imgs/ZCAT20.3D.png" width="100" />
 
+## Miscellaneous Problems
+
+Problem | # of Vars | # of Objs | # of Constrs | Type | Constructor | Pareto Front
+:------ | :-------: | :-------: | :----------: | :--- | :---------- | ------------
+Belegundu | 2 | 2 | 2 | Real | `new Belegundu()` | <img src="imgs/Belegundu.png" width="100" />
+Binh | 2 | 2 | 0 | Real | `new Binh()` | <img src="imgs/Binh.png" width="100" />
+Binh2 | 2 | 2 | 2 | Real | `new Binh2()` | <img src="imgs/Binh2.png" width="100" />
+Binh3 | 2 | 3 | 0 | Real | `new Binh3()` | <img src="imgs/Binh3.png" width="100" />
+Binh4 | 2 | 3 | 2 | Real | `new Binh4()` | <img src="imgs/Binh4.png" width="100" />
+Fonseca | 2 | 2 | 0 | Real | `new Fonseca()` | <img src="imgs/Fonseca.png" width="100" />
+Fonseca2 | 3 | 2 | 0 | Real | `new Fonseca2()` | <img src="imgs/Fonseca2.png" width="100" />
+Jimenez (Maximized) | 2 | 2 | 4 | Real | `new Jimenez()` | <img src="imgs/Jimenez.png" width="100" />
+Kita (Maximized) | 2 | 2 | 3 | Real | `new Kita()` | <img src="imgs/Kita.png" width="100" />
+Kursawe | 3 | 2 | 0 | Real | `new Kursawe()` | <img src="imgs/Kursawe.png" width="100" />
+Laumanns | 2 | 2 | 0 | Real | `new Laumanns()` | <img src="imgs/Laumanns.png" width="100" />
+Lis | 2 | 2 | 0 | Real | `new Lis()` | <img src="imgs/Lis.png" width="100" />
+Murata | 2 | 2 | 0 | Real | `new Murata()` | <img src="imgs/Murata.png" width="100" />
+Obayashi (Maximized) | 2 | 2 | 1 | Real | `new Obayashi()` | <img src="imgs/Obayashi.png" width="100" />
+OKA1 | 2 | 2 | 0 | Real | `new OKA1()` | <img src="imgs/OKA1.png" width="100" />
+OKA2 | 3 | 2 | 0 | Real | `new OKA2()` | <img src="imgs/OKA2.png" width="100" />
+Osyczka | 2 | 2 | 2 | Real | `new Osyczka()` | <img src="imgs/Osyczka.png" width="100" />
+Osyczka2 | 6 | 2 | 6 | Real | `new Osyczka2()` | <img src="imgs/Osyczka2.png" width="100" />
+Poloni (Maximized) | 2 | 2 | 0 | Real | `new Poloni()` | <img src="imgs/Poloni.png" width="100" />
+Quagliarella | 16 | 2 | 0 | Real | `new Quagliarella()` | <img src="imgs/Quagliarella.png" width="100" />
+Rendon | 2 | 2 | 0 | Real | `new Rendon()` | <img src="imgs/Rendon.png" width="100" />
+Rendon2 | 2 | 2 | 0 | Real | `new Rendon2()` | <img src="imgs/Rendon2.png" width="100" />
+Schaffer | 1 | 2 | 0 | Real | `new Schaffer()` | <img src="imgs/Schaffer.png" width="100" />
+Schaffer2 | 1 | 2 | 0 | Real | `new Schaffer2()` | <img src="imgs/Schaffer2.png" width="100" />
+Srinivas | 2 | 2 | 2 | Real | `new Srinivas()` | <img src="imgs/Srinivas.png" width="100" />
+Tamaki (Maximized) | 3 | 3 | 1 | Real | `new Tamaki()` | <img src="imgs/Tamaki.png" width="100" />
+Tanaka | 2 | 2 | 2 | Real | `new Tanaka()` | <img src="imgs/Tanaka.png" width="100" />
+Viennet | 2 | 3 | 0 | Real | `new Viennet()` | <img src="imgs/Viennet.png" width="100" />
+Viennet2 | 2 | 3 | 0 | Real | `new Viennet2()` | <img src="imgs/Viennet2.png" width="100" />
+Viennet3 | 2 | 3 | 0 | Real | `new Viennet3()` | <img src="imgs/Viennet3.png" width="100" />
+Viennet4 | 2 | 3 | 3 | Real | `new Viennet4()` | <img src="imgs/Viennet4.png" width="100" />
+
+Note that several of these problems are maximized.  Since the MOEA Framework only supports minimization, the
+objective values are negated!
+
 ### BBOB-2016
 
 Contains the 55 bi-objective problems as part of the "bbob-biobj" test suite from the BBOB workshop hosted at GECCO
@@ -219,45 +235,6 @@ Problem problem = ProblemFactory.getInstance().getProblem("bbob-biobj(bbob_f1_i2
 ```
 
 For more details on the specific problem instances, see http://numbbo.github.io/coco-doc/bbob-biobj/functions/.
-
-## Individual Problems
-
-Problem | # of Vars | # of Objs | # of Constrs | Type | Constructor | Pareto Front
-:------ | :-------: | :-------: | :----------: | :--- | :---------- | ------------
-Belegundu | 2 | 2 | 2 | Real | `new Belegundu()` | <img src="imgs/Belegundu.png" width="100" />
-Binh | 2 | 2 | 0 | Real | `new Binh()` | <img src="imgs/Binh.png" width="100" />
-Binh2 | 2 | 2 | 2 | Real | `new Binh2()` | <img src="imgs/Binh2.png" width="100" />
-Binh3 | 2 | 3 | 0 | Real | `new Binh3()` | <img src="imgs/Binh3.png" width="100" />
-Binh4 | 2 | 3 | 2 | Real | `new Binh4()` | <img src="imgs/Binh4.png" width="100" />
-Fonseca | 2 | 2 | 0 | Real | `new Fonseca()` | <img src="imgs/Fonseca.png" width="100" />
-Fonseca2 | 3 | 2 | 0 | Real | `new Fonseca2()` | <img src="imgs/Fonseca2.png" width="100" />
-Jimenez $\dagger$ | 2 | 2 | 4 | Real | `new Jimenez()` | <img src="imgs/Jimenez.png" width="100" />
-Kita $\dagger$ | 2 | 2 | 3 | Real | `new Kita()` | <img src="imgs/Kita.png" width="100" />
-Kursawe | 3 | 2 | 0 | Real | `new Kursawe()` | <img src="imgs/Kursawe.png" width="100" />
-Laumanns | 2 | 2 | 0 | Real | `new Laumanns()` | <img src="imgs/Laumanns.png" width="100" />
-Lis | 2 | 2 | 0 | Real | `new Lis()` | <img src="imgs/Lis.png" width="100" />
-Murata | 2 | 2 | 0 | Real | `new Murata()` | <img src="imgs/Murata.png" width="100" />
-Obayashi $\dagger$ | 2 | 2 | 1 | Real | `new Obayashi()` | <img src="imgs/Obyashi.png" width="100" />
-OKA1 | 2 | 2 | 0 | Real | `new OKA1()` | <img src="imgs/OKA1.png" width="100" />
-OKA2 | 3 | 2 | 0 | Real | `new OKA2()` | <img src="imgs/OKA2.png" width="100" />
-Osyczka | 2 | 2 | 2 | Real | `new Osyczka()` | <img src="imgs/Osyczka.png" width="100" />
-Osyczka2 | 6 | 2 | 6 | Real | `new Osyczka2()` | <img src="imgs/Osyczka2.png" width="100" />
-Poloni $\dagger$ | 2 | 2 | 0 | Real | `new Poloni()` | <img src="imgs/Poloni.png" width="100" />
-Quagliarella | 16 | 2 | 0 | Real | `new Quagliarella()` | <img src="imgs/Quagliarella.png" width="100" />
-Rendon | 2 | 2 | 0 | Real | `new Rendon()` | <img src="imgs/Rendon.png" width="100" />
-Rendon2 | 2 | 2 | 0 | Real | `new Rendon2()` | <img src="imgs/Rendon2.png" width="100" />
-Schaffer | 1 | 2 | 0 | Real | `new Schaffer()` | <img src="imgs/Schaffer.png" width="100" />
-Schaffer2 | 1 | 2 | 0 | Real | `new Schaffer2()` | <img src="imgs/Schaffer2.png" width="100" />
-Srinivas | 2 | 2 | 2 | Real | `new Srinivas()` | <img src="imgs/Srinivas.png" width="100" />
-Tamaki $\dagger$ | 3 | 3 | 1 | Real | `new Tamaki()` | <img src="imgs/Tamaki.png" width="100" />
-Tanaka | 2 | 2 | 2 | Real | `new Tanaka()` | <img src="imgs/Tanaka.png" width="100" />
-Viennet | 2 | 3 | 0 | Real | `new Viennet()` | <img src="imgs/Viennet.png" width="100" />
-Viennet2 | 2 | 3 | 0 | Real | `new Viennet2()` | <img src="imgs/Viennet2.png" width="100" />
-Viennet3 | 2 | 3 | 0 | Real | `new Viennet3()` | <img src="imgs/Viennet3.png" width="100" />
-Viennet4 | 2 | 3 | 3 | Real | `new Viennet4()` | <img src="imgs/Viennet4.png" width="100" />
-
-Problems marked with $\dagger$ have maximized objectives.  Since the MOEA Framework only works with minimized
-objectives, the objective values are negated.
 
 ## Problem Wrappers
 
