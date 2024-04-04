@@ -40,6 +40,7 @@ public class SingleObjectiveProblemProvider extends RegisteredProblemProvider {
 		register("Rosenbrock", Rosenbrock::new, null);
 		register("Schwefel", Schwefel::new, null);
 		register("Sphere", Sphere::new, null);
+		register("Zakharov", Zakharov::new, null);
 	}
 	
 	@Override
