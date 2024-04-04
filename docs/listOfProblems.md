@@ -48,30 +48,29 @@ Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_3");
 
 Contains five real-valued and one binary problem [^zitzler00].
 
-Problem | # of Vars | # of Objs | # of Constrs | Type 
-:------ | :-------: | :-------: | :----------: | :---
-`ZDT1` | 30 | 2 | 0 | Real
-`ZDT2` | 30 | 2 | 0 | Real
-`ZDT3` | 30 | 2 | 0 | Real
-`ZDT4` | 10 | 2 | 0 | Real
-`ZDT5` | 80 | 2 | 0 | Binary
-`ZDT6` | 10 | 2 | 0 | Real
+Problem | # of Vars | # of Objs | # of Constrs | Type | Constructor | Pareto Front
+:------ | :-------: | :-------: | :----------: | :--- | :---------- | ------------
+ZDT1 | 30 | 2 | 0 | Real | `new ZDT1()` | <img src="imgs/ZDT1.png" width="100" />
+ZDT2 | 30 | 2 | 0 | Real | `new ZDT2()` | <img src="imgs/ZDT1.png" width="100" />
+ZDT3 | 30 | 2 | 0 | Real | `new ZDT3()` | <img src="imgs/ZDT1.png" width="100" />
+ZDT4 | 10 | 2 | 0 | Real | `new ZDT4()` | <img src="imgs/ZDT1.png" width="100" />
+ZDT5 | 80 | 2 | 0 | Binary | `new ZDT5()` | <img src="imgs/ZDT1.png" width="100" />
+ZDT6 | 10 | 2 | 0 | Real | `new ZDT6()` | <img src="imgs/ZDT1.png" width="100" />
 
 ### DTLZ
 
-Contains five unconstrained real-valued problems [^deb01] [^deb02].  These problems are scalable in the number of
-objectives.  Control this by replacing `N` in the name.  For example, `DTLZ2_2` creates the 2-objective DTLZ2
-instance.
+Contains unconstrained real-valued problems that are scalable in the number of objectives [^deb01] [^deb02].
+Control this by replacing `N` in the name.  For example, `DTLZ2_2` creates the 2-objective DTLZ2 instance.
 
-Problem | # of Vars | # of Objs | # of Constrs | Type 
-:------ | :-------: | :-------: | :----------: | :---
-`DTLZ1_N` | `4+N` | N | 0 | Real
-`DTLZ2_N` | `9+N` | N | 0 | Real
-`DTLZ3_N` | `9+N` | N | 0 | Real
-`DTLZ4_N` | `9+N` | N | 0 | Real
-`DTLZ5_N` | `9+N` | N | 0 | Real
-`DTLZ6_N` | `9+N` | N | 0 | Real
-`DTLZ7_N` | `19+N` | N | 0 | Real
+Problem | # of Vars | # of Objs | # of Constrs | Type | Constructor | Pareto Front
+:------ | :-------: | :-------: | :----------: | :--- | :---------- | ------------
+DTLZ1 | `4+N` | `N` | 0 | Real | `new DTLZ1(N)` | <img src="imgs/DTLZ1.2D.png" width="100" /> <img src="imgs/DTLZ1.3D.png" width="100" />
+DTLZ2 | `9+N` | `N` | 0 | Real | `new DTLZ2(N)` | <img src="imgs/DTLZ2.2D.png" width="100" /> <img src="imgs/DTLZ2.3D.png" width="100" />
+DTLZ3 | `9+N` | `N` | 0 | Real | `new DTLZ3(N)` | <img src="imgs/DTLZ3.2D.png" width="100" /> <img src="imgs/DTLZ3.3D.png" width="100" />
+DTLZ4 | `9+N` | `N` | 0 | Real | `new DTLZ4(N)` | <img src="imgs/DTLZ4.2D.png" width="100" /> <img src="imgs/DTLZ4.3D.png" width="100" />
+DTLZ5 | `9+N` | `N` | 0 | Real | `new DTLZ5(N)` | <img src="imgs/DTLZ5.2D.png" width="100" /> <img src="imgs/DTLZ5.3D.png" width="100" />
+DTLZ6 | `9+N` | `N` | 0 | Real | `new DTLZ6(N)` | <img src="imgs/DTLZ6.2D.png" width="100" /> <img src="imgs/DTLZ6.3D.png" width="100" />
+DTLZ7 | `19+N` | `N` | 0 | Real | `new DTLZ7(N)` | <img src="imgs/DTLZ7.2D.png" width="100" /> <img src="imgs/DTLZ7.3D.png" width="100" />
 
 ### LZ
 
