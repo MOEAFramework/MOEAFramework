@@ -27,7 +27,7 @@ import org.moeaframework.util.Vector;
  * <p>
  * References:
  * <ol>
- *   <li>Laguna, M., & Marti, R.  "Experimental Testing of Advanced Scatter Search Designs for Global Optimization of
+ *   <li>Laguna, M. and Marti, R.  "Experimental Testing of Advanced Scatter Search Designs for Global Optimization of
  *       Multimodal Functions."  (2002).
  * </ol>
  */

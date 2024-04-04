@@ -27,7 +27,7 @@ import org.moeaframework.util.Vector;
  * <p>
  * References:
  * <ol>
- *   <li>Molga, M., & Smutnicki, C. Test Functions for Optimization Needs."  (2005).
+ *   <li>Molga, M. and Smutnicki, C. Test Functions for Optimization Needs."  (2005).
  * </ol>
  */
 public class Griewank extends AbstractSingleObjectiveProblem {
