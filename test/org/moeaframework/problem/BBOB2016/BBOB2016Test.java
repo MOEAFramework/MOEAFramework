@@ -118,7 +118,7 @@ public class BBOB2016Test {
 				moeaProblem.evaluate(solution);
 				cocoProblem.evaluate(cocoSolution);
 				
-				Assert.assertNoNaN(solution);;
+				Assert.assertNoNaN(solution);
 				Assert.assertNoNaN(cocoSolution);
 
 				try {
