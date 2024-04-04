@@ -255,10 +255,10 @@ Problem problem = new ScaledProblem(new DTLZ2(2), 2.0);
 
 ### Rotating Decision Variables
 
-The `RotatedProblem` wrapper applies a rotation to the decision variables.  This is useful when decision variables
-are independent, as it creates a linear relationship between the variables.  We can customize the rotation, selecting
-all or a subset of decision variables, by constructing the `RotationMatrixBuilder`.  In the example below, we apply
-a 45 degree rotation to each axis.
+The `RotatedProblem` wrapper applies a rotation to the decision variables.  This is beneficial as it converts what
+would be independent decision variables (which is typically easier to optimize) into a version with linear relationships
+between the variables.  We can customize the rotation matrix, selecting all or a subset of decision variables, by
+constructing the `RotationMatrixBuilder`.  The example below demonstrates applying a 45 degree rotation to each axis.
 
 <!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [63:66] -->
 
