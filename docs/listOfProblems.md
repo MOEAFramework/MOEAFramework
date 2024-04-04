@@ -37,7 +37,7 @@ ZDT6 | 10 | 2 | 0 | Real | `new ZDT6()` | <img src="imgs/ZDT6.png" width="100" /
 ### DTLZ
 
 Contains unconstrained real-valued problems that are scalable in the number of objectives [^deb01] [^deb02].
-Control this by replacing `N` in the name.  For example, `DTLZ2_2` creates the 2-objective DTLZ2 instance.
+These problems are scalable in the number of objectives, controlled by passing the value `N` to the constructor.
 
 Problem | # of Vars | # of Objs | # of Constrs | Type | Constructor | Pareto Front
 :------ | :-------: | :-------: | :----------: | :--- | :---------- | ------------
@@ -91,9 +91,9 @@ UF7 | 30 | 2 | 0 | Real | `new UF7()` | <img src="imgs/UF7.png" width="100" />
 UF8 | 30 | 3 | 0 | Real | `new UF8()` | <img src="imgs/UF8.png" width="100" />
 UF9 | 30 | 3 | 0 | Real | `new UF9()` | <img src="imgs/UF9.png" width="100" />
 UF10 | 30 | 3 | 0 | Real | `new UF10()` | <img src="imgs/UF10.png" width="100" />
-UF11 | 30 | 5 | 0 | Real | `new UF11()` |
-UF12 | 30 | 5 | 0 | Real | `new UF12()` |
-UF13 | 30 | 5 | 0 | Real | `new UF13()` |
+UF11 | 30 | 5 | 0 | Real | `new UF11()` | Not Available
+UF12 | 30 | 5 | 0 | Real | `new UF12()` | Not Available
+UF13 | 30 | 5 | 0 | Real | `new UF13()` | Not Available
 
 ### WFG
 
@@ -113,8 +113,8 @@ WFG9 | `9+N` | `N` | 0 | Real | `new WFG9(N)` | <img src="imgs/WFG9.2D.png" widt
 
 ### CDTLZ
 
-A constrained version of the DTLZ problem suite [^deb14] [^jain14].  These problems are scalable in the number of
-objectives.  Control this by replacing `N` in the name.
+A constrained version of the DTLZ problem suite [^deb14] [^jain14].  These problems are scalable in the number of objectives,
+controlled by passing the value `N` to the constructor.
 
 Problem | # of Vars | # of Objs | # of Constrs | Type | Constructor | Pareto Front
 :------ | :-------: | :-------: | :----------: | :--- | :---------- | ------------
@@ -127,8 +127,8 @@ Convex_C2_DTLZ2 | `9+N` | `N` | 1 | Real | `new ConvexC2_DTLZ2(N)` | <img src="i
 
 ### LSMOP
 
-Large-scale multi- and many-objective problem test suite [^cheng17].  These problems are scalable in the number of
-objectives.  Control this by replacing `N` in the name.
+Large-scale multi- and many-objective problem test suite [^cheng17].  These problems are scalable in the number of objectives,
+controlled by passing the value `N` to the constructor.
 
 Problem | # of Vars | # of Objs | # of Constrs | Type | Constructor | Pareto Front
 :------ | :-------: | :-------: | :----------: | :--- | :---------- | ------------
@@ -148,7 +148,7 @@ The number of decision variables depends on the how the problem is configured.  
 ### ZCAT
 
 Set of challenging test problems for multi- and many-objective optimization [^zapotecas23].  These problems are
-scalable in the number of objectives.  Control this by replacing `N` in the name.
+scalable in the number of objectives, controlled by passing the value `N` to the constructor.
 
 Problem | # of Vars | # of Objs | # of Constrs | Type | Constructor | Pareto Front
 :------ | :-------: | :-------: | :----------: | :--- | :---------- | ------------
@@ -174,6 +174,8 @@ ZCAT19 | `10*N` | `N` | 0 | Real | `new ZCAT19(N)` | <img src="imgs/ZCAT19.2D.pn
 ZCAT20 | `10*N` | `N` | 0 | Real | `new ZCAT20(N)` | <img src="imgs/ZCAT20.2D.png" width="100" /> <img src="imgs/ZCAT20.3D.png" width="100" />
 
 ## Miscellaneous Problems
+
+Individual problems found throughout the literature that do not belong to a specific test suite.
 
 Problem | # of Vars | # of Objs | # of Constrs | Type | Constructor | Pareto Front
 :------ | :-------: | :-------: | :----------: | :--- | :---------- | ------------
