@@ -212,12 +212,11 @@ Viennet4 | 2 | 3 | 3 | Real | `new Viennet4()` | <img src="imgs/Viennet4.png" wi
 Note that several of these problems are maximized.  Since the MOEA Framework only supports minimization, the
 objective values are negated!
 
-### BBOB-2016
+## BBOB-2016
 
 Contains the 55 bi-objective problems as part of the "bbob-biobj" test suite from the BBOB workshop hosted at GECCO
-2016 [^finck15].  These bi-objective problems are formed by combining two single-objective functions.
-
-The easiest way to construct a BBOB 2016 problem instance is from its name.  Each single-objective function is defined
+2016 [^finck15].  These bi-objective problems are formed by combining two single-objective functions.  The easiest
+way to construct a BBOB 2016 problem instance is from its name.  Each single-objective function is defined
 by its (1) test function number, (2) instance number, and (3) dimension, given as:
 
 ```
@@ -238,8 +237,7 @@ For more details on the specific problem instances, see http://numbbo.github.io/
 
 ## Problem Wrappers
 
-Problem wrappers modify or add some extra functionality to existing problems, typically in an effort to make the
-problem more challenging.
+Problem wrappers modify or extend an existing problems, typically in an effort to make the problem more challenging.
 
 ### Scaled Problems
 
