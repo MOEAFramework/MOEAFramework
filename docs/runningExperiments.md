@@ -118,7 +118,6 @@ It collects information about each algorithm while it is running at a fixed freq
 <!-- java:examples/Example5.java [40:55] -->
 
 ```java
-
 Instrumenter instrumenter = new Instrumenter()
         .withProblem("UF1")
         .withFrequency(100)

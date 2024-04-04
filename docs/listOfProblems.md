@@ -4,7 +4,7 @@
 
 We can create an instance of any problem by calling its constructor:
 
-<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [39:39] -->
+<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [36:36] -->
 
 ```java
 Problem problem = new UF1();
@@ -13,7 +13,7 @@ Problem problem = new UF1();
 Several of these problems can be scaled in terms of the number of decision variables or objectives.  We can call the
 relevant constructor to configure the problem.  For example, here we create the three-objective DTLZ2 problem:
 
-<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [44:44] -->
+<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [41:41] -->
 
 ```java
 Problem problem = new DTLZ2(3);
@@ -229,7 +229,7 @@ For example, `bbob_f1_i2_d5` would use the function `1` (Sphere), instance `2`, 
 to construct the two-objective version, we simply combine two of these single-objective functions with a comma.
 Here's an example:
 
-<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [55:55] -->
+<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [52:52] -->
 
 ```java
 Problem problem = ProblemFactory.getInstance().getProblem("bbob-biobj(bbob_f1_i2_d5,bbob_f21_i2_d5)");
@@ -246,7 +246,7 @@ Problem wrappers modify or extend an existing problems, typically in an effort t
 Many test problems are defined with similar ranges for objective values.  To counteract any bias, we can apply a
 scaling factor to each objective.  In this example, we will scale the i-th objective by $2^i$:
 
-<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [61:61] -->
+<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [58:58] -->
 
 ```java
 Problem problem = new ScaledProblem(new DTLZ2(2), 2.0);
@@ -259,7 +259,7 @@ the problem in decision variable space, creating a linear relationship between t
 rotation matrix using the `RotationMatrixBuilder`.  We can fully customize the rotation matrix, but here we
 demonstrate applying a 45-degree rotation to each axis:
 
-<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [66:69] -->
+<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [63:66] -->
 
 
 ```java
@@ -274,7 +274,7 @@ Problem problem = new RotatedProblem(new DTLZ2(2), builder.create());
 The `TimingProblem` wrapper is used to measure the total time spent performing function evaluations.  This can
 capture up to a nanoseconds resolution, as long as the system supports that level of accuracy.
 
-<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [74:76] -->
+<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [71:73] -->
 
 ```java
 TimingProblem problem = new TimingProblem(new DTLZ2(2));

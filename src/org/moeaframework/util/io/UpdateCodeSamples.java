@@ -725,7 +725,9 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		public List<String> stripComments(List<String> lines) {
 			String content = String.join(System.lineSeparator(), lines);
 			content = stripComments(content);
-			return new ArrayList<String>(content.lines().toList());
+			
+			List<String> result = new ArrayList<String>(content.lines().toList());
+			return stripLeadingAndTrailingBlankLines(result);
 		}
 		
 		/**
@@ -738,6 +740,26 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			String content = String.join(System.lineSeparator(), lines);
 			content = content.stripIndent();
 			return new ArrayList<String>(content.lines().toList());
+		}
+		
+		/**
+		 * Removes any leading or trailing blank lines, which are empty or contain only whitespace.
+		 * 
+		 * @param lines the code block
+		 * @return the code block without leading and trailing blank lines
+		 */
+		public List<String> stripLeadingAndTrailingBlankLines(List<String> lines) {
+			List<String> result = new ArrayList<String>(lines);
+			
+			while (result.get(0).isBlank()) {
+				result.remove(0);
+			}
+			
+			while (result.get(result.size()-1).isBlank()) {
+				result.remove(result.size()-1);
+			}
+			
+			return result;
 		}
 		
 		/**

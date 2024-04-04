@@ -48,7 +48,6 @@ for the output:
 <!-- java:examples/org/moeaframework/examples/misc/SaveAndFormatResultsExample.java [42:44] -->
 
 ```java
-
 NumberFormatter.getDefault().setPrecision(10);
 algorithm.getResult().display();
 ```

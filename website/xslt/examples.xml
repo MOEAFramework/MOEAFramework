@@ -163,7 +163,6 @@ Var1     Var2     Var3     Var4     Var5     Var6     Var7     Var8     Var9    
 <!-- java:examples/Example2.java [37:48] -->
 <pre class="brush: java; toolbar: false;">
 <![CDATA[
-
     NSGAII algorithm = new NSGAII(problem);
     algorithm.run(10000);
 
@@ -342,7 +341,6 @@ GDE3:
 <!-- java:examples/Example5.java [40:55] -->
 <pre class="brush: java; toolbar: false;">
 <![CDATA[
-
 Instrumenter instrumenter = new Instrumenter()
         .withProblem("UF1")
         .withFrequency(100)

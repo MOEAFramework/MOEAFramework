@@ -19,9 +19,6 @@ package org.moeaframework.snippet;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.Executor;
-import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.CEC2009.UF1;
