@@ -18,15 +18,14 @@
 package org.moeaframework.util.io;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.io.Reader;
-import java.io.InputStreamReader;
 
 import org.junit.Assert;
 import org.junit.Test;

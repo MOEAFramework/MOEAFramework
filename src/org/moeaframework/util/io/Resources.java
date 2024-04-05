@@ -46,20 +46,20 @@ public class Resources {
 		
 		/**
 		 * First search for a file referenced by the resource string.  While a resource string starting with "/"
-		 * indicates an absolute path relative to the classpath, this is ignored when locating a file.  The file will
-		 * be resolved relative to the base directory.
+		 * indicates an absolute path when searching the classpath, this is ignored when locating a file.  The file
+		 * will be resolved relative to the base directory.
 		 */
 		FILE,
 				
 		/**
 		 * Extracts the resource to a temporary file instead of the path referenced by the resource.  This option is
-		 * only used by {@link Resources#getResourceAsFile(Class, String, ResourceOption...)}.
+		 * only used by {@link Resources#asFile(Class, String, ResourceOption...)}.
 		 */
 		TEMPORARY,
 		
 		/**
 		 * Set the executable flag on the file if being extracted.  This option is only used by
-		 * {@link Resources#getResourceAsFile(Class, String, ResourceOption...)}.
+		 * {@link Resources#asFile(Class, String, ResourceOption...)}.
 		 */
 		EXECUTABLE,
 		
@@ -75,35 +75,94 @@ public class Resources {
 		super();
 	}
 	
-	public static String resolvePath(String resource) {
+	/**
+	 * Returns the normalized resource path.  Path segments like {@code "."} and {@code ".."} are resolved and the
+	 * path separates are normalized to {@code "/"}.
+	 * 
+	 * @param resource the resource path
+	 * @return the normalized resource path
+	 */
+	static String resolvePath(String resource) {
 		return Path.of(resource).normalize().toString().replaceAll("\\\\", "/");
 	}
 	
-	public static File resolveFile(String resource) {
+	/**
+	 * Returns the file reference after normalizing the resource path.
+	 * 
+	 * @param resource the resource path
+	 * @return the file reference
+	 */
+	static File resolveFile(String resource) {
 		return new File(resource.startsWith("/") ? resource.substring(1) : resource);
 	}
 	
+	/**
+	 * Opens the resource as an {@link InputStream}.  The caller is expected to close the stream when no longer used.
+	 * 
+	 * @param owner the class that is requesting the resource
+	 * @param resource the resource path
+	 * @param options options for locating and opening the resource
+	 * @return the input stream, or {@code null} if the resource was not found
+	 * @throws IOException if an I/O error occurred
+	 */
 	public static InputStream asStream(Class<?> owner, String resource, ResourceOption... options) throws IOException {
 		return asStream(owner, resource, options.length == 0 ? EnumSet.noneOf(ResourceOption.class) :
 				EnumSet.copyOf(List.of(options)));
 	}
 
+	/**
+	 * Opens the resource as a {@link Reader}.  The caller is expected to close the reader when no longer used.
+	 * 
+	 * @param owner the class that is requesting the resource
+	 * @param resource the resource path
+	 * @param options options for locating and opening the resource
+	 * @return the reader, or {@code null} if the resource was not found
+	 * @throws IOException if an I/O error occurred
+	 */
 	public static Reader asReader(Class<?> owner, String resource, ResourceOption... options) throws IOException {
 		return asReader(owner, resource, options.length == 0 ? EnumSet.noneOf(ResourceOption.class) :
 				EnumSet.copyOf(List.of(options)));
 	}
 	
+	/**
+	 * Opens the resource as a {@link CommentedLineReader}.  The caller is expected to close the reader when no longer
+	 * used.
+	 * 
+	 * @param owner the class that is requesting the resource
+	 * @param resource the resource path
+	 * @param options options for locating and opening the resource
+	 * @return the reader, or {@code null} if the resource was not found
+	 * @throws IOException if an I/O error occurred
+	 */
 	public static CommentedLineReader asLineReader(Class<?> owner, String resource, ResourceOption... options)
 			throws IOException {
 		Reader reader = asReader(owner, resource, options);
 		return reader == null ? null : CommentedLineReader.wrap(reader);
 	}
 	
+	/**
+	 * Loads the contents of the resource as a string.
+	 * 
+	 * @param owner the class that is requesting the resource
+	 * @param resource the resource path
+	 * @param options options for locating and opening the resource
+	 * @return the contents, or {@code null} if the resource was not found
+	 * @throws IOException if an I/O error occurred
+	 */
 	public static String readString(Class<?> owner, String resource, ResourceOption... options) throws IOException {
 		return readString(owner, resource, options.length == 0 ? EnumSet.noneOf(ResourceOption.class) :
 				EnumSet.copyOf(List.of(options)));
 	}
 	
+	/**
+	 * Locates the resource as a file on disk, extracting the contents of the resource to a file if required.
+	 * 
+	 * @param owner the class that is requesting the resource
+	 * @param resource the resource path
+	 * @param options options for locating and opening the resource
+	 * @return the contents, or {@code null} if the resource was not found
+	 * @throws IOException if an I/O error occurred
+	 */
 	public static File asFile(Class<?> owner, String resource, ResourceOption... options) throws IOException {
 		return asFile(owner, resource, options.length == 0 ? EnumSet.noneOf(ResourceOption.class) :
 				EnumSet.copyOf(List.of(options)));
