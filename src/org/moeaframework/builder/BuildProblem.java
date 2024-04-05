@@ -166,7 +166,7 @@ public class BuildProblem extends CommandLineUtility {
 			throw new FrameworkException("'" + problemName +"' is reserved and can not be used as a problem name");
 		}
 
-		if (!SourceVersion.isIdentifier(problemName)) {
+		if (!SourceVersion.isIdentifier(functionName)) {
 			throw new FrameworkException("'" + functionName + "' is not a valid function name");
 		}
 		

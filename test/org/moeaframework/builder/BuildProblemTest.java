@@ -70,6 +70,33 @@ public class BuildProblemTest {
 				"--directory", directory.toString()
 		});
 	}
+	
+	@Test(expected = Exception.class)
+	public void testInvalidProblemName() throws Exception {
+		File directory = TempFiles.createDirectory();
+
+		BuildProblem.main(new String[] {
+				"--problemName", "Foo Bar",
+				"--language", "c",
+				"--numberOfVariables", "10",
+				"--numberOfObjectives", "2",
+				"--directory", directory.toString()
+		});
+	}
+	
+	@Test(expected = Exception.class)
+	public void testInvalidFunctionName() throws Exception {
+		File directory = TempFiles.createDirectory();
+
+		BuildProblem.main(new String[] {
+				"--problemName", "Test",
+				"--functionName", "evaluate!",
+				"--language", "c",
+				"--numberOfVariables", "10",
+				"--numberOfObjectives", "2",
+				"--directory", directory.toString()
+		});
+	}
 
 	private void test(String language) throws Exception {		
 		File directory = TempFiles.createDirectory();
