@@ -209,7 +209,7 @@ public class BuildProblem extends CommandLineUtility {
 		StringSubstitutor substitutor = new StringSubstitutor(mappings);
 		substitutor.setEnableSubstitutionInVariables(true);
 		
-		processManifest(Path.of("org", "moeaframework", "builder", language), directory, substitutor);
+		processManifest(Path.of(language), directory, substitutor);
 		
 		System.out.println(problemName + " created in " + directory + ".  To use:");
 		System.out.println("  1. Go to this directory, edit the source files and implement your problem");
@@ -262,7 +262,7 @@ public class BuildProblem extends CommandLineUtility {
 		} else {
 			String path = root.resolve(resource).normalize().toString().replaceAll("\\\\", "/");
 			
-		    try (InputStream input = getClass().getClassLoader().getResourceAsStream(path)) {
+		    try (InputStream input = getClass().getResourceAsStream(path)) {
 		        if (input == null) {
 		        	throw new IOException("Unable to find file or resource " + path);
 		        }

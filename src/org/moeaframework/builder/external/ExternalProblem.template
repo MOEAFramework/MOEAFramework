@@ -7,7 +7,7 @@ import org.moeaframework.problem.ExternalProblem;
 public class ${problemName} extends ExternalProblem {
 
 	public ${problemName}() throws IOException {
-		super(extractResource("${problemName}.exe"));
+		super(extractResource(${problemName}.class, "./${problemName}.exe"));
 	}
 
 	@Override

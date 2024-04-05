@@ -187,20 +187,22 @@ public abstract class ExternalProblem implements Problem {
 	}
 	
 	/**
-	 * Checks the the referenced file exists, and if not, checks if the resource can be extracted from the
-	 * classpath.  If being extracted, the resulting file will be saved to the temp folder.
+	 * Locates a resource, either as a file or a resource loaded from the classpath / a JAR file.  If found on the
+	 * classpath, the content is extracted to a file.  This allows external problems to package any required
+	 * resources in a JAR and extract on demand.
 	 * 
+	 * @param type the class that is requesting the resource
 	 * @param path the path to the file
 	 * @return the path to the file or extracted file
 	 * @throws IOException if an I/O error occurred
 	 */
-	public static final String extractResource(String path) throws IOException {
+	public static final String extractResource(Class<?> type, String path) throws IOException {
 		if (new File(path).exists()) {
 			return path;
 		} else {
 			File tempFile = File.createTempFile("problem", "." + FilenameUtils.getExtension(path));
 			
-		    try (InputStream input = ClassLoader.getSystemResourceAsStream(path)) {
+		    try (InputStream input = type.getResourceAsStream(FilenameUtils.getName(path))) {
 		        if (input == null) {
 		        	throw new IOException("Unable to find file or resource " + path);
 		        }

@@ -7,7 +7,7 @@ import org.moeaframework.problem.ExternalProblem;
 public class ${problemName} extends ExternalProblem {
 
 	public ${problemName}() throws IOException {
-		super("python", extractResource("${problemName}.py"));
+		super("python", extractResource(${problemName}.class, "${problemName}.py"));
 	}
 
 	@Override
