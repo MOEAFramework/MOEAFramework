@@ -215,7 +215,7 @@ public class BuildProblem extends CommandLineUtility {
 		System.out.println("  1. Go to this directory, edit the source files and implement your problem");
 		System.out.println("  2. Run 'make' to compile and package the files");
 		System.out.println("  3. Run 'make run' to run the example");
-		System.out.println("  4. Add '" + problemName + ".jar to the Java classpath, typically by placing the JAR in the lib/ folder");
+		System.out.println("  4. Add '" + problemName + ".jar' to the Java classpath, typically by placing the JAR in the lib/ folder");
 	}
 
 	private void processManifest(Path root, Path targetDirectory, StringSubstitutor substitutor) throws IOException {

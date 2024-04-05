@@ -18,8 +18,11 @@
 package org.moeaframework.builder;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
@@ -100,6 +103,7 @@ public class BuildProblemTest {
 
 	private void test(String language) throws Exception {		
 		File directory = TempFiles.createDirectory();
+		File testDirectory = new File(directory, "Test");
 
 		BuildProblem.main(new String[] {
 				"--problemName", "Test",
@@ -111,10 +115,16 @@ public class BuildProblemTest {
 		});
 
 		Assume.assumeMakeExists();
-
-		Make.runMake(new File(directory, "Test"));
-		String output = Make.runMake(new File(directory, "Test"), "run");
-
+		Make.runMake(testDirectory);
+		
+		// remove any compiled files to verify they are packaged correctly in the JAR
+		List<String> extensionsToRemove = List.of("exe", "py", "class");
+		Files.walk(testDirectory.toPath())
+			.filter(x -> extensionsToRemove.contains(FilenameUtils.getExtension(x.toString())))
+			.map(Path::toFile)
+			.forEach(File::delete);
+		
+		String output = Make.runMake(testDirectory, "run");
 		System.out.println(output);
 
 		List<String> lines = output.lines().skip(1).toList(); // first line the the java command
