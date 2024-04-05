@@ -111,7 +111,8 @@ public class BuildProblemTest {
 				"--numberOfVariables", "10",
 				"--numberOfObjectives", "2",
 				"--directory", directory.toString(),
-				"--classpath", System.getProperty("java.class.path") + File.pathSeparator + "."
+				"--classpath", System.getProperty("java.class.path") + File.pathSeparator + "Test.jar" +
+						File.pathSeparator + "."
 		});
 
 		Assume.assumeMakeExists();
