@@ -189,7 +189,8 @@ public class BuildProblem extends CommandLineUtility {
 		String[] classpath = new String[] {
 				tryRelativize(directory, Path.of(".")).resolve("lib").normalize().toString() + File.separator + "*",
 				tryRelativize(directory, Path.of(".")).resolve("bin").normalize().toString(),
-				"*"
+				problemName + ".jar",
+				"."
 		};		
 
 		Map<String, Object> mappings = new HashMap<>();

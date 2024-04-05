@@ -12,7 +12,7 @@ This page documents notable changes introduced in each chronological release of 
     Please update imports to fix any compilation issues.
     
   * Adds ProblemBuilder tool that generates templates for writing problems in C, C++, Fortran, Java, and Python.
-    See the [Writing Native Problems](writingNativeProblems.md) documentation for more details.
+    See the [Writing Native Problems](writingNativeProblem.md) documentation for more details.
 
   * Other notable changes include:
   
