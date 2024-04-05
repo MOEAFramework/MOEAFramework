@@ -23,6 +23,8 @@ import java.io.InputStream;
 
 import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.util.io.Resources;
+import org.moeaframework.util.io.Resources.ResourceOption;
 
 /**
  * Example running the ant trail problem with the Santa Fe trail.  NSGA-II
@@ -41,36 +43,22 @@ public class SantaFeExample {
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		int maxMoves = 500;
 		
-		// solve the ant trail instance
-		NondominatedPopulation results = new Executor()
-				.withProblemClass(AntProblem.class, openDataFile(), maxMoves)
-				.withAlgorithm("GA")
-				.withProperty("populationSize", 500)
-				.withMaxEvaluations(250000)
-				.run();
+		InputStream input = Resources.asStream(SantaFeExample.class, "santafe.trail",
+				ResourceOption.REQUIRED);
 		
-		// display the result
-		try (AntProblem problem = new AntProblem(openDataFile(), maxMoves)) {
+		try (AntProblem problem = new AntProblem(input, maxMoves)) {
+			// solve the ant trail instance
+			NondominatedPopulation results = new Executor()
+					.withProblem(problem)
+					.withAlgorithm("GA")
+					.withProperty("populationSize", 500)
+					.withMaxEvaluations(250000)
+					.run();
+			
+			// display the result
 			problem.evaluate(results.get(0));
 			problem.displayLastEvaluation();
 		}
-	}
-	
-	/**
-	 * Returns an input stream that contains the ant trail data file.
-	 * 
-	 * @return an input stream that contains the ant trail data file
-	 */
-	public static InputStream openDataFile() {
-		InputStream stream = SantaFeExample.class.getResourceAsStream(
-				"santafe.trail");
-		
-		if (stream == null) {
-			System.err.println("Unable to find the file santafe.trail.");
-			System.exit(-1);
-		}
-		
-		return stream;
 	}
 
 }

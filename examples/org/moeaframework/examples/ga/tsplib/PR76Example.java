@@ -20,6 +20,9 @@ package org.moeaframework.examples.ga.tsplib;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.moeaframework.util.io.Resources;
+import org.moeaframework.util.io.Resources.ResourceOption;
+
 /**
  * Example of optimization using a permutation encoding to solve the traveling
  * salesman problem (TSP) on the {@code pr76.tsp} instance.
@@ -33,13 +36,9 @@ public class PR76Example {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public static void main(String[] args) throws IOException {
-		try (InputStream is = PR76Example.class.getResourceAsStream("pr76.tsp")) {
-			if (is == null) {
-				System.err.println("Unable to find the file pr76.tsp");
-				System.exit(-1);
-			}
-			
-			TSPExample.solve(is);
+		try (InputStream input = Resources.asStream(PR76Example.class,
+				"pr76.tsp", ResourceOption.REQUIRED)) {
+			TSPExample.solve(input);
 		}
 	}
 	

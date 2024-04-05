@@ -23,6 +23,8 @@ import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 import org.moeaframework.util.Vector;
+import org.moeaframework.util.io.Resources;
+import org.moeaframework.util.io.Resources.ResourceOption;
 
 /**
  * Example of binary optimization using the {@link KnapsackSubset} problem on the
@@ -38,14 +40,9 @@ public class KnapsackSubsetExample {
 	 */
 	public static void main(String[] args) throws IOException {
 		// open the file containing the knapsack problem instance
-		InputStream input = KnapsackSubset.class.getResourceAsStream(
-				"knapsack.100.2");
-		
-		if (input == null) {
-			System.err.println("Unable to find the file knapsack.100.2");
-			System.exit(-1);
-		}
-				
+		InputStream input = Resources.asStream(KnapsackSubset.class,
+				"knapsack.100.2", ResourceOption.REQUIRED);
+
 		// solve using NSGA-II
 		NondominatedPopulation result = new Executor()
 				.withProblemClass(KnapsackSubset.class, input)

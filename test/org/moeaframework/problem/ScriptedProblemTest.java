@@ -18,11 +18,7 @@
 package org.moeaframework.problem;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.Reader;
 import java.net.URISyntaxException;
 
@@ -30,7 +26,6 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.Assert;
@@ -41,6 +36,8 @@ import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.io.Resources;
+import org.moeaframework.util.io.Resources.ResourceOption;
 
 @RunWith(CIRunner.class)
 public class ScriptedProblemTest {
@@ -71,18 +68,20 @@ public class ScriptedProblemTest {
 	public void testJavascriptFile() throws ScriptException, IOException, URISyntaxException {
 		ignoreIfScriptingNotAvailbale();
 		
-		File file = extractResource(RESOURCE_JAVASCRIPT);
+		File file = Resources.asFile(getClass(), RESOURCE_JAVASCRIPT, ResourceOption.REQUIRED, ResourceOption.TEMPORARY);
 		
 		try (Problem problem = new ScriptedProblem(file)) {
 			test(problem);
 		}
+		
+		file.delete();
 	}
 	
 	@Test
 	public void testJavascriptReader() throws IOException, ScriptException {
 		ignoreIfScriptingNotAvailbale();
 		
-		try (Reader reader = new InputStreamReader(getClass().getResourceAsStream(RESOURCE_JAVASCRIPT));
+		try (Reader reader = Resources.asReader(getClass(), RESOURCE_JAVASCRIPT, ResourceOption.REQUIRED);
 				Problem problem = new ScriptedProblem(reader, "nashorn")) {
 			test(problem);
 		}
@@ -108,33 +107,6 @@ public class ScriptedProblemTest {
 		problem.evaluate(solution);
 		
 		Assert.assertEquals(variable.getValue(), solution.getObjective(0), TestThresholds.HIGH_PRECISION);
-	}
-	
-	/**
-	 * Extracts the data stored in a resource, saving its contents to a temporary file.  If the resource name contains
-	 * an extension, the file will be created with the extension.
-	 * 
-	 * @param resource the name of the resource to extract
-	 * @return the temporary file containing the resource data
-	 * @throws IOException if an I/O error occurred
-	 */
-	public static File extractResource(String resource) throws IOException {
-		//determine the file extension, if any
-		String extension = FilenameUtils.getExtension(resource);
-		File file = TempFiles.createFileWithExtension(extension);
-		
-		//copy the resource contents to the file
-		try (InputStream input = ScriptedProblemTest.class.getResourceAsStream(resource)) {
-			if (input == null) {
-				throw new IOException("resource not found: " + resource);
-			}
-			
-			try (OutputStream output = new FileOutputStream(file)) {
-				input.transferTo(output);
-			}
-		}
-		
-		return file;
 	}
 
 }

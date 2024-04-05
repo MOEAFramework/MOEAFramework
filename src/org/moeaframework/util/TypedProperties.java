@@ -41,6 +41,7 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.util.format.Displayable;
 import org.moeaframework.util.io.CommentedLineReader;
+import org.moeaframework.util.io.Resources;
 
 /**
  * Stores a collection of key-value pairs similar to {@link Properties} but has support for reading and writing
@@ -133,7 +134,7 @@ public class TypedProperties implements Displayable {
 	public static TypedProperties loadBuildProperties() throws IOException {
 		Properties rawProperties = new Properties();
 		
-		try (InputStream stream = Settings.class.getResourceAsStream("/META-INF/build.properties")) {
+		try (InputStream stream = Resources.asStream(Settings.class, "/META-INF/build.properties")) {
 			if (stream != null) {
 				rawProperties.load(stream);
 			}

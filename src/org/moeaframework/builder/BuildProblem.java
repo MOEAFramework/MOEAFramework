@@ -17,11 +17,8 @@
  */
 package org.moeaframework.builder;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -30,8 +27,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
-
 import javax.lang.model.SourceVersion;
 
 import org.apache.commons.cli.CommandLine;
@@ -41,6 +36,8 @@ import org.apache.commons.text.StringSubstitutor;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.io.CommentedLineReader;
+import org.moeaframework.util.io.Resources;
+import org.moeaframework.util.io.Resources.ResourceOption;
 
 /**
  * Command line tool for creating new natively-compiled problems.  This tool will create a folder containing all the
@@ -260,17 +257,7 @@ public class BuildProblem extends CommandLineUtility {
 			// references a file relative to the MOEA Framework root folder
 			return Files.readString(new File(resource.substring(1)).toPath(), StandardCharsets.UTF_8);
 		} else {
-			String path = root.resolve(resource).normalize().toString().replaceAll("\\\\", "/");
-			
-		    try (InputStream input = getClass().getResourceAsStream(path)) {
-		        if (input == null) {
-		        	throw new IOException("Unable to find file or resource " + path);
-		        }
-		        
-		        try (BufferedReader reader = new BufferedReader(new InputStreamReader(input))) {
-		            return reader.lines().collect(Collectors.joining(System.lineSeparator()));
-		        }
-		    }
+			return Resources.readString(getClass(), root.resolve(resource).toString(), ResourceOption.REQUIRED);
 		}
 	}
 

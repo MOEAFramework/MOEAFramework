@@ -18,7 +18,7 @@
 package org.moeaframework.examples.ge.regression;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.Reader;
 
 import javax.script.Bindings;
 import javax.script.ScriptEngine;
@@ -33,6 +33,8 @@ import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.util.grammar.ContextFreeGrammar;
 import org.moeaframework.util.grammar.Parser;
+import org.moeaframework.util.io.Resources;
+import org.moeaframework.util.io.Resources.ResourceOption;
 
 /**
  * The symbolic regression problem for grammatical evolution.  Given a function,
@@ -110,8 +112,11 @@ public class SymbolicRegression extends AbstractProblem {
 		// setup the grammar and encoding.
 		symbol = "x";
 		codonLength = 10;
-		grammar = Parser.load(new InputStreamReader(
-				SymbolicRegression.class.getResourceAsStream("grammar.bnf")));
+		
+		try (Reader reader = Resources.asReader(SymbolicRegression.class,
+				"grammar.bnf", ResourceOption.REQUIRED)) {
+			grammar = Parser.load(reader);
+		}
 		
 		// cache the function's x and y values
 		x = new double[steps];

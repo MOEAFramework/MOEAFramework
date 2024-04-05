@@ -22,13 +22,8 @@ import java.awt.Desktop;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -47,6 +42,8 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 import org.moeaframework.core.Settings;
+import org.moeaframework.util.io.Resources;
+import org.moeaframework.util.io.Resources.ResourceOption;
 
 /**
  * GUI for displaying and running the examples.
@@ -97,64 +94,6 @@ public class ExamplesGUI extends JFrame {
 		
 		setSize(1000, 650);
 		setIconImages(Settings.getIcon().getResolutionVariants());
-	}
-	
-	/**
-	 * Returns the contents of the specified resource.  This resource can
-	 * reference a file on the local system or a resource contained on the
-	 * classpath.
-	 * 
-	 * @param resource the resource to load
-	 * @return the contents of the resource
-	 * @throws IOException if an I/O error occurred
-	 */
-	private String load(String resource) throws IOException {
-		File file = new File(resource);
-		
-		if (file.exists()) {
-			return load(file);
-		} else {
-			try (InputStream input = getClass().getResourceAsStream("/" + resource)) {
-				if (input == null) {
-					throw new FileNotFoundException(resource);
-				} else {
-					return load(new BufferedReader(new InputStreamReader(input)));
-				}
-			}
-		}
-	}
-	
-	/**
-	 * Return the contents of the specified reader.  This method does not close
-	 * the reader.
-	 * 
-	 * @param reader the reader to read
-	 * @return the contents of the reader
-	 * @throws IOException if an I/O error occurred
-	 */
-	private String load(BufferedReader reader) throws IOException {
-		String line = null;
-		StringBuilder builder = new StringBuilder();
-		
-		while ((line = reader.readLine()) != null) {
-			builder.append(line);
-			builder.append(System.lineSeparator());
-		}
-		
-		return builder.toString();
-	}
-	
-	/**
-	 * Returns the contents of the specified file.
-	 * 
-	 * @param file the file to read
-	 * @return the contents of the file
-	 * @throws IOException if an I/O error occurred
-	 */
-	private String load(File file) throws IOException {
-		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-			return load(reader);
-		}
 	}
 	
 	/**
@@ -268,8 +207,10 @@ public class ExamplesGUI extends JFrame {
 						textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NONE);
 					}
 					
+					textArea.setText(Resources.readString(getClass(), "/" + resource,
+							ResourceOption.REQUIRED, ResourceOption.FILE));
+					
 					textArea.setCodeFoldingEnabled(true);
-					textArea.setText(load(resource));
 					textArea.setSelectionStart(0);
 					textArea.setSelectionEnd(0);
 					textArea.setEditable(false);

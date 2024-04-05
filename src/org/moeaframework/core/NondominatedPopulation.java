@@ -20,13 +20,12 @@ package org.moeaframework.core;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Iterator;
 
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.util.io.CommentedLineReader;
+import org.moeaframework.util.io.Resources;
 
 /**
  * A population that maintains the property of pair-wise non-dominance between all solutions. When the {@code add}
@@ -229,11 +228,10 @@ public class NondominatedPopulation extends Population {
 		if (file.exists()) {
 			return loadReferenceSet(file);
 		} else {
-			try (InputStream input = NondominatedPopulation.class.getResourceAsStream("/" + resource)) {
-				if (input != null) {
-					try (CommentedLineReader reader = new CommentedLineReader(new InputStreamReader(input))) {
-						return new NondominatedPopulation(Population.loadObjectives(reader));
-					}
+			try (CommentedLineReader reader = Resources.asLineReader(NondominatedPopulation.class,
+					"/" + resource)) {
+				if (reader != null) {
+					return new NondominatedPopulation(Population.loadObjectives(reader));
 				}
 			}
 		}

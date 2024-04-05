@@ -17,14 +17,14 @@
  */
 package org.moeaframework.core.spi;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.core.Settings;
+import org.moeaframework.util.io.CommentedLineReader;
+import org.moeaframework.util.io.Resources;
+import org.moeaframework.util.io.Resources.ResourceOption;
 
 /**
  * General tests for SPI factories.
@@ -46,17 +46,15 @@ public abstract class AbstractFactoryTest<T, S extends AbstractFactory<T>> {
 	 */
 	@Test
 	public void testDefaultProviders() throws IOException {
-		try (InputStream stream = Settings.class.getResourceAsStream("/META-INF/services/" +
-				getProviderType().getName())) {
-			Assert.assertNotNull(stream);
-			
-			try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
-				String line = null;
+		String resource = "/META-INF/services/" + getProviderType().getName();
+		
+		try (CommentedLineReader reader = Resources.asLineReader(Settings.class, resource,
+				ResourceOption.REQUIRED)) {
+			String line = null;
 				
-				while ((line = reader.readLine()) != null) {
-					System.out.println("Testing existence of provider " + line);
-					Assert.assertTrue(createFactory().hasProvider(line));
-				}
+			while ((line = reader.readLine()) != null) {
+				System.out.println("Testing existence of provider " + line);
+				Assert.assertTrue(createFactory().hasProvider(line));
 			}
 		}
 	}

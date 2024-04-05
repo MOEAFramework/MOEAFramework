@@ -19,8 +19,6 @@ package org.moeaframework.problem;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -30,7 +28,6 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import org.apache.commons.io.FilenameUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
@@ -39,6 +36,8 @@ import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.io.RedirectStream;
+import org.moeaframework.util.io.Resources;
+import org.moeaframework.util.io.Resources.ResourceOption;
 
 /**
  * Evaluate solutions using an externally-defined problem.  Two modes of operation are supported: standard I/O and
@@ -197,23 +196,8 @@ public abstract class ExternalProblem implements Problem {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public static final String extractResource(Class<?> type, String path) throws IOException {
-		if (new File(path).exists()) {
-			return path;
-		} else {
-			File tempFile = File.createTempFile("problem", "." + FilenameUtils.getExtension(path));
-			
-		    try (InputStream input = type.getResourceAsStream(FilenameUtils.getName(path))) {
-		        if (input == null) {
-		        	throw new IOException("Unable to find file or resource " + path);
-		        }
-		        
-		        try (OutputStream output = new FileOutputStream(tempFile)) {
-		        	input.transferTo(output);
-		        }
-		    }
-		    
-		    return tempFile.getAbsolutePath();
-		}
+		return Resources.asFile(type, path, ResourceOption.REQUIRED, ResourceOption.TEMPORARY,
+				ResourceOption.EXECUTABLE).getPath();
 	}
 	
 	/**

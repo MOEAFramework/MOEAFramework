@@ -21,10 +21,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -43,6 +41,9 @@ import org.moeaframework.Instrumenter;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.util.Localization;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.io.CommentedLineReader;
+import org.moeaframework.util.io.Resources;
+import org.moeaframework.util.io.Resources.ResourceOption;
 
 /**
  * Collection of actions used by the diagnostic tool.
@@ -857,8 +858,8 @@ public class ActionFactory implements ControllerListener {
 		String line = null;
 		boolean isNewParagraph = false;
 		
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
-					getClass().getResourceAsStream("/META-INF/LGPL-LICENSE")))) {
+		try (CommentedLineReader reader = Resources.asLineReader(getClass(), "/META-INF/LGPL-LICENSE",
+				ResourceOption.REQUIRED)) {
 			while ((line = reader.readLine()) != null) {
 				line = line.trim();
 				

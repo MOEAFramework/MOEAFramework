@@ -17,14 +17,15 @@
  */
 package org.moeaframework.util.sequence;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
 import org.moeaframework.core.FrameworkException;
+import org.moeaframework.util.io.CommentedLineReader;
+import org.moeaframework.util.io.Resources;
+import org.moeaframework.util.io.Resources.ResourceOption;
 
 /**
  * Generates sequences using the Sobol' low-discrepancy sequence generator. When replacing uniformly random numbers
@@ -71,8 +72,8 @@ public class Sobol implements Sequence {
 	 * Loads the direction numbers. This is designed to read the file format from Kuo and Joe's site.
 	 */
 	private static void loadDirectionNumbers() throws IOException {
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
-					Sobol.class.getResourceAsStream(DIRECTIONS_RESOURCE)))) {
+		try (CommentedLineReader reader = Resources.asLineReader(Sobol.class, DIRECTIONS_RESOURCE,
+				ResourceOption.REQUIRED)) {
 			List<int[]> directions = new ArrayList<int[]>();
 
 			String line = reader.readLine(); // remove header line
