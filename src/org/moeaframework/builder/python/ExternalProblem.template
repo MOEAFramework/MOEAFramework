@@ -1,13 +1,28 @@
 import java.io.IOException;
 
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.ExternalProblem;
+import org.moeaframework.util.io.Resources;
+import org.moeaframework.util.io.Resources.ResourceOption;
 
 public class ${problemName} extends ExternalProblem {
 
+	public static final String SCRIPT;
+	
+	static {
+		// Locate the Python script on disk or extract from the JAR
+		try {
+			SCRIPT = Resources.asFile(${problemName}.class, "${problemName}.py",
+				ResourceOption.REQUIRED, ResourceOption.TEMPORARY).getPath();
+		} catch (IOException e) {
+			throw new FrameworkException("Failed to locate executable", e);
+		}
+	}
+
 	public ${problemName}() throws IOException {
-		super("python", extractResource(${problemName}.class, "${problemName}.py"));
+		super("python", SCRIPT);
 	}
 
 	@Override

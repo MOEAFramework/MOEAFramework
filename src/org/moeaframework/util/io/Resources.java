@@ -45,9 +45,9 @@ public class Resources {
 	public enum ResourceOption {
 		
 		/**
-		 * First search for a file referenced by the resource string.  While a resource string starting with "/"
-		 * indicates an absolute path when searching the classpath, this is ignored when locating a file.  The file
-		 * will be resolved relative to the base directory.
+		 * First search for a file referenced by the resource path.  Any leading {@code "/"} in the resource path,
+		 * which is typically used to indicate the resource path is absolute (starting at the root of the classpath),
+		 * is ignored when locating the file.  The file will be resolved relative to the base directory.
 		 */
 		FILE,
 				

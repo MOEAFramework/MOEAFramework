@@ -36,8 +36,6 @@ import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.io.RedirectStream;
-import org.moeaframework.util.io.Resources;
-import org.moeaframework.util.io.Resources.ResourceOption;
 
 /**
  * Evaluate solutions using an externally-defined problem.  Two modes of operation are supported: standard I/O and
@@ -183,21 +181,6 @@ public abstract class ExternalProblem implements Problem {
 		if (Settings.isExternalProblemDebuggingEnabled()) {
 			setDebugStream(System.out);
 		}
-	}
-	
-	/**
-	 * Locates a resource, either as a file or a resource loaded from the classpath / a JAR file.  If found on the
-	 * classpath, the content is extracted to a file.  This allows external problems to package any required
-	 * resources in a JAR and extract on demand.
-	 * 
-	 * @param type the class that is requesting the resource
-	 * @param path the path to the file
-	 * @return the path to the file or extracted file
-	 * @throws IOException if an I/O error occurred
-	 */
-	public static final String extractResource(Class<?> type, String path) throws IOException {
-		return Resources.asFile(type, path, ResourceOption.REQUIRED, ResourceOption.TEMPORARY,
-				ResourceOption.EXECUTABLE).getPath();
 	}
 	
 	/**
