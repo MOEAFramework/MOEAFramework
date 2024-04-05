@@ -47,6 +47,11 @@ public class BuildProblemTest {
 	public void testJava() throws Exception {
 		test("java");
 	}
+	
+	@Test
+	public void testPython() throws Exception {
+		test("python");
+	}
 
 	@Test
 	public void testExternal() throws Exception {

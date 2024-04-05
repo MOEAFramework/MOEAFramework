@@ -76,6 +76,7 @@ public class BuildProblem extends CommandLineUtility {
 		LANGUAGES.put("c++", "cpp");
 		LANGUAGES.put("fortran", "fortran");
 		LANGUAGES.put("java", "java");
+		LANGUAGES.put("python", "python");
 		LANGUAGES.put("external", "external");
 	}
 	
@@ -188,7 +189,7 @@ public class BuildProblem extends CommandLineUtility {
 		String[] classpath = new String[] {
 				tryRelativize(directory, Path.of(".")).resolve("lib").normalize().toString() + File.separator + "*",
 				tryRelativize(directory, Path.of(".")).resolve("bin").normalize().toString(),
-				"."
+				"*"
 		};		
 
 		Map<String, Object> mappings = new HashMap<>();
@@ -258,10 +259,9 @@ public class BuildProblem extends CommandLineUtility {
 			// references a file relative to the MOEA Framework root folder
 			return Files.readString(new File(resource.substring(1)).toPath(), StandardCharsets.UTF_8);
 		} else {
-			ClassLoader classLoader = getClass().getClassLoader();
 			String path = root.resolve(resource).normalize().toString().replaceAll("\\\\", "/");
 			
-		    try (InputStream input = classLoader.getResourceAsStream(path)) {
+		    try (InputStream input = getClass().getClassLoader().getResourceAsStream(path)) {
 		        if (input == null) {
 		        	throw new IOException("Unable to find file or resource " + path);
 		        }

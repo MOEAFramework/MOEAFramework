@@ -2,13 +2,17 @@
 
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
-## vNext
+## Version 4.0 (TBD)
 
   * Bumps minimum supported Java version to 17.  This is a long-term support (LTS) release with an end-of-life of
     Sept 2029.
     
   * As this is a major update, a number of breaking changes have been introduced, including removing deprecated
-    methods and reorganizing classes.  Upgrading to this version will likely require reaction work!
+    methods and reorganizing classes.  Most classes still exists, but have been moved to different packages.
+    Please update imports to fix any compilation issues.
+    
+  * Adds ProblemBuilder tool that generates templates for writing problems in C, C++, Fortran, Java, and Python.
+    See the [Writing Native Problems](writingNativeProblems.md) documentation for more details.
 
   * Other notable changes include:
   

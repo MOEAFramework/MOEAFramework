@@ -122,4 +122,5 @@ C        | `gcc`            | C function
 CPP      | `g++`            | C++ function.  Output includes `.c` and `.h` file
 Fortran  | `gfortran`      | Fortran90 function
 Java     | `javac`         | Java problem definition (see [Writing Java Problem](writingJavaProblem.md))
-External |                  | External problem using Standard I/O (see [Writing External Problems](writingExternalProblem.md))
+Python   |                  | Python program using Standard I/O
+External |                  | External C/C++ problem using Standard I/O (see [Writing External Problems](writingExternalProblem.md))

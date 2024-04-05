@@ -1,0 +1,6 @@
+Makefile.template -> Makefile
+Problem.template -> ${problemName}.py
+ExternalProblem.template -> ${problemName}.java
+../shared/ProblemProvider.template -> ${problemName}Provider.java
+../shared/Service.template -> META-INF/services/org.moeaframework.problem.ProblemProvider
+../shared/Example.template -> Example.java

@@ -19,6 +19,9 @@ package org.moeaframework.problem;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,6 +31,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import org.apache.commons.io.FilenameUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
@@ -180,6 +184,34 @@ public abstract class ExternalProblem implements Problem {
 		
 		if (Settings.isExternalProblemDebuggingEnabled()) {
 			setDebugStream(System.out);
+		}
+	}
+	
+	/**
+	 * Checks the the referenced file exists, and if not, checks if the resource can be extracted from the
+	 * classpath.  If being extracted, the resulting file will be saved to the temp folder.
+	 * 
+	 * @param path the path to the file
+	 * @return the path to the file or extracted file
+	 * @throws IOException if an I/O error occurred
+	 */
+	public static final String extractResource(String path) throws IOException {
+		if (new File(path).exists()) {
+			return path;
+		} else {
+			File tempFile = File.createTempFile("problem", "." + FilenameUtils.getExtension(path));
+			
+		    try (InputStream input = ClassLoader.getSystemResourceAsStream(path)) {
+		        if (input == null) {
+		        	throw new IOException("Unable to find file or resource " + path);
+		        }
+		        
+		        try (OutputStream output = new FileOutputStream(tempFile)) {
+		        	input.transferTo(output);
+		        }
+		    }
+		    
+		    return tempFile.getAbsolutePath();
 		}
 	}
 	

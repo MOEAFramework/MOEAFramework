@@ -228,7 +228,7 @@ public class Settings {
 					PROPERTIES.load(reader);
 				}
 			} else {
-				try (InputStream stream = Settings.class.getResourceAsStream("/" + resource)) {
+				try (InputStream stream = ClassLoader.getSystemResourceAsStream("/" + resource)) {
 					if (stream != null) {
 						try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
 							PROPERTIES.load(reader);
