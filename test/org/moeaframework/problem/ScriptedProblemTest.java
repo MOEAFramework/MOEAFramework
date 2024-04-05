@@ -39,7 +39,6 @@ import org.moeaframework.CIRunner;
 import org.moeaframework.TempFiles;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 
@@ -120,9 +119,6 @@ public class ScriptedProblemTest {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public static File extractResource(String resource) throws IOException {
-		byte[] buffer = new byte[Settings.BUFFER_SIZE];
-		int len = -1;
-		
 		//determine the file extension, if any
 		String extension = FilenameUtils.getExtension(resource);
 		File file = TempFiles.createFileWithExtension(extension);
@@ -134,9 +130,7 @@ public class ScriptedProblemTest {
 			}
 			
 			try (OutputStream output = new FileOutputStream(file)) {
-				while ((len = input.read(buffer)) != -1) {
-					output.write(buffer, 0, len);
-				}
+				input.transferTo(output);
 			}
 		}
 		
