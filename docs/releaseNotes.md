@@ -2,7 +2,7 @@
 
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
-## Version 4.0 (TBD)
+## Version 4.0 (05 Apr 2024)
 
   * Bumps minimum supported Java version to 17.  This is a long-term support (LTS) release with an end-of-life of
     Sept 2029.
@@ -10,16 +10,15 @@ This page documents notable changes introduced in each chronological release of 
   * As this is a major update, a number of breaking changes have been introduced, including removing deprecated
     methods and reorganizing classes.  Most classes still exists, but have been moved to different packages.
     Please update imports to fix any compilation issues.
-    
-  * Adds ProblemBuilder tool that generates templates for writing problems in C, C++, Fortran, Java, and Python.
-    See the [Writing Native Problems](writingNativeProblem.md) documentation for more details.
 
   * Other notable changes include:
   
+    * Adds ProblemBuilder tool that generates templates for writing problems in C, C++, Fortran, Java,
+      and Python.  See the [Writing Native Problems](writingNativeProblem.md) documentation for more
+      details.
+  
     * Adds the `Indicators` class to simplify calculating performance indicators.
-    
-    * Parameter truncation warnings (rounding double to int) are now suppressed by default.
-    
+        
     * Moves all documentation online, replacing the Beginner's Guide PDF.
     
 
