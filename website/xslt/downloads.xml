@@ -29,8 +29,7 @@
 <div class="listing">
   <ul>
     <li>
-      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%-Demo.jar"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '%VERSION%']);">
+      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%-Demo.jar">
         <img src="images/java_jar.png" class="float-left" width="22" height="22" alt="Download the demo application" />
         <strong>Demo Application</strong>
       </a>
@@ -44,8 +43,7 @@
       <div class="fix"></div>
     </li>
     <li>
-      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%.tar.gz"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Binary', '%VERSION%']);">
+      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%.tar.gz">
         <img src="images/tgz.png" class="float-left" width="22" height="22" alt="Download compiled binaries" />
         <strong>Compiled Binaries</strong>
       </a>
@@ -58,8 +56,7 @@
       <div class="fix"></div>
     </li>
     <li>
-      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%-Source.tar.gz"
-          onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '%VERSION%']);">
+      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%-Source.tar.gz">
         <img src="images/tgz.png" class="float-left" width="22" height="22" alt="Download source code" />
         <strong>Source Code</strong>
       </a>

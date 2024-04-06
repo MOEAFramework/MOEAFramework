@@ -23,6 +23,15 @@
 
 		<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 			<head>
+				<!-- Google tag (gtag.js) -->
+				<script async="true" src="https://www.googletagmanager.com/gtag/js?id=G-G5Q9J52Z1T"></script>
+				<script>
+				  window.dataLayer = window.dataLayer || [];
+				  function gtag(){dataLayer.push(arguments);}
+				  gtag('js', new Date());
+				  gtag('config', 'G-G5Q9J52Z1T');
+				</script>
+				
 				<meta name="author" content="David Hadka" />
 				<meta name="description">
 					<xsl:attribute name="content"><xsl:value-of select="description" /></xsl:attribute>
@@ -110,22 +119,17 @@
 								</p>
 								<ul>
 									<li>
-										<a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%-Demo.jar"
-										    onClick="_gaq.push(['_trackEvent', 'Downloads', 'Demo', '%VERSION%']);"
-										    itemprop="downloadUrl">
+										<a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%-Demo.jar" itemprop="downloadUrl">
 											Demo Application
 										</a>
 									</li>
 									<li>
-										<a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%.tar.gz"
-										    onClick="_gaq.push(['_trackEvent', 'Downloads', 'Binary', '%VERSION%']);"
-										    itemprop="downloadUrl">
+										<a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%.tar.gz" itemprop="downloadUrl">
 											Compiled Binaries
 										</a>
 									</li>
 									<li>
-										<a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%-Source.tar.gz"
-                                            onClick="_gaq.push(['_trackEvent', 'Downloads', 'Source', '%VERSION%']);">
+										<a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%-Source.tar.gz" itemprop="downloadUrl">
 											Source Code
 										</a>
 									</li>
