@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.examples.misc;
+package org.moeaframework.examples.algorithm;
 
 import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
 import org.moeaframework.core.NondominatedSortingPopulation;
@@ -31,7 +31,7 @@ import org.moeaframework.problem.misc.Srinivas;
  * Example showing how to write a custom optimization algorithm.  This simple "random walker" algorithm will mutate
  * one individual from the population using polynomial mutation (PM) each iteration.
  */
-public class RandomWalkerExample {
+public class NewAlgorithmExample {
 
 	public static class RandomWalker extends AbstractEvolutionaryAlgorithm {
 		

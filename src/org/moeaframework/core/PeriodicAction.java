@@ -73,7 +73,7 @@ public abstract class PeriodicAction implements Algorithm {
 	protected int lastInvocation;
 	
 	/**
-	 * Decorates an algorithm to perform a period action.
+	 * Decorates an algorithm to perform a periodic action.
 	 * 
 	 * @param algorithm the algorithm being decorated
 	 * @param frequency the frequency the {@link #doAction()} method is invoked

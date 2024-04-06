@@ -53,4 +53,28 @@ public class MaxFunctionEvaluationsTest {
 		Assert.assertTrue(termination.shouldTerminate(algorithm));
 	}
 	
+	@Test
+	public void testMultipleInitializations() {
+		MockAlgorithm algorithm = new MockAlgorithm();
+		MaxFunctionEvaluations termination = new MaxFunctionEvaluations(10000);
+		
+		termination.initialize(algorithm);
+		Assert.assertFalse(termination.shouldTerminate(algorithm));
+		
+		algorithm.setNumberOfEvaluations(5000);
+		Assert.assertFalse(termination.shouldTerminate(algorithm));
+		
+		algorithm.setNumberOfEvaluations(10000);
+		Assert.assertTrue(termination.shouldTerminate(algorithm));
+		
+		termination.initialize(algorithm);
+		Assert.assertFalse(termination.shouldTerminate(algorithm));
+		
+		algorithm.setNumberOfEvaluations(15000);
+		Assert.assertFalse(termination.shouldTerminate(algorithm));
+
+		algorithm.setNumberOfEvaluations(20000);
+		Assert.assertTrue(termination.shouldTerminate(algorithm));
+	}
+	
 }

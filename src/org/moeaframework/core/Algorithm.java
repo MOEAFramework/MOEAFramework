@@ -17,6 +17,8 @@
  */
 package org.moeaframework.core;
 
+import java.util.Arrays;
+
 import org.moeaframework.core.termination.MaxFunctionEvaluations;
 
 /**
@@ -71,6 +73,28 @@ public interface Algorithm extends Stateful {
 		while (!isTerminated() && !terminationCondition.shouldTerminate(this)) {
 			step();
 		}
+	}
+	
+	/**
+	 * Evaluates the specified solutions. This method calls {@link #evaluate(Solution)} on each of the solutions.
+	 * Subclasses should prefer calling this method over {@code evaluate} whenever possible, as this ensures the
+	 * solutions can be evaluated in parallel.
+	 * 
+	 * @param solutions the solutions to evaluate
+	 */
+	public default void evaluateAll(Iterable<Solution> solutions) {
+		for (Solution solution : solutions) {
+			evaluate(solution);
+		}
+	}
+	
+	/**
+	 * Evaluates the specified solutions.  This method is equivalent to {@code evaluateAll(Arrays.asList(solutions))}.
+	 * 
+	 * @param solutions the solutions to evaluate
+	 */
+	public default void evaluateAll(Solution[] solutions) {
+		evaluateAll(Arrays.asList(solutions));
 	}
 
 	/**

@@ -20,7 +20,6 @@ package org.moeaframework.algorithm;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Arrays;
 
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
@@ -72,28 +71,6 @@ public abstract class AbstractAlgorithm implements Algorithm {
 		
 		Validate.notNull("problem", problem);
 		this.problem = problem;
-	}
-
-	/**
-	 * Evaluates the specified solutions. This method calls {@link #evaluate(Solution)} on each of the solutions.
-	 * Subclasses should prefer calling this method over {@code evaluate} whenever possible, as this ensures the
-	 * solutions can be evaluated in parallel.
-	 * 
-	 * @param solutions the solutions to evaluate
-	 */
-	public void evaluateAll(Iterable<Solution> solutions) {
-		for (Solution solution : solutions) {
-			evaluate(solution);
-		}
-	}
-	
-	/**
-	 * Evaluates the specified solutions.  This method is equivalent to {@code evaluateAll(Arrays.asList(solutions))}.
-	 * 
-	 * @param solutions the solutions to evaluate
-	 */
-	public void evaluateAll(Solution[] solutions) {
-		evaluateAll(Arrays.asList(solutions));
 	}
 
 	@Override
