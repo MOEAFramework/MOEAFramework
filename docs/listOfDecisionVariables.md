@@ -88,13 +88,14 @@ EncodingUtils.setPermutation(solution.getVariable(i), permutation);
 
 ## Subset
 
-A subset represents a fixed or variable-length set of $N$ possible elements.  The elements range from $0, ..., N-1$.
-Unlike a permutation, the order of elements in a subset do not matter.  Additionally, each element can appear *at most*
-once.
+A subset represents a fixed set of $K$ elements or a variable-length set of between $L$ and $U$ possible elements.
+Additionally, the set can contain $M$ possible elements, ranging from $0, ..., M-1$.  Each element can appear *at most*
+once, but the order of the elements does not matter.
 
-There is some overlap, but also key differences, between subsets and binary encodings.  A binary encoding of length
-$N$ is equivalent to a variable-length subset that can hold between $0$ and $N$ elements.  The bits represent
-membership in the set.  However, unlike binary, a subset can require a specific number of elements in the set.
+Subsets and binary encodings can serve similar purposes, as we can interpret the bit values of `0` and `1` as
+membership in the set.  A binary string of length $N$ is equivalent to a variable-length subset containing between $0$
+and $N$ elements.  However, the primary difference is a subset can specify the minimum, $L$, and maximum, $U$, number
+of elements in a valid subset.
 
 <!-- java:test/org/moeaframework/snippet/VariableSnippet.java [108:114] {keepComments} -->
 

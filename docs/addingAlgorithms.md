@@ -12,7 +12,7 @@ For this example, we're going to create a simple algorithm that just randomly mu
 using the Polynomial Mutation (PM) operator.  We'll call this the `RandomWalker` algorithm.  Since this algorithm
 will maintain a population of solutions, we can build this from the `AbstractEvolutionaryAlgorithm`:
 
-<!-- java:examples/org/moeaframework/examples/algorithm/NewAlgorithmExample.java [36:69] -->
+<!-- java:examples/org/moeaframework/examples/algorithm/NewAlgorithmExample.java [36:65] -->
 
 ```java
 public static class RandomWalker extends AbstractEvolutionaryAlgorithm {
@@ -36,9 +36,7 @@ public static class RandomWalker extends AbstractEvolutionaryAlgorithm {
         Solution offspring = getVariation().evolve(new Solution[] { parent })[0];
 
         evaluate(offspring);
-
         population.add(offspring);
-
         population.truncate(population.size()-1);
     }
 
@@ -55,7 +53,7 @@ The two key components are:
 
 Then, to use this algorithm, we simply construct it like we would any other:
 
-<!-- java:examples/org/moeaframework/examples/algorithm/NewAlgorithmExample.java [72:74] -->
+<!-- java:examples/org/moeaframework/examples/algorithm/NewAlgorithmExample.java [68:70] -->
 
 ```java
 RandomWalker algorithm = new RandomWalker(new Srinivas());

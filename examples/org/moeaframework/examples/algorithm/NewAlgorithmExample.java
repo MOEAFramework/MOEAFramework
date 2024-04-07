@@ -56,13 +56,9 @@ public class NewAlgorithmExample {
 			// mutate the selected solution
 			Solution offspring = getVariation().evolve(new Solution[] { parent })[0];
 			
-			// evaluate the objectives/constraints
+			// evaluate the offspring, add to population, and truncate the worst solution
 			evaluate(offspring);
-			
-			// add the offspring to the population
 			population.add(offspring);
-			
-			// use non-dominated sorting to remove the worst solution
 			population.truncate(population.size()-1);
 		}
 

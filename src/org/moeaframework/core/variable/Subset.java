@@ -29,7 +29,9 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Variable;
 
 /**
- * Decision variable for subsets.
+ * Decision variable for subsets.  Subsets can either be fixed-length, which must contain exactly {@code k} elements,
+ * or variable-length, which can contain between {@code l} and {@code u} elements.  Furthermore, the values stored in
+ * a subset can range from {@code 0} to {@code n}, where {@code n >= k, u}.
  */
 public class Subset implements Variable {
 
@@ -87,7 +89,7 @@ public class Subset implements Variable {
 		this.n = n;
 		
 		if (u > n) {
-			throw new IllegalArgumentException("k must be <= n");
+			throw new IllegalArgumentException("u must be <= n");
 		}
 		
 		if (l < 0) {
