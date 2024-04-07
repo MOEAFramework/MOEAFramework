@@ -201,7 +201,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	 * @throws InterruptedException if the process was interrupted
 	 * @throws IOException if an I/O error occurred while processing the file
 	 */
-	private boolean process(File file) throws IOException, InterruptedException {
+	public boolean process(File file) throws IOException, InterruptedException {
 		boolean fileChanged = false;
 		FileType fileType = FileType.fromExtension(FilenameUtils.getExtension(file.getName()));
 		
@@ -222,7 +222,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 				writer.newLine();
 				
 				Matcher matcher = REGEX.matcher(line);
-				
+								
 				if (matcher.matches()) {
 					Language language = Language.fromString(matcher.group(1));
 					String path = matcher.group(2);
@@ -252,7 +252,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 					}
 					
 					// compare old and new content
-					List<String> newContent = format(content, options, fileType);
+					List<String> newContent = options.format(content, fileType);
 					List<String> oldContent = getNextCodeBlock(reader, writer, fileType);
 					
 					boolean contentChanged = diff(oldContent, newContent);
@@ -316,14 +316,14 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 		for (int i = 0; i < Math.max(first.size(), second.size()); i++) {
 			if (i >= first.size()) {
-				System.out.println("      ! >> " + second.get(i));
+				System.out.println("      ! ++ " + second.get(i));
 				result = true;
 			} else if (i >= second.size()) {
-				System.out.println("      ! << " + first.get(i));
+				System.out.println("      ! -- " + first.get(i));
 				result = true;
 			} else if (!first.get(i).equals(second.get(i))) {
-				System.out.println("      ! << " + first.get(i));
-				System.out.println("      ! >> " + second.get(i));
+				System.out.println("      ! -- " + first.get(i));
+				System.out.println("      ! ++ " + second.get(i));
 				result = true;
 			}
 		}
@@ -464,68 +464,9 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	}
 	
 	/**
-	 * Formats the given code block based on the options and target file type.
-	 * 
-	 * @param content the code block to format
-	 * @param options the formatting options
-	 * @param fileType the target file type where the code block is inserted
-	 * @return the formatted code block
-	 * @throws IOException if an I/O error occurred
-	 */
-	private List<String> format(String content, FormattingOptions options, FileType fileType) throws IOException {
-		return format(new ArrayList<String>(content.lines().toList()), options, fileType);
-	}
-	
-	/**
-	 * Formats the given code block based on the options and target file type.
-	 * 
-	 * @param lines the code block to format
-	 * @param options the formatting options
-	 * @param fileType the target file type where the code block is inserted
-	 * @return the formatted code block
-	 * @throws IOException if an I/O error occurred
-	 */
-	private List<String> format(List<String> lines, FormattingOptions options, FileType fileType) throws IOException {
-		int startingLine = options.startingLine;
-		int endingLine = options.endingLine;
-		
-		if (startingLine < 0) {
-			startingLine += lines.size() + 1;
-		} else if (startingLine == 0) {
-			startingLine = 1;
-		}
-		
-		if (endingLine < 0) {
-			endingLine += lines.size();
-		}
-		
-		lines = lines.subList(Math.max(0, startingLine - 1), Math.min(lines.size(), endingLine));
-		
-		if (options.stripComments()) {
-			lines = options.language.stripComments(lines);
-		}
-		
-		if (options.stripIndentation()) {
-			lines = options.language.stripIndentation(lines);
-		}
-		
-		if (options.replaceTabsWithSpaces()) {
-			for (int i = 0; i < lines.size(); i++) {
-				String line = lines.get(i);
-				line = line.replaceAll("[\\t]", "    ");
-				lines.set(i, line);
-			}
-		}
-		
-		fileType.wrapInCodeBlock(lines, options);
-		
-		return lines;
-	}
-	
-	/**
 	 * Formatting options for the code block.
 	 */
-	private class FormattingOptions {
+	static class FormattingOptions {
 		
 		/**
 		 * Constant representing the first line in the file.
@@ -543,13 +484,12 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		private final Language language;
 		
 		/**
-		 * The starting line number.  Line numbers start at index {@code 1}.
+		 * The starting line number.
 		 */
 		private int startingLine;
 		
 		/**
-		 * The ending line number.  Line numbers start at index {@code 1}.  If the value exceeds the length of the
-		 * file, will include all lines up to the end of the file.
+		 * The ending line number.
 		 */
 		private int endingLine;
 		
@@ -610,6 +550,27 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 		
 		/**
+		 * Returns the starting line number.  Line numbers start at index {@code 1}.  If negative, the line number
+		 * is measured from the end of the file.
+		 * 
+		 * @return the starting line number
+		 */
+		public int getStartingLine() {
+			return startingLine;
+		}
+		
+		/**
+		 * Returns the ending line number.  Line numbers start at index {@code 1}.  If the value exceeds the length of
+		 * the file, will include all lines up to the end of the file.  If the value is negative, the line number is
+		 * measured from the end of the file.
+		 * 
+		 * @return the ending line number
+		 */
+		public int getEndingLine() {
+			return endingLine;
+		}
+		
+		/**
 		 * Parses additional format flags given as {@code {<flag1>;<flag2>;...}}.
 		 * 
 		 * @param str the string representation of the format flags
@@ -644,6 +605,59 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		public boolean replaceTabsWithSpaces() {
 			return !formatFlags.contains(FormatFlag.KeepTabs);
 		}
+		
+		/**
+		 * Formats the given code block based on the options and target file type.
+		 * 
+		 * @param content the code block to format
+		 * @param fileType the target file type where the code block is inserted
+		 * @return the formatted code block
+		 * @throws IOException if an I/O error occurred
+		 */
+		public List<String> format(String content, FileType fileType) throws IOException {
+			return format(new ArrayList<String>(content.lines().toList()), fileType);
+		}
+		
+		/**
+		 * Formats the given code block based on the options and target file type.
+		 * 
+		 * @param lines the code block to format
+		 * @param fileType the target file type where the code block is inserted
+		 * @return the formatted code block
+		 * @throws IOException if an I/O error occurred
+		 */
+		public List<String> format(List<String> lines, FileType fileType) throws IOException {
+			int startingLine = getStartingLine();
+			int endingLine = getEndingLine();
+			
+			if (startingLine < 0) {
+				startingLine += lines.size() + 1;
+			} else if (startingLine == 0) {
+				startingLine = 1;
+			}
+			
+			if (endingLine < 0) {
+				endingLine += lines.size();
+			}
+			
+			lines = lines.subList(Math.max(0, startingLine - 1), Math.min(lines.size(), endingLine));
+			
+			if (stripComments()) {
+				lines = language.stripComments(lines);
+			}
+			
+			if (stripIndentation()) {
+				lines = language.stripIndentation(lines);
+			}
+			
+			if (replaceTabsWithSpaces()) {
+				lines = language.replaceTabsWithSpaces(lines);
+			}
+			
+			fileType.wrapInCodeBlock(lines, this);
+			
+			return lines;
+		}
 
 		@Override
 		public String toString() {
@@ -667,7 +681,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	/**
 	 * The language shown in the code block, used to ensure the appropriate syntax highlighting is configured.
 	 */
-	private enum Language {
+	enum Language {
 		
 		/**
 		 * Java source code.
@@ -720,7 +734,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * Strips comments out of the code block.
 		 * 
 		 * @param lines the code block
-		 * @return the code block without comments
+		 * @return the updated code block
 		 */
 		public List<String> stripComments(List<String> lines) {
 			String content = String.join(System.lineSeparator(), lines);
@@ -734,7 +748,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * Removes any leading indentation from the code block.
 		 * 
 		 * @param lines the code block
-		 * @return the code block without indentation
+		 * @return the updated code block
 		 */
 		public List<String> stripIndentation(List<String> lines) {
 			String content = String.join(System.lineSeparator(), lines);
@@ -743,10 +757,26 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 		
 		/**
+		 * Replaces tabs with four spaces.
+		 * 
+		 * @param lines the code block
+		 * @return the updated code block
+		 */
+		public List<String> replaceTabsWithSpaces(List<String> lines) {
+			List<String> result = new ArrayList<String>();
+			
+			for (String line : lines) {
+				result.add(line.replaceAll("[\\t]", "    "));
+			}
+
+			return result;
+		}
+		
+		/**
 		 * Removes any leading or trailing blank lines, which are empty or contain only whitespace.
 		 * 
 		 * @param lines the code block
-		 * @return the code block without leading and trailing blank lines
+		 * @return the updated code block
 		 */
 		public List<String> stripLeadingAndTrailingBlankLines(List<String> lines) {
 			List<String> result = new ArrayList<String>(lines);
@@ -767,7 +797,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * when removing the comments.
 		 * 
 		 * @param content the code block
-		 * @return the code block without comments
+		 * @return the updated code block
 		 */
 		public String stripComments(String content) {
 			return switch (this) {
@@ -791,7 +821,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	/**
 	 * Additional formatting flags.
 	 */
-	private enum FormatFlag {
+	enum FormatFlag {
 		
 		/**
 		 * Retain all comments.  By default, the formatter removes comments.
@@ -866,7 +896,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	 * Supported file types that are processed by this utility.  This defines how code blocks are identified and
 	 * formatted for a particular file format.
 	 */
-	private enum FileType {
+	enum FileType {
 		
 		/**
 		 * Markdown files.
