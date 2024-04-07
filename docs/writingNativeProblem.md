@@ -1,7 +1,7 @@
 # Natively-Compiled Functions
 
 This example demonstrates how to construct native problems, where we write the function in a language like C, C++,
-or Fortran.  The code is then compiled into a natively shared library (`.dll` or `.so`) or an executable, which is
+or Fortran.  The code is then compiled into a shared library (`.dll` or `.so`) or an executable (`.exe`), which is
 then called from the MOEA Framework.  While there is a small amount of additional overhead, writing complex functions
 in a native language will typically outperform their Java equivalent.
 
@@ -14,9 +14,9 @@ To run this example, you will need a C/C++ compiler and Make.  For Windows, we r
 pacman -S make mingw-w64-x86_64-gcc
 ```
 
-## Generating the Problem Scaffolding
+## Generating the Problem Template
 
-We provide a tool, `BuildProblem`, that creates a folder with the scaffolding for writing a native problem.  This
+We provide a tool, `BuildProblem`, that creates a folder with the template for writing a native problem.  This
 tool supports a variety of programming languages, including `C`, `C++`, `Fortran`, and `Java`.  As an example,
 here we create `TestProblem` with a single real-valued decision variable and two objectives.  The lower and uppper
 bounds of the variables is also specified:
@@ -105,11 +105,12 @@ If using an IDE like Eclipse, you likely also need to add this `.jar` to the bui
 At this point, the problem is now discoverable by the MOEA Framework and can be used as follows:
 
 ```java
-try (Problem problem = new TestProblem()) {
-	NSGAII algorithm = new NSGAII(problem);
-	algorithm.run(10000);
-	algorithm.getResult().display();
-}
+TestProblem problem = new TestProblem();
+
+NSGAII algorithm = new NSGAII(problem);
+algorithm.run(10000);
+
+algorithm.getResult().display();
 ```
 
 ## Supported Languages
