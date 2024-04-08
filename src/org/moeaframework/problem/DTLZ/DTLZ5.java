@@ -59,18 +59,24 @@ public class DTLZ5 extends DTLZ {
 			System.err.println("DLTZ5 is known to produce additional solutions than expected for M > 3");
 		}
 	}
+	
+	@Override
+	protected double g(double[] x) {
+		int k = numberOfVariables - numberOfObjectives + 1;
+		double g = 0.0;
+		
+		for (int i = numberOfVariables - k; i < numberOfVariables; i++) {
+			g += Math.pow(x[i] - 0.5, 2.0);
+		}
+		
+		return g;
+	}
 
 	@Override
 	public void evaluate(Solution solution) {
 		double[] x = EncodingUtils.getReal(solution);
 		double[] f = new double[numberOfObjectives];
-
-		int k = numberOfVariables - numberOfObjectives + 1;
-
-		double g = 0.0;
-		for (int i = numberOfVariables - k; i < numberOfVariables; i++) {
-			g += Math.pow(x[i] - 0.5, 2.0);
-		}
+		double g = g(x);
 		
 		double[] theta = new double[numberOfObjectives - 1];
 		for (int i = 0; i < numberOfObjectives - 1; i++) {
