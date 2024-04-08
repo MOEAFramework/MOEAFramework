@@ -17,12 +17,16 @@
  */
 package org.moeaframework.util.tree;
 
+import java.io.Serializable;
+
 /**
  * A node in an expression tree.  Expression trees are strongly typed, meaning nodes have defined return types and
  * argument types.  The return type of all nodes must match the argument type from its parent node.
  */
-public abstract class Node {
-	
+public abstract class Node implements Serializable {
+
+	private static final long serialVersionUID = 8670076212862882751L;
+
 	/**
 	 * {@code true} if this node should not be modified, altered or replaced; {@code false} otherwise.
 	 */
@@ -167,8 +171,9 @@ public abstract class Node {
 	 * @return a reference to this node, allowing multiple calls to be chained together
 	 */
 	public Node setArgument(int index, Node expression) {
-		expression.setParent(this);
 		arguments[index] = expression;
+		expression.setParent(this);
+
 		return this;
 	}
 	

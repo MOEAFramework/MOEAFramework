@@ -48,6 +48,8 @@ package org.moeaframework.util.tree;
  */
 public class Sequence extends Node {
 	
+	private static final long serialVersionUID = 2318840214228385180L;
+
 	/**
 	 * Constructs a new node for executing two expressions in sequence.
 	 */

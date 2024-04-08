@@ -46,6 +46,8 @@ package org.moeaframework.util.tree;
  */
 public class Multiply extends Node {
 	
+	private static final long serialVersionUID = -6931920752887428649L;
+
 	/**
 	 * Constructs a new node for multiplying two numbers.
 	 */

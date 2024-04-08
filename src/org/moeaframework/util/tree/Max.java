@@ -49,6 +49,8 @@ package org.moeaframework.util.tree;
  */
 public class Max extends Node {
 	
+	private static final long serialVersionUID = -3937799602010061507L;
+
 	/**
 	 * Constructs a new node for calculating the maximum value of the two arguments.
 	 */

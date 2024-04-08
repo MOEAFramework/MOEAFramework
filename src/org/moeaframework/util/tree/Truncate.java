@@ -42,6 +42,8 @@ package org.moeaframework.util.tree;
  */
 public class Truncate extends Node {
 	
+	private static final long serialVersionUID = -1309869749799625350L;
+
 	/**
 	 * The minimum value in the range.
 	 */

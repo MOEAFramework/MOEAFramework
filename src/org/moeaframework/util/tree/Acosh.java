@@ -43,6 +43,8 @@ package org.moeaframework.util.tree;
  */
 public class Acosh extends Node {
 	
+	private static final long serialVersionUID = 6371412623094117311L;
+
 	/**
 	 * Constructs a new node for calculating the hyperbolic arc cosine of a number.
 	 */

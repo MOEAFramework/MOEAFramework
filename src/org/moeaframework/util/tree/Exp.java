@@ -43,6 +43,8 @@ package org.moeaframework.util.tree;
  */
 public class Exp extends Node {
 	
+	private static final long serialVersionUID = 8894214131988919269L;
+
 	/**
 	 * Constructs a new node for calculating the result of Euler's number <i>e</i> raised to the power of a number.
 	 */

@@ -43,6 +43,8 @@ package org.moeaframework.util.tree;
  */
 public class Tanh extends Node {
 	
+	private static final long serialVersionUID = -7930543988046629445L;
+
 	/**
 	 * Constructs a new node for calculating the hyperbolic tangent of a number.
 	 */

@@ -36,14 +36,18 @@ import org.moeaframework.analysis.io.ResultFileWriter.ResultFileWriterSettings;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.Variable;
+import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.core.variable.Permutation;
+import org.moeaframework.core.variable.Program;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.mock.MockUnsupportedVariable;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.tree.Rules;
 
 public class ResultFileWriterTest {
 	
@@ -53,7 +57,7 @@ public class ResultFileWriterTest {
 	private Solution solution3; // violates constraints
 
 	@Before
-	public void setUp() {
+	public void setUp() {		
 		problem = new AbstractProblem(3, 2, 1) {
 			
 			@Override
@@ -342,26 +346,27 @@ public class ResultFileWriterTest {
 	}
 	
 	@Test
-	public void testEncode() throws IOException {
+	public void testEncodeSatisfiesRequirements() throws IOException {
 		File file = TempFiles.createFile();
 		
-		try (ResultFileWriter writer = ResultFileWriter.append(problem, file)) {
-			RealVariable rv = new RealVariable(0.5, 0.0, 1.0);
-			Assert.assertEquals("0.5", writer.encode(rv));
-			Assert.assertFalse(writer.encode(rv).matches(".*\\s.*"));
-			
-			BinaryVariable bv = new BinaryVariable(5);
-			bv.set(2, true);
-			Assert.assertEquals("00100", writer.encode(bv));
-			Assert.assertFalse(writer.encode(bv).matches(".*\\s.*"));
-			
-			Permutation p = new Permutation(5);
-			Assert.assertEquals("0,1,2,3,4", writer.encode(p));
-			Assert.assertFalse(writer.encode(p).matches(".*\\s.*"));
-			
-			Grammar g = new Grammar(5);
-			Assert.assertEquals("Grammar(0,0,0,0,0)", writer.encode(g));
-			Assert.assertFalse(writer.encode(g).matches(".*\\s.*"));
+		Rules rules = new Rules();
+		rules.populateWithDefaults();
+		rules.setMaxInitializationDepth(10);
+		
+		Solution solution = new Solution(7, 2, 1);
+		solution.setVariable(0, new RealVariable(0.0, 1.0));
+		solution.setVariable(1, new BinaryVariable(5));
+		solution.setVariable(2, new Permutation(3));
+		solution.setVariable(3, new BinaryIntegerVariable(5, 10));
+		solution.setVariable(4, new Grammar(5));
+		solution.setVariable(5, new Program(rules));
+		solution.setVariable(6, new MockUnsupportedVariable());
+		
+		try (ResultFileWriter writer = ResultFileWriter.overwrite(problem, file)) {
+			for (int i = 0; i < solution.getNumberOfVariables(); i++) {
+				Variable variable = solution.getVariable(i);
+				Assert.assertFalse(writer.encode(variable).matches("\\s+"));
+			}
 		}
 	}
 	

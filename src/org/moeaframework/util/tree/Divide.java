@@ -46,6 +46,8 @@ package org.moeaframework.util.tree;
  */
 public class Divide extends Node {
 	
+	private static final long serialVersionUID = 7257388777502405158L;
+
 	/**
 	 * Constructs a new node for dividing two numbers.
 	 */

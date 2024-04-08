@@ -45,6 +45,8 @@ package org.moeaframework.util.tree;
  */
 public class Sign extends Node {
 	
+	private static final long serialVersionUID = -1441715983660249316L;
+
 	/**
 	 * Constructs a new node for calculating the sign of a number.
 	 */

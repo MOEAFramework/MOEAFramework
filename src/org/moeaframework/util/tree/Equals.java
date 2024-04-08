@@ -45,7 +45,9 @@ package org.moeaframework.util.tree;
  * </table>
  */
 public class Equals extends Node {
-	
+
+	private static final long serialVersionUID = -3151984940053306352L;
+
 	/**
 	 * Constructs a new node for comparing two numbers for equality.
 	 */

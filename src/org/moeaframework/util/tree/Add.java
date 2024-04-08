@@ -46,6 +46,8 @@ package org.moeaframework.util.tree;
  */
 public class Add extends Node {
 	
+	private static final long serialVersionUID = -3690030436626853685L;
+
 	/**
 	 * Constructs a new node for adding two numbers.
 	 */

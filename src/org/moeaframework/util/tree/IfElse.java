@@ -51,6 +51,8 @@ package org.moeaframework.util.tree;
  */
 public class IfElse extends Node {
 	
+	private static final long serialVersionUID = 2060740511567427688L;
+
 	/**
 	 * Constructs a new node for executing one of two expressions depending on the result of a boolean expression.
 	 */

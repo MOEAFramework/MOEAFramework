@@ -42,7 +42,9 @@ package org.moeaframework.util.tree;
  * @see Math#acos(double)
  */
 public class Acos extends Node {
-	
+
+	private static final long serialVersionUID = -8585418673022992160L;
+
 	/**
 	 * Constructs a new node for calculating the arc cosine of a number.
 	 */

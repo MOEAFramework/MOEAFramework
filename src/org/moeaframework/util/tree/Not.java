@@ -40,6 +40,8 @@ package org.moeaframework.util.tree;
  * </table>
  */
 public class Not extends Node {
+	
+	private static final long serialVersionUID = 3744737892875040066L;
 
 	/**
 	 * Constructs a new node for calculating the logical NOT of a boolean value.

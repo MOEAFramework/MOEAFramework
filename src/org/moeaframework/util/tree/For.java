@@ -57,6 +57,8 @@ package org.moeaframework.util.tree;
  */
 public class For extends Node {
 	
+	private static final long serialVersionUID = 2852329340013774170L;
+	
 	/**
 	 * The name of the variable where the loop counter is stored
 	 */

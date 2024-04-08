@@ -46,6 +46,8 @@ package org.moeaframework.util.tree;
  */
 public class Or extends Node {
 	
+	private static final long serialVersionUID = 326913488266699882L;
+
 	/**
 	 * Constructs a new node for calculating the logical OR of two boolean values.
 	 */

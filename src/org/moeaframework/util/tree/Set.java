@@ -44,6 +44,8 @@ package org.moeaframework.util.tree;
  */
 public class Set extends Node {
 	
+	private static final long serialVersionUID = 3977781791136114263L;
+	
 	/**
 	 * The name of the variable.
 	 */

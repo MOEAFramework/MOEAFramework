@@ -25,7 +25,9 @@ import org.moeaframework.util.tree.Node;
  * facing.  Performing this operation consumes one move.
  */
 public class MoveForward extends Node {
-	
+
+	private static final long serialVersionUID = -6091983634993802945L;
+
 	/**
 	 * Constructs a new node for moving the ant forward one position in the
 	 * direction it is facing.

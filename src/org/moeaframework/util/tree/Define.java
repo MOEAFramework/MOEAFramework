@@ -25,6 +25,8 @@ package org.moeaframework.util.tree;
  */
 public class Define extends Node {
 	
+	private static final long serialVersionUID = 8909211647443245077L;
+
 	/**
 	 * The name of this function.
 	 */

@@ -35,9 +35,4 @@ public abstract class AbstractProgramOperatorTest<T extends Variation> extends A
 		return program;
 	}
 
-	@Override
-	public void testParentImmutability() {
-		// bypass this test, programs do not implement equals so this check does not work
-	}
-
 }

@@ -31,10 +31,10 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.BinaryVariable;
-import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.mock.MockSolution;
+import org.moeaframework.mock.MockUnsupportedVariable;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.util.TypedProperties;
 
@@ -453,9 +453,8 @@ public class ResultFileReaderTest {
 			reader.decode(p, "2,0,1,4,3");
 			Assert.assertArrayEquals(new int[] { 2, 0, 1, 4, 3 }, p.toArray());
 			
-			//grammars technically have valid encodings, but this tests the unsupported decision variable type entry
-			Grammar g = new Grammar(5);
-			reader.decode(g, "-");
+			MockUnsupportedVariable uv = new MockUnsupportedVariable();
+			reader.decode(uv, "-");
 		}
 	}
 	

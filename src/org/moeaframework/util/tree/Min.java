@@ -49,6 +49,8 @@ package org.moeaframework.util.tree;
  */
 public class Min extends Node {
 	
+	private static final long serialVersionUID = -117186577019732908L;
+
 	/**
 	 * Constructs a new node for calculating the minimum value of the two arguments.
 	 */

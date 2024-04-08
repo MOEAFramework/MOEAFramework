@@ -46,6 +46,8 @@ package org.moeaframework.util.tree;
  */
 public class Subtract extends Node {
 	
+	private static final long serialVersionUID = -1058012120577779578L;
+
 	/**
 	 * Constructs a new node for subtracting two numbers.
 	 */

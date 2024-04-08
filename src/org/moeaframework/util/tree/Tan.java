@@ -43,6 +43,8 @@ package org.moeaframework.util.tree;
  */
 public class Tan extends Node {
 	
+	private static final long serialVersionUID = 7857289854928443962L;
+
 	/**
 	 * Constructs a new node for calculating the trigonometric tangent of an angle specified in radians.
 	 */

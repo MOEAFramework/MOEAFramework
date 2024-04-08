@@ -37,6 +37,10 @@ package org.moeaframework.util.tree;
 public class Constant extends Node {
 	
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -337595627232272804L;
+	/**
 	 * The value.
 	 */
 	private final Object value;

@@ -17,9 +17,18 @@
  */
 package org.moeaframework.core.variable;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Base64;
+
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Variable;
 import org.moeaframework.util.tree.Environment;
+import org.moeaframework.util.tree.NOP;
 import org.moeaframework.util.tree.Node;
 import org.moeaframework.util.tree.Rules;
 
@@ -46,6 +55,8 @@ public class Program extends Node implements Variable {
 	public Program(Rules rules) {
 		super(rules.getReturnType(), rules.getReturnType());
 		this.rules = rules;
+		
+		setArgument(0, new NOP());
 	}
 	
 	/**
@@ -101,33 +112,29 @@ public class Program extends Node implements Variable {
 	
 	@Override
 	public String encode() {
-		throw new UnsupportedOperationException("programs are not serializable");
-		
-//		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//				ObjectOutputStream oos = new ObjectOutputStream(baos)) {
-//			oos.writeObject(getArgument(0));
-//			return "Program(" + Base64.getEncoder().encodeToString(baos.toByteArray()) + ")";
-//		} catch (IOException e) {
-//			throw new FrameworkException("failed to encode program", e);
-//		}
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+			oos.writeObject(getArgument(0));
+			return "Program(" + Base64.getEncoder().encodeToString(baos.toByteArray()) + ")";
+		} catch (IOException e) {
+			throw new FrameworkException("failed to encode program", e);
+		}
 	}
 	
 	@Override
 	public void decode(String value) {
-		throw new UnsupportedOperationException("programs are not serializable");
+		if (!value.startsWith("Program(") || !value.endsWith(")")) {
+			throw new IllegalArgumentException("invalid variable encoding, missing Program(...)");
+		}
 		
-//		if (!value.startsWith("Program(") || !value.endsWith(")")) {
-//			throw new IllegalArgumentException("invalid variable encoding, missing Program(...)");
-//		}
-//		
-//		byte[] encoding = Base64.getDecoder().decode(value.substring(8, value.length()-1));
-//		
-//		try (ByteArrayInputStream baos = new ByteArrayInputStream(encoding);
-//				ObjectInputStream ois = new ObjectInputStream(baos)) {
-//			setArgument(0, (Node)ois.readObject());
-//		} catch (IOException | ClassNotFoundException e) {
-//			throw new FrameworkException("failed to decode program", e);
-//		}
+		byte[] encoding = Base64.getDecoder().decode(value.substring(8, value.length()-1));
+		
+		try (ByteArrayInputStream baos = new ByteArrayInputStream(encoding);
+				ObjectInputStream ois = new ObjectInputStream(baos)) {
+			setArgument(0, (Node)ois.readObject());
+		} catch (IOException | ClassNotFoundException e) {
+			throw new FrameworkException("failed to decode program", e);
+		}
 	}
 
 }

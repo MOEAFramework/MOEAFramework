@@ -43,6 +43,8 @@ package org.moeaframework.util.tree;
  */
 public class Sinh extends Node {
 	
+	private static final long serialVersionUID = -6408713316176238405L;
+
 	/**
 	 * Constructs a new node for calculating the hyperbolic sine of a number.
 	 */

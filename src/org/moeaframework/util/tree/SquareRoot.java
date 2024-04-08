@@ -43,6 +43,8 @@ package org.moeaframework.util.tree;
  */
 public class SquareRoot extends Node {
 	
+	private static final long serialVersionUID = -5482836398807885241L;
+
 	/**
 	 * Constructs a new node for calculating the square root of a number.
 	 */

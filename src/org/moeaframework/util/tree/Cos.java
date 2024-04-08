@@ -43,6 +43,8 @@ package org.moeaframework.util.tree;
  */
 public class Cos extends Node {
 	
+	private static final long serialVersionUID = 7517035057889312437L;
+
 	/**
 	 * Constructs a new node for calculating the trigonometric cosine of an angle specified in radians.
 	 */

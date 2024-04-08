@@ -43,7 +43,9 @@ package org.moeaframework.util.tree;
  * @see Math#abs(double)
  */
 public class Abs extends Node {
-	
+
+	private static final long serialVersionUID = 5588935450554189242L;
+
 	/**
 	 * Constructs a new node for calculating the absolute value of a number.
 	 */

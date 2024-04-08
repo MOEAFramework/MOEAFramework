@@ -26,6 +26,8 @@ package org.moeaframework.util.tree;
  */
 public class Lambda extends Node {
 	
+	private static final long serialVersionUID = 4355400776083960211L;
+
 	/**
 	 * The body of this function.
 	 */

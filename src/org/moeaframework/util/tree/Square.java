@@ -41,6 +41,8 @@ package org.moeaframework.util.tree;
  */
 public class Square extends Node {
 	
+	private static final long serialVersionUID = -7003190031467414411L;
+
 	/**
 	 * Constructs a new node for calculating the square of a number.
 	 */

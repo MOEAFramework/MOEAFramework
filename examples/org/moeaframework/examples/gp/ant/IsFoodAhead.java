@@ -39,7 +39,9 @@ import org.moeaframework.util.tree.Node;
  * </table>
  */
 public class IsFoodAhead extends Node {
-	
+
+	private static final long serialVersionUID = 4442494775650582593L;
+
 	/**
 	 * Constructs a new node for determining if food is located in the position
 	 * directly ahead of the ant.

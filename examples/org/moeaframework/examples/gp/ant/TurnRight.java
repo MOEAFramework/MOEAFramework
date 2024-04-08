@@ -26,6 +26,8 @@ import org.moeaframework.util.tree.Node;
  */
 public class TurnRight extends Node {
 	
+	private static final long serialVersionUID = -2541888746629659824L;
+
 	/**
 	 * Constructs a new node for turning the ant right.
 	 */

@@ -24,6 +24,8 @@ package org.moeaframework.util.tree;
  */
 public class Call extends Node {
 	
+	private static final long serialVersionUID = -7007119390023290184L;
+
 	/**
 	 * The name of the function to call.
 	 */

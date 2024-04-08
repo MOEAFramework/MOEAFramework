@@ -42,7 +42,9 @@ package org.moeaframework.util.tree;
  * @see Math#asin(double)
  */
 public class Asin extends Node {
-	
+
+	private static final long serialVersionUID = -7236759411677695947L;
+
 	/**
 	 * Constructs a new node for calculating the arc sine of a number.
 	 */

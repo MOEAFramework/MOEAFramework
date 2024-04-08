@@ -45,6 +45,8 @@ package org.moeaframework.util.tree;
  * </table>
  */
 public class While extends Node {
+	
+	private static final long serialVersionUID = 2365993074992585024L;
 
 	/**
 	 * Constructs a new node for repeatedly executing an expression while a condition remains {@code true}.

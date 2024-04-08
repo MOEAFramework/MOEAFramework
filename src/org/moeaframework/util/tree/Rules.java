@@ -17,6 +17,7 @@
  */
 package org.moeaframework.util.tree;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,8 +32,10 @@ import org.moeaframework.core.PRNG;
  * automatically defined functions), so that the function appears in all programs.  Any undefined arguments (i.e.,
  * {@code null}) to a node will be filled by the genetic programming algorithm.
  */
-public class Rules {
+public class Rules implements Serializable {
 	
+	private static final long serialVersionUID = 8544918549571965603L;
+
 	/**
 	 * The return type of all programs produced using these rules.
 	 */

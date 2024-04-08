@@ -37,6 +37,7 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.Program;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.io.CommentedLineReader;
 
@@ -137,8 +138,13 @@ public class Assert extends org.junit.Assert {
 				expected.getNumberOfConstraints(), actual.getNumberOfConstraints());
 
 		for (int i = 0; i < expected.getNumberOfVariables(); i++) {
-			assertEquals("Solutions have different variables at index " + i + ":",
-					expected.getVariable(i), actual.getVariable(i));
+			if (expected.getVariable(i) instanceof Program p1 && actual.getVariable(i) instanceof Program p2) {
+				// Programs do not implement equals, so check their encoding instead
+				assertEquals("Solutions have different variables at index " + i + ":", p1.encode(), p2.encode());
+			} else {
+				assertEquals("Solutions have different variables at index " + i + ":",
+						expected.getVariable(i), actual.getVariable(i));
+			}
 		}
 
 		for (int i = 0; i < expected.getNumberOfObjectives(); i++) {

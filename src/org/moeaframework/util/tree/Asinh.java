@@ -43,6 +43,8 @@ package org.moeaframework.util.tree;
  */
 public class Asinh extends Node {
 	
+	private static final long serialVersionUID = 18668156899157795L;
+
 	/**
 	 * Constructs a new node for calculating the hyperbolic arc sine of a number.
 	 */

@@ -48,6 +48,8 @@ package org.moeaframework.util.tree;
  */
 public class Power extends Node {
 	
+	private static final long serialVersionUID = 2139762605221527425L;
+
 	/**
 	 * Constructs a new node for calculating the power of a base number and exponent.
 	 */

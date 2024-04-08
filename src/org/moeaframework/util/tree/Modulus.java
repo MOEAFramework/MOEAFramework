@@ -46,6 +46,8 @@ package org.moeaframework.util.tree;
  */
 public class Modulus extends Node {
 	
+	private static final long serialVersionUID = -6590228700975940470L;
+
 	/**
 	 * Constructs a new node for calculating the modulus, or remainder, of two numbers.
 	 */

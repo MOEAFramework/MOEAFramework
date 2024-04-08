@@ -68,10 +68,27 @@ public class ProgramTest {
 		Assert.assertEquals(copy.getArgument(0).toString(), program.getArgument(0).toString());
 	}
 	
-	@Test(expected = UnsupportedOperationException.class)
-	public void testEncode() {
+	@Test
+	public void testEncodeDecode() {
 		String encoding = program.encode();
-		program.decode(encoding);
+		
+		Program copy = program.copy();
+		copy.decode(encoding);
+		
+		Assert.assertEquals(copy.getNumberOfArguments(), program.getNumberOfArguments());
+		Assert.assertEquals(copy.getArgument(0).toString(), program.getArgument(0).toString());
+	}
+	
+	@Test
+	public void testEncodeDecodeEmptyProgram() {
+		Program program = new Program(rules);
+		String encoding = program.encode();
+		
+		Program copy = program.copy();
+		copy.decode(encoding);
+		
+		Assert.assertEquals(copy.getNumberOfArguments(), program.getNumberOfArguments());
+		Assert.assertEquals(copy.getArgument(0).toString(), program.getArgument(0).toString());
 	}
 	
 	private Object testEvaluate(Program program, boolean allowNull) {

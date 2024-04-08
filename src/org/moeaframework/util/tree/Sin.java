@@ -43,6 +43,8 @@ package org.moeaframework.util.tree;
  */
 public class Sin extends Node {
 	
+	private static final long serialVersionUID = -5107326359825716491L;
+
 	/**
 	 * Constructs a new node for calculating the trigonometric sine of an angle specified in radians.
 	 */

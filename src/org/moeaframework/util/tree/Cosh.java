@@ -43,6 +43,8 @@ package org.moeaframework.util.tree;
  */
 public class Cosh extends Node {
 	
+	private static final long serialVersionUID = -8316777857195685779L;
+
 	/**
 	 * Constructs a new node for calculating the hyperbolic cosine of a number.
 	 */

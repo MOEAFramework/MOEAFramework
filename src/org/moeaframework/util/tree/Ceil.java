@@ -42,7 +42,9 @@ package org.moeaframework.util.tree;
  * @see Math#ceil(double)
  */
 public class Ceil extends Node {
-	
+
+	private static final long serialVersionUID = 8313580705953096036L;
+
 	/**
 	 * Constructs a new node for calculating the smallest integer value that is greater than or equal to a number.
 	 */

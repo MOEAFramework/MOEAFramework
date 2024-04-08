@@ -43,6 +43,8 @@ package org.moeaframework.util.tree;
  */
 public class Log10 extends Node {
 	
+	private static final long serialVersionUID = 7282692811989145296L;
+
 	/**
 	 * Constructs a new node for calculating the base-10 logarithm of a number.
 	 */

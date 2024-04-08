@@ -43,6 +43,8 @@ package org.moeaframework.util.tree;
  */
 public class Log extends Node {
 	
+	private static final long serialVersionUID = 866685432361230557L;
+
 	/**
 	 * Constructs a new node for calculating the natural logarithm of a number.
 	 */

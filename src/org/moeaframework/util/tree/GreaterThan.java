@@ -46,6 +46,8 @@ package org.moeaframework.util.tree;
  */
 public class GreaterThan extends Node {
 	
+	private static final long serialVersionUID = 870051108440754805L;
+
 	/**
 	 * Constructs a new node for comparing if one number is greater than another.
 	 */

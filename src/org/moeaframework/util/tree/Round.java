@@ -43,6 +43,8 @@ package org.moeaframework.util.tree;
  */
 public class Round extends Node {
 	
+	private static final long serialVersionUID = 5502785988651711941L;
+
 	/**
 	 * Constructs a new node for rounding a number to the nearest integer.
 	 */

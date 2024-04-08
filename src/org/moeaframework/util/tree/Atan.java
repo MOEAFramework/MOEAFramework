@@ -42,7 +42,9 @@ package org.moeaframework.util.tree;
  * @see Math#atan(double)
  */
 public class Atan extends Node {
-	
+
+	private static final long serialVersionUID = -5825222166224191162L;
+
 	/**
 	 * Constructs a new node for calculating the arc tangent of a number.
 	 */

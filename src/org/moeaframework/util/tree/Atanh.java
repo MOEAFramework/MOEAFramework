@@ -42,7 +42,9 @@ package org.moeaframework.util.tree;
  * @see Math#tanh(double)
  */
 public class Atanh extends Node {
-	
+
+	private static final long serialVersionUID = 5393683368033489233L;
+
 	/**
 	 * Constructs a new node for calculating the hyperbolic arc tangent of a number.
 	 */

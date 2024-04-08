@@ -43,6 +43,8 @@ package org.moeaframework.util.tree;
  */
 public class Floor extends Node {
 	
+	private static final long serialVersionUID = 3614611115061664157L;
+
 	/**
 	 * Constructs a new node for calculating the largest integer value that is less than or equal to a number.
 	 */

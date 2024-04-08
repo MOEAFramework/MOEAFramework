@@ -25,7 +25,9 @@ import org.moeaframework.util.tree.Node;
  * move.
  */
 public class TurnLeft extends Node {
-	
+
+	private static final long serialVersionUID = 1121416231000448514L;
+
 	/**
 	 * Constructs a new node for turning the ant left.
 	 */

@@ -46,6 +46,8 @@ package org.moeaframework.util.tree;
  */
 public class LessThanOrEqual extends Node {
 	
+	private static final long serialVersionUID = 3427747921710390373L;
+
 	/**
 	 * Constructs a new node for comparing if a number is less than or equal to another.
 	 */

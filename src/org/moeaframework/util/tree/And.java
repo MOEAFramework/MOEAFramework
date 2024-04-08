@@ -45,7 +45,9 @@ package org.moeaframework.util.tree;
  * </table>
  */
 public class And extends Node {
-	
+
+	private static final long serialVersionUID = -174601363499585162L;
+
 	/**
 	 * Constructs a new node for calculating the logical AND of two boolean values.
 	 */
