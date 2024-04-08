@@ -20,11 +20,11 @@ package org.moeaframework.core;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.Iterator;
 
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
-import org.moeaframework.util.io.CommentedLineReader;
 import org.moeaframework.util.io.Resources;
 
 /**
@@ -228,8 +228,7 @@ public class NondominatedPopulation extends Population {
 		if (file.exists()) {
 			return loadReferenceSet(file);
 		} else {
-			try (CommentedLineReader reader = Resources.asLineReader(NondominatedPopulation.class,
-					"/" + resource)) {
+			try (Reader reader = Resources.asReader(NondominatedPopulation.class, "/" + resource)) {
 				if (reader != null) {
 					return new NondominatedPopulation(Population.loadObjectives(reader));
 				}

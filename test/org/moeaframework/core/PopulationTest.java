@@ -216,7 +216,7 @@ public class PopulationTest {
 	}
 
 	@Test
-	public void testSaveLoad() throws IOException {		
+	public void testSaveLoadBinary() throws IOException {		
 		Solution s1 = MockSolution.of()
 				.withVariables(new BinaryVariable(10), new Grammar(5), new Permutation(5), new RealVariable(0.0, 1.0))
 				.withObjectives(1.0, 0.0)
@@ -229,9 +229,9 @@ public class PopulationTest {
 		population.addAll(List.of(s1, s2));
 
 		File file = TempFiles.createFile();
-		population.save(file);
+		population.saveBinary(file);
 		
-		Population population2 = Population.load(file);
+		Population population2 = Population.loadBinary(file);
 		Assert.assertEquals(population, population2);
 	}
 	

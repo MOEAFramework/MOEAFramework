@@ -48,8 +48,7 @@ public abstract class AbstractFactoryTest<T, S extends AbstractFactory<T>> {
 	public void testDefaultProviders() throws IOException {
 		String resource = "/META-INF/services/" + getProviderType().getName();
 		
-		try (CommentedLineReader reader = Resources.asLineReader(Settings.class, resource,
-				ResourceOption.REQUIRED)) {
+		try (CommentedLineReader reader = Resources.asLineReader(Settings.class, resource, ResourceOption.REQUIRED)) {
 			String line = null;
 				
 			while ((line = reader.readLine()) != null) {
