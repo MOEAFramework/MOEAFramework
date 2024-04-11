@@ -29,12 +29,24 @@ public class AdditiveEpsilonIndicator extends NormalizedIndicator {
 
 	/**
 	 * Constructs an additive &epsilon;-indicator evaluator for the specified problem and corresponding reference set.
+	 * The default normalization procedure, as specified by {@link DefaultNormalizer}, is used.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set for the problem
 	 */
 	public AdditiveEpsilonIndicator(Problem problem, NondominatedPopulation referenceSet) {
 		super(problem, referenceSet);
+	}
+	
+	/**
+	 * Constructs an additive &epsilon;-indicator evaluator with a user-provided normalizer.
+	 * 
+	 * @param problem the problem
+	 * @param referenceSet the reference set for the problem
+	 * @param normalizer the user-provided normalizer, or {@code null} if the default is used
+	 */
+	public AdditiveEpsilonIndicator(Problem problem, NondominatedPopulation referenceSet, Normalizer normalizer) {
+		super(problem, referenceSet, normalizer);
 	}
 
 	@Override

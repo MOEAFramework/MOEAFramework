@@ -35,7 +35,8 @@ import org.moeaframework.util.format.TabularData;
 
 /**
  * Helper for evaluating multiple performance indicators, primarily for avoiding repetitive calculations that
- * would occur if creating each indicator separately.
+ * would occur if creating each indicator separately.  Normalized indicators are, by default, normalized using the
+ * provided reference set.  See {@link DefaultNormalizer} for ways to customize normalization.
  */
 public class Indicators implements Function<NondominatedPopulation, Indicators.IndicatorValues> {
 
@@ -191,7 +192,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 		this.problem = problem;
 		this.referenceSet = referenceSet;
 
-		normalizer = new Normalizer(problem, referenceSet);
+		normalizer = DefaultNormalizer.getInstance().getNormalizer(problem, referenceSet);
 		normalizedReferenceSet = normalizer.normalize(referenceSet);
 		
 		subdivisions = Optional.empty();

@@ -117,11 +117,12 @@ public abstract class RIndicator extends NormalizedIndicator {
 	 * @param problem the problem
 	 * @param subdivisions the number of subdivisions along each objective
 	 * @param referenceSet the reference set
+	 * @param normalizer the user-provided normalizer, or {@code null} if the default is used
 	 * @param utilityFunction the utility function
 	 */
-	public RIndicator(Problem problem, int subdivisions, NondominatedPopulation referenceSet,
+	public RIndicator(Problem problem, int subdivisions, NondominatedPopulation referenceSet, Normalizer normalizer,
 			UtilityFunction utilityFunction) {
-		super(problem, referenceSet);
+		super(problem, referenceSet, normalizer);
 		this.utilityFunction = utilityFunction;
 		
 		weights = generateUniformWeights(subdivisions, problem.getNumberOfObjectives());

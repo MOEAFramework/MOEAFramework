@@ -59,36 +59,24 @@ import org.moeaframework.core.Solution;
 public class PISAHypervolume extends NormalizedIndicator {
 
 	/**
-	 * Constructs a hypervolume evaluator for the specified problem and reference set.  See
-	 * {@link Hypervolume#getNormalizer(Problem, NondominatedPopulation)} for details on configuring normalization.
+	 * Constructs a hypervolume evaluator for the specified problem and reference set.  See {@link DefaultNormalizer}
+	 * for details on configuring normalization.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set
 	 */
 	public PISAHypervolume(Problem problem, NondominatedPopulation referenceSet) {
-		super(problem, referenceSet, Hypervolume.getNormalizer(problem, referenceSet));
-	}
-	
-	/**
-	 * Constructs a hypervolume evaluator for the specified problem using the given reference set and reference point.
-	 * 
-	 * @param problem the problem
-	 * @param referenceSet the reference set
-	 * @param referencePoint the reference point
-	 */
-	public PISAHypervolume(Problem problem, NondominatedPopulation referenceSet, double[] referencePoint) {
-		super(problem, referenceSet, referencePoint);
+		super(problem, referenceSet, DefaultNormalizer.getInstance().getHypervolumeNormalizer(problem, referenceSet));
 	}
 	
 	/**
 	 * Constructs a hypervolume evaluator for the specified problem using the given minimum and maximum bounds.
 	 * 
 	 * @param problem the problem
-	 * @param minimum the minimum bounds of the set
-	 * @param maximum the maximum bounds of the set
+	 * @param normalizer a user-provided normalizer
 	 */
-	public PISAHypervolume(Problem problem, double[] minimum, double[] maximum) {
-		super(problem, new NondominatedPopulation(), minimum, maximum);
+	public PISAHypervolume(Problem problem, Normalizer normalizer) {
+		super(problem, new NondominatedPopulation(), normalizer);
 	}
 
 	/**

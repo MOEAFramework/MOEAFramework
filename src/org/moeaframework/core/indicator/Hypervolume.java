@@ -31,24 +31,14 @@ public class Hypervolume implements Indicator {
 	final Indicator instance;
 	
 	/**
-	 * Constructs a hypervolume evaluator for the specified problem and reference set.  See
-	 * {@link #getNormalizer(Problem, NondominatedPopulation)} for details on configuring normalization.
+	 * Constructs a hypervolume evaluator for the specified problem and reference set.  See {@link DefaultNormalizer}
+	 * for details on configuring normalization.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set
 	 */
 	public Hypervolume(Problem problem, NondominatedPopulation referenceSet) {
-		String selection = Settings.getHypervolume();
-		
-		if (selection != null) {
-			instance = switch (selection.toLowerCase()) {
-				case "pisa" -> new PISAHypervolume(problem, referenceSet);
-				case "wfg" -> new WFGNormalizedHypervolume(problem, referenceSet);
-				default -> new NativeHypervolume(problem, referenceSet);
-			};
-		} else {
-			instance = new WFGNormalizedHypervolume(problem, referenceSet);
-		}
+		this(problem, DefaultNormalizer.getInstance().getHypervolumeNormalizer(problem, referenceSet));
 	}
 	
 	/**
@@ -59,17 +49,7 @@ public class Hypervolume implements Indicator {
 	 * @param referencePoint the reference point
 	 */
 	public Hypervolume(Problem problem, NondominatedPopulation referenceSet, double[] referencePoint) {
-		String selection = Settings.getHypervolume();
-		
-		if (selection != null) {
-			instance = switch (selection.toLowerCase()) {
-				case "pisa" -> new PISAHypervolume(problem, referenceSet, referencePoint);
-				case "wfg" -> new WFGNormalizedHypervolume(problem, referenceSet, referencePoint);
-				default -> new NativeHypervolume(problem, referenceSet, referencePoint);
-			};
-		} else {
-			instance = new WFGNormalizedHypervolume(problem, referenceSet, referencePoint);
-		}
+		this(problem, new Normalizer(problem, referenceSet, referencePoint));
 	}
 
 	/**
@@ -80,50 +60,32 @@ public class Hypervolume implements Indicator {
 	 * @param maximum the maximum bounds of the set
 	 */
 	public Hypervolume(Problem problem, double[] minimum, double[] maximum) {
+		this(problem, new Normalizer(problem, minimum, maximum));
+	}
+	
+	/**
+	 * Constructs a hypervolume evaluator with a user-provided normalizer.
+	 * 
+	 * @param problem the problem
+	 * @param normalizer the user-provided normalizer
+	 */
+	public Hypervolume(Problem problem, Normalizer normalizer) {
 		String selection = Settings.getHypervolume();
 		
 		if (selection != null) {
 			instance = switch (selection.toLowerCase()) {
-				case "pisa" -> new PISAHypervolume(problem, minimum, maximum);
-				case "wfg" -> new WFGNormalizedHypervolume(problem, minimum, maximum);
-				default -> new NativeHypervolume(problem, minimum, maximum);
+				case "pisa" -> new PISAHypervolume(problem, normalizer);
+				case "wfg" -> new WFGNormalizedHypervolume(problem, normalizer);
+				default -> new NativeHypervolume(problem, normalizer);
 			};
 		} else {
-			instance = new WFGNormalizedHypervolume(problem, minimum, maximum);
+			instance = new WFGNormalizedHypervolume(problem, normalizer);
 		}
 	}
 	
 	@Override
 	public double evaluate(NondominatedPopulation approximationSet) {
 		return instance.evaluate(approximationSet);
-	}
-	
-	/**
-	 * Returns the normalizer for calculating hypervolume using the following priority for determining the bounds:
-	 * <ol>
-	 *   <li>Normalize using the {@code idealpt} and {@code refpt} settings
-	 *   <li>Normalize using the {@code refpt} setting, with the ideal point based on the reference set
-	 *   <li>Normalize using the bounds of the reference set plus the configured hypervolume delta
-	 * </ol>
-	 * 
-	 * @param problem the problem
-	 * @param referenceSet the reference set
-	 * @return the normalize for calculating hypervolume
-	 * @see Settings#getIdealPoint(String)
-	 * @see Settings#getReferencePoint(String)
-	 * @see Settings#getHypervolumeDelta()
-	 */
-	static Normalizer getNormalizer(Problem problem, NondominatedPopulation referenceSet) {
-		double[] idealPoint = Settings.getIdealPoint(problem.getName());
-		double[] referencePoint = Settings.getReferencePoint(problem.getName());
-		
-		if ((idealPoint != null) && (referencePoint != null)) {
-			return new Normalizer(problem, idealPoint, referencePoint);
-		} else if (referencePoint != null) {
-			return new Normalizer(problem, referenceSet, referencePoint);
-		} else {
-			return new Normalizer(problem, referenceSet, Settings.getHypervolumeDelta());
-		}
 	}
 	
 }

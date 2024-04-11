@@ -134,17 +134,7 @@ public class Settings {
 	 * The property key for the hypervolume delta when determining the reference point.
 	 */
 	public static final String KEY_HYPERVOLUME_DELTA = createKey(KEY_PREFIX, "core", "indicator", "hypervolume", "delta");
-	
-	/**
-	 * The prefix for specifying custom ideal points for different problems.
-	 */
-	public static final String KEY_IDEALPT_PREFIX = createKey(KEY_PREFIX, "core", "indicator", "hypervolume", "idealpt");
-	
-	/**
-	 * The prefix for specifying custom reference points for different problems.
-	 */
-	public static final String KEY_REFPT_PREFIX = createKey(KEY_PREFIX, "core", "indicator", "hypervolume", "refpt");
-	
+
 	/**
 	 * The property key for the hypervolume command.
 	 */
@@ -295,27 +285,7 @@ public class Settings {
 	public static double getIGDPower() {
 		return PROPERTIES.getDouble(KEY_IGD_POWER, 1.0);
 	}
-	
-	/**
-	 * Returns the ideal point for the given problem, or {@code null} if one is not specified.
-	 * 
-	 * @param problem the problem name
-	 * @return the ideal point
-	 */
-	public static double[] getIdealPoint(String problem) {
-		return PROPERTIES.getDoubleArray(createKey(KEY_IDEALPT_PREFIX, problem), null);
-	}
-	
-	/**
-	 * Returns the reference point for the given problem, or {@code null} if one is not specified.
-	 * 
-	 * @param problem the problem name
-	 * @return the reference point
-	 */
-	public static double[] getReferencePoint(String problem) {
-		return PROPERTIES.getDoubleArray(createKey(KEY_REFPT_PREFIX, problem), null);
-	}
-	
+
 	/**
 	 * Returns {@code true} if fast non-dominated sorting should be used; or {@code false} if the naive non-dominated
 	 * sorting implementation is preferred.  The default is {@code false} since while the fast version has better
@@ -380,6 +350,71 @@ public class Settings {
 	 */
 	public static boolean isHypervolumeEnabled() {
 		return PROPERTIES.getBoolean(KEY_HYPERVOLUME_ENABLED, true);
+	}
+	
+	/**
+	 * Returns the configured minimum bounds (ideal point) used for normalization, or {@code null} if not configured.
+	 * 
+	 * @param problem the problem name
+	 * @return the minimum bounds or {@code null}
+	 */
+	public static double[] getProblemSpecificMinimumBounds(String problem) {
+		double[] result = PROPERTIES.getDoubleArray(
+				createKey(Settings.KEY_PROBLEM_PREFIX, problem, "normalization", "minimum"), null);
+		
+		if (result == null) {
+			result = PROPERTIES.getDoubleArray(
+					createKey(KEY_PREFIX, "core", "indicator", "hypervolume", "idealpt", problem), null);
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Returns the configured maximum bounds (reference point) used for normalization, or {@code null} if not
+	 * configured.
+	 * 
+	 * @param problem the problem name
+	 * @return the maximum bounds or {@code null}
+	 */
+	public static double[] getProblemSpecificMaximumBounds(String problem) {
+		double[] result = PROPERTIES.getDoubleArray(
+				createKey(Settings.KEY_PROBLEM_PREFIX, problem, "normalization", "maximum"), null);
+		
+		if (result == null) {
+			result = PROPERTIES.getDoubleArray(
+					createKey(KEY_PREFIX, "core", "indicator", "hypervolume", "refpt", problem), null);
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Returns a problem-specific delta used for hypervolume calculations, or the default from
+	 * {@link #getHypervolumeDelta()} if no problem-specific value is configured.
+	 * 
+	 * @param problem the problem name
+	 * @return the hypervolume delta
+	 */
+	public static double getProblemSpecificHypervolumeDelta(String problem) {
+		String key = createKey(Settings.KEY_PROBLEM_PREFIX, problem, "normalization", "delta");
+		
+		if (PROPERTIES.contains(key)) {
+			return PROPERTIES.getDouble(key);
+		}
+		
+		return getHypervolumeDelta();
+	}
+	
+	/**
+	 * Returns {@code true} if normalization has been disabled for the given problem instance.
+	 * 
+	 * @param problem the problem name
+	 * @return {@code true} if disabled; {@code false} otherwise
+	 */
+	public static boolean isNormalizationDisabled(String problem) {
+		return PROPERTIES.getBoolean(createKey(Settings.KEY_PROBLEM_PREFIX, problem, "normalization", "disabled"),
+				false);
 	}
 	
 	/**

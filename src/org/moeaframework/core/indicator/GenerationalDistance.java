@@ -22,8 +22,8 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 
 /**
- * Generational distance indicator. Represents average distance from solutions in an approximation set to the nearest
- * solution in the reference set.
+ * Generational distance (GD) indicator. Represents average distance from solutions in an approximation set to the
+ * nearest solution in the reference set.
  */
 public class GenerationalDistance extends NormalizedIndicator {
 	
@@ -34,7 +34,8 @@ public class GenerationalDistance extends NormalizedIndicator {
 	private final double d;
 
 	/**
-	 * Constructs a generational distance evaluator for the specified problem and corresponding reference set.
+	 * Constructs a generational distance evaluator for the specified problem and corresponding reference set.  The
+	 * default normalization procedure, as specified by {@link DefaultNormalizer}, is used.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set for the problem
@@ -44,14 +45,27 @@ public class GenerationalDistance extends NormalizedIndicator {
 	}
 	
 	/**
-	 * Constructs a generational distance evaluator for the specified problem and corresponding reference set.
+	 * Constructs a generational distance evaluator for the specified problem and corresponding reference set.  The
+	 * default normalization procedure, as specified by {@link DefaultNormalizer}, is used.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set for the problem
 	 * @param d the power, typically {@code 2.0}
 	 */
 	public GenerationalDistance(Problem problem, NondominatedPopulation referenceSet, double d) {
-		super(problem, referenceSet);
+		this(problem, referenceSet, null, d);
+	}
+	
+	/**
+	 * Constructs a generational distance evaluator with a user-provided normalizer.
+	 * 
+	 * @param problem the problem
+	 * @param referenceSet the reference set for the problem
+	 * @param normalizer the user-provided normalizer, or {@code null} if the default is used
+	 * @param d the power, typically {@code 2.0}
+	 */
+	public GenerationalDistance(Problem problem, NondominatedPopulation referenceSet, Normalizer normalizer, double d) {
+		super(problem, referenceSet, normalizer);
 		this.d = d;
 	}
 

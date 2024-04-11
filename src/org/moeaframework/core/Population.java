@@ -445,7 +445,7 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 	/**
 	 * Saves this population to a file using a binary format.  Unlike the other save and load methods, the binary
 	 * format stores a complete copy of the solutions, including all attributes.  Files written using this method can
-	 * only be read using the {@link #load} method.
+	 * only be read using the {@link #loadBinary} method.
 	 * 
 	 * @param file the file to which the solutions are written
 	 * @throws IOException if an I/O exception occurred
@@ -459,7 +459,8 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 	/**
 	 * Saves this population to an output stream using a binary format.  Unlike the other save and load methods, the
 	 * binary format stores a complete copy of the solutions, including all attributes.  Files written using this
-	 * method can only be read using the {@link #load} method.  <b>This method does not close the output stream!</b>
+	 * method can only be read using the {@link #loadBoinary} method.  <b>This method does not close the output
+	 * stream!</b>
 	 * 
 	 * @param outputStream the outputStream to which the solutions are written
 	 * @throws IOException if an I/O exception occurred

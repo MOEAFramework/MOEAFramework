@@ -28,13 +28,8 @@ public class WFGNormalizedHypervolumeTest extends AbstractHypervolumeTest<WFGNor
 	}
 	
 	@Override
-	public WFGNormalizedHypervolume createInstance(Problem problem, double[] minimum, double[] maximum) {
-		return new WFGNormalizedHypervolume(problem, minimum, maximum);
-	}
-	
-	@Override
-	public WFGNormalizedHypervolume createInstance(Problem problem, NondominatedPopulation referenceSet, double[] referencePoint) {
-		return new WFGNormalizedHypervolume(problem, referenceSet, referencePoint);
+	public WFGNormalizedHypervolume createInstance(Problem problem, Normalizer normalizer) {
+		return new WFGNormalizedHypervolume(problem, normalizer);
 	}
 	
 	public boolean includesBetterSolutions() {

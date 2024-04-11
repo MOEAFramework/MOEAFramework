@@ -42,41 +42,15 @@ public abstract class NormalizedIndicator implements Indicator {
 	private final NondominatedPopulation normalizedReferenceSet;
 
 	/**
-	 * Constructs a normalized indicator for the specified problem and corresponding reference set.
+	 * Constructs a normalized indicator for the specified problem and corresponding reference set.  See
+	 * {@link DefaultNormalizer} for details on how normalization can be customized.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set for the problem
 	 * @throws IllegalArgumentException if the reference set contains fewer than two solutions
 	 */
 	public NormalizedIndicator(Problem problem, NondominatedPopulation referenceSet) {
-		this(problem, referenceSet, new Normalizer(problem, referenceSet));
-	}
-	
-	/**
-	 * Constructs a normalized indicator for the specified problem and corresponding reference set.  This version
-	 * allows the use of a custom reference point.
-	 * 
-	 * @param problem the problem
-	 * @param referenceSet the reference set for the problem
-	 * @param referencePoint the reference point (used for hypervolume calculations)
-	 * @throws IllegalArgumentException if the reference set contains fewer than two solutions
-	 */
-	public NormalizedIndicator(Problem problem, NondominatedPopulation referenceSet, double[] referencePoint) {
-		this(problem, referenceSet, new Normalizer(problem, referenceSet, referencePoint));
-	}
-	
-	/**
-	 * Constructs a normalized indicator for the specified problem and corresponding reference set.  This version
-	 * allows the use of a custom minimum and maximum bounds.
-	 * 
-	 * @param problem the problem
-	 * @param referenceSet the reference set for the problem
-	 * @param minimum the minimum bounds
-	 * @param maximum the maximum bounds
-	 */
-	public NormalizedIndicator(Problem problem, NondominatedPopulation referenceSet, double[] minimum,
-			double[] maximum) {
-		this(problem, referenceSet, new Normalizer(problem, minimum, maximum));
+		this(problem, referenceSet, null);
 	}
 	
 	/**
@@ -84,13 +58,17 @@ public abstract class NormalizedIndicator implements Indicator {
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set for the problem
-	 * @param normalizer the normalizer
+	 * @param normalizer a user-provided normalizer, or {@code null} to use the default
 	 */
 	public NormalizedIndicator(Problem problem, NondominatedPopulation referenceSet, Normalizer normalizer) {
 		super();
 		this.problem = problem;
-		this.normalizer = normalizer;
 		
+		if (normalizer == null) {
+			normalizer = DefaultNormalizer.getInstance().getNormalizer(problem, referenceSet);
+		}
+		
+		this.normalizer = normalizer;
 		normalizedReferenceSet = normalizer.normalize(referenceSet);
 	}
 	

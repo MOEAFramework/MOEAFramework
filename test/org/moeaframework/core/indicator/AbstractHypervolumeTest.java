@@ -31,10 +31,8 @@ import org.moeaframework.util.PropertyScope;
 
 public abstract class AbstractHypervolumeTest<T extends Indicator> extends AbstractIndicatorTest<T> {
 	
-	public abstract T createInstance(Problem problem, double[] minimum, double[] maximum);
-	
-	public abstract T createInstance(Problem problem, NondominatedPopulation referenceSet, double[] referencePoint);
-	
+	public abstract T createInstance(Problem problem, Normalizer normalizer);
+		
 	/**
 	 * Returns {@code true} if the measured hypervolume includes points that exceed / are better than the ideal point.
 	 */
@@ -54,24 +52,42 @@ public abstract class AbstractHypervolumeTest<T extends Indicator> extends Abstr
 	
 	@Test
 	public void testDefaultBounds_IdealAndReferencePoint() {
-		testDefaultBounds(createInstance(new MockRealProblem(2), new double[] { 0.0, 0.0 }, new double[] { 1.0, 1.0 }));
+		Problem problem = new MockRealProblem(2);
+		
+		testDefaultBounds(createInstance(problem,
+				new Normalizer(problem, new double[] { 0.0, 0.0 }, new double[] { 1.0, 1.0 })));
 	}
 	
 	@Test
 	public void testExpandedBounds_ReferencePointOnly() {
-		testExpandedBounds(createInstance(new MockRealProblem(2), getDefaultReferenceSet(), new double[] { 2.0, 2.0 }));
+		Problem problem = new MockRealProblem(2);
+		
+		testExpandedBounds(createInstance(problem,
+				new Normalizer(problem, getDefaultReferenceSet(), new double[] { 2.0, 2.0 })));
 	}
 	
 	@Test
 	public void testExpandedBounds_IdealAndReferencePoint() {
-		testExpandedBounds(createInstance(new MockRealProblem(2), new double[] { 0.0, 0.0 }, new double[] { 2.0, 2.0 }));
+		Problem problem = new MockRealProblem(2);
+		
+		testExpandedBounds(createInstance(problem,
+				new Normalizer(problem, new double[] { 0.0, 0.0 }, new double[] { 2.0, 2.0 })));
 	}
 	
 	@Test
-	public void testExpandedBounds_FromProperties() {
+	public void testExpandedBounds_FromIdealRefPointProperties() {
 		try (PropertyScope scope = Settings.createScope()
-				.with(Settings.createKey(Settings.KEY_IDEALPT_PREFIX, "MockRealProblem"), 0.0)
-				.with(Settings.createKey(Settings.KEY_REFPT_PREFIX, "MockRealProblem"), 2.0)) {
+				.with(Settings.createKey("org", "moeaframework", "core", "indicator", "hypervolume", "idealpt", "MockRealProblem"), 0.0)
+				.with(Settings.createKey("org", "moeaframework", "core", "indicator", "hypervolume", "refpt", "MockRealProblem"), 2.0)) {
+			testExpandedBounds(createInstance(new MockRealProblem(2), new NondominatedPopulation()));
+		}
+	}
+	
+	@Test
+	public void testExpandedBounds_FromMinMaxProperties() {
+		try (PropertyScope scope = Settings.createScope()
+				.with(Settings.createKey("org", "moeaframework", "problem", "MockRealProblem", "normalization", "minimum"), 0.0)
+				.with(Settings.createKey("org", "moeaframework", "problem", "MockRealProblem", "normalization", "maximum"), 2.0)) {
 			testExpandedBounds(createInstance(new MockRealProblem(2), new NondominatedPopulation()));
 		}
 	}

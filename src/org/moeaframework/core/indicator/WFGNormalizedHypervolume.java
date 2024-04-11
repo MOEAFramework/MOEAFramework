@@ -40,38 +40,24 @@ public class WFGNormalizedHypervolume extends NormalizedIndicator {
 	private WFGHypervolume hypervolume;
 
 	/**
-	 * Constructs a hypervolume evaluator for the specified problem and reference set.  See
-	 * {@link Hypervolume#getNormalizer(Problem, NondominatedPopulation)} for details on configuring normalization.
+	 * Constructs a hypervolume evaluator for the specified problem and reference set.  See {@link DefaultNormalizer}
+	 * for details on configuring normalization.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set
 	 */
 	public WFGNormalizedHypervolume(Problem problem, NondominatedPopulation referenceSet) {
-		super(problem, referenceSet, Hypervolume.getNormalizer(problem, referenceSet));
-		this.hypervolume = new WFGHypervolume(problem, getNormalizedReferencePoint(problem));
+		this(problem, DefaultNormalizer.getInstance().getHypervolumeNormalizer(problem, referenceSet));
 	}
 	
 	/**
-	 * Constructs a hypervolume evaluator for the specified problem using the given reference set and reference point.
+	 * Constructs a hypervolume evaluator for the specified problem using the given normalizer.
 	 * 
 	 * @param problem the problem
-	 * @param referenceSet the reference set
-	 * @param referencePoint the reference point
+	 * @param normalizer a user-provided normalizer
 	 */
-	public WFGNormalizedHypervolume(Problem problem, NondominatedPopulation referenceSet, double[] referencePoint) {
-		super(problem, referenceSet, referencePoint);
-		this.hypervolume = new WFGHypervolume(problem, getNormalizedReferencePoint(problem));
-	}
-	
-	/**
-	 * Constructs a hypervolume evaluator for the specified problem using the given minimum and maximum bounds.
-	 * 
-	 * @param problem the problem
-	 * @param minimum the minimum bounds of the set
-	 * @param maximum the maximum bounds of the set
-	 */
-	public WFGNormalizedHypervolume(Problem problem, double[] minimum, double[] maximum) {
-		super(problem, new NondominatedPopulation(), minimum, maximum);
+	public WFGNormalizedHypervolume(Problem problem, Normalizer normalizer) {
+		super(problem, new NondominatedPopulation(), normalizer);
 		this.hypervolume = new WFGHypervolume(problem, getNormalizedReferencePoint(problem));
 	}
 	

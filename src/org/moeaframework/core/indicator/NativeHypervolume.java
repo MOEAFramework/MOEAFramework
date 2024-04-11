@@ -53,36 +53,24 @@ import org.moeaframework.util.io.RedirectStream;
 public class NativeHypervolume extends NormalizedIndicator {
 
 	/**
-	 * Constructs a hypervolume evaluator for the specified problem and reference set.  See
-	 * {@link Hypervolume#getNormalizer(Problem, NondominatedPopulation)} for details on configuring normalization.
+	 * Constructs a hypervolume evaluator for the specified problem and reference set.  See {@link DefaultNormalizer}
+	 * for details on configuring normalization.
 	 * 
 	 * @param problem the problem
 	 * @param referenceSet the reference set
 	 */
 	public NativeHypervolume(Problem problem, NondominatedPopulation referenceSet) {
-		super(problem, referenceSet, Hypervolume.getNormalizer(problem, referenceSet));
-	}
-	
-	/**
-	 * Constructs a hypervolume evaluator for the specified problem using the given reference set and reference point.
-	 * 
-	 * @param problem the problem
-	 * @param referenceSet the reference set
-	 * @param referencePoint the reference point
-	 */
-	public NativeHypervolume(Problem problem, NondominatedPopulation referenceSet, double[] referencePoint) {
-		super(problem, referenceSet, referencePoint);
+		super(problem, referenceSet, DefaultNormalizer.getInstance().getHypervolumeNormalizer(problem, referenceSet));
 	}
 	
 	/**
 	 * Constructs a hypervolume evaluator for the specified problem using the given minimum and maximum bounds.
 	 * 
 	 * @param problem the problem
-	 * @param minimum the minimum bounds of the set
-	 * @param maximum the maximum bounds of the set
+	 * @param normalizer a user-provided normalizer
 	 */
-	public NativeHypervolume(Problem problem, double[] minimum, double[] maximum) {
-		super(problem, new NondominatedPopulation(), minimum, maximum);
+	public NativeHypervolume(Problem problem, Normalizer normalizer) {
+		super(problem, new NondominatedPopulation(), normalizer);
 	}
 
 	/**

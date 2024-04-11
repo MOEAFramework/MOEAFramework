@@ -47,14 +47,15 @@ public class R1Indicator extends RIndicator {
 	private double epsilon;
 
 	/**
-	 * Constructs a new R1 indicator using the Chebychev utility function.
+	 * Constructs a new R1 indicator using the Chebychev utility function.  The default normalization procedure, as
+	 * specified by {@link DefaultNormalizer}, is used.
 	 * 
 	 * @param problem the problem
 	 * @param subdivisions the number of subdivisions along each objective
 	 * @param referenceSet the reference set
 	 */
 	public R1Indicator(Problem problem, int subdivisions, NondominatedPopulation referenceSet) {
-		this(problem, subdivisions, referenceSet, new ChebychevUtility());
+		this(problem, subdivisions, referenceSet, null, new ChebychevUtility(), DEFAULT_EPSILON);
 	}
 	
 	/**
@@ -63,25 +64,13 @@ public class R1Indicator extends RIndicator {
 	 * @param problem the problem
 	 * @param subdivisions the number of subdivisions along each objective
 	 * @param referenceSet the reference set
-	 * @param utilityFunction the utility function
-	 */
-	public R1Indicator(Problem problem, int subdivisions, NondominatedPopulation referenceSet,
-			UtilityFunction utilityFunction) {
-		this(problem, subdivisions, referenceSet, utilityFunction, DEFAULT_EPSILON);
-	}
-	
-	/**
-	 * Constructs a new R1 indicator using the specified utility function.
-	 * 
-	 * @param problem the problem
-	 * @param subdivisions the number of subdivisions along each objective
-	 * @param referenceSet the reference set
+	 * @param normalizer the user-provided normalizer, or {@code null} if the default is used
 	 * @param utilityFunction the utility function
 	 * @param epsilon resolution when comparing two utility function values for equality
 	 */
-	public R1Indicator(Problem problem, int subdivisions, NondominatedPopulation referenceSet,
+	public R1Indicator(Problem problem, int subdivisions, NondominatedPopulation referenceSet, Normalizer normalizer,
 			UtilityFunction utilityFunction, double epsilon) {
-		super(problem, subdivisions, referenceSet, utilityFunction);
+		super(problem, subdivisions, referenceSet, normalizer, utilityFunction);
 		this.epsilon = epsilon;
 	}
 	

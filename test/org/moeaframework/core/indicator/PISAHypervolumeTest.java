@@ -28,13 +28,8 @@ public class PISAHypervolumeTest extends AbstractHypervolumeTest<PISAHypervolume
 	}
 	
 	@Override
-	public PISAHypervolume createInstance(Problem problem, double[] minimum, double[] maximum) {
-		return new PISAHypervolume(problem, minimum, maximum);
-	}
-	
-	@Override
-	public PISAHypervolume createInstance(Problem problem, NondominatedPopulation referenceSet, double[] referencePoint) {
-		return new PISAHypervolume(problem, referenceSet, referencePoint);
+	public PISAHypervolume createInstance(Problem problem, Normalizer normalizer) {
+		return new PISAHypervolume(problem, normalizer);
 	}
 
 }

@@ -2,6 +2,11 @@
 
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
+## Version 4.1 (In Progress)
+
+  * Expands the ability to customize or disable normalization when computing performance indicators.
+  
+
 ## Version 4.0 (05 Apr 2024)
 
   * Bumps minimum supported Java version to 17.  This is a long-term support (LTS) release with an end-of-life of

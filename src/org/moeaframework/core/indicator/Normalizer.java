@@ -80,12 +80,13 @@ public class Normalizer {
 	
 	/**
 	 * Constructs a normalizer for normalizing populations so that all objectives reside in the range {@code [0, 1]}.
-	 * This constructor derives the minimum and maximum bounds from the given population and a given delta.
+	 * This constructor derives the minimum and maximum bounds from the given population and a given delta.  This
+	 * delta offsets the maximum bounds, typically for hypervolume calculations, to ensure there is a non-zero distance
+	 * between the extremal points and the reference point.
 	 * 
 	 * @param problem the problem
 	 * @param population the population defining the minimum and maximum bounds
-	 * @param delta a delta added to the maximum value (used when computing the reference point for hypervolume
-	 *        calculations)
+	 * @param delta a delta added to the maximum value
 	 * @throws IllegalArgumentException if the population set contains fewer than two solutions, or if there exists
 	 *         an objective with an empty range
 	 */
@@ -103,11 +104,13 @@ public class Normalizer {
 	
 	/**
 	 * Constructs a normalizer for normalizing populations so that all objectives reside in the range {@code [0, 1]}.
-	 * This constructor derives the minimum and maximum bounds from the given population and a given delta.
+	 * This constructor derives the minimum and maximum bounds from the given population and a given reference point.
+	 * This is typically used by hypervolume calculations, which measures the volume of spacing between each solution
+	 * and the reference point.
 	 * 
 	 * @param problem the problem
 	 * @param population the population defining the minimum and maximum bounds
-	 * @param referencePoint the reference point if defined (used for hypervolume calculations)
+	 * @param referencePoint the reference point; if {@code null}, the bounds are based on the population
 	 * @throws IllegalArgumentException if the population set contains fewer than two solutions, or if there exists
 	 *         an objective with an empty range
 	 */
@@ -115,7 +118,7 @@ public class Normalizer {
 		super();
 		this.problem = problem;
 		this.delta = 0.0;
-		this.referencePoint = referencePoint.clone();
+		this.referencePoint = referencePoint == null ? null : referencePoint.clone();
 		this.minimum = new double[problem.getNumberOfObjectives()];
 		this.maximum = new double[problem.getNumberOfObjectives()];
 
@@ -181,14 +184,15 @@ public class Normalizer {
 			for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
 				maximum[j] = referencePoint[j >= referencePoint.length ? referencePoint.length-1 : j];
 			}
-			
-			System.err.println("Using reference point: " + Arrays.toString(maximum));
 		} else if (delta > 0.0) {
 			for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
 				maximum[j] += delta * (maximum[j] - minimum[j]);
 			}
-			
-			System.err.println("Using reference point: " + Arrays.toString(maximum));
+		}
+		
+		if (Settings.isVerbose()) {
+			System.err.println("Normalizer for " + problem.getName() + " created with bounds " +
+					Arrays.toString(minimum) + " and " + Arrays.toString(maximum));
 		}
 	}
 	
