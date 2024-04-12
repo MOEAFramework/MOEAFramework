@@ -17,15 +17,16 @@
  */
 package org.moeaframework.analysis;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.function.Predicate;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.util.format.Column;
+import org.moeaframework.util.format.Formattable;
+import org.moeaframework.util.format.TabularData;
 
 /**
  * Provides &epsilon; values for algorithms and archives using &epsilon;-dominance.  The search order is:
@@ -36,12 +37,12 @@ import org.moeaframework.core.spi.ProblemFactory;
  *   <li>The global default of {@value DefaultEpsilons#DEFAULT}
  * </ol>
  */
-public class DefaultEpsilons {
+public class DefaultEpsilons implements Formattable<Entry<String, Epsilons>> {
 	
 	/**
 	 * The default &epsilon; value that is returned for any problem without an explicitly configured value.
 	 */
-	public static final double DEFAULT = 0.01;
+	public static final Epsilons DEFAULT = Epsilons.of(0.01);
 	
 	private static DefaultEpsilons INSTANCE;
 	
@@ -67,11 +68,11 @@ public class DefaultEpsilons {
 		INSTANCE = instance;
 	}
 		
-	private final List<Pair<Predicate<Problem>, Epsilons>> overrides;
+	private final TreeMap<String, Epsilons> overrides;
 	
 	private DefaultEpsilons() {
 		super();
-		overrides = new LinkedList<>();
+		overrides = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 	}
 	
 	/**
@@ -89,48 +90,59 @@ public class DefaultEpsilons {
 	 * @return the &epsilon; values
 	 */
 	public Epsilons getEpsilons(Problem problem) {
-		Epsilons value = findOverride(problem);
+		return getEpsilons(problem.getName());
+	}
+	
+	/**
+	 * Returns the default &epsilon; values for the given problem.  If the problem is not recognized, the default
+	 * &epsilon; value of {@value DEFAULT} is returned.
+	 * 
+	 * @param problemName the problem name
+	 * @return the &epsilon; values
+	 */
+	public Epsilons getEpsilons(String problemName) {
+		Epsilons value = findOverride(problemName);
 		
 		if (value != null) {
 			if (Settings.isVerbose()) {
-				System.err.println("Using user-provided epsilons for " + problem.getName() + ": " + value);
+				System.err.println("Using user-provided epsilons for " + problemName + ": " + value);
 			}
 			
 			return value;
 		}
 		
-		value = ProblemFactory.getInstance().getEpsilons(problem.getName());
+		value = ProblemFactory.getInstance().getEpsilons(problemName);
 		
 		if (value != null) {
 			if (Settings.isVerbose()) {
-				System.err.println("Using problem-specific epsilons for " + problem.getName() + ": " + value);
+				System.err.println("Using problem-specific epsilons for " + problemName + ": " + value);
 			}
 			
 			return value;
 		}
 		
 		if (Settings.isVerbose()) {
-			System.err.println("Using default epsilons for " + problem.getName() + ": " + value);
+			System.err.println("Using default epsilons for " + problemName + ": " + value);
 		}
 		
-		return Epsilons.of(DEFAULT);
+		return DEFAULT;
 	}
 	
 	/**
 	 * Finds the overridden &epsilon; values for the given problem, either one set by calling {@link #override} or
 	 * from {@link Settings#getProblemSpecificEpsilons(String)}.
 	 * 
-	 * @param problem the problem
+	 * @param problemName the problem name
 	 * @return the &epsilon; values, or {@code null} if no match was found
 	 */
-	protected Epsilons findOverride(Problem problem) {
-		for (Pair<Predicate<Problem>, Epsilons> override : overrides) {
-			if (override.getKey().test(problem)) {
-				return override.getValue();
-			}
+	protected Epsilons findOverride(String problemName) {
+		Epsilons epsilons = overrides.get(problemName);
+		
+		if (epsilons == null) {
+			epsilons = Settings.getProblemSpecificEpsilons(problemName);
 		}
 		
-		return Settings.getProblemSpecificEpsilons(problem.getName());
+		return epsilons;
 	}	
 	
 	/**
@@ -152,9 +164,24 @@ public class DefaultEpsilons {
 	 * @param epsilons the &epsilon; values
 	 */
 	public void override(String problemName, Epsilons epsilons) {
-		overrides.add(0, Pair.of(
-				(p) -> p.getName().equalsIgnoreCase(problemName),
-				epsilons));
+		overrides.put(problemName, epsilons);
+	}
+
+	@Override
+	public TabularData<Entry<String, Epsilons>> asTabularData() {
+		TreeMap<String, Epsilons> orderedData = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		
+		for (String problemName : ProblemFactory.getInstance().getAllRegisteredProblems()) {
+			orderedData.put(problemName, DefaultEpsilons.getInstance().getEpsilons(problemName));
+		}
+		
+		TabularData<Entry<String, Epsilons>> result = new TabularData<>(orderedData.entrySet());
+		
+		result.addColumn(new Column<Entry<String, Epsilons>, String>("Problem", x -> x.getKey()));
+		result.addColumn(new Column<Entry<String, Epsilons>, Epsilons>("Epsilons", x -> x.getValue()));
+		result.addColumn(new Column<Entry<String, Epsilons>, Boolean>("IsOverridden", x -> overrides.containsKey(x.getKey())));
+		
+		return result;
 	}
 
 }

@@ -29,13 +29,13 @@ import org.moeaframework.util.PropertyScope;
 public class DefaultEpsilonsTest {
 	
 	@Test
-	public void testDefault() {
-		Assert.assertGreaterThan(DefaultEpsilons.getInstance().getEpsilons(new DTLZ2(3)).get(0), DefaultEpsilons.DEFAULT);
+	public void testKnownProblemOverridesDefault() {
+		Assert.assertNotSame(DefaultEpsilons.getInstance().getEpsilons(new DTLZ2(3)), DefaultEpsilons.DEFAULT);
 	}
 	
 	@Test
-	public void testUndefinedProblem() {
-		Assert.assertEquals(DefaultEpsilons.getInstance().getEpsilons(new MockRealProblem()).get(0), DefaultEpsilons.DEFAULT);
+	public void testUndefinedProblemReturnsDefault() {
+		Assert.assertSame(DefaultEpsilons.getInstance().getEpsilons(new MockRealProblem()), DefaultEpsilons.DEFAULT);
 	}
 	
 	@Test
@@ -43,10 +43,10 @@ public class DefaultEpsilonsTest {
 		Problem problem = new MockRealProblem();
 		
 		DefaultEpsilons.getInstance().override(problem, Epsilons.of(0.5));
-		Assert.assertEquals(DefaultEpsilons.getInstance().getEpsilons(problem).get(0), 0.5);
+		Assert.assertEquals(DefaultEpsilons.getInstance().getEpsilons(problem), Epsilons.of(0.5));
 		
 		DefaultEpsilons.getInstance().clearOverrides();
-		Assert.assertEquals(DefaultEpsilons.getInstance().getEpsilons(problem).get(0), DefaultEpsilons.DEFAULT);
+		Assert.assertSame(DefaultEpsilons.getInstance().getEpsilons(problem), DefaultEpsilons.DEFAULT);
 	}
 	
 	@Test
@@ -55,7 +55,7 @@ public class DefaultEpsilonsTest {
 		
 		try (PropertyScope scope = Settings.createScope()
 				.with(Settings.createKey("org", "moeaframework", "problem", problem.getName(), "epsilons"), 0.75)) {
-			Assert.assertEquals(DefaultEpsilons.getInstance().getEpsilons(problem).get(0), 0.75);
+			Assert.assertEquals(DefaultEpsilons.getInstance().getEpsilons(problem), Epsilons.of(0.75));
 		}
 	}
 	
