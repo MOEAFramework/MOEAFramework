@@ -407,6 +407,23 @@ public class Settings {
 	}
 	
 	/**
+	 * Returns a problem-specific &epsilon; value used in algorithms, archives, and other objects based on &epsilon;
+	 * dominance.
+	 * 
+	 * @param problem the problem name
+	 * @return the &epsilon; values or {@code null} if no override provided
+	 */
+	public static Epsilons getProblemSpecificEpsilons(String problem) {
+		String key = createKey(Settings.KEY_PROBLEM_PREFIX, problem, "epsilons");
+		
+		if (PROPERTIES.contains(key)) {
+			return new Epsilons(PROPERTIES.getDoubleArray(key));
+		}
+		
+		return null;
+	}
+	
+	/**
 	 * Returns {@code true} if normalization has been disabled for the given problem instance.
 	 * 
 	 * @param problem the problem name

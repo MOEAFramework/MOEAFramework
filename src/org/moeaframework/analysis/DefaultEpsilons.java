@@ -111,7 +111,8 @@ public class DefaultEpsilons {
 	}
 	
 	/**
-	 * Finds the overridden &epsilon; values for the given problem.
+	 * Finds the overridden &epsilon; values for the given problem, either one set by calling {@link #override} or
+	 * from {@link Settings#getProblemSpecificEpsilons(String)}.
 	 * 
 	 * @param problem the problem
 	 * @return the &epsilon; values, or {@code null} if no match was found
@@ -123,7 +124,7 @@ public class DefaultEpsilons {
 			}
 		}
 		
-		return null;
+		return Settings.getProblemSpecificEpsilons(problem.getName());
 	}	
 	
 	/**

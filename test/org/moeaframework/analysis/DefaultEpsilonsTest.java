@@ -21,8 +21,10 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
+import org.moeaframework.util.PropertyScope;
 
 public class DefaultEpsilonsTest {
 	
@@ -45,6 +47,16 @@ public class DefaultEpsilonsTest {
 		
 		DefaultEpsilons.getInstance().clearOverrides();
 		Assert.assertEquals(DefaultEpsilons.getInstance().getEpsilons(problem).get(0), DefaultEpsilons.DEFAULT);
+	}
+	
+	@Test
+	public void testOverrideFromProperties() {
+		Problem problem = new MockRealProblem();
+		
+		try (PropertyScope scope = Settings.createScope()
+				.with(Settings.createKey("org", "moeaframework", "problem", problem.getName(), "epsilons"), 0.75)) {
+			Assert.assertEquals(DefaultEpsilons.getInstance().getEpsilons(problem).get(0), 0.75);
+		}
 	}
 	
 }
