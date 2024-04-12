@@ -4,7 +4,9 @@ This page documents notable changes introduced in each chronological release of 
 
 ## Version 4.1 (In Progress)
 
-  * Expands the ability to customize or disable normalization when computing performance indicators.
+  * Adds `DefaultNormalizer` and `DefaultEpsilons` classes with the ability to override the defaults with
+    problem-specific, custom settings.  These settings can be set either by calling `override` or loaded from the
+    properties file.
   
 
 ## Version 4.0 (05 Apr 2024)

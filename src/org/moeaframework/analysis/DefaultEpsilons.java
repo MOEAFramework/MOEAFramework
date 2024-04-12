@@ -28,7 +28,13 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.ProblemFactory;
 
 /**
- * Provides &epsilon; values for algorithms using &epsilon;-dominance archives on the standard test problems.
+ * Provides &epsilon; values for algorithms and archives using &epsilon;-dominance.  The search order is:
+ * <ol>
+ *   <li>Epsilons configured by the user by calling {@link #override}
+ *   <li>Epsilons configured by the user in the properties file {@value Settings#DEFAULT_CONFIGURATION_FILE}
+ *   <li>Epsilons defined by the problem provider (i.e., our recommended defaults)
+ *   <li>The global default of {@value DefaultEpsilons#DEFAULT}
+ * </ol>
  */
 public class DefaultEpsilons {
 	
