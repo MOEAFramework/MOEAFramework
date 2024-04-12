@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.moeaframework.analysis.EpsilonHelper;
+import org.moeaframework.analysis.DefaultEpsilons;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.EpsilonBoxEvolutionaryAlgorithm;
 import org.moeaframework.core.Initialization;
@@ -73,7 +73,7 @@ public class EpsilonMOEA extends AbstractEvolutionaryAlgorithm implements Epsilo
 		this(problem,
 				Settings.DEFAULT_POPULATION_SIZE,
 				new Population(),
-				new EpsilonBoxDominanceArchive(EpsilonHelper.getEpsilons(problem)),
+				new EpsilonBoxDominanceArchive(DefaultEpsilons.getInstance().getEpsilons(problem)),
 				new TournamentSelection(2),
 				OperatorFactory.getInstance().getVariation(problem),
 				new RandomInitialization(problem));

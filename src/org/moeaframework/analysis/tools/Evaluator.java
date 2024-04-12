@@ -24,15 +24,15 @@ import java.io.IOException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
-import org.moeaframework.analysis.EpsilonHelper;
 import org.moeaframework.analysis.io.MetricFileWriter;
 import org.moeaframework.analysis.io.OutputWriter;
 import org.moeaframework.analysis.io.ParameterFile;
 import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileWriter;
-import org.moeaframework.analysis.io.SampleReader;
 import org.moeaframework.analysis.io.ResultFileWriter.ResultFileWriterSettings;
+import org.moeaframework.analysis.io.SampleReader;
 import org.moeaframework.core.Algorithm;
+import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
@@ -222,7 +222,7 @@ public class Evaluator extends CommandLineUtility {
 		// apply epsilon-dominance if required
 		if (properties.contains("epsilon")) {
 			Epsilons epsilons = new Epsilons(properties.getDoubleArray("epsilon"));
-			result = EpsilonHelper.convert(result, epsilons);
+			result = EpsilonBoxDominanceArchive.of(result, epsilons);
 		}
 
 		// record instrumented data

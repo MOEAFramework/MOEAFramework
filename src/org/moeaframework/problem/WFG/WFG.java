@@ -56,6 +56,11 @@ public abstract class WFG extends AbstractProblem implements AnalyticalProblem {
 		this.l = l;
 		this.M = M;
 	}
+	
+	@Override
+	public String getName() {
+		return getClass().getSimpleName() + "_" + M;
+	}
 
 	@Override
 	public Solution newSolution() {

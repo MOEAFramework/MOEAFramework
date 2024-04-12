@@ -97,6 +97,15 @@ public abstract class ProblemTest {
 	}
 	
 	/**
+	 * Asserts that the problem has defined &epsilon; values.
+	 * 
+	 * @param problemName the problem name
+	 */
+	public void assertEpsilonsDefined(String problemName) {
+		Assert.assertNotNull(ProblemFactory.getInstance().getEpsilons(problemName));
+	}
+	
+	/**
 	 * Tests the reference set to verify it is non-empty and all solutions match the given predicate.
 	 * 
 	 * @param problemName the problem name

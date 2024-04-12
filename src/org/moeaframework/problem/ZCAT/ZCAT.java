@@ -105,6 +105,11 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 		Validate.notNull("F", F);
 		Validate.notNull("G", G);
 	}
+	
+	@Override
+	public String getName() {
+		return getClass().getSimpleName() + "_" + numberOfObjectives;
+	}
 
 	@Override
 	public void evaluate(Solution solution) {	

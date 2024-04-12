@@ -28,7 +28,7 @@ import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.algorithm.continuation.EpsilonProgressContinuation;
 import org.moeaframework.algorithm.sa.AMOSA;
-import org.moeaframework.analysis.EpsilonHelper;
+import org.moeaframework.analysis.DefaultEpsilons;
 import org.moeaframework.analysis.collector.IndicatorCollector;
 import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
 import org.moeaframework.analysis.collector.Observation;
@@ -448,7 +448,7 @@ public class DefaultAlgorithmsTest {
 						new ParetoDominanceComparator());
 	
 				EpsilonBoxDominanceArchive archive = new EpsilonBoxDominanceArchive(
-						EpsilonHelper.getEpsilons(problem));
+						DefaultEpsilons.getInstance().getEpsilons(problem));
 	
 				TournamentSelection selection = new TournamentSelection(2, new ChainedComparator(
 						new ParetoDominanceComparator(),

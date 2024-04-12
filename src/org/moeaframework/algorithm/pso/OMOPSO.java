@@ -17,7 +17,7 @@
  */
 package org.moeaframework.algorithm.pso;
 
-import org.moeaframework.analysis.EpsilonHelper;
+import org.moeaframework.analysis.DefaultEpsilons;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.PRNG;
@@ -69,7 +69,7 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 		this(problem,
 				Settings.DEFAULT_POPULATION_SIZE,
 				Settings.DEFAULT_POPULATION_SIZE,
-				EpsilonHelper.getEpsilons(problem),
+				DefaultEpsilons.getInstance().getEpsilons(problem),
 				1.0 / problem.getNumberOfVariables(),
 				0.5,
 				maxIterations);

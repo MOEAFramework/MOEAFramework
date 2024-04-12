@@ -20,6 +20,7 @@ package org.moeaframework.core.spi;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 
@@ -76,5 +77,17 @@ public abstract class ProblemProvider {
 	 *         problem or no reference set is available
 	 */
 	public abstract NondominatedPopulation getReferenceSet(String name);
+	
+	/**
+	 * Returns the recommended or default &epsilon; values for the specified problem, or {@code null} if this provider
+	 * does not support the problem or no defaults are provided.
+	 * 
+	 * @param name the problem name
+	 * @return the &epsilon; values for the specified problem, or {@code null} if this provider does not support the
+	 *         problem or no reference set is available
+	 */
+	public Epsilons getEpsilons(String name) {
+		return null;
+	}
 
 }

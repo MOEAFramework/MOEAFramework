@@ -22,6 +22,7 @@ import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.ProblemTest;
 
 public class DTLZ2Test extends ProblemTest {
@@ -53,6 +54,17 @@ public class DTLZ2Test extends ProblemTest {
 	public void testProvider() {
 		assertProblemDefined("DTLZ2_2", 2);
 		assertProblemDefined("DTLZ2_3", 3);
+	}
+	
+	@Test
+	public void testName() {
+		Assert.assertEquals("DTLZ2_2", ProblemFactory.getInstance().getProblem("DTLZ2").getName());
+	}
+	
+	@Test
+	public void testEpsilons() {
+		assertEpsilonsDefined("DTLZ2_2");
+		assertEpsilonsDefined("DTLZ2_3");
 	}
 	
 	@Test

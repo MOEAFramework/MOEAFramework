@@ -132,6 +132,24 @@ public class EpsilonBoxDominanceArchive extends NondominatedPopulation {
 	public EpsilonBoxDominanceArchive(EpsilonBoxDominanceComparator comparator, Iterable<? extends Solution> iterable) {
 		super(comparator, iterable);
 	}
+	
+	/**
+	 * Converts the population to an &epsilon;-box dominance archive with the given &epsilon; values.
+	 * To prevent unnecessary conversion, this checks if the original population is already an
+	 * {@code EpsilonBoxDominanceArchive} with identical &epsilon; values.
+	 * 
+	 * @param population the population to convert
+	 * @param epsilons the &epsilon; values
+	 * @return the population converted to an &epsilon;-box dominance archive with the given &epsilon; values
+	 */
+	public static EpsilonBoxDominanceArchive of(Population population, Epsilons epsilons) {
+		if (population instanceof EpsilonBoxDominanceArchive epsilonArchive &&
+				epsilons.equals(epsilonArchive.getComparator().getEpsilons())) {
+			return epsilonArchive;
+		}
+
+		return new EpsilonBoxDominanceArchive(epsilons, population);
+	}
 
 	@Override
 	public boolean add(Solution newSolution) {

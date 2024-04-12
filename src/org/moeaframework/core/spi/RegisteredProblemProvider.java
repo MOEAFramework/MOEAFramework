@@ -25,6 +25,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.Supplier;
 
+import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 
@@ -50,6 +51,11 @@ public class RegisteredProblemProvider extends ProblemProvider {
 	private final TreeMap<String, String> referenceSetMap;
 	
 	/**
+	 * Mapping of problem names to their epsilons.
+	 */
+	private final TreeMap<String, Epsilons> epsilonsMap;
+	
+	/**
 	 * Collection of problems to appear in the diagnostic tool.
 	 */
 	private final TreeSet<String> diagnosticToolProblems;
@@ -61,6 +67,7 @@ public class RegisteredProblemProvider extends ProblemProvider {
 		super();
 		constructorMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 		referenceSetMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		epsilonsMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 		diagnosticToolProblems = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
 	}
 	
@@ -74,6 +81,17 @@ public class RegisteredProblemProvider extends ProblemProvider {
 	protected final void register(String name, Supplier<Problem> constructor, String referenceSet) {
 		constructorMap.put(name, constructor);
 		referenceSetMap.put(name, referenceSet);
+	}
+	
+	/**
+	 * Registers the &epsilon; values for the given problem, used as the defaults when constructing an algorithm,
+	 * archive, or other object that uses &epsilon;-based dominance.
+	 * 
+	 * @param name the problem name
+	 * @param epsilons the &epsilon; values
+	 */
+	protected final void registerEpsilons(String name, Epsilons epsilons) {
+		epsilonsMap.put(name, epsilons);
 	}
 	
 	/**
@@ -133,6 +151,11 @@ public class RegisteredProblemProvider extends ProblemProvider {
 		}
 		
 		return null;
+	}
+	
+	@Override
+	public Epsilons getEpsilons(String name) {
+		return epsilonsMap.get(name);
 	}
 
 }

@@ -17,6 +17,7 @@
  */
 package org.moeaframework.problem.CEC2009;
 
+import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.spi.RegisteredProblemProvider;
 
 /**
@@ -56,5 +57,19 @@ public class CEC2009ProblemProvider extends RegisteredProblemProvider {
 		register("UF13", () -> new UF13(), "pf/WFG1_M5.dat");
 		
 		registerDiagnosticToolProblems(getRegisteredProblems());
+		
+		registerEpsilons("UF1", Epsilons.of(0.001));
+		registerEpsilons("UF2", Epsilons.of(0.005));
+		registerEpsilons("UF3", Epsilons.of(0.0008));
+		registerEpsilons("UF4", Epsilons.of(0.005));
+		registerEpsilons("UF5", Epsilons.of(0.000001));
+		registerEpsilons("UF6", Epsilons.of(0.000001));
+		registerEpsilons("UF7", Epsilons.of(0.005));
+		registerEpsilons("UF8", Epsilons.of(0.0045));
+		registerEpsilons("UF9", Epsilons.of(0.008));
+		registerEpsilons("UF10", Epsilons.of(0.001));
+		registerEpsilons("UF11", Epsilons.of(0.2));
+		registerEpsilons("UF12", Epsilons.of(0.2));
+		registerEpsilons("UF13", Epsilons.of(0.2));
 	}
 }

@@ -22,10 +22,10 @@ import java.io.File;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
-import org.moeaframework.analysis.EpsilonHelper;
 import org.moeaframework.analysis.io.MetricFileWriter;
 import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileReader;
+import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
@@ -115,7 +115,7 @@ public class ResultFileEvaluator extends CommandLineUtility {
 					ResultEntry entry = reader.next();
 
 					if (epsilons != null) {
-						entry = new ResultEntry(EpsilonHelper.convert(entry.getPopulation(), epsilons),
+						entry = new ResultEntry(EpsilonBoxDominanceArchive.of(entry.getPopulation(), epsilons),
 								entry.getProperties());
 					}
 						

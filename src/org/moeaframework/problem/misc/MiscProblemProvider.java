@@ -17,6 +17,7 @@
  */
 package org.moeaframework.problem.misc;
 
+import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.spi.RegisteredProblemProvider;
 
 /**
@@ -64,5 +65,37 @@ public class MiscProblemProvider extends RegisteredProblemProvider {
 		register("Osyczka2", () -> new Osyczka2(), "pf/Osyczka2.pf");
 		
 		registerDiagnosticToolProblems(getRegisteredProblems());
+		
+		registerEpsilons("Belegundu", Epsilons.of(0.1));
+		registerEpsilons("Binh", Epsilons.of(0.25));
+		registerEpsilons("Binh2", Epsilons.of(0.35));
+		registerEpsilons("Binh3", Epsilons.of(0.01));
+		registerEpsilons("Binh4", Epsilons.of(0.01));
+		registerEpsilons("Fonseca", Epsilons.of(0.0025));
+		registerEpsilons("Fonseca2", Epsilons.of(0.007));
+		registerEpsilons("Jimenez", Epsilons.of(0.05));
+		registerEpsilons("Kita", Epsilons.of(0.01));
+		registerEpsilons("Kursawe", Epsilons.of(0.035));
+		registerEpsilons("Laumanns", Epsilons.of(0.02));
+		registerEpsilons("Lis", Epsilons.of(0.004));
+		registerEpsilons("Murata", Epsilons.of(0.02));
+		registerEpsilons("Obayashi", Epsilons.of(0.006));
+		registerEpsilons("OKA1", Epsilons.of(0.0145));
+		registerEpsilons("OKA2", Epsilons.of(0.000001));
+		registerEpsilons("Osyczka", Epsilons.of(0.0012));
+		registerEpsilons("Osyczka2", Epsilons.of(0.5));
+		registerEpsilons("Poloni", Epsilons.of(0.04));
+		registerEpsilons("Quagliarella", Epsilons.of(0.03));
+		registerEpsilons("Rendon", Epsilons.of(0.01));
+		registerEpsilons("Rendon2", Epsilons.of(0.027));
+		registerEpsilons("Schaffer", Epsilons.of(0.02));
+		registerEpsilons("Schaffer2", Epsilons.of(0.017));
+		registerEpsilons("Srinivas", Epsilons.of(1.5));
+		registerEpsilons("Tamaki", Epsilons.of(0.06));
+		registerEpsilons("Tanaka", Epsilons.of(0.0045));
+		registerEpsilons("Viennet", Epsilons.of(0.1));
+		registerEpsilons("Viennet2", Epsilons.of(0.0062));
+		registerEpsilons("Viennet3", Epsilons.of(0.011));
+		registerEpsilons("Viennet4", Epsilons.of(0.085));
 	}
 }

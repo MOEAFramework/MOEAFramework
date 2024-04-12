@@ -20,6 +20,7 @@ package org.moeaframework.problem.DTLZ;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.RegisteredProblemProvider;
 
@@ -27,6 +28,8 @@ import org.moeaframework.core.spi.RegisteredProblemProvider;
  * Problem provider for the DTLZ test problems.
  */
 public class DTLZProblemProvider extends RegisteredProblemProvider {
+	
+	private final Pattern pattern = Pattern.compile("^DTLZ([0-9])_([0-9]+)$", Pattern.CASE_INSENSITIVE);
 
 	/**
 	 * Constructs and registers the DTLZ problems.
@@ -96,7 +99,6 @@ public class DTLZProblemProvider extends RegisteredProblemProvider {
 		
 		// allow creating any number of objectives, but these will not have reference sets
 		try {
-			Pattern pattern = Pattern.compile("^DTLZ([0-9])_([0-9]+)$", Pattern.CASE_INSENSITIVE);
 			Matcher matcher = pattern.matcher(name);
 			
 			if (matcher.matches()) {
@@ -116,6 +118,23 @@ public class DTLZProblemProvider extends RegisteredProblemProvider {
 			}
 		} catch (NumberFormatException e) {
 			return null;
+		}
+		
+		return null;
+	}
+	
+	@Override
+	public Epsilons getEpsilons(String name) {
+		Matcher matcher = pattern.matcher(name);
+		
+		if (matcher.matches()) {
+			int numberOfObjectives = Integer.parseInt(matcher.group(2));
+			
+			return switch (numberOfObjectives) {
+				case 2 -> Epsilons.of(0.01);
+				case 3 -> Epsilons.of(0.05);
+				default -> Epsilons.of(0.1 + 0.05 * (numberOfObjectives - 3));
+			};
 		}
 		
 		return null;

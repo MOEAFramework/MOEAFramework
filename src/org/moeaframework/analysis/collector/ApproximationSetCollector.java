@@ -19,8 +19,8 @@ package org.moeaframework.analysis.collector;
 
 import java.util.ArrayList;
 
-import org.moeaframework.analysis.EpsilonHelper;
 import org.moeaframework.core.Algorithm;
+import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
@@ -88,7 +88,7 @@ public class ApproximationSetCollector implements Collector {
 		
 		//if epsilons are provided, convert result to epsilon-dominance archive
 		if (epsilons != null) {
-			result = EpsilonHelper.convert(result, epsilons);
+			result = EpsilonBoxDominanceArchive.of(result, epsilons);
 		}
 		
 		observation.set("Approximation Set", new ArrayList<Solution>(result.asList(true)));

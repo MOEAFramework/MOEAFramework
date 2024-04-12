@@ -21,6 +21,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.mock.MockSolution;
 
 public class EpsilonBoxDominanceArchiveTest {
@@ -137,6 +138,36 @@ public class EpsilonBoxDominanceArchiveTest {
 			Assert.assertEquals(expectedDominatingImprovements[i], archive.getNumberOfDominatingImprovements());
 			Assert.assertEquals(expectedResult[i], result);
 		}
+	}
+	
+	@Test
+	public void testOfNondominatedPopulation() {
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
+		EpsilonBoxDominanceArchive expected = new EpsilonBoxDominanceArchive(0.1, referenceSet);
+		EpsilonBoxDominanceArchive actual = EpsilonBoxDominanceArchive.of(referenceSet, Epsilons.of(0.1));
+		
+		Assert.assertEquals(expected, actual);
+		Assert.assertEquals(0.1, actual.getComparator().getEpsilons().get(0));
+	}
+	
+	@Test
+	public void testOfDifferentEpsilons() {
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
+		NondominatedPopulation population = new EpsilonBoxDominanceArchive(0.1, referenceSet);
+		EpsilonBoxDominanceArchive actual = EpsilonBoxDominanceArchive.of(population, Epsilons.of(0.25));
+		
+		Assert.assertNotSame(actual, population);
+		Assert.assertEquals(0.25, actual.getComparator().getEpsilons().get(0));
+	}
+	
+	@Test
+	public void testOfSameEpsilons() {
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
+		NondominatedPopulation population = new EpsilonBoxDominanceArchive(0.1, referenceSet);
+		EpsilonBoxDominanceArchive actual = EpsilonBoxDominanceArchive.of(population, Epsilons.of(0.1));
+		
+		Assert.assertSame(actual, population);
+		Assert.assertEquals(0.1, actual.getComparator().getEpsilons().get(0));
 	}
 
 }

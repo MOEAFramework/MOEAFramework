@@ -21,6 +21,7 @@ import java.util.ServiceConfigurationError;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 
@@ -128,6 +129,25 @@ public class ProblemFactory extends AbstractFactory<ProblemProvider> {
 			}
 		}
 
+		return null;
+	}
+	
+	/**
+	 * Searches through all discovered {@code ProblemProvider} instances, returning the &epsilon; values of the problem
+	 * with the registered name.  Returns {@code null} if no values are available for the specified problem.
+	 * 
+	 * @param name the name identifying the problem
+	 * @return the &epsilon; values of the problem with the registered name; or {@code null} if no values are available
+	 */
+	public synchronized Epsilons getEpsilons(String name) {
+		for (ProblemProvider provider : this) {
+			Epsilons epsilons = provider.getEpsilons(name);
+			
+			if (epsilons != null) {
+				return epsilons;
+			}
+		}
+		
 		return null;
 	}
 	

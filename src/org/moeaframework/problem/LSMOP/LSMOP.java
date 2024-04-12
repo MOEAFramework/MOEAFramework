@@ -170,7 +170,7 @@ public abstract class LSMOP implements Problem {
 
 	@Override
 	public String getName() {
-		return getClass().getSimpleName();
+		return getClass().getSimpleName() + "_" + M;
 	}
 
 	@Override

@@ -54,7 +54,7 @@ public class DefaultNormalizerTest {
 	public void tearDown() {
 		problem = null;
 		referenceSet = null;
-		DefaultNormalizer.getInstance().clear();
+		DefaultNormalizer.getInstance().clearOverrides();
 	}
 	
 	@Test

@@ -89,7 +89,7 @@ public class DefaultNormalizer {
 	/**
 	 * Removes any overrides.
 	 */
-	public void clear() {
+	public void clearOverrides() {
 		overrides.clear();
 	}
 	
@@ -133,7 +133,7 @@ public class DefaultNormalizer {
 				if (normalizer instanceof NullNormalizer) {
 					System.err.println("Normalization is disabled by user for " + problem.getName());
 				} else {
-					System.err.println("Using custom normalizer for " + problem.getName());
+					System.err.println("Using user-provided normalizer for " + problem.getName());
 				}
 			}
 			

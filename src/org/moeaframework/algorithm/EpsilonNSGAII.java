@@ -18,7 +18,7 @@
 package org.moeaframework.algorithm;
 
 import org.moeaframework.algorithm.continuation.AdaptiveTimeContinuation;
-import org.moeaframework.analysis.EpsilonHelper;
+import org.moeaframework.analysis.DefaultEpsilons;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedSortingPopulation;
@@ -59,7 +59,7 @@ public class EpsilonNSGAII extends AdaptiveTimeContinuation implements Configura
 		this(problem,
 				Settings.DEFAULT_POPULATION_SIZE,
 				new NondominatedSortingPopulation(),
-				new EpsilonBoxDominanceArchive(EpsilonHelper.getEpsilons(problem)),
+				new EpsilonBoxDominanceArchive(DefaultEpsilons.getInstance().getEpsilons(problem)),
 				new TournamentSelection(2, new ChainedComparator(new ParetoDominanceComparator(), new CrowdingComparator())),
 				OperatorFactory.getInstance().getVariation(problem),
 				new RandomInitialization(problem),

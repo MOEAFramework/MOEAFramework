@@ -20,6 +20,7 @@ package org.moeaframework.problem.DTLZ;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.ProblemTest;
 
 public class DTLZ7Test extends ProblemTest {
@@ -51,6 +52,17 @@ public class DTLZ7Test extends ProblemTest {
 	public void testProvider() {
 		assertProblemDefined("DTLZ7_2", 2);
 		assertProblemDefined("DTLZ7_3", 3);
+	}
+	
+	@Test
+	public void testName() {
+		Assert.assertEquals("DTLZ7_2", ProblemFactory.getInstance().getProblem("DTLZ7").getName());
+	}
+	
+	@Test
+	public void testEpsilons() {
+		assertEpsilonsDefined("DTLZ7_2");
+		assertEpsilonsDefined("DTLZ7_3");
 	}
 
 }

@@ -40,7 +40,7 @@ import org.apache.commons.lang3.event.EventListenerSupport;
 import org.moeaframework.Analyzer;
 import org.moeaframework.Executor;
 import org.moeaframework.Instrumenter;
-import org.moeaframework.analysis.EpsilonHelper;
+import org.moeaframework.analysis.DefaultEpsilons;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Epsilons;
@@ -405,7 +405,7 @@ public class Controller {
 		String problemName = selectedResults.get(0).getProblem();
 		
 		try (Problem problem = ProblemFactory.getInstance().getProblem(problemName)) {
-			Epsilons epsilons = EpsilonHelper.getEpsilons(problem);
+			Epsilons epsilons = DefaultEpsilons.getInstance().getEpsilons(problem);
 			
 			Analyzer analyzer = new Analyzer()
 					.withProblem(problemName)
@@ -566,7 +566,7 @@ public class Controller {
 					
 					// lookup predefined epsilons for this problem
 					try (Problem problem = ProblemFactory.getInstance().getProblem(problemName)) {
-						instrumenter.withEpsilons(EpsilonHelper.getEpsilons(problem));
+						instrumenter.withEpsilons(DefaultEpsilons.getInstance().getEpsilons(problem));
 					}
 					
 					// setup the progress listener to receive updates
