@@ -18,7 +18,6 @@
 package org.moeaframework.core.fitness;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.moeaframework.core.FitnessEvaluator;
