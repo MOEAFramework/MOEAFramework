@@ -246,14 +246,8 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 * @return the feasible solutions in the population
 	 */
 	Population getFeasibleSolutions(Population population) {
-		Population feasibleSolutions = new Population();
-		
-		for (Solution solution : population) {
-			if (solution.isFeasible()) {
-				feasibleSolutions.add(solution);
-			}
-		}
-		
+		Population feasibleSolutions = new Population(population);
+		feasibleSolutions.filter(Solution::isFeasible);
 		return feasibleSolutions;
 	}
 	
@@ -282,6 +276,8 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 		}
 		
 		Population feasibleSolutions = getFeasibleSolutions(getPopulation());
+		
+		
 
 		if (!feasibleSolutions.isEmpty()) {
 			for (int i = 0; i < feasibleSolutions.size(); i++) {

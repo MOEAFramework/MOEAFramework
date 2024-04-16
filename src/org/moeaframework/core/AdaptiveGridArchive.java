@@ -26,6 +26,7 @@ import java.util.Iterator;
 import org.apache.commons.math3.exception.MathArithmeticException;
 import org.apache.commons.math3.util.ArithmeticUtils;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.util.Vector;
 
 // TODO: if the capacity is significantly less than the number of divisions,
 // using a sparse array would be much more memory efficient.
@@ -95,9 +96,6 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 		this.problem = problem;
 		this.numberOfDivisions = numberOfDivisions;
 
-		minimum = new double[problem.getNumberOfObjectives()];
-		maximum = new double[problem.getNumberOfObjectives()];
-		
 		// guard against integer overflow
 		try {
 			density = new int[ArithmeticUtils.pow(numberOfDivisions, problem.getNumberOfObjectives())];
@@ -292,16 +290,16 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 	 * Computes new lower and upper bounds and recalculates the densities of each grid cell.
 	 */
 	protected void adaptGrid() {
-		Arrays.fill(minimum, Double.POSITIVE_INFINITY);
-		Arrays.fill(maximum, Double.NEGATIVE_INFINITY);
-		Arrays.fill(density, 0);
-
-		for (Solution solution : this) {
-			for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-				minimum[i] = Math.min(minimum[i], solution.getObjective(i));
-				maximum[i] = Math.max(maximum[i], solution.getObjective(i));
-			}
+		if (isEmpty()) {
+			// these values make findIndex return -1
+			minimum = Vector.of(problem.getNumberOfObjectives(), Double.POSITIVE_INFINITY);
+			maximum = Vector.of(problem.getNumberOfObjectives(), Double.NEGATIVE_INFINITY);
+		} else {
+			minimum = getLowerBounds();
+			maximum = getUpperBounds();
 		}
+
+		Arrays.fill(density, 0);
 
 		for (Solution solution : this) {
 			density[findIndex(solution)]++;

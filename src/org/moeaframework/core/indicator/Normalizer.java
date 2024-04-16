@@ -51,12 +51,12 @@ public class Normalizer {
 	/**
 	 * The minimum value for each objective.
 	 */
-	private final double[] minimum;
+	private double[] minimum;
 
 	/**
 	 * The maximum value for each objective.
 	 */
-	private final double[] maximum;
+	private double[] maximum;
 	
 	/**
 	 * Constructs a normalizer for normalizing populations so that all objectives reside in the range {@code [0, 1]}.
@@ -72,8 +72,6 @@ public class Normalizer {
 		this.problem = problem;
 		this.delta = 0.0;
 		this.referencePoint = null;
-		this.minimum = new double[problem.getNumberOfObjectives()];
-		this.maximum = new double[problem.getNumberOfObjectives()];
 
 		calculateRanges(population);		
 		checkRanges();
@@ -96,9 +94,7 @@ public class Normalizer {
 		this.problem = problem;
 		this.delta = delta;
 		this.referencePoint = null;
-		this.minimum = new double[problem.getNumberOfObjectives()];
-		this.maximum = new double[problem.getNumberOfObjectives()];
-
+		
 		calculateRanges(population);		
 		checkRanges();
 	}
@@ -120,8 +116,6 @@ public class Normalizer {
 		this.problem = problem;
 		this.delta = 0.0;
 		this.referencePoint = referencePoint == null ? null : referencePoint.clone();
-		this.minimum = new double[problem.getNumberOfObjectives()];
-		this.maximum = new double[problem.getNumberOfObjectives()];
 
 		calculateRanges(population);		
 		checkRanges();
@@ -159,27 +153,15 @@ public class Normalizer {
 	 * @throws IllegalArgumentException if the population contains fewer than two solutions
 	 */
 	private void calculateRanges(Population population) {
-		if (population.size() < 2) {
-			throw new IllegalArgumentException("requires at least two solutions");
+		Population feasibleSolutions = new Population(population);
+		feasibleSolutions.filter(Solution::isFeasible);
+		
+		if (feasibleSolutions.size() < 2) {
+			throw new IllegalArgumentException("requires at least two solutions to compute bounds for normalization");
 		}
 		
-		for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-			minimum[i] = Double.POSITIVE_INFINITY;
-			maximum[i] = Double.NEGATIVE_INFINITY;
-		}
-
-		for (int i = 0; i < population.size(); i++) {
-			Solution solution = population.get(i);
-			
-			if (solution.violatesConstraints()) {
-				continue;
-			}
-			
-			for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
-				minimum[j] = Math.min(minimum[j], solution.getObjective(j));
-				maximum[j] = Math.max(maximum[j], solution.getObjective(j));
-			}
-		}
+		minimum = feasibleSolutions.getLowerBounds();
+		maximum = feasibleSolutions.getUpperBounds();
 		
 		if (referencePoint != null) {
 			for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
@@ -205,7 +187,8 @@ public class Normalizer {
 	private void checkRanges() {
 		for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
 			if (Math.abs(maximum[i] - minimum[i]) < Settings.EPS) {
-				throw new IllegalArgumentException("objective with empty range");
+				throw new IllegalArgumentException("unable to normalize, objective " + i +
+						" has identical lower and upper bounds");
 			}
 		}
 	}

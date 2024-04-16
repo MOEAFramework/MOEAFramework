@@ -56,17 +56,7 @@ public class WFGHypervolume implements Indicator {
 	 * @param referenceSet the reference set used to derive the reference point
 	 */
 	public WFGHypervolume(Problem problem, NondominatedPopulation referenceSet) {
-		super();
-		this.problem = problem;
-		
-		// this returns a copy of the array, so we are safe to modify in place
-		referencePoint = referenceSet.get(0).getObjectives();
-			
-		for (int i = 1; i < referenceSet.size(); i++) {
-			for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
-				referencePoint[j] = Math.max(referencePoint[j], referenceSet.get(i).getObjective(j));
-			}
-		}
+		this(problem, referenceSet.getUpperBounds());
 	}
 	
 	/**

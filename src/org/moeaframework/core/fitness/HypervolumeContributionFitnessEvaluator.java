@@ -97,27 +97,20 @@ public class HypervolumeContributionFitnessEvaluator implements FitnessEvaluator
 	 * @return the normalized solutions
 	 */
 	private List<Solution> normalize(Population population) {
-		List<Solution> result = new ArrayList<Solution>();
-		
-		double[] min = new double[problem.getNumberOfObjectives()];
-		double[] max = new double[problem.getNumberOfObjectives()];
-		
-		Arrays.fill(min, Double.POSITIVE_INFINITY);
-		Arrays.fill(max, Double.NEGATIVE_INFINITY);
-		
-		for (Solution solution : population) {
-			for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-				min[i] = Math.min(min[i], solution.getObjective(i));
-				max[i] = Math.max(max[i], solution.getObjective(i));
-			}
+		if (population.size() < 2) {
+			throw new IllegalArgumentException("requires at least two solutions to compute bounds for normalization");
 		}
+		
+		double[] min = population.getLowerBounds();
+		double[] max = population.getUpperBounds();
+		List<Solution> result = new ArrayList<Solution>();
 		
 		for (Solution solution : population) {
 			Solution newSolution = solution.copy();
 			
 			for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-				newSolution.setObjective(i, (max[i] - (newSolution.getObjective(i) - min[i]) + offset) /
-						(max[i] - min[i]));
+				newSolution.setObjective(i,
+						(max[i] - (newSolution.getObjective(i) - min[i]) + offset) / (max[i] - min[i]));
 			}
 
 			result.add(newSolution);
