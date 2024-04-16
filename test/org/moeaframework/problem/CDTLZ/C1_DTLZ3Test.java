@@ -53,12 +53,12 @@ public class C1_DTLZ3Test extends ProblemTest {
 	
 	@Test
 	public void testGenerate() {
-		testGenerate("C1_DTLZ3_2", ProblemTest::assertFeasible);
-		testGenerate("C1_DTLZ3_3", ProblemTest::assertFeasible);
-		testGenerate("C1_DTLZ3_5", ProblemTest::assertFeasible);
-		testGenerate("C1_DTLZ3_8", ProblemTest::assertFeasible);
-		testGenerate("C1_DTLZ3_10", ProblemTest::assertFeasible);
-		testGenerate("C1_DTLZ3_15", ProblemTest::assertFeasible);
+		testGenerate("C1_DTLZ3_2", Assert::assertFeasible);
+		testGenerate("C1_DTLZ3_3", Assert::assertFeasible);
+		testGenerate("C1_DTLZ3_5", Assert::assertFeasible);
+		testGenerate("C1_DTLZ3_8", Assert::assertFeasible);
+		testGenerate("C1_DTLZ3_10", Assert::assertFeasible);
+		testGenerate("C1_DTLZ3_15", Assert::assertFeasible);
 	}
 	
 }

@@ -95,7 +95,7 @@ public class C2_DTLZ2 extends DTLZ2 {
 			
 			evaluate(solution);
 			
-			if (!solution.violatesConstraints()) {
+			if (solution.isFeasible()) {
 				return solution;
 			}
 		}

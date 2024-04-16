@@ -171,7 +171,7 @@ public class ResultFileWriter implements OutputWriter {
 		List<Solution> feasibleSolutions = new ArrayList<Solution>();
 		
 		for (Solution solution : entry.getPopulation()) {
-			if (!solution.violatesConstraints()) {
+			if (solution.isFeasible()) {
 				feasibleSolutions.add(solution);
 			}
 		}

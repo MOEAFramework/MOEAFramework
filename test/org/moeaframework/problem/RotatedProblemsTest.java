@@ -130,7 +130,7 @@ public class RotatedProblemsTest {
 			problemB.evaluate(solutionB);
 			
 			Assert.assertEquals(solutionA, solutionB);
-			Assert.assertEquals(solutionA.violatesConstraints(), solutionB.violatesConstraints());
+			Assert.assertEquals(solutionA.isFeasible(), solutionB.isFeasible());
 		}
 	}
 	

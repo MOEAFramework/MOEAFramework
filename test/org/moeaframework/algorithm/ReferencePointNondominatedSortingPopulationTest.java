@@ -210,5 +210,19 @@ public class ReferencePointNondominatedSortingPopulationTest {
 		Assert.assertContains(population, solutions[1]);
 		Assert.assertContains(population, solutions[2]);
 	}
+	
+	@Test
+	public void testCopy() {
+		ReferencePointNondominatedSortingPopulation population = new ReferencePointNondominatedSortingPopulation(
+				2, new NormalBoundaryDivisions(2));
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
+		
+		ReferencePointNondominatedSortingPopulation copy = population.copy();
+		
+		Assert.assertNotSame(population, copy);
+		Assert.assertSame(population.getComparator(), copy.getComparator());
+		Assert.assertEquals(population.getDivisions(), copy.getDivisions());
+		Assert.assertEquals(population, copy, true);
+	}
 
 }

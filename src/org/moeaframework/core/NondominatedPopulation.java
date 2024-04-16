@@ -32,6 +32,9 @@ import org.moeaframework.util.io.Resources;
  * method is invoked with a new solution, all solutions currently in the population that are dominated by the new
  * solution are removed. If the new solution is dominated by any member of the population, the new solution is not
  * added.
+ * <p>
+ * <strong>Avoid modifying solutions contained in non-dominated populations.</strong>  Since the dominance checks are
+ * only performed when adding solutions, modifying an existing solution can violating this contract.
  */
 public class NondominatedPopulation extends Population {
 	
@@ -212,6 +215,17 @@ public class NondominatedPopulation extends Population {
 	 */
 	public DominanceComparator getComparator() {
 		return comparator;
+	}
+	
+	@Override
+	public NondominatedPopulation copy() {
+		NondominatedPopulation result = new NondominatedPopulation(getComparator());
+		
+		for (Solution solution : this) {
+			result.forceAddWithoutCheck(solution.copy());
+		}
+		
+		return result;
 	}
 	
 	/**

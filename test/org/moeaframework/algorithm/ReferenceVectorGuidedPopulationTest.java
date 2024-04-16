@@ -182,5 +182,19 @@ public class ReferenceVectorGuidedPopulationTest {
 		Assert.assertArrayEquals(new double[] { 1.0, 0.0 }, population.weights.get(2), TestThresholds.HIGH_PRECISION);
 		Assert.assertLessThanOrEqual(population.weights.get(1)[0], population.weights.get(1)[1]);
 	}
+	
+	@Test
+	public void testCopy() {
+		ReferenceVectorGuidedPopulation population = new ReferenceVectorGuidedPopulation(
+				2, new NormalBoundaryDivisions(2), 2.0);
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
+		
+		ReferenceVectorGuidedPopulation copy = population.copy();
+		
+		Assert.assertNotSame(population, copy);
+		Assert.assertEquals(population.getDivisions(), copy.getDivisions());
+		Assert.assertEquals(population.getAlpha(), copy.getAlpha());
+		Assert.assertEquals(population, copy, true);
+	}
 
 }

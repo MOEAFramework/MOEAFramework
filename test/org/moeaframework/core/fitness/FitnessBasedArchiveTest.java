@@ -17,6 +17,8 @@
  */
 package org.moeaframework.core.fitness;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.core.FitnessEvaluator;
@@ -29,11 +31,14 @@ import org.moeaframework.mock.MockSolution;
 
 public class FitnessBasedArchiveTest {
 	
-	@Test
-	public void test() {
-		Problem mockProblem = new MockRealProblem(2);
+	private Problem mockProblem;
+	private FitnessEvaluator mockEvaluator;
+	
+	@Before
+	public void setUp() {
+		mockProblem = new MockRealProblem(2);
 		
-		FitnessEvaluator mockEvaluator = new FitnessEvaluator() {
+		mockEvaluator = new FitnessEvaluator() {
 
 			@Override
 			public void evaluate(Population population) {
@@ -48,7 +53,16 @@ public class FitnessBasedArchiveTest {
 			}
 			
 		};
-		
+	}
+	
+	@After
+	public void tearDown() {
+		mockProblem = null;
+		mockEvaluator = null;
+	}
+	
+	@Test
+	public void test() {
 		FitnessBasedArchive archive = new FitnessBasedArchive(mockEvaluator, 1);
 		
 		Solution solution1 = MockSolution.of(mockProblem).at(0.25).withObjectives(0.5, 0.5);
@@ -63,6 +77,21 @@ public class FitnessBasedArchiveTest {
 
 		Assert.assertEquals(1, archive.size());
 		Assert.assertEquals(solution2, archive.get(0));
+	}
+	
+	@Test
+	public void testCopy() {
+		FitnessBasedArchive archive = new FitnessBasedArchive(mockEvaluator, 1);
+		archive.add(MockSolution.of(mockProblem).at(0.75).withObjectives(0.0, 1.0));
+		archive.update();
+		
+		FitnessBasedArchive copy = archive.copy();
+		
+		Assert.assertNotSame(archive, copy);
+		Assert.assertSame(archive.fitnessEvaluator, copy.fitnessEvaluator);
+		Assert.assertSame(archive.getComparator(), copy.getComparator());
+		Assert.assertEquals(archive.getCapacity(), copy.getCapacity());
+		Assert.assertEquals(archive, copy, true);
 	}
 
 }

@@ -399,7 +399,7 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm implements 
 	 * @return the current leaders
 	 */
 	public List<Solution> getLeaders() {
-		return leaders.asList(true);
+		return leaders.copy().asList();
 	}
 	
 	@Override

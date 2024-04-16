@@ -34,17 +34,17 @@ public class FitnessBasedArchive extends NondominatedPopulation {
 	/**
 	 * The maximum capacity of this archive.
 	 */
-	private final int capacity;
+	protected final int capacity;
 	
 	/**
 	 * The fitness evaluator for computing the fitness of solutions.
 	 */
-	private final FitnessEvaluator fitnessEvaluator;
+	protected final FitnessEvaluator fitnessEvaluator;
 	
 	/**
 	 * The fitness comparator for comparing fitness values.
 	 */
-	private final FitnessComparator fitnessComparator;
+	protected final FitnessComparator fitnessComparator;
 
 	/**
 	 * Constructs an empty fitness-based archive.
@@ -95,6 +95,15 @@ public class FitnessBasedArchive extends NondominatedPopulation {
 	public FitnessBasedArchive(FitnessEvaluator evaluator, int capacity, Iterable<? extends Solution> iterable) {
 		this(evaluator, capacity, new ParetoDominanceComparator(), iterable);
 	}
+	
+	/**
+	 * Returns the maximum number of solutions stored in this archive.
+	 * 
+	 * @return the maximum number of solutions stored in this archive
+	 */
+	public int getCapacity() {
+		return capacity;
+	}
 
 	@Override
 	public boolean add(Solution solution) {
@@ -115,6 +124,18 @@ public class FitnessBasedArchive extends NondominatedPopulation {
 	 */
 	public void update() {
 		fitnessEvaluator.evaluate(this);
+	}
+	
+	@Override
+	public FitnessBasedArchive copy() {
+		FitnessBasedArchive result = new FitnessBasedArchive(fitnessEvaluator, capacity, getComparator());
+		
+		for (Solution solution : this) {
+			result.forceAddWithoutCheck(solution.copy());
+		}
+		
+		result.update();
+		return result;
 	}
 
 }

@@ -69,7 +69,7 @@ public class FeasibilityRatio {
 		int feasible = 0;
 		
 		for (Solution solution : solutions) {
-			if (!solution.violatesConstraints()) {
+			if (solution.isFeasible()) {
 				feasible++;
 			}
 		}

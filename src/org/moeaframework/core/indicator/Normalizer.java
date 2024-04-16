@@ -18,6 +18,7 @@
 package org.moeaframework.core.indicator;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
@@ -216,19 +217,8 @@ public class Normalizer {
 	 * @return a new non-dominated population containing the normalized solutions from the specified population
 	 */
 	public NondominatedPopulation normalize(NondominatedPopulation population) {
-		NondominatedPopulation result = new NondominatedPopulation() {
-
-			/**
-			 * Enables a performance hack to avoid performing non-dominance checks on solutions already known to be
-			 * non-dominated.
-			 */
-			public boolean add(Solution newSolution) {
-				return super.forceAddWithoutCheck(newSolution);
-			}
-
-		};
-
-		normalize(population, result);
+		NondominatedPopulation result = population.copy();
+		normalizeInPlace(result);
 		return result;
 	}
 	
@@ -239,31 +229,31 @@ public class Normalizer {
 	 * @return a new population containing the normalized solutions from the specified population
 	 */
 	public Population normalize(Population population) {
-		Population result = new Population();
-		normalize(population, result);
+		Population result = population.copy();
+		normalizeInPlace(result);
 		return result;
 	}
 	
 	/**
-	 * Performs the actual normalization.  Each solution in {@code originalSet} is copied, normalized and added to
-	 * {@code normalizedSet}.
+	 * Performs the actual normalization by modifying the objective values in place.  While we typically discourage
+	 * modifying solutions in a population, we allow it here because normalization does not change the structure of
+	 * the population (meaning dominance, rankings, etc. are unchanged).
 	 * 
-	 * @param originalSet the unnormalized population
-	 * @param normalizedSet the normalized population
+	 * @param population the unnormalized population
 	 */
-	private void normalize(Population originalSet, Population normalizedSet) {
-		for (Solution solution : originalSet) {
-			if (solution.violatesConstraints()) {
-				continue;
-			}
+	private void normalizeInPlace(Population population) {
+		Iterator<Solution> iterator = population.iterator();
+		
+		while (iterator.hasNext()) {
+			Solution solution = iterator.next();
 			
-			Solution clone = solution.copy();
-	
-			for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
-				clone.setObjective(j, (clone.getObjective(j) - minimum[j]) / (maximum[j] - minimum[j]));
+			if (solution.violatesConstraints()) {
+				iterator.remove();
+			} else {
+				for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
+					solution.setObjective(j, (solution.getObjective(j) - minimum[j]) / (maximum[j] - minimum[j]));
+				}
 			}
-	
-			normalizedSet.add(clone);
 		}
 	}
 

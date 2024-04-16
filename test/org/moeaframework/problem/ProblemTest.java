@@ -166,7 +166,7 @@ public abstract class ProblemTest {
 			Solution solution = problem.generate();
 			problem.evaluate(solution);
 			
-			Assert.assertFalse(solution.violatesConstraints());
+			Assert.assertFeasible(solution);
 			Assert.assertTrue(population.add(solution));
 		}
 	}
@@ -183,15 +183,6 @@ public abstract class ProblemTest {
 				assertion.accept(problem.generate());
 			}
 		}
-	}
-	
-	/**
-	 * Asserts that the solution is feasible and has no constraint violations.
-	 * 
-	 * @param solution the solution to test
-	 */
-	public static void assertFeasible(Solution solution) {
-		Assert.assertFalse(solution.violatesConstraints());
 	}
 	
 	/**

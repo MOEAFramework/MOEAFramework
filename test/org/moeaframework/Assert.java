@@ -18,15 +18,20 @@
 package org.moeaframework;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
@@ -81,8 +86,12 @@ public class Assert extends org.junit.Assert {
 			}
 		}
 	}
-
+	
 	public static void assertEquals(Population expected, Population actual) {
+		assertEquals(expected, actual, false);
+	}
+
+	public static void assertEquals(Population expected, Population actual, boolean includeAttributes) {
 		org.junit.Assert.assertEquals("The populations have different sizes:", expected.size(), actual.size());
 
 		BitSet expectedMatches = new BitSet(expected.size());
@@ -91,7 +100,7 @@ public class Assert extends org.junit.Assert {
 		for (int i = 0; i < expected.size(); i++) {
 			for (int j = 0; j < actual.size(); j++) {
 				try {
-					assertEquals(expected.get(i), actual.get(j));
+					assertEquals(expected.get(i), actual.get(j), includeAttributes);
 					expectedMatches.set(i);
 					actualMatches.set(j);
 				} catch (AssertionError e) {
@@ -128,6 +137,10 @@ public class Assert extends org.junit.Assert {
 	}
 	
 	public static void assertEquals(Solution expected, Solution actual) {
+		assertEquals(expected, actual, false);
+	}
+	
+	public static void assertEquals(Solution expected, Solution actual, boolean includeAttributes) {
 		assertEquals("Solutions have different number of variables:",
 				expected.getNumberOfVariables(), actual.getNumberOfVariables());
 
@@ -157,9 +170,55 @@ public class Assert extends org.junit.Assert {
 					expected.getConstraint(i), actual.getConstraint(i), TestThresholds.LOW_PRECISION);
 		}
 		
-		// We do not check attributes here because (1) attributes are generally specific to a solution and can differ
-		// even if all other values are identical; and (2) identity checks will fail if arrays or other objects are
-		// stored as attributes.
+		if (includeAttributes) {
+			assertAttributeEquality(expected, actual);
+		}
+	}
+	
+	public static void assertAttributeEquality(Solution expected, Solution actual) {
+		Map<String, Serializable> expectedAttributes = expected.getAttributes();
+		Map<String, Serializable> actualAttributes = actual.getAttributes();
+		
+		assertEquals("Solutions contain different attribute keys:",
+				expectedAttributes.keySet(), actualAttributes.keySet());
+		
+		for (String key : expectedAttributes.keySet()) {
+			Serializable expectedValue = expectedAttributes.get(key);
+			Serializable actualValue = actualAttributes.get(key);
+			
+			assertEquals("Attribute " + key + " has different types:",
+					expectedValue.getClass(), actualValue.getClass());
+			
+			Method method = null;
+			
+			try {
+				method = expectedValue.getClass().getMethod("equals", Object.class);
+			} catch (NoSuchMethodException e) {
+				throw new AssertionError("Unable to locate equals method", e);
+			}
+			
+			if (method.getDeclaringClass().equals(Object.class)) {
+				// Object#equals performs an identity check, which can't detect two different objects with the same
+				// value.  Instead, we check if the serialized values are equal.
+				try (ByteArrayOutputStream expectedBytes = new ByteArrayOutputStream();
+						ByteArrayOutputStream actualBytes = new ByteArrayOutputStream();
+						ObjectOutputStream expectedOut = new ObjectOutputStream(expectedBytes);
+						ObjectOutputStream actualOut = new ObjectOutputStream(actualBytes)) {
+					expectedOut.writeObject(expected);
+					actualOut.writeObject(actual);
+					
+					expectedOut.close();
+					actualOut.close();
+					
+					assertArrayEquals("Attribute " + key + " has different serialized values:",
+							expectedBytes.toByteArray(), actualBytes.toByteArray());
+				} catch (IOException e) {
+					throw new AssertionError("Unable to compare serializable objects", e);
+				}
+			} else {
+				assertEquals("Attribute " + key + " has different values:", expectedValue, actualValue);
+			}
+		}
 	}
 	
 	public static void assertGreaterThan(double lhs, double rhs) {
@@ -346,6 +405,10 @@ public class Assert extends org.junit.Assert {
 	
 	public static void assertSize(int expected, Population population) {
 		assertEquals("Population not the expected size:", expected, population.size());
+	}
+	
+	public static void assertFeasible(Solution solution) {
+		assertTrue("Solution is not feasible", solution.isFeasible());
 	}
 	
 	public static void any(Runnable... assertions) {

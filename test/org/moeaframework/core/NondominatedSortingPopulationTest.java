@@ -195,5 +195,17 @@ public class NondominatedSortingPopulationTest {
 		
 		Assert.assertEquals(8, population.getNumberOfUpdates());
 	}
+	
+	@Test
+	public void testCopy() {
+		NondominatedSortingPopulation population = new NondominatedSortingPopulation();
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
+		
+		NondominatedSortingPopulation copy = population.copy();
+		
+		Assert.assertNotSame(population, copy);
+		Assert.assertSame(population.getComparator(), copy.getComparator());
+		Assert.assertEquals(population, copy, true);
+	}
 
 }

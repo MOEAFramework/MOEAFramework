@@ -235,9 +235,20 @@ public class Solution implements Formattable<Solution>, Serializable {
 	public void setVariable(int index, Variable variable) {
 		variables[index] = variable;
 	}
+	
+	/**
+	 * Returns {@code true} if all constraints are satisfied; {@code false} otherwise.  This is the opposite of
+	 * {@link #violatesConstraints()}.
+	 * 
+	 * @return {@code true} if all constraints are satisfied; {@code false} otherwise
+	 */
+	public boolean isFeasible() {
+		return !violatesConstraints();
+	}
 
 	/**
-	 * Returns {@code true} if any of the constraints are violated; {@code false} otherwise.
+	 * Returns {@code true} if any of the constraints are violated; {@code false} otherwise.  This is the opposite of
+	 * {@link #isFeasible()}.
 	 * 
 	 * @return {@code true} if any of the constraints are violated; {@code false} otherwise
 	 */

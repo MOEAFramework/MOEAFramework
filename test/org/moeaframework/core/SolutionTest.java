@@ -268,7 +268,7 @@ public class SolutionTest {
 		
 		Solution copy = solution.deepCopy();
 		
-		Assert.assertNotSame(array, copy.getAttribute("key"));
+		Assert.assertEquals(solution, copy, true);
 	}
 
 	@Test
@@ -304,6 +304,17 @@ public class SolutionTest {
 		// the equals method works to detect the change
 		Assert.assertFalse(solution.equals(copy));
 		Assert.assertFalse(copy.equals(solution));
+	}
+	
+	@Test
+	public void testIsFeasible() {
+		Assert.assertFalse(solution.isFeasible());
+
+		solution.setConstraint(1, 0.0);
+		Assert.assertTrue(solution.isFeasible());
+
+		// solution with no constraints
+		Assert.assertTrue(new Solution(0, 0, 0).isFeasible());
 	}
 
 	@Test

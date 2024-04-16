@@ -350,6 +350,18 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 	}
 	
 	@Override
+	public AdaptiveGridArchive copy() {
+		AdaptiveGridArchive result = new AdaptiveGridArchive(capacity, problem, numberOfDivisions);
+		
+		for (Solution solution : this) {
+			result.forceAddWithoutCheck(solution.copy());
+		}
+		
+		result.adaptGrid();
+		return result;
+	}
+	
+	@Override
 	public void saveState(ObjectOutputStream stream) throws IOException {
 		super.saveState(stream);
 		stream.writeObject(minimum);

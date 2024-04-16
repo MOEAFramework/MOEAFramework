@@ -43,6 +43,7 @@ import org.moeaframework.util.format.TabularData;
 public class PopulationTest {
 
 	private Population population;
+	private Population constrainedPopulation;
 
 	@Before
 	public void setUp() {
@@ -51,11 +52,18 @@ public class PopulationTest {
 				MockSolution.of().withObjectives(1.0, 2.0, 2.0),
 				MockSolution.of().withObjectives(2.0, 2.0, 3.0),
 				MockSolution.of().withObjectives(4.0, 3.0, 2.0)));
+		
+		constrainedPopulation = new Population(List.of(
+				MockSolution.of().withObjectives(3.0, 2.0, 3.0).withConstraints(0.0),
+				MockSolution.of().withObjectives(1.0, 2.0, 2.0).withConstraints(1.0),
+				MockSolution.of().withObjectives(2.0, 2.0, 3.0).withConstraints(-1.0),
+				MockSolution.of().withObjectives(4.0, 3.0, 2.0).withConstraints(0.0)));
 	}
 
 	@After
 	public void tearDown() {
 		population = null;
+		constrainedPopulation = null;
 	}
 
 	@Test
@@ -242,6 +250,50 @@ public class PopulationTest {
 		
 		Assert.assertArrayEquals(new double[] {0.0, 1.0, 2.0}, population.get(0).getObjectives(), TestThresholds.HIGH_PRECISION);
 		Assert.assertArrayEquals(new double[] {3.0, 4.0, 5.0}, population.get(1).getObjectives(), TestThresholds.HIGH_PRECISION);
+	}
+	
+	@Test
+	public void testFilter() {
+		population.filter(s -> true);
+		Assert.assertSize(4, population);
+		
+		population.filter(s -> s.getObjective(0) >= 3.0);
+		Assert.assertSize(2, population);
+		
+		for (Solution solution : population) {
+			Assert.assertGreaterThanOrEqual(solution.getObjective(0), 3.0);
+		}
+		
+		population.filter(s -> false);
+		Assert.assertSize(0, population);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public void testGetLowerBoundsOnEmptyPopulation() {
+		new Population().getLowerBounds();
+	}
+	
+	@Test(expected = UnsupportedOperationException.class)
+	public void testGetUpperBoundsOnEmptyPopulation() {
+		new Population().getUpperBounds();
+	}
+	
+	@Test
+	public void testGetLowerBounds() {
+		double[] lowerBounds = constrainedPopulation.getLowerBounds();
+		Assert.assertArrayEquals(new double[] { 1.0, 2.0, 2.0 }, lowerBounds, TestThresholds.HIGH_PRECISION);
+	}
+	
+	@Test
+	public void testGetUpperBounds() {
+		double[] upperBounds = constrainedPopulation.getUpperBounds();
+		Assert.assertArrayEquals(new double[] { 4.0, 3.0, 3.0 }, upperBounds, TestThresholds.HIGH_PRECISION);
+	}
+	
+	@Test
+	public void testCopy() {
+		Population copy = population.copy();
+		Assert.assertEquals(population, copy);
 	}
 
 }

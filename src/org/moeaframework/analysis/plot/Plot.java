@@ -518,7 +518,7 @@ public class Plot {
 		List<Number> ys = new ArrayList<Number>();
 		
 		for (Solution solution : population) {
-			if (!solution.violatesConstraints()) {
+			if (solution.isFeasible()) {
 				xs.add(solution.getObjective(x));
 				ys.add(solution.getObjective(y));
 			}

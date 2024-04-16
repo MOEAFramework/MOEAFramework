@@ -157,5 +157,19 @@ public class AdaptiveGridArchiveTest {
 	public void testOverflow() {
 		new AdaptiveGridArchive(100, new ProblemStub(4), 256);
 	}
+	
+	@Test
+	public void testCopy() {
+		AdaptiveGridArchive archive = new AdaptiveGridArchive(4, problem, 2);
+		archive.add(MockSolution.of().withObjectives(0.0, 1.0));
+		
+		AdaptiveGridArchive copy = archive.copy();
+		
+		Assert.assertNotSame(archive, copy);
+		Assert.assertSame(archive.getProblem(), copy.getProblem());
+		Assert.assertEquals(archive.getCapacity(), copy.getCapacity());
+		Assert.assertEquals(archive.getBisections(), copy.getBisections());
+		Assert.assertEquals(archive, copy, true);
+	}
 
 }

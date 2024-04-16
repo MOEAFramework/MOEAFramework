@@ -370,7 +370,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 		Solution minSolution = null;
 		
 		for (Solution solution : solutions) {
-			if (!solution.violatesConstraints()) {
+			if (solution.isFeasible()) {
 				double[] objectives = (double[])solution.getAttribute(NORMALIZED_OBJECTIVES);
 				
 				double penalty = numberOfObjectives * Math.pow(scalingFactor, alpha) *
@@ -428,6 +428,18 @@ public class ReferenceVectorGuidedPopulation extends Population {
 				add(select(associations, i));
 			}
 		}
+	}
+	
+	@Override
+	public ReferenceVectorGuidedPopulation copy() {
+		ReferenceVectorGuidedPopulation result = new ReferenceVectorGuidedPopulation(numberOfObjectives, divisions,
+				alpha);
+		
+		for (Solution solution : this) {
+			result.add(solution.copy());
+		}
+		
+		return result;
 	}
 	
 	public void saveState(ObjectOutputStream stream) throws IOException {

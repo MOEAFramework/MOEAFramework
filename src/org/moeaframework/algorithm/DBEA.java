@@ -249,7 +249,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 		Population feasibleSolutions = new Population();
 		
 		for (Solution solution : population) {
-			if (!solution.violatesConstraints()) {
+			if (solution.isFeasible()) {
 				feasibleSolutions.add(solution);
 			}
 		}
@@ -394,7 +394,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 * @param solution the new solution
 	 */
 	void updateIdealPointAndIntercepts(Solution solution) {
-		if (!solution.violatesConstraints()) {
+		if (solution.isFeasible()) {
 			// update the ideal point
 			for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
 				idealPoint[j] = Math.min(idealPoint[j], solution.getObjective(j));
@@ -488,7 +488,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 		boolean success = false;
 		
 		// update the corners if necessary
-		if (corner != null && !child.violatesConstraints()) {
+		if (corner != null && child.isFeasible()) {
 			corner.add(child);
 			corner = corner_sort(corner);
 		}

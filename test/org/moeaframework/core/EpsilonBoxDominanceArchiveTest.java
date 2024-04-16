@@ -169,5 +169,17 @@ public class EpsilonBoxDominanceArchiveTest {
 		Assert.assertSame(actual, population);
 		Assert.assertEquals(0.1, actual.getComparator().getEpsilons().get(0));
 	}
+	
+	@Test
+	public void testCopy() {
+		EpsilonBoxDominanceArchive population = new EpsilonBoxDominanceArchive(0.1);
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
+		
+		EpsilonBoxDominanceArchive copy = population.copy();
+		
+		Assert.assertNotSame(population, copy);
+		Assert.assertSame(population.getComparator(), copy.getComparator());
+		Assert.assertEquals(population, copy, true);
+	}
 
 }

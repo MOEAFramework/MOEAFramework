@@ -588,6 +588,18 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	}
 	
 	@Override
+	public ReferencePointNondominatedSortingPopulation copy() {
+		ReferencePointNondominatedSortingPopulation result = new ReferencePointNondominatedSortingPopulation(
+				numberOfObjectives, divisions, getComparator());
+		
+		for (Solution solution : this) {
+			result.add(solution.copy());
+		}
+		
+		return result;
+	}
+	
+	@Override
 	public void saveState(ObjectOutputStream stream) throws IOException {
 		super.saveState(stream);
 		stream.writeObject(idealPoint);

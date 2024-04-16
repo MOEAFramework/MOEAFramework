@@ -215,6 +215,17 @@ public class EpsilonBoxDominanceArchive extends NondominatedPopulation {
 	}
 	
 	@Override
+	public EpsilonBoxDominanceArchive copy() {
+		EpsilonBoxDominanceArchive result = new EpsilonBoxDominanceArchive(getComparator());
+		
+		for (Solution solution : this) {
+			result.forceAddWithoutCheck(solution.copy());
+		}
+		
+		return result;
+	}
+	
+	@Override
 	public void saveState(ObjectOutputStream stream) throws IOException {
 		super.saveState(stream);
 		stream.writeInt(numberOfImprovements);

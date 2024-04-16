@@ -359,6 +359,17 @@ public class MSOPSRankedPopulation extends Population {
 	}
 	
 	@Override
+	public MSOPSRankedPopulation copy() {
+		MSOPSRankedPopulation result = new MSOPSRankedPopulation(weights);
+		
+		for (Solution solution : this) {
+			result.add(solution.copy());
+		}
+		
+		return result;
+	}
+	
+	@Override
 	public void saveState(ObjectOutputStream stream) throws IOException {
 		super.saveState(stream);
 		stream.writeObject(weights);

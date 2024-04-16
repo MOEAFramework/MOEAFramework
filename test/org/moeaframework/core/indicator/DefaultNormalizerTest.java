@@ -136,5 +136,13 @@ public class DefaultNormalizerTest {
 			Assert.assertArrayEquals(new double[] { 0.5, 0.5 }, population.get(0).getObjectives(), TestThresholds.HIGH_PRECISION);
 		}
 	}
+	
+	@Test
+	public void testNamesWithSpecialCharacters() {
+		try (PropertyScope scope = Settings.createScope()
+				.with(Settings.createKey("org", "moeaframework", "problem", "foo.bar", "normalization", "disabled"), true)) {
+			Assert.assertTrue(Settings.isNormalizationDisabled("foo.bar"));
+		}
+	}
 
 }

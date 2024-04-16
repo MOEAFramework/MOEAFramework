@@ -91,7 +91,7 @@ public class ApproximationSetCollector implements Collector {
 			result = EpsilonBoxDominanceArchive.of(result, epsilons);
 		}
 		
-		observation.set("Approximation Set", new ArrayList<Solution>(result.asList(true)));
+		observation.set("Approximation Set", new ArrayList<Solution>(result.copy().asList()));
 	}
 	
 	/**

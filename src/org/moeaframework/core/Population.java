@@ -40,6 +40,7 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 
 import org.apache.commons.io.input.CloseShieldInputStream;
 import org.apache.commons.io.input.CloseShieldReader;
@@ -296,6 +297,75 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 		modCount++;
 		Collections.sort(data, comparator);
 	}
+	
+	/**
+	 * Applies a filter to this population, removing any solutions that do not match the predicate.
+	 * 
+	 * @param predicate the filter that returns {@code true} on solutions to keep
+	 */
+	public void filter(Predicate<Solution> predicate) {
+		Iterator<Solution> iterator = iterator();
+		
+		while (iterator.hasNext()) {
+			Solution solution = iterator.next();
+			
+			if (!predicate.test(solution)) {
+				iterator.remove();
+			}
+		}
+	}
+	
+	/**
+	 * Computes the lower bounds of this population.  Since all objectives are minimized, this is equivalent to the
+	 * ideal point.  Also note that all solutions, including those violating constraints, are included.
+	 * 
+	 * @return the lower bounds
+	 */
+	public double[] getLowerBounds() {
+		double[] lower = null;
+		
+		for (Solution solution : this) {
+			if (lower == null) {
+				lower = solution.getObjectives(); // the returned array is a copy
+			} else {
+				for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
+					lower[i] = Math.min(lower[i], solution.getObjective(i));
+				}
+			}
+		}
+		
+		if (lower == null) {
+			throw new UnsupportedOperationException("population must contain at least one solution to compute bounds");
+		}
+		
+		return lower;
+	}
+	
+	/**
+	 * Computes the upper bounds of this population.  Since all objectives are minimized, this is equivalent to the
+	 * Nadir point.  Also note that all solutions, including those violating constraints, are included.
+	 * 
+	 * @return the upper bounds
+	 */
+	public double[] getUpperBounds() {
+		double[] upper = null;
+		
+		for (Solution solution : this) {
+			if (upper == null) {
+				upper = solution.getObjectives(); // the returned array is a copy
+			} else {
+				for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
+					upper[i] = Math.max(upper[i], solution.getObjective(i));
+				}
+			}
+		}
+		
+		if (upper == null) {
+			throw new UnsupportedOperationException("population must contain at least one solution to compute bounds");
+		}
+		
+		return upper;
+	}
 
 	/**
 	 * Sorts this population using the specified comparator and removes the last (maximum) solutions until this
@@ -313,26 +383,32 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 	}
 	
 	/**
-	 * Returns a list of all solutions in this population.  This is equivalent to calling {@link #asList(boolean)}
-	 * with a value of {@code true}.
+	 * Returns a copy of this population, which involves creating copies of the individual solutions in this
+	 * population.  Consequently, changes made to the returned copy will have no impact on this population.
 	 * 
-	 * @return a list of all solutions in this population
+	 * @return the copy of this population
 	 */
-	public List<Solution> asList() {
-		return asList(true);
+	public Population copy() {
+		Population result = new Population();
+		
+		for (Solution solution : this) {
+			result.add(solution.copy());
+		}
+		
+		return result;
 	}
 	
 	/**
-	 * Returns a list of all solutions in this population.
+	 * Returns the contents of this population as a list.  Consider using {@link #copy()} first if planning to modify
+	 * the solutions in any way.
 	 * 
-	 * @param copy if {@code true}, copies of each solution are returned
-	 * @return a list of all solutions in this population
+	 * @return the contents of this population as a list
 	 */
-	public List<Solution> asList(boolean copy) {
+	public List<Solution> asList() {
 		List<Solution> result = new ArrayList<Solution>(size());
 		
 		for (Solution solution : this) {
-			result.add(copy ? solution.copy() : solution);
+			result.add(solution);
 		}
 		
 		return result;

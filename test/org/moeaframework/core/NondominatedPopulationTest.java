@@ -140,5 +140,17 @@ public class NondominatedPopulationTest {
 			Assert.assertTrue(population.add(solution3));
 		}
 	}
+	
+	@Test
+	public void testCopy() {
+		NondominatedPopulation population = new NondominatedPopulation();
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
+		
+		NondominatedPopulation copy = population.copy();
+		
+		Assert.assertNotSame(population, copy);
+		Assert.assertSame(population.getComparator(), copy.getComparator());
+		Assert.assertEquals(population, copy, true);
+	}
 
 }

@@ -235,6 +235,17 @@ public class NondominatedSortingPopulation extends Population {
 	}
 	
 	@Override
+	public NondominatedSortingPopulation copy() {
+		NondominatedSortingPopulation result = new NondominatedSortingPopulation(getComparator());
+		
+		for (Solution solution : this) {
+			result.add(solution.copy());
+		}
+		
+		return result;
+	}
+	
+	@Override
 	public void saveState(ObjectOutputStream stream) throws IOException {
 		super.saveState(stream);
 		stream.writeBoolean(modified);
