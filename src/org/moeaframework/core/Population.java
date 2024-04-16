@@ -383,8 +383,14 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 	}
 	
 	/**
-	 * Returns a copy of this population, which involves creating copies of the individual solutions in this
-	 * population.  Consequently, changes made to the returned copy will have no impact on this population.
+	 * Returns a copy of this population.  This can be thought of as a "deep copy", which creates a copy of both the
+	 * population itself and copies of the individual solutions in the population.  Consequently, the returned
+	 * copy is completely independent, such that any modifications to the contents or order will not impact the
+	 * original.
+	 * <p>
+	 * Since creating such a "deep copy" can be expensive, prefer using the constructor {@link #Population(Iterable)}
+	 * or {@link #addAll(Iterable)} whenever possible.  These alternatives are useful when filtering or reordering the
+	 * solutions, but the solutions themselves are left unchanged.
 	 * 
 	 * @return the copy of this population
 	 */
