@@ -34,7 +34,7 @@ import org.moeaframework.util.format.TabularData;
  *   <li>Epsilons configured by the user by calling {@link #override}
  *   <li>Epsilons configured by the user in the properties file {@value Settings#DEFAULT_CONFIGURATION_FILE}
  *   <li>Epsilons defined by the problem provider (i.e., our recommended defaults)
- *   <li>The global default of {@value DefaultEpsilons#DEFAULT}
+ *   <li>The global default of {@link #DEFAULT}
  * </ol>
  */
 public class DefaultEpsilons implements Formattable<Entry<String, Epsilons>> {
@@ -84,7 +84,7 @@ public class DefaultEpsilons implements Formattable<Entry<String, Epsilons>> {
 	
 	/**
 	 * Returns the default &epsilon; values for the given problem.  If the problem is not recognized, the default
-	 * &epsilon; value of {@value DEFAULT} is returned.
+	 * &epsilon; value of {@link #DEFAULT} is returned.
 	 * 
 	 * @param problem the problem
 	 * @return the &epsilon; values
@@ -95,7 +95,7 @@ public class DefaultEpsilons implements Formattable<Entry<String, Epsilons>> {
 	
 	/**
 	 * Returns the default &epsilon; values for the given problem.  If the problem is not recognized, the default
-	 * &epsilon; value of {@value DEFAULT} is returned.
+	 * &epsilon; value of {@link #DEFAULT} is returned.
 	 * 
 	 * @param problemName the problem name
 	 * @return the &epsilon; values
