@@ -41,6 +41,8 @@ import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.AbstractCompoundVariation;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
+import org.moeaframework.core.penalty.PenaltyFunction;
+import org.moeaframework.core.penalty.SumOfConstraintsPenaltyFunction;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.weights.RandomGenerator;
@@ -121,6 +123,11 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	 * The current generation number.
 	 */
 	private int generation;
+	
+	/**
+	 * The penalty function used to handle constraint violations.
+	 */
+	private final PenaltyFunction penaltyFunction;
 	
 	/**
 	 * Constructs the MOEA/D algorithm with default settings.
@@ -207,6 +214,8 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 		if (variation != null) {
 			setVariation(variation);
 		}
+		
+		penaltyFunction = new SumOfConstraintsPenaltyFunction(10000.0);
 	}
 	
 	/**
@@ -581,9 +590,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 			max = Math.max(max, Math.max(weights[i], 0.0001) * Math.abs(solution.getObjective(i) - idealPoint[i]));
 		}
 
-		if (solution.violatesConstraints()) {
-			max += 10000.0;
-		}
+		max += penaltyFunction.calculate(solution);
 
 		return max;
 	}

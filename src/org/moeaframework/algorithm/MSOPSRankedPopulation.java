@@ -34,6 +34,7 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.RankComparator;
+import org.moeaframework.core.penalty.SumOfConstraintsPenaltyFunction;
 
 /**
  * Population implementing the ranking scheme used by the Multiple Single Objective Pareto Sampling (MSOPS) algorithm.
@@ -75,6 +76,11 @@ public class MSOPSRankedPopulation extends Population {
 	private List<double[]> weights;
 	
 	/**
+	 * The penalty function used to handle constraint violations.
+	 */
+	private final SumOfConstraintsPenaltyFunction penaltyFunction;
+	
+	/**
 	 * Matrix of scores, updated by calling {@link #update()}.
 	 */
 	double[][] scores;
@@ -98,6 +104,7 @@ public class MSOPSRankedPopulation extends Population {
 	public MSOPSRankedPopulation(List<double[]> weights) {
 		super();
 		this.weights = weights;
+		this.penaltyFunction = new SumOfConstraintsPenaltyFunction();
 	}
 
 	/**
@@ -284,13 +291,15 @@ public class MSOPSRankedPopulation extends Population {
 			}
 		}
 		
-		// offset score to handle constraints
+		// penalize score to handle constraints
+		penaltyFunction.setOffset(maxScore);
+		
 		for (int i = 0; i < P; i++) {
 			Solution solution = get(i);
 			
 			if (solution.violatesConstraints()) {
 				for (int j = 0; j < T; j++) {
-					scores[i][j] += maxScore + solution.getSumOfConstraintViolations();
+					scores[i][j] += penaltyFunction.calculate(solution);
 				}
 			}
 		}
