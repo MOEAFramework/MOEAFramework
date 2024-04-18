@@ -26,6 +26,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -60,9 +61,16 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
+import org.jfree.base.Library;
+import org.jfree.ui.about.AboutDialog;
+import org.jfree.ui.about.ProjectInfo;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.core.Settings;
 import org.moeaframework.util.Localization;
+import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.io.CommentedLineReader;
+import org.moeaframework.util.io.Resources;
+import org.moeaframework.util.io.Resources.ResourceOption;
 
 /**
  * The main window of the diagnostic tool.
@@ -288,7 +296,7 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 			
 		});
 		
-		selectAll = new JButton(actionFactory.getSelectAllAction(resultTable));
+		selectAll = new JButton(actionFactory.getSelectAllResultsAction());
 		showStatistics = new JButton(actionFactory.getShowStatisticsAction());
 		
 		//initialize the sorted list of algorithms
@@ -530,6 +538,15 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 	}
 	
 	/**
+	 * Returns the action factory which creates the actions triggered by menu items and buttons.
+	 * 
+	 * @return the action factory used by this diagnostic tool instance
+	 */
+	protected ActionFactory getActionFactory() {
+		return actionFactory;
+	}
+	
+	/**
 	 * Returns the paint helper used by this diagnostic tool instance.  This paint helper contains the mapping from
 	 * series to paints displayed in this window.
 	 * 
@@ -618,6 +635,13 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 	}
 	
 	/**
+	 * Selects all available metrics for display.
+	 */
+	public void selectAllMetrics() {
+		metricList.getSelectionModel().setSelectionInterval(0, metricList.getModel().getSize()-1);
+	}
+	
+	/**
 	 * Returns a list of the selected results.
 	 * 
 	 * @return a list of the selected results
@@ -633,12 +657,28 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 	}
 	
 	/**
+	 * Selects all available results for display.
+	 */
+	public void selectAllResults() {
+		resultTable.getSelectionModel().setSelectionInterval(0, resultTable.getModel().getRowCount()-1);
+	}
+	
+	/**
 	 * Returns the algorithm selected in the run control pane.
 	 * 
 	 * @return the algorithm selected for the next evaluation job
 	 */
 	protected String getAlgorithm() {
 		return (String)algorithm.getSelectedItem();
+	}
+	
+	/**
+	 * Sets the algorithm selected in the run control pane.
+	 * 
+	 * @param algorithm the algorithm selected in the run control pane
+	 */
+	protected void setAlgorithm(String algorithm) {
+		this.algorithm.setSelectedItem(algorithm);
 	}
 	
 	/**
@@ -651,6 +691,15 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 	}
 	
 	/**
+	 * Sets the problem selected in the run control pane.
+	 * 
+	 * @param problem the problem selected in the run control pane
+	 */
+	protected void setProblem(String problem) {
+		this.problem.setSelectedItem(problem);
+	}
+	
+	/**
 	 * Returns the number of evaluations set in the run control pane.
 	 * 
 	 * @return the number of evaluations set in the run control pane
@@ -660,12 +709,30 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 	}
 	
 	/**
+	 * Sets the number of evaluations in the run control pane.
+	 * 
+	 * @param numberOfEvaluations the number of function evaluations
+	 */
+	protected void setNumberOfEvaluations(int numberOfEvaluations) {
+		this.numberOfEvaluations.setValue(numberOfEvaluations);
+	}
+	
+	/**
 	 * Returns the number of seeds set in the run control pane.
 	 * 
 	 * @return the number of seeds set in the run control pane
 	 */
 	protected int getNumberOfSeeds() {
 		return (Integer)numberOfSeeds.getValue();
+	}
+	
+	/**
+	 * Sets the number of seeds in the run control pane.
+	 * 
+	 * @param numberOfSeeds the number of seeds
+	 */
+	protected void setNumberOfSeeds(int numberOfSeeds) {
+		this.numberOfSeeds.setValue(numberOfSeeds);
 	}
 	
 	/**
@@ -679,6 +746,77 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 			return new ApproximationSetPlot(this, metric);
 		} else {
 			return new LinePlot(this, metric);
+		}
+	}
+	
+	/**
+	 * Creates and displays a dialog containing about / license information.
+	 * 
+	 * @return the dialog, or {@code null} if unable to display
+	 */
+	protected AboutDialog showAbout() {
+		try {
+			TypedProperties properties = TypedProperties.loadBuildProperties();
+
+			ProjectInfo info = new ProjectInfo(
+					properties.getString("name"),
+					properties.getString("version"), 
+					properties.getString("description"),
+					null,
+					properties.getString("copyright"),
+					null,
+					loadLicense());
+			
+			for (String dependency : properties.getStringArray("runtime.dependencies", new String[0])) {
+				info.addLibrary(new Library(
+						dependency,
+						properties.getString(dependency + ".version", "???"),
+						properties.getString(dependency + ".license", "???"),
+						null));
+			}
+			
+			AboutDialog dialog = new AboutDialog(this, localization.getString("title.about"), info);
+			dialog.setLocationRelativeTo(this);
+			dialog.setVisible(true);
+			return dialog;
+		} catch (Exception ex) {
+			controller.handleException(ex);
+			return null;
+		}
+	}
+	
+	/**
+	 * Loads the GNU LGPL license file and formats it for display.
+	 * 
+	 * @return the formatted GNU LGPL license
+	 * @throws IOException if an I/O error occurred
+	 */
+	private String loadLicense() throws IOException {
+		StringBuilder sb = new StringBuilder();
+		String line = null;
+		boolean isNewParagraph = false;
+		
+		try (CommentedLineReader reader = Resources.asLineReader(getClass(), "/META-INF/LGPL-LICENSE",
+				ResourceOption.REQUIRED)) {
+			while ((line = reader.readLine()) != null) {
+				line = line.trim();
+				
+				if (line.isEmpty()) {
+					isNewParagraph = true;
+				} else {
+					if (isNewParagraph) {
+						sb.append(System.lineSeparator());
+						sb.append(System.lineSeparator());
+					} else {
+						sb.append(' ');
+					}
+					
+					sb.append(line);
+					isNewParagraph = false;
+				}
+			}
+			
+			return sb.toString();
 		}
 	}
 

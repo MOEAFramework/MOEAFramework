@@ -17,6 +17,7 @@
  */
 package org.moeaframework;
 
+import java.awt.GraphicsEnvironment;
 import java.io.File;
 
 import org.apache.commons.lang3.SystemUtils;
@@ -42,6 +43,11 @@ public class Assume extends org.junit.Assume {
 	
 	public static void assumeMakeExists() {
 		assumeTrue("Make is not available on this system, skipping test", Make.verifyMakeExists());
+	}
+	
+	public static void assumeHasDisplay() {
+		assumeTrue("Skipping test as the system has no display", !GraphicsEnvironment.isHeadless() &&
+				GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length > 0);
 	}
 
 }

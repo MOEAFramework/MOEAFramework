@@ -17,6 +17,8 @@
  */
 package org.moeaframework;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -32,7 +34,16 @@ import java.util.BitSet;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
+
+import javax.swing.AbstractButton;
+import javax.swing.Action;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.MenuElement;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
@@ -409,6 +420,45 @@ public class Assert extends org.junit.Assert {
 	
 	public static void assertFeasible(Solution solution) {
 		assertTrue("Solution is not feasible", solution.isFeasible());
+	}
+	
+	public static void assertLocalized(Component component, Predicate<String> isLocalized) {
+		if (component instanceof JComponent jComponent) {
+			Assert.assertTrue("Tooltip is not localized", isLocalized.test(jComponent.getToolTipText()));
+		}
+		
+		if (component instanceof JFrame jFrame) {
+			Assert.assertTrue("Frame title is not localized", isLocalized.test(jFrame.getTitle()));
+		} else if (component instanceof JDialog jDialog) {
+			Assert.assertTrue("Dialog title is not localized", isLocalized.test(jDialog.getTitle()));
+		} else if (component instanceof AbstractButton button) {
+			Assert.assertTrue("Button text is not localized", isLocalized.test(button.getText()));
+			
+			Action action = button.getAction();
+			
+			if (action != null) {
+				Assert.assertTrue("Action name is not localized", isLocalized.test((String)action.getValue(Action.NAME)));
+				Assert.assertTrue("Action description is not localized", isLocalized.test((String)action.getValue(Action.SHORT_DESCRIPTION)));
+			}
+		} else if (component instanceof JLabel label) {
+			Assert.assertTrue("Label text is not localized", isLocalized.test(label.getText()));
+		}
+		
+		if (component instanceof MenuElement menuElement) {
+			for (MenuElement nestedMenuElement : menuElement.getSubElements()) {
+				assertLocalized(nestedMenuElement.getComponent(), isLocalized);
+			}
+		}
+		
+		if (component instanceof Container container) {
+			for (Component nestedComponent : container.getComponents()) {
+				assertLocalized(nestedComponent, isLocalized);
+			}
+		}
+	}
+	
+	public static boolean isLocalized(String text) {
+		return text == null || text.contains(" ") || text.endsWith("...") || !text.contains(".");
 	}
 	
 	public static void any(Runnable... assertions) {

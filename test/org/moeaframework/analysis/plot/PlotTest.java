@@ -18,7 +18,6 @@
 package org.moeaframework.analysis.plot;
 
 import java.awt.Color;
-import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
 import java.util.stream.IntStream;
@@ -39,11 +38,6 @@ import org.moeaframework.core.NondominatedPopulation;
  * These tests do not check for the correctness of the plots, only that the code runs without error.
  */
 public class PlotTest {
-	
-	public static boolean hasDisplay() {
-		return !GraphicsEnvironment.isHeadless() &&
-				GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length > 0;
-	}
 	
 	@Test
 	public void testEmpty() {
@@ -166,7 +160,7 @@ public class PlotTest {
 	
 	public void runTest(Plot plot) {
 		if (isJUnitTest()) {
-			Assume.assumeTrue("Skipping test as the system has no display", hasDisplay());
+			Assume.assumeHasDisplay();
 			
 			JFrame frame = plot.show();
 			frame.dispose();

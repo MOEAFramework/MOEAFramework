@@ -163,8 +163,7 @@ public class Controller {
 	private volatile int overallProgress;
 	
 	/**
-	 * The thread running the current job; or {@code null} if no job is
-	 * running.
+	 * The thread running the current job; or {@code null} if no job is running.
 	 */
 	private volatile Thread thread;
 	
@@ -399,8 +398,10 @@ public class Controller {
 	
 	/**
 	 * Creates and displays a dialog containing a statistical comparison of the selected results.
+	 * 
+	 * @return the dialog, or {@code null} if unable to display
 	 */
-	public void showStatistics() {
+	public StatisticalResultsViewer showStatistics() {
 		List<ResultKey> selectedResults = frame.getSelectedResults();
 		String problemName = selectedResults.get(0).getProblem();
 		
@@ -473,8 +474,10 @@ public class Controller {
 				StatisticalResultsViewer viewer = new StatisticalResultsViewer(this, output.toString());
 				viewer.setLocationRelativeTo(frame);
 				viewer.setVisible(true);
+				return viewer;
 			} catch (IOException e) {
 				handleException(e);
+				return null;
 			}
 		}
 	}
@@ -630,6 +633,17 @@ public class Controller {
 	 */
 	public boolean isRunning() {
 		return thread != null;
+	}
+	
+	/**
+	 * Waits for the currently running thread to finish.  If there is no such thread, this method returns immediately.
+	 * 
+	 * @throws InterruptedException if the thread was interrupted
+	 */
+	public void join() throws InterruptedException {
+		if (thread != null) {
+			thread.join();
+		}
 	}
 
 	/**

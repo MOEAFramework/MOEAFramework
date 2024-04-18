@@ -29,21 +29,13 @@ import java.util.Set;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JFileChooser;
-import javax.swing.JTable;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import org.jfree.base.Library;
-import org.jfree.ui.about.AboutDialog;
-import org.jfree.ui.about.ProjectInfo;
 import org.moeaframework.Instrumenter;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.util.Localization;
-import org.moeaframework.util.TypedProperties;
-import org.moeaframework.util.io.CommentedLineReader;
-import org.moeaframework.util.io.Resources;
-import org.moeaframework.util.io.Resources.ResourceOption;
 
 /**
  * Collection of actions used by the diagnostic tool.
@@ -206,6 +198,11 @@ public class ActionFactory implements ControllerListener {
 	 * The action for showing a statistical comparison of the results.
 	 */
 	private Action showStatisticsAction;
+	
+	/**
+	 * The action to select all results.
+	 */
+	private Action selectAllResultsAction;
 	
 	/**
 	 * The action for displaying the about dialog.
@@ -726,6 +723,22 @@ public class ActionFactory implements ControllerListener {
 			
 		};
 		
+		selectAllResultsAction = new AbstractAction() {
+
+			private static final long serialVersionUID = 8538384599545194314L;
+			
+			{
+				putValue(Action.NAME, localization.getString("action.selectAll.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.selectAll.description"));
+			}
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.selectAllResults();
+			}
+			
+		};
+		
 		aboutDialogAction = new AbstractAction() {
 
 			private static final long serialVersionUID = -7768030811303579787L;
@@ -737,32 +750,7 @@ public class ActionFactory implements ControllerListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-					TypedProperties properties = TypedProperties.loadBuildProperties();
-
-					ProjectInfo info = new ProjectInfo(
-							properties.getString("name"),
-							properties.getString("version"), 
-							properties.getString("description"),
-							null,
-							properties.getString("copyright"),
-							null,
-							loadLicense());
-					
-					for (String dependency : properties.getStringArray("runtime.dependencies", new String[0])) {
-						info.addLibrary(new Library(
-								dependency,
-								properties.getString(dependency + ".version", "???"),
-								properties.getString(dependency + ".license", "???"),
-								null));
-					}
-					
-					AboutDialog dialog = new AboutDialog(frame, localization.getString("title.about"), info);
-					dialog.setLocationRelativeTo(frame);
-					dialog.setVisible(true);
-				} catch (Exception ex) {
-					controller.handleException(ex);
-				}
+				frame.showAbout();
 			}
 			
 		};
@@ -845,41 +833,6 @@ public class ActionFactory implements ControllerListener {
 			}
 			
 		});
-	}
-	
-	/**
-	 * Loads the GNU LGPL license file and formats it for display.
-	 * 
-	 * @return the formatted GNU LGPL license
-	 * @throws IOException if an I/O error occurred
-	 */
-	private String loadLicense() throws IOException {
-		StringBuilder sb = new StringBuilder();
-		String line = null;
-		boolean isNewParagraph = false;
-		
-		try (CommentedLineReader reader = Resources.asLineReader(getClass(), "/META-INF/LGPL-LICENSE",
-				ResourceOption.REQUIRED)) {
-			while ((line = reader.readLine()) != null) {
-				line = line.trim();
-				
-				if (line.isEmpty()) {
-					isNewParagraph = true;
-				} else {
-					if (isNewParagraph) {
-						sb.append(System.lineSeparator());
-						sb.append(System.lineSeparator());
-					} else {
-						sb.append(' ');
-					}
-					
-					sb.append(line);
-					isNewParagraph = false;
-				}
-			}
-			
-			return sb.toString();
-		}
 	}
 
 	/**
@@ -1184,31 +1137,12 @@ public class ActionFactory implements ControllerListener {
 	}
 	
 	/**
-	 * Returns the action to select all items in the specified table.
+	 * Returns the action to select all results.
 	 * 
-	 * @param table the table on which this action operates
 	 * @return the action to select all items in the specified table
 	 */
-	public Action getSelectAllAction(final JTable table) {
-		return new AbstractAction() {
-
-			private static final long serialVersionUID = 8538384599545194314L;
-			
-			{
-				putValue(Action.NAME, localization.getString("action.selectAll.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.selectAll.description"));
-			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (table.getModel().getRowCount() > 0) {
-					table.getSelectionModel().setValueIsAdjusting(true);
-					table.addRowSelectionInterval(0, table.getModel().getRowCount()-1);
-					table.getSelectionModel().setValueIsAdjusting(false);
-				}
-			}
-			
-		};
+	public Action getSelectAllResultsAction() {
+		return selectAllResultsAction;
 	}
 
 	@Override
