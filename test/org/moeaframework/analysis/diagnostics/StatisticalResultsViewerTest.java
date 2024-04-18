@@ -17,6 +17,7 @@
  */
 package org.moeaframework.analysis.diagnostics;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
@@ -26,10 +27,13 @@ import org.moeaframework.Assume;
  */
 public class StatisticalResultsViewerTest {
 	
+	@Before
+	public void setUp() {
+		Assume.assumeHasDisplay();
+	}
+	
 	@Test
 	public void testWithReferenceSet() {
-		Assume.assumeHasDisplay();
-		
 		DiagnosticTool tool = new DiagnosticTool();
 		Controller controller = tool.getController();
 		

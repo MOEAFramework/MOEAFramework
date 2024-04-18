@@ -41,6 +41,8 @@ public class ApproximationSetViewerTest {
 	
 	@Before
 	public void setUp() {
+		Assume.assumeHasDisplay();
+		
 		observations = new Observations();
 		
 		for (int i = 0; i < 10; i++) {
@@ -64,8 +66,6 @@ public class ApproximationSetViewerTest {
 	
 	@Test
 	public void testWithReferenceSet() {
-		Assume.assumeHasDisplay();
-		
 		ApproximationSetViewer viewer = new ApproximationSetViewer("Viewer", List.of(observations), referenceSet);
 		viewer.setVisible(true);
 		viewer.dispose();
@@ -73,8 +73,6 @@ public class ApproximationSetViewerTest {
 	
 	@Test
 	public void testNoReferenceSet() {
-		Assume.assumeHasDisplay();
-		
 		ApproximationSetViewer viewer = new ApproximationSetViewer("Viewer", List.of(observations), null);
 		viewer.setVisible(true);
 		viewer.dispose();

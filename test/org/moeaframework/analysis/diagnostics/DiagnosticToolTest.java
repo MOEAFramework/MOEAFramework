@@ -26,6 +26,7 @@ import java.util.function.Function;
 import javax.swing.Action;
 
 import org.jfree.ui.about.AboutDialog;
+import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
@@ -46,10 +47,13 @@ public class DiagnosticToolTest {
 	
 	private AtomicInteger progressChangedCount = new AtomicInteger();
 	
+	@Before
+	public void setUp() {
+		Assume.assumeHasDisplay();
+	}
+	
 	@Test
 	public void testWithDisplay() throws InterruptedException {
-		Assume.assumeHasDisplay();
-		
 		// Render the UI and display plots to check for any errors
 		DiagnosticTool tool = runTest();
 		tool.setVisible(true);
