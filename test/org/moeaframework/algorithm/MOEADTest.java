@@ -17,6 +17,9 @@
  */
 package org.moeaframework.algorithm;
 
+import java.io.IOException;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.Assert;
@@ -31,17 +34,61 @@ import org.moeaframework.util.TypedProperties;
 @Retryable
 public class MOEADTest extends JMetalAlgorithmTest {
 	
+	private boolean testDRA;
+	
 	public MOEADTest() {
 		super("MOEAD", true);
 	}
 	
-	// Override JMetal's default neighborhoodSelectionProbability.  MOEADBuilder defaults to 0.1, which differs from
-	// Li and Zhang's original MOEA/D paper specifying a delta of 0.9 (see section IV.A.6).
+	@Before
+	public void setUp() {
+		testDRA = false;
+	}
+	
 	@Override
 	public void test(String problem, String algorithm1, String algorithm2, boolean allowBetterPerformance) {
-		test(problem, algorithm1, new TypedProperties(), algorithm2,
-				TypedProperties.withProperty("neighborhoodSelectionProbability", "0.9"),
+		TypedProperties properties1 = new TypedProperties();
+		
+		// Override JMetal's default neighborhoodSelectionProbability.  MOEADBuilder defaults to 0.1, which differs
+		// from Li and Zhang's original MOEA/D paper specifying a delta of 0.9 (see section IV.A.6).
+		TypedProperties properties2 = new TypedProperties();
+		properties2.setDouble("neighborhoodSelectionProbability", 0.9);
+		
+		if (testDRA) {
+			properties1.setInt("updateUtility", 30); // Match JMetal's hard-coded value
+			properties2.setString("variant", "MOEADDRA");
+		}
+		
+		test(problem, algorithm1, properties1, algorithm2, properties2,
 				allowBetterPerformance, AlgorithmFactory.getInstance());
+	}
+	
+	@Test
+	public void testDTLZ1_MOEADDRA() throws IOException {
+		assumeJMetalExists();
+		testDRA = true;
+		test("DTLZ1_2", algorithmName, algorithmName + "-JMetal", allowBetterPerformance);
+	}
+	
+	@Test
+	public void testDTLZ2_MOEADDRA() throws IOException {
+		assumeJMetalExists();
+		testDRA = true;
+		test("DTLZ2_2", algorithmName, algorithmName + "-JMetal", allowBetterPerformance);
+	}
+	
+	@Test
+	public void testDTLZ7_MOEADDRA() throws IOException {
+		assumeJMetalExists();
+		testDRA = true;
+		test("DTLZ7_2", algorithmName, algorithmName + "-JMetal", allowBetterPerformance);
+	}
+	
+	@Test
+	public void testUF1_MOEADDRA() throws IOException {
+		assumeJMetalExists();
+		testDRA = true;
+		test("UF1", algorithmName, algorithmName + "-JMetal", allowBetterPerformance);
 	}
 	
 	@Test

@@ -28,9 +28,9 @@ import org.junit.Test;
  */
 public abstract class JMetalAlgorithmTest extends AlgorithmTest {
 	
-	private final String algorithmName;
+	protected final String algorithmName;
 	
-	private final boolean allowBetterPerformance;
+	protected final boolean allowBetterPerformance;
 	
 	public JMetalAlgorithmTest(String algorithmName) {
 		this(algorithmName, false);
