@@ -132,3 +132,6 @@ The provided `Makefile` will only compile the native library for the host system
 a directory identifying the system architecture, such as `win32-x86-64`.  A cross-platform version of the JAR can
 be created by compiling the native library on different systems and combining these platform-specific directories into
 a single JAR file.
+
+If you experience issues locating or loading the shared library, add `-Djna.debug_load=true` to the `java`
+command do print out debugging logs.

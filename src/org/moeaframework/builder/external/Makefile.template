@@ -16,7 +16,7 @@ build:
 	$(CC) -o ${problemName}.exe ${problemName}.c moeaframework.c $(LIBS)
 	javac -classpath "$(CLASSPATH)" ${problemName}.java ${problemName}Provider.java
 	jar cf ${problemName}.jar ${problemName}.exe *.class META-INF
-	rm *.o *.class
+	rm -f *.class
 
 clean:
 	rm -f ${problemName}.exe ${problemName}.jar
