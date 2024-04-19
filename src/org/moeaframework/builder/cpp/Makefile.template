@@ -24,7 +24,7 @@ build:
 	
 	jar cf ${problemName}.jar *.class $(SYSARCH) META-INF
 	
-	rm *.o *.class
+	rm -f *.o *.class
 	java -classpath "$(CLASSPATH)" org.moeaframework.builder.JNAInfo --test --problem ${problemName}
 
 clean:
