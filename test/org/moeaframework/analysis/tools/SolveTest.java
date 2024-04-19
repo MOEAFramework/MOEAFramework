@@ -30,6 +30,7 @@ import org.apache.commons.cli.ParseException;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
+import org.moeaframework.Make;
 import org.moeaframework.TempFiles;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.analysis.io.ResultFileReader;
@@ -120,7 +121,14 @@ public class SolveTest {
 	
 	@Test
 	public void testExternalProblemWithLowerAndUpperBounds() throws Exception {
-		Assume.assumeFileExists(new File("./examples/dtlz2_stdio.exe"));
+		Assume.assumeMakeExists();
+		
+		File executable = new File("./examples/dtlz2_stdio.exe");
+		
+		if (!executable.exists()) {
+			Make.runMake(executable.getParentFile());
+		}
+		
 		File outputFile = TempFiles.createFile();
 		
 		Solve.main(new String[] {
@@ -130,14 +138,21 @@ public class SolveTest {
 				"-o", "2",
 				"-n", "1000",
 				"-f", outputFile.getPath(),
-				"./examples/dtlz2_stdio.exe"});
+				executable.getPath() });
 		
 		checkOutput(outputFile);
 	}
 	
 	@Test
 	public void testExternalProblemWithVariables() throws Exception {
-		Assume.assumeFileExists(new File("./examples/dtlz2_stdio.exe"));
+		Assume.assumeMakeExists();
+		
+		File executable = new File("./examples/dtlz2_stdio.exe");
+		
+		if (!executable.exists()) {
+			Make.runMake(executable.getParentFile());
+		}
+		
 		File outputFile = TempFiles.createFile();
 		
 		Solve.main(new String[] {
@@ -146,7 +161,7 @@ public class SolveTest {
 				"-o", "2",
 				"-n", "1000",
 				"-f", outputFile.getPath(),
-				"./examples/dtlz2_stdio.exe"});
+				executable.getPath() });
 		
 		checkOutput(outputFile);
 	}
