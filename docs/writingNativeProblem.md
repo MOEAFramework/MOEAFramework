@@ -125,3 +125,12 @@ Fortran  | `gfortran`      | Fortran90 function
 Java     | `javac`         | Java problem definition (see [Writing Java Problem](writingJavaProblem.md))
 Python   |                  | Python program using Standard I/O
 External |                  | External C/C++ problem using Standard I/O (see [Writing External Problems](writingExternalProblem.md))
+
+## Cross-Platform Support
+
+Please note that the provided `Makefile` will only compile the native library for the host system.  If you need to run the code
+on different operating systems or computer architectures, there are two options:
+
+1. Copy all of the source files onto the target system and use the `Makefile` to rebuild the library.
+2. Create a cross-platform JAR by bundling multiple versions of the library, each targeting a different system.  See
+   https://github.com/java-native-access/jna for more details on this process and the required file structure within the JAR.
