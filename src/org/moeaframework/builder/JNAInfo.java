@@ -51,6 +51,10 @@ public class JNAInfo extends CommandLineUtility {
 				.longOpt("prefix")
 				.build());
 		
+		group.addOption(Option.builder("s")
+				.longOpt("sysArch")
+				.build());
+		
 		group.addOption(Option.builder("n")
 				.longOpt("libName")
 				.build());
@@ -71,7 +75,7 @@ public class JNAInfo extends CommandLineUtility {
 			System.out.println("Found " + instance.getName() + " at " + instance.getFile());
 		} else if (commandLine.hasOption("libName")) {
 			System.out.println(System.mapLibraryName(commandLine.getOptionValue("problem")));
-		} else if (commandLine.hasOption("prefix")) {
+		} else if (commandLine.hasOption("prefix") || commandLine.hasOption("sysArch")) {
 			System.out.println(Platform.RESOURCE_PREFIX);
 		} else {
 			throw new IllegalArgumentException("No option selected");

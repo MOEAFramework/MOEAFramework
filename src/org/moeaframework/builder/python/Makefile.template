@@ -11,7 +11,7 @@ CLASSPATH = ${java.class.path}
 build:
 	javac -classpath "$(CLASSPATH)" ${problemName}.java ${problemName}Provider.java
 	jar cf ${problemName}.jar ${problemName}.py *.class META-INF
-	rm *.class
+	rm -f *.class
 
 clean:
 	rm -f ${problemName}.jar
