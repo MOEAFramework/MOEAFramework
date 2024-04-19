@@ -1,20 +1,20 @@
-# Detect the OS and configure the build settings
+# Configure the platform-specific settings
 ifeq ($(OS),Windows_NT)
     SEPARATOR = ;
 else
     SEPARATOR = :
 endif
 
-# Configure the Java classpath
 CLASSPATH = ${java.class.path}
 
 # Compile the external program
 build:
 	javac -classpath "$(CLASSPATH)" ${problemName}.java ${problemName}Provider.java
 	jar cf ${problemName}.jar ${problemName}.py *.class META-INF
+	rm *.class
 
 clean:
-	rm -f $(LIBNAME) ${problemName}.o
+	rm -f ${problemName}.jar
 	
 run:
 	java -classpath "$(CLASSPATH)" Example.java

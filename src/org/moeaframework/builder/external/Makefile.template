@@ -2,14 +2,13 @@
 CC = gcc
 LIBS =
 
-# Detect the OS and configure the build settings
+# Configure the platform-specific settings
 ifeq ($(OS),Windows_NT)
     SEPARATOR = ;
 else
     SEPARATOR = :
 endif
 
-# Configure the Java classpath
 CLASSPATH = ${java.class.path}
 
 # Compile the external program
@@ -17,9 +16,10 @@ build:
 	$(CC) -o ${problemName}.exe ${problemName}.c moeaframework.c $(LIBS)
 	javac -classpath "$(CLASSPATH)" ${problemName}.java ${problemName}Provider.java
 	jar cf ${problemName}.jar ${problemName}.exe *.class META-INF
+	rm *.o *.class
 
 clean:
-	rm -f $(LIBNAME) ${problemName}.o
+	rm -f ${problemName}.exe ${problemName}.jar
 	
 run:
 	java -classpath "$(CLASSPATH)" Example.java

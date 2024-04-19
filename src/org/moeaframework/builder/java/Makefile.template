@@ -1,20 +1,20 @@
-# Detect the OS and configure the build settings
+# Configure the platform-specific settings
 ifeq ($(OS),Windows_NT)
     SEPARATOR = ;
 else
     SEPARATOR = :
 endif
 
-# Configure the Java classpath
 CLASSPATH = ${java.class.path}
 
 # Compile the shared library
 build:
 	javac -classpath "$(CLASSPATH)" ${problemName}.java ${problemName}Provider.java
 	jar cf ${problemName}.jar *.class META-INF
+	rm -f *.class
 
 clean:
-	rm -f *.class *.jar
+	rm -f ${problemName}.jar
 	
 run:
 	java -classpath "$(CLASSPATH)" Example.java
