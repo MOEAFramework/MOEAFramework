@@ -31,8 +31,8 @@ open this folder, we will see the following files:
 
 1. `TestProblem.c`, which contains the function used to implement the problem;
 2. `TestProblem.java`, which is the MOEA Framework problem definition that calls the native function; this file also
-   specifies the structure of the problem, including the bounds of each decision variable; and
-3. `Makefile`, which is used to compile and test the function using the tool `make`.
+   specifies the structure of the problem, including the bounds of each decision variable;
+3. `Makefile`, which is used to compile and test the function using the tool `make`; and
 4. `Example.java`, which is a simple example solving your new problem using NSGA-II
 
 The folder also will contain a problem provider, such as `TestProblemProvider.java`, and the `META-INF/`folder.
