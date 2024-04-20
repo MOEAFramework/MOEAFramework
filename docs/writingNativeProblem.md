@@ -135,9 +135,8 @@ Var1     Obj1     Obj2
 
 ### Step 4 - Integrating Problem with the MOEA Framework
 
-The Makefile we ran above also creates a Java JAR file, such as `TestProblem.jar`, that we can use to integrate
-this problem with the MOEA Framework.  Simply copy this JAR file into the MOEA Fraemwork's `lib/` folder so it is
-discoverable on the classpath.  If using an IDE like Eclipse, you must also add this JAR to the build path.
+The Makefile also produces a JAR file, such as `TestProblem.jar`, that we can copy into the MOEA Framework's `lib/`
+folder so it is included on the classpath.  If using an IDE like Eclipse, you must also add this JAR to the build path.
 
 Once set up, we can reference this new problem as we would any other:
 
@@ -154,20 +153,22 @@ algorithm.getResult().display();
 
 ### Decision Variable Types
 
-The templates are only designed to support real-valued decision variables.  That being said, we can still use the
-generated templates and modify them to support different decision variable types.  See
+The templates are only designed to support real-valued decision variables.  That being said, it's certainly possible
+to use different types, you just need to update both the native code and the Java code to pass the correct types.  See
 [JNA Java to Native type mappings](https://github.com/java-native-access/jna/blob/master/www/Mappings.md) for more
 details.
 
 ### Required Dependencies
 
-While the generated JAR file does contain the native library that is compiled when running the Makefile, it does not
-include any other dependencies.  Consequently, any required software or libraries must be pre-installed on the system
-and discoverable through the `PATH` or `LD_LIBRARY_PATH` environment variables.
+The Makefile bundles the shared library in the Java JAR.  If your entire program is contained within the shared
+library, then the JAR file contains everything required to use the problem.  However, any other dependencies like input
+files, executables, and referenced libraries will not be included!  Consequently, these dependencies must be installed
+separately on the system and, if necessary, included in the `PATH` or `LD_LIBRARY_PATH` environment variables so
+they can be discovered.
 
 ### Cross-Platform Support
 
-The provided `Makefile` will only compile the native library for the host system.  The compiled library is placed in
+The Makefile will only compile the native library for the host system.  The compiled library is placed in
 a directory identifying the system architecture, such as `win32-x86-64`.  A cross-platform version of the JAR can
 be created by compiling the native library on different systems and combining these platform-specific directories into
 a single JAR file.
