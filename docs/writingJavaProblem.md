@@ -21,7 +21,7 @@ $$ \begin{align} \text{Minimize } &f_1 = (x - 2)^2 + (y - 1)^2 + 2 \\\ &f_2 = 9x
 which has two decision variables, `x` and `y`, two objectives, `f1` and `f2`, and two constraints, `c1` and `c2`.
 Programming this using the MOEA Framework would look something like:
 
-<!-- java:examples/Example6.java [32:77] -->
+<!-- java:examples/Example6.java [32:78] -->
 
 ```java
 public static class Srinivas extends AbstractProblem {
@@ -32,17 +32,19 @@ public static class Srinivas extends AbstractProblem {
 
     @Override
     public void evaluate(Solution solution) {
-        double[] x = EncodingUtils.getReal(solution);
-        double f1 = Math.pow(x[0] - 2.0, 2.0) + Math.pow(x[1] - 1.0, 2.0) + 2.0;
-        double f2 = 9.0*x[0] - Math.pow(x[1] - 1.0, 2.0);
-        double c1 = Math.pow(x[0], 2.0) + Math.pow(x[1], 2.0) - 225.0;
-        double c2 = x[0] - 3.0*x[1] + 10.0;
+        double x = EncodingUtils.getReal(solution.getVariable(0));
+        double y = EncodingUtils.getReal(solution.getVariable(1));
+
+        double f1 = Math.pow(x - 2.0, 2.0) + Math.pow(y - 1.0, 2.0) + 2.0;
+        double f2 = 9.0*x - Math.pow(y - 1.0, 2.0);
+        double c1 = Math.pow(x, 2.0) + Math.pow(y, 2.0);
+        double c2 = x - 3.0*y;
 
         solution.setObjective(0, f1);
         solution.setObjective(1, f2);
 
-        solution.setConstraint(0, Constraint.lessThanOrEqual(c1, 0.0));
-        solution.setConstraint(1, Constraint.lessThanOrEqual(c2, 0.0));
+        solution.setConstraint(0, Constraint.lessThanOrEqual(c1, 225.0));
+        solution.setConstraint(1, Constraint.lessThanOrEqual(c2, -10.0));
     }
 
     @Override
@@ -60,7 +62,7 @@ public static class Srinivas extends AbstractProblem {
 
 We can solve this problem by passing it directly to the constructor of an optimization algorithm, such as NSGA-II:
 
-<!-- java:examples/Example6.java [80:85] -->
+<!-- java:examples/Example6.java [81:86] -->
 
 ```java
 Problem problem = new Srinivas();

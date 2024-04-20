@@ -28,6 +28,9 @@ import java.nio.charset.StandardCharsets;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.CommandLineUtility;
 
+/**
+ * Captures content written to standard output.
+ */
 public class Capture {
 	
 	private Capture() {
@@ -57,6 +60,10 @@ public class Capture {
 		});
 	}
 	
+	/**
+	 * Stores the captured output and converts / saves it as required.  Note that it is safe to use the
+	 * {@link ByteArrayOutputStream} in this manner, even after being closed.
+	 */
 	public static class CaptureResult {
 		
 		private final ByteArrayOutputStream output;

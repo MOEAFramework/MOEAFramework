@@ -43,20 +43,21 @@ public class Example6 {
 		 */
 		@Override
 		public void evaluate(Solution solution) {
-			double[] x = EncodingUtils.getReal(solution);
-			double f1 = Math.pow(x[0] - 2.0, 2.0) + Math.pow(x[1] - 1.0, 2.0) + 2.0;
-			double f2 = 9.0*x[0] - Math.pow(x[1] - 1.0, 2.0);
-			double c1 = Math.pow(x[0], 2.0) + Math.pow(x[1], 2.0) - 225.0;
-			double c2 = x[0] - 3.0*x[1] + 10.0;
+			double x = EncodingUtils.getReal(solution.getVariable(0));
+			double y = EncodingUtils.getReal(solution.getVariable(1));
+			
+			double f1 = Math.pow(x - 2.0, 2.0) + Math.pow(y - 1.0, 2.0) + 2.0;
+			double f2 = 9.0*x - Math.pow(y - 1.0, 2.0);
+			double c1 = Math.pow(x, 2.0) + Math.pow(y, 2.0);
+			double c2 = x - 3.0*y;
 			
 			// set the objective values - these are being minimized
 			solution.setObjective(0, f1);
 			solution.setObjective(1, f2);
 			
-			// set the constraint values - indicate violations with any non-zero value, or use
-			// the appropriate method from the Constraint class.
-			solution.setConstraint(0, Constraint.lessThanOrEqual(c1, 0.0));
-			solution.setConstraint(1, Constraint.lessThanOrEqual(c2, 0.0));
+			// set the constraints - use the methods in the Constraint class for convenience
+			solution.setConstraint(0, Constraint.lessThanOrEqual(c1, 225.0));
+			solution.setConstraint(1, Constraint.lessThanOrEqual(c2, -10.0));
 		}
 
 		/**
