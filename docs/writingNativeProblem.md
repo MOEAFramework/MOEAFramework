@@ -1,9 +1,15 @@
 # Natively-Compiled Functions
 
 This example demonstrates how to construct native problems, where we write the function in a language like C, C++,
-or Fortran.  The code is then compiled into a shared library (`.dll` or `.so`) or an executable (`.exe`), which is
-then called from the MOEA Framework.  While there is a small amount of additional overhead, writing complex functions
-in a native language will typically outperform their Java equivalent.
+or Fortran, using our tool for generating problem templates.  This process involves four steps:
+
+1. Using the `BuildProblem` tool to generate the template for a given programming language (e.g., C)
+2. Updating the generated template files to define our problem
+3. Compiling and testing the problem
+4. Linking the compiled code back with the MOEA Framework
+
+While there is a small amount of additional overhead, writing complex functions in a native language will typically
+outperform their Java equivalent.
 
 ## Prerequisites
 
@@ -14,19 +20,40 @@ To run this example, you will need a C/C++ compiler and Make.  For Windows, we r
 pacman -S make mingw-w64-x86_64-gcc
 ```
 
-## Generating the Problem Template
+## Supported Languages
 
-We provide a tool, `BuildProblem`, that creates a folder with the template for writing a native problem.  This
-tool supports a variety of programming languages.  As an example, below we create `TestProblem` in `C` with a single
-real-valued decision variable and two objectives.  We also define the lower and upper bounds:
+The following table lists the programming languages supported by the `BuildProblem` tool.  Specify the language
+using the `--language` option when running this tool.
+
+Language | Default Compiler | Notes
+-------- | ---------------- | -----
+C        | `gcc`            | C function
+CPP      | `g++`            | C++ function.  Output includes `.c` and `.h` file
+Fortran  | `gfortran`       | Fortran90 function
+Java     | `javac`          | Java problem definition (see [Writing Java Problem](writingJavaProblem.md))
+Python   |                  | Python program using Standard I/O (see [Writing External Problems](writingExternalProblem.md))
+External |                  | External C/C++ problem using Standard I/O (see [Writing External Problems](writingExternalProblem.md))
+
+## Example
+
+For this example, we will implement the Schaffer problem, given as $f(x) = (x^2, (x-2)^2)$, in the C programming
+language.  This problem has a single decision variable, $-10 \leq x \leq 10$, and two objectives.
+
+### Step 1 - Generating the Problem Template
+
+The `BuildProblem` tool generates templates for writing problems in other programming languages.  This includes
+both the file for defining the function in the chosen language, several Java classes used to interface with the 
+MOEA Framework, and a Makefile for compiling and testing the code.
+
+We run this tool as follows:
 
 ```bash
 java -classpath "lib/*" org.moeaframework.builder.BuildProblem --problemName TestProblem --language c \
 	--numberOfVariables 1 --numberOfObjectives 2 --lowerBound -10.0 --upperBound 10.0
 ```
 
-The generated files will appear under the `native/` folder, such as `native/TestProblem` in this example, containing
-the following files:
+By default, the generated files are created under the `native/` folder, such as `native/TestProblem` in this
+example.  The exact contents will vary for the different programming languages, but should appear similar to:
 
 ```
 META-INF/
@@ -37,13 +64,11 @@ TestProblem.java
 TestProblemProvider.java
 ```
 
-Most importantly, this creates `TestProblem.c` which contains the template for our C function, `TestProblem.java` which
-defines the problem definition, and `Makefile` which is used to build and package the native library.  For most uses,
-you will not need to modify any other files.
+### Step 2 - Writing the Function
 
-## Writing the Function
-
-Open the file `TestProblem.c` using an editor of your choice.  The contents of this file will appear similar to:
+For this example, which is being written in C, the function will be defined in `TestProblem.c`.  Other languages
+will have a similar file, with a different extension, for defining the function.  To begin, open `TestProblem.c`
+in an editor of your choice.  The contents will look similar to:
 
 ```c
 int nvars = 1;
@@ -55,7 +80,10 @@ void evaluate(double* vars, double* objs, double* constrs) {
 }
 ```
 
-For the purposes of this example, we will implement the Schaffer problem which is defined as $f(x) = (x^2, (x-2)^2)$.
+Note that the generated template defines a function taking three arguments: the decision variables `vars`, the
+computed objective values `objs`, and the computed constraint values `constrs`.  `objs` and `constrs` are outputs.
+
+We can fill in the body of the function as follows to implement the Schaffer problem:
 
 ```c
 void evaluate(double* vars, double* objs, double* constrs) {
@@ -66,10 +94,11 @@ void evaluate(double* vars, double* objs, double* constrs) {
 }
 ```
 
-Since we already specified the lower and upper bounds when generating the template, we are done.  However, if you
-do need more control over the decisions variables, they are defined in `TestProblem.java`.
+Since this function has a single decision variable, we are fine to use the lower and upper bounds we provided when
+generating the template files.  However, if you need to supply different bounds, edit `TestProblem.java` and make
+the required changes.
 
-## Compiling and Testing
+### Step 3 - Compiling and Testing
 
 After saving these changes, we can use the provided Makefile to compile the code by running:
 
@@ -77,14 +106,20 @@ After saving these changes, we can use the provided Makefile to compile the code
 make
 ```
 
-Note this creates a shared library, either a `.dll` on Windows or a `.so` on Linux, along with a `.jar` file.
-Next, we can test our problem using the provided example in `Example.java`.  Run this test with:
+This Makefile produces two files:
+
+1. The shared library, such as `TestProblem.dll` on Windows or `libTestProblem.so` on Linux; and
+2. A Java JAR file, such as `TestProblem.jar`, that contains everything required to integrate the problem with
+   the MOEA Framework.
+   
+The generate templates also include an example, `Example.java`, that solves the problem we just created using
+NSGA-II.  We can run this example with:
 
 ```bash
 make run
 ```
 
-If everything is configured correctly, you should see the Pareto front displayed.
+If everything is configured correctly, you should see the Pareto approximation set displayed to the output:
 
 ```
 Var1     Obj1     Obj2
@@ -98,11 +133,13 @@ Var1     Obj1     Obj2
 ...
 ```
 
-## Integrating Problem with the MOEA Framework
+### Step 4 - Integrating Problem with the MOEA Framework
 
-Copy the `.jar` file, in this example `TestProblem.jar`, into the `lib/` folder used by the MOEA Framework.  If using an
-IDE like Eclipse, you must also add this `.jar` to the build path.  At this point, the new problem is discoverable
-and can be used like any other:
+The Makefile we ran above also creates a Java JAR file, such as `TestProblem.jar`, that we can use to integrate
+this problem with the MOEA Framework.  Simply copy this JAR file into the MOEA Fraemwork's `lib/` folder so it is
+discoverable on the classpath.  If using an IDE like Eclipse, you must also add this JAR to the build path.
+
+Once set up, we can reference this new problem as we would any other:
 
 ```java
 TestProblem problem = new TestProblem();
@@ -113,25 +150,34 @@ algorithm.run(10000);
 algorithm.getResult().display();
 ```
 
-## Supported Languages
+## Limitations and Troubleshooting
 
-The following table lists the available languages:
+### Decision Variable Types
 
-Language | Default Compiler | Notes
--------- | ---------------- | -----
-C        | `gcc`            | C function
-CPP      | `g++`            | C++ function.  Output includes `.c` and `.h` file
-Fortran  | `gfortran`       | Fortran90 function
-Java     | `javac`          | Java problem definition (see [Writing Java Problem](writingJavaProblem.md))
-Python   |                  | Python program using Standard I/O (see [Writing External Problems](writingExternalProblem.md))
-External |                  | External C/C++ problem using Standard I/O (see [Writing External Problems](writingExternalProblem.md))
+The templates are only designed to support real-valued decision variables.  That being said, we can still use the
+generated templates and modify them to support different decision variable types.  See
+[JNA Java to Native type mappings](https://github.com/java-native-access/jna/blob/master/www/Mappings.md) for more
+details.
 
-## Cross-Platform Support
+### Required Dependencies
+
+While the generated JAR file does contain the native library that is compiled when running the Makefile, it does not
+include any other dependencies.  Consequently, any required software or libraries must be pre-installed on the system
+and discoverable through the `PATH` or `LD_LIBRARY_PATH` environment variables.
+
+### Cross-Platform Support
 
 The provided `Makefile` will only compile the native library for the host system.  The compiled library is placed in
 a directory identifying the system architecture, such as `win32-x86-64`.  A cross-platform version of the JAR can
 be created by compiling the native library on different systems and combining these platform-specific directories into
 a single JAR file.
 
-If you experience issues locating or loading the shared library, add `-Djna.debug_load=true` to the `java`
-command do print out debugging logs.
+### Issues Loading the Native Library
+
+If you experience errors indicating the library could not be found or loaded, try adding `-Djna.debug_load=true` to
+the `java` command to display debugging logs.
+
+Errors can also occur if targeting the wrong system architecture or using a different calling convention.  The provided
+Makefile should handle this correctly, but errors can occur if the library was compiled on a 64-bit architecture but
+used with a 32-bit version of Java, for example.  One workaround is adding `-m32` to the compiler flags to create a
+32-bit version of the library.

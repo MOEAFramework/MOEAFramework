@@ -1,11 +1,11 @@
 # Configure the platform-specific settings
 ifeq ($(OS),Windows_NT)
-    SEPARATOR = ;
+    SEPARATOR := ;
 else
-    SEPARATOR = :
+    SEPARATOR := :
 endif
 
-CLASSPATH = ${java.class.path}
+CLASSPATH := ${java.class.path}
 
 # Compile the external program
 build:

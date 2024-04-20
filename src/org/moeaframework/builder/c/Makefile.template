@@ -1,12 +1,14 @@
 # Edit the following to configure the compiler and required libraries
 CC = gcc
 LIBS =
+CFLAGS = -O3
 
 # Configure the platform-specific settings
 ifeq ($(OS),Windows_NT)
-    SEPARATOR = ;
+    SEPARATOR := ;
+    CFLAGS += -DWIN32
 else
-    SEPARATOR = :
+    SEPARATOR := :
 endif
 
 CLASSPATH := ${java.class.path}
@@ -16,7 +18,7 @@ LIBNAME := $(shell java -classpath "$(CLASSPATH)" org.moeaframework.builder.JNAI
 # Compile the shared library
 build:
 	mkdir -p $(SYSARCH)
-	$(CC) -c -fPIC ${problemName}.c $(LIBS)
+	$(CC) $(CFLAGS) -c -fPIC ${problemName}.c $(LIBS)
 	$(CC) -shared -o $(SYSARCH)/$(LIBNAME) ${problemName}.o
 	javac -classpath "$(CLASSPATH)" ${problemName}.java ${problemName}Provider.java
 	

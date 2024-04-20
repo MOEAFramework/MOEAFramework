@@ -1,14 +1,14 @@
 # Edit the following to configure the compiler and required libraries
 CC = g++
 LIBS =
+CFLAGS = 
 
 # Configure the platform-specific settings
 ifeq ($(OS),Windows_NT)
-    SEPARATOR = ;
-    CFLAGS = -DWIN32
+    SEPARATOR := ;
+    CFLAGS += -DWIN32
 else
-    SEPARATOR = :
-    CFLAGS = 
+    SEPARATOR := :
 endif
 
 CLASSPATH := ${java.class.path}
