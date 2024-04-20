@@ -128,9 +128,10 @@ External |                  | External C/C++ problem using Standard I/O (see [Wr
 
 ## Cross-Platform Support
 
-Please note that the provided `Makefile` will only compile the native library for the host system.  If you need to run the code
-on different operating systems or computer architectures, there are two options:
+The provided `Makefile` will only compile the native library for the host system.  The compiled library is placed in
+a directory identifying the system architecture, such as `win32-x86-64`.  A cross-platform version of the JAR can
+be created by compiling the native library on different systems and combining these platform-specific directories into
+a single JAR file.
 
-1. Copy all of the source files onto the target system and use the `Makefile` to rebuild the library.
-2. Create a cross-platform JAR by bundling multiple versions of the library, each targeting a different system.  See
-   https://github.com/java-native-access/jna for more details on this process and the required file structure within the JAR.
+If you experience issues locating or loading the shared library, add `-Djna.debug_load=true` to the `java`
+command do print out debugging logs.

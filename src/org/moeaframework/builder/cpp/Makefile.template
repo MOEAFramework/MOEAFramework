@@ -2,35 +2,33 @@
 CC = g++
 LIBS =
 
-# Detect the OS and configure the correct shared library name
+# Configure the platform-specific settings
 ifeq ($(OS),Windows_NT)
-    LIBNAME = ${problemName}.dll
     SEPARATOR = ;
     CFLAGS = -DWIN32
 else
-    UNAME := $(shell uname -s)
     SEPARATOR = :
     CFLAGS = 
-    
-    ifeq ($(UNAME),Linux)
-        LIBNAME = lib${problemName}.so
-    else ifeq ($(UNAME),Darwin)
-        LIBNAME = ${problemName}.dylib
-    endif
 endif
 
-# Configure the Java classpath
-CLASSPATH = ${java.class.path}
+CLASSPATH := ${java.class.path}
+SYSARCH := $(shell java -classpath "$(CLASSPATH)" org.moeaframework.builder.JNAInfo --sysArch)
+LIBNAME := $(shell java -classpath "$(CLASSPATH)" org.moeaframework.builder.JNAInfo --libName --problem ${problemName})
 
 # Compile the shared library
 build:
+	mkdir -p $(SYSARCH)
 	$(CC) $(CFLAGS) -c -fPIC ${problemName}.cpp $(LIBS)
-	$(CC) -shared -o $(LIBNAME) ${problemName}.o
+	$(CC) -shared -o $(SYSARCH)/$(LIBNAME) ${problemName}.o
 	javac -classpath "$(CLASSPATH)" ${problemName}.java ${problemName}Provider.java
-	jar cf ${problemName}.jar *.class $(LIBNAME) META-INF
+	
+	jar cf ${problemName}.jar *.class $(SYSARCH) META-INF
+	
+	rm -f *.o *.class
+	java -classpath "$(CLASSPATH)" org.moeaframework.builder.JNAInfo --test --problem ${problemName}
 
 clean:
-	rm -f $(LIBNAME) *.o *.class *.jar
+	rm -rf $(SYSARCH) ${problemName}.jar
 	
 run:
 	java -classpath "$(CLASSPATH)" Example.java
