@@ -33,6 +33,7 @@ open this folder, we will see the following files:
 2. `TestProblem.java`, which is the MOEA Framework problem definition that calls the native function; this file also
    specifies the structure of the problem, including the bounds of each decision variable; and
 3. `Makefile`, which is used to compile and test the function using the tool `make`.
+4. `Example.java`, which is a simple example solving your new problem using NSGA-II
 
 The folder also will contain a problem provider, such as `TestProblemProvider.java`, and the `META-INF/`folder.
 These files are responsible for registering and integrating the problem with the MOEA Framework.  *Typically, you will
@@ -99,8 +100,8 @@ Var1     Obj1     Obj2
 ## Integrating Problem with the MOEA Framework
 
 The build script also generates a Java `.jar` file containing all the required files to integrate the problem with
-the MOEA Framework.  Simply copy the `.jar` file and place it into the `lib/` folder used by the MOEA Framework.
-If using an IDE like Eclipse, you likely also need to add this `.jar` to the build path.
+the MOEA Framework.  Simply copy the `.jar` file and place it into the `lib/` folder.  If using an IDE like Eclipse, you
+will also need to add this `.jar` to the build path.
 
 At this point, the problem is now discoverable by the MOEA Framework and can be used as follows:
 
@@ -123,7 +124,7 @@ C        | `gcc`            | C function
 CPP      | `g++`            | C++ function.  Output includes `.c` and `.h` file
 Fortran  | `gfortran`      | Fortran90 function
 Java     | `javac`         | Java problem definition (see [Writing Java Problem](writingJavaProblem.md))
-Python   |                  | Python program using Standard I/O
+Python   |                  | Python program using Standard I/O (see [Writing External Problems](writingExternalProblem.md))
 External |                  | External C/C++ problem using Standard I/O (see [Writing External Problems](writingExternalProblem.md))
 
 ## Cross-Platform Support
