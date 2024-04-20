@@ -17,31 +17,33 @@ pacman -S make mingw-w64-x86_64-gcc
 ## Generating the Problem Template
 
 We provide a tool, `BuildProblem`, that creates a folder with the template for writing a native problem.  This
-tool supports a variety of programming languages, including `C`, `C++`, `Fortran`, and `Java`.  As an example,
-here we create `TestProblem` with a single real-valued decision variable and two objectives.  The lower and uppper
-bounds of the variables is also specified:
+tool supports a variety of programming languages.  As an example, below we create `TestProblem` in `C` with a single
+real-valued decision variable and two objectives.  We also define the lower and upper bounds:
 
 ```bash
 java -classpath "lib/*" org.moeaframework.builder.BuildProblem --problemName TestProblem --language c \
 	--numberOfVariables 1 --numberOfObjectives 2 --lowerBound -10.0 --upperBound 10.0
 ```
 
-The generated files will appear under the `native/` folder, such as `native/TestProblem` in this example.  If we
-open this folder, we will see the following files:
+The generated files will appear under the `native/` folder, such as `native/TestProblem` in this example, containing
+the following files:
 
-1. `TestProblem.c`, which contains the function used to implement the problem;
-2. `TestProblem.java`, which is the MOEA Framework problem definition that calls the native function; this file also
-   specifies the structure of the problem, including the bounds of each decision variable; and
-3. `Makefile`, which is used to compile and test the function using the tool `make`.
+```
+META-INF/
+Example.java
+Makefile
+TestProblem.c
+TestProblem.java
+TestProblemProvider.java
+```
 
-The folder also will contain a problem provider, such as `TestProblemProvider.java`, and the `META-INF/`folder.
-These files are responsible for registering and integrating the problem with the MOEA Framework.  *Typically, you will
-not need to modify these files!*
+Most importantly, this creates `TestProblem.c` which contains the template for our C function, `TestProblem.java` which
+defines the problem definition, and `Makefile` which is used to build and package the native library.  For most uses,
+you will not need to modify any other files.
 
 ## Writing the Function
 
-Open the file `TestProblem.c` under `native/TestProblem` using an editor of your choice.  The contents of this
-file will appear similar to:
+Open the file `TestProblem.c` using an editor of your choice.  The contents of this file will appear similar to:
 
 ```c
 int nvars = 1;
@@ -64,8 +66,8 @@ void evaluate(double* vars, double* objs, double* constrs) {
 }
 ```
 
-We already specified the lower and upper bounds of the decision variables when calling `BuildProblem`.  However,
-if you do need more control over the bounds, edit `TestProblem.java`.
+Since we already specified the lower and upper bounds when generating the template, we are done.  However, if you
+do need more control over the decisions variables, they are defined in `TestProblem.java`.
 
 ## Compiling and Testing
 
@@ -75,8 +77,8 @@ After saving these changes, we can use the provided Makefile to compile the code
 make
 ```
 
-Note this creates a shared library (a `.dll` on Windows or a `.so` on Linux) along with a `.jar` file.  Furthermore,
-we can test the code using the provided example in `Example.java` by running:
+Note this creates a shared library, either a `.dll` on Windows or a `.so` on Linux, along with a `.jar` file.
+Next, we can test our problem using the provided example in `Example.java`.  Run this test with:
 
 ```bash
 make run
@@ -98,11 +100,9 @@ Var1     Obj1     Obj2
 
 ## Integrating Problem with the MOEA Framework
 
-The build script also generates a Java `.jar` file containing all the required files to integrate the problem with
-the MOEA Framework.  Simply copy the `.jar` file and place it into the `lib/` folder used by the MOEA Framework.
-If using an IDE like Eclipse, you likely also need to add this `.jar` to the build path.
-
-At this point, the problem is now discoverable by the MOEA Framework and can be used as follows:
+Copy the `.jar` file, in this example `TestProblem.jar`, into the `lib/` folder used by the MOEA Framework.  If using an
+IDE like Eclipse, you must also add this `.jar` to the build path.  At this point, the new problem is discoverable
+and can be used like any other:
 
 ```java
 TestProblem problem = new TestProblem();
@@ -121,9 +121,9 @@ Language | Default Compiler | Notes
 -------- | ---------------- | -----
 C        | `gcc`            | C function
 CPP      | `g++`            | C++ function.  Output includes `.c` and `.h` file
-Fortran  | `gfortran`      | Fortran90 function
-Java     | `javac`         | Java problem definition (see [Writing Java Problem](writingJavaProblem.md))
-Python   |                  | Python program using Standard I/O
+Fortran  | `gfortran`       | Fortran90 function
+Java     | `javac`          | Java problem definition (see [Writing Java Problem](writingJavaProblem.md))
+Python   |                  | Python program using Standard I/O (see [Writing External Problems](writingExternalProblem.md))
 External |                  | External C/C++ problem using Standard I/O (see [Writing External Problems](writingExternalProblem.md))
 
 ## Cross-Platform Support
