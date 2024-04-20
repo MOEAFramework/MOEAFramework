@@ -30,6 +30,10 @@ import org.moeaframework.util.CommandLineUtility;
 
 public class Capture {
 	
+	private Capture() {
+		super();
+	}
+	
 	public static CaptureResult output(Runnable runnable) throws IOException {
 		PrintStream oldOut = System.out;
 		
