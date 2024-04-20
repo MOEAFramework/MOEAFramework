@@ -105,7 +105,7 @@ public class DiagnosticToolTest {
 					case VIEW_CHANGED -> viewChangedCount.incrementAndGet();
 					case PROGRESS_CHANGED -> progressChangedCount.incrementAndGet();
 					default -> Assert.fail("Unexpected controller event type " + event.getType());
-				};
+				}
 			}
 			
 		});
@@ -123,7 +123,9 @@ public class DiagnosticToolTest {
 		controller.join();
 		
 		// Block until the events signal the run finishes, as events can be sent after the thread completes
-		while (isRunning.get()) { Thread.yield(); }
+		while (isRunning.get()) {
+			Thread.yield();
+		}
 		
 		Assert.assertEquals(2, stateChangedCount.get());
 		Assert.assertEquals(10, modelChangedCount.get());

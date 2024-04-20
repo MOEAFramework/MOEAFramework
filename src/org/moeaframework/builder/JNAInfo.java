@@ -31,6 +31,9 @@ import com.sun.jna.Platform;
  */
 public class JNAInfo extends CommandLineUtility {
 	
+	/**
+	 * Constructs a new instance of this command line utility.
+	 */
 	public JNAInfo() {
 		super();
 	}
@@ -39,7 +42,7 @@ public class JNAInfo extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		options.addOption(Option.builder("b")
+		options.addOption(Option.builder("p")
 				.longOpt("problem")
 				.hasArg()
 				.build());
@@ -51,7 +54,7 @@ public class JNAInfo extends CommandLineUtility {
 				.longOpt("sysArch")
 				.build());
 		
-		group.addOption(Option.builder("n")
+		group.addOption(Option.builder("l")
 				.longOpt("libName")
 				.build());
 
@@ -67,15 +70,25 @@ public class JNAInfo extends CommandLineUtility {
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
 		if (commandLine.hasOption("test")) {
-			NativeLibrary instance = NativeLibrary.getInstance(commandLine.getOptionValue("problem"));
+			NativeLibrary instance = NativeLibrary.getInstance(getRequiredProblemName(commandLine));
 			System.out.println("Found " + instance.getName() + " at " + instance.getFile());
 		} else if (commandLine.hasOption("libName")) {
-			System.out.println(System.mapLibraryName(commandLine.getOptionValue("problem")));
+			System.out.println(System.mapLibraryName(getRequiredProblemName(commandLine)));
 		} else if (commandLine.hasOption("sysArch")) {
 			System.out.println(Platform.RESOURCE_PREFIX);
 		} else {
 			throw new IllegalArgumentException("No option selected");
 		}
+	}
+	
+	private String getRequiredProblemName(CommandLine commandLine) {
+		String result = commandLine.getOptionValue("problem");
+		
+		if (result == null) {
+			throw new IllegalArgumentException("must supply a problem name along with the given options");
+		}
+		
+		return result;
 	}
 
 	/**

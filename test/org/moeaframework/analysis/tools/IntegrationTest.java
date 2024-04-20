@@ -18,15 +18,13 @@
 package org.moeaframework.analysis.tools;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
-import java.lang.reflect.Method;
 import java.nio.file.Paths;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.Capture;
 import org.moeaframework.TempFiles;
 import org.moeaframework.analysis.io.MetricFileWriter;
 import org.moeaframework.core.spi.AlgorithmFactory;
@@ -130,9 +128,7 @@ public class IntegrationTest {
 		Assert.assertFileWithContent(combinedFile);
 		
 		//evaluate the combined set hypervolume
-		File setHypervolumeOutput = TempFiles.createFile();
-		
-		pipeCommandLine(setHypervolumeOutput, SetHypervolume.class, combinedFile.getPath());
+		File setHypervolumeOutput = Capture.output(SetHypervolume.class, combinedFile.getPath()).toFile();
 		
 		Assert.assertLineCount(1, setHypervolumeOutput);
 		Assert.assertLinePattern(setHypervolumeOutput, "^.+ [0-9]*(?:.[0-9]+)?$");
@@ -264,22 +260,18 @@ public class IntegrationTest {
 	@Test
 	public void testMerger() throws Exception {
 		//test reference set merger
-		File mergerOutput = TempFiles.createFile();
 		File mergedFile = TempFiles.createFile();
-		
-		pipeCommandLine(mergerOutput, ReferenceSetMerger.class,
+		File mergerOutput = Capture.output(ReferenceSetMerger.class,
 				"-o", mergedFile.getPath(),
-				"pf/DTLZ2.2D.pf", "pf/DTLZ3.2D.pf", "pf/DTLZ4.2D.pf");
+				"pf/DTLZ2.2D.pf", "pf/DTLZ3.2D.pf", "pf/DTLZ4.2D.pf").toFile();
 		
 		Assert.assertLineCount(3, mergerOutput);
 		Assert.assertLinePattern(mergerOutput, "^.+ [0-9]+ / [0-9]+$");
 		
 		//test set contribution
-		File setContributionOutput = TempFiles.createFile();
-		
-		pipeCommandLine(setContributionOutput, SetContribution.class, 
+		File setContributionOutput = Capture.output(SetContribution.class, 
 				"-r", mergedFile.getPath(),
-				"pf/DTLZ2.2D.pf", "pf/DTLZ3.2D.pf", "pf/DTLZ4.2D.pf");
+				"pf/DTLZ2.2D.pf", "pf/DTLZ3.2D.pf", "pf/DTLZ4.2D.pf").toFile();
 		
 		Assert.assertLineCount(3, setContributionOutput);
 		Assert.assertLinePattern(mergerOutput, "^.+ [0-9]*(?:.[0-9]+)?$");
@@ -408,19 +400,6 @@ public class IntegrationTest {
 					file.getPath() });
 			
 			Assert.assertLinePattern(resultInfoFile, "^.* 100$");
-		}
-	}
-	
-	private static void pipeCommandLine(File output, Class<?> tool, String... args) throws Exception {
-		PrintStream oldOut = System.out;
-		
-		try (PrintStream newOut = new PrintStream(new FileOutputStream(output))) {
-			System.setOut(newOut);
-		
-			Method mainMethod = tool.getMethod("main", String[].class);
-			mainMethod.invoke(null, (Object)args);
-		} finally {
-			System.setOut(oldOut);
 		}
 	}
 	
