@@ -21,7 +21,7 @@ import java.time.Duration;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.SpinLock;
+import org.moeaframework.Wait;
 
 public class MaxElapsedTimeTest {
 
@@ -33,11 +33,11 @@ public class MaxElapsedTimeTest {
 		termination.initialize(algorithm);
 		Assert.assertFalse(termination.shouldTerminate(algorithm));
 		
-		SpinLock.waitFor(Duration.ofMillis(550));
+		Wait.spinFor(Duration.ofMillis(550));
 		algorithm.setNumberOfEvaluations(1000);
 		Assert.assertFalse(termination.shouldTerminate(algorithm));
 		
-		SpinLock.waitFor(Duration.ofMillis(550));
+		Wait.spinFor(Duration.ofMillis(550));
 		algorithm.setNumberOfEvaluations(2000);
 		Assert.assertTrue(termination.shouldTerminate(algorithm));
 	}

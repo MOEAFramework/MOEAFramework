@@ -31,7 +31,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.SpinLock;
+import org.moeaframework.Wait;
 import org.moeaframework.TempFiles;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.analysis.io.ResultFileWriter.ResultFileWriterSettings;
@@ -409,7 +409,7 @@ public class ResultFileWriterTest {
 		
 		long originalTimestamp = file.lastModified();
 		
-		SpinLock.waitFor(Duration.ofMillis(100));
+		Wait.spinFor(Duration.ofMillis(100));
 		
 		try (ResultFileWriter writer = ResultFileWriter.append(problem, file)) {
 			Assert.assertEquals(2, writer.getNumberOfEntries());
@@ -417,7 +417,7 @@ public class ResultFileWriterTest {
 		
 		Assert.assertEquals(originalTimestamp, file.lastModified());
 		
-		SpinLock.waitFor(Duration.ofMillis(100));
+		Wait.spinFor(Duration.ofMillis(100));
 
 		try (ResultFileWriter writer = ResultFileWriter.append(problem, file)) {
 			Assert.assertEquals(2, writer.getNumberOfEntries());

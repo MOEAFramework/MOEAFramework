@@ -26,7 +26,7 @@ import java.util.concurrent.Future;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.SpinLock;
+import org.moeaframework.Wait;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Problem;
@@ -112,7 +112,7 @@ public class FutureSolutionTest {
 
 			@Override
 			public void evaluate(Solution solution) {
-				SpinLock.waitFor(Duration.ofSeconds(2));
+				Wait.spinFor(Duration.ofSeconds(2));
 				super.evaluate(solution);
 			}
 			

@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.SpinLock;
+import org.moeaframework.Wait;
 import org.moeaframework.core.PRNG;
 
 public class ThreadLocalMersenneTwisterTest {
@@ -63,7 +63,7 @@ public class ThreadLocalMersenneTwisterTest {
 				
 			for (int i = 0; i < 100; i++) {
 				samples.add(PRNG.nextInt());
-				SpinLock.waitFor(Duration.ofMillis(1));
+				Wait.spinFor(Duration.ofMillis(1));
 			}
 		}
 		

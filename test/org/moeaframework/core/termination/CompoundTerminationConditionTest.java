@@ -21,7 +21,7 @@ import java.time.Duration;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.SpinLock;
+import org.moeaframework.Wait;
 
 public class CompoundTerminationConditionTest {
 	
@@ -35,11 +35,11 @@ public class CompoundTerminationConditionTest {
 		compound.initialize(algorithm);
 		Assert.assertFalse(compound.shouldTerminate(algorithm));
 		
-		SpinLock.waitFor(Duration.ofMillis(250));
+		Wait.spinFor(Duration.ofMillis(250));
 		algorithm.setNumberOfEvaluations(1000);
 		Assert.assertFalse(compound.shouldTerminate(algorithm));
 		
-		SpinLock.waitFor(Duration.ofMillis(250));
+		Wait.spinFor(Duration.ofMillis(250));
 		algorithm.setNumberOfEvaluations(10001);
 		Assert.assertTrue(compound.shouldTerminate(algorithm));
 	}
@@ -54,11 +54,11 @@ public class CompoundTerminationConditionTest {
 		compound.initialize(algorithm);
 		Assert.assertFalse(compound.shouldTerminate(algorithm));
 		
-		SpinLock.waitFor(Duration.ofMillis(550));
+		Wait.spinFor(Duration.ofMillis(550));
 		algorithm.setNumberOfEvaluations(1000);
 		Assert.assertFalse(compound.shouldTerminate(algorithm));
 		
-		SpinLock.waitFor(Duration.ofMillis(550));
+		Wait.spinFor(Duration.ofMillis(550));
 		algorithm.setNumberOfEvaluations(2000);
 		Assert.assertTrue(compound.shouldTerminate(algorithm));
 	}

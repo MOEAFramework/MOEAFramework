@@ -24,7 +24,7 @@ import java.time.Duration;
 import org.apache.commons.cli.ParseException;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.SpinLock;
+import org.moeaframework.Wait;
 import org.moeaframework.TempFiles;
 import org.moeaframework.analysis.io.MetricFileWriter.MetricFileWriterSettings;
 import org.moeaframework.core.NondominatedPopulation;
@@ -139,7 +139,7 @@ public class MetricFileWriterTest {
 		
 		long originalTimestamp = file.lastModified();
 		
-		SpinLock.waitFor(Duration.ofMillis(100));
+		Wait.spinFor(Duration.ofMillis(100));
 		
 		try (MetricFileWriter writer = MetricFileWriter.append(indicators, file)) {
 			Assert.assertEquals(2, writer.getNumberOfEntries());
@@ -147,7 +147,7 @@ public class MetricFileWriterTest {
 		
 		Assert.assertEquals(originalTimestamp, file.lastModified());
 		
-		SpinLock.waitFor(Duration.ofMillis(100));
+		Wait.spinFor(Duration.ofMillis(100));
 		
 		try (MetricFileWriter writer = MetricFileWriter.append(indicators, file)) {
 			Assert.assertEquals(2, writer.getNumberOfEntries());
