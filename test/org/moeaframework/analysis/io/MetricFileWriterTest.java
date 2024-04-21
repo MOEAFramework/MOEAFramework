@@ -19,10 +19,12 @@ package org.moeaframework.analysis.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
 
 import org.apache.commons.cli.ParseException;
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.SpinLock;
 import org.moeaframework.TempFiles;
 import org.moeaframework.analysis.io.MetricFileWriter.MetricFileWriterSettings;
 import org.moeaframework.core.NondominatedPopulation;
@@ -117,7 +119,7 @@ public class MetricFileWriterTest {
 	}
 	
 	@Test
-	public void testFileTimestamp() throws IOException, InterruptedException {
+	public void testFileTimestamp() throws IOException {
 		File file = TempFiles.createFile();
 		
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
@@ -137,7 +139,7 @@ public class MetricFileWriterTest {
 		
 		long originalTimestamp = file.lastModified();
 		
-		Thread.sleep(100);
+		SpinLock.waitFor(Duration.ofMillis(100));
 		
 		try (MetricFileWriter writer = MetricFileWriter.append(indicators, file)) {
 			Assert.assertEquals(2, writer.getNumberOfEntries());
@@ -145,7 +147,7 @@ public class MetricFileWriterTest {
 		
 		Assert.assertEquals(originalTimestamp, file.lastModified());
 		
-		Thread.sleep(100);
+		SpinLock.waitFor(Duration.ofMillis(100));
 		
 		try (MetricFileWriter writer = MetricFileWriter.append(indicators, file)) {
 			Assert.assertEquals(2, writer.getNumberOfEntries());

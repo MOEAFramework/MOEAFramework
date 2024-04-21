@@ -17,12 +17,14 @@
  */
 package org.moeaframework.parallel.util;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.SpinLock;
 import org.moeaframework.core.PRNG;
 
 public class ThreadLocalMersenneTwisterTest {
@@ -57,15 +59,11 @@ public class ThreadLocalMersenneTwisterTest {
 		
 		@Override
 		public void run() {
-			try {
-				PRNG.setSeed(12345);
+			PRNG.setSeed(12345);
 				
-				for (int i = 0; i < 100; i++) {
-					samples.add(PRNG.nextInt());
-					Thread.sleep(1);
-				}
-			} catch (InterruptedException e) {
-				// exit thread
+			for (int i = 0; i < 100; i++) {
+				samples.add(PRNG.nextInt());
+				SpinLock.waitFor(Duration.ofMillis(1));
 			}
 		}
 		

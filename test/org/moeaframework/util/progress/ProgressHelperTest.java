@@ -17,11 +17,13 @@
  */
 package org.moeaframework.util.progress;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.SpinLock;
 
 public class ProgressHelperTest {
 	
@@ -29,7 +31,7 @@ public class ProgressHelperTest {
 	 * Tests progress reporting for a single seed.
 	 */
 	@Test
-	public void testTimingSingleSeed() throws InterruptedException {
+	public void testTimingSingleSeed() {
 		test(1, 100000, 10000, 10);
 	}
 	
@@ -37,7 +39,7 @@ public class ProgressHelperTest {
 	 * Tests progress reporting for many seeds.
 	 */
 	@Test
-	public void testTimingManySeeds() throws InterruptedException {
+	public void testTimingManySeeds() {
 		test(5, 100000, 10000, 10);
 	}
 	
@@ -45,7 +47,7 @@ public class ProgressHelperTest {
 	 * Tests progress reporting for a single seed with fine-grain step sizes.
 	 */
 	@Test
-	public void testTimingFineGrained() throws InterruptedException {
+	public void testTimingFineGrained() {
 		test(1, 50, 1, 10);
 	}
 	
@@ -56,9 +58,8 @@ public class ProgressHelperTest {
 	 * @param maxNFE the maximum NFE per seed to simulate
 	 * @param frequency the frequency of progress updates
 	 * @param time the simulated time per step, in milliseconds
-	 * @throws InterruptedException if the simulation failed to execute properly due to an interruption
 	 */
-	private void test(int totalSeeds, int maxNFE, int frequency, int time) throws InterruptedException {
+	private void test(int totalSeeds, int maxNFE, int frequency, int time) {
 		ProgressHelper helper = new ProgressHelper(null);		
 		final List<ProgressEvent> events = new ArrayList<ProgressEvent>();
 		
@@ -83,7 +84,7 @@ public class ProgressHelperTest {
 		
 		for (int i = 0; i < totalSeeds; i++) {
 			for (int j = 0; j <= maxNFE-frequency; j += frequency) {
-				sleep(time);				
+				SpinLock.waitFor(Duration.ofMillis(time));				
 				helper.setCurrentNFE(j+frequency);
 			}
 			
@@ -129,7 +130,7 @@ public class ProgressHelperTest {
 	 * Tests if progress reporting handles situations where no change in NFE occurs.
 	 */
 	@Test
-	public void testNoProgress() throws InterruptedException {
+	public void testNoProgress() {
 		ProgressHelper helper = new ProgressHelper(null);
 		final List<ProgressEvent> events = new ArrayList<ProgressEvent>();
 		
@@ -144,9 +145,9 @@ public class ProgressHelperTest {
 		
 		helper.start(10, 100000, -1);
 		helper.setCurrentNFE(0);
-		Thread.sleep(50);
+		SpinLock.waitFor(Duration.ofMillis(50));
 		helper.setCurrentNFE(0);
-		Thread.sleep(50);
+		SpinLock.waitFor(Duration.ofMillis(50));
 		helper.nextSeed();
 		
 		Assert.assertEquals(3, events.size());
@@ -159,7 +160,7 @@ public class ProgressHelperTest {
 	 * Tests if progress reporting handles the situation where no change in time occurs.
 	 */
 	@Test
-	public void testNoTime() throws InterruptedException {
+	public void testNoTime() {
 		ProgressHelper helper = new ProgressHelper(null);
 		final List<ProgressEvent> events = new ArrayList<ProgressEvent>();
 		
@@ -175,20 +176,12 @@ public class ProgressHelperTest {
 		helper.start(10, 100000, -1);
 		helper.setCurrentNFE(0);
 		helper.setCurrentNFE(50000);
-		Thread.sleep(50);
+		SpinLock.waitFor(Duration.ofMillis(50));
 		helper.setCurrentNFE(100000);
 		
 		Assert.assertEquals(3, events.size());
 		Assert.assertTrue(Double.isNaN(events.get(0).getRemainingTime()));
 		Assert.assertTrue(Double.isNaN(events.get(1).getRemainingTime()) || events.get(1).getRemainingTime() > 0.0);
 		Assert.assertTrue(events.get(2).getRemainingTime() > 0.0);
-	}
-	
-	private void sleep(int waitTime) {
-		long startTime = System.nanoTime();
-		
-		while (System.nanoTime() - startTime < waitTime*1000000L) {
-			// do nothing
-		}
 	}
 }

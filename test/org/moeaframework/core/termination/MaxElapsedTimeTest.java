@@ -21,28 +21,29 @@ import java.time.Duration;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.SpinLock;
 
 public class MaxElapsedTimeTest {
 
 	@Test
-	public void test() throws InterruptedException {
+	public void test() {
 		MockAlgorithm algorithm = new MockAlgorithm();
 		MaxElapsedTime termination = new MaxElapsedTime(1000);
 		
 		termination.initialize(algorithm);
 		Assert.assertFalse(termination.shouldTerminate(algorithm));
 		
-		Thread.sleep(550);
+		SpinLock.waitFor(Duration.ofMillis(550));
 		algorithm.setNumberOfEvaluations(1000);
 		Assert.assertFalse(termination.shouldTerminate(algorithm));
 		
-		Thread.sleep(550);
+		SpinLock.waitFor(Duration.ofMillis(550));
 		algorithm.setNumberOfEvaluations(2000);
 		Assert.assertTrue(termination.shouldTerminate(algorithm));
 	}
 	
 	@Test
-	public void testToMilliseconds() throws InterruptedException {
+	public void testToMilliseconds() {
 		Assert.assertEquals(5 * 1000, MaxElapsedTime.toMilliseconds(Duration.ofSeconds(5)));
 		Assert.assertEquals(500, MaxElapsedTime.toMilliseconds(Duration.ofMillis(500)));
 		Assert.assertEquals(5 * 60 * 1000, MaxElapsedTime.toMilliseconds(Duration.ofMinutes(5)));

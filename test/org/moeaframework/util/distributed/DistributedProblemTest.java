@@ -17,10 +17,12 @@
  */
 package org.moeaframework.util.distributed;
 
+import java.time.Duration;
 import java.util.concurrent.Executors;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.SpinLock;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.core.PRNG;
@@ -111,7 +113,7 @@ public class DistributedProblemTest {
 				population.get(i).getConstraint(0);
 			}
 	
-			Assert.assertLessThan(Math.abs(1000 * N / (double)P - (System.currentTimeMillis() - startTime)), 1000);
+			Assert.assertLessThan(Math.abs(100 * N / (double)P - (System.currentTimeMillis() - startTime)), 100);
 		}
 	}
 	
@@ -139,12 +141,10 @@ public class DistributedProblemTest {
 
 		@Override
 		public void evaluate(Solution solution) {
-			try {
-				super.evaluate(solution);
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
+			super.evaluate(solution);
+			long start = System.currentTimeMillis();
+			SpinLock.yieldFor(Duration.ofMillis(100));
+			System.out.println(System.currentTimeMillis() - start);
 		}
 
 	}
@@ -160,12 +160,7 @@ public class DistributedProblemTest {
 			isInvoked = true;
 			
 			super.evaluate(solution);
-			
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				// do nothing
-			}
+			SpinLock.yieldFor(Duration.ofMillis(10));
 			
 			isInvoked = false;
 		}

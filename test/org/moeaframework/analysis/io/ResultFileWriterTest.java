@@ -19,6 +19,7 @@ package org.moeaframework.analysis.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Optional;
 
 import org.apache.commons.cli.CommandLine;
@@ -30,6 +31,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.SpinLock;
 import org.moeaframework.TempFiles;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.analysis.io.ResultFileWriter.ResultFileWriterSettings;
@@ -390,7 +392,7 @@ public class ResultFileWriterTest {
 	}
 	
 	@Test
-	public void testFileTimestamp() throws IOException, InterruptedException {
+	public void testFileTimestamp() throws IOException {
 		File file = TempFiles.createFile();
 
 		NondominatedPopulation population = new NondominatedPopulation();
@@ -407,7 +409,7 @@ public class ResultFileWriterTest {
 		
 		long originalTimestamp = file.lastModified();
 		
-		Thread.sleep(100);
+		SpinLock.waitFor(Duration.ofMillis(100));
 		
 		try (ResultFileWriter writer = ResultFileWriter.append(problem, file)) {
 			Assert.assertEquals(2, writer.getNumberOfEntries());
@@ -415,7 +417,7 @@ public class ResultFileWriterTest {
 		
 		Assert.assertEquals(originalTimestamp, file.lastModified());
 		
-		Thread.sleep(100);
+		SpinLock.waitFor(Duration.ofMillis(100));
 
 		try (ResultFileWriter writer = ResultFileWriter.append(problem, file)) {
 			Assert.assertEquals(2, writer.getNumberOfEntries());

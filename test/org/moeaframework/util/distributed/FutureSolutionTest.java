@@ -17,6 +17,7 @@
  */
 package org.moeaframework.util.distributed;
 
+import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -25,6 +26,7 @@ import java.util.concurrent.Future;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.SpinLock;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Problem;
@@ -110,12 +112,7 @@ public class FutureSolutionTest {
 
 			@Override
 			public void evaluate(Solution solution) {
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {
-					throw new FrameworkException("sleep was interrupted", e);
-				}
-				
+				SpinLock.waitFor(Duration.ofSeconds(2));
 				super.evaluate(solution);
 			}
 			
