@@ -142,9 +142,7 @@ public class DistributedProblemTest {
 		@Override
 		public void evaluate(Solution solution) {
 			super.evaluate(solution);
-			long start = System.currentTimeMillis();
 			SpinLock.yieldFor(Duration.ofMillis(100));
-			System.out.println(System.currentTimeMillis() - start);
 		}
 
 	}
