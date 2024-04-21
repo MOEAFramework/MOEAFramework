@@ -6,32 +6,33 @@ ifeq ($(MATLAB),)
 endif
 
 MATLAB_ROOT := $(shell dirname "$(dirname "$(MATLAB)")")
-MATLAB_ENGINE := "$(MATLAB_ROOT)/extern/engines/java/jar/engine.jar"
+MATLAB_ENGINE := $(MATLAB_ROOT)/extern/engines/java/jar/engine.jar
 
 $(info "Using Matlab at: $(MATLAB_ROOT)")
 
 # Configure the platform-specific settings
 ifeq ($(OS),Windows_NT)
 	SEPARATOR := ;
-	MATLAB_LIBRARY := "$(MATLAB_ROOT)/extern/bin/win64"
+	MATLAB_LIBRARY := $(MATLAB_ROOT)/extern/bin/win64
 else
 	SEPARATOR := :
 	UNAME := $(shell uname -s)
 	
 	ifeq ($(UNAME),Linux)
-		MATLAB_LIBRARY := "$(MATLAB_ROOT)/extern/bin/glnxa64$(SEPARATOR)$(MATLAB_ROOT)/sys/os/glnxa64"
+		MATLAB_LIBRARY := $(MATLAB_ROOT)/extern/bin/glnxa64$(SEPARATOR)$(MATLAB_ROOT)/sys/os/glnxa64
 	else ifeq ($(UNAME),Darwin)
-		MATLAB_LIBRARY := "$(MATLAB_ROOT)/extern/bin/maci64" # For Intel, use maca64 if Apple silicon
+		# For Intel, use maca64 if Apple silicon
+		MATLAB_LIBRARY := $(MATLAB_ROOT)/extern/bin/maci64
 	endif
 endif
 
-CLASSPATH := "${java.class.path}$(SEPARATOR)$(MATLAB_ENGINE)"
+CLASSPATH := ${java.class.path}$(SEPARATOR)$(MATLAB_ENGINE)
 
 # Compile the shared library
 build:
-	javac -classpath "$(CLASSPATH)" ${problemName}.java ${problemName}Provider.java
-	jar cf ${problemName}.jar *.class ${functionName}.m META-INF
-	rm -f *.class
+	#javac -classpath "$(CLASSPATH)" ${problemName}.java ${problemName}Provider.java
+	#jar cf ${problemName}.jar *.class ${functionName}.m META-INF
+	#rm -f *.class
 
 clean:
 	rm -f ${problemName}.jar
