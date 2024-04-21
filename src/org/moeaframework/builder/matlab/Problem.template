@@ -6,12 +6,12 @@ import org.moeaframework.problem.AbstractProblem;
 public class ${problemName} extends AbstractProblem {
 
 	static {
-		// Locate the Matlab file on disk or extract from the JAR
+		// Locate the Matlab function on disk or extract from the JAR
 		try {
 			EXECUTABLE = Resources.asFile(${problemName}.class, "${functionName}.m",
 				ResourceOption.REQUIRED, ResourceOption.TEMPORARY).getPath();
 		} catch (IOException e) {
-			throw new FrameworkException("Failed to locate executable", e);
+			throw new FrameworkException("Failed to locate ${functionName}.m", e);
 		}
 	}
 

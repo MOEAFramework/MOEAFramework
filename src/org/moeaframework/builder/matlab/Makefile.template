@@ -11,7 +11,7 @@ ifeq ($(OS),Windows_NT)
 	MATLAB_LIBRARY := "$(MATLAB_ROOT)/extern/bin/win64"
 else
 	SEPARATOR := :
-	UNAME := $(shell uname -s
+	UNAME := $(shell uname -s)
 	
 	ifeq ($(UNAME),Linux)
 		MATLAB_LIBRARY := "$(MATLAB_ROOT)/extern/bin/glnxa64$(SEPARATOR)$(MATLAB_ROOT)/sys/os/glnxa64"
