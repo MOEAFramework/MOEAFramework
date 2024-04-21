@@ -1,31 +1,34 @@
-# Locate Matlab (this assumes a Linux-like environment)
+# Locate Matlab. This searches up two directories to find the root.
 MATLAB := $(shell which matlab)
 
-ifeq ($(MATLAB),)
-	$(error "Unable to locate Matlab, please add to your system PATH")
+ifeq ("$(wildcard $(MATLAB)/bin/matlab)","")
+    override MATLAB := $(shell dirname "$(MATLAB)")
 endif
 
-MATLAB_ROOT := $(shell dirname "$(dirname "$(MATLAB)")")
-MATLAB_ENGINE := $(MATLAB_ROOT)/extern/engines/java/jar/engine.jar
+ifeq ("$(wildcard $(MATLAB)/bin/matlab)","")
+    override MATLAB := $(shell dirname "$(MATLAB)")
+endif
 
-$(info MATLAB=$(MATLAB))
-$(info MATLAB_ROOT=$(MATLAB_ROOT))
-$(info MATLAB_ENGINE=$(MATLAB_ENGINE))
+ifeq ("$(wildcard $(MATLAB)/bin/matlab)","")
+    $(error "Unable to locate Matlab.  Specify the path by running 'make MATLAB=<path>'.")
+endif
+
+MATLAB_ENGINE := $(MATLAB)/extern/engines/java/jar/engine.jar
 
 # Configure the platform-specific settings
 ifeq ($(OS),Windows_NT)
-	SEPARATOR := ;
-	MATLAB_LIBRARY := $(MATLAB_ROOT)/extern/bin/win64
+    SEPARATOR := ;
+    MATLAB_LIBRARY := $(MATLAB)/extern/bin/win64
 else
-	SEPARATOR := :
-	UNAME := $(shell uname -s)
-	
-	ifeq ($(UNAME),Linux)
-		MATLAB_LIBRARY := $(MATLAB_ROOT)/extern/bin/glnxa64$(SEPARATOR)$(MATLAB_ROOT)/sys/os/glnxa64
-	else ifeq ($(UNAME),Darwin)
-		# For Intel, use maca64 if Apple silicon
-		MATLAB_LIBRARY := $(MATLAB_ROOT)/extern/bin/maci64
-	endif
+    SEPARATOR := :
+    UNAME := $(shell uname -s)
+
+    ifeq ($(UNAME),Linux)
+        MATLAB_LIBRARY := $(MATLAB)/extern/bin/glnxa64$(SEPARATOR)$(MATLAB)/sys/os/glnxa64
+    else ifeq ($(UNAME),Darwin)
+        # For Intel, use maca64 if Apple silicon
+        MATLAB_LIBRARY := $(MATLAB)/extern/bin/maci64
+    endif
 endif
 
 CLASSPATH := ${java.class.path}$(SEPARATOR)$(MATLAB_ENGINE)
