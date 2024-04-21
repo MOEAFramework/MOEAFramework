@@ -26,8 +26,7 @@ import java.util.function.BooleanSupplier;
  * <ol>
  *   <li>A spin lock can not be interrupted, so no {@link InterruptedException} is thrown.
  *   <li>A spin lock typically has finer-grained resolution than {@link Thread#sleep(Duration)} or other wait methods.
- *   <li>A spin lock will consume the current thread and CPU, unless using one of the yielding variants.  Note that
- *       yielding can negatively impact the resolution but allows other threads and processes to do work.
+ *   <li>A spin lock will consume the current thread and CPU.
  * </ol>
  */
 public class SpinLock {
@@ -46,19 +45,6 @@ public class SpinLock {
 	public static void waitUntil(BooleanSupplier condition) {
 		while (!condition.getAsBoolean()) {
 			// spin
-		}
-	}
-	
-	public static void yieldFor(Duration duration) {
-		final long waitTime = duration.getSeconds() * 1_000_000_000 + duration.getNano();
-		final long startTime = System.nanoTime();
-		
-		yieldUntil(() -> System.nanoTime() - startTime >= waitTime);
-	}
-	
-	public static void yieldUntil(BooleanSupplier condition) {
-		while (!condition.getAsBoolean()) {
-			Thread.yield();
 		}
 	}
 

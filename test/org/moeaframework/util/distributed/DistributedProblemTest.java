@@ -17,12 +17,10 @@
  */
 package org.moeaframework.util.distributed;
 
-import java.time.Duration;
 import java.util.concurrent.Executors;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.SpinLock;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.core.PRNG;
@@ -142,7 +140,12 @@ public class DistributedProblemTest {
 		@Override
 		public void evaluate(Solution solution) {
 			super.evaluate(solution);
-			SpinLock.yieldFor(Duration.ofMillis(100));
+			
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// do nothing
+			}
 		}
 
 	}
@@ -158,7 +161,12 @@ public class DistributedProblemTest {
 			isInvoked = true;
 			
 			super.evaluate(solution);
-			SpinLock.yieldFor(Duration.ofMillis(10));
+			
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// do nothing
+			}
 			
 			isInvoked = false;
 		}
