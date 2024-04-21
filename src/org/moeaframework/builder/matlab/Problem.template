@@ -1,0 +1,54 @@
+import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.problem.AbstractProblem;
+
+public class ${problemName} extends AbstractProblem {
+
+	static {
+		// Locate the Matlab file on disk or extract from the JAR
+		try {
+			EXECUTABLE = Resources.asFile(${problemName}.class, "${functionName}.m",
+				ResourceOption.REQUIRED, ResourceOption.TEMPORARY).getPath();
+		} catch (IOException e) {
+			throw new FrameworkException("Failed to locate executable", e);
+		}
+	}
+
+	private MatlabEngine engine;
+
+	public ${problemName}() {
+		super(${numberOfVariables}, ${numberOfObjectives}, ${numberOfConstraints});
+	}
+
+	public void evaluate(Solution solution) {		
+		if (engine == null) {
+			engine = MatlabEngine.startMatlab();
+		}
+		
+		double[] vars = EncodingUtils.getReal(solution);
+		
+		Object[] results = eng.feval(2, "${functionName}", vars);
+
+		solution.setObjectives((double[])results[0]);
+		solution.setConstraints((double[])results[1]);
+	}
+
+	public Solution newSolution() {
+		Solution solution = new Solution(numberOfVariables, numberOfObjectives, numberOfConstraints);
+
+		for (int i = 0; i < numberOfVariables; i++) {
+			solution.setVariable(i, new RealVariable(${lowerBound}, ${upperBound}));
+		}
+
+		return solution;
+	}
+	
+	public void close() {
+		if (engine != null) {
+			engine.close();
+			engine = null;
+		}
+	}
+
+}

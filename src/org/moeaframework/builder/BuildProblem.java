@@ -62,6 +62,11 @@ public class BuildProblem extends CommandLineUtility {
 	public static final Map<String, String> LANGUAGES;
 	
 	/**
+	 * Experimental languages.  These are not officially supported.  Use at your own risk.
+	 */
+	public static final Map<String, String> EXPERIMENTAL;
+	
+	/**
 	 * The variable used in Makefiles specifying the platform-specific classpath separator.
 	 */
 	public static final String PATH_SEPARATOR = "$(SEPARATOR)";
@@ -75,6 +80,9 @@ public class BuildProblem extends CommandLineUtility {
 		LANGUAGES.put("java", "java");
 		LANGUAGES.put("python", "python");
 		LANGUAGES.put("external", "external");
+		
+		EXPERIMENTAL = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
+		EXPERIMENTAL.put("matlab", "matlab");
 	}
 	
 	/**
@@ -169,6 +177,9 @@ public class BuildProblem extends CommandLineUtility {
 		
 		if (LANGUAGES.containsKey(language)) {
 			language = LANGUAGES.get(language);
+		} else if (EXPERIMENTAL.containsKey(language)) {
+			language = EXPERIMENTAL.get(language);
+			System.err.println("WARNING: " + language + " is experimental, use at your own risk!");
 		} else {
 			throw new FrameworkException("'" + language + "' is not a supported language");
 		}

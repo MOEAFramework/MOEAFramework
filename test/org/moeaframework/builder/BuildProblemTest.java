@@ -55,6 +55,11 @@ public class BuildProblemTest {
 	public void testPython() throws Exception {
 		test("python");
 	}
+	
+	@Test
+	public void testMatlab() throws Exception {
+		test("matlab", false); // only test build step, MatlabEngine not supported on GitHub Actions
+	}
 
 	@Test
 	public void testExternal() throws Exception {
@@ -100,8 +105,12 @@ public class BuildProblemTest {
 				"--directory", directory.toString()
 		});
 	}
+	
+	private void test(String language) throws Exception {
+		test(language, true);
+	}
 
-	private void test(String language) throws Exception {		
+	private void test(String language, boolean run) throws Exception {		
 		File directory = TempFiles.createDirectory();
 		File testDirectory = new File(directory, "Test");
 
@@ -119,7 +128,7 @@ public class BuildProblemTest {
 		Make.runMake(testDirectory);
 		
 		// remove any compiled files to verify they are packaged correctly in the JAR
-		List<String> extensionsToRemove = List.of("exe", "py", "class");
+		List<String> extensionsToRemove = List.of("exe", "dll", "so", "py", "class");
 		Files.walk(testDirectory.toPath())
 			.filter(x -> extensionsToRemove.contains(FilenameUtils.getExtension(x.toString())))
 			.map(Path::toFile)
