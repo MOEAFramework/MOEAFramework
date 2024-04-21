@@ -155,7 +155,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 				<formatter type="xml" />
 				<zipfileset src="${dist}/${shortname}-${version}-Test.jar">
 					<!--<include name="**/*Test.class" />-->
-					<include name="org/moeaframework/builder.BuildProblemTest.class" />
+					<include name="org/moeaframework/builder/BuildProblemTest.class" />
 					
 					<!-- exclude abstract classes without tests -->
 					<exclude name="org/moeaframework/algorithm/AlgorithmTest.class" />
