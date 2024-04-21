@@ -176,7 +176,7 @@ public class ProgressHelper {
 		double remainingTime = maxTime - (currentTime - startTime);
 		double percentNFE = Double.POSITIVE_INFINITY;
 		double percentTime = Double.POSITIVE_INFINITY;
-		
+				
 		if (maxNFE >= 0) {
 			percentNFE = (remainingSeeds + (remainingNFE / maxNFE)) / totalSeeds;
 		}

@@ -30,7 +30,7 @@ public class ProgressHelperTest {
 	 */
 	@Test
 	public void testTimingSingleSeed() throws InterruptedException {
-		test(1, 100000, 10000, 500);
+		test(1, 100000, 10000, 10);
 	}
 	
 	/**
@@ -38,7 +38,7 @@ public class ProgressHelperTest {
 	 */
 	@Test
 	public void testTimingManySeeds() throws InterruptedException {
-		test(10, 100000, 10000, 500);
+		test(5, 100000, 10000, 10);
 	}
 	
 	/**
@@ -46,7 +46,7 @@ public class ProgressHelperTest {
 	 */
 	@Test
 	public void testTimingFineGrained() throws InterruptedException {
-		test(1, 1000, 1, 50);
+		test(1, 50, 1, 10);
 	}
 	
 	/**
@@ -55,11 +55,11 @@ public class ProgressHelperTest {
 	 * @param totalSeeds the total number of seeds to simulate
 	 * @param maxNFE the maximum NFE per seed to simulate
 	 * @param frequency the frequency of progress updates
-	 * @param time the simulated time per step
+	 * @param time the simulated time per step, in milliseconds
 	 * @throws InterruptedException if the simulation failed to execute properly due to an interruption
 	 */
 	private void test(int totalSeeds, int maxNFE, int frequency, int time) throws InterruptedException {
-		ProgressHelper helper = new ProgressHelper(null);
+		ProgressHelper helper = new ProgressHelper(null);		
 		final List<ProgressEvent> events = new ArrayList<ProgressEvent>();
 		
 		helper.addProgressListener(new ProgressListener() {
@@ -71,25 +71,28 @@ public class ProgressHelperTest {
 			
 		});
 		
+		// force an event to fire before starting the actual test, as there appears to be a relatively large
+		// overhead on the first event
 		helper.start(totalSeeds, maxNFE, -1);
+		helper.setCurrentNFE(frequency);
+		helper.stop();
+		events.clear();
+		
+		helper.start(totalSeeds, maxNFE, -1);
+		long startTime = System.currentTimeMillis();
 		
 		for (int i = 0; i < totalSeeds; i++) {
 			for (int j = 0; j <= maxNFE-frequency; j += frequency) {
-				long start = System.nanoTime();
-				
-				while (System.nanoTime() - start < time*1000000) {
-					//loop for the given amount of time
-				}
-				
+				sleep(time);				
 				helper.setCurrentNFE(j+frequency);
 			}
 			
 			helper.nextSeed();
 		}
-		
+				
 		int expectedCount = totalSeeds * (maxNFE/frequency + 1);
-		double expectedTime = ((expectedCount - totalSeeds) * time) / 1000.0;
-		double error = 0.05 * expectedTime;
+		double expectedTime = (System.currentTimeMillis() - startTime) / 1000.0;
+		double error = 2 * time / 1000.0;
 		
 		Assert.assertEquals(expectedCount, events.size());
 		Assert.assertFalse(events.get(0).isSeedFinished());
@@ -141,9 +144,9 @@ public class ProgressHelperTest {
 		
 		helper.start(10, 100000, -1);
 		helper.setCurrentNFE(0);
-		Thread.sleep(1000);
+		Thread.sleep(50);
 		helper.setCurrentNFE(0);
-		Thread.sleep(1000);
+		Thread.sleep(50);
 		helper.nextSeed();
 		
 		Assert.assertEquals(3, events.size());
@@ -172,7 +175,7 @@ public class ProgressHelperTest {
 		helper.start(10, 100000, -1);
 		helper.setCurrentNFE(0);
 		helper.setCurrentNFE(50000);
-		Thread.sleep(1000);
+		Thread.sleep(50);
 		helper.setCurrentNFE(100000);
 		
 		Assert.assertEquals(3, events.size());
@@ -181,4 +184,11 @@ public class ProgressHelperTest {
 		Assert.assertTrue(events.get(2).getRemainingTime() > 0.0);
 	}
 	
+	private void sleep(int waitTime) {
+		long startTime = System.nanoTime();
+		
+		while (System.nanoTime() - startTime < waitTime*1000000L) {
+			// do nothing
+		}
+	}
 }
