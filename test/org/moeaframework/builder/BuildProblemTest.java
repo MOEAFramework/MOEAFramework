@@ -66,7 +66,7 @@ public class BuildProblemTest {
 		File directory = test("matlab", false);
 		
 		ProcessBuilder builder = new ProcessBuilder()
-				.command("matlab", "-r", "objs, constrs = evaluate(zeros(1, 10))")
+				.command("matlab", "-batch", "objs, constrs = evaluate(zeros(1, 10))")
 				.directory(directory);
 		
 		RedirectStream.pipe(builder, System.out);	
