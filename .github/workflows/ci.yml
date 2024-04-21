@@ -27,6 +27,8 @@ jobs:
       with:
         java-version: ${{ matrix.java }}
         distribution: zulu
+    - name: Set up Matlab
+      uses: matlab-actions/setup-matlab@v2
     - name: Download test dependencies
       run: ant -f test.xml download-all
     - name: Setup Coco Framework
@@ -65,6 +67,8 @@ jobs:
         java-version: 17
         distribution: temurin
         cache: maven
+    - name: Set up Matlab
+      uses: matlab-actions/setup-matlab@v2
     - name: Prepare Maven project
       run: ant -f test.xml build-maven-tests
     - name: Run Maven tests
