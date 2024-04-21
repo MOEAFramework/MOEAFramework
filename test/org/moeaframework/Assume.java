@@ -42,7 +42,7 @@ public class Assume extends org.junit.Assume {
 	}
 	
 	public static void assumeMakeExists() {
-		assumeTrue("Make is not available on this system, skipping test", Make.verifyMakeExists());
+		assumeTrue("Make is not available on this system, skipping test", Make.isMakeAvailable());
 	}
 	
 	public static void assumeHasDisplay() {
