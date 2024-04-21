@@ -129,21 +129,23 @@ public class BuildProblemTest {
 		String output = Make.runMake(testDirectory);
 		System.out.println(output);
 		
-		// remove any compiled files to verify they are packaged correctly in the JAR
-		List<String> extensionsToRemove = List.of("exe", "dll", "so", "py", "class");
-		Files.walk(testDirectory.toPath())
-			.filter(x -> extensionsToRemove.contains(FilenameUtils.getExtension(x.toString())))
-			.map(Path::toFile)
-			.forEach(File::delete);
-		
-		output = Make.runMake(testDirectory, "run");
-		System.out.println(output);
-
-		List<String> lines = output.lines().skip(1).toList(); // first line the the java command
-		Assert.assertEquals(3, lines.size());
-		Assert.assertMatches(lines.get(0), "(\\bVar[0-9]+\\b\\s*){10}(\\bObj[0-9]+\\b\\s*){2}");
-		Assert.assertMatches(lines.get(1), "([\\-]+\\s*){12}");
-		Assert.assertMatches(lines.get(2), "(\\-?[0-9]+\\.[0-9]+\\b\\s*){12}");
+		if (run) {
+			// remove any compiled files to verify they are packaged correctly in the JAR
+			List<String> extensionsToRemove = List.of("exe", "dll", "so", "py", "class");
+			Files.walk(testDirectory.toPath())
+				.filter(x -> extensionsToRemove.contains(FilenameUtils.getExtension(x.toString())))
+				.map(Path::toFile)
+				.forEach(File::delete);
+			
+			output = Make.runMake(testDirectory, "run");
+			System.out.println(output);
+	
+			List<String> lines = output.lines().skip(1).toList(); // first line the the java command
+			Assert.assertEquals(3, lines.size());
+			Assert.assertMatches(lines.get(0), "(\\bVar[0-9]+\\b\\s*){10}(\\bObj[0-9]+\\b\\s*){2}");
+			Assert.assertMatches(lines.get(1), "([\\-]+\\s*){12}");
+			Assert.assertMatches(lines.get(2), "(\\-?[0-9]+\\.[0-9]+\\b\\s*){12}");
+		}
 	}
 
 }

@@ -8,7 +8,9 @@ endif
 MATLAB_ROOT := $(shell dirname "$(dirname "$(MATLAB)")")
 MATLAB_ENGINE := $(MATLAB_ROOT)/extern/engines/java/jar/engine.jar
 
-$(info "Using Matlab at: $(MATLAB_ROOT)")
+$(info MATLAB=$(MATLAB))
+$(info MATLAB_ROOT=$(MATLAB_ROOT))
+$(info MATLAB_ENGINE=$(MATLAB_ENGINE))
 
 # Configure the platform-specific settings
 ifeq ($(OS),Windows_NT)
