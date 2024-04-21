@@ -1,5 +1,10 @@
 # Locate Matlab (this assumes a Linux-like environment)
 MATLAB := $(shell which matlab)
+
+ifeq ($(MATLAB),)
+	$(error "Unable to locate Matlab, please add to your system PATH")
+endif
+
 MATLAB_ROOT := $(shell dirname "$(dirname "$(MATLAB)")")
 MATLAB_ENGINE := "$(MATLAB_ROOT)/extern/engines/java/jar/engine.jar"
 

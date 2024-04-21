@@ -125,7 +125,9 @@ public class BuildProblemTest {
 		});
 
 		Assume.assumeMakeExists();
-		Make.runMake(testDirectory);
+		
+		String output = Make.runMake(testDirectory);
+		System.out.println(output);
 		
 		// remove any compiled files to verify they are packaged correctly in the JAR
 		List<String> extensionsToRemove = List.of("exe", "dll", "so", "py", "class");
@@ -134,7 +136,7 @@ public class BuildProblemTest {
 			.map(Path::toFile)
 			.forEach(File::delete);
 		
-		String output = Make.runMake(testDirectory, "run");
+		output = Make.runMake(testDirectory, "run");
 		System.out.println(output);
 
 		List<String> lines = output.lines().skip(1).toList(); // first line the the java command
