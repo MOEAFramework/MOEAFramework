@@ -19,8 +19,10 @@ package org.moeaframework;
 
 import java.awt.GraphicsEnvironment;
 import java.io.File;
+import java.io.IOException;
 
 import org.apache.commons.lang3.SystemUtils;
+import org.moeaframework.util.io.RedirectStream;
 
 public class Assume extends org.junit.Assume {
 	
@@ -43,6 +45,24 @@ public class Assume extends org.junit.Assume {
 	
 	public static void assumeMakeExists() {
 		assumeTrue("Make is not available on this system, skipping test", Make.verifyMakeExists());
+	}
+	
+	public static void assumePythonExists() {
+		try {
+			ProcessBuilder processBuilder = new ProcessBuilder("python", "--version");
+			RedirectStream.capture(processBuilder);
+		} catch (Exception e) {
+			assumeNoException("Python is not available on this system, skipping test", e);
+		}
+	}
+	
+	public static void assumeMatlabExists() {
+		try {
+			ProcessBuilder processBuilder = new ProcessBuilder("matlab", "-n");
+			RedirectStream.capture(processBuilder);
+		} catch (Exception e) {
+			assumeNoException("Matlab is not available on this system, skipping test", e);
+		}
 	}
 	
 	public static void assumeHasDisplay() {

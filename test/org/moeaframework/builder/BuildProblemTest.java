@@ -28,6 +28,7 @@ import org.moeaframework.Assert;
 import org.moeaframework.Assume;
 import org.moeaframework.Make;
 import org.moeaframework.TempFiles;
+import org.moeaframework.util.io.RedirectStream;
 
 public class BuildProblemTest {
 
@@ -53,12 +54,22 @@ public class BuildProblemTest {
 	
 	@Test
 	public void testPython() throws Exception {
+		Assume.assumePythonExists();
 		test("python");
 	}
 	
 	@Test
 	public void testMatlab() throws Exception {
-		test("matlab", false); // only test build step, MatlabEngine not supported on GitHub Actions
+		// Note: MatlabEngine is not available on GitHub Actions.  We can build the code but not run the example.
+		Assume.assumeMatlabExists();
+		
+		File directory = test("matlab", false);
+		
+		ProcessBuilder builder = new ProcessBuilder()
+				.command("matlab", "-r", "objs, constrs = evaluate(zeros(1, 10))")
+				.directory(directory);
+		
+		RedirectStream.pipe(builder, System.out);	
 	}
 
 	@Test
@@ -106,11 +117,11 @@ public class BuildProblemTest {
 		});
 	}
 	
-	private void test(String language) throws Exception {
-		test(language, true);
+	private File test(String language) throws Exception {
+		return test(language, true);
 	}
 
-	private void test(String language, boolean run) throws Exception {		
+	private File test(String language, boolean run) throws Exception {		
 		File directory = TempFiles.createDirectory();
 		File testDirectory = new File(directory, "Test");
 
@@ -146,6 +157,8 @@ public class BuildProblemTest {
 			Assert.assertMatches(lines.get(1), "([\\-]+\\s*){12}");
 			Assert.assertMatches(lines.get(2), "(\\-?[0-9]+\\.[0-9]+\\b\\s*){12}");
 		}
+		
+		return testDirectory;
 	}
 
 }
