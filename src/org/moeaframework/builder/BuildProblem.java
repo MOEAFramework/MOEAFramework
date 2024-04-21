@@ -179,7 +179,7 @@ public class BuildProblem extends CommandLineUtility {
 			language = LANGUAGES.get(language);
 		} else if (EXPERIMENTAL.containsKey(language)) {
 			language = EXPERIMENTAL.get(language);
-			System.err.println("WARNING: " + language + " is experimental, use at your own risk!");
+			System.err.println("WARNING: " + language + " is experimental and not fully tested.  Please report any issues.");
 		} else {
 			throw new FrameworkException("'" + language + "' is not a supported language");
 		}

@@ -10,7 +10,9 @@ ifeq ("$(wildcard $(MATLAB)/bin/matlab)","")
 endif
 
 ifeq ("$(wildcard $(MATLAB)/bin/matlab)","")
-    $(error "Unable to locate Matlab.  Specify the path by running 'make MATLAB=<path>'.")
+    $(error Unable to locate Matlab.  Specify the path by running 'make MATLAB=<path>'.)
+else
+    $(info Found Matlab root directory at "$(MATLAB)")
 endif
 
 MATLAB_ENGINE := $(MATLAB)/extern/engines/java/jar/engine.jar
@@ -35,9 +37,9 @@ CLASSPATH := ${java.class.path}$(SEPARATOR)$(MATLAB_ENGINE)
 
 # Compile the shared library
 build:
-	#javac -classpath "$(CLASSPATH)" ${problemName}.java ${problemName}Provider.java
-	#jar cf ${problemName}.jar *.class ${functionName}.m META-INF
-	#rm -f *.class
+	javac -classpath "$(CLASSPATH)" ${problemName}.java ${problemName}Provider.java
+	jar cf ${problemName}.jar *.class ${functionName}.m META-INF
+	rm -f *.class
 
 clean:
 	rm -f ${problemName}.jar
