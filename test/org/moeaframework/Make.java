@@ -28,6 +28,18 @@ import org.moeaframework.util.io.RedirectStream;
 
 public class Make {
 	
+	private static boolean isMakeAvailable;
+	
+	static {
+		try {
+			runMake(new File("."), "--version");
+			isMakeAvailable = true;
+		} catch (IOException e) {
+			System.err.println(e);
+			isMakeAvailable = false;
+		}
+	}
+	
 	private Make() {
 		super();
 	}
@@ -62,14 +74,8 @@ public class Make {
 	 * 
 	 * @return {@code true} if the 'make' command exists; {@code false} otherwise
 	 */
-	public static boolean verifyMakeExists() {
-		try {
-			runMake(new File("."), "--version");
-			return true;
-		} catch (IOException e) {
-			System.err.println(e);
-			return false;
-		}
+	public static boolean isMakeAvailable() {
+		return isMakeAvailable;
 	}
 
 }

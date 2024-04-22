@@ -17,11 +17,13 @@
  */
 package org.moeaframework.util.distributed;
 
+import java.time.Duration;
 import java.util.concurrent.Executors;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
+import org.moeaframework.Wait;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
@@ -111,7 +113,7 @@ public class DistributedProblemTest {
 				population.get(i).getConstraint(0);
 			}
 	
-			Assert.assertLessThan(Math.abs(1000 * N / (double)P - (System.currentTimeMillis() - startTime)), 1000);
+			Assert.assertLessThan(Math.abs(100 * N / (double)P - (System.currentTimeMillis() - startTime)), 100);
 		}
 	}
 	
@@ -139,12 +141,8 @@ public class DistributedProblemTest {
 
 		@Override
 		public void evaluate(Solution solution) {
-			try {
-				super.evaluate(solution);
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
+			super.evaluate(solution);
+			Wait.sleepFor(Duration.ofMillis(100));
 		}
 
 	}
@@ -160,12 +158,7 @@ public class DistributedProblemTest {
 			isInvoked = true;
 			
 			super.evaluate(solution);
-			
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				// do nothing
-			}
+			Wait.sleepFor(Duration.ofMillis(100));
 			
 			isInvoked = false;
 		}

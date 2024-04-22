@@ -17,13 +17,16 @@
  */
 package org.moeaframework.core.termination;
 
+import java.time.Duration;
+
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.Wait;
 
 public class CompoundTerminationConditionTest {
 	
 	@Test
-	public void testNFE() throws InterruptedException {
+	public void testNFE() {
 		MockAlgorithm algorithm = new MockAlgorithm();
 		MaxElapsedTime timeTermination = new MaxElapsedTime(1000);
 		MaxFunctionEvaluations nfeTermination = new MaxFunctionEvaluations(10000);
@@ -32,17 +35,17 @@ public class CompoundTerminationConditionTest {
 		compound.initialize(algorithm);
 		Assert.assertFalse(compound.shouldTerminate(algorithm));
 		
-		Thread.sleep(250);
+		Wait.spinFor(Duration.ofMillis(250));
 		algorithm.setNumberOfEvaluations(1000);
 		Assert.assertFalse(compound.shouldTerminate(algorithm));
 		
-		Thread.sleep(250);
+		Wait.spinFor(Duration.ofMillis(250));
 		algorithm.setNumberOfEvaluations(10001);
 		Assert.assertTrue(compound.shouldTerminate(algorithm));
 	}
 	
 	@Test
-	public void testTime() throws InterruptedException {
+	public void testTime() {
 		MockAlgorithm algorithm = new MockAlgorithm();
 		MaxElapsedTime timeTermination = new MaxElapsedTime(1000);
 		MaxFunctionEvaluations nfeTermination = new MaxFunctionEvaluations(10000);
@@ -51,11 +54,11 @@ public class CompoundTerminationConditionTest {
 		compound.initialize(algorithm);
 		Assert.assertFalse(compound.shouldTerminate(algorithm));
 		
-		Thread.sleep(550);
+		Wait.spinFor(Duration.ofMillis(550));
 		algorithm.setNumberOfEvaluations(1000);
 		Assert.assertFalse(compound.shouldTerminate(algorithm));
 		
-		Thread.sleep(550);
+		Wait.spinFor(Duration.ofMillis(550));
 		algorithm.setNumberOfEvaluations(2000);
 		Assert.assertTrue(compound.shouldTerminate(algorithm));
 	}
