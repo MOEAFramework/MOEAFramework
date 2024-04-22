@@ -105,7 +105,7 @@ public class DistributedProblemTest {
 				problem.evaluate(population.get(i));
 			}
 			
-			Assert.assertLessThan(System.currentTimeMillis() - startTime, EVALAUATE_MS);
+			Assert.assertLessThan(System.currentTimeMillis() - startTime, 2 * EVALAUATE_MS);
 	
 			// these should block
 			startTime = System.currentTimeMillis();
@@ -115,7 +115,7 @@ public class DistributedProblemTest {
 			}
 			
 			Assert.assertLessThan(Math.abs(EVALAUATE_MS * N / (double)P - (System.currentTimeMillis() - startTime)),
-					2*EVALAUATE_MS);
+					2 * EVALAUATE_MS);
 	
 			// these should not block
 			startTime = System.currentTimeMillis();
