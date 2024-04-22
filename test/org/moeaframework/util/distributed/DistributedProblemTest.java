@@ -35,6 +35,8 @@ import org.moeaframework.mock.MockRealStochasticProblem;
 
 public class DistributedProblemTest {
 	
+	public static final int EVALAUATE_MS = 100;
+	
 	@Test
 	public void testSerialExecution() {
 		try (Problem problem = new DistributedProblem(new MockSynchronizedProblem(),
@@ -96,24 +98,33 @@ public class DistributedProblemTest {
 				population.add(problem.newSolution());
 			}
 	
-			long startTime = System.currentTimeMillis();
-	
 			// submit the tasks to start processing
+			long startTime = System.currentTimeMillis();
+			
 			for (int i = 0; i < N; i++) {
 				problem.evaluate(population.get(i));
 			}
+			
+			Assert.assertLessThan(System.currentTimeMillis() - startTime, EVALAUATE_MS);
 	
 			// these should block
+			startTime = System.currentTimeMillis();
+			
 			for (int i = 0; i < N; i++) {
 				population.get(i).getObjective(0);
 			}
+			
+			Assert.assertLessThan(Math.abs(EVALAUATE_MS * N / (double)P - (System.currentTimeMillis() - startTime)),
+					2*EVALAUATE_MS);
 	
 			// these should not block
+			startTime = System.currentTimeMillis();
+			
 			for (int i = 0; i < N; i++) {
 				population.get(i).getConstraint(0);
 			}
 	
-			Assert.assertLessThan(Math.abs(100 * N / (double)P - (System.currentTimeMillis() - startTime)), 100);
+			Assert.assertLessThan(System.currentTimeMillis() - startTime, EVALAUATE_MS);
 		}
 	}
 	
@@ -142,7 +153,7 @@ public class DistributedProblemTest {
 		@Override
 		public void evaluate(Solution solution) {
 			super.evaluate(solution);
-			Wait.sleepFor(Duration.ofMillis(100));
+			Wait.sleepFor(Duration.ofMillis(EVALAUATE_MS));
 		}
 
 	}
@@ -158,7 +169,7 @@ public class DistributedProblemTest {
 			isInvoked = true;
 			
 			super.evaluate(solution);
-			Wait.sleepFor(Duration.ofMillis(100));
+			Wait.sleepFor(Duration.ofMillis(EVALAUATE_MS));
 			
 			isInvoked = false;
 		}
