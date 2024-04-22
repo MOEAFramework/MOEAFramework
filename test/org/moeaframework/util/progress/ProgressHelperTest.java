@@ -32,7 +32,7 @@ public class ProgressHelperTest {
 	 */
 	@Test
 	public void testTimingSingleSeed() {
-		test(1, 100000, 10000, 10);
+		test(1, 100000, 10000, 100);
 	}
 	
 	/**
@@ -40,7 +40,7 @@ public class ProgressHelperTest {
 	 */
 	@Test
 	public void testTimingManySeeds() {
-		test(5, 100000, 10000, 10);
+		test(5, 100000, 10000, 100);
 	}
 	
 	/**
@@ -48,7 +48,7 @@ public class ProgressHelperTest {
 	 */
 	@Test
 	public void testTimingFineGrained() {
-		test(1, 50, 1, 10);
+		test(1, 50, 1, 100);
 	}
 	
 	/**
