@@ -110,7 +110,8 @@
 				<version>3.2.5</version>
 				<configuration>
 					<parallel>classes</parallel>
-					<useUnlimitedThreads>true</useUnlimitedThreads>
+					<forkCount>2.0C</forkCount>
+         			<reuseForks>true</reuseForks>
 				</configuration>
 			</plugin>
 		</plugins>
