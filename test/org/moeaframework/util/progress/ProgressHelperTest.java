@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.SpinLock;
+import org.moeaframework.Wait;
 
 public class ProgressHelperTest {
 	
@@ -84,7 +84,7 @@ public class ProgressHelperTest {
 		
 		for (int i = 0; i < totalSeeds; i++) {
 			for (int j = 0; j <= maxNFE-frequency; j += frequency) {
-				SpinLock.waitFor(Duration.ofMillis(time));				
+				Wait.spinFor(Duration.ofMillis(time));				
 				helper.setCurrentNFE(j+frequency);
 			}
 			
@@ -145,9 +145,9 @@ public class ProgressHelperTest {
 		
 		helper.start(10, 100000, -1);
 		helper.setCurrentNFE(0);
-		SpinLock.waitFor(Duration.ofMillis(50));
+		Wait.spinFor(Duration.ofMillis(50));
 		helper.setCurrentNFE(0);
-		SpinLock.waitFor(Duration.ofMillis(50));
+		Wait.spinFor(Duration.ofMillis(50));
 		helper.nextSeed();
 		
 		Assert.assertEquals(3, events.size());
@@ -176,7 +176,7 @@ public class ProgressHelperTest {
 		helper.start(10, 100000, -1);
 		helper.setCurrentNFE(0);
 		helper.setCurrentNFE(50000);
-		SpinLock.waitFor(Duration.ofMillis(50));
+		Wait.spinFor(Duration.ofMillis(50));
 		helper.setCurrentNFE(100000);
 		
 		Assert.assertEquals(3, events.size());

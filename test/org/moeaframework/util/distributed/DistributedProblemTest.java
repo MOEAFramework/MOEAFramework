@@ -22,8 +22,8 @@ import java.util.concurrent.Executors;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.SpinLock;
 import org.moeaframework.TestThresholds;
+import org.moeaframework.Wait;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
@@ -142,7 +142,7 @@ public class DistributedProblemTest {
 		@Override
 		public void evaluate(Solution solution) {
 			super.evaluate(solution);
-			SpinLock.yieldFor(Duration.ofMillis(100));
+			Wait.sleepFor(Duration.ofMillis(100));
 		}
 
 	}
@@ -158,7 +158,7 @@ public class DistributedProblemTest {
 			isInvoked = true;
 			
 			super.evaluate(solution);
-			SpinLock.yieldFor(Duration.ofMillis(10));
+			Wait.sleepFor(Duration.ofMillis(100));
 			
 			isInvoked = false;
 		}
