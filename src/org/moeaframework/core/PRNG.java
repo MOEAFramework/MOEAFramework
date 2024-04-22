@@ -23,8 +23,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import org.apache.commons.math3.random.MersenneTwister;
-import org.apache.commons.math3.random.RandomAdaptor;
+import org.moeaframework.parallel.util.ThreadLocalMersenneTwister;
 
 /**
  * Static methods for generating random or pseudo-random numbers. Any source of randomness implementing the
@@ -45,7 +44,7 @@ public class PRNG {
 	 * Initialize the static variables.
 	 */
 	static {
-		random = new RandomAdaptor(new MersenneTwister());
+		random = ThreadLocalMersenneTwister.getInstance();
 		
 		if (Settings.PROPERTIES.contains(Settings.KEY_PRNG_SEED)) {
 			setSeed(Settings.PROPERTIES.getLong(Settings.KEY_PRNG_SEED));
