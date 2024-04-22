@@ -51,7 +51,7 @@ public class Make {
 	 * @param args any additional arguments passed to make
 	 * @return the captured output from make
 	 */
-	public static String runMake(File folder, String... args) throws IOException {
+	public static void runMake(File folder, String... args) throws IOException {
 		List<String> command = new ArrayList<String>();
 		command.add("make");
 		command.addAll(Arrays.asList(args));
@@ -63,7 +63,7 @@ public class Make {
 			ProcessBuilder processBuilder = new ProcessBuilder(command);
 			processBuilder.directory(folder);
 			
-			return RedirectStream.capture(processBuilder);
+			RedirectStream.pipe(processBuilder, System.out);
 		} catch (InterruptedException e) {
 			throw new IOException(e);
 		}

@@ -26,9 +26,10 @@ import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
+import org.moeaframework.Capture;
+import org.moeaframework.Capture.CaptureResult;
 import org.moeaframework.Make;
 import org.moeaframework.TempFiles;
-import org.moeaframework.util.io.RedirectStream;
 
 public class BuildProblemTest {
 
@@ -44,6 +45,7 @@ public class BuildProblemTest {
 
 	@Test
 	public void testFortran() throws Exception {
+		Assume.assumeFortranExists();
 		test("fortran");
 	}
 
@@ -61,7 +63,7 @@ public class BuildProblemTest {
 	@Test
 	public void testMatlab() throws Exception {
 		// Note: MatlabEngine is not available on GitHub Actions.  We can build the code but not run the example.
-//		Assume.assumeMatlabExists();
+		Assume.assumeMatlabExists();
 		
 		File directory = test("matlab", false);
 		
@@ -136,9 +138,7 @@ public class BuildProblemTest {
 		});
 
 		Assume.assumeMakeExists();
-		
-		String output = Make.runMake(testDirectory);
-		System.out.println(output);
+		Make.runMake(testDirectory);
 		
 		if (run) {
 			// remove any compiled files to verify they are packaged correctly in the JAR
@@ -148,10 +148,10 @@ public class BuildProblemTest {
 				.map(Path::toFile)
 				.forEach(File::delete);
 			
-			output = Make.runMake(testDirectory, "run");
-			System.out.println(output);
+			CaptureResult result = Capture.output(() -> Make.runMake(testDirectory, "run"));
+			result.assertSuccessful();
 	
-			List<String> lines = output.lines().skip(1).toList(); // first line the the java command
+			List<String> lines = result.toString().lines().skip(1).toList(); // skip first line, which is the java command
 			Assert.assertEquals(3, lines.size());
 			Assert.assertMatches(lines.get(0), "(\\bVar[0-9]+\\b\\s*){10}(\\bObj[0-9]+\\b\\s*){2}");
 			Assert.assertMatches(lines.get(1), "([\\-]+\\s*){12}");

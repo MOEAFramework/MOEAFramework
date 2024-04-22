@@ -42,26 +42,29 @@ public class Assume extends org.junit.Assume {
 		}
 	}
 	
+	public static void assumeCommand(String... args) {
+		try {
+			ProcessBuilder processBuilder = new ProcessBuilder(args);
+			RedirectStream.pipe(processBuilder, System.out);
+		} catch (Exception e) {
+			assumeNoException(args[0] + " is not available on this system, skipping test", e);
+		}
+	}
+	
 	public static void assumeMakeExists() {
 		assumeTrue("Make is not available on this system, skipping test", Make.isMakeAvailable());
 	}
 	
+	public static void assumeFortranExists() {
+		assumeCommand("gfortran", "--version");
+	}
+	
 	public static void assumePythonExists() {
-		try {
-			ProcessBuilder processBuilder = new ProcessBuilder("python", "--version");
-			RedirectStream.capture(processBuilder);
-		} catch (Exception e) {
-			assumeNoException("Python is not available on this system, skipping test", e);
-		}
+		assumeCommand("python", "--version");
 	}
 	
 	public static void assumeMatlabExists() {
-		try {
-			ProcessBuilder processBuilder = new ProcessBuilder("matlab", "-n");
-			RedirectStream.capture(processBuilder);
-		} catch (Exception e) {
-			assumeNoException("Matlab is not available on this system, skipping test", e);
-		}
+		assumeCommand("matlab", "-n");
 	}
 	
 	public static void assumeHasDisplay() {
