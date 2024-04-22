@@ -61,15 +61,15 @@ public class BuildProblemTest {
 	@Test
 	public void testMatlab() throws Exception {
 		// Note: MatlabEngine is not available on GitHub Actions.  We can build the code but not run the example.
-		Assume.assumeMatlabExists();
+//		Assume.assumeMatlabExists();
 		
 		File directory = test("matlab", false);
 		
-		ProcessBuilder builder = new ProcessBuilder()
-				.command("matlab", "-batch", "objs, constrs = evaluate(zeros(1, 10))")
-				.directory(directory);
-		
-		RedirectStream.pipe(builder, System.out);	
+//		ProcessBuilder builder = new ProcessBuilder()
+//				.command("matlab", "-batch", "objs, constrs = evaluate(zeros(1, 10))")
+//				.directory(directory);
+//		
+//		RedirectStream.pipe(builder, System.out);	
 	}
 
 	@Test
