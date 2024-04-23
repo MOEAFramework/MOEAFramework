@@ -7,6 +7,9 @@ This page documents notable changes introduced in each chronological release of 
   * Adds `DefaultNormalizer` and `DefaultEpsilons` classes with the ability to override the defaults with
     problem-specific, custom settings.  These settings can be set either by calling `override` or loaded from the
     properties file.
+    
+  * `ThreadLocalMersenneTwister` is now the default random number generator used by `PRNG`.  Consequently,
+    `PRNG` can be used by multi-threaded or parallel codes directly.
   
 
 ## Version 4.0 (05 Apr 2024)

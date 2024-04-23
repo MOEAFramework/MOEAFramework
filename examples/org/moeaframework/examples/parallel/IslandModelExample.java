@@ -20,7 +20,6 @@ package org.moeaframework.examples.parallel;
 import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Selection;
 import org.moeaframework.core.comparator.ChainedComparator;
@@ -34,7 +33,6 @@ import org.moeaframework.parallel.island.migration.Migration;
 import org.moeaframework.parallel.island.migration.SingleNeighborMigration;
 import org.moeaframework.parallel.island.topology.FullyConnectedTopology;
 import org.moeaframework.parallel.island.topology.Topology;
-import org.moeaframework.parallel.util.ThreadLocalMersenneTwister;
 import org.moeaframework.problem.CEC2009.UF1;
 
 /**
@@ -44,8 +42,6 @@ public class IslandModelExample {
 	
 	public static void main(String[] args) throws IOException {
 		Problem problem = new UF1();
-		
-		PRNG.setRandom(ThreadLocalMersenneTwister.getInstance());
 		
 		Selection migrationSelection = new TournamentSelection(2, 
 				new ChainedComparator(
