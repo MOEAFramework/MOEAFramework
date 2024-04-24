@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 import com.mathworks.engine.EngineException;
 import com.mathworks.engine.MatlabEngine;
@@ -42,7 +43,7 @@ public class ${problemName} extends AbstractProblem {
 	
 			solution.setObjectives((double[])results[0]);
 			solution.setConstraints((double[])results[1]);
-		} catch (EngineException | MatlabExecutionException | MatlabSyntaxException | InterruptedException e) {
+		} catch (EngineException | ExecutionException | MatlabExecutionException | MatlabSyntaxException | InterruptedException e) {
 			throw new FrameworkException("Failed while invoking Matlab function ${functionName}", e);
 		}
 	}
