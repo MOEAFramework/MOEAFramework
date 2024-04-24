@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 import com.mathworks.engine.MatlabEngine;
 
 import org.moeaframework.core.FrameworkException;
