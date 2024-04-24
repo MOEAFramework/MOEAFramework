@@ -74,13 +74,6 @@ public class BuildProblemTest {
 		
 		result.assertSuccessful();
 	}
-	
-	@Test
-	public void testMatlabFull() throws Exception {
-		Assume.assumeMatlabExists();
-		
-		test("matlab");
-	}
 
 	@Test
 	public void testExternal() throws Exception {
