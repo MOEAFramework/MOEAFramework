@@ -43,7 +43,7 @@ public class ${problemName} extends AbstractProblem {
 	
 			solution.setObjectives((double[])results[0]);
 			solution.setConstraints((double[])results[1]);
-		} catch (EngineException | ExecutionException | MatlabExecutionException | MatlabSyntaxException | InterruptedException e) {
+		} catch (Exception e) {
 			throw new FrameworkException("Failed while invoking Matlab function ${functionName}", e);
 		}
 	}
@@ -64,7 +64,7 @@ public class ${problemName} extends AbstractProblem {
 				engine.close();
 				engine = null;
 			}
-		} catch (EngineException e) {
+		} catch (Exception e) {
 			throw new FrameworkException("Failed while closing MatlabEngine", e);
 		}
 	}
