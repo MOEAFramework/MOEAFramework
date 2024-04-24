@@ -8,8 +8,7 @@ public class ${problemName} extends AbstractProblem {
 	static {
 		// Locate the Matlab function on disk or extract from the JAR
 		try {
-			EXECUTABLE = Resources.asFile(${problemName}.class, "${functionName}.m",
-				ResourceOption.REQUIRED, ResourceOption.TEMPORARY).getPath();
+			Resources.asFile(${problemName}.class, "${functionName}.m", ResourceOption.REQUIRED).getPath();
 		} catch (IOException e) {
 			throw new FrameworkException("Failed to locate ${functionName}.m", e);
 		}
