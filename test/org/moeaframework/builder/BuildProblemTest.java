@@ -69,7 +69,7 @@ public class BuildProblemTest {
 		File directory = test("matlab", false);
 		
 		CaptureResult result = Capture.output(new ProcessBuilder()
-				.command("matlab", "-batch", "objs, constrs = evaluate(zeros(1, 10))")
+				.command("matlab", "-batch", "[objs, constrs] = evaluate(zeros(1, 10))")
 				.directory(directory));
 		
 		result.assertSuccessful();
