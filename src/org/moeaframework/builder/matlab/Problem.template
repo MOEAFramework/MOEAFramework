@@ -1,7 +1,12 @@
+import com.mathworks.engine.MatlabEngine;
+
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.util.io.Resources;
+import org.moeaframework.util.io.Resources.ResourceOption;
 
 public class ${problemName} extends AbstractProblem {
 
@@ -27,7 +32,7 @@ public class ${problemName} extends AbstractProblem {
 		
 		double[] vars = EncodingUtils.getReal(solution);
 		
-		Object[] results = eng.feval(2, "${functionName}", vars);
+		Object[] results = engine.feval(2, "${functionName}", vars);
 
 		solution.setObjectives((double[])results[0]);
 		solution.setConstraints((double[])results[1]);
