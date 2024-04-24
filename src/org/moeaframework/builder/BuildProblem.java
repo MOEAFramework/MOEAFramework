@@ -62,7 +62,7 @@ public class BuildProblem extends CommandLineUtility {
 	public static final Map<String, String> LANGUAGES;
 	
 	/**
-	 * Experimental languages.  These are not officially supported.  Use at your own risk.
+	 * Experimental languages.  These are not officially supported as we typically can't fully test end-to-end.
 	 */
 	public static final Map<String, String> EXPERIMENTAL;
 	
