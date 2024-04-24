@@ -67,6 +67,14 @@ public class Assume extends org.junit.Assume {
 		assumeCommand("matlab", "-batch", "version");
 	}
 	
+	public static void assumeGitHubActions() {
+		assumeTrue("Expected to run on GitHub Actions, skipping test", System.getenv("GITHUB_ACTIONS") != null);
+	}
+	
+	public static void assumeNotGitHubActions() {
+		assumeTrue("Expected to run on GitHub Actions, skipping test", System.getenv("GITHUB_ACTIONS") == null);
+	}
+	
 	public static void assumeHasDisplay() {
 		assumeTrue("Skipping test as the system has no display", !GraphicsEnvironment.isHeadless() &&
 				GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length > 0);

@@ -61,10 +61,10 @@ public class BuildProblemTest {
 	}
 	
 	@Test
-	public void testMatlab() throws Exception {
-		// Note: MatlabEngine is not available on GitHub Actions.  We can compile the code but not run the example.
-		// Therefore, we test compiling and running the Matlab function directly, but can't test end-to-end.
+	public void testMatlabPartial() throws Exception {
+		// Note: MatlabEngine is not available on GitHub Actions.  Therefore, we can't perform a full end-to-end test.
 		Assume.assumeMatlabExists();
+		Assume.assumeGitHubActions();
 		
 		File directory = test("matlab", false);
 		
@@ -73,6 +73,13 @@ public class BuildProblemTest {
 				.directory(directory));
 		
 		result.assertSuccessful();
+	}
+	
+	@Test
+	public void testMatlabFull() throws Exception {
+		Assume.assumeMatlabExists();
+		
+		test("matlab");
 	}
 
 	@Test
@@ -143,7 +150,7 @@ public class BuildProblemTest {
 		
 		if (run) {
 			// remove any compiled files to verify they are packaged correctly in the JAR
-			List<String> extensionsToRemove = List.of("exe", "dll", "so", "py", "class");
+			List<String> extensionsToRemove = List.of("exe", "dll", "so", "py", "m", "class");
 			Files.walk(testDirectory.toPath())
 				.filter(x -> extensionsToRemove.contains(FilenameUtils.getExtension(x.toString())))
 				.map(Path::toFile)
