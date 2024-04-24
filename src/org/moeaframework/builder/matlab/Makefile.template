@@ -20,16 +20,16 @@ MATLAB_ENGINE := $(MATLAB)/extern/engines/java/jar/engine.jar
 # Configure the platform-specific settings
 ifeq ($(OS),Windows_NT)
     SEPARATOR := ;
-    MATLAB_LIBRARY := $(MATLAB)/extern/bin/win64
+    MATLAB_LIBRARY := $(MATLAB)/bin/win64$(SEPARATOR)$(MATLAB)/extern/bin/win64
 else
     SEPARATOR := :
     UNAME := $(shell uname -s)
     
     ifeq ($(UNAME),Linux)
-        MATLAB_LIBRARY := $(MATLAB)/extern/bin/glnxa64$(SEPARATOR)$(MATLAB)/sys/os/glnxa64
+        MATLAB_LIBRARY := $(MATLAB)/bin/glnxa64$(SEPARATOR)$(MATLAB)/extern/bin/glnxa64$(SEPARATOR)$(MATLAB)/sys/os/glnxa64
     else ifeq ($(UNAME),Darwin)
         # For Intel, use maca64 if Apple silicon
-        MATLAB_LIBRARY := $(MATLAB)/extern/bin/maci64
+        MATLAB_LIBRARY := $(MATLAB)/bin/maci64$(SEPARATOR)$(MATLAB)/extern/bin/maci64
     endif
 endif
 

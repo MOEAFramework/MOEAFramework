@@ -68,16 +68,16 @@ public class Assume extends org.junit.Assume {
 	}
 	
 	public static void assumeGitHubActions() {
-		assumeTrue("Expected to run on GitHub Actions, skipping test", System.getenv("GITHUB_ACTIONS") != null);
-	}
-	
-	public static void assumeNotGitHubActions() {
-		assumeTrue("Expected to run on GitHub Actions, skipping test", System.getenv("GITHUB_ACTIONS") == null);
+		assumeTrue("Expected to run on GitHub Actions, skipping test", isGitHubActions());
 	}
 	
 	public static void assumeHasDisplay() {
 		assumeTrue("Skipping test as the system has no display", !GraphicsEnvironment.isHeadless() &&
 				GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length > 0);
+	}
+	
+	public static boolean isGitHubActions() {
+		return System.getenv("GITHUB_ACTIONS") != null;
 	}
 
 }
