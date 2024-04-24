@@ -62,16 +62,17 @@ public class BuildProblemTest {
 	
 	@Test
 	public void testMatlab() throws Exception {
-		// Note: MatlabEngine is not available on GitHub Actions.  We can build the code but not run the example.
+		// Note: MatlabEngine is not available on GitHub Actions.  We can compile the code but not run the example.
+		// Therefore, we test compiling and running the Matlab function directly, but can't test end-to-end.
 		Assume.assumeMatlabExists();
 		
 		File directory = test("matlab", false);
 		
-//		ProcessBuilder builder = new ProcessBuilder()
-//				.command("matlab", "-batch", "objs, constrs = evaluate(zeros(1, 10))")
-//				.directory(directory);
-//		
-//		RedirectStream.pipe(builder, System.out);	
+		CaptureResult result = Capture.output(new ProcessBuilder()
+				.command("matlab", "-batch", "objs, constrs = evaluate(zeros(1, 10))")
+				.directory(directory));
+		
+		result.assertSuccessful();
 	}
 
 	@Test
