@@ -64,7 +64,7 @@ public class Assume extends org.junit.Assume {
 	}
 	
 	public static void assumeMatlabExists() {
-		assumeCommand("matlab", "-n");
+		assumeCommand("matlab", "-batch", "version");
 	}
 	
 	public static void assumeHasDisplay() {
