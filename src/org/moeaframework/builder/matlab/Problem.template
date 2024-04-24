@@ -55,10 +55,14 @@ public class ${problemName} extends AbstractProblem {
 		return solution;
 	}
 	
-	public void close() throws EngineException {
-		if (engine != null) {
-			engine.close();
-			engine = null;
+	public void close() {
+		try {
+			if (engine != null) {
+				engine.close();
+				engine = null;
+			}
+		} catch (EngineException e) {
+			throw new FrameworkException("Failed while closing MatlabEngine", e);
 		}
 	}
 
