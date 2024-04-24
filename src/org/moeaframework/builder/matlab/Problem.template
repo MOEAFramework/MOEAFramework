@@ -1,5 +1,6 @@
 import java.io.IOException;
 
+import com.mathworks.engine.EngineException;
 import com.mathworks.engine.MatlabEngine;
 
 import org.moeaframework.core.FrameworkException;
@@ -27,17 +28,21 @@ public class ${problemName} extends AbstractProblem {
 		super(${numberOfVariables}, ${numberOfObjectives}, ${numberOfConstraints});
 	}
 
-	public void evaluate(Solution solution) {		
-		if (engine == null) {
-			engine = MatlabEngine.startMatlab();
+	public void evaluate(Solution solution) {
+		try {		
+			if (engine == null) {
+				engine = MatlabEngine.startMatlab();
+			}
+			
+			double[] vars = EncodingUtils.getReal(solution);
+			
+			Object[] results = engine.feval(2, "${functionName}", vars);
+	
+			solution.setObjectives((double[])results[0]);
+			solution.setConstraints((double[])results[1]);
+		} catch (EngineException e) {
+			throw new FrameworkException("Failed while invoking Matlab function ${functionName}", e);
 		}
-		
-		double[] vars = EncodingUtils.getReal(solution);
-		
-		Object[] results = engine.feval(2, "${functionName}", vars);
-
-		solution.setObjectives((double[])results[0]);
-		solution.setConstraints((double[])results[1]);
 	}
 
 	public Solution newSolution() {
@@ -50,7 +55,7 @@ public class ${problemName} extends AbstractProblem {
 		return solution;
 	}
 	
-	public void close() {
+	public void close() throws EngineException {
 		if (engine != null) {
 			engine.close();
 			engine = null;
