@@ -150,6 +150,10 @@ public class BuildProblemTest {
 			
 			CaptureResult result = Capture.output(() -> Make.runMake(testDirectory, "run"));
 			result.assertSuccessful();
+			
+			for (String line : result.toString().lines().toList()) {
+				System.out.println("> " + line);
+			}
 	
 			List<String> lines = result.toString().lines().skip(1).toList(); // skip first line, which is the java command
 			Assert.assertEquals(3, lines.size());
