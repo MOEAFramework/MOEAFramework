@@ -150,12 +150,8 @@ public class BuildProblemTest {
 			
 			CaptureResult result = Capture.output(() -> Make.runMake(testDirectory, "run"));
 			result.assertSuccessful();
-			
-			for (String line : result.toString().lines().toList()) {
-				System.out.println("> " + line);
-			}
 	
-			List<String> lines = result.toString().lines().skip(1).toList(); // skip first line, which is the java command
+			List<String> lines = result.toString().lines().skip(2).toList(); // skip first two lines
 			Assert.assertEquals(3, lines.size());
 			Assert.assertMatches(lines.get(0), "(\\bVar[0-9]+\\b\\s*){10}(\\bObj[0-9]+\\b\\s*){2}");
 			Assert.assertMatches(lines.get(1), "([\\-]+\\s*){12}");

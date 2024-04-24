@@ -33,7 +33,7 @@ else
     endif
 endif
 
-CLASSPATH := ${java.class.path}$(SEPARATOR)$(MATLAB_ENGINE)
+CLASSPATH := $(MATLAB_ENGINE)$(SEPARATOR)${java.class.path}
 
 # Compile the shared library
 build:
