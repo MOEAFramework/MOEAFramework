@@ -16,5 +16,7 @@ dtlz2_stdio.exe: dtlz2.c
 
 dtlz2_socket.exe: dtlz2.c
 ifneq ($(OS),Windows_NT)
-	gcc -D_POSIX_SOURCE -DUSE_SOCKET -o dtlz2_socket.exe dtlz2.c moeaframework.c -lm
+ifeq ($(shell uname -s),Linux)
+	gcc -DUSE_SOCKET -o dtlz2_socket.exe dtlz2.c moeaframework.c -lm
+endif
 endif

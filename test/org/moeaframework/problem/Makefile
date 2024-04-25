@@ -21,5 +21,7 @@ test_stdio.exe: test.c $(EXAMPLES)/moeaframework.c
 	
 test_socket.exe: test.c $(EXAMPLES)/moeaframework.c
 ifneq ($(OS),Windows_NT)
-	gcc -D_POSIX_SOURCE -DUSE_SOCKET -o test_socket.exe -I $(EXAMPLES) test.c $(EXAMPLES)/moeaframework.c
+ifeq ($(shell uname -s),Linux)
+	gcc -DUSE_SOCKET -o test_socket.exe -I $(EXAMPLES) test.c $(EXAMPLES)/moeaframework.c
+endif
 endif

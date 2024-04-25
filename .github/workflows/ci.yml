@@ -144,7 +144,7 @@ jobs:
         make -C examples
 
         # Compile all Java examples
-        CLASSPATH="lib/*${{ runner.os == 'Linux' && ':' || ';' }}examples"
+        CLASSPATH="lib/*${{ runner.os == 'Windows' && ';' || ':' }}examples"
         find examples/ -type f -name '*.java' | xargs -rt -I "{}" javac -classpath "${CLASSPATH}" "{}"
 
         # Run all examples, excluding files requiring a GUI
