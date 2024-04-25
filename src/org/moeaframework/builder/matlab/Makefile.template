@@ -10,7 +10,7 @@ ifeq ("$(wildcard $(MATLAB)/bin/matlab)","")
 endif
 
 ifeq ("$(wildcard $(MATLAB)/bin/matlab)","")
-    $(error Unable to locate Matlab.  Specify the path by running 'make MATLAB=<path>'.)
+    $(error Unable to locate Matlab.  Specify the path by running 'make MATLAB=<path>')
 else
     $(info Found Matlab root directory at "$(MATLAB)")
 endif

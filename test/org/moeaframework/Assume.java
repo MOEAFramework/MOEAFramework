@@ -47,7 +47,7 @@ public class Assume extends org.junit.Assume {
 			ProcessBuilder processBuilder = new ProcessBuilder(args);
 			RedirectStream.pipe(processBuilder, System.out);
 		} catch (Exception e) {
-			assumeNoException(args[0] + " is not available on this system, skipping test", e);
+			assumeTrue(args[0] + " is not available on this system, skipping test", false);
 		}
 	}
 	

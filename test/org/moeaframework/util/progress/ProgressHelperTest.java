@@ -22,9 +22,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.moeaframework.Assert;
+import org.moeaframework.CIRunner;
+import org.moeaframework.Retryable;
 import org.moeaframework.Wait;
 
+@RunWith(CIRunner.class)
+@Retryable
 public class ProgressHelperTest {
 	
 	/**
