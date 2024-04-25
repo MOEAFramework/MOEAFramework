@@ -81,7 +81,8 @@ public class ExternalProblemWithPython {
 	
 	public static void main(String[] args) throws IOException {
 		try (ExternalProblem problem = new MyDTLZ2()) {
-			problem.setDebugStream(System.out);
+			// Uncomment the following to show debugging output
+			//problem.setDebugStream(System.out);
 			
 			Algorithm algorithm = new NSGAII(problem);
 			algorithm.run(10000);

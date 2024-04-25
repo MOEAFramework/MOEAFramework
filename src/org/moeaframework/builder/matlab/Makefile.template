@@ -1,5 +1,6 @@
 # Locate Matlab. This searches up two directories to find the root.
 MATLAB := $(shell which matlab)
+$(info Starting path $(MATLAB))
 
 ifeq ("$(wildcard $(MATLAB)/bin/matlab)","")
     override MATLAB := $(shell dirname "$(MATLAB)")
