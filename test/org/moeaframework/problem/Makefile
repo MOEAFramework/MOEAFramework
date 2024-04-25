@@ -16,10 +16,10 @@ main: test_stdio.exe test_socket.exe
 clean:
 	rm -f test_stdio.exe test_socket.exe
 
-test_stdio.exe: test.c $(EXAMPLES)/moeaframework.c
+test_stdio.exe:
 	gcc -o test_stdio.exe -I $(EXAMPLES) test.c $(EXAMPLES)/moeaframework.c
 	
-test_socket.exe: test.c $(EXAMPLES)/moeaframework.c
+test_socket.exe:
 ifneq ($(OS),Windows_NT)
 ifeq ($(shell uname -s),Linux)
 	gcc -DUSE_SOCKET -o test_socket.exe -I $(EXAMPLES) test.c $(EXAMPLES)/moeaframework.c
