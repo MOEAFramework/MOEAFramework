@@ -62,17 +62,21 @@ public class BuildProblemTest {
 	
 	@Test
 	public void testMatlabPartial() throws Exception {
-		// Note: MatlabEngine is not available on GitHub Actions.  Therefore, we can't perform a full end-to-end test.
 		Assume.assumeMatlabExists();
-		Assume.assumeGitHubActions();
 		
-		File directory = test("matlab", false);
-		
-		CaptureResult result = Capture.output(new ProcessBuilder()
-				.command("matlab", "-batch", "[objs, constrs] = evaluate(zeros(1, 10))")
-				.directory(directory));
-		
-		result.assertSuccessful();
+		if (Assume.isGitHubActions()) {
+			// Note: The licenses imported by the setup-matlab action does not enable MatlabEngine.  We can compile
+			// the example but can't run to end-to-end.  See https://github.com/matlab-actions/setup-matlab/issues/13.
+			File directory = test("matlab", false);
+			
+			CaptureResult result = Capture.output(new ProcessBuilder()
+					.command("matlab", "-batch", "[objs, constrs] = evaluate(zeros(1, 10))")
+					.directory(directory));
+			
+			result.assertSuccessful();
+		} else {
+			test("matlab");
+		}
 	}
 
 	@Test

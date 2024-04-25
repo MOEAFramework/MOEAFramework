@@ -15,11 +15,17 @@ on:
 
 jobs:
   ant-tests:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
+        os: [ 'ubuntu-latest' ]
         java: [ '17', '18', '19', '20', '21' ]
+        include:
+          - os: 'windows-latest'
+            java: '21'
+          - os: 'macos-latest'
+            java: '21'
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK ${{ matrix.java }}
@@ -31,7 +37,8 @@ jobs:
       uses: matlab-actions/setup-matlab@v1
     - name: Download test dependencies
       run: ant -f test.xml download-all
-    - name: Setup Coco Framework
+    - name: Setup Coco Framework (Linux)
+      if: runner.os == 'Linux'
       run: |
         sudo rm /usr/bin/javah
 
@@ -54,7 +61,7 @@ jobs:
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: ant-test-results-${{ matrix.java }}
+        name: ant-test-results-${{ matrix.os }}-${{ matrix.java }}
         path: test-results     
 
   maven-tests:
