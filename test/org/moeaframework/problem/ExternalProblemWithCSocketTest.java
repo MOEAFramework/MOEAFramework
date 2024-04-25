@@ -53,6 +53,7 @@ public class ExternalProblemWithCSocketTest extends ExternalProblemWithCStdioTes
 		Assume.assumeFileExists(file);
 		
 		//start the process separately to intercept the error (debug) data
+		System.out.println("Starting: " + file);
 		process = new ProcessBuilder(file.toString()).start();
 
 		//sleep to allow the external process to begin listening to the port
