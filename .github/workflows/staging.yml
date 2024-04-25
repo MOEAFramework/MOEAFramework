@@ -23,17 +23,21 @@ on:
         description: 'Skip version validations'
         default: false
         type: boolean
+        
+env:
+  JAVA_VERSION: 17            # Minimum supported Java version
+  JAVA_DISTRIBUTION: zulu     # Java distribution used in tests
 
 jobs:
   stage:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up JDK 17
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
         uses: actions/setup-java@v4
         with:
-          java-version: 17
-          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
       - name: Setup Git and GitHub CLI
         run: |
           gh auth setup-git

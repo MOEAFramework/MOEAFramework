@@ -12,32 +12,36 @@ on:
           - 'false'
           - 'true'
         default: 'false'
+        
+env:
+  JAVA_VERSION: 17            # Minimum supported Java version
+  JAVA_DISTRIBUTION: zulu     # Java distribution used in tests
 
 jobs:
   ant-tests:
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}-latest
     strategy:
       fail-fast: false
       matrix:
-        os: [ 'ubuntu-latest' ]
-        java: [ '17', '18', '19', '20', '21' ]
+        os: [ ubuntu ]
+        java: [ 17, 18, 19, 20, 21 ]
         include:
-          - os: 'windows-latest'
-            java: '21'
-          - os: 'macos-latest'
-            java: '21'
+          - os: windows
+            java: 21
+          - os: macos
+            java: 21
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK ${{ matrix.java }}
       uses: actions/setup-java@v4
       with:
         java-version: ${{ matrix.java }}
-        distribution: zulu
+        distribution: ${{ env.JAVA_DISTRIBUTION }}
     - name: Set up Matlab
       uses: matlab-actions/setup-matlab@v1
     - name: Download test dependencies
       run: ant -f test.xml download-all
-    - name: Setup Coco Framework (Linux)
+    - name: Set up Coco Framework (Linux)
       if: runner.os == 'Linux'
       run: |
         sudo rm /usr/bin/javah
@@ -68,11 +72,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Set up JDK 17
+    - name: Set up JDK ${{ env.JAVA_VERSION }}
       uses: actions/setup-java@v4
       with:
-        java-version: 17
-        distribution: temurin
+        java-version: ${{ env.JAVA_VERSION }}
+        distribution: ${{ env.JAVA_DISTRIBUTION }}
         cache: maven
     - name: Set up Matlab
       uses: matlab-actions/setup-matlab@v1
@@ -88,18 +92,18 @@ jobs:
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: maven-test-results
+        name: maven-test-results-ubuntu-${{ env.JAVA_VERSION }}
         path: build/target/surefire-reports
 
   content-tests:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Set up JDK 17
+    - name: Set up JDK ${{ env.JAVA_VERSION }}
       uses: actions/setup-java@v4
       with:
-        java-version: 17
-        distribution: temurin
+        java-version: ${{ env.JAVA_VERSION }}
+        distribution: ${{ env.JAVA_DISTRIBUTION }}
     - name: Validate docs
       run: ant -f build.xml validate-docs
     - name: Validate links
@@ -124,11 +128,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
-    - name: Set up JDK 17
+    - name: Set up JDK ${{ env.JAVA_VERSION }}
       uses: actions/setup-java@v4
       with:
-        java-version: 17
-        distribution: temurin
+        java-version: ${{ env.JAVA_VERSION }}
+        distribution: ${{ env.JAVA_DISTRIBUTION }}
     - name: Package binary
       run: ant -f build.xml package-binary
     - name: Compiler info
@@ -156,11 +160,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Set up JDK 17
+    - name: Set up JDK ${{ env.JAVA_VERSION }}
       uses: actions/setup-java@v4
       with:
-        java-version: 17
-        distribution: temurin
+        java-version: ${{ env.JAVA_VERSION }}
+        distribution: ${{ env.JAVA_DISTRIBUTION }}
     - name: Package binary
       run: ant -f build.xml package-binary
     - name: Package source
