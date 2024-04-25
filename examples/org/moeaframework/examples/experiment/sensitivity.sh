@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Demonstrates a simple sensitivity analysis study to measure the first, second, and total-order
-# effects of NSGA-II's parameters with respect to the Hypervolume metric.
+# effects of NSGA-II's parameters with respect to the Hypervolume metric.  For demonstration
+# purposes, this uses '--numberOfSamples 500', but real experiments should consider larger values.
 
 if ! [ -f lib/MOEAFramework-*.jar -o -f dist/MOEAFramework-*.jar ]; then
     echo "Please build the MOEA Framework using 'ant build-binary' before running this example"
@@ -14,7 +15,7 @@ if [ ! -f NSGAII_Samples.txt ]; then
     java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.SampleGenerator \
         --parameterFile examples/org/moeaframework/examples/experiment/NSGAII_Params.txt \
         --method saltelli \
-        --numberOfSamples 1000 \
+        --numberOfSamples 500 \
         --output NSGAII_Samples.txt
 fi
 
