@@ -6,10 +6,10 @@
 # Run 'make' to build all files
 
 # Find the examples/ folder, which changes if using Ant or Maven
-ROOT := ../../..
+ROOT := ../../../..
 
 ifeq ("$(wildcard $(ROOT)/examples)","")
-    override ROOT := $(ROOT)/../../..
+    override ROOT := $(ROOT)/../..
 endif
 
 ifeq ("$(wildcard $(ROOT)/examples)","")

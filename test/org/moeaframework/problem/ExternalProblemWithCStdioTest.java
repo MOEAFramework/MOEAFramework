@@ -131,6 +131,8 @@ public class ExternalProblemWithCStdioTest {
 				process.destroyForcibly();
 				Assert.fail("Process did not terminate within timeout and was forcibly destroyed");
 			}
+			
+			process = null;
 		}
 	}
 	
