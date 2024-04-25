@@ -121,11 +121,11 @@ jobs:
         fi
 
   example-tests:
+    runs-on: ${{ matrix.os }}-latest
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
+        os: [ubuntu, windows, macos]
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK ${{ env.JAVA_VERSION }}
