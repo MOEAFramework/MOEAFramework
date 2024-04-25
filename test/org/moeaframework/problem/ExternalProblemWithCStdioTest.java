@@ -21,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
@@ -125,7 +126,7 @@ public class ExternalProblemWithCStdioTest {
 		
 		if (process != null) {
 			try {
-				process.wait(TIMEOUT);
+				process.waitFor(TIMEOUT, TimeUnit.MILLISECONDS);
 			} catch (InterruptedException e) {
 				process.destroyForcibly();
 				Assert.fail("Process did not terminate within timeout and was forcibly destroyed");
