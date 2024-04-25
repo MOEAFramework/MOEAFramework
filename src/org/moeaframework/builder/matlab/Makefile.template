@@ -10,6 +10,9 @@ ifeq ("$(wildcard $(MATLAB)/bin/matlab)","")
     override MATLAB := $(shell dirname "$(MATLAB)")
 endif
 
+$(info Final path $(MATLAB))
+$(info $(wildcard $(MATLAB)/bin/matlab))
+
 ifeq ("$(wildcard $(MATLAB)/bin/matlab)","")
     $(error Unable to locate Matlab.  Specify the path by running 'make MATLAB=<path>')
 else
