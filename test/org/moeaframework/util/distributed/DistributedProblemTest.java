@@ -21,7 +21,10 @@ import java.time.Duration;
 import java.util.concurrent.Executors;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.moeaframework.Assert;
+import org.moeaframework.CIRunner;
+import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.Wait;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
@@ -33,6 +36,8 @@ import org.moeaframework.mock.MockConstraintProblem;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockRealStochasticProblem;
 
+@RunWith(CIRunner.class)
+@Retryable
 public class DistributedProblemTest {
 	
 	public static final int EVALAUATE_MS = 100;
