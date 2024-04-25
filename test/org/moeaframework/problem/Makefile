@@ -9,7 +9,7 @@
 ROOT := ../../..
 
 ifeq ("$(wildcard $(ROOT)/examples)","")
-    override ROOT := $(ROOT)/..
+    override ROOT := $(ROOT)/../../..
 endif
 
 ifeq ("$(wildcard $(ROOT)/examples)","")

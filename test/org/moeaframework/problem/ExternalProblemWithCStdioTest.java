@@ -41,7 +41,11 @@ import org.moeaframework.mock.MockUnsupportedVariable;
 
 public class ExternalProblemWithCStdioTest {
 	
+	private static final int TIMEOUT = 10000;
+	
 	protected File file;
+	
+	protected Process process;
 	
 	protected ExternalProblem problem;
 	
@@ -65,7 +69,7 @@ public class ExternalProblemWithCStdioTest {
 		Assume.assumeFileExists(file);
 		
 		//start the process separately to intercept the error (debug) data
-		Process process = new ProcessBuilder(file.toString()).start();
+		process = new ProcessBuilder(file.toString()).start();
 
 		debugReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 
@@ -117,6 +121,15 @@ public class ExternalProblemWithCStdioTest {
 		if (debugReader != null) {
 			debugReader.close();
 			debugReader = null;
+		}
+		
+		if (process != null) {
+			try {
+				process.wait(TIMEOUT);
+			} catch (InterruptedException e) {
+				process.destroyForcibly();
+				Assert.fail("Process did not terminate within timeout and was forcibly destroyed");
+			}
 		}
 	}
 	
