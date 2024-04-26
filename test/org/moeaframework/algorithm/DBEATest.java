@@ -200,7 +200,7 @@ public class DBEATest {
 	 */
 	@Test
 	public void test() throws IOException {
-		File directory = new File("Matlab-DBEA");
+		File directory = new File("DBEA-Matlab");
 		Assume.assumeFileExists(directory);
 		
 		Problem problem = new DTLZ2(15);
