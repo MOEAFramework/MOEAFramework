@@ -141,7 +141,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-${{ env.MAC_VERSION }}]
+        os: [ubuntu-latest, windows-latest]
+        include:
+          - os: macos-${{ env.MAC_VERSION }}
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK ${{ env.MIN_JAVA_VERSION }}
