@@ -56,6 +56,10 @@ jobs:
       with:
         java-version: ${{ matrix.java }}
         distribution: ${{ env.JAVA_DISTRIBUTION }}
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        auto apt install unrar
     - name: Set up Matlab
       uses: matlab-actions/setup-matlab@v1
     - name: Download test dependencies
