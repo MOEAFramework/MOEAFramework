@@ -1,18 +1,7 @@
-# Locate Matlab. This searches up two directories to find the root.
-MATLAB := $(shell which matlab)
-$(info Starting path $(MATLAB))
-$(info Wildcard $(wildcard $(MATLAB)))
-$(info Wildcard $(wildcard "C:/Program Files/MATLAB/R2024a/bin/matlab"))
+# Locate Matlab.
+MATLAB := $(shell matlab -nosplash -batch "disp(matlabroot);" | tail -n 1 || echo "")
 
-ifeq ("$(wildcard $(MATLAB)/bin/matlab)","")
-    override MATLAB := $(shell dirname "$(MATLAB)")
-endif
-
-ifeq ("$(wildcard $(MATLAB)/bin/matlab)","")
-    override MATLAB := $(shell dirname "$(MATLAB)")
-endif
-
-ifeq ("$(wildcard $(MATLAB)/bin/matlab)","")
+ifeq ("$(MATLAB)","")
     $(error Unable to locate Matlab.  Specify the path by running 'make MATLAB=<path>')
 else
     $(info Found Matlab root directory at "$(MATLAB)")
