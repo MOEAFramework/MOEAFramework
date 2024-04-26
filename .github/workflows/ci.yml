@@ -19,16 +19,16 @@ env:
 
 jobs:
   ant-tests:
-    runs-on: ${{ matrix.os }}-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu ]
+        os: [ ubuntu-latest ]
         java: [ 17, 18, 19, 20, 21 ]
         include:
-          - os: windows
+          - os: windows-latest
             java: 21
-          - os: macos
+          - os: macos-latest-large
             java: 21
     steps:
     - uses: actions/checkout@v4
@@ -121,11 +121,11 @@ jobs:
         fi
 
   example-tests:
-    runs-on: ${{ matrix.os }}-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu, windows, macos]
+        os: [ubuntu-latest, windows-latest, macos-latest-large]
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK ${{ env.MIN_JAVA_VERSION }}
