@@ -10,6 +10,8 @@ This page documents notable changes introduced in each chronological release of 
     
   * `ThreadLocalMersenneTwister` is now the default random number generator used by `PRNG`.  Consequently,
     `PRNG` can be used by multi-threaded or parallel codes directly.
+    
+  * Expands CI testing to include Windows and MacOS.
   
 
 ## Version 4.0 (05 Apr 2024)

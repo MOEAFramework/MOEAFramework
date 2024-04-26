@@ -12,10 +12,30 @@ on:
           - 'false'
           - 'true'
         default: 'false'
+      java-distribution:
+        type: choice
+        required: true
+        description: Java distribution
+        options:
+          - 'zulu'
+          - 'temurin'
+          - 'oracle'
+        default: 'zulu'
+      macos-version:
+        type: choice
+        required: true
+        description: MacOS version
+        options:
+          - '12'
+          - '13'
+          - '14'
+        default: '13'
         
 env:
-  MIN_JAVA_VERSION: 17        # Minimum supported Java version
-  JAVA_DISTRIBUTION: zulu     # Java distribution used in tests
+  MIN_JAVA_VERSION: 17
+  JAVA_DISTRIBUTION: ${{ inputs.java-distribution || 'zulu' }}
+  MAC_VERSION: ${{ inputs.macos-version || '13' }}
+  ALL_TESTS: ${{ inputs.all-tests || 'false' }}
 
 jobs:
   ant-tests:
@@ -28,7 +48,7 @@ jobs:
         include:
           - os: windows-latest
             java: 21
-          - os: macos-13
+          - os: macos-${{ env.MAC_VERSION }}
             java: 21
     steps:
     - uses: actions/checkout@v4
@@ -59,8 +79,6 @@ jobs:
         sudo mv libCocoJNI.so /usr/java/packages/lib/
     - name: Test with Ant - Java ${{ matrix.java }}
       run: ant -f test.xml
-      env:
-        ALL_TESTS: ${{ inputs.all-tests || 'false' }}
     - name: Upload test results
       uses: actions/upload-artifact@v4
       if: always()
@@ -86,8 +104,6 @@ jobs:
       run: |
         cd build
         mvn test
-      env:
-        ALL_TESTS: ${{ inputs.all-tests || 'false' }}
     - name: Upload test results
       uses: actions/upload-artifact@v4
       if: always()
@@ -125,7 +141,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-13]
+        os: [ubuntu-latest, windows-latest, macos-${{ env.MAC_VERSION }}]
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK ${{ env.MIN_JAVA_VERSION }}
