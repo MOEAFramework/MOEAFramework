@@ -148,15 +148,6 @@ jobs:
         find examples -type f -name '*.java' | xargs -rt -I "{}" javac -classpath "${CLASSPATH}" "{}"
 
         # Run all examples, excluding files requiring a GUI
-        find examples -type f -name '*.java'
-        echo $?
-        find examples -type f -name '*.java' | xargs -r grep -l 'public static void main('
-        echo $?
-        find examples -type f -name '*.java' | xargs -r grep -l 'public static void main(' | xargs -r grep -iL 'plot\|gui\|tsp'
-        echo $?
-        find examples -type f -name '*.java' | xargs -r grep -l 'public static void main(' | xargs -r grep -iL 'plot\|gui\|tsp' | sed 's~/~.~g; s/.java$//; s/examples.//'
-        echo $?
-        
         find examples -type f -name '*.java' | xargs -r grep -l 'public static void main(' | xargs -r grep -iL 'plot\|gui\|tsp' | sed 's~/~.~g; s/.java$//; s/examples.//' | xargs -rt -I "{}" java -classpath "${CLASSPATH}" "{}"
     - name: Test solve.sh
       if: runner.os == 'Linux'
