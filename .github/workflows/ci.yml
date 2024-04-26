@@ -14,7 +14,7 @@ on:
         default: 'false'
         
 env:
-  JAVA_VERSION: 17            # Minimum supported Java version
+  MIN_JAVA_VERSION: 17        # Minimum supported Java version
   JAVA_DISTRIBUTION: zulu     # Java distribution used in tests
 
 jobs:
@@ -72,10 +72,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Set up JDK ${{ env.JAVA_VERSION }}
+    - name: Set up JDK ${{ env.MIN_JAVA_VERSION }}
       uses: actions/setup-java@v4
       with:
-        java-version: ${{ env.JAVA_VERSION }}
+        java-version: ${{ env.MIN_JAVA_VERSION }}
         distribution: ${{ env.JAVA_DISTRIBUTION }}
         cache: maven
     - name: Set up Matlab
@@ -92,17 +92,17 @@ jobs:
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: maven-test-results-ubuntu-${{ env.JAVA_VERSION }}
+        name: maven-test-results-ubuntu-${{ env.MIN_JAVA_VERSION }}
         path: build/target/surefire-reports
 
   content-tests:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Set up JDK ${{ env.JAVA_VERSION }}
+    - name: Set up JDK ${{ env.MIN_JAVA_VERSION }}
       uses: actions/setup-java@v4
       with:
-        java-version: ${{ env.JAVA_VERSION }}
+        java-version: ${{ env.MIN_JAVA_VERSION }}
         distribution: ${{ env.JAVA_DISTRIBUTION }}
     - name: Validate docs
       run: ant -f build.xml validate-docs
@@ -128,10 +128,10 @@ jobs:
         os: [ubuntu, windows, macos]
     steps:
     - uses: actions/checkout@v4
-    - name: Set up JDK ${{ env.JAVA_VERSION }}
+    - name: Set up JDK ${{ env.MIN_JAVA_VERSION }}
       uses: actions/setup-java@v4
       with:
-        java-version: ${{ env.JAVA_VERSION }}
+        java-version: ${{ env.MIN_JAVA_VERSION }}
         distribution: ${{ env.JAVA_DISTRIBUTION }}
     - name: Package binary
       run: ant -f build.xml package-binary
@@ -148,6 +148,15 @@ jobs:
         find examples -type f -name '*.java' | xargs -rt -I "{}" javac -classpath "${CLASSPATH}" "{}"
 
         # Run all examples, excluding files requiring a GUI
+        find examples -type f -name '*.java'
+        echo $?
+        find examples -type f -name '*.java' | xargs -r grep -l 'public static void main('
+        echo $?
+        find examples -type f -name '*.java' | xargs -r grep -l 'public static void main(' | xargs -r grep -iL 'plot\|gui\|tsp'
+        echo $?
+        find examples -type f -name '*.java' | xargs -r grep -l 'public static void main(' | xargs -r grep -iL 'plot\|gui\|tsp' | sed 's~/~.~g; s/.java$//; s/examples.//'
+        echo $?
+        
         find examples -type f -name '*.java' | xargs -r grep -l 'public static void main(' | xargs -r grep -iL 'plot\|gui\|tsp' | sed 's~/~.~g; s/.java$//; s/examples.//' | xargs -rt -I "{}" java -classpath "${CLASSPATH}" "{}"
     - name: Test solve.sh
       if: runner.os == 'Linux'
@@ -160,10 +169,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Set up JDK ${{ env.JAVA_VERSION }}
+    - name: Set up JDK ${{ env.MIN_JAVA_VERSION }}
       uses: actions/setup-java@v4
       with:
-        java-version: ${{ env.JAVA_VERSION }}
+        java-version: ${{ env.MIN_JAVA_VERSION }}
         distribution: ${{ env.JAVA_DISTRIBUTION }}
     - name: Package binary
       run: ant -f build.xml package-binary
