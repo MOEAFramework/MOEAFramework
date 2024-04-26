@@ -57,7 +57,7 @@ jobs:
         java-version: ${{ matrix.java }}
         distribution: ${{ env.JAVA_DISTRIBUTION }}
     - name: Set up Matlab
-      uses: matlab-actions/setup-matlab@v1
+      uses: matlab-actions/setup-matlab@v2
     - name: Download test dependencies
       run: ant -f test.xml download-all
     - name: Set up Coco Framework (Linux)
