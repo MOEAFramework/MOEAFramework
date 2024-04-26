@@ -29,6 +29,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.Assume;
 import org.moeaframework.Wait;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
@@ -199,9 +200,10 @@ public class DBEATest {
 	 * Matlab/Octave version can be downloaded from https://github.com/MOEAFramework/Archive.
 	 */
 	@Test
-	@Ignore("Must download DBEA Matlab/Octave code to use this test")
 	public void test() throws IOException {
 		File directory = new File("Matlab-DBEA");
+		Assume.assumeFileExists(directory);
+		
 		Problem problem = new DTLZ2(15);
 		
 		DBEA.TESTING_MODE = true;
