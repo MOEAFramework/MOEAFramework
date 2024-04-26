@@ -25,7 +25,7 @@ on:
         type: boolean
         
 env:
-  JAVA_VERSION: 17            # Minimum supported Java version
+  MIN_JAVA_VERSION: 17        # Minimum supported Java version
   JAVA_DISTRIBUTION: zulu     # Java distribution used in tests
 
 jobs:
@@ -33,10 +33,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up JDK ${{ env.JAVA_VERSION }}
+      - name: Set up JDK ${{ env.MIN_JAVA_VERSION }}
         uses: actions/setup-java@v4
         with:
-          java-version: ${{ env.JAVA_VERSION }}
+          java-version: ${{ env.MIN_JAVA_VERSION }}
           distribution: ${{ env.JAVA_DISTRIBUTION }}
       - name: Setup Git and GitHub CLI
         run: |

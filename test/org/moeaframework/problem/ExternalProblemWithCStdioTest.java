@@ -70,7 +70,6 @@ public class ExternalProblemWithCStdioTest {
 		Assume.assumeFileExists(file);
 		
 		//start the process separately to intercept the error (debug) data
-		System.out.println("Starting: " + file);
 		process = new ProcessBuilder(file.toString()).start();
 
 		debugReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
@@ -127,9 +126,7 @@ public class ExternalProblemWithCStdioTest {
 		
 		if (process != null) {
 			try {
-				System.out.println("Waiting on exit: " + file);
 				process.waitFor(TIMEOUT, TimeUnit.MILLISECONDS);
-				System.out.println("Process exited: " + file );
 			} catch (InterruptedException e) {
 				process.destroyForcibly();
 				Assert.fail("Process did not terminate within timeout and was forcibly destroyed");
