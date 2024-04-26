@@ -34,7 +34,6 @@ on:
 env:
   MIN_JAVA_VERSION: 17
   JAVA_DISTRIBUTION: ${{ inputs.java-distribution || 'zulu' }}
-  MAC_VERSION: ${{ inputs.macos-version || '13' }}
   ALL_TESTS: ${{ inputs.all-tests || 'false' }}
 
 jobs:
@@ -48,7 +47,7 @@ jobs:
         include:
           - os: windows-latest
             java: 21
-          - os: macos-${{ env.MAC_VERSION }}
+          - os: macos-${{ inputs.macos-version || '13' }}
             java: 21
     steps:
     - uses: actions/checkout@v4
@@ -143,7 +142,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
         include:
-          - os: macos-${{ env.MAC_VERSION }}
+          - os: macos-${{ inputs.macos-version || '13' }}
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK ${{ env.MIN_JAVA_VERSION }}
