@@ -28,7 +28,7 @@ jobs:
         include:
           - os: windows-latest
             java: 21
-          - os: macos-latest-large
+          - os: macos-13
             java: 21
     steps:
     - uses: actions/checkout@v4
@@ -125,7 +125,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest-large]
+        os: [ubuntu-latest, windows-latest, macos-13]
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK ${{ env.MIN_JAVA_VERSION }}
