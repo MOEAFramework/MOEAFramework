@@ -39,7 +39,9 @@ public class JNAInfoTest {
 	@Test
 	public void testLibName() throws IOException {
 		String actual = Capture.output(JNAInfo.class, "--libName", "--problem", "TestProblem").toString().trim();
-		String expected = SystemUtils.IS_OS_WINDOWS ? "TestProblem.dll" : "libTestProblem.so";
+		String expected = SystemUtils.IS_OS_WINDOWS ? "TestProblem.dll" :
+			SystemUtils.IS_OS_MAC ? "libTestProblem.dylib" :
+			"libTestProblem.so";
 		
 		Assert.assertEquals(expected, actual);
 	}
@@ -47,7 +49,9 @@ public class JNAInfoTest {
 	@Test
 	public void testSysArch() throws IOException {
 		String actual = Capture.output(JNAInfo.class, "--sysArch").toString().trim();
-		String expected = SystemUtils.IS_OS_WINDOWS ? "win32-x86-64" : "linux-x86-64";
+		String expected = SystemUtils.IS_OS_WINDOWS ? "win32-x86-64" :
+				SystemUtils.IS_OS_MAC ? "darwin-x86-64" :
+				"linux-x86-64";
 		
 		Assert.assertEquals(expected, actual);
 	}

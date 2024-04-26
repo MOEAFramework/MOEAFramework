@@ -33,6 +33,7 @@ Fortran  | `gfortran`       | Fortran90 function
 Java     | `javac`          | Java problem definition (see [Writing Java Problem](writingJavaProblem.md))
 Python   |                  | Python program using Standard I/O (see [Writing External Problems](writingExternalProblem.md))
 External |                  | External C/C++ problem using Standard I/O (see [Writing External Problems](writingExternalProblem.md))
+Matlab   |                  | Uses `MatlabEngine` to call Matlab function (**experimental**)
 
 ## Example
 

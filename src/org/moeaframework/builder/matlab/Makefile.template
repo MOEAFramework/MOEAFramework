@@ -1,0 +1,40 @@
+# Locate Matlab.
+MATLAB := $(shell matlab -nosplash -batch "disp(matlabroot);" | tail -n 1 || echo "")
+
+ifeq ("$(MATLAB)","")
+    $(error Unable to locate Matlab.  Specify the path by running 'make MATLAB=<path>')
+else
+    $(info Found Matlab root directory at "$(MATLAB)")
+endif
+
+MATLAB_ENGINE := $(MATLAB)/extern/engines/java/jar/engine.jar
+
+# Configure the platform-specific settings
+ifeq ($(OS),Windows_NT)
+    SEPARATOR := ;
+    MATLAB_LIBRARY := $(MATLAB)/bin/win64$(SEPARATOR)$(MATLAB)/extern/bin/win64
+else
+    SEPARATOR := :
+    UNAME := $(shell uname -s)
+    
+    ifeq ($(UNAME),Linux)
+        MATLAB_LIBRARY := $(MATLAB)/bin/glnxa64$(SEPARATOR)$(MATLAB)/extern/bin/glnxa64$(SEPARATOR)$(MATLAB)/sys/os/glnxa64
+    else ifeq ($(UNAME),Darwin)
+        # For Intel, use maca64 if Apple silicon
+        MATLAB_LIBRARY := $(MATLAB)/bin/maci64$(SEPARATOR)$(MATLAB)/extern/bin/maci64
+    endif
+endif
+
+CLASSPATH := $(MATLAB_ENGINE)$(SEPARATOR)${java.class.path}
+
+# Compile the shared library
+build:
+	javac -classpath "$(CLASSPATH)" ${problemName}.java ${problemName}Provider.java
+	jar cf ${problemName}.jar *.class ${functionName}.m META-INF
+	rm -f *.class
+
+clean:
+	rm -f ${problemName}.jar
+	
+run:
+	java -Djava.library.path="$(MATLAB_LIBRARY)" -classpath "$(CLASSPATH)" Example.java

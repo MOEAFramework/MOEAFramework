@@ -21,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
@@ -41,7 +42,11 @@ import org.moeaframework.mock.MockUnsupportedVariable;
 
 public class ExternalProblemWithCStdioTest {
 	
+	private static final int TIMEOUT = 10000;
+	
 	protected File file;
+	
+	protected Process process;
 	
 	protected ExternalProblem problem;
 	
@@ -65,7 +70,7 @@ public class ExternalProblemWithCStdioTest {
 		Assume.assumeFileExists(file);
 		
 		//start the process separately to intercept the error (debug) data
-		Process process = new ProcessBuilder(file.toString()).start();
+		process = new ProcessBuilder(file.toString()).start();
 
 		debugReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 
@@ -117,6 +122,17 @@ public class ExternalProblemWithCStdioTest {
 		if (debugReader != null) {
 			debugReader.close();
 			debugReader = null;
+		}
+		
+		if (process != null) {
+			try {
+				process.waitFor(TIMEOUT, TimeUnit.MILLISECONDS);
+			} catch (InterruptedException e) {
+				process.destroyForcibly();
+				Assert.fail("Process did not terminate within timeout and was forcibly destroyed");
+			}
+			
+			process = null;
 		}
 	}
 	

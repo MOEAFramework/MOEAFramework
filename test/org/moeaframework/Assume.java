@@ -21,6 +21,7 @@ import java.awt.GraphicsEnvironment;
 import java.io.File;
 
 import org.apache.commons.lang3.SystemUtils;
+import org.moeaframework.util.io.RedirectStream;
 
 public class Assume extends org.junit.Assume {
 	
@@ -41,13 +42,42 @@ public class Assume extends org.junit.Assume {
 		}
 	}
 	
+	public static void assumeCommand(String... args) {
+		try {
+			ProcessBuilder processBuilder = new ProcessBuilder(args);
+			RedirectStream.pipe(processBuilder, System.out);
+		} catch (Exception e) {
+			assumeTrue(args[0] + " is not available on this system, skipping test", false);
+		}
+	}
+	
 	public static void assumeMakeExists() {
 		assumeTrue("Make is not available on this system, skipping test", Make.isMakeAvailable());
+	}
+	
+	public static void assumeFortranExists() {
+		assumeCommand("gfortran", "--version");
+	}
+	
+	public static void assumePythonExists() {
+		assumeCommand("python", "--version");
+	}
+	
+	public static void assumeMatlabExists() {
+		assumeCommand("matlab", "-batch", "version");
+	}
+	
+	public static void assumeGitHubActions() {
+		assumeTrue("Expected to run on GitHub Actions, skipping test", isGitHubActions());
 	}
 	
 	public static void assumeHasDisplay() {
 		assumeTrue("Skipping test as the system has no display", !GraphicsEnvironment.isHeadless() &&
 				GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length > 0);
+	}
+	
+	public static boolean isGitHubActions() {
+		return System.getenv("GITHUB_ACTIONS") != null;
 	}
 
 }

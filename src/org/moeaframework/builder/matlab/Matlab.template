@@ -1,0 +1,10 @@
+function [objs, constrs] = ${functionName}(vars)
+	nvars = ${numberOfVariables};
+	nobjs = ${numberOfObjectives};
+	nconstrs = ${numberOfConstraints};
+
+	objs = zeros(1, nobjs);
+	constrs = zeros(1, nconstrs);
+	
+	% TODO: Fill in with your problem definition
+end

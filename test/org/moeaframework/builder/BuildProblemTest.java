@@ -26,6 +26,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
+import org.moeaframework.Capture;
+import org.moeaframework.Capture.CaptureResult;
 import org.moeaframework.Make;
 import org.moeaframework.TempFiles;
 
@@ -43,6 +45,7 @@ public class BuildProblemTest {
 
 	@Test
 	public void testFortran() throws Exception {
+		Assume.assumeFortranExists();
 		test("fortran");
 	}
 
@@ -53,7 +56,27 @@ public class BuildProblemTest {
 	
 	@Test
 	public void testPython() throws Exception {
+		Assume.assumePythonExists();
 		test("python");
+	}
+	
+	@Test
+	public void testMatlabPartial() throws Exception {
+		Assume.assumeMatlabExists();
+		
+		if (Assume.isGitHubActions()) {
+			// Note: The licenses imported by the setup-matlab action does not enable MatlabEngine.  We can compile
+			// the example but can't run to end-to-end.  See https://github.com/matlab-actions/setup-matlab/issues/13.
+			File directory = test("matlab", false);
+			
+			CaptureResult result = Capture.output(new ProcessBuilder()
+					.command("matlab", "-batch", "[objs, constrs] = evaluate(zeros(1, 10))")
+					.directory(directory));
+			
+			result.assertSuccessful();
+		} else {
+			test("matlab");
+		}
 	}
 
 	@Test
@@ -100,8 +123,12 @@ public class BuildProblemTest {
 				"--directory", directory.toString()
 		});
 	}
+	
+	private File test(String language) throws Exception {
+		return test(language, true);
+	}
 
-	private void test(String language) throws Exception {		
+	private File test(String language, boolean run) throws Exception {		
 		File directory = TempFiles.createDirectory();
 		File testDirectory = new File(directory, "Test");
 
@@ -118,21 +145,25 @@ public class BuildProblemTest {
 		Assume.assumeMakeExists();
 		Make.runMake(testDirectory);
 		
-		// remove any compiled files to verify they are packaged correctly in the JAR
-		List<String> extensionsToRemove = List.of("exe", "py", "class");
-		Files.walk(testDirectory.toPath())
-			.filter(x -> extensionsToRemove.contains(FilenameUtils.getExtension(x.toString())))
-			.map(Path::toFile)
-			.forEach(File::delete);
+		if (run) {
+			// remove any compiled files to verify they are packaged correctly in the JAR
+			List<String> extensionsToRemove = List.of("exe", "dll", "so", "py", "m", "class");
+			Files.walk(testDirectory.toPath())
+				.filter(x -> extensionsToRemove.contains(FilenameUtils.getExtension(x.toString())))
+				.map(Path::toFile)
+				.forEach(File::delete);
+			
+			CaptureResult result = Capture.output(() -> Make.runMake(testDirectory, "run"));
+			result.assertSuccessful();
+	
+			List<String> lines = result.toString().lines().skip(2).toList(); // skip first two lines
+			Assert.assertEquals(3, lines.size());
+			Assert.assertMatches(lines.get(0), "(\\bVar[0-9]+\\b\\s*){10}(\\bObj[0-9]+\\b\\s*){2}");
+			Assert.assertMatches(lines.get(1), "([\\-]+\\s*){12}");
+			Assert.assertMatches(lines.get(2), "(\\-?[0-9]+\\.[0-9]+\\b\\s*){12}");
+		}
 		
-		String output = Make.runMake(testDirectory, "run");
-		System.out.println(output);
-
-		List<String> lines = output.lines().skip(1).toList(); // first line the the java command
-		Assert.assertEquals(3, lines.size());
-		Assert.assertMatches(lines.get(0), "(\\bVar[0-9]+\\b\\s*){10}(\\bObj[0-9]+\\b\\s*){2}");
-		Assert.assertMatches(lines.get(1), "([\\-]+\\s*){12}");
-		Assert.assertMatches(lines.get(2), "(\\-?[0-9]+\\.[0-9]+\\b\\s*){12}");
+		return testDirectory;
 	}
 
 }

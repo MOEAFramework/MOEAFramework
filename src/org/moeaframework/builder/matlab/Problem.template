@@ -1,0 +1,68 @@
+import java.io.IOException;
+
+import com.mathworks.engine.MatlabEngine;
+
+import org.moeaframework.core.FrameworkException;
+import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.util.io.Resources;
+import org.moeaframework.util.io.Resources.ResourceOption;
+
+public class ${problemName} extends AbstractProblem {
+
+	static {
+		// Locate the Matlab function on disk or extract from the JAR
+		try {
+			Resources.asFile(${problemName}.class, "${functionName}.m", ResourceOption.REQUIRED).getPath();
+		} catch (IOException e) {
+			throw new FrameworkException("Failed to locate ${functionName}.m", e);
+		}
+	}
+
+	private MatlabEngine engine;
+
+	public ${problemName}() {
+		super(${numberOfVariables}, ${numberOfObjectives}, ${numberOfConstraints});
+	}
+
+	public void evaluate(Solution solution) {
+		try {		
+			if (engine == null) {
+				engine = MatlabEngine.startMatlab();
+			}
+			
+			double[] vars = EncodingUtils.getReal(solution);
+			
+			Object[] results = engine.feval(2, "${functionName}", vars);
+	
+			solution.setObjectives((double[])results[0]);
+			solution.setConstraints((double[])results[1]);
+		} catch (Exception e) {
+			throw new FrameworkException("Failed while invoking Matlab function ${functionName}", e);
+		}
+	}
+
+	public Solution newSolution() {
+		Solution solution = new Solution(numberOfVariables, numberOfObjectives, numberOfConstraints);
+
+		for (int i = 0; i < numberOfVariables; i++) {
+			solution.setVariable(i, new RealVariable(${lowerBound}, ${upperBound}));
+		}
+
+		return solution;
+	}
+	
+	public void close() {
+		try {
+			if (engine != null) {
+				engine.close();
+				engine = null;
+			}
+		} catch (Exception e) {
+			throw new FrameworkException("Failed while closing MatlabEngine", e);
+		}
+	}
+
+}
