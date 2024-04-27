@@ -23,8 +23,13 @@
 extern "C" {
 #endif
 
-#ifdef _POSIX_SOURCE
-#define MOEA_SOCKETS
+#if defined __has_include
+#  if __has_include (<unistd.h>) && \
+      __has_include (<sys/types.h>) && \
+      __has_include (<sys/socket.h>) && \
+      __has_include (<netdb.h>)
+#    define MOEA_SOCKETS
+#  endif
 #endif
 
 /**

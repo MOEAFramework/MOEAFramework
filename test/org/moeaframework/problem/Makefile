@@ -28,7 +28,5 @@ test_stdio.exe:
 	
 test_socket.exe:
 ifneq ($(OS),Windows_NT)
-ifeq ($(shell uname -s),Linux)
 	gcc -DUSE_SOCKET -o test_socket.exe -I $(ROOT)/examples test.c $(ROOT)/examples/moeaframework.c
-endif
 endif
