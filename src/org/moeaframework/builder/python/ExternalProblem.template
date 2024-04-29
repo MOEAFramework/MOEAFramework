@@ -4,6 +4,7 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.ExternalProblem;
+import org.moeaframework.problem.ExternalProblem.Builder;
 import org.moeaframework.util.io.Resources;
 import org.moeaframework.util.io.Resources.ResourceOption;
 
@@ -22,7 +23,7 @@ public class ${problemName} extends ExternalProblem {
 	}
 
 	public ${problemName}() throws IOException {
-		super("python", SCRIPT);
+		super(new Builder().withCommand("python", SCRIPT));
 	}
 
 	@Override

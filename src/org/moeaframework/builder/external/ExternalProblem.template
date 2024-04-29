@@ -4,6 +4,7 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.ExternalProblem;
+import org.moeaframework.problem.ExternalProblem.Builder;
 import org.moeaframework.util.io.Resources;
 import org.moeaframework.util.io.Resources.ResourceOption;
 
@@ -14,7 +15,7 @@ public class ${problemName} extends ExternalProblem {
 	static {
 		// Locate the executable on disk or extract from the JAR
 		try {
-			EXECUTABLE = Resources.asFile(${problemName}.class, "./${problemName}.exe",
+			EXECUTABLE = Resources.asFile(${problemName}.class, "${problemName}.exe",
 				ResourceOption.REQUIRED, ResourceOption.TEMPORARY, ResourceOption.EXECUTABLE).getPath();
 		} catch (IOException e) {
 			throw new FrameworkException("Failed to locate executable", e);
@@ -22,7 +23,7 @@ public class ${problemName} extends ExternalProblem {
 	}
 
 	public ${problemName}() throws IOException {
-		super(EXECUTABLE);
+		super(new Builder().withCommand(EXECUTABLE));
 	}
 
 	@Override
