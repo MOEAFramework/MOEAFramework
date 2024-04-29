@@ -301,8 +301,12 @@ public abstract class ExternalProblem implements Problem {
 			if (builder.command != null && builder.command.length > 0) {
 				String[] command = builder.command.clone();
 
-				// If the command is relative and it exists in the working directory, correct the relative path to
-				// work on different platforms.
+				// Rules for locating executable:
+				//   1. If absolute, use the given path
+				//   2. If executable exists in working directory, supply relative path appropriate for OS
+				//      a. Windows - Path is relative to where Java was launched
+				//      b. Linux - Path is relative to working directory, including "./" prefix
+				//   3. Use system path
 				if (!new File(command[0]).isAbsolute() && new File(builder.workingDirectory, command[0]).exists()) {
 					File relativePath = SystemUtils.IS_OS_WINDOWS ? builder.workingDirectory : new File(".");
 					command[0] = new File(relativePath, command[0]).getPath();
