@@ -17,9 +17,9 @@ or an externally-defined problem.
 <!-- help:src/org/moeaframework/analysis/tools/Solve.java [:-2] -->
 
 ```
-usage: java -classpath "lib/*" org.moeaframework.analysis.tools.Solve -a <name> [-b <name>] [-c <value>] [-D <value>]
-       [-e <e1,e2,...>] -f <file> [-F <value>] [-h] [-H <value>] [-l <v1,v2,...>] -n <value> [-o <value>] [-P <value>]
-       [-s <value>] [-S] [-t <trials>] [-u <v1,v2,...>] [-v <v1,v2,...>] [-x <p1=v1;p2=v2;...>]
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.Solve -a <name> [-b <name>] [-c <value>] [-e
+       <e1,e2,...>] -f <file> [-F <value>] [-h] [-H <value>] [-l <v1,v2,...>] -n <value> [-o <value>] [-P <value>] [-r
+       <value>] [-s <value>] [-S] [-t <trials>] [-u <v1,v2,...>] [-v <v1,v2,...>] [-x <p1=v1;p2=v2;...>]
 
 Solves an optimization problem using any optimization algorithm supported by the MOEA Framework.  The following options
 are available:
@@ -27,8 +27,6 @@ are available:
  -a,--algorithm <name>               Algorithm name
  -b,--problem <name>                 Problem name
  -c,--constraints <value>            Number of constraints (default 0)
- -D,--startupDelay <value>           Delay in seconds between running the executable and starting optimization (default
-                                     1)
  -e,--epsilon <e1,e2,...>            Epsilon values for epsilon-dominance
  -f,--output <file>                  Output file
  -F,--runtimeFrequency <value>       Output population every N evaluations (default 100)
@@ -38,6 +36,7 @@ are available:
  -n,--numberOfEvaluations <value>    Maximum number of evaluations
  -o,--objectives <value>             Number of objectives
  -P,--port <value>                   Port used when using sockets (default 16801)
+ -r,--retries <value>                The number of retries when establishing a socket connection (default 5)
  -s,--seed <value>                   Random number seed
  -S,--useSocket                      Communicate with external problem using sockets
  -t,--test <trials>                  Runs a few trials to test the connection with the external problem

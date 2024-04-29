@@ -141,8 +141,8 @@ public class Solve extends CommandLineUtility {
 				.hasArg()
 				.argName("value")
 				.build());
-		options.addOption(Option.builder("D")
-				.longOpt("startupDelay")
+		options.addOption(Option.builder("r")
+				.longOpt("retries")
 				.hasArg()
 				.argName("value")
 				.build());
@@ -286,7 +286,7 @@ public class Solve extends CommandLineUtility {
 			}
 			
 			builder.withSocket(hostname, port);
-			builder.withConnectionDelay(Duration.ofSeconds(Integer.parseInt(commandLine.getOptionValue("startupDelay"))));
+			builder.withRetries(Integer.parseInt(commandLine.getOptionValue("retries", "5")), Duration.ofSeconds(1));
 		}
 		
 		if (commandLine.getArgs().length > 0) {

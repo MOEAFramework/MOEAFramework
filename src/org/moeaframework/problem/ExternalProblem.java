@@ -30,6 +30,7 @@ import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.nio.file.Path;
 import java.time.Duration;
@@ -68,6 +69,12 @@ import org.moeaframework.util.io.RedirectStream;
  * When using Sockets, data is transmitted over the network.  Typically, this talks to a local process using a
  * specific port.  However, this can also connect to a remote process over a local-area network or the Internet.
  * 
+ * <h2>C/C++ Library</h2>
+ * To assist in writing the function in a native language, we provide {@code moeaframework.c} and
+ * {@code moeaframework.h} under the {@code examples/} folder.  This library handles setting up the connection using
+ * either I/O or sockets, parsing decision variables, and writing the objectives and constraints.  Furthermore, we can
+ * use the {@link org.moeaframework.builder.BuildProblem} to generate a template using {@code --language external}.
+ * 
  * <p>
  * <b>It is critical that the {@link #close()} method be invoked to ensure the external process is shutdown cleanly.</b>
  * Failure to do so could leave the process running in the background.
@@ -97,8 +104,10 @@ public abstract class ExternalProblem implements Problem {
 		private OutputStream errorStream;
 		
 		private PrintStream debug;
+		
+		private int retryAttempts = 5;
 				
-		private Duration connectionDelay = Duration.ofSeconds(1);
+		private Duration retryDelay = Duration.ofSeconds(1);
 		
 		private Duration shutdownTimeout = Duration.ofSeconds(10);
 		
@@ -228,13 +237,15 @@ public abstract class ExternalProblem implements Problem {
 		}
 		
 		/**
-		 * Overrides the delay between starting the process and attempting to connect with sockets.
+		 * Sets the retry options when trying to connect to the external process with sockets.
 		 * 
-		 * @param connectionDelay the connection delay
+		 * @param retryAttempts the number of retry attempts (a value <= 0 will fail after the first attempt)
+		 * @param retryDelay the fixed delay between retries
 		 * @return a reference to this builder for chaining together calls
 		 */
-		public Builder withConnectionDelay(Duration connectionDelay) {
-			this.connectionDelay = connectionDelay;
+		public Builder withRetries(int retryAttempts, Duration retryDelay) {
+			this.retryAttempts = retryAttempts;
+			this.retryDelay = retryDelay;
 			return this;
 		}
 		
@@ -269,7 +280,9 @@ public abstract class ExternalProblem implements Problem {
 		
 		private final InetSocketAddress socketAddress;
 		
-		private final Duration connectionDelay;
+		private final int retryAttempts;
+		
+		private final Duration retryDelay;
 		
 		private final Duration shutdownTimeout;
 		
@@ -293,7 +306,8 @@ public abstract class ExternalProblem implements Problem {
 		public Instance(Builder builder) {
 			super();
 			this.socketAddress = builder.socketAddress;
-			this.connectionDelay = builder.connectionDelay;
+			this.retryAttempts = builder.retryAttempts;
+			this.retryDelay = builder.retryDelay;
 			this.shutdownTimeout = builder.shutdownTimeout;
 			this.errorStream = builder.errorStream;
 			this.debug = builder.debug;
@@ -332,6 +346,38 @@ public abstract class ExternalProblem implements Problem {
 		public boolean isStarted() {
 			return reader != null || writer != null;
 		}
+
+		/**
+		 * Establishes a socket connection to the address with retries.
+		 * 
+		 * @return the connected socket
+		 * @throws IOException if an error occurred connecting to the address
+		 */
+		private Socket connectWithRetries() throws IOException {
+			int attempts = 0;
+			
+			while (true) {
+				try {
+					Socket socket = new Socket();
+					socket.connect(socketAddress);
+					return socket;
+				} catch (SocketException e) {
+					if (attempts >= retryAttempts) {
+						throw e;
+					}
+					
+					debug.println("Connection failed with '" + e.getMessage() + "', retrying...");
+					
+					try {
+						Thread.sleep(DurationUtils.toMilliseconds(retryDelay));
+					} catch (InterruptedException ie) {
+						throw e;
+					}
+				}
+				
+				attempts++;
+			}
+		}
 		
 		/**
 		 * Starts the underlying process and establishes any connections.
@@ -346,18 +392,10 @@ public abstract class ExternalProblem implements Problem {
 			if (processBuilder != null) {
 				process = processBuilder.start();
 				RedirectStream.redirect(process.getErrorStream(), errorStream != null ? errorStream : System.err);
-				
-				try {
-					debug.println("Sleeping for " + connectionDelay);
-					Thread.sleep(DurationUtils.toMilliseconds(connectionDelay));
-				} catch (InterruptedException e) {
-					// ignore if interrupted
-				}
 			}
 			
 			if (socketAddress != null) {
-				socket = new Socket();
-				socket.connect(socketAddress);
+				socket = connectWithRetries();
 			}
 			
 			if (socket != null) {

@@ -79,7 +79,7 @@ public class ExternalProblemWithCStdioTest {
 					TestExternalProblem problem = new TestExternalProblem(builder)) {
 				Initialization initialization = new RandomInitialization(problem);
 		
-				Solution[] solutions = initialization.initialize(TestThresholds.SAMPLES);
+				Solution[] solutions = initialization.initialize(100);
 				
 				for (int i=0; i<solutions.length; i++) {
 					Solution solution = solutions[i];
@@ -118,6 +118,22 @@ public class ExternalProblemWithCStdioTest {
 					}
 				}
 			}
+		}
+	}
+	
+	@Test
+	public void testLazyStart() {
+		Builder builder = new Builder().withCommand("test_not_exists.exe");
+		
+		try (TestExternalProblem problem = new TestExternalProblem(builder)) {
+			Assert.assertEquals(5, problem.getNumberOfVariables());
+			Assert.assertEquals(2, problem.getNumberOfObjectives());
+			Assert.assertEquals(1, problem.getNumberOfVariables());
+			
+			Solution solution = problem.newSolution();
+			Assert.assertNotNull(solution);
+			
+			Assert.assertThrows(ProblemException.class, () -> problem.evaluate(solution));
 		}
 	}
 	

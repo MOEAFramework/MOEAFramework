@@ -13,6 +13,8 @@ This page documents notable changes introduced in each chronological release of 
     
   * Expands CI testing to include Windows and MacOS.
   
+  * Improved support for configuring external problems using the Builder pattern
+  
 
 ## Version 4.0 (05 Apr 2024)
 
