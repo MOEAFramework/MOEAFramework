@@ -63,7 +63,9 @@ public class ExternalProblemWithCStdioTest {
 	
 	public Builder createBuilder() {
 		File executable = getExecutable("test_stdio.exe");
-		return new ExternalProblem.Builder().withCommand(executable.toString());
+		
+		return new Builder()
+				.withCommand(executable.toString());
 	}
 	
 	@Test

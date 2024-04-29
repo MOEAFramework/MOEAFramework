@@ -29,7 +29,10 @@ public class ExternalProblemWithCSocketTest extends ExternalProblemWithCStdioTes
 		Assume.assumePOSIX();
 		
 		File executable = getExecutable("test_socket.exe");
-		return new ExternalProblem.Builder().withCommand(executable.toString());
+		
+		return new Builder()
+				.withCommand(executable.toString())
+				.withSocket(ExternalProblem.DEFAULT_PORT);
 	}
 
 }

@@ -55,9 +55,8 @@ import org.moeaframework.util.io.RedirectStream;
  * Each solution is evaluated serially by writing the decision variables to the process or socket, waiting for a
  * response, and reading the objectives and constraints.  Values are formatted using the {@link Variable#toString()}
  * method and separated by whitespace, typically a single space character, and sent on a single line terminated by the
- * new line character (which depending on the platform can be {@code "\n"}, {@code "\r"}, or {@code "\r\n"}).
- * <p>
- * This process repeats in a loop until all solutions are evaluated, at which point the stream is closed.  We strongly
+ * new line character (which depending on the platform can be {@code "\n"}, {@code "\r"}, or {@code "\r\n"}).  This
+ * process repeats in a loop until all solutions are evaluated, at which point the stream is closed.  We strongly
  * recommend flushing the output stream after writing each line to prevent buffering.
  * 
  * <h2>Standard I/O</h2>
@@ -408,6 +407,14 @@ public abstract class ExternalProblem implements Problem {
 				writer.close();
 			}
 			
+			if (reader != null) {
+				reader.close();
+			}
+			
+			if (debug != null) {
+				debug.close();
+			}
+			
 			if (socket != null) {
 				socket.close();
 			}
@@ -424,14 +431,6 @@ public abstract class ExternalProblem implements Problem {
 				} catch (InterruptedException | IllegalThreadStateException e) {
 					debug.println("Caught exception while waiting on process: " + e.getMessage());
 				}
-			}
-			
-			if (reader != null) {
-				reader.close();
-			}
-			
-			if (debug != null) {
-				debug.close();
 			}
 		}
 		
