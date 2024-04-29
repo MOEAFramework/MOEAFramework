@@ -117,6 +117,10 @@ public class ExternalProblemWithCStdioTest {
 						Assert.assertEquals(p.get(j), Integer.parseInt(debugTokens[8+j]));
 					}
 				}
+				
+				Assert.assertTrue(problem.getInstance().getProcess().isAlive());
+				problem.close();
+				Assert.assertFalse(problem.getInstance().getProcess().isAlive());
 			}
 		}
 	}
@@ -128,7 +132,7 @@ public class ExternalProblemWithCStdioTest {
 		try (TestExternalProblem problem = new TestExternalProblem(builder)) {
 			Assert.assertEquals(5, problem.getNumberOfVariables());
 			Assert.assertEquals(2, problem.getNumberOfObjectives());
-			Assert.assertEquals(1, problem.getNumberOfVariables());
+			Assert.assertEquals(1, problem.getNumberOfConstraints());
 			
 			Solution solution = problem.newSolution();
 			Assert.assertNotNull(solution);
@@ -290,7 +294,7 @@ public class ExternalProblemWithCStdioTest {
 		}
 	}
 	
-	private class TestExternalProblem extends ExternalProblem {
+	protected class TestExternalProblem extends ExternalProblem {
 		
 		public TestExternalProblem(Builder builder) {
 			super(builder);
@@ -325,6 +329,10 @@ public class ExternalProblemWithCStdioTest {
 			solution.setVariable(3, new BinaryIntegerVariable(5, 20));
 			solution.setVariable(4, new Permutation(3));
 			return solution;
+		}
+
+		public Instance getInstance() {
+			return instance;
 		}
 
 	};

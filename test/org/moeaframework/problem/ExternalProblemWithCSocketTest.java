@@ -18,8 +18,12 @@
 package org.moeaframework.problem;
 
 import java.io.File;
+import java.net.ConnectException;
 
+import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.Assume;
+import org.moeaframework.core.Solution;
 import org.moeaframework.problem.ExternalProblem.Builder;
 
 public class ExternalProblemWithCSocketTest extends ExternalProblemWithCStdioTest {
@@ -33,6 +37,66 @@ public class ExternalProblemWithCSocketTest extends ExternalProblemWithCStdioTes
 		return new Builder()
 				.withCommand(executable.toString())
 				.withSocket(ExternalProblem.DEFAULT_PORT);
+	}
+	
+	@Test
+	public void testFailAfterRetries() {
+		Builder builder = new Builder()
+				.withSocket(ExternalProblem.DEFAULT_PORT)
+				.withDebugging();
+		
+		try (TestExternalProblem problem = new TestExternalProblem(builder)) {
+			Solution solution = problem.newSolution();
+			
+			// The following should take at least retryAttempts * retryDelay
+			long startTime = System.currentTimeMillis();
+			
+			try {
+				problem.evaluate(solution);
+			} catch (ProblemException e) {
+				Assert.assertTrue(e.getCause() instanceof ConnectException);
+			}
+			
+			long endTime = System.currentTimeMillis();
+			Assert.assertGreaterThanOrEqual(endTime - startTime, 5000);
+			
+			Assert.assertNull(problem.getInstance().getProcess());
+			Assert.assertTrue(problem.getInstance().getSocket() == null || problem.getInstance().getSocket().isClosed());
+			problem.close();
+			Assert.assertFalse(problem.getInstance().getProcess().isAlive());
+		}
+	}
+	
+	@Test
+	public void testFailAfterRetriesWithProcess() {
+		File executable = getExecutable("test_stdio.exe");
+		
+		Builder builder = new Builder()
+				.withCommand(executable.toString())
+				.withSocket(ExternalProblem.DEFAULT_PORT)
+				.withDebugging();
+		
+		try (TestExternalProblem problem = new TestExternalProblem(builder)) {
+			Solution solution = problem.newSolution();
+			
+			// The following should take at least retryAttempts * retryDelay + shutdownTimeout
+			long startTime = System.currentTimeMillis();
+			
+			try {
+				problem.evaluate(solution);
+			} catch (ProblemException e) {
+				Assert.assertTrue(e.getCause() instanceof ConnectException);
+			}
+			
+			long endTime = System.currentTimeMillis();
+			Assert.assertGreaterThanOrEqual(endTime - startTime, 15000);
+			
+			Assert.assertNotNull(problem.getInstance().getProcess());
+			Assert.assertTrue(problem.getInstance().getProcess().isAlive());
+			Assert.assertTrue(problem.getInstance().getSocket() == null || problem.getInstance().getSocket().isClosed());
+			problem.close();
+			Assert.assertFalse(problem.getInstance().getProcess().isAlive());
+		}
 	}
 
 }

@@ -215,7 +215,8 @@ public abstract class ExternalProblem implements Problem {
 		}
 		
 		/**
-		 * Enables writing debugging info to the given output stream.
+		 * Enables writing debugging info to the given output stream.  The given stream is not closed when the problem
+		 * is closed.
 		 * 
 		 * @param debug the output stream
 		 * @return a reference to this builder for chaining together calls
@@ -226,7 +227,8 @@ public abstract class ExternalProblem implements Problem {
 		}
 		
 		/**
-		 * Redirects the process' standard error to the given stream.
+		 * Redirects the process' standard error to the given stream.  The given stream is not closed when the problem
+		 * is closed.
 		 * 
 		 * @param errorStream the stream where error messages are written
 		 * @return a reference to this builder for chaining together calls
@@ -354,28 +356,32 @@ public abstract class ExternalProblem implements Problem {
 		 * @throws IOException if an error occurred connecting to the address
 		 */
 		private Socket connectWithRetries() throws IOException {
-			int attempts = 0;
+			int attempt = 0;
 			
 			while (true) {
+				attempt += 1;
+				
+				Socket socket = new Socket();
+				
 				try {
-					Socket socket = new Socket();
+					debug.println("Connecting to " + socketAddress);
 					socket.connect(socketAddress);
 					return socket;
 				} catch (SocketException e) {
-					if (attempts >= retryAttempts) {
+					if (attempt > retryAttempts) {
 						throw e;
 					}
 					
-					debug.println("Connection failed with '" + e.getMessage() + "', retrying...");
+					debug.println(e.getMessage() + ", retrying attempt " + attempt + " of " + retryAttempts + "...");
 					
 					try {
 						Thread.sleep(DurationUtils.toMilliseconds(retryDelay));
 					} catch (InterruptedException ie) {
 						throw e;
 					}
+				} finally {
+					socket.close();
 				}
-				
-				attempts++;
 			}
 		}
 		
@@ -443,6 +449,24 @@ public abstract class ExternalProblem implements Problem {
 		public PrintStream getDebug() {
 			return debug;
 		}
+		
+		/**
+		 * Returns the underlying process, primarily intended for testing purposes.
+		 * 
+		 * @return the underlying process, or {@code null} if there is none
+		 */
+		public Process getProcess() {
+			return process;
+		}
+		
+		/**
+		 * Returns the underlying socket, primarily intended for testing purposes.
+		 * 
+		 * @return the underlying socket, or {@code null} if there is none
+		 */
+		public Socket getSocket() {
+			return socket;
+		}
 
 		@Override
 		public void close() throws IOException {
@@ -454,16 +478,16 @@ public abstract class ExternalProblem implements Problem {
 				reader.close();
 			}
 			
-			if (debug != null) {
-				debug.close();
-			}
-			
 			if (socket != null) {
 				socket.close();
 			}
 			
 			if (process != null) {
 				try {
+					if (process.isAlive()) {
+						debug.println("Waiting for process to exit");
+					}
+					
 					if (process.waitFor(DurationUtils.toMilliseconds(shutdownTimeout), TimeUnit.MILLISECONDS)) {
 						int exitCode = process.exitValue();
 						debug.println("Process exited with code " + exitCode);
@@ -483,7 +507,7 @@ public abstract class ExternalProblem implements Problem {
 	 * The instance backing this external problem, which manages the underlying resources including the process,
 	 * socket, and streams.
 	 */
-	private final Instance instance;
+	protected final Instance instance;
 
 	/**
 	 * Constructs an external problem using {@code new ProcessBuilder(command).start()}.  If the command contains
