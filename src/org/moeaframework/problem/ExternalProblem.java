@@ -36,6 +36,7 @@ import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.output.CloseShieldOutputStream;
+import org.apache.commons.lang3.SystemUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
@@ -79,9 +80,14 @@ public abstract class ExternalProblem implements Problem {
 	 */
 	public static final int DEFAULT_PORT = 16801;
 	
+	/**
+	 * Builder for defining the process or connection to the external problem.
+	 */
 	public static class Builder {
 		
-		private ProcessBuilder processBuilder;
+		private String[] command;
+		
+		private File workingDirectory;
 				
 		private InetSocketAddress socketAddress;
 		
@@ -97,6 +103,9 @@ public abstract class ExternalProblem implements Problem {
 		
 		private Duration shutdownTimeout = Duration.ofSeconds(10);
 		
+		/**
+		 * Constructs a new builder.
+		 */
 		public Builder() {
 			super();
 			
@@ -106,80 +115,155 @@ public abstract class ExternalProblem implements Problem {
 				withDebugging(OutputStream.nullOutputStream());
 			}
 		}
-				
+		
+		/**
+		 * Configures this builder to start a process using the given command and optional arguments.
+		 * 
+		 * @param command the command and arguments
+		 * @return a reference to this builder for chaining together calls
+		 */
 		public Builder withCommand(String... command) {
-			if (processBuilder == null) {
-				processBuilder = new ProcessBuilder();
-			}
-			
-			processBuilder.command(command);
+			this.command = command;
 			return this;
 		}
 		
+		/**
+		 * Sets the working directory where the process is started.
+		 * 
+		 * @param directory the working directory
+		 * @return a reference to this builder for chaining together calls
+		 */
 		public Builder withWorkingDirectory(File directory) {
-			if (processBuilder == null) {
-				processBuilder = new ProcessBuilder();
-			}
-			
-			processBuilder.directory(directory);
+			this.workingDirectory = directory;
 			return this;
 		}
 		
+		/**
+		 * Sets the working directory where the process is started.
+		 * 
+		 * @param path the working directory
+		 * @return a reference to this builder for chaining together calls
+		 */
 		public Builder withWorkingDirectory(Path path) {
 			return withWorkingDirectory(path.toFile());
 		}
 		
+		/**
+		 * Configures this builder to communicate with a local process using the given port.
+		 * 
+		 * @param port the port
+		 * @return a reference to this builder for chaining together calls
+		 */
 		public Builder withSocket(int port) {
 			socketAddress = new InetSocketAddress(port);
 			return this;
 		}
 		
+		/**
+		 * Configures this builder to communicate with the specified address and port.
+		 * 
+		 * @param address the address
+		 * @param port the port
+		 * @return a reference to this builder for chaining together calls
+		 */
 		public Builder withSocket(InetAddress address, int port) {
 			socketAddress = new InetSocketAddress(address, port);
 			return this;
 		}
 		
+		/**
+		 * Configures this builder to communicate with the specified hostname and port.
+		 * 
+		 * @param hostname the host name
+		 * @param port the port
+		 * @return a reference to this builder for chaining together calls
+		 */
 		public Builder withSocket(String hostname, int port) {
 			socketAddress = new InetSocketAddress(hostname, port);
 			return this;
 		}
 		
+		/**
+		 * Configures this builder to communicate using the given input and output streams.  This is primarily intended
+		 * for internal use.
+		 * 
+		 * @param inputStream the input stream
+		 * @param outputStream the output stream
+		 * @return a reference to this builder for chaining together calls
+		 */
 		public Builder withIOStreams(InputStream inputStream, OutputStream outputStream) {
 			this.inputStream = inputStream;
 			this.outputStream = outputStream;
 			return this;
 		}
-				
+		
+		/**
+		 * Enables writing debugging info to standard output.
+		 * 
+		 * @return a reference to this builder for chaining together calls
+		 */
 		public Builder withDebugging() {
 			return withDebugging(CloseShieldOutputStream.wrap(System.out));
 		}
 		
+		/**
+		 * Enables writing debugging info to the given output stream.
+		 * 
+		 * @param debug the output stream
+		 * @return a reference to this builder for chaining together calls
+		 */
 		public Builder withDebugging(OutputStream debug) {
 			this.debug = new PrintStream(debug);
 			return this;
 		}
 		
+		/**
+		 * Redirects the process' standard error to the given stream.
+		 * 
+		 * @param errorStream the stream where error messages are written
+		 * @return a reference to this builder for chaining together calls
+		 */
 		public Builder redirectErrorTo(OutputStream errorStream) {
 			this.errorStream = errorStream;
 			return this;
 		}
 		
+		/**
+		 * Overrides the delay between starting the process and attempting to connect with sockets.
+		 * 
+		 * @param connectionDelay the connection delay
+		 * @return a reference to this builder for chaining together calls
+		 */
 		public Builder withConnectionDelay(Duration connectionDelay) {
 			this.connectionDelay = connectionDelay;
 			return this;
 		}
 		
+		/**
+		 * Overrides the timeout given to allow the process to cleanly terminate before sending a kill signal.
+		 * 
+		 * @param shutdownTimeout the shutdown timeout
+		 * @return a reference to this builder for chaining together calls
+		 */
 		public Builder withShutdownTimeout(Duration shutdownTimeout) {
 			this.shutdownTimeout = shutdownTimeout;
 			return this;
 		}
 		
+		/**
+		 * Returns the constructed instance.
+		 * 
+		 * @return the external problem instance
+		 */
 		private Instance build() {
 			return new Instance(this);
 		}
 		
 	}
 	
+	/**
+	 * Instance of the external problem.  This manages the lifecycle of the process and connections.
+	 */
 	protected static class Instance implements Closeable {
 		
 		private final ProcessBuilder processBuilder;
@@ -202,26 +286,54 @@ public abstract class ExternalProblem implements Problem {
 		
 		private PrintStream debug;
 		
+		/**
+		 * Constructs an instance of an external problem.
+		 * 
+		 * @param builder the builder
+		 */
 		public Instance(Builder builder) {
 			super();
-			this.processBuilder = builder.processBuilder;
 			this.socketAddress = builder.socketAddress;
 			this.connectionDelay = builder.connectionDelay;
 			this.shutdownTimeout = builder.shutdownTimeout;
 			this.errorStream = builder.errorStream;
 			this.debug = builder.debug;
 			
-			// For testing
+			// Standardize running commands on different systems			
+			if (builder.command != null && builder.command.length > 0) {
+				String[] command = builder.command.clone();
+
+				if (new File(builder.workingDirectory, command[0]).exists()) {
+					File relativePath = SystemUtils.IS_OS_WINDOWS ? builder.workingDirectory : new File(".");
+					command[0] = new File(relativePath, command[0]).getPath();
+				}
+				
+				this.processBuilder = new ProcessBuilder(command).directory(builder.workingDirectory);
+			} else {
+				this.processBuilder = null;
+			}
+			
+			// Passing in streams directly is primarily intended for testing and internal use
 			if (builder.inputStream != null && builder.outputStream != null) {
 				reader = new BufferedReader(new InputStreamReader(builder.inputStream));
 				writer = new BufferedWriter(new OutputStreamWriter(builder.outputStream));
 			}
 		}
 		
+		/**
+		 * Returns {@code true} if the underlying process or connections are established; {@code false} otherwise.
+		 * 
+		 * @return {@code true} if the underlying process or connections are established; {@code false} otherwise
+		 */
 		public boolean isStarted() {
 			return reader != null || writer != null;
 		}
 		
+		/**
+		 * Starts the underlying process and establishes any connections.
+		 * 
+		 * @throws IOException if an I/O error occurred
+		 */
 		public void start() throws IOException {
 			if (isStarted()) {
 				return;
@@ -255,6 +367,11 @@ public abstract class ExternalProblem implements Problem {
 			}
 		}
 		
+		/**
+		 * Returns the reader used to read content from the external problem.
+		 * 
+		 * @return the reader
+		 */
 		public BufferedReader getReader() {
 			if (!isStarted()) {
 				throw new IllegalStateException("must call start() before using problem instance");
@@ -263,6 +380,11 @@ public abstract class ExternalProblem implements Problem {
 			return reader;
 		}
 		
+		/**
+		 * Returns the writer used to write content to the external problem.
+		 * 
+		 * @return the writer
+		 */
 		public BufferedWriter getWriter() {
 			if (!isStarted()) {
 				throw new IllegalStateException("must call start() before using problem instance");
@@ -271,6 +393,11 @@ public abstract class ExternalProblem implements Problem {
 			return writer;
 		}
 		
+		/**
+		 * Returns the stream where debugging logs are written.
+		 * 
+		 * @return the debug stream
+		 */
 		public PrintStream getDebug() {
 			return debug;
 		}
@@ -369,6 +496,31 @@ public abstract class ExternalProblem implements Problem {
 	public ExternalProblem(Builder builder) {
 		super();
 		instance = builder.build();
+	}
+	
+	/**
+	 * Constructs an external problem using the specified process.
+	 * 
+	 * @param process the process used to evaluate solutions
+	 * @deprecated Use the {@link #ExternalProblem(Builder)} constructor
+	 */
+	@Deprecated
+	protected ExternalProblem(Process process) {
+		this(process.getInputStream(), process.getOutputStream());
+		RedirectStream.redirect(process.getErrorStream(), System.err);
+	}
+	
+
+	/**
+	 * Constructs an external problem using the specified input and output streams.
+	 * 
+	 * @param input the input stream
+	 * @param output the output stream
+	 * @deprecated Use the {@link #ExternalProblem(Builder)} constructor
+	 */
+	@Deprecated
+	protected ExternalProblem(InputStream input, OutputStream output) {
+		this(new Builder().withIOStreams(input, output));
 	}
 	
 	/**
