@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.net.Socket;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -118,9 +119,7 @@ public class ExternalProblemWithCStdioTest {
 					}
 				}
 				
-				Assert.assertTrue(problem.getInstance().getProcess().isAlive());
-				problem.close();
-				Assert.assertFalse(problem.getInstance().getProcess().isAlive());
+				validateClose(problem);
 			}
 		}
 	}
@@ -291,6 +290,30 @@ public class ExternalProblemWithCStdioTest {
 	protected void copy(Solution s1, Solution s2, int size) {
 		for (int i=0; i<size; i++) {
 			s1.setVariable(i, s2.getVariable(i));
+		}
+	}
+	
+	protected void validateClose(TestExternalProblem problem) {
+		Process process = problem.getInstance().getProcess();
+		Socket socket = problem.getInstance().getSocket();
+		
+		if (process != null) {
+			Assert.assertTrue(process.isAlive());
+		}
+		
+		if (socket != null) {
+			Assert.assertTrue(socket.isConnected());
+			Assert.assertFalse(socket.isClosed());
+		}
+		
+		problem.close();
+		
+		if (process != null) {
+			Assert.assertFalse(process.isAlive());
+		}
+		
+		if (socket != null) {
+			Assert.assertTrue(socket.isClosed());
 		}
 	}
 	
