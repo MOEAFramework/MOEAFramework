@@ -19,15 +19,23 @@ package org.moeaframework.problem;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.Closeable;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintStream;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.file.Path;
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.io.output.CloseShieldOutputStream;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
@@ -35,46 +43,31 @@ import org.moeaframework.core.Variable;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.DurationUtils;
 import org.moeaframework.util.io.RedirectStream;
 
 /**
  * Evaluate solutions using an externally-defined problem.  Two modes of operation are supported: standard I/O and
  * sockets.
  * 
- * <h2>Standard I/O Mode</h2>
- * Standard I/O is the easiest mode to setup and run.  First, an executable program on the computer is launched by
- * invoking the constructor with the program name (and any optional arguments):
- * <pre>
- *   new ExternalProblem("./problem.exe", "arg1", "arg2") { ... }
- * </pre>
- * Then, solutions are sent to the process on its standard input (stdin) stream, and the objectives and constraints
- * are read from its standard output (stdout) stream.  Writing or reading any other content from these streams will
- * interfere with the communication.  Consider using sockets, as discussed below, if the program already uses standard
- * input / output for other purposes.
+ * <h2>Communication Protocol</h2>
+ * Each solution is evaluated serially by writing the decision variables to the process or socket, waiting for a
+ * response, and reading the objectives and constraints.  Values are formatted using the {@link Variable#toString()}
+ * method and separated by whitespace, typically a single space character, and sent on a single line terminated by the
+ * new line character (which depending on the platform can be {@code "\n"}, {@code "\r"}, or {@code "\r\n"}).
+ * <p>
+ * This process repeats in a loop until all solutions are evaluated, at which point the stream is closed.  We strongly
+ * recommend flushing the output stream after writing each line to prevent buffering.
  * 
- * <h2>Socket Mode</h2>
- * Socket mode is more complicated to setup, but is more flexible and robust.  It has the ability to not only evaluate
- * the problem on the host computer, but can be spread across a computer network.  To use sockets, use either the
- * {@link #ExternalProblem(String, int)} or {@link #ExternalProblem(InetAddress, int)} constructor.
+ * <h2>Standard I/O</h2>
+ * When using Standard I/O, a process is started and the data is transmitted over the standard input/output streams.
+ * One limitation of this approach is the process can not use standard input/output for any other purpose, as that will
+ * interfere with the communication.  Consider using sockets instead.
  * 
- * <h2>C/C++ Interface</h2>
- * A C/C++ interface is provided for implementing problems.  This interface supports both modes of communication,
- * depending on which initialization routine is invoked.  See the {@code moeaframework.c} and {@code moeaframework.h}
- * files in the {@code examples/} folder for details.  This interface conforms to the communication protocol described
- * below.
- * <p>
- * The communication protocol consists of sending decision variables to the external process, and the process
- * responding with the objectives and constraints.  First, the MOEA Framework writes a line containing the decision
- * variables separated by whitespace and terminated by the newline character.  The program should read this line
- * from stdin, then write the objectives and constraints, if any, to stdout.  The objectives and constraints must also
- * appear on a single line separated by whitespace.
- * <p>
- * The program must continue processing lines until the input stream is closed.  In addition, it should always flush
- * the output stream after writing each line.  Otherwise, some systems may buffer the data causing the program to
- * stall.
- * <p>
- * Whitespace is one or more spaces, tabs or any combination thereof.  The newline is either the line feed ('\n'),
- * carriage return ('\r') or a carriage return followed immediately by a line feed ("\r\n"). 
+ * <h2>Sockets</h2>
+ * When using Sockets, data is transmitted over the network.  Typically, this talks to a local process using a
+ * specific port.  However, this can also connect to a remote process over a local-area network or the Internet.
+ * 
  * <p>
  * <b>It is critical that the {@link #close()} method be invoked to ensure the external process is shutdown cleanly.</b>
  * Failure to do so could leave the process running in the background.
@@ -85,26 +78,243 @@ public abstract class ExternalProblem implements Problem {
 	 * The default port used by the MOEA Framework to connect to remote evaluation processes via sockets.
 	 */
 	public static final int DEFAULT_PORT = 16801;
+	
+	public static class Builder {
+		
+		private ProcessBuilder processBuilder;
+				
+		private InetSocketAddress socketAddress;
+		
+		private InputStream inputStream;
+		
+		private OutputStream outputStream;
+		
+		private OutputStream errorStream;
+		
+		private PrintStream debug;
+				
+		private Duration connectionDelay = Duration.ofSeconds(1);
+		
+		private Duration shutdownTimeout = Duration.ofSeconds(10);
+		
+		public Builder() {
+			super();
+			
+			if (Settings.isExternalProblemDebuggingEnabled()) {
+				withDebugging();
+			} else {
+				withDebugging(OutputStream.nullOutputStream());
+			}
+		}
+				
+		public Builder withCommand(String... command) {
+			if (processBuilder == null) {
+				processBuilder = new ProcessBuilder();
+			}
+			
+			processBuilder.command(command);
+			return this;
+		}
+		
+		public Builder withWorkingDirectory(File directory) {
+			if (processBuilder == null) {
+				processBuilder = new ProcessBuilder();
+			}
+			
+			processBuilder.directory(directory);
+			return this;
+		}
+		
+		public Builder withWorkingDirectory(Path path) {
+			return withWorkingDirectory(path.toFile());
+		}
+		
+		public Builder withSocket(int port) {
+			socketAddress = new InetSocketAddress(port);
+			return this;
+		}
+		
+		public Builder withSocket(InetAddress address, int port) {
+			socketAddress = new InetSocketAddress(address, port);
+			return this;
+		}
+		
+		public Builder withSocket(String hostname, int port) {
+			socketAddress = new InetSocketAddress(hostname, port);
+			return this;
+		}
+		
+		public Builder withIOStreams(InputStream inputStream, OutputStream outputStream) {
+			this.inputStream = inputStream;
+			this.outputStream = outputStream;
+			return this;
+		}
+				
+		public Builder withDebugging() {
+			return withDebugging(CloseShieldOutputStream.wrap(System.out));
+		}
+		
+		public Builder withDebugging(OutputStream debug) {
+			this.debug = new PrintStream(debug);
+			return this;
+		}
+		
+		public Builder redirectErrorTo(OutputStream errorStream) {
+			this.errorStream = errorStream;
+			return this;
+		}
+		
+		public Builder withConnectionDelay(Duration connectionDelay) {
+			this.connectionDelay = connectionDelay;
+			return this;
+		}
+		
+		public Builder withShutdownTimeout(Duration shutdownTimeout) {
+			this.shutdownTimeout = shutdownTimeout;
+			return this;
+		}
+		
+		private Instance build() {
+			return new Instance(this);
+		}
+		
+	}
+	
+	protected static class Instance implements Closeable {
+		
+		private final ProcessBuilder processBuilder;
+		
+		private final InetSocketAddress socketAddress;
+		
+		private final Duration connectionDelay;
+		
+		private final Duration shutdownTimeout;
+		
+		private Process process;
+		
+		private Socket socket;
+		
+		private BufferedReader reader;
+		
+		private BufferedWriter writer;
+		
+		private OutputStream errorStream;
+		
+		private PrintStream debug;
+		
+		public Instance(Builder builder) {
+			super();
+			this.processBuilder = builder.processBuilder;
+			this.socketAddress = builder.socketAddress;
+			this.connectionDelay = builder.connectionDelay;
+			this.shutdownTimeout = builder.shutdownTimeout;
+			this.errorStream = builder.errorStream;
+			this.debug = builder.debug;
+			
+			// For testing
+			if (builder.inputStream != null && builder.outputStream != null) {
+				reader = new BufferedReader(new InputStreamReader(builder.inputStream));
+				writer = new BufferedWriter(new OutputStreamWriter(builder.outputStream));
+			}
+		}
+		
+		public boolean isStarted() {
+			return reader != null || writer != null;
+		}
+		
+		public void start() throws IOException {
+			if (isStarted()) {
+				return;
+			}
+			
+			if (processBuilder != null) {
+				process = processBuilder.start();
+				RedirectStream.redirect(process.getErrorStream(), errorStream != null ? errorStream : System.err);
+				
+				try {
+					debug.println("Sleeping for " + connectionDelay);
+					Thread.sleep(DurationUtils.toMilliseconds(connectionDelay));
+				} catch (InterruptedException e) {
+					// ignore if interrupted
+				}
+			}
+			
+			if (socketAddress != null) {
+				socket = new Socket();
+				socket.connect(socketAddress);
+			}
+			
+			if (socket != null) {
+				reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+			} else if (process != null) {
+				reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+				writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
+			} else {
+				throw new IllegalArgumentException("Must configure a program or socket address");
+			}
+		}
+		
+		public BufferedReader getReader() {
+			if (!isStarted()) {
+				throw new IllegalStateException("must call start() before using problem instance");
+			}
+			
+			return reader;
+		}
+		
+		public BufferedWriter getWriter() {
+			if (!isStarted()) {
+				throw new IllegalStateException("must call start() before using problem instance");
+			}
+			
+			return writer;
+		}
+		
+		public PrintStream getDebug() {
+			return debug;
+		}
 
-	/**
-	 * Reader connected to the process' standard output.
-	 */
-	private final BufferedReader reader;
-
-	/**
-	 * Writer connected to the process' standard input.
-	 */
-	private final BufferedWriter writer;
+		@Override
+		public void close() throws IOException {
+			if (writer != null) {
+				writer.close();
+			}
+			
+			if (socket != null) {
+				socket.close();
+			}
+			
+			if (process != null) {
+				try {
+					if (process.waitFor(DurationUtils.toMilliseconds(shutdownTimeout), TimeUnit.MILLISECONDS)) {
+						int exitCode = process.exitValue();
+						debug.println("Process exited with code " + exitCode);
+					} else {
+						debug.println("Process still alive after timeout, sending kill signal");
+						process.destroy();
+					}
+				} catch (InterruptedException | IllegalThreadStateException e) {
+					debug.println("Caught exception while waiting on process: " + e.getMessage());
+				}
+			}
+			
+			if (reader != null) {
+				reader.close();
+			}
+			
+			if (debug != null) {
+				debug.close();
+			}
+		}
+		
+	}
 	
 	/**
-	 * Writer for debugging messages.
+	 * The instance backing this external problem, which manages the underlying resources including the process,
+	 * socket, and streams.
 	 */
-	private BufferedWriter debug;
-	
-	/**
-	 * The process, or {@code null} if no process was started.
-	 */
-	private Process process;
+	private final Instance instance;
 
 	/**
 	 * Constructs an external problem using {@code new ProcessBuilder(command).start()}.  If the command contains
@@ -115,9 +325,11 @@ public abstract class ExternalProblem implements Problem {
 	 * 
 	 * @param command a specified system command
 	 * @throws IOException if an I/O error occured
+	 * @deprecated Use the {@link #ExternalProblem(Builder)} constructor
 	 */
+	@Deprecated
 	public ExternalProblem(String... command) throws IOException {
-		this(new ProcessBuilder(command).start());
+		this(new Builder().withCommand(command));
 	}
 	
 	/**
@@ -128,9 +340,11 @@ public abstract class ExternalProblem implements Problem {
 	 * @param port the port number
 	 * @throws UnknownHostException if the IP address of the specified host could not be determined
 	 * @throws IOException if an I/O error occurred
+	 * @deprecated Use the {@link #ExternalProblem(Builder)} constructor
 	 */
+	@Deprecated
 	public ExternalProblem(String host, int port) throws IOException, UnknownHostException {
-		this(new Socket(host, port));
+		this(new Builder().withSocket(host, port));
 	}
 	
 	/**
@@ -140,47 +354,21 @@ public abstract class ExternalProblem implements Problem {
 	 * @param address the IP address of the remote system
 	 * @param port the port number
 	 * @throws IOException if an I/O error occurred
+	 * @deprecated Use the {@link #ExternalProblem(Builder)} constructor
 	 */
+	@Deprecated
 	public ExternalProblem(InetAddress address, int port) throws IOException {
-		this(new Socket(address, port));
-	}
-	
-	/**
-	 * Constructs an external problem using the specified socket.
-	 * 
-	 * @param socket the socket used to send solutions to be evaluated
-	 * @throws IOException if an I/O error occurred
-	 */
-	protected ExternalProblem(Socket socket) throws IOException {
-		this(socket.getInputStream(), socket.getOutputStream());
+		this(new Builder().withSocket(address, port));
 	}
 
 	/**
-	 * Constructs an external problem using the specified process.
+	 * Constructs an external problem using the specified builder.
 	 * 
-	 * @param process the process used to evaluate solutions
+	 * @param builder the builder that defines the process and/or socket address
 	 */
-	protected ExternalProblem(Process process) {
-		this(process.getInputStream(), process.getOutputStream());
-		RedirectStream.redirect(process.getErrorStream(), System.err);
-		
-		this.process = process;
-	}
-	
-	/**
-	 * Constructs an external problem using the specified input and output streams.
-	 * 
-	 * @param input the input stream
-	 * @param output the output stream
-	 */
-	protected ExternalProblem(InputStream input, OutputStream output) {
+	public ExternalProblem(Builder builder) {
 		super();
-		reader = new BufferedReader(new InputStreamReader(input));
-		writer = new BufferedWriter(new OutputStreamWriter(output));
-		
-		if (Settings.isExternalProblemDebuggingEnabled()) {
-			setDebugStream(System.out);
-		}
+		instance = builder.build();
 	}
 	
 	/**
@@ -188,12 +376,14 @@ public abstract class ExternalProblem implements Problem {
 	 * stream is not closed by this class and must be managed by the caller.
 	 * 
 	 * @param stream the output stream
+	 * @deprecated Enable debugging by calling {@link Builder#withDebugging()}
 	 */
-	public void setDebugStream(OutputStream stream) {
+	@Deprecated
+	public void setDebugStream(OutputStream stream) {		
 		if (stream == null) {
-			debug = null;
+			instance.debug = null;
 		} else {
-			debug = new BufferedWriter(new OutputStreamWriter(stream));
+			instance.debug = new PrintStream(stream);
 		}
 	}
 
@@ -203,15 +393,9 @@ public abstract class ExternalProblem implements Problem {
 	@Override
 	public synchronized void close() {
 		try {
-			writer.close();
+			instance.close();
 		} catch (IOException e) {
 			throw new ProblemException(this, e);
-		} finally {
-			try {
-				reader.close();
-			} catch (IOException e) {
-				throw new ProblemException(this, e);
-			}
 		}
 	}
 
@@ -222,7 +406,17 @@ public abstract class ExternalProblem implements Problem {
 	 */
 	@Override
 	public synchronized void evaluate(Solution solution) throws ProblemException {
-		BufferedWriter debug = this.debug;
+		if (!instance.isStarted()) {
+			try {
+				instance.start();
+			} catch (IOException e) {
+				throw new ProblemException(this, "error while starting external problem", e);
+			}
+		}
+		
+		BufferedReader reader = instance.getReader();
+		BufferedWriter writer = instance.getWriter();
+		PrintStream debug = instance.getDebug();
 		
 		// send variables to external process
 		try {
@@ -237,16 +431,13 @@ public abstract class ExternalProblem implements Problem {
 			
 			sb.append(System.lineSeparator());
 			
-			if (debug != null) {
-				debug.write("<< ");
-				debug.write(sb.toString());
-				debug.flush();
-			}
+			debug.print("<< ");
+			debug.println(sb.toString());
 			
 			writer.write(sb.toString());
 			writer.flush();
 		} catch (IOException e) {
-			throw new ProblemException(this, "error sending variables to external process", e);
+			throw new ProblemException(this, "error sending variables to external problem", e);
 		}
 
 		// receive objectives from external process
@@ -255,30 +446,15 @@ public abstract class ExternalProblem implements Problem {
 
 			if (line == null) {
 				if (debug != null) {
-					debug.write("Reached end of stream");
-					debug.newLine();
-					
-					if (process != null) {
-						try {
-							int exitCode = process.exitValue();
-							debug.write("Process exited with code " + exitCode);
-						} catch (IllegalThreadStateException e) {
-							debug.write("Process is still alive");
-						}
-					}
-					
-					debug.flush();
+					debug.println("Reached end of stream");
+					instance.close();
 				}
 				
 				throw new ProblemException(this, "end of stream reached when response expected");
 			}
 
-			if (debug != null) {
-				debug.write(">> ");
-				debug.write(line);
-				debug.newLine();
-				debug.flush();
-			}
+			debug.print(">> ");
+			debug.println(line);
 			
 			String[] tokens = line.split("\\s+");
 			
@@ -297,10 +473,8 @@ public abstract class ExternalProblem implements Problem {
 				solution.setConstraint(i, Double.parseDouble(tokens[index]));
 				index++;
 			}
-		} catch (IOException e) {
-			throw new ProblemException(this, "error receiving variables from external process", e);
-		} catch (NumberFormatException e) {
-			throw new ProblemException(this, "error receiving variables from external process", e);
+		} catch (IOException | NumberFormatException e) {
+			throw new ProblemException(this, "error receiving variables from external problem", e);
 		}
 	}
 
@@ -309,14 +483,12 @@ public abstract class ExternalProblem implements Problem {
 	 * 
 	 * @param variable the variable
 	 * @return the string representation of the variable
-	 * @throws IOException if an error occurs during serialization
 	 */
-	private String encode(Variable variable) throws IOException {
+	private String encode(Variable variable) {
 		if (!(variable instanceof RealVariable ||
 				variable instanceof BinaryVariable ||
 				variable instanceof Permutation)) {
-			throw new IOException(ExternalProblem.class.getSimpleName() + " does not support encoding type " +
-					variable.getClass().getSimpleName());
+			throw new ProblemException(this, "encoding " + variable.getClass().getSimpleName() + " not supported");
 		}
 		
 		// use toString() instead of encode() as we want to send the value

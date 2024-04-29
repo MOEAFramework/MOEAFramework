@@ -21,10 +21,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.concurrent.TimeUnit;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.Assert;
@@ -39,260 +38,232 @@ import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.mock.MockUnsupportedVariable;
+import org.moeaframework.problem.ExternalProblem.Builder;
 
 public class ExternalProblemWithCStdioTest {
+
+	protected File getExecutable(String filename) {
+		try {			
+			File file = new File("src/test/resources").exists() ?
+					new File("src/test/resources/org/moeaframework/problem", filename) :
+					new File("test/org/moeaframework/problem", filename);
+			
+			if (!file.exists()) {
+				Assume.assumeMakeExists();
+				Make.runMake(file.getParentFile());
+			}
 	
-	private static final int TIMEOUT = 10000;
-	
-	protected File file;
-	
-	protected Process process;
-	
-	protected ExternalProblem problem;
-	
-	protected BufferedReader debugReader;
-	
-	@Before
-	public void setUp() throws IOException {
-		Assume.assumeMakeExists();
-		
-		if (new File("src/test/resources").exists()) {
-			file = new File("src/test/resources/org/moeaframework/problem/test_stdio.exe");
-		} else {
-			file = new File("test/org/moeaframework/problem/test_stdio.exe");
+			Assume.assumeFileExists(file);
+			return file;
+		} catch (IOException e) {
+			Assume.assumeNoException(e);
+			return null;
 		}
-		
-		//attempt to run make if the file does not exist
-		if (!file.exists()) {
-			Make.runMake(file.getParentFile());
-		}
-
-		Assume.assumeFileExists(file);
-		
-		//start the process separately to intercept the error (debug) data
-		process = new ProcessBuilder(file.toString()).start();
-
-		debugReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-
-		problem = new ExternalProblem(process.getInputStream(), process.getOutputStream()) {
-
-			@Override
-			public String getName() {
-				return "Test";
-			}
-
-			@Override
-			public int getNumberOfVariables() {
-				return 5;
-			}
-
-			@Override
-			public int getNumberOfObjectives() {
-				return 2;
-			}
-
-			@Override
-			public int getNumberOfConstraints() {
-				return 1;
-			}
-
-			@Override
-			public Solution newSolution() {
-				Solution solution = new Solution(5, 2, 1);
-				solution.setVariable(0, new RealVariable(0.0, 1.0));
-				solution.setVariable(1, new RealVariable(-1e26, 1e26));
-				solution.setVariable(2, new BinaryVariable(5));
-				solution.setVariable(3, new BinaryIntegerVariable(5, 20));
-				solution.setVariable(4, new Permutation(3));
-				return solution;
-			}
-
-		};
 	}
 	
-	@After
-	public void tearDown() throws IOException {
-		file = null;
-		
-		if (problem != null) {
-			problem.close();
-			problem = null;
-		}
-		
-		if (debugReader != null) {
-			debugReader.close();
-			debugReader = null;
-		}
-		
-		if (process != null) {
-			try {
-				process.waitFor(TIMEOUT, TimeUnit.MILLISECONDS);
-			} catch (InterruptedException e) {
-				process.destroyForcibly();
-				Assert.fail("Process did not terminate within timeout and was forcibly destroyed");
-			}
-			
-			process = null;
-		}
+	public Builder createBuilder() {
+		File executable = getExecutable("test_stdio.exe");
+		return new ExternalProblem.Builder().withCommand(executable.toString());
 	}
 	
 	@Test
 	public void test() throws IOException {
-		Initialization initialization = new RandomInitialization(problem);
-
-		Solution[] solutions = initialization.initialize(TestThresholds.SAMPLES);
+		Builder builder = createBuilder();
 		
-		for (int i=0; i<solutions.length; i++) {
-			Solution solution = solutions[i];
-			problem.evaluate(solution);
+		try (PipedOutputStream out = new PipedOutputStream(); PipedInputStream in = new PipedInputStream(out)) {
+			builder.redirectErrorTo(out);
 			
-			//check objectives and constraints
-			Assert.assertArrayEquals(new double[] { i+1, 1e-10/(i+1) }, solution.getObjectives(), TestThresholds.HIGH_PRECISION);
-			Assert.assertArrayEquals(new double[] { 1e10*(i+1) }, solution.getConstraints(), TestThresholds.HIGH_PRECISION);
-			
-			//check the debug stream
-			String debugLine = debugReader.readLine();
-			
-			Assert.assertNotNull(debugLine);
-			
-			String[] debugTokens = debugLine.split("\\s+");
-			
-			for (int j=0; j<2; j++) {
-				Assert.assertEquals(((RealVariable)solution.getVariable(j)).getValue(), 
-						Double.parseDouble(debugTokens[j]), TestThresholds.HIGH_PRECISION);
-			}
-			
-			BinaryVariable bv = ((BinaryVariable)solution.getVariable(2));
-
-			for (int j=0; j<bv.getNumberOfBits(); j++) {
-				Assert.assertEquals(bv.get(j) ? 1 : 0, Integer.parseInt(debugTokens[2+j]));
-			}
-			
-			BinaryIntegerVariable biv = ((BinaryIntegerVariable)solution.getVariable(3));
-			
-			Assert.assertEquals(biv.getValue(), Integer.parseInt(debugTokens[7]));
-			
-			Permutation p = ((Permutation)solution.getVariable(4));
-			
-			for (int j=0; j<p.size(); j++) {
-				Assert.assertEquals(p.get(j), Integer.parseInt(debugTokens[8+j]));
+			try (BufferedReader debugReader = new BufferedReader(new InputStreamReader(in));
+					TestExternalProblem problem = new TestExternalProblem(builder)) {
+				Initialization initialization = new RandomInitialization(problem);
+		
+				Solution[] solutions = initialization.initialize(TestThresholds.SAMPLES);
+				
+				for (int i=0; i<solutions.length; i++) {
+					Solution solution = solutions[i];
+					problem.evaluate(solution);
+					
+					//check objectives and constraints
+					Assert.assertArrayEquals(new double[] { i+1, 1e-10/(i+1) }, solution.getObjectives(), TestThresholds.HIGH_PRECISION);
+					Assert.assertArrayEquals(new double[] { 1e10*(i+1) }, solution.getConstraints(), TestThresholds.HIGH_PRECISION);
+					
+					//check the debug stream
+					String debugLine = debugReader.readLine();
+					
+					Assert.assertNotNull(debugLine);
+					
+					String[] debugTokens = debugLine.split("\\s+");
+					
+					for (int j=0; j<2; j++) {
+						Assert.assertEquals(((RealVariable)solution.getVariable(j)).getValue(), 
+								Double.parseDouble(debugTokens[j]), TestThresholds.HIGH_PRECISION);
+					}
+					
+					BinaryVariable bv = ((BinaryVariable)solution.getVariable(2));
+		
+					for (int j=0; j<bv.getNumberOfBits(); j++) {
+						Assert.assertEquals(bv.get(j) ? 1 : 0, Integer.parseInt(debugTokens[2+j]));
+					}
+					
+					BinaryIntegerVariable biv = ((BinaryIntegerVariable)solution.getVariable(3));
+					
+					Assert.assertEquals(biv.getValue(), Integer.parseInt(debugTokens[7]));
+					
+					Permutation p = ((Permutation)solution.getVariable(4));
+					
+					for (int j=0; j<p.size(); j++) {
+						Assert.assertEquals(p.get(j), Integer.parseInt(debugTokens[8+j]));
+					}
+				}
 			}
 		}
 	}
 	
 	@Test
 	public void testIntToDoubleCompatibility() {
-		Solution solution = problem.newSolution();
-		solution.setVariable(1, new BinaryIntegerVariable(8, 5, 20));
-		problem.evaluate(solution);
+		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {
+			Solution solution = problem.newSolution();
+			solution.setVariable(1, new BinaryIntegerVariable(8, 5, 20));
+			problem.evaluate(solution);
+		}
 	}
 	
 	@Test(expected = ProblemException.class)
 	public void testErrorParsingBinary() {
-		Solution solution = problem.newSolution();
-		solution.setVariable(2, new RealVariable(0.5, 0.0, 1.0));
-		problem.evaluate(solution);
+		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {
+			Solution solution = problem.newSolution();
+			solution.setVariable(2, new RealVariable(0.5, 0.0, 1.0));
+			problem.evaluate(solution);
+		}
 	}
 	
 	@Test(expected = ProblemException.class)
 	public void testErrorParsingInteger() {
-		Solution solution = problem.newSolution();
-		solution.setVariable(3, new RealVariable(0.5, 0.0, 1.0));
-		problem.evaluate(solution);
+		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {
+			Solution solution = problem.newSolution();
+			solution.setVariable(3, new RealVariable(0.5, 0.0, 1.0));
+			problem.evaluate(solution);
+		}
 	}
 
 	@Test(expected = ProblemException.class)
 	public void testErrorParsingPermutation() {
-		Solution solution = problem.newSolution();
-		solution.setVariable(4, new RealVariable(0.5, 0.0, 1.0));
-		problem.evaluate(solution);
+		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {
+			Solution solution = problem.newSolution();
+			solution.setVariable(4, new RealVariable(0.5, 0.0, 1.0));
+			problem.evaluate(solution);
+		}
 	}
 	
 	@Test(expected = ProblemException.class)
 	public void testErrorParsingReal() {
-		Solution solution = problem.newSolution();
-		solution.setVariable(1, new Permutation(3));
-		problem.evaluate(solution);
+		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {
+			Solution solution = problem.newSolution();
+			solution.setVariable(1, new Permutation(3));
+			problem.evaluate(solution);
+		}
 	}
 	
 	@Test(expected = ProblemException.class)
 	public void testErrorTooFewVariables() {
-		Solution solution = new Solution(4, 2, 1);
-		copy(solution, problem.newSolution(), 4);
-		problem.evaluate(solution);
+		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {
+			Solution solution = new Solution(4, 2, 1);
+			copy(solution, problem.newSolution(), 4);
+			problem.evaluate(solution);
+		}
 	}
 	
 	@Ignore("this case is not detected by the C/C++ library")
 	@Test(expected = ProblemException.class)
 	public void testErrorTooManyVariables() {
-		Solution solution = new Solution(6, 2, 1);
-		copy(solution, problem.newSolution(), 5);
-		solution.setVariable(5, new RealVariable(0.5, 0.0, 1.0));
-		problem.evaluate(solution);
+		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {
+			Solution solution = new Solution(6, 2, 1);
+			copy(solution, problem.newSolution(), 5);
+			solution.setVariable(5, new RealVariable(0.5, 0.0, 1.0));
+			problem.evaluate(solution);
+		}
 	}
 	
 	@Test(expected = ProblemException.class)
 	public void testErrorTooFewObjectives() {
-		Solution solution = new Solution(5, 1, 1);
-		copy(solution, problem.newSolution(), 5);
-		problem.evaluate(solution);
+		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {
+			Solution solution = new Solution(5, 1, 1);
+			copy(solution, problem.newSolution(), 5);
+			problem.evaluate(solution);
+		}
 	}
 	
 	@Test(expected = ProblemException.class)
 	public void testErrorTooManyObjectives() {
-		Solution solution = new Solution(5, 3, 1);
-		copy(solution, problem.newSolution(), 5);
-		problem.evaluate(solution);
+		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {
+			Solution solution = new Solution(5, 3, 1);
+			copy(solution, problem.newSolution(), 5);
+			problem.evaluate(solution);
+		}
 	}
 	
 	@Test(expected = ProblemException.class)
 	public void testErrorTooFewConstraints() {
-		Solution solution = new Solution(5, 2, 0);
-		copy(solution, problem.newSolution(), 5);
-		problem.evaluate(solution);
+		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {
+			Solution solution = new Solution(5, 2, 0);
+			copy(solution, problem.newSolution(), 5);
+			problem.evaluate(solution);
+		}
 	}
 	
 	@Test(expected = ProblemException.class)
 	public void testErrorTooManyConstraints() {
-		Solution solution = new Solution(5, 2, 2);
-		copy(solution, problem.newSolution(), 5);
-		problem.evaluate(solution);
+		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {
+			Solution solution = new Solution(5, 2, 2);
+			copy(solution, problem.newSolution(), 5);
+			problem.evaluate(solution);
+		}
 	}
 	
 	@Test(expected = ProblemException.class)
 	public void testErrorPermutationTooShort() {
-		Solution solution = problem.newSolution();
-		solution.setVariable(4, new Permutation(2));
-		problem.evaluate(solution);
+		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {
+			Solution solution = problem.newSolution();
+			solution.setVariable(4, new Permutation(2));
+			problem.evaluate(solution);
+		}
 	}
 	
 	@Test(expected = ProblemException.class)
 	public void testErrorPermutationTooLong() {
-		Solution solution = problem.newSolution();
-		solution.setVariable(4, new Permutation(4));
-		problem.evaluate(solution);
+		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {
+			Solution solution = problem.newSolution();
+			solution.setVariable(4, new Permutation(4));
+			problem.evaluate(solution);
+		}
 	}
 	
 	@Test(expected = ProblemException.class)
 	public void testErrorBinaryTooShort() {
-		Solution solution = problem.newSolution();
-		solution.setVariable(2, new BinaryVariable(4));
-		problem.evaluate(solution);
+		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {
+			Solution solution = problem.newSolution();
+			solution.setVariable(2, new BinaryVariable(4));
+			problem.evaluate(solution);
+		}
 	}
 	
 	@Test(expected = ProblemException.class)
 	public void testErrorBinaryTooLong() {
-		Solution solution = problem.newSolution();
-		solution.setVariable(2, new BinaryVariable(6));
-		problem.evaluate(solution);
+		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {
+			Solution solution = problem.newSolution();
+			solution.setVariable(2, new BinaryVariable(6));
+			problem.evaluate(solution);
+		}
 	}
 	
 	@Test(expected = ProblemException.class)
 	public void testUnsupportedVariableType() {
-		Solution solution = new Solution(5, 2, 1);
-		copy(solution, problem.newSolution(), 4);
-		solution.setVariable(4, new MockUnsupportedVariable());
-		problem.evaluate(solution);
+		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {
+			Solution solution = new Solution(5, 2, 1);
+			copy(solution, problem.newSolution(), 4);
+			solution.setVariable(4, new MockUnsupportedVariable());
+			problem.evaluate(solution);
+		}
 	}
 	
 	protected void copy(Solution s1, Solution s2, int size) {
@@ -300,5 +271,44 @@ public class ExternalProblemWithCStdioTest {
 			s1.setVariable(i, s2.getVariable(i));
 		}
 	}
+	
+	private class TestExternalProblem extends ExternalProblem {
+		
+		public TestExternalProblem(Builder builder) {
+			super(builder);
+		}
+
+		@Override
+		public String getName() {
+			return "Test";
+		}
+
+		@Override
+		public int getNumberOfVariables() {
+			return 5;
+		}
+
+		@Override
+		public int getNumberOfObjectives() {
+			return 2;
+		}
+
+		@Override
+		public int getNumberOfConstraints() {
+			return 1;
+		}
+
+		@Override
+		public Solution newSolution() {
+			Solution solution = new Solution(5, 2, 1);
+			solution.setVariable(0, new RealVariable(0.0, 1.0));
+			solution.setVariable(1, new RealVariable(-1e26, 1e26));
+			solution.setVariable(2, new BinaryVariable(5));
+			solution.setVariable(3, new BinaryIntegerVariable(5, 20));
+			solution.setVariable(4, new Permutation(3));
+			return solution;
+		}
+
+	};
 
 }

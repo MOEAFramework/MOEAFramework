@@ -21,6 +21,7 @@ import java.time.Duration;
 
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.TerminationCondition;
+import org.moeaframework.util.DurationUtils;
 
 /**
  * Terminates a run when the maximum elapsed time is exceeded.
@@ -53,7 +54,7 @@ public class MaxElapsedTime implements TerminationCondition {
 	 * @param maxTime the maximum elapsed time
 	 */
 	public MaxElapsedTime(Duration maxTime) {
-		this(toMilliseconds(maxTime));
+		this(DurationUtils.toMilliseconds(maxTime));
 	}
 
 	@Override
@@ -64,10 +65,6 @@ public class MaxElapsedTime implements TerminationCondition {
 	@Override
 	public boolean shouldTerminate(Algorithm algorithm) {
 		return (System.currentTimeMillis() - startTime) >= maxTime;
-	}
-	
-	static final long toMilliseconds(Duration duration) {
-		return duration.getSeconds() * 1000 + duration.getNano() / 1000000;
 	}
 
 }

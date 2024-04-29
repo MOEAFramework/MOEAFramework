@@ -17,87 +17,19 @@
  */
 package org.moeaframework.problem;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
-import org.junit.Before;
 import org.moeaframework.Assume;
-import org.moeaframework.Make;
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.BinaryIntegerVariable;
-import org.moeaframework.core.variable.BinaryVariable;
-import org.moeaframework.core.variable.Permutation;
-import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.problem.ExternalProblem.Builder;
 
 public class ExternalProblemWithCSocketTest extends ExternalProblemWithCStdioTest {
 	
-	@Before
-	public void setUp() throws IOException {
-		//skip this test if the machine is not POSIX compliant
+	@Override
+	public Builder createBuilder() {
 		Assume.assumePOSIX();
-		Assume.assumeMakeExists();
 		
-		if (new File("src/test/resources").exists()) {
-			file = new File("src/test/resources/org/moeaframework/problem/test_socket.exe");
-		} else {
-			file = new File("test/org/moeaframework/problem/test_socket.exe");
-		}
-		
-		//attempt to run make if the file does not exist
-		if (!file.exists()) {
-			Make.runMake(file.getParentFile());
-		}
-		
-		Assume.assumeFileExists(file);
-		
-		//start the process separately to intercept the error (debug) data
-		process = new ProcessBuilder(file.toString()).start();
-
-		//sleep to allow the external process to begin listening to the port
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			//handle silently
-		}
-
-		debugReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-
-		problem = new ExternalProblem("localhost", ExternalProblem.DEFAULT_PORT) {
-
-			@Override
-			public String getName() {
-				return "Test";
-			}
-
-			@Override
-			public int getNumberOfVariables() {
-				return 5;
-			}
-
-			@Override
-			public int getNumberOfObjectives() {
-				return 2;
-			}
-
-			@Override
-			public int getNumberOfConstraints() {
-				return 1;
-			}
-
-			@Override
-			public Solution newSolution() {
-				Solution solution = new Solution(5, 2, 1);
-				solution.setVariable(0, new RealVariable(0.0, 1.0));
-				solution.setVariable(1, new RealVariable(-1e26, 1e26));
-				solution.setVariable(2, new BinaryVariable(5));
-				solution.setVariable(3, new BinaryIntegerVariable(5, 20));
-				solution.setVariable(4, new Permutation(3));
-				return solution;
-			}
-
-		};
+		File executable = getExecutable("test_socket.exe");
+		return new ExternalProblem.Builder().withCommand(executable.toString());
 	}
 
 }

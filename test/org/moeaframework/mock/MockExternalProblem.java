@@ -58,7 +58,7 @@ public class MockExternalProblem extends ExternalProblem {
 	
 	MockExternalProblem(final PipedInputStream input, final PipedOutputStream output,
 			final Function<String, String> callback) throws IOException {
-		super(input, output);		
+		super(new Builder().withIOStreams(input, output));		
 		count = new AtomicInteger();
 		
 		pipedWriter = new PipedOutputStream(input);		

@@ -20,7 +20,6 @@ package org.moeaframework.examples.external;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.lang3.SystemUtils;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
@@ -39,13 +38,14 @@ import org.moeaframework.problem.ExternalProblem;
 public class ExternalProblemWithSocket {
 
 	/**
-	 * Notice that the only change is in the constructor, where the hostname and
-	 * port are specified.
+	 * Notice that the only change is in the constructor, where we specify the socket port.
 	 */
 	public static class MyDTLZ2 extends ExternalProblem {
 
 		public MyDTLZ2() throws IOException {
-			super("localhost", ExternalProblem.DEFAULT_PORT);
+			super(new Builder()
+					.withCommand("./examples/dtlz2_socket.exe")
+					.withSocket(ExternalProblem.DEFAULT_PORT));
 		}
 
 		@Override
@@ -86,20 +86,9 @@ public class ExternalProblemWithSocket {
 		File file = new File("./examples/dtlz2_socket.exe");
 		
 		if (!file.exists()) {
-			if (!SystemUtils.IS_OS_UNIX) {
-				System.err.println("This example only works on POSIX-compliant systems; see the Makefile for details");
-				return;
-			}
-			
 			System.err.println("Please compile the executable by running make in the ./examples/ folder");
 			return;
 		}
-		
-		//run the executable
-		new ProcessBuilder(file.toString()).start();
-		
-		//wait a short period of time for the process to start and listen to the socket
-		Thread.sleep(1000);
 		
 		//configure and run this example problem
 		try (Problem problem = new MyDTLZ2()) {

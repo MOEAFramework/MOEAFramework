@@ -19,6 +19,7 @@ package org.moeaframework.analysis.tools;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +43,7 @@ import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.ExternalProblem;
+import org.moeaframework.problem.ExternalProblem.Builder;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.TypedProperties;
 
@@ -269,10 +271,11 @@ public class Solve extends CommandLineUtility {
 		
 		final List<Variable> variables = parseVariables(commandLine);
 		
+		Builder builder = new Builder();
+		
 		if (commandLine.hasOption("useSocket")) {
-			String hostname = null; // default to localhost
-			int port = 16801;
-			int delay = 1;
+			String hostname = null;
+			int port = ExternalProblem.DEFAULT_PORT;
 			
 			if (commandLine.hasOption("hostname")) {
 				hostname = commandLine.getOptionValue("hostname");
@@ -282,97 +285,51 @@ public class Solve extends CommandLineUtility {
 				port = Integer.parseInt(commandLine.getOptionValue("port"));
 			}
 			
-			if (commandLine.hasOption("startupDelay")) {
-				delay = Integer.parseInt(commandLine.getOptionValue("startupDelay"));
-			}
-			
-			if (commandLine.getArgs().length > 0) {
-				// the command to run is specified on the command line
-				System.out.print("Running ");
-				System.out.println(StringUtils.join(commandLine.getArgs()));
-				new ProcessBuilder(commandLine.getArgs()).start();
-			}
-			
-			try {
-				System.out.print("Sleeping for ");
-				System.out.print(delay);
-				System.out.println(" seconds");
-				Thread.sleep(delay*1000);
-			} catch (InterruptedException e) {
-				// do nothing
-			}
-			
-			System.out.println("Starting optimization");
-			return new ExternalProblem(hostname, port) {
-				
-				@Override
-				public String getName() {
-					return StringUtils.join(commandLine.getArgs());
-				}
-	
-				@Override
-				public int getNumberOfVariables() {
-					return variables.size();
-				}
-	
-				@Override
-				public int getNumberOfObjectives() {
-					return numberOfObjectives;
-				}
-	
-				@Override
-				public int getNumberOfConstraints() {
-					return numberOfConstraints;
-				}
-	
-				@Override
-				public Solution newSolution() {
-					Solution solution = new Solution(variables.size(), numberOfObjectives, numberOfConstraints);
-					
-					for (int i = 0; i < variables.size(); i++) {
-						solution.setVariable(i, variables.get(i).copy());
-					}
-					
-					return solution;
-				}
-				
-			};
-		} else {
-			return new ExternalProblem(commandLine.getArgs()) {
-	
-				@Override
-				public String getName() {
-					return StringUtils.join(commandLine.getArgs());
-				}
-	
-				@Override
-				public int getNumberOfVariables() {
-					return variables.size();
-				}
-	
-				@Override
-				public int getNumberOfObjectives() {
-					return numberOfObjectives;
-				}
-	
-				@Override
-				public int getNumberOfConstraints() {
-					return numberOfConstraints;
-				}
-	
-				@Override
-				public Solution newSolution() {
-					Solution solution = new Solution(variables.size(), numberOfObjectives, numberOfConstraints);
-					
-					for (int i = 0; i < variables.size(); i++) {
-						solution.setVariable(i, variables.get(i).copy());
-					}
-					
-					return solution;
-				}
-				
-			};
+			builder.withSocket(hostname, port);
+			builder.withConnectionDelay(Duration.ofSeconds(Integer.parseInt(commandLine.getOptionValue("startupDelay"))));
 		}
+		
+		if (commandLine.getArgs().length > 0) {
+			System.out.print("Running ");
+			System.out.println(StringUtils.join(commandLine.getArgs()));
+			builder.withCommand(commandLine.getArgs());
+		}
+			
+		System.out.println("Starting optimization");
+		return new ExternalProblem(builder) {
+
+			@Override
+			public String getName() {
+				return StringUtils.join(commandLine.getArgs());
+			}
+
+			@Override
+			public int getNumberOfVariables() {
+				return variables.size();
+			}
+
+			@Override
+			public int getNumberOfObjectives() {
+				return numberOfObjectives;
+			}
+
+			@Override
+			public int getNumberOfConstraints() {
+				return numberOfConstraints;
+			}
+
+			@Override
+			public Solution newSolution() {
+				Solution solution = new Solution(variables.size(), numberOfObjectives, numberOfConstraints);
+
+				for (int i = 0; i < variables.size(); i++) {
+					solution.setVariable(i, variables.get(i).copy());
+				}
+
+				return solution;
+			}
+
+		};
 	}
 	
 	/**

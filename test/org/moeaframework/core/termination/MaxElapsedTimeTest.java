@@ -42,11 +42,4 @@ public class MaxElapsedTimeTest {
 		Assert.assertTrue(termination.shouldTerminate(algorithm));
 	}
 	
-	@Test
-	public void testToMilliseconds() {
-		Assert.assertEquals(5 * 1000, MaxElapsedTime.toMilliseconds(Duration.ofSeconds(5)));
-		Assert.assertEquals(500, MaxElapsedTime.toMilliseconds(Duration.ofMillis(500)));
-		Assert.assertEquals(5 * 60 * 1000, MaxElapsedTime.toMilliseconds(Duration.ofMinutes(5)));
-	}
-	
 }

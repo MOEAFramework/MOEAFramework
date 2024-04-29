@@ -20,6 +20,8 @@ package org.moeaframework;
 import java.time.Duration;
 import java.util.function.BooleanSupplier;
 
+import org.moeaframework.util.DurationUtils;
+
 public class Wait {
 	
 	private Wait() {
@@ -27,7 +29,7 @@ public class Wait {
 	}
 	
 	public static void spinFor(Duration duration) {
-		final long waitTime = duration.getSeconds() * 1_000_000_000 + duration.getNano();
+		final long waitTime = DurationUtils.toNanoseconds(duration);
 		final long startTime = System.nanoTime();
 		
 		spinUntil(() -> System.nanoTime() - startTime >= waitTime);
@@ -40,8 +42,7 @@ public class Wait {
 	}
 	
 	public static void sleepFor(Duration duration) {
-		// Convert duration to milliseconds.  If upgrading to Java 19, we can pass Duration directly into sleep.
-		long waitTime = duration.getSeconds() * 1000 + duration.getNano() / 1000000;
+		long waitTime = DurationUtils.toMilliseconds(duration);
 		
 		try {
 			Thread.sleep(waitTime);

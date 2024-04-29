@@ -61,7 +61,7 @@ public class ExternalProblemWithStdio {
 	public static class MyDTLZ2 extends ExternalProblem {
 
 		public MyDTLZ2() throws IOException {
-			super("./examples/dtlz2_stdio.exe");
+			super(new Builder().withCommand("./examples/dtlz2_stdio.exe"));
 		}
 
 		@Override
