@@ -232,23 +232,23 @@ public class Assert extends org.junit.Assert {
 		}
 	}
 	
-	public static void assertGreaterThan(double lhs, double rhs) {
+	public static <T extends Comparable<T>> void assertGreaterThan(T lhs, T rhs) {
 		MatcherAssert.assertThat(lhs, Matchers.greaterThan(rhs));
 	}
 	
-	public static void assertGreaterThanOrEqual(double lhs, double rhs) {
+	public static <T extends Comparable<T>> void assertGreaterThanOrEqual(T lhs, T rhs) {
 		MatcherAssert.assertThat(lhs, Matchers.greaterThanOrEqualTo(rhs));
 	}
 	
-	public static void assertLessThan(double lhs, double rhs) {
+	public static <T extends Comparable<T>> void assertLessThan(T lhs, T rhs) {
 		MatcherAssert.assertThat(lhs, Matchers.lessThan(rhs));
 	}
 	
-	public static void assertLessThanOrEqual(double lhs, double rhs) {
+	public static <T extends Comparable<T>> void assertLessThanOrEqual(T lhs, T rhs) {
 		MatcherAssert.assertThat(lhs, Matchers.lessThanOrEqualTo(rhs));
 	}
 	
-	public static void assertBetween(double lowerBound, double upperBound, double value) {
+	public static <T extends Comparable<T>> void assertBetween(T lowerBound, T upperBound, T value) {
 		MatcherAssert.assertThat(value, Matchers.allOf(Matchers.greaterThanOrEqualTo(lowerBound),
 				Matchers.lessThanOrEqualTo(upperBound)));
 	}

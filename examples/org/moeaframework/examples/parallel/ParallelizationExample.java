@@ -23,6 +23,7 @@ import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.misc.Schaffer;
+import org.moeaframework.util.Timer;
 import org.moeaframework.util.distributed.DistributedProblem;
 
 /**
@@ -39,32 +40,32 @@ public class ParallelizationExample {
 		//first run on a single core (serially).
 		System.out.println("First run - serial");
 		
-		long startSerial = System.currentTimeMillis();
+		Timer serialTimer = Timer.startNew();
 		
 		NSGAII serialAlgorithm = new NSGAII(problem);
 		serialAlgorithm.run(100000);
 		
-		long endSerial = System.currentTimeMillis();
+		serialTimer.stop();
 		
 		//now distribute evaluations on all available cores.
 		System.out.println("Second run - parallel (" +
 				Runtime.getRuntime().availableProcessors() + " cores)");
 		
-		long startParallel = System.currentTimeMillis();
+		Timer parallelTimer = Timer.startNew();
 		
 		try (Problem distributedProblem = DistributedProblem.from(problem)) {
 			NSGAII distributedAlgorithm = new NSGAII(distributedProblem);
 			distributedAlgorithm.run(100000);
 		}
 		
-		long endParallel = System.currentTimeMillis();
+		parallelTimer.stop();
 		
 		//display results
 		System.out.println("Results:");
-		System.out.println("  Serial   - " + (endSerial - startSerial) + " ms");
-		System.out.println("  Parallel - " + (endParallel - startParallel) + " ms");
+		System.out.println("  Serial   - " + serialTimer.getElapsedTime() + " sec");
+		System.out.println("  Parallel - " + parallelTimer.getElapsedTime() + " sec");
 		
-		double speedup = (endSerial - startSerial) / (double)(endParallel - startParallel);
+		double speedup = serialTimer.getElapsedTime() / parallelTimer.getElapsedTime();
 		System.out.println("  Speedup  - " + String.format("%.02f", speedup));
 	}
 	

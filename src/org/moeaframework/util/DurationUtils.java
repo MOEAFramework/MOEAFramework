@@ -29,6 +29,16 @@ public class DurationUtils {
 	}
 	
 	/**
+	 * Converts the given duration into fractional seconds.
+	 * 
+	 * @param duration the duration
+	 * @return the duration in seconds
+	 */
+	public static final double toSeconds(Duration duration) {
+		return duration.getSeconds() + duration.getNano() / 1e9;
+	}
+	
+	/**
 	 * Converts the given duration into milliseconds.
 	 * 
 	 * @param duration the duration

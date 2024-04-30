@@ -27,6 +27,8 @@ import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
 import org.moeaframework.Wait;
+import org.moeaframework.util.DurationUtils;
+import org.moeaframework.util.Timer;
 
 @RunWith(CIRunner.class)
 @Retryable
@@ -37,7 +39,7 @@ public class ProgressHelperTest {
 	 */
 	@Test
 	public void testTimingSingleSeed() {
-		test(1, 100000, 10000, 50);
+		test(1, 100000, 10000, Duration.ofMillis(50));
 	}
 	
 	/**
@@ -45,7 +47,7 @@ public class ProgressHelperTest {
 	 */
 	@Test
 	public void testTimingManySeeds() {
-		test(5, 100000, 10000, 50);
+		test(5, 100000, 10000, Duration.ofMillis(50));
 	}
 	
 	/**
@@ -53,7 +55,7 @@ public class ProgressHelperTest {
 	 */
 	@Test
 	public void testTimingFineGrained() {
-		test(1, 50, 1, 50);
+		test(1, 50, 1, Duration.ofMillis(50));
 	}
 	
 	/**
@@ -62,9 +64,9 @@ public class ProgressHelperTest {
 	 * @param totalSeeds the total number of seeds to simulate
 	 * @param maxNFE the maximum NFE per seed to simulate
 	 * @param frequency the frequency of progress updates
-	 * @param time the simulated time per step, in milliseconds
+	 * @param delay the simulated time per step
 	 */
-	private void test(int totalSeeds, int maxNFE, int frequency, int time) {
+	private void test(int totalSeeds, int maxNFE, int frequency, Duration delay) {
 		ProgressHelper helper = new ProgressHelper(null);		
 		final List<ProgressEvent> events = new ArrayList<ProgressEvent>();
 		
@@ -85,11 +87,11 @@ public class ProgressHelperTest {
 		events.clear();
 		
 		helper.start(totalSeeds, maxNFE, -1);
-		long startTime = System.currentTimeMillis();
+		Timer timer = Timer.startNew();
 		
 		for (int i = 0; i < totalSeeds; i++) {
 			for (int j = 0; j <= maxNFE-frequency; j += frequency) {
-				Wait.spinFor(Duration.ofMillis(time));				
+				Wait.spinFor(delay);				
 				helper.setCurrentNFE(j+frequency);
 			}
 			
@@ -97,8 +99,8 @@ public class ProgressHelperTest {
 		}
 				
 		int expectedCount = totalSeeds * (maxNFE/frequency + 1);
-		double expectedTime = (System.currentTimeMillis() - startTime) / 1000.0;
-		double error = 2 * time / 1000.0;
+		double expectedTime = timer.stop();
+		double error = DurationUtils.toSeconds(delay.multipliedBy(2));
 		
 		Assert.assertEquals(expectedCount, events.size());
 		Assert.assertFalse(events.get(0).isSeedFinished());

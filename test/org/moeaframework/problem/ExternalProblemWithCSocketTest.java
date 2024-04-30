@@ -26,6 +26,7 @@ import org.moeaframework.Assert;
 import org.moeaframework.Assume;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.ExternalProblem.Builder;
+import org.moeaframework.util.Timer;
 
 public class ExternalProblemWithCSocketTest extends ExternalProblemWithCStdioTest {
 	
@@ -50,7 +51,7 @@ public class ExternalProblemWithCSocketTest extends ExternalProblemWithCStdioTes
 			Solution solution = problem.newSolution();
 			
 			// The following should take at least retryAttempts * retryDelay
-			long startTime = System.currentTimeMillis();
+			Timer timer = Timer.startNew();
 			
 			try {
 				problem.evaluate(solution);
@@ -58,8 +59,7 @@ public class ExternalProblemWithCSocketTest extends ExternalProblemWithCStdioTes
 				Assert.assertTrue(e.getCause() instanceof ConnectException);
 			}
 			
-			long endTime = System.currentTimeMillis();
-			Assert.assertGreaterThanOrEqual(endTime - startTime, 5000);
+			Assert.assertGreaterThanOrEqual(timer.stop(), 5.0);
 			
 			Assert.assertNull(problem.getInstance().getProcess());
 			Assert.assertTrue(problem.getInstance().getSocket() == null || problem.getInstance().getSocket().isClosed());
@@ -79,7 +79,7 @@ public class ExternalProblemWithCSocketTest extends ExternalProblemWithCStdioTes
 			Solution solution = problem.newSolution();
 			
 			// The following should take at least retryAttempts * retryDelay + shutdownTimeout
-			long startTime = System.currentTimeMillis();
+			Timer timer = Timer.startNew();
 			
 			try {
 				problem.evaluate(solution);
@@ -87,8 +87,7 @@ public class ExternalProblemWithCSocketTest extends ExternalProblemWithCStdioTes
 				Assert.assertTrue(e.getCause() instanceof ConnectException);
 			}
 			
-			long endTime = System.currentTimeMillis();
-			Assert.assertGreaterThanOrEqual(endTime - startTime, 5000);
+			Assert.assertGreaterThanOrEqual(timer.stop(), 5.0);
 			
 			Assert.assertNotNull(problem.getInstance().getProcess());
 			Assert.assertTrue(problem.getInstance().getProcess().isAlive());

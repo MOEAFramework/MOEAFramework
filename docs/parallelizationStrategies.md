@@ -3,7 +3,7 @@
 By default, the MOEA Framework is single-threaded.  Solving a problem in the manner below will use a single core on
 your computer:
 
-<!-- java:examples/org/moeaframework/examples/parallel/ParallelizationExample.java [44:45] -->
+<!-- java:examples/org/moeaframework/examples/parallel/ParallelizationExample.java [45:46] -->
 
 ```java
 NSGAII serialAlgorithm = new NSGAII(problem);
@@ -19,7 +19,7 @@ Perhaps the most straightforward approach to speeding up evaluations is to distr
 evaluations across multiple cores.  Most consumer CPUs today have multiple cores (and even multiple threads per core!).
 We can distributed function evaluations using the `DistributedProblem` class:
 
-<!-- java:examples/org/moeaframework/examples/parallel/ParallelizationExample.java [55:58] -->
+<!-- java:examples/org/moeaframework/examples/parallel/ParallelizationExample.java [56:59] -->
 
 ```java
 try (Problem distributedProblem = DistributedProblem.from(problem)) {
