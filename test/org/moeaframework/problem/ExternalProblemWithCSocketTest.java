@@ -19,6 +19,7 @@ package org.moeaframework.problem;
 
 import java.io.File;
 import java.net.ConnectException;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
@@ -66,7 +67,7 @@ public class ExternalProblemWithCSocketTest extends ExternalProblemWithCStdioTes
 	}
 	
 	@Test
-	public void testFailAfterRetriesWithProcess() {
+	public void testFailAfterRetriesWithProcess() throws InterruptedException {
 		File executable = getExecutable("test_stdio.exe");
 		
 		Builder builder = new Builder()
@@ -93,7 +94,7 @@ public class ExternalProblemWithCSocketTest extends ExternalProblemWithCStdioTes
 			Assert.assertTrue(problem.getInstance().getProcess().isAlive());
 			Assert.assertTrue(problem.getInstance().getSocket() == null || problem.getInstance().getSocket().isClosed());
 			problem.close();
-			Assert.assertFalse(problem.getInstance().getProcess().isAlive());
+			Assert.assertTrue(problem.getInstance().getProcess().waitFor(10, TimeUnit.SECONDS));
 		}
 	}
 
