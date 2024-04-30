@@ -26,6 +26,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.time.Duration;
 import java.util.Properties;
 import java.util.Set;
 
@@ -182,8 +183,31 @@ public class Settings {
 	
 	/**
 	 * The property key for enabling debugging info when running external problems.
+	 * 
+	 * @deprecated Use {@link #KEY_EXTERNAL_PROBLEM_DEBUGGING} instead
 	 */
-	public static final String KEY_EXTERNAL_PROBLEM_DEBUGGING = createKey(KEY_PREFIX, "problem", "external_problem_debugging");
+	@Deprecated
+	public static final String KEY_EXTERNAL_PROBLEM_DEBUGGING_DEPRECATED = createKey(KEY_PREFIX, "problem", "external_problem_debugging");
+	
+	/**
+	 * The property key for enabling debugging info when running external problems.
+	 */
+	public static final String KEY_EXTERNAL_PROBLEM_DEBUGGING = createKey(KEY_PROBLEM_PREFIX, "external", "enable_debugging");
+	
+	/**
+	 * The property key for configuring the number of retry attempts when running external problems.
+	 */
+	public static final String KEY_EXTERNAL_RETRY_ATTEMPTS = createKey(KEY_PROBLEM_PREFIX, "external", "retry_attempts");
+	
+	/**
+	 * The property key for configuring the retry delay when running external problems.
+	 */
+	public static final String KEY_EXTERNAL_RETRY_DELAY = createKey(KEY_PROBLEM_PREFIX, "external", "retry_delay");
+	
+	/**
+	 * The property key for configuring the shutdown timeout when running external problems.
+	 */
+	public static final String KEY_EXTERNAL_SHUTDOWN_TIMEOUT = createKey(KEY_PROBLEM_PREFIX, "external", "shutdown_timeout");
 	
 	static {
 		reload();
@@ -511,7 +535,36 @@ public class Settings {
 	 * @return {@code true} if debugging for external problems is enabled; {@code false} otherwise
 	 */
 	public static boolean isExternalProblemDebuggingEnabled() {
-		return PROPERTIES.getBoolean(KEY_EXTERNAL_PROBLEM_DEBUGGING, false);
+		return PROPERTIES.getBoolean(KEY_EXTERNAL_PROBLEM_DEBUGGING,
+				PROPERTIES.getBoolean(KEY_EXTERNAL_PROBLEM_DEBUGGING_DEPRECATED, false));
+	}
+	
+	/**
+	 * Returns the number of retry attempts when connecting to an external problem with sockets.
+	 * 
+	 * @return the number of retry attempts
+	 */
+	public static int getExternalProblemRetryAttempts() {
+		return PROPERTIES.getInt(KEY_EXTERNAL_RETRY_ATTEMPTS, 5);
+	}
+	
+	/**
+	 * Returns the delay, given in seconds, between retry attempts when connecting to an external problem with sockets.
+	 * 
+	 * @return the retry delay
+	 */
+	public static Duration getExternalProblemRetryDelay() {
+		return Duration.ofSeconds(PROPERTIES.getInt(KEY_EXTERNAL_RETRY_DELAY, 1));
+	}
+	
+	/**
+	 * Returns the timeout, given in seconds, the external process is given to shutdown cleanly before a forceful
+	 * shutdown is attempted.
+	 * 
+	 * @return the shutdown timeout
+	 */
+	public static Duration getExternalProblemShutdownTimeout() {
+		return Duration.ofSeconds(PROPERTIES.getInt(KEY_EXTERNAL_SHUTDOWN_TIMEOUT, 10));
 	}
 	
 	/**

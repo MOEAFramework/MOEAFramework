@@ -36,7 +36,7 @@ public class TimerTest {
 		Timer timer = new Timer();
 		Assert.assertNull(timer.getName());
 		
-		run(timer, 5, Duration.ofMillis(10));
+		run(timer, 5, Duration.ofMillis(100));
 	}
 	
 	@Test
@@ -44,13 +44,13 @@ public class TimerTest {
 		Timer timer = new Timer("foo");
 		Assert.assertEquals("foo", timer.getName());
 		
-		run(timer, 5, Duration.ofMillis(10));
+		run(timer, 5, Duration.ofMillis(100));
 	}
 	
 	@Test
 	public void testClear() throws IOException {
 		Timer timer = new Timer("foo");
-		run(timer, 5, Duration.ofMillis(10));
+		run(timer, 5, Duration.ofMillis(100));
 		
 		timer.clear();
 		

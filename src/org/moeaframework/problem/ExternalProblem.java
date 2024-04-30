@@ -105,11 +105,11 @@ public abstract class ExternalProblem implements Problem {
 		
 		private PrintStream debug;
 		
-		private int retryAttempts = 5;
+		private int retryAttempts;
 				
-		private Duration retryDelay = Duration.ofSeconds(1);
+		private Duration retryDelay;
 		
-		private Duration shutdownTimeout = Duration.ofSeconds(10);
+		private Duration shutdownTimeout;
 		
 		/**
 		 * Constructs a new builder.
@@ -122,6 +122,10 @@ public abstract class ExternalProblem implements Problem {
 			} else {
 				withDebugging(OutputStream.nullOutputStream());
 			}
+			
+			retryAttempts = Settings.getExternalProblemRetryAttempts();
+			retryDelay = Settings.getExternalProblemRetryDelay();
+			shutdownTimeout = Settings.getExternalProblemShutdownTimeout();
 		}
 		
 		/**

@@ -13,7 +13,14 @@ This page documents notable changes introduced in each chronological release of 
     
   * Expands CI testing to include Windows and MacOS.
   
-  * Improved support for configuring external problems using the Builder pattern
+  * Improved support for configuring external problems, including using a Builder pattern, adding retries, and ensuring
+    the process is shutdown.  These new settings can be configured with:
+    ```
+    org.moeaframework.problem.external.enable_debugging = true
+    org.moeaframework.problem.external.retry_attempts = 5
+    org.moeaframework.problem.external.retry_delay = 1
+    org.moeaframework.problem.external.shutdown_timeout = 10
+    ```
   
 
 ## Version 4.0 (05 Apr 2024)
