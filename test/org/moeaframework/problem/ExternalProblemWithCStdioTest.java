@@ -125,7 +125,7 @@ public class ExternalProblemWithCStdioTest {
 	}
 	
 	@Test
-	public void testLazyStart() {
+	public void testMissingExecutable() {
 		Builder builder = new Builder().withCommand("test_not_exists.exe");
 		
 		try (TestExternalProblem problem = new TestExternalProblem(builder)) {

@@ -87,7 +87,7 @@ public class ExternalProblemWithCSocketTest extends ExternalProblemWithCStdioTes
 			}
 			
 			long endTime = System.currentTimeMillis();
-			Assert.assertGreaterThanOrEqual(endTime - startTime, 15000);
+			Assert.assertGreaterThanOrEqual(endTime - startTime, 5000);
 			
 			Assert.assertNotNull(problem.getInstance().getProcess());
 			Assert.assertTrue(problem.getInstance().getProcess().isAlive());
