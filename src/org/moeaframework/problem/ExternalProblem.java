@@ -267,11 +267,31 @@ public abstract class ExternalProblem implements Problem {
 		}
 		
 		/**
+		 * Creates a copy of this builder.  Note that streams are shared between the two instances.
+		 * 
+		 * @return the copy
+		 */
+		protected Builder copy() {
+			Builder copy = new Builder();
+			copy.command = command.clone();
+			copy.workingDirectory = workingDirectory;
+			copy.socketAddress = socketAddress;
+			copy.inputStream = inputStream;
+			copy.outputStream = outputStream;
+			copy.errorStream = errorStream;
+			copy.debug = debug;
+			copy.retryAttempts = retryAttempts;
+			copy.retryDelay = retryDelay;
+			copy.shutdownTimeout = shutdownTimeout;
+			return copy;
+		}
+		
+		/**
 		 * Returns the constructed instance.
 		 * 
 		 * @return the external problem instance
 		 */
-		private Instance build() {
+		protected Instance build() {
 			return new Instance(this);
 		}
 		
@@ -282,15 +302,7 @@ public abstract class ExternalProblem implements Problem {
 	 */
 	protected static class Instance implements Closeable {
 		
-		private final ProcessBuilder processBuilder;
-		
-		private final InetSocketAddress socketAddress;
-		
-		private final int retryAttempts;
-		
-		private final Duration retryDelay;
-		
-		private final Duration shutdownTimeout;
+		private final Builder builder;
 		
 		private Process process;
 		
@@ -300,10 +312,6 @@ public abstract class ExternalProblem implements Problem {
 		
 		private BufferedWriter writer;
 		
-		private OutputStream errorStream;
-		
-		private PrintStream debug;
-		
 		/**
 		 * Constructs an instance of an external problem.
 		 * 
@@ -311,37 +319,7 @@ public abstract class ExternalProblem implements Problem {
 		 */
 		public Instance(Builder builder) {
 			super();
-			this.socketAddress = builder.socketAddress;
-			this.retryAttempts = builder.retryAttempts;
-			this.retryDelay = builder.retryDelay;
-			this.shutdownTimeout = builder.shutdownTimeout;
-			this.errorStream = builder.errorStream;
-			this.debug = builder.debug;
-			
-			if (builder.command != null && builder.command.length > 0) {
-				String[] command = builder.command.clone();
-
-				// Rules for locating executable:
-				//   1. If absolute, use the given path
-				//   2. If executable exists in working directory, supply relative path appropriate for OS
-				//      a. Windows - Path is relative to where Java was launched
-				//      b. Linux - Path is relative to working directory, including "./" prefix
-				//   3. Use system path
-				if (!new File(command[0]).isAbsolute() && new File(builder.workingDirectory, command[0]).exists()) {
-					File relativePath = SystemUtils.IS_OS_WINDOWS ? builder.workingDirectory : new File(".");
-					command[0] = new File(relativePath, command[0]).getPath();
-				}
-				
-				this.processBuilder = new ProcessBuilder(command).directory(builder.workingDirectory);
-			} else {
-				this.processBuilder = null;
-			}
-			
-			// Passing in streams directly is primarily intended for testing and internal use
-			if (builder.inputStream != null && builder.outputStream != null) {
-				reader = new BufferedReader(new InputStreamReader(builder.inputStream));
-				writer = new BufferedWriter(new OutputStreamWriter(builder.outputStream));
-			}
+			this.builder = builder.copy();
 		}
 		
 		/**
@@ -356,11 +334,16 @@ public abstract class ExternalProblem implements Problem {
 		/**
 		 * Establishes a socket connection to the address with retries.
 		 * 
-		 * @return the connected socket
+		 * @return the connected socket, or {@code null} if no socket connection was configured
 		 * @throws IOException if an error occurred connecting to the address
 		 */
 		private Socket connectWithRetries() throws IOException {
+			if (builder.socketAddress == null) {
+				return null;
+			}
+			
 			int attempt = 0;
+			PrintStream debug = getDebug();
 			
 			while (true) {
 				attempt += 1;
@@ -368,26 +351,61 @@ public abstract class ExternalProblem implements Problem {
 				Socket socket = new Socket();
 				
 				try {
-					debug.println("Connecting to " + socketAddress);
-					socket.connect(socketAddress);
+					debug.println("Connecting to " + builder.socketAddress);
+					socket.connect(builder.socketAddress);
 					return socket;
 				} catch (SocketException e) {
 					socket.close();
 					
-					if (attempt > retryAttempts) {
+					if (attempt > builder.retryAttempts) {
 						throw e;
 					}
 					
-					debug.println(e.getMessage() + ", retrying attempt " + attempt + " of " + retryAttempts + "...");
+					debug.println(e.getMessage() + ", retrying attempt " + attempt + " of " + builder.retryAttempts +
+							"...");
 					
 					try {
-						Thread.sleep(DurationUtils.toMilliseconds(retryDelay));
+						Thread.sleep(DurationUtils.toMilliseconds(builder.retryDelay));
 					} catch (InterruptedException ie) {
 						// if interrupted, rethrow the original error causing retries
 						throw e;
 					}
 				}
 			}
+		}
+		
+		/**
+		 * Starts the process specified by the command.  The following order is used to locate the executable:
+		 * <ol>
+		 *   <li>If absolute, use the given path
+	     *   <li>If executable exists in working directory, supply relative path appropriate for the OS
+	     *     <ol>
+		 *       <li>Windows - Path is relative to where Java was launched
+		 *       <li>Linux - Path is relative to working directory, including "./" prefix
+		 *     </ol>
+		 *   <li>Use system path
+		 * </ol>
+		 * 
+		 * @return the process, or {@code null} if no command was configured
+		 * @throws IOException if an error occurred starting the process
+		 */
+		private Process startProcess() throws IOException {
+			String[] command = builder.command;
+			
+			if (command == null || command.length == 0) {
+				return null;
+			}
+			
+			// Create a clone of the command as we will potentially modify it below
+			command = command.clone();
+			
+			if (!new File(command[0]).isAbsolute() && new File(builder.workingDirectory, command[0]).exists()) {
+				File relativePath = SystemUtils.IS_OS_WINDOWS ? builder.workingDirectory : new File(".");
+				command[0] = new File(relativePath, command[0]).getPath();
+			}
+			
+			getDebug().println("Starting process '" + String.join(" ", command) + "'");
+			return new ProcessBuilder(command).directory(builder.workingDirectory).start();
 		}
 		
 		/**
@@ -400,23 +418,29 @@ public abstract class ExternalProblem implements Problem {
 				return;
 			}
 			
-			if (processBuilder != null) {
-				process = processBuilder.start();
-				RedirectStream.redirect(process.getErrorStream(), errorStream != null ? errorStream : System.err);
+			// Start the process, if configured
+			process = startProcess();
+			
+			if (process != null) {
+				RedirectStream.redirect(process.getErrorStream(), builder.errorStream != null ? builder.errorStream :
+					System.err);
 			}
 			
-			if (socketAddress != null) {
-				socket = connectWithRetries();
-			}
+			// Start the socket connection, if configured
+			socket = connectWithRetries();
 			
-			if (socket != null) {
+			// Set up the reader / writer for communication
+			if (builder.inputStream != null && builder.outputStream != null) {
+				reader = new BufferedReader(new InputStreamReader(builder.inputStream));
+				writer = new BufferedWriter(new OutputStreamWriter(builder.outputStream));
+			} else if (socket != null) {
 				reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			} else if (process != null) {
 				reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 				writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
 			} else {
-				throw new IllegalArgumentException("Must configure a program or socket address");
+				throw new IllegalArgumentException("Must configure a program or socket connection");
 			}
 		}
 		
@@ -452,7 +476,7 @@ public abstract class ExternalProblem implements Problem {
 		 * @return the debug stream
 		 */
 		public PrintStream getDebug() {
-			return debug;
+			return builder.debug;
 		}
 		
 		/**
@@ -475,6 +499,8 @@ public abstract class ExternalProblem implements Problem {
 
 		@Override
 		public void close() throws IOException {
+			PrintStream debug = getDebug();
+			
 			if (writer != null) {
 				writer.close();
 			}
@@ -488,12 +514,12 @@ public abstract class ExternalProblem implements Problem {
 			}
 			
 			if (process != null) {
-				try {
+				try {					
 					if (process.isAlive()) {
-						debug.println("Waiting for process to exit");
+						debug.println("Waiting for process to exit...");
 					}
 					
-					if (process.waitFor(DurationUtils.toMilliseconds(shutdownTimeout), TimeUnit.MILLISECONDS)) {
+					if (process.waitFor(DurationUtils.toMilliseconds(builder.shutdownTimeout), TimeUnit.MILLISECONDS)) {
 						int exitCode = process.exitValue();
 						debug.println("Process exited with code " + exitCode);
 					} else {
@@ -604,9 +630,9 @@ public abstract class ExternalProblem implements Problem {
 	@Deprecated
 	public void setDebugStream(OutputStream stream) {		
 		if (stream == null) {
-			instance.debug = null;
+			instance.builder.debug = null;
 		} else {
-			instance.debug = new PrintStream(stream);
+			instance.builder.debug = new PrintStream(stream);
 		}
 	}
 
