@@ -368,6 +368,8 @@ public abstract class ExternalProblem implements Problem {
 					socket.connect(socketAddress);
 					return socket;
 				} catch (SocketException e) {
+					socket.close();
+					
 					if (attempt > retryAttempts) {
 						throw e;
 					}
@@ -379,8 +381,6 @@ public abstract class ExternalProblem implements Problem {
 					} catch (InterruptedException ie) {
 						throw e;
 					}
-				} finally {
-					socket.close();
 				}
 			}
 		}

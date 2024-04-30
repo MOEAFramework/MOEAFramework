@@ -62,8 +62,6 @@ public class ExternalProblemWithCSocketTest extends ExternalProblemWithCStdioTes
 			
 			Assert.assertNull(problem.getInstance().getProcess());
 			Assert.assertTrue(problem.getInstance().getSocket() == null || problem.getInstance().getSocket().isClosed());
-			problem.close();
-			Assert.assertFalse(problem.getInstance().getProcess().isAlive());
 		}
 	}
 	
