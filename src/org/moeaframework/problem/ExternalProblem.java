@@ -273,7 +273,7 @@ public abstract class ExternalProblem implements Problem {
 		 */
 		protected Builder copy() {
 			Builder copy = new Builder();
-			copy.command = command.clone();
+			copy.command = command == null ? null : command.clone();
 			copy.workingDirectory = workingDirectory;
 			copy.socketAddress = socketAddress;
 			copy.inputStream = inputStream;
@@ -422,8 +422,8 @@ public abstract class ExternalProblem implements Problem {
 			process = startProcess();
 			
 			if (process != null) {
-				RedirectStream.redirect(process.getErrorStream(), builder.errorStream != null ? builder.errorStream :
-					System.err);
+				RedirectStream.redirect(process.getErrorStream(),
+						builder.errorStream != null ? builder.errorStream : System.err);
 			}
 			
 			// Start the socket connection, if configured
