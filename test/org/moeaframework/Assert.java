@@ -26,6 +26,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -46,6 +48,7 @@ import javax.swing.JLabel;
 import javax.swing.MenuElement;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
@@ -61,6 +64,43 @@ public class Assert extends org.junit.Assert {
 
 	private Assert() {
 		super();
+	}
+	
+	public static void assertBothNullOrNotNull(Object expected, Object actual) {
+		Assert.assertFalse("Expected both values to either be null or non-null",
+				expected != null ^ actual != null);
+	}
+	
+	public static <T> void assertCopy(T expected, T actual) {
+		try {
+			Assert.assertNotSame(expected, actual);
+			Assert.assertEquals(expected.getClass(), actual.getClass());
+			
+			Class<?> type = expected.getClass();
+			
+			for (Field field : FieldUtils.getAllFields(type)) {
+				field.setAccessible(true);
+				
+				Object expectedValue = field.get(expected);
+				Object actualValue = field.get(actual);
+				
+				if (field.getType().isArray()) {
+					Assert.assertBothNullOrNotNull(expectedValue, actualValue);
+					Assert.assertTrue("expected arrays in copied objects to be copies", expectedValue != actualValue);
+					
+					Assert.assertEquals("expected arrays to have identical length",
+							Array.getLength(expectedValue), Array.getLength(actualValue));
+					
+					for (int i = 0; i < Array.getLength(expectedValue); i++) {
+						Assert.assertEquals(Array.get(expectedValue, i), Array.get(actualValue, i));
+					}
+				} else {
+					Assert.assertEquals(expectedValue, actualValue);	
+				}
+			}
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			throw new AssertionError("Unable to compare copies", e);
+		}
 	}
 
 	public static void assertEqualsNormalized(String expected, String actual) {
@@ -502,7 +542,7 @@ public class Assert extends org.junit.Assert {
 		if (n > 1) {
 			pattern += "(\\s*,\\s*-?[0-9]+(\\.[0-9]+(E-?[0-9]+)?)?){" + (n-1) + "}";
 		}
-		
+
 		return pattern;
 	}
 
