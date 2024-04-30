@@ -379,6 +379,7 @@ public abstract class ExternalProblem implements Problem {
 					try {
 						Thread.sleep(DurationUtils.toMilliseconds(retryDelay));
 					} catch (InterruptedException ie) {
+						// if interrupted, rethrow the original error causing retries
 						throw e;
 					}
 				}

@@ -47,7 +47,7 @@ public class Wait {
 		try {
 			Thread.sleep(waitTime);
 		} catch (InterruptedException e) {
-			System.err.println(e.getMessage());
+			Assert.fail("sleep was interrupted which may produce invalid test results");
 		}
 	}
 
