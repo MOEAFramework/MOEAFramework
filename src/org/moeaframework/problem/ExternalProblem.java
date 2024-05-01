@@ -681,7 +681,7 @@ public abstract class ExternalProblem implements Problem {
 			sb.append(System.lineSeparator());
 			
 			debug.print("<< ");
-			debug.println(sb.toString());
+			debug.print(sb.toString());
 			
 			writer.write(sb.toString());
 			writer.flush();

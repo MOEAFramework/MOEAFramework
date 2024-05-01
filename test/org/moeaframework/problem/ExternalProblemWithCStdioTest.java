@@ -25,7 +25,6 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.net.Socket;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
@@ -66,7 +65,8 @@ public class ExternalProblemWithCStdioTest {
 		File executable = getExecutable("test_stdio.exe");
 		
 		return new Builder()
-				.withCommand(executable.toString());
+				.withCommand(executable.toString())
+				.withDebugging();
 	}
 	
 	@Test
@@ -194,7 +194,6 @@ public class ExternalProblemWithCStdioTest {
 		}
 	}
 	
-	@Ignore("this case is not detected by the C/C++ library")
 	@Test(expected = ProblemException.class)
 	public void testErrorTooManyVariables() {
 		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {

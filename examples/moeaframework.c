@@ -39,7 +39,7 @@
 #endif
 
 #define MOEA_WHITESPACE " \t"
-#define MOEA_INITIAL_BUFFER_SIZE 1024
+#define MOEA_BUFFER_SIZE 1024
 
 FILE* MOEA_Stream_input = NULL;
 FILE* MOEA_Stream_output = NULL;
@@ -50,9 +50,9 @@ SOCKET MOEA_Socket = INVALID_SOCKET;
 int MOEA_Number_objectives;
 int MOEA_Number_constraints;
 
-char* MOEA_Line_buffer = NULL;
-size_t MOEA_Line_position = 0;
-size_t MOEA_Line_limit = 0;
+char* MOEA_Buffer = NULL;
+size_t MOEA_Buffer_position = 0;
+size_t MOEA_Buffer_limit = 0;
 
 void MOEA_Error_callback_default(const MOEA_Status status) {
   MOEA_Debug("%s\n", MOEA_Status_message(status));
@@ -72,6 +72,8 @@ const char* MOEA_Status_message(const MOEA_Status status) {
     return "No solution read, missing call to MOEA_Next_solution()";
   case MOEA_PARSE_EOL:
     return "Attempted to parse variable but at end-of-line";
+  case MOEA_PARSE_EXTRA:
+    return "Expected to be at end-of-line but found extra characters";
   case MOEA_PARSE_INTEGER_ERROR:
     return "Unable to parse integer variable";
   case MOEA_PARSE_DOUBLE_ERROR:
@@ -104,6 +106,46 @@ MOEA_Status MOEA_Error(const MOEA_Status status) {
     MOEA_Error_callback(status);
     return status;
   }
+}
+
+MOEA_Status MOEA_Buffer_capacity(int required) {
+  if (required < MOEA_Buffer_limit) {
+    return MOEA_SUCCESS;
+  }
+
+  MOEA_Buffer_limit = required + MOEA_BUFFER_SIZE;
+  MOEA_Buffer = (char*)realloc(MOEA_Buffer, MOEA_Buffer_limit*sizeof(char));
+    
+  if (MOEA_Buffer == NULL) {
+    MOEA_Debug("realloc: %s\n", strerror(errno));
+    return MOEA_Error(MOEA_MALLOC_ERROR);
+  }
+  
+  return MOEA_SUCCESS;
+}
+
+MOEA_Status MOEA_Buffer_append(const char* format, ...) {
+  int len;
+  va_list arguments;
+  va_start(arguments, format);
+
+  /* determine the number of characters being written */
+  len = vsnprintf(NULL, 0, format, arguments);
+
+  /* expand the buffer if required, adding 1 to account for \0 terminating the string */
+  if (MOEA_Buffer_capacity(MOEA_Buffer_position + len + 1) != MOEA_SUCCESS) {
+    return MOEA_Error(MOEA_MALLOC_ERROR);
+  }
+
+  /* format and append to the buffer */
+  if ((len = vsnprintf(&MOEA_Buffer[MOEA_Buffer_position], len + 1, format, arguments)) < 0) {
+    return MOEA_Error(MOEA_FORMAT_ERROR);
+  }
+
+  MOEA_Buffer_position += len;
+
+  va_end(arguments);
+  return MOEA_SUCCESS;
 }
 
 MOEA_Status MOEA_Init(const int objectives, const int constraints) {
@@ -203,91 +245,85 @@ MOEA_Status MOEA_Debug(const char* format, ...) {
 }
 
 MOEA_Status MOEA_Next_solution() {
-  size_t position = 0;
-  size_t recv_len = 0;
+  size_t len = 0;
   int character;
-  
-  if (MOEA_Line_limit > 0) {
-  	MOEA_Line_buffer[0] = '\0';
-  }
 
-  if (feof(MOEA_Stream_input)) {
-    return MOEA_EOF;
+  MOEA_Buffer_position = 0;
+  
+  if (MOEA_Buffer_limit > 0) {
+  	MOEA_Buffer[0] = '\0';
   }
   
   while (!feof(MOEA_Stream_input)) {
-    /* increase line buffer if needed */
-    if ((MOEA_Line_limit == 0) || (position >= MOEA_Line_limit-1)) {
-      MOEA_Line_limit += MOEA_INITIAL_BUFFER_SIZE;
-      MOEA_Line_buffer = (char*)realloc(MOEA_Line_buffer, MOEA_Line_limit*sizeof(char));
-    
-      if (MOEA_Line_buffer == NULL) {
-        return MOEA_Error(MOEA_MALLOC_ERROR);
-      }
+    /* expand buffer if required */
+    if (MOEA_Buffer_capacity(MOEA_Buffer_position + MOEA_BUFFER_SIZE) != MOEA_SUCCESS) {
+      return MOEA_Error(MOEA_MALLOC_ERROR);
     }
   
     /* read the next chunk into the buffer */
     if (MOEA_Socket == INVALID_SOCKET) {
-      if (fgets(&MOEA_Line_buffer[position], MOEA_Line_limit - position, MOEA_Stream_input) == NULL) {
+      if (fgets(&MOEA_Buffer[MOEA_Buffer_position], MOEA_Buffer_limit - MOEA_Buffer_position, MOEA_Stream_input) == NULL) {
         if (!feof(MOEA_Stream_input)) {
           MOEA_Debug("fgets: %s\n", strerror(errno));
           return MOEA_Error(MOEA_IO_ERROR);
         }
       }
-    } else {
-      recv_len = recv(MOEA_Socket, &MOEA_Line_buffer[position], MOEA_Line_limit - position, 0);
 
-      if (recv_len < 0) {
+      MOEA_Buffer_position = strlen(MOEA_Buffer);
+    } else {
+      len = recv(MOEA_Socket, &MOEA_Buffer[MOEA_Buffer_position], MOEA_Buffer_limit - MOEA_Buffer_position, 0);
+
+      if (len < 0) {
         MOEA_Debug("recv: %s\n", strerror(errno));
         return MOEA_Error(MOEA_SOCKET_ERROR);
       }
 
-      MOEA_Line_buffer[position + recv_len] = '\0';
+      MOEA_Buffer_position += len;
+      MOEA_Buffer[MOEA_Buffer_position] = '\0';
     }
     
-    /* compute the new length and check if a full line was read */
-    position = strlen(MOEA_Line_buffer);
-    
-    if (position < MOEA_Line_limit || MOEA_Line_buffer[position-1] == '\n') {
+    if (MOEA_Buffer[MOEA_Buffer_position-1] == '\n') {
     	break;	
     }
+
+    break;
   }
   
   /* remove any newline characters */
-  while (position > 0 && (MOEA_Line_buffer[position-1] == '\n' || MOEA_Line_buffer[position-1] == '\r')) {
-    MOEA_Line_buffer[position-1] = '\0';
-    position -= 1;
+  while (MOEA_Buffer_position > 0 &&
+      (MOEA_Buffer[MOEA_Buffer_position-1] == '\n' || MOEA_Buffer[MOEA_Buffer_position-1] == '\r')) {
+    MOEA_Buffer[MOEA_Buffer_position-1] = '\0';
+    MOEA_Buffer_position -= 1;
   }
   
-  MOEA_Line_position = 0;
-  
-  if (position == 0) {
+  if (MOEA_Buffer_position == 0) {
     return MOEA_EOF;
   } else {
+    MOEA_Buffer_position = 0;
     return MOEA_SUCCESS;
   }
 }
 
 MOEA_Status MOEA_Read_token(char** token) {
-  if (MOEA_Line_buffer == NULL) {
+  if (MOEA_Buffer == NULL) {
     return MOEA_Error(MOEA_PARSE_NO_SOLUTION);
   }
 
   /* find start of next token (skipping any leading whitespace) */
-  MOEA_Line_position += strspn(MOEA_Line_buffer+MOEA_Line_position, MOEA_WHITESPACE);
+  MOEA_Buffer_position += strspn(MOEA_Buffer+MOEA_Buffer_position, MOEA_WHITESPACE);
   
   /* if this is the end of the line, signal an error */
-  if (MOEA_Line_buffer[MOEA_Line_position] == '\0') {
+  if (MOEA_Buffer[MOEA_Buffer_position] == '\0') {
     return MOEA_Error(MOEA_PARSE_EOL);
   }
   
   /* find end of token */
-  size_t end = strcspn(MOEA_Line_buffer+MOEA_Line_position, MOEA_WHITESPACE);
+  size_t end = strcspn(MOEA_Buffer+MOEA_Buffer_position, MOEA_WHITESPACE);
   
   /* create token */
-  MOEA_Line_buffer[MOEA_Line_position+end] = '\0';
-  *token = MOEA_Line_buffer+MOEA_Line_position;
-  MOEA_Line_position += end + 1;
+  MOEA_Buffer[MOEA_Buffer_position+end] = '\0';
+  *token = MOEA_Buffer+MOEA_Buffer_position;
+  MOEA_Buffer_position += end + 1;
   
   return MOEA_SUCCESS;
 }
@@ -404,80 +440,70 @@ MOEA_Status MOEA_Read_doubles(const int size, double* values) {
   return MOEA_SUCCESS;
 }
 
+MOEA_Status MOEA_Read_complete() {
+  if (MOEA_Buffer == NULL) {
+    return MOEA_Error(MOEA_PARSE_NO_SOLUTION);
+  }
+
+  /* validate end of line after skipping any whitespace */
+  MOEA_Buffer_position += strspn(MOEA_Buffer+MOEA_Buffer_position, MOEA_WHITESPACE);
+  
+  if (MOEA_Buffer[MOEA_Buffer_position] != '\0') {
+    return MOEA_Error(MOEA_PARSE_EXTRA);
+  }
+
+  return MOEA_SUCCESS;
+}
+
 MOEA_Status MOEA_Write(const double* objectives, const double* constraints) {
   int i;
-  size_t position = 0;
-  size_t len = 0;
+  int res;
+
+  /* validate that input has been fully read */
+  if ((res = MOEA_Read_complete()) != MOEA_SUCCESS) {
+    return res;
+  }
   
   /* validate inputs before writing results */
   if (((objectives == NULL) && (MOEA_Number_objectives > 0)) || ((constraints == NULL) && (MOEA_Number_constraints > 0))) {
     return MOEA_Error(MOEA_NULL_POINTER_ERROR);   
   }
-  
-  /* determine size of output */
-  for (i=0; i<MOEA_Number_objectives; i++) {
-    len += snprintf(NULL, 0, "%.17g", objectives[i]);
-    len += 1;
-  }
 
-  for (i=0; i<MOEA_Number_constraints; i++) {
-    len += snprintf(NULL, 0, "%.17g", constraints[i]);
-    len += 1;
-  }
-
-  /* increase line buffer if needed */
-  if ((MOEA_Line_limit == 0) || (len >= MOEA_Line_limit-1)) {
-    MOEA_Line_limit += len + MOEA_INITIAL_BUFFER_SIZE + 1;
-    MOEA_Line_buffer = (char*)realloc(MOEA_Line_buffer, MOEA_Line_limit*sizeof(char));
-    
-    if (MOEA_Line_buffer == NULL) {
-      return MOEA_Error(MOEA_MALLOC_ERROR);
-    }
-  }
+  MOEA_Buffer_position = 0;
 
   /* write content to the buffer */
   for (i=0; i<MOEA_Number_objectives; i++) {
     if (i > 0) {
-      if ((len = sprintf(&MOEA_Line_buffer[position], " ")) < 0) {
-        return MOEA_Error(MOEA_FORMAT_ERROR);
+      if ((res = MOEA_Buffer_append(" ")) != MOEA_SUCCESS) {
+        return res;
       }
-
-      position += len;
     }
 
-    if ((len = sprintf(&MOEA_Line_buffer[position], "%.17g", objectives[i])) < 0) {
-      return MOEA_Error(MOEA_FORMAT_ERROR);
+    if ((res = MOEA_Buffer_append("%.17g", objectives[i])) != MOEA_SUCCESS) {
+      return res;
     }
-
-    position += len;
   }
   
   for (i=0; i<MOEA_Number_constraints; i++) {
     if ((MOEA_Number_objectives > 0) || (i > 0)) {
-      if ((len = sprintf(&MOEA_Line_buffer[position], " ")) < 0) {
-        return MOEA_Error(MOEA_FORMAT_ERROR);
+      if ((res = MOEA_Buffer_append(" ")) != MOEA_SUCCESS) {
+        return res;
       }
-
-      position += len;
-    }
-  
-    if ((len = sprintf(&MOEA_Line_buffer[position], "%.17g", constraints[i])) < 0) {
-      return MOEA_Error(MOEA_FORMAT_ERROR);
     }
 
-    position += len;
+    if ((res = MOEA_Buffer_append("%.17g", constraints[i])) != MOEA_SUCCESS) {
+      return res;
+    }
   }
   
   /* terminate line with newline */
-  if ((len = sprintf(&MOEA_Line_buffer[position], "\n")) < 0) {
-    return MOEA_Error(MOEA_FORMAT_ERROR);
+  if ((res = MOEA_Buffer_append("\n")) != MOEA_SUCCESS) {
+    return res;
   }
-
-  position += len;
 
   /* send content */
   if (MOEA_Socket == INVALID_SOCKET) {
-    if (fputs(MOEA_Line_buffer, MOEA_Stream_output) == EOF) {
+    if (fputs(MOEA_Buffer, MOEA_Stream_output) == EOF) {
       return MOEA_Error(MOEA_IO_ERROR);
     }
 
@@ -485,7 +511,7 @@ MOEA_Status MOEA_Write(const double* objectives, const double* constraints) {
       return MOEA_Error(MOEA_IO_ERROR);
     }
   } else {
-    if (send(MOEA_Socket, MOEA_Line_buffer, position, 0) < 0) {
+    if (send(MOEA_Socket, MOEA_Buffer, MOEA_Buffer_position, 0) < 0) {
       MOEA_Debug("send: %s\n", strerror(errno));
       return MOEA_Error(MOEA_SOCKET_ERROR);
     }
@@ -507,7 +533,7 @@ MOEA_Status MOEA_Terminate() {
     fclose(MOEA_Stream_error);
   }
 
-  if (MOEA_Socket > 0) {
+  if (MOEA_Socket != INVALID_SOCKET) {
     close(MOEA_Socket);
   }
   
