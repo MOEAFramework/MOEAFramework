@@ -41,6 +41,7 @@
 #define MOEA_WHITESPACE " \t"
 #define MOEA_INITIAL_BUFFER_SIZE 1024
 #define MOEA_DEFAULT_PORT "16801"
+#define MOEA_DEFAULT_NODE "127.0.0.1"
 
 FILE* MOEA_Stream_input = NULL;
 FILE* MOEA_Stream_output = NULL;
@@ -144,7 +145,7 @@ MOEA_Status MOEA_Init_socket(const int objectives, const int constraints, const 
     service = MOEA_DEFAULT_PORT;
   }
 
-  if ((gai_errno = getaddrinfo("127.0.0.1", service, &hints, &servinfo)) != 0) {
+  if ((gai_errno = getaddrinfo(MOEA_DEFAULT_NODE, service, &hints, &servinfo)) != 0) {
     MOEA_Debug("getaddrinfo: %s\n", gai_strerror(gai_errno));
     return MOEA_Error(MOEA_SOCKET_ERROR);
   }
