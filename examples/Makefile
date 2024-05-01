@@ -6,15 +6,20 @@
 #
 # Run 'make' to build all files
 
+LIBS = -lm
+
+ifeq ($(OS),Windows_NT)
+	LIBS += -lwsock32 -lWs2_32
+endif
+
 main: dtlz2_stdio.exe dtlz2_socket.exe
 
 clean:
 	rm -f dtlz2_stdio.exe dtlz2_socket.exe
 
 dtlz2_stdio.exe:
-	gcc -o dtlz2_stdio.exe dtlz2.c moeaframework.c -lm
+	gcc -o dtlz2_stdio.exe dtlz2.c moeaframework.c $(LIBS)
 
 dtlz2_socket.exe:
-ifneq ($(OS),Windows_NT)
-	gcc -DUSE_SOCKET -o dtlz2_socket.exe dtlz2.c moeaframework.c -lm
-endif
+	gcc -DUSE_SOCKET -o dtlz2_socket.exe dtlz2.c moeaframework.c $(LIBS)
+

@@ -2,7 +2,7 @@
 #define ${problemName}_H
 
 extern "C" {
-#ifdef WIN32
+#ifdef __WIN32__
 void __declspec(dllexport) ${functionName}(double* vars, double* objs, double* constrs);
 #else
 void ${functionName}(double* vars, double* objs, double* constrs);

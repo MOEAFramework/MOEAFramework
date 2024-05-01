@@ -23,15 +23,6 @@
 extern "C" {
 #endif
 
-#if defined __has_include
-#  if __has_include (<unistd.h>) && \
-      __has_include (<sys/types.h>) && \
-      __has_include (<sys/socket.h>) && \
-      __has_include (<netdb.h>)
-#    define MOEA_SOCKETS
-#  endif
-#endif
-
 /**
  * The status and error codes that are returned by functions provided by this
  * library.
@@ -48,7 +39,8 @@ typedef enum MOEA_Status {
   MOEA_MALLOC_ERROR,
   MOEA_NULL_POINTER_ERROR,
   MOEA_SOCKET_ERROR,
-  MOEA_IO_ERROR
+  MOEA_IO_ERROR,
+  MOEA_FORMAT_ERROR
 } MOEA_Status;
 
 /**
@@ -84,7 +76,6 @@ const char* MOEA_Status_message(const MOEA_Status);
  */
 MOEA_Status MOEA_Init(const int, const int);
 
-#ifdef MOEA_SOCKETS
 /**
  * Initializes the MOEA Framework to support a problem with the specified
  * number of objectives and constraints.  This initializer establishes a
@@ -98,7 +89,6 @@ MOEA_Status MOEA_Init(const int, const int);
  *         specific error code causing failure
  */
 MOEA_Status MOEA_Init_socket(const int, const int, const char*);
-#endif
 
 /**
  * Begins reading the next solution from the MOEA Framework.

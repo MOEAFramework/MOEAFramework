@@ -6,7 +6,6 @@ CFLAGS = -O3
 # Configure the platform-specific settings
 ifeq ($(OS),Windows_NT)
     SEPARATOR := ;
-    CFLAGS += -DWIN32
 else
     SEPARATOR := :
 endif

@@ -7,6 +7,7 @@
 
 # Find the examples/ folder, which changes if using Ant or Maven
 ROOT := ../../../..
+LIBS = 
 
 ifeq ("$(wildcard $(ROOT)/examples)","")
     override ROOT := $(ROOT)/../..
@@ -18,15 +19,17 @@ else
     $(info Found the MOEA Framework root directory at "$(ROOT)")
 endif
 
+ifeq ($(OS),Windows_NT)
+	LIBS += -lwsock32 -lWs2_32
+endif
+
 main: test_stdio.exe test_socket.exe
 
 clean:
 	rm -f test_stdio.exe test_socket.exe
 
 test_stdio.exe:
-	gcc -o test_stdio.exe -I $(ROOT)/examples test.c $(ROOT)/examples/moeaframework.c
+	gcc -o test_stdio.exe -I $(ROOT)/examples test.c $(ROOT)/examples/moeaframework.c $(LIBS)
 	
 test_socket.exe:
-ifneq ($(OS),Windows_NT)
-	gcc -DUSE_SOCKET -o test_socket.exe -I $(ROOT)/examples test.c $(ROOT)/examples/moeaframework.c
-endif
+	gcc -DUSE_SOCKET -o test_socket.exe -I $(ROOT)/examples test.c $(ROOT)/examples/moeaframework.c $(LIBS)

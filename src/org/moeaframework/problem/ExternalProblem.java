@@ -682,6 +682,7 @@ public abstract class ExternalProblem implements Problem {
 			
 			debug.print("<< ");
 			debug.println(sb.toString());
+			debug.flush();
 			
 			writer.write(sb.toString());
 			writer.flush();

@@ -45,7 +45,8 @@ public class ExternalProblemWithSocket {
 		public MyDTLZ2() throws IOException {
 			super(new Builder()
 					.withCommand("./examples/dtlz2_socket.exe")
-					.withSocket(ExternalProblem.DEFAULT_PORT));
+					.withSocket("localhost", ExternalProblem.DEFAULT_PORT)
+					.withDebugging());
 		}
 
 		@Override
