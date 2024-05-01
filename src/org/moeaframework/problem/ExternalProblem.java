@@ -429,6 +429,11 @@ public abstract class ExternalProblem implements Problem {
 			// Start the socket connection, if configured
 			socket = connectWithRetries();
 			
+			// If we are not reading from the process' output, pipe it to stdout to avoid blocking on a full buffer
+			if (process != null && ((builder.inputStream != null && builder.outputStream != null) || socket != null)) {
+				RedirectStream.redirect(process.getInputStream(), System.out);
+			}
+			
 			// Set up the reader / writer for communication
 			if (builder.inputStream != null && builder.outputStream != null) {
 				reader = new BufferedReader(new InputStreamReader(builder.inputStream));

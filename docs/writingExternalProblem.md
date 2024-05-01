@@ -160,18 +160,61 @@ try (Problem problem = new MyDTLZ2()) {
 }
 ```
 
+## Sockets
+
+The above example uses standard input and output to communicate with the program.  Programs that use input / output for
+any other purpose will interfere with the communication.  To avoid this, we can instead use sockets (networking) to
+send messages between the two processes.  To enable sockets:
+
+First, in the C/C++ code, change `MOEA_init` to `MOEA_Init_socket`.  As our example above demonstrates, we define
+`USE_SOCKET` to switch between these two constructors.  Use the following to compile with this flag enabled:
+
+```bash
+gcc -DUSE_SOCKET -o dtlz2_socket.exe dtlz2.c moeaframework.c -lm
+```
+
+Second, update the Java code, namely the `MyDTLZ2` constructor, to use sockets:
+
+<!-- java:examples/org/moeaframework/examples/external/ExternalProblemWithSocket.java [45:49] -->
+
+```java
+public MyDTLZ2() throws IOException {
+    super(new Builder()
+            .withCommand("./examples/dtlz2_socket.exe")
+            .withSocket("127.0.0.1", ExternalProblem.DEFAULT_PORT));
+}
+```
+
 ## Other Languages
 
-We can use the same approach to connect to problems written in other programming languages.  Simply construct a loop
-to read the decision variables from the input and write the objective (and constraint) values to the output.  As an
-example, we have included a Python example at [`examples/dtlz2.py`](../examples/dtlz2.py).
+While we provide a C/C++ library for convenience, this same technique can be used by other programming languages.
+Simply construct a loop to read the decision variables from the input and write the objective (and constraint) values
+to the output.  As an example, we have included a Python examples at [`examples/dtlz2.py`](../examples/dtlz2.py) and
+[`examples/dtlz2_socket.py`](../examples/dtlz2_socket.py).
 
 ## Troubleshooting
 
-On Windows, if you see an error message about the `msys.dll` missing, make sure you use the MingGW compiler.  To
-verify what version you have, open the MinGW64 terminal and run `which gcc`.  This should display
-`/mingw64/bin/gcc`.
+#### Missing msys.dll on Windows
+This occurs when using the default MSYS compiler instead of the MinGW compiler.  The latter creates an executable that
+can run on Windows outside of the MSYS environment.  Run `which gcc` and verify it outputs `/mingw64/bin/gcc`.
+If not, make sure you are using the MinGW64 terminal.
 
-The program can hang if the number of decision variables sent to the program do not match the expected number, as it
-will wait for further input.  To assist in debugging, set
-`org.moeaframework.problem.external_problem_debugging = true` in `moeaframework.properties`.
+#### Linking (ld) errors on Windows
+When compiling on Windows, we must link against the Winsock libraries.  Add `-lwsock32 -lWs2_32` at the end of the
+`gcc` command.
+
+#### Enable debugging output
+If you are seeing unexpected behavior, please enable debugging to try and diagnose the problem.  You can enable this
+on a specific problem by modifying the constructor:
+
+```java
+new Builder()
+    .withCommand("./examples/dtlz2_stdio.exe")
+    .withDebugging()
+```
+
+or globally by adding the following line to `moeaframework.properties`:
+
+```
+org.moeaframework.problem.external.enable_debugging = true
+```

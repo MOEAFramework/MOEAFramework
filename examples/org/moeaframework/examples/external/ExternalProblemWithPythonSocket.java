@@ -26,14 +26,16 @@ import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.ExternalProblem;
 
 /**
- * Demonstrates writing a external problem (2-objective DTLZ2) in Python using standard I/O.
+ * Demonstrates writing a external problem (2-objective DTLZ2) in Python using sockets.
  */
-public class ExternalProblemWithPython {
+public class ExternalProblemWithPythonSocket {
 
 	public static class MyDTLZ2 extends ExternalProblem {
 
 		public MyDTLZ2() throws IOException {
-			super(new Builder().withCommand("python", "examples/dtlz2.py"));
+			super(new Builder()
+					.withCommand("python", "examples/dtlz2_socket.py")
+					.withSocket("127.0.0.1", DEFAULT_PORT));
 		}
 
 		@Override
