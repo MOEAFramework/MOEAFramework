@@ -126,11 +126,13 @@ MOEA_Status MOEA_Buffer_capacity(int required) {
 
 MOEA_Status MOEA_Buffer_append(const char* format, ...) {
   int len;
-  va_list arguments;
-  va_start(arguments, format);
+  va_list args1, args2;
+
+  va_start(args1, format);
+  va_copy(args2, args1);
 
   /* determine the number of characters being written */
-  len = vsnprintf(NULL, 0, format, arguments);
+  len = vsnprintf(NULL, 0, format, args1);
 
   /* expand the buffer if required, adding 1 to account for \0 terminating the string */
   if (MOEA_Buffer_capacity(MOEA_Buffer_position + len + 1) != MOEA_SUCCESS) {
@@ -138,13 +140,14 @@ MOEA_Status MOEA_Buffer_append(const char* format, ...) {
   }
 
   /* format and append to the buffer */
-  if ((len = vsnprintf(&MOEA_Buffer[MOEA_Buffer_position], len + 1, format, arguments)) < 0) {
+  if ((len = vsprintf(&MOEA_Buffer[MOEA_Buffer_position], format, args2)) < 0) {
     return MOEA_Error(MOEA_FORMAT_ERROR);
   }
 
   MOEA_Buffer_position += len;
 
-  va_end(arguments);
+  va_end(args1);
+  va_end(args2);
   return MOEA_SUCCESS;
 }
 
@@ -234,12 +237,12 @@ MOEA_Status MOEA_Init_socket(const int objectives, const int constraints, const 
 }
 
 MOEA_Status MOEA_Debug(const char* format, ...) {
-  va_list arguments;
+  va_list args;
   
-  va_start(arguments, format);
-  vfprintf(MOEA_Stream_error, format, arguments);
+  va_start(args, format);
+  vfprintf(MOEA_Stream_error, format, args);
   fflush(MOEA_Stream_error);
-  va_end(arguments);
+  va_end(args);
   
   return MOEA_SUCCESS;
 }
