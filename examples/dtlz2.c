@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
 	double objs[nobjs];
 
 #ifdef USE_SOCKET
-	MOEA_Init_socket(nobjs, 0, NULL);
+	MOEA_Init_socket(nobjs, 0, MOEA_DEFAULT_PORT);
 #else
 	MOEA_Init(nobjs, 0);
 #endif

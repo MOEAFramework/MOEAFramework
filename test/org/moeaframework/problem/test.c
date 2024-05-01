@@ -25,7 +25,7 @@
  */
 int main() {
 #ifdef USE_SOCKET
-  MOEA_Init_socket(2, 1, NULL);
+  MOEA_Init_socket(2, 1, MOEA_DEFAULT_PORT);
 #else
   MOEA_Init(2, 1);
 #endif

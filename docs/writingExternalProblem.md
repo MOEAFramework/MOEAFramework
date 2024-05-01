@@ -71,7 +71,7 @@ int main(int argc, char* argv[]) {
     double objs[nobjs];
 
 #ifdef USE_SOCKET
-    MOEA_Init_socket(nobjs, 0, NULL);
+    MOEA_Init_socket(nobjs, 0, MOEA_DEFAULT_PORT);
 #else
     MOEA_Init(nobjs, 0);
 #endif
@@ -90,10 +90,8 @@ int main(int argc, char* argv[]) {
 
 See `examples/dtlz2.c` for the full code sample.  Once this file is written, we can compile using:
 
-<!-- bash:examples/Makefile [15:15] -->
-
 ```bash
-main: dtlz2_stdio.exe dtlz2_socket.exe
+gcc -o dtlz2_stdio.exe dtlz2.c moeaframework.c
 ```
 
 This will produce the executable `dtlz2_stdio.exe`.  Then, we can switch over to the Java and create an
