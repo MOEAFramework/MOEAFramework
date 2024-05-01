@@ -91,7 +91,7 @@ int main(int argc, char* argv[]) {
 See `examples/dtlz2.c` for the full code sample.  Once this file is written, we can compile using:
 
 ```bash
-gcc -o dtlz2_stdio.exe dtlz2.c moeaframework.c
+gcc -o dtlz2_stdio.exe dtlz2.c moeaframework.c -lm
 ```
 
 This will produce the executable `dtlz2_stdio.exe`.  Then, we can switch over to the Java and create an
