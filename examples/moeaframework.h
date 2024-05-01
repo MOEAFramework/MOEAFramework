@@ -23,6 +23,9 @@
 extern "C" {
 #endif
 
+#define MOEA_DEFAULT_PORT "16801"
+#define MOEA_DEFAULT_NODE "127.0.0.1"
+
 /**
  * The status and error codes that are returned by functions provided by this
  * library.

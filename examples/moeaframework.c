@@ -40,8 +40,6 @@
 
 #define MOEA_WHITESPACE " \t"
 #define MOEA_INITIAL_BUFFER_SIZE 1024
-#define MOEA_DEFAULT_PORT "16801"
-#define MOEA_DEFAULT_NODE "127.0.0.1"
 
 FILE* MOEA_Stream_input = NULL;
 FILE* MOEA_Stream_output = NULL;
