@@ -93,7 +93,7 @@ See `examples/dtlz2.c` for the full code sample.  Once this file is written, we 
 <!-- bash:examples/Makefile [15:15] -->
 
 ```bash
-gcc -o dtlz2_stdio.exe dtlz2.c moeaframework.c -lm
+main: dtlz2_stdio.exe dtlz2_socket.exe
 ```
 
 This will produce the executable `dtlz2_stdio.exe`.  Then, we can switch over to the Java and create an

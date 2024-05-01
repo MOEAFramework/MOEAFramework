@@ -38,7 +38,7 @@ public class ExternalProblemWithCSocketTest extends ExternalProblemWithCStdioTes
 		
 		return new Builder()
 				.withCommand(executable.toString())
-				.withSocket(ExternalProblem.DEFAULT_PORT);
+				.withSocket("127.0.0.1", ExternalProblem.DEFAULT_PORT);
 	}
 	
 	@Test

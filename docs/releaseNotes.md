@@ -22,6 +22,8 @@ This page documents notable changes introduced in each chronological release of 
     org.moeaframework.problem.external.shutdown_timeout = 10
     ```
   
+  * Adds Winsock support to `moeaframework.c` allowing socket communication on Windows.
+  
 
 ## Version 4.0 (05 Apr 2024)
 
