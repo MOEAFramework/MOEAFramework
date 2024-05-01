@@ -9,7 +9,7 @@
 LIBS = -lm
 
 ifeq ($(OS),Windows_NT)
-	LIBS += -lwsock32 -lWs2_32
+    LIBS += -lwsock32 -lWs2_32
 endif
 
 main: dtlz2_stdio.exe dtlz2_socket.exe

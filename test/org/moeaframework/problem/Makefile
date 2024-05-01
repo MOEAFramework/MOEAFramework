@@ -20,7 +20,7 @@ else
 endif
 
 ifeq ($(OS),Windows_NT)
-	LIBS += -lwsock32 -lWs2_32
+    LIBS += -lwsock32 -lWs2_32
 endif
 
 main: test_stdio.exe test_socket.exe

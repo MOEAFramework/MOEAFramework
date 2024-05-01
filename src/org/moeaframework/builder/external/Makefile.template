@@ -6,7 +6,7 @@ CLFAGS = -O3
 # Configure the platform-specific settings
 ifeq ($(OS),Windows_NT)
     SEPARATOR := ;
-	LIBS += -lwsock32 -lWs2_32
+    LIBS += -lwsock32 -lWs2_32
 else
     SEPARATOR := :
 endif
