@@ -135,6 +135,16 @@ MOEA_Status MOEA_Read_binary(const int size, int* values);
 MOEA_Status MOEA_Read_int(int* value);
 
 /**
+ * Reads one or more integer decision variables from the current solution.  This method is equivalent to calling
+ * MOEA_Read_int multiple times.
+ *
+ * @param size the number of integer values to read
+ * @param values a reference to the integer that is assigned the value of the decision variable
+ * @return MOEA_SUCCESS if the decision variable was successfully read; or the specific error code causing failure
+ */
+MOEA_Status MOEA_Read_ints(const int size, int* values);
+
+/**
  * Reads the next permutation decision variable from the current solution.  Upon the successful completion of this
  * function call, the i-th index in the int array will store the value of the i-th element in the permutation, ranging
  * from 0 to size-1.  Ensure the provided array is sufficiently large to store the requested number of elements.

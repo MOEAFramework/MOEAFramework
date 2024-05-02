@@ -481,6 +481,20 @@ MOEA_Status MOEA_Read_int(int* value) {
   return MOEA_SUCCESS;
 }
 
+MOEA_Status MOEA_Read_ints(const int size, int* values) {
+  int i;
+
+  for (i=0; i<size; i++) {
+    MOEA_Status status = MOEA_Read_int(&values[i]);
+    
+    if (status != MOEA_SUCCESS) {
+      return MOEA_Error(status);
+    }
+  }
+  
+  return MOEA_SUCCESS;
+}
+
 MOEA_Status MOEA_Read_double(double* value) {
   char* token = NULL;
   char* endptr = NULL;

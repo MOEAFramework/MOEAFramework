@@ -160,6 +160,70 @@ try (Problem problem = new MyDTLZ2()) {
 }
 ```
 
+## Supported Decision Variables
+
+This external problem interface currently supports real-valued, integer, binary, permutation, and subset variables.
+The `MOEA_Read_<type>` calls must be made in the same order of the decision variables.  The sections below detail
+each type:
+
+### Real-Valued
+
+Real-valued decision variables can either be read individually or as an array:
+
+```c
+double x, y;
+MOEA_Read_double(&x);
+MOEA_Read_double(&y);
+
+double vars[10];
+MOEA_Read_doubles(10, vars);
+```
+
+### Integers
+
+Similar to real-valued, integer values can be read individually or as an array:
+
+```c
+int x, y;
+MOEA_Read_int(&x);
+MOEA_Read_int(&y);
+
+int vars[10];
+MOEA_Read_ints(10, vars);
+```
+
+### Binary
+
+Binary strings are parsed into an integer array containing `0` and `1`.  Here we read a binary string of length `20`:
+
+```c
+int binary[20];
+MOEA_Read_binary(20, binary);
+```
+
+### Permutation
+
+Permutations are parsed into an integer array, with the i-th index containing the i-th element of the permutation.
+Here we read a permutation of 5 elements:
+
+```c
+int permutation[5];
+MOEA_Read_permutation(5, permutation);
+```
+
+### Subset
+
+Subsets are also parsed into an integer array, but can have variable length.  Therefore, the method will return both
+the array and the number of elements in the array.  Here, we read a subset of size `2 <= subset_size <= 5`.  Note
+we allocate the array to hold the maximum size:
+
+```c
+int subset[5];
+int subset_size;
+
+MOEA_Read_subset(2, 5, subset, &subset_size); 
+```
+
 ## Sockets
 
 The above example uses standard input and output to communicate with the program.  Programs that use input / output for
