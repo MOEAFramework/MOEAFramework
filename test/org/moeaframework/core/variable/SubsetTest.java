@@ -224,7 +224,7 @@ public class SubsetTest {
 	public void testToString() {
 		Subset subset = new Subset(5, 10);
 		subset.fromArray(new int[] { 9, 3, 5, 7, 1 });
-		Assert.assertEquals("1,3,5,7,9", subset.toString());
+		Assert.assertEquals("{1,3,5,7,9}", subset.toString());
 	}
 	
 	@Test
@@ -237,6 +237,14 @@ public class SubsetTest {
 		Subset newSubset = new Subset(0, 10, 10);
 		newSubset.decode(subset.encode());
 		Assert.assertArrayEquals(subset.toArray(), newSubset.toArray());
+	}
+	
+	@Test
+	public void testDecodeWithoutBraces() {
+		Subset subset = new Subset(0, 10, 10);
+		subset.decode("3,5,9");
+		
+		Assert.assertArrayEquals(new int[] {3, 5, 9}, subset.toArray());
 	}
 	
 	@Test

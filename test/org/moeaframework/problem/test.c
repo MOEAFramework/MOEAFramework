@@ -34,6 +34,8 @@ int main() {
   int binary[5];
   int integer;
   int permutation[3];
+  int subset[3];
+  int subset_size;
   double objectives[2];
   double constraints[1];
   int count = 0;
@@ -45,13 +47,15 @@ int main() {
     MOEA_Read_binary(5, binary);
     MOEA_Read_int(&integer);
     MOEA_Read_permutation(3, permutation);
+    MOEA_Read_subset(1, 3, subset, &subset_size);
     
     /* echo variables back for verification */
-    MOEA_Debug("%.17g %.17g %d %d %d %d %d %d %d %d %d\n",
+    MOEA_Debug("%.17g %.17g %d %d %d %d %d %d %d %d %d %d %d %d %d\n",
         doubles[0], doubles[1],
         binary[0], binary[1], binary[2], binary[3], binary[4],
         integer,
-        permutation[0], permutation[1], permutation[2]);
+        permutation[0], permutation[1], permutation[2],
+        subset_size, subset_size > 0 ? subset[0] : -1, subset_size > 1 ? subset[1] : -1, subset_size > 2 ? subset[2] : -1);
 
     objectives[0] = count;
     objectives[1] = 1e-10/count;

@@ -82,6 +82,8 @@ const char* MOEA_Status_message(const MOEA_Status status) {
     return "Unable to parse binary variable";
   case MOEA_PARSE_PERMUTATION_ERROR:
     return "Unable to parse permutation variable";
+  case MOEA_PARSE_SUBSET_ERROR:
+    return "Unable to parse subset variable";
   case MOEA_MALLOC_ERROR:
     return "Error while allocating memory";
   case MOEA_NULL_POINTER_ERROR:
@@ -92,6 +94,8 @@ const char* MOEA_Status_message(const MOEA_Status status) {
     return "Unable to read/write from stream";
   case MOEA_FORMAT_ERROR:
     return "Unable to format value";
+  case MOEA_INVALID_SIZE:
+    return "Size of permutation or subset is invalid";
   default:
     return "Unknown error";
   }
@@ -372,6 +376,14 @@ MOEA_Status MOEA_Read_permutation(const int size, int* values) {
   if (status != MOEA_SUCCESS) {
     return MOEA_Error(status);
   }
+
+  if (size <= 0) {
+    return MOEA_Error(MOEA_INVALID_SIZE);
+  }
+
+  if (token[0] == '[') {
+    token++;
+  }
   
   values[0] = strtol(token, &endptr, 10);
 
@@ -383,11 +395,70 @@ MOEA_Status MOEA_Read_permutation(const int size, int* values) {
     token = endptr+1;
     values[i] = strtol(token, &endptr, 10);
   }
+
+  if (*endptr == ']') {
+    endptr++;
+  }
   
   if (*endptr != '\0') {
     return MOEA_Error(MOEA_PARSE_PERMUTATION_ERROR);
   }
   
+  return MOEA_SUCCESS;
+}
+
+MOEA_Status MOEA_Read_subset(const int minSize, const int maxSize, int* values, int* size) {
+  int i;
+  char* token = NULL;
+  char* endptr = NULL;
+  
+  MOEA_Status status = MOEA_Read_token(&token);
+  
+  if (status != MOEA_SUCCESS) {
+    return MOEA_Error(status);
+  }
+
+  if (minSize < 0 || maxSize < 0) {
+    return MOEA_Error(MOEA_INVALID_SIZE);
+  }
+
+  if (token[0] == '{') {
+    token++;
+  }
+
+  if (token[0] == '}') {
+    if (minSize > 0) {
+      return MOEA_Error(MOEA_PARSE_SUBSET_ERROR);
+    }
+
+    *size = 0;
+    return MOEA_SUCCESS;
+  }
+  
+  values[0] = strtol(token, &endptr, 10);
+
+  for (i=1; i<maxSize; i++) {
+    if (*endptr == '}') {
+      break;
+    }
+
+    if ((*endptr != ',') || (*(endptr+1) == '\0')) {
+      return MOEA_Error(MOEA_PARSE_SUBSET_ERROR);
+    }
+    
+    token = endptr+1;
+    values[i] = strtol(token, &endptr, 10);
+  }
+
+  if (*endptr == '}') {
+    endptr++;
+  }
+  
+  if (*endptr != '\0') {
+    return MOEA_Error(MOEA_PARSE_SUBSET_ERROR);
+  }
+  
+  *size = i;
   return MOEA_SUCCESS;
 }
 

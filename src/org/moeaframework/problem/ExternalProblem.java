@@ -45,6 +45,7 @@ import org.moeaframework.core.Variable;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.core.variable.Subset;
 import org.moeaframework.util.DurationUtils;
 import org.moeaframework.util.io.RedirectStream;
 
@@ -741,7 +742,8 @@ public abstract class ExternalProblem implements Problem {
 	private String encode(Variable variable) {
 		if (!(variable instanceof RealVariable ||
 				variable instanceof BinaryVariable ||
-				variable instanceof Permutation)) {
+				variable instanceof Permutation ||
+				variable instanceof Subset)) {
 			throw new ProblemException(this, "encoding " + variable.getClass().getSimpleName() + " not supported");
 		}
 		

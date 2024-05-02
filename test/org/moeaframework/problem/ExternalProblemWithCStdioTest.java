@@ -24,6 +24,7 @@ import java.io.InputStreamReader;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.net.Socket;
+import java.util.Set;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
@@ -37,6 +38,7 @@ import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.core.variable.Subset;
 import org.moeaframework.mock.MockUnsupportedVariable;
 import org.moeaframework.problem.ExternalProblem.Builder;
 
@@ -82,7 +84,7 @@ public class ExternalProblemWithCStdioTest {
 		
 				Solution[] solutions = initialization.initialize(100);
 				
-				for (int i=0; i<solutions.length; i++) {
+				for (int i=0; i<solutions.length; i++) {					
 					Solution solution = solutions[i];
 					problem.evaluate(solution);
 					
@@ -94,29 +96,43 @@ public class ExternalProblemWithCStdioTest {
 					String debugLine = debugReader.readLine();
 					
 					Assert.assertNotNull(debugLine);
+					System.out.println(debugLine);
 					
 					String[] debugTokens = debugLine.split("\\s+");
+					int tokenIndex = 0;
 					
 					for (int j=0; j<2; j++) {
 						Assert.assertEquals(((RealVariable)solution.getVariable(j)).getValue(), 
-								Double.parseDouble(debugTokens[j]), TestThresholds.HIGH_PRECISION);
+								Double.parseDouble(debugTokens[tokenIndex++]), TestThresholds.HIGH_PRECISION);
 					}
 					
 					BinaryVariable bv = ((BinaryVariable)solution.getVariable(2));
 		
 					for (int j=0; j<bv.getNumberOfBits(); j++) {
-						Assert.assertEquals(bv.get(j) ? 1 : 0, Integer.parseInt(debugTokens[2+j]));
+						Assert.assertEquals(bv.get(j) ? 1 : 0, Integer.parseInt(debugTokens[tokenIndex++]));
 					}
 					
 					BinaryIntegerVariable biv = ((BinaryIntegerVariable)solution.getVariable(3));
 					
-					Assert.assertEquals(biv.getValue(), Integer.parseInt(debugTokens[7]));
+					Assert.assertEquals(biv.getValue(), Integer.parseInt(debugTokens[tokenIndex++]));
 					
 					Permutation p = ((Permutation)solution.getVariable(4));
 					
 					for (int j=0; j<p.size(); j++) {
-						Assert.assertEquals(p.get(j), Integer.parseInt(debugTokens[8+j]));
+						Assert.assertEquals(p.get(j), Integer.parseInt(debugTokens[tokenIndex++]));
 					}
+					
+					Subset s = ((Subset)solution.getVariable(5));
+					Set<Integer> set = s.getSet();
+					int setSize = set.size();
+					
+					Assert.assertEquals(setSize, Integer.parseInt(debugTokens[tokenIndex++]));
+					
+					for (int j=0; j<setSize; j++) {
+						Assert.assertTrue(set.remove(Integer.parseInt(debugTokens[tokenIndex++])));
+					}
+										
+					Assert.assertEquals("Elements not found in set: " + set, 0, set.size());
 				}
 				
 				validateClose(problem);
@@ -129,7 +145,7 @@ public class ExternalProblemWithCStdioTest {
 		Builder builder = new Builder().withCommand("test_not_exists.exe");
 		
 		try (TestExternalProblem problem = new TestExternalProblem(builder)) {
-			Assert.assertEquals(5, problem.getNumberOfVariables());
+			Assert.assertEquals(6, problem.getNumberOfVariables());
 			Assert.assertEquals(2, problem.getNumberOfObjectives());
 			Assert.assertEquals(1, problem.getNumberOfConstraints());
 			
@@ -172,6 +188,15 @@ public class ExternalProblemWithCStdioTest {
 		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {
 			Solution solution = problem.newSolution();
 			solution.setVariable(4, new RealVariable(0.5, 0.0, 1.0));
+			problem.evaluate(solution);
+		}
+	}
+	
+	@Test(expected = ProblemException.class)
+	public void testErrorParsingSubset() {
+		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {
+			Solution solution = problem.newSolution();
+			solution.setVariable(5, new RealVariable(0.5, 0.0, 1.0));
 			problem.evaluate(solution);
 		}
 	}
@@ -250,10 +275,28 @@ public class ExternalProblemWithCStdioTest {
 	}
 	
 	@Test(expected = ProblemException.class)
+	public void testErrorSubsetTooShort() {
+		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {
+			Solution solution = problem.newSolution();
+			solution.setVariable(5, new Subset(0, 0));
+			problem.evaluate(solution);
+		}
+	}
+	
+	@Test(expected = ProblemException.class)
 	public void testErrorPermutationTooLong() {
 		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {
 			Solution solution = problem.newSolution();
 			solution.setVariable(4, new Permutation(4));
+			problem.evaluate(solution);
+		}
+	}
+	
+	@Test(expected = ProblemException.class)
+	public void testErrorSubsetTooLong() {
+		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {
+			Solution solution = problem.newSolution();
+			solution.setVariable(5, new Subset(4, 4));
 			problem.evaluate(solution);
 		}
 	}
@@ -329,7 +372,7 @@ public class ExternalProblemWithCStdioTest {
 
 		@Override
 		public int getNumberOfVariables() {
-			return 5;
+			return 6;
 		}
 
 		@Override
@@ -344,12 +387,13 @@ public class ExternalProblemWithCStdioTest {
 
 		@Override
 		public Solution newSolution() {
-			Solution solution = new Solution(5, 2, 1);
+			Solution solution = new Solution(6, 2, 1);
 			solution.setVariable(0, new RealVariable(0.0, 1.0));
 			solution.setVariable(1, new RealVariable(-1e26, 1e26));
 			solution.setVariable(2, new BinaryVariable(5));
 			solution.setVariable(3, new BinaryIntegerVariable(5, 20));
 			solution.setVariable(4, new Permutation(3));
+			solution.setVariable(5, new Subset(1, 3, 5));
 			return solution;
 		}
 
