@@ -34,9 +34,13 @@ import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.core.variable.Subset;
 import org.moeaframework.problem.ExternalProblem;
 
 public class MockExternalProblem extends ExternalProblem {
+	
+	private final Pattern pattern = Pattern.compile(
+			"^[0-9]+\\.[0-9]+\\s+[0-9]+\\s+[0-1]{5}\\s+\\[[0-9,]+\\]\\s+\\{[0-9,]+\\}$");
 	
 	private final AtomicInteger count;
 		
@@ -68,7 +72,6 @@ public class MockExternalProblem extends ExternalProblem {
 			public void run() {
 				try (BufferedReader reader = new BufferedReader(new InputStreamReader(pipedReader));
 						PrintStream writer = new PrintStream(pipedWriter)) {
-					Pattern pattern = Pattern.compile("^[0-9]+\\.[0-9]+\\s+[0-9]+\\s+[0-1]{5}\\s+[0-9,]+$");
 					String line = null;
 	
 					while (!thread.isInterrupted() && (line = reader.readLine()) != null) {
@@ -99,7 +102,7 @@ public class MockExternalProblem extends ExternalProblem {
 
 	@Override
 	public int getNumberOfVariables() {
-		return 4;
+		return 5;
 	}
 
 	@Override
@@ -114,11 +117,12 @@ public class MockExternalProblem extends ExternalProblem {
 
 	@Override
 	public Solution newSolution() {
-		Solution solution = new Solution(4, 2, 1);
+		Solution solution = new Solution(5, 2, 1);
 		solution.setVariable(0, new RealVariable(0.5, 0.0, 1.0));
 		solution.setVariable(1, new BinaryIntegerVariable(5, 0, 10));
 		solution.setVariable(2, new BinaryVariable(5));
 		solution.setVariable(3, new Permutation(3));
+		solution.setVariable(4, new Subset(1, 3));
 		return solution;
 	}
 	
