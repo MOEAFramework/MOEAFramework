@@ -54,8 +54,9 @@ algorithm.getResult().display();
 
 ## Injecting Initial Solutions
 
-By default, algorithms initialize the population using randomly-generated solutions.  It's also possible to
-inject pre-defined solutions into the initial population:
+By default, algorithms initialize the population using randomly-generated solutions.  It's also possible to inject
+pre-defined solutions into the initial population.  The remainder of the population will be filled with random
+solutions.
 
 <!-- java:examples/org/moeaframework/examples/misc/InjectSolutionsExample.java [34:46] -->
 
@@ -77,9 +78,9 @@ algorithm.getResult().display();
 
 ## Mixed Types
 
-Some problems may require combining different types of decision variables.  This is supported by the
-MOEA Framework, but it does require some additional setup.  First, when defining the problem, configure
-the solution with the desired types.  Here we setup up a binary integer and a real decision variable.
+Some problems may require combining different types of decision variables.  This is supported by the MOEA Framework,
+but it does require some additional setup.  First, when defining the problem, configure the solution with the desired
+types.  Here we setup up a binary integer and a real decision variable.
 
 <!-- java:examples/org/moeaframework/examples/misc/MixedTypesExample.java [62:68] -->
 
@@ -102,11 +103,10 @@ int x = EncodingUtils.getInt(solution.getVariable(0));
 double y = EncodingUtils.getReal(solution.getVariable(1));
 ```
 
-No default operators are provided for mixed types, but we can easily construct the operators
-using `CompoundVariation` to combine the individual operators.  Here we combine
-Simulated Binary Crossover (SBX), Half-Uniform Crossover (HUX), Polynomial Mutation (PM), and
-Bit Flip Mutation (BF) operators.  SBX and PM operate on the real value whereas HUX and BF operate on
-the binary variable.
+No default operators are provided for mixed types, but we can easily construct the operators using
+`CompoundVariation` to combine the individual operators.  Here we combine Simulated Binary Crossover (SBX),
+Half-Uniform Crossover (HUX), Polynomial Mutation (PM), and Bit Flip Mutation (BF) operators.  SBX and PM operate on
+the real value whereas HUX and BF operate on the binary variable.
 
 <!-- java:examples/org/moeaframework/examples/misc/MixedTypesExample.java [74:80] -->
 
@@ -125,8 +125,8 @@ followed by the mutation operators (PM and BF).
 
 ## Termination Conditions
 
-We typically run algorithms for a fixed number of function evaluations (NFE), but we can specify different
-termination conditions.  Here, we set the max wallclock time.
+We typically run algorithms for a fixed number of function evaluations (NFE), but we can specify different termination
+conditions.  Here, we set the max wall-clock time.
 
 <!-- java:examples/org/moeaframework/examples/misc/MaxTimeTerminationExample.java [35:36] -->
 
@@ -135,11 +135,25 @@ NSGAII algorithm = new NSGAII(new Srinivas());
 algorithm.run(new MaxElapsedTime(Duration.ofSeconds(seconds)));
 ```
 
-## Generating Reference Sets
+## Reference Sets
 
-We provide default reference sets for many problems under the `./pf/` folder.  Any problem implementing the
-`AnalyticalProblem` interface can generate points from the Pareto front.  Below we generate a new reference set
-for the 3-objective DTLZ2 problem.
+We provide default reference sets for many problems under the `./pf/` folder.  These same reference sets are
+automatically used when computing performance indicators, unless you provide your own sets.  For instance, below
+we load a reference set from file to use with the `Indicators`:
+
+<!-- java:examples/Example2.java [44:47] -->
+
+```java
+NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet("pf/DTLZ2.2D.pf");
+
+Indicators indicators = Indicators.all(problem, referenceSet);
+indicators.apply(approximationSet).display();
+```
+
+For many of the test problems, the reference set is known analytically.  These problems implement the
+`AnalyticalProblem` interface which defines the `generate()` method.  Each time we call `generate()`, we get
+a new, random Pareto optimal solutions.  Below demonstrates how we can generate and save these Pareto optimal solutions
+to a file:
 
 <!-- java:examples/org/moeaframework/examples/misc/GenerateReferenceSetExample.java [36:44] -->
 

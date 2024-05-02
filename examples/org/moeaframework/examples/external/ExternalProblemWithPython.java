@@ -33,7 +33,8 @@ public class ExternalProblemWithPython {
 	public static class MyDTLZ2 extends ExternalProblem {
 
 		public MyDTLZ2() throws IOException {
-			super(new Builder().withCommand("python", "examples/dtlz2.py"));
+			super(new ExternalProblem.Builder()
+					.withCommand("python", "examples/dtlz2.py"));
 		}
 
 		@Override

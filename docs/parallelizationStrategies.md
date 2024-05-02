@@ -17,7 +17,7 @@ explore how we can improve evaluation times.
 
 Perhaps the most straightforward approach to speeding up evaluations is to distribute or parallelize the function
 evaluations across multiple cores.  Most consumer CPUs today have multiple cores (and even multiple threads per core!).
-We can distributed function evaluations using the `DistributedProblem` class:
+We can distribute function evaluations using the `DistributedProblem` class:
 
 <!-- java:examples/org/moeaframework/examples/parallel/ParallelizationExample.java [56:59] -->
 
@@ -33,8 +33,8 @@ There are a few key points to call out:
 1. We create a distributed version of the problem by calling `DistributedProblem.from(...)`.  By default, this
    will distribute across all available processors on the local machine.
 
-2. Be sure to close the the problem when finished to ensure all underlying resources are cleaned up.  The easiest
-   way is using a try-with-resources block as demonstrated in this example.
+2. Be sure to close the problem when finished to ensure all underlying resources are cleaned up.  The easiest way is
+   using a try-with-resources block as demonstrated in this example.
    
 3. When distributing function evaluations, we must balance the speedup provided by parallelization against
    communication and overhead costs.  If each function evaluation only takes milliseconds, parallelization is unlikely

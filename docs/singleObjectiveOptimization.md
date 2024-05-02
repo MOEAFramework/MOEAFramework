@@ -5,8 +5,8 @@ optimization.
 
 ## Defining the Problem
 
-A single-objective problem is defined the same way as their multi-objective variants, except we specify only
-one objective.  Here, we create a class for the Rosenbrock problem:
+A single-objective problem is defined the same way as their multi-objective variants, except we specify only one
+objective.  Here, we create a class for the Rosenbrock problem:
 
 $$ \text{Minimize } f(x,y) = 100(y-x^2)^2 + (1-x)^2 $$
 
@@ -65,9 +65,9 @@ Var1     Var2     Obj1
 
 ## Using Weights to Solve Multi-Objective Problems
 
-We can also use these single-objective optimizers to solve multi-objective problems.  This works by
-calculating a weighted aggregate fitness value.  Two supported approaches are "linear" and "min-max".
-Here, we solve the 2-objective DTLZ2 problem:
+We can also use these single-objective optimizers to solve multi-objective problems.  This works by calculating a
+weighted aggregate fitness value.  Two supported approaches are "linear" and "min-max".  Here, we solve the 2-objective
+DTLZ2 problem:
 
 <!-- java:examples/org/moeaframework/examples/single/MultiObjectiveWithWeightsExample.java [36:50] -->
 
@@ -108,9 +108,8 @@ Var1     Var2     Var3     Var4     Var5     Var6     Var7     Var8     Var9    
 
 ## Repeated Single Objective
 
-Observe above that each weight vector will typically produce a single solution.  The Repeated Single
-Objective (RSO) algorithm extends this idea to produce a Pareto front by solving the problems with
-multiple weights.
+Observe above that each weight vector will typically produce a single solution.  The Repeated Single Objective (RSO)
+algorithm extends this idea to produce a Pareto front by solving the problems with multiple weights.
 
 <!-- java:examples/org/moeaframework/examples/single/RepeatedSingleObjectiveExample.java [36:46] -->
 
@@ -126,4 +125,19 @@ RepeatedSingleObjective algorithm = new RepeatedSingleObjective(problem, 50,
 
 algorithm.run(100000);
 algorithm.getResult().display();
+```
+
+Since this essentially is solving the problem using `50` genetic algorithms with different weights, we expect to
+get `50` Pareto optimal solutions:
+
+<!-- output:examples/org/moeaframework/examples/single/RepeatedSingleObjectiveExample.java [:7] -->
+
+```
+Var1     Var2     Var3     Var4     Var5     Var6     Var7     Var8     Var9     Var10    Var11    Obj1     Obj2
+-------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- -------- --------
+0.000001 0.784339 0.655026 0.356214 0.484376 0.568065 0.646731 0.392905 0.512172 0.573540 0.462883 1.170366 0.000001
+0.999998 0.545630 0.440571 0.465660 0.692718 0.603546 0.405917 0.505772 0.524952 0.569806 0.483925 0.000004 1.069294
+0.010852 0.456152 0.539906 0.487323 0.509044 0.486386 0.502341 0.485789 0.455131 0.505509 0.492831 1.006099 0.017152
+0.100449 0.512263 0.477734 0.456705 0.511608 0.551392 0.516108 0.519335 0.512558 0.467112 0.522962 0.995179 0.158340
+0.097464 0.529165 0.488107 0.469683 0.518976 0.496194 0.541695 0.571284 0.513365 0.519407 0.510400 0.997959 0.153988
 ```

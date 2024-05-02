@@ -33,7 +33,7 @@ public class ExternalProblemWithPythonSocket {
 	public static class MyDTLZ2 extends ExternalProblem {
 
 		public MyDTLZ2() throws IOException {
-			super(new Builder()
+			super(new ExternalProblem.Builder()
 					.withCommand("python", "examples/dtlz2_socket.py")
 					.withSocket("127.0.0.1", DEFAULT_PORT));
 		}

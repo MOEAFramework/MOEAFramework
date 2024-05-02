@@ -97,13 +97,14 @@ gcc -o dtlz2_stdio.exe dtlz2.c moeaframework.c -lm
 This will produce the executable `dtlz2_stdio.exe`.  Then, we can switch over to the Java and create an
 external problem referencing this executable:
 
-<!-- java:examples/org/moeaframework/examples/external/ExternalProblemWithStdio.java [61:98] -->
+<!-- java:examples/org/moeaframework/examples/external/ExternalProblemWithStdio.java [61:99] -->
 
 ```java
 public static class MyDTLZ2 extends ExternalProblem {
 
     public MyDTLZ2() throws IOException {
-        super(new Builder().withCommand("./examples/dtlz2_stdio.exe"));
+        super(new ExternalProblem.Builder()
+                .withCommand("./examples/dtlz2_stdio.exe"));
     }
 
     @Override
@@ -150,7 +151,7 @@ Finally, we can solve this problem.  Since the `ExternalProblem` spins up the pr
 important that the problem is closed after use.  As demonstrated below, we can use a try-with-resources block, allowing
 Java to automatically close the problem.
 
-<!-- java:examples/org/moeaframework/examples/external/ExternalProblemWithStdio.java [110:114] -->
+<!-- java:examples/org/moeaframework/examples/external/ExternalProblemWithStdio.java [111:115] -->
 
 ```java
 try (Problem problem = new MyDTLZ2()) {
@@ -231,7 +232,7 @@ any other purpose will interfere with the communication.  To avoid this, we can 
 send messages between the two processes.  To enable sockets:
 
 First, in the C/C++ code, change `MOEA_init` to `MOEA_Init_socket`.  As our example above demonstrates, we define
-`USE_SOCKET` to switch between these two constructors.  Use the following to compile with this flag enabled:
+`USE_SOCKET` to switch between these two methods.  Use the following to compile with this flag enabled:
 
 ```bash
 gcc -DUSE_SOCKET -o dtlz2_socket.exe dtlz2.c moeaframework.c -lm
@@ -243,9 +244,9 @@ Second, update the Java code, namely the `MyDTLZ2` constructor, to use sockets:
 
 ```java
 public MyDTLZ2() throws IOException {
-    super(new Builder()
+    super(new ExternalProblem.Builder()
             .withCommand("./examples/dtlz2_socket.exe")
-            .withSocket("127.0.0.1", ExternalProblem.DEFAULT_PORT));
+            .withSocket("127.0.0.1", DEFAULT_PORT));
 }
 ```
 
@@ -253,7 +254,7 @@ public MyDTLZ2() throws IOException {
 
 While we provide a C/C++ library for convenience, this same technique can be used by other programming languages.
 Simply construct a loop to read the decision variables from the input and write the objective (and constraint) values
-to the output.  As an example, we have included a Python examples at [`examples/dtlz2.py`](../examples/dtlz2.py) and
+to the output.  As an example, we have included Python examples at [`examples/dtlz2.py`](../examples/dtlz2.py) and
 [`examples/dtlz2_socket.py`](../examples/dtlz2_socket.py).
 
 ## Troubleshooting

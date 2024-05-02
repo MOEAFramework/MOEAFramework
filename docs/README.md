@@ -20,7 +20,7 @@
   * [Injecting Initial Solutions](miscellaneousTopics.md#injecting-initial-solutions)
   * [Mixed Types](miscellaneousTopics.md#mixed-types)
   * [Termination Conditions](miscellaneousTopics.md#termination-conditions)
-  * [Generating Reference Sets](miscellaneousTopics.md#generating-reference-sets)
+  * [Reference Sets](miscellaneousTopics.md#reference-sets)
 
 ## References
 * [List of Decision Variables](listOfDecisionVariables.md)

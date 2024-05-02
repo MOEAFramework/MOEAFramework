@@ -2,11 +2,12 @@
 
 ## Prerequisites
 
-Download and install the latest version of Java Development Kit (JDK).  For Windows, we recommend either
-[Eclipse Temurin](https://adoptium.net/) or [Azul Zulu](https://www.azul.com/downloads/?package=jdk).  Linux users
-with Apt can run `sudo apt install default-jdk`.
+Download and install the latest version of Java Development Kit (JDK).  Version 17 or later is required.  For Windows,
+we recommend either [Eclipse Temurin](https://adoptium.net/) or [Azul Zulu](https://www.azul.com/downloads/?package=jdk).\
+Linux users with Apt can run `sudo apt install default-jdk`.
 
-Download and install the latest version of Eclipse from http://eclipse.org.
+While not required, we recommend using [Eclipse](http://eclipse.org) as your Java editor.  The instructions found in
+these docs are tailored for Eclipse.
 
 ## Setting up a Java Project
 

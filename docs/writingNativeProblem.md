@@ -30,7 +30,7 @@ Language | Default Compiler | Notes
 C        | `gcc`            | C function
 CPP      | `g++`            | C++ function.  Output includes `.c` and `.h` file
 Fortran  | `gfortran`       | Fortran90 function
-Java     | `javac`          | Java problem definition (see [Writing Java Problem](writingJavaProblem.md))
+Java     | `javac`          | Java problem definition (see [Writing Problems in Java](writingJavaProblem.md))
 Python   |                  | Python program using Standard I/O (see [Writing External Problems](writingExternalProblem.md))
 External |                  | External C/C++ problem using Standard I/O (see [Writing External Problems](writingExternalProblem.md))
 Matlab   |                  | Uses `MatlabEngine` to call Matlab function (**experimental**)
@@ -83,7 +83,6 @@ void evaluate(double* vars, double* objs, double* constrs) {
 
 Note that the generated template defines a function taking three arguments: the decision variables `vars`, the
 computed objective values `objs`, and the computed constraint values `constrs`.  `objs` and `constrs` are outputs.
-
 We can fill in the body of the function as follows to implement the Schaffer problem:
 
 ```c
@@ -111,9 +110,10 @@ This `Makefile` produces two files:
 
 1. The shared library, such as `TestProblem.dll` on Windows or `libTestProblem.so` on Linux; and
 2. A Java JAR file, such as `TestProblem.jar`, that contains everything required to integrate the problem with
-   the MOEA Framework.
+   the MOEA Framework.  This JAR is "self-contained", meaning it contains the shared library.  Thus, you only need to
+   copy the JAR file.
    
-The generate templates also include an example, `Example.java`, that solves the problem we just created using
+The generated templates also provide an example, `Example.java`, that solves the problem we just created using
 NSGA-II.  We can run this example with:
 
 ```bash
