@@ -46,25 +46,30 @@ The above example distributed the function evaluations on the local computer.  B
 remote machines using a library like [Apache Ignite](https://ignite.apache.org/).  In fact, any library that
 provides an `ExecutorService` implementation is supported!
 
-First, the problem class must implement the `Serializable` interface.  This allows Java to transmit the problem
+We provide an example using Apache Ignite at https://github.com/MOEAFramework/ApacheIgniteExample.  Typically, two
+steps are required.
+
+First, the problem class should implement the `Serializable` interface.  This allows Java to transmit the problem
 definition to the remote machines.  Without this, you will likely see a `NotSerializableException`.
 
 ```java
 public class MyDistributedProblem extends AbstractProblem implements Serializable {
-    // ... implement problem ...
+    // implement problem
 }
 ```
 
 Then, use the `ExecutorService` provided by your library with the `DistributedProblem`.  For Apache Ignite,
 it would look something like:
 
+<!-- java:https://raw.githubusercontent.com/MOEAFramework/ApacheIgniteExample/main/src/main/java/org/moeaframework/ignite/IgniteMasterSlaveExample.java [31:39] -->
+
 ```java
 try (Ignite ignite = Ignition.start("config/ignite-config.xml")) {
     ExecutorService executor = ignite.executorService();
-			
-    try (Problem problem = DistributedProblem.from(new MyDistributedProblem(), executor)) {
+
+    try (Problem problem = new DistributedProblem(new MyDistributedProblem(), executor)) {
         NSGAII algorithm = new NSGAII(problem);
-        algorithm.run(10000);		
+        algorithm.run(10000);
         algorithm.getResult().display();
     }
 }
