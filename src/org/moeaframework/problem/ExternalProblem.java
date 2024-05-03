@@ -246,7 +246,7 @@ public abstract class ExternalProblem implements Problem {
 		/**
 		 * Sets the retry options when trying to connect to the external process with sockets.
 		 * 
-		 * @param retryAttempts the number of retry attempts (a value <= 0 will fail after the first attempt)
+		 * @param retryAttempts the number of retry attempts (a value {@code <= 0} will fail after the first attempt)
 		 * @param retryDelay the fixed delay between retries
 		 * @return a reference to this builder for chaining together calls
 		 */

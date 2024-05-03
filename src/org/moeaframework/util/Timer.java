@@ -111,7 +111,7 @@ public class Timer implements Formattable<StatisticalSummary> {
 	/**
 	 * Stops the timer and records the elapsed time.
 	 * 
-	 * @returns the elapsed time, in seconds, since this timer was last started
+	 * @return the elapsed time, in seconds, since this timer was last started
 	 */
 	public double stop() {
 		long stopTime = System.nanoTime();
