@@ -376,6 +376,23 @@ public abstract class ExternalProblem implements Problem {
 		}
 		
 		/**
+		 * Determines if the given executable is local to the working directory.
+		 * 
+		 * @param executable the executable
+		 * @return {@code true} if the executable is local; {@code false} if absolute or the path was not found
+		 */
+		private boolean isLocalExecutable(String executable) {
+			File file = new File(executable);
+			
+			if (file.isAbsolute()) {
+				return false;
+			}
+			
+			file = new File(builder.workingDirectory, executable);
+			return file.exists() && file.isFile() && file.canExecute();
+		}
+		
+		/**
 		 * Starts the process specified by the command.  The following order is used to locate the executable:
 		 * <ol>
 		 *   <li>If absolute, use the given path
@@ -400,7 +417,7 @@ public abstract class ExternalProblem implements Problem {
 			// Create a clone of the command as we will potentially modify it below
 			command = command.clone();
 			
-			if (!new File(command[0]).isAbsolute() && new File(builder.workingDirectory, command[0]).exists()) {
+			if (isLocalExecutable(command[0])) {
 				File relativePath = SystemUtils.IS_OS_WINDOWS ? builder.workingDirectory : new File(".");
 				command[0] = new File(relativePath, command[0]).getPath();
 			}
