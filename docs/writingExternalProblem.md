@@ -1,4 +1,4 @@
-# Connecting to Problems with Standard I/O
+# Calling an External Program with Standard I/O
 
 In this example, we will write a C/C++ program for the 2-objective DTLZ2 problem, compile it into an executable, and
 optimize it using the MOEA Framework.  This uses the `ExternalProblem` class, which uses standard input/output to

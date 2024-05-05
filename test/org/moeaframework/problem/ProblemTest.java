@@ -222,7 +222,7 @@ public abstract class ProblemTest {
 	protected void testAgainstJMetal(Problem problemA, Problem problemB, boolean exactConstraints) {
 		RandomInitialization initialization = new RandomInitialization(problemA);
 		
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < 1000*TestThresholds.SAMPLES; i++) {
 			Solution solutionA = initialization.initialize(1)[0];
 			Solution solutionB = solutionA.copy();
 			
@@ -245,7 +245,7 @@ public abstract class ProblemTest {
 			
 			try {
 				compare(solutionA, solutionB, exactConstraints);
-			} catch (AssertionFailedError e) {
+			} catch (AssertionError e) {
 				System.out.println("Solution comparison failed!");
 				System.out.println("  Problem: " + problemA.getName());
 				System.out.println("  Variables: " + formatVariables(solutionA));

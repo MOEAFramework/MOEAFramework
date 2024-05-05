@@ -17,9 +17,13 @@
  */
 package org.moeaframework.problem.WFG;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Solution;
+import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.mock.MockSolution;
 
 public class WFG1Test extends WFGTest {
 	
@@ -37,11 +41,13 @@ public class WFG1Test extends WFGTest {
 	}
 
 	@Test
+	@Ignore("JMetal produces incorrect solutions for some results, see notes")
 	public void testJMetal2D() {
 		testAgainstJMetal("WFG1_2");
 	}
 	
 	@Test
+	@Ignore("JMetal produces incorrect solutions for some results, see notes")
 	public void testJMetal3D() {
 		testAgainstJMetal("WFG1_3");
 	}
@@ -57,6 +63,38 @@ public class WFG1Test extends WFGTest {
 	public void testGenerate() {
 		testGenerate("WFG1_2");
 		testGenerate("WFG1_3");
+	}
+	
+	/**
+	 * WFG1 randomly experienced CI failures when compared against JMetal.  The original WFG website is no longer
+	 * available, but I found two versions of the original codes, which are now archived at:
+	 * 
+	 *     https://github.com/MOEAFramework/Archive/blob/main/WFG_v2006.03.28.tar.gz
+	 *     https://github.com/MOEAFramework/PISA/blob/main/variators/wfg_c_source.rar
+	 * 
+	 * Below, we are comparing one such solution that produced different results, using the result from the original
+	 * WFG codes for validation.
+	 */
+	@Test
+	public void testKnownGoodSolution() {
+		Problem problem = ProblemFactory.getInstance().getProblem("WFG1_2");
+		Solution solution = MockSolution.of(problem).at(1.8389005583162747, 3.6362558539762473, 0.12275000703991479, 1.3456684852354126, 3.4999999596260922, 2.1963726044829377, 6.692140537740539, 1.5934349970960149, 3.0573993595302524, 17.46985254359542, 19.95946267739649);
+		
+		problem.evaluate(solution);
+		
+		Assert.assertArrayEquals(new double[] { 2.96206, 0.967335 }, solution.getObjectives(), 0.00001);
+	}
+	
+	@Test(expected = AssertionError.class)
+	public void testJMetalOnKnownGoodSolution() {
+		assumeJMetalExists();
+		
+		Problem problem = ProblemFactory.getInstance().getProblem("WFG1_2-JMetal");
+		Solution solution = MockSolution.of(problem).at(1.8389005583162747, 3.6362558539762473, 0.12275000703991479, 1.3456684852354126, 3.4999999596260922, 2.1963726044829377, 6.692140537740539, 1.5934349970960149, 3.0573993595302524, 17.46985254359542, 19.95946267739649);
+		
+		problem.evaluate(solution);
+		
+		Assert.assertArrayEquals(new double[] { 2.96206, 0.967335 }, solution.getObjectives(), 0.00001);
 	}
 
 }
