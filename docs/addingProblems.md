@@ -7,14 +7,14 @@ allows solving your own multi-objective optimization problems.
 
 The three main approaches to integrate your own optimization problems are:
 
-1. [Writing the problem in Java](writingJavaProblem.md).  We recommend this approach as it's the easiest option, but
+1. [Writing the Problem in Java](writingJavaProblem.md): We recommend this approach as it's the easiest option, but
    does require some knowledge of Java.
    
-2. [Calling a native function](writingNativeProblem.md).  This approach involves compiling code written in
+2. [Natively-compiled Function](writingNativeProblem.md): This approach involves compiling code written in
    C, C++, Fortran, or another language.  We do provide a tool that generates problem templates to make it easier to
    configure, compile, and use native functions.
    
-3. [Calling an external program](writingExternalProblem.md).  This approach involves calling an external program using
+3. [Calling an External Program](writingExternalProblem.md): This approach involves calling an external program using
    standard I/O or sockets for communication.  This has significantly more overhead, but can be used with practically
    any programming language.
    
@@ -23,16 +23,16 @@ The three main approaches to integrate your own optimization problems are:
 The table below shows the average time to perform 100,000 function evaluations of a simple test problem (DTLZ2), so
 these times reflect the overhead from calling the function.
 
-Method                   | Avg Time (sec)
------------------------- | --------------
-Java                     | 0.610
-Native (Fortran)         | 0.646
-Native (C)               | 0.765
-Native (C++)             | 0.769
-External C (stdio)       | 3.653
-External Python (stdio)  | 4.614
-External C (socket)      | 5.788
-External Python (socket) | 7.456
+Method                          | Avg Time (sec)
+------------------------------- | --------------
+Java                            | 0.610
+Native Fortran                  | 0.646
+Native C                        | 0.765
+Native C++                      | 0.769
+External C - Standard I/O       | 3.653
+External Python - Standard I/O  | 4.614
+External C - Sockets            | 5.788
+External Python - Sockets       | 7.456
 
 The key takeaway is writing the function in pure Java or using a low-level compiled function in C, C++, Fortran, or
 similar language offers the best performance.  The `ExternalProblem` approach, which communicates with a program
