@@ -9,12 +9,12 @@
 * [Plotting and Visualizations](visualizations.md)
 * [Parallelization and Island Model](parallelizationStrategies.md)
 * [Single-Objective Optimization](singleObjectiveOptimization.md)
-* Adding New Problems
+* [Adding New Problems](addingProblems.md)
   * [Writing Problems in Java](writingJavaProblem.md)
   * [Connecting to Programs using Standard I/O](writingExternalProblem.md)
   * [Natively-Compiled Functions](writingNativeProblem.md)
 * [Adding New Algorithms](addingAlgorithms.md)
-* Miscellaneous Topics
+* [Miscellaneous Topics](miscellaneousTopics.md)
   * [Checkpoints](miscellaneousTopics.md#checkpoints)
   * [Saving and Formatting Results](miscellaneousTopics.md#saving-and-formatting-results)
   * [Injecting Initial Solutions](miscellaneousTopics.md#injecting-initial-solutions)
