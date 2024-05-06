@@ -545,7 +545,7 @@ MOEA_Status MOEA_Read_complete() {
 
 MOEA_Status MOEA_Write(const double* objectives, const double* constraints) {
   int i;
-  int res;
+  MOEA_Status res;
 
   /* validate that input has been fully read */
   if ((res = MOEA_Read_complete()) != MOEA_SUCCESS) {
