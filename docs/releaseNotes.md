@@ -2,7 +2,7 @@
 
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
-## Version 4.1 (In Progress)
+## Version 4.1 (06 May 2024)
 
   * Adds `DefaultNormalizer` and `DefaultEpsilons` classes with the ability to override the defaults with
     problem-specific, custom settings.  These settings can be set either by calling `override` or loaded from the
@@ -10,6 +10,11 @@ This page documents notable changes introduced in each chronological release of 
     
   * `ThreadLocalMersenneTwister` is now the default random number generator used by `PRNG`.  Consequently,
     `PRNG` can be used by multi-threaded or parallel codes directly.
+    
+  * Markdown and Latex support when saving or displaying tables:
+    ```
+    algorithm.getResult().save(TableFormat.Latex, new File("result.tex"));
+    ```
     
   * Expands CI testing to include Windows and MacOS.
   
