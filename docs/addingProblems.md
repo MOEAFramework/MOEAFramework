@@ -14,9 +14,9 @@ The three main approaches to integrate your own optimization problems are:
    C, C++, Fortran, or another language.  We do provide a tool that generates problem templates to make it easier to
    configure, compile, and use native functions.
    
-3. [Calling an External Program](writingExternalProblem.md): This approach involves calling an external program using
-   standard I/O or sockets for communication.  This has significantly more overhead, but can be used with practically
-   any programming language.
+3. [Calling Executable with Standard I/O or Sockets](writingExternalProblem.md): This approach involves calling an
+   external program using standard I/O or sockets for communication.  This has significantly more overhead, but can be
+   used with practically any programming language.
    
 ## Performance
 

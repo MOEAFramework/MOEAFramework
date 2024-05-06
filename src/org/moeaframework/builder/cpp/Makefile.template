@@ -1,7 +1,7 @@
 # Edit the following to configure the compiler and required libraries
 CC = g++
 LIBS =
-CFLAGS = 
+CFLAGS = -O3
 
 # Configure the platform-specific settings
 ifeq ($(OS),Windows_NT)

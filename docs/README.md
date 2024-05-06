@@ -11,8 +11,8 @@
 * [Single-Objective Optimization](singleObjectiveOptimization.md)
 * [Adding New Problems](addingProblems.md)
   * [Writing Problems in Java](writingJavaProblem.md)
-  * [Connecting to Programs using Standard I/O](writingExternalProblem.md)
   * [Natively-Compiled Functions](writingNativeProblem.md)
+  * [Calling Executable with Standard I/O or Sockets](writingExternalProblem.md)
 * [Adding New Algorithms](addingAlgorithms.md)
 * [Miscellaneous Topics](miscellaneousTopics.md)
   * [Checkpoints](miscellaneousTopics.md#checkpoints)
@@ -21,6 +21,7 @@
   * [Mixed Types](miscellaneousTopics.md#mixed-types)
   * [Termination Conditions](miscellaneousTopics.md#termination-conditions)
   * [Reference Sets](miscellaneousTopics.md#reference-sets)
+* [Troubleshooting](troubleshooting.md)
 
 ## References
 * [List of Decision Variables](listOfDecisionVariables.md)
@@ -34,8 +35,4 @@
 
 * [API Specification (Javadoc)](http://moeaframework.org/javadoc/index.html)
 * [Developers Guide](developersGuide.md)
-
-## Appendix
-
-* [Known Error and Warning Messages](listOfErrorsAndWarnings.md)
 * [Credits](credits.md)

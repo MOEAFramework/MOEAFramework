@@ -37,16 +37,3 @@ command line:
 
 java -classpath "lib/*" examples/Example1.java
 ```
-
-## Troubleshooting
-
-If you see many build errors indicating `<className> cannot be resolved to a type`, it's likely the project
-was created with **modules** enabled.  To confirm, check if the file `src/module-info.java` exists:
-
-![image](https://github.com/MOEAFramework/MOEAFramework/assets/2496211/78d76409-b70a-4fa3-8a57-cc4df16df4c2)
-
-To fix, we recommend deleting the broken project including the source directory.  Download and extract the
-MOEA Framework release again, then follow the steps above to import the project.  If you are instead creating a new
-Java project, be sure to uncheck the option to create `module-info.java`:
-
-![image](https://github.com/MOEAFramework/MOEAFramework/assets/2496211/cab2283a-0dd4-4574-8720-d15f4c2657ab)

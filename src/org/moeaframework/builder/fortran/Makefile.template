@@ -1,5 +1,7 @@
 # Edit the following to configure the compiler and required libraries
 FORTRAN = gfortran
+LIBS =
+FFLAGS = -O3
 
 # Configure the platform-specific settings
 ifeq ($(OS),Windows_NT)
@@ -15,7 +17,8 @@ LIBNAME := $(shell java -classpath "$(CLASSPATH)" org.moeaframework.builder.JNAI
 # Compile the shared library
 build:
 	mkdir -p $(SYSARCH)
-	$(FORTRAN) -shared -fPIC -o $(SYSARCH)/$(LIBNAME) ${problemName}.f90
+	$(FORTRAN) $(FFLAGS) -c -fPIC ${problemName}.f90 $(LIBS)
+	$(FORTRAN) -shared -o $(SYSARCH)/$(LIBNAME) ${problemName}.o
 	javac -classpath "$(CLASSPATH)" ${problemName}.java ${problemName}Provider.java
 	
 	jar cf ${problemName}.jar *.class $(SYSARCH) META-INF
