@@ -1,7 +1,7 @@
 # Troubleshooting
 
 Below lists common errors, warnings, and other troubleshooting advice.  If you can not resolve the problem using this
-guide, please open an issue on our GitHub page.
+guide, please [report the issue](#reporting-an-issue).
 
 ## Setup / Installation
 
@@ -84,3 +84,14 @@ following errors:
 
 If this occurs, you either need to provide a reference set with two or more **different** solutions, provide explicit
 lower and upper bounds for normalization, or disable normalization.  See the `Indicators` class for more details.
+
+## Reporting an Issue
+
+If encountering an issue not covered by this troubleshooting guide, first search the
+[issues](https://github.com/MOEAFramework/MOEAFramework/issues) on our GitHub page to see if the problem is already
+addressed.  If not, please open a new issue.  When doing so, we ask you provide the following information:
+
+1. The version and distribution of Java being used (`java -version`)
+2. The operating system name, version, and any specifics of the environment
+3. A copy of any error or warning messages
+4. If possible, example code that reproduces the error or warning messages
