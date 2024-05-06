@@ -39,8 +39,37 @@ public interface Formattable<T> extends Displayable {
 	
 	@Override
 	public default void display(PrintStream out) {
-		TabularData<T> data = asTabularData();
-		data.display(out);
+		asTabularData().display(out);
+	}
+	
+	/**
+	 * Displays the data in the given format to the terminal.
+	 * 
+	 * @param tableFormat the table format
+	 */
+	public default void display(TableFormat tableFormat) {
+		asTabularData().display(tableFormat);
+	}
+	
+	/**
+	 * Displays the data in the given format.
+	 * 
+	 * @param tableFormat the table format
+	 * @param out the output stream
+	 */
+	public default void display(TableFormat tableFormat, PrintStream out) {
+		asTabularData().display(tableFormat, out);
+	}
+	
+	/**
+	 * Saves the data to a file in the requested format.
+	 * 
+	 * @param tableFormat the resulting table format
+	 * @param file the resulting file
+	 * @throws IOException if an I/O error occurred while writing the file
+	 */
+	public default void save(TableFormat tableFormat, File file) throws IOException {
+		asTabularData().save(tableFormat, file);
 	}
 	
 	/**
@@ -50,7 +79,7 @@ public interface Formattable<T> extends Displayable {
 	 * @throws IOException if an I/O error occurred while writing the file
 	 */
 	public default void saveCSV(File file) throws IOException {
-		asTabularData().saveCSV(file);
+		save(TableFormat.CSV, file);
 	}
 
 }

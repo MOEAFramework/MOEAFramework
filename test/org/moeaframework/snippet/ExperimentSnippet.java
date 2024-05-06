@@ -31,6 +31,7 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.problem.CEC2009.UF1;
+import org.moeaframework.util.format.TableFormat;
 
 @SuppressWarnings("unused")
 public class ExperimentSnippet {

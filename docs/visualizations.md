@@ -115,10 +115,10 @@ This tool can be downloaded and installed from https://github.com/Project-Platyp
 
 First, we need to export the results into a CSV file:
 
-<!-- java:examples/org/moeaframework/examples/misc/SaveAndFormatResultsExample.java [40:40] -->
+<!-- java:examples/org/moeaframework/examples/misc/SaveAndFormatResultsExample.java [41:41] -->
 
 ```java
-algorithm.getResult().saveCSV(new File("solutions.csv"));
+algorithm.getResult().save(TableFormat.CSV, new File("solutions.csv"));
 ```
 
 Then, launch J3 and open `solutions.csv`.  The initial 3D plot will look random due to how the axes are configured.

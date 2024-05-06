@@ -42,7 +42,7 @@ public class TabularData<T> implements Displayable {
 	private final List<Column<T, ?>> columns;
 	
 	private final Deque<Formatter<?>> formatters;
-	
+		
 	/**
 	 * Creates a new tabular data object using the given data source.
 	 * 
@@ -119,15 +119,52 @@ public class TabularData<T> implements Displayable {
 	
 	@Override
 	public void display(PrintStream out) {
-		toPlaintext(out);
+		display(TableFormat.Plaintext, out);
 	}
 	
 	/**
-	 * Writes the data in the default, plain format.
+	 * Displays the data in the given format to the terminal.
+	 * 
+	 * @param tableFormat the table format
+	 */
+	public void display(TableFormat tableFormat) {
+		display(tableFormat, System.out);
+	}
+	
+	/**
+	 * Displays the data in the given format.
+	 * 
+	 * @param tableFormat the table format
+	 * @param out the output stream
+	 */
+	public void display(TableFormat tableFormat, PrintStream out) {
+		switch (tableFormat) {
+			case Plaintext -> toPlaintext(out);
+			case CSV -> toCSV(out);
+			case Markdown -> toMarkdown(out);
+			case Latex -> toLatex(out);
+		};
+	}
+	
+	/**
+	 * Saves the data to a file in the requested format.
+	 * 
+	 * @param tableFormat the resulting table format
+	 * @param file the resulting file
+	 * @throws IOException if an I/O error occurred while writing the file
+	 */
+	public void save(TableFormat tableFormat, File file) throws IOException {
+		try (PrintStream out = new PrintStream(new FileOutputStream(file))) {
+			display(tableFormat, out);
+		}
+	}
+	
+	/**
+	 * Writes the data in the default, plaintext format.
 	 * 
 	 * @param out the output stream
 	 */
-	public void toPlaintext(PrintStream out) {
+	protected void toPlaintext(PrintStream out) {
 		List<String[]> formattedData = toFixedWidthFormat();
 
 		for (int j = 0; j < columns.size(); j++) {
@@ -158,7 +195,9 @@ public class TabularData<T> implements Displayable {
 	 * 
 	 * @param file the resulting file
 	 * @throws IOException if an I/O error occurred while writing the file
+	 * @deprecated Use {@link #save(TableFormat, File)} instead
 	 */
+	@Deprecated
 	public void saveCSV(File file) throws IOException {
 		try (PrintStream out = new PrintStream(new FileOutputStream(file))) {
 			toCSV(out);
@@ -170,7 +209,7 @@ public class TabularData<T> implements Displayable {
 	 * 
 	 * @param out the output stream
 	 */
-	public void toCSV(PrintStream out) {
+	protected void toCSV(PrintStream out) {
 		List<String[]> formattedData = toFixedWidthFormat();
 		
 		for (int j = 0; j < columns.size(); j++) {
@@ -201,7 +240,7 @@ public class TabularData<T> implements Displayable {
 	 * 
 	 * @param out the output stream
 	 */
-	public void toMarkdown(PrintStream out) {
+	protected void toMarkdown(PrintStream out) {
 		List<String[]> formattedData = toFixedWidthFormat();
 		
 		for (int j = 0; j < columns.size(); j++) {
@@ -243,7 +282,7 @@ public class TabularData<T> implements Displayable {
 	 * 
 	 * @param out the output stream
 	 */
-	public void toLatex(PrintStream out) {
+	protected void toLatex(PrintStream out) {
 		List<String[]> formattedData = toFixedWidthFormat();
 
 		out.print("\\begin{tabular}{|");

@@ -130,13 +130,6 @@ public class TabularDataTest {
 	}
 	
 	@Test
-	public void testCsvFile() throws IOException {
-		File tempFile = TempFiles.createFile();
-		data.saveCSV(tempFile);
-		Assert.assertEqualsNormalized(expectedCsv, Files.readString(tempFile.toPath(), StandardCharsets.UTF_8));
-	}
-	
-	@Test
 	public void testMarkdown() throws IOException {
 		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				 PrintStream ps = new PrintStream(baos)) {
@@ -153,6 +146,34 @@ public class TabularDataTest {
 			Assert.assertEqualsNormalized(expectedLatex, baos.toString());
 			data.toLatex(System.out);
 		}
+	}
+	
+	@Test
+	public void testSavePlaintext() throws IOException {
+		File tempFile = TempFiles.createFile();
+		data.save(TableFormat.Plaintext, tempFile);
+		Assert.assertEqualsNormalized(expectedOutput, Files.readString(tempFile.toPath(), StandardCharsets.UTF_8));
+	}
+	
+	@Test
+	public void testSaveCsv() throws IOException {
+		File tempFile = TempFiles.createFile();
+		data.save(TableFormat.CSV, tempFile);
+		Assert.assertEqualsNormalized(expectedCsv, Files.readString(tempFile.toPath(), StandardCharsets.UTF_8));
+	}
+	
+	@Test
+	public void testSaveMarkdown() throws IOException {
+		File tempFile = TempFiles.createFile();
+		data.save(TableFormat.Markdown, tempFile);
+		Assert.assertEqualsNormalized(expectedMarkdown, Files.readString(tempFile.toPath(), StandardCharsets.UTF_8));
+	}
+	
+	@Test
+	public void testSaveLatex() throws IOException {
+		File tempFile = TempFiles.createFile();
+		data.save(TableFormat.Latex, tempFile);
+		Assert.assertEqualsNormalized(expectedLatex, Files.readString(tempFile.toPath(), StandardCharsets.UTF_8));
 	}
 
 }

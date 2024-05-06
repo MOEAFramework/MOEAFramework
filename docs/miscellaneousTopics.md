@@ -34,18 +34,20 @@ Checkpoint file exists, resuming previous run at 2000000 evaluations!
 ## Saving and Formatting Results
 
 In many of the examples, you likely noticed we displayed results using `algorithm.getResult().display()`.
-Alternatively, we can save the output to a file using:
+Alternatively, we can save the output to a file in various formats using:
 
-<!-- java:examples/org/moeaframework/examples/misc/SaveAndFormatResultsExample.java [40:40] -->
+<!-- java:examples/org/moeaframework/examples/misc/SaveAndFormatResultsExample.java [41:43] -->
 
 ```java
-algorithm.getResult().saveCSV(new File("solutions.csv"));
+algorithm.getResult().save(TableFormat.CSV, new File("solutions.csv"));
+algorithm.getResult().save(TableFormat.Markdown, new File("solutions.md"));
+algorithm.getResult().save(TableFormat.Latex, new File("solutions.tex"));
 ```
 
 We can also customize how the output is formatted.  Say we want to use ten digits of precision
 for the output:
 
-<!-- java:examples/org/moeaframework/examples/misc/SaveAndFormatResultsExample.java [42:44] -->
+<!-- java:examples/org/moeaframework/examples/misc/SaveAndFormatResultsExample.java [46:47] -->
 
 ```java
 NumberFormatter.getDefault().setPrecision(10);
