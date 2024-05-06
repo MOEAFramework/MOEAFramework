@@ -27,11 +27,15 @@ import java.util.function.Function;
  */
 public class Column<T, V> {
 	
+	static final int UNSPECIFIED_WIDTH = -1;
+	
 	private final String name;
 	
 	private final Function<T, V> supplier;
 	
 	private Formatter<V> customFormatter;
+	
+	private int width;
 	
 	/**
 	 * Creates a new column.
@@ -43,6 +47,8 @@ public class Column<T, V> {
 		super();
 		this.name = name;
 		this.supplier = supplier;
+		
+		width = UNSPECIFIED_WIDTH;
 	}
 	
 	/**
@@ -80,6 +86,29 @@ public class Column<T, V> {
 	 */
 	public V getValue(T row) {
 		return supplier.apply(row);
+	}
+	
+	/**
+	 * Returns the current width or {@value UNSPECIFIED_WIDTH} if not yet specified.
+	 * 
+	 * @return the current width
+	 */
+	int getWidth() {
+		return width;
+	}
+	
+	/**
+	 * Updates the width by taking the larger of the current width or the given (requested) width.  A negative value
+	 * will unset the width, allowing it to be recomputed.
+	 * 
+	 * @param width the requested width in characters
+	 */
+	void updateWidth(int width) {
+		if (width < 0) {
+			width = UNSPECIFIED_WIDTH;
+		} else {
+			this.width = Math.max(this.width, width);
+		}
 	}
 
 }

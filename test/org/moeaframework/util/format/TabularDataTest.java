@@ -21,7 +21,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -44,6 +43,10 @@ public class TabularDataTest {
 	
 	private String expectedCsv;
 	
+	private String expectedMarkdown;
+	
+	private String expectedLatex;
+	
 	@Before
 	public void setUp() {
 		List<Triple<String, Integer, Variable>> rawData = new ArrayList<Triple<String, Integer, Variable>>();
@@ -65,6 +68,22 @@ public class TabularDataTest {
 				"String, Integer, Variable",
 				"foo, 1, 0.500000",
 				"bar, 2147483647, 5" });
+		
+		expectedMarkdown = String.join(System.lineSeparator(), new String[] {
+				"String | Integer    | Variable",
+				"------ | ---------- | --------",
+				"foo    | 1          | 0.500000",
+				"bar    | 2147483647 | 5" });
+		
+		expectedLatex = String.join(System.lineSeparator(), new String[] {
+				"\\begin{tabular}{|lll|}",
+				"  \\hline",
+				"  String & Integer    & Variable \\\\",
+				"  \\hline",
+				"  foo    & 1          & 0.500000 \\\\",
+				"  bar    & 2147483647 & 5        \\\\",
+				"  \\hline",
+				"\\end{tabular}"});
 	}
 	
 	@Test
@@ -103,9 +122,10 @@ public class TabularDataTest {
 	
 	@Test
 	public void testCsv() throws IOException {
-		try (StringWriter writer = new StringWriter()) {
-			data.toCSV(writer);
-			Assert.assertEqualsNormalized(expectedCsv, writer.toString());
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				 PrintStream ps = new PrintStream(baos)) {
+			data.toCSV(ps);
+			Assert.assertEqualsNormalized(expectedCsv, baos.toString());
 		}
 	}
 	
@@ -114,6 +134,25 @@ public class TabularDataTest {
 		File tempFile = TempFiles.createFile();
 		data.saveCSV(tempFile);
 		Assert.assertEqualsNormalized(expectedCsv, Files.readString(tempFile.toPath(), StandardCharsets.UTF_8));
+	}
+	
+	@Test
+	public void testMarkdown() throws IOException {
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				 PrintStream ps = new PrintStream(baos)) {
+			data.toMarkdown(ps);
+			Assert.assertEqualsNormalized(expectedMarkdown, baos.toString());
+		}
+	}
+	
+	@Test
+	public void testLatex() throws IOException {
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				 PrintStream ps = new PrintStream(baos)) {
+			data.toLatex(ps);
+			Assert.assertEqualsNormalized(expectedLatex, baos.toString());
+			data.toLatex(System.out);
+		}
 	}
 
 }
