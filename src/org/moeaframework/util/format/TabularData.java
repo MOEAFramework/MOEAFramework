@@ -118,7 +118,7 @@ public class TabularData<T> implements Displayable {
 	}
 	
 	@Override
-	public void display(PrintStream out) throws IOException {
+	public void display(PrintStream out) {
 		toPlain(out);
 	}
 	
