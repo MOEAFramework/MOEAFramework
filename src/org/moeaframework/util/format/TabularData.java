@@ -119,7 +119,7 @@ public class TabularData<T> implements Displayable {
 	
 	@Override
 	public void display(PrintStream out) {
-		toPlain(out);
+		toPlaintext(out);
 	}
 	
 	/**
@@ -127,7 +127,7 @@ public class TabularData<T> implements Displayable {
 	 * 
 	 * @param out the output stream
 	 */
-	public void toPlain(PrintStream out) {
+	public void toPlaintext(PrintStream out) {
 		List<String[]> formattedData = toFixedWidthFormat();
 
 		for (int j = 0; j < columns.size(); j++) {
