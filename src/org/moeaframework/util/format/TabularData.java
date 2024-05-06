@@ -118,7 +118,16 @@ public class TabularData<T> implements Displayable {
 	}
 	
 	@Override
-	public void display(PrintStream out) {
+	public void display(PrintStream out) throws IOException {
+		toPlain(out);
+	}
+	
+	/**
+	 * Writes the data in the default, plain format.
+	 * 
+	 * @param out the output stream
+	 */
+	public void toPlain(PrintStream out) {
 		List<String[]> formattedData = toFixedWidthFormat();
 
 		for (int j = 0; j < columns.size(); j++) {
@@ -160,9 +169,8 @@ public class TabularData<T> implements Displayable {
 	 * Writes the data formatted as CSV.
 	 * 
 	 * @param out the output stream
-	 * @throws IOException if an I/O error occurred while writing the data
 	 */
-	public void toCSV(PrintStream out) throws IOException {
+	public void toCSV(PrintStream out) {
 		List<String[]> formattedData = toFixedWidthFormat();
 		
 		for (int j = 0; j < columns.size(); j++) {
@@ -192,9 +200,8 @@ public class TabularData<T> implements Displayable {
 	 * Writes the data formatted as a Markdown table.
 	 * 
 	 * @param out the output stream
-	 * @throws IOException if an I/O error occurred while writing the data
 	 */
-	public void toMarkdown(PrintStream out) throws IOException {
+	public void toMarkdown(PrintStream out) {
 		List<String[]> formattedData = toFixedWidthFormat();
 		
 		for (int j = 0; j < columns.size(); j++) {
@@ -235,9 +242,8 @@ public class TabularData<T> implements Displayable {
 	 * Writes the data formatted as a Latex table.
 	 * 
 	 * @param out the output stream
-	 * @throws IOException if an I/O error occurred while writing the data
 	 */
-	public void toLatex(PrintStream out) throws IOException {
+	public void toLatex(PrintStream out) {
 		List<String[]> formattedData = toFixedWidthFormat();
 
 		out.print("\\begin{tabular}{|");
