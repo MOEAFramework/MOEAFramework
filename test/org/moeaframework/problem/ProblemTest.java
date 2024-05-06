@@ -31,8 +31,6 @@ import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProviderNotFoundException;
 import org.moeaframework.mock.MockSolution;
 
-import junit.framework.AssertionFailedError;
-
 /**
  * Utilities for testing problems.  While these are not strict requirements, these tests should cover:
  * <ol>

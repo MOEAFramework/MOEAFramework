@@ -18,6 +18,7 @@
 package org.moeaframework.problem.WFG;
 
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.AnalyticalProblem;
@@ -55,6 +56,14 @@ public abstract class WFG extends AbstractProblem implements AnalyticalProblem {
 		this.k = k;
 		this.l = l;
 		this.M = M;
+		
+		Validate.greaterThanOrEqual("k", 1, k);
+		Validate.greaterThanOrEqual("l", 1, l);
+		Validate.greaterThanOrEqual("M", 2, M);
+		
+		if (k % (M - 1) != 0) {
+			throw new IllegalArgumentException("k must be a multiple of (M-1), given " + k + " with M = " + M);
+		}
 	}
 	
 	@Override

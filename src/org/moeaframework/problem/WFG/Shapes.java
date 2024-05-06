@@ -151,25 +151,4 @@ class Shapes {
 		return WFG_calculate_f(x, h);
 	}
 
-	public static double[] I1_shape(double[] t_p) {
-		assert Misc.vector_in_01(t_p);
-		assert t_p.length >= 2;
-
-		int M = t_p.length;
-
-		int[] A = WFG_create_A(M, false);
-		double[] x = FrameworkFunctions.calculate_x(t_p, A);
-
-		double[] h = new double[M];
-
-		for (int m = 1; m <= M; m++) {
-			h[m - 1] = ShapeFunctions.concave(x, m);
-		}
-
-		double[] S = new double[M];
-		Arrays.fill(S, 1.0);
-
-		return FrameworkFunctions.calculate_f(1.0, x, h, S);
-	}
-
 }
