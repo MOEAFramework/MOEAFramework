@@ -32,7 +32,7 @@ build:
 	mkdir -p bin/
 	cp -r META-INF bin
 	javac -classpath "$(CLASSPATH)" -d bin src/${packagePath}/*.java
-	mv ${functionName}.m bin/${packagePath}
+	cp ${functionName}.m bin/${packagePath}
 	jar -cf ${problemName}.jar -C bin META-INF/ -C bin ${packagePath}
 
 clean:
