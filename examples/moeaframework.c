@@ -261,7 +261,8 @@ MOEA_Status MOEA_Next_solution() {
   	MOEA_Buffer[0] = '\0';
   }
   
-  while (!feof(MOEA_Stream_input)) {
+  /* loop until file or socket indicate the end */
+  while (1) {
     /* expand buffer if required */
     if (MOEA_Buffer_capacity(MOEA_Buffer_position + MOEA_BUFFER_SIZE) != MOEA_SUCCESS) {
       return MOEA_Error(MOEA_MALLOC_ERROR);
@@ -289,7 +290,7 @@ MOEA_Status MOEA_Next_solution() {
       MOEA_Buffer[MOEA_Buffer_position] = '\0';
     }
     
-    if (MOEA_Buffer[MOEA_Buffer_position-1] == '\n') {
+    if (MOEA_Buffer_position == 0 || MOEA_Buffer[MOEA_Buffer_position-1] == '\n') {
     	break;	
     }
   }
