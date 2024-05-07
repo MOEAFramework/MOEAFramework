@@ -289,6 +289,7 @@ MOEA_Status MOEA_Next_solution() {
       MOEA_Buffer[MOEA_Buffer_position] = '\0';
     }
     
+    /* exit loop when no data read or newline found */
     if (MOEA_Buffer_position == 0 || MOEA_Buffer[MOEA_Buffer_position-1] == '\n') {
     	break;	
     }
