@@ -39,7 +39,10 @@
 #endif
 
 #define MOEA_WHITESPACE " \t"
-#define MOEA_BUFFER_SIZE 1024
+
+#ifndef MOEA_BUFFER_SIZE
+#define MOEA_BUFFER_SIZE 4096
+#endif
 
 FILE* MOEA_Stream_input = NULL;
 FILE* MOEA_Stream_output = NULL;

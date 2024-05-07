@@ -9,7 +9,7 @@
 ROOT := ../../../..
 CC := gcc
 CPP := g++
-CFLAGS := -O3 -Wall -Werror
+CFLAGS := -O3 -Wall -Werror -DMOEA_BUFFER_SIZE=16
 LIBS = 
 
 ifeq ("$(wildcard $(ROOT)/examples)","")
