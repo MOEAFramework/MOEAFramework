@@ -15,13 +15,15 @@ CLASSPATH := ${java.class.path}
 
 # Compile the external program
 build:
-	$(CC) $(CFLAGS) -o ${problemName}.exe ${problemName}.c moeaframework.c $(LIBS)
-	javac -classpath "$(CLASSPATH)" ${problemName}.java ${problemName}Provider.java
-	jar cf ${problemName}.jar ${problemName}.exe *.class META-INF
-	rm -f *.class
+	mkdir -p bin/
+	$(CC) $(CFLAGS) -o bin/${problemName}.exe ${problemName}.c moeaframework.c $(LIBS)
+	cp -r META-INF bin
+	javac -classpath "$(CLASSPATH)" -d bin src/${packagePath}/*.java
+	mv bin/${problemName}.exe bin/${packagePath}
+	jar -cf ${problemName}.jar -C bin META-INF/ -C bin ${packagePath}
 
 clean:
-	rm -f ${problemName}.exe ${problemName}.jar
+	rm -rf bin/ ${problemName}.jar
 	
 run:
-	java -classpath "$(CLASSPATH)" Example.java
+	java -classpath "$(CLASSPATH)" ${packageName}.Example

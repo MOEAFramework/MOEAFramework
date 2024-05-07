@@ -1,3 +1,5 @@
+package ${packageName};
+
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.spi.RegisteredProblemProvider;
 

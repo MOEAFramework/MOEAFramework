@@ -16,18 +16,17 @@ LIBNAME := $(shell java -classpath "$(CLASSPATH)" org.moeaframework.builder.JNAI
 
 # Compile the shared library
 build:
-	mkdir -p $(SYSARCH)
-	$(CC) $(CFLAGS) -c -fPIC ${problemName}.cpp $(LIBS)
-	$(CC) -shared -o $(SYSARCH)/$(LIBNAME) ${problemName}.o
-	javac -classpath "$(CLASSPATH)" ${problemName}.java ${problemName}Provider.java
-	
-	jar cf ${problemName}.jar *.class $(SYSARCH) META-INF
-	
-	rm -f *.o *.class
+	mkdir -p bin/
+	mkdir -p bin/$(SYSARCH)
+	$(CC) $(CFLAGS) -c -fPIC -o bin/${problemName}.o ${problemName}.cpp $(LIBS)
+	$(CC) -shared -o bin/$(SYSARCH)/$(LIBNAME) bin/${problemName}.o
+	cp -r META-INF bin
+	javac -classpath "$(CLASSPATH)" -d bin src/${packagePath}/*.java
+	jar -cf ${problemName}.jar -C bin META-INF/ -C bin ${packagePath} -C bin $(SYSARCH)/
 	java -classpath "$(CLASSPATH)" org.moeaframework.builder.JNAInfo --test --problem ${problemName}
 
 clean:
-	rm -rf $(SYSARCH) ${problemName}.jar
+	rm -rf bin/ ${problemName}.jar
 	
 run:
-	java -classpath "$(CLASSPATH)" Example.java
+	java -classpath "$(CLASSPATH)" ${packageName}.Example

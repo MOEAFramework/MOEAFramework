@@ -27,6 +27,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+
 import javax.lang.model.SourceVersion;
 
 import org.apache.commons.cli.CommandLine;
@@ -146,6 +147,11 @@ public class BuildProblem extends CommandLineUtility {
 				.build());
 		
 		options.addOption(Option.builder()
+				.longOpt("package")
+				.hasArg()
+				.build());
+		
+		options.addOption(Option.builder()
 				.longOpt("classpath")
 				.hasArg()
 				.build());
@@ -162,6 +168,7 @@ public class BuildProblem extends CommandLineUtility {
 		String problemName = commandLine.getOptionValue("problemName");
 		String language = commandLine.getOptionValue("language");
 		String functionName = commandLine.getOptionValue("functionName", "evaluate");
+		String packageName = commandLine.getOptionValue("package", problemName);
 
 		if (!SourceVersion.isIdentifier(problemName)) {
 			throw new FrameworkException("'" + problemName + "' is not a valid Java class name");
@@ -173,6 +180,10 @@ public class BuildProblem extends CommandLineUtility {
 
 		if (!SourceVersion.isIdentifier(functionName)) {
 			throw new FrameworkException("'" + functionName + "' is not a valid function name");
+		}
+		
+		if (!SourceVersion.isName(packageName)) {
+			throw new FrameworkException("'" + packageName + "' is not a valid Java package name");
 		}
 		
 		if (LANGUAGES.containsKey(language)) {
@@ -199,11 +210,15 @@ public class BuildProblem extends CommandLineUtility {
 				tryRelativize(directory, Path.of(".")).resolve("bin").normalize().toString(),
 				problemName + ".jar",
 				"."
-		};		
+		};	
+		
+		String packagePath = packageName.replaceAll("\\.", "/");
 
 		Map<String, Object> mappings = new HashMap<>();
 		mappings.put("problemName", problemName);
 		mappings.put("functionName", functionName);
+		mappings.put("packageName", packageName);
+		mappings.put("packagePath", packagePath);
 		mappings.put("language", language);
 		mappings.put("numberOfVariables", Integer.parseInt(commandLine.getOptionValue("numberOfVariables")));
 		mappings.put("numberOfObjectives", Integer.parseInt(commandLine.getOptionValue("numberOfObjectives")));

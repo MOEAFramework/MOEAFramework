@@ -9,12 +9,14 @@ CLASSPATH := ${java.class.path}
 
 # Compile the external program
 build:
-	javac -classpath "$(CLASSPATH)" ${problemName}.java ${problemName}Provider.java
-	jar cf ${problemName}.jar ${problemName}.py *.class META-INF
-	rm -f *.class
+	mkdir -p bin/
+	cp -r META-INF bin
+	javac -classpath "$(CLASSPATH)" -d bin src/${packagePath}/*.java
+	mv ${problemName}.py bin/${packagePath}
+	jar -cf ${problemName}.jar -C bin META-INF/ -C bin ${packagePath}
 
 clean:
-	rm -f ${problemName}.jar
+	rm -rf bin/ ${problemName}.jar
 	
 run:
-	java -classpath "$(CLASSPATH)" Example.java
+	java -classpath "$(CLASSPATH)" ${packageName}.Example

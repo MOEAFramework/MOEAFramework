@@ -29,12 +29,14 @@ CLASSPATH := $(MATLAB_ENGINE)$(SEPARATOR)${java.class.path}
 
 # Compile the shared library
 build:
-	javac -classpath "$(CLASSPATH)" ${problemName}.java ${problemName}Provider.java
-	jar cf ${problemName}.jar *.class ${functionName}.m META-INF
-	rm -f *.class
+	mkdir -p bin/
+	cp -r META-INF bin
+	javac -classpath "$(CLASSPATH)" -d bin src/${packagePath}/*.java
+	mv ${functionName}.m bin/${packagePath}
+	jar -cf ${problemName}.jar -C bin META-INF/ -C bin ${packagePath}
 
 clean:
-	rm -f ${problemName}.jar
+	rm -rf bin/ ${problemName}.jar
 	
 run:
-	java -Djava.library.path="$(MATLAB_LIBRARY)" -classpath "$(CLASSPATH)" Example.java
+	java -Djava.library.path="$(MATLAB_LIBRARY)" -classpath "$(CLASSPATH)" ${packageName}.Example

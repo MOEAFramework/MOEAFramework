@@ -9,12 +9,13 @@ CLASSPATH := ${java.class.path}
 
 # Compile the shared library
 build:
-	javac -classpath "$(CLASSPATH)" ${problemName}.java ${problemName}Provider.java
-	jar cf ${problemName}.jar *.class META-INF
-	rm -f *.class
+	mkdir -p bin/
+	cp -r META-INF bin
+	javac -classpath "$(CLASSPATH)" -d bin src/${packagePath}/*.java
+	jar -cf ${problemName}.jar -C bin META-INF/ -C bin ${packagePath}
 
 clean:
-	rm -f ${problemName}.jar
+	rm -rf bin/ ${problemName}.jar
 	
 run:
-	java -classpath "$(CLASSPATH)" Example.java
+	java -classpath "$(CLASSPATH)" ${packageName}.Example
