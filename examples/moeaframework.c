@@ -292,8 +292,6 @@ MOEA_Status MOEA_Next_solution() {
     if (MOEA_Buffer[MOEA_Buffer_position-1] == '\n') {
     	break;	
     }
-
-    break;
   }
   
   /* remove any newline characters */
