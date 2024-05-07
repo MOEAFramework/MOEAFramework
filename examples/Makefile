@@ -17,9 +17,9 @@ main: dtlz2_stdio.exe dtlz2_socket.exe
 clean:
 	rm -f dtlz2_stdio.exe dtlz2_socket.exe
 
-dtlz2_stdio.exe:
+dtlz2_stdio.exe: dtlz2.c moeaframework.c
 	gcc -o dtlz2_stdio.exe dtlz2.c moeaframework.c $(LIBS)
 
-dtlz2_socket.exe:
+dtlz2_socket.exe: dtlz2.c moeaframework.c
 	gcc -DUSE_SOCKET -o dtlz2_socket.exe dtlz2.c moeaframework.c $(LIBS)
 

@@ -23,13 +23,16 @@ ifeq ($(OS),Windows_NT)
     LIBS += -lwsock32 -lWs2_32
 endif
 
-main: test_stdio.exe test_socket.exe
+main: test_stdio.exe test_socket.exe test_cpp.exe
 
 clean:
-	rm -f test_stdio.exe test_socket.exe
+	rm -f test_stdio.exe test_socket.exe test_cpp.exe
 
-test_stdio.exe:
+test_stdio.exe: test.c $(ROOT)/examples/moeaframework.c
 	gcc -o test_stdio.exe -I $(ROOT)/examples test.c $(ROOT)/examples/moeaframework.c $(LIBS)
 	
-test_socket.exe:
+test_socket.exe: test.c $(ROOT)/examples/moeaframework.c
 	gcc -DUSE_SOCKET -o test_socket.exe -I $(ROOT)/examples test.c $(ROOT)/examples/moeaframework.c $(LIBS)
+
+test_cpp.exe: test.c $(ROOT)/examples/moeaframework.c
+	g++ -o test_cpp.exe -I $(ROOT)/examples test.c $(ROOT)/examples/moeaframework.c $(LIBS)
