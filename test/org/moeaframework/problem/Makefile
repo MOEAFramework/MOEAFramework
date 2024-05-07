@@ -7,6 +7,9 @@
 
 # Find the examples/ folder, which changes if using Ant or Maven
 ROOT := ../../../..
+CC := gcc
+CPP := g++
+CFLAGS := -O3 -Wall -Werror
 LIBS = 
 
 ifeq ("$(wildcard $(ROOT)/examples)","")
@@ -29,10 +32,10 @@ clean:
 	rm -f test_stdio.exe test_socket.exe test_cpp.exe
 
 test_stdio.exe: test.c $(ROOT)/examples/moeaframework.c
-	gcc -o test_stdio.exe -I $(ROOT)/examples test.c $(ROOT)/examples/moeaframework.c $(LIBS)
+	$(CC) $(CFLAGS) -o test_stdio.exe -I $(ROOT)/examples test.c $(ROOT)/examples/moeaframework.c $(LIBS)
 	
 test_socket.exe: test.c $(ROOT)/examples/moeaframework.c
-	gcc -DUSE_SOCKET -o test_socket.exe -I $(ROOT)/examples test.c $(ROOT)/examples/moeaframework.c $(LIBS)
+	$(CC) $(CFLAGS) -DUSE_SOCKET -o test_socket.exe -I $(ROOT)/examples test.c $(ROOT)/examples/moeaframework.c $(LIBS)
 
 test_cpp.exe: test.c $(ROOT)/examples/moeaframework.c
-	g++ -o test_cpp.exe -I $(ROOT)/examples test.c $(ROOT)/examples/moeaframework.c $(LIBS)
+	$(CPP) $(CFLAGS) -o test_cpp.exe -I $(ROOT)/examples test.c $(ROOT)/examples/moeaframework.c $(LIBS)

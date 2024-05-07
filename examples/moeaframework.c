@@ -112,7 +112,7 @@ MOEA_Status MOEA_Error(const MOEA_Status status) {
   }
 }
 
-MOEA_Status MOEA_Buffer_capacity(int required) {
+MOEA_Status MOEA_Buffer_capacity(size_t required) {
   if (required < MOEA_Buffer_limit) {
     return MOEA_SUCCESS;
   }
@@ -168,7 +168,7 @@ MOEA_Status MOEA_Init(const int objectives, const int constraints) {
 MOEA_Status MOEA_Init_socket(const int objectives, const int constraints, const char* service) {
   int gai_errno;
   SOCKET listen_sock;
-  int yes = 1;
+  const int yes = 1;
   struct addrinfo hints;
   struct addrinfo *servinfo = NULL;
   struct addrinfo *sp = NULL;
@@ -253,7 +253,6 @@ MOEA_Status MOEA_Debug(const char* format, ...) {
 
 MOEA_Status MOEA_Next_solution() {
   size_t len = 0;
-  int character;
 
   MOEA_Buffer_position = 0;
   
@@ -626,6 +625,10 @@ MOEA_Status MOEA_Terminate() {
 #ifdef __WIN32__
   WSACleanup();
 #endif
+
+  if (MOEA_Buffer != NULL) {
+    free(MOEA_Buffer);
+  }
 
   return MOEA_SUCCESS;
 }
