@@ -64,7 +64,8 @@ TestProblem.c
 ```
 
 The `src/` folder contains the Java-specific files, including `TestProblem.java`, `TestProblemProvider.java`,
-and `Example.java`.  These files are responsible for integrating the native code with the MOEA Framework.
+and `Example.java`.  These files are responsible for integrating the native code with the MOEA Framework, and in
+most scenarios can be left unchanged.
 
 ### Step 2 - Writing the Function
 
@@ -108,9 +109,9 @@ make
 ```
 
 This `Makefile` compiles the code into the `bin/` directory, where you will find the shared library such as
-`TestProblem.dll` on Windows or `libTestProblem.so` on Linux, along with a Java JAR file that contains
-everything required to integrate the problem with the MOEA Framework.  This JAR is "self-contained", meaning it
-contains the shared library.  Thus, you only need to copy the JAR file.
+`TestProblem.dll` on Windows or `libTestProblem.so` on Linux.  Additionally, a "self-contained" Java JAR file is
+created, called `TestProblem.jar` in this example, that contains everything required to integrate the problem with
+the MOEA Framework, including the shared library.  Thus, you only need to copy the JAR file.
    
 The generated templates also provide an example, `Example.java`, that solves the problem we just created using
 NSGA-II.  We can run this example with:
@@ -135,9 +136,9 @@ Var1     Obj1     Obj2
 
 ### Step 4 - Integrating Problem with the MOEA Framework
 
-The `Makefile` also produces a JAR file, such as `TestProblem.jar`, that we can copy into the MOEA Framework's
-`lib/` folder so it is included on the classpath.  If using an IDE like Eclipse, you must also add this JAR to the
-build path.  Once set up, we can reference this new problem as we would any other:
+To integrate this problem back into the MOEA Framework, copy the JAR file into the MOEA Framework's `lib/` folder.
+If using an IDE like Eclipse, you must also add this JAR to the build path.  Once set up, we can reference this new
+problem as we would any other:
 
 ```java
 TestProblem problem = new TestProblem();
