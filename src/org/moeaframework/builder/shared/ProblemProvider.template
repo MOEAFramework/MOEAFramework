@@ -8,16 +8,8 @@ public class ${problemName}Provider extends RegisteredProblemProvider {
 	public ${problemName}Provider() {
 		super();
 		
-		register("${problemName}", this::create${problemName}, null);
+		register("${problemName}", ${problemName}::new, null);
 		registerDiagnosticToolProblems(getRegisteredProblems());
-	}
-	
-	private ${problemName} create${problemName}() {
-		try {
-			return new ${problemName}();
-		} catch (Exception e) {
-			throw new FrameworkException("Failed to create instance of ${problemName}", e);
-		}
 	}
 	
 }

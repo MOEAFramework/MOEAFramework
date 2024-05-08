@@ -1,23 +1,62 @@
-import sys
+package ${packageName};
 
-nvars = ${numberOfVariables}
-nobjs = ${numberOfObjectives}
-nconstrs = ${numberOfConstraints}
+import java.io.IOException;
 
-def evaluate(vars):
-    objs = [0.0]*nobjs
-    constrs = [0.0]*nconstrs
+import org.moeaframework.core.FrameworkException;
+import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.problem.ExternalProblem;
+import org.moeaframework.problem.ExternalProblem.Builder;
+import org.moeaframework.util.io.Resources;
+import org.moeaframework.util.io.Resources.ResourceOption;
 
-    # TODO: Fill in with your problem definition
+public class ${problemName} extends ExternalProblem {
 
-    return (objs, constrs)
+	public static final String SCRIPT;
+	
+	static {
+		// Locate the Python script on disk or extract from the JAR
+		try {
+			SCRIPT = Resources.asFile(${problemName}.class, "${problemName}.py",
+				ResourceOption.REQUIRED, ResourceOption.TEMPORARY).getPath();
+		} catch (IOException e) {
+			throw new FrameworkException("Failed to locate executable", e);
+		}
+	}
 
-if __name__ == "__main__":
-    for line in sys.stdin:
-        vars = list(map(float, line.split()))
+	public ${problemName}() {
+		super(new Builder().withCommand("python", SCRIPT));
+	}
 
-        if len(vars) != nvars:
-            sys.exit(f"Incorrect number of variables (expected: {nvars}, actual: {len(vars)})")
+	@Override
+	public String getName() {
+		return "${problemName}";
+	}
 
-        (objs, constrs) = evaluate(vars)
-        print(" ".join(map(str, objs + constrs)), flush=True)
+	@Override
+	public int getNumberOfVariables() {
+		return ${numberOfVariables};
+	}
+
+	@Override
+	public int getNumberOfObjectives() {
+		return ${numberOfObjectives};
+	}
+
+	@Override
+	public int getNumberOfConstraints() {
+		return ${numberOfConstraints};
+	}
+
+	@Override
+	public Solution newSolution() {
+		Solution solution = new Solution(getNumberOfVariables(), getNumberOfObjectives(), getNumberOfConstraints());
+
+		for (int i = 0; i < getNumberOfVariables(); i++) {
+			solution.setVariable(i, new RealVariable(${lowerBound}, ${upperBound}));
+		}
+
+		return solution;
+	}
+	
+}

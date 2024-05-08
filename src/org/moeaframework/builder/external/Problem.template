@@ -24,7 +24,7 @@ public class ${problemName} extends ExternalProblem {
 		}
 	}
 
-	public ${problemName}() throws IOException {
+	public ${problemName}() {
 		super(new Builder().withCommand(EXECUTABLE));
 	}
 
