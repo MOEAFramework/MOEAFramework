@@ -8,6 +8,7 @@ public class ${problemName}Provider extends RegisteredProblemProvider {
 	public ${problemName}Provider() {
 		super();
 		
+		// If a reference set is available, replace the last argument with the file path
 		register("${problemName}", ${problemName}::new, null);
 		registerDiagnosticToolProblems(getRegisteredProblems());
 	}

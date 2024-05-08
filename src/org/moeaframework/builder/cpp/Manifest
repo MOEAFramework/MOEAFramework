@@ -1,7 +1,7 @@
 Makefile.template -> Makefile
 CPP.template -> ${problemName}.cpp
 Header.template -> ${problemName}.h
-../c/Problem.template -> src/${packagePath}/${problemName}.java
+../shared/NativeProblem.template -> src/${packagePath}/${problemName}.java
 ../shared/ProblemProvider.template -> src/${packagePath}/${problemName}Provider.java
 ../shared/Service.template -> META-INF/services/org.moeaframework.problem.ProblemProvider
 ../shared/Example.template -> src/${packagePath}/Example.java

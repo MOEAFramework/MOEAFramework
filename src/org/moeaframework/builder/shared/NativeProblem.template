@@ -24,7 +24,7 @@ public class ${problemName} extends AbstractProblem {
 		double[] objs = new double[numberOfObjectives];
 		double[] constrs = new double[numberOfConstraints];
 
-		INSTANCE.evaluate(vars, objs, constrs);
+		${functionName}(vars, objs, constrs);
 
 		solution.setObjectives(objs);
 		solution.setConstraints(constrs);
