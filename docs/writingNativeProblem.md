@@ -56,16 +56,10 @@ java -classpath "lib/*" org.moeaframework.builder.BuildProblem --problemName Tes
 By default, the generated files are created under the `native/` folder, such as `native/TestProblem` in this
 example.  The exact contents will vary for the different programming languages, but should appear similar to:
 
-```
-META-INF/
-src/
-Makefile
-TestProblem.c
-```
+![image](https://github.com/MOEAFramework/MOEAFramework/assets/2496211/00f6fce2-5590-4021-996a-3f5b503a101f)
 
-The `src/` folder contains the Java-specific files, including `TestProblem.java`, `TestProblemProvider.java`,
-and `Example.java`.  These files are responsible for integrating the native code with the MOEA Framework, and in
-most scenarios can be left unchanged.
+The `src/` and `META-INF/` folders contain the Java-specific files for integrating the native code with the
+MOEA Framework.  In most scenarios, these files can be left unchanged.
 
 ### Step 2 - Writing the Function
 
