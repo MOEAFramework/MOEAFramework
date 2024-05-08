@@ -152,6 +152,6 @@ would generate statements like `sin(x) + cos(x)`, `log(x / y)`, `y - x`, etc.  H
 grammar can generate arbitrary statements, not necessarily just executable programs.
 
 Regardless of what statements the grammar produces, one then needs a way to "evaluate" the program in terms of fitness.
-For executable programs, the statement can be fed into a scripting language, including any of
-[Java's supported scripting languages](https://objectcomputing.com/resources/publications/sett/march-2001-scripting-languages-for-java).
-Find code samples in [/examples/org/moeaframework/examples/ge](../examples/org/moeaframework/examples/ge).
+For executable programs, the statement can be fed into a scripting language, including any of Java's supported
+scripting languages.  Find code samples in
+[/examples/org/moeaframework/examples/ge](../examples/org/moeaframework/examples/ge).
