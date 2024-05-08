@@ -206,8 +206,8 @@ public class BuildProblem extends CommandLineUtility {
 		}
 		
 		String[] classpath = new String[] {
-				tryRelativize(directory, Path.of(".")).resolve("lib").normalize().toString() + File.separator + "*",
-				tryRelativize(directory, Path.of(".")).resolve("bin").normalize().toString(),
+				normalizeSeparator(tryRelativize(directory, Path.of(".")).resolve("lib").normalize()) + "/*",
+				normalizeSeparator(tryRelativize(directory, Path.of(".")).resolve("bin").normalize()),
 				problemName + ".jar",
 				"."
 		};	
@@ -225,7 +225,7 @@ public class BuildProblem extends CommandLineUtility {
 		mappings.put("numberOfConstraints", Integer.parseInt(commandLine.getOptionValue("numberOfConstraints", "0")));
 		mappings.put("lowerBound", Double.parseDouble(commandLine.getOptionValue("lowerBound", "0.0")));
 		mappings.put("upperBound", Double.parseDouble(commandLine.getOptionValue("upperBound", "1.0")));
-		mappings.put("relativePath", tryRelativize(directory, Path.of(".")).toString());
+		mappings.put("relativePath", normalizeSeparator(tryRelativize(directory, Path.of("."))));
 		mappings.put("java.home", System.getProperty("java.home"));
 		mappings.put("java.class.path", commandLine.getOptionValue("classpath", String.join(PATH_SEPARATOR, classpath)));
 
@@ -264,6 +264,11 @@ public class BuildProblem extends CommandLineUtility {
 		String content = loadResourceAsString(root, resource);
 		content = substitutor.replace(content);
 		Files.writeString(targetFile, content, StandardCharsets.UTF_8);
+	}
+	
+	private String normalizeSeparator(Path path) {
+		// avoid using '\' as some systems interpret this as an escape character
+		return path.toString().replaceAll("\\\\", "/");
 	}
 	
 	private Path tryRelativize(Path first, Path second) {
