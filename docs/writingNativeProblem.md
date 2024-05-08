@@ -58,12 +58,13 @@ example.  The exact contents will vary for the different programming languages, 
 
 ```
 META-INF/
-Example.java
+src/
 Makefile
 TestProblem.c
-TestProblem.java
-TestProblemProvider.java
 ```
+
+The `src/` folder contains the Java-specific files, including `TestProblem.java`, `TestProblemProvider.java`,
+and `Example.java`.  These files are responsible for integrating the native code with the MOEA Framework.
 
 ### Step 2 - Writing the Function
 
@@ -106,12 +107,10 @@ After saving these changes, we can use the provided `Makefile` to compile the co
 make
 ```
 
-This `Makefile` produces two files:
-
-1. The shared library, such as `TestProblem.dll` on Windows or `libTestProblem.so` on Linux; and
-2. A Java JAR file, such as `TestProblem.jar`, that contains everything required to integrate the problem with
-   the MOEA Framework.  This JAR is "self-contained", meaning it contains the shared library.  Thus, you only need to
-   copy the JAR file.
+This `Makefile` compiles the code into the `bin/` directory, where you will find the shared library such as
+`TestProblem.dll` on Windows or `libTestProblem.so` on Linux, along with a Java JAR file that contains
+everything required to integrate the problem with the MOEA Framework.  This JAR is "self-contained", meaning it
+contains the shared library.  Thus, you only need to copy the JAR file.
    
 The generated templates also provide an example, `Example.java`, that solves the problem we just created using
 NSGA-II.  We can run this example with:
