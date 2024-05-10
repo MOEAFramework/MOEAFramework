@@ -17,14 +17,15 @@
  */
 package org.moeaframework.util.validate;
 
-import java.util.Iterator;
-
 import org.moeaframework.core.Problem;
 
 /**
- * Constructs validators for specific types.  Validators are tied to a specific property or argument, by name, which
- * is also displayed in any error message.  All validators throw {@link IllegalArgumentException}s if the conditions
- * fail, though they may also throw {@link NullPointerException} for unexpected {@code null} values.
+ * Static methods for creating validators of parameters, arguments, or inputs.  Each method produces a validator for
+ * a specific type.  Additionally, when creating the validator, the name of the parameter, argument, or input is given
+ * along with the value, which is used to format the error message.
+ * <p>
+ * All validators throw {@link IllegalArgumentException}s if the conditions fail, though they may also throw
+ * {@link NullPointerException} for unexpected {@code null} values.
  */
 public class Validate {
 	

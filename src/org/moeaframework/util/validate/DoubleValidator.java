@@ -89,7 +89,7 @@ public class DoubleValidator extends NumberValidator<Double> {
 	}
 	
 	/**
-	 * Asserts the value is a probability, meaning {@code 0.0 <= value <= 1.0}.
+	 * Asserts the value represents a probability, meaning {@code 0.0 <= value <= 1.0}.
 	 */
 	public void isProbability() {
 		super.isBetween(0.0, 1.0);

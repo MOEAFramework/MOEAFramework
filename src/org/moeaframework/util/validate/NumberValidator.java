@@ -18,8 +18,12 @@
 package org.moeaframework.util.validate;
 
 /**
- * Abstract validator for {@link Number}s.  Prefer creating a subclass for each primitive type, but we can call these
- * generic methods for consistency across types.
+ * Abstract validator for {@link Number}s.
+ * <p>
+ * To simplify the implementation of these validations, we use the fact that most numeric types implement the
+ * {@link Comparable} interface.  Consequently, this class only supports the "boxed" types for numbers, while most
+ * parameters we are validating are primitives.  Thus, prefer creating subclasses that accept only the primitive type,
+ * which then call these generic methods.
  * 
  * @param <T> the number type
  */

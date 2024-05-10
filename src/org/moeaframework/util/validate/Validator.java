@@ -18,8 +18,8 @@
 package org.moeaframework.util.validate;
 
 /**
- * Base class for validators, which stores the property name and value.  Subclasses should define methods specific
- * to the type being checked.
+ * Abstract class for validators.  This class captures the name of the property, argument, or input along with its
+ * value.  Subclasses are expected to define specific methods for validating the value based on its type.
  * 
  * @param <T> the value type
  */
