@@ -26,13 +26,13 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
 import org.moeaframework.core.selection.DifferentialEvolutionSelection;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.Vector;
+import org.moeaframework.util.validate.Validate;
 import org.moeaframework.util.weights.RandomGenerator;
 
 /**
@@ -84,8 +84,8 @@ public class MSOPS extends AbstractEvolutionaryAlgorithm {
 			Initialization initialization) {
 		super(problem, initialPopulationSize, population, null, initialization, variation);
 		
-		Validate.problemType(problem, RealVariable.class);
-		Validate.notNull("selection", selection);
+		Validate.that("problem", problem).isType(RealVariable.class);
+		Validate.that("selection", selection).isNotNull();
 		
 		this.selection = selection;
 	}

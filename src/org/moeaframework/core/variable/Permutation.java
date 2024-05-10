@@ -23,7 +23,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Variable;
-import org.moeaframework.core.configuration.Validate;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Decision variable for permutations.
@@ -44,7 +44,7 @@ public class Permutation implements Variable {
 	 */
 	public Permutation(int size) {
 		super();
-		Validate.greaterThan("size", 0, size);
+		Validate.that("size", size).isGreaterThan(0);
 
 		permutation = new int[size];
 
@@ -61,7 +61,7 @@ public class Permutation implements Variable {
 	 */
 	public Permutation(int[] permutation) {
 		super();
-		Validate.greaterThan("permutation.length", 0, permutation.length);
+		Validate.that("permutation.length", permutation.length).isGreaterThan(0);
 		
 		fromArray(permutation);
 	}

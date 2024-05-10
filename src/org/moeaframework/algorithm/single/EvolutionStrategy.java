@@ -23,9 +23,9 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Single-objective {@code (mu + lambda)} evolution strategy (ES) algorithm.  In this implementation, {@code mu} and
@@ -66,7 +66,7 @@ public class EvolutionStrategy extends SingleObjectiveEvolutionaryAlgorithm {
 			Initialization initialization, SelfAdaptiveNormalVariation variation) {
 		super(problem, initialPopulationSize, new Population(), null, comparator, initialization, variation);
 		
-		Validate.problemType(problem, RealVariable.class);
+		Validate.that("problem", problem).isType(RealVariable.class);
 	}
 
 	@Override

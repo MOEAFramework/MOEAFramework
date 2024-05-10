@@ -18,7 +18,7 @@
 package org.moeaframework.algorithm.sa;
 
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Geometric reduction rule for simulated annealing.  The next temperature is calculated as
@@ -66,7 +66,7 @@ public class GeometricCoolingSchedule implements CoolingSchedule {
 	 */
 	@Property
 	public void setAlpha(double alpha) {
-		Validate.inclusiveBetween("alpha", Math.nextUp(0.0), Math.nextDown(1.0), alpha);
+		Validate.that("alpha", alpha).isBetween(Math.nextUp(0.0), Math.nextDown(1.0));
 		this.alpha = alpha;
 	}
 

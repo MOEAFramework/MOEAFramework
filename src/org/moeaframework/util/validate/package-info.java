@@ -15,31 +15,8 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.util.format;
 
 /**
- * Enumeration of supported table output formats.
+ * Methods for validating inputs, arguments, and properties.
  */
-public enum TableFormat {
-	
-	/**
-	 * Plain text, the default.
-	 */
-	Plaintext,
-	
-	/**
-	 * Comma-separated values.
-	 */
-	CSV,
-	
-	/**
-	 * Markdown table.
-	 */
-	Markdown,
-	
-	/**
-	 * Latex table.
-	 */
-	Latex
-
-}
+package org.moeaframework.util.validate;

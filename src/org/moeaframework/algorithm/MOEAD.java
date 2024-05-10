@@ -37,7 +37,6 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.AbstractCompoundVariation;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
@@ -45,6 +44,7 @@ import org.moeaframework.core.penalty.PenaltyFunction;
 import org.moeaframework.core.penalty.SumOfConstraintsPenaltyFunction;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.validate.Validate;
 import org.moeaframework.util.weights.RandomGenerator;
 import org.moeaframework.util.weights.WeightGenerator;
 
@@ -255,7 +255,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	@Property("populationSize")
 	public void setInitialPopulationSize(int initialPopulationSize) {
 		assertNotInitialized();
-		Validate.greaterThanZero("initialPopulationSize", initialPopulationSize);
+		Validate.that("initialPopulationSize", initialPopulationSize).isGreaterThan(0);
 		this.initialPopulationSize = initialPopulationSize;
 	}
 
@@ -275,7 +275,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	 */
 	@Property
 	public void setNeighborhoodSize(int neighborhoodSize) {
-		Validate.greaterThanZero("neighborhoodSize", neighborhoodSize);
+		Validate.that("neighborhoodSize", neighborhoodSize).isGreaterThan(0);
 		this.neighborhoodSize = neighborhoodSize;
 	}
 
@@ -295,7 +295,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	 */
 	@Property
 	public void setDelta(double delta) {
-		Validate.probability("delta", delta);
+		Validate.that("delta", delta).isBetween(0.0, 1.0);
 		this.delta = delta;
 	}
 
@@ -315,7 +315,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	 */
 	@Property
 	public void setEta(double eta) {
-		Validate.greaterThanZero("eta", eta);
+		Validate.that("eta", eta).isGreaterThan(0.0);
 		this.eta = eta;
 	}
 
@@ -356,7 +356,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	 */
 	@Property("operator")
 	public void setVariation(Variation variation) {
-		Validate.notNull("variation", variation);
+		Validate.that("variation", variation).isNotNull();
 		this.variation = variation;
 		
 		if (variation instanceof DifferentialEvolutionVariation) {
@@ -385,7 +385,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	 */
 	public void setInitialization(Initialization initialization) {
 		assertNotInitialized();
-		Validate.notNull("initialization", initialization);
+		Validate.that("initialization", initialization).isNotNull();
 		this.initialization = initialization;
 	}
 	

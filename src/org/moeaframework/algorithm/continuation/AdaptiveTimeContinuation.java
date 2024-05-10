@@ -30,7 +30,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Decorator for {@link EvolutionaryAlgorithm}s to add time continuation (restarts). Restarts occur if either
@@ -115,8 +115,8 @@ public class AdaptiveTimeContinuation extends PeriodicAction implements Evolutio
 		setMinimumPopulationSize(minimumPopulationSize);
 		setMaximumPopulationSize(maximumPopulationSize);
 		
-		Validate.notNull("restartSelection", restartSelection);
-		Validate.notNull("restartVariation", restartVariation);
+		Validate.that("restartSelection", restartSelection).isNotNull();
+		Validate.that("restartVariation", restartVariation).isNotNull();
 		
 		this.restartSelection = restartSelection;
 		this.restartVariation = restartVariation;
@@ -140,7 +140,7 @@ public class AdaptiveTimeContinuation extends PeriodicAction implements Evolutio
 	 */
 	@Property
 	public void setWindowSize(int windowSize) {
-		Validate.greaterThanZero("windowSize", windowSize);
+		Validate.that("windowSize", windowSize).isGreaterThan(0);
 		this.frequency = windowSize;
 	}
 
@@ -160,7 +160,7 @@ public class AdaptiveTimeContinuation extends PeriodicAction implements Evolutio
 	 */
 	@Property
 	public void setMaxWindowSize(int maxWindowSize) {
-		Validate.greaterThanZero("maxWindowSize", maxWindowSize);
+		Validate.that("maxWindowSize", maxWindowSize).isGreaterThan(0);
 		this.maxWindowSize = maxWindowSize;
 	}
 
@@ -181,7 +181,7 @@ public class AdaptiveTimeContinuation extends PeriodicAction implements Evolutio
 	 */
 	@Property
 	public void setInjectionRate(double injectionRate) {
-		Validate.greaterThanZero("injectionRate", injectionRate);
+		Validate.that("injectionRate", injectionRate).isGreaterThan(0.0);
 		this.injectionRate = injectionRate;
 	}
 
@@ -201,7 +201,7 @@ public class AdaptiveTimeContinuation extends PeriodicAction implements Evolutio
 	 */
 	@Property
 	public void setMinimumPopulationSize(int minimumPopulationSize) {
-		Validate.greaterThanZero("minimumPopulationSize", minimumPopulationSize);
+		Validate.that("minimumPopulationSize", minimumPopulationSize).isGreaterThan(0);
 		this.minimumPopulationSize = minimumPopulationSize;
 	}
 
@@ -221,7 +221,7 @@ public class AdaptiveTimeContinuation extends PeriodicAction implements Evolutio
 	 */
 	@Property
 	public void setMaximumPopulationSize(int maximumPopulationSize) {
-		Validate.greaterThanZero("maximumPopulationSize", maximumPopulationSize);
+		Validate.that("maximumPopulationSize", maximumPopulationSize).isGreaterThan(0);
 		this.maximumPopulationSize = maximumPopulationSize;
 	}
 

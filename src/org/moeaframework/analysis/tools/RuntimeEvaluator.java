@@ -40,9 +40,9 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Command line utility for evaluating an algorithm using many parameterizations.  Unlike {@link Evaluator}, this class
@@ -183,7 +183,7 @@ public class RuntimeEvaluator extends CommandLineUtility {
 			ResultFileWriter output) throws IOException {
 		int maxEvaluations = properties.getTruncatedInt("maxEvaluations");
 		
-		Validate.greaterThanOrEqualToZero("maxEvaluations", maxEvaluations);
+		Validate.that("maxEvaluations", maxEvaluations).isGreaterThanOrEqualTo(0);
 		
 		Instrumenter instrumenter = new Instrumenter()
 				.withProblem(problem)

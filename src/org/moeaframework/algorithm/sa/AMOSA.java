@@ -26,10 +26,10 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Implementation of the simulated annealing-based multiobjective optimization algorithm (AMOSA).  AMOSA incorporates
@@ -116,7 +116,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	 */
 	@Property
 	public void setGamma(double gamma) {
-		Validate.greaterThanOrEqual("gamma", 1, gamma);
+		Validate.that("gamma", gamma).isGreaterThanOrEqualTo(1.0);
 		this.gamma = gamma;
 	}
 
@@ -137,7 +137,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	 */
 	@Property(alias="SL")
 	public void setSoftLimit(int softLimit) {
-		Validate.greaterThanZero("softLimit", softLimit);
+		Validate.that("softLimit", softLimit).isGreaterThan(0);
 		this.softLimit = softLimit;
 	}
 
@@ -157,7 +157,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	 */
 	@Property(alias="HL")
 	public void setHardLimit(int hardLimit) {
-		Validate.greaterThanZero("hardLimit", hardLimit);
+		Validate.that("hardLimit", hardLimit).isGreaterThan(0);
 		this.hardLimit = hardLimit;
 	}
 
@@ -178,7 +178,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	 */
 	@Property(alias="iter")
 	public void setNumberOfIterationsPerTemperature(int numberOfIterationsPerTemperature) {
-		Validate.greaterThanZero("numberOfIterationsPerTemperature", numberOfIterationsPerTemperature);
+		Validate.that("numberOfIterationsPerTemperature", numberOfIterationsPerTemperature).isGreaterThan(0);
 		this.numberOfIterationsPerTemperature = numberOfIterationsPerTemperature;
 	}
 
@@ -200,7 +200,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	@Property(alias="hillClimbIter")
 	public void setNumberOfHillClimbingIterationsForRefinement(int numberOfHillClimbingIterationsForRefinement) {
 		assertNotInitialized();
-		Validate.greaterThanOrEqualToZero("numberOfHillClimbingIterationsForRefinement", numberOfHillClimbingIterationsForRefinement);
+		Validate.that("numberOfHillClimbingIterationsForRefinement", numberOfHillClimbingIterationsForRefinement).isGreaterThanOrEqualTo(0);
 		this.numberOfHillClimbingIterationsForRefinement = numberOfHillClimbingIterationsForRefinement;
 	}
 

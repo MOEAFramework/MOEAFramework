@@ -22,8 +22,8 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Differential evolution (DE) variation operator.  Differential evolution works by randomly selecting three distinct
@@ -97,7 +97,7 @@ public class DifferentialEvolutionVariation implements Variation {
 	 */
 	@Property
 	public void setCrossoverRate(double crossoverRate) {
-		Validate.probability("crossoverRate", crossoverRate);
+		Validate.that("crossoverRate", crossoverRate).isProbability();
 		this.crossoverRate = crossoverRate;
 	}
 
@@ -117,7 +117,7 @@ public class DifferentialEvolutionVariation implements Variation {
 	 */
 	@Property("stepSize")
 	public void setScalingFactor(double scalingFactor) {
-		Validate.greaterThanZero("scalingFactor", scalingFactor);
+		Validate.that("scalingFactor", scalingFactor).isGreaterThan(0.0);
 		this.scalingFactor = scalingFactor;
 	}
 

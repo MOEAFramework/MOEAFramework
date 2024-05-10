@@ -24,8 +24,8 @@ import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Simulated binary crossover (SBX) operator.  SBX attempts to simulate the offspring distribution of binary-encoded
@@ -125,7 +125,7 @@ public class SBX implements Variation {
 	 */
 	@Property("rate")
 	public void setProbability(double probability) {
-		Validate.probability("probability", probability);
+		Validate.that("probability", probability).isProbability();
 		this.probability = probability;
 	}
 
@@ -145,7 +145,7 @@ public class SBX implements Variation {
 	 */
 	@Property("distributionIndex")
 	public void setDistributionIndex(double distributionIndex) {
-		Validate.greaterThanZero("distributionIndex", distributionIndex);
+		Validate.that("distributionIndex", distributionIndex).isGreaterThan(0.0);
 		this.distributionIndex = distributionIndex;
 	}
 

@@ -22,7 +22,7 @@ import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.TerminationCondition;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Terminates a simulated annealing algorithm when the temperature drops below a stopping, or minimum, temperature.
@@ -67,7 +67,7 @@ public class TemperatureBasedTerminationCondition implements TerminationConditio
 	 */
 	@Property(alias="tMin")
 	public void setStoppingTemperature(double stoppingTemperature) {
-		Validate.greaterThanOrEqual("stoppingTemperature", 0.0, stoppingTemperature);
+		Validate.that("stoppingTemperature", stoppingTemperature).isGreaterThanOrEqualTo(0.0);
 		this.stoppingTemperature = stoppingTemperature;
 	}
 

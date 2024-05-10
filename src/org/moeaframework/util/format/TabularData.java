@@ -143,7 +143,8 @@ public class TabularData<T> implements Displayable {
 			case CSV -> toCSV(out);
 			case Markdown -> toMarkdown(out);
 			case Latex -> toLatex(out);
-		};
+			default -> throw new IllegalArgumentException("Invalid table format " + tableFormat);
+		}
 	}
 	
 	/**

@@ -41,13 +41,13 @@ import org.moeaframework.core.comparator.RankComparator;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
 import org.moeaframework.core.fitness.HypervolumeFitnessEvaluator;
 import org.moeaframework.core.fitness.IndicatorFitnessEvaluator;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * The Covariance Matrix Adaption Evolution Strategy (CMA-ES) algorithm for single and multi-objective problems.
@@ -259,7 +259,7 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 		setFitnessEvaluator(fitnessEvaluator);
 		setCheckConsistency(checkConsistency);
 		
-		Validate.problemType(problem, RealVariable.class);
+		Validate.that("problem", problem).isType(RealVariable.class);
 		
 		this.initialSearchPoint = initialSearchPoint;
 		

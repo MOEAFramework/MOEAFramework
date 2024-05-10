@@ -25,7 +25,7 @@ import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Stateful;
-import org.moeaframework.core.configuration.Validate;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Abstract class providing default implementations for several {@link Algorithm} methods.
@@ -69,7 +69,7 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	public AbstractAlgorithm(Problem problem) {
 		super();
 		
-		Validate.notNull("problem", problem);
+		Validate.that("problem", problem).isNotNull();
 		this.problem = problem;
 	}
 

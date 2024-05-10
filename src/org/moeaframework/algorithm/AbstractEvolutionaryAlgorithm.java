@@ -29,7 +29,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Configurable;
-import org.moeaframework.core.configuration.Validate;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Abstract class providing default implementations for several {@link EvolutionaryAlgorithm} methods. Primarily,
@@ -156,7 +156,7 @@ Configurable {
 	 */
 	protected void setInitialPopulationSize(int initialPopulationSize) {
 		assertNotInitialized();
-		Validate.greaterThanZero("initialPopulationSize", initialPopulationSize);
+		Validate.that("initialPopulationSize", initialPopulationSize).isGreaterThan(0);
 		this.initialPopulationSize = initialPopulationSize;
 	}
 
@@ -172,7 +172,7 @@ Configurable {
 	 */
 	protected void setPopulation(Population population) {
 		assertNotInitialized();
-		Validate.notNull("population", population);
+		Validate.that("population", population).isNotNull();
 		this.population = population;
 	}
 	
@@ -191,7 +191,7 @@ Configurable {
 	 * @param variation the variation operator
 	 */
 	protected void setVariation(Variation variation) {
-		Validate.notNull("variation", variation);
+		Validate.that("variation", variation).isNotNull();
 		this.variation = variation;
 	}
 
@@ -212,7 +212,7 @@ Configurable {
 	 */
 	public void setInitialization(Initialization initialization) {
 		assertNotInitialized();
-		Validate.notNull("initialization", initialization);
+		Validate.that("initialization", initialization).isNotNull();
 		this.initialization = initialization;
 	}
 	

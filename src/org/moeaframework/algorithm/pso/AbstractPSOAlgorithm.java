@@ -31,12 +31,12 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.fitness.FitnessBasedArchive;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Abstract multi-objective particle swarm optimizer (MOPSO).
@@ -114,10 +114,10 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm implements 
 		setSwarmSize(swarmSize);
 		setLeaderSize(leaderSize);
 		
-		Validate.problemType(problem, RealVariable.class);
-		Validate.notNull("leaderComparer", leaderComparator);
-		Validate.notNull("dominanceComparator", dominanceComparator);
-		Validate.notNull("leaders", leaders);
+		Validate.that("problem", problem).isType(RealVariable.class);
+		Validate.that("leaderComparer", leaderComparator).isNotNull();
+		Validate.that("dominanceComparator", dominanceComparator).isNotNull();
+		Validate.that("leaders", leaders).isNotNull();
 
 		this.leaderComparator = leaderComparator;
 		this.dominanceComparator = dominanceComparator;
@@ -144,7 +144,7 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm implements 
 	@Property(alias="populationSize")
 	public void setSwarmSize(int swarmSize) {
 		assertNotInitialized();
-		Validate.greaterThanZero("swarmSize", swarmSize);
+		Validate.that("swarmSize", swarmSize).isGreaterThan(0);
 		this.swarmSize = swarmSize;
 	}
 
@@ -166,7 +166,7 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm implements 
 	@Property(alias="archiveSize")
 	public void setLeaderSize(int leaderSize) {
 		assertNotInitialized();
-		Validate.greaterThanZero("leaderSize", leaderSize);
+		Validate.that("leaderSize", leaderSize).isGreaterThan(0);
 		this.leaderSize = leaderSize;
 	}
 	

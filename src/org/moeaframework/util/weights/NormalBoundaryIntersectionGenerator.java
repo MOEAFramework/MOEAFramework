@@ -20,7 +20,7 @@ package org.moeaframework.util.weights;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.moeaframework.core.configuration.Validate;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Generates weights using the Normal Boundary Intersection (NBI) method.  For {@code d} divisions and {@code M}
@@ -59,8 +59,8 @@ public class NormalBoundaryIntersectionGenerator implements WeightGenerator {
 		this.numberOfObjectives = numberOfObjectives;
 		this.divisions = divisions;
 		
-		Validate.greaterThanOrEqual("numberOfObjectives", 1, numberOfObjectives);
-		Validate.notNull("divisions", divisions);
+		Validate.that("numberOfObjectives", numberOfObjectives).isGreaterThanOrEqualTo(1);
+		Validate.that("divisions", divisions).isNotNull();
 	}
 
 	@Override

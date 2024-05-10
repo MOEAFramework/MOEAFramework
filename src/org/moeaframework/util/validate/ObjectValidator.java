@@ -15,31 +15,32 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.util.format;
+package org.moeaframework.util.validate;
 
 /**
- * Enumeration of supported table output formats.
+ * Validator for generic objects.
+ * 
+ * @param <T> the object type
  */
-public enum TableFormat {
+public class ObjectValidator<T> extends Validator<T> {
+
+	/**
+	 * Constructs a new validator.
+	 * 
+	 * @param propertyName the property name corresponding to the object
+	 * @param propertyValue the object
+	 */
+	public ObjectValidator(String propertyName, T propertyValue) {
+		super(propertyName, propertyValue);
+	}
 	
 	/**
-	 * Plain text, the default.
+	 * Asserts the object is not {@code null}.
 	 */
-	Plaintext,
-	
-	/**
-	 * Comma-separated values.
-	 */
-	CSV,
-	
-	/**
-	 * Markdown table.
-	 */
-	Markdown,
-	
-	/**
-	 * Latex table.
-	 */
-	Latex
+	public void isNotNull() {
+		if (getPropertyValue() == null) {
+			throw new IllegalArgumentException("Expected " + getPropertyName() + " to be set, given a <null> value");
+		}
+	}
 
 }

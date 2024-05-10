@@ -22,8 +22,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.math3.util.CombinatoricsUtils;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.configuration.ConfigurationException;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Stores the number of reference point divisions and calculations based on those values.
@@ -55,8 +55,8 @@ public class NormalBoundaryDivisions {
 		this.outerDivisions = outerDivisions;
 		this.innerDivisions = innerDivisions;
 		
-		Validate.greaterThanOrEqual("outerDivisions", 0, outerDivisions);
-		Validate.greaterThanOrEqual("innerDivisions", 0, innerDivisions);
+		Validate.that("outerDivisions", outerDivisions).isGreaterThanOrEqualTo(0);
+		Validate.that("innerDivisions", innerDivisions).isGreaterThanOrEqualTo(0);
 	}
 	
 	/**

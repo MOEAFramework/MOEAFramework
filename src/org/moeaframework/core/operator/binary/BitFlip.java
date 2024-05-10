@@ -22,9 +22,9 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.variable.BinaryVariable;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Bit flip mutation operator.  Each bit is flipped (switched from a {@code 0} to a {@code 1}, or vice versa) using
@@ -78,7 +78,7 @@ public class BitFlip implements Mutation {
 	 */
 	@Property("rate")
 	public void setProbability(double probability) {
-		Validate.probability("probability", probability);
+		Validate.that("probability", probability).isProbability();
 		this.probability = probability;
 	}
 

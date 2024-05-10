@@ -19,7 +19,7 @@ package org.moeaframework.core.operator.real;
 
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Abstract class for operators that can take a variable number of parents and produce a variable number of offspring.
@@ -65,7 +65,7 @@ public abstract class MultiParentVariation implements Variation {
 	 */
 	@Property("parents")
 	public void setNumberOfParents(int numberOfParents) {
-		Validate.greaterThanZero("numberOfParents", numberOfParents);
+		Validate.that("numberOfParents", numberOfParents).isGreaterThan(0);
 		this.numberOfParents = numberOfParents;
 	}
 
@@ -85,7 +85,7 @@ public abstract class MultiParentVariation implements Variation {
 	 */
 	@Property("offspring")
 	public void setNumberOfOffspring(int numberOfOffspring) {
-		Validate.greaterThanZero("numberOfOffspring", numberOfOffspring);
+		Validate.that("numberOfOffspring", numberOfOffspring).isGreaterThan(0);
 		this.numberOfOffspring = numberOfOffspring;
 	}
 	

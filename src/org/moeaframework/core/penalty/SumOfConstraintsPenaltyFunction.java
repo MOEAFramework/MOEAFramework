@@ -18,7 +18,7 @@
 package org.moeaframework.core.penalty;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.configuration.Validate;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Penalty function based on a fixed offset plus the sum of constraint violations.
@@ -50,7 +50,7 @@ public class SumOfConstraintsPenaltyFunction implements PenaltyFunction {
 	 * @param offset the constant offset applied to all penalties
 	 */
 	public void setOffset(double offset) {
-		Validate.greaterThanOrEqualToZero("offset", offset);
+		Validate.that("offset", offset).isGreaterThanOrEqualTo(0.0);
 		this.offset = offset;
 	}
 	

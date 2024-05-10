@@ -35,11 +35,11 @@ import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Implementation of the &epsilon;-MOEA algorithm.  The &epsilon;-MOEA is a steady-state algorithm, meaning only one
@@ -114,8 +114,8 @@ public class EpsilonMOEA extends AbstractEvolutionaryAlgorithm implements Epsilo
 			Initialization initialization, DominanceComparator dominanceComparator) {
 		super(problem, initialPopulationSize, population, archive, initialization, variation);
 		
-		Validate.notNull("selection", selection);
-		Validate.notNull("dominanceComparator", dominanceComparator);
+		Validate.that("selection", selection).isNotNull();
+		Validate.that("dominanceComparator", dominanceComparator).isNotNull();
 		
 		this.selection = selection;
 		this.dominanceComparator = dominanceComparator;
@@ -188,7 +188,7 @@ public class EpsilonMOEA extends AbstractEvolutionaryAlgorithm implements Epsilo
 	 * @param archive the archive
 	 */
 	public void setArchive(EpsilonBoxDominanceArchive archive) {
-		Validate.notNull("archive", archive);
+		Validate.that("archive", archive).isNotNull();
 		super.setArchive(archive);
 	}
 	

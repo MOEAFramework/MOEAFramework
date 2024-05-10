@@ -28,11 +28,11 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Implementation of single-objective simulated annealing.
@@ -107,7 +107,7 @@ public class SimulatedAnnealing extends AbstractSimulatedAnnealingAlgorithm {
 	 */
 	@Property(alias="iter")
 	public void setNumberOfIterationsPerTemperature(int numberOfIterationsPerTemperature) {
-		Validate.greaterThanZero("numberOfIterationsPerTemperature", numberOfIterationsPerTemperature);
+		Validate.that("numberOfIterationsPerTemperature", numberOfIterationsPerTemperature).isGreaterThan(0);
 		this.numberOfIterationsPerTemperature = numberOfIterationsPerTemperature;
 	}
 	
@@ -126,7 +126,7 @@ public class SimulatedAnnealing extends AbstractSimulatedAnnealingAlgorithm {
 	 * @param comparator the aggregate objective comparator
 	 */
 	public void setComparator(AggregateObjectiveComparator comparator) {
-		Validate.notNull("comparator", comparator);
+		Validate.that("comparator", comparator).isNotNull();
 		this.comparator = comparator;
 	}
 

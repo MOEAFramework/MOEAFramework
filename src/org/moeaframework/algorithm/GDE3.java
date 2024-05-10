@@ -25,11 +25,11 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
 import org.moeaframework.core.selection.DifferentialEvolutionSelection;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Implementation of the Generalized Differential Evolution (GDE3) algorithm.
@@ -100,9 +100,9 @@ public class GDE3 extends AbstractEvolutionaryAlgorithm {
 			DifferentialEvolutionVariation variation, Initialization initialization) {
 		super(problem, initialPopulationSize, population, null, initialization, variation);
 		
-		Validate.problemType(problem, RealVariable.class);
-		Validate.notNull("comparator", comparator);
-		Validate.notNull("selection", selection);
+		Validate.that("problem", problem).isType(RealVariable.class);
+		Validate.that("comparator", comparator).isNotNull();
+		Validate.that("selection", selection).isNotNull();
 		
 		this.comparator = comparator;
 		this.selection = selection;
