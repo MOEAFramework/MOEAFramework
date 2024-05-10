@@ -25,15 +25,16 @@ these times reflect the overhead from calling the function.
 
 Method                          | Avg Time (sec)
 ------------------------------- | --------------
-Java                            | 0.610
-Native Fortran                  | 0.646
-Native C                        | 0.765
-Native C++                      | 0.769
-External C - Standard I/O       | 3.653
-External Python - Standard I/O  | 4.614
-External C - Sockets            | 5.788
-External Python - Sockets       | 7.456
+Java                            | 0.593
+Native Fortran                  | 0.465
+Native C                        | 0.587
+Native C++                      | 0.587
+External C - Standard I/O       | 3.714
+External Python - Standard I/O  | 4.584
+External C - Sockets            | 5.862
+External Python - Sockets       | 7.508
 
 The key takeaway is writing the function in pure Java or using a low-level compiled function in C, C++, Fortran, or
 similar language offers the best performance.  The `ExternalProblem` approach, which communicates with a program
-using standard I/O or sockets, is about 6x slower, though this approach can support nearly any language.
+using standard I/O or sockets, is about 6x slower, but this is still relatively fast given it ran 100,000 function
+evaluations.
