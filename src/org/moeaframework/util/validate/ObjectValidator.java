@@ -20,7 +20,7 @@ package org.moeaframework.util.validate;
 import java.lang.reflect.Array;
 
 /**
- * Validator for generic objects.
+ * Validator for generic objects including arrays.
  * 
  * @param <T> the object type
  */

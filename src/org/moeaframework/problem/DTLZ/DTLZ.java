@@ -21,6 +21,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.AnalyticalProblem;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Implements methods shared by all problems in the DTLZ test suite.
@@ -35,6 +36,9 @@ public abstract class DTLZ extends AbstractProblem implements AnalyticalProblem 
 	 */
 	public DTLZ(int numberOfVariables, int numberOfObjectives) {
 		super(numberOfVariables, numberOfObjectives);
+		
+		Validate.that("numberOfVariables", numberOfVariables).isGreaterThanOrEqualTo(numberOfObjectives);
+		Validate.that("numberOfObjectives", numberOfObjectives).isGreaterThanOrEqualTo(2);
 	}
 	
 	@Override

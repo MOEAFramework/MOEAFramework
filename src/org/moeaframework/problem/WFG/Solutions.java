@@ -120,7 +120,7 @@ class Solutions {
 			double[] w = new double[result.length];
 			Arrays.fill(w, 1.0);
 
-			double u = TransFunctions.r_sum(result, w);
+			double u = TransitionFunctions.r_sum(result, w);
 
 			double tmp1 = Math.abs(Math.floor(0.5 - u) + 0.98 / 49.98);
 			double tmp2 = 0.02 + 49.98 * (0.98 / 49.98 - (1.0 - 2.0 * u) * tmp1);
@@ -165,7 +165,7 @@ class Solutions {
 			double[] w = new double[result_sub.length];
 			Arrays.fill(w, 1.0);
 
-			double tmp1 = TransFunctions.r_sum(result_sub, w);
+			double tmp1 = TransitionFunctions.r_sum(result_sub, w);
 
 			result[i] = Math.pow(0.35, Math.pow(0.02 + 1.96 * tmp1, -1.0));
 		}

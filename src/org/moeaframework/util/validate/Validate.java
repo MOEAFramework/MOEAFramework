@@ -17,6 +17,8 @@
  */
 package org.moeaframework.util.validate;
 
+import java.util.Iterator;
+
 import org.moeaframework.core.Problem;
 
 /**

@@ -28,12 +28,12 @@ package org.moeaframework.problem.WFG;
  *
  * http://www.wfg.csse.uwa.edu.au/
  */
-class TransFunctions {
+class TransitionFunctions {
 
 	/**
 	 * Private constructor to prevent instantiation.
 	 */
-	private TransFunctions() {
+	private TransitionFunctions() {
 		super();
 	}
 
