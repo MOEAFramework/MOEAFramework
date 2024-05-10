@@ -17,6 +17,7 @@
  */
 package org.moeaframework.problem;
 
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 import org.moeaframework.Assert;
@@ -240,8 +241,34 @@ public abstract class ProblemTest {
 				solutionA.setConstraints(constraints);
 			}
 			
-			compare(solutionA, solutionB, exactConstraints);
+			try {
+				compare(solutionA, solutionB, exactConstraints);
+			} catch (AssertionError e) {
+				System.out.println("Solution comparison failed!");
+				System.out.println("  Problem: " + problemA.getName());
+				System.out.println("  Variables: " + formatVariables(solutionA));
+				System.out.println("  Objectives: " + Arrays.toString(solutionA.getObjectives()) + " / " +
+						Arrays.toString(solutionB.getObjectives()));
+				System.out.println("  Constraints: " + Arrays.toString(solutionA.getConstraints()) + " / " +
+						Arrays.toString(solutionB.getConstraints()));
+				
+				throw e;
+			}
 		}
+	}
+	
+	protected String formatVariables(Solution solution) {
+		StringBuilder sb = new StringBuilder();
+		
+		for (int i = 0; i < solution.getNumberOfVariables(); i++) {
+			if (i > 0) {
+				sb.append(" ");
+			}
+			
+			sb.append(solution.getVariable(i).encode());
+		}
+		
+		return sb.toString();
 	}
 
 	/**

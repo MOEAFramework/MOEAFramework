@@ -1,3 +1,5 @@
+package ${packageName};
+
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;

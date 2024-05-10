@@ -366,6 +366,8 @@ public class Subset implements Variable {
 	public String encode() {
 		StringBuilder sb = new StringBuilder();
 		int[] array = toArray();
+		
+		sb.append('{');
 
 		for (int i=0; i<array.length; i++) {
 			if (i > 0) {
@@ -375,11 +377,16 @@ public class Subset implements Variable {
 			sb.append(array[i]);
 		}
 		
+		sb.append('}');
 		return sb.toString();
 	}
 	
 	@Override
 	public void decode(String value) {
+		if (value.startsWith("{") && value.endsWith("}")) {
+			value = value.substring(1, value.length()-1);
+		}
+		
 		String[] tokens = value.split(",");
 		int[] array = new int[tokens.length];
 		

@@ -36,10 +36,10 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.ObjectiveComparator;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.validate.Validate;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 import org.moeaframework.util.weights.NormalBoundaryIntersectionGenerator;
 
@@ -151,7 +151,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 */
 	public void setDivisions(NormalBoundaryDivisions divisions) {
 		assertNotInitialized();
-		Validate.notNull("divisions", divisions);
+		Validate.that("divisions", divisions).isNotNull();
 		this.divisions = divisions;
 		
 		setInitialPopulationSize(divisions.getNumberOfReferencePoints(problem));

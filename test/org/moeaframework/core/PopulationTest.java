@@ -38,6 +38,7 @@ import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.core.variable.Subset;
 import org.moeaframework.mock.MockSolution;
+import org.moeaframework.util.format.TableFormat;
 import org.moeaframework.util.format.TabularData;
 
 public class PopulationTest {
@@ -182,7 +183,7 @@ public class PopulationTest {
 		File tempFile = TempFiles.createFile();
 		TabularData<Solution> data = population.asTabularData();
 		
-		data.saveCSV(tempFile);
+		data.save(TableFormat.CSV, tempFile);
 		Assert.assertLineCount(population.size() + 1, tempFile);
 	}
 	

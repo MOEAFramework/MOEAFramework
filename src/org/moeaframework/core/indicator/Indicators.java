@@ -27,11 +27,11 @@ import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Helper for evaluating multiple performance indicators, primarily for avoiding repetitive calculations that
@@ -311,7 +311,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators withSubdivisions(int subdivisions) {
-		Validate.greaterThan("subdivisions", 1, subdivisions);
+		Validate.that("subdivisions", subdivisions).isGreaterThan(1);
 		
 		r1 = null;
 		r2 = null;

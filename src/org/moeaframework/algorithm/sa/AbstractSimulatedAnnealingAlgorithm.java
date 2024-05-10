@@ -30,8 +30,8 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.operator.Mutation;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Abstract class of fundamental simulated annealing algorithm. While the iterations of evolving SA algorithms vary,
@@ -137,7 +137,7 @@ public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgori
 	 */
 	protected void setCoolingSchedule(CoolingSchedule coolingSchedule) {
 		assertNotInitialized();
-		Validate.notNull("coolingSchedule", coolingSchedule);
+		Validate.that("coolingSchedule", coolingSchedule).isNotNull();
 		this.coolingSchedule = coolingSchedule;
 	}
 	
@@ -176,7 +176,7 @@ public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgori
 	 */
 	public void setInitialization(Initialization initialization) {
 		assertNotInitialized();
-		Validate.notNull("initialization", initialization);
+		Validate.that("initialization", initialization).isNotNull();
 		this.initialization = initialization;
 	}
 	
@@ -196,7 +196,7 @@ public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgori
 	 */
 	@Property("operator")
 	public void setMutation(Mutation mutation) {
-		Validate.notNull("mutation", mutation);
+		Validate.that("mutation", mutation).isNotNull();
 		this.mutation = mutation;
 	}
 

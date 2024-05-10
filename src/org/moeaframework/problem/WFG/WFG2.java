@@ -44,6 +44,10 @@ public class WFG2 extends WFG {
 	 */
 	public WFG2(int k, int l, int M) {
 		super(k, l, M);
+		
+		if (l % 2 != 0) {
+			throw new IllegalArgumentException("l must be a multiple of 2, given " + l);
+		}
 	}
 
 	@Override

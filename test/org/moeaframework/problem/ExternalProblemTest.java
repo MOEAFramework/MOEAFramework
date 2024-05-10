@@ -25,6 +25,7 @@ import org.moeaframework.TestThresholds;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
 import org.moeaframework.mock.MockExternalProblem;
+import org.moeaframework.problem.ExternalProblem.Builder;
 
 /**
  * Tests basic functionality without requiring an executable.
@@ -61,6 +62,18 @@ public class ExternalProblemTest {
 		test(s -> {
 			throw new FrameworkException("test close with no response");
 		});
+	}
+	
+	@Test
+	public void testBuilderCopy() {
+		Builder expected = new Builder()
+				.withCommand("foo", "bar")
+				.withSocket(ExternalProblem.DEFAULT_PORT)
+				.withDebugging();
+		
+		Builder copy = expected.copy();
+		
+		Assert.assertCopy(expected, copy);
 	}
 	
 	private void test(final Function<String, String> callback) throws Exception {

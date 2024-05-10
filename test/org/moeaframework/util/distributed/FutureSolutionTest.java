@@ -34,6 +34,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.problem.ProblemWrapper;
+import org.moeaframework.util.Timer;
 
 public class FutureSolutionTest {
 	
@@ -124,11 +125,9 @@ public class FutureSolutionTest {
 			TestableFutureSolution solution = new TestableFutureSolution(unevaluatedSolution);
 			problem.evaluate(solution);
 
-			long startTime = System.currentTimeMillis();
-			solution.update();
-			long endTime = System.currentTimeMillis();
-			
-			Assert.assertGreaterThan((endTime - startTime), 1000);
+			Timer timer = Timer.startNew();
+			solution.update();			
+			Assert.assertGreaterThan(timer.stop(), 1.0);
 		} finally {
 			executor.shutdown();
 		}

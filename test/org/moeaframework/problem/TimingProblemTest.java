@@ -43,7 +43,7 @@ public class TimingProblemTest {
 		problem.evaluate(MockSolution.of(problem).randomize());
 		
 		Assert.assertGreaterThan(problem.getSeconds(), 0.0);
-		Assert.assertGreaterThan(problem.getNanoseconds(), 0.0);
+		Assert.assertGreaterThan(problem.getNanoseconds(), 0L);
 		Assert.assertEquals(1, problem.getNFE());
 	}
 

@@ -17,8 +17,6 @@
  */
 package org.moeaframework.core.variable;
 
-import java.io.IOException;
-
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.After;
 import org.junit.Before;
@@ -64,6 +62,16 @@ public class PermutationTest {
 		// ensure stored array is independent from argument
 		array[0] = 1;
 		Assert.assertEquals(3, permutation.get(0));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testEmptySize() {
+		new Permutation(0);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testEmptyArray() {
+		new Permutation(new int[] { });
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -167,7 +175,7 @@ public class PermutationTest {
 	@Test
 	public void testToString() {
 		permutation.fromArray(new int[] { 2, 0, 1, 3, 4 });
-		Assert.assertEquals("2,0,1,3,4", permutation.toString());
+		Assert.assertEquals("[2,0,1,3,4]", permutation.toString());
 	}
 
 	@Test
@@ -177,16 +185,23 @@ public class PermutationTest {
 		Assert.assertArrayEquals(permutation.toArray(), newVariable.toArray());
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
-	public void testDecodeInvalidLength() throws IOException {
-		Permutation p = new Permutation(5);
+	@Test
+	public void testDecodeWithoutBrackets() {
+		Permutation p = new Permutation(3);
 		p.decode("2,0,1");
+		Assert.assertArrayEquals(new int[] { 2, 0, 1 }, p.toArray());
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testDecodeInvalidValue() throws IOException {
+	public void testDecodeInvalidLength() {
 		Permutation p = new Permutation(5);
-		p.decode("2,0,1,5,3");
+		p.decode("[2,0,1]");
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testDecodeInvalidValue() {
+		Permutation p = new Permutation(5);
+		p.decode("[2,0,1,5,3]");
 	}
 	
 	@Test

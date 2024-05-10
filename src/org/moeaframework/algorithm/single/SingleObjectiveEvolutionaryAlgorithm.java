@@ -24,8 +24,8 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Abstract class for building single-objective evolutionary algorithms.  These use an aggregating or scalarizing
@@ -78,7 +78,7 @@ public abstract class SingleObjectiveEvolutionaryAlgorithm extends AbstractEvolu
 	 * @param comparator the aggregate objective comparator
 	 */
 	public void setComparator(AggregateObjectiveComparator comparator) {
-		Validate.notNull("comparator", comparator);
+		Validate.that("comparator", comparator).isNotNull();
 		this.comparator = comparator;
 	}
 	

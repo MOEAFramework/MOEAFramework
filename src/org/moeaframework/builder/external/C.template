@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
 	double constrs[nconstrs];
 
 #ifdef USE_SOCKET
-	MOEA_Init_socket(nobjs, nconstrs, NULL);
+	MOEA_Init_socket(nobjs, nconstrs, MOEA_DEFAULT_PORT);
 #else
 	MOEA_Init(nobjs, nconstrs);
 #endif

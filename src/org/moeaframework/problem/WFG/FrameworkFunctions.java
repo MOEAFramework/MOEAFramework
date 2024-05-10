@@ -37,19 +37,6 @@ class FrameworkFunctions {
 		super();
 	}
 
-	public static double[] normalize_z(double[] z, double[] z_max) {
-		double[] result = new double[z.length];
-
-		for (int i = 0; i < z.length; i++) {
-			assert (z[i] >= 0.0) && (z[i] <= z_max[i]);
-			assert z_max[i] > 0.0;
-
-			result[i] = z[i] / z_max[i];
-		}
-
-		return result;
-	}
-
 	public static double[] calculate_x(double[] t_p, int[] A) {
 		assert Misc.vector_in_01(t_p);
 		assert t_p.length != 0;

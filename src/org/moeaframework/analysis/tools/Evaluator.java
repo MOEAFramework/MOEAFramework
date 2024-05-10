@@ -38,12 +38,12 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.problem.TimingProblem;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Command line utility for evaluating an algorithm using many parameterizations.
@@ -208,7 +208,7 @@ public class Evaluator extends CommandLineUtility {
 
 		// find the maximum NFE to run
 		int maxEvaluations = properties.getTruncatedInt("maxEvaluations");
-		Validate.greaterThanOrEqualToZero("maxEvaluations", maxEvaluations);
+		Validate.that("maxEvaluations", maxEvaluations).isGreaterThanOrEqualTo(0);
 
 		// run the algorithm
 		long startTime = System.nanoTime();

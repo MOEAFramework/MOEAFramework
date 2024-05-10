@@ -17,7 +17,7 @@
  */
 package org.moeaframework.analysis.io;
 
-import org.moeaframework.core.configuration.Validate;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Defines a parameter.
@@ -87,7 +87,7 @@ public class Parameter {
 	 * @return the scaled value between the lower and upper bounds
 	 */
 	public double scale(double sample) {
-		Validate.inclusiveBetween("sample", 0.0, 1.0, sample);
+		Validate.that("sample", sample).isBetween(0.0, 1.0);
 		return getLowerBound() + sample * (getUpperBound() - getLowerBound());
 	}
 

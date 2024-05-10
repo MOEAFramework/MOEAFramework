@@ -1,4 +1,4 @@
-# Connecting to Problems with Standard I/O
+# Calling Executable with Standard I/O or Sockets
 
 In this example, we will write a C/C++ program for the 2-objective DTLZ2 problem, compile it into an executable, and
 optimize it using the MOEA Framework.  This uses the `ExternalProblem` class, which uses standard input/output to
@@ -71,7 +71,7 @@ int main(int argc, char* argv[]) {
     double objs[nobjs];
 
 #ifdef USE_SOCKET
-    MOEA_Init_socket(nobjs, 0, NULL);
+    MOEA_Init_socket(nobjs, 0, MOEA_DEFAULT_PORT);
 #else
     MOEA_Init(nobjs, 0);
 #endif
@@ -90,8 +90,6 @@ int main(int argc, char* argv[]) {
 
 See `examples/dtlz2.c` for the full code sample.  Once this file is written, we can compile using:
 
-<!-- bash:examples/Makefile [15:15] -->
-
 ```bash
 gcc -o dtlz2_stdio.exe dtlz2.c moeaframework.c -lm
 ```
@@ -99,13 +97,14 @@ gcc -o dtlz2_stdio.exe dtlz2.c moeaframework.c -lm
 This will produce the executable `dtlz2_stdio.exe`.  Then, we can switch over to the Java and create an
 external problem referencing this executable:
 
-<!-- java:examples/org/moeaframework/examples/external/ExternalProblemWithStdio.java [61:98] -->
+<!-- java:examples/org/moeaframework/examples/external/ExternalProblemWithStdio.java [61:99] -->
 
 ```java
 public static class MyDTLZ2 extends ExternalProblem {
 
     public MyDTLZ2() throws IOException {
-        super("./examples/dtlz2_stdio.exe");
+        super(new ExternalProblem.Builder()
+                .withCommand("./examples/dtlz2_stdio.exe"));
     }
 
     @Override
@@ -152,7 +151,7 @@ Finally, we can solve this problem.  Since the `ExternalProblem` spins up the pr
 important that the problem is closed after use.  As demonstrated below, we can use a try-with-resources block, allowing
 Java to automatically close the problem.
 
-<!-- java:examples/org/moeaframework/examples/external/ExternalProblemWithStdio.java [110:114] -->
+<!-- java:examples/org/moeaframework/examples/external/ExternalProblemWithStdio.java [111:115] -->
 
 ```java
 try (Problem problem = new MyDTLZ2()) {
@@ -162,18 +161,125 @@ try (Problem problem = new MyDTLZ2()) {
 }
 ```
 
+## Supported Decision Variables
+
+This external problem interface currently supports real-valued, integer, binary, permutation, and subset variables.
+The `MOEA_Read_<type>` calls must be made in the same order of the decision variables.  The sections below detail
+each type:
+
+### Real-Valued
+
+Real-valued decision variables can either be read individually or as an array:
+
+```c
+double x, y;
+MOEA_Read_double(&x);
+MOEA_Read_double(&y);
+
+double vars[10];
+MOEA_Read_doubles(10, vars);
+```
+
+### Integers
+
+Similar to real-valued, integer values can be read individually or as an array:
+
+```c
+int x, y;
+MOEA_Read_int(&x);
+MOEA_Read_int(&y);
+
+int vars[10];
+MOEA_Read_ints(10, vars);
+```
+
+### Binary
+
+Binary strings are parsed into an integer array containing `0` and `1`.  Here we read a binary string of length `20`:
+
+```c
+int binary[20];
+MOEA_Read_binary(20, binary);
+```
+
+### Permutation
+
+Permutations are parsed into an integer array, with the i-th index containing the i-th element of the permutation.
+Here we read a permutation of 5 elements:
+
+```c
+int permutation[5];
+MOEA_Read_permutation(5, permutation);
+```
+
+### Subset
+
+Subsets are also parsed into an integer array, but can have variable length.  Therefore, the method will return both
+the array and the number of elements in the array.  Here, we read a subset of size `2 <= subset_size <= 5`.  Note
+we allocate the array to hold the maximum size:
+
+```c
+int subset[5];
+int subset_size;
+
+MOEA_Read_subset(2, 5, subset, &subset_size); 
+```
+
+## Sockets
+
+The above example uses standard input and output to communicate with the program.  Programs that use input / output for
+any other purpose will interfere with the communication.  To avoid this, we can instead use sockets (networking) to
+send messages between the two processes.  To enable sockets:
+
+First, in the C/C++ code, change `MOEA_init` to `MOEA_Init_socket`.  As our example above demonstrates, we define
+`USE_SOCKET` to switch between these two methods.  Use the following to compile with this flag enabled:
+
+```bash
+gcc -DUSE_SOCKET -o dtlz2_socket.exe dtlz2.c moeaframework.c -lm
+```
+
+Second, update the Java code, namely the `MyDTLZ2` constructor, to use sockets:
+
+<!-- java:examples/org/moeaframework/examples/external/ExternalProblemWithSocket.java [45:49] -->
+
+```java
+public MyDTLZ2() throws IOException {
+    super(new ExternalProblem.Builder()
+            .withCommand("./examples/dtlz2_socket.exe")
+            .withSocket("127.0.0.1", DEFAULT_PORT));
+}
+```
+
 ## Other Languages
 
-We can use the same approach to connect to problems written in other programming languages.  Simply construct a loop
-to read the decision variables from the input and write the objective (and constraint) values to the output.  As an
-example, we have included a Python example at [`examples/dtlz2.py`](../examples/dtlz2.py).
+While we provide a C/C++ library for convenience, this same technique can be used by other programming languages.
+Simply construct a loop to read the decision variables from the input and write the objective (and constraint) values
+to the output.  As an example, we have included Python examples at [`examples/dtlz2.py`](../examples/dtlz2.py) and
+[`examples/dtlz2_socket.py`](../examples/dtlz2_socket.py).
 
 ## Troubleshooting
 
-On Windows, if you see an error message about the `msys.dll` missing, make sure you use the MingGW compiler.  To
-verify what version you have, open the MinGW64 terminal and run `which gcc`.  This should display
-`/mingw64/bin/gcc`.
+#### Missing msys.dll on Windows
+This occurs when using the default MSYS compiler instead of the MinGW compiler.  The latter creates an executable that
+can run on Windows outside of the MSYS environment.  Run `which gcc` and verify it outputs `/mingw64/bin/gcc`.
+If not, make sure you are using the MinGW64 terminal.
 
-The program can hang if the number of decision variables sent to the program do not match the expected number, as it
-will wait for further input.  To assist in debugging, set
-`org.moeaframework.problem.external_problem_debugging = true` in `moeaframework.properties`.
+#### Linking (ld) errors on Windows
+When compiling on Windows, we must link against the Winsock libraries.  Add `-lwsock32 -lWs2_32` at the end of the
+`gcc` command.
+
+#### Enable debugging output
+If you are seeing unexpected behavior, please enable debugging to try and diagnose the problem.  You can enable this
+on a specific problem by modifying the constructor:
+
+```java
+new Builder()
+    .withCommand("./examples/dtlz2_stdio.exe")
+    .withDebugging()
+```
+
+or globally by adding the following line to `moeaframework.properties`:
+
+```
+org.moeaframework.problem.external.enable_debugging = true
+```

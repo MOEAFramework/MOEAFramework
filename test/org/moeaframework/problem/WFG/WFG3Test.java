@@ -58,5 +58,11 @@ public class WFG3Test extends WFGTest {
 		testGenerate("WFG3_2");
 		testGenerate("WFG3_3");
 	}
+	
+	@SuppressWarnings("resource")
+	@Test(expected = IllegalArgumentException.class)
+	public void testInvalidArgument() {
+		new WFG3(1, 5, 2);
+	}
 
 }

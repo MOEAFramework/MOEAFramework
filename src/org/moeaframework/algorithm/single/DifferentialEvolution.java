@@ -24,11 +24,11 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
 import org.moeaframework.core.selection.DifferentialEvolutionSelection;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Single-objective differential evolution (DE) algorithm.
@@ -75,8 +75,8 @@ public class DifferentialEvolution extends SingleObjectiveEvolutionaryAlgorithm 
 			DifferentialEvolutionVariation variation) {
 		super(problem, initialPopulationSize, new Population(), null, comparator, initialization, variation);
 		
-		Validate.problemType(problem, RealVariable.class);
-		Validate.notNull("selection", selection);
+		Validate.that("problem", problem).isType(RealVariable.class);
+		Validate.that("selection", selection).isNotNull();
 		
 		this.selection = selection;
 	}

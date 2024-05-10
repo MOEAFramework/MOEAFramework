@@ -7,6 +7,10 @@
 
 # Find the examples/ folder, which changes if using Ant or Maven
 ROOT := ../../../..
+CC := gcc
+CPP := g++
+CFLAGS := -O3 -Wall -Werror -DMOEA_BUFFER_SIZE=16
+LIBS = 
 
 ifeq ("$(wildcard $(ROOT)/examples)","")
     override ROOT := $(ROOT)/../..
@@ -18,17 +22,20 @@ else
     $(info Found the MOEA Framework root directory at "$(ROOT)")
 endif
 
-main: test_stdio.exe test_socket.exe
+ifeq ($(OS),Windows_NT)
+    LIBS += -lwsock32 -lWs2_32
+endif
+
+main: test_stdio.exe test_socket.exe test_cpp.exe
 
 clean:
-	rm -f test_stdio.exe test_socket.exe
+	rm -f test_stdio.exe test_socket.exe test_cpp.exe
 
-test_stdio.exe:
-	gcc -o test_stdio.exe -I $(ROOT)/examples test.c $(ROOT)/examples/moeaframework.c
+test_stdio.exe: test.c $(ROOT)/examples/moeaframework.c
+	$(CC) $(CFLAGS) -o test_stdio.exe -I $(ROOT)/examples test.c $(ROOT)/examples/moeaframework.c $(LIBS)
 	
-test_socket.exe:
-ifneq ($(OS),Windows_NT)
-ifeq ($(shell uname -s),Linux)
-	gcc -DUSE_SOCKET -o test_socket.exe -I $(ROOT)/examples test.c $(ROOT)/examples/moeaframework.c
-endif
-endif
+test_socket.exe: test.c $(ROOT)/examples/moeaframework.c
+	$(CC) $(CFLAGS) -DUSE_SOCKET -o test_socket.exe -I $(ROOT)/examples test.c $(ROOT)/examples/moeaframework.c $(LIBS)
+
+test_cpp.exe: test.c $(ROOT)/examples/moeaframework.c
+	$(CPP) $(CFLAGS) -o test_cpp.exe -I $(ROOT)/examples test.c $(ROOT)/examples/moeaframework.c $(LIBS)

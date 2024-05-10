@@ -21,7 +21,7 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * An abstract mutation class that validates the types of each variable before applying the mutation operation with
@@ -70,7 +70,7 @@ public abstract class TypeSafeMutation<T extends Variable> implements Mutation {
 	 */
 	@Property("rate")
 	public void setProbability(double probability) {
-		Validate.probability("probability", probability);
+		Validate.that("probability", probability).isProbability();
 		this.probability = probability;
 	}
 

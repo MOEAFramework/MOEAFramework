@@ -21,8 +21,8 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Simplex crossover (SPX) operator.  SPX is a multiparent operator, allowing a user-defined number of parents and
@@ -169,7 +169,7 @@ public class SPX extends MultiParentVariation {
 	 */
 	@Property
 	public void setEpsilon(double epsilon) {
-		Validate.greaterThanZero("epsilon", epsilon);
+		Validate.that("epsilon", epsilon).isGreaterThan(0.0);
 		this.epsilon = epsilon;
 	}
 

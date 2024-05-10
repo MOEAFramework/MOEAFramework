@@ -18,10 +18,9 @@
 package org.moeaframework.util.format;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -43,7 +42,7 @@ public class TabularData<T> implements Displayable {
 	private final List<Column<T, ?>> columns;
 	
 	private final Deque<Formatter<?>> formatters;
-	
+		
 	/**
 	 * Creates a new tabular data object using the given data source.
 	 * 
@@ -120,30 +119,64 @@ public class TabularData<T> implements Displayable {
 	
 	@Override
 	public void display(PrintStream out) {
-		List<String[]> formattedData = new ArrayList<String[]>();
-		int[] columnWidths = new int[columns.size()];
-		
-		for (T record : dataSource) {
-			String[] row = new String[columns.size()];
-			
-			for (int j = 0; j < columns.size(); j++) {
-				row[j] = format(record, columns.get(j));
-				columnWidths[j] = Math.max(columnWidths[j], row[j].length());
-			}
-			
-			formattedData.add(row);
+		display(TableFormat.Plaintext, out);
+	}
+	
+	/**
+	 * Displays the data in the given format to the terminal.
+	 * 
+	 * @param tableFormat the table format
+	 */
+	public void display(TableFormat tableFormat) {
+		display(tableFormat, System.out);
+	}
+	
+	/**
+	 * Displays the data in the given format.
+	 * 
+	 * @param tableFormat the table format
+	 * @param out the output stream
+	 */
+	public void display(TableFormat tableFormat, PrintStream out) {
+		switch (tableFormat) {
+			case Plaintext -> toPlaintext(out);
+			case CSV -> toCSV(out);
+			case Markdown -> toMarkdown(out);
+			case Latex -> toLatex(out);
+			default -> throw new IllegalArgumentException("Invalid table format " + tableFormat);
 		}
-		
+	}
+	
+	/**
+	 * Saves the data to a file in the requested format.
+	 * 
+	 * @param tableFormat the resulting table format
+	 * @param file the resulting file
+	 * @throws IOException if an I/O error occurred while writing the file
+	 */
+	public void save(TableFormat tableFormat, File file) throws IOException {
+		try (PrintStream out = new PrintStream(new FileOutputStream(file))) {
+			display(tableFormat, out);
+		}
+	}
+	
+	/**
+	 * Writes the data in the default, plaintext format.
+	 * 
+	 * @param out the output stream
+	 */
+	protected void toPlaintext(PrintStream out) {
+		List<String[]> formattedData = toFixedWidthFormat();
+
 		for (int j = 0; j < columns.size(); j++) {
 			String columnName = columns.get(j).getName();
-			columnWidths[j] = Math.max(columnWidths[j], columnName.length());
-			out.print(StringUtils.rightPad(columnName, columnWidths[j]+1));
+			out.print(StringUtils.rightPad(columnName, columns.get(j).getWidth()+1));
 		}
 		
 		out.println();
 		
 		for (int j = 0; j < columns.size(); j++) {
-			out.print(StringUtils.repeat('-', columnWidths[j]));
+			out.print(StringUtils.repeat('-', columns.get(j).getWidth()));
 			out.print(' ');
 		}
 		
@@ -151,7 +184,7 @@ public class TabularData<T> implements Displayable {
 		
 		for (int i = 0; i < formattedData.size(); i++) {
 			for (int j = 0; j < columns.size(); j++) {
-				out.print(StringUtils.rightPad(formattedData.get(i)[j], columnWidths[j]+1));
+				out.print(StringUtils.rightPad(formattedData.get(i)[j], columns.get(j).getWidth()+1));
 			}
 			
 			out.println();
@@ -163,41 +196,169 @@ public class TabularData<T> implements Displayable {
 	 * 
 	 * @param file the resulting file
 	 * @throws IOException if an I/O error occurred while writing the file
+	 * @deprecated Use {@link #save(TableFormat, File)} instead
 	 */
+	@Deprecated
 	public void saveCSV(File file) throws IOException {
-		try (FileWriter writer = new FileWriter(file)) {
-			toCSV(writer);
+		try (PrintStream out = new PrintStream(new FileOutputStream(file))) {
+			toCSV(out);
 		}
 	}
 	
 	/**
 	 * Writes the data formatted as CSV.
 	 * 
-	 * @param out the output writer
-	 * @throws IOException if an I/O error occurred while writing the data
+	 * @param out the output stream
 	 */
-	public void toCSV(Writer out) throws IOException {
-		for (int i = 0; i < columns.size(); i++) {
-			if (i > 0) {
-				out.write(", ");
+	protected void toCSV(PrintStream out) {
+		List<String[]> formattedData = toFixedWidthFormat();
+		
+		for (int j = 0; j < columns.size(); j++) {
+			if (j > 0) {
+				out.print(", ");
 			}
 			
-			out.write(StringEscapeUtils.escapeCsv(columns.get(i).getName()));
+			out.print(StringEscapeUtils.escapeCsv(columns.get(j).getName()));
 		}
 		
-		out.write(System.lineSeparator());
+		out.println();
 
-		for (T record : dataSource) {
-			for (int i = 0; i < columns.size(); i++) {
-				if (i > 0) {
-					out.write(", ");
+		for (int i = 0; i < formattedData.size(); i++) {
+			for (int j = 0; j < columns.size(); j++) {
+				if (j > 0) {
+					out.print(", ");
 				}
 				
-				out.write(StringEscapeUtils.escapeCsv(format(record, columns.get(i))));
+				out.print(StringEscapeUtils.escapeCsv(formattedData.get(i)[j]));
 			}
 			
-			out.write(System.lineSeparator());
+			out.println();
 		}
+	}
+	
+	/**
+	 * Writes the data formatted as a Markdown table.
+	 * 
+	 * @param out the output stream
+	 */
+	protected void toMarkdown(PrintStream out) {
+		List<String[]> formattedData = toFixedWidthFormat();
+		
+		for (int j = 0; j < columns.size(); j++) {
+			if (j > 0) {
+				out.print(" | ");
+			}
+			
+			String columnName = columns.get(j).getName();
+			out.print(StringUtils.rightPad(columnName, columns.get(j).getWidth()));
+		}
+		
+		out.println();
+		
+		for (int j = 0; j < columns.size(); j++) {
+			if (j > 0) {
+				out.print(" | ");
+			}
+			
+			out.print(StringUtils.repeat('-', columns.get(j).getWidth()));
+		}
+		
+		out.println();
+		
+		for (int i = 0; i < formattedData.size(); i++) {
+			for (int j = 0; j < columns.size(); j++) {
+				if (j > 0) {
+					out.print(" | ");
+				}
+				
+				out.print(StringUtils.rightPad(formattedData.get(i)[j], columns.get(j).getWidth()));
+			}
+			
+			out.println();
+		}
+	}
+	
+	/**
+	 * Writes the data formatted as a Latex table.
+	 * 
+	 * @param out the output stream
+	 */
+	protected void toLatex(PrintStream out) {
+		List<String[]> formattedData = toFixedWidthFormat();
+
+		out.print("\\begin{tabular}{|");
+		
+		for (int j = 0; j < columns.size(); j++) {
+			out.print("l");
+		}
+		
+		out.println("|}");
+		out.println("  \\hline");
+		out.print("  ");
+		
+		for (int j = 0; j < columns.size(); j++) {
+			if (j > 0) {
+				out.print(" & ");
+			}
+			
+			String columnName = columns.get(j).getName();
+			out.print(StringUtils.rightPad(columnName, columns.get(j).getWidth()));
+		}
+		
+		out.println(" \\\\");
+		out.println("  \\hline");
+				
+		for (int i = 0; i < formattedData.size(); i++) {
+			out.print("  ");
+			
+			for (int j = 0; j < columns.size(); j++) {
+				if (j > 0) {
+					out.print(" & ");
+				}
+				
+				out.print(StringUtils.rightPad(formattedData.get(i)[j], columns.get(j).getWidth()));
+			}
+			
+			out.println(" \\\\");
+		}
+		
+		out.println("  \\hline");
+		out.println("\\end{tabular}");
+	}
+	
+	/**
+	 * Formats the data and computes the fixed column widths.  Note that the returned list only includes data rows
+	 * and is not yet padded to the fixed width.
+	 * 
+	 * @return the formatted data
+	 */
+	private List<String[]> toFixedWidthFormat() {
+		List<String[]> formattedData = new ArrayList<String[]>();
+		
+		// reset the column width
+		for (int j = 0; j < columns.size(); j++) {
+			columns.get(j).updateWidth(Column.UNSPECIFIED_WIDTH);
+		}
+		
+		// calculate width for headers
+		for (int j = 0; j < columns.size(); j++) {
+			String columnName = columns.get(j).getName();
+			columns.get(j).updateWidth(columnName.length());
+		}
+		
+		// calculate width for data rows
+		for (T record : dataSource) {
+			String[] row = new String[columns.size()];
+			
+			for (int j = 0; j < columns.size(); j++) {
+				row[j] = format(record, columns.get(j));
+				columns.get(j).updateWidth(row[j].length());
+			}
+			
+			formattedData.add(row);
+		}
+		
+		return formattedData;
 	}
 
 }

@@ -30,10 +30,10 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.validate.Validate;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
 /**
@@ -187,7 +187,7 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 	 */
 	@Property
 	public void setAdaptFrequency(int adaptFrequency) {
-		Validate.greaterThanZero("adaptFrequency", adaptFrequency);
+		Validate.that("adaptFrequency", adaptFrequency).isGreaterThan(0);
 		this.adaptFrequency = adaptFrequency;
 	}
 	

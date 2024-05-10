@@ -23,6 +23,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Variable;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Decision variable for permutations.
@@ -43,6 +44,7 @@ public class Permutation implements Variable {
 	 */
 	public Permutation(int size) {
 		super();
+		Validate.that("size", size).isGreaterThan(0);
 
 		permutation = new int[size];
 
@@ -59,9 +61,8 @@ public class Permutation implements Variable {
 	 */
 	public Permutation(int[] permutation) {
 		super();
-		this.permutation = permutation;
-
-		//this call is necessary to ensure the invariants hold
+		Validate.that("permutation", permutation).isNotEmpty();
+		
 		fromArray(permutation);
 	}
 
@@ -143,7 +144,7 @@ public class Permutation implements Variable {
 	 * @throws IllegalArgumentException if the permutation array is not a valid permutation
 	 */
 	public void fromArray(int[] permutation) {
-		if (permutation.length != this.permutation.length) {
+		if (this.permutation != null && permutation.length != this.permutation.length) {
 			throw new IllegalArgumentException("invalid permutation, expected array of length " +
 					this.permutation.length + " but given array of length " + permutation.length);
 		}
@@ -231,6 +232,8 @@ public class Permutation implements Variable {
 		StringBuilder sb = new StringBuilder();
 		int[] array = toArray();
 
+		sb.append('[');
+		
 		for (int i=0; i<array.length; i++) {
 			if (i > 0) {
 				sb.append(',');
@@ -239,11 +242,16 @@ public class Permutation implements Variable {
 			sb.append(array[i]);
 		}
 		
+		sb.append(']');
 		return sb.toString();
 	}
 	
 	@Override
 	public void decode(String value) {
+		if (value.startsWith("[") && value.endsWith("]")) {
+			value = value.substring(1, value.length()-1);
+		}
+		
 		String[] tokens = value.split(",");
 		int[] array = new int[tokens.length];
 		

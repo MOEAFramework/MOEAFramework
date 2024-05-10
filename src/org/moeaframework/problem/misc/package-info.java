@@ -17,7 +17,7 @@
  */
 
 /**
- * Set of unconstrained and constrained numeric multiobjective test problems aggregated by Van Veldhuizen [1].
+ * Collection of unconstrained and constrained numeric multiobjective test problems aggregated by Van Veldhuizen [1].
  * Coello Coello et al. [2] also refer to this list of test problems.
  * <p>
  * References:

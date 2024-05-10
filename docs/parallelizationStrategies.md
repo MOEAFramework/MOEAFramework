@@ -3,7 +3,7 @@
 By default, the MOEA Framework is single-threaded.  Solving a problem in the manner below will use a single core on
 your computer:
 
-<!-- java:examples/org/moeaframework/examples/parallel/ParallelizationExample.java [44:45] -->
+<!-- java:examples/org/moeaframework/examples/parallel/ParallelizationExample.java [45:46] -->
 
 ```java
 NSGAII serialAlgorithm = new NSGAII(problem);
@@ -17,9 +17,9 @@ explore how we can improve evaluation times.
 
 Perhaps the most straightforward approach to speeding up evaluations is to distribute or parallelize the function
 evaluations across multiple cores.  Most consumer CPUs today have multiple cores (and even multiple threads per core!).
-We can distributed function evaluations using the `DistributedProblem` class:
+We can distribute function evaluations using the `DistributedProblem` class:
 
-<!-- java:examples/org/moeaframework/examples/parallel/ParallelizationExample.java [55:58] -->
+<!-- java:examples/org/moeaframework/examples/parallel/ParallelizationExample.java [56:59] -->
 
 ```java
 try (Problem distributedProblem = DistributedProblem.from(problem)) {
@@ -33,8 +33,8 @@ There are a few key points to call out:
 1. We create a distributed version of the problem by calling `DistributedProblem.from(...)`.  By default, this
    will distribute across all available processors on the local machine.
 
-2. Be sure to close the the problem when finished to ensure all underlying resources are cleaned up.  The easiest
-   way is using a try-with-resources block as demonstrated in this example.
+2. Be sure to close the problem when finished to ensure all underlying resources are cleaned up.  The easiest way is
+   using a try-with-resources block as demonstrated in this example.
    
 3. When distributing function evaluations, we must balance the speedup provided by parallelization against
    communication and overhead costs.  If each function evaluation only takes milliseconds, parallelization is unlikely
@@ -46,25 +46,30 @@ The above example distributed the function evaluations on the local computer.  B
 remote machines using a library like [Apache Ignite](https://ignite.apache.org/).  In fact, any library that
 provides an `ExecutorService` implementation is supported!
 
-First, the problem class must implement the `Serializable` interface.  This allows Java to transmit the problem
+We provide an example using Apache Ignite at https://github.com/MOEAFramework/ApacheIgniteExample.  Typically, two
+steps are required.
+
+First, the problem class should implement the `Serializable` interface.  This allows Java to transmit the problem
 definition to the remote machines.  Without this, you will likely see a `NotSerializableException`.
 
 ```java
 public class MyDistributedProblem extends AbstractProblem implements Serializable {
-    // ... implement problem ...
+    // implement problem
 }
 ```
 
 Then, use the `ExecutorService` provided by your library with the `DistributedProblem`.  For Apache Ignite,
 it would look something like:
 
+<!-- java:https://raw.githubusercontent.com/MOEAFramework/ApacheIgniteExample/main/src/main/java/org/moeaframework/ignite/IgniteMasterSlaveExample.java [31:39] -->
+
 ```java
 try (Ignite ignite = Ignition.start("config/ignite-config.xml")) {
     ExecutorService executor = ignite.executorService();
-			
-    try (Problem problem = DistributedProblem.from(new MyDistributedProblem(), executor)) {
+
+    try (Problem problem = new DistributedProblem(new MyDistributedProblem(), executor)) {
         NSGAII algorithm = new NSGAII(problem);
-        algorithm.run(10000);		
+        algorithm.run(10000);
         algorithm.getResult().display();
     }
 }

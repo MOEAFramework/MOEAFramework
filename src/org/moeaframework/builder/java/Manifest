@@ -1,5 +1,5 @@
 Makefile.template -> Makefile
-Problem.template -> ${problemName}.java
-../shared/ProblemProvider.template -> ${problemName}Provider.java
+Problem.template -> src/${packagePath}/${problemName}.java
+../shared/ProblemProvider.template -> src/${packagePath}/${problemName}Provider.java
 ../shared/Service.template -> META-INF/services/org.moeaframework.problem.ProblemProvider
-../shared/Example.template -> Example.java
+../shared/Example.template -> src/${packagePath}/Example.java

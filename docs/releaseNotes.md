@@ -2,7 +2,7 @@
 
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
-## Version 4.1 (In Progress)
+## Version 4.1 (06 May 2024)
 
   * Adds `DefaultNormalizer` and `DefaultEpsilons` classes with the ability to override the defaults with
     problem-specific, custom settings.  These settings can be set either by calling `override` or loaded from the
@@ -11,8 +11,33 @@ This page documents notable changes introduced in each chronological release of 
   * `ThreadLocalMersenneTwister` is now the default random number generator used by `PRNG`.  Consequently,
     `PRNG` can be used by multi-threaded or parallel codes directly.
     
+  * Markdown and Latex support when saving or displaying tables:
+    ```
+    algorithm.getResult().save(TableFormat.Latex, new File("result.tex"));
+    ```
+    
   * Expands CI testing to include Windows and MacOS.
   
+  * Improvements to `ExternalProblem`, including:
+  
+    - Adds Builder to simplify configuring the executable, optional sockets, and other settings:
+      ```
+      new ExternalProblem.Builder().withCommand("problem.exe").withDebugging()
+      ```
+      
+    - Added retries and shutdown timeout, which can be configured through the builder or the global properties:
+      ```
+      org.moeaframework.problem.external.enable_debugging = true
+      org.moeaframework.problem.external.retry_attempts = 5
+      org.moeaframework.problem.external.retry_delay = 1
+      org.moeaframework.problem.external.shutdown_timeout = 10
+      ```
+      
+    - Adds Winsock support on Windows, enabling socket communication on all supported platforms.
+    
+    - Adds brackets "[0,1,2]" and braces "{0,3}" to permutation and subset string encodings, respectively, for
+      improved parsing and validation.
+
 
 ## Version 4.0 (05 Apr 2024)
 

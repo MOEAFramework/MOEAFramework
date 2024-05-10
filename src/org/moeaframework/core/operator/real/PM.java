@@ -20,9 +20,9 @@ package org.moeaframework.core.operator.real;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.operator.TypeSafeMutation;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Polynomial mutation (PM) operator.  PM attempts to simulate the offspring distribution of binary-encoded bit-flip
@@ -90,7 +90,7 @@ public class PM extends TypeSafeMutation<RealVariable> {
 	 */
 	@Property
 	public void setDistributionIndex(double distributionIndex) {
-		Validate.greaterThanZero("distributionIndex", distributionIndex);
+		Validate.that("distributionIndex", distributionIndex).isGreaterThan(0.0);
 		this.distributionIndex = distributionIndex;
 	}
 

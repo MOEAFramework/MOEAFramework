@@ -1,0 +1,23 @@
+import sys
+
+nvars = ${numberOfVariables}
+nobjs = ${numberOfObjectives}
+nconstrs = ${numberOfConstraints}
+
+def evaluate(vars):
+    objs = [0.0]*nobjs
+    constrs = [0.0]*nconstrs
+
+    # TODO: Fill in with your problem definition
+
+    return (objs, constrs)
+
+if __name__ == "__main__":
+    for line in sys.stdin:
+        vars = list(map(float, line.split()))
+
+        if len(vars) != nvars:
+            sys.exit(f"Incorrect number of variables (expected: {nvars}, actual: {len(vars)})")
+
+        (objs, constrs) = evaluate(vars)
+        print(" ".join(map(str, objs + constrs)), flush=True)

@@ -26,24 +26,15 @@ import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.ExternalProblem;
 
 /**
- * Demonstrates writing a external problem (2-objective DTLZ2) in Python.
- * 
- * A few things to note:
- * 
- *   1. setDebugStream is useful for debugging the external program if you notice it stuck or
- *      not behaving correctly.  This will display the variables sent to the program and the
- *      objectives/constraints read back.
- *      
- *   2. If the program appears to be stuck, ensure you are flushing the output after writing
- *      each line.  Often, the output is buffered and must be flushed to write the output
- *      immediately.
+ * Demonstrates writing a external problem (2-objective DTLZ2) in Python using standard I/O.
  */
 public class ExternalProblemWithPython {
 
 	public static class MyDTLZ2 extends ExternalProblem {
 
 		public MyDTLZ2() throws IOException {
-			super("python", "examples/dtlz2.py");
+			super(new ExternalProblem.Builder()
+					.withCommand("python", "examples/dtlz2.py"));
 		}
 
 		@Override

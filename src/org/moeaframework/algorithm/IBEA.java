@@ -28,7 +28,6 @@ import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.FitnessComparator;
 import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
 import org.moeaframework.core.fitness.HypervolumeFitnessEvaluator;
 import org.moeaframework.core.fitness.IndicatorFitnessEvaluator;
@@ -36,6 +35,7 @@ import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Implementation of the Indicator-Based Evolutionary Algorithm (IBEA).  Instead of using Pareto dominance to evaluate
@@ -94,7 +94,7 @@ public class IBEA extends AbstractEvolutionaryAlgorithm {
 		super(problem, initialPopulationSize, new Population(), archive, initialization, variation);
 		setFitnessEvaluator(fitnessEvaluator);
 		
-		Validate.problemHasNoConstraints(problem);
+		Validate.that("problem", problem).isUnconstrained();
 	}
 	
 	/**
@@ -112,7 +112,7 @@ public class IBEA extends AbstractEvolutionaryAlgorithm {
 	 * @param fitnessEvaluator the indicator-based fitness evaluator
 	 */
 	public void setFitnessEvaluator(IndicatorFitnessEvaluator fitnessEvaluator) {
-		Validate.notNull("fitnessEvaluator", fitnessEvaluator);
+		Validate.that("fitnessEvaluator", fitnessEvaluator).isNotNull();
 		
 		this.fitnessEvaluator = fitnessEvaluator;
 		fitnessComparator = new FitnessComparator(fitnessEvaluator.areLargerValuesPreferred());

@@ -23,7 +23,7 @@ import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * One-point or single-point crossover. A crossover point is selected and all decision variables to the left/right
@@ -75,7 +75,7 @@ public class OnePointCrossover implements Variation {
 	 */
 	@Property("rate")
 	public void setProbability(double probability) {
-		Validate.probability("probability", probability);
+		Validate.that("probability", probability).isProbability();
 		this.probability = probability;
 	}
 

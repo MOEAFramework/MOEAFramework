@@ -26,12 +26,12 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.fitness.CrowdingDistanceFitnessEvaluator;
 import org.moeaframework.core.fitness.FitnessBasedArchive;
 import org.moeaframework.core.operator.TypeSafeMutation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Implementation of OMOPSO, a multi-objective particle swarm optimizer (MOPSO).  According to [2], OMOPSO is one of
@@ -116,7 +116,7 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 	 */
 	@Property
 	public void setMutationProbability(double mutationProbability) {
-		Validate.probability("mutationProbability", mutationProbability);
+		Validate.that("mutationProbability", mutationProbability).isProbability();
 		
 		uniformMutation.setProbability(mutationProbability);
 		nonUniformMutation.setProbability(mutationProbability);
@@ -138,7 +138,7 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 	 */
 	@Property
 	public void setPerturbationIndex(double perturbationIndex) {
-		Validate.greaterThanZero("perturbationIndex", perturbationIndex);
+		Validate.that("perturbationIndex", perturbationIndex).isGreaterThan(0.0);
 		
 		uniformMutation.perturbationIndex = perturbationIndex;
 		nonUniformMutation.perturbationIndex = perturbationIndex;
@@ -163,7 +163,7 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 	 * @param maxIterations the maximum number of iterations
 	 */
 	protected void setMaxIterations(int maxIterations) {
-		Validate.greaterThanZero("maxIterations", maxIterations);
+		Validate.that("maxIterations", maxIterations).isGreaterThan(0);
 		
 		nonUniformMutation.maxIterations = maxIterations;
 	}

@@ -28,9 +28,9 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * The adaptive metropolis (AM) operator.  AM is a multiparent operator, allowing a user-defined number of parents
@@ -107,7 +107,7 @@ public class AdaptiveMetropolis extends MultiParentVariation {
 	 */
 	@Property("coefficient")
 	public void setJumpRateCoefficient(double jumpRateCoefficient) {
-		Validate.greaterThanZero("jumpRateCoefficient", jumpRateCoefficient);
+		Validate.that("jumpRateCoefficient", jumpRateCoefficient).isGreaterThan(0.0);
 		this.jumpRateCoefficient = jumpRateCoefficient;
 	}
 

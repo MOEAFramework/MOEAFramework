@@ -23,11 +23,11 @@ import java.util.List;
 
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.AnalyticalProblem;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Abstract class for implementing ZCAT test problems.
@@ -100,10 +100,10 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 		this.F = F;
 		this.G = G;
 		
-		Validate.greaterThanOrEqual("numberOfObjectives", 2, numberOfObjectives);
-		Validate.inclusiveBetween("level", 1, 6, level);
-		Validate.notNull("F", F);
-		Validate.notNull("G", G);
+		Validate.that("numberOfObjectives", numberOfObjectives).isGreaterThanOrEqualTo(2);
+		Validate.that("level", level).isBetween(1, 6);
+		Validate.that("F", F).isNotNull();
+		Validate.that("G", G).isNotNull();
 	}
 	
 	@Override

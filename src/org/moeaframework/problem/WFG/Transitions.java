@@ -347,44 +347,4 @@ class Transitions {
 		return t;
 	}
 
-	public static double[] I1_t2(double[] y, int k) {
-		return WFG1_t1(y, k);
-	}
-
-	public static double[] I1_t3(double[] y, int k, int M) {
-		return WFG2_t3(y, k, M);
-	}
-
-	public static double[] I2_t1(double[] y) {
-		return WFG9_t1(y);
-	}
-
-	public static double[] I3_t1(double[] y) {
-		int n = y.length;
-
-		assert Misc.vector_in_01(y);
-
-		double[] w = new double[n];
-		Arrays.fill(w, 1.0);
-
-		double[] t = new double[n];
-
-		t[0] = y[0];
-
-		for (int i = 1; i < n; i++) {
-			double[] y_sub = subvector(y, 0, i);
-			double[] w_sub = subvector(w, 0, i);
-
-			double u = TransFunctions.r_sum(y_sub, w_sub);
-
-			t[i] = TransFunctions.b_param(y[i], u, 0.98 / 49.98, 0.02, 50);
-		}
-
-		return t;
-	}
-
-	public static double[] I4_t3(double[] y, int k, int M) {
-		return WFG6_t2(y, k, M);
-	}
-
 }

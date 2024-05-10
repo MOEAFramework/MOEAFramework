@@ -24,9 +24,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Optional;
 
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.indicator.Indicators.IndicatorValues;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Writes metric files. A metric file is the output of {@code Evaluator} and contains on each line one or more
@@ -162,7 +162,7 @@ public class MetricFileWriter implements OutputWriter {
 	public static int getMetricIndex(String value) {
 		if (value.matches("[0-9]+")) {
 			int index = Integer.parseInt(value);
-			Validate.inclusiveBetween("index", 0, NUMBER_OF_METRICS-1, index);			
+			Validate.that("index", index).isBetween(0, NUMBER_OF_METRICS-1);
 			return index;
 		}
 		

@@ -23,6 +23,7 @@ import java.io.IOException;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.problem.misc.Srinivas;
 import org.moeaframework.util.format.NumberFormatter;
+import org.moeaframework.util.format.TableFormat;
 
 /**
  * Demonstrates saving results to a CSV file and altering formatting.
@@ -36,8 +37,10 @@ public class SaveAndFormatResultsExample {
 		// Display results to console
 		algorithm.getResult().display();
 
-		// Save results to CSV file
-		algorithm.getResult().saveCSV(new File("solutions.csv"));
+		// Save results to various file formats
+		algorithm.getResult().save(TableFormat.CSV, new File("solutions.csv"));
+		algorithm.getResult().save(TableFormat.Markdown, new File("solutions.md"));
+		algorithm.getResult().save(TableFormat.Latex, new File("solutions.tex"));
 
 		// Change formatting of output
 		NumberFormatter.getDefault().setPrecision(10);

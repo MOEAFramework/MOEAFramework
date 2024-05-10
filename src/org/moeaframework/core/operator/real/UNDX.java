@@ -24,9 +24,9 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.Vector;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Unimodal Normal Distribution Crossover (UNDX) operator.  UNDX is a multiparent operator, allowing a user-defined
@@ -119,7 +119,7 @@ public class UNDX extends MultiParentVariation {
 	 */
 	@Property
 	public void setZeta(double zeta) {
-		Validate.greaterThanZero("zeta", zeta);
+		Validate.that("zeta", zeta).isGreaterThan(0.0);
 		this.zeta = zeta;
 	}
 
@@ -142,7 +142,7 @@ public class UNDX extends MultiParentVariation {
 	 */
 	@Property
 	public void setEta(double eta) {
-		Validate.greaterThanZero("eta", eta);
+		Validate.that("eta", eta).isGreaterThan(0.0);
 		this.eta = eta;
 	}
 

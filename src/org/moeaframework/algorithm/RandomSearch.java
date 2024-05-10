@@ -28,8 +28,8 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.initialization.RandomInitialization;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Random search implementation.  An {@link Initialization} instance is used to generate random solutions, which are
@@ -76,8 +76,8 @@ public class RandomSearch extends AbstractAlgorithm implements Configurable {
 		super(problem);
 		setSampleSize(sampleSize);
 		
-		Validate.notNull("generator", generator);
-		Validate.notNull("archive", archive);
+		Validate.that("generator", generator).isNotNull();
+		Validate.that("archive", archive).isNotNull();
 		
 		this.generator = generator;
 		this.archive = archive;
@@ -101,7 +101,7 @@ public class RandomSearch extends AbstractAlgorithm implements Configurable {
 	 */
 	@Property(alias="populationSize")
 	public void setSampleSize(int sampleSize) {
-		Validate.greaterThanZero("sampleSize", sampleSize);
+		Validate.that("sampleSize", sampleSize).isGreaterThan(0);
 		this.sampleSize = sampleSize;
 	}
 

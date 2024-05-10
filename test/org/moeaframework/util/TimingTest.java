@@ -28,14 +28,14 @@ import org.moeaframework.TempFiles;
 
 public class TimingTest {
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = IllegalStateException.class)
 	public void testNonexistentTimer() {
 		Timing.clear();
 		
 		Timing.stopTimer("testNonExistentTimer");
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = IllegalStateException.class)
 	public void testDuplicateTimer() {
 		Timing.clear();
 		
@@ -57,6 +57,8 @@ public class TimingTest {
 		
 		Assert.assertEquals(1, Timing.getStatistics("timer1").getN());
 		Assert.assertEquals(2, Timing.getStatistics("timer2").getN());
+		
+		Timing.display();
 	}
 	
 	@Test
@@ -81,23 +83,21 @@ public class TimingTest {
 		Timing.startTimer("timer2");
 		Timing.stopTimer("timer2");
 		
-		Assert.assertNotNull(Timing.getStatistics("timer1"));
-		Assert.assertNotNull(Timing.getStatistics("timer2"));
+		Assert.assertEquals(1, Timing.getStatistics("timer1").getN());
+		Assert.assertEquals(1, Timing.getStatistics("timer2").getN());
 		
 		Timing.clear();
-		Assert.assertNull(Timing.getStatistics("timer1"));
-		Assert.assertNull(Timing.getStatistics("timer2"));
+		Assert.assertEquals(0, Timing.getStatistics("timer1").getN());
+		Assert.assertEquals(0, Timing.getStatistics("timer2").getN());
 	}
 	
-	@Test
+	@Test(expected = IllegalStateException.class)
 	public void testClearWithActiveTimers() {
 		Timing.clear();
 		
 		Timing.startTimer("timer1");
 		Timing.clear();
 		Timing.stopTimer("timer1");
-		
-		Assert.assertEquals(1, Timing.getStatistics("timer1").getN());
 	}
 	
 	private File saveDisplayToFile() throws IOException {

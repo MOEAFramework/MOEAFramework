@@ -35,12 +35,14 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.mock.MockConstraintProblem;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockRealStochasticProblem;
+import org.moeaframework.util.DurationUtils;
+import org.moeaframework.util.Timer;
 
 @RunWith(CIRunner.class)
 @Retryable
 public class DistributedProblemTest {
 	
-	public static final int EVALAUATE_MS = 100;
+	public static final Duration EVALUATE_TIME = Duration.ofMillis(100);
 	
 	@Test
 	public void testSerialExecution() {
@@ -95,6 +97,10 @@ public class DistributedProblemTest {
 	 * @param P the number of processing threads
 	 */
 	public void testRun(int N, int P) {
+		if (N % P != 0) {
+			Assert.fail("Test should only be run when N is a multiple of P");
+		}
+		
 		try (DistributedProblem problem = new DistributedProblem(new MockExpensiveProblem(),
 				Executors.newFixedThreadPool(P))) {
 			Population population = new Population();
@@ -104,32 +110,33 @@ public class DistributedProblemTest {
 			}
 	
 			// submit the tasks to start processing
-			long startTime = System.currentTimeMillis();
+			Timer timer = Timer.startNew();
 			
 			for (int i = 0; i < N; i++) {
 				problem.evaluate(population.get(i));
 			}
 			
-			Assert.assertLessThan(System.currentTimeMillis() - startTime, 2 * EVALAUATE_MS);
+			Assert.assertLessThan(timer.stop(), DurationUtils.toSeconds(EVALUATE_TIME.multipliedBy(2)));
 	
 			// these should block
-			startTime = System.currentTimeMillis();
+			timer = Timer.startNew();
 			
 			for (int i = 0; i < N; i++) {
 				population.get(i).getObjective(0);
 			}
 			
-			Assert.assertLessThan(Math.abs(EVALAUATE_MS * N / (double)P - (System.currentTimeMillis() - startTime)),
-					2 * EVALAUATE_MS);
+			Assert.assertLessThan(
+					Math.abs(DurationUtils.toSeconds(EVALUATE_TIME.multipliedBy(N / P)) - timer.stop()),
+					DurationUtils.toSeconds(EVALUATE_TIME.multipliedBy(4)));
 	
 			// these should not block
-			startTime = System.currentTimeMillis();
+			timer = Timer.startNew();
 			
 			for (int i = 0; i < N; i++) {
 				population.get(i).getConstraint(0);
 			}
 	
-			Assert.assertLessThan(System.currentTimeMillis() - startTime, EVALAUATE_MS);
+			Assert.assertLessThan(timer.stop(), DurationUtils.toSeconds(EVALUATE_TIME));
 		}
 	}
 	
@@ -158,7 +165,7 @@ public class DistributedProblemTest {
 		@Override
 		public void evaluate(Solution solution) {
 			super.evaluate(solution);
-			Wait.sleepFor(Duration.ofMillis(EVALAUATE_MS));
+			Wait.sleepFor(EVALUATE_TIME);
 		}
 
 	}
@@ -174,7 +181,7 @@ public class DistributedProblemTest {
 			isInvoked = true;
 			
 			super.evaluate(solution);
-			Wait.sleepFor(Duration.ofMillis(EVALAUATE_MS));
+			Wait.sleepFor(EVALUATE_TIME);
 			
 			isInvoked = false;
 		}

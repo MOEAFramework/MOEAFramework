@@ -39,10 +39,10 @@ import org.moeaframework.core.comparator.FitnessComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.configuration.Validate;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Implementation of the strength-based evolutionary algorithm (SPEA2).  SPEA2 uses a novel strength-based measure of
@@ -148,7 +148,7 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 	 */
 	@Property("offspringSize")
 	public void setNumberOfOffspring(int numberOfOffspring) {
-		Validate.greaterThanZero("numberOfOffspring", numberOfOffspring);
+		Validate.that("numberOfOffspring", numberOfOffspring).isGreaterThan(0);
 		this.numberOfOffspring = numberOfOffspring;
 	}
 	
@@ -418,7 +418,7 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 		 */
 		@Property
 		public void setK(int k) {
-			Validate.greaterThanZero("k", k);
+			Validate.that("k", k).isGreaterThan(0);
 			this.k = k;
 		}
 
