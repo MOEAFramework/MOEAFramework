@@ -17,6 +17,8 @@
  */
 package org.moeaframework.util.validate;
 
+import java.lang.reflect.Array;
+
 /**
  * Validator for generic objects.
  * 
@@ -40,6 +42,28 @@ public class ObjectValidator<T> extends Validator<T> {
 	public void isNotNull() {
 		if (getPropertyValue() == null) {
 			throw new IllegalArgumentException("Expected " + getPropertyName() + " to be set, given a <null> value");
+		}
+	}
+	
+	/**
+	 * Asserts the given object is not empty.  An "empty" object is defined as:
+	 * <ol>
+	 *   <li>A {@code null} value,
+	 *   <li>An array with length 0, or
+	 *   <li>A {@link Iterable}, which encompasses practically all collection types, that contains no elements.
+	 * </ol>
+	 */
+	public void isNotEmpty() {
+		isNotNull();
+		
+		T value = getPropertyValue();
+		
+		if (value instanceof Iterable<?> iterable && !iterable.iterator().hasNext()) {
+			throw new IllegalArgumentException("Expected " + getPropertyName() + " to not be empty");
+		}
+		
+		if (value.getClass().isArray() && Array.getLength(value) == 0) {
+			throw new IllegalArgumentException("Expected " + getPropertyName() + " array to not be empty");
 		}
 	}
 

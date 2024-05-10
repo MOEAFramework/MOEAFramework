@@ -79,6 +79,16 @@ public class DoubleValidator extends NumberValidator<Double> {
 	}
 	
 	/**
+	 * Asserts the value is between the given lower and upper bounds, but not equal to the lower or upper bounds.
+	 * 
+	 * @param lower the lower bound
+	 * @param upper the upper bound
+	 */
+	public void isStrictlyBetween(double lower, double upper) {
+		super.isBetween(Math.nextUp(lower), Math.nextDown(upper));
+	}
+	
+	/**
 	 * Asserts the value is a probability, meaning {@code 0.0 <= value <= 1.0}.
 	 */
 	public void isProbability() {

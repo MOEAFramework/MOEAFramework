@@ -56,7 +56,7 @@ public class Validate {
 	 * Constructs a validator for a {@link Problem}.
 	 * 
 	 * @param name the parameter name
-	 * @param value the parameter value
+	 * @param problem the problem
 	 * @return the validator
 	 */
 	public static ProblemValidator that(String name, Problem problem) {
@@ -67,7 +67,8 @@ public class Validate {
 	 * Constructs a validator for any generic object.
 	 * 
 	 * @param name the parameter name
-	 * @param value the parameter value
+	 * @param value the object
+	 * @param <T> the type of the object
 	 * @return the validator
 	 */
 	public static <T> ObjectValidator<T> that(String name, T value) {

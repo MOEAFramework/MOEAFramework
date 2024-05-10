@@ -61,7 +61,7 @@ public class Permutation implements Variable {
 	 */
 	public Permutation(int[] permutation) {
 		super();
-		Validate.that("permutation.length", permutation.length).isGreaterThan(0);
+		Validate.that("permutation", permutation).isNotEmpty();
 		
 		fromArray(permutation);
 	}

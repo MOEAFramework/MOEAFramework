@@ -17,8 +17,11 @@
  */
 package org.moeaframework.util.validate;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.core.Population;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.mock.MockConstraintProblem;
@@ -88,6 +91,15 @@ public class ValidateTest {
 	}
 	
 	@Test
+	public void testStrictlyBetween() {
+		Validate.that("foo", 7.0).isStrictlyBetween(5.0, 10.0);
+		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", 5.0).isStrictlyBetween(5.0, 10.0));
+		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", 10.0).isStrictlyBetween(5.0, 10.0));
+		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", 4.0).isStrictlyBetween(5.0, 10.0));
+		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", 11.0).isStrictlyBetween(5.0, 10.0));
+	}
+	
+	@Test
 	public void testProbability() {
 		Validate.that("foo", 0.0).isProbability();
 		Validate.that("foo", 0.5).isProbability();
@@ -100,6 +112,17 @@ public class ValidateTest {
 	public void testNotNull() {
 		Validate.that("foo", new double[0]).isNotNull();
 		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", null).isNotNull());
+	}
+	
+	@Test
+	public void testNotEmpty() {
+		Validate.that("foo", new double[1]).isNotEmpty();
+		Validate.that("foo", List.of(5)).isNotEmpty();
+		Validate.that("foo", new Object()).isNotEmpty();
+		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", null).isNotEmpty());
+		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", new double[0]).isNotEmpty());
+		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", List.of()).isNotEmpty());
+		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", new Population()).isNotEmpty());
 	}
 	
 	@Test

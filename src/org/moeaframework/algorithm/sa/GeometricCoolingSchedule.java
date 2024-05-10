@@ -66,7 +66,7 @@ public class GeometricCoolingSchedule implements CoolingSchedule {
 	 */
 	@Property
 	public void setAlpha(double alpha) {
-		Validate.that("alpha", alpha).isBetween(Math.nextUp(0.0), Math.nextDown(1.0));
+		Validate.that("alpha", alpha).isStrictlyBetween(0.0, 1.0);
 		this.alpha = alpha;
 	}
 
