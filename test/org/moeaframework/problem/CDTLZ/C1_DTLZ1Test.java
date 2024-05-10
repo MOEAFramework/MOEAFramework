@@ -60,5 +60,10 @@ public class C1_DTLZ1Test extends ProblemTest {
 		testGenerate("C1_DTLZ1_10", Assert::assertFeasible);
 		testGenerate("C1_DTLZ1_15", Assert::assertFeasible);
 	}
+	
+	@Test
+	public void testAgainstPymoo() {
+		testAgainstPymoo("C1_DTLZ1_2", "C1DTLZ1");
+	}
 
 }

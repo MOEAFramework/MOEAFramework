@@ -60,6 +60,8 @@ jobs:
       uses: matlab-actions/setup-matlab@v1
     - name: Download test dependencies
       run: ant -f test.xml download-all
+    - name: Set up Pymoo
+      run: pip install pymoo
     - name: Set up Coco Framework (Linux)
       if: runner.os == 'Linux'
       run: |

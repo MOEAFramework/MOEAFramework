@@ -47,11 +47,18 @@ import org.moeaframework.mock.MockSolution;
 public abstract class ProblemTest {
 	
 	/**
-	 * Call from any test to skip if JMetal does not exist.
+	 * Call from any test to skip if JMetal-Plugin is not configured.
 	 */
 	public void assumeJMetalExists() {
 		Assume.assumeTrue("JMetal-Plugin required to run test",
 				ProblemFactory.getInstance().hasProvider("org.moeaframework.problem.jmetal.JMetalProblems"));
+	}
+	
+	/**
+	 * Call from any test to skip of Pymoo is not configured.
+	 */
+	public void assumePymooExists() {
+		Assume.assumeCommand("python", "-c", "import pymoo");
 	}
 	
 	/**
@@ -204,55 +211,51 @@ public abstract class ProblemTest {
 	public void testAgainstJMetal(String problemName, boolean exactConstraints) {
 		assumeJMetalExists();
 		
-		Problem problemA = ProblemFactory.getInstance().getProblem(problemName);
-		Problem problemB = ProblemFactory.getInstance().getProblem(problemName + "-JMetal");
-
-		testAgainstJMetal(problemA, problemB, exactConstraints);
-	}
-	
-	/**
-	 * Tests if two problems produce identical results.
-	 * 
-	 * @param problemA the first problem
-	 * @param problemB the second problem
-	 * @param exactConstraints if {@code true}, require identical constraint values
-	 */
-	protected void testAgainstJMetal(Problem problemA, Problem problemB, boolean exactConstraints) {
-		RandomInitialization initialization = new RandomInitialization(problemA);
-		
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
-			Solution solutionA = initialization.initialize(1)[0];
-			Solution solutionB = solutionA.copy();
+		try (Problem moeaProblem = ProblemFactory.getInstance().getProblem(problemName);
+				Problem jmetalProblem = ProblemFactory.getInstance().getProblem(problemName + "-JMetal")) {
+			RandomInitialization initialization = new RandomInitialization(moeaProblem);
 			
-			problemA.evaluate(solutionA);
-			problemB.evaluate(solutionB);
-			
-			// JMetal only recognizes negative values as violating constraints, therefore fix the sign
-			// before performing exact comparisons.
-			if (exactConstraints && problemA.getNumberOfConstraints() > 0) {
-				double[] constraints = solutionA.getConstraints();
+			for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+				Solution moeaSolution = initialization.initialize(1)[0];
+				Solution jmetalSolution = moeaSolution.copy();
 				
-				for (int j = 0; j < constraints.length; j++) {
-					if (constraints[j] > 0.0) {
-						constraints[j] = -constraints[j];
+				moeaProblem.evaluate(moeaSolution);
+				jmetalProblem.evaluate(jmetalSolution);
+				
+				// JMetal only recognizes negative values as violating constraints, therefore fix the sign
+				// before performing exact comparisons.
+				if (exactConstraints && moeaProblem.getNumberOfConstraints() > 0) {
+					double[] constraints = moeaSolution.getConstraints();
+					
+					for (int j = 0; j < constraints.length; j++) {
+						if (constraints[j] > 0.0) {
+							constraints[j] = -constraints[j];
+						}
 					}
+					
+					moeaSolution.setConstraints(constraints);
 				}
 				
-				solutionA.setConstraints(constraints);
+				compare(moeaSolution, jmetalSolution, exactConstraints);
 			}
+		}
+	}
+	
+	public void testAgainstPymoo(String problemName, String pymooProblemName) {
+		assumePymooExists();
+		
+		try (Problem moeaProblem = ProblemFactory.getInstance().getProblem(problemName);
+				Problem pymooProblem = new PymooProblem(pymooProblemName, moeaProblem)) {
+			RandomInitialization initialization = new RandomInitialization(moeaProblem);
 			
-			try {
-				compare(solutionA, solutionB, exactConstraints);
-			} catch (AssertionError e) {
-				System.out.println("Solution comparison failed!");
-				System.out.println("  Problem: " + problemA.getName());
-				System.out.println("  Variables: " + formatVariables(solutionA));
-				System.out.println("  Objectives: " + Arrays.toString(solutionA.getObjectives()) + " / " +
-						Arrays.toString(solutionB.getObjectives()));
-				System.out.println("  Constraints: " + Arrays.toString(solutionA.getConstraints()) + " / " +
-						Arrays.toString(solutionB.getConstraints()));
+			for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+				Solution moeaSolution = initialization.initialize(1)[0];
+				Solution pymooSolution = moeaSolution.copy();
 				
-				throw e;
+				moeaProblem.evaluate(moeaSolution);
+				pymooProblem.evaluate(pymooSolution);
+				
+				compare(moeaSolution, pymooSolution, true);
 			}
 		}
 	}
@@ -279,17 +282,26 @@ public abstract class ProblemTest {
 	 * @param exactConstraints if {@code true}, require identical constraint values
 	 */
 	protected void compare(Solution solutionA, Solution solutionB, boolean exactConstraints) {
-		for (int i = 0; i < solutionA.getNumberOfObjectives(); i++) {
-			Assert.assertEquals(solutionA.getObjective(i), solutionB.getObjective(i), TestThresholds.LOW_PRECISION);
-		}
-		
-		for (int i = 0; i < solutionA.getNumberOfConstraints(); i++) {
-			if (exactConstraints) {
-				Assert.assertEquals(solutionA.getConstraint(i), solutionB.getConstraint(i), TestThresholds.LOW_PRECISION);
-			} else {
-				// only check if constraints are feasible (== 0) or infeasible (!= 0)
-				Assert.assertEquals(solutionA.getConstraint(i) != 0, solutionB.getConstraint(i) != 0);
+		try {
+			for (int i = 0; i < solutionA.getNumberOfObjectives(); i++) {
+				Assert.assertEquals(solutionA.getObjective(i), solutionB.getObjective(i), TestThresholds.LOW_PRECISION);
 			}
+			
+			for (int i = 0; i < solutionA.getNumberOfConstraints(); i++) {
+				if (exactConstraints) {
+					Assert.assertEquals(solutionA.getConstraint(i), solutionB.getConstraint(i), TestThresholds.LOW_PRECISION);
+				} else {
+					// only check if constraints are feasible (== 0) or infeasible (!= 0)
+					Assert.assertEquals(solutionA.getConstraint(i) != 0, solutionB.getConstraint(i) != 0);
+				}
+			}
+		} catch (AssertionError e) {
+			System.err.println("Solution comparison failed!");
+			System.err.println("  Variables: " + formatVariables(solutionA));
+			System.err.println("  Objectives: " + Arrays.toString(solutionA.getObjectives()) + " / " + Arrays.toString(solutionB.getObjectives()));
+			System.err.println("  Constraints: " + Arrays.toString(solutionA.getConstraints()) + " / " + Arrays.toString(solutionB.getConstraints()));
+			
+			throw e;
 		}
 	}
 
