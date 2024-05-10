@@ -56,10 +56,10 @@ jobs:
       with:
         java-version: ${{ matrix.java }}
         distribution: ${{ env.JAVA_DISTRIBUTION }}
-    - name: Set up Python 3.12
+    - name: Set up Python 3.10
       uses: actions/setup-python@v5
       with:
-        python-version: '3.12'
+        python-version: '3.10' # distutils is required by Coco, but removed in 3.12
     - name: Set up Matlab
       uses: matlab-actions/setup-matlab@v1
     - name: Download test dependencies
