@@ -58,5 +58,19 @@ public abstract class Validator<T> {
 	protected T getPropertyValue() {
 		return propertyValue;
 	}
+	
+	/**
+	 * Throws an {@link IllegalArgumentException} with the given message.  This method does define a return type so
+	 * callers can {@code return} the result to avoid "not all code paths return a value" compilation errors.
+	 * However, this method always throws and never returns.
+	 * 
+	 * @param <R> the return type, typically determined automatically by the type system
+	 * @param message the message describing the validation failure
+	 * @return this method will never return
+	 * @throws IllegalArgumentException with the given message
+	 */
+	public <R> R fails(String message) {
+		throw new IllegalArgumentException("Validation of " + getPropertyName() + " failed: " + message);
+	}
 
 }

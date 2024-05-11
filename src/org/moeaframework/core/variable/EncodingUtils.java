@@ -44,46 +44,6 @@ import org.moeaframework.util.validate.Validate;
  * binary and gray code formats.
  */
 public class EncodingUtils {
-	
-	/**
-	 * The error message shown when the array length is not valid.
-	 */
-	private static final String INVALID_LENGTH = "invalid number of values";
-	
-	/**
-	 * The error message shown when the number of bits provided is not valid.
-	 */
-	private static final String INVALID_BITS = "invalid number of bits";
-	
-	/**
-	 * The error message shown when the decision variable is not real-valued.
-	 */
-	private static final String NOT_REAL = "not a real variable";
-	
-	/**
-	 * The error message shown when the decision variable is not integer-valued.
-	 */
-	private static final String NOT_INT = "not an integer variable";
-	
-	/**
-	 * The error message shown when the decision variable is not a permutation.
-	 */
-	private static final String NOT_PERMUTATION = "not a permutation";
-	
-	/**
-	 * The error message shown when the decision variable is not a subset.
-	 */
-	private static final String NOT_SUBSET = "not a subset";
-	
-	/**
-	 * The error message shown when the decision variable is not a binary value.
-	 */
-	private static final String NOT_BINARY = "not a binary variable";
-	
-	/**
-	 * The error message shown when the decision variable is not a boolean.
-	 */
-	private static final String NOT_BOOLEAN = "not a boolean variable";
 
 	/**
 	 * Private constructor to prevent instantiation.
@@ -111,7 +71,7 @@ public class EncodingUtils {
 		BitSet bits = encode(index);
 		
 		if (bits.length() > numberOfBits) {
-			throw new IllegalArgumentException("number of bits not sufficient to represent value");
+			Validate.that("binary", binary).fails("Requires at least " + bits.length() + " bits to store value.");
 		}
 
 		for (int i = 0; i < numberOfBits; i++) {
@@ -163,7 +123,7 @@ public class EncodingUtils {
 		int numberOfBits = binary.length();
 
 		if (numberOfBits > 64) {
-			throw new IllegalArgumentException(INVALID_BITS);
+			Validate.that("binary", binary).fails("Number of bits exceeds 64, the maximum size of a long.");
 		}
 
 		long value = 0;
@@ -322,7 +282,7 @@ public class EncodingUtils {
 	 * 
 	 * @param variable the decision variable
 	 * @return the value stored in an integer-valued decision variable
-	 * @throws IllegalArgumentException if the decision variable is not of type {@link RealVariable}
+	 * @throws IllegalArgumentException if the decision variable is not convertible to an integer
 	 */
 	public static int getInt(Variable variable) {
 		if (variable instanceof RealVariable realVariable) {
@@ -330,7 +290,7 @@ public class EncodingUtils {
 		} else if (variable instanceof BinaryIntegerVariable binaryIntegerVariable) {
 			return binaryIntegerVariable.getValue();
 		} else {
-			throw new IllegalArgumentException(NOT_INT);
+			return Validate.that("variable", variable).fails("Decision variable is not convertible to an integer.");
 		}
 	}
 	
@@ -377,7 +337,7 @@ public class EncodingUtils {
 		if (values.length == 1) {
 			return values[0];
 		} else {
-			throw new IllegalArgumentException(NOT_BOOLEAN);
+			return Validate.that("variable", variable).fails("Must be a binary variable with length 1.");
 		}
 	}
 	
@@ -567,7 +527,7 @@ public class EncodingUtils {
 	 */
 	public static void setReal(Solution solution, int startIndex, int endIndex, double[] values) {
 		if (values.length != (endIndex - startIndex)) {
-			throw new IllegalArgumentException(INVALID_LENGTH);
+			Validate.that("values", values).fails("The start / end index and array length are not compatible.");
 		}
 		
 		for (int i=startIndex; i<endIndex; i++) {
@@ -580,7 +540,7 @@ public class EncodingUtils {
 	 * 
 	 * @param variable the decision variable
 	 * @param value the value to assign the integer-valued decision variable
-	 * @throws IllegalArgumentException if the decision variable is not of type {@link RealVariable}
+	 * @throws IllegalArgumentException if the decision variable is not convertible to an integer
 	 * @throws IllegalArgumentException if the value is out of bounds
 	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
 	 */
@@ -590,7 +550,7 @@ public class EncodingUtils {
 		} else if (variable instanceof BinaryIntegerVariable binaryIntegerVariable) {
 			binaryIntegerVariable.setValue(value);
 		} else {
-			throw new IllegalArgumentException(NOT_INT);
+			Validate.that("variable", variable).fails("Decision variable is not convertible to an integer.");
 		}
 	}
 	
@@ -600,8 +560,7 @@ public class EncodingUtils {
 	 * 
 	 * @param solution the solution
 	 * @param values the array of integer values to assign the solution
-	 * @throws IllegalArgumentException if any decision variable contained in the solution is not of type
-	 *         {@link RealVariable}
+	 * @throws IllegalArgumentException if the decision variable is not convertible to an integer
 	 * @throws IllegalArgumentException if any of the values are out of bounds
 	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
 	 */
@@ -617,15 +576,14 @@ public class EncodingUtils {
 	 * @param startIndex the start index (inclusive)
 	 * @param endIndex the end index (exclusive)
 	 * @param values the array of floating-point values to assign the decision variables
-	 * @throws IllegalArgumentException if any decision variable contained in the solution between the start and end
-	 *         index is not of type {@link RealVariable}
+	 * @throws IllegalArgumentException if the decision variables are not convertible to an integer
 	 * @throws IllegalArgumentException if an invalid number of values are provided
 	 * @throws IllegalArgumentException if any of the values are out of bounds
 	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
 	 */
 	public static void setInt(Solution solution, int startIndex, int endIndex, int[] values) {
 		if (values.length != (endIndex - startIndex)) {
-			throw new IllegalArgumentException(INVALID_LENGTH);
+			Validate.that("values", values).fails("The start / end index and array length are not compatible.");
 		}
 		
 		for (int i=startIndex; i<endIndex; i++) {
@@ -660,7 +618,7 @@ public class EncodingUtils {
 		BinaryVariable binaryVariable = Validate.that("variable", variable).isA(BinaryVariable.class);
 		
 		if (values.length != binaryVariable.getNumberOfBits()) {
-			throw new IllegalArgumentException(INVALID_LENGTH);
+			Validate.that("values", values).fails("Array length must equal the number of bits.");
 		}
 			
 		for (int i=0; i<binaryVariable.getNumberOfBits(); i++) {

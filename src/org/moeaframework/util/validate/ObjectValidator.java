@@ -67,7 +67,14 @@ public class ObjectValidator<T> extends Validator<T> {
 		}
 	}
 	
-	public final <S extends T> S isA(Class<S> type) {
+	/**
+	 * Asserts the given object is the requested type.  This method also returns the object cast to the type.
+	 * 
+	 * @param <R> the return type
+	 * @param type the requested type
+	 * @return the object cast to the requested type
+	 */
+	public final <R extends T> R isA(Class<R> type) {
 		try {
 			return type.cast(getPropertyValue());
 		} catch (ClassCastException e) {
