@@ -330,7 +330,7 @@ public class EncodingUtils {
 		if (variable instanceof RealVariable realVariable) {
 			return (int)Math.floor(realVariable.getValue());
 		} else if (variable instanceof BinaryIntegerVariable binaryIntegerVariable) {
-			return (int)Math.floor(binaryIntegerVariable.getValue());
+			return binaryIntegerVariable.getValue();
 		} else {
 			throw new IllegalArgumentException(NOT_INT);
 		}
