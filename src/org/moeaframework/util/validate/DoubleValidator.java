@@ -20,7 +20,7 @@ package org.moeaframework.util.validate;
 /**
  * Validator for {@code double} primitives.
  */
-public class DoubleValidator extends NumberValidator<Double> {
+public final class DoubleValidator extends NumberValidator<Double> {
 
 	/**
 	 * Constructs a new validator for {@code double} primitives.
@@ -37,7 +37,7 @@ public class DoubleValidator extends NumberValidator<Double> {
 	 * 
 	 * @param threshold the threshold
 	 */
-	public void isGreaterThan(double threshold) {
+	public final void isGreaterThan(double threshold) {
 		super.isGreaterThan(threshold);
 	}
 	
@@ -46,7 +46,7 @@ public class DoubleValidator extends NumberValidator<Double> {
 	 * 
 	 * @param threshold the threshold
 	 */
-	public void isGreaterThanOrEqualTo(double threshold) {
+	public final void isGreaterThanOrEqualTo(double threshold) {
 		super.isGreaterThanOrEqualTo(threshold);
 	}
 	
@@ -55,7 +55,7 @@ public class DoubleValidator extends NumberValidator<Double> {
 	 * 
 	 * @param threshold the threshold
 	 */
-	public void isLessThan(double threshold) {
+	public final void isLessThan(double threshold) {
 		super.isLessThan(threshold);
 	}
 	
@@ -64,7 +64,7 @@ public class DoubleValidator extends NumberValidator<Double> {
 	 * 
 	 * @param threshold the threshold
 	 */
-	public void isLessThanOrEqualTo(double threshold) {
+	public final void isLessThanOrEqualTo(double threshold) {
 		super.isLessThanOrEqualTo(threshold);
 	}
 	
@@ -74,7 +74,7 @@ public class DoubleValidator extends NumberValidator<Double> {
 	 * @param lower the lower bound
 	 * @param upper the upper bound
 	 */
-	public void isBetween(double lower, double upper) {
+	public final void isBetween(double lower, double upper) {
 		super.isBetween(lower, upper);
 	}
 	
@@ -84,14 +84,14 @@ public class DoubleValidator extends NumberValidator<Double> {
 	 * @param lower the lower bound
 	 * @param upper the upper bound
 	 */
-	public void isStrictlyBetween(double lower, double upper) {
+	public final void isStrictlyBetween(double lower, double upper) {
 		super.isBetween(Math.nextUp(lower), Math.nextDown(upper));
 	}
 	
 	/**
 	 * Asserts the value represents a probability, meaning {@code 0.0 <= value <= 1.0}.
 	 */
-	public void isProbability() {
+	public final void isProbability() {
 		super.isBetween(0.0, 1.0);
 	}
 

@@ -20,7 +20,7 @@ package org.moeaframework.util.validate;
 /**
  * Validator for {@code int} primitives.
  */
-public class IntegerValidator extends NumberValidator<Integer> {
+public final class IntegerValidator extends NumberValidator<Integer> {
 
 	/**
 	 * Constructs a new validator for {@code int} primitives.
@@ -37,7 +37,7 @@ public class IntegerValidator extends NumberValidator<Integer> {
 	 * 
 	 * @param threshold the threshold
 	 */
-	public void isGreaterThan(int threshold) {
+	public final void isGreaterThan(int threshold) {
 		super.isGreaterThan(threshold);
 	}
 	
@@ -46,7 +46,7 @@ public class IntegerValidator extends NumberValidator<Integer> {
 	 * 
 	 * @param threshold the threshold
 	 */
-	public void isGreaterThanOrEqualTo(int threshold) {
+	public final void isGreaterThanOrEqualTo(int threshold) {
 		super.isGreaterThanOrEqualTo(threshold);
 	}
 	
@@ -55,7 +55,7 @@ public class IntegerValidator extends NumberValidator<Integer> {
 	 * 
 	 * @param threshold the threshold
 	 */
-	public void isLessThan(int threshold) {
+	public final void isLessThan(int threshold) {
 		super.isLessThan(threshold);
 	}
 	
@@ -64,7 +64,7 @@ public class IntegerValidator extends NumberValidator<Integer> {
 	 * 
 	 * @param threshold the threshold
 	 */
-	public void isLessThanOrEqualTo(int threshold) {
+	public final void isLessThanOrEqualTo(int threshold) {
 		super.isLessThanOrEqualTo(threshold);
 	}
 	
@@ -74,7 +74,7 @@ public class IntegerValidator extends NumberValidator<Integer> {
 	 * @param lower the lower bound
 	 * @param upper the upper bound
 	 */
-	public void isBetween(int lower, int upper) {
+	public final void isBetween(int lower, int upper) {
 		super.isBetween(lower, upper);
 	}
 

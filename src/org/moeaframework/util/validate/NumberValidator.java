@@ -44,7 +44,7 @@ public abstract class NumberValidator<T extends Number & Comparable<T>> extends 
 	 * 
 	 * @param threshold the threshold
 	 */
-	protected void isGreaterThan(T threshold) {
+	protected final void isGreaterThan(T threshold) {
 		if (getPropertyValue().compareTo(threshold) <= 0) {
 			throw new IllegalArgumentException("Expected " + getPropertyName() + " to be greater than " + threshold +
 					", given " + getPropertyValue());
@@ -56,7 +56,7 @@ public abstract class NumberValidator<T extends Number & Comparable<T>> extends 
 	 * 
 	 * @param threshold the threshold
 	 */
-	protected void isGreaterThanOrEqualTo(T threshold) {
+	protected final void isGreaterThanOrEqualTo(T threshold) {
 		if (getPropertyValue().compareTo(threshold) < 0) {
 			throw new IllegalArgumentException("Expected " + getPropertyName() + " to be greater than or equal to " +
 					threshold + ", given " + getPropertyValue());
@@ -68,7 +68,7 @@ public abstract class NumberValidator<T extends Number & Comparable<T>> extends 
 	 * 
 	 * @param threshold the threshold
 	 */
-	protected void isLessThan(T threshold) {
+	protected final void isLessThan(T threshold) {
 		if (getPropertyValue().compareTo(threshold) >= 0) {
 			throw new IllegalArgumentException("Expected " + getPropertyName() + " to be less than " + threshold +
 					", given " + getPropertyValue());
@@ -80,7 +80,7 @@ public abstract class NumberValidator<T extends Number & Comparable<T>> extends 
 	 * 
 	 * @param threshold the threshold
 	 */
-	protected void isLessThanOrEqualTo(T threshold) {
+	protected final void isLessThanOrEqualTo(T threshold) {
 		if (getPropertyValue().compareTo(threshold) > 0) {
 			throw new IllegalArgumentException("Expected " + getPropertyName() + " to be less than or equal to " +
 					threshold + ", given " + getPropertyValue());
@@ -93,7 +93,7 @@ public abstract class NumberValidator<T extends Number & Comparable<T>> extends 
 	 * @param lower the lower bound
 	 * @param upper the upper bound
 	 */
-	protected void isBetween(T lower, T upper) {
+	protected final void isBetween(T lower, T upper) {
 		if (getPropertyValue().compareTo(lower) < 0 || getPropertyValue().compareTo(upper) > 0) {
 			throw new IllegalArgumentException("Expected " + getPropertyName() + " to be between " + lower +
 					" and " + upper + " (inclusive), given " + getPropertyValue());

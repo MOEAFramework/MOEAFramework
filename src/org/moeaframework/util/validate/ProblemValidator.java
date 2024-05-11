@@ -23,7 +23,7 @@ import org.moeaframework.core.Variable;
 /**
  * Validator for {@link Problem}s.
  */
-public class ProblemValidator extends ObjectValidator<Problem> {
+public final class ProblemValidator extends ObjectValidator<Problem> {
 
 	/**
 	 * Constructs a new problem validator.
@@ -38,7 +38,7 @@ public class ProblemValidator extends ObjectValidator<Problem> {
 	/**
 	 * Asserts the problem has no constraints.
 	 */
-	public void isUnconstrained() {
+	public final void isUnconstrained() {
 		isNotNull();
 		
 		if (getPropertyValue().getNumberOfConstraints() > 0) {
@@ -51,7 +51,7 @@ public class ProblemValidator extends ObjectValidator<Problem> {
 	 * 
 	 * @param type the requested type
 	 */
-	public void isType(Class<? extends Variable> type) {
+	public final void isType(Class<? extends Variable> type) {
 		isNotNull();
 		
 		if (!getPropertyValue().isType(type)) {
