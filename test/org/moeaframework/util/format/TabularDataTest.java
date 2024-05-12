@@ -144,7 +144,6 @@ public class TabularDataTest {
 				 PrintStream ps = new PrintStream(baos)) {
 			data.toLatex(ps);
 			Assert.assertEqualsNormalized(expectedLatex, baos.toString());
-			data.toLatex(System.out);
 		}
 	}
 	

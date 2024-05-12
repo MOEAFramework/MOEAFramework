@@ -38,6 +38,7 @@ public final class DoubleValidator extends NumberValidator<Double> {
 	 * @param threshold the threshold
 	 */
 	public final void isGreaterThan(double threshold) {
+		isValidNumber();
 		super.isGreaterThan(threshold);
 	}
 	
@@ -47,6 +48,7 @@ public final class DoubleValidator extends NumberValidator<Double> {
 	 * @param threshold the threshold
 	 */
 	public final void isGreaterThanOrEqualTo(double threshold) {
+		isValidNumber();
 		super.isGreaterThanOrEqualTo(threshold);
 	}
 	
@@ -56,6 +58,7 @@ public final class DoubleValidator extends NumberValidator<Double> {
 	 * @param threshold the threshold
 	 */
 	public final void isLessThan(double threshold) {
+		isValidNumber();
 		super.isLessThan(threshold);
 	}
 	
@@ -65,6 +68,7 @@ public final class DoubleValidator extends NumberValidator<Double> {
 	 * @param threshold the threshold
 	 */
 	public final void isLessThanOrEqualTo(double threshold) {
+		isValidNumber();
 		super.isLessThanOrEqualTo(threshold);
 	}
 	
@@ -75,6 +79,7 @@ public final class DoubleValidator extends NumberValidator<Double> {
 	 * @param upper the upper bound
 	 */
 	public final void isBetween(double lower, double upper) {
+		isValidNumber();
 		super.isBetween(lower, upper);
 	}
 	
@@ -85,14 +90,34 @@ public final class DoubleValidator extends NumberValidator<Double> {
 	 * @param upper the upper bound
 	 */
 	public final void isStrictlyBetween(double lower, double upper) {
-		super.isBetween(Math.nextUp(lower), Math.nextDown(upper));
+		isBetween(Math.nextUp(lower), Math.nextDown(upper));
 	}
 	
 	/**
 	 * Asserts the value represents a probability, meaning {@code 0.0 <= value <= 1.0}.
 	 */
 	public final void isProbability() {
-		super.isBetween(0.0, 1.0);
+		isBetween(0.0, 1.0);
+	}
+	
+	/**
+	 * Asserts the value is a finite number (i.e., not infinite or {@value Double#NaN}).
+	 */
+	public final void isFinite() {
+		if (!Double.isFinite(getPropertyValue())) {
+			throw new IllegalArgumentException("Expected " + getPropertyName() + " to be a finite number, given " +
+					getPropertyValue());
+		}
+	}
+	
+	/**
+	 * Asserts the value is a valid number (i.e., not {@value Double#NaN}).
+	 */
+	private final void isValidNumber() {
+		if (Double.isNaN(getPropertyValue())) {
+			throw new IllegalArgumentException("Expected " + getPropertyName() + " to be a valid number, given " +
+					getPropertyValue());
+		}
 	}
 
 }

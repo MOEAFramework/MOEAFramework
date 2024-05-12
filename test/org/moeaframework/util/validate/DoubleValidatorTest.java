@@ -17,26 +17,18 @@
  */
 package org.moeaframework.util.validate;
 
-import java.util.List;
-
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.Population;
-import org.moeaframework.core.variable.BinaryVariable;
-import org.moeaframework.core.variable.RealVariable;
-import org.moeaframework.mock.MockConstraintProblem;
-import org.moeaframework.mock.MockMixedBinaryProblem;
-import org.moeaframework.mock.MockMultiTypeProblem;
-import org.moeaframework.mock.MockRealProblem;
 
-public class ValidateTest {
+public class DoubleValidatorTest {
+	
+	@Test
+	public void testValidatorType() {
+		Assert.assertInstanceOf(DoubleValidator.class, Validate.that("foo", 1.0));
+	}
 
 	@Test
 	public void testGreaterThan() {
-		Validate.that("foo", 2).isGreaterThan(1);
-		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", 1).isGreaterThan(1));
-		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", 0).isGreaterThan(1));
-		
 		Validate.that("foo", 2.0).isGreaterThan(1.0);
 		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", 1.0).isGreaterThan(1.0));
 		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", 0.0).isGreaterThan(1.0));
@@ -44,10 +36,6 @@ public class ValidateTest {
 	
 	@Test
 	public void testGreaterThanOrEqualTo() {
-		Validate.that("foo", 1).isGreaterThanOrEqualTo(1);
-		Validate.that("foo", 2).isGreaterThanOrEqualTo(1);
-		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", 0).isGreaterThanOrEqualTo(1));
-		
 		Validate.that("foo", 1.0).isGreaterThanOrEqualTo(1.0);
 		Validate.that("foo", 2.0).isGreaterThanOrEqualTo(1.0);
 		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", 0.0).isGreaterThanOrEqualTo(1.0));
@@ -55,10 +43,6 @@ public class ValidateTest {
 	
 	@Test
 	public void testLessThan() {
-		Validate.that("foo", 0).isLessThan(1);
-		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", 1).isLessThan(1));
-		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", 2).isLessThan(1));
-		
 		Validate.that("foo", 0.0).isLessThan(1.0);
 		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", 1.0).isLessThan(1.0));
 		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", 2.0).isLessThan(1.0));
@@ -66,10 +50,6 @@ public class ValidateTest {
 	
 	@Test
 	public void testLessThanOrEqualTo() {
-		Validate.that("foo", 0).isLessThanOrEqualTo(1);
-		Validate.that("foo", 1).isLessThanOrEqualTo(1);
-		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", 2).isLessThanOrEqualTo(1));
-		
 		Validate.that("foo", 0.0).isLessThanOrEqualTo(1.0);
 		Validate.that("foo", 1.0).isLessThanOrEqualTo(1.0);
 		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", 2.0).isLessThanOrEqualTo(1.0));
@@ -77,12 +57,6 @@ public class ValidateTest {
 	
 	@Test
 	public void testBetween() {
-		Validate.that("foo", 5).isBetween(5, 10);
-		Validate.that("foo", 7).isBetween(5, 10);
-		Validate.that("foo", 10).isBetween(5, 10);
-		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", 4).isBetween(5, 10));
-		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", 11).isBetween(5, 10));
-		
 		Validate.that("foo", 5.0).isBetween(5.0, 10.0);
 		Validate.that("foo", 7.0).isBetween(5.0, 10.0);
 		Validate.that("foo", 10.0).isBetween(5.0, 10.0);
@@ -109,34 +83,24 @@ public class ValidateTest {
 	}
 	
 	@Test
-	public void testNotNull() {
-		Validate.that("foo", new double[0]).isNotNull();
-		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", null).isNotNull());
+	public void testFinite() {
+		Validate.that("foo", 0.0).isFinite();
+		Validate.that("foo", Double.MAX_VALUE).isFinite();
+		Validate.that("foo", -Double.MAX_VALUE).isFinite();
+		Validate.that("foo", Double.MIN_VALUE).isFinite();
+		Validate.that("foo", -Double.MIN_VALUE).isFinite();
+		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", Double.POSITIVE_INFINITY).isFinite());
+		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", Double.NEGATIVE_INFINITY).isFinite());
 	}
 	
 	@Test
-	public void testNotEmpty() {
-		Validate.that("foo", new double[1]).isNotEmpty();
-		Validate.that("foo", List.of(5)).isNotEmpty();
-		Validate.that("foo", new Object()).isNotEmpty();
-		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", null).isNotEmpty());
-		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", new double[0]).isNotEmpty());
-		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", List.of()).isNotEmpty());
-		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", new Population()).isNotEmpty());
-	}
-	
-	@Test
-	public void testUnconstrained() {
-		Validate.that("problem", new MockRealProblem()).isUnconstrained();
-		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("problem", new MockConstraintProblem()).isUnconstrained());
-	}
-	
-	@Test
-	public void testProblemType() {
-		Validate.that("problem", new MockRealProblem()).isType(RealVariable.class);
-		Validate.that("problem", new MockMixedBinaryProblem()).isType(BinaryVariable.class);
-		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("problem", new MockRealProblem()).isType(BinaryVariable.class));
-		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("problem", new MockMultiTypeProblem()).isType(BinaryVariable.class));
+	public void testNaNsRejected() {
+		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", Double.NaN).isGreaterThan(1.0));
+		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", Double.NaN).isGreaterThanOrEqualTo(1.0));
+		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", Double.NaN).isLessThan(1.0));
+		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", Double.NaN).isLessThanOrEqualTo(1.0));
+		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", Double.NaN).isBetween(0.0, 1.0));
+		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", Double.NaN).isFinite());
 	}
 	
 }
