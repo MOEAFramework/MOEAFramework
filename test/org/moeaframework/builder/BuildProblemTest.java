@@ -158,9 +158,9 @@ public class BuildProblemTest {
 	
 			List<String> lines = result.toString().lines().skip(2).toList(); // skip first two lines
 			Assert.assertEquals(3, lines.size());
-			Assert.assertMatches(lines.get(0), "(\\bVar[0-9]+\\b\\s*){10}(\\bObj[0-9]+\\b\\s*){2}");
-			Assert.assertMatches(lines.get(1), "([\\-]+\\s*){12}");
-			Assert.assertMatches(lines.get(2), "(\\-?[0-9]+\\.[0-9]+\\b\\s*){12}");
+			Assert.assertStringMatches(lines.get(0), "(\\bVar[0-9]+\\b\\s*){10}(\\bObj[0-9]+\\b\\s*){2}");
+			Assert.assertStringMatches(lines.get(1), "([\\-]+\\s*){12}");
+			Assert.assertStringMatches(lines.get(2), "(\\-?[0-9]+\\.[0-9]+\\b\\s*){12}");
 		}
 		
 		return testDirectory;

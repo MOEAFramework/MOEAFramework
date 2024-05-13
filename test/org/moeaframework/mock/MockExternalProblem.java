@@ -75,7 +75,7 @@ public class MockExternalProblem extends ExternalProblem {
 					String line = null;
 	
 					while (!thread.isInterrupted() && (line = reader.readLine()) != null) {
-						Assert.assertMatches(line, pattern);
+						Assert.assertStringMatches(line, pattern);
 	
 						writer.println(callback.apply(line));
 						writer.flush();

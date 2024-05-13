@@ -113,7 +113,8 @@ public abstract class Validator<T> {
 	}
 	
 	/**
-	 * Always fails to indicate a user-provided value does not match the supported list of enum constants.
+	 * Always fails to indicate a user-provided value does not match the supported list of enum constants.  The
+	 * property value does not necessarily need to be the enum type, as we often convert from strings.
 	 * 
 	 * @param <R> the return type
 	 * @param enumType the enum type

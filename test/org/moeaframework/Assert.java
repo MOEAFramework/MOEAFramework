@@ -297,11 +297,19 @@ public class Assert extends org.junit.Assert {
 		assertTrue("Line is not blank: '" + line + "'", line.isBlank());
 	}
 	
-	public static void assertMatches(String line, String regex) {
+	public static void assertStringContains(String line, CharSequence substring) {
+		assertTrue("Line does not contain expected substring: '" + line + "'", line.contains(substring));
+	}
+	
+	public static void assertStringNotContains(String line, CharSequence substring) {
+		assertFalse("Line contains substring when it should not: '" + line + "'", line.contains(substring));
+	}
+	
+	public static void assertStringMatches(String line, String regex) {
 		assertTrue("Line does not match regex: '" + line + "'", line.matches(regex));
 	}
 	
-	public static void assertMatches(String line, Pattern regex) {
+	public static void assertStringMatches(String line, Pattern regex) {
 		assertTrue("Line does not match regex: '" + line + "'", regex.matcher(line).matches());
 	}
 	
@@ -373,7 +381,7 @@ public class Assert extends org.junit.Assert {
 			String line = null;
 			
 			while ((line = reader.readLine()) != null) {
-				assertMatches(line, regex);
+				assertStringMatches(line, regex);
 			}
 		}
 	}

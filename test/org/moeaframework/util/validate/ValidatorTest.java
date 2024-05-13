@@ -18,6 +18,7 @@
 package org.moeaframework.util.validate;
 
 import org.junit.Test;
+import org.moeaframework.Assert;
 
 public class ValidatorTest {
 	
@@ -28,17 +29,52 @@ public class ValidatorTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testFailUnrecognizedOption() {
-		Validate.that("foo", "value").failUnsupportedOption();
+		try {
+			Validate.that("foo", "bar").failUnsupportedOption();
+		} catch (IllegalArgumentException e) {
+			Assert.assertStringNotContains(e.getMessage(), "valid options are:");
+			throw e;
+		}
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testFailUnrecognizedOptionWithSupportedValues() {
-		Validate.that("foo", "value").failUnsupportedOption("other");
+		try {
+		Validate.that("foo", "bar").failUnsupportedOption("baz");
+		} catch (IllegalArgumentException e) {
+			Assert.assertStringContains(e.getMessage(), "valid options are: baz");
+			throw e;
+		}
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testFailUnsupportedOptionWithEnum() {
-		Validate.that("foo", TestEnum.Foo).failUnsupportedOption();
+		try {
+			Validate.that("foo", TestEnum.Foo).failUnsupportedOption();
+		} catch (IllegalArgumentException e) {
+			Assert.assertStringContains(e.getMessage(), "valid options are: Foo, Bar");
+			throw e;
+		}
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testFailUnsupportedOptionWithEnumAsString() {
+		try {
+			Validate.that("foo", "baz").failUnsupportedOption(TestEnum.class);
+		} catch (IllegalArgumentException e) {
+			Assert.assertStringContains(e.getMessage(), "valid options are: Foo, Bar");
+			throw e;
+		}
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testFailUnsupportedOptionWithNull() {
+		try {
+			Validate.that("foo", null).failUnsupportedOption();
+		} catch (IllegalArgumentException e) {
+			Assert.assertStringNotContains(e.getMessage(), "valid options are:");
+			throw e;
+		}
 	}
 	
 	private enum TestEnum {
