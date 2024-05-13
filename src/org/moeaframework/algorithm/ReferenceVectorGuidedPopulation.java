@@ -29,6 +29,7 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
 import org.moeaframework.util.Vector;
+import org.moeaframework.util.validate.Validate;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 import org.moeaframework.util.weights.NormalBoundaryIntersectionGenerator;
 
@@ -213,9 +214,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	 */
 	private void initialize() {
 		// validate arguments
-		if (numberOfObjectives < 2) {
-			throw new IllegalArgumentException("requires at least two objectives");
-		}
+		Validate.that("numberOfObjectives", numberOfObjectives).isGreaterThanOrEqualTo(2);
 		
 		// create the reference vectors
 		originalWeights = new NormalBoundaryIntersectionGenerator(numberOfObjectives, divisions).generate();

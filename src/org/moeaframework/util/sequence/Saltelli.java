@@ -18,6 +18,7 @@
 package org.moeaframework.util.sequence;
 
 import org.moeaframework.analysis.tools.SobolAnalysis;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Extension of Sobol's sequence for generating the samples for Saltelli's version of Sobol' global variance
@@ -51,9 +52,7 @@ public class Saltelli implements Sequence {
 
 	@Override
 	public double[][] generate(int N, int D) {
-		if (N % (2 * D + 2) != 0) {
-			throw new IllegalArgumentException("N must be a multiple of 2*D+2");
-		}
+		Validate.that("N", N).isDivisibleBy("2*D+2", 2*D+2);
 
 		N = N / (2 * D + 2);
 

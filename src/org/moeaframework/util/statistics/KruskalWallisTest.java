@@ -18,6 +18,7 @@
 package org.moeaframework.util.statistics;
 
 import org.apache.commons.math3.distribution.ChiSquaredDistribution;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * The Kruskal-Wallis One-Way Analysis of Variance by Ranks is a non-parametric statistical test determining if
@@ -52,10 +53,7 @@ public class KruskalWallisTest extends OrdinalStatisticalTest {
 	 */
 	public KruskalWallisTest(int numberOfGroups) {
 		super(numberOfGroups);
-		
-		if (numberOfGroups <= 1) {
-			throw new IllegalArgumentException("requires two or more groups");
-		}
+		Validate.that("numberOfGroups", numberOfGroups).isGreaterThan(1);
 	}
 
 	// make method public

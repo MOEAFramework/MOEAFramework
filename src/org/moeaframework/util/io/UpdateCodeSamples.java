@@ -50,6 +50,7 @@ import org.apache.commons.lang3.SystemUtils;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Utility to update code samples and output found in various documents, including Markdown and HTML / XSLT files.
@@ -425,7 +426,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			
 			RedirectStream.invoke(processBuilder);
 		} else {
-			throw new IllegalArgumentException("Unsupported file extension " + extension);
+			Validate.that("file extension", extension).failUnsupportedOption("java");
 		}
 	}
 	
@@ -459,7 +460,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			
 			return RedirectStream.capture(new ProcessBuilder(command));
 		} else {
-			throw new IllegalArgumentException("Unsupported file extension " + extension);
+			return Validate.that("file extension", extension).failUnsupportedOption("java", "class");
 		}
 	}
 	
@@ -545,7 +546,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 				startingLine = matcher.group(1) != null ? Integer.parseInt(matcher.group(1)) : FIRST_LINE;
 				endingLine = matcher.group(2) != null ? Integer.parseInt(matcher.group(2)) : LAST_LINE;
 			} else {
-				throw new IllegalArgumentException("Unrecognized line number range '" + str + "'");
+				Validate.that("line number range", str).failUnsupportedOption();
 			}
 		}
 		
@@ -727,7 +728,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 				}
 			}
 			
-			throw new IllegalArgumentException("Unrecognized language '" + str + "'");
+			return Validate.that("language", str).failUnsupportedOption(Language.class);
 		}
 		
 		/**
@@ -853,7 +854,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 				}
 			}
 			
-			throw new IllegalArgumentException("Unrecognized formatting flag '" + str + "'");
+			return Validate.that("formatting flag", str).failUnsupportedOption(FormatFlag.class);
 		}
 		
 		/**

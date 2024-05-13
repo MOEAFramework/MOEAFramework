@@ -42,7 +42,7 @@ public class RealVariableTest {
 	}
 	
 	@Test
-	public void testEmptyConstructor() {
+	public void testNoValueConstructor() {
 		Assert.assertTrue(Double.isNaN(new RealVariable(0.0, 1.0).getValue()));
 	}
 

@@ -25,6 +25,7 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.indicator.PISAHypervolume;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Assigns the fitness of solutions based on their contribution to the overall hypervolume.
@@ -97,7 +98,8 @@ public class HypervolumeContributionFitnessEvaluator implements FitnessEvaluator
 	 */
 	private List<Solution> normalize(Population population) {
 		if (population.size() < 2) {
-			throw new IllegalArgumentException("requires at least two solutions to compute bounds for normalization");
+			Validate.that("population", population)
+				.fails("Requires at least two solutions to compute bounds for normalization");
 		}
 		
 		double[] min = population.getLowerBounds();

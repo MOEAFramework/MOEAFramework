@@ -42,6 +42,7 @@ import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.util.format.Displayable;
 import org.moeaframework.util.io.CommentedLineReader;
 import org.moeaframework.util.io.Resources;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Stores a collection of key-value pairs similar to {@link Properties} but has support for reading and writing
@@ -623,9 +624,8 @@ public class TypedProperties implements Displayable {
 					return enumConstant;
 				}
 			}
-
-			throw new IllegalArgumentException("enum " + enumType.getSimpleName() + " has no constant of value " +
-					value);
+			
+			return Validate.that(key, value).failUnsupportedOption(enumType);
 		}
 	}
 	
@@ -1140,9 +1140,9 @@ public class TypedProperties implements Displayable {
 	private String arrayToString(Object array) {
 		StringBuilder sb = new StringBuilder();
 		Class<?> type = array.getClass();
-		
+
 		if (!type.isArray()) {
-			throw new IllegalArgumentException("not an array");
+			Validate.that("array", array).fails("Not an array");
 		}
 		
 		for (int i=0; i<Array.getLength(array); i++) {

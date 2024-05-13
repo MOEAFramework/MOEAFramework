@@ -25,6 +25,7 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Normalizes populations so that all objectives reside in the range {@code [0, 1]}.  This normalization ignores
@@ -157,7 +158,8 @@ public class Normalizer {
 		feasibleSolutions.filter(Solution::isFeasible);
 		
 		if (feasibleSolutions.size() < 2) {
-			throw new IllegalArgumentException("requires at least two solutions to compute bounds for normalization");
+			Validate.that("population", population)
+				.fails("At least two solutions must be provided to compute bounds for normalization");
 		}
 		
 		minimum = feasibleSolutions.getLowerBounds();
@@ -187,8 +189,8 @@ public class Normalizer {
 	private void checkRanges() {
 		for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
 			if (Math.abs(maximum[i] - minimum[i]) < Settings.EPS) {
-				throw new IllegalArgumentException("unable to normalize, objective " + i +
-						" has identical lower and upper bounds");
+				Validate.fail("Unable to compute bounds for normalization, objective " + i +
+						" is degenerate with identical lower and upper bounds");
 			}
 		}
 	}

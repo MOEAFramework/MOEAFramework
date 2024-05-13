@@ -31,6 +31,7 @@ import org.moeaframework.core.indicator.Indicators.IndicatorValues;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.OptionCompleter;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Command line utility for extracting data from a result file.  The data that can be extracted includes any properties
@@ -133,7 +134,7 @@ public class ExtractData extends CommandLineUtility {
 						continue;
 					}
 					
-					throw new IllegalArgumentException("missing field '" + fields[i] + "'");
+					Validate.that("field", fields[i]).fails("Field name not found in data");
 				}
 
 				output.println();

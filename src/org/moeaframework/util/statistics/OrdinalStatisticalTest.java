@@ -22,6 +22,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.moeaframework.util.validate.Validate;
+
 /**
  * Abstract class for implementing ordinal (rank-based) statistical tests.  Methods are provided for storing
  * {@link RankedObservation} objects and updating their ranks.
@@ -92,10 +94,7 @@ public abstract class OrdinalStatisticalTest implements StatisticalTest {
 	 * @param group the group to which the new observation belongs
 	 */
 	protected void add(double value, int group) {
-		if ((group < 0) || (group >= numberOfGroups)) {
-			throw new IllegalArgumentException();
-		}
-
+		Validate.that("group", group).isBetween(0, numberOfGroups-1);
 		data.add(new RankedObservation(value, group));
 	}
 	

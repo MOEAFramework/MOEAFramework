@@ -406,7 +406,7 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 			segments.add(new double[] { 0.676309689096988, 0.802185323301117 });
 			segments.add(new double[] { 0.898531908344865, 1.0               });
 		} else {
-			throw new IllegalArgumentException("getSegments not defined for k=" + k);
+			Validate.that("k", k).failUnsupportedOption();
 		}
 		
 		return segments;

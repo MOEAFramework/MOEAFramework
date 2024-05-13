@@ -23,6 +23,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Variable;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Decision variable for binary strings.
@@ -137,9 +138,7 @@ public class BinaryVariable implements Variable {
 	 * @throws IllegalArgumentException if the two binary strings differ in the number of bits
 	 */
 	public int hammingDistance(BinaryVariable variable) {
-		if (numberOfBits != variable.numberOfBits) {
-			throw new IllegalArgumentException("must have same number of bits");
-		}
+		Validate.that("numberOfBits", variable.getNumberOfBits()).isEqualTo(numberOfBits);
 
 		int count = 0;
 
@@ -201,10 +200,7 @@ public class BinaryVariable implements Variable {
 	
 	@Override
 	public void decode(String value) {
-		if (getNumberOfBits() != value.length()) {
-			throw new IllegalArgumentException("invalid bit string, expected " + getNumberOfBits() +
-					" bits but given " + value.length());
-		}
+		Validate.that("value.length", value.length()).isEqualTo("numberOfBits", numberOfBits);
 
 		for (int i=0; i<getNumberOfBits(); i++) {
 			char c = value.charAt(i);
@@ -214,8 +210,7 @@ public class BinaryVariable implements Variable {
 			} else if (c == '1') {
 				set(i, true);
 			} else {
-				throw new IllegalArgumentException("invalid bit string, unexpected character '" + c +
-						"' at index " + i);
+				Validate.that("value", value).fails("Bit string contains invalid character '" + c + "' at index " + i);
 			}
 		}
 	}

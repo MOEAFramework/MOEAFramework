@@ -22,6 +22,7 @@ import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.DTLZ.DTLZ3;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * The unconstrained UF12 test problem from the CEC 2009 special session and competition.
@@ -194,7 +195,7 @@ public class UF12 extends AbstractProblem {
 		super(numberOfVariables, numberOfObjectives);
 		
 		if ((numberOfVariables != 10) && (numberOfVariables != 30)) {
-			throw new IllegalArgumentException("number of variables must be 10 or 30");
+			Validate.that("numberOfVariables", numberOfVariables).failUnsupportedOption(10, 30);
 		}
 		
 		problem = new DTLZ3(numberOfVariables, numberOfObjectives);

@@ -39,7 +39,7 @@ public class ObjectValidator<T> extends Validator<T> {
 	/**
 	 * Asserts the object is not {@code null}.
 	 */
-	public void isNotNull() {
+	public final void isNotNull() {
 		if (getPropertyValue() == null) {
 			throw new IllegalArgumentException("Expected " + getPropertyName() + " to be set, given a <null> value");
 		}
@@ -53,7 +53,7 @@ public class ObjectValidator<T> extends Validator<T> {
 	 *   <li>An {@link Iterable} that contains no elements, which applies to practically all collection types, .
 	 * </ol>
 	 */
-	public void isNotEmpty() {
+	public final void isNotEmpty() {
 		isNotNull();
 		
 		T value = getPropertyValue();
@@ -64,6 +64,22 @@ public class ObjectValidator<T> extends Validator<T> {
 		
 		if (value.getClass().isArray() && Array.getLength(value) == 0) {
 			throw new IllegalArgumentException("Expected array " + getPropertyName() + " to not be empty");
+		}
+	}
+	
+	/**
+	 * Asserts the given object is the requested type.  This method also returns the object cast to the type.
+	 * 
+	 * @param <R> the return type
+	 * @param type the requested type
+	 * @return the object cast to the requested type
+	 */
+	public final <R extends T> R isA(Class<R> type) {
+		try {
+			return type.cast(getPropertyValue());
+		} catch (ClassCastException e) {
+			throw new IllegalArgumentException("Expected " + getPropertyName() + " to be type " +
+					type.getSimpleName() + ", but given type " + getPropertyValue().getClass().getSimpleName());
 		}
 	}
 

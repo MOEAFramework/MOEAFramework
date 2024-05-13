@@ -32,6 +32,7 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Utility for merging two or more populations identified by unique sources and determining the contribution of each
@@ -84,7 +85,7 @@ public class ReferenceSetMerger extends CommandLineUtility {
 	 */
 	public void add(String source, Population population) {
 		if (populations.containsKey(source)) {
-			throw new IllegalArgumentException("source already exists");
+			Validate.that("source", source).fails("A population with the same source has already been added");
 		}
 
 		populations.put(source, population);

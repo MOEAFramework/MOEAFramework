@@ -29,6 +29,7 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.util.validate.Validate;
 
 /* The following code is derived from derived from the ANSI C code developed
  * by Martin Pelikan available from <http://medal-lab.org/software.php>.  The
@@ -192,21 +193,10 @@ public class MNKProblem implements Problem {
 	 * @throws IllegalArgumentException if any parameter is invalid
 	 */
 	private void checkArguments() {
-		if (M <= 0) {
-			throw new IllegalArgumentException("M must be greater than 0");
-		}
-		
-		if (N <= 0) {
-			throw new IllegalArgumentException("N must be greater than 0");
-		}
-		
-		if (K >= N) {
-			throw new IllegalArgumentException("K must be less than N");
-		}
-		
-		if ((K < 0) || (K > 31)) {
-			throw new IllegalArgumentException("K must be an integer between 0 and 31");
-		}
+		Validate.that("M", M).isGreaterThan(0);
+		Validate.that("N", N).isGreaterThan(0);
+		Validate.that("K", K).isLessThan("N", N);
+		Validate.that("K", K).isBetween(0, 31);
 	}
 	
 	/**

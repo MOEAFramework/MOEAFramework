@@ -19,6 +19,7 @@ package org.moeaframework.problem.single;
 
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.util.validate.Validate;
 
 abstract class AbstractSingleObjectiveProblem extends AbstractProblem {
 	
@@ -28,10 +29,7 @@ abstract class AbstractSingleObjectiveProblem extends AbstractProblem {
 	
 	public AbstractSingleObjectiveProblem(int numberOfVariables, int numberOfObjectives, int numberOfConstraints) {
 		super(numberOfVariables, numberOfObjectives, numberOfConstraints);
-		
-		if (numberOfObjectives != 1) {
-			throw new IllegalArgumentException("numberOfObjectives must be 1 for single objective problems");
-		}
+		Validate.that("numberOfObjectives", numberOfObjectives).isEqualTo(1);
 	}
 	
 	/**

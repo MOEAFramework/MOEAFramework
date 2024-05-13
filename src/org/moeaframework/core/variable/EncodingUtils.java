@@ -22,6 +22,7 @@ import java.util.BitSet;
 
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Helper methods for working with various decision variable types and encodings.  First, these methods perform any
@@ -43,46 +44,6 @@ import org.moeaframework.core.Variable;
  * binary and gray code formats.
  */
 public class EncodingUtils {
-	
-	/**
-	 * The error message shown when the array length is not valid.
-	 */
-	private static final String INVALID_LENGTH = "invalid number of values";
-	
-	/**
-	 * The error message shown when the number of bits provided is not valid.
-	 */
-	private static final String INVALID_BITS = "invalid number of bits";
-	
-	/**
-	 * The error message shown when the decision variable is not real-valued.
-	 */
-	private static final String NOT_REAL = "not a real variable";
-	
-	/**
-	 * The error message shown when the decision variable is not integer-valued.
-	 */
-	private static final String NOT_INT = "not an integer variable";
-	
-	/**
-	 * The error message shown when the decision variable is not a permutation.
-	 */
-	private static final String NOT_PERMUTATION = "not a permutation";
-	
-	/**
-	 * The error message shown when the decision variable is not a subset.
-	 */
-	private static final String NOT_SUBSET = "not a subset";
-	
-	/**
-	 * The error message shown when the decision variable is not a binary value.
-	 */
-	private static final String NOT_BINARY = "not a binary variable";
-	
-	/**
-	 * The error message shown when the decision variable is not a boolean.
-	 */
-	private static final String NOT_BOOLEAN = "not a boolean variable";
 
 	/**
 	 * Private constructor to prevent instantiation.
@@ -110,7 +71,7 @@ public class EncodingUtils {
 		BitSet bits = encode(index);
 		
 		if (bits.length() > numberOfBits) {
-			throw new IllegalArgumentException("number of bits not sufficient to represent value");
+			Validate.that("binary", binary).fails("Requires at least " + bits.length() + " bits to store value.");
 		}
 
 		for (int i = 0; i < numberOfBits; i++) {
@@ -162,7 +123,7 @@ public class EncodingUtils {
 		int numberOfBits = binary.length();
 
 		if (numberOfBits > 64) {
-			throw new IllegalArgumentException(INVALID_BITS);
+			Validate.that("binary", binary).fails("Number of bits exceeds 64, the maximum size of a long.");
 		}
 
 		long value = 0;
@@ -312,11 +273,8 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if the decision variable is not of type {@link RealVariable}
 	 */
 	public static double getReal(Variable variable) {
-		if (variable instanceof RealVariable realVariable) {
-			return realVariable.getValue();
-		} else {
-			throw new IllegalArgumentException(NOT_REAL);
-		}
+		RealVariable realVariable = Validate.that("variable", variable).isA(RealVariable.class);
+		return realVariable.getValue();
 	}
 	
 	/**
@@ -324,7 +282,7 @@ public class EncodingUtils {
 	 * 
 	 * @param variable the decision variable
 	 * @return the value stored in an integer-valued decision variable
-	 * @throws IllegalArgumentException if the decision variable is not of type {@link RealVariable}
+	 * @throws IllegalArgumentException if the decision variable is not convertible to an integer
 	 */
 	public static int getInt(Variable variable) {
 		if (variable instanceof RealVariable realVariable) {
@@ -332,7 +290,7 @@ public class EncodingUtils {
 		} else if (variable instanceof BinaryIntegerVariable binaryIntegerVariable) {
 			return binaryIntegerVariable.getValue();
 		} else {
-			throw new IllegalArgumentException(NOT_INT);
+			return Validate.that("variable", variable).fails("Decision variable is not convertible to an integer.");
 		}
 	}
 	
@@ -344,11 +302,8 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if the decision variable is not of type {@link BinaryVariable}
 	 */
 	public static BitSet getBitSet(Variable variable) {
-		if (variable instanceof BinaryVariable binaryVariable) {
-			return binaryVariable.getBitSet();
-		} else {
-			throw new IllegalArgumentException(NOT_BINARY);
-		}
+		BinaryVariable binaryVariable = Validate.that("variable", variable).isA(BinaryVariable.class);
+		return binaryVariable.getBitSet();
 	}
 	
 	/**
@@ -359,17 +314,14 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if the decision variable is not of type {@link BinaryVariable}
 	 */
 	public static boolean[] getBinary(Variable variable) {
-		if (variable instanceof BinaryVariable binaryVariable) {
-			boolean[] result = new boolean[binaryVariable.getNumberOfBits()];
+		BinaryVariable binaryVariable = Validate.that("variable", variable).isA(BinaryVariable.class);
+		boolean[] result = new boolean[binaryVariable.getNumberOfBits()];
 			
-			for (int i=0; i<binaryVariable.getNumberOfBits(); i++) {
-				result[i] = binaryVariable.get(i);
-			}
-			
-			return result;
-		} else {
-			throw new IllegalArgumentException(NOT_BINARY);
+		for (int i=0; i<binaryVariable.getNumberOfBits(); i++) {
+			result[i] = binaryVariable.get(i);
 		}
+			
+		return result;
 	}
 	
 	/**
@@ -385,7 +337,7 @@ public class EncodingUtils {
 		if (values.length == 1) {
 			return values[0];
 		} else {
-			throw new IllegalArgumentException(NOT_BOOLEAN);
+			return Validate.that("variable", variable).fails("Must be a binary variable with length 1.");
 		}
 	}
 	
@@ -397,11 +349,8 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if the decision variable is not of type {@link Permutation}
 	 */
 	public static int[] getPermutation(Variable variable) {
-		if (variable instanceof Permutation permutation) {
-			return permutation.toArray();
-		} else {
-			throw new IllegalArgumentException(NOT_PERMUTATION);
-		}
+		Permutation permutation = Validate.that("variable", variable).isA(Permutation.class);
+		return permutation.toArray();
 	}
 	
 	/**
@@ -412,11 +361,8 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if the decision variable is not of type {@link Subset}
 	 */
 	public static int[] getSubset(Variable variable) {
-		if (variable instanceof Subset subset) {
-			return subset.toArray();
-		} else {
-			throw new IllegalArgumentException(NOT_SUBSET);
-		}
+		Subset subset = Validate.that("variable", variable).isA(Subset.class);
+		return subset.toArray();
 	}
 	
 	/**
@@ -440,17 +386,14 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if the decision variable is not of type {@link Subset}
 	 */
 	public static boolean[] getSubsetAsBinary(Variable variable) {
-		if (variable instanceof Subset subset) {
-			boolean[] result = new boolean[subset.getN()];
+		Subset subset = Validate.that("variable", variable).isA(Subset.class);
+		boolean[] result = new boolean[subset.getN()];
 			
-			for (int i = 0; i < subset.getN(); i++) {
-				result[i] = subset.contains(i);
-			}
-			
-			return result;
-		} else {
-			throw new IllegalArgumentException(NOT_SUBSET);
+		for (int i = 0; i < subset.getN(); i++) {
+			result[i] = subset.contains(i);
 		}
+			
+		return result;
 	}
 	
 	/**
@@ -461,17 +404,14 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if the decision variable is not of type {@link Subset}
 	 */
 	public static BitSet getSubsetAsBitSet(Variable variable) {
-		if (variable instanceof Subset subset) {
-			BitSet bitSet = new BitSet(subset.getN());
+		Subset subset = Validate.that("variable", variable).isA(Subset.class);
+		BitSet bitSet = new BitSet(subset.getN());
 			
-			for (int i = 0; i < subset.getN(); i++) {
-				bitSet.set(i, subset.contains(i));
-			}
-			
-			return bitSet;
-		} else {
-			throw new IllegalArgumentException(NOT_SUBSET);
+		for (int i = 0; i < subset.getN(); i++) {
+			bitSet.set(i, subset.contains(i));
 		}
+			
+		return bitSet;
 	}
 	
 	/**
@@ -552,11 +492,8 @@ public class EncodingUtils {
 	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
 	 */
 	public static void setReal(Variable variable, double value) {
-		if (variable instanceof RealVariable realVariable) {
-			realVariable.setValue(value);
-		} else {
-			throw new IllegalArgumentException(NOT_REAL);
-		}
+		RealVariable realVariable = Validate.that("variable", variable).isA(RealVariable.class);
+		realVariable.setValue(value);
 	}
 	
 	/**
@@ -590,7 +527,7 @@ public class EncodingUtils {
 	 */
 	public static void setReal(Solution solution, int startIndex, int endIndex, double[] values) {
 		if (values.length != (endIndex - startIndex)) {
-			throw new IllegalArgumentException(INVALID_LENGTH);
+			Validate.that("values", values).fails("The start / end index and array length are not compatible.");
 		}
 		
 		for (int i=startIndex; i<endIndex; i++) {
@@ -603,7 +540,7 @@ public class EncodingUtils {
 	 * 
 	 * @param variable the decision variable
 	 * @param value the value to assign the integer-valued decision variable
-	 * @throws IllegalArgumentException if the decision variable is not of type {@link RealVariable}
+	 * @throws IllegalArgumentException if the decision variable is not convertible to an integer
 	 * @throws IllegalArgumentException if the value is out of bounds
 	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
 	 */
@@ -613,7 +550,7 @@ public class EncodingUtils {
 		} else if (variable instanceof BinaryIntegerVariable binaryIntegerVariable) {
 			binaryIntegerVariable.setValue(value);
 		} else {
-			throw new IllegalArgumentException(NOT_INT);
+			Validate.that("variable", variable).fails("Decision variable is not convertible to an integer.");
 		}
 	}
 	
@@ -623,8 +560,7 @@ public class EncodingUtils {
 	 * 
 	 * @param solution the solution
 	 * @param values the array of integer values to assign the solution
-	 * @throws IllegalArgumentException if any decision variable contained in the solution is not of type
-	 *         {@link RealVariable}
+	 * @throws IllegalArgumentException if the decision variable is not convertible to an integer
 	 * @throws IllegalArgumentException if any of the values are out of bounds
 	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
 	 */
@@ -640,15 +576,14 @@ public class EncodingUtils {
 	 * @param startIndex the start index (inclusive)
 	 * @param endIndex the end index (exclusive)
 	 * @param values the array of floating-point values to assign the decision variables
-	 * @throws IllegalArgumentException if any decision variable contained in the solution between the start and end
-	 *         index is not of type {@link RealVariable}
+	 * @throws IllegalArgumentException if the decision variables are not convertible to an integer
 	 * @throws IllegalArgumentException if an invalid number of values are provided
 	 * @throws IllegalArgumentException if any of the values are out of bounds
 	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
 	 */
 	public static void setInt(Solution solution, int startIndex, int endIndex, int[] values) {
 		if (values.length != (endIndex - startIndex)) {
-			throw new IllegalArgumentException(INVALID_LENGTH);
+			Validate.that("values", values).fails("The start / end index and array length are not compatible.");
 		}
 		
 		for (int i=startIndex; i<endIndex; i++) {
@@ -664,12 +599,10 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if the decision variable is not of type {@link BinaryVariable}
 	 */
 	public static void setBitSet(Variable variable, BitSet bitSet) {
-		if (variable instanceof BinaryVariable binaryVariable) {
-			for (int i=0; i<binaryVariable.getNumberOfBits(); i++) {
-				binaryVariable.set(i, bitSet.get(i));
-			}
-		} else {
-			throw new IllegalArgumentException(NOT_BINARY);
+		BinaryVariable binaryVariable = Validate.that("variable", variable).isA(BinaryVariable.class);
+		
+		for (int i=0; i<binaryVariable.getNumberOfBits(); i++) {
+			binaryVariable.set(i, bitSet.get(i));
 		}
 	}
 	
@@ -682,16 +615,14 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if an invalid number of values are provided
 	 */
 	public static void setBinary(Variable variable, boolean[] values) {
-		if (variable instanceof BinaryVariable binaryVariable) {
-			if (values.length != binaryVariable.getNumberOfBits()) {
-				throw new IllegalArgumentException(INVALID_LENGTH);
-			}
+		BinaryVariable binaryVariable = Validate.that("variable", variable).isA(BinaryVariable.class);
+		
+		if (values.length != binaryVariable.getNumberOfBits()) {
+			Validate.that("values", values).fails("Array length must equal the number of bits.");
+		}
 			
-			for (int i=0; i<binaryVariable.getNumberOfBits(); i++) {
-				binaryVariable.set(i, values[i]);
-			}
-		} else {
-			throw new IllegalArgumentException(NOT_BINARY);
+		for (int i=0; i<binaryVariable.getNumberOfBits(); i++) {
+			binaryVariable.set(i, values[i]);
 		}
 	}
 	
@@ -716,11 +647,8 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if {@code values} is not a valid permutation
 	 */
 	public static void setPermutation(Variable variable, int[] values) {
-		if (variable instanceof Permutation permutation) {
-			permutation.fromArray(values);
-		} else {
-			throw new IllegalArgumentException(NOT_PERMUTATION);
-		}
+		Permutation permutation = Validate.that("variable", variable).isA(Permutation.class);
+		permutation.fromArray(values);
 	}
 	
 	/**
@@ -732,11 +660,8 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if {@code values} is not a valid subset
 	 */
 	public static void setSubset(Variable variable, int[] values) {
-		if (variable instanceof Subset subset) {
-			subset.fromArray(values);
-		} else {
-			throw new IllegalArgumentException(NOT_SUBSET);
-		}
+		Subset subset = Validate.that("variable", variable).isA(Subset.class);
+		subset.fromArray(values);
 	}
 	
 	/**
@@ -764,18 +689,15 @@ public class EncodingUtils {
 	 * @throws IllegalArgumentException if the BitSet representation is not a valid subset
 	 */
 	public static void setSubset(Variable variable, BitSet bitSet) {
-		if (variable instanceof Subset subset) {
-			int[] values = new int[bitSet.cardinality()];
-			int count = 0;
+		Subset subset = Validate.that("variable", variable).isA(Subset.class);
+		int[] values = new int[bitSet.cardinality()];
+		int count = 0;
 			
-			for (int i = bitSet.nextSetBit(0); i >= 0; i = bitSet.nextSetBit(i+1)) {
-				values[count++] = i;
-			}
-			
-			setSubset(subset, values);
-		} else {
-			throw new IllegalArgumentException(NOT_SUBSET);
+		for (int i = bitSet.nextSetBit(0); i >= 0; i = bitSet.nextSetBit(i+1)) {
+			values[count++] = i;
 		}
+			
+		setSubset(subset, values);
 	}
 
 }

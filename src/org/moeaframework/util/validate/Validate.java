@@ -27,7 +27,7 @@ import org.moeaframework.core.Problem;
  * All validators throw {@link IllegalArgumentException}s if the conditions fail, though they may also throw
  * {@link NullPointerException} for unexpected {@code null} values.
  */
-public class Validate {
+public final class Validate {
 	
 	private Validate() {
 		super();
@@ -40,7 +40,7 @@ public class Validate {
 	 * @param value the parameter value
 	 * @return the validator
 	 */
-	public static DoubleValidator that(String name, double value) {
+	public static final DoubleValidator that(String name, double value) {
 		return new DoubleValidator(name, value);
 	}
 	
@@ -51,7 +51,7 @@ public class Validate {
 	 * @param value the parameter value
 	 * @return the validator
 	 */
-	public static IntegerValidator that(String name, int value) {
+	public static final IntegerValidator that(String name, int value) {
 		return new IntegerValidator(name, value);
 	}
 	
@@ -62,7 +62,7 @@ public class Validate {
 	 * @param problem the problem
 	 * @return the validator
 	 */
-	public static ProblemValidator that(String name, Problem problem) {
+	public static final ProblemValidator that(String name, Problem problem) {
 		return new ProblemValidator(name, problem);
 	}
 	
@@ -74,8 +74,19 @@ public class Validate {
 	 * @param <T> the type of the object
 	 * @return the validator
 	 */
-	public static <T> ObjectValidator<T> that(String name, T value) {
+	public static final <T> ObjectValidator<T> that(String name, T value) {
 		return new ObjectValidator<T>(name, value);
+	}
+	
+	/**
+	 * Always fails with the given message.
+	 * 
+	 * @param <R> the return type
+	 * @param message the reason for the failure
+	 * @return this method never returns
+	 */
+	public static final <R> R fail(String message) {
+		throw new IllegalArgumentException(message);
 	}
 
 }

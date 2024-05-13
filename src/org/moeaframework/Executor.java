@@ -40,6 +40,7 @@ import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.distributed.DistributedProblem;
 import org.moeaframework.util.progress.ProgressHelper;
 import org.moeaframework.util.progress.ProgressListener;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Configures and executes algorithms while hiding the underlying boilerplate code needed to setup and safely execute
@@ -280,10 +281,7 @@ public class Executor extends ProblemBuilder {
 	 * @throws IllegalArgumentException if {@code numberOfThreads <= 0}
 	 */
 	public Executor distributeOn(int numberOfThreads) {
-		if (numberOfThreads <= 0) {
-			throw new IllegalArgumentException("invalid number of threads");
-		}
-		
+		Validate.that("numberOfThreads", numberOfThreads).isGreaterThan(0);		
 		this.numberOfThreads = numberOfThreads;
 		return this;
 	}
@@ -720,13 +718,7 @@ public class Executor extends ProblemBuilder {
 	 * @return the end-of-run approximation set; or {@code null} if canceled
 	 */
 	protected NondominatedPopulation runSingleSeed(int seed, int numberOfSeeds) {
-		if (algorithmName == null) {
-			throw new IllegalArgumentException("no algorithm specified");
-		}
-		
-		if ((problemName == null) && (problemClass == null) && (problemInstance == null)) {
-			throw new IllegalArgumentException("no problem specified");
-		}
+		Validate.that("algorithmName", algorithmName).isNotNull();
 		
 		Algorithm algorithm = null;
 		

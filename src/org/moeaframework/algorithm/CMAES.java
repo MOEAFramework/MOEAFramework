@@ -262,8 +262,7 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 		Validate.that("problem", problem).isType(RealVariable.class);
 		
 		this.initialSearchPoint = initialSearchPoint;
-		
-		population = new Population();
+		this.population = new Population();
 	}
 
 	/**
@@ -541,31 +540,25 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 
 	/**
 	 * Validates parameters prior to calling the {@link #initialize()} method.  Checks include ensuring the initial
-	 * search point is valid and ensures each devision variable is real-valued.
+	 * search point is valid.
 	 * 
-	 * @param prototypeSolution an example solution for retrieving variable types and bounds
+	 * @param prototypeSolution an example solution for retrieving variable bounds
 	 * @throws IllegalArgumentException if any of the checks fail
 	 */
 	private void preInitChecks(Solution prototypeSolution) {
-		if (initialSearchPoint != null) {
-			if (initialSearchPoint.length != prototypeSolution.getNumberOfVariables()) {
-				throw new IllegalArgumentException("initial search point is not the correct length (expected=" +
-						prototypeSolution.getNumberOfVariables() + ", actual=" + initialSearchPoint.length + ")");
-			}
+		if (initialSearchPoint == null) {
+			return;
+		}
+		
+		if (initialSearchPoint.length != prototypeSolution.getNumberOfVariables()) {
+			Validate.that("initialSearchPoint", initialSearchPoint)
+				.fails("must match the number of decision variables");
 		}
 		
 		for (int i = 0; i < problem.getNumberOfVariables(); i++) {
-			if (prototypeSolution.getVariable(i) instanceof RealVariable variable) {			
-				if (initialSearchPoint != null) {
-					if (initialSearchPoint[i] > variable.getUpperBound()) {
-						throw new IllegalArgumentException("initial search point is out of bounds (index=" + i + ", value=" + initialSearchPoint[i] + ", ub=" + variable.getUpperBound() + ")");
-					} else if (initialSearchPoint[i] < variable.getLowerBound()) {
-						throw new IllegalArgumentException("initial search point is out of bounds (index=" + i + ", value=" + initialSearchPoint[i] + ", lb=" + variable.getLowerBound() + ")");
-					}
-				}
-			} else {
-				throw new IllegalArgumentException("CMA-ES is only applicable to real-valued decision variables");
-			}
+			RealVariable realVariable = (RealVariable)prototypeSolution.getVariable(i);
+			Validate.that("initialSearchPoint", initialSearchPoint[i])
+				.isBetween(realVariable.getLowerBound(), realVariable.getUpperBound());
 		}
 	}
 	
@@ -575,49 +568,17 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 	 * @throws IllegalArgumentException if any of the checks fail
 	 */
 	private void postInitChecks() {
-		if (problem.getNumberOfVariables() == 0) {
-			throw new IllegalArgumentException("dimension must be greater than zero");
-		}
-		
-		if (lambda <= 1) {
-			throw new IllegalArgumentException("offspring population size, lambda, must be greater than one (lambda=" + lambda + ")");
-		}
-		
-		if (mu < 1) {
-			throw new IllegalArgumentException("number of parents used in recombination, mu, must be smaller or equal to lambda (lambda=" + lambda + ", mu=" + mu + ")");
-		}
-		
-		if ((cs <= 0) || (cs > 1)) {
-			throw new IllegalArgumentException("0 < cs <= 1 must hold for step-size cumulation parameter (cs=" + cs + ")");
-		}
-		
-		if (damps <= 0) {
-			throw new IllegalArgumentException("step size damping parameter, damps, must be greater than zero (damps=" + damps + ")");
-		}
-		
-		if ((cc <= 0) || (cc > 1)) {
-			throw new IllegalArgumentException("0 < cc <= 1 must hold for cumulation parameter (cc=" + cc + ")");
-		}
-		
-		if (mueff < 0) {
-			throw new IllegalArgumentException("mueff >= 0 must hold (mueff=" + mueff + ")");
-		}
-		
-		if (ccov < 0) {
-			throw new IllegalArgumentException("ccov >= 0 must hold (ccov=" + ccov + ")");
-		}
-		
-		if (ccovsep < 0) {
-			throw new IllegalArgumentException("ccovsep >= 0 must hold (ccovsep=" + ccovsep + ")");
-		}
-		
-		if (sigma <= 0) {
-			throw new IllegalArgumentException("initial standard deviation, sigma, must be positive (sigma=" + sigma + ")");
-		}
-		
-		if (StatUtils.min(diagD) <= 0) {
-			throw new IllegalArgumentException("initial standard deviations, diagD, must be positive");
-		}
+		Validate.that("number of variables", problem.getNumberOfVariables()).isGreaterThan(0);
+		Validate.that("lambda (offspring population size)", lambda).isGreaterThanOrEqualTo(1);
+		Validate.that("mu (number of parents selected for recombination)", mu).isLessThanOrEqualTo("lambda", lambda);
+		Validate.that("cs (step-size cumulation parameter)", cs).isBetween(0.0, 1.0);
+		Validate.that("damps (step-size damping parameter)", damps).isGreaterThan(0.0);
+		Validate.that("cc (cumulation parameter)", cc).isBetween(0.0, 1.0);
+		Validate.that("mueff (variance effectiveness)", mueff).isGreaterThanOrEqualTo(0.0);
+		Validate.that("ccov (learning rate)", ccov).isGreaterThanOrEqualTo(0.0);
+		Validate.that("ccovsep (learning rate when diagonal mode is active)", ccovsep).isGreaterThanOrEqualTo(0.0);
+		Validate.that("sigma (initial standard deviation)", sigma).isGreaterThan(0.0);
+		Validate.that("diagD (initial standard deviations)", StatUtils.min(diagD)).isGreaterThan(0.0);
 	}
 
 	@Override

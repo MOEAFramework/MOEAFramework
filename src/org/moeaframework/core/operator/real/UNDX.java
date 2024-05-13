@@ -174,9 +174,7 @@ public class UNDX extends MultiParentVariation {
 	 * @return one randomly-generated offspring produced by this operator.
 	 */
 	public Solution undx(Solution[] parents) {
-		if (parents.length < 2) {
-			throw new IllegalArgumentException("requires at least 2 parents");
-		}
+		Validate.that("parents.length", parents.length).isGreaterThanOrEqualTo(2);
 
 		int k = parents.length;
 		int n = parents[0].getNumberOfVariables();

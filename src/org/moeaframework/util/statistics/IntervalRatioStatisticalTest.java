@@ -20,6 +20,8 @@ package org.moeaframework.util.statistics;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.moeaframework.util.validate.Validate;
+
 /**
  * Abstract class for interval ratio statistical tests.
  */
@@ -54,10 +56,7 @@ public abstract class IntervalRatioStatisticalTest implements StatisticalTest {
 	 * @param group the group to which the new observation belongs
 	 */
 	protected void add(double value, int group) {
-		if ((group < 0) || (group >= numberOfGroups)) {
-			throw new IllegalArgumentException("invalid group");
-		}
-
+		Validate.that("group", group).isBetween(0, numberOfGroups-1);
 		data.add(new Observation(value, group));
 	}
 	

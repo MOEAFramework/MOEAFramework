@@ -22,6 +22,7 @@ import java.util.BitSet;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.PRNG;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Decision variable for integers encoded as a binary string.  Note that if {@code upperBound-lowerBound} is not a
@@ -144,11 +145,7 @@ public class BinaryIntegerVariable extends BinaryVariable {
 	 *         {@code (value < getLowerBound()) || (value > getUpperBound())}
 	 */
 	public void setValue(int value) {
-		if ((value < lowerBound) || (value > upperBound)) {
-			throw new IllegalArgumentException("value out of bounds (value: " + value + 
-					", min: " + lowerBound + ", max: " + upperBound + ")");
-		}
-		
+		Validate.that("value", value).isBetween(lowerBound, upperBound);		
 		BitSet bits = EncodingUtils.encode(value - lowerBound);
 
 		if (gray) {

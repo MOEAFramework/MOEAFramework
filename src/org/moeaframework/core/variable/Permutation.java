@@ -144,9 +144,8 @@ public class Permutation implements Variable {
 	 * @throws IllegalArgumentException if the permutation array is not a valid permutation
 	 */
 	public void fromArray(int[] permutation) {
-		if (this.permutation != null && permutation.length != this.permutation.length) {
-			throw new IllegalArgumentException("invalid permutation, expected array of length " +
-					this.permutation.length + " but given array of length " + permutation.length);
+		if (this.permutation != null) {
+			Validate.that("permutation.length", permutation.length).isEqualTo(this.permutation.length);
 		}
 		
 		validatePermutation(permutation);
@@ -164,19 +163,17 @@ public class Permutation implements Variable {
 		BitSet bits = new BitSet(permutation.length);
 		
 		for (int i = 0; i < permutation.length; i++) {
-			if (permutation[i] < 0 || permutation[i] >= permutation.length) {
-				throw new IllegalArgumentException("invalid permutation, value at index " + i + " is out of bounds");
-			}
+			Validate.that("permutation[i]", permutation[i]).isBetween(0, permutation.length - 1);
 			
 			if (bits.get(permutation[i])) {
-				throw new IllegalArgumentException("invalid permutation, value at index " + i + " is duplicated");
+				Validate.that("permutation", permutation).fails("Duplicate value " + permutation[i] + " at index " + i);
 			}
 			
 			bits.set(permutation[i]);
 		}
 		
 		if (bits.cardinality() != permutation.length) {
-			throw new IllegalArgumentException("invalid permutation, missing value " + bits.nextClearBit(0));
+			Validate.that("permutation", permutation).fails("Missing value " + bits.nextClearBit(0));
 		}
 	}
 

@@ -20,7 +20,7 @@ package org.moeaframework.util.validate;
 /**
  * Validator for {@code double} primitives.
  */
-public class DoubleValidator extends NumberValidator<Double> {
+public final class DoubleValidator extends NumberValidator<Double> {
 
 	/**
 	 * Constructs a new validator for {@code double} primitives.
@@ -35,37 +35,81 @@ public class DoubleValidator extends NumberValidator<Double> {
 	/**
 	 * Asserts the value is greater than some threshold.
 	 * 
-	 * @param threshold the threshold
+	 * @param thresholdValue the threshold value
 	 */
-	public void isGreaterThan(double threshold) {
-		super.isGreaterThan(threshold);
+	public final void isGreaterThan(double thresholdValue) {
+		isGreaterThan(null, thresholdValue);
+	}
+	
+	/**
+	 * Asserts the value is greater than some threshold.
+	 * 
+	 * @param thresholdName the threshold name
+	 * @param thresholdValue the threshold value
+	 */
+	public final void isGreaterThan(String thresholdName, double thresholdValue) {
+		isValidNumber();
+		super.isGreaterThan(thresholdName, thresholdValue);
 	}
 	
 	/**
 	 * Asserts the value is greater than or equal to some threshold.
 	 * 
-	 * @param threshold the threshold
+	 * @param thresholdValue the threshold value
 	 */
-	public void isGreaterThanOrEqualTo(double threshold) {
-		super.isGreaterThanOrEqualTo(threshold);
+	public final void isGreaterThanOrEqualTo(double thresholdValue) {
+		isGreaterThanOrEqualTo(null, thresholdValue);
+	}
+	
+	/**
+	 * Asserts the value is greater than or equal to some threshold.
+	 * 
+	 * @param thresholdName the threshold name
+	 * @param thresholdValue the threshold value
+	 */
+	public final void isGreaterThanOrEqualTo(String thresholdName, double thresholdValue) {
+		isValidNumber();
+		super.isGreaterThanOrEqualTo(thresholdName, thresholdValue);
 	}
 	
 	/**
 	 * Asserts the value is less than some threshold.
 	 * 
-	 * @param threshold the threshold
+	 * @param thresholdValue the threshold value
 	 */
-	public void isLessThan(double threshold) {
-		super.isLessThan(threshold);
+	public final void isLessThan(double thresholdValue) {
+		isLessThan(null, thresholdValue);
+	}
+	
+	/**
+	 * Asserts the value is less than some threshold.
+	 * 
+	 * @param thresholdName the threshold name
+	 * @param thresholdValue the threshold value
+	 */
+	public final void isLessThan(String thresholdName, double thresholdValue) {
+		isValidNumber();
+		super.isLessThan(thresholdName, thresholdValue);
 	}
 	
 	/**
 	 * Asserts the value is less than or equal to some threshold.
 	 * 
-	 * @param threshold the threshold
+	 * @param thresholdValue the threshold value
 	 */
-	public void isLessThanOrEqualTo(double threshold) {
-		super.isLessThanOrEqualTo(threshold);
+	public final void isLessThanOrEqualTo(double thresholdValue) {
+		isLessThanOrEqualTo(null, thresholdValue);
+	}
+	
+	/**
+	 * Asserts the value is less than or equal to some threshold.
+	 * 
+	 * @param thresholdName the threshold name
+	 * @param thresholdValue the threshold value
+	 */
+	public final void isLessThanOrEqualTo(String thresholdName, double thresholdValue) {
+		isValidNumber();
+		super.isLessThanOrEqualTo(thresholdName, thresholdValue);
 	}
 	
 	/**
@@ -74,7 +118,8 @@ public class DoubleValidator extends NumberValidator<Double> {
 	 * @param lower the lower bound
 	 * @param upper the upper bound
 	 */
-	public void isBetween(double lower, double upper) {
+	public final void isBetween(double lower, double upper) {
+		isValidNumber();
 		super.isBetween(lower, upper);
 	}
 	
@@ -84,15 +129,35 @@ public class DoubleValidator extends NumberValidator<Double> {
 	 * @param lower the lower bound
 	 * @param upper the upper bound
 	 */
-	public void isStrictlyBetween(double lower, double upper) {
-		super.isBetween(Math.nextUp(lower), Math.nextDown(upper));
+	public final void isStrictlyBetween(double lower, double upper) {
+		isBetween(Math.nextUp(lower), Math.nextDown(upper));
 	}
 	
 	/**
 	 * Asserts the value represents a probability, meaning {@code 0.0 <= value <= 1.0}.
 	 */
-	public void isProbability() {
-		super.isBetween(0.0, 1.0);
+	public final void isProbability() {
+		isBetween(0.0, 1.0);
+	}
+	
+	/**
+	 * Asserts the value is a finite number (i.e., not infinite or {@value Double#NaN}).
+	 */
+	public final void isFinite() {
+		if (!Double.isFinite(getPropertyValue())) {
+			throw new IllegalArgumentException("Expected " + getPropertyName() + " to be a finite number, given " +
+					getPropertyValue());
+		}
+	}
+	
+	/**
+	 * Asserts the value is a valid number (i.e., not {@value Double#NaN}).
+	 */
+	private final void isValidNumber() {
+		if (Double.isNaN(getPropertyValue())) {
+			throw new IllegalArgumentException("Expected " + getPropertyName() + " to be a valid number, given " +
+					getPropertyValue());
+		}
 	}
 
 }

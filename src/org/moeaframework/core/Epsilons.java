@@ -21,6 +21,7 @@ import java.util.Arrays;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Stores the &epsilon; values for an &epsilon;-dominance archive.  In particular, if the given &epsilon; value or
@@ -51,17 +52,14 @@ public class Epsilons {
 	 */
 	public Epsilons(double[] epsilons) {
 		super();
+		
+		Validate.that("epsilons.length", epsilons.length).isGreaterThanOrEqualTo(1);
+		
+		for (int i = 0; i < epsilons.length; i++) {
+			Validate.that("epsilons[i]", epsilons[i]).isGreaterThan(0.0);
+		}
+		
 		this.epsilons = epsilons.clone();
-		
-		if (this.epsilons.length < 1) {
-			throw new IllegalArgumentException("at least one epsilon must be provided");
-		}
-		
-		for (double eps : epsilons) {
-			if (eps <= 0.0) {
-				throw new IllegalArgumentException("epsilons must be > 0.0");
-			}
-		}
 	}
 	
 	/**

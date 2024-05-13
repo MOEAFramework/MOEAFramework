@@ -21,6 +21,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Variable;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Decision variable for real values.
@@ -81,18 +82,18 @@ public class RealVariable implements Variable {
 	}
 
 	/**
-	 * Sets the value of this decision variable.
+	 * Sets the value of this decision variable.  The value can be set to {@value Double#NaN} to indicate no value
+	 * is assigned.
 	 * 
 	 * @param value the new value for this decision variable
 	 * @throws IllegalArgumentException if the value is out of bounds
 	 *         {@code (value < getLowerBound()) || (value > getUpperBound())}
 	 */
 	public void setValue(double value) {
-		if ((value < lowerBound) || (value > upperBound)) {
-			throw new IllegalArgumentException("value out of bounds (value: " + value + 
-					", min: " + lowerBound + ", max: " + upperBound + ")");
+		if (!Double.isNaN(value)) {
+			Validate.that("value", value).isBetween(lowerBound, upperBound);
 		}
-
+		
 		this.value = value;
 	}
 

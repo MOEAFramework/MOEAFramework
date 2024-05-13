@@ -212,7 +212,7 @@ class ProblemBuilder {
 		try {
 			return withReferenceSet(NondominatedPopulation.loadReferenceSet(referenceSetFile));
 		} catch (IOException e) {
-			throw new IllegalArgumentException("unable to load reference set", e);
+			throw new FrameworkException("unable to load reference set", e);
 		}
 	}
 	
@@ -253,7 +253,7 @@ class ProblemBuilder {
 	 * </ol>
 	 * 
 	 * @return the reference set used by this builder
-	 * @throws IllegalArgumentException if no reference set is available or could not be loaded
+	 * @throws FrameworkException if no reference set is available or could not be loaded
 	 */
 	NondominatedPopulation getReferenceSet() {
 		NondominatedPopulation result = newArchive();
@@ -271,7 +271,7 @@ class ProblemBuilder {
 			}
 			
 			if (factorySet == null) {
-				throw new IllegalArgumentException("no reference set available");
+				throw new FrameworkException("no reference set available");
 			}
 			
 			result.addAll(factorySet);
@@ -295,18 +295,13 @@ class ProblemBuilder {
 	 * Returns a new instance of the problem used by this builder, or throws an exception if no problem has been
 	 * defined.  The code requesting the problem instance is expected to close the problem when finished.
 	 * 
-	 * @return a new instance of the problem used by this builder, or throws an exception if no problem has been
-	 *         defined
+	 * @return a new instance of the problem used by this builder, or throws an exception if no problem has been defined
 	 * @throws IllegalArgumentException if no problem has been defined
-	 * @throws FrameworkException if an error occurred invoking the constructor caused by an
-	 *         {@link InstantiationException}, 
-	 *         {@link IllegalAccessException}, 
-	 *         {@link InvocationTargetException} or
-	 *         {@link NoSuchMethodException}.
+	 * @throws FrameworkException if no problem has been defined, or an error occurred invoking the problem constructor
 	 */
 	Problem getProblemInstance() {
 		if (!isProblemConfigured()) {
-			throw new IllegalArgumentException("no problem specified");
+			throw new FrameworkException("no problem specified");
 		}
 		
 		if (problemInstance != null) {

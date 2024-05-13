@@ -24,6 +24,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.util.validate.Validate;
 
 /*
  * The following source code is modified from the complicated Pareto set test problem suite by Hui Li and Qingfu Zhang
@@ -117,32 +118,20 @@ public abstract class LZ extends AbstractProblem {
 	 * Validates the inputs, throwing an {@link IllegalArgumentException} if any inputs are invalid.
 	 */
 	private void validate() {
-		if ((numberOfObjectives < 2) || (numberOfObjectives > 3)) {
-			throw new IllegalArgumentException("invalid number of objectives");
-		}
+		Validate.that("numberOfObjectives", numberOfObjectives).isBetween(2, 3);
 
 		if (numberOfObjectives == 2) {
-			if ((pType < 21) || (pType > 24)) {
-				throw new IllegalArgumentException("invalid ptype");
-			}
+			Validate.that("pType", pType).isBetween(21, 24);
 		} else if (numberOfObjectives == 3) {
-			if ((pType < 31) || (pType > 34)) {
-				throw new IllegalArgumentException("invalid ptype");
-			}
+			Validate.that("pType", pType).isBetween(31, 34);
 		}
-
-		if ((dType < 1) || (dType > 4)) {
-			throw new IllegalArgumentException("invalid dtype");
-		}
+		
+		Validate.that("dType", dType).isBetween(1, 4);
 
 		if (numberOfObjectives == 2) {
-			if ((lType < 21) || (lType > 26)) {
-				throw new IllegalArgumentException("invalid ltype");
-			}
+			Validate.that("lType", lType).isBetween(21, 26);
 		} else {
-			if ((lType < 31) || (lType > 32)) {
-				throw new IllegalArgumentException("invalid ltype");
-			}
+			Validate.that("lType", lType).isBetween(31, 32);
 		}
 	}
 

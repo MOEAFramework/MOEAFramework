@@ -27,6 +27,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Variable;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Decision variable for subsets.  Subsets can either be fixed-length, which must contain exactly {@code k} elements,
@@ -88,17 +89,9 @@ public class Subset implements Variable {
 		this.u = u;
 		this.n = n;
 		
-		if (u > n) {
-			throw new IllegalArgumentException("u must be <= n");
-		}
-		
-		if (l < 0) {
-			throw new IllegalArgumentException("l must be >= 0");
-		}
-		
-		if (l > u) {
-			throw new IllegalArgumentException("l must be <= u");
-		}
+		Validate.that("u", u).isLessThanOrEqualTo("n", n);
+		Validate.that("l", l).isGreaterThanOrEqualTo(0);
+		Validate.that("l", l).isLessThanOrEqualTo("u", u);
 
 		members = new HashSet<Integer>();
 		
@@ -231,17 +224,11 @@ public class Subset implements Variable {
 	 * @param array the array containing the subset members
 	 */
 	public void fromArray(int[] array) {
-		if (array.length < l || array.length > u) {
-			throw new IllegalArgumentException("invalid subset length");
-		}
-		
+		Validate.that("array.length", array.length).isBetween(l, u);
 		members.clear();
 
 		for (int i = 0; i < array.length; i++) {
-			if ((array[i] < 0) || (array[i] >= n)) {
-				throw new IllegalArgumentException("invalid value in subset");
-			}
-			
+			Validate.that("array[i]", array[i]).isBetween(0, n-1);			
 			members.add(array[i]);
 		}
 	}
