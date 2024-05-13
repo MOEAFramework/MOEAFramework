@@ -146,8 +146,6 @@ public class TabularData<T> implements Displayable {
 			case Latex -> toLatex(out);
 			default -> Validate.that("tableFormat", tableFormat).failUnsupportedOption();
 		}
-		
-		Validate.that("tableFormat", tableFormat).failUnsupportedOption();
 	}
 	
 	/**
