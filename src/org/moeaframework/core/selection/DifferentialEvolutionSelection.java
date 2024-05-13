@@ -22,6 +22,7 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Selection;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Selection operator to be used in conjunction with the {@link DifferentialEvolutionVariation} operator.  The
@@ -58,9 +59,7 @@ public class DifferentialEvolutionSelection implements Selection {
 
 	@Override
 	public Solution[] select(int arity, Population population) {
-		if (population.size() < arity) {
-			throw new IllegalArgumentException("population too small");
-		}
+		Validate.that("population.size()", population.size()).isGreaterThanOrEqualTo("arity", arity);
 
 		int[] indices = new int[arity];
 		

@@ -72,5 +72,52 @@ public abstract class Validator<T> {
 	public <R> R fails(String message) {
 		throw new IllegalArgumentException("Validation of " + getPropertyName() + " failed: " + message);
 	}
+	
+	/**
+	 * Always fails to indicate a user-provided value does not match the supported list of options.  The argument is
+	 * a list of supported values that are displayed in the error message.  If none are provided, will attempt to
+	 * determine the valid values from the type.
+	 * 
+	 * @param <S> the type of the option
+	 * @param <R> the return type
+	 * @param supportedValues a list of supported values
+	 * @return this method never returns
+	 */
+	@SafeVarargs
+	public final <S, R> R failUnsupportedOption(S... supportedValues) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Unsupported value ");
+		sb.append(getPropertyValue());
+		
+		Object[] values = null;
+		
+		if (supportedValues != null && supportedValues.length > 0) {
+			values = supportedValues;
+		} else if (getPropertyValue() != null) {
+			values = getPropertyValue().getClass().getEnumConstants();
+		}
+		
+		if (values != null) {
+			sb.append(", valid options are:");
+			
+			for (Object value : values) {
+				sb.append(" ");
+				sb.append(value);
+			}
+		}
+		
+		return fails(sb.toString());
+	}
+	
+	/**
+	 * Always fails to indicate a user-provided value does not match the supported list of enum constants.
+	 * 
+	 * @param <R> the return type
+	 * @param enumType the enum type
+	 * @return this method never returns
+	 */
+	public final <R> R failUnsupportedOption(Class<? extends Enum<?>> enumType) {
+		return failUnsupportedOption(enumType.getEnumConstants());
+	}
 
 }

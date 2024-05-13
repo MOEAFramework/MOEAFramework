@@ -26,6 +26,7 @@ import org.apache.commons.lang3.SerializationUtils;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * A solution to an optimization problem, storing the decision variables, objectives, constraints and attributes.
@@ -78,6 +79,10 @@ public class Solution implements Formattable<Solution>, Serializable {
 	 */
 	public Solution(int numberOfVariables, int numberOfObjectives, int numberOfConstraints) {
 		super();
+		Validate.that("numberOfVariables", numberOfVariables).isGreaterThanOrEqualTo(0);
+		Validate.that("numberOfObjectives", numberOfObjectives).isGreaterThanOrEqualTo(0);
+		Validate.that("numberOfConstraints", numberOfConstraints).isGreaterThanOrEqualTo(0);
+		
 		variables = new Variable[numberOfVariables];
 		objectives = new double[numberOfObjectives];
 		constraints = new double[numberOfConstraints];
@@ -205,9 +210,7 @@ public class Solution implements Formattable<Solution>, Serializable {
 	 * @throws IllegalArgumentException if {@code objectives.length != getNumberOfObjectives()}
 	 */
 	public void setObjectives(double[] objectives) {
-		if (objectives.length != this.objectives.length) {
-			throw new IllegalArgumentException("invalid number of objectives");
-		}
+		Validate.that("objectives.length", objectives.length).isEqualTo(getNumberOfObjectives());
 
 		for (int i = 0; i < objectives.length; i++) {
 			this.objectives[i] = objectives[i];
@@ -297,9 +300,7 @@ public class Solution implements Formattable<Solution>, Serializable {
 	 * @throws IllegalArgumentException if {@code constraints.length != getNumberOfConstraints()}
 	 */
 	public void setConstraints(double[] constraints) {
-		if (constraints.length != this.constraints.length) {
-			throw new IllegalArgumentException("invalid number of constraints");
-		}
+		Validate.that("constraints.length", constraints.length).isEqualTo(getNumberOfConstraints());
 
 		for (int i = 0; i < constraints.length; i++) {
 			this.constraints[i] = constraints[i];
@@ -432,9 +433,8 @@ public class Solution implements Formattable<Solution>, Serializable {
 	 * @throws IllegalArgumentException if the solutions have differing numbers of objectives
 	 */
 	private double distanceTo(Solution otherSolution, double power) {
-		if (getNumberOfObjectives() != otherSolution.getNumberOfObjectives()) {
-			throw new IllegalArgumentException("solutions have different number of objectives");
-		}
+		Validate.that("otherSolution.getNumberOfObjectives()", otherSolution.getNumberOfObjectives())
+			.isEqualTo("this.getNumberOfObjectives()", getNumberOfObjectives());
 		
 		double distance = 0.0;
 

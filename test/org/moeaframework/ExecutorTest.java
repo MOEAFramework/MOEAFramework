@@ -126,7 +126,7 @@ public class ExecutorTest {
 		Assert.assertEquals(0.0, listener.getLastEvent().getRemainingTime(), 0.0);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = FrameworkException.class)
 	public void testNoProblem() {
 		new Executor().withAlgorithm("NSGAII").run();
 	}

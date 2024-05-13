@@ -31,6 +31,7 @@ import org.moeaframework.util.sequence.Saltelli;
 import org.moeaframework.util.sequence.Sequence;
 import org.moeaframework.util.sequence.Sobol;
 import org.moeaframework.util.sequence.Uniform;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Command line utility for producing randomly-generated parameters for use by the {@link Evaluator} or
@@ -88,14 +89,9 @@ public class SampleGenerator extends CommandLineUtility {
 		int N = Integer.parseInt(commandLine.getOptionValue("numberOfSamples"));
 		int D = parameterFile.size();
 		
-		if (N <= 0) {
-			throw new IllegalArgumentException("numberOfSamples must be positive");
-		}
+		Validate.that("numberOfSamples", N).isGreaterThan(0);
+		Validate.that("numberOfParameters", D).isGreaterThan(0);
 		
-		if (D <= 0) {
-			throw new IllegalArgumentException("parameter file contains no parameters");
-		}
-
 		Sequence sequence = null;
 
 		if (commandLine.hasOption("method")) {
@@ -103,7 +99,7 @@ public class SampleGenerator extends CommandLineUtility {
 			String method = completer.lookup(commandLine.getOptionValue("method"));
 			
 			if (method == null) {
-				throw new IllegalArgumentException("invalid method: " + commandLine.getOptionValue("method"));
+				Validate.that("method", commandLine.getOptionValue("method")).failUnsupportedOption(completer.getOptions());
 			}
 			
 			switch (method) {

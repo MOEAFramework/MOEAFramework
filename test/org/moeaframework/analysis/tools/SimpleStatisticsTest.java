@@ -18,6 +18,7 @@
 package org.moeaframework.analysis.tools;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
@@ -46,7 +47,7 @@ public class SimpleStatisticsTest {
 		Assert.assertArrayEquals(expected, actual);
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = IOException.class)
 	public void testMissingEntries() throws Exception {
 		File input1 = TempFiles.createFileWithContent("0.0 0.0 0.0\n1.0 1.0 1.0");
 		File input2 = TempFiles.createFileWithContent("0.0 0.0\n0.0 0.5 1.0\n");
@@ -59,7 +60,7 @@ public class SimpleStatisticsTest {
 				input2.getPath()});
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = IOException.class)
 	public void testEmptyFile() throws Exception {
 		File input1 = TempFiles.createFileWithContent("0.0 0.0 0.0\n1.0 1.0 1.0");
 		File input2 = TempFiles.createFileWithContent("");
@@ -72,7 +73,7 @@ public class SimpleStatisticsTest {
 				input2.getPath()});
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = IOException.class)
 	public void testMissingRows() throws Exception {
 		File input1 = TempFiles.createFileWithContent("0.0 0.0 0.0\n1.0 1.0 1.0");
 		File input2 = TempFiles.createFileWithContent("0.0 0.0 0.0\n");
@@ -85,7 +86,7 @@ public class SimpleStatisticsTest {
 				input2.getPath()});
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = IOException.class)
 	public void testNoInputs() throws Exception {
 		File output = TempFiles.createFile();
 		

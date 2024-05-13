@@ -23,6 +23,7 @@ import java.util.List;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.moeaframework.core.PRNG;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Builds rotation matrices of any dimension constructively from one or more 2D planar rotations.  Three types of
@@ -146,12 +147,11 @@ public class RotationMatrixBuilder {
 	 * @return a reference to this rotation matrix builder
 	 */
 	public RotationMatrixBuilder rotatePlane(int i, int j) {
-		if ((i < 0) || (i >= dimension) || (j < 0) || (j >= dimension) || (i == j)) {
-			throw new IllegalArgumentException("invalid plane");
-		}
-		
+		Validate.that("i", i).isBetween(0, dimension-1);
+		Validate.that("j", j).isBetween(0, dimension-1);
+		Validate.that("i", i).isNotEqualTo("j", j);
+
 		planes.add(new Plane(i, j));
-		
 		return this;
 	}
 	
@@ -164,7 +164,6 @@ public class RotationMatrixBuilder {
 	 */
 	public RotationMatrixBuilder withTheta(double theta) {
 		planes.get(planes.size()-1).setTheta(theta);
-		
 		return this;
 	}
 	
@@ -229,9 +228,7 @@ public class RotationMatrixBuilder {
 			}
 		}
 		
-		if ((k < 0) || (k > tempPlanes.size())) {
-			throw new IllegalArgumentException("invalid number of planes");
-		}
+		Validate.that("k", k).isBetween(0, tempPlanes.size());
 		
 		//shuffle to randomize which planes are rotated
 		PRNG.shuffle(tempPlanes);

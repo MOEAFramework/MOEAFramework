@@ -19,6 +19,7 @@ package org.moeaframework.util.statistics;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.moeaframework.core.Settings;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * The Mann-Whitney U test determines if two populations have different medians.
@@ -124,9 +125,8 @@ public class MannWhitneyUTest extends OrdinalStatisticalTest {
 	 *         is provided
 	 */
 	private static int getCriticalUValueFromTable(int n1, int n2, double alpha) {
-		if ((n1 < 1) || (n1 > 20) || (n2 < 1) || (n2 > 20)) {
-			throw new IllegalArgumentException("only valid for 1 <= n1 <= 20, 1 <= n2 <= 20");
-		}
+		Validate.that("n1", n1).isBetween(1, 20);
+		Validate.that("n2", n2).isBetween(1, 20);
 
 		int value = -1;
 
@@ -136,11 +136,11 @@ public class MannWhitneyUTest extends OrdinalStatisticalTest {
 		} else if (alpha == 0.01) {
 			value = TABLE_1[n1-1][n2-1];
 		} else {
-			throw new IllegalArgumentException("only valid for 0.05 or 0.01");
+			Validate.that("alpha", alpha).failUnsupportedOption(0.05, 0.01);
 		}
 
 		if (value == -1) {
-			throw new IllegalArgumentException("insufficient sampling size");
+			Validate.fail("insufficient sampling size");
 		}
 
 		return value;

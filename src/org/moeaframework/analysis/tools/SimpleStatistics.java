@@ -29,6 +29,7 @@ import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import org.moeaframework.analysis.io.MatrixReader;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.OptionCompleter;
+import org.moeaframework.util.validate.Validate;
 
  /**
  * Command line utility for computing statistics across multiple data files.  The data files should only contain
@@ -95,7 +96,7 @@ public class SimpleStatistics extends CommandLineUtility {
 		
 		//validate the inputs
 		if (entries.isEmpty()) {
-			throw new IllegalArgumentException("requires at least one file");
+			throw new IOException("requires at least one file");
 		}
 		
 		int numberOfRows = -1;
@@ -106,16 +107,16 @@ public class SimpleStatistics extends CommandLineUtility {
 				numberOfRows = entries.get(i).length;
 				
 				if (numberOfRows == 0) {
-					throw new IllegalArgumentException("empty file: " + commandLine.getArgs()[i]);
+					throw new IOException("empty file: " + commandLine.getArgs()[i]);
 				}
 			} else if (numberOfRows != entries.get(i).length) {
-				throw new IllegalArgumentException("unbalanced rows: " + commandLine.getArgs()[i]);
+				throw new IOException("unbalanced rows: " + commandLine.getArgs()[i]);
 			}
 			
 			if (numberOfColumns == -1) {
 				numberOfColumns = entries.get(i)[0].length;
 			} else if (numberOfColumns != entries.get(i)[0].length) {
-				throw new IllegalArgumentException("unbalanced columns: " + commandLine.getArgs()[i]);
+				throw new IOException("unbalanced columns: " + commandLine.getArgs()[i]);
 			}
 		}
 
@@ -124,7 +125,7 @@ public class SimpleStatistics extends CommandLineUtility {
 			mode = completer.lookup(commandLine.getOptionValue("mode"));
 			
 			if (mode == null) {
-				throw new IllegalArgumentException("invalid mode '" + commandLine.getOptionValue("mode") + "'");
+				Validate.that("mode", commandLine.getOptionValue("mode")).failUnsupportedOption(completer.getOptions());
 			}
 		} else {
 			mode = "average";

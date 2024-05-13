@@ -41,17 +41,17 @@ public class ProblemBuilderTest {
 		Assert.assertTrue(new ProblemBuilder().withProblemClass(DTLZ2.class, 2).isProblemConfigured());
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = FrameworkException.class)
 	public void testNoProblemGetInstance() throws IOException {
 		new ProblemBuilder().getProblemInstance();
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = FrameworkException.class)
 	public void testNoProblemGetReferenceSet() throws IOException {
 		new ProblemBuilder().getReferenceSet();
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = FrameworkException.class)
 	public void testNoReferenceSet() throws IOException {
 		//20D DTLZ2 has no reference set
 		new ProblemBuilder().withProblem("DTLZ2_20").getReferenceSet();

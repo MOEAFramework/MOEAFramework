@@ -48,6 +48,7 @@ import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.core.variable.Subset;
 import org.moeaframework.util.DurationUtils;
 import org.moeaframework.util.io.RedirectStream;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Evaluate solutions using an externally-defined problem.  Two modes of operation are supported: standard I/O and
@@ -463,7 +464,7 @@ public abstract class ExternalProblem implements Problem {
 				reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 				writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
 			} else {
-				throw new IllegalArgumentException("Must configure a program or socket connection");
+				Validate.fail("Must configure a program or socket connection");
 			}
 		}
 		

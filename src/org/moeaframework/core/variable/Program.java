@@ -124,7 +124,7 @@ public class Program extends Node implements Variable {
 	@Override
 	public void decode(String value) {
 		if (!value.startsWith("Program(") || !value.endsWith(")")) {
-			throw new IllegalArgumentException("invalid variable encoding, missing Program(...)");
+			throw new FrameworkException("failed to decode program, missing 'Program(' ... ')'");
 		}
 		
 		byte[] encoding = Base64.getDecoder().decode(value.substring(8, value.length()-1));

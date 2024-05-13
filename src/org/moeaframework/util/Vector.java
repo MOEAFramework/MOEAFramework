@@ -18,6 +18,7 @@
 package org.moeaframework.util;
 
 import org.moeaframework.core.Settings;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Mathematical operators for manipulating vectors (double arrays).
@@ -57,10 +58,7 @@ public class Vector {
 	 * @throws IllegalArgumentException if the two vectors are not the same length
 	 */
 	static int length(double[] u, double[] v) {
-		if (u.length != v.length) {
-			throw new IllegalArgumentException("vectors must have same length");
-		}
-
+		Validate.that("u.length", u.length).isEqualTo("v.length", v.length);
 		return u.length;
 	}
 
@@ -181,7 +179,7 @@ public class Vector {
 	 */
 	public static double[] normalize(double[] u) {
 		if (isZero(u)) {
-			throw new IllegalArgumentException("can not normalize zero vector");
+			Validate.that("u", u).fails("Can not normalize a vector of zeros");
 		}
 
 		return multiply(1.0 / magnitude(u), u);
@@ -248,12 +246,9 @@ public class Vector {
 	 * @throws IllegalArgumentException if the specified vectors is empty
 	 */
 	public static double[] mean(double[][] vs) {
+		Validate.that("vs.length", vs.length).isGreaterThan(0);
+
 		int k = vs.length;
-
-		if (k == 0) {
-			throw new IllegalArgumentException("empty vector");
-		}
-
 		int n = vs[0].length;
 		double[] mean = new double[n];
 

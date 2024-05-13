@@ -116,13 +116,8 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 		this.adaptFrequency = adaptFrequency;
 		
 		// catch potential errors
-		if (variation.getArity() != 2) {
-			throw new IllegalArgumentException("RVEA only supports operators requiring 2 parents");
-		}
-		
-		if (problem.getNumberOfObjectives() < 2) {
-			throw new IllegalArgumentException("RVEA requires at least two objectives");
-		}
+		Validate.that("variation.getArity()", variation.getArity()).isEqualTo(2);
+		Validate.that("problem.getNumberOfObjectives()", problem.getNumberOfObjectives()).isGreaterThanOrEqualTo(2);
 	}
 
 	@Override

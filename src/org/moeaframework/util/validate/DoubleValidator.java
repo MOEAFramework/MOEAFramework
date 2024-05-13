@@ -35,41 +35,81 @@ public final class DoubleValidator extends NumberValidator<Double> {
 	/**
 	 * Asserts the value is greater than some threshold.
 	 * 
-	 * @param threshold the threshold
+	 * @param thresholdValue the threshold value
 	 */
-	public final void isGreaterThan(double threshold) {
+	public final void isGreaterThan(double thresholdValue) {
+		isGreaterThan(null, thresholdValue);
+	}
+	
+	/**
+	 * Asserts the value is greater than some threshold.
+	 * 
+	 * @param thresholdName the threshold name
+	 * @param thresholdValue the threshold value
+	 */
+	public final void isGreaterThan(String thresholdName, double thresholdValue) {
 		isValidNumber();
-		super.isGreaterThan(threshold);
+		super.isGreaterThan(thresholdName, thresholdValue);
 	}
 	
 	/**
 	 * Asserts the value is greater than or equal to some threshold.
 	 * 
-	 * @param threshold the threshold
+	 * @param thresholdValue the threshold value
 	 */
-	public final void isGreaterThanOrEqualTo(double threshold) {
+	public final void isGreaterThanOrEqualTo(double thresholdValue) {
+		isGreaterThanOrEqualTo(null, thresholdValue);
+	}
+	
+	/**
+	 * Asserts the value is greater than or equal to some threshold.
+	 * 
+	 * @param thresholdName the threshold name
+	 * @param thresholdValue the threshold value
+	 */
+	public final void isGreaterThanOrEqualTo(String thresholdName, double thresholdValue) {
 		isValidNumber();
-		super.isGreaterThanOrEqualTo(threshold);
+		super.isGreaterThanOrEqualTo(thresholdName, thresholdValue);
 	}
 	
 	/**
 	 * Asserts the value is less than some threshold.
 	 * 
-	 * @param threshold the threshold
+	 * @param thresholdValue the threshold value
 	 */
-	public final void isLessThan(double threshold) {
+	public final void isLessThan(double thresholdValue) {
+		isLessThan(null, thresholdValue);
+	}
+	
+	/**
+	 * Asserts the value is less than some threshold.
+	 * 
+	 * @param thresholdName the threshold name
+	 * @param thresholdValue the threshold value
+	 */
+	public final void isLessThan(String thresholdName, double thresholdValue) {
 		isValidNumber();
-		super.isLessThan(threshold);
+		super.isLessThan(thresholdName, thresholdValue);
 	}
 	
 	/**
 	 * Asserts the value is less than or equal to some threshold.
 	 * 
-	 * @param threshold the threshold
+	 * @param thresholdValue the threshold value
 	 */
-	public final void isLessThanOrEqualTo(double threshold) {
+	public final void isLessThanOrEqualTo(double thresholdValue) {
+		isLessThanOrEqualTo(null, thresholdValue);
+	}
+	
+	/**
+	 * Asserts the value is less than or equal to some threshold.
+	 * 
+	 * @param thresholdName the threshold name
+	 * @param thresholdValue the threshold value
+	 */
+	public final void isLessThanOrEqualTo(String thresholdName, double thresholdValue) {
 		isValidNumber();
-		super.isLessThanOrEqualTo(threshold);
+		super.isLessThanOrEqualTo(thresholdName, thresholdValue);
 	}
 	
 	/**

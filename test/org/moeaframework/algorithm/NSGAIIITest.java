@@ -125,7 +125,7 @@ public class NSGAIIITest {
 		InvertedGenerationalDistance igd = new InvertedGenerationalDistance(problem, referenceSet, 2.0);
 		
 		for (int i = 0; i < trials; i++) {
-			int populationSize;
+			int populationSize = 0;
 			
 			if (problem.getNumberOfObjectives() == 3) {
 				populationSize = 92;
@@ -137,8 +137,10 @@ public class NSGAIIITest {
 				populationSize = 276;
 			} else if (problem.getNumberOfObjectives() == 15) {
 				populationSize = 136;
-			} else {
-				throw new IllegalArgumentException();
+			}
+			
+			if (populationSize <= 0) {
+				Assert.fail("Unsupported number of objectives");
 			}
 			
 			TypedProperties properties = new TypedProperties();

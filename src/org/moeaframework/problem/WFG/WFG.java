@@ -60,10 +60,7 @@ public abstract class WFG extends AbstractProblem implements AnalyticalProblem {
 		Validate.that("k", k).isGreaterThanOrEqualTo(1);
 		Validate.that("l", l).isGreaterThanOrEqualTo(1);
 		Validate.that("M", M).isGreaterThanOrEqualTo(2);
-		
-		if (k % (M - 1) != 0) {
-			throw new IllegalArgumentException("k must be a multiple of (M-1), given " + k + " with M = " + M);
-		}
+		Validate.that("k", k).isDivisibleBy("M-1", M-1);
 	}
 	
 	@Override

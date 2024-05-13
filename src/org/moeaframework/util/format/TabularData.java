@@ -29,6 +29,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.TypeUtils;
 import org.apache.commons.text.StringEscapeUtils;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Formats and displays tabular data.
@@ -143,8 +144,10 @@ public class TabularData<T> implements Displayable {
 			case CSV -> toCSV(out);
 			case Markdown -> toMarkdown(out);
 			case Latex -> toLatex(out);
-			default -> throw new IllegalArgumentException("Invalid table format " + tableFormat);
+			default -> Validate.that("tableFormat", tableFormat).failUnsupportedOption();
 		}
+		
+		Validate.that("tableFormat", tableFormat).failUnsupportedOption();
 	}
 	
 	/**

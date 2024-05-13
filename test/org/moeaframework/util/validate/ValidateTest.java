@@ -19,31 +19,11 @@ package org.moeaframework.util.validate;
 
 import org.junit.Test;
 
-public class ValidatorTest {
+public class ValidateTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testFails() {
-		Validate.that("foo", 1).fails("This always fails");
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void testFailUnrecognizedOption() {
-		Validate.that("foo", "value").failUnsupportedOption();
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void testFailUnrecognizedOptionWithSupportedValues() {
-		Validate.that("foo", "value").failUnsupportedOption("other");
-	}
-	
-	@Test//(expected = IllegalArgumentException.class)
-	public void testFailUnsupportedOptionWithEnum() {
-		Validate.that("foo", TestEnum.Foo).failUnsupportedOption();
-	}
-	
-	private enum TestEnum {
-		Foo,
-		Bar
+		Validate.fail("fails");
 	}
 	
 }

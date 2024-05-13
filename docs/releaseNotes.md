@@ -2,6 +2,15 @@
 
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
+## Version 4.2 (TBD)
+
+  * Improves argument validation with the new `Validate` class, enabling simpler and more expressive conditions along
+    with detailed error messages:
+    ```
+    Validate.that("arg", arg).isGreaterThan(0);
+    ```
+  
+
 ## Version 4.1 (06 May 2024)
 
   * Adds `DefaultNormalizer` and `DefaultEpsilons` classes with the ability to override the defaults with

@@ -84,6 +84,15 @@ public class OptionCompleter {
 	public void add(String option) {
 		options.put(option, option.toLowerCase());
 	}
+	
+	/**
+	 * Returns the supported options.
+	 * 
+	 * @return the supported options
+	 */
+	public String[] getOptions() {
+		return options.keySet().toArray(String[]::new);
+	}
 
 	/**
 	 * Returns the closest matching unique option from the set of options stored in this {@code OptionCompleter}.

@@ -56,6 +56,20 @@ public class IntegerValidatorTest {
 	}
 	
 	@Test
+	public void testEqualTo() {
+		Validate.that("foo", 0).isEqualTo(0);
+		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", 0).isEqualTo(1));
+		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", 0).isEqualTo(-1));
+	}
+	
+	@Test
+	public void testNotEqualTo() {
+		Validate.that("foo", 0).isNotEqualTo(1);
+		Validate.that("foo", 0).isNotEqualTo(-1);
+		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", 0).isNotEqualTo(0));
+	}
+	
+	@Test
 	public void testBetween() {
 		Validate.that("foo", 5).isBetween(5, 10);
 		Validate.that("foo", 7).isBetween(5, 10);

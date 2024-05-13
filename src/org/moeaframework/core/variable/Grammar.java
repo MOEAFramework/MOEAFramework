@@ -19,9 +19,11 @@ package org.moeaframework.core.variable;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Variable;
 import org.moeaframework.util.grammar.ContextFreeGrammar;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Decision variable for grammars. This class represents the grammar as a variable-length integer codon which is
@@ -104,9 +106,7 @@ public class Grammar implements Variable {
 	 */
 	public void fromArray(int[] codon) {
 		for (int i = 0; i < codon.length; i++) {
-			if ((codon[i] < 0) || (codon[i] >= maximumValue)) {
-				throw new IllegalArgumentException("invalid codon value");
-			}
+			Validate.that("codon[i]", codon[i]).isBetween(0, maximumValue - 1);
 		}
 
 		this.codon = codon.clone();
@@ -131,10 +131,7 @@ public class Grammar implements Variable {
 	 *         ({@code (value < 0) || (value >= getMaximumValue())})
 	 */
 	public void set(int index, int value) {
-		if ((value < 0) || (value >= maximumValue)) {
-			throw new IllegalArgumentException("invalid codon value");
-		}
-
+		Validate.that("value", value).isBetween(0, maximumValue - 1);
 		codon[index] = value;
 	}
 
@@ -169,9 +166,7 @@ public class Grammar implements Variable {
 	 * @return the array of values removed by this cut operation
 	 */
 	public int[] cut(int start, int end) {
-		if (start > end) {
-			throw new IllegalArgumentException("start not before end");
-		}
+		Validate.that("start", start).isLessThanOrEqualTo("end", end);
 
 		int[] newCodon = new int[codon.length - (end - start + 1)];
 		int[] result = new int[end - start + 1];
@@ -276,7 +271,7 @@ public class Grammar implements Variable {
 	@Override
 	public void decode(String value) {
 		if (!value.startsWith("Grammar(") || !value.endsWith(")")) {
-			throw new IllegalArgumentException("invalid variable encoding, missing Grammar(...)");
+			throw new FrameworkException("failed to decode grammar, missing 'Grammar(' ... ')'");
 		}
 		
 		String[] tokens = value.substring(8, value.length()-1).split(",");

@@ -77,5 +77,16 @@ public final class Validate {
 	public static final <T> ObjectValidator<T> that(String name, T value) {
 		return new ObjectValidator<T>(name, value);
 	}
+	
+	/**
+	 * Always fails with the given message.
+	 * 
+	 * @param <R> the return type
+	 * @param message the reason for the failure
+	 * @return this method never returns
+	 */
+	public static final <R> R fail(String message) {
+		throw new IllegalArgumentException(message);
+	}
 
 }

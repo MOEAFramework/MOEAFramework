@@ -21,6 +21,7 @@ import java.util.Comparator;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.moeaframework.core.Settings;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * The Wilcoxon Signed-Ranks test determines if the population median is equal to a specified value.
@@ -174,9 +175,7 @@ public class WilcoxonSignedRanksTest extends OrdinalStatisticalTest {
 	 *         is provided
 	 */
 	private static int getCriticalTValueFromTable(int n, double alpha) {
-		if ((n < 6) || (n > 50)) {
-			throw new IllegalArgumentException("only valid for 6 <= n <= 50");
-		}
+		Validate.that("n", n).isBetween(6, 50);
 
 		int value = -1;
 
@@ -185,11 +184,11 @@ public class WilcoxonSignedRanksTest extends OrdinalStatisticalTest {
 		} else if (alpha == 0.01) {
 			value = TABLE_1[n - 6];
 		} else {
-			throw new IllegalArgumentException("only valid for 0.05 or 0.01");
+			Validate.that("alpha", alpha).failUnsupportedOption(0.05, 0.01);
 		}
 
 		if (value == -1) {
-			throw new IllegalArgumentException("insufficient sampling size");
+			Validate.fail("insufficient sampling size");
 		}
 
 		return value;

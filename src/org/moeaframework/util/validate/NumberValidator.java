@@ -39,51 +39,92 @@ public abstract class NumberValidator<T extends Number & Comparable<T>> extends 
 		super(propertyName, propertyValue);
 	}
 	
+	protected final void failsOnCondition(String condition) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Expected ");
+		sb.append(getPropertyName());
+		sb.append(" to be ");
+		sb.append(condition);
+		sb.append(", given ");
+		sb.append(getPropertyValue());
+		
+		throw new IllegalArgumentException(sb.toString());
+	}
+	
+	protected final void failsOnCondition(String condition, String thresholdName, T thresholdValue) {
+		failsOnCondition(condition + " " +
+				(thresholdName == null ? thresholdValue : thresholdName + " (" + thresholdValue + ")"));
+	}
+	
 	/**
 	 * Asserts the value is greater than some threshold.
 	 * 
-	 * @param threshold the threshold
+	 * @param thresholdName the threshold name, or {@code null} if not associated with a named parameter
+	 * @param thresholdValue the threshold value
 	 */
-	protected final void isGreaterThan(T threshold) {
-		if (getPropertyValue().compareTo(threshold) <= 0) {
-			throw new IllegalArgumentException("Expected " + getPropertyName() + " to be greater than " + threshold +
-					", given " + getPropertyValue());
+	protected final void isGreaterThan(String thresholdName, T thresholdValue) {
+		if (getPropertyValue().compareTo(thresholdValue) <= 0) {
+			failsOnCondition("greater than", thresholdName, thresholdValue);
 		}
 	}
 	
 	/**
 	 * Asserts the value is greater than or equal to some threshold.
 	 * 
-	 * @param threshold the threshold
+	 * @param thresholdName the threshold name, or {@code null} if not associated with a named parameter
+	 * @param thresholdValue the threshold value
 	 */
-	protected final void isGreaterThanOrEqualTo(T threshold) {
-		if (getPropertyValue().compareTo(threshold) < 0) {
-			throw new IllegalArgumentException("Expected " + getPropertyName() + " to be greater than or equal to " +
-					threshold + ", given " + getPropertyValue());
+	protected final void isGreaterThanOrEqualTo(String thresholdName, T thresholdValue) {
+		if (getPropertyValue().compareTo(thresholdValue) < 0) {
+			failsOnCondition("greater than or equal to", thresholdName, thresholdValue);
 		}
 	}
 	
 	/**
 	 * Asserts the value is less than some threshold.
 	 * 
-	 * @param threshold the threshold
+	 * @param thresholdName the threshold name, or {@code null} if not associated with a named parameter
+	 * @param thresholdValue the threshold value
 	 */
-	protected final void isLessThan(T threshold) {
-		if (getPropertyValue().compareTo(threshold) >= 0) {
-			throw new IllegalArgumentException("Expected " + getPropertyName() + " to be less than " + threshold +
-					", given " + getPropertyValue());
+	protected final void isLessThan(String thresholdName, T thresholdValue) {
+		if (getPropertyValue().compareTo(thresholdValue) >= 0) {
+			failsOnCondition("less than", thresholdName, thresholdValue);
 		}
 	}
 	
 	/**
 	 * Asserts the value is less than or equal to some threshold.
 	 * 
-	 * @param threshold the threshold
+	 * @param thresholdName the threshold name, or {@code null} if not associated with a named parameter
+	 * @param thresholdValue the threshold value
 	 */
-	protected final void isLessThanOrEqualTo(T threshold) {
-		if (getPropertyValue().compareTo(threshold) > 0) {
-			throw new IllegalArgumentException("Expected " + getPropertyName() + " to be less than or equal to " +
-					threshold + ", given " + getPropertyValue());
+	protected final void isLessThanOrEqualTo(String thresholdName, T thresholdValue) {
+		if (getPropertyValue().compareTo(thresholdValue) > 0) {
+			failsOnCondition("less than or equal to", thresholdName, thresholdValue);
+		}
+	}
+	
+	/**
+	 * Asserts the value equals some other parameter.
+	 * 
+	 * @param parameterName the parameter name, or {@code null} if not associated with a named parameter
+	 * @param parameterValue the parameter value
+	 */
+	protected final void isEqualTo(String parameterName, T parameterValue) {
+		if (getPropertyValue().compareTo(parameterValue) != 0) {
+			failsOnCondition("equal to", parameterName, parameterValue);
+		}
+	}
+	
+	/**
+	 * Asserts the value is not equal to some other parameter.
+	 * 
+	 * @param parameterName the parameter name, or {@code null} if not associated with a named parameter
+	 * @param parameterValue the parameter value
+	 */
+	protected final void isNotEqualTo(String parameterName, T parameterValue) {
+		if (getPropertyValue().compareTo(parameterValue) == 0) {
+			failsOnCondition("not equal to", parameterName, parameterValue);
 		}
 	}
 	
@@ -95,8 +136,7 @@ public abstract class NumberValidator<T extends Number & Comparable<T>> extends 
 	 */
 	protected final void isBetween(T lower, T upper) {
 		if (getPropertyValue().compareTo(lower) < 0 || getPropertyValue().compareTo(upper) > 0) {
-			throw new IllegalArgumentException("Expected " + getPropertyName() + " to be between " + lower +
-					" and " + upper + " (inclusive), given " + getPropertyValue());
+			failsOnCondition("between " + lower + " and " + upper + " (inclusive)");
 		}
 	}
 

@@ -24,6 +24,7 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.EpsilonBoxDominanceComparator;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Measures the contribution of the approximation set to the reference set.
@@ -89,9 +90,7 @@ public class Contribution implements Indicator {
 		super();
 		this.comparator = comparator;
 		
-		if (referenceSet.isEmpty()) {
-			throw new IllegalArgumentException("reference set is empty");
-		}
+		Validate.that("referenceSet", referenceSet).isNotEmpty();
 		
 		if (comparator == null) {
 			this.referenceSet = referenceSet;

@@ -30,6 +30,7 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.util.validate.Validate;
 
 /* The following code is derived from derived from the ANSI C code developed
  * by Martin Pelikan available from <http://medal-lab.org/software.php>.  The
@@ -190,29 +191,11 @@ public class AdditivelyDecomposableProblem implements Problem {
 	 * @throws IllegalArgumentException if any parameter is invalid
 	 */
 	private void checkArguments() {
-		if (n <= 0) {
-			throw new IllegalArgumentException("n must be greater than 0");
-		}
-		
-		if (k <= 0) {
-			throw new IllegalArgumentException("k must be greater than 0");
-		}
-		
-		if (overlap < 0) {
-			throw new IllegalArgumentException("overlap must be non-negative");
-		}
-		
-		if ((n-k) % (k-overlap) != 0) {
-			int more = (k-overlap-((n-k) % (k-overlap)));
-			int less = (n-k) % (k-overlap);
-			throw new IllegalArgumentException(
-					"invalid value for n; must either be " + more +
-					" bits more or " + less + " bits less");
-		}
-		
-		if (overlap > k/2) {
-			throw new IllegalArgumentException("overlap must be at most k/2");
-		}
+		Validate.that("n", n).isGreaterThan(0);
+		Validate.that("k", k).isGreaterThan(0);
+		Validate.that("overlap", overlap).isGreaterThanOrEqualTo(0);
+		Validate.that("overlap", overlap).isLessThanOrEqualTo("k/2", k/2);
+		Validate.that("n-k", n-k).isDivisibleBy("k-overlap", k-overlap);
 	}
 	
 	/**

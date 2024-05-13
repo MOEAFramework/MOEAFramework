@@ -173,7 +173,7 @@ public class MetricFileWriter implements OutputWriter {
 			case "spacing" -> 3;
 			case "epsilonindicator" -> 4;
 			case "maximumparetofronterror" -> 5;
-			default -> throw new IllegalArgumentException("Unsupported metric '" + value + "'");
+			default -> Validate.that("value", value).fails("Unsupported or unrecognized metric name");
 		};
 	}
 

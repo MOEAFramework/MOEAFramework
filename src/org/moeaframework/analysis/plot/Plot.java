@@ -83,6 +83,7 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Provides simple 2D plotting capabilities.  This is intended to allow the rapid creation of 2D plots, supporting:
@@ -1050,7 +1051,7 @@ public class Plot {
 					writer.write("\n");
 				}
 			}
-			default -> throw new IllegalArgumentException("Unsupported image format '" + format + "'");
+			default -> Validate.that("format", format).failUnsupportedOption("PNG", "JPG", "SVG");
 		}
 		
 		return this;
