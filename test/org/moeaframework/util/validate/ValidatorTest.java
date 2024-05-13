@@ -36,7 +36,7 @@ public class ValidatorTest {
 		Validate.that("foo", "value").failUnsupportedOption("other");
 	}
 	
-	@Test//(expected = IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testFailUnsupportedOptionWithEnum() {
 		Validate.that("foo", TestEnum.Foo).failUnsupportedOption();
 	}

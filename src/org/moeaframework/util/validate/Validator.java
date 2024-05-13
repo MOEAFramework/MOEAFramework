@@ -78,7 +78,7 @@ public abstract class Validator<T> {
 	 * a list of supported values that are displayed in the error message.  If none are provided, will attempt to
 	 * determine the valid values from the type.
 	 * 
-	 * @param <S> the type of the option
+	 * @param <S> the type of supported values, which might differ from the property value if conversion is required
 	 * @param <R> the return type
 	 * @param supportedValues a list of supported values
 	 * @return this method never returns
@@ -98,11 +98,14 @@ public abstract class Validator<T> {
 		}
 		
 		if (values != null) {
-			sb.append(", valid options are:");
+			sb.append(", valid options are: ");
 			
-			for (Object value : values) {
-				sb.append(" ");
-				sb.append(value);
+			for (int i = 0; i < values.length; i++) {
+				if (i > 0) {
+					sb.append(", ");
+				}
+				
+				sb.append(values[i]);
 			}
 		}
 		
