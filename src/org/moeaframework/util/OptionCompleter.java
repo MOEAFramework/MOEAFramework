@@ -18,8 +18,9 @@
 package org.moeaframework.util;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Comparator;
+import java.util.List;
+import java.util.TreeSet;
 
 /**
  * Utility for auto-completion, finding the closest matching unique option from a set of options. For instance,
@@ -36,10 +37,9 @@ import java.util.Map;
 public class OptionCompleter {
 
 	/**
-	 * Collection of options. The map serves to ensure each option is unique and stores the value of the option
-	 * in lowercase.
+	 * Collection of the unique options stored in a case-insensitive manner.
 	 */
-	private final Map<String, String> options;
+	private final TreeSet<String> options;
 
 	/**
 	 * Constructs a new, empty option auto-completer.
@@ -47,7 +47,7 @@ public class OptionCompleter {
 	public OptionCompleter() {
 		super();
 
-		options = new HashMap<String, String>();
+		options = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
 	}
 
 	/**
@@ -56,11 +56,7 @@ public class OptionCompleter {
 	 * @param options the initial options
 	 */
 	public OptionCompleter(String... options) {
-		this();
-
-		for (String option : options) {
-			add(option);
-		}
+		this(List.of(options));
 	}
 
 	/**
@@ -82,7 +78,7 @@ public class OptionCompleter {
 	 * @param option the option
 	 */
 	public void add(String option) {
-		options.put(option, option.toLowerCase());
+		options.add(option);
 	}
 	
 	/**
@@ -91,7 +87,7 @@ public class OptionCompleter {
 	 * @return the supported options
 	 */
 	public String[] getOptions() {
-		return options.keySet().toArray(String[]::new);
+		return options.toArray(String[]::new);
 	}
 
 	/**
@@ -103,14 +99,14 @@ public class OptionCompleter {
 	 */
 	public String lookup(String partial) {
 		String result = null;
-
-		// cast to lower case for case-insensitive matching
-		partial = partial.toLowerCase();
-
-		for (Map.Entry<String, String> option : options.entrySet()) {
-			if (option.getValue().startsWith(partial)) {
+		Comparator<? super String> comparator = options.comparator();
+		
+		for (String option : options) {
+			String optionPrefix = option.substring(0, Math.min(option.length(), partial.length()));
+			
+			if (comparator.compare(optionPrefix, partial) == 0) {
 				if (result == null) {
-					result = option.getKey();
+					result = option;
 				} else {
 					// more than one potential options matched
 					return null;

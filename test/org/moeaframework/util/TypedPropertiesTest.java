@@ -372,6 +372,13 @@ public class TypedPropertiesTest {
 		Assert.assertEquals(clone, properties);
 		Assert.assertEquals(clone.hashCode(), properties.hashCode());
 	}
+	
+	@Test
+	public void testLocale() {
+		properties.setString("\u0130", "found");
+		Assert.assertEquals("found", properties.getString("\u0069"));
+		Assert.assertEquals("found", properties.getString("\u0131"));
+	}
 
 	private enum TestEnum {
 		FOO,

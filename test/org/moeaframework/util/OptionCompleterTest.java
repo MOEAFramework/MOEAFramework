@@ -76,5 +76,13 @@ public class OptionCompleterTest {
 		OptionCompleter completer2 = new OptionCompleter(options);
 		Assert.assertEquals("subset", completer2.lookup("sub"));
 	}
+	
+	@Test
+	public void testLocale() {
+		OptionCompleter completer = new OptionCompleter("\u0130");
+		
+		Assert.assertEquals("\u0130", completer.lookup("\u0069"));
+		Assert.assertEquals("\u0130", completer.lookup("\u0131"));
+	}
 
 }
