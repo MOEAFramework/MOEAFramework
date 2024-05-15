@@ -30,6 +30,9 @@ import org.apache.commons.lang3.tuple.Triple;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.Assume;
+import org.moeaframework.Capture;
+import org.moeaframework.Capture.CaptureResult;
 import org.moeaframework.TempFiles;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
@@ -46,6 +49,8 @@ public class TabularDataTest {
 	private String expectedMarkdown;
 	
 	private String expectedLatex;
+	
+	private String expectedJson;
 	
 	@Before
 	public void setUp() {
@@ -84,6 +89,39 @@ public class TabularDataTest {
 				"  bar    & 2147483647 & 5        \\\\",
 				"  \\hline",
 				"\\end{tabular}"});
+		
+		expectedJson = String.join(System.lineSeparator(), new String[] {
+				"{",
+				"  \"schema\": {",
+				"    \"fields\": [",
+				"      {",
+				"        \"name\": \"String\",",
+				"        \"type\": \"string\"",
+				"      },",
+				"      {",
+				"        \"name\": \"Integer\",",
+				"        \"type\": \"number\"",
+				"      },",
+				"      {",
+				"        \"name\": \"Variable\",",
+				"        \"type\": \"number\"",
+				"      }",
+				"    ]",
+				"  },",
+				"  \"data\": [",
+				"    {",
+				"      \"String\": \"foo\",",
+				"      \"Integer\": 1,",
+				"      \"Variable\": 0.500000",
+				"    },",
+				"    {",
+				"      \"String\": \"bar\",",
+				"      \"Integer\": 2147483647,",
+				"      \"Variable\": 5",
+				"    }",
+				"  ]",
+				"}"
+		});
 	}
 	
 	@Test
@@ -148,6 +186,15 @@ public class TabularDataTest {
 	}
 	
 	@Test
+	public void testJson() throws IOException {
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				 PrintStream ps = new PrintStream(baos)) {
+			data.toJson(ps);
+			Assert.assertEqualsNormalized(expectedJson, baos.toString());
+		}
+	}
+	
+	@Test
 	public void testSavePlaintext() throws IOException {
 		File tempFile = TempFiles.createFile();
 		data.save(TableFormat.Plaintext, tempFile);
@@ -173,6 +220,47 @@ public class TabularDataTest {
 		File tempFile = TempFiles.createFile();
 		data.save(TableFormat.Latex, tempFile);
 		Assert.assertEqualsNormalized(expectedLatex, Files.readString(tempFile.toPath(), StandardCharsets.UTF_8));
+	}
+	
+	@Test
+	public void testSaveJson() throws IOException {
+		File tempFile = TempFiles.createFile();
+		data.save(TableFormat.Json, tempFile);
+		Assert.assertEqualsNormalized(expectedJson, Files.readString(tempFile.toPath(), StandardCharsets.UTF_8));
+	}
+	
+	@Test
+	public void testJsonWithPython() throws IOException {
+		Assume.assumePythonExists();
+		
+		File tempFile = TempFiles.createFile();
+		data.save(TableFormat.Json, tempFile);
+		
+		ProcessBuilder processBuilder = new ProcessBuilder()
+				.command("python", "-c", "import json; f=open(r'" + tempFile.getAbsolutePath() +
+						"'); df = json.load(f); print(df); f.close();");
+		
+		CaptureResult result = Capture.output(processBuilder);
+		
+		System.out.println(result.toString());
+		result.assertSuccessful();
+	}
+	
+	@Test
+	public void testJsonWithPandas() throws IOException, InterruptedException {
+		Assume.assumePythonExists();
+		
+		File tempFile = TempFiles.createFile();
+		data.save(TableFormat.Json, tempFile);
+		
+		ProcessBuilder processBuilder = new ProcessBuilder()
+				.command("python", "-c", "import pandas; df = pandas.read_json(r'" + tempFile.getAbsolutePath() +
+						"', orient='table'); print(df);");
+		
+		CaptureResult result = Capture.output(processBuilder);
+		
+		System.out.println(result.toString());
+		result.assertSuccessful();
 	}
 
 }

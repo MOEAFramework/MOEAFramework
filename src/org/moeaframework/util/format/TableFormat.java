@@ -40,6 +40,11 @@ public enum TableFormat {
 	/**
 	 * Latex table.
 	 */
-	Latex
+	Latex,
+	
+	/**
+	 * Json format.
+	 */
+	Json
 
 }

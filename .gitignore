@@ -8,6 +8,9 @@
 /.settings/
 /*.txt
 /*.csv
+/*.md
+/*.tex
+/*.json
 *.exe
 *.class
 *~

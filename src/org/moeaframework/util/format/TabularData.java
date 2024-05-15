@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.TypeUtils;
@@ -144,6 +145,7 @@ public class TabularData<T> implements Displayable {
 			case CSV -> toCSV(out);
 			case Markdown -> toMarkdown(out);
 			case Latex -> toLatex(out);
+			case Json -> toJson(out);
 			default -> Validate.that("tableFormat", tableFormat).failUnsupportedOption();
 		}
 	}
@@ -325,6 +327,98 @@ public class TabularData<T> implements Displayable {
 		
 		out.println("  \\hline");
 		out.println("\\end{tabular}");
+	}
+	
+	/**
+	 * Writes the data formatted as a Json object.  This format is designed to be compatible with Pandas, and should
+	 * roughly match the format produced by:
+	 * <pre>
+	 *   import pandas as pd
+	 *   
+	 *   df = pd.DataFrame(...)
+	 *   df.to_json("data.json", orient='table', index=False)
+	 *   
+	 *   df = pd.read_json("data.json", orient='table')
+	 * </pre>
+	 * 
+	 * @param out the output stream
+	 */
+	protected void toJson(PrintStream out) {
+		List<String[]> formattedData = toFixedWidthFormat();
+		boolean[] isNumeric = new boolean[columns.size()];
+		Pattern pattern = Pattern.compile("^-?[0-9]+(\\.[0-9]+(E-?[0-9]+)?)?$");
+		
+		// Scan data to determine if field is numeric or string
+		for (int j = 0; j < columns.size(); j++) {
+			isNumeric[j] = true;
+			
+			for (int i = 0; i < formattedData.size(); i++) {
+				if (!pattern.matcher(formattedData.get(i)[j]).matches()) {
+					isNumeric[j] = false;
+					break;
+				}
+			}
+		}
+		
+		out.println("{");
+		
+		// Write the schema
+		out.println("  \"schema\": {");
+		out.println("    \"fields\": [");
+		
+		for (int j = 0; j < columns.size(); j++) {
+			if (j > 0) {
+				out.println(",");
+			}
+			
+			out.println("      {");
+			out.print("        \"name\": \"");
+			out.print(StringEscapeUtils.escapeJson(columns.get(j).getName()));
+			out.println("\",");
+			out.print("        \"type\": \"");
+			out.print(isNumeric[j] ? "number" : "string");
+			out.println("\"");
+			out.print("      }");
+		}
+		
+		out.println();
+		out.println("    ]");
+		out.println("  },");
+		out.println("  \"data\": [");
+		
+		// Write the data
+		for (int i = 0; i < formattedData.size(); i++) {
+			if (i > 0) {
+				out.println(",");
+			}
+			
+			out.println("    {");
+			
+			for (int j = 0; j < columns.size(); j++) {
+				if (j > 0) {
+					out.println(",");
+				}
+				
+				out.print("      \"");
+				out.print(StringEscapeUtils.escapeJson(columns.get(j).getName()));
+				out.print("\": ");
+				
+				if (isNumeric[j]) {
+					out.print(formattedData.get(i)[j]);
+				} else {
+					out.print("\"");
+					out.print(StringEscapeUtils.escapeJson(formattedData.get(i)[j]));
+					out.print("\"");
+				}
+			}
+			
+			out.println();
+			out.print("    }");
+		}
+		
+		out.println();
+		out.println("  ]");
+		out.println("}");
 	}
 	
 	/**

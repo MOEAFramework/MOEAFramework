@@ -41,6 +41,7 @@ public class SaveAndFormatResultsExample {
 		algorithm.getResult().save(TableFormat.CSV, new File("solutions.csv"));
 		algorithm.getResult().save(TableFormat.Markdown, new File("solutions.md"));
 		algorithm.getResult().save(TableFormat.Latex, new File("solutions.tex"));
+		algorithm.getResult().save(TableFormat.Json, new File("solution.json"));
 
 		// Change formatting of output
 		NumberFormatter.getDefault().setPrecision(10);
