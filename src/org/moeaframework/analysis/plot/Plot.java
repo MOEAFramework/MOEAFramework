@@ -84,6 +84,7 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Provides simple 2D plotting capabilities.  This is intended to allow the rapid creation of 2D plots, supporting:
@@ -1103,6 +1104,7 @@ public class Plot {
 					writer.write("\n");
 				}
 			}
+			default -> Validate.that("fileType", fileType).failUnsupportedOption();
 		}
 		
 		return this;

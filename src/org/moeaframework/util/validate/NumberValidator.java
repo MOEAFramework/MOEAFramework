@@ -39,6 +39,11 @@ public abstract class NumberValidator<T extends Number & Comparable<T>> extends 
 		super(propertyName, propertyValue);
 	}
 	
+	/**
+	 * Throws an exception indicating the specified condition failed.
+	 * 
+	 * @param condition a description of the condition that failed
+	 */
 	protected final void failsOnCondition(String condition) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Expected ");
@@ -51,6 +56,13 @@ public abstract class NumberValidator<T extends Number & Comparable<T>> extends 
 		throw new IllegalArgumentException(sb.toString());
 	}
 	
+	/**
+	 * Throws an exception indicating the specified condition failed along with threshold value that was violated.
+	 * 
+	 * @param condition a description of the condition that failed
+	 * @param thresholdName the threshold name, or {@code null} if not associated with a named parameter
+	 * @param thresholdValue the threshold value
+	 */
 	protected final void failsOnCondition(String condition, String thresholdName, T thresholdValue) {
 		failsOnCondition(condition + " " +
 				(thresholdName == null ? thresholdValue : thresholdName + " (" + thresholdValue + ")"));

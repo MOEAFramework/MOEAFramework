@@ -623,12 +623,13 @@ public class TypedProperties implements Displayable {
 	}
 	
 	/**
-	 * Converts the value into the matching enumeration constant.  Unlike using {@link Enum#valueOf(Class, String)},
-	 * this version is case-insensitive.
+	 * Converts the value into the matching Enum constant.  Unlike using {@link Enum#valueOf(Class, String)}, this
+	 * version is case-insensitive.
 	 * 
 	 * @param <T> the Enum type
 	 * @param enumType the Enum class
 	 * @param value the value as a string
+	 * @return the Enum value
 	 * @throws IllegalArgumentException if the value does not match any enumeration constant
 	 */
 	public static <T extends Enum<?>> T getEnumFromString(Class<T> enumType, String value) {
