@@ -330,15 +330,15 @@ public class TabularData<T> implements Displayable {
 	}
 	
 	/**
-	 * Writes the data formatted as a Json object.  This format is designed to be compatible with Pandas, and should
-	 * roughly match the format produced by:
+	 * Writes the data formatted as a Json object.  This format is designed to be compatible with Pandas, matching
+	 * the output produced by {@code orient='record'}.
 	 * <pre>
 	 *   import pandas as pd
 	 *   
 	 *   df = pd.DataFrame(...)
-	 *   df.to_json("data.json", orient='table', index=False)
+	 *   df.to_json("data.json", orient='record')
 	 *   
-	 *   df = pd.read_json("data.json", orient='table')
+	 *   df = pd.read_json("data.json")
 	 * </pre>
 	 * 
 	 * @param out the output stream
@@ -359,49 +359,24 @@ public class TabularData<T> implements Displayable {
 				}
 			}
 		}
+
+		out.print("[");
 		
-		out.println("{");
-		
-		// Write the schema
-		out.println("  \"schema\": {");
-		out.println("    \"fields\": [");
-		
-		for (int j = 0; j < columns.size(); j++) {
-			if (j > 0) {
-				out.println(",");
-			}
-			
-			out.println("      {");
-			out.print("        \"name\": \"");
-			out.print(StringEscapeUtils.escapeJson(columns.get(j).getName()));
-			out.println("\",");
-			out.print("        \"type\": \"");
-			out.print(isNumeric[j] ? "number" : "string");
-			out.println("\"");
-			out.print("      }");
-		}
-		
-		out.println();
-		out.println("    ]");
-		out.println("  },");
-		out.println("  \"data\": [");
-		
-		// Write the data
 		for (int i = 0; i < formattedData.size(); i++) {
 			if (i > 0) {
-				out.println(",");
+				out.print(",");
 			}
 			
-			out.println("    {");
+			out.print("{");
 			
 			for (int j = 0; j < columns.size(); j++) {
 				if (j > 0) {
-					out.println(",");
+					out.print(",");
 				}
 				
-				out.print("      \"");
+				out.print("\"");
 				out.print(StringEscapeUtils.escapeJson(columns.get(j).getName()));
-				out.print("\": ");
+				out.print("\":");
 				
 				if (isNumeric[j]) {
 					out.print(formattedData.get(i)[j]);
@@ -412,13 +387,11 @@ public class TabularData<T> implements Displayable {
 				}
 			}
 			
-			out.println();
-			out.print("    }");
+			out.print("}");
 		}
 		
+		out.print("]");
 		out.println();
-		out.println("  ]");
-		out.println("}");
 	}
 	
 	/**

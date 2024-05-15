@@ -51,7 +51,7 @@ public class TabularDataTest {
 	private String expectedLatex;
 	
 	private String expectedJson;
-	
+		
 	@Before
 	public void setUp() {
 		List<Triple<String, Integer, Variable>> rawData = new ArrayList<Triple<String, Integer, Variable>>();
@@ -90,38 +90,19 @@ public class TabularDataTest {
 				"  \\hline",
 				"\\end{tabular}"});
 		
-		expectedJson = String.join(System.lineSeparator(), new String[] {
+		expectedJson = String.join("", new String[] {
+				"[",
 				"{",
-				"  \"schema\": {",
-				"    \"fields\": [",
-				"      {",
-				"        \"name\": \"String\",",
-				"        \"type\": \"string\"",
-				"      },",
-				"      {",
-				"        \"name\": \"Integer\",",
-				"        \"type\": \"number\"",
-				"      },",
-				"      {",
-				"        \"name\": \"Variable\",",
-				"        \"type\": \"number\"",
-				"      }",
-				"    ]",
-				"  },",
-				"  \"data\": [",
-				"    {",
-				"      \"String\": \"foo\",",
-				"      \"Integer\": 1,",
-				"      \"Variable\": 0.500000",
-				"    },",
-				"    {",
-				"      \"String\": \"bar\",",
-				"      \"Integer\": 2147483647,",
-				"      \"Variable\": 5",
-				"    }",
-				"  ]",
-				"}"
-		});
+				"\"String\":\"foo\",",
+				"\"Integer\":1,",
+				"\"Variable\":0.500000",
+				"},",
+				"{",
+				"\"String\":\"bar\",",
+				"\"Integer\":2147483647,",
+				"\"Variable\":5",
+				"}",
+				"]"});
 	}
 	
 	@Test
@@ -230,7 +211,7 @@ public class TabularDataTest {
 	}
 	
 	@Test
-	public void testJsonWithPython() throws IOException {
+	public void testJsonUsingPython() throws IOException {
 		Assume.assumePythonExists();
 		
 		File tempFile = TempFiles.createFile();
@@ -247,7 +228,7 @@ public class TabularDataTest {
 	}
 	
 	@Test
-	public void testJsonWithPandas() throws IOException, InterruptedException {
+	public void testJsonUsingPandas() throws IOException, InterruptedException {
 		Assume.assumePythonExists();
 		
 		File tempFile = TempFiles.createFile();
@@ -255,7 +236,7 @@ public class TabularDataTest {
 		
 		ProcessBuilder processBuilder = new ProcessBuilder()
 				.command("python", "-c", "import pandas; df = pandas.read_json(r'" + tempFile.getAbsolutePath() +
-						"', orient='table'); print(df);");
+						"'); print(df);");
 		
 		CaptureResult result = Capture.output(processBuilder);
 		
