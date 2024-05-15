@@ -126,9 +126,26 @@ public class Plot {
 	 */
 	public enum FileType {
 		
+		/**
+		 * Portable Network Graphic (PNG) format, a raster graphics file with lossless compression.
+		 */
 		PNG,
+		
+		/**
+		 * Same as {@link #JPEG}.
+		 */
 		JPG,
+		
+		/**
+		 * Joint Photographic Experts Group (JPEG) format, which often produces smaller file sizes but is lossy.
+		 */
 		JPEG,
+		
+		/**
+		 * Scalable Vector Graphics (SVG) format, which stores images in a vector-based format instead of raster
+		 * (pixel-based) format, allowing the image to scale to any dimension without artifacts.  Use of this format
+		 * requires the <a href="https://www.jfree.org/jfreesvg/">JFreeSVG</a> library on the classpath.
+		 */
 		SVG;
 		
 		/**
@@ -1024,7 +1041,7 @@ public class Plot {
 	
 	/**
 	 * Saves the plot to an image file.  The type of image is determined from the filename extension, which must
-	 * match one of the supported file types in {@link FileType}.  Requires JFreeSVG library on classpath.
+	 * match one of the supported file types in {@link FileType}.
 	 * 
 	 * @param filename the filename
 	 * @return a reference to this {@code Plot} instance
@@ -1036,7 +1053,7 @@ public class Plot {
 
 	/**
 	 * Saves the plot to an image file.  The type of image is determined from the filename extension, which must
-	 * match one of the supported file types in {@link FileType}.  Requires JFreeSVG library on classpath.
+	 * match one of the supported file types in {@link FileType}.
 	 * 
 	 * @param file the file
 	 * @return a reference to this {@code Plot} instance
@@ -1051,7 +1068,6 @@ public class Plot {
 	
 	/**
 	 * Saves the plot to an image file.  The format must match one of the supported file types in {@link FileType}.
-	 * Requires JFreeSVG library on classpath.
 	 * 
 	 * @param file the file
 	 * @param format the image format
@@ -1065,7 +1081,7 @@ public class Plot {
 	}
 
 	/**
-	 * Saves the plot to an image file.  Requires JFreeSVG library on classpath.
+	 * Saves the plot to an image file.
 	 * 
 	 * @param file the file
 	 * @param fileType the image file format
@@ -1108,8 +1124,8 @@ public class Plot {
 			throw new FrameworkException("JFreeSVG library is not present.");
 		}
 		
-		// we suppress shadow generation, because SVG is a vector format and the shadow effect is applied via bitmap
-		// effects...
+		// Suppress shadow generation, because SVG is a vector format and the shadow effect is applied via bitmap
+		// effects.
 		g2.setRenderingHint(new RenderingHints.Key(0) {
 	        @Override
 	        public boolean isCompatibleValue(Object val) {
@@ -1126,7 +1142,7 @@ public class Plot {
 			svg = (String) m.invoke(g2);
 		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException |
 				InvocationTargetException e) {
-			// null will be returned
+			// Suppress any errors and return null
 		}
 		
 		return svg;

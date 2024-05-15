@@ -45,11 +45,35 @@ public class MetricFileWriter implements OutputWriter {
 	 * Enumeration of metrics that are written to the metric file.  This also specifies the order of the columns.
 	 */
 	public enum Metric {
+		
+		/**
+		 * Hypervolume.
+		 */
 		Hypervolume,
+		
+		/**
+		 * Generational distance (GD).
+		 */
 		GenerationalDistance,
+		
+		/**
+		 * Inverted generational distance (IGD).
+		 */
 		InvertedGenerationalDistance,
+		
+		/**
+		 * Spacing.
+		 */
 		Spacing,
+		
+		/**
+		 * Additive epsilon-indicator (AEI).
+		 */
 		EpsilonIndicator,
+		
+		/**
+		 * Maximum Pareto front error.
+		 */
 		MaximumParetoFrontError;
 		
 		/**

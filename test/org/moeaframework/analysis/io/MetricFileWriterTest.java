@@ -19,7 +19,6 @@ package org.moeaframework.analysis.io;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.time.Duration;
 
 import org.apache.commons.cli.ParseException;
