@@ -83,7 +83,7 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.util.validate.Validate;
+import org.moeaframework.util.TypedProperties;
 
 /**
  * Provides simple 2D plotting capabilities.  This is intended to allow the rapid creation of 2D plots, supporting:
@@ -120,6 +120,28 @@ import org.moeaframework.util.validate.Validate;
  * generated.  JFreeSVG can be obtained from http://www.jfree.org/jfreesvg/.
  */
 public class Plot {
+	
+	/**
+	 * List of supported file types when saving a plot.
+	 */
+	public enum FileType {
+		
+		PNG,
+		JPG,
+		JPEG,
+		SVG;
+		
+		/**
+		 * Determine the file type from its string representation using case-insensitive matching.
+		 * 
+		 * @param value the string representation of the file type
+		 * @return the file type
+		 * @throws IllegalArgumentException if the file type is not supported
+		 */
+		public static FileType fromString(String value) {
+			return TypedProperties.getEnumFromString(FileType.class, value);
+		}
+	}
 
 	/**
 	 * The internal JFreeChart instance.
@@ -1001,8 +1023,8 @@ public class Plot {
 	}
 	
 	/**
-	 * Saves the plot to an image file.  The type of image is determined from the filename extension.  See
-	 * {@link #save(File, String, int, int)} for a list of supported types.
+	 * Saves the plot to an image file.  The type of image is determined from the filename extension, which must
+	 * match one of the supported file types in {@link FileType}.  Requires JFreeSVG library on classpath.
 	 * 
 	 * @param filename the filename
 	 * @return a reference to this {@code Plot} instance
@@ -1013,8 +1035,8 @@ public class Plot {
 	}
 
 	/**
-	 * Saves the plot to an image file.  The type of image is determined from the filename extension.  See
-	 * {@link #save(File, String, int, int)} for a list of supported types.
+	 * Saves the plot to an image file.  The type of image is determined from the filename extension, which must
+	 * match one of the supported file types in {@link FileType}.  Requires JFreeSVG library on classpath.
 	 * 
 	 * @param file the file
 	 * @return a reference to this {@code Plot} instance
@@ -1026,10 +1048,10 @@ public class Plot {
 		
 		return save(file, extension, 800, 600);
 	}
-
+	
 	/**
-	 * Saves the plot to an image file.  The format must be one of {@code png}, {@code jpeg}, or {@code svg} (requires
-	 * JFreeSVG).
+	 * Saves the plot to an image file.  The format must match one of the supported file types in {@link FileType}.
+	 * Requires JFreeSVG library on classpath.
 	 * 
 	 * @param file the file
 	 * @param format the image format
@@ -1039,10 +1061,24 @@ public class Plot {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public Plot save(File file, String format, int width, int height) throws IOException {
-		switch (format.toUpperCase()) {
-			case "PNG" -> ChartUtils.saveChartAsPNG(file, chart, width, height);
-			case "JPG", "JPEG" -> ChartUtils.saveChartAsJPEG(file, chart, width, height);
-			case "SVG" -> {
+		return save(file, FileType.fromString(format), width, height);
+	}
+
+	/**
+	 * Saves the plot to an image file.  Requires JFreeSVG library on classpath.
+	 * 
+	 * @param file the file
+	 * @param fileType the image file format
+	 * @param width the image width
+	 * @param height the image height
+	 * @return a reference to this {@code Plot} instance
+	 * @throws IOException if an I/O error occurred
+	 */
+	public Plot save(File file, FileType fileType, int width, int height) throws IOException {
+		switch (fileType) {
+			case PNG -> ChartUtils.saveChartAsPNG(file, chart, width, height);
+			case JPG, JPEG -> ChartUtils.saveChartAsJPEG(file, chart, width, height);
+			case SVG -> {
 				String svg = generateSVG(width, height);
 	
 				try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
@@ -1051,7 +1087,6 @@ public class Plot {
 					writer.write("\n");
 				}
 			}
-			default -> Validate.that("format", format).failUnsupportedOption("PNG", "JPG", "SVG");
 		}
 		
 		return this;
