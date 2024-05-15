@@ -26,7 +26,7 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Capture;
 import org.moeaframework.TempFiles;
-import org.moeaframework.analysis.io.MetricFileWriter;
+import org.moeaframework.analysis.io.MetricFileWriter.Metric;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.AlgorithmFactoryTestWrapper;
 import org.moeaframework.core.spi.ProblemFactory;
@@ -162,10 +162,8 @@ public class IntegrationTest {
 		
 		Assert.assertLineCount(11, metricFile1);
 		Assert.assertLineCount(11, metricFile2);
-		Assert.assertLinePattern(metricFile1, Assert.getSpaceSeparatedNumericPattern(
-				MetricFileWriter.NUMBER_OF_METRICS));
-		Assert.assertLinePattern(metricFile2, Assert.getSpaceSeparatedNumericPattern(
-				MetricFileWriter.NUMBER_OF_METRICS));
+		Assert.assertLinePattern(metricFile1, Assert.getSpaceSeparatedNumericPattern(Metric.getNumberOfMetrics()));
+		Assert.assertLinePattern(metricFile2, Assert.getSpaceSeparatedNumericPattern(Metric.getNumberOfMetrics()));
 		
 		//compute the average metric value
 		File averageMetrics = TempFiles.createFile();
@@ -177,8 +175,7 @@ public class IntegrationTest {
 				metricFile2.getPath() });
 		
 		Assert.assertLineCount(10, averageMetrics);
-		Assert.assertLinePattern(averageMetrics, Assert.getSpaceSeparatedNumericPattern(
-				MetricFileWriter.NUMBER_OF_METRICS));
+		Assert.assertLinePattern(averageMetrics, Assert.getSpaceSeparatedNumericPattern(Metric.getNumberOfMetrics()));
 		
 		//perform the analysis
 		File analysisFile = TempFiles.createFile();
@@ -233,8 +230,7 @@ public class IntegrationTest {
 				"-m" });
 		
 		Assert.assertLineCount(61, metricFile);
-		Assert.assertLinePattern(metricFile, Assert.getSpaceSeparatedNumericPattern(
-				MetricFileWriter.NUMBER_OF_METRICS));
+		Assert.assertLinePattern(metricFile, Assert.getSpaceSeparatedNumericPattern(Metric.getNumberOfMetrics()));
 
 		//compute sensitivity results
 		File analysisFile1 = TempFiles.createFile();

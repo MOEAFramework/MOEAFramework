@@ -33,6 +33,7 @@ import javax.swing.Timer;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.apache.commons.io.FilenameUtils;
 import org.moeaframework.Instrumenter;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.util.Localization;
@@ -50,7 +51,7 @@ public class ActionFactory implements ControllerListener {
 	/**
 	 * The file extension.
 	 */
-	private static String EXTENSION = "." + localization.getString("file.extension").toLowerCase();
+	private static String EXTENSION = localization.getString("file.extension");
 
 	/**
 	 * The file filter used when selecting the file to save/load.
@@ -258,8 +259,8 @@ public class ActionFactory implements ControllerListener {
 				if (result == JFileChooser.APPROVE_OPTION) {
 					File file = fileChooser.getSelectedFile();
 						
-					if (!file.getName().toLowerCase().endsWith(EXTENSION)) {
-						file = new File(file.getParent(), file.getName() + EXTENSION);
+					if (!FilenameUtils.getExtension(file.getName()).equalsIgnoreCase(EXTENSION)) {
+						file = new File(file.getParent(), file.getName() + "." + EXTENSION);
 					}
 					
 					try {

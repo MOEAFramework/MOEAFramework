@@ -50,6 +50,7 @@ import org.apache.commons.lang3.SystemUtils;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -717,18 +718,12 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		/**
 		 * Determine the language from its string representation using case-insensitive matching.
 		 * 
-		 * @param str the string representation of the language
+		 * @param value the string representation of the language
 		 * @return the language
 		 * @throws IllegalArgumentException if the language is not supported
 		 */
-		public static Language fromString(String str) {
-			for (Language language : values()) {
-				if (language.name().equalsIgnoreCase(str)) {
-					return language;
-				}
-			}
-			
-			return Validate.that("language", str).failUnsupportedOption(Language.class);
+		public static Language fromString(String value) {
+			return TypedProperties.getEnumFromString(Language.class, value);
 		}
 		
 		/**
@@ -843,18 +838,12 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		/**
 		 * Determine the format flag from its string representation using case-insensitive matching.
 		 * 
-		 * @param str the string representation
+		 * @param value the string representation
 		 * @return the format flag
 		 * @throws IllegalArgumentException if the format flag is not supported
 		 */
-		public static FormatFlag fromString(String str) {
-			for (FormatFlag formatFlag : values()) {
-				if (formatFlag.name().equalsIgnoreCase(str)) {
-					return formatFlag;
-				}
-			}
-			
-			return Validate.that("formatting flag", str).failUnsupportedOption(FormatFlag.class);
+		public static FormatFlag fromString(String value) {
+			return TypedProperties.getEnumFromString(FormatFlag.class, value);
 		}
 		
 		/**

@@ -604,8 +604,7 @@ public class TypedProperties implements Displayable {
 	
 	/**
 	 * Returns the value of the property with the specified name as an Enum; or {@code defaultValue} if no property
-	 * with the specified name exists.  Unlike using {@link Enum#valueOf(Class, String)}, this version is
-	 * case-insensitive.
+	 * with the specified name exists.
 	 * 
 	 * @param <T> the Enum type
 	 * @param key the property name
@@ -619,14 +618,27 @@ public class TypedProperties implements Displayable {
 		if (value == null) {
 			return defaultValue;
 		} else {
-			for (T enumConstant : enumType.getEnumConstants()) {
-				if (enumConstant.name().equalsIgnoreCase(value)) {
-					return enumConstant;
-				}
-			}
-			
-			return Validate.that(key, value).failUnsupportedOption(enumType);
+			return getEnumFromString(enumType, value);
 		}
+	}
+	
+	/**
+	 * Converts the value into the matching enumeration constant.  Unlike using {@link Enum#valueOf(Class, String)},
+	 * this version is case-insensitive.
+	 * 
+	 * @param <T> the Enum type
+	 * @param enumType the Enum class
+	 * @param value the value as a string
+	 * @throws IllegalArgumentException if the value does not match any enumeration constant
+	 */
+	public static <T extends Enum<?>> T getEnumFromString(Class<T> enumType, String value) {
+		for (T enumConstant : enumType.getEnumConstants()) {
+			if (enumConstant.name().equalsIgnoreCase(value)) {
+				return enumConstant;
+			}
+		}
+			
+		return Validate.that("value", value).failUnsupportedOption(enumType);
 	}
 	
 	/**

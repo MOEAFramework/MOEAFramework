@@ -36,6 +36,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.apache.commons.io.FilenameUtils;
 import org.moeaframework.core.Settings;
 import org.moeaframework.util.Localization;
 
@@ -114,7 +115,7 @@ public class StatisticalResultsViewer extends JFrame {
 				if (result == JFileChooser.APPROVE_OPTION) {
 					File file = fileChooser.getSelectedFile();
 						
-					if (!file.getName().toLowerCase().endsWith(".txt")) {
+					if (!FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("txt")) {
 						file = new File(file.getParent(), file.getName() + ".txt");
 					}
 					

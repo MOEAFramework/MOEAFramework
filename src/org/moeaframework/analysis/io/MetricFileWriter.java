@@ -26,6 +26,7 @@ import java.util.Optional;
 
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.indicator.Indicators.IndicatorValues;
+import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -41,14 +42,42 @@ import org.moeaframework.util.validate.Validate;
 public class MetricFileWriter implements OutputWriter {
 	
 	/**
-	 * The number of metrics supported by {@code MetricFileWriter}.
+	 * Enumeration of metrics that are written to the metric file.  This also specifies the order of the columns.
 	 */
-	public static final int NUMBER_OF_METRICS = 6;
+	public enum Metric {
+		Hypervolume,
+		GenerationalDistance,
+		InvertedGenerationalDistance,
+		Spacing,
+		EpsilonIndicator,
+		MaximumParetoFrontError;
+		
+		/**
+		 * Returns the number of metrics written to the metric file.
+		 * 
+		 * @return the number of metrics
+		 */
+		public static int getNumberOfMetrics() {
+			return values().length;
+		}
+		
+		/**
+		 * Determine the metric from its string representation using case-insensitive matching.
+		 * 
+		 * @param value the string representation of the metric
+		 * @return the metric
+		 * @throws IllegalArgumentException if the metric is not supported
+		 */
+		public static Metric fromString(String value) {
+			return TypedProperties.getEnumFromString(Metric.class, value);
+		}
+	}
 	
 	/**
-	 * The header line.
+	 * The character or string that separates entries in a row.  This must be compatible with the separator used by
+	 * {@link MetricFileReader}.
 	 */
-	static final String HEADER = "#Hypervolume GenerationalDistance InvertedGenerationalDistance Spacing EpsilonIndicator MaximumParetoFrontError";
+	private static final String SEPARATOR = " ";
 	
 	/**
 	 * Settings for this metric file.
@@ -92,7 +121,7 @@ public class MetricFileWriter implements OutputWriter {
 			
 			try (MetricFileReader reader = new MetricFileReader(file);
 					PrintWriter writer = new PrintWriter(new FileWriter(tempFile))) {
-				writer.println(HEADER);
+				appendHeader(writer);
 				
 				while (reader.hasNext()) {
 					double[] data = reader.next();
@@ -100,7 +129,7 @@ public class MetricFileWriter implements OutputWriter {
 					writer.print(data[0]);
 
 					for (int i = 1; i < data.length; i++) {
-						writer.print(' ');
+						writer.print(SEPARATOR);
 						writer.print(data[i]);
 					}
 
@@ -120,7 +149,7 @@ public class MetricFileWriter implements OutputWriter {
 			// if the file doesn't exist or we are not appending, create a new file and print the header
 			numberOfEntries = 0;
 			writer = new PrintWriter(new BufferedWriter(new FileWriter(file)), true);
-			writer.println(HEADER);
+			appendHeader(writer);
 		}
 	}
 
@@ -135,46 +164,61 @@ public class MetricFileWriter implements OutputWriter {
 	@Override
 	public void append(ResultEntry entry) {
 		IndicatorValues result = indicators.apply(entry.getPopulation());
+		boolean addSeparator = false;
+		
+		for (Metric metric : Metric.values()) {
+			if (addSeparator) {
+				writer.print(SEPARATOR);
+			}
+			
+			writer.print(switch (metric) {
+				case Hypervolume -> result.getHypervolume();
+				case GenerationalDistance -> result.getGenerationalDistance();
+				case InvertedGenerationalDistance -> result.getInvertedGenerationalDistance();
+				case Spacing -> result.getSpacing();
+				case EpsilonIndicator -> result.getAdditiveEpsilonIndicator();
+				case MaximumParetoFrontError -> result.getMaximumParetoFrontError();
+			});
+			
+			addSeparator = true;
+		}
 
-		writer.print(result.getHypervolume());
-		writer.print(' ');
-		writer.print(result.getGenerationalDistance());
-		writer.print(' ');
-		writer.print(result.getInvertedGenerationalDistance());
-		writer.print(' ');
-		writer.print(result.getSpacing());
-		writer.print(' ');
-		writer.print(result.getAdditiveEpsilonIndicator());
-		writer.print(' ');
-		writer.print(result.getMaximumParetoFrontError());
 		writer.println();
-
 		numberOfEntries++;
 	}
 	
+	private void appendHeader(PrintWriter writer) {
+		boolean addSeparator = false;
+		
+		writer.print("#");
+		
+		for (Metric metric : Metric.values()) {
+			if (addSeparator) {
+				writer.print(SEPARATOR);
+			}
+			
+			writer.print(metric.name());
+			addSeparator = true;
+		}
+
+		writer.println();
+	}
+	
 	/**
-	 * Gets the index of the metric.  This should match the order that columns are written in
-	 * {@link #append(ResultEntry)}.
+	 * Gets the index of the metric, either from its name or the column index.  This should match the order of values
+	 * in {@link Metric}.
 	 * 
-	 * @param value the metric
+	 * @param value the metric name or column index
 	 * @return the index of the metric
 	 */
 	public static int getMetricIndex(String value) {
 		if (value.matches("[0-9]+")) {
 			int index = Integer.parseInt(value);
-			Validate.that("index", index).isBetween(0, NUMBER_OF_METRICS-1);
+			Validate.that("index", index).isBetween(0, Metric.getNumberOfMetrics()-1);
 			return index;
 		}
 		
-		return switch (value.toLowerCase()) {
-			case "hypervolume" -> 0;
-			case "generationaldistance" -> 1;
-			case "invertedgenerationaldistance" -> 2;
-			case "spacing" -> 3;
-			case "epsilonindicator" -> 4;
-			case "maximumparetofronterror" -> 5;
-			default -> Validate.that("value", value).fails("Unsupported or unrecognized metric name");
-		};
+		return Metric.fromString(value).ordinal();
 	}
 
 	@Override

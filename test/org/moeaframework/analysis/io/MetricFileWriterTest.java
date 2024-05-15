@@ -19,6 +19,7 @@ package org.moeaframework.analysis.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.time.Duration;
 
 import org.apache.commons.cli.ParseException;
@@ -26,6 +27,7 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Wait;
 import org.moeaframework.TempFiles;
+import org.moeaframework.analysis.io.MetricFileWriter.Metric;
 import org.moeaframework.analysis.io.MetricFileWriter.MetricFileWriterSettings;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
@@ -34,6 +36,29 @@ import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.mock.MockSolution;
 
 public class MetricFileWriterTest {
+	
+	@Test
+	public void testOutputFormat() throws IOException {
+		File file = TempFiles.createFile();
+		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
+		Indicators indicators = Indicators.standard(problem, referenceSet);
+
+		NondominatedPopulation approximationSet = new NondominatedPopulation();
+		approximationSet.add(MockSolution.of().withObjectives(0.0, 1.0));
+		approximationSet.add(MockSolution.of().withObjectives(1.0, 0.0));
+
+		try (MetricFileWriter writer = MetricFileWriter.append(indicators, file)) {
+			Assert.assertEquals(0, writer.getNumberOfEntries());
+
+			writer.append(new ResultEntry(approximationSet));
+			writer.append(new ResultEntry(approximationSet));
+
+			Assert.assertEquals(2, writer.getNumberOfEntries());
+		}
+		
+		Assert.assertLinePattern(file, Assert.getSpaceSeparatedNumericPattern(Metric.getNumberOfMetrics()));
+	}
 
 	@Test
 	public void testAppend() throws IOException {
