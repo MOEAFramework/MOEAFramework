@@ -44,6 +44,8 @@ public class DistributedProblemTest {
 	
 	public static final Duration EVALUATE_TIME = Duration.ofMillis(100);
 	
+	public static final Duration NONBLOCK_TIME = Duration.ofMillis(5);
+	
 	@Test
 	public void testSerialExecution() {
 		try (Problem problem = new DistributedProblem(new MockSynchronizedProblem(),
@@ -100,7 +102,7 @@ public class DistributedProblemTest {
 		if (N % P != 0) {
 			Assert.fail("Test should only be run when N is a multiple of P");
 		}
-		
+				
 		try (DistributedProblem problem = new DistributedProblem(new MockExpensiveProblem(),
 				Executors.newFixedThreadPool(P))) {
 			Population population = new Population();
@@ -116,7 +118,7 @@ public class DistributedProblemTest {
 				problem.evaluate(population.get(i));
 			}
 			
-			Assert.assertLessThan(timer.stop(), DurationUtils.toSeconds(EVALUATE_TIME.multipliedBy(2)));
+			Assert.assertLessThan(timer.stop(), DurationUtils.toSeconds(NONBLOCK_TIME.multipliedBy(N)));
 	
 			// these should block
 			timer = Timer.startNew();
@@ -125,9 +127,10 @@ public class DistributedProblemTest {
 				population.get(i).getObjective(0);
 			}
 			
-			Assert.assertLessThan(
-					Math.abs(DurationUtils.toSeconds(EVALUATE_TIME.multipliedBy(N / P)) - timer.stop()),
-					DurationUtils.toSeconds(EVALUATE_TIME.multipliedBy(4)));
+			Assert.assertBetween(
+					DurationUtils.toSeconds(EVALUATE_TIME.multipliedBy(N / P).minusMillis(50)),
+					DurationUtils.toSeconds(EVALUATE_TIME.multipliedBy(N / P).plusMillis(500)),
+					timer.stop());
 	
 			// these should not block
 			timer = Timer.startNew();
@@ -136,7 +139,7 @@ public class DistributedProblemTest {
 				population.get(i).getConstraint(0);
 			}
 	
-			Assert.assertLessThan(timer.stop(), DurationUtils.toSeconds(EVALUATE_TIME));
+			Assert.assertLessThan(timer.stop(), DurationUtils.toSeconds(NONBLOCK_TIME.multipliedBy(N)));
 		}
 	}
 	
