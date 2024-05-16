@@ -401,6 +401,6 @@ public class ExternalProblemWithCStdioTest {
 			return instance;
 		}
 
-	};
+	}
 
 }
