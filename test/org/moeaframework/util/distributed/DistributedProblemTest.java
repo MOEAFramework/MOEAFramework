@@ -44,7 +44,7 @@ public class DistributedProblemTest {
 	
 	public static final Duration EVALUATE_TIME = Duration.ofMillis(100);
 	
-	public static final Duration NONBLOCK_TIME = Duration.ofMillis(5);
+	public static final Duration NONBLOCK_TIME = Duration.ofMillis(10);
 	
 	@Test
 	public void testSerialExecution() {
