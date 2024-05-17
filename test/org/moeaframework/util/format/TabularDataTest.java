@@ -243,5 +243,80 @@ public class TabularDataTest {
 		System.out.println(result.toString());
 		result.assertSuccessful();
 	}
+	
+	@Test
+	public void testPlaintextEscaping() throws IOException {
+		List<String> rawData = new ArrayList<String>();
+		rawData.add("foo\"\\\t\r\n|&bar");
+			
+		TabularData<String> data = new TabularData<>(rawData);
+		data.addColumn(new Column<String, String>("key", x -> x));
+			
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				 PrintStream ps = new PrintStream(baos)) {
+			data.toPlaintext(ps);
+			Assert.assertEqualsNormalized("key\n----------\nfoo\"\\|&bar", baos.toString());
+		}	
+	}
+	
+	@Test
+	public void testCsvEscaping() throws IOException {
+		List<String> rawData = new ArrayList<String>();
+		rawData.add("foo\"\\\t\r\n|&bar");
+			
+		TabularData<String> data = new TabularData<>(rawData);
+		data.addColumn(new Column<String, String>("key", x -> x));
+			
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				 PrintStream ps = new PrintStream(baos)) {
+			data.toCSV(ps);
+			Assert.assertEqualsNormalized("key\n\"foo\"\"\\\t\r\n|&bar\"", baos.toString());
+		}	
+	}
+	
+	@Test
+	public void testMarkdownEscaping() throws IOException {
+		List<String> rawData = new ArrayList<String>();
+		rawData.add("foo\"\\\t\r\n|&bar");
+			
+		TabularData<String> data = new TabularData<>(rawData);
+		data.addColumn(new Column<String, String>("key", x -> x));
+			
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				 PrintStream ps = new PrintStream(baos)) {
+			data.toMarkdown(ps);
+			Assert.assertEqualsNormalized("key\n----------------\nfoo\"\\\\&#124;&bar", baos.toString());
+		}	
+	}
+	
+	@Test
+	public void testLatexEscaping() throws IOException {
+		List<String> rawData = new ArrayList<String>();
+		rawData.add("foo\"\\\t\r\n|&bar");
+			
+		TabularData<String> data = new TabularData<>(rawData);
+		data.addColumn(new Column<String, String>("key", x -> x));
+			
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				 PrintStream ps = new PrintStream(baos)) {
+			data.toLatex(ps);
+			Assert.assertEqualsNormalized("\\begin{tabular}{|l|}\n\\hline\nkey \\\\\n\\hline\nfoo\"\\|\\&bar \\\\\n\\hline\n\\end{tabular}", baos.toString());
+		}	
+	}
+	
+	@Test
+	public void testJsonEscaping() throws IOException {
+		List<String> rawData = new ArrayList<String>();
+		rawData.add("foo\"\\\t\r\n|&bar");
+			
+		TabularData<String> data = new TabularData<>(rawData);
+		data.addColumn(new Column<String, String>("key", x -> x));
+			
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				 PrintStream ps = new PrintStream(baos)) {
+			data.toJson(ps);
+			Assert.assertEqualsNormalized("[{\"key\":\"foo\\\"\\\\\\t\\r\\n|&bar\"}]", baos.toString());
+		}	
+	}
 
 }

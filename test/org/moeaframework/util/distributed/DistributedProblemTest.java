@@ -42,7 +42,7 @@ import org.moeaframework.util.Timer;
 @Retryable
 public class DistributedProblemTest {
 	
-	public static final Duration EVALUATE_TIME = Duration.ofMillis(100);
+	public static final Duration EVALUATE_TIME = Duration.ofMillis(250);
 	
 	public static final Duration NONBLOCK_TIME = Duration.ofMillis(10);
 	
@@ -128,8 +128,8 @@ public class DistributedProblemTest {
 			}
 			
 			Assert.assertBetween(
-					DurationUtils.toSeconds(EVALUATE_TIME.multipliedBy(N / P).minusMillis(50)),
-					DurationUtils.toSeconds(EVALUATE_TIME.multipliedBy(N / P).plusMillis(500)),
+					DurationUtils.toSeconds(EVALUATE_TIME.multipliedBy(N / P).minus(NONBLOCK_TIME.multipliedBy(5))),
+					DurationUtils.toSeconds(EVALUATE_TIME.multipliedBy(N / P).plus(NONBLOCK_TIME.multipliedBy(N))),
 					timer.stop());
 	
 			// these should not block
