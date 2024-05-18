@@ -17,7 +17,6 @@
  */
 package org.moeaframework.util.distributed;
 
-import java.time.Duration;
 import java.util.concurrent.Executors;
 
 import org.junit.Test;
@@ -26,42 +25,47 @@ import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.Wait;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Solution;
-import org.moeaframework.mock.MockConstraintProblem;
-import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockRealStochasticProblem;
-import org.moeaframework.util.DurationUtils;
-import org.moeaframework.util.Timer;
 
 @RunWith(CIRunner.class)
 @Retryable
 public class DistributedProblemTest {
 	
-	public static final Duration EVALUATE_TIME = Duration.ofMillis(250);
-	
-	public static final Duration NONBLOCK_TIME = Duration.ofMillis(10);
-	
 	@Test
 	public void testSerialExecution() {
-		try (Problem problem = new DistributedProblem(new MockSynchronizedProblem(),
-				Executors.newFixedThreadPool(10))) {
+		int N = 10;
+		TestableSynchronizedProblem synchronizedProblem = new TestableSynchronizedProblem();
+		
+		try (Problem problem = new DistributedProblem(synchronizedProblem, Executors.newFixedThreadPool(N))) {
 			Population population = new Population();
 			
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < N; i++) {
 				population.add(problem.newSolution());
 			}
 			
-			for (int i = 0; i < 10; i++) {
+			// verify these are all future solutions
+			for (int i = 0; i < N; i++) {
+				Assert.assertInstanceOf(FutureSolution.class, population.get(i));
+			}
+			
+			// calls to evaluate are serialized (assertions in evaluate method)
+			for (int i = 0; i < N; i++) {
 				problem.evaluate(population.get(i));
 			}
 			
-			for (int i = 0; i < 10; i++) {
+			// futures are still used even when synchronized, should not be updated yet
+			for (int i = 0; i < N; i++) {
+				((TestableFutureSolution)population.get(i)).assertNotUpdated();
+			}
+
+			// verify reads call update
+			for (int i = 0; i < N; i++) {
 				population.get(i).getObjectives();
+				((TestableFutureSolution)population.get(i)).assertUpdated();
 			}
 		}
 	}
@@ -102,44 +106,45 @@ public class DistributedProblemTest {
 		if (N % P != 0) {
 			Assert.fail("Test should only be run when N is a multiple of P");
 		}
+		
+		TestableFutureProblem blockingProblem = new TestableFutureProblem(0);
 				
-		try (DistributedProblem problem = new DistributedProblem(new MockExpensiveProblem(),
-				Executors.newFixedThreadPool(P))) {
+		try (DistributedProblem problem = new DistributedProblem(blockingProblem, Executors.newFixedThreadPool(P))) {
 			Population population = new Population();
 	
 			for (int i = 0; i < N; i++) {
 				population.add(problem.newSolution());
 			}
+			
+			// verify these are all future solutions
+			for (int i = 0; i < N; i++) {
+				Assert.assertInstanceOf(FutureSolution.class, population.get(i));
+			}
 	
 			// submit the tasks to start processing
-			Timer timer = Timer.startNew();
-			
 			for (int i = 0; i < N; i++) {
 				problem.evaluate(population.get(i));
 			}
 			
-			Assert.assertLessThan(timer.stop(), DurationUtils.toSeconds(NONBLOCK_TIME.multipliedBy(N)));
-	
-			// these should block
-			timer = Timer.startNew();
+			// futures are not updated yet
+			for (int i = 0; i < N; i++) {
+				((TestableFutureSolution)population.get(i)).assertNotUpdated();
+			}
+
+			// evaluate should not block the test thread if properly distributed
+			blockingProblem.releaseOrFailIfBlocked(N);
 			
+			// futures are not updated yet
+			for (int i = 0; i < N; i++) {
+				((TestableFutureSolution)population.get(i)).assertNotUpdated();
+			}
+
+			// verify reads call update
 			for (int i = 0; i < N; i++) {
 				population.get(i).getObjective(0);
-			}
-			
-			Assert.assertBetween(
-					DurationUtils.toSeconds(EVALUATE_TIME.multipliedBy(N / P).minus(NONBLOCK_TIME.multipliedBy(5))),
-					DurationUtils.toSeconds(EVALUATE_TIME.multipliedBy(N / P).plus(NONBLOCK_TIME.multipliedBy(N))),
-					timer.stop());
-	
-			// these should not block
-			timer = Timer.startNew();
-			
-			for (int i = 0; i < N; i++) {
 				population.get(i).getConstraint(0);
+				((TestableFutureSolution)population.get(i)).assertUpdated();
 			}
-	
-			Assert.assertLessThan(timer.stop(), DurationUtils.toSeconds(NONBLOCK_TIME.multipliedBy(N)));
 		}
 	}
 	
@@ -161,34 +166,6 @@ public class DistributedProblemTest {
 		algorithm.run(1000);
 		
 		return algorithm.getResult().get(0).getObjective(0); // one optimum for a single objective problem
-	}
-	
-	private static class MockExpensiveProblem extends MockConstraintProblem {
-
-		@Override
-		public void evaluate(Solution solution) {
-			super.evaluate(solution);
-			Wait.sleepFor(EVALUATE_TIME);
-		}
-
-	}
-	
-	private static class MockSynchronizedProblem extends MockRealProblem {
-		
-		private boolean isInvoked;
-
-		@Override
-		public synchronized void evaluate(Solution solution) {
-			Assert.assertFalse(isInvoked);
-			
-			isInvoked = true;
-			
-			super.evaluate(solution);
-			Wait.sleepFor(EVALUATE_TIME);
-			
-			isInvoked = false;
-		}
-		
 	}
 
 }

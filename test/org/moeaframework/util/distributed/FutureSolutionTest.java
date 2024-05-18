@@ -17,7 +17,6 @@
  */
 package org.moeaframework.util.distributed;
 
-import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -26,66 +25,39 @@ import java.util.concurrent.Future;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.Wait;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.initialization.RandomInitialization;
-import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.problem.ProblemWrapper;
-import org.moeaframework.util.Timer;
 
 public class FutureSolutionTest {
 	
-	public class TestableFutureSolution extends FutureSolution {
-
-		private static final long serialVersionUID = 2833940082100144051L;
-		
-		private boolean isUpdated;
-		
-		public TestableFutureSolution(Solution solution) {
-			super(solution);
-		}
-
-		@Override
-		public synchronized void update() {
-			super.update();
-			isUpdated = true;
-		}
-		
-		@Override
-		public synchronized void setFuture(Future<Solution> future) {
-			super.setFuture(future);
-			isUpdated = false;
-		}
-		
-	}
-	
-	private Problem testProblem;
-	private Solution unevaluatedSolution;
+	private TestableFutureProblem testProblem;
+	private TestableFutureSolution unevaluatedSolution;
 	private Solution evaluatedSolution;
-	private Future<Solution> futureSolution;
+	private Future<Solution> completedFuture;
 	
 	@Before
 	public void setUp() {
-		testProblem = new MockRealProblem();
+		testProblem = new TestableFutureProblem();
 		
-		unevaluatedSolution = new RandomInitialization(testProblem).initialize(1)[0];
+		unevaluatedSolution = testProblem.newSolution();
+		unevaluatedSolution.randomize();
 		
 		evaluatedSolution = unevaluatedSolution.copy();
 		testProblem.evaluate(evaluatedSolution);
 		
-		futureSolution = CompletableFuture.completedFuture(evaluatedSolution);
+		completedFuture = CompletableFuture.completedFuture(evaluatedSolution);
 	}
 	
 	@Test
 	public void testUpdate() {
 		TestableFutureSolution solution = new TestableFutureSolution(unevaluatedSolution);
-		solution.setFuture(futureSolution);
+		solution.setFuture(completedFuture);
 		
-		Assert.assertEquals(solution, evaluatedSolution);
-		Assert.assertTrue(solution.isUpdated);
+		solution.assertEqualsTo(evaluatedSolution);
+		solution.assertUpdated();
 	}
 	
 	@Test
@@ -98,8 +70,8 @@ public class FutureSolutionTest {
 			TestableFutureSolution solution = new TestableFutureSolution(unevaluatedSolution);
 			problem.evaluate(solution);
 			
-			Assert.assertEquals(solution, evaluatedSolution);
-			Assert.assertTrue(solution.isUpdated);
+			solution.assertEqualsTo(evaluatedSolution);
+			solution.assertUpdated();
 		} finally {
 			executor.shutdown();
 		}
@@ -108,26 +80,18 @@ public class FutureSolutionTest {
 	@Test
 	public void testBlocking() {
 		ExecutorService executor = Executors.newSingleThreadExecutor();
-		
-		Problem delayedProblem = new ProblemWrapper(testProblem) {
-
-			@Override
-			public void evaluate(Solution solution) {
-				Wait.spinFor(Duration.ofSeconds(2));
-				super.evaluate(solution);
-			}
-			
-		};
+		testProblem = new TestableFutureProblem(0);
 				
 		try {
-			DistributedProblem problem = DistributedProblem.from(delayedProblem, 1);
+			DistributedProblem problem = DistributedProblem.from(testProblem, 1);
 			
 			TestableFutureSolution solution = new TestableFutureSolution(unevaluatedSolution);
 			problem.evaluate(solution);
+			
+			testProblem.releaseOrFailIfBlocked(1);
 
-			Timer timer = Timer.startNew();
-			solution.update();			
-			Assert.assertGreaterThan(timer.stop(), 1.0);
+			solution.update();
+			solution.assertUpdated();
 		} finally {
 			executor.shutdown();
 		}
@@ -164,17 +128,17 @@ public class FutureSolutionTest {
 	@Test
 	public void testCopy() {
 		TestableFutureSolution solution = new TestableFutureSolution(unevaluatedSolution);
-		Assert.assertFalse(solution.isUpdated);
+		solution.assertNotUpdated();
 		
 		FutureSolution copy = solution.copy();
-		Assert.assertTrue(solution.isUpdated);
-		Assert.assertNotEquals(solution, copy);
+		solution.assertUpdated();
+		Assert.assertNotSame(solution, copy);
 		
-		solution.setFuture(futureSolution);
+		solution.setFuture(completedFuture);
 		copy = solution.copy();
-		Assert.assertTrue(solution.isUpdated);
-		Assert.assertNotEquals(solution, copy);
-		Assert.assertEquals(solution, copy);
+		solution.assertUpdated();
+		solution.assertEqualsTo(copy);
+		Assert.assertNotSame(solution, copy);
 	}
 	
 	@Test
@@ -183,17 +147,17 @@ public class FutureSolutionTest {
 		evaluatedSolution.setAttribute("foo", "bar");
 		
 		Solution copy = solution.deepCopy();
-		Assert.assertTrue(solution.isUpdated);
+		solution.assertUpdated();
 		Assert.assertInstanceOf(FutureSolution.class, copy);
 		Assert.assertNotSame(solution, copy);
 		Assert.assertFalse(copy.hasAttribute("foo"));
 		
-		solution.setFuture(futureSolution);
+		solution.setFuture(completedFuture);
 		copy = solution.deepCopy();
-		Assert.assertTrue(solution.isUpdated);
+		solution.assertUpdated();
+		solution.assertEqualsTo(copy);
 		Assert.assertInstanceOf(FutureSolution.class, copy);
 		Assert.assertNotSame(solution, copy);
-		Assert.assertEquals(solution, copy);
 		Assert.assertTrue(copy.hasAttribute("foo"));
 	}
 	
@@ -204,7 +168,7 @@ public class FutureSolutionTest {
 		// Expect non-zero result since the unevaluated solution has an objective value of 0
 		Assert.assertNotEquals(0.0, solution.euclideanDistance(evaluatedSolution), TestThresholds.HIGH_PRECISION);
 		
-		solution.setFuture(futureSolution);
+		solution.setFuture(completedFuture);
 		Assert.assertEquals(0.0, solution.euclideanDistance(evaluatedSolution), TestThresholds.HIGH_PRECISION);
 	}
 

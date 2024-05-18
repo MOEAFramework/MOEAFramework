@@ -160,7 +160,13 @@ public class DistributedProblem extends ProblemWrapper {
 
 	@Override
 	public Solution newSolution() {
-		return new FutureSolution(super.newSolution());
+		Solution solution = super.newSolution();
+		
+		if (solution instanceof FutureSolution) {
+			return solution;
+		} else {
+			return new FutureSolution(solution);
+		}
 	}
 	
 	@Override
