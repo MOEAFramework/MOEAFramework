@@ -34,6 +34,7 @@ import org.moeaframework.core.Selection;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.attribute.Fitness;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.FitnessComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
@@ -210,7 +211,7 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 		
 		while (iterator.hasNext()) {
 			Solution solution = iterator.next();
-			double fitness = FitnessEvaluator.getFitness(solution);
+			double fitness = Fitness.getAttribute(solution);
 			
 			if (fitness < 1.0) {
 				survivors.add(solution);
@@ -464,7 +465,7 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 			
 			// assign fitness attribute to solutions
 			for (int i = 0; i < population.size(); i++) {
-				FitnessEvaluator.setFitness(population.get(i), fitness[i]);
+				Fitness.setAttribute(population.get(i), fitness[i]);
 			}
 		}
 

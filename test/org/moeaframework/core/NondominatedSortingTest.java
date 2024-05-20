@@ -24,6 +24,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
+import org.moeaframework.core.attribute.CrowdingDistance;
+import org.moeaframework.core.attribute.Rank;
 import org.moeaframework.mock.MockSolution;
 
 public class NondominatedSortingTest {
@@ -54,9 +56,9 @@ public class NondominatedSortingTest {
 		
 		assertHasAttributes(population);
 
-		Assert.assertEquals(0, NondominatedSorting.getRank(solution1));
-		Assert.assertEquals(1, NondominatedSorting.getRank(solution2));
-		Assert.assertEquals(2, NondominatedSorting.getRank(solution3));
+		Assert.assertEquals(0, Rank.getAttribute(solution1));
+		Assert.assertEquals(1, Rank.getAttribute(solution2));
+		Assert.assertEquals(2, Rank.getAttribute(solution3));
 	}
 
 	@Test
@@ -70,12 +72,12 @@ public class NondominatedSortingTest {
 		
 		assertHasAttributes(population);
 
-		Assert.assertEquals(0, NondominatedSorting.getRank(solution1));
-		Assert.assertEquals(0, NondominatedSorting.getRank(solution2));
-		Assert.assertEquals(0, NondominatedSorting.getRank(solution3));
-		Assert.assertEquals(Double.POSITIVE_INFINITY, NondominatedSorting.getCrowding(solution1), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(2.0, NondominatedSorting.getCrowding(solution2), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(Double.POSITIVE_INFINITY, NondominatedSorting.getCrowding(solution3), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0, Rank.getAttribute(solution1));
+		Assert.assertEquals(0, Rank.getAttribute(solution2));
+		Assert.assertEquals(0, Rank.getAttribute(solution3));
+		Assert.assertEquals(Double.POSITIVE_INFINITY, CrowdingDistance.getAttribute(solution1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(2.0, CrowdingDistance.getAttribute(solution2), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(Double.POSITIVE_INFINITY, CrowdingDistance.getAttribute(solution3), TestThresholds.HIGH_PRECISION);
 	}
 
 	@Test
@@ -89,12 +91,12 @@ public class NondominatedSortingTest {
 		
 		assertHasAttributes(population);
 
-		Assert.assertEquals(0, NondominatedSorting.getRank(solution1));
-		Assert.assertEquals(0, NondominatedSorting.getRank(solution2));
-		Assert.assertEquals(0, NondominatedSorting.getRank(solution3));
+		Assert.assertEquals(0, Rank.getAttribute(solution1));
+		Assert.assertEquals(0, Rank.getAttribute(solution2));
+		Assert.assertEquals(0, Rank.getAttribute(solution3));
 		
-		Assert.assertTrue(Double.isInfinite(NondominatedSorting.getCrowding(solution1)));
-		Assert.assertEquals(0.0, NondominatedSorting.getCrowding(solution3), TestThresholds.HIGH_PRECISION);
+		Assert.assertTrue(Double.isInfinite(CrowdingDistance.getAttribute(solution1)));
+		Assert.assertEquals(0.0, CrowdingDistance.getAttribute(solution3), TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -108,19 +110,19 @@ public class NondominatedSortingTest {
 		
 		assertHasAttributes(population);
 
-		Assert.assertEquals(0, NondominatedSorting.getRank(solution1));
-		Assert.assertEquals(0, NondominatedSorting.getRank(solution2));
-		Assert.assertEquals(0, NondominatedSorting.getRank(solution3));
+		Assert.assertEquals(0, Rank.getAttribute(solution1));
+		Assert.assertEquals(0, Rank.getAttribute(solution2));
+		Assert.assertEquals(0, Rank.getAttribute(solution3));
 		
-		Assert.assertTrue(Double.isInfinite(NondominatedSorting.getCrowding(solution1)));
-		Assert.assertFalse(Double.isNaN(NondominatedSorting.getCrowding(solution2)));
-		Assert.assertTrue(Double.isInfinite(NondominatedSorting.getCrowding(solution3)));
+		Assert.assertTrue(Double.isInfinite(CrowdingDistance.getAttribute(solution1)));
+		Assert.assertFalse(Double.isNaN(CrowdingDistance.getAttribute(solution2)));
+		Assert.assertTrue(Double.isInfinite(CrowdingDistance.getAttribute(solution3)));
 	}
 	
 	private void assertHasAttributes(Population population) {
 		for (Solution solution : population) {
-			Assert.assertTrue(solution.hasAttribute(FastNondominatedSorting.RANK_ATTRIBUTE));
-			Assert.assertTrue(solution.hasAttribute(FastNondominatedSorting.CROWDING_ATTRIBUTE));
+			Assert.assertTrue(solution.hasAttribute(Rank.ATTRIBUTE_NAME));
+			Assert.assertTrue(solution.hasAttribute(CrowdingDistance.ATTRIBUTE_NAME));
 		}
 	}
 

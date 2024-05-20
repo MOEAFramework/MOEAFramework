@@ -21,9 +21,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.core.FitnessEvaluator;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.attribute.Fitness;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockSolution;
 
@@ -70,8 +70,8 @@ public class HypervolumeFitnessEvaluatorTest {
 		
 		fitness.evaluate(population);
 		
-		Assert.assertLessThan(FitnessEvaluator.getFitness(population.get(0)),
-				FitnessEvaluator.getFitness(population.get(1)));
+		Assert.assertLessThan(Fitness.getAttribute(population.get(0)),
+				Fitness.getAttribute(population.get(1)));
 	}
 	
 	@Test
@@ -82,8 +82,8 @@ public class HypervolumeFitnessEvaluatorTest {
 		
 		fitness.evaluate(population);
 		
-		Assert.assertEquals(FitnessEvaluator.getFitness(population.get(0)),
-				FitnessEvaluator.getFitness(population.get(1)), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(Fitness.getAttribute(population.get(0)),
+				Fitness.getAttribute(population.get(1)), TestThresholds.HIGH_PRECISION);
 	}
 	
 }

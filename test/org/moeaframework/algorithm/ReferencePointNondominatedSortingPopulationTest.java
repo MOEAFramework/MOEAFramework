@@ -23,6 +23,9 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.attribute.Niche;
+import org.moeaframework.core.attribute.NicheDistance;
+import org.moeaframework.core.attribute.NormalizedObjectives;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
@@ -110,7 +113,7 @@ public class ReferencePointNondominatedSortingPopulationTest {
 		population.updateIdealPoint();
 		population.translateByIdealPoint();
 
-		double[] objectives = ReferencePointNondominatedSortingPopulation.getNormalizedObjectives(population.get(0));
+		double[] objectives = NormalizedObjectives.getAttribute(population.get(0));
 		
 		Assert.assertEquals(0.5, objectives[0], TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(0.0, objectives[1], TestThresholds.HIGH_PRECISION);
@@ -130,7 +133,7 @@ public class ReferencePointNondominatedSortingPopulationTest {
 		population.translateByIdealPoint();
 		population.normalizeByIntercepts(intercepts);
 		
-		double[] objectives = ReferencePointNondominatedSortingPopulation.getNormalizedObjectives(population.get(0));
+		double[] objectives = NormalizedObjectives.getAttribute(population.get(0));
 		
 		Assert.assertEquals(1.0, objectives[0], TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(0.0, objectives[1], TestThresholds.HIGH_PRECISION);
@@ -233,13 +236,13 @@ public class ReferencePointNondominatedSortingPopulationTest {
 		
 		population.updateNiches();
 		
-		Assert.assertEquals(0, ReferencePointNondominatedSortingPopulation.getNiche(population.get(0)));
-		Assert.assertEquals(1, ReferencePointNondominatedSortingPopulation.getNiche(population.get(1)));
-		Assert.assertEquals(2, ReferencePointNondominatedSortingPopulation.getNiche(population.get(2)));
+		Assert.assertEquals(0, Niche.getAttribute(population.get(0)));
+		Assert.assertEquals(1, Niche.getAttribute(population.get(1)));
+		Assert.assertEquals(2, Niche.getAttribute(population.get(2)));
 
-		Assert.assertEquals(0.0, ReferencePointNondominatedSortingPopulation.getNicheDistance(population.get(0)), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.0, ReferencePointNondominatedSortingPopulation.getNicheDistance(population.get(1)), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.0, ReferencePointNondominatedSortingPopulation.getNicheDistance(population.get(2)), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, NicheDistance.getAttribute(population.get(0)), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, NicheDistance.getAttribute(population.get(1)), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, NicheDistance.getAttribute(population.get(2)), TestThresholds.HIGH_PRECISION);
 	}
 
 }

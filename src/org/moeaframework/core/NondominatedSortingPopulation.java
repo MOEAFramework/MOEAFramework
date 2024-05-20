@@ -23,6 +23,7 @@ import java.io.ObjectOutputStream;
 import java.util.Comparator;
 import java.util.Iterator;
 
+import org.moeaframework.core.attribute.Rank;
 import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.NondominatedSortingComparator;
@@ -198,12 +199,12 @@ public class NondominatedSortingPopulation extends Population {
 
 		//collect all solutions in the front which must be pruned
 		//note the use of super to prevent repeatedly triggering update()
-		int maxRank = NondominatedSorting.getRank(super.get(size-1));
+		int maxRank = Rank.getAttribute(super.get(size-1));
 		Population front = new Population();
 
 		for (int i=size()-1; i>=0; i--) {
 			Solution solution = super.get(i);
-			int rank = NondominatedSorting.getRank(solution);
+			int rank = Rank.getAttribute(solution);
 			
 			if (rank >= maxRank) {
 				super.remove(i);

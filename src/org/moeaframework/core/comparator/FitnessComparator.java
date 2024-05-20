@@ -21,6 +21,7 @@ import java.util.Comparator;
 
 import org.moeaframework.core.FitnessEvaluator;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.attribute.Fitness;
 
 /**
  * Compares two solutions based on their fitness value.
@@ -48,7 +49,7 @@ public class FitnessComparator implements DominanceComparator, Comparator<Soluti
 	@Override
 	public int compare(Solution solution1, Solution solution2) {
 		return (largerValuesPreferred ? -1 : 1) *
-				Double.compare(FitnessEvaluator.getFitness(solution1), FitnessEvaluator.getFitness(solution2));
+				Double.compare(Fitness.getAttribute(solution1), Fitness.getAttribute(solution2));
 	}
 
 }

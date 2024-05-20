@@ -24,10 +24,10 @@ import org.junit.runner.RunWith;
 import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
-import org.moeaframework.core.FitnessEvaluator;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.attribute.Fitness;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.core.spi.ProblemFactory;
@@ -141,7 +141,7 @@ public class SPEA2Test extends JMetalAlgorithmTest {
 	}
 	
 	private void assertFitnessInRange(Solution solution, double min, double max) {
-		double fitness = FitnessEvaluator.getFitness(solution);
+		double fitness = Fitness.getAttribute(solution);
 		
 		if ((fitness < min) || (fitness > max)) {
 			Assert.fail("fitness " + fitness + " not within bounds [" + min + ", " + max + "]");

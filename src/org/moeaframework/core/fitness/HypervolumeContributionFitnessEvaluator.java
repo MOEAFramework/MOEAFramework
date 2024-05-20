@@ -24,6 +24,7 @@ import org.moeaframework.core.FitnessEvaluator;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.attribute.Fitness;
 import org.moeaframework.core.indicator.PISAHypervolume;
 import org.moeaframework.util.validate.Validate;
 
@@ -67,7 +68,7 @@ public class HypervolumeContributionFitnessEvaluator implements FitnessEvaluator
 	public void evaluate(Population population) {
 		if (population.size() <= 2) {
 			for (Solution solution : population) {
-				FitnessEvaluator.setFitness(solution, 0.0);
+				Fitness.setAttribute(solution, 0.0);
 			}
 		} else {
 			int numberOfObjectives = problem.getNumberOfObjectives();
@@ -84,7 +85,7 @@ public class HypervolumeContributionFitnessEvaluator implements FitnessEvaluator
 				double volume = PISAHypervolume.calculateHypervolume(solutionsCopy, solutionsCopy.size(),
 						numberOfObjectives);
 				
-				FitnessEvaluator.setFitness(population.get(i), totalVolume - volume);
+				Fitness.setAttribute(population.get(i), totalVolume - volume);
 			}
 		}
 	}

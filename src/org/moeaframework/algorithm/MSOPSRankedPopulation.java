@@ -17,8 +17,6 @@
  */
 package org.moeaframework.algorithm;
 
-import static org.moeaframework.core.NondominatedSorting.RANK_ATTRIBUTE;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -33,6 +31,7 @@ import org.moeaframework.algorithm.single.VectorAngleDistanceScalingComparator;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.attribute.Rank;
 import org.moeaframework.core.comparator.RankComparator;
 import org.moeaframework.core.penalty.SumOfConstraintsPenaltyFunction;
 
@@ -363,7 +362,7 @@ public class MSOPSRankedPopulation extends Population {
 		});
 		
 		for (int i = 0; i < P; i++) {
-			get(indices[i]).setAttribute(RANK_ATTRIBUTE, i);
+			Rank.setAttribute(get(indices[i]), i);
 		}
 	}
 	

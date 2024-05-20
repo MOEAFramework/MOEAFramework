@@ -19,8 +19,8 @@ package org.moeaframework.core.comparator;
 
 import java.util.Comparator;
 
-import org.moeaframework.core.NondominatedSorting;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.attribute.CrowdingDistance;
 
 /**
  * Compares solutions using their crowding distance. Solutions with larger crowding distances are preferred.
@@ -36,7 +36,8 @@ public class CrowdingComparator implements DominanceComparator, Comparator<Solut
 
 	@Override
 	public int compare(Solution solution1, Solution solution2) {
-		return -Double.compare(NondominatedSorting.getCrowding(solution1), NondominatedSorting.getCrowding(solution2));
+		return -Double.compare(CrowdingDistance.getAttribute(solution1),
+				CrowdingDistance.getAttribute(solution2));
 	}
 
 }

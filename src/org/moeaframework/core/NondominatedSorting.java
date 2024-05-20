@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
+import org.moeaframework.core.attribute.CrowdingDistance;
+import org.moeaframework.core.attribute.Rank;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ObjectiveComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
@@ -41,16 +43,6 @@ import org.moeaframework.core.comparator.ParetoDominanceComparator;
  * </ol>
  */
 public class NondominatedSorting {
-
-	/**
-	 * Attribute key for the rank of a solution.
-	 */
-	public static final String RANK_ATTRIBUTE = "rank";
-
-	/**
-	 * Attribute key for the crowding distance of a solution.
-	 */
-	public static final String CROWDING_ATTRIBUTE = "crowdingDistance";
 
 	/**
 	 * The dominance comparator.
@@ -107,7 +99,7 @@ public class NondominatedSorting {
 
 			for (Solution solution : front) {
 				remaining.remove(solution);
-				setRank(solution, rank);
+				Rank.setAttribute(solution, rank);
 			}
 
 			updateCrowdingDistance(front);
@@ -125,7 +117,7 @@ public class NondominatedSorting {
 	public void updateCrowdingDistance(Population front) {
 		// initially assign all crowding distances of 0.0
 		for (Solution solution : front) {
-			setCrowding(solution, 0.0);
+			CrowdingDistance.setAttribute(solution, 0.0);
 		}
 		
 		// remove any duplicate solutions, the duplicate solutions will retain the crowding distance of 0.0
@@ -153,7 +145,7 @@ public class NondominatedSorting {
 		
 		if (n < 3) {
 			for (Solution solution : front) {
-				setCrowding(solution, Double.POSITIVE_INFINITY);
+				CrowdingDistance.setAttribute(solution, Double.POSITIVE_INFINITY);
 			}
 		} else {
 			int numberOfObjectives = front.get(0).getNumberOfObjectives();
@@ -165,58 +157,18 @@ public class NondominatedSorting {
 				double maxObjective = front.get(n - 1).getObjective(i);
 				
 				if (maxObjective - minObjective >= Settings.EPS) {
-					setCrowding(front.get(0), Double.POSITIVE_INFINITY);
-					setCrowding(front.get(n - 1), Double.POSITIVE_INFINITY);
+					CrowdingDistance.setAttribute(front.get(0), Double.POSITIVE_INFINITY);
+					CrowdingDistance.setAttribute(front.get(n - 1), Double.POSITIVE_INFINITY);
 
 					for (int j = 1; j < n - 1; j++) {
-						double distance = getCrowding(front.get(j));
+						double distance = CrowdingDistance.getAttribute(front.get(j));
 						distance += (front.get(j + 1).getObjective(i) - front.get(j - 1).getObjective(i))
 								/ (maxObjective - minObjective);
-						setCrowding(front.get(j), distance);
+						CrowdingDistance.setAttribute(front.get(j), distance);
 					}
 				}
 			}
 		}
-	}
-	
-	/**
-	 * Returns the rank of the specified solution.
-	 * 
-	 * @param solution the solution
-	 * @return the rank of the specified solution
-	 */
-	public static final int getRank(Solution solution) {
-		return (Integer)solution.getAttribute(RANK_ATTRIBUTE);
-	}
-	
-	/**
-	 * Sets the rank of the specified solution.
-	 * 
-	 * @param solution the solution
-	 * @param rank the rank of the specified solution
-	 */
-	public static final void setRank(Solution solution, int rank) {
-		solution.setAttribute(RANK_ATTRIBUTE, rank);
-	}
-	
-	/**
-	 * Returns the crowding distance of the specified solution.
-	 * 
-	 * @param solution the solution
-	 * @return the crowding distance of the specified solution
-	 */
-	public static final double getCrowding(Solution solution) {
-		return (Double)solution.getAttribute(CROWDING_ATTRIBUTE);
-	}
-	
-	/**
-	 * Sets the crowding distance of the specified solution.
-	 * 
-	 * @param solution the solution
-	 * @param crowding the crowding distance of the specified solution
-	 */
-	public static final void setCrowding(Solution solution, double crowding) {
-		solution.setAttribute(CROWDING_ATTRIBUTE, crowding);
 	}
 
 }

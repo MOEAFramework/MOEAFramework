@@ -24,6 +24,7 @@ import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.attribute.NormalizedObjectives;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.util.Vector;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
@@ -85,7 +86,7 @@ public class ReferenceVectorGuidedPopulationTest {
 		population.calculateIdealPoint();
 		population.translateByIdealPoint();
 
-		double[] objectives = ReferencePointNondominatedSortingPopulation.getNormalizedObjectives(population.get(0));
+		double[] objectives = NormalizedObjectives.getAttribute(population.get(0));
 		
 		Assert.assertEquals(0.5, objectives[0], TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(0.0, objectives[1], TestThresholds.HIGH_PRECISION);

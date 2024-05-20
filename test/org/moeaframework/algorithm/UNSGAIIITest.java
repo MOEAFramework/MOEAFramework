@@ -19,8 +19,10 @@ package org.moeaframework.algorithm;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.NondominatedSorting;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.attribute.Niche;
+import org.moeaframework.core.attribute.NicheDistance;
+import org.moeaframework.core.attribute.Rank;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.mock.MockSolution;
 
@@ -32,19 +34,19 @@ public class UNSGAIIITest {
 		
 		Solution s1 = MockSolution.of().withConstraints(-1.0);
 		Solution s2 = MockSolution.of()
-				.withAttribute(ReferencePointNondominatedSortingPopulation.NICHE_ATTRIBUTE, 1)
-				.withAttribute(NondominatedSorting.RANK_ATTRIBUTE, 1);
+				.withAttribute(Niche.ATTRIBUTE_NAME, 1)
+				.withAttribute(Rank.ATTRIBUTE_NAME, 1);
 		Solution s3 = MockSolution.of()
-				.withAttribute(ReferencePointNondominatedSortingPopulation.NICHE_ATTRIBUTE, 1)
-				.withAttribute(NondominatedSorting.RANK_ATTRIBUTE, 2);
+				.withAttribute(Niche.ATTRIBUTE_NAME, 1)
+				.withAttribute(Rank.ATTRIBUTE_NAME, 2);
 		Solution s4 = MockSolution.of()
-				.withAttribute(ReferencePointNondominatedSortingPopulation.NICHE_ATTRIBUTE, 1)
-				.withAttribute(NondominatedSorting.RANK_ATTRIBUTE, 1)
-				.withAttribute(ReferencePointNondominatedSortingPopulation.NICHE_DISTANCE_ATTRIBUTE, 0.1);
+				.withAttribute(Niche.ATTRIBUTE_NAME, 1)
+				.withAttribute(Rank.ATTRIBUTE_NAME, 1)
+				.withAttribute(NicheDistance.ATTRIBUTE_NAME, 0.1);
 		Solution s5 = MockSolution.of()
-				.withAttribute(ReferencePointNondominatedSortingPopulation.NICHE_ATTRIBUTE, 1)
-				.withAttribute(NondominatedSorting.RANK_ATTRIBUTE, 1)
-				.withAttribute(ReferencePointNondominatedSortingPopulation.NICHE_DISTANCE_ATTRIBUTE, 0.5);
+				.withAttribute(Niche.ATTRIBUTE_NAME, 1)
+				.withAttribute(Rank.ATTRIBUTE_NAME, 1)
+				.withAttribute(NicheDistance.ATTRIBUTE_NAME, 0.5);
 		
 		Assert.assertEquals(1, comparator.compare(s1, s2));
 		Assert.assertEquals(-1, comparator.compare(s3, s1));

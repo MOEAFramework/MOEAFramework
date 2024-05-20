@@ -18,6 +18,7 @@
 package org.moeaframework.core.penalty;
 
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.attribute.Penalty;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -66,7 +67,7 @@ public class SumOfConstraintsPenaltyFunction implements PenaltyFunction {
 	@Override
 	public double calculate(Solution solution) {
 		double penalty = solution.isFeasible() ? 0.0 : offset + solution.getSumOfConstraintViolations();
-		PenaltyFunction.setPenalty(solution, penalty);
+		Penalty.setAttribute(solution, penalty);
 		return penalty;
 	}
 

@@ -20,6 +20,7 @@ package org.moeaframework.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.moeaframework.core.attribute.Rank;
 import org.moeaframework.core.comparator.DominanceComparator;
 
 /**
@@ -114,7 +115,7 @@ public class FastNondominatedSorting extends NondominatedSorting {
 			
 			for (int i = 0; i < currentFront.size(); i++) {
 				Solution solution = population.get(currentFront.get(i));
-				solution.setAttribute(RANK_ATTRIBUTE, rank);
+				Rank.setAttribute(solution, rank);
 				
 				// update the dominated counts as compute next front
 				for (Integer j : dominatesList.get(currentFront.get(i))) {

@@ -17,13 +17,12 @@
  */
 package org.moeaframework.core.comparator;
 
-import static org.moeaframework.core.NondominatedSorting.CROWDING_ATTRIBUTE;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.attribute.CrowdingDistance;
 
 public class CrowdingComparatorTest {
 
@@ -45,9 +44,9 @@ public class CrowdingComparatorTest {
 		Solution solution2 = new Solution(0, 0);
 		Solution solution3 = new Solution(0, 0);
 
-		solution1.setAttribute(CROWDING_ATTRIBUTE, Double.POSITIVE_INFINITY);
-		solution2.setAttribute(CROWDING_ATTRIBUTE, 0.0);
-		solution3.setAttribute(CROWDING_ATTRIBUTE, 1.0);
+		CrowdingDistance.setAttribute(solution1, Double.POSITIVE_INFINITY);
+		CrowdingDistance.setAttribute(solution2, 0.0);
+		CrowdingDistance.setAttribute(solution3, 1.0);
 
 		Assert.assertTrue(comparator.compare(solution1, solution2) < 0);
 		Assert.assertTrue(comparator.compare(solution2, solution1) > 0);
@@ -61,15 +60,15 @@ public class CrowdingComparatorTest {
 		Solution solution2 = new Solution(0, 0);
 
 		// test infinite crowding distance
-		solution1.setAttribute(CROWDING_ATTRIBUTE, Double.POSITIVE_INFINITY);
-		solution2.setAttribute(CROWDING_ATTRIBUTE, Double.POSITIVE_INFINITY);
+		CrowdingDistance.setAttribute(solution1, Double.POSITIVE_INFINITY);
+		CrowdingDistance.setAttribute(solution2, Double.POSITIVE_INFINITY);
 
 		Assert.assertTrue(comparator.compare(solution1, solution2) == 0);
 		Assert.assertTrue(comparator.compare(solution2, solution1) == 0);
 
 		// test finite crowding distance
-		solution1.setAttribute(CROWDING_ATTRIBUTE, 1.0);
-		solution2.setAttribute(CROWDING_ATTRIBUTE, 1.0);
+		CrowdingDistance.setAttribute(solution1, 1.0);
+		CrowdingDistance.setAttribute(solution2, 1.0);
 
 		Assert.assertTrue(comparator.compare(solution1, solution2) == 0);
 		Assert.assertTrue(comparator.compare(solution2, solution1) == 0);

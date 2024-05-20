@@ -24,12 +24,8 @@ package org.moeaframework.core;
 public interface FitnessEvaluator {
 
 	/**
-	 * Attribute key for the fitness of a solution.
-	 */
-	public static final String FITNESS_ATTRIBUTE = "fitness";
-
-	/**
-	 * Evaluates the solutions in the specified population assigning the {@code FITNESS_ATTRIBUTE} attribute.
+	 * Evaluates the fitness of solutions in the population, updating the
+	 * {@link org.moeaframework.core.attribute.Fitness} attribute.
 	 * 
 	 * @param population the population to be evaluated
 	 */
@@ -41,25 +37,5 @@ public interface FitnessEvaluator {
 	 * @return {@code true} if larger fitness values are preferred; otherwise smaller fitness values are preferred
 	 */
 	public boolean areLargerValuesPreferred();
-	
-	/**
-	 * Returns the fitness value for the given solution.
-	 * 
-	 * @param solution the solution
-	 * @return the fitness value
-	 */
-	public static double getFitness(Solution solution) {
-		return (Double)solution.getAttribute(FITNESS_ATTRIBUTE);
-	}
-	
-	/**
-	 * Sets the fitness value on the given solution.
-	 * 
-	 * @param solution the solution
-	 * @param value the fitness value
-	 */
-	public static void setFitness(Solution solution, double value) {
-		solution.setAttribute(FITNESS_ATTRIBUTE, value);
-	}
 
 }

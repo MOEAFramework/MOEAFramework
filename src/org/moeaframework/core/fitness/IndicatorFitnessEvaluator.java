@@ -22,6 +22,7 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.attribute.Fitness;
 import org.moeaframework.core.indicator.Normalizer;
 
 /**
@@ -132,7 +133,7 @@ public abstract class IndicatorFitnessEvaluator implements FitnessEvaluator {
 				}
 			}
 			
-			FitnessEvaluator.setFitness(population.get(i), sum);
+			Fitness.setAttribute(population.get(i), sum);
 		}
 	}
 	
@@ -153,11 +154,11 @@ public abstract class IndicatorFitnessEvaluator implements FitnessEvaluator {
 		for (int i = 0; i < population.size(); i++) {
 			if (i != removeIndex) {
 				Solution solution = population.get(i);
-				double fitness = FitnessEvaluator.getFitness(solution);
+				double fitness = Fitness.getAttribute(solution);
 				
 				fitness -= Math.exp((-fitcomp[removeIndex][i] / maxAbsIndicatorValue) / kappa);
 				
-				FitnessEvaluator.setFitness(solution, fitness);
+				Fitness.setAttribute(solution, fitness);
 			}
 		}
 		

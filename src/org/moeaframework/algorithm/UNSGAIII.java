@@ -23,15 +23,14 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Selection;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.attribute.Niche;
+import org.moeaframework.core.attribute.NicheDistance;
 import org.moeaframework.core.comparator.AggregateConstraintComparator;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.RankComparator;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
-
-import static org.moeaframework.algorithm.ReferencePointNondominatedSortingPopulation.getNiche;
-import static org.moeaframework.algorithm.ReferencePointNondominatedSortingPopulation.getNicheDistance;
 
 /**
  * Implementation of the "unified" NSGA-III, or U-NSGA-III, which improves selection pressure by replacing the random
@@ -133,11 +132,11 @@ public class UNSGAIII extends NSGAIII {
 				return cmp;
 			}
 			
-			if (getNiche(solution1) == getNiche(solution2)) {
+			if (Niche.getAttribute(solution1) == Niche.getAttribute(solution2)) {
 				int cmp = rankComparator.compare(solution1, solution2);
 				
 				if (cmp == 0) {
-					return Double.compare(getNicheDistance(solution1), getNicheDistance(solution2));
+					return Double.compare(NicheDistance.getAttribute(solution1), NicheDistance.getAttribute(solution2));
 				}
 				
 				return cmp;

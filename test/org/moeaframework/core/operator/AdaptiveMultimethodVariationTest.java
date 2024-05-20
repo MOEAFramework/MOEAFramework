@@ -27,6 +27,7 @@ import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.attribute.OperatorIndex;
 import org.moeaframework.core.selection.UniformSelection;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.mock.MockVariation;
@@ -42,9 +43,9 @@ public class AdaptiveMultimethodVariationTest {
 		Solution s2 = MockSolution.of();
 		Solution s3 = MockSolution.of();
 		
-		s1.setAttribute(AdaptiveMultimethodVariation.OPERATOR_ATTRIBUTE, 0);
-		s2.setAttribute(AdaptiveMultimethodVariation.OPERATOR_ATTRIBUTE, 1);
-		s3.setAttribute(AdaptiveMultimethodVariation.OPERATOR_ATTRIBUTE, 0);
+		OperatorIndex.setAttribute(s1, 0);
+		OperatorIndex.setAttribute(s2, 1);
+		OperatorIndex.setAttribute(s3, 0);
 		
 		population = new Population(List.of(s1, s2, s3));
 		variation = new AdaptiveMultimethodVariation(population);
@@ -87,7 +88,7 @@ public class AdaptiveMultimethodVariationTest {
 		Assert.assertEquals(2, variation.getArity());
 		
 		for (Solution solution : population) {
-			solution.removeAttribute(AdaptiveMultimethodVariation.OPERATOR_ATTRIBUTE);
+			OperatorIndex.removeAttribute(solution);
 		}
 		
 		Assert.assertEquals(0.5, variation.getOperatorProbability(0), TestThresholds.HIGH_PRECISION);

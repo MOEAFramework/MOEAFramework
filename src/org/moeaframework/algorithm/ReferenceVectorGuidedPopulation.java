@@ -28,13 +28,11 @@ import java.util.List;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.attribute.NormalizedObjectives;
 import org.moeaframework.util.Vector;
 import org.moeaframework.util.validate.Validate;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 import org.moeaframework.util.weights.NormalBoundaryIntersectionGenerator;
-
-import static org.moeaframework.algorithm.ReferencePointNondominatedSortingPopulation.getNormalizedObjectives;
-import static org.moeaframework.algorithm.ReferencePointNondominatedSortingPopulation.setNormalizedObjectives;
 
 /**
  * A reference vector guided population, for use with RVEA, that truncates the population using the method outlined in
@@ -257,7 +255,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	
 	/**
 	 * Offsets the solutions in this population by the ideal point.  This method does not modify the objective values,
-	 * it creates a new attribute with the name {@value ReferencePointNondominatedSortingPopulation#NORMALIZED_OBJECTIVES_ATTRIBUTE}.
+	 * instead it sets the {@link NormalizedObjectives} attribute.
 	 */
 	protected void translateByIdealPoint() {
 		for (Solution solution : this) {
@@ -267,7 +265,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 				objectives[i] -= idealPoint[i];
 			}
 
-			setNormalizedObjectives(solution, objectives);
+			NormalizedObjectives.setAttribute(solution, objectives);
 		}
 	}
 	
@@ -311,7 +309,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 		}
 
 		for (Solution solution : population) {
-			double[] objectives = getNormalizedObjectives(solution);
+			double[] objectives = NormalizedObjectives.getAttribute(solution);
 			double maxDistance = Double.NEGATIVE_INFINITY;
 			int maxIndex = -1;
 
@@ -368,7 +366,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 		
 		for (Solution solution : solutions) {
 			if (solution.isFeasible()) {
-				double[] objectives = getNormalizedObjectives(solution);
+				double[] objectives = NormalizedObjectives.getAttribute(solution);
 				
 				double penalty = numberOfObjectives * Math.pow(scalingFactor, alpha) *
 						acosine(weight, objectives) / minAngles[index];

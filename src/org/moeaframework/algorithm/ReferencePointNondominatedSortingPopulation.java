@@ -28,17 +28,20 @@ import java.util.List;
 import java.util.Set;
 
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.core.NondominatedSorting;
 import org.moeaframework.core.NondominatedSortingPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.attribute.Niche;
+import org.moeaframework.core.attribute.NicheDistance;
+import org.moeaframework.core.attribute.NormalizedObjectives;
+import org.moeaframework.core.attribute.Rank;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.RankComparator;
 import org.moeaframework.util.Vector;
-import org.moeaframework.util.weights.NormalBoundaryIntersectionGenerator;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
+import org.moeaframework.util.weights.NormalBoundaryIntersectionGenerator;
 
 /**
  * Implementation of the reference-point-based nondominated sorting method for NSGA-III.  NSGA-III includes an
@@ -60,23 +63,6 @@ import org.moeaframework.util.weights.NormalBoundaryDivisions;
  * </ol>
  */
 public class ReferencePointNondominatedSortingPopulation extends NondominatedSortingPopulation {
-
-	/**
-	 * The name of the attribute for storing the normalized objectives.
-	 */
-	static final String NORMALIZED_OBJECTIVES_ATTRIBUTE = "normalized_objectives";
-	
-	/**
-	 * The name of the attribute for storing the niche, which identifies which reference point each solution is
-	 * nearest.
-	 */
-	static final String NICHE_ATTRIBUTE = "niche";
-	
-	/**
-	 * The name of the attribute for storing the niche distance, which is the perpendicular distance from the solution
-	 * to the nearest reference point.
-	 */
-	static final String NICHE_DISTANCE_ATTRIBUTE = "niche_distance";
 
 	/**
 	 * The number of objectives.
@@ -199,7 +185,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 
 	/**
 	 * Offsets the solutions in this population by the ideal point.  This method does not modify the objective values,
-	 * it creates a new attribute with the name {@value NORMALIZED_OBJECTIVES_ATTRIBUTE}.
+	 * instead it sets the {@link NormalizedObjectives} attribute.
 	 */
 	protected void translateByIdealPoint() {
 		for (Solution solution : this) {
@@ -209,19 +195,19 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 				objectives[i] -= idealPoint[i];
 			}
 
-			setNormalizedObjectives(solution, objectives);
+			NormalizedObjectives.setAttribute(solution, objectives);
 		}
 	}
 
 	/**
 	 * Normalizes the solutions in this population by the given intercepts (or scaling factors).  This method does not
-	 * modify the objective values, it modifies the {@value NORMALIZED_OBJECTIVES_ATTRIBUTE} attribute.
+	 * modify the objective values, instead it sets the {@link NormalizedObjectives} attribute.
 	 * 
 	 * @param intercepts the intercepts used for scaling
 	 */
 	protected void normalizeByIntercepts(double[] intercepts) {
 		for (Solution solution : this) {
-			double[] objectives = getNormalizedObjectives(solution);
+			double[] objectives = NormalizedObjectives.getAttribute(solution);
 
 			for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
 				objectives[i] /= intercepts[i];
@@ -238,7 +224,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	 */
 	protected static double achievementScalarizingFunction(Solution solution, double[] weights) {
 		double max = Double.NEGATIVE_INFINITY;
-		double[] objectives = getNormalizedObjectives(solution);
+		double[] objectives = NormalizedObjectives.getAttribute(solution);
 
 		for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
 			max = Math.max(max, objectives[i]/weights[i]);
@@ -317,7 +303,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 			double[][] A = new double[numberOfObjectives][numberOfObjectives];
 			
 			for (int i = 0; i < numberOfObjectives; i++) {
-				double[] objectives = getNormalizedObjectives(extremePoints[i]);
+				double[] objectives = NormalizedObjectives.getAttribute(extremePoints[i]);
 
 				b[i] = 1.0;
 
@@ -439,8 +425,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	 * each reference point using their index.  The inner list is an unordered collection of the solutions associated
 	 * with the reference point.
 	 * <p>
-	 * As a side-effect, this method also sets the {@value #NICHE_ATTRIBUTE} and {@value #NICHE_DISTANCE_ATTRIBUTE}
-	 * attributes on all solutions.
+	 * As a side-effect, this method also sets the {@link Niche} and {@link NicheDistance} attributes.
 	 * 
 	 * @param population the population of solutions
 	 * @return the association of solutions to reference points
@@ -453,7 +438,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 		}
 
 		for (Solution solution : population) {
-			double[] objectives = getNormalizedObjectives(solution);
+			double[] objectives = NormalizedObjectives.getAttribute(solution);
 			double minDistance = Double.POSITIVE_INFINITY;
 			int minIndex = -1;
 
@@ -468,8 +453,8 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 
 			result.get(minIndex).add(solution);
 			
-			setNiche(solution, minIndex);
-			setNicheDistance(solution, minDistance);
+			Niche.setAttribute(solution, minIndex);
+			NicheDistance.setAttribute(solution, minDistance);
 		}
 
 		return result;
@@ -487,7 +472,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 		Solution minSolution = null;
 
 		for (int i = 0; i < solutions.size(); i++) {
-			double[] objectives = getNormalizedObjectives(solutions.get(i));
+			double[] objectives = NormalizedObjectives.getAttribute(solutions.get(i));
 			double distance = pointLineDistance(weight, objectives);
 			
 			if (distance < minDistance) {
@@ -508,11 +493,11 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 			// remove all solutions past the last front
 			sort(new RankComparator());
 			
-			int maxRank = NondominatedSorting.getRank(super.get(size-1));
+			int maxRank = Rank.getAttribute(super.get(size-1));
 			Population front = new Population();
 
 			for (int i = 0; i < size(); i++) {
-				int rank = NondominatedSorting.getRank(get(i));
+				int rank = Rank.getAttribute(get(i));
 				
 				if (rank > maxRank) {
 					front.add(get(i));
@@ -535,7 +520,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 			front = new Population();
 
 			for (int i = 0; i < size(); i++) {
-				int rank = NondominatedSorting.getRank(get(i));
+				int rank = Rank.getAttribute(get(i));
 
 				if (rank == maxRank) {
 					front.add(get(i));
@@ -602,9 +587,9 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	}
 	
 	/**
-	 * Updates the {@value #NICHE_ATTRIBUTE} and {@value #NICHE_DISTANCE_ATTRIBUTE} attributes on all solutions in this
-	 * population.  Normally, this is handled by the {@link #truncate(int, Comparator)} method, but this can be called
-	 * when the calculation is needed explicitly, such as after initialization.
+	 * Updates the {@link Niche} and {@link NicheDistance} attributes on all solutions in this population.  Normally,
+	 * this is handled by the {@link #truncate(int, Comparator)} method, but this can be called when the calculation is
+	 * needed explicitly, such as after initialization.
 	 */
 	public void updateNiches() {
 		updateIdealPoint();
@@ -638,66 +623,6 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 		super.loadState(stream);
 		idealPoint = (double[])stream.readObject();
 		weights = (List<double[]>)stream.readObject();
-	}
-	
-	/**
-	 * Returns the normalized objectives of the specified solution, read from its attribute.
-	 * 
-	 * @param solution the solution
-	 * @return the normalized objectives
-	 */
-	static final double[] getNormalizedObjectives(Solution solution) {
-		return (double[])solution.getAttribute(NORMALIZED_OBJECTIVES_ATTRIBUTE);
-	}
-	
-	/**
-	 * Sets the normalized objectives of the specified solution, stored as an attribute.
-	 * 
-	 * @param solution the solution
-	 * @param normalizedObjectives the normalized objectives
-	 */
-	static final void setNormalizedObjectives(Solution solution, double[] normalizedObjectives) {
-		solution.setAttribute(NORMALIZED_OBJECTIVES_ATTRIBUTE, normalizedObjectives);
-	}
-	
-	/**
-	 * Returns the niche of the specified solution, read from its attribute.
-	 * 
-	 * @param solution the solution
-	 * @return the niche
-	 */
-	static final int getNiche(Solution solution) {
-		return (Integer)solution.getAttribute(NICHE_ATTRIBUTE);
-	}
-	
-	/**
-	 * Sets the niche of the specified solution, stored as an attribute.
-	 * 
-	 * @param solution the solution
-	 * @param niche the niche
-	 */
-	static final void setNiche(Solution solution, int niche) {
-		solution.setAttribute(NICHE_ATTRIBUTE, niche);
-	}
-	
-	/**
-	 * Returns the niche distance of the specified solution, read from its attribute.
-	 * 
-	 * @param solution the solution
-	 * @return the niche distance
-	 */
-	static final double getNicheDistance(Solution solution) {
-		return (Double)solution.getAttribute(NICHE_DISTANCE_ATTRIBUTE);
-	}
-	
-	/**
-	 * Sets the niche distance of the specified solution, stored as an attribute.
-	 * 
-	 * @param solution the solution
-	 * @param niche the niche distance
-	 */
-	static final void setNicheDistance(Solution solution, double nicheDistance) {
-		solution.setAttribute(NICHE_DISTANCE_ATTRIBUTE, nicheDistance);
 	}
 	
 }

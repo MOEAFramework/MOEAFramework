@@ -23,6 +23,7 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.attribute.OperatorIndex;
 
 /**
  * Auto-adaptive multi-method recombination operator. Applies operators with probabilities proportional to the number
@@ -30,11 +31,6 @@ import org.moeaframework.core.Variation;
  */
 public class AdaptiveMultimethodVariation extends AbstractCompoundVariation<Variation> {
 	
-	/**
-	 * The attribute for the operator index.
-	 */
-	public static final String OPERATOR_ATTRIBUTE = "operator";
-
 	/**
 	 * The probabilities for applying each operator.
 	 */
@@ -147,8 +143,8 @@ public class AdaptiveMultimethodVariation extends AbstractCompoundVariation<Vari
 		Arrays.fill(count, 1.0);
 
 		for (Solution solution : archive) {
-			if (solution.hasAttribute(OPERATOR_ATTRIBUTE)) {
-				count[(Integer)solution.getAttribute(OPERATOR_ATTRIBUTE)]++;
+			if (OperatorIndex.hasAttribute(solution)) {
+				count[OperatorIndex.getAttribute(solution)]++;
 			}
 		}
 
@@ -200,7 +196,7 @@ public class AdaptiveMultimethodVariation extends AbstractCompoundVariation<Vari
 		Solution[] result = operator.evolve(Arrays.copyOf(parents, operator.getArity()));
 
 		for (int i = 0; i < result.length; i++) {
-			result[i].setAttribute(OPERATOR_ATTRIBUTE, index);
+			OperatorIndex.setAttribute(result[i], index);
 		}
 
 		return result;

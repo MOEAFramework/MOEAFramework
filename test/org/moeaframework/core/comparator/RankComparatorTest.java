@@ -17,13 +17,12 @@
  */
 package org.moeaframework.core.comparator;
 
-import static org.moeaframework.core.NondominatedSorting.RANK_ATTRIBUTE;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.attribute.Rank;
 
 public class RankComparatorTest {
 
@@ -44,8 +43,8 @@ public class RankComparatorTest {
 		Solution solution1 = new Solution(0, 0);
 		Solution solution2 = new Solution(0, 0);
 
-		solution1.setAttribute(RANK_ATTRIBUTE, 0);
-		solution2.setAttribute(RANK_ATTRIBUTE, 1);
+		Rank.setAttribute(solution1, 0);
+		Rank.setAttribute(solution2, 1);
 
 		Assert.assertTrue(comparator.compare(solution1, solution2) < 0);
 		Assert.assertTrue(comparator.compare(solution2, solution1) > 0);
@@ -56,8 +55,8 @@ public class RankComparatorTest {
 		Solution solution1 = new Solution(0, 0);
 		Solution solution2 = new Solution(0, 0);
 
-		solution1.setAttribute(RANK_ATTRIBUTE, 1);
-		solution2.setAttribute(RANK_ATTRIBUTE, 1);
+		Rank.setAttribute(solution1, 1);
+		Rank.setAttribute(solution2, 1);
 
 		Assert.assertTrue(comparator.compare(solution1, solution2) == 0);
 		Assert.assertTrue(comparator.compare(solution2, solution1) == 0);
