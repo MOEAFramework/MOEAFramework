@@ -33,6 +33,9 @@ import org.moeaframework.util.validate.Validate;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 import org.moeaframework.util.weights.NormalBoundaryIntersectionGenerator;
 
+import static org.moeaframework.algorithm.ReferencePointNondominatedSortingPopulation.getNormalizedObjectives;
+import static org.moeaframework.algorithm.ReferencePointNondominatedSortingPopulation.setNormalizedObjectives;
+
 /**
  * A reference vector guided population, for use with RVEA, that truncates the population using the method outlined in
  * [1].
@@ -44,11 +47,6 @@ import org.moeaframework.util.weights.NormalBoundaryIntersectionGenerator;
  * </ol>
  */
 public class ReferenceVectorGuidedPopulation extends Population {
-	
-	/**
-	 * The name of the attribute for storing the normalized objectives.
-	 */
-	private static final String NORMALIZED_OBJECTIVES = "Normalized Objectives";
 
 	/**
 	 * The number of objectives.
@@ -269,7 +267,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 				objectives[i] -= idealPoint[i];
 			}
 
-			solution.setAttribute(NORMALIZED_OBJECTIVES, objectives);
+			setNormalizedObjectives(solution, objectives);
 		}
 	}
 	
@@ -313,7 +311,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 		}
 
 		for (Solution solution : population) {
-			double[] objectives = (double[])solution.getAttribute(NORMALIZED_OBJECTIVES);
+			double[] objectives = getNormalizedObjectives(solution);
 			double maxDistance = Double.NEGATIVE_INFINITY;
 			int maxIndex = -1;
 
@@ -370,7 +368,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 		
 		for (Solution solution : solutions) {
 			if (solution.isFeasible()) {
-				double[] objectives = (double[])solution.getAttribute(NORMALIZED_OBJECTIVES);
+				double[] objectives = getNormalizedObjectives(solution);
 				
 				double penalty = numberOfObjectives * Math.pow(scalingFactor, alpha) *
 						acosine(weight, objectives) / minAngles[index];
