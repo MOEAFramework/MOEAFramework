@@ -6,6 +6,8 @@ This page documents notable changes introduced in each chronological release of 
 
   * Adds the `U-NSGA-III` algorithm, which replaces NSGA-III's random selection with niche-based tournament selection
     to increase selection pressure.
+    
+  * Adds classes in `org.moeaframework.core.attribute` for reading and writing attributes.
 
   * Improves argument validation with the new `Validate` class, enabling simpler and more expressive conditions along
     with detailed error messages:
