@@ -190,7 +190,7 @@ public class NondominatedSorting {
 	}
 	
 	/**
-	 * SEts the rank of the specified solution.
+	 * Sets the rank of the specified solution.
 	 * 
 	 * @param solution the solution
 	 * @param rank the rank of the specified solution

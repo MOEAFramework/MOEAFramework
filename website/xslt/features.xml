@@ -107,12 +107,6 @@ using existing components.</p>
   	<td style="font-weight: bold">&epsilon;-NSGA-II</td>
   	<td>NSGA-II with &epsilon;-Dominance, Randomized Restarts, and Adaptive Population Sizing</td>
   </tr>
-  <!--
-  <tr>
-    <td style="font-weight: bold">FastPGA</td>
-    <td>Fast Pareto Genetic Algorithm<sup>1</sup></td>
-  </tr>
-  -->
   <tr>
     <td style="font-weight: bold">FEMO</td>
     <td>Fair Evolutionary Multiobjective Optimizer<sup>2</sup></td>
@@ -208,6 +202,10 @@ using existing components.</p>
   <tr>
     <td style="font-weight: bold">SPEA2</td>
     <td>Strength-based Evolutionary Algorithm</td>
+  </tr>
+  <tr>
+  	<td style="font-weight: bold">U-NSGA-III</td>
+  	<td>Unified version of NSGA-III, with niche-based tournament selection</td>
   </tr>
   <tr>
     <td style="font-weight: bold">VEGA</td>

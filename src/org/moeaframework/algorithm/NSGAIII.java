@@ -102,7 +102,7 @@ public class NSGAIII extends NSGAII {
 	 * @param divisions the number of divisions for generating reference points
 	 * @return the initial population size
 	 */
-	private static final int getInitialPopulationSize(Problem problem, NormalBoundaryDivisions divisions) {
+	protected static final int getInitialPopulationSize(Problem problem, NormalBoundaryDivisions divisions) {
 		int referencePoints = divisions.getNumberOfReferencePoints(problem);
 		return (int)Math.ceil(referencePoints / 4.0) * 4;
 	}
@@ -113,7 +113,7 @@ public class NSGAIII extends NSGAII {
 	 * @param problem the problem
 	 * @return the default variation operator
 	 */
-	private static final Variation getDefaultVariation(Problem problem) {
+	protected static final Variation getDefaultVariation(Problem problem) {
 		Variation result = OperatorFactory.getInstance().getVariation(problem);
 		fixDefaultParameters(result);
 		return result;
@@ -125,7 +125,7 @@ public class NSGAIII extends NSGAII {
 	 * 
 	 * @param variation the variation operator
 	 */
-	private static final void fixDefaultParameters(Variation variation) {
+	protected static final void fixDefaultParameters(Variation variation) {
 		if (variation instanceof AbstractCompoundVariation<?> compoundVariation) {
 			for (Variation innerVariation : compoundVariation.getOperators()) {
 				fixDefaultParameters(innerVariation);
@@ -146,7 +146,7 @@ public class NSGAIII extends NSGAII {
 	 * @param problem the problem
 	 * @return the selection operator
 	 */
-	private static final Selection getDefaultSelection(Problem problem) {
+	protected static final Selection getDefaultSelection(Problem problem) {
 		if (problem.getNumberOfConstraints() == 0) {
 			return new Selection() {
 	

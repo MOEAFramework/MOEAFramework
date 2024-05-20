@@ -195,6 +195,11 @@ public class DefaultAlgorithmsTest {
 	}
 	
 	@Test
+	public void testUNSGAIII() {
+		test("UNSGAIII", real, binary, permutation, subset, grammar, program);
+	}
+	
+	@Test
 	public void testVEGA() {
 		test("VEGA", real, binary, permutation, subset, grammar, program);
 	}

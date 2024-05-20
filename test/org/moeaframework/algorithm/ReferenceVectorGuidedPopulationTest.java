@@ -85,8 +85,7 @@ public class ReferenceVectorGuidedPopulationTest {
 		population.calculateIdealPoint();
 		population.translateByIdealPoint();
 
-		double[] objectives = (double[])population.get(0).getAttribute(
-				ReferencePointNondominatedSortingPopulation.NORMALIZED_OBJECTIVES);
+		double[] objectives = ReferencePointNondominatedSortingPopulation.getNormalizedObjectives(population.get(0));
 		
 		Assert.assertEquals(0.5, objectives[0], TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(0.0, objectives[1], TestThresholds.HIGH_PRECISION);

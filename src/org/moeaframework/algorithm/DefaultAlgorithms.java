@@ -66,6 +66,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		register(fromProblem(SPEA2::new), "SPEA2");
 		register(fromProblem(SMPSO::new), "SMPSO");
 		register(fromProblem(SMSEMOA::new), "SMSEMOA", "SMS-EMOA");
+		register(fromProblem(UNSGAIII::new), "UNSGAIII", "U-NSGA-III", "UNSGA3");
 		register(fromProblem(VEGA::new), "VEGA");
 		
 		// single-objective
@@ -96,6 +97,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		registerDiagnosticToolAlgorithm("SPEA2");
 		registerDiagnosticToolAlgorithm("SMPSO");
 		registerDiagnosticToolAlgorithm("SMS-EMOA");
+		registerDiagnosticToolAlgorithm("U-NSGA-III");
 		registerDiagnosticToolAlgorithm("VEGA");
 		registerDiagnosticToolAlgorithm("DifferentialEvolution");
 		registerDiagnosticToolAlgorithm("GeneticAlgorithm");

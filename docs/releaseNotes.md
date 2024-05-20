@@ -4,6 +4,9 @@ This page documents notable changes introduced in each chronological release of 
 
 ## Version 4.2 (TBD)
 
+  * Adds the `U-NSGA-III` algorithm, which replaces NSGA-III's random selection with niche-based tournament selection
+    to increase selection pressure.
+
   * Improves argument validation with the new `Validate` class, enabling simpler and more expressive conditions along
     with detailed error messages:
     ```

@@ -4,16 +4,12 @@
 ![Maven Central](https://img.shields.io/maven-central/v/org.moeaframework/moeaframework)
 ![GitHub all releases](https://img.shields.io/github/downloads/MOEAFramework/MOEAFramework/total?label=GitHub%20Downloads)
 
-The MOEA Framework is a free and open source Java library for developing and
-experimenting with multiobjective evolutionary algorithms (MOEAs) and other
-general-purpose multiobjective optimization algorithms. The MOEA Framework
-supports genetic algorithms, differential evolution, particle swarm
-optimization, genetic programming, grammatical evolution, and more. A number of
-algorithms are provided out-of-the-box, including NSGA-II, NSGA-III, ε-MOEA,
-GDE3, PAES, PESA2, SPEA2, IBEA, SMS-EMOA, SMPSO, OMOPSO, CMA-ES, and MOEA/D.
-In addition, the MOEA Framework provides the tools necessary
-to rapidly design, develop, execute and statistically test optimization
-algorithms.
+The MOEA Framework is a free and open source Java library for developing and experimenting with multiobjective
+evolutionary algorithms (MOEAs) and other general-purpose multiobjective optimization algorithms.  The MOEA Framework
+supports genetic algorithms, differential evolution, particle swarm optimization, genetic programming, grammatical
+evolution, and more.  A number of algorithms are provided out-of-the-box, including NSGA-II, NSGA-III, U-NSGA-III,
+ε-MOEA, GDE3, PAES, PESA2, SPEA2, IBEA, SMS-EMOA, SMPSO, OMOPSO, CMA-ES, and MOEA/D.  In addition, the MOEA Framework
+provides the tools necessary to rapidly design, develop, execute and statistically test optimization algorithms.
 
 Its key features includes:
   * Fast, reliable implementations of many state-of-the-art algorithms
@@ -25,9 +21,9 @@ Its key features includes:
 
 ### Download ###
 
-The latest release can be downloaded from our [website](http://moeaframework.org)
-or from the [releases page](https://github.com/MOEAFramework/MOEAFramework/releases).
-Maven users can add our dependency to their `pom.xml` file:
+The latest release can be downloaded from our [website](http://moeaframework.org) or from the
+[releases page](https://github.com/MOEAFramework/MOEAFramework/releases).  Maven users can add our dependency to their
+`pom.xml` file:
 
 ```xml
 <dependency>
@@ -49,15 +45,13 @@ Find our [documentation](docs/README.md), [examples](examples/), and online reso
 
 Copyright 2009-2024 David Hadka and other contributors.  All rights reserved.
 
-The MOEA Framework is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as published by
-the Free Software Foundation, either version 3 of the License, or (at your
-option) any later version.
+The MOEA Framework is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+later version.
 
-The MOEA Framework is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
-License for more details.
+The MOEA Framework is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the
+implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
+more details.
 
-You should have received a copy of the GNU Lesser General Public License
-along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU Lesser General Public License along with the MOEA Framework.  If not, see
+<http://www.gnu.org/licenses/>.
