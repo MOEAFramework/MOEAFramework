@@ -188,7 +188,11 @@ public class InstrumenterTest {
 		
 		Set<Object> instrumentedObjects = collector.getInstrumentedObjects();
 		
-		Assert.assertSize(7, instrumentedObjects);
+		for (Object obj : instrumentedObjects) {
+			System.out.println(obj.getClass());
+		}
+		
+		Assert.assertSize(8, instrumentedObjects);
 		Assert.assertContains(instrumentedObjects, algorithm);
 		Assert.assertContains(instrumentedObjects, algorithm.variation);
 		Assert.assertContains(instrumentedObjects, algorithm.selection);

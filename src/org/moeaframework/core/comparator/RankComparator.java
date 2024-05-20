@@ -17,26 +17,18 @@
  */
 package org.moeaframework.core.comparator;
 
-import java.util.Comparator;
-
 import org.moeaframework.core.NondominatedSorting;
-import org.moeaframework.core.Solution;
 
 /**
  * Compares solutions using their rank.
  */
-public class RankComparator implements DominanceComparator, Comparator<Solution> {
+public class RankComparator extends AbstractNumericComparator<Integer> {
 
 	/**
 	 * Constructs a dominance comparator for comparing solutions using their rank.
 	 */
 	public RankComparator() {
-		super();
-	}
-
-	@Override
-	public int compare(Solution solution1, Solution solution2) {
-		return Integer.compare(NondominatedSorting.getRank(solution1), NondominatedSorting.getRank(solution2));
+		super(SMALLER_VALUES_PREFERRED, NondominatedSorting::getRank);
 	}
 
 }
