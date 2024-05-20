@@ -257,7 +257,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	
 	/**
 	 * Offsets the solutions in this population by the ideal point.  This method does not modify the objective values,
-	 * it creates a new attribute with the name {@value NORMALIZED_OBJECTIVES}.
+	 * it creates a new attribute with the name {@value ReferencePointNondominatedSortingPopulation#NORMALIZED_OBJECTIVES_ATTRIBUTE}.
 	 */
 	protected void translateByIdealPoint() {
 		for (Solution solution : this) {
