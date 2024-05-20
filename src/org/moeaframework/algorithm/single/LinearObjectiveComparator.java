@@ -22,16 +22,40 @@ import org.moeaframework.core.Solution;
 /**
  * The weighted linear aggregate function.  By default, this method assumes equal weights for all objectives.
  */
-public class LinearObjectiveComparator extends AbstractAggregateObjectiveComparator {
-
+public class LinearObjectiveComparator implements AggregateObjectiveComparator {
+		
 	/**
-	 * Constructs a new comparator using a weighted linear aggregate function.
+	 * The weight vector.
+	 */
+	private double[] weights;
+	
+	/**
+	 * Constructs a new comparator using a weighted linear aggregate function.  One weight should be given for each
+	 * objective; if fewer weights are provided, the last weight is repeated for the remaining objectives.  Defaults
+	 * to weights of {@code 1.0} if none are provided.
 	 * 
 	 * @param weights the weight vector
-	 * @see AbstractAggregateObjectiveComparator#AbstractAggregateObjectiveComparator(double...)
 	 */
 	public LinearObjectiveComparator(double... weights) {
-		super(weights);
+		super();
+		this.weights = weights;
+		
+		if ((this.weights == null) || (this.weights.length == 0)) {
+			this.weights = new double[] { 1.0 };
+		}
+	}
+	
+	@Override
+	public double[] getWeights() {
+		return weights;
+	}
+
+	@Override
+	public int compare(Solution solution1, Solution solution2) {
+		double fitness1 = calculateFitness(solution1);
+		double fitness2 = calculateFitness(solution2);
+		
+		return Double.compare(fitness1, fitness2);
 	}
 	
 	@Override
@@ -47,7 +71,7 @@ public class LinearObjectiveComparator extends AbstractAggregateObjectiveCompara
 	 * @param weights the weight vector
 	 * @return the fitness, where smaller values are preferred
 	 */
-	public static final double calculateFitness(Solution solution, double[] weights) {
+	public static double calculateFitness(Solution solution, double[] weights) {
 		double fitness = 0.0;
 		
 		for (int i = 0; i < solution.getNumberOfObjectives(); i++) {

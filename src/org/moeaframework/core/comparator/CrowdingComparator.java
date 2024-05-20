@@ -17,18 +17,26 @@
  */
 package org.moeaframework.core.comparator;
 
+import java.util.Comparator;
+
 import org.moeaframework.core.NondominatedSorting;
+import org.moeaframework.core.Solution;
 
 /**
  * Compares solutions using their crowding distance. Solutions with larger crowding distances are preferred.
  */
-public class CrowdingComparator extends AbstractNumericComparator<Double> {
+public class CrowdingComparator implements DominanceComparator, Comparator<Solution> {
 
 	/**
 	 * Constructs a dominance comparator for comparing solutions using their crowding distance.
 	 */
 	public CrowdingComparator() {
-		super(LARGER_VALUES_PREFERRED, NondominatedSorting::getCrowding);
+		super();
+	}
+
+	@Override
+	public int compare(Solution solution1, Solution solution2) {
+		return -Double.compare(NondominatedSorting.getCrowding(solution1), NondominatedSorting.getCrowding(solution2));
 	}
 
 }

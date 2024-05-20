@@ -17,15 +17,23 @@
  */
 package org.moeaframework.core.comparator;
 
+import java.util.Comparator;
+
 import org.moeaframework.core.FitnessEvaluator;
+import org.moeaframework.core.Solution;
 
 /**
  * Compares two solutions based on their fitness value.
  * 
  * @see FitnessEvaluator
  */
-public class FitnessComparator extends AbstractNumericComparator<Double> {
-
+public class FitnessComparator implements DominanceComparator, Comparator<Solution> {
+	
+	/**
+	 * {@code true} if larger fitness values are preferred; otherwise smaller fitness values are preferred.
+	 */
+	private final boolean largerValuesPreferred;
+	
 	/**
 	 * Constructs a dominance comparator for comparing solutions based on their fitness value.
 	 * 
@@ -33,7 +41,14 @@ public class FitnessComparator extends AbstractNumericComparator<Double> {
 	 *        values are preferred
 	 */
 	public FitnessComparator(boolean largerValuesPreferred) {
-		super(largerValuesPreferred, FitnessEvaluator::getFitness);
+		super();
+		this.largerValuesPreferred = largerValuesPreferred;
+	}
+
+	@Override
+	public int compare(Solution solution1, Solution solution2) {
+		return (largerValuesPreferred ? -1 : 1) *
+				Double.compare(FitnessEvaluator.getFitness(solution1), FitnessEvaluator.getFitness(solution2));
 	}
 
 }

@@ -30,13 +30,18 @@ import org.moeaframework.util.Vector;
  *       pp. 2678-2684.
  * </ol>
  */
-public class VectorAngleDistanceScalingComparator extends AbstractAggregateObjectiveComparator {
+public class VectorAngleDistanceScalingComparator implements AggregateObjectiveComparator {
 
 	/**
 	 * Factor for scaling the effects of the angle.
 	 */
 	private final double q;
-
+	
+	/**
+	 * The weight vector.  Must have a magnitude of 1.0.
+	 */
+	private final double[] weights;
+	
 	/**
 	 * Constructs a new instance of the vector angle distance scaling aggregate function with the given weights.
 	 * 
@@ -53,7 +58,8 @@ public class VectorAngleDistanceScalingComparator extends AbstractAggregateObjec
 	 * @param q factor for scaling the effects of the angle
 	 */
 	public VectorAngleDistanceScalingComparator(double[] weights, double q) {
-		super(weights);
+		super();
+		this.weights = weights;
 		this.q = q;
 	}
 	
@@ -64,6 +70,19 @@ public class VectorAngleDistanceScalingComparator extends AbstractAggregateObjec
 	 */
 	public double getAngleScalingFactor() {
 		return q;
+	}
+	
+	@Override
+	public double[] getWeights() {
+		return weights;
+	}
+
+	@Override
+	public int compare(Solution solution1, Solution solution2) {
+		double fitness1 = calculateFitness(solution1);
+		double fitness2 = calculateFitness(solution2);
+		
+		return Double.compare(fitness1, fitness2);
 	}
 	
 	@Override
@@ -80,7 +99,7 @@ public class VectorAngleDistanceScalingComparator extends AbstractAggregateObjec
 	 * @param q factor for scaling the effects of the angle
 	 * @return the fitness, where smaller values are preferred
 	 */
-	public static final double calculateFitness(Solution solution, double[] weights, double q) {
+	public static double calculateFitness(Solution solution, double[] weights, double q) {
 		double[] objectives = solution.getObjectives();
 		double magnitude = Vector.magnitude(objectives);
 		double cosine = Vector.dot(weights, Vector.divide(objectives, magnitude));

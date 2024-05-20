@@ -17,19 +17,29 @@
  */
 package org.moeaframework.core.comparator;
 
+import java.util.Comparator;
+
 import org.moeaframework.core.Solution;
 
 /**
  * Compares solutions based on their magnitude of constraint violations.  Absolute values of constraints are used,
  * so only the magnitude of the constraint violation is important.
  */
-public class AggregateConstraintComparator extends AbstractNumericComparator<Double> {
+public class AggregateConstraintComparator implements DominanceComparator, Comparator<Solution> {
 
 	/**
 	 * Constructs an aggregate constraint comparator.
 	 */
 	public AggregateConstraintComparator() {
-		super(SMALLER_VALUES_PREFERRED, Solution::getSumOfConstraintViolations);
+		super();
+	}
+
+	@Override
+	public int compare(Solution solution1, Solution solution2) {
+		double constraints1 = solution1.getSumOfConstraintViolations();
+		double constraints2 = solution2.getSumOfConstraintViolations();
+		
+		return Double.compare(constraints1, constraints2);
 	}
 
 }
