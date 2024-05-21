@@ -32,8 +32,9 @@ public interface PenaltyFunction {
 	 * Calculates the penalty for the given solution.  In addition to returning the value to the caller, this method
 	 * also sets the {@link org.moeaframework.core.attribute.Penalty} attribute on the solution.
 	 * <p>
-	 * In general, the penalty should be {@code 0.0} for feasible solutions, and {@code > 0.0} for solutions violating
-	 * constraints.
+	 * Calling this method does not alter the objectives or constraints of the solution.  It is the responsibility of
+	 * the caller to use the penalty value, such as during selection.  We encourage implementations to return a value
+	 * of {@code 0.0} for feasible solutions and {@code > 0.0} for solutions violating constraints.
 	 * 
 	 * @param solution the solution
 	 * @return the penalty for the solution
