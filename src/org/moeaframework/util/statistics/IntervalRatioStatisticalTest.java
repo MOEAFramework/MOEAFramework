@@ -20,6 +20,7 @@ package org.moeaframework.util.statistics;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -104,6 +105,24 @@ public abstract class IntervalRatioStatisticalTest implements StatisticalTest {
 	 */
 	public int getNumberOfGroups() {
 		return numberOfGroups;
+	}
+	
+	/**
+	 * Returns the descriptive statistics for the given group.
+	 * 
+	 * @param group the group
+	 * @return the descriptive statistics
+	 */
+	protected DescriptiveStatistics getStatistics(int group) {
+		DescriptiveStatistics statistics = new DescriptiveStatistics();
+		
+		for (Observation observation : data) {
+			if (observation.getGroup() == group) {
+				statistics.addValue(observation.getValue());
+			}
+		}
+		
+		return statistics;
 	}
 
 }

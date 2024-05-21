@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -37,13 +38,7 @@ public abstract class OrdinalStatisticalTest implements StatisticalTest {
 
 		@Override
 		public int compare(RankedObservation o1, RankedObservation o2) {
-			if (o1.getValue() < o2.getValue()) {
-				return -1;
-			} else if (o1.getValue() > o2.getValue()) {
-				return 1;
-			} else {
-				return 0;
-			}
+			return Double.compare(o1.getValue(), o2.getValue());
 		}
 
 	}
@@ -152,6 +147,24 @@ public abstract class OrdinalStatisticalTest implements StatisticalTest {
 	 */
 	public int getNumberOfGroups() {
 		return numberOfGroups;
+	}
+	
+	/**
+	 * Returns the descriptive statistics for the given group.
+	 * 
+	 * @param group the group
+	 * @return the descriptive statistics
+	 */
+	protected DescriptiveStatistics getStatistics(int group) {
+		DescriptiveStatistics statistics = new DescriptiveStatistics();
+		
+		for (RankedObservation observation : data) {
+			if (observation.getGroup() == group) {
+				statistics.addValue(observation.getValue());
+			}
+		}
+		
+		return statistics;
 	}
 
 	/**

@@ -19,6 +19,7 @@ package org.moeaframework.util.statistics;
 
 import java.util.List;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.inference.TestUtils;
 
 /**
@@ -68,6 +69,12 @@ public class TwoSampleTTest extends IntervalRatioStatisticalTest {
 	@Override
 	public void addAll(double[] values, int group) {
 		super.addAll(values, group);
+	}
+	
+	// make method public
+	@Override
+	public DescriptiveStatistics getStatistics(int group) {
+		return super.getStatistics(group);
 	}
 
 	/**

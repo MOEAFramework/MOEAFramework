@@ -17,6 +17,7 @@
  */
 package org.moeaframework.util.statistics;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.inference.TestUtils;
 
 /**
@@ -80,6 +81,15 @@ public class SingleSampleTTest extends IntervalRatioStatisticalTest {
 	 */
 	public void addAll(double[] values) {
 		super.addAll(values, 0);
+	}
+	
+	/**
+	 * Returns the descriptive statistics for the recorded data.
+	 * 
+	 * @return the descriptive statistics
+	 */
+	public DescriptiveStatistics getStatistics() {
+		return super.getStatistics(0);
 	}
 
 	/**

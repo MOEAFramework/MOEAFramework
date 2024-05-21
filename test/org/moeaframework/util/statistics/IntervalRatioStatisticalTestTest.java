@@ -64,6 +64,20 @@ public class IntervalRatioStatisticalTestTest {
 		testArraysMatch(new double[] { 2.0, 3.0, -1.0, -3.0 }, result.get(0));
 		testArraysMatch(new double[] { -1.0, -2.0, 5.0 }, result.get(1));
 	}
+	
+	@Test
+	public void testStatistics() {
+		test.add(2.0, 0);
+		test.add(-1.0, 1);
+		test.add(-2.0, 1);
+		test.add(3.0, 0);
+		test.add(5.0, 1);
+		test.add(-1.0, 0);
+		test.add(-3.0, 0);
+		
+		Assert.assertEquals(4, test.getStatistics(0).getN());
+		Assert.assertEquals(3, test.getStatistics(1).getN());
+	}
 
 	/**
 	 * Asserts that the two arrays contain the same elements, but not necessarily in the same order.

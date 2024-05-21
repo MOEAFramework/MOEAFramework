@@ -18,6 +18,7 @@
 package org.moeaframework.util.statistics;
 
 import org.apache.commons.math3.distribution.ChiSquaredDistribution;
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -66,6 +67,12 @@ public class KruskalWallisTest extends OrdinalStatisticalTest {
 	@Override
 	public void addAll(double[] values, int group) {
 		super.addAll(values, group);
+	}
+	
+	// make method public
+	@Override
+	public DescriptiveStatistics getStatistics(int group) {
+		return super.getStatistics(group);
 	}
 
 	/**

@@ -18,6 +18,7 @@
 package org.moeaframework.util.statistics;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.moeaframework.core.Settings;
 import org.moeaframework.util.validate.Validate;
 
@@ -67,6 +68,12 @@ public class MannWhitneyUTest extends OrdinalStatisticalTest {
 	@Override
 	public void addAll(double[] values, int group) {
 		super.addAll(values, group);
+	}
+	
+	// make method public
+	@Override
+	public DescriptiveStatistics getStatistics(int group) {
+		return super.getStatistics(group);
 	}
 
 	/**

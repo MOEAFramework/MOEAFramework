@@ -68,6 +68,20 @@ public class OrdinalStatisticalTestTest {
 		checkRank(3.0, 6);
 		checkRank(4.0, 7);
 	}
+	
+	@Test
+	public void testStatistics() {
+		test.add(2.0, 0);
+		test.add(-1.0, 1);
+		test.add(-2.0, 1);
+		test.add(3.0, 0);
+		test.add(5.0, 1);
+		test.add(-1.0, 0);
+		test.add(-3.0, 0);
+		
+		Assert.assertEquals(4, test.getStatistics(0).getN());
+		Assert.assertEquals(3, test.getStatistics(1).getN());
+	}
 
 	/**
 	 * Asserts that any observations in the shared test with the specified value also have the specified rank.

@@ -20,6 +20,7 @@ package org.moeaframework.util.statistics;
 import java.util.Comparator;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.moeaframework.core.Settings;
 import org.moeaframework.util.validate.Validate;
 
@@ -51,16 +52,7 @@ public class WilcoxonSignedRanksTest extends OrdinalStatisticalTest {
 
 		@Override
 		public int compare(RankedObservation o1, RankedObservation o2) {
-			double v1 = Math.abs(o1.getValue());
-			double v2 = Math.abs(o2.getValue());
-
-			if (v1 < v2) {
-				return -1;
-			} else if (v1 > v2) {
-				return 1;
-			} else {
-				return 0;
-			}
+			return Double.compare(Math.abs(o1.getValue()), Math.abs(o2.getValue()));
 		}
 
 	}
@@ -115,6 +107,15 @@ public class WilcoxonSignedRanksTest extends OrdinalStatisticalTest {
 		for (double value : values) {
 			add(value);
 		}
+	}
+	
+	/**
+	 * Returns the descriptive statistics for the recorded data.
+	 * 
+	 * @return the descriptive statistics
+	 */
+	public DescriptiveStatistics getStatistics() {
+		return super.getStatistics(0);
 	}
 
 	/**
