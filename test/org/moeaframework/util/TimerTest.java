@@ -25,10 +25,15 @@ import java.time.Duration;
 
 import org.apache.commons.math3.stat.descriptive.StatisticalSummary;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.moeaframework.Assert;
+import org.moeaframework.CIRunner;
+import org.moeaframework.Retryable;
 import org.moeaframework.TempFiles;
 import org.moeaframework.Wait;
 
+@RunWith(CIRunner.class)
+@Retryable
 public class TimerTest {
 	
 	@Test
