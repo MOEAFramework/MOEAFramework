@@ -1,22 +1,15 @@
 <html>
 <body>
 <p>
-This document is the API specification for the MOEA Framework.  The MOEA 
-Framework is a free and open source Java library for developing and
-experimenting with multiobjective
-evolutionary algorithms (MOEAs) and other general-purpose optimization 
-algorithms and metaheuristics.  It supports genetic algorithms, differential
-evolution, particle swarm optimization, genetic programming, grammatical
-evolution, and more.  Problems can be defined using real or integer-valued
-decision variables, permutations, binary arrays (bit strings), expression
-trees (programs), grammars, and any combination thereof.  This makes the
-MOEA Framework one of the most comprehensive evolutionary algorithm libraries
-available.
+This document is the API specification for the MOEA Framework.  The MOEA Framework is a free and open source Java
+library for developing and experimenting with multiobjective evolutionary algorithms (MOEAs) and other general-purpose
+optimization algorithms and metaheuristics.  It supports genetic algorithms, differential evolution, particle swarm
+optimization, genetic programming, grammatical evolution, and more.  Problems can be defined using real or
+integer-valued decision variables, permutations, binary arrays (bit strings), expression trees (programs), grammars,
+and any combination thereof.  This makes the MOEA Framework one of the most comprehensive evolutionary algorithm
+libraries available.
 <p>
-For most users, the {@link org.moeaframework.Executor} and
-{@link org.moeaframework.Analyzer} classes provide sufficient functionality
-to execute and analyze MOEAs.  The following table lists the algorithms
-provided by the MOEA Framework and supported third-party libraries.
+The following table lists the algorithms provided by the MOEA Framework natively:
 
 <table id="listOfAlgorithms" style="width: 100%; border-collapse: collapse">
   <caption>List of algorithms</caption>
@@ -30,19 +23,6 @@ provided by the MOEA Framework and supported third-party libraries.
     <th style="width: 9%; text-align: center">Grammar</th>
     <th style="width: 9%; text-align: center">Program</th>
     <th style="width: 9%; text-align: center">Constraints</th>
-    <th style="width: 9%; text-align: center">Provider</th>
-  </tr>
-  <tr>
-    <td>AbYSS</td>
-    <td>Scatter Search</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">JMetal</td>
   </tr>
   <tr>
     <td>AMOSA</td>
@@ -54,31 +34,6 @@ provided by the MOEA Framework and supported third-party libraries.
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">Native</td>
-  </tr>
-  <tr>
-    <td>CDG</td>
-    <td>Differential Evolution</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">JMetal</td>
-  </tr>
-  <tr>
-    <td>CellDE</td>
-    <td>Differential Evolution</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">JMetal</td>
   </tr>
   <tr>
     <td>CMA-ES</td>
@@ -90,7 +45,6 @@ provided by the MOEA Framework and supported third-party libraries.
     <td style="text-align: center; background: #FF9090">No</td>
     <td style="text-align: center; background: #FF9090">No</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">Native</td>
   </tr>
   <tr>
     <td>DBEA</td>
@@ -102,7 +56,6 @@ provided by the MOEA Framework and supported third-party libraries.
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">Native</td>
   </tr>
   <tr>
     <td>DE</td>
@@ -114,31 +67,6 @@ provided by the MOEA Framework and supported third-party libraries.
     <td style="text-align: center; background: #FF9090">No</td>
     <td style="text-align: center; background: #FF9090">No</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">Native</td>
-  </tr>
-  <tr>
-    <td>ECEA</td>
-    <td>Genetic Algorithm</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center">PISA</td>
-  </tr>
-  <tr>
-    <td>ESPEA</td>
-    <td>Genetic Algorithm</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">JMetal</td>
   </tr>
   <tr>
     <td>eMOEA</td>
@@ -150,7 +78,6 @@ provided by the MOEA Framework and supported third-party libraries.
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">Native</td>
   </tr>
   <tr>
     <td>eNSGAII</td>
@@ -162,7 +89,6 @@ provided by the MOEA Framework and supported third-party libraries.
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">Native</td>
   </tr>
   <tr>
     <td>ES</td>
@@ -174,19 +100,6 @@ provided by the MOEA Framework and supported third-party libraries.
     <td style="text-align: center; background: #FF9090">No</td>
     <td style="text-align: center; background: #FF9090">No</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">Native</td>
-  </tr>
-  <tr>
-    <td>FEMO</td>
-    <td>Genetic Algorithm</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center">PISA</td>
   </tr>
   <tr>
     <td>GA</td>
@@ -198,7 +111,6 @@ provided by the MOEA Framework and supported third-party libraries.
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">Native</td>
   </tr>
   <tr>
     <td>GDE3</td>
@@ -210,19 +122,6 @@ provided by the MOEA Framework and supported third-party libraries.
     <td style="text-align: center; background: #FF9090">No</td>
     <td style="text-align: center; background: #FF9090">No</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">Native</td>
-  </tr>
-  <tr>
-    <td>HypE</td>
-    <td>Indicator-Based</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center">PISA</td>
   </tr>
   <tr>
     <td>IBEA</td>
@@ -234,31 +133,6 @@ provided by the MOEA Framework and supported third-party libraries.
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center">Native</td>
-  </tr>
-  <tr>
-    <td>MOCell</td>
-    <td>Cellular</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">JMetal</td>
-  </tr>
-  <tr>
-    <td>MOCHC</td>
-    <td>CHC Algorithm</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">JMetal</td>
   </tr>
   <tr>
     <td>MOEAD</td>
@@ -270,7 +144,6 @@ provided by the MOEA Framework and supported third-party libraries.
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">Native</td>
   </tr>
   <tr>
     <td>MSOPS</td>
@@ -282,7 +155,6 @@ provided by the MOEA Framework and supported third-party libraries.
     <td style="text-align: center; background: #FF9090">No</td>
     <td style="text-align: center; background: #FF9090">No</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">Native</td>
   </tr>
   <tr>
     <td>NSGAII</td>
@@ -294,7 +166,6 @@ provided by the MOEA Framework and supported third-party libraries.
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">Native</td>
   </tr>
   <tr>
     <td>NSGAIII</td>
@@ -306,7 +177,6 @@ provided by the MOEA Framework and supported third-party libraries.
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">Native</td>
   </tr>
   <tr>
     <td>OMOPSO</td>
@@ -318,7 +188,6 @@ provided by the MOEA Framework and supported third-party libraries.
     <td style="text-align: center; background: #FF9090">No</td>
     <td style="text-align: center; background: #FF9090">No</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">Native</td>
   </tr>
   <tr>
     <td>PAES</td>
@@ -330,7 +199,6 @@ provided by the MOEA Framework and supported third-party libraries.
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">Native</td>
   </tr>
   <tr>
     <td>PESA2</td>
@@ -342,7 +210,6 @@ provided by the MOEA Framework and supported third-party libraries.
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">Native</td>
   </tr>
   <tr>
     <td>RSO</td>
@@ -354,7 +221,6 @@ provided by the MOEA Framework and supported third-party libraries.
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">Native</td>  
   </tr>
   <tr>
     <td>RVEA</td>
@@ -366,7 +232,6 @@ provided by the MOEA Framework and supported third-party libraries.
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">Native</td>
   </tr>
   <tr>
     <td>SA</td>
@@ -378,43 +243,6 @@ provided by the MOEA Framework and supported third-party libraries.
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">Native</td>
-  </tr>
-  <tr>
-    <td>SEMO2</td>
-    <td>Genetic Algorithm</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center">PISA</td>
-  </tr>
-  <tr>
-    <td>SHV</td>
-    <td>Indicator-Based</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center">PISA</td>
-  </tr>
-  <tr>
-    <td>SIBEA</td>
-    <td>Indicator-Based</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center">PISA</td>
   </tr>
   <tr>
     <td>SMPSO</td>
@@ -426,7 +254,6 @@ provided by the MOEA Framework and supported third-party libraries.
     <td style="text-align: center; background: #FF9090">No</td>
     <td style="text-align: center; background: #FF9090">No</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">Native</td>
   </tr>
   <tr>
     <td>SMSEMOA</td>
@@ -438,19 +265,6 @@ provided by the MOEA Framework and supported third-party libraries.
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">Native</td>
-  </tr>
-  <tr>
-    <td>SPAM</td>
-    <td>Indicator-Based</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center">PISA</td>
   </tr>
   <tr>
     <td>SPEA2</td>
@@ -462,7 +276,6 @@ provided by the MOEA Framework and supported third-party libraries.
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">Native</td>
   </tr>
   <tr>
     <td>UNSGAIII</td>
@@ -474,7 +287,6 @@ provided by the MOEA Framework and supported third-party libraries.
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
-    <td style="text-align: center">Native</td>
   </tr>
   <tr>
     <td>VEGA</td>
@@ -486,17 +298,15 @@ provided by the MOEA Framework and supported third-party libraries.
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #90FF90">Yes</td>
     <td style="text-align: center; background: #FF9090">No</td>
-    <td style="text-align: center">Native</td>
   </tr>
 </table>
 <p>
-While the MOEA Framework provides a large collection of built-in algorithms,
-operators and problems, advanced users can take advantage of its object-oriented
-design to extend existing features or add new functionality.  In addition, the
-service provider interface allows extending the software with algorithms and
-problems provided by third-party libraries.  Any algorithms and problems working
-within the MOEA Framework can take advantage of its suite of diagnostic and
-statistical testing tools.  As this project is academic in nature, every effort
-is taken to ensure the correctness, quality and openness of the codes.
+Furthermore, extensions are available to integrate with other popular libraries, including
+<a href="https://github.com/MOEAFramework/JMetal-Plugin">JMetal-Plugin</a> and
+<a href="https://github.com/MOEAFramework/PISA-Plugin">PISA-Plugin</a>.
+<p>
+As this project is academic in nature, every effort is taking to ensure the correctness, quality, and openness of this
+software.  Please open an issue on our <a href="https://github.com/MOEAFramework/MOEAFramework">GitHub repository</a>
+if you encounter any issues.
 </body>
 </html>

@@ -63,9 +63,9 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		register(fromProblem(PESA2::new), "PESA2");
 		register(fromProblem(RandomSearch::new), "Random");
 		register(fromProblemWithIterations(RVEA::new), "RVEA");
-		register(fromProblem(SPEA2::new), "SPEA2");
 		register(fromProblem(SMPSO::new), "SMPSO");
 		register(fromProblem(SMSEMOA::new), "SMSEMOA", "SMS-EMOA");
+		register(fromProblem(SPEA2::new), "SPEA2");
 		register(fromProblem(UNSGAIII::new), "UNSGAIII", "U-NSGA-III", "UNSGA3");
 		register(fromProblem(VEGA::new), "VEGA");
 		
