@@ -21,15 +21,20 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintStream;
+import java.io.Reader;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
 
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.io.RedirectStream;
 
 /**
- * Captures content written to standard output, including any partial output if an exception occurred.
+ * Captures content written to output, streams, or files.  One key difference is any exceptions are caught and returned
+ * as part of the result, allowing this to capture partial output for debugging.
  */
 public class Capture {
 	
@@ -72,14 +77,63 @@ public class Capture {
 		}
 	}
 	
-	/**
-	 * Function like a {@link Runnable} but can throw checked exceptions.
-	 */
-	@FunctionalInterface
-	public static interface Invocable {
-		
-		public void invoke() throws Exception;
-		
+	public static CaptureResult stream(ThrowingConsumer<PrintStream> consumer) throws IOException {
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream(); PrintStream out = new PrintStream(baos)) {
+			try {
+				consumer.accept(out);
+				return new CaptureResult(baos);
+			} catch (Exception e) {
+				return new CaptureResult(baos, e);
+			}
+		}
+	}
+	
+	public static CaptureResult input(InputStream stream) throws IOException {
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+			try {
+				stream.transferTo(baos);
+				return new CaptureResult(baos);
+			} catch (Exception e) {
+				return new CaptureResult(baos, e);
+			}
+		}
+	}
+	
+	public static CaptureResult input(Reader reader) throws IOException {
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				OutputStreamWriter writer = new OutputStreamWriter(baos)) {
+			try {
+				reader.transferTo(writer);
+				return new CaptureResult(baos);
+			} catch (Exception e) {
+				return new CaptureResult(baos, e);
+			}
+		}
+	}
+	
+	public static CaptureResult file(File file) throws IOException {
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+			try {
+				baos.write(Files.readAllBytes(file.toPath()));
+				return new CaptureResult(baos);
+			} catch (Exception e) {
+				return new CaptureResult(baos, e);
+			}
+		}
+	}
+	
+	public static CaptureResult file(ThrowingConsumer<File> consumer) throws IOException {
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+			try {
+				File tempFile = TempFiles.createFile();
+				consumer.accept(tempFile);
+				
+				baos.write(Files.readAllBytes(tempFile.toPath()));
+				return new CaptureResult(baos);
+			} catch (Exception e) {
+				return new CaptureResult(baos, e);
+			}
+		}
 	}
 	
 	/**
@@ -111,12 +165,34 @@ public class Capture {
 			Assert.assertEquals("Thrown exception is not the expected type", expectedType, exception.getClass());
 		}
 		
+		public void assertEquals(String expected) {
+			assertSuccessful();
+			Assert.assertEquals(expected, toString());
+		}
+		
+		public void assertEqualsNormalized(String expected) {
+			assertSuccessful();
+			Assert.assertEqualsNormalized(expected, toString());
+		}
+		
+		public void assertThat(ThrowingConsumer<CaptureResult> condition) {
+			assertSuccessful();
+			
+			try {
+				condition.accept(this);
+			} catch (Exception e) {
+				throw new AssertionError("Caught unhandled exception while testing assertion", e);
+			}
+		}
+		
 		public boolean isSuccessful() {
 			return exception == null;
 		}
 		
 		public void rethrowException() {
-			throw new FrameworkException("Caught exception while capturing output", exception);
+			if (exception != null) {
+				throw new FrameworkException("Caught exception while capturing output", exception);
+			}
 		}
 		
 		public byte[] toBytes() {

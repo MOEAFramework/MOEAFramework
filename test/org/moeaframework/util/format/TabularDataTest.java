@@ -17,19 +17,14 @@
  */
 package org.moeaframework.util.format;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.tuple.Triple;
 import org.junit.Before;
 import org.junit.Test;
-import org.moeaframework.Assert;
 import org.moeaframework.Assume;
 import org.moeaframework.Capture;
 import org.moeaframework.Capture.CaptureResult;
@@ -41,6 +36,8 @@ import org.moeaframework.core.variable.RealVariable;
 public class TabularDataTest {
 	
 	private TabularData<Triple<String, Integer, Variable>> data;
+	
+	private TabularData<String> escapedData;
 	
 	private String expectedOutput;
 	
@@ -103,15 +100,17 @@ public class TabularDataTest {
 				"\"Variable\":5",
 				"}",
 				"]"});
+		
+		List<String> rawEscapedData = new ArrayList<String>();
+		rawEscapedData.add("foo\"\\\t\r\n|&bar");
+			
+		escapedData = new TabularData<>(rawEscapedData);
+		escapedData.addColumn(new Column<String, String>("key", x -> x));
 	}
 	
 	@Test
 	public void testDisplay() throws IOException {
-		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			 PrintStream ps = new PrintStream(baos)) {
-			data.display(ps);
-			Assert.assertEqualsNormalized(expectedOutput, baos.toString());
-		}
+		Capture.stream((ps) -> data.display(ps)).assertEqualsNormalized(expectedOutput);
 	}
 	
 	@Test
@@ -132,82 +131,52 @@ public class TabularDataTest {
 		
 		expectedOutput = expectedOutput.replace("foo", "FOO").replace("bar", "BAR");
 		
-		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			 PrintStream ps = new PrintStream(baos)) {
-			data.display(ps);
-			Assert.assertEqualsNormalized(expectedOutput, baos.toString());
-		}
+		Capture.stream((ps) -> data.display(ps)).assertEqualsNormalized(expectedOutput);
 	}
 	
 	@Test
 	public void testCsv() throws IOException {
-		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				 PrintStream ps = new PrintStream(baos)) {
-			data.toCSV(ps);
-			Assert.assertEqualsNormalized(expectedCsv, baos.toString());
-		}
+		Capture.stream((ps) -> data.toCSV(ps)).assertEqualsNormalized(expectedCsv);
 	}
 	
 	@Test
 	public void testMarkdown() throws IOException {
-		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				 PrintStream ps = new PrintStream(baos)) {
-			data.toMarkdown(ps);
-			Assert.assertEqualsNormalized(expectedMarkdown, baos.toString());
-		}
+		Capture.stream((ps) -> data.toMarkdown(ps)).assertEqualsNormalized(expectedMarkdown);
 	}
 	
 	@Test
 	public void testLatex() throws IOException {
-		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				 PrintStream ps = new PrintStream(baos)) {
-			data.toLatex(ps);
-			Assert.assertEqualsNormalized(expectedLatex, baos.toString());
-		}
+		Capture.stream((ps) -> data.toLatex(ps)).assertEqualsNormalized(expectedLatex);
 	}
 	
 	@Test
 	public void testJson() throws IOException {
-		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				 PrintStream ps = new PrintStream(baos)) {
-			data.toJson(ps);
-			Assert.assertEqualsNormalized(expectedJson, baos.toString());
-		}
+		Capture.stream((ps) -> data.toJson(ps)).assertEqualsNormalized(expectedJson);
 	}
 	
 	@Test
 	public void testSavePlaintext() throws IOException {
-		File tempFile = TempFiles.createFile();
-		data.save(TableFormat.Plaintext, tempFile);
-		Assert.assertEqualsNormalized(expectedOutput, Files.readString(tempFile.toPath(), StandardCharsets.UTF_8));
+		Capture.file((f) -> data.save(TableFormat.Plaintext, f)).assertEqualsNormalized(expectedOutput);
 	}
 	
 	@Test
 	public void testSaveCsv() throws IOException {
-		File tempFile = TempFiles.createFile();
-		data.save(TableFormat.CSV, tempFile);
-		Assert.assertEqualsNormalized(expectedCsv, Files.readString(tempFile.toPath(), StandardCharsets.UTF_8));
+		Capture.file((f) -> data.save(TableFormat.CSV, f)).assertEqualsNormalized(expectedCsv);
 	}
 	
 	@Test
 	public void testSaveMarkdown() throws IOException {
-		File tempFile = TempFiles.createFile();
-		data.save(TableFormat.Markdown, tempFile);
-		Assert.assertEqualsNormalized(expectedMarkdown, Files.readString(tempFile.toPath(), StandardCharsets.UTF_8));
+		Capture.file((f) -> data.save(TableFormat.Markdown, f)).assertEqualsNormalized(expectedMarkdown);
 	}
 	
 	@Test
 	public void testSaveLatex() throws IOException {
-		File tempFile = TempFiles.createFile();
-		data.save(TableFormat.Latex, tempFile);
-		Assert.assertEqualsNormalized(expectedLatex, Files.readString(tempFile.toPath(), StandardCharsets.UTF_8));
+		Capture.file((f) -> data.save(TableFormat.Latex, f)).assertEqualsNormalized(expectedLatex);
 	}
 	
 	@Test
 	public void testSaveJson() throws IOException {
-		File tempFile = TempFiles.createFile();
-		data.save(TableFormat.Json, tempFile);
-		Assert.assertEqualsNormalized(expectedJson, Files.readString(tempFile.toPath(), StandardCharsets.UTF_8));
+		Capture.file((f) -> data.save(TableFormat.Json, f)).assertEqualsNormalized(expectedJson);
 	}
 	
 	@Test
@@ -246,77 +215,27 @@ public class TabularDataTest {
 	
 	@Test
 	public void testPlaintextEscaping() throws IOException {
-		List<String> rawData = new ArrayList<String>();
-		rawData.add("foo\"\\\t\r\n|&bar");
-			
-		TabularData<String> data = new TabularData<>(rawData);
-		data.addColumn(new Column<String, String>("key", x -> x));
-			
-		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				 PrintStream ps = new PrintStream(baos)) {
-			data.toPlaintext(ps);
-			Assert.assertEqualsNormalized("key\n----------\nfoo\"\\|&bar", baos.toString());
-		}	
+		Capture.stream((ps) -> escapedData.toPlaintext(ps)).assertEqualsNormalized("key\n----------\nfoo\"\\|&bar");
 	}
 	
 	@Test
 	public void testCsvEscaping() throws IOException {
-		List<String> rawData = new ArrayList<String>();
-		rawData.add("foo\"\\\t\r\n|&bar");
-			
-		TabularData<String> data = new TabularData<>(rawData);
-		data.addColumn(new Column<String, String>("key", x -> x));
-			
-		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				 PrintStream ps = new PrintStream(baos)) {
-			data.toCSV(ps);
-			Assert.assertEqualsNormalized("key\n\"foo\"\"\\\t\r\n|&bar\"", baos.toString());
-		}	
+		Capture.stream((ps) -> escapedData.toCSV(ps)).assertEqualsNormalized("key\n\"foo\"\"\\\t\r\n|&bar\"");	
 	}
 	
 	@Test
 	public void testMarkdownEscaping() throws IOException {
-		List<String> rawData = new ArrayList<String>();
-		rawData.add("foo\"\\\t\r\n|&bar");
-			
-		TabularData<String> data = new TabularData<>(rawData);
-		data.addColumn(new Column<String, String>("key", x -> x));
-			
-		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				 PrintStream ps = new PrintStream(baos)) {
-			data.toMarkdown(ps);
-			Assert.assertEqualsNormalized("key\n----------------\nfoo\"\\\\&#124;&bar", baos.toString());
-		}	
+		Capture.stream((ps) -> escapedData.toMarkdown(ps)).assertEqualsNormalized("key\n----------------\nfoo\"\\\\&#124;&bar");
 	}
 	
 	@Test
 	public void testLatexEscaping() throws IOException {
-		List<String> rawData = new ArrayList<String>();
-		rawData.add("foo\"\\\t\r\n|&bar");
-			
-		TabularData<String> data = new TabularData<>(rawData);
-		data.addColumn(new Column<String, String>("key", x -> x));
-			
-		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				 PrintStream ps = new PrintStream(baos)) {
-			data.toLatex(ps);
-			Assert.assertEqualsNormalized("\\begin{tabular}{|l|}\n\\hline\nkey \\\\\n\\hline\nfoo\"\\|\\&bar \\\\\n\\hline\n\\end{tabular}", baos.toString());
-		}	
+		Capture.stream((ps) -> escapedData.toLatex(ps)).assertEqualsNormalized("\\begin{tabular}{|l|}\n\\hline\nkey \\\\\n\\hline\nfoo\"\\|\\&bar \\\\\n\\hline\n\\end{tabular}");
 	}
 	
 	@Test
 	public void testJsonEscaping() throws IOException {
-		List<String> rawData = new ArrayList<String>();
-		rawData.add("foo\"\\\t\r\n|&bar");
-			
-		TabularData<String> data = new TabularData<>(rawData);
-		data.addColumn(new Column<String, String>("key", x -> x));
-			
-		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				 PrintStream ps = new PrintStream(baos)) {
-			data.toJson(ps);
-			Assert.assertEqualsNormalized("[{\"key\":\"foo\\\"\\\\\\t\\r\\n|&bar\"}]", baos.toString());
-		}	
+		Capture.stream((ps) -> escapedData.toJson(ps)).assertEqualsNormalized("[{\"key\":\"foo\\\"\\\\\\t\\r\\n|&bar\"}]");
 	}
 
 }

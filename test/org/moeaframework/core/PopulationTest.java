@@ -17,10 +17,8 @@
  */
 package org.moeaframework.core;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.Comparator;
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -29,6 +27,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.Capture;
+import org.moeaframework.Capture.CaptureResult;
 import org.moeaframework.TempFiles;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
@@ -198,15 +198,10 @@ public class PopulationTest {
 		
 		Population population = new Population(List.of(solution));
 		
-		try (ByteArrayOutputStream output1 = new ByteArrayOutputStream();
-				ByteArrayOutputStream output2 = new ByteArrayOutputStream();
-				PrintStream ps1 = new PrintStream(output1);
-				PrintStream ps2 = new PrintStream(output2)) {
-			solution.display(ps1);
-			population.display(ps2);
-			
-			Assert.assertEquals(output1.toString(), output2.toString());
-		}
+		CaptureResult result1 = Capture.stream((ps) -> solution.display(ps));
+		CaptureResult result2 = Capture.stream((ps) -> population.display(ps));
+		
+		Assert.assertEquals(result1.toString(), result2.toString());
 	}
 
 	@Test

@@ -17,14 +17,11 @@
  */
 package org.moeaframework.util;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TempFiles;
+import org.moeaframework.Capture;
 
 public class TimingTest {
 	
@@ -57,21 +54,18 @@ public class TimingTest {
 		
 		Assert.assertEquals(1, Timing.getStatistics("timer1").getN());
 		Assert.assertEquals(2, Timing.getStatistics("timer2").getN());
-		
-		Timing.display();
 	}
 	
 	@Test
 	public void testDisplay() throws IOException {
 		Timing.clear();
-		Assert.assertLineCount(2, saveDisplayToFile());
+		Capture.stream((ps) -> Timing.display(ps)).assertThat((out) -> Assert.assertLineCount(2, out.toString()));
 		
 		Timing.startTimer("timer1");
 		Timing.stopTimer("timer1");
 		Timing.startTimer("timer2");
 		Timing.stopTimer("timer2");
-		
-		Assert.assertLineCount(4, saveDisplayToFile());
+		Capture.stream((ps) -> Timing.display(ps)).assertThat((out) -> Assert.assertLineCount(4, out.toString()));
 	}
 	
 	@Test
@@ -98,16 +92,6 @@ public class TimingTest {
 		Timing.startTimer("timer1");
 		Timing.clear();
 		Timing.stopTimer("timer1");
-	}
-	
-	private File saveDisplayToFile() throws IOException {
-		File file = TempFiles.createFile();
-		
-		try (PrintStream ps = new PrintStream(new FileOutputStream(file))) {	
-			Timing.display(ps);
-		}
-		
-		return file;
 	}
 	
 }

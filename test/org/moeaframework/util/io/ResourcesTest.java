@@ -18,17 +18,15 @@
 package org.moeaframework.util.io;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Capture;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.util.io.Resources.ResourceOption;
 
@@ -37,16 +35,14 @@ public class ResourcesTest {
 	@Test
 	public void testInputStreamWithRelativePath() throws IOException {
 		try (InputStream input = Resources.asStream(ResourcesTest.class, "Test.txt")) {
-			Assert.assertNotNull(input);
-			Assert.assertEquals("foo", read(input));
+			Capture.input(input).assertEquals("foo");
 		}
 	}
 	
 	@Test
 	public void testInputStreamWithAbsolutePath() throws IOException {
 		try (InputStream input = Resources.asStream(ResourcesTest.class, "/org/moeaframework/util/io/Test.txt")) {
-			Assert.assertNotNull(input);
-			Assert.assertEquals("foo", read(input));
+			Capture.input(input).assertEquals("foo");
 		}
 	}
 	
@@ -78,8 +74,7 @@ public class ResourcesTest {
 		File file = createLocalFile("foo");
 		
 		try (InputStream input = Resources.asStream(ResourcesTest.class, file.getName(), ResourceOption.FILE)) {
-			Assert.assertNotNull(input);
-			Assert.assertEquals("foo", read(input));
+			Capture.input(input).assertEquals("foo");
 		} finally {
 			file.delete();
 		}
@@ -88,16 +83,14 @@ public class ResourcesTest {
 	@Test
 	public void testReaderWithRelativePath() throws IOException {
 		try (Reader reader = Resources.asReader(ResourcesTest.class, "Test.txt")) {
-			Assert.assertNotNull(reader);
-			Assert.assertEquals("foo", read(reader));
+			Capture.input(reader).assertEquals("foo");
 		}
 	}
 	
 	@Test
 	public void testReaderWithAbsolutePath() throws IOException {
 		try (Reader reader = Resources.asReader(ResourcesTest.class, "/org/moeaframework/util/io/Test.txt")) {
-			Assert.assertNotNull(reader);
-			Assert.assertEquals("foo", read(reader));
+			Capture.input(reader).assertEquals("foo");
 		}
 	}
 	
@@ -146,7 +139,8 @@ public class ResourcesTest {
 			
 			Assert.assertNotNull(file);
 			Assert.assertNull(file.getParent());
-			Assert.assertEquals("foo", read(file));
+			
+			Capture.file(file).assertEquals("foo");
 		} finally {
 			if (file != null) {
 				file.delete();
@@ -160,9 +154,11 @@ public class ResourcesTest {
 		
 		try {
 			file = Resources.asFile(ResourcesTest.class, "/org/moeaframework/util/io/Test.txt", ResourceOption.TEMPORARY);
+			
 			Assert.assertNotNull(file);
 			Assert.assertEquals(Path.of(System.getProperty("java.io.tmpdir")).normalize(), file.toPath().getParent().normalize());
-			Assert.assertEquals("foo", read(file));
+			
+			Capture.file(file).assertEquals("foo");
 		} finally {
 			if (file != null) {
 				file.delete();
@@ -192,9 +188,11 @@ public class ResourcesTest {
 		
 		try {
 			File locatedFile = Resources.asFile(ResourcesTest.class, file.getName(), ResourceOption.FILE);
+			
 			Assert.assertNotNull(locatedFile);
 			Assert.assertEquals(file, locatedFile);
-			Assert.assertEquals("foo", read(locatedFile));
+			
+			Capture.file(locatedFile).assertEquals("foo");
 		} finally {
 			file.delete();
 		}
@@ -206,9 +204,11 @@ public class ResourcesTest {
 		
 		try {
 			File locatedFile = Resources.asFile(ResourcesTest.class, "/" + file.getName(), ResourceOption.FILE);
+			
 			Assert.assertNotNull(locatedFile);
 			Assert.assertEquals(file, locatedFile);
-			Assert.assertEquals("foo", read(locatedFile));
+			
+			Capture.file(locatedFile).assertEquals("foo");
 		} finally {
 			file.delete();
 		}
@@ -227,35 +227,6 @@ public class ResourcesTest {
 			if (file != null) {
 				file.delete();
 			}
-		}
-	}
-	
-	private String read(InputStream input) throws IOException {
-		if (input == null) {
-			return null;
-		}
-		
-		try (Reader reader = new InputStreamReader(input);
-				StringWriter writer = new StringWriter()) {
-			reader.transferTo(writer);
-			return writer.toString();
-		}
-	}
-	
-	private String read(Reader reader) throws IOException {
-		if (reader == null) {
-			return null;
-		}
-		
-		try (StringWriter writer = new StringWriter()) {
-			reader.transferTo(writer);
-			return writer.toString();
-		}
-	}
-	
-	private String read(File file) throws IOException {
-		try (FileReader reader = new FileReader(file)) {
-			return read(reader);
 		}
 	}
 	

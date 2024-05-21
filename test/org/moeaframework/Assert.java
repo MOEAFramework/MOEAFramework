@@ -26,6 +26,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.io.StringReader;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -406,15 +407,25 @@ public class Assert extends org.junit.Assert {
 	}
 	
 	public static void assertLineCount(int expected, File file) throws IOException {
+		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+			assertLineCount("File '" + file + "' contains unexpected line count", expected, reader);
+		}
+	}
+	
+	public static void assertLineCount(int expected, String content) throws IOException {
+		try (BufferedReader reader = new BufferedReader(new StringReader(content))) {
+			assertLineCount("Content contains unexpected line count", expected, reader);
+		}
+	}
+	
+	private static void assertLineCount(String message, int expected, BufferedReader reader) throws IOException {
 		int actual = 0;
 		
-		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-			while (reader.readLine() != null) {
-				actual++;
-			}
+		while (reader.readLine() != null) {
+			actual++;
 		}
 		
-		assertEquals("File '" + file + "' contains unexpected line count", expected, actual);
+		assertEquals(message, expected, actual);
 	}
 	
 	public static void assertInstanceOf(Class<?> type, Object object) {

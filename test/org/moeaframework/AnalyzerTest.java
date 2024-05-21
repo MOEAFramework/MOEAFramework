@@ -17,16 +17,15 @@
  */
 package org.moeaframework;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.nio.file.Files;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moeaframework.Capture.CaptureResult;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
@@ -92,33 +91,25 @@ public class AnalyzerTest {
 				.includeAllMetrics()
 				.showAll();
 		
-		try (ByteArrayOutputStream result = new ByteArrayOutputStream();
-				PrintStream ps = new PrintStream(result)) {
-			analyzer.printAnalysis(ps);
-			Assert.assertEquals(0, result.size());
-		}
+		Capture.stream((ps) -> analyzer.printAnalysis(ps)).assertThat((out) -> Assert.assertEquals("", out.toString()));
 	}
 	
 	@Test
-	public void testAll() throws IOException {
-		Analyzer analyzer = generate();
-		File tempFile = TempFiles.createFile();
+	public void testSaveLoad() throws IOException {
+		Analyzer analyzer = generate();		
+		CaptureResult result = Capture.stream((ps) -> analyzer.printAnalysis(ps));
 		
-		try (ByteArrayOutputStream expected = new ByteArrayOutputStream();
-				PrintStream ps = new PrintStream(expected)) {
-			analyzer.printAnalysis(ps);
-	
-			analyzer.saveData(tempFile.getParentFile(), tempFile.getName(), ".dat");
-			analyzer.clear();
-			analyzer.loadData(tempFile.getParentFile(), tempFile.getName(), ".dat");
+		File tempFile = TempFiles.createFile();
+		analyzer.saveData(tempFile.getParentFile(), tempFile.getName(), ".dat");
+		analyzer.clear();
+		analyzer.loadData(tempFile.getParentFile(), tempFile.getName(), ".dat");
 			
-			File actualFile = TempFiles.createFile();
-			analyzer.saveAnalysis(actualFile);
+		File actualFile = TempFiles.createFile();
+		analyzer.saveAnalysis(actualFile);
 			
-			//20 closes from generate(), 2 from saveData, 2 from loadData, 1 from printAnalysis, 1 from saveAnalysis
-			Assert.assertEquals(26, problemFactory.getCloseCount());
-			Assert.assertArrayEquals(expected.toByteArray(), Files.readAllBytes(actualFile.toPath()));
-		}
+		//20 closes from generate(), 2 from saveData, 2 from loadData, 1 from printAnalysis, 1 from saveAnalysis
+		Assert.assertEquals(26, problemFactory.getCloseCount());
+		Assert.assertArrayEquals(result.toBytes(), Files.readAllBytes(actualFile.toPath()));
 	}
 	
 	private Analyzer generate() {
