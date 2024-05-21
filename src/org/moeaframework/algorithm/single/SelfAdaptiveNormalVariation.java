@@ -19,6 +19,7 @@ package org.moeaframework.algorithm.single;
 
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.attribute.Attribute;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.variable.RealVariable;
 
@@ -33,11 +34,6 @@ import org.moeaframework.core.variable.RealVariable;
  * deviation {@code 1}.
  */
 public class SelfAdaptiveNormalVariation implements Mutation {
-	
-	/**
-	 * The attribute for storing the self adaptive parameter.
-	 */
-	public static final String SIGMA = "sigma";
 	
 	/**
 	 * Constructs a new instance of the self-adaptive variation based on the normal distribution.
@@ -58,12 +54,12 @@ public class SelfAdaptiveNormalVariation implements Mutation {
 		double tau = 1.0 / Math.sqrt(2.0 * child.getNumberOfVariables());
 		
 		// copy attribute from parent
-		if (parent.hasAttribute(SIGMA)) {
-			sigma = (Double)parent.getAttribute(SIGMA);
+		if (Sigma.hasAttribute(parent)) {
+			sigma = Sigma.getAttribute(parent);
 		}
 		
 		sigma *= Math.exp(tau*PRNG.nextGaussian());
-		child.setAttribute(SIGMA, sigma);
+		Sigma.setAttribute(child, sigma);
 		
 		for (int i = 0; i < child.getNumberOfVariables(); i++) {
 			RealVariable variable = (RealVariable)child.getVariable(i);
@@ -80,6 +76,28 @@ public class SelfAdaptiveNormalVariation implements Mutation {
 		}
 		
 		return child;
+	}
+	
+	private static final class Sigma implements Attribute {
+		
+		public static final String ATTRIBUTE_NAME = "sigma";
+		
+		private Sigma() {
+			super();
+		}
+		
+		public static final boolean hasAttribute(Solution solution) {
+			return solution.hasAttribute(ATTRIBUTE_NAME);
+		}
+		
+		public static final void setAttribute(Solution solution, double value) {
+			solution.setAttribute(ATTRIBUTE_NAME, value);
+		}
+		
+		public static final double getAttribute(Solution solution) {
+			return (Double)solution.getAttribute(ATTRIBUTE_NAME);
+		}
+		
 	}
 
 }

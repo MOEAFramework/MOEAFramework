@@ -18,12 +18,21 @@
 package org.moeaframework.core.attribute;
 
 /**
- * Marker interface for attributes, which is metadata associated with a specific solution.  Classes implementing this
- * interface are simply for convenience when reading or writing these attributes.  While this interface does not
- * mandate any particular implementation, for standardization we recommend each subclass should:
+ * Marker interface for accessing attributes.  Attributes are metadata associated with a specific solution.  While one
+ * can call the {@link org.moeaframework.core.Solution} methods for working with attributes directly, such as
+ * {@link org.moeaframework.core.Solution#getAttribute(String)}, these attribute classes provide a standardized and
+ * type-safe way to access the attributes.
+ * <p>
+ * These classes are implemented with {@code static} methods.  This design decision was made for performance and
+ * simplicity, as an actual class would require extra overhead from calling the constructor and methods.  Static (and
+ * final) methods can be resolved at compile-time and often in-lined.  Additionally, these static methods can be used
+ * with Java's functional interfaces (see {@code java.util.function}) if more flexibility is required.
+ * <p>
+ * While this interface does not mandate any particular implementation, for standardization we recommend the following:
  * <ol>
- *   <li>Specify the class and methods are {@code static} and {@code final}.
- *   <li>Define the following methods:
+ *   <li>The class should be {@code final}
+ *   <li>Define {@code public static final String ATTRIBUTE_NAME} that identifies the key / name of the attribute
+ *   <li>Define the following {@code static final} methods:
  *     <ol>
  *       <li>{@code boolean hasAttribute(Solution)}
  *       <li>{@code void setAttribute(Solution, T)}
@@ -31,10 +40,8 @@ package org.moeaframework.core.attribute;
  *       <li>{@code void removeAttribute(Solution)} (optional)
  *     </ol>
  * </ol>
- * <p>
- * By flagging the class and methods as {@code static} and {@code final}, we help the JIT compiler optimize the code,
- * possibly in-lining the function calls.  Additionally, we can call these methods directly or pass them as arguments
- * using Java's functional interfaces.
+ * Where {@code T} is the type of the attribute.  Prefer using primitive types and implement any boxing / un-boxing
+ * within the getter and setter.
  */
 public interface Attribute {
 
