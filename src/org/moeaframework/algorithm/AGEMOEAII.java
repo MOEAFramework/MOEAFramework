@@ -47,7 +47,6 @@ import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.util.Vector;
-import org.moeaframework.util.validate.Validate;
 
 /**
  * Implementation of AGE-MOEA-II, which is an adaptive evolutionary algorithm that estimates the Pareto front geometry

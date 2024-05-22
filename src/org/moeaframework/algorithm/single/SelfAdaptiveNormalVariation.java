@@ -25,7 +25,7 @@ import org.moeaframework.core.variable.RealVariable;
 
 /**
  * Self adaptive variation based on the normal distribution.  The self adaptive parameter {@code sigma} is stored as
- * the {@value SIGMA} attribute.  Each call to {@link #evolve(Solution[])} performs the following changes:
+ * the {@link Sigma} attribute.  Each call to {@link #evolve(Solution[])} performs the following changes:
  * <pre>
  *   sigma = sigma * e^(tau * N(0,1))
  *   vars = vars + sigma * N(0,I)

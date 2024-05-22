@@ -7,10 +7,10 @@ Below lists the optimization algorithms provided by the MOEA Framework organized
 * Multi-objective
   * Classical - [NSGA-II](#nsga-ii), [MOEA/D](#moead), [GDE3](#gde3), [PAES](#paes), [PESA2](#pesa2), [SPEA2](#spea2), [VEGA](#vega)
   * Epsilon-dominance - [e-MOEA](#e-moea), [e-NSGA-II](#e-nsga-ii)
-  * Reference point / vector - [NSGA-III](#nsga-iii), [DBEA](#dbea), [RVEA](#rvea)
+  * Reference point / vector - [NSGA-III](#nsga-iii), [U-NSGA-III](#u-nsga-iii), [DBEA](#dbea), [RVEA](#rvea)
   * Particle swarm - [OMOPSO](#omopso), [SMPSO](#smpso)
   * Indicator based - [IBEA](#ibea), [SMS-EMOA](#sms-emoa)
-  * Other - [AMOSA](#amosa), [CMA-ES](#cma-es), [MSOPS](#msops), [RSO](#rso), [Random](#random)
+  * Other - [AGE-MOEA-II](#age-moea-ii), [AMOSA](#amosa), [CMA-ES](#cma-es), [MSOPS](#msops), [RSO](#rso), [Random](#random)
 * Single-objective - [GA](#ga), [ES](#es), [DE](#de), [SA](#sa), [CMA-ES](#cma-es)
 
 In addition, the MOEA Framework provides [JMetal and PISA extensions](listOfExtensions.md) to enable additional
@@ -53,6 +53,22 @@ will depend on the problem type.  A default operators is used unless explicitly 
 parameter, where supported.  See the [List of Operators](listOfOperators.md) for specifics.
 
 ## Multiobjective Optimizers
+
+### AGE-MOEA-II
+
+Built upon NSGA-II, AGE-MOEA-II essentially replaces the crowding operator used by NSGA-II with a survival score
+computed by estimating the curvature of the Pareto front [^panichella22].  This score is then used during mating and
+survival selection.
+
+**Algorithm Name:** `"AGE-MOEA-II"`  
+**Supported Types:** Any  
+**Supported Operators:** Any
+
+Parameter            | Default Value     | Description
+:------------------- | :---------------- | :----------
+`populationSize`     | `100`             | The size of the population
+`operator`           | Problem dependent | The variation (crossover and/or mutation) operator
+
 
 ### AMOSA
 
@@ -444,6 +460,25 @@ Parameter            | Default Value     | Description
 `k`                  | `1`               | Crowding is based on the distance to the $k$-th nearest neighbor
 `operator`           | Problem dependent | The variation (crossover and/or mutation) operator
 
+
+### U-NSGA-III
+
+U-NSGA-III extends NSGA-III to replace its random selection with a "unified" version using niches formed by the
+reference points [^seada16].  See [NSGA-III](#nsga-iii) for additional details.
+
+**Algorithm Name:** `"U-NSGA-III"`  
+**Supported Types:** Any  
+**Supported Operators:** Any
+
+Parameter            | Default Value     | Description
+:------------------- | :---------------- | :----------
+`populationSize`     | Unset             | The size of the population.  If unset, the population size is equal to the number of reference points
+`operator`           | Problem dependent | The variation (crossover and/or mutation) operator
+`divisions`          | Problem dependent | The number of divisions
+`divisionsInner`     | Unset             | The number of inner divisions when using the two-layer approach
+`divisionsOuter`     | Unset             | The number of outer divisions when using the two-layer approach
+
+
 ### VEGA
 
 VEGA is considered the earliest documented MOEA.  While we provide support for VEGA, other MOEAs should be preferred as
@@ -557,8 +592,10 @@ Parameter                          | Default Value     | Description
 [^li09]: Li, H. and Zhang, Q. (2009). Multiobjective optimization problems with complicated Pareto sets, MOEA/D and NSGA-II. IEEE Transactions on Evolutionary Computation, 13(2):284–302.
 [^nebro09]: Nebro, A. J., Durillo, J. J., Garc´ıa-Nieto, J., Coello Coello, C. A., Luna, F., and Alba, E. (2009). SMPSO: A new PSO-based metaheuristic for multi-objective optimization. In IEEE Symposium on Computational Intelligence in Multicriteria Decision-Making
 (MCDM 2009), pages 66–73, Nashville, TN.
+[^panichella22]: Panichella, A.  "An Improved Pareto Front Modeling Algorithm for Large-scale Many-Objective Optimization." GECCO '22, July 9-13, 2022, Boston, MA, USA, pp. 565-573.
 [^rechenberg71]: Rechenberg, I. (1971). Evolutionsstrategie: Optimierung technischer Systeme nach Prinzipiender biologischen Evolution. PhD thesis, Fromman-Holzboog.
 [^schaffer85]: Schaffer, D. J. (1985). Multiple objective optimization with vector evaluated genetic algorithms. In 1st International Conference on Genetic Algorithms, pages 93–100.
+[^seada16]: H. Seada and K. Deb. "A Unified Evolutionary Optimization Procedure for Single, Multiple, and Many Objectives." IEEE Transactions on Evolutionary Computation, 20(3):358–369, June 2016.
 [^sierra05]: Sierra, M. R. and Coello Coello, C. A. (2005). Improving PSO-based multi-objective optimization using crowding, mutation and ϵ-dominance. In Evolutionary Multi-Criterion Optimization (EMO 2005), pages 505–519, Guanajuato, Mexico.
 [^storn97]: Storn, R. and Price, K. (1997). Differential evolution — a simple and efficient heuristic for global optimization over continuous spaces. Journal of Global Optimization, 11(4):341–359.
 [^zhang09]: Zhang, Q., Liu, W., and Li, H. (2009). The performance of a new version of MOEA/D on CEC09 unconstrained MOP test instances. In Congress on Evolutionary Computation (CEC 2009), pages 203–208, Trondheim, Norway.

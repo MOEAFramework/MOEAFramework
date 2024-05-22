@@ -281,6 +281,7 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 	 * Removes all solutions matching the given predicate.
 	 * 
 	 * @param predicate the filter that returns {@code true} on solutions to remove
+	 * @return {@code true} if this population was modified as a result of this method; {@code false} otherwise
 	 */
 	public boolean removeAll(Predicate<? super Solution> predicate) {
 		Iterator<Solution> iterator = iterator();
