@@ -632,8 +632,7 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 			distances = new HashMap<Pair<T, T>, Double>();
 		}
 
-		// Since distances are symmetric, order the items so that {first, second} and {second, first} result in the
-		// same key.
+		// Use the hashCode to order the arguments, allowing symmetric distances
 		private final Pair<T, T> getKey(T first, T second) {
 			return first.hashCode() < second.hashCode() ? Pair.of(first, second) : Pair.of(second, first);
 		}

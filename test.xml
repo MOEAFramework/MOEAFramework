@@ -148,9 +148,9 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<junit haltonfailure="false" tempdir="${results}/raw" errorproperty="junit.failure"
 				failureproperty="junit.failure" fork="true" threads="${runtime.availableProcessors}">
 			<classpath>
-				<path refid="classpath" />
 				<fileset file="${dist}/${shortname}-${version}.jar" />
 				<fileset file="${dist}/${shortname}-${version}-Test.jar" />
+				<path refid="classpath" />
 			</classpath>
 			<batchtest todir="${results}/raw">
 				<formatter type="xml" />

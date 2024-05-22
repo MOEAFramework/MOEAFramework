@@ -272,6 +272,9 @@ public class DefaultAlgorithmsTest {
 		for (Problem problem : allProblems) {
 			boolean isSupported = List.of(supportedProblems).contains(problem);
 			
+			// test if the provider is the MOEA Framework, the order on the classpath matters!
+			testProvider(name, problem);
+			
 			// test if the algorithm can be instantiated and run against the problem type
 			try {
 				System.out.print("  Test run on " + problem.getName() + "...");
@@ -325,6 +328,11 @@ public class DefaultAlgorithmsTest {
 			System.out.println("failed!");
 			throw new AssertionError(name + " failed reproducibility test on DTLZ2");
 		}
+	}
+	
+	private void testProvider(String name, Problem problem) {
+		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(name, properties, problem);
+		Assert.assertStringContains(algorithm.getClass().getPackageName(), "org.moeaframework.");;
 	}
 
 	private void testRun(String name, Problem problem) {
