@@ -17,9 +17,15 @@
  */
 package org.moeaframework.algorithm;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
+import org.moeaframework.TestThresholds;
+import org.moeaframework.algorithm.AGEMOEAII.DistanceMap;
+import org.moeaframework.core.Solution;
+import org.moeaframework.mock.MockSolution;
 
 @RunWith(CIRunner.class)
 @Retryable
@@ -27,6 +33,19 @@ public class AGEMOEAIITest extends JMetalAlgorithmTest {
 	
 	public AGEMOEAIITest() {
 		super("AGE-MOEA-II");
+	}
+	
+	@Test
+	public void testDistanceMap() {
+		DistanceMap<Solution> distances = new DistanceMap<Solution>();
+		
+		Solution s1 = MockSolution.of().withObjectives(0.0, 1.0);
+		Solution s2 = MockSolution.of().withObjectives(1.0, 0.0);
+		
+		distances.set(s1, s2, 5.0);
+		
+		Assert.assertEquals(5.0, distances.get(s1, s2), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(5.0, distances.get(s2, s1), TestThresholds.HIGH_PRECISION);
 	}
 
 }

@@ -141,7 +141,7 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 	/**
 	 * Population that computes the AGE-MOEA-II survival score, stored as a fitness value, for truncation.
 	 */
-	protected static class AGEMOEAIIPopulation extends Population {
+	static class AGEMOEAIIPopulation extends Population {
 
 		private final int numberOfObjectives;
 
@@ -533,18 +533,6 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 		}
 
 		/**
-		 * Computes the Minkowski distance between the normalized objective values of two solutions.
-		 * 
-		 * @param source the first solution
-		 * @param target the second solution
-		 * @param p the curvature of the L_p manifold
-		 * @return the Minkowski distance
-		 */
-		protected double minkowskiDistance(Solution source, Solution target, double p) {
-			return minkowskiDistance(source, NormalizedObjectives.getAttribute(target), p);
-		}
-
-		/**
 		 * Computes the Minkowski distance between the normalized objective values of a solution and a target point.
 		 * 
 		 * @param source the solution
@@ -623,7 +611,7 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 	 * 
 	 * @param <T> the type of object being stored
 	 */
-	private static class DistanceMap<T> {
+	static class DistanceMap<T> {
 
 		private final Map<Pair<T, T>, Double> distances;
 
@@ -650,7 +638,7 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 	/**
 	 * Attribute for storing the projected objective values.
 	 */
-	private static final class ProjectedObjectives implements Attribute {
+	static final class ProjectedObjectives implements Attribute {
 
 		public static final String ATTRIBUTE_NAME = "projectedObjectives";
 
