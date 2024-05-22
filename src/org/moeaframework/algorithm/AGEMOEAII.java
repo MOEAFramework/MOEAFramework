@@ -73,7 +73,7 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 		this(problem,
 				Settings.DEFAULT_POPULATION_SIZE,
 				new AGEMOEAIIPopulation(problem.getNumberOfObjectives()),
-				new TournamentSelection(2, new ChainedComparator(new RankComparator(), new FitnessComparator(true))),
+				new TournamentSelection(2, new ChainedComparator(new RankComparator(), AGEMOEAIIPopulation.COMPARATOR)),
 				OperatorFactory.getInstance().getVariation(problem),
 				new RandomInitialization(problem));
 	}
@@ -142,6 +142,11 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 	 * Population that computes the AGE-MOEA-II survival score, stored as a fitness value, for truncation.
 	 */
 	static class AGEMOEAIIPopulation extends Population {
+		
+		/**
+		 * Comparator used to sort solutions by their survival score.
+		 */
+		public static final FitnessComparator COMPARATOR = new FitnessComparator(true);
 
 		private final int numberOfObjectives;
 
@@ -162,8 +167,7 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 			super();
 			this.numberOfObjectives = numberOfObjectives;
 
-			// constant used for the origin point after normalization
-			zeros = Vector.of(numberOfObjectives, 0.0);
+			zeros = Vector.of(numberOfObjectives, 0.0); // constant used for the origin point after normalization
 		}
 
 		/**
@@ -183,7 +187,7 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 			computeSurvivalScore(front);
 
 			if (front.size() > size) {
-				front.truncate(size, new FitnessComparator(true));
+				front.truncate(size, COMPARATOR);
 			}
 
 			selected.addAll(front);
@@ -196,7 +200,7 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 				computeConvergenceScore(front);
 				
 				if (selected.size() + front.size() > size) {
-					front.truncate(size - selected.size(), new FitnessComparator(true));
+					front.truncate(size - selected.size(), COMPARATOR);
 				}
 				
 				selected.addAll(front);
@@ -234,7 +238,7 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 			normalize(front, idealPoint, intercepts);
 
 			// Estimate the front geometry
-			p = getGeometry(front, extremePoints);
+			p = fitGeometry(front, extremePoints);
 
 			// Proximity Score
 			double[] proximity = new double[front.size()];
@@ -382,7 +386,7 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 		 * @param extremePoints the exteme points of the rank {@value Rank#BEST_RANK} front
 		 * @return the curvature of the L_p manifold (best fit)
 		 */
-		protected double getGeometry(Population front, Solution[] extremePoints) {
+		protected double fitGeometry(Population front, Solution[] extremePoints) {
 			double[] d = new double[front.size()];
 			Set<Solution> extremePointsSet = Set.of(extremePoints);
 
