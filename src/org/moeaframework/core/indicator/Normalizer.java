@@ -155,7 +155,7 @@ public class Normalizer {
 	 */
 	private void calculateRanges(Population population) {
 		Population feasibleSolutions = new Population(population);
-		feasibleSolutions.filter(Solution::isFeasible);
+		feasibleSolutions.removeAll(Solution::violatesConstraints);
 		
 		if (feasibleSolutions.size() < 2) {
 			Validate.that("population", population)

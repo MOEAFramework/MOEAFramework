@@ -27,7 +27,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedSortingPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
@@ -40,6 +39,7 @@ import org.moeaframework.core.attribute.Rank;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.RankComparator;
 import org.moeaframework.util.Vector;
+import org.moeaframework.util.validate.Validate;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 import org.moeaframework.util.weights.NormalBoundaryIntersectionGenerator;
 
@@ -173,9 +173,8 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	 */
 	protected void updateIdealPoint() {
 		for (Solution solution : this) {
-			if (solution.getNumberOfObjectives() != numberOfObjectives) {
-				throw new FrameworkException("incorrect number of objectives");
-			}
+			Validate.that("solution.getNumberOfObjectives()", solution.getNumberOfObjectives())
+				.isEqualTo(numberOfObjectives);
 
 			for (int i = 0; i < numberOfObjectives; i++) {
 				idealPoint[i] = Math.min(idealPoint[i], solution.getObjective(i));
@@ -355,7 +354,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	 * @param b the b vector
 	 * @return the solved equation using Gaussian elimination
 	 */
-	private double[] lsolve(double[][] A, double[] b) {
+	protected static double[] lsolve(double[][] A, double[] b) {
 		int N  = b.length;
 
 		for (int p = 0; p < N; p++) {
@@ -411,11 +410,11 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	/**
 	 * Returns the minimum perpendicular distance between a point and a line.
 	 * 
-	 * @param line the line originating from the origin
 	 * @param point the point
+	 * @param line the line originating from the origin
 	 * @return the minimum distance
 	 */
-	protected static double pointLineDistance(double[] line, double[] point) {
+	protected static double pointLineDistance(double[] point, double[] line) {
 		return Vector.magnitude(Vector.subtract(Vector.multiply(Vector.dot(line, point) / Vector.dot(line, line),
 				line), point));
 	}
@@ -443,7 +442,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 			int minIndex = -1;
 
 			for (int i = 0; i < weights.size(); i++) {
-				double distance = pointLineDistance(weights.get(i), objectives);
+				double distance = pointLineDistance(objectives, weights.get(i));
 
 				if (distance < minDistance) {
 					minDistance = distance;
@@ -473,7 +472,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 
 		for (int i = 0; i < solutions.size(); i++) {
 			double[] objectives = NormalizedObjectives.getAttribute(solutions.get(i));
-			double distance = pointLineDistance(weight, objectives);
+			double distance = pointLineDistance(objectives, weight);
 			
 			if (distance < minDistance) {
 				minDistance = distance;

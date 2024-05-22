@@ -54,6 +54,10 @@ using existing components.</p>
     <td>Multiobjective Scatter Search<sup>1</sup></td>
   </tr>
   <tr>
+    <td style="font-weight: bold">AGE-MOEA-II</td>
+    <td>Pareto Front Geometry Estimation</td>
+  </tr>
+  <tr>
     <td style="font-weight: bold">AMOSA</td>
     <td>Archived Multi-objective Simulated Annealing</td>
   </tr>

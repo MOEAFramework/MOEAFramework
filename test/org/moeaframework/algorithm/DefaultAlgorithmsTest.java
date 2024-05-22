@@ -125,6 +125,16 @@ public class DefaultAlgorithmsTest {
 	}
 	
 	@Test
+	public void testAGEMOEAII() {
+		test("AGE-MOEA-II", real, binary, permutation, subset, grammar, program);
+	}
+	
+	@Test
+	public void testAMOSA() {
+		test("AMOSA", real, binary, permutation, subset, grammar, program);
+	}
+	
+	@Test
 	public void testEpsilonMOEA() {
 		test("eMOEA", real, binary, permutation, subset, grammar, program);
 	}
@@ -242,11 +252,6 @@ public class DefaultAlgorithmsTest {
 	@Test
 	public void testMSOPS() {
 		test("MSOPS", real);
-	}
-	
-	@Test
-	public void testAMOSA() {
-		test("AMOSA", real, binary, permutation, subset, grammar, program);
 	}
 	
 	@Test

@@ -249,19 +249,38 @@ public class PopulationTest {
 	}
 	
 	@Test
-	public void testFilter() {
-		population.filter(s -> true);
+	public void testRemoveAllWithPredicate() {
+		Assert.assertFalse(population.removeAll(s -> false));
 		Assert.assertSize(4, population);
 		
-		population.filter(s -> s.getObjective(0) >= 3.0);
+		Assert.assertTrue(population.removeAll(s -> s.getObjective(0) < 3.0));
 		Assert.assertSize(2, population);
 		
 		for (Solution solution : population) {
 			Assert.assertGreaterThanOrEqual(solution.getObjective(0), 3.0);
 		}
 		
-		population.filter(s -> false);
+		Assert.assertTrue(population.removeAll(s -> true));
 		Assert.assertSize(0, population);
+	}
+	
+	@Test
+	public void testFilter() {
+		Population filtered = population.filter(s -> true);
+		Assert.assertSize(4, filtered);
+		Assert.assertEquals(filtered, population);
+		
+		filtered = population.filter(s -> s.getObjective(0) >= 3.0);
+		Assert.assertSize(2, filtered);
+		Assert.assertSize(4, population);
+		
+		for (Solution solution : filtered) {
+			Assert.assertGreaterThanOrEqual(solution.getObjective(0), 3.0);
+		}
+		
+		filtered = population.filter(s -> false);
+		Assert.assertSize(0, filtered);
+		Assert.assertSize(4, population);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)

@@ -47,6 +47,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		super();
 		
 		// multi-objective
+		register(fromProblem(AGEMOEAII::new), "AGE-MOEA-II", "AGEMOEAII", "AGEMOEA2");
 		register(fromProblem(AMOSA::new), "AMOSA");
 		register(fromProblem(CMAES::new), "CMA-ES", "CMAES", "MO-CMA-ES");
 		register(fromProblem(DBEA::new), "DBEA", "I-DBEA");
@@ -79,6 +80,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		register(this::newRSO, "RSO");
 		
 		// register all to appear in the diagnostic tool
+		registerDiagnosticToolAlgorithm("AGE-MOEA-II");
 		registerDiagnosticToolAlgorithm("AMOSA");
 		registerDiagnosticToolAlgorithm("CMA-ES");
 		registerDiagnosticToolAlgorithm("DBEA");

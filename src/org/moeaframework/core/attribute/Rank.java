@@ -17,6 +17,8 @@
  */
 package org.moeaframework.core.attribute;
 
+import java.util.function.Predicate;
+
 import org.moeaframework.core.Solution;
 
 /**
@@ -30,6 +32,11 @@ public final class Rank implements Attribute {
 	 * The name / key used for this attribute.
 	 */
 	public static final String ATTRIBUTE_NAME = "rank";
+	
+	/**
+	 * Constant identifying the value of the best rank (aka. the Pareto front).
+	 */
+	public static final int BEST_RANK = 0;
 
 	private Rank() {
 		super();
@@ -63,6 +70,16 @@ public final class Rank implements Attribute {
 	 */
 	public static final int getAttribute(Solution solution) {
 		return (Integer)solution.getAttribute(ATTRIBUTE_NAME);
+	}
+	
+	/**
+	 * Returns a predicate for identifying solutions belonging to a specific rank.
+	 * 
+	 * @param rank the rank
+	 * @return the predicate function
+	 */
+	public static final Predicate<Solution> isRank(final int rank) {
+		return (s) -> Rank.getAttribute(s) == rank;
 	}
 
 }

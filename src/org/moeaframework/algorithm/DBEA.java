@@ -247,7 +247,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	 */
 	Population getFeasibleSolutions(Population population) {
 		Population feasibleSolutions = new Population(population);
-		feasibleSolutions.filter(Solution::isFeasible);
+		feasibleSolutions.removeAll(Solution::violatesConstraints);
 		return feasibleSolutions;
 	}
 	

@@ -276,6 +276,44 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 	public <T extends Solution> boolean removeAll(T[] solutions) {
 		return removeAll(Arrays.asList(solutions));
 	}
+	
+	/**
+	 * Removes all solutions matching the given predicate.
+	 * 
+	 * @param predicate the filter that returns {@code true} on solutions to remove
+	 */
+	public boolean removeAll(Predicate<? super Solution> predicate) {
+		Iterator<Solution> iterator = iterator();
+		boolean changed = false;
+		
+		while (iterator.hasNext()) {
+			Solution solution = iterator.next();
+			
+			if (predicate.test(solution)) {
+				iterator.remove();
+				changed = true;
+			}
+		}
+		
+		return changed;
+	}
+	
+	/**
+	 * Returns a new population containing only the solutions matching the given predicate.
+	 * <p>
+	 * The filtered population should be treated as a "view" into this population.  The structure of the filtered
+	 * population can be modified without affecting this population (e.g., by adding, removing, or sorting), but
+	 * any modifications to the solutions contained in either will appear in both.  Use {@link #copy()} to create an
+	 * independent copy.
+	 * 
+	 * @param predicate the filter that returns {@code true} on solutions to keep in the filtered population
+	 * @return the filtered population
+	 */
+	public Population filter(Predicate<? super Solution> predicate) {
+		Population result = new Population(this);
+		result.removeAll((s) -> !predicate.test(s));
+		return result;
+	}
 
 	/**
 	 * Returns the number of solutions in this population.
@@ -296,23 +334,6 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 	public void sort(Comparator<? super Solution> comparator) {
 		modCount++;
 		Collections.sort(data, comparator);
-	}
-	
-	/**
-	 * Applies a filter to this population, removing any solutions that do not match the predicate.
-	 * 
-	 * @param predicate the filter that returns {@code true} on solutions to keep
-	 */
-	public void filter(Predicate<Solution> predicate) {
-		Iterator<Solution> iterator = iterator();
-		
-		while (iterator.hasNext()) {
-			Solution solution = iterator.next();
-			
-			if (!predicate.test(solution)) {
-				iterator.remove();
-			}
-		}
 	}
 	
 	/**

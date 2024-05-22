@@ -40,27 +40,27 @@ public class ReferencePointNondominatedSortingPopulationTest {
 		
 		Assert.assertEquals(Math.sqrt(2.0)/2.0,
 				ReferencePointNondominatedSortingPopulation.pointLineDistance(
-						new double[] { 0.5, 0.5 }, new double[] { 0.0, 1.0 }),
+						new double[] { 0.0, 1.0 }, new double[] { 0.5, 0.5 }),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertEquals(Math.sqrt(2.0)/2.0,
 				ReferencePointNondominatedSortingPopulation.pointLineDistance(
-						new double[] { 0.5, 0.5 }, new double[] { 1.0, 0.0 }),
+						new double[] { 1.0, 0.0 }, new double[] { 0.5, 0.5 }),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertEquals(0.0,
 				ReferencePointNondominatedSortingPopulation.pointLineDistance(
-						new double[] { 1.0, 1.0 }, new double[] { 0.5, 0.5 }),
+						new double[] { 0.5, 0.5 }, new double[] { 1.0, 1.0 }),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertEquals(0.0,
 				ReferencePointNondominatedSortingPopulation.pointLineDistance(
-						new double[] { 1.0, 1.0, 1.0 }, new double[] { 0.5, 0.5, 0.5 }),
+						new double[] { 0.5, 0.5, 0.5 }, new double[] { 1.0, 1.0, 1.0 }),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertEquals(Math.sqrt(2.0),
 				ReferencePointNondominatedSortingPopulation.pointLineDistance(
-						new double[] { 0.0, 0.0, 1.0 }, new double[] { 1.0, 1.0, 1.0 }),
+						new double[] { 1.0, 1.0, 1.0 }, new double[] { 0.0, 0.0, 1.0 }),
 				TestThresholds.HIGH_PRECISION);
 	}
 	
