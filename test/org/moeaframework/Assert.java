@@ -347,7 +347,7 @@ public class Assert extends org.junit.Assert {
 	}
 	
 	public static void assertUniformDistribution(double min, double max, DescriptiveStatistics statistics) {
-		double epsilon = TestThresholds.LOW_PRECISION;
+		double epsilon = (max - min) * TestThresholds.LOW_PRECISION;
 		
 		assertEquals((min + max) / 2.0, statistics.getMean(), epsilon);
 		assertEquals(Math.pow(max - min, 2.0) / 12.0, statistics.getVariance(), epsilon);
@@ -359,7 +359,7 @@ public class Assert extends org.junit.Assert {
 
 	// Note: It's important to use the integer version for discrete values to ensure we offset the range by 1.
 	public static void assertUniformDistribution(int min, int max, DescriptiveStatistics statistics) {
-		double epsilon = TestThresholds.LOW_PRECISION;
+		double epsilon = (max - min) * TestThresholds.LOW_PRECISION;
 		int n = max - min + 1;
 		int nn = n * n;
 

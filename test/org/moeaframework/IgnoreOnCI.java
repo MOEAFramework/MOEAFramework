@@ -24,7 +24,7 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation for ignoring unit tests on CI builds.  This can be used to ignore tests that frequently fail due to their
- * stochastic nature, are not configured to run correctly in a CI build environment, or exceed the 10 minute timeout.
+ * stochastic nature, are not configured to run correctly in a CI build environment, or are too slow.
  * <p>
  * Test classes using this annotation must also specify {@code @RunWith(CIRunner.class)}..
  */
