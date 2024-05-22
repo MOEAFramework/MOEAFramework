@@ -30,10 +30,8 @@ import org.apache.commons.math3.ml.clustering.KMeansPlusPlusClusterer;
 import org.apache.commons.math3.stat.correlation.Covariance;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.moeaframework.AbsoluteError;
 import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
-import org.moeaframework.RelativeError;
 import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
@@ -90,7 +88,7 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest<AdaptiveM
 				{ 0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0003, -0.0003 },
 				{ 0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0000,  0.0003 }});
 
-		Assert.assertEquals(expected, actual, new AbsoluteError(0.0001));
+		Assert.assertEquals(expected, actual, 0.0001);
 	}
 
 	@Test
@@ -174,8 +172,8 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest<AdaptiveM
 		List<CentroidCluster<DoublePoint>> clusters = clusterer.cluster(points);
 
 		for (CentroidCluster<DoublePoint> cluster : clusters) {
-			Assert.assertEquals(getCovariance(cluster), getCovariance(parents, jumpRateCoefficient), 
-					new RelativeError(0.1));
+			Assert.assertEquals(getCovariance(cluster), getCovariance(parents, jumpRateCoefficient),
+					TestThresholds.LOW_PRECISION);
 		}
 	}
 

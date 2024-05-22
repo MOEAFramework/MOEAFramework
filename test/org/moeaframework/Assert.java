@@ -109,23 +109,19 @@ public class Assert extends org.junit.Assert {
 				StringUtils.normalizeSpace(expected), StringUtils.normalizeSpace(actual));
 	}
 	
+	public static void assertEquals(double expected, double actual) {
+		assertEquals(expected, actual, TestThresholds.HIGH_PRECISION);
+	}
+	
 	public static void assertEquals(double[][] expected, double[][] actual) {
 		assertEquals(new Array2DRowRealMatrix(expected), new Array2DRowRealMatrix(actual));
 	}
 	
 	public static void assertEquals(RealMatrix expected, RealMatrix actual) {
-		assertEquals(expected, actual, new AbsoluteError(TestThresholds.HIGH_PRECISION));
-	}
-	
-	public static void assertEquals(double expected, double actual) {
 		assertEquals(expected, actual, TestThresholds.HIGH_PRECISION);
 	}
-	
-	public static void assertEquals(double expected, double actual, FloatingPointError epsilon) {
-		epsilon.assertEquals(expected, actual);
-	}
 
-	public static void assertEquals(RealMatrix expected, RealMatrix actual, FloatingPointError epsilon) {
+	public static void assertEquals(RealMatrix expected, RealMatrix actual, double epsilon) {
 		assertEquals("The matrices have different number of rows:",
 				expected.getRowDimension(), actual.getRowDimension());
 		
@@ -134,7 +130,7 @@ public class Assert extends org.junit.Assert {
 		
 		for (int i = 0; i < expected.getRowDimension(); i++) {
 			for (int j = 0; j < expected.getColumnDimension(); j++) {
-				epsilon.assertEquals(expected.getEntry(i, j), actual.getEntry(i, j));
+				assertEquals(expected.getEntry(i, j), actual.getEntry(i, j), epsilon);
 			}
 		}
 	}
@@ -351,7 +347,7 @@ public class Assert extends org.junit.Assert {
 	}
 	
 	public static void assertUniformDistribution(double min, double max, DescriptiveStatistics statistics) {
-		FloatingPointError epsilon = new RelativeError(0.05);
+		double epsilon = TestThresholds.LOW_PRECISION;
 		
 		assertEquals((min + max) / 2.0, statistics.getMean(), epsilon);
 		assertEquals(Math.pow(max - min, 2.0) / 12.0, statistics.getVariance(), epsilon);
@@ -363,7 +359,7 @@ public class Assert extends org.junit.Assert {
 
 	// Note: It's important to use the integer version for discrete values to ensure we offset the range by 1.
 	public static void assertUniformDistribution(int min, int max, DescriptiveStatistics statistics) {
-		FloatingPointError epsilon = new RelativeError(0.05);
+		double epsilon = TestThresholds.LOW_PRECISION;
 		int n = max - min + 1;
 		int nn = n * n;
 

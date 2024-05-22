@@ -21,7 +21,6 @@ import org.apache.commons.math3.linear.LUDecomposition;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.util.CombinatoricsUtils;
 import org.junit.Test;
-import org.moeaframework.AbsoluteError;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 
@@ -41,7 +40,7 @@ public class RotationMatrixBuilderTest {
 		LUDecomposition lu = new LUDecomposition(rm);
 		
 		Assert.assertEquals(1.0, lu.getDeterminant(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(rm.transpose(), lu.getSolver().getInverse(), new AbsoluteError(0.05));
+		Assert.assertEquals(rm.transpose(), lu.getSolver().getInverse(), TestThresholds.LOW_PRECISION);
 	}
 	
 	/**
