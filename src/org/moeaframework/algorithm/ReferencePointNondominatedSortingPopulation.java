@@ -316,7 +316,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 			for (int i = 0; i < numberOfObjectives; i++) {
 				intercepts[i] = 1.0 / result[i];
 			}
-		} catch (RuntimeException e) {
+		} catch (ArithmeticException e) {
 			degenerate = true;
 		}
 
@@ -377,7 +377,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 
 			// singular or nearly singular
 			if (Math.abs(A[p][p]) <= Settings.EPS) {
-				throw new RuntimeException("Matrix is singular or nearly singular");
+				throw new ArithmeticException("Matrix is singular or nearly singular");
 			}
 
 			// pivot within A and b

@@ -278,7 +278,7 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 
 		/**
 		 * Identify the extreme points in the front, where the {@code i}-th index corresponds to the point nearest the
-		 * {@code i}-th objective boundary.  Note that the same solution can appear multiple times in the result!
+		 * {@code i}-th objective boundary.  The same solution can appear multiple times in the result!
 		 * <p>
 		 * Note: while the paper mentions the same normalization procedure as {@link NSGAIII} is used, the actual
 		 * method to find extreme points is not clearly defined.  Our research into NSGA-III found the authors used a
@@ -344,7 +344,7 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 				for (int i = 0; i < numberOfObjectives; i++) {
 					intercepts[i] = 1.0 / result[i];
 				}
-			} catch (RuntimeException e) {
+			} catch (ArithmeticException e) {
 				degenerate = true;
 			}
 
