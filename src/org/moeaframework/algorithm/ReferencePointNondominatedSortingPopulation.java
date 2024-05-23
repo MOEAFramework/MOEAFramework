@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.math3.linear.SingularMatrixException;
 import org.moeaframework.core.NondominatedSortingPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
@@ -38,6 +39,7 @@ import org.moeaframework.core.attribute.NormalizedObjectives;
 import org.moeaframework.core.attribute.Rank;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.RankComparator;
+import org.moeaframework.util.LinearAlgebra;
 import org.moeaframework.util.Vector;
 import org.moeaframework.util.validate.Validate;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
@@ -311,12 +313,12 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 				}
 			}
 
-			double[] result = lsolve(A, b);
+			double[] result = LinearAlgebra.lsolve(A, b);
 
 			for (int i = 0; i < numberOfObjectives; i++) {
 				intercepts[i] = 1.0 / result[i];
 			}
-		} catch (ArithmeticException e) {
+		} catch (SingularMatrixException e) {
 			degenerate = true;
 		}
 
@@ -345,80 +347,6 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 		return intercepts;
 	}
 
-	// Gaussian elimination with partial pivoting
-	// Copied from http://introcs.cs.princeton.edu/java/95linear/GaussianElimination.java.html
-	/**
-	 * Gaussian elimination with partial pivoting.
-	 * 
-	 * @param A the A matrix
-	 * @param b the b vector
-	 * @return the solved equation using Gaussian elimination
-	 */
-	protected static double[] lsolve(double[][] A, double[] b) {
-		int N  = b.length;
-
-		for (int p = 0; p < N; p++) {
-			// find pivot row and swap
-			int max = p;
-
-			for (int i = p + 1; i < N; i++) {
-				if (Math.abs(A[i][p]) > Math.abs(A[max][p])) {
-					max = i;
-				}
-			}
-
-			double[] temp = A[p];
-			A[p] = A[max];
-			A[max] = temp;
-
-			double t = b[p];
-			b[p] = b[max];
-			b[max] = t;
-
-			// singular or nearly singular
-			if (Math.abs(A[p][p]) <= Settings.EPS) {
-				throw new ArithmeticException("Matrix is singular or nearly singular");
-			}
-
-			// pivot within A and b
-			for (int i = p + 1; i < N; i++) {
-				double alpha = A[i][p] / A[p][p];
-				b[i] -= alpha * b[p];
-
-				for (int j = p; j < N; j++) {
-					A[i][j] -= alpha * A[p][j];
-				}
-			}
-		}
-
-		// back substitution
-		double[] x = new double[N];
-
-		for (int i = N - 1; i >= 0; i--) {
-			double sum = 0.0;
-
-			for (int j = i + 1; j < N; j++) {
-				sum += A[i][j] * x[j];
-			}
-
-			x[i] = (b[i] - sum) / A[i][i];
-		}
-
-		return x;
-	}
-
-	/**
-	 * Returns the minimum perpendicular distance between a point and a line.
-	 * 
-	 * @param point the point
-	 * @param line the line originating from the origin
-	 * @return the minimum distance
-	 */
-	protected static double pointLineDistance(double[] point, double[] line) {
-		return Vector.magnitude(Vector.subtract(Vector.multiply(Vector.dot(line, point) / Vector.dot(line, line),
-				line), point));
-	}
-
 	/**
 	 * Associates each solution to the nearest reference point, returning a list-of-lists.  The outer list maps to
 	 * each reference point using their index.  The inner list is an unordered collection of the solutions associated
@@ -442,7 +370,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 			int minIndex = -1;
 
 			for (int i = 0; i < weights.size(); i++) {
-				double distance = pointLineDistance(objectives, weights.get(i));
+				double distance = Vector.pointLineDistance(objectives, weights.get(i));
 
 				if (distance < minDistance) {
 					minDistance = distance;
@@ -472,7 +400,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 
 		for (int i = 0; i < solutions.size(); i++) {
 			double[] objectives = NormalizedObjectives.getAttribute(solutions.get(i));
-			double distance = pointLineDistance(objectives, weight);
+			double distance = Vector.pointLineDistance(objectives, weight);
 			
 			if (distance < minDistance) {
 				minDistance = distance;

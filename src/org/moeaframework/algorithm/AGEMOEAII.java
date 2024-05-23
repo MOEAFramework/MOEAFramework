@@ -17,9 +17,6 @@
  */
 package org.moeaframework.algorithm;
 
-import static org.moeaframework.algorithm.ReferencePointNondominatedSortingPopulation.lsolve;
-import static org.moeaframework.algorithm.ReferencePointNondominatedSortingPopulation.pointLineDistance;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.math3.linear.SingularMatrixException;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedSorting;
 import org.moeaframework.core.Population;
@@ -47,6 +45,7 @@ import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.util.LinearAlgebra;
 import org.moeaframework.util.Vector;
 
 /**
@@ -300,7 +299,7 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 				Solution minSolution = null;
 
 				for (Solution solution : front) {
-					double distance = pointLineDistance(solution.getObjectives(), weights);
+					double distance = Vector.pointLineDistance(solution.getObjectives(), weights);
 
 					if (distance < minDistance) {
 						minDistance = distance;
@@ -339,12 +338,12 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 					}
 				}
 				
-				double[] result = lsolve(A, b);
+				double[] result = LinearAlgebra.lsolve(A, b);
 				
 				for (int i = 0; i < numberOfObjectives; i++) {
 					intercepts[i] = 1.0 / result[i];
 				}
-			} catch (ArithmeticException e) {
+			} catch (SingularMatrixException e) {
 				degenerate = true;
 			}
 

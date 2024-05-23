@@ -278,5 +278,17 @@ public class Vector {
 
 		return true;
 	}
+	
+	/**
+	 * Returns the perpendicular distance between a point and a line passing through the origin {@code (0, ..., 0)}.
+	 * 
+	 * @param point the point
+	 * @param line the line
+	 * @return the minimum distance
+	 */
+	public static double pointLineDistance(double[] point, double[] line) {
+		return Vector.magnitude(
+				Vector.subtract(Vector.multiply(Vector.dot(line, point) / Vector.dot(line, line), line), point));
+	}
 
 }

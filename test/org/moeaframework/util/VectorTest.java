@@ -160,5 +160,22 @@ public class VectorTest {
 		Assert.assertArrayEquals(new double[] { 5.0, 5.0 }, Vector.of(2, 5.0), TestThresholds.HIGH_PRECISION);
 	}
 	
+	@Test
+	public void testPointLineDistance() {
+		Assert.assertEquals(Math.sqrt(2.0)/2.0, Vector.pointLineDistance(new double[] { 0.0, 1.0 }, new double[] { 1.0, 1.0 }));
+		Assert.assertEquals(Math.sqrt(2.0)/2.0, Vector.pointLineDistance(new double[] { 0.0, -1.0 }, new double[] { 1.0, 1.0 }));
+		Assert.assertEquals(Math.sqrt(2.0)/2.0, Vector.pointLineDistance(new double[] { 0.0, 1.0 }, new double[] { 0.5, 0.5 }));
+		Assert.assertEquals(Math.sqrt(2.0)/2.0, Vector.pointLineDistance(new double[] { 0.0, -1.0 }, new double[] { 0.5, 0.5 }));
+		Assert.assertEquals(0.0, Vector.pointLineDistance(new double[] { 2.0, 2.0 }, new double[] { 1.0, 1.0 }));
+		Assert.assertEquals(0.0, Vector.pointLineDistance(new double[] { 0.0, 0.0 }, new double[] { 1.0, 1.0 }));
+		
+		Assert.assertEquals(Math.sqrt(2.0), Vector.pointLineDistance(new double[] { 1.0, 1.0, 1.0 }, new double[] { 0.0, 0.0, 1.0 }));
+		Assert.assertEquals(0.0, Vector.pointLineDistance(new double[] { 0.5, 0.5, 0.5 }, new double[] { 1.0, 1.0, 1.0 }));
+	}
+	
+	@Test
+	public void testPointLineDistanceWithMalformedLine() {
+		Assert.assertEquals(Double.NaN, Vector.pointLineDistance(new double[] { 0.0, 2.0 }, new double[] { 0.0, 0.0 }));
+	}
 
 }

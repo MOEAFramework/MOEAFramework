@@ -56,9 +56,24 @@ public class AGEMOEAIITest extends JMetalAlgorithmTest {
 	}
 	
 	@Test
-	public void testCalculateIntercepts() {
+	public void testCalculateIntercepts1() {
 		Solution solution1 = MockSolution.of().withObjectives(0.9, 0.1);
 		Solution solution2 = MockSolution.of().withObjectives(0.1, 0.9);
+		
+		Solution[] extremePoints = new Solution[] { solution1, solution2 };
+		
+		AGEMOEAIIPopulation population = new AGEMOEAIIPopulation(2);
+		population.addAll(List.of(solution1, solution2));
+
+		double[] intercepts = population.calculateIntercepts(extremePoints);
+
+		Assert.assertArrayEquals(new double[] { 1.0, 1.0 }, intercepts, TestThresholds.HIGH_PRECISION);
+	}
+	
+	@Test
+	public void testCalculateIntercepts2() {
+		Solution solution1 = MockSolution.of().withObjectives(0.75, 0.25);
+		Solution solution2 = MockSolution.of().withObjectives(0.25, 0.75);
 		
 		Solution[] extremePoints = new Solution[] { solution1, solution2 };
 		
