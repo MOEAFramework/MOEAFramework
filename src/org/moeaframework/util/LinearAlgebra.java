@@ -35,6 +35,15 @@ public class LinearAlgebra {
 	 * Pivioting.  {@code A} must be a square matrix of size {@code N * N}, and {@code b} a vector of length {@code N}.
 	 * <p>
 	 * <strong>This method modifies the arguments!</strong>  Pass in copies if you need to retain the original values.
+	 * <p>
+	 * In our testing, this method is about 5-10x faster than other solvers like Commons Math's {@code LUDecomposition}
+	 * on {@code N < 50}, however these other approaches may have better numerical stability.  If needed, this can be
+	 * replaced with:
+	 * <pre>
+	 *   RealMatrix A = new Array2DRowRealMatrix(...);
+	 *   RealVector b = new ArrayRealVector(...);
+	 *   RealVector x = new LUDecomposition(A).getSolver().solve(b);
+	 * </pre>
 	 * 
 	 * @param A the {@code A} matrix
 	 * @param b the {@code b} vector
