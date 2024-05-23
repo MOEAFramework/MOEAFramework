@@ -634,7 +634,13 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 		}
 
 		public double get(T first, T second) {
-			return distances.get(getKey(first, second));
+			Double result = distances.get(getKey(first, second));
+			
+			if (result == null) {
+				throw new IllegalArgumentException("No distance stored for key " + getKey(first, second));
+			}
+			
+			return result;
 		}
 
 	}

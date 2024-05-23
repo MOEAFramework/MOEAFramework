@@ -47,5 +47,15 @@ public class AGEMOEAIITest extends JMetalAlgorithmTest {
 		Assert.assertEquals(5.0, distances.get(s1, s2), TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(5.0, distances.get(s2, s1), TestThresholds.HIGH_PRECISION);
 	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testDistanceMapThrows() {
+		DistanceMap<Solution> distances = new DistanceMap<Solution>();
+		
+		Solution s1 = MockSolution.of().withObjectives(0.0, 1.0);
+		Solution s2 = MockSolution.of().withObjectives(1.0, 0.0);
+				
+		Assert.assertEquals(5.0, distances.get(s1, s2), TestThresholds.HIGH_PRECISION);
+	}
 
 }
