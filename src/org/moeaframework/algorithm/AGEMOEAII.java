@@ -21,7 +21,9 @@ import static org.moeaframework.algorithm.ReferencePointNondominatedSortingPopul
 import static org.moeaframework.algorithm.ReferencePointNondominatedSortingPopulation.pointLineDistance;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -58,6 +60,7 @@ import org.moeaframework.util.Vector;
  *       Optimization."  GECCO '19, July 13-17, 2019, Prague, Czech Republic, pp. 595-603.
  *   <li>Panichella, A.  "An Improved Pareto Front Modeling Algorithm for Large-scale Many-Objective Optimization."
  *       GECCO '22, July 9-13, 2022, Boston, MA, USA, pp. 565-573.
+ *   <li>The JMetal implementation contributed by A. Panichella - https://github.com/jMetal/jMetal/pull/451
  * </ol>
  */
 public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
@@ -322,32 +325,28 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 		 * @return the intercepts for each objective
 		 */
 		protected double[] calculateIntercepts(Solution[] extremePoints) {
-			boolean degenerate = Set.of(extremePoints).size() != extremePoints.length;
+			boolean degenerate = false;
 			double[] intercepts = new double[numberOfObjectives];
 
-			if (!degenerate) {
-				try {
-					double[] b = new double[numberOfObjectives];
-					double[][] A = new double[numberOfObjectives][numberOfObjectives];
+			try {
+				double[] b = new double[numberOfObjectives];
+				double[][] A = new double[numberOfObjectives][numberOfObjectives];
 
-					for (int i = 0; i < numberOfObjectives; i++) {
-						double[] objectives = extremePoints[i].getObjectives();
+				for (int i = 0; i < numberOfObjectives; i++) {
+					b[i] = 1.0;
 
-						b[i] = 1.0;
-
-						for (int j = 0; j < numberOfObjectives; j++) {
-							A[i][j] = objectives[j];
-						}
+					for (int j = 0; j < numberOfObjectives; j++) {
+						A[i][j] = extremePoints[i].getObjective(j);
 					}
-
-					double[] result = lsolve(A, b);
-
-					for (int i = 0; i < numberOfObjectives; i++) {
-						intercepts[i] = 1.0 / result[i];
-					}
-				} catch (RuntimeException e) {
-					degenerate = true;
 				}
+				
+				double[] result = lsolve(A, b);
+				
+				for (int i = 0; i < numberOfObjectives; i++) {
+					intercepts[i] = 1.0 / result[i];
+				}
+			} catch (RuntimeException e) {
+				degenerate = true;
 			}
 
 			if (degenerate) {
@@ -388,7 +387,7 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 		 */
 		protected double fitGeometry(Population front, Solution[] extremePoints) {
 			double[] d = new double[front.size()];
-			Set<Solution> extremePointsSet = Set.of(extremePoints);
+			Set<Solution> extremePointsSet = new HashSet<Solution>(List.of(extremePoints));
 
 			for (int i = 0; i < front.size(); i++) {
 				if (extremePointsSet.contains(front.get(i))) {
