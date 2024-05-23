@@ -45,19 +45,24 @@ public class DTLZ7 extends DTLZ {
 	public DTLZ7(int numberOfVariables, int numberOfObjectives) {
 		super(numberOfVariables, numberOfObjectives);
 	}
+	
+	@Override
+	protected double g(double[] x) {
+		int k = numberOfVariables - numberOfObjectives + 1;
+		double g = 0.0;
+		
+		for (int i = numberOfVariables - k; i < numberOfVariables; i++) {
+			g += x[i];
+		}
+		
+		return 1.0 + (9.0 * g) / k;
+	}
 
 	@Override
 	public void evaluate(Solution solution) {
 		double[] x = EncodingUtils.getReal(solution);
 		double[] f = new double[numberOfObjectives];
-
-		int k = numberOfVariables - numberOfObjectives + 1;
-
-		double g = 0.0;
-		for (int i = numberOfVariables - k; i < numberOfVariables; i++) {
-			g += x[i];
-		}
-		g = 1.0 + (9.0 * g) / k;
+		double g = g(x);
 
 		double h = numberOfObjectives;
 		for (int i = 0; i < numberOfObjectives - 1; i++) {
@@ -67,6 +72,7 @@ public class DTLZ7 extends DTLZ {
 		for (int i = 0; i < numberOfObjectives - 1; i++) {
 			f[i] = x[i];
 		}
+		
 		f[numberOfObjectives - 1] = (1.0 + g) * h;
 
 		solution.setObjectives(f);

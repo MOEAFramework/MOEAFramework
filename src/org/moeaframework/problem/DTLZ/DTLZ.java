@@ -45,6 +45,17 @@ public abstract class DTLZ extends AbstractProblem implements AnalyticalProblem 
 	public String getName() {
 		return getClass().getSimpleName() + "_" + numberOfObjectives;
 	}
+	
+	/**
+	 * Computes the {@code g(X_M)} function used by the DTLZ problems.  This function controls the distance to the
+	 * Pareto front.  While the entire decision variable array is passed as an argument, {@code X_M} typically only
+	 * references the last {@code k = n - M + 1} variables, where {@code n} is the total number of decision variables
+	 * and {@code M} is the number of objectives
+	 * 
+	 * @param x the decision variables
+	 * @return the value of the {@code g(X_M)} function
+	 */
+	protected abstract double g(double[] x);
 
 	@Override
 	public Solution newSolution() {
