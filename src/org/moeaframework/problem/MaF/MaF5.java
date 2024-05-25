@@ -41,7 +41,7 @@ public class MaF5 extends AbstractProblem {
 	 * implementation.  Set to {@code false} to match the PlatEMO implementation, or {@code true} to match the paper's
 	 * definition.
 	 */
-	public static boolean PUBLISHED_DEFINITION = false;
+	public static final boolean PUBLISHED_DEFINITION = false;
 
 	/**
 	 * Constructs an MaF5 test problem with the specified number of objectives.
@@ -52,7 +52,7 @@ public class MaF5 extends AbstractProblem {
 		super(numberOfObjectives + 9, numberOfObjectives);
 	}
 	
-	protected double g(double[] x) {
+	private double g(double[] x) {
 		int k = numberOfVariables - numberOfObjectives + 1;
 		double g = 0.0;
 		

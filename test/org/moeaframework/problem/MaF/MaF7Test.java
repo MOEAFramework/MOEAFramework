@@ -32,6 +32,7 @@ public class MaF7Test extends ProblemTest {
 	
 	@Test
 	public void testAgainstJMetal() {
+		assumeProblemDefined("MaF7_3-JMetal");
 		testAgainstJMetal("MaF7_3");
 	}
 

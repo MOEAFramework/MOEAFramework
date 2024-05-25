@@ -104,7 +104,7 @@ public class MaF9 extends AbstractProblem {
 		}
 	}
 	
-	public Polygon getPolygon() {
+	Polygon getPolygon() {
 		return polygon;
 	}
 

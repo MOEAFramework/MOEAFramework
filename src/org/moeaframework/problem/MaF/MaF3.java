@@ -41,7 +41,7 @@ public class MaF3 extends AbstractProblem {
 		super(numberOfObjectives + 9, numberOfObjectives);
 	}
 	
-	protected double g(double[] x) {
+	private double g(double[] x) {
 		int k = numberOfVariables - numberOfObjectives + 1;
 		double g = 0.0;
 		

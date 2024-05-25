@@ -43,7 +43,7 @@ public class MaF1 extends AbstractProblem implements AnalyticalProblem {
 		super(numberOfObjectives + 9, numberOfObjectives);
 	}
 	
-	protected double g(double[] x) {
+	private double g(double[] x) {
 		int k = numberOfVariables - numberOfObjectives + 1;
 		double g = 0.0;
 		

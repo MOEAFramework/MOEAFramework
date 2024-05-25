@@ -41,7 +41,7 @@ public class MaF2 extends AbstractProblem {
 		super(numberOfObjectives + 9, numberOfObjectives);
 	}
 	
-	protected double g(double[] x, int i) {
+	private double g(double[] x, int i) {
 		double g = 0.0;
 		int factor = (int)((numberOfVariables - numberOfObjectives + 1) / (double)numberOfObjectives);
 		int startingIndex = numberOfObjectives + i * factor - 1;
@@ -54,7 +54,7 @@ public class MaF2 extends AbstractProblem {
 		return g;
 	}
 	
-	protected double theta(double[] x, int i) {
+	private double theta(double[] x, int i) {
 		return (Math.PI / 2.0) * (x[i] / 2.0 + 0.25);
 	}
 

@@ -67,6 +67,7 @@ public class MaF3Test extends ProblemTest {
 	
 	@Test
 	public void testAgainstJMetal3D() {
+		assumeProblemDefined("MaF3_3-JMetal");
 		testAgainstJMetal("MaF3_3");
 	}
 

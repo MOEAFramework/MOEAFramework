@@ -21,6 +21,8 @@ import org.junit.Test;
 import org.moeaframework.problem.ProblemTest;
 
 public class MaF14Test extends ProblemTest {
+	
+	// This problem is identical to LSMOP3, so no need for specific tests.
 		
 	@Test
 	public void testProvider() {
@@ -30,6 +32,7 @@ public class MaF14Test extends ProblemTest {
 	
 	@Test
 	public void testAgainstJMetal() {
+		assumeProblemDefined("MaF14_3-JMetal");
 		testAgainstJMetal("MaF14_3");
 	}
 
