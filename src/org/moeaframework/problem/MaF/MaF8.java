@@ -32,7 +32,7 @@ import org.moeaframework.problem.AbstractProblem;
  */
 public class MaF8 extends AbstractProblem {
 	
-	private final Polygon polygon;
+	final Polygon polygon;
 
 	/**
 	 * Constructs an MaF8 test problem with the specified number of objectives.

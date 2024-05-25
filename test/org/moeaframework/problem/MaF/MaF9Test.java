@@ -25,7 +25,6 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.algorithm.MOEAD;
 import org.moeaframework.analysis.plot.Plot;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.ProblemTest;
@@ -35,7 +34,9 @@ public class MaF9Test extends ProblemTest {
 	
 	@Test
 	public void test3D() {
-		Problem problem = new MaF9(3);
+		MaF9 problem = new MaF9(3);
+		
+		Assert.assertSize(0, problem.invalidRegions);
 		
 		Assert.assertArrayEquals(new double[] { 9999.5, 3659.75404, 13660.75404 }, 
 				evaluateAtLowerBounds(problem).getObjectives(),
@@ -53,6 +54,22 @@ public class MaF9Test extends ProblemTest {
 	@Test
 	public void test10D() {
 		MaF9 problem = new MaF9(10);
+		
+		Assert.assertSize(30, problem.invalidRegions);
+		
+		Assert.assertArrayEquals(new double[] { 0.58779, 0.80902 }, problem.invalidRegions.get(0).getVertex(0).toArray(), 0.00001);
+		Assert.assertArrayEquals(new double[] { 0.95106, 0.30902 }, problem.invalidRegions.get(0).getVertex(1).toArray(), 0.00001);
+		Assert.assertArrayEquals(new double[] { 1.31433, 0.57295 }, problem.invalidRegions.get(0).getVertex(2).toArray(), 0.00001);
+		Assert.assertArrayEquals(new double[] { 0.95106, 1.07295 }, problem.invalidRegions.get(0).getVertex(3).toArray(), 0.00001);
+		
+		Assert.assertArrayEquals(new double[] { 0.0, 1.0 }, problem.invalidRegions.get(29).getVertex(0).toArray(), 0.0001);
+		Assert.assertArrayEquals(new double[] { 0.58779, 0.80902 }, problem.invalidRegions.get(29).getVertex(1).toArray(), 0.0001);
+		Assert.assertArrayEquals(new double[] { 0.95106, 0.30902 }, problem.invalidRegions.get(29).getVertex(2).toArray(), 0.0001);
+		Assert.assertArrayEquals(new double[] { 0.95106, -0.30902 }, problem.invalidRegions.get(29).getVertex(3).toArray(), 0.0001);
+		Assert.assertArrayEquals(new double[] { 4.9798, 2.6180 }, problem.invalidRegions.get(29).getVertex(4).toArray(), 0.0001);
+		Assert.assertArrayEquals(new double[] { 4.3920, 2.8090 }, problem.invalidRegions.get(29).getVertex(5).toArray(), 0.0001);
+		Assert.assertArrayEquals(new double[] { 4.0287, 3.3090 }, problem.invalidRegions.get(29).getVertex(6).toArray(), 0.0001);
+		Assert.assertArrayEquals(new double[] { 4.0287, 3.9271 }, problem.invalidRegions.get(29).getVertex(7).toArray(), 0.0001);
 		
 		Assert.assertTrue(problem.isInvalid(new Vector2D(1, 1)));
 		Assert.assertFalse(problem.isInvalid(new Vector2D(10, 10)));
@@ -88,8 +105,8 @@ public class MaF9Test extends ProblemTest {
 				solutions.stream().mapToDouble(x -> EncodingUtils.getReal(x.getVariable(0))).toArray(),
 				solutions.stream().mapToDouble(x -> EncodingUtils.getReal(x.getVariable(1))).toArray());
 		plot.scatter("Vertices",
-				problem.getPolygon().getVertices().stream().mapToDouble(x -> x.getX()).toArray(),
-				problem.getPolygon().getVertices().stream().mapToDouble(x -> x.getY()).toArray());
+				problem.polygon.getVertices().stream().mapToDouble(x -> x.getX()).toArray(),
+				problem.polygon.getVertices().stream().mapToDouble(x -> x.getY()).toArray());
 		plot.show();
 	}
 

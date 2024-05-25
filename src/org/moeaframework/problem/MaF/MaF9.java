@@ -44,9 +44,9 @@ import org.moeaframework.util.validate.Validate;
  */
 public class MaF9 extends AbstractProblem {
 
-	private final Polygon polygon;
+	final Polygon polygon;
 
-	private final List<Polygon> invalidRegions;
+	final List<Polygon> invalidRegions;
 
 	/**
 	 * Constructs an MaF9 test problem with the specified number of objectives.
@@ -63,21 +63,14 @@ public class MaF9 extends AbstractProblem {
 		int iterations = (int)Math.ceil(numberOfObjectives / 2.0 - 2.0);
 		invalidRegions = new ArrayList<Polygon>(iterations * numberOfObjectives);
 
-		int[] head = new int[iterations * numberOfObjectives];
-		int[] tail = new int[iterations * numberOfObjectives];
-
-		for (int i = 0; i < iterations; i++) {
-			for (int j = 0; j < numberOfObjectives; j++) {
-				head[i * numberOfObjectives + j] = j;
-				tail[i * numberOfObjectives + j] = i + j + 1;
-			}
-		}
-
 		for (int i = 0; i < iterations * numberOfObjectives; i++) {
-			Vector2D v1 = polygon.getVertex(head[i] - 1);
-			Vector2D v2 = polygon.getVertex(head[i]);
-			Vector2D v3 = polygon.getVertex(tail[i]);
-			Vector2D v4 = polygon.getVertex(tail[i] + 1);
+			int head = i % numberOfObjectives;
+			int tail = head + i / numberOfObjectives + 1;
+			
+			Vector2D v1 = polygon.getVertex(head - 1);
+			Vector2D v2 = polygon.getVertex(head);
+			Vector2D v3 = polygon.getVertex(tail);
+			Vector2D v4 = polygon.getVertex(tail + 1);
 
 			Line l1 = new Line(v1, v2, Settings.EPS);
 			Line l2 = new Line(v3, v4, Settings.EPS);
@@ -90,11 +83,11 @@ public class MaF9 extends AbstractProblem {
 
 			List<Vector2D> vertices = new ArrayList<Vector2D>();
 
-			for (int j = head[i]; j <= tail[i]; j++) {
+			for (int j = head; j <= tail; j++) {
 				vertices.add(polygon.getVertex(j));
 			}
 
-			for (int j = head[i]; j <= tail[i]; j++) {
+			for (int j = head; j <= tail; j++) {
 				vertices.add(new Vector2D(
 						2 * intersection.getX() - polygon.getVertex(j).getX(),
 						2 * intersection.getY() - polygon.getVertex(j).getY()));
@@ -102,10 +95,6 @@ public class MaF9 extends AbstractProblem {
 
 			invalidRegions.add(new Polygon(vertices));
 		}
-	}
-	
-	Polygon getPolygon() {
-		return polygon;
 	}
 
 	@Override
