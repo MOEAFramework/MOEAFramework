@@ -19,7 +19,10 @@ package org.moeaframework.problem.MaF;
 
 import java.util.List;
 
+import org.apache.commons.math3.geometry.euclidean.twod.Euclidean2D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.math3.geometry.partitioning.Region;
+import org.apache.commons.math3.geometry.partitioning.Region.Location;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.Assert;
@@ -71,8 +74,13 @@ public class MaF9Test extends ProblemTest {
 		Assert.assertArrayEquals(new double[] { 4.0287, 3.3090 }, problem.invalidRegions.get(29).getVertex(6).toArray(), 0.0001);
 		Assert.assertArrayEquals(new double[] { 4.0287, 3.9271 }, problem.invalidRegions.get(29).getVertex(7).toArray(), 0.0001);
 		
-		Assert.assertTrue(problem.isInvalid(new Vector2D(1, 1)));
-		Assert.assertFalse(problem.isInvalid(new Vector2D(10, 10)));
+		Region<Euclidean2D> region = problem.invalidRegions.get(0).toRegion(0.0001);
+		Assert.assertEquals(Location.INSIDE, region.checkPoint(new Vector2D(0.95, 0.80902)));
+		Assert.assertEquals(Location.OUTSIDE, region.checkPoint(new Vector2D(1.5, 0.57295)));
+		Assert.assertEquals(Location.BOUNDARY, region.checkPoint(new Vector2D(1.31433, 0.57295)));
+		
+		Assert.assertTrue(problem.isInvalid(new Vector2D(1.0, 1.0)));
+		Assert.assertFalse(problem.isInvalid(new Vector2D(10.0, 10.0)));
 		
 		Assert.assertArrayEquals(new double[] { 13.017, 9.0489, 1.2613, 7.3715, 13.5518, 14.9191, 10.9511, 3.1634, 5.4693, 11.6497}, 
 				evaluateAt(problem, Vector.of(2, 10.0)).getObjectives(),

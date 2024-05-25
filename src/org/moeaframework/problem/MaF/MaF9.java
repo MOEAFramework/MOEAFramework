@@ -119,7 +119,7 @@ public class MaF9 extends AbstractProblem {
 	
 	boolean isInvalid(Vector2D point) {
 		for (Polygon invalidRegion : invalidRegions) {
-			if (invalidRegion.toRegion().checkPoint(point) == Location.INSIDE) {
+			if (invalidRegion.toRegion(Settings.EPS).checkPoint(point) == Location.INSIDE) {
 				return true;
 			}
 		}
