@@ -10,6 +10,8 @@ This page documents notable changes introduced in each chronological release of 
   * Adds the `AGE-MOEA-II` algorithm, which uses the (estimated) geometry of the Pareto front when assigning survival
     scores / fitness to solutions.
     
+  * Adds the 15 problems from the MaF test problem suite.
+    
   * Adds classes in `org.moeaframework.core.attribute` for reading and writing attributes.
 
   * Improves argument validation with the new `Validate` class, enabling simpler and more expressive conditions along

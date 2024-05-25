@@ -145,6 +145,29 @@ LSMOP9 | ??? | `N` | 0 | Real | `new LSMOP9(N)` | <img src="imgs/LSMOP9.2D.png" 
 The number of decision variables depends on the how the problem is configured.  Use
 `problem.getNumberOfVariables()` to lookup the exact values.
 
+### MaF
+
+A suite of many-objective problems exhibiting properties of real-world problems [^cheng17b].  These problems are scalable in the
+number of objectives, controlled by passing the value `N` to the constructor.
+
+Problem | # of Vars | # of Objs | # of Constrs | Type | Constructor | Pareto Front
+:------ | :-------: | :-------: | :----------: | :--- | :---------- | ------------
+MaF1   | `N+9`  | `N` | 0 | Real | `new MaF1(N)`  | <img src="imgs/MaF1_3.png" width="100" />
+MaF2   | `N+9`  | `N` | 0 | Real | `new MaF2(N)`  | <img src="imgs/MaF2_3.png" width="100" />
+MaF3   | `N+9`  | `N` | 0 | Real | `new MaF3(N)`  | <img src="imgs/MaF3_3.png" width="100" />
+MaF4   | `N+9`  | `N` | 0 | Real | `new MaF4(N)`  | <img src="imgs/MaF4_3.png" width="100" />
+MaF5   | `N+9`  | `N` | 0 | Real | `new MaF5(N)`  | <img src="imgs/MaF5_3.png" width="100" />
+MaF6   | `N+9`  | `N` | 0 | Real | `new MaF6(N)`  | <img src="imgs/MaF6_3.png" width="100" />
+MaF7   | `19+N` | `N` | 0 | Real | `new MaF7(N)`  | <img src="imgs/MaF7_3.png" width="100" />
+MaF8   | `2`    | `N` | 0 | Real | `new MaF8(N)`  | <img src="imgs/MaF8_3.png" width="100" />
+MaF9   | `2`    | `N` | 0 | Real | `new MaF9(N)`  | <img src="imgs/MaF9_3.png" width="100" />
+MaF10  | `9+N`  | `N` | 0 | Real | `new MaF10(N)` | <img src="imgs/MaF10_3.png" width="100" />
+MaF11  | `9+N`  | `N` | 0 | Real | `new MaF11(N)` | <img src="imgs/MaF11_3.png" width="100" />
+MaF12  | `9+N`  | `N` | 0 | Real | `new MaF12(N)` | <img src="imgs/MaF12_3.png" width="100" />
+MaF13  | `5`    | `N` | 0 | Real | `new MaF13(N)` | <img src="imgs/MaF13_3.png" width="100" />
+MaF14  | `20*N` | `N` | 0 | Real | `new MaF14(N)` | <img src="imgs/MaF14_3.png" width="100" />
+MaF15  | `20*N` | `N` | 0 | Real | `new MaF15(N)` | <img src="imgs/MaF15_3.png" width="100" />
+
 ### ZCAT
 
 Set of challenging test problems for multi- and many-objective optimization [^zapotecas23].  These problems are
@@ -283,6 +306,7 @@ System.out.println(problem.getNFE() + " evaluations took " + problem.getSeconds(
 ```
 
 [^cheng17]: Cheng et al. "Test problems for large-scale multiobjective and many-objective optimization." IEEE Transactions on Cybernetics, 7(12): 4108-4121, 2017.
+[^cheng17b]: Cheng et al. "A benchmark test suite for evolutionary many-objective optimization." Complex Intell. Syst., 3:67-81, 2017.
 [^deb01]: Deb et al.  "Scalable Test Problems for Evolutionary Multi-Objective Optimization."  TIK-Technical Report No 112, 2001.
 [^deb02]: Deb et al. "Scalable Multi-Objective Optimization Test Problems." Congress on Evolutionary Computation. pp 825-830, 2002.
 [^deb14]: Deb, K. and H. Jain.  "An Evolutionary Many-Objective Optimization Algorithm Using Reference-Point-Based Nondominated Sorting Approach, Part I: Solving Problems With Box Constraints."  IEEE Transactions on Evolutionary Computation, 18(4):577-601, 2014.
