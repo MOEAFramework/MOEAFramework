@@ -152,21 +152,21 @@ number of objectives, controlled by passing the value `N` to the constructor.
 
 Problem | # of Vars | # of Objs | # of Constrs | Type | Constructor | Pareto Front
 :------ | :-------: | :-------: | :----------: | :--- | :---------- | ------------
-MaF1   | `N+9`  | `N` | 0 | Real | `new MaF1(N)`  | <img src="imgs/MaF1_3.png" width="100" />
-MaF2   | `N+9`  | `N` | 0 | Real | `new MaF2(N)`  | <img src="imgs/MaF2_3.png" width="100" />
-MaF3   | `N+9`  | `N` | 0 | Real | `new MaF3(N)`  | <img src="imgs/MaF3_3.png" width="100" />
-MaF4   | `N+9`  | `N` | 0 | Real | `new MaF4(N)`  | <img src="imgs/MaF4_3.png" width="100" />
-MaF5   | `N+9`  | `N` | 0 | Real | `new MaF5(N)`  | <img src="imgs/MaF5_3.png" width="100" />
-MaF6   | `N+9`  | `N` | 0 | Real | `new MaF6(N)`  | <img src="imgs/MaF6_3.png" width="100" />
-MaF7   | `19+N` | `N` | 0 | Real | `new MaF7(N)`  | <img src="imgs/MaF7_3.png" width="100" />
+MaF1   | `N+9`  | `N` | 0 | Real | `new MaF1(N)`  | <img src="imgs/MaF1_2.png" width="100" /> <img src="imgs/MaF1_3.png" width="100" />
+MaF2   | `N+9`  | `N` | 0 | Real | `new MaF2(N)`  | <img src="imgs/MaF2_2.png" width="100" /> <img src="imgs/MaF2_3.png" width="100" />
+MaF3   | `N+9`  | `N` | 0 | Real | `new MaF3(N)`  | <img src="imgs/MaF3_2.png" width="100" /> <img src="imgs/MaF3_3.png" width="100" />
+MaF4   | `N+9`  | `N` | 0 | Real | `new MaF4(N)`  | <img src="imgs/MaF4_2.png" width="100" /> <img src="imgs/MaF4_3.png" width="100" />
+MaF5   | `N+9`  | `N` | 0 | Real | `new MaF5(N)`  | <img src="imgs/MaF5_2.png" width="100" /> <img src="imgs/MaF5_3.png" width="100" />
+MaF6   | `N+9`  | `N` | 0 | Real | `new MaF6(N)`  | <img src="imgs/MaF6_2.png" width="100" /> <img src="imgs/MaF6_3.png" width="100" />
+MaF7   | `19+N` | `N` | 0 | Real | `new MaF7(N)`  | <img src="imgs/MaF7_2.png" width="100" /> <img src="imgs/MaF7_3.png" width="100" />
 MaF8   | `2`    | `N` | 0 | Real | `new MaF8(N)`  | <img src="imgs/MaF8_3.png" width="100" />
-MaF9   | `2`    | `N` | 0 | Real | `new MaF9(N)`  | <img src="imgs/MaF9_3.png" width="100" />
-MaF10  | `9+N`  | `N` | 0 | Real | `new MaF10(N)` | <img src="imgs/MaF10_3.png" width="100" />
-MaF11  | `9+N`  | `N` | 0 | Real | `new MaF11(N)` | <img src="imgs/MaF11_3.png" width="100" />
-MaF12  | `9+N`  | `N` | 0 | Real | `new MaF12(N)` | <img src="imgs/MaF12_3.png" width="100" />
-MaF13  | `5`    | `N` | 0 | Real | `new MaF13(N)` | <img src="imgs/MaF13_3.png" width="100" />
-MaF14  | `20*N` | `N` | 0 | Real | `new MaF14(N)` | <img src="imgs/MaF14_3.png" width="100" />
-MaF15  | `20*N` | `N` | 0 | Real | `new MaF15(N)` | <img src="imgs/MaF15_3.png" width="100" />
+MaF9   | `2`    | `N > 3` | 0 | Real | `new MaF9(N)`  | <img src="imgs/MaF9_3.png" width="100" />
+MaF10  | `9+N`  | `N` | 0 | Real | `new MaF10(N)` | <img src="imgs/MaF10_2.png" width="100" /> <img src="imgs/MaF10_3.png" width="100" />
+MaF11  | `9+N`  | `N` | 0 | Real | `new MaF11(N)` | <img src="imgs/MaF11_2.png" width="100" /> <img src="imgs/MaF11_3.png" width="100" />
+MaF12  | `9+N`  | `N` | 0 | Real | `new MaF12(N)` | <img src="imgs/MaF12_2.png" width="100" /> <img src="imgs/MaF12_3.png" width="100" />
+MaF13  | `5`    | `N > 3` | 0 | Real | `new MaF13(N)` | <img src="imgs/MaF13_3.png" width="100" />
+MaF14  | `20*N` | `N` | 0 | Real | `new MaF14(N)` | <img src="imgs/MaF14_2.png" width="100" /> <img src="imgs/MaF14_3.png" width="100" />
+MaF15  | `20*N` | `N` | 0 | Real | `new MaF15(N)` | <img src="imgs/MaF15_2.png" width="100" /> <img src="imgs/MaF15_3.png" width="100" />
 
 ### ZCAT
 
