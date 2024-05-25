@@ -137,11 +137,13 @@ class Polygon {
 	 * Returns the region defined by this polygon, useful for determining if points lie inside, on, or outside this
 	 * polygon.
 	 * 
+	 * @param tolerance the tolerance / thickness of the region
 	 * @return the region
 	 */
 	public Region<Euclidean2D> toRegion(double tolerance) {
 		if (region == null) {
-			// The inside is on the "left" of the edges formed by the vertices, implying a CCW ordering
+			// Per this constructor, the vertices must be ordered in a counter-clockwise manner so that the inside
+			// is to the "left" of the lines.
 			region = new PolygonsSet(tolerance, vertices);
 		}
 

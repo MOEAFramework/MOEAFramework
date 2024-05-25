@@ -50,7 +50,7 @@ public class LinearAlgebra {
 	 * @return the solved values for {@code x}
 	 * @throws SingularMatrixException if the matrix is singular or nearly singular
 	 * @throws DimensionMismatchException if the dimensions of the provided matrix and vector are not valid
-	 * @see http://introcs.cs.princeton.edu/java/95linear/GaussianElimination.java.html
+	 * @see <a href="http://introcs.cs.princeton.edu/java/95linear/GaussianElimination.java.html">Reference Code</a>
 	 */
 	public static double[] lsolve(double[][] A, double[] b) {	
 		int N = b.length;

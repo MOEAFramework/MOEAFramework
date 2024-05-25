@@ -280,6 +280,10 @@ new problems written in Java or other languages can be easily incorporated.</p>
   <tr>
   	<td style="font-weight: bold">LSMOP</td>
   	<td>9 large-scale, real-valued problems by Cheng et al. (2017)</td>
+  </tr
+  <tr>
+  	<td style="font-weight: bold">MaF</td>
+  	<td>15 multi and many-objective objective problems by Cheng et al. (2017)</td>
   </tr>
   <tr>
   	<td style="font-weight: bold">ZCAT</td>
