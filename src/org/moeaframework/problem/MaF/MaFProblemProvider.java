@@ -35,22 +35,6 @@ public class MaFProblemProvider extends RegisteredProblemProvider {
 	 */
 	public MaFProblemProvider() {
 		super();
-
-		registerDiagnosticToolProblem("MaF1_2");
-		registerDiagnosticToolProblem("MaF2_2");
-		registerDiagnosticToolProblem("MaF3_2");
-		registerDiagnosticToolProblem("MaF4_2");
-		registerDiagnosticToolProblem("MaF5_2");
-		registerDiagnosticToolProblem("MaF6_2");
-		registerDiagnosticToolProblem("MaF7_2");
-		registerDiagnosticToolProblem("MaF8_2");
-		registerDiagnosticToolProblem("MaF9_2");
-		registerDiagnosticToolProblem("MaF10_2");
-		registerDiagnosticToolProblem("MaF11_2");
-		registerDiagnosticToolProblem("MaF12_2");
-		registerDiagnosticToolProblem("MaF13_2");
-		registerDiagnosticToolProblem("MaF14_2");
-		registerDiagnosticToolProblem("MaF15_2"); 
 	}
 	
 	@Override
