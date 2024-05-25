@@ -36,6 +36,11 @@ public abstract class LSMOP implements Problem {
 	public static final int DEFAULT_N_k = 5;
 	
 	/**
+	 * The default multiplier for the number of decision variables.
+	 */
+	public static final int DEFAULT_N_ns = 100;
+	
+	/**
 	 * The configured number of objectives.
 	 */
 	private final int M;
@@ -93,6 +98,23 @@ public abstract class LSMOP implements Problem {
 	 */
 	public LSMOP(int M, int N_k, ShapeFunction g1, ShapeFunction g2, LinkageFunction linkage,
 			CorrelationMatrix correlationMatrix, ParetoFrontGeometry geometry) {
+		this(M, N_k, DEFAULT_N_ns * M, g1, g2, linkage, correlationMatrix, geometry);
+	}
+	
+	/**
+	 * Constructs a new LSMOP problem instance.
+	 * 
+	 * @param M the number of objectives
+	 * @param N_k the number of subcomponents in each decision variable group
+	 * @param N_ns the number of decision variables split across the groups
+	 * @param g1 the first shape function (for even indices)
+	 * @param g2 the second shape function (for odd indices)
+	 * @param linkage the linkage function
+	 * @param correlationMatrix the correlation matrix
+	 * @param geometry the Pareto front geometry
+	 */
+	public LSMOP(int M, int N_k, int N_ns, ShapeFunction g1, ShapeFunction g2, LinkageFunction linkage,
+			CorrelationMatrix correlationMatrix, ParetoFrontGeometry geometry) {
 		super();
 		this.M = M;
 		this.N_k = N_k;
@@ -100,8 +122,6 @@ public abstract class LSMOP implements Problem {
 		this.g2 = g2;
 		this.linkage = linkage;
 		this.geometry = geometry;
-		
-		int N_ns = 100 * M;
 		
 		// Chaos-based random number generator
 		final double a = 3.8;

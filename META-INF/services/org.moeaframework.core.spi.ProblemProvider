@@ -7,6 +7,7 @@ org.moeaframework.problem.CDTLZ.CDTLZProblemProvider
 org.moeaframework.problem.BBOB2016.BBOB2016Problems
 org.moeaframework.problem.LSMOP.LSMOPProblemProvider
 org.moeaframework.problem.ZCAT.ZCATProblemProvider
+org.moeaframework.problem.MaF.MaFProblemProvider
 org.moeaframework.problem.misc.MiscProblemProvider
 org.moeaframework.problem.single.SingleObjectiveProblemProvider
 org.moeaframework.problem.PropertiesProblems
