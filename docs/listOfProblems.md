@@ -48,6 +48,7 @@ DTLZ4 | `9+N` | `N` | 0 | Real | `new DTLZ4(N)` | <img src="imgs/DTLZ4.2D.png" w
 DTLZ5 | `9+N` | `N` | 0 | Real | `new DTLZ5(N)` | <img src="imgs/DTLZ5.2D.png" width="100" /> <img src="imgs/DTLZ5.3D.png" width="100" />
 DTLZ6 | `9+N` | `N` | 0 | Real | `new DTLZ6(N)` | <img src="imgs/DTLZ6.2D.png" width="100" /> <img src="imgs/DTLZ6.3D.png" width="100" />
 DTLZ7 | `19+N` | `N` | 0 | Real | `new DTLZ7(N)` | <img src="imgs/DTLZ7.2D.png" width="100" /> <img src="imgs/DTLZ7.3D.png" width="100" />
+Inverted_DTLZ1 | `4 + N` | `N` | 0 | Real | `new InvertedDTLZ1(N)` | <img src="imgs/Inverted_DTLZ1.2D.png" width="100" /> <img src="imgs/Inverted_DTLZ1.3D.png" width="100" />
 
 ### LZ
 
