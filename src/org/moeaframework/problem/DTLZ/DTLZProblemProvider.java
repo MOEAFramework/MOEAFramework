@@ -129,7 +129,7 @@ public class DTLZProblemProvider extends RegisteredProblemProvider {
 		Matcher matcher = pattern.matcher(name);
 		
 		if (matcher.matches()) {
-			int numberOfObjectives = Integer.parseInt(matcher.group(2));
+			int numberOfObjectives = Integer.parseInt(matcher.group(3));
 			
 			return switch (numberOfObjectives) {
 				case 2 -> Epsilons.of(0.01);
