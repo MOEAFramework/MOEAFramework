@@ -21,6 +21,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.problem.DTLZ.DTLZ;
 
 /**
  * The MaF6 test problem, also known as the "DTLZ5(I,M)" problem with {@code I=2}.  This problem exhibits the following
@@ -40,24 +41,13 @@ public class MaF6 extends AbstractProblem {
 	public MaF6(int numberOfObjectives) {
 		super(numberOfObjectives + 9, numberOfObjectives);
 	}
-	
-	private double g(double[] x) {
-		int k = numberOfVariables - numberOfObjectives + 1;
-		double g = 0.0;
-		
-		for (int i = numberOfVariables - k; i < numberOfVariables; i++) {
-			g += Math.pow(x[i] - 0.5, 2.0);
-		}
-		
-		return g;
-	}
 
 	@Override
 	public void evaluate(Solution solution) {
 		double[] x = EncodingUtils.getReal(solution);
 		double[] f = new double[numberOfObjectives];
 		final int I = 2;
-		double g = g(x);
+		double g = DTLZ.g2(numberOfVariables, numberOfObjectives, x);
 		
 		double[] theta = new double[numberOfObjectives - 1];
 		for (int i = 0; i < numberOfObjectives - 1; i++) {

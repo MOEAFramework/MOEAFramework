@@ -21,6 +21,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.problem.DTLZ.DTLZ;
 
 /**
  * The MaF3 test problem, which is a convex version of the DTLZ3 problem.  This problem exhibits the following
@@ -40,23 +41,12 @@ public class MaF3 extends AbstractProblem {
 	public MaF3(int numberOfObjectives) {
 		super(numberOfObjectives + 9, numberOfObjectives);
 	}
-	
-	private double g(double[] x) {
-		int k = numberOfVariables - numberOfObjectives + 1;
-		double g = 0.0;
-		
-		for (int i = numberOfVariables - k; i < numberOfVariables; i++) {
-			g += Math.pow(x[i] - 0.5, 2.0) - Math.cos(20.0 * Math.PI * (x[i] - 0.5));
-		}
-		
-		return 100.0 * (k + g);
-	}
 
 	@Override
 	public void evaluate(Solution solution) {
 		double[] x = EncodingUtils.getReal(solution);
 		double[] f = new double[numberOfObjectives];
-		double g = g(x);
+		double g = DTLZ.g1(numberOfVariables, numberOfObjectives, x);
 
 		for (int i = 0; i < numberOfObjectives; i++) {
 			f[i] = 1.0 + g;

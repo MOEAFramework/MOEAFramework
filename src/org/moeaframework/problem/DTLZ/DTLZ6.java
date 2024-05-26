@@ -60,8 +60,7 @@ public class DTLZ6 extends DTLZ {
 		}
 	}
 	
-	@Override
-	protected double g(double[] x) {
+	private double g(double[] x) {
 		int k = numberOfVariables - numberOfObjectives + 1;
 		double g = 0.0;
 		

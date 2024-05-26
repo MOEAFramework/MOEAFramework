@@ -24,7 +24,9 @@ import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.util.validate.Validate;
 
 /**
- * Implements methods shared by all problems in the DTLZ test suite.
+ * Implements methods shared by all problems in the DTLZ test suite.  The DTLZ problems define a {@code g(X_M)}
+ * function, which controls the convergence or distance to the Pareto front, and the {@code f_1(x), ..., f_M(x)}
+ * functions controlling the shape or position of solutions on the Pareto front.
  */
 public abstract class DTLZ extends AbstractProblem implements AnalyticalProblem {
 
@@ -45,17 +47,6 @@ public abstract class DTLZ extends AbstractProblem implements AnalyticalProblem 
 	public String getName() {
 		return getClass().getSimpleName() + "_" + numberOfObjectives;
 	}
-	
-	/**
-	 * Computes the {@code g(X_M)} function used by the DTLZ problems.  This function controls the distance to the
-	 * Pareto front.  While the entire decision variable array is passed as an argument, {@code X_M} typically only
-	 * references the last {@code k = n - M + 1} variables, where {@code n} is the total number of decision variables
-	 * and {@code M} is the number of objectives
-	 * 
-	 * @param x the decision variables
-	 * @return the value of the {@code g(X_M)} function
-	 */
-	protected abstract double g(double[] x);
 
 	@Override
 	public Solution newSolution() {
@@ -66,6 +57,48 @@ public abstract class DTLZ extends AbstractProblem implements AnalyticalProblem 
 		}
 
 		return solution;
+	}
+	
+	/**
+	 * Computes the {@code g(X_M)} function used by {@link DTLZ1} and {@link DTLZ3}.  Note that while the entire array
+	 * of decision variables is provided to this method, only the last {@code k = D - M + 1} variables are used in
+	 * this calculation.
+	 * 
+	 * @param numberOfVariables the number of decision variables
+	 * @param numberOfObjectives the number of objectives
+	 * @param x the array of decision variable values
+	 * @return the computed value of the {@code g(X_M)} function
+	 */
+	public static final double g1(int numberOfVariables, int numberOfObjectives, double[] x) {
+		int k = numberOfVariables - numberOfObjectives + 1;
+		double g = 0.0;
+		
+		for (int i = numberOfVariables - k; i < numberOfVariables; i++) {
+			g += Math.pow(x[i] - 0.5, 2.0) - Math.cos(20.0 * Math.PI * (x[i] - 0.5));
+		}
+		
+		return 100.0 * (k + g);
+	}
+	
+	/**
+	 * Computes the {@code g(X_M)} function used by {@link DTLZ2}, {@link DTLZ4}, and {@link DTLZ5}.  Note that while
+	 * the entire array of decision variables is provided to this method, only the last {@code k = D - M + 1} variables
+	 * are used in this calculation.
+	 * 
+	 * @param numberOfVariables the number of decision variables
+	 * @param numberOfObjectives the number of objectives
+	 * @param x the array of decision variable values
+	 * @return the computed value of the {@code g(X_M)} function
+	 */
+	public static final double g2(int numberOfVariables, int numberOfObjectives, double[] x) {
+		int k = numberOfVariables - numberOfObjectives + 1;
+		double g = 0.0;
+		
+		for (int i = numberOfVariables - k; i < numberOfVariables; i++) {
+			g += Math.pow(x[i] - 0.5, 2.0);
+		}
+		
+		return g;
 	}
 
 }
