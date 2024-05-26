@@ -74,7 +74,7 @@ public class MaF9Test extends ProblemTest {
 		Assert.assertArrayEquals(new double[] { 4.0287, 3.3090 }, problem.invalidRegions.get(29).getVertex(6).toArray(), 0.0001);
 		Assert.assertArrayEquals(new double[] { 4.0287, 3.9271 }, problem.invalidRegions.get(29).getVertex(7).toArray(), 0.0001);
 		
-		Region<Euclidean2D> region = problem.invalidRegions.get(0).toRegion(0.0001);
+		Region<Euclidean2D> region = problem.invalidRegions.get(0).toRegion();
 		Assert.assertEquals(Location.INSIDE, region.checkPoint(new Vector2D(0.95, 0.80902)));
 		Assert.assertEquals(Location.OUTSIDE, region.checkPoint(new Vector2D(1.5, 0.57295)));
 		Assert.assertEquals(Location.BOUNDARY, region.checkPoint(new Vector2D(1.31433, 0.57295)));

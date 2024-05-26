@@ -26,12 +26,13 @@ import org.apache.commons.math3.geometry.euclidean.twod.Line;
 import org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.apache.commons.math3.geometry.partitioning.Region;
-import org.moeaframework.core.Settings;
 
 /**
  * An immutable polygon, represented by an ordered list of vertices and the line segments formed between those vertices.
  */
 class Polygon {
+	
+	private static final double TOLERANCE = 0.00001;
 
 	private final Vector2D[] vertices;
 
@@ -59,7 +60,7 @@ class Polygon {
 		this.lines = new Line[vertices.length];
 
 		for (int i = 0; i < vertices.length; i++) {
-			lines[i] = new Line(vertices[i], vertices[(i + 1) % vertices.length], Settings.EPS);
+			lines[i] = new Line(vertices[i], vertices[(i + 1) % vertices.length], TOLERANCE);
 		}
 	}
 
@@ -134,17 +135,17 @@ class Polygon {
 	}
 
 	/**
-	 * Returns the region defined by this polygon, useful for determining if points lie inside, on, or outside this
-	 * polygon.
+	 * Returns the region defined by this polygon, useful for determining if points lie inside, on the boundary, or
+	 * outside this polygon.
 	 * 
 	 * @param tolerance the tolerance / thickness of the region
 	 * @return the region
 	 */
-	public Region<Euclidean2D> toRegion(double tolerance) {
+	public Region<Euclidean2D> toRegion() {
 		if (region == null) {
 			// Per this constructor, the vertices must be ordered in a counter-clockwise manner so that the inside
 			// is to the "left" of the lines.
-			region = new PolygonsSet(tolerance, vertices);
+			region = new PolygonsSet(TOLERANCE, vertices);
 		}
 
 		return region;

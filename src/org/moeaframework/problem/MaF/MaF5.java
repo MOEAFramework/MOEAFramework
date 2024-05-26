@@ -30,18 +30,8 @@ import org.moeaframework.problem.AbstractProblem;
  *   <li>Badly scaled decision variables
  *   <li>Biased
  * </ul>
- * <p>
- * This problem has a discrepancy between the published paper and PlatEMO implementation, see
- * {@link #PUBLISHED_DEFINITION} for more details.
  */
 public class MaF5 extends AbstractProblem {
-	
-	/**
-	 * The MaF5 problem defined in the paper (see Equation 9) includes a power of 4, but this is missing in the PlatEMO
-	 * implementation.  Set to {@code false} to match the PlatEMO implementation, or {@code true} to match the paper's
-	 * definition.
-	 */
-	public static final boolean PUBLISHED_DEFINITION = false;
 
 	/**
 	 * Constructs an MaF5 test problem with the specified number of objectives.
@@ -82,7 +72,7 @@ public class MaF5 extends AbstractProblem {
 				f[i] *= Math.sin(0.5 * Math.PI * Math.pow(x[numberOfObjectives - i - 1], alpha));
 			}
 			
-			f[i] = Math.pow(a, numberOfObjectives - i) * (PUBLISHED_DEFINITION ? Math.pow(f[i], 4.0) : f[i]);
+			f[i] = Math.pow(a, numberOfObjectives - i) * f[i];
 		}
 
 		solution.setObjectives(f);
