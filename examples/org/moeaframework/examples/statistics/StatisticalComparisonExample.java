@@ -63,7 +63,8 @@ public class StatisticalComparisonExample {
 		
 		System.out.println("NSGA-II median: " + test.getStatistics(0).getPercentile(50));
 		System.out.println("MOEA/D median:  " + test.getStatistics(1).getPercentile(50));
-		System.out.println("Are medians different (5% significance level)? " + Boolean.toString(test.test(0.05)));
+		System.out.println("Are medians different (5% significance level)? " + test.test(0.05));
+		System.out.println("Are medians different (1% significance level)? " + test.test(0.01));
 	}
 
 }
