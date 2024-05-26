@@ -21,7 +21,15 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 
 /**
- * The Inverted DTLZ1 test problem.
+ * The Inverted DTLZ1 test problem.  This problem was introduced to test reference-point based algorithms since not all
+ * reference points lie on or intersect with the inverted Pareto front.
+ * <p>
+ * References:
+ * <ol>
+ *   <li>Jain, H. and K. Deb. "An Evolutionary Many-Objective Optimization Algorithm Using Reference-Point-Based
+ *       Nondominated Sorting Approach, Part II: Handling Constraints and Extending to an Adaptive Approach."
+ *       IEEE Transactions on Evolutionary Computation, 18(4):602-622, 2014.
+ * </ol>
  */
 public class InvertedDTLZ1 extends DTLZ1 {
 
