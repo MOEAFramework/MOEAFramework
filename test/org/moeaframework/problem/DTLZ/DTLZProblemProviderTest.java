@@ -25,8 +25,8 @@ public class DTLZProblemProviderTest extends ProblemTest {
 	
 	@Test
 	public void testCaseSensitivity() {
-		Assert.assertNotNull(new DTLZProblemProvider().getProblem("dtlz1"));
-		Assert.assertNotNull(new DTLZProblemProvider().getProblem("inverted_dtlz1"));
+		Assert.assertNotNull(new DTLZProblemProvider().getProblem("dtlz1_2"));
+		Assert.assertNotNull(new DTLZProblemProvider().getProblem("inverted_dtlz1_2"));
 	}
 
 	@Test
