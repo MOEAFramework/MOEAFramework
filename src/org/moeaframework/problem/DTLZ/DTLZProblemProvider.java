@@ -87,7 +87,6 @@ public class DTLZProblemProvider extends RegisteredProblemProvider {
 		registerDiagnosticToolProblem("DTLZ5_2");
 		registerDiagnosticToolProblem("DTLZ6_2");
 		registerDiagnosticToolProblem("DTLZ7_2");
-		registerDiagnosticToolProblem("Inverted_DTLZ1_2");
 	}
 	
 	@Override
