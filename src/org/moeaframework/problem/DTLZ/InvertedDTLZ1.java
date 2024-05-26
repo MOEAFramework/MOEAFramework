@@ -26,23 +26,12 @@ import org.moeaframework.core.variable.EncodingUtils;
 public class InvertedDTLZ1 extends DTLZ1 {
 
 	/**
-	 * Constructs an Inverted DTLZ1 test problem with the specified number of objectives.  This is equivalent to
-	 * calling {@code new InvertedDTLZ1(numberOfObjectives+4, numberOfObjectives)}.
+	 * Constructs an Inverted DTLZ1 test problem with the specified number of objectives.
 	 * 
 	 * @param numberOfObjectives the number of objectives for this problem
 	 */
 	public InvertedDTLZ1(int numberOfObjectives) {
-		this(numberOfObjectives + 4, numberOfObjectives);
-	}
-
-	/**
-	 * Constructs an Inverted DTLZ1 test problem with the specified number of variables and objectives.
-	 * 
-	 * @param numberOfVariables the number of variables for this problem
-	 * @param numberOfObjectives the number of objectives for this problem
-	 */
-	public InvertedDTLZ1(int numberOfVariables, int numberOfObjectives) {
-		super(numberOfVariables, numberOfObjectives);
+		super(numberOfObjectives + 4, numberOfObjectives);
 	}
 	
 	@Override
@@ -52,7 +41,7 @@ public class InvertedDTLZ1 extends DTLZ1 {
 		// apply the transformation to create the inverted version
 		double[] x = EncodingUtils.getReal(solution);
 		double[] f = solution.getObjectives();
-		double g = g(x);
+		double g = g1(numberOfVariables, numberOfObjectives, x);
 		
 		for (int i = 0; i < numberOfObjectives; i++) {
 			f[i] = 0.5 * (1.0 + g) - f[i];

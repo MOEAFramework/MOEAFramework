@@ -29,7 +29,7 @@ import org.moeaframework.core.spi.RegisteredProblemProvider;
  */
 public class DTLZProblemProvider extends RegisteredProblemProvider {
 	
-	private final Pattern pattern = Pattern.compile("^DTLZ([0-9])_([0-9]+)$", Pattern.CASE_INSENSITIVE);
+	private final Pattern pattern = Pattern.compile("^(Inverted_)?DTLZ([0-9])_([0-9]+)$", Pattern.CASE_INSENSITIVE);
 
 	/**
 	 * Constructs and registers the DTLZ problems.
@@ -87,6 +87,7 @@ public class DTLZProblemProvider extends RegisteredProblemProvider {
 		registerDiagnosticToolProblem("DTLZ5_2");
 		registerDiagnosticToolProblem("DTLZ6_2");
 		registerDiagnosticToolProblem("DTLZ7_2");
+		registerDiagnosticToolProblem("Inverted_DTLZ1_2");
 	}
 	
 	@Override
@@ -102,11 +103,12 @@ public class DTLZProblemProvider extends RegisteredProblemProvider {
 			Matcher matcher = pattern.matcher(name);
 			
 			if (matcher.matches()) {
-				int instance = Integer.parseInt(matcher.group(1));
-				int numberOfObjectives = Integer.parseInt(matcher.group(2));
+				boolean inverted = matcher.group(1) != null;
+				int instance = Integer.parseInt(matcher.group(2));
+				int numberOfObjectives = Integer.parseInt(matcher.group(3));
 				
 				return switch (instance) {
-					case 1 -> new DTLZ1(numberOfObjectives);
+					case 1 -> inverted ? new InvertedDTLZ1(numberOfObjectives) : new DTLZ1(numberOfObjectives);
 					case 2 -> new DTLZ2(numberOfObjectives);
 					case 3 -> new DTLZ3(numberOfObjectives);
 					case 4 -> new DTLZ4(numberOfObjectives);

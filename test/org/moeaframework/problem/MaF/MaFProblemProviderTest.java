@@ -15,36 +15,24 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.problem.DTLZ;
+package org.moeaframework.problem.MaF;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.problem.ProblemTest;
 
-public class DTLZProblemProviderTest extends ProblemTest {
-	
-	@Test
-	public void testCaseSensitivity() {
-		Assert.assertNotNull(new DTLZProblemProvider().getProblem("dtlz1"));
-		Assert.assertNotNull(new DTLZProblemProvider().getProblem("inverted_dtlz1"));
-	}
+public class MaFProblemProviderTest extends ProblemTest {
 
 	@Test
-	public void testHigherObjectives() {
-		assertProblemDefined("DTLZ1_4", 4, false);
-		assertProblemDefined("DTLZ2_4", 4, false);
-		assertProblemDefined("DTLZ3_4", 4, false);
-		assertProblemDefined("DTLZ4_4", 4, false);
-		assertProblemDefined("DTLZ5_4", 4, false);
-		assertProblemDefined("DTLZ6_4", 4, false);
-		assertProblemDefined("DTLZ7_4", 4, false);
-		assertProblemDefined("Inverted_DTLZ1_4", 4, false);
+	public void testNameFormats() {
+		assertProblemDefined("maf1_4", 4, false);
+		assertProblemDefined("MaF1_4", 4, false);
+		assertProblemDefined("MaF01_4", 4, false);
 	}
 	
 	@Test
 	public void testUnrecognizedProblem() {
-		Assert.assertNull(new DTLZProblemProvider().getProblem("DTLZ8_2"));
-		Assert.assertNull(new DTLZProblemProvider().getProblem("Foo_DTLZ1_2"));
+		Assert.assertNull(new MaFProblemProvider().getProblem("MaF16_2"));
 	}
 
 }
