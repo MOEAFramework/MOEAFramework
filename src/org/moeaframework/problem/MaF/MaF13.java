@@ -18,7 +18,6 @@
 package org.moeaframework.problem.MaF;
 
 import org.apache.commons.math3.stat.StatUtils;
-import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
