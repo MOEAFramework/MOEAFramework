@@ -52,7 +52,7 @@ are available:
 This section details the steps to perform a sensitivity analysis study in the format as:
 
 > Hadka, D. and Reed, P.  "Diagnostic Assessment of Search Controls and Failure Modes in Many-Objective
-> Evolutionary Optimization."  Evolutionary Computation, 20(3):423-452.
+> Evolutionary Optimization."  Evolutionary Computation, 20(3):423-452, 2012.
 
 The diagram below depicts the steps along with intermediate file formats:
 
