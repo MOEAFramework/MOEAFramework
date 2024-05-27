@@ -94,7 +94,7 @@ sbx.symmetric=false
 ```
 
 What if we want to run this algorithm with a different configuration?  We can simply call the setter methods.
-Here we change the initial population size and set the variation operator to Parent Centrix Crossover (PCX):
+Here we change the initial population size and set the variation operator to Parent Centric Crossover (PCX):
 
 <!-- java:examples/org/moeaframework/examples/configuration/SetConfigurationExample.java [33:40] -->
 
