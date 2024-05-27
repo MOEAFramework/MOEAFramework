@@ -17,12 +17,15 @@
  */
 package org.moeaframework.problem.MaF;
 
+import org.moeaframework.core.Solution;
+import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.problem.LSMOP.CorrelationMatrix;
 import org.moeaframework.problem.LSMOP.LSMOP;
 import org.moeaframework.problem.LSMOP.LSMOP3;
 import org.moeaframework.problem.LSMOP.LinkageFunction;
 import org.moeaframework.problem.LSMOP.ParetoFrontGeometry;
 import org.moeaframework.problem.LSMOP.ShapeFunction;
+import org.moeaframework.util.Vector;
 
 /**
  * The MaF14 test problem, which is identical to the {@link LSMOP3} test problem with {@code N_k=2} and {@code N_ns=20}.
@@ -33,7 +36,7 @@ import org.moeaframework.problem.LSMOP.ShapeFunction;
  *   <li>Non-uniform correlations between decision variables and objectives
  * </ul>
  */
-public class MaF14 extends LSMOP {
+public class MaF14 extends LSMOP implements AnalyticalProblem {
 
 	/**
 	 * Constructs an MaF14 test problem with the specified number of objectives.
@@ -43,6 +46,15 @@ public class MaF14 extends LSMOP {
 	public MaF14(int numberOfObjectives) {
 		super(numberOfObjectives, 2, 20 * numberOfObjectives, ShapeFunction.Rastrigin, ShapeFunction.Rosenbrock,
 				LinkageFunction.Linear, CorrelationMatrix.Separable, ParetoFrontGeometry.Linear);
+	}
+
+	@Override
+	public Solution generate() {
+		double[] f = Vector.uniform(getNumberOfObjectives());
+		
+		Solution solution = new Solution(0, getNumberOfObjectives());
+		solution.setObjectives(f);
+		return solution;
 	}
 
 }

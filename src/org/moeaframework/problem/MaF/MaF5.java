@@ -19,8 +19,7 @@ package org.moeaframework.problem.MaF;
 
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
-import org.moeaframework.core.variable.RealVariable;
-import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.problem.DTLZ.DTLZ;
 
 /**
@@ -32,7 +31,7 @@ import org.moeaframework.problem.DTLZ.DTLZ;
  *   <li>Biased
  * </ul>
  */
-public class MaF5 extends AbstractProblem {
+public class MaF5 extends DTLZ implements AnalyticalProblem {
 
 	/**
 	 * Constructs an MaF5 test problem with the specified number of objectives.
@@ -49,7 +48,7 @@ public class MaF5 extends AbstractProblem {
 		double[] f = new double[numberOfObjectives];
 		final double alpha = 100.0;
 		final double a = 2.0;
-		double g = DTLZ.g2(numberOfVariables, numberOfObjectives, x);
+		double g = g2(x);
 
 		for (int i = 0; i < numberOfObjectives; i++) {
 			f[i] = 1.0 + g;
@@ -69,14 +68,8 @@ public class MaF5 extends AbstractProblem {
 	}
 	
 	@Override
-	public Solution newSolution() {
-		Solution solution = new Solution(numberOfVariables, numberOfObjectives);
-
-		for (int i = 0; i < numberOfVariables; i++) {
-			solution.setVariable(i, new RealVariable(0.0, 1.0));
-		}
-
-		return solution;
+	public Solution generate() {
+		return generateAt(0.5);
 	}
 
 }

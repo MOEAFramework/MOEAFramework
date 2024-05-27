@@ -17,6 +17,9 @@
  */
 package org.moeaframework.problem.MaF;
 
+import org.apache.commons.math3.stat.StatUtils;
+import org.moeaframework.core.Solution;
+import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.problem.LSMOP.CorrelationMatrix;
 import org.moeaframework.problem.LSMOP.LSMOP;
 import org.moeaframework.problem.LSMOP.LSMOP8;
@@ -34,7 +37,7 @@ import org.moeaframework.util.Vector;
  *   <li>Non-uniform correlations between decision variables and objectives
  * </ul>
  */
-public class MaF15 extends LSMOP {
+public class MaF15 extends LSMOP implements AnalyticalProblem {
 
 	/**
 	 * Constructs an MaF15 test problem with the specified number of objectives.
@@ -62,5 +65,19 @@ public class MaF15 extends LSMOP {
 		
 		return F;
 	};
+	
+	@Override
+	public Solution generate() {
+		double[] f = Vector.uniform(getNumberOfObjectives());
+		double divisor = Math.sqrt(StatUtils.sumSq(f));
+		
+		for (int i = 0; i < getNumberOfObjectives(); i++) {
+			f[i] = 1.0 - f[i] / divisor;
+		}
+		
+		Solution solution = new Solution(0, getNumberOfObjectives());
+		solution.setObjectives(f);
+		return solution;
+	}
 
 }

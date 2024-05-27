@@ -17,9 +17,9 @@
  */
 package org.moeaframework.problem.DTLZ;
 
-import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.problem.AnalyticalProblem;
 
 /**
  * The DTLZ5 test problem.
@@ -34,7 +34,7 @@ import org.moeaframework.core.variable.EncodingUtils;
  *       Computation, pages 3353–3360.
  * </ol>
  */
-public class DTLZ5 extends DTLZ {
+public class DTLZ5 extends DTLZ implements AnalyticalProblem {
 
 	/**
 	 * Constructs a DTLZ5 test problem with the specified number of objectives.  This is equivalent to calling
@@ -64,9 +64,9 @@ public class DTLZ5 extends DTLZ {
 	public void evaluate(Solution solution) {
 		double[] x = EncodingUtils.getReal(solution);
 		double[] f = new double[numberOfObjectives];
-		double g = g2(numberOfVariables, numberOfObjectives, x);
-		
 		double[] theta = new double[numberOfObjectives - 1];
+		double g = g2(x);
+		
 		for (int i = 0; i < numberOfObjectives - 1; i++) {
 			theta[i] = i == 0 ? 0.5 * Math.PI * x[i] : Math.PI / (4.0 * (1.0 + g)) * (1.0 + 2.0 * g * x[i]);
 		}
@@ -88,19 +88,7 @@ public class DTLZ5 extends DTLZ {
 
 	@Override
 	public Solution generate() {
-		Solution solution = newSolution();
-
-		for (int i = 0; i < numberOfObjectives - 1; i++) {
-			EncodingUtils.setReal(solution.getVariable(i), PRNG.nextDouble());
-		}
-
-		for (int i = numberOfObjectives - 1; i < numberOfVariables; i++) {
-			EncodingUtils.setReal(solution.getVariable(i), 0.5);
-		}
-
-		evaluate(solution);
-
-		return solution;
+		return generateAt(0.5);
 	}
 
 }

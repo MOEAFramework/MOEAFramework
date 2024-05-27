@@ -17,9 +17,9 @@
  */
 package org.moeaframework.problem.DTLZ;
 
-import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.problem.AnalyticalProblem;
 
 /**
  * The DTLZ6 test problem.
@@ -34,7 +34,7 @@ import org.moeaframework.core.variable.EncodingUtils;
  *       Computation, pages 3353–3360.
  * </ol>
  */
-public class DTLZ6 extends DTLZ {
+public class DTLZ6 extends DTLZ implements AnalyticalProblem {
 
 	/**
 	 * Constructs a DTLZ6 test problem with the specified number of objectives.  This is equivalent to calling
@@ -99,19 +99,7 @@ public class DTLZ6 extends DTLZ {
 
 	@Override
 	public Solution generate() {
-		Solution solution = newSolution();
-
-		for (int i = 0; i < numberOfObjectives - 1; i++) {
-			EncodingUtils.setReal(solution.getVariable(i), PRNG.nextDouble());
-		}
-
-		for (int i = numberOfObjectives - 1; i < numberOfVariables; i++) {
-			EncodingUtils.setReal(solution.getVariable(i), 0.0);
-		}
-
-		evaluate(solution);
-
-		return solution;
+		return generateAt(0.0);
 	}
 
 }

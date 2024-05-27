@@ -18,10 +18,13 @@
 package org.moeaframework.problem.MaF;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.math3.geometry.partitioning.Region.Location;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.problem.AnalyticalProblem;
 
 /**
  * The MaF8 test problem.  This problem exhibits the following properties:
@@ -30,7 +33,7 @@ import org.moeaframework.problem.AbstractProblem;
  *   <li>Degenerate
  * </ul>
  */
-public class MaF8 extends AbstractProblem {
+public class MaF8 extends AbstractProblem implements AnalyticalProblem {
 	
 	final Polygon polygon;
 
@@ -64,6 +67,21 @@ public class MaF8 extends AbstractProblem {
 			solution.setVariable(i, new RealVariable(-10000, 10000));
 		}
 
+		return solution;
+	}
+
+	@Override
+	public Solution generate() {
+		Vector2D point = new Vector2D(PRNG.nextDouble(-1.0, 1.0), PRNG.nextDouble(-1.0, 1.0));
+		
+		while (polygon.checkPoint(point) == Location.OUTSIDE) {
+			point = new Vector2D(PRNG.nextDouble(-1.0, 1.0), PRNG.nextDouble(-1.0, 1.0));
+		}
+		
+		Solution solution = newSolution();
+		EncodingUtils.setReal(solution, point.toArray());
+		evaluate(solution);
+		
 		return solution;
 	}
 

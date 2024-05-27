@@ -20,6 +20,7 @@ package org.moeaframework.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.math3.stat.StatUtils;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
@@ -158,6 +159,12 @@ public class VectorTest {
 	public void testOf() {
 		Assert.assertArrayEquals(new double[0], Vector.of(0, 5.0), TestThresholds.HIGH_PRECISION);
 		Assert.assertArrayEquals(new double[] { 5.0, 5.0 }, Vector.of(2, 5.0), TestThresholds.HIGH_PRECISION);
+	}
+	
+	@Test
+	public void testUniform() {
+		Assert.assertEquals(1.0, StatUtils.sum(Vector.uniform(3)), TestThresholds.HIGH_PRECISION);
+		Assert.assertGreaterThan(Vector.magnitude(Vector.subtract(Vector.uniform(3), Vector.uniform(3))), 0.0);
 	}
 	
 	@Test

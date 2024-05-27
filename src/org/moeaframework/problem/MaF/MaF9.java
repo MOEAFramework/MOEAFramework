@@ -23,11 +23,13 @@ import java.util.List;
 import org.apache.commons.math3.geometry.euclidean.twod.Line;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.apache.commons.math3.geometry.partitioning.Region.Location;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -42,7 +44,7 @@ import org.moeaframework.util.validate.Validate;
  * non-dominated with respect to points inside the polygon.  The repair operator simply resamples the point at a new,
  * random location.
  */
-public class MaF9 extends AbstractProblem {
+public class MaF9 extends AbstractProblem implements AnalyticalProblem {
 
 	final Polygon polygon;
 
@@ -99,8 +101,18 @@ public class MaF9 extends AbstractProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		Vector2D point = new Vector2D(EncodingUtils.getReal(solution));
+		Vector2D point = repair(solution);
 		double[] f = new double[numberOfObjectives];
+		
+		for (int i = 0; i < numberOfObjectives; i++) {
+			f[i] = polygon.getLine(i).distance(point);
+		}
+		
+		solution.setObjectives(f);
+	}
+	
+	Vector2D repair(Solution solution) {
+		Vector2D point = new Vector2D(EncodingUtils.getReal(solution));
 		
 		while (isInvalid(point)) {
 			for (int i = 0; i < solution.getNumberOfVariables(); i++) {
@@ -109,17 +121,13 @@ public class MaF9 extends AbstractProblem {
 			
 			point = new Vector2D(EncodingUtils.getReal(solution));
 		}
-
-		for (int i = 0; i < numberOfObjectives; i++) {
-			f[i] = polygon.getLine(i).distance(point);
-		}
 		
-		solution.setObjectives(f);
+		return point;
 	}
 	
 	boolean isInvalid(Vector2D point) {
 		for (Polygon invalidRegion : invalidRegions) {
-			if (invalidRegion.toRegion().checkPoint(point) == Location.INSIDE) {
+			if (invalidRegion.checkPoint(point) == Location.INSIDE) {
 				return true;
 			}
 		}
@@ -135,6 +143,21 @@ public class MaF9 extends AbstractProblem {
 			solution.setVariable(i, new RealVariable(-10000, 10000));
 		}
 
+		return solution;
+	}
+	
+	@Override
+	public Solution generate() {
+		Vector2D point = new Vector2D(PRNG.nextDouble(-1.0, 1.0), PRNG.nextDouble(-1.0, 1.0));
+		
+		while (polygon.checkPoint(point) == Location.OUTSIDE) {
+			point = new Vector2D(PRNG.nextDouble(-1.0, 1.0), PRNG.nextDouble(-1.0, 1.0));
+		}
+		
+		Solution solution = newSolution();
+		EncodingUtils.setReal(solution, point.toArray());
+		evaluate(solution);
+		
 		return solution;
 	}
 

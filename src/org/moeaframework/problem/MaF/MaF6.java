@@ -19,8 +19,7 @@ package org.moeaframework.problem.MaF;
 
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
-import org.moeaframework.core.variable.RealVariable;
-import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.problem.DTLZ.DTLZ;
 
 /**
@@ -31,7 +30,9 @@ import org.moeaframework.problem.DTLZ.DTLZ;
  *   <li>Degenerate
  * </ul>
  */
-public class MaF6 extends AbstractProblem {
+public class MaF6 extends DTLZ implements AnalyticalProblem {
+	
+	private static final int I = 2;
 	
 	/**
 	 * Constructs an MaF6 test problem with the specified number of objectives.
@@ -46,10 +47,9 @@ public class MaF6 extends AbstractProblem {
 	public void evaluate(Solution solution) {
 		double[] x = EncodingUtils.getReal(solution);
 		double[] f = new double[numberOfObjectives];
-		final int I = 2;
-		double g = DTLZ.g2(numberOfVariables, numberOfObjectives, x);
-		
 		double[] theta = new double[numberOfObjectives - 1];
+		double g = g2(x);
+		
 		for (int i = 0; i < numberOfObjectives - 1; i++) {
 			theta[i] = i < I - 1 ? 0.5 * Math.PI * x[i] : Math.PI / (4.0 * (1.0 + g)) * (1.0 + 2.0 * g * x[i]);
 		}
@@ -70,14 +70,8 @@ public class MaF6 extends AbstractProblem {
 	}
 	
 	@Override
-	public Solution newSolution() {
-		Solution solution = new Solution(numberOfVariables, numberOfObjectives);
-
-		for (int i = 0; i < numberOfVariables; i++) {
-			solution.setVariable(i, new RealVariable(0.0, 1.0));
-		}
-
-		return solution;
+	public Solution generate() {
+		return generateAt(0.5);
 	}
 
 }

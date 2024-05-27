@@ -17,12 +17,10 @@
  */
 package org.moeaframework.problem.MaF;
 
-import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
-import org.moeaframework.core.variable.RealVariable;
-import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.AnalyticalProblem;
+import org.moeaframework.problem.DTLZ.DTLZ;
 
 /**
  * The MaF1 test problem, which is a modified inverted version of the DTLZ1 test problem.  This problem exhibits the
@@ -32,7 +30,7 @@ import org.moeaframework.problem.AnalyticalProblem;
  *   <li>No single optimal solution in any subset of the objectives
  * </ul>
  */
-public class MaF1 extends AbstractProblem implements AnalyticalProblem {
+public class MaF1 extends DTLZ implements AnalyticalProblem {
 
 	/**
 	 * Constructs an MaF1 test problem with the specified number of objectives.
@@ -42,23 +40,12 @@ public class MaF1 extends AbstractProblem implements AnalyticalProblem {
 	public MaF1(int numberOfObjectives) {
 		super(numberOfObjectives + 9, numberOfObjectives);
 	}
-	
-	private double g(double[] x) {
-		int k = numberOfVariables - numberOfObjectives + 1;
-		double g = 0.0;
-		
-		for (int i = numberOfVariables - k; i < numberOfVariables; i++) {
-			g += Math.pow(x[i] - 0.5, 2.0);
-		}
-		
-		return g;
-	}
 
 	@Override
 	public void evaluate(Solution solution) {
 		double[] x = EncodingUtils.getReal(solution);
 		double[] f = new double[numberOfObjectives];
-		double g = g(x);
+		double g = g2(x);
 		double xmul = x[0];
 		
 		for (int i = numberOfObjectives - 2; i > 0; i--) {
@@ -77,31 +64,8 @@ public class MaF1 extends AbstractProblem implements AnalyticalProblem {
 	}
 	
 	@Override
-	public Solution newSolution() {
-		Solution solution = new Solution(numberOfVariables, numberOfObjectives);
-
-		for (int i = 0; i < numberOfVariables; i++) {
-			solution.setVariable(i, new RealVariable(0.0, 1.0));
-		}
-
-		return solution;
-	}
-	
-	@Override
 	public Solution generate() {
-		Solution solution = newSolution();
-
-		for (int i = 0; i < numberOfObjectives - 1; i++) {
-			EncodingUtils.setReal(solution.getVariable(i), PRNG.nextDouble());
-		}
-
-		for (int i = numberOfObjectives - 1; i < numberOfVariables; i++) {
-			EncodingUtils.setReal(solution.getVariable(i), 0.5);
-		}
-
-		evaluate(solution);
-
-		return solution;
+		return generateAt(0.5);
 	}
 
 }

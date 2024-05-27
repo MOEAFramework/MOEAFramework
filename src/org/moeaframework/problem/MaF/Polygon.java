@@ -150,6 +150,17 @@ class Polygon {
 
 		return region;
 	}
+	
+	/**
+	 * Checks the location of the point in relation to this polygon, determining if it is inside, on the boundary, or
+	 * outside this polygon.
+	 * 
+	 * @param point the point to check
+	 * @return the location of the point in relation to this polygon
+	 */
+	public Region.Location checkPoint(Vector2D point) {
+		return toRegion().checkPoint(point);
+	}
 
 	@Override
 	public String toString() {

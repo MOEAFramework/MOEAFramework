@@ -19,8 +19,7 @@ package org.moeaframework.problem.MaF;
 
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
-import org.moeaframework.core.variable.RealVariable;
-import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.problem.DTLZ.DTLZ;
 
 /**
  * The MaF2 test problem, also known as the "DTLZ2BZ" problem.  This problem exhibits the following
@@ -30,7 +29,7 @@ import org.moeaframework.problem.AbstractProblem;
  *   <li>No single optimal solution in any subset of the objectives
  * </ul>
  */
-public class MaF2 extends AbstractProblem {
+public class MaF2 extends DTLZ {
 
 	/**
 	 * Constructs an MaF2 test problem with the specified number of objectives.
@@ -53,40 +52,30 @@ public class MaF2 extends AbstractProblem {
 		
 		return g;
 	}
-	
-	private double theta(double[] x, int i) {
-		return (Math.PI / 2.0) * (x[i] / 2.0 + 0.25);
-	}
 
 	@Override
 	public void evaluate(Solution solution) {
 		double[] x = EncodingUtils.getReal(solution);
 		double[] f = new double[numberOfObjectives];
+		double[] theta = new double[numberOfObjectives - 1];
+		
+		for (int i = 0; i < numberOfObjectives - 1; i++) {
+			theta[i] = (Math.PI / 2.0) * (x[i] / 2.0 + 0.25);
+		}
 
 		for (int i = 0; i < numberOfObjectives; i++) {
 			f[i] = 1.0 + g(x, i);
 
 			for (int j = 0; j < numberOfObjectives - i - 1; j++) {
-				f[i] *= Math.cos(theta(x, j));
+				f[i] *= Math.cos(theta[j]);
 			}
 
 			if (i != 0) {
-				f[i] *= Math.sin(theta(x, numberOfObjectives - i - 1));
+				f[i] *= Math.sin(theta[numberOfObjectives - i - 1]);
 			}
 		}
 
 		solution.setObjectives(f);
-	}
-	
-	@Override
-	public Solution newSolution() {
-		Solution solution = new Solution(numberOfVariables, numberOfObjectives);
-
-		for (int i = 0; i < numberOfVariables; i++) {
-			solution.setVariable(i, new RealVariable(0.0, 1.0));
-		}
-
-		return solution;
 	}
 
 }

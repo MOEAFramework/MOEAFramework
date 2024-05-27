@@ -17,6 +17,7 @@
  */
 package org.moeaframework.util;
 
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Settings;
 import org.moeaframework.util.validate.Validate;
 
@@ -44,6 +45,28 @@ public class Vector {
 		
 		for (int i = 0; i < n; i++) {
 			w[i] = v;
+		}
+		
+		return w;
+	}
+	
+	/**
+	 * Returns a vector filled with uniformly-random numbers that sum to {@code 1.0}.
+	 * 
+	 * @param n the length of the vector
+	 * @return the generated vector
+	 */
+	public static double[] uniform(int n) {
+		double[] w = new double[n];
+		double sum = 0.0;
+		
+		for (int i = 0; i < n; i++) {
+			w[i] = PRNG.nextDouble();
+			sum += w[i];
+		}
+		
+		for (int i = 0; i < n; i++) {
+			w[i] /= sum;
 		}
 		
 		return w;

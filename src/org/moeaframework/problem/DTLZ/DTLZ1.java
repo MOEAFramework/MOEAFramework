@@ -17,14 +17,14 @@
  */
 package org.moeaframework.problem.DTLZ;
 
-import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.problem.AnalyticalProblem;
 
 /**
  * The DTLZ1 test problem.
  */
-public class DTLZ1 extends DTLZ {
+public class DTLZ1 extends DTLZ implements AnalyticalProblem {
 
 	/**
 	 * Constructs a DTLZ1 test problem with the specified number of objectives.  This is equivalent to calling
@@ -50,7 +50,7 @@ public class DTLZ1 extends DTLZ {
 	public void evaluate(Solution solution) {
 		double[] x = EncodingUtils.getReal(solution);
 		double[] f = new double[numberOfObjectives];
-		double g = g1(numberOfVariables, numberOfObjectives, x);
+		double g = g1(x);
 
 		for (int i = 0; i < numberOfObjectives; i++) {
 			f[i] = 0.5 * (1.0 + g);
@@ -69,19 +69,7 @@ public class DTLZ1 extends DTLZ {
 
 	@Override
 	public Solution generate() {
-		Solution solution = newSolution();
-
-		for (int i = 0; i < numberOfObjectives - 1; i++) {
-			EncodingUtils.setReal(solution.getVariable(i), PRNG.nextDouble());
-		}
-
-		for (int i = numberOfObjectives - 1; i < numberOfVariables; i++) {
-			EncodingUtils.setReal(solution.getVariable(i), 0.5);
-		}
-
-		evaluate(solution);
-
-		return solution;
+		return generateAt(0.5);
 	}
 
 }

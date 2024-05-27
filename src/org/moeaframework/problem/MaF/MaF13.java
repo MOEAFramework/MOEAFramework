@@ -17,10 +17,14 @@
  */
 package org.moeaframework.problem.MaF;
 
+import org.apache.commons.math3.stat.StatUtils;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.problem.AnalyticalProblem;
+import org.moeaframework.util.Vector;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -32,7 +36,7 @@ import org.moeaframework.util.validate.Validate;
  *   <li>Degenerate
  * </ul>
  */
-public class MaF13 extends AbstractProblem {
+public class MaF13 extends AbstractProblem implements AnalyticalProblem {
 	
 	/**
 	 * Constructs an MaF13 test problem with the specified number of objectives.
@@ -89,6 +93,25 @@ public class MaF13 extends AbstractProblem {
 			solution.setVariable(i, new RealVariable(-2.0, 2.0));
 		}
 
+		return solution;
+	}
+	
+	@Override
+	public Solution generate() {
+		double[] p = Vector.uniform(3);
+		double divisor = Math.sqrt(StatUtils.sumSq(p));
+		
+		for (int i = 0; i < 3; i++) {
+			p[i] /= divisor;
+		}
+		
+		double remainder = Math.pow(p[0], 2.0) + Math.pow(p[1], 10.0) + Math.pow(p[2], 10.0);
+		Solution solution = new Solution(0, getNumberOfObjectives());
+		
+		for (int i = 0; i < getNumberOfObjectives(); i++) {
+			solution.setObjective(i, i < 3 ? p[i] : remainder);
+		}
+		
 		return solution;
 	}
 

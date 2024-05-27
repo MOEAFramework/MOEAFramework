@@ -17,10 +17,11 @@
  */
 package org.moeaframework.problem.DTLZ;
 
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
-import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -28,7 +29,7 @@ import org.moeaframework.util.validate.Validate;
  * function, which controls the convergence or distance to the Pareto front, and the {@code f_1(x), ..., f_M(x)}
  * functions controlling the shape or position of solutions on the Pareto front.
  */
-public abstract class DTLZ extends AbstractProblem implements AnalyticalProblem {
+public abstract class DTLZ extends AbstractProblem {
 
 	/**
 	 * Constructs a new DTLZ problem instance with the specified number of variables and objectives.
@@ -69,7 +70,7 @@ public abstract class DTLZ extends AbstractProblem implements AnalyticalProblem 
 	 * @param x the array of decision variable values
 	 * @return the computed value of the {@code g(X_M)} function
 	 */
-	public static final double g1(int numberOfVariables, int numberOfObjectives, double[] x) {
+	protected double g1(double[] x) {
 		int k = numberOfVariables - numberOfObjectives + 1;
 		double g = 0.0;
 		
@@ -90,7 +91,7 @@ public abstract class DTLZ extends AbstractProblem implements AnalyticalProblem 
 	 * @param x the array of decision variable values
 	 * @return the computed value of the {@code g(X_M)} function
 	 */
-	public static final double g2(int numberOfVariables, int numberOfObjectives, double[] x) {
+	protected double g2(double[] x) {
 		int k = numberOfVariables - numberOfObjectives + 1;
 		double g = 0.0;
 		
@@ -99,6 +100,29 @@ public abstract class DTLZ extends AbstractProblem implements AnalyticalProblem 
 		}
 		
 		return g;
+	}
+	
+	/**
+	 * Generates a random Pareto optimal solution given the optimal value for the {@code K} decision variables used in
+	 * the calculation of {@code g(X_M)}.
+	 * 
+	 * @param optimalValue the decision variable value that produces an optimal value for {@code g(X_M)}
+	 * @return the solution
+	 */
+	protected Solution generateAt(double optimalValue) {
+		Solution solution = newSolution();
+
+		for (int i = 0; i < numberOfObjectives - 1; i++) {
+			EncodingUtils.setReal(solution.getVariable(i), PRNG.nextDouble());
+		}
+
+		for (int i = numberOfObjectives - 1; i < numberOfVariables; i++) {
+			EncodingUtils.setReal(solution.getVariable(i), optimalValue);
+		}
+
+		evaluate(solution);
+
+		return solution;
 	}
 
 }

@@ -30,6 +30,7 @@ import org.moeaframework.algorithm.MOEAD;
 import org.moeaframework.analysis.plot.Plot;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.ProblemTest;
 import org.moeaframework.util.Vector;
 
@@ -85,6 +86,12 @@ public class MaF9Test extends ProblemTest {
 		Assert.assertArrayEquals(new double[] { 13.017, 9.0489, 1.2613, 7.3715, 13.5518, 14.9191, 10.9511, 3.1634, 5.4693, 11.6497}, 
 				evaluateAt(problem, Vector.of(2, 10.0)).getObjectives(),
 				0.001);
+	}
+	
+	@Test
+	public void test10DRepair() {
+		MaF9 problem = new MaF9(10);
+		Assert.assertFalse(problem.isInvalid(problem.repair(MockSolution.of(problem).at(1.0, 1.0))));
 	}
 	
 	@Test
