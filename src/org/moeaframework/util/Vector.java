@@ -51,7 +51,10 @@ public class Vector {
 	}
 	
 	/**
-	 * Returns a vector filled with uniformly-random numbers that sum to {@code 1.0}.
+	 * Returns a vector filled with randomly generated numbers that sum to {@code 1.0}.  Usage of this method is
+	 * generally fine if only a small number of random vectors is needed, as the generated vectors are biased towards
+	 * the center and less likely near the boundaries.  If needing many vectors that are uniformly distributed in
+	 * space, prefer using {@link org.moeaframework.util.weights.WeightGenerator}.
 	 * 
 	 * @param n the length of the vector
 	 * @return the generated vector
