@@ -73,12 +73,12 @@ public class DefaultOperators extends RegisteredOperatorProvider {
 		setMutationHint(Program.class, "ptm");
 		setMutationHint(Subset.class, "replace+add+remove");
 		
-		setVariationHint(RealVariable.class, "sbx+pm");
-		setVariationHint(BinaryVariable.class, "hux+bf");
-		setVariationHint(Permutation.class, "pmx+insertion+swap");
-		setVariationHint(Grammar.class, "gx+gm");
-		setVariationHint(Program.class, "stx+ptm");
-		setVariationHint(Subset.class, "ssx+replace+add+remove");
+		setCrossoverHint(RealVariable.class, "sbx");
+		setCrossoverHint(BinaryVariable.class, "hux");
+		setCrossoverHint(Permutation.class, "pmx");
+		setCrossoverHint(Grammar.class, "gx");
+		setCrossoverHint(Program.class, "stx");
+		setCrossoverHint(Subset.class, "ssx");
 		
 		// real
 		registerConfigurable("sbx", SBX::new);

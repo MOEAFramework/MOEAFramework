@@ -106,10 +106,12 @@ int x = EncodingUtils.getInt(solution.getVariable(0));
 double y = EncodingUtils.getReal(solution.getVariable(1));
 ```
 
-No default operators are provided for mixed types, but we can easily construct the operators using
-`CompoundVariation` to combine the individual operators.  Here we combine Simulated Binary Crossover (SBX),
-Half-Uniform Crossover (HUX), Polynomial Mutation (PM), and Bit Flip Mutation (BF) operators.  SBX and PM operate on
-the real value whereas HUX and BF operate on the binary variable.
+Lastly, we must configure the variation operators.  Default operators are typically selected, even for mixed types.
+In this example, the default is Simulated Binary Crossover (SBX), Half-Uniform Crossover (HUX), Polynomial Mutation
+(PM), and Bit Flip Mutation (BF) operators.  SBX and PM operate on the real variable whereas HUX and BF operate on the
+binary variable.
+
+We can also explicitly supply a variation operator for mixed types by combining the operators as demonstrated below:
 
 <!-- java:examples/org/moeaframework/examples/misc/MixedTypesExample.java [74:80] -->
 
@@ -123,8 +125,8 @@ algorithm.run(10000);
 algorithm.getResult().display();
 ```
 
-The order of the operators does matter.  The rule of thumb is to put the crossover operators first (SBX and HUX)
-followed by the mutation operators (PM and BF).
+Please refer to the documentation for instructions on combining operators.  The type and order of the operators is
+important!
 
 ## Termination Conditions
 

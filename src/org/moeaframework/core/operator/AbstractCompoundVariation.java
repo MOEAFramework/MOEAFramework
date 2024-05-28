@@ -28,19 +28,15 @@ import org.moeaframework.core.Variation;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * Construct a variation operator applying one or more variations sequentially.  This construct is used to support
- * mixed-type decision variables; however, this requires that the variation operators are type safe. Type safe
- * variation operates only on supported types and ignores unsupported types.
+ * Constructs a variation operator applying two or more variations sequentially.  This is often used for mixed-type
+ * decision variables by supplying a <strong>type-safe</strong> operator for each type.
  * <p>
- * {@code CompoundVariation} provides the following behavior:
- * <ol>
- *   <li>If the previous operator produced {@code K} offspring and the current operator requires {@code K} parents,
- *       the current operator is applied normally. The current operator may produce any number of offspring.
- *   <li>If the previous operator produced {@code K} offspring and the current operator requires {@code 1} parent,
- *       the current operator is applied to each offspring individually. The current operator may produce any number of
- *       offspring, but only the first offspring will be retained.
- *   <li>Otherwise, an exception is thrown.
- * </ol>
+ * The number of parents (arity) of an operator must equal or evenly divide the number of offspring produced by the
+ * previous operator.  When equal, the offspring are passed directly into the next operator.  When divisible, the
+ * offspring are partitioned and multiple calls made to the next operator.  Therefore, we typically want to put all
+ * crossover operators first followed by any mutation operators.
+ * <p>
+ * Consequently, not all combinations of operators are valid and may result in a runtime exception being thrown.
  */
 public class AbstractCompoundVariation<T extends Variation> implements Variation {
 
@@ -124,21 +120,29 @@ public class AbstractCompoundVariation<T extends Variation> implements Variation
 
 	@Override
 	public Solution[] evolve(Solution[] parents) {
-		Solution[] result = Arrays.copyOf(parents, parents.length);
-
+		Solution[] solutions = Arrays.copyOf(parents, parents.length);
+		
 		for (T operator : operators) {
-			if (result.length == operator.getArity()) {
-				result = operator.evolve(result);
-			} else if (operator.getArity() == 1) {
-				for (int j = 0; j < result.length; j++) {
-					result[j] = operator.evolve(new Solution[] { result[j] })[0];
+			List<Solution> result = new ArrayList<Solution>();
+			
+			if (operator instanceof Mutation mutation) {
+				for (int i = 0; i < solutions.length; i++) {
+					result.add(mutation.mutate(solutions[i]));
+				}
+			} else if (solutions.length % operator.getArity() == 0) {
+				for (int i = 0; i < solutions.length; i += operator.getArity()) {
+					result.addAll(List.of(operator.evolve(Arrays.copyOfRange(solutions, i, i + operator.getArity()))));
 				}
 			} else {
-				throw new FrameworkException("invalid number of parents");
+				throw new FrameworkException("Invalid operator combination, " + operator.getClass().getSimpleName() +
+						" expected " + operator.getArity() + " parents (or a multiple thereof) but given " +
+						solutions.length);
 			}
+			
+			solutions = result.toArray(Solution[]::new);
 		}
 
-		return result;
+		return solutions;
 	}
 
 	@Override

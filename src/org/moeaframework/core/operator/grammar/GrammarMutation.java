@@ -21,6 +21,7 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.configuration.Prefix;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.util.validate.Validate;
@@ -76,6 +77,7 @@ public class GrammarMutation implements Mutation {
 	 * 
 	 * @param probability the probability (0.0 - 1.0)
 	 */
+	@Property("rate")
 	public void setProbability(double probability) {
 		Validate.that("probability", probability).isProbability();
 		this.probability = probability;

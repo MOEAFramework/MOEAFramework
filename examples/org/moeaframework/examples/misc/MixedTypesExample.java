@@ -32,8 +32,8 @@ import org.moeaframework.problem.AbstractProblem;
  * Demonstrates solving a problem with mixed types.  In this example, we recreate the
  * Srinivas problem using a binary integer and real-valued decision variables.
  * 
- * Of note, default variation operators are not provided for mixed types.  Instead, we must
- * specify the variation operators explicitly.
+ * Default operators will be provided for mixed types, by combining the operators for
+ * each type, but we can also supply our own operators as demonstrated in this example.
  */
 public class MixedTypesExample {
 	

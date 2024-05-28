@@ -56,6 +56,7 @@ public class Swap extends TypeSafeMutation<Permutation> {
 	 * 
 	 * @param permutation the permutation to be mutated
 	 */
+	@Override
 	public void mutate(Permutation permutation) {
 		int i = PRNG.nextInt(permutation.size());
 		int j = PRNG.nextInt(permutation.size() - 1);

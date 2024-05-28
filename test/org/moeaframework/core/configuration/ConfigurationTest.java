@@ -24,7 +24,6 @@ import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.algorithm.NSGAIII;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.operator.CompoundVariation;
@@ -72,8 +71,8 @@ public class ConfigurationTest {
 		Assert.assertEquals(expectedProperties.getDouble("bf.rate"), ((BitFlip)operators.get(1)).getProbability(), TestThresholds.HIGH_PRECISION);
 	}
 	
-	@Test(expected = FrameworkException.class)
-	public void testMixedTypesNoVariationOperator() {
+	@Test
+	public void testMixedTypesWithDefaultOperator() {
 		Problem problem = new MockMultiTypeProblem();
 		NSGAII algorithm = new NSGAII(problem);
 		
@@ -85,7 +84,7 @@ public class ConfigurationTest {
 	}
 	
 	@Test
-	public void testMixedTypes1() {
+	public void testMixedTypesWithOperatorProperty() {
 		Problem problem = new MockMultiTypeProblem();
 		NSGAII algorithm = new NSGAII(problem);
 		
@@ -98,7 +97,7 @@ public class ConfigurationTest {
 	}
 	
 	@Test
-	public void testMixedTypes2() {
+	public void testMixedTypesWithSetter() {
 		Problem problem = new MockMultiTypeProblem();
 		NSGAII algorithm = new NSGAII(problem);
 		

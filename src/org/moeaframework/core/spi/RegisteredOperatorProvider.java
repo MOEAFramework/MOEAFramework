@@ -19,15 +19,20 @@ package org.moeaframework.core.spi;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
+
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.operator.CompoundVariation;
+import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.util.TypedProperties;
 
 /**
@@ -41,9 +46,9 @@ public class RegisteredOperatorProvider extends OperatorProvider {
 	private final Map<Class<? extends Variable>, String> mutationHints;
 	
 	/**
-	 * Mapping of decision variable types to the suggested variation operator.
+	 * Mapping of decision variable types to the suggested crossover operator.
 	 */
-	private final Map<Class<? extends Variable>, String> variationHints;
+	private final Map<Class<? extends Variable>, String> crossoverHints;
 	
 	/**
 	 * Mapping of operators names to a constructor function.
@@ -56,12 +61,13 @@ public class RegisteredOperatorProvider extends OperatorProvider {
 	public RegisteredOperatorProvider() {
 		super();
 		mutationHints = new HashMap<>();
-		variationHints = new HashMap<>();
+		crossoverHints = new HashMap<>();
 		constructorMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 	}
 	
 	/**
-	 * Sets the mutation hint for the given decision variable type, overwriting any existing hint.
+	 * Sets the mutation hint for the given decision variable type, overwriting any existing hint.  By convention,
+	 * all mutation operators should accept a single parent and produce a single offspring.
 	 * 
 	 * @param type the decision variable type
 	 * @param operator the suggested operator
@@ -71,13 +77,15 @@ public class RegisteredOperatorProvider extends OperatorProvider {
 	}
 	
 	/**
-	 * Sets the variation hint for the given decision variable type, overwriting any existing hint.
+	 * Sets the crossover hint for the given decision variable type, overwriting any existing hint.  While not strictly
+	 * required, we recommend only configuring crossover operators that accept two parents and produce two offspring.
+	 * This convention guarantees the crossover operators can be combined safely.
 	 * 
 	 * @param type the decision variable type
 	 * @param operator the suggested operator
 	 */
-	protected final void setVariationHint(Class<? extends Variable> type, String operator) {
-		variationHints.put(type, operator);
+	protected final void setCrossoverHint(Class<? extends Variable> type, String operator) {
+		crossoverHints.put(type, operator);
 	}
 	
 	/**
@@ -98,91 +106,77 @@ public class RegisteredOperatorProvider extends OperatorProvider {
 	public Set<String> getRegisteredOperators() {
 		Set<String> result = new HashSet<String>();
 		result.addAll(mutationHints.values());
-		result.addAll(variationHints.values());
+		result.addAll(crossoverHints.values());
 		result.addAll(constructorMap.keySet());
 		return result;
 	}
 	
 	/**
-	 * Determines the decision variable type for the problem.  This only supports a single type, but will work with
-	 * compatible types.  For example, the {@link BinaryIntegerVariable} type is compatible with {@code BinaryVariable},
-	 * but not vice-versa.
+	 * Generates the operator hint for the given solution.  Exact matching between types is always preferred, but will
+	 * fall back to type compatibility.  For example, {@link BinaryIntegerVariable} is compatible with
+	 * {@code BinaryVariable}, but not vice-versa.
+	 * <p>
+	 * For solutions with mixed types, the resulting hint can include two or more operators separated by {@code '+'}.
+	 * This method does not guarantee the compatibility of operators.  See {@link CompoundVariation} for details on
+	 * operator compatibility.
 	 * 
-	 * @param problem the problem
-	 * @return the single type contained in this problem, or {@code null} if the type could not be determined or there
-	 *         were multiple types
+	 * @param solution the solution, which describes the number of types of decision variables
+	 * @param hints the operator hints
+	 * @return the hint, or {@code null} if no hint available
 	 */
-	private Class<? extends Variable> getProblemType(Problem problem) {
-		Class<? extends Variable> type = null;
-		Solution solution = problem.newSolution();
+	private static final String getHint(Solution solution, Map<Class<? extends Variable>, String> hints) {
+		Set<String> operators = new LinkedHashSet<>();
 		
-		for (int i=0; i<solution.getNumberOfVariables(); i++) {
+		for (int i = 0; i < solution.getNumberOfVariables(); i++) {
 			Variable variable = solution.getVariable(i);
 			
 			if (variable == null) {
 				throw new ProviderLookupException("variable is null");
 			}
 			
-			if (type == null) {
-				type = variable.getClass();
-			} else if (type.isAssignableFrom(variable.getClass())) {
-				// the current type is compatible with the variable
-			} else if (variable.getClass().isAssignableFrom(type)) {
-				// the variable has a more generalized type - use that instead
-				type = variable.getClass();
-			} else {
-				// the types are incompatible
+			Class<? extends Variable> type = variable.getClass();
+			String result = hints.get(type);
+			
+			// check assignment compatibility if an exact match not found
+			if (result == null) {
+				for (Entry<Class<? extends Variable>, String> entry : hints.entrySet()) {
+					if (entry.getKey().isAssignableFrom(type)) {
+						result = entry.getValue();
+					}
+				}
+			}
+			
+			if (result == null) {
+				// no hint for the given type, bail out
 				return null;
 			}
+			
+			operators.add(result);
 		}
-
-		return type;
+		
+		if (operators.size() == 0) {
+			return null;
+		}
+		
+		return operators.stream().collect(Collectors.joining("+"));
 	}
 	
 	@Override
 	public String getMutationHint(Problem problem) {
-		Class<? extends Variable> type = getProblemType(problem);
-		
-		if (type == null) {
-			return null;
-		}
-		
-		// prioritize exact matches
-		String result = mutationHints.get(type);
-		
-		// fall back to checking type compatibility
-		if (result == null) {
-			for (Entry<Class<? extends Variable>, String> entry : mutationHints.entrySet()) {
-				if (entry.getKey().isAssignableFrom(type)) {
-					result = entry.getValue();
-				}
-			}
-		}
-		
-		return result;
+		return getHint(problem.newSolution(), mutationHints);
 	}
 	
 	@Override
 	public String getVariationHint(Problem problem) {
-		Class<? extends Variable> type = getProblemType(problem);
+		Solution solution = problem.newSolution();
+		String crossoverHint = getHint(solution, crossoverHints);
+		String mutationHint = getHint(solution, mutationHints);
 		
-		if (type == null) {
+		if (crossoverHint == null || mutationHint == null) {
 			return null;
 		}
 		
-		// prioritize exact matches
-		String result = variationHints.get(type);
-		
-		// fall back to checking type compatibility
-		if (result == null) {
-			for (Entry<Class<? extends Variable>, String> entry : variationHints.entrySet()) {
-				if (entry.getKey().isAssignableFrom(type)) {
-					result = entry.getValue();
-				}
-			}
-		}
-		
-		return result;
+		return crossoverHint + "+" + mutationHint;
 	}
 
 	@Override

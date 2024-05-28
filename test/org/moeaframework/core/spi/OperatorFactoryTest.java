@@ -24,9 +24,19 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.core.initialization.RandomInitialization;
+import org.moeaframework.core.operator.CompoundVariation;
 import org.moeaframework.core.operator.DefaultOperators;
-import org.moeaframework.core.variable.Grammar;
+import org.moeaframework.core.operator.binary.BitFlip;
+import org.moeaframework.core.operator.binary.HUX;
+import org.moeaframework.core.operator.grammar.GrammarCrossover;
+import org.moeaframework.core.operator.grammar.GrammarMutation;
+import org.moeaframework.core.operator.permutation.Insertion;
+import org.moeaframework.core.operator.permutation.PMX;
+import org.moeaframework.core.operator.permutation.Swap;
+import org.moeaframework.core.operator.real.PM;
+import org.moeaframework.core.operator.real.SBX;
 import org.moeaframework.mock.MockBinaryProblem;
+import org.moeaframework.mock.MockGrammarProblem;
 import org.moeaframework.mock.MockMixedBinaryProblem;
 import org.moeaframework.mock.MockMultiTypeProblem;
 import org.moeaframework.mock.MockPermutationProblem;
@@ -79,47 +89,73 @@ public class OperatorFactoryTest extends AbstractFactoryTest<OperatorProvider, O
 	@Test
 	public void testDefaultReal() {
 		Problem problem = new MockRealProblem();		
-		Assert.assertNotNull(createFactory().getVariation(null, new TypedProperties(), problem));
+		Assert.assertEquals("sbx+pm", createFactory().lookupVariationHint(problem));
+		
+		Variation variation = createFactory().getVariation(null, new TypedProperties(), problem);
+		Assert.assertInstanceOf(CompoundVariation.class, variation);
+		Assert.assertInstanceOf(SBX.class, ((CompoundVariation)variation).getOperators().get(0));
+		Assert.assertInstanceOf(PM.class, ((CompoundVariation)variation).getOperators().get(1));
 	}
 	
 	@Test
 	public void testDefaultBinary() {
 		Problem problem = new MockBinaryProblem();
-		Assert.assertNotNull(createFactory().getVariation(null, new TypedProperties(), problem));
+		Assert.assertEquals("hux+bf", createFactory().lookupVariationHint(problem));
+		
+		Variation variation = createFactory().getVariation(null, new TypedProperties(), problem);
+		Assert.assertInstanceOf(CompoundVariation.class, variation);
+		Assert.assertInstanceOf(HUX.class, ((CompoundVariation)variation).getOperators().get(0));
+		Assert.assertInstanceOf(BitFlip.class, ((CompoundVariation)variation).getOperators().get(1));
 	}
 	
 	@Test
 	public void testCombiningBinary() {
 		Problem problem = new MockMixedBinaryProblem();
-		Assert.assertNotNull(createFactory().getVariation(null, new TypedProperties(), problem));
+		Assert.assertEquals("hux+bf", createFactory().lookupVariationHint(problem));
+		
+		Variation variation = createFactory().getVariation(null, new TypedProperties(), problem);
+		Assert.assertInstanceOf(CompoundVariation.class, variation);
+		Assert.assertInstanceOf(HUX.class, ((CompoundVariation)variation).getOperators().get(0));
+		Assert.assertInstanceOf(BitFlip.class, ((CompoundVariation)variation).getOperators().get(1));
 	}
 	
 	@Test
 	public void testDefaultPermutation() {
 		Problem problem = new MockPermutationProblem();
-		Assert.assertNotNull(createFactory().getVariation(null, new TypedProperties(), problem));
+		Assert.assertEquals("pmx+insertion+swap", createFactory().lookupVariationHint(problem));
+		
+		Variation variation = createFactory().getVariation(null, new TypedProperties(), problem);
+		Assert.assertInstanceOf(CompoundVariation.class, variation);
+		Assert.assertInstanceOf(PMX.class, ((CompoundVariation)variation).getOperators().get(0));
+		Assert.assertInstanceOf(Insertion.class, ((CompoundVariation)variation).getOperators().get(1));
+		Assert.assertInstanceOf(Swap.class, ((CompoundVariation)variation).getOperators().get(2));
 	}
 	
 	@Test
 	public void testDefaultGrammar() {
-		Problem problem = new ProblemStub(1) {
-			
-			@Override
-			public Solution newSolution() {
-				Solution solution = new Solution(1, 0);
-				solution.setVariable(0, new Grammar(4));
-				return solution;
-			}
-
-		};
+		Problem problem = new MockGrammarProblem();
+		Assert.assertEquals("gx+gm", createFactory().lookupVariationHint(problem));
 		
-		Assert.assertNotNull(createFactory().getVariation(null, new TypedProperties(), problem));
+		Variation variation = createFactory().getVariation(null, new TypedProperties(), problem);
+		Assert.assertInstanceOf(CompoundVariation.class, variation);
+		Assert.assertInstanceOf(GrammarCrossover.class, ((CompoundVariation)variation).getOperators().get(0));
+		Assert.assertInstanceOf(GrammarMutation.class, ((CompoundVariation)variation).getOperators().get(1));
 	}
 	
 	@Test
 	public void testMixedType() {
 		Problem problem = new MockMultiTypeProblem();
-		Assert.assertNull(createFactory().getVariation(null, new TypedProperties(), problem));
+		Assert.assertEquals("sbx+hux+pmx+pm+bf+insertion+swap", createFactory().lookupVariationHint(problem));
+		
+		Variation variation = createFactory().getVariation(null, new TypedProperties(), problem);
+		Assert.assertInstanceOf(CompoundVariation.class, variation);
+		Assert.assertInstanceOf(SBX.class, ((CompoundVariation)variation).getOperators().get(0));
+		Assert.assertInstanceOf(HUX.class, ((CompoundVariation)variation).getOperators().get(1));
+		Assert.assertInstanceOf(PMX.class, ((CompoundVariation)variation).getOperators().get(2));
+		Assert.assertInstanceOf(PM.class, ((CompoundVariation)variation).getOperators().get(3));
+		Assert.assertInstanceOf(BitFlip.class, ((CompoundVariation)variation).getOperators().get(4));
+		Assert.assertInstanceOf(Insertion.class, ((CompoundVariation)variation).getOperators().get(5));
+		Assert.assertInstanceOf(Swap.class, ((CompoundVariation)variation).getOperators().get(6));
 	}
 	
 	@Test
@@ -135,12 +171,14 @@ public class OperatorFactoryTest extends AbstractFactoryTest<OperatorProvider, O
 
 		};
 		
+		Assert.assertNull(createFactory().lookupVariationHint(problem));
 		Assert.assertNull(createFactory().getVariation(null, new TypedProperties(), problem));
 	}
 	
 	@Test
 	public void testEmptyType() {
 		Problem problem = new ProblemStub(0);
+		Assert.assertNull(createFactory().lookupVariationHint(problem));
 		Assert.assertNull(createFactory().getVariation(null, new TypedProperties(), problem));
 	}
 	

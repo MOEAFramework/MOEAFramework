@@ -2,12 +2,12 @@
 
 ## Overview
 
-This page details mutation and crossover operators built into the MOEA Framework.  For problems with a single decision
-variable type, a default operator is automatically selected.  See [Mixed Types](miscellaneousTopics.md#mixed-types) for
-instructions on configuring operators when combining two or more decision variable types.
+This page details mutation and crossover operators built into the MOEA Framework.  When constructing a new algorithm,
+default operators for each built-in type are automatically selected and configured.  Mixed types are also supported
+by combining multiple operators.
 
-There are two ways to change the operator or the operator parameters.  First, we can create the variation operator
-directly, in which case we pass the parameters to the constructor:
+The selected operator and its configuration can be changed.  First, we can call the setter with the operator, passing
+any parameters into the constructor.
 
 <!-- java:examples/org/moeaframework/examples/configuration/SetConfigurationExample.java [37:37] -->
 

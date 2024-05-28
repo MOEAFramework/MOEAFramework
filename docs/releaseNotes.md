@@ -2,6 +2,11 @@
 
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
+## Version 4.3 (TBD)
+
+  * Adds default operators for mixed type problems.
+
+
 ## Version 4.2 (26 May 2024)
 
   * Adds the `U-NSGA-III` algorithm, which replaces NSGA-III's random selection with niche-based tournament selection

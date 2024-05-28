@@ -44,8 +44,8 @@ public abstract class OperatorProvider {
 	}
 	
 	/**
-	 * Returns the name of the suggested mutation operator for the given problem.  Mixed types are currently not
-	 * supported.  Returns {@code null} if no mutation operators support the given problem.
+	 * Returns the name of the suggested mutation operator for the given problem, or {@code null} if no hint is
+	 * available.
 	 * 
 	 * @param problem the problem
 	 * @return the name of the suggested mutation operator for the given problem
@@ -53,8 +53,8 @@ public abstract class OperatorProvider {
 	public abstract String getMutationHint(Problem problem);
 	
 	/**
-	 * Returns the name of the suggested variation operator for the given problem.  Mixed types are currently not
-	 * supported.  Returns {@code null} if no variation operators support the given problem.
+	 * Returns the name of the suggested variation operator for the given problem, or {@code null} if no hint is
+	 * available.
 	 * 
 	 * @param problem the problem
 	 * @return the name of the suggested variation operator for the given problem

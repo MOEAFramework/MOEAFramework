@@ -217,7 +217,7 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 		throw new ProviderNotFoundException(name);
 	}
 	
-	private String lookupMutationHint(Problem problem) {
+	String lookupMutationHint(Problem problem) {
 		for (OperatorProvider provider : this) {
 			String hint = provider.getMutationHint(problem);
 			
@@ -229,7 +229,7 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 		return null;
 	}
 	
-	private String lookupVariationHint(Problem problem) {
+	String lookupVariationHint(Problem problem) {
 		for (OperatorProvider provider : this) {
 			String hint = provider.getVariationHint(problem);
 

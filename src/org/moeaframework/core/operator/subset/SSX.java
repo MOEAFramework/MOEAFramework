@@ -61,6 +61,7 @@ public class SSX extends TypeSafeCrossover<Subset> {
 	 * @param s1 the first subset
 	 * @param s2 the second subset
 	 */
+	@Override
 	public void evolve(Subset s1, Subset s2) {
 		Set<Integer> s1set = s1.getSet();
 		Set<Integer> s2set = s2.getSet();

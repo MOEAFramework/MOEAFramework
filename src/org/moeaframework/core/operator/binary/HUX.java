@@ -58,6 +58,7 @@ public class HUX extends TypeSafeCrossover<BinaryVariable> {
 	 * @param v1 the first variable
 	 * @param v2 the second variable
 	 */
+	@Override
 	public void evolve(BinaryVariable v1, BinaryVariable v2) {
 		if (v1.getNumberOfBits() != v2.getNumberOfBits()) {
 			throw new FrameworkException("binary variables not same length");

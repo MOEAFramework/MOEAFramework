@@ -136,8 +136,8 @@ public class ExecutorTest {
 		new Executor().withProblem("DTLZ2_2").run();
 	}
 	
-	@Test(expected = FrameworkException.class)
-	public void testMixedTypesNoVariationOperator() {
+	@Test
+	public void testMixedTypesWithDefaultOperator() {
 		new Executor()
 			.withProblem(new MockMultiTypeProblem())
 			.withAlgorithm("NSGAII")
@@ -146,7 +146,7 @@ public class ExecutorTest {
 	}
 	
 	@Test
-	public void testMixedTypes() {
+	public void testMixedTypesWithSuppliedOperator() {
 		new Executor()
 			.withProblem(new MockMultiTypeProblem())
 			.withAlgorithm("NSGAII")

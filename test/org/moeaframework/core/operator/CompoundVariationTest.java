@@ -17,8 +17,6 @@
  */
 package org.moeaframework.core.operator;
 
-import java.util.Arrays;
-
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
@@ -57,9 +55,19 @@ public class CompoundVariationTest {
 		public Solution[] evolve(Solution[] parents) {
 			count++;
 			Assert.assertEquals(arity, parents.length);
-			return Arrays.copyOf(parents, numberOfOffspring);
+			return createSolutions(numberOfOffspring);
 		}
 		
+	}
+	
+	private static Solution[] createSolutions(int n) {
+		Solution[] result = new Solution[n];
+		
+		for (int i = 0; i < n; i++) {
+			result[i] = MockSolution.of();
+		}
+		
+		return result;
 	}
 	
 	@Test
@@ -71,7 +79,7 @@ public class CompoundVariationTest {
 		Assert.assertEquals(1, variation.getArity());
 		
 		for (int i=0; i<TestThresholds.SAMPLES; i++) {
-			Solution[] parents = new Solution[] { MockSolution.of() };
+			Solution[] parents = createSolutions(1);
 			Assert.assertEquals(1, variation.evolve(parents).length);
 		}
 		
@@ -88,7 +96,7 @@ public class CompoundVariationTest {
 		Assert.assertEquals(2, variation.getArity());
 		
 		for (int i=0; i<TestThresholds.SAMPLES; i++) {
-			Solution[] parents = new Solution[] { MockSolution.of(), MockSolution.of() };
+			Solution[] parents = createSolutions(2);
 			Assert.assertEquals(2, variation.evolve(parents).length);
 		}
 		
@@ -97,7 +105,7 @@ public class CompoundVariationTest {
 	}
 	
 	@Test
-	public void testComplex() {
+	public void testMultipleCrossover() {
 		VariationStub vs1 = new VariationStub(3, 2);
 		VariationStub vs2 = new VariationStub(2, 2);
 		VariationStub vs3 = new VariationStub(1, 1);
@@ -108,13 +116,26 @@ public class CompoundVariationTest {
 		Assert.assertEquals(3, variation.getArity());
 		
 		for (int i=0; i<TestThresholds.SAMPLES; i++) {
-			Solution[] parents = new Solution[] { MockSolution.of(), MockSolution.of(), MockSolution.of() };
+			Solution[] parents = createSolutions(3);
 			Assert.assertEquals(2, variation.evolve(parents).length);
 		}
 		
 		Assert.assertEquals(TestThresholds.SAMPLES, vs1.count);
 		Assert.assertEquals(TestThresholds.SAMPLES, vs2.count);
 		Assert.assertEquals(2*TestThresholds.SAMPLES, vs3.count);
+	}
+	
+	@Test
+	public void testMultipleOfParents() {
+		VariationStub vs1 = new VariationStub(4, 4);
+		VariationStub vs2 = new VariationStub(2, 2);
+		VariationStub vs3 = new VariationStub(1, 1);
+		CompoundVariation variation = new CompoundVariation(vs1, vs2, vs3);
+		
+		Assert.assertEquals(4, variation.getArity());
+		
+		Solution[] parents = createSolutions(4);
+		variation.evolve(parents);
 	}
 	
 	@Test(expected = FrameworkException.class)
@@ -126,7 +147,7 @@ public class CompoundVariationTest {
 		
 		Assert.assertEquals(3, variation.getArity());
 		
-		Solution[] parents = new Solution[] { MockSolution.of(), MockSolution.of(), MockSolution.of() };
+		Solution[] parents = createSolutions(3);
 		variation.evolve(parents);
 	}
 
