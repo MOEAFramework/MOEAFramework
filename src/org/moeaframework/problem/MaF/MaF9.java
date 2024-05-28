@@ -24,7 +24,6 @@ import org.apache.commons.math3.geometry.euclidean.twod.Line;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.apache.commons.math3.geometry.partitioning.Region.Location;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
@@ -74,8 +73,8 @@ public class MaF9 extends AbstractProblem implements AnalyticalProblem {
 			Vector2D v3 = polygon.getVertex(tail);
 			Vector2D v4 = polygon.getVertex(tail + 1);
 
-			Line l1 = new Line(v1, v2, Settings.EPS);
-			Line l2 = new Line(v3, v4, Settings.EPS);
+			Line l1 = new Line(v1, v2, Polygon.TOLERANCE);
+			Line l2 = new Line(v3, v4, Polygon.TOLERANCE);
 
 			Vector2D intersection = l1.intersection(l2);
 

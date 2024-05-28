@@ -32,7 +32,7 @@ import org.apache.commons.math3.geometry.partitioning.Region;
  */
 class Polygon {
 	
-	private static final double TOLERANCE = 0.00001;
+	static final double TOLERANCE = 0.00001;
 
 	private final Vector2D[] vertices;
 
