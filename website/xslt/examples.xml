@@ -194,9 +194,9 @@ AdditiveEpsilonIndicator     0.010052
 Spacing                      0.005918
 MaximumParetoFrontError      0.042614
 Contribution                 0.000000
-R1                           0.446108
-R2                           0.000276
-R3                           0.000419
+R1Indicator                  0.446108
+R2Indicator                  0.000276
+R3Indicator                  0.000419
 ]]>
 </pre>
 </div>
