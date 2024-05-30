@@ -347,6 +347,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	/**
 	 * Enables the evaluation of the given performance indicator.
 	 * 
+	 * @param indicator the indicator to enable
 	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators include(StandardIndicator indicator) {

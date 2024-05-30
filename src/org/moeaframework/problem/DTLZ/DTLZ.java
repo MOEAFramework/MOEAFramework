@@ -65,8 +65,6 @@ public abstract class DTLZ extends AbstractProblem {
 	 * of decision variables is provided to this method, only the last {@code k = D - M + 1} variables are used in
 	 * this calculation.
 	 * 
-	 * @param numberOfVariables the number of decision variables
-	 * @param numberOfObjectives the number of objectives
 	 * @param x the array of decision variable values
 	 * @return the computed value of the {@code g(X_M)} function
 	 */
@@ -86,8 +84,6 @@ public abstract class DTLZ extends AbstractProblem {
 	 * the entire array of decision variables is provided to this method, only the last {@code k = D - M + 1} variables
 	 * are used in this calculation.
 	 * 
-	 * @param numberOfVariables the number of decision variables
-	 * @param numberOfObjectives the number of objectives
 	 * @param x the array of decision variable values
 	 * @return the computed value of the {@code g(X_M)} function
 	 */
