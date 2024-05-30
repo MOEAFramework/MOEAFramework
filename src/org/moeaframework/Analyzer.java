@@ -272,7 +272,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 * @return a reference to this analyzer
 	 */
 	public Analyzer includeR1() {
-		selectedIndicators.add(StandardIndicator.R1);
+		selectedIndicators.add(StandardIndicator.R1Indicator);
 		return this;
 	}
 
@@ -282,7 +282,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 * @return a reference to this analyzer
 	 */
 	public Analyzer includeR2() {
-		selectedIndicators.add(StandardIndicator.R2);
+		selectedIndicators.add(StandardIndicator.R2Indicator);
 		return this;
 	}
 
@@ -292,7 +292,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 * @return a reference to this analyzer
 	 */
 	public Analyzer includeR3() {
-		selectedIndicators.add(StandardIndicator.R3);
+		selectedIndicators.add(StandardIndicator.R3Indicator);
 		return this;
 	}
 
@@ -652,7 +652,11 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 
 	@Override
 	public void display(PrintStream ps) {
-		getAnalysis().display(ps);
+		if (data.isEmpty()) {
+			ps.println("-- no data --");
+		} else {
+			getAnalysis().display(ps);
+		}
 	}
 
 	/**

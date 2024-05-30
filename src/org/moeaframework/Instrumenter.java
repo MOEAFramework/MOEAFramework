@@ -309,7 +309,7 @@ public class Instrumenter extends ProblemBuilder {
 	 * @return a reference to this instrumenter
 	 */
 	public Instrumenter attachR1Collector() {
-		selectedIndicators.add(StandardIndicator.R1);
+		selectedIndicators.add(StandardIndicator.R1Indicator);
 		return this;
 	}
 	
@@ -319,7 +319,7 @@ public class Instrumenter extends ProblemBuilder {
 	 * @return a reference to this instrumenter
 	 */
 	public Instrumenter attachR2Collector() {
-		selectedIndicators.add(StandardIndicator.R2);
+		selectedIndicators.add(StandardIndicator.R2Indicator);
 		return this;
 	}
 	
@@ -329,7 +329,7 @@ public class Instrumenter extends ProblemBuilder {
 	 * @return a reference to this instrumenter
 	 */
 	public Instrumenter attachR3Collector() {
-		selectedIndicators.add(StandardIndicator.R3);
+		selectedIndicators.add(StandardIndicator.R3Indicator);
 		return this;
 	}
 	
@@ -670,17 +670,17 @@ public class Instrumenter extends ProblemBuilder {
 				collectors.add(new IndicatorCollector(new MaximumParetoFrontError(problem, referenceSet), archive));
 			}
 			
-			if (selectedIndicators.contains(StandardIndicator.R1)) {
+			if (selectedIndicators.contains(StandardIndicator.R1Indicator)) {
 				collectors.add(new IndicatorCollector(new R1Indicator(problem,
 						R1Indicator.getDefaultSubdivisions(problem), referenceSet), archive));
 			}
 			
-			if (selectedIndicators.contains(StandardIndicator.R2)) {
+			if (selectedIndicators.contains(StandardIndicator.R2Indicator)) {
 				collectors.add(new IndicatorCollector(new R2Indicator(problem,
 						R2Indicator.getDefaultSubdivisions(problem), referenceSet), archive));
 			}
 			
-			if (selectedIndicators.contains(StandardIndicator.R3)) {
+			if (selectedIndicators.contains(StandardIndicator.R3Indicator)) {
 				collectors.add(new IndicatorCollector(new R3Indicator(problem,
 						R3Indicator.getDefaultSubdivisions(problem), referenceSet), archive));
 			}

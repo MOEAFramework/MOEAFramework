@@ -38,6 +38,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.indicator.Indicators.StandardIndicator;
 import org.moeaframework.core.operator.real.UM;
 import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.mock.MockRealProblem;
@@ -64,7 +65,6 @@ public class InstrumenterTest {
 				@Override
 				public boolean matches(Stack<Object> parents, Object object) {
 					Class<?> type = object.getClass();
-					
 					return (type.getPackage() != null) && type.getPackage().getName().startsWith("org.moeaframework");
 				}
 				
@@ -226,7 +226,7 @@ public class InstrumenterTest {
 				.attachAll();
 		
 		Executor executor = new Executor()
-				.withProblem("DTLZ2_2")
+				.withSameProblemAs(instrumenter)
 				.withAlgorithm("NSGAII")
 				.withMaxEvaluations(1000)
 				.withInstrumenter(instrumenter);
@@ -234,8 +234,12 @@ public class InstrumenterTest {
 		executor.run();
 		
 		Observations observations = instrumenter.getObservations();
+				
+		Assert.assertSize(14, observations.keys());
 		
-		Assert.assertSize(13, observations.keys());
+		for (StandardIndicator indicator : StandardIndicator.values()) {
+			Assert.assertTrue("Missing observation for " + indicator.name(), observations.keys().contains(indicator.name()));
+		}
 	}
 	
 }

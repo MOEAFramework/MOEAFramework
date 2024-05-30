@@ -91,7 +91,7 @@ public class AnalyzerTest {
 				.includeAllMetrics()
 				.showAll();
 		
-		Capture.stream((ps) -> analyzer.printAnalysis(ps)).assertThat((out) -> Assert.assertEquals("", out.toString()));
+		Capture.stream((ps) -> analyzer.printAnalysis(ps)).assertEqualsNormalized("-- no data --");
 	}
 	
 	@Test

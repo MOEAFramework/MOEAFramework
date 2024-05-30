@@ -42,7 +42,8 @@ import org.moeaframework.util.validate.Validate;
 public class Indicators implements Function<NondominatedPopulation, Indicators.IndicatorValues> {
 	
 	/**
-	 * Enumeration of standard indicators provided by the MOEA Framework.
+	 * Enumeration of standard indicators provided by the MOEA Framework.  These constants should match the
+	 * corresponding class names.
 	 */
 	public static enum StandardIndicator {
 
@@ -84,17 +85,17 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 		/**
 		 * R1 indicator.
 		 */
-		R1,
+		R1Indicator,
 		
 		/**
 		 * R2 indicator.
 		 */
-		R2,
+		R2Indicator,
 		
 		/**
 		 * R3 indicator.
 		 */
-		R3
+		R3Indicator
 		
 	}
 
@@ -258,7 +259,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 			result.contribution = contribution.evaluate(approximationSet);
 		}
 
-		if (selectedIndicators.contains(StandardIndicator.R1)) {
+		if (selectedIndicators.contains(StandardIndicator.R1Indicator)) {
 			if (r1 == null) {
 				r1 = new R1Indicator(problem,
 						subdivisions.isPresent() ? subdivisions.get() : RIndicator.getDefaultSubdivisions(problem),
@@ -268,7 +269,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 			result.r1 = r1.evaluate(approximationSet);
 		}
 
-		if (selectedIndicators.contains(StandardIndicator.R2)) {
+		if (selectedIndicators.contains(StandardIndicator.R2Indicator)) {
 			if (r2 == null) {
 				r2 = new R2Indicator(problem,
 						subdivisions.isPresent() ? subdivisions.get() : RIndicator.getDefaultSubdivisions(problem),
@@ -278,7 +279,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 			result.r2 = r2.evaluate(approximationSet);
 		}
 
-		if (selectedIndicators.contains(StandardIndicator.R3)) {
+		if (selectedIndicators.contains(StandardIndicator.R3Indicator)) {
 			if (r3 == null) {
 				r3 = new R3Indicator(problem,
 						subdivisions.isPresent() ? subdivisions.get() : RIndicator.getDefaultSubdivisions(problem),
@@ -471,7 +472,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators includeR1() {
-		include(StandardIndicator.R1);
+		include(StandardIndicator.R1Indicator);
 		return this;
 	}
 
@@ -481,7 +482,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators includeR2() {
-		include(StandardIndicator.R2);
+		include(StandardIndicator.R2Indicator);
 		return this;
 	}
 
@@ -491,7 +492,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators includeR3() {
-		include(StandardIndicator.R3);
+		include(StandardIndicator.R3Indicator);
 		return this;
 	}
 	
@@ -593,9 +594,9 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 				case Spacing -> getSpacing();
 				case MaximumParetoFrontError -> getMaximumParetoFrontError();
 				case Contribution -> getContribution();
-				case R1 -> getR1();
-				case R2 -> getR2();
-				case R3 -> getR3();
+				case R1Indicator -> getR1();
+				case R2Indicator -> getR2();
+				case R3Indicator -> getR3();
 			};
 		}
 
