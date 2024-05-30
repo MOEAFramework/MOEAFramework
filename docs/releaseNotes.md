@@ -4,7 +4,13 @@ This page documents notable changes introduced in each chronological release of 
 
 ## Version 4.3 (TBD)
 
-  * Adds default operators for mixed type problems.
+  * Adds default operators for mixed type problems.  For example, if given a problem with real and binary decision
+    variables, it will not automatically combine SBX and PM for the real values and HUX and BitFlip for binary.
+    
+  * Refactors defining standard performance indicators.  These indicators are now defined in the `StandardIndicator`
+    enumeration, and methods updated to accept these enum constants.
+    
+  * Analyzer results are now displayed in a more condensed table format.
 
 
 ## Version 4.2 (26 May 2024)

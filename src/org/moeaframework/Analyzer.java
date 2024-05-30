@@ -25,40 +25,46 @@ import java.io.PrintStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.descriptive.UnivariateStatistic;
-import org.apache.commons.math3.stat.descriptive.rank.Max;
-import org.apache.commons.math3.stat.descriptive.rank.Median;
-import org.apache.commons.math3.stat.descriptive.rank.Min;
 import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.analysis.io.ResultFileWriter;
+import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Epsilons;
-import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.indicator.AdditiveEpsilonIndicator;
-import org.moeaframework.core.indicator.Contribution;
-import org.moeaframework.core.indicator.GenerationalDistance;
-import org.moeaframework.core.indicator.Hypervolume;
-import org.moeaframework.core.indicator.InvertedGenerationalDistance;
-import org.moeaframework.core.indicator.MaximumParetoFrontError;
-import org.moeaframework.core.indicator.R1Indicator;
-import org.moeaframework.core.indicator.R2Indicator;
-import org.moeaframework.core.indicator.R3Indicator;
-import org.moeaframework.core.indicator.Spacing;
+import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.indicator.Indicators;
+import org.moeaframework.core.indicator.Indicators.StandardIndicator;
+import org.moeaframework.core.indicator.Indicators.IndicatorValues;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Displayable;
+import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.NumberFormatter;
+import org.moeaframework.util.format.TabularData;
 import org.moeaframework.util.statistics.KruskalWallisTest;
 import org.moeaframework.util.statistics.MannWhitneyUTest;
 
 /**
- * Performs basic end-of-run analysis.  For example, the following demonstrates its typical use.  First construct and
- * configure the analyzer:
+ * Performs basic end-of-run analysis.  This includes evaluating the selected performance indicators, summarizing the
+ * indicator values with descriptive statistics (min, median, max, inter-quartile range, etc.), and determining if
+ * the results of each algorithm are statistically similar.
+ * <p>
+ * For example, the following demonstrates its typical use.  First construct and configure the analyzer:
  * <pre>
  *   Analyzer analyzer = new Analyzer()
  *       .withProblem("DTLZ2_2")
@@ -77,140 +83,93 @@ import org.moeaframework.util.statistics.MannWhitneyUTest;
  * </pre>
  * Lastly, print the results of the analysis:
  * <pre>
- *   analyzer.printAnalysis();
+ *   analyzer.display();
  * </pre>
- * The output produced is compatible with the <a href="http://yaml.org/">YAML</a> format, and thus can be postprocessed
- * easily with any YAML parser.  The results can also be accessed programatically by calling {@link #getAnalysis()}.
  */
 public class Analyzer extends ProblemBuilder implements Displayable {
+
+	/**
+	 * The indicators that have been selected.
+	 */
+	private final EnumSet<StandardIndicator> selectedIndicators;
 	
 	/**
-	 * {@code true} if the hypervolume metric is to be computed; {@code false} otherwise.
+	 * The {@link UnivariateStatistic}s used during the analysis.  If none are specified by the user, then the default
+	 * statistics are displayed.
 	 */
-	private boolean includeHypervolume;
-	
-	/**
-	 * {@code true} if the generational distance metric is to be computed; {@code false} otherwise.
-	 */
-	private boolean includeGenerationalDistance;
-	
-	/**
-	 * {@code true} if the inverted generational distance metric is to be computed; {@code false} otherwise.
-	 */
-	private boolean includeInvertedGenerationalDistance;
-	
-	/**
-	 * {@code true} if the additive &epsilon;-indicator metric is to be computed; {@code false} otherwise.
-	 */
-	private boolean includeAdditiveEpsilonIndicator;
-	
-	/**
-	 * {@code true} if the spacing metric is to be computed; {@code false} otherwise.
-	 */
-	private boolean includeSpacing;
-	
-	/**
-	 * {@code true} if the maximum Pareto front error metric is to be computed; {@code false} otherwise.
-	 */
-	private boolean includeMaximumParetoFrontError;
-	
-	/**
-	 * {@code true} if the contribution of each approximation set to the reference set is to be computed;
-	 * {@code false} otherwise.
-	 */
-	private boolean includeContribution;
-	
-	/**
-	 * {@code true} if the R1 indicator is to be computed; {@code false} otherwise.
-	 */
-	private boolean includeR1;
-	
-	/**
-	 * {@code true} if the R2 indicator is to be computed; {@code false} otherwise.
-	 */
-	private boolean includeR2;
-	
-	/**
-	 * {@code true} if the R3 indicator is to be computed; {@code false} otherwise.
-	 */
-	private boolean includeR3;
-	
+	private final List<UnivariateStatistic> selectedStatistics;
+
 	/**
 	 * {@code true} if the individual values for each seed are shown; {@code false} otherwise.
 	 */
 	private boolean showIndividualValues;
-	
+
 	/**
 	 * {@code true} if the metric values for the aggregate approximation set (across all seeds) is to be calculated;
 	 * {@code false} otherwise.
 	 */
 	private boolean showAggregate;
-	
+
 	/**
 	 * {@code true} if the statistical significance of all metrics is to be calculated; {@code false} otherwise.
 	 * If {@code true}, it is necessary to record multiple seeds for each entry.
 	 */
 	private boolean showStatisticalSignificance;
-	
+
 	/**
 	 * The level of significance used when testing the statistical significance of observed differences in the medians.
 	 */
 	private double significanceLevel;
-	
-	/**
-	 * The {@link UnivariateStatistic}s used during the analysis.  If none are specified by the user, then {@link Min},
-	 * {@link Median} and {@link Max} are used.
-	 */
-	private List<UnivariateStatistic> statistics;
-	
+
 	/**
 	 * The ideal point to use when normalizing the data; or {@code null} if the ideal point should be derived from the
 	 * reference set.
 	 */
 	private double[] idealPoint;
-	
+
 	/**
 	 * The reference point to use when computing the hypervolume metric; or {@code null} if the reference point should
 	 * be derived from the reference set.
 	 */
 	private double[] referencePoint;
-	
+
 	/**
 	 * The collection of end-of-run approximation sets.
 	 */
-	private Map<String, List<NondominatedPopulation>> data;
-	
+	private TreeMap<String, EndOfRunResults> data;
+
 	/**
 	 * Constructs a new analyzer initialized with default settings.
 	 */
 	public Analyzer() {
 		super();
-		
+
 		significanceLevel = 0.05;
-		statistics = new ArrayList<UnivariateStatistic>();
-		data = new HashMap<String, List<NondominatedPopulation>>();
+		selectedIndicators = EnumSet.noneOf(StandardIndicator.class);
+		selectedStatistics = new ArrayList<>();
+		data = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 	}
-	
+
 	@Override
 	public Analyzer withSameProblemAs(ProblemBuilder builder) {
 		return (Analyzer)super.withSameProblemAs(builder);
 	}
-	
+
 	@Override
 	public Analyzer usingProblemFactory(ProblemFactory problemFactory) {
 		return (Analyzer)super.usingProblemFactory(problemFactory);
 	}
-	
+
 	@Override
 	public Analyzer withProblem(String problemName) {
 		return (Analyzer)super.withProblem(problemName);
 	}
-	
+
 	@Override
 	public Analyzer withProblem(Problem problemInstance) {
 		return (Analyzer)super.withProblem(problemInstance);
 	}
-	
+
 	@Override
 	public Analyzer withProblemClass(Class<?> problemClass, Object... problemArguments) {
 		return (Analyzer)super.withProblemClass(problemClass, problemArguments);
@@ -221,59 +180,59 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 			throws ClassNotFoundException {
 		return (Analyzer)super.withProblemClass(problemClassName, problemArguments);
 	}
-	
+
 	@Override
 	public Analyzer withEpsilon(double... epsilon) {
 		return (Analyzer)super.withEpsilon(epsilon);
 	}
-	
+
 	@Override
 	public Analyzer withEpsilons(Epsilons epsilons) {
 		return (Analyzer)super.withEpsilons(epsilons);
 	}
-	
+
 	@Override
 	public Analyzer withReferenceSet(File referenceSetFile) {
 		return (Analyzer)super.withReferenceSet(referenceSetFile);
 	}
-	
+
 	/**
 	 * Enables the evaluation of the hypervolume metric.
 	 * 
 	 * @return a reference to this analyzer
 	 */
 	public Analyzer includeHypervolume() {
-		includeHypervolume = true;
+		selectedIndicators.add(StandardIndicator.Hypervolume);
 		return this;
 	}
-	
+
 	/**
 	 * Enables the evaluation of the generational distance metric.
 	 * 
 	 * @return a reference to this analyzer
 	 */
 	public Analyzer includeGenerationalDistance() {
-		includeGenerationalDistance = true;
+		selectedIndicators.add(StandardIndicator.GenerationalDistance);
 		return this;
 	}
-	
+
 	/**
 	 * Enables the evaluation of the inverted generational distance metric.
 	 * 
 	 * @return a reference to this analyzer
 	 */
 	public Analyzer includeInvertedGenerationalDistance() {
-		includeInvertedGenerationalDistance = true;
+		selectedIndicators.add(StandardIndicator.InvertedGenerationalDistance);
 		return this;
 	}
-	
+
 	/**
 	 * Enables the evaluation of the additive &epsilon;-indicator metric.
 	 * 
 	 * @return a reference to this analyzer
 	 */
 	public Analyzer includeAdditiveEpsilonIndicator() {
-		includeAdditiveEpsilonIndicator = true;
+		selectedIndicators.add(StandardIndicator.AdditiveEpsilonIndicator);
 		return this;
 	}
 
@@ -283,60 +242,60 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 * @return a reference to this analyzer
 	 */
 	public Analyzer includeMaximumParetoFrontError() {
-		includeMaximumParetoFrontError = true;
+		selectedIndicators.add(StandardIndicator.MaximumParetoFrontError);
 		return this;
 	}
-	
+
 	/**
 	 * Enables the evaluation of the spacing metric.
 	 * 
 	 * @return a reference to this analyzer
 	 */
 	public Analyzer includeSpacing() {
-		includeSpacing = true;
+		selectedIndicators.add(StandardIndicator.Spacing);
 		return this;
 	}
-	
+
 	/**
 	 * Enables the evaluation of the contribution metric.
 	 * 
 	 * @return a reference to this analyzer
 	 */
 	public Analyzer includeContribution() {
-		includeContribution = true;
+		selectedIndicators.add(StandardIndicator.Contribution);
 		return this;
 	}
-	
+
 	/**
 	 * Enables the evaluation of the R1 indicator.
 	 * 
 	 * @return a reference to this analyzer
 	 */
 	public Analyzer includeR1() {
-		includeR1 = true;
+		selectedIndicators.add(StandardIndicator.R1);
 		return this;
 	}
-	
+
 	/**
 	 * Enables the evaluation of the R2 indicator.
 	 * 
 	 * @return a reference to this analyzer
 	 */
 	public Analyzer includeR2() {
-		includeR2 = true;
+		selectedIndicators.add(StandardIndicator.R2);
 		return this;
 	}
-	
+
 	/**
 	 * Enables the evaluation of the R3 indicator.
 	 * 
 	 * @return a reference to this analyzer
 	 */
 	public Analyzer includeR3() {
-		includeR3 = true;
+		selectedIndicators.add(StandardIndicator.R3);
 		return this;
 	}
-	
+
 	/**
 	 * Enables the evaluation of all metrics.
 	 * 
@@ -353,10 +312,10 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		includeR1();
 		includeR2();
 		includeR3();
-		
+
 		return this;
 	}
-	
+
 	/**
 	 * Enables the output of all analysis results.
 	 * 
@@ -366,10 +325,10 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		showIndividualValues();
 		showAggregate();
 		showStatisticalSignificance();
-		
+
 		return this;
 	}
-	
+
 	/**
 	 * Enables the output of individual metric values for each seed.
 	 * 
@@ -379,7 +338,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		showIndividualValues = true;
 		return this;
 	}
-	
+
 	/**
 	 * Enables the output of the metric value of the aggregate approximation set, produced by merging all individual
 	 * seeds.
@@ -390,7 +349,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		showAggregate = true;
 		return this;
 	}
-	
+
 	/**
 	 * Enables the output of statistical significance tests.  If enabled, it is necessary to record multiple seeds
 	 * for each entry.
@@ -401,19 +360,19 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		showStatisticalSignificance = true;
 		return this;
 	}
-	
+
 	/**
 	 * Specifies the {@link UnivariateStatistic}s calculated during the analysis.  If none are specified by the user,
-	 * then {@link Min}, {@link Median} and {@link Max} are used.
+	 * then the default statistics are displayed.
 	 * 
 	 * @param statistic the statistic to calculate
 	 * @return a reference to this analyzer
 	 */
 	public Analyzer showStatistic(UnivariateStatistic statistic) {
-		statistics.add(statistic);
+		selectedStatistics.add(statistic);
 		return this;
 	}
-	
+
 	/**
 	 * Sets the level of significance used when testing the statistical significance of observed differences in the
 	 * medians.  Commonly used levels of significance are {@code 0.05} and {@code 0.01}.
@@ -425,7 +384,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		this.significanceLevel = significanceLevel;
 		return this;
 	}
-	
+
 	/**
 	 * Sets the ideal point used for computing the hypervolume metric.
 	 * 
@@ -452,39 +411,39 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 * Adds the collection of new samples with the specified name.
 	 * 
 	 * @param name the name of these samples
-	 * @param results the approximation sets
+	 * @param approximationSets the approximation sets
 	 * @return a reference to this analyzer
 	 */
-	public Analyzer addAll(String name, Collection<NondominatedPopulation> results) {
-		for (NondominatedPopulation result : results) {
-			add(name, result);
+	public Analyzer addAll(String name, Collection<NondominatedPopulation> approximationSets) {
+		for (NondominatedPopulation approximationSet : approximationSets) {
+			add(name, approximationSet);
 		}
-		
+
 		return this;
 	}
-	
+
 	/**
 	 * Adds a new sample with the specified name.  If multiple samples are added using the same name, each sample is
 	 * treated as an individual seed.  Analyses can be performed on both the individual seeds and aggregates of the
 	 * seeds.
 	 * 
 	 * @param name the name of this sample
-	 * @param result the approximation set
+	 * @param approximationSet the approximation set
 	 * @return a reference to this analyzer
 	 */
-	public Analyzer add(String name, NondominatedPopulation result) {
-		List<NondominatedPopulation> list = data.get(name);
-		
-		if (list == null) {
-			list = new ArrayList<NondominatedPopulation>();
-			data.put(name, list);
+	public Analyzer add(String name, NondominatedPopulation approximationSet) {
+		EndOfRunResults result = data.get(name);
+
+		if (result == null) {
+			result = new EndOfRunResults(name);
+			data.put(name, result);
 		}
-		
-		list.add(result);
-		
+
+		result.addApproximationSet(approximationSet);
+
 		return this;
 	}
-	
+
 	/**
 	 * Saves all data stored in this analyzer, which can subsequently be read using
 	 * {@link #loadData(File, String, String)} with matching arguments.
@@ -501,10 +460,10 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		for (String algorithm : data.keySet()) {
 			saveAs(algorithm, new File(directory, prefix + algorithm + suffix));
 		}
-		
+
 		return this;
 	}
-	
+
 	/**
 	 * Loads data into this analyzer, which was previously saved using {@link #saveData(File, String, String)} with
 	 * matching arguments.
@@ -524,10 +483,10 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 				loadAs(name, file);
 			}
 		}
-		
+
 		return this;
 	}
-	
+
 	/**
 	 * Loads the samples stored in a result file using {@link ResultFileReader}.
 	 * 
@@ -544,10 +503,10 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 				}
 			}
 		}
-		
+
 		return this;
 	}
-	
+
 	/**
 	 * Saves the samples to a result file using {@link ResultFileWriter}.  If {@code name} is {@code null}, the
 	 * reference set is saved.  Otherwise, the approximation sets for the named entries are saved.
@@ -563,16 +522,18 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 				if (name == null) {
 					writer.append(new ResultEntry(getReferenceSet()));
 				} else {
-					for (NondominatedPopulation result : data.get(name)) {
-						writer.append(new ResultEntry(result));
+					EndOfRunResults result = data.get(name);
+
+					for (NondominatedPopulation approximationSet : result.getApproximationSets()) {
+						writer.append(new ResultEntry(approximationSet));
 					}
 				}
 			}
 		}
-		
+
 		return this;
 	}
-	
+
 	/**
 	 * Saves the analysis of all data recorded in this analyzer to the specified file.
 	 * 
@@ -584,10 +545,10 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		try (PrintStream ps = new PrintStream(new BufferedOutputStream(new FileOutputStream(file)))) {
 			printAnalysis(ps);
 		}
-		
+
 		return this;
 	}
-	
+
 	/**
 	 * Prints the analysis of all data recorded in this analyzer to standard output.
 	 * 
@@ -597,7 +558,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		printAnalysis(System.out);
 		return this;
 	}
-	
+
 	/**
 	 * Saves the reference set to the specified file.
 	 * 
@@ -610,7 +571,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		getReferenceSet().saveObjectives(file);
 		return this;
 	}
-	
+
 	/**
 	 * Returns the reference set used by this analyzer.  The reference set is generated as follows:
 	 * <ol>
@@ -630,20 +591,20 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 			if (referenceSet == null) {
 				//return the combination of all approximation sets
 				NondominatedPopulation referenceSet = newArchive();
-				
-				for (List<NondominatedPopulation> entry : data.values()) {
-					for (NondominatedPopulation set : entry) {
-						referenceSet.addAll(set);
+
+				for (EndOfRunResults result : data.values()) {
+					for (NondominatedPopulation approximationSet : result.getApproximationSets()) {
+						referenceSet.addAll(approximationSet);
 					}
 				}
-				
+
 				return referenceSet;
 			} else {
 				throw e;
 			}
 		}
 	}
-	
+
 	/**
 	 * Generates the analysis of all data recorded in this analyzer.  
 	 * 
@@ -653,188 +614,31 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		if (data.isEmpty()) {
 			return new AnalyzerResults();
 		}
-		
+
 		if (!isProblemConfigured()) {
 			System.err.println("no problem configured");
 			return new AnalyzerResults();
 		}
-		
+
 		try (Problem problem = getProblemInstance()) {
 			//instantiate the reference set
 			NondominatedPopulation referenceSet = getReferenceSet();
-			
-			//setup the quality indicators
-			List<Indicator> indicators = new ArrayList<Indicator>();
-			
-			if (includeHypervolume) {
-				if ((idealPoint != null) && (referencePoint != null)) {
-					indicators.add(new Hypervolume(problem, idealPoint, referencePoint));
-				} else if (referencePoint != null) {
-					indicators.add(new Hypervolume(problem, referenceSet, referencePoint));
-				} else {
-					indicators.add(new Hypervolume(problem, referenceSet));
-				}
+
+			//construct the result object
+			AnalyzerResults analyzerResults = new AnalyzerResults(problem, referenceSet, epsilons, selectedIndicators);
+			analyzerResults.addAll(data.values());
+
+			//perform the analysis
+			analyzerResults.calculateIndicators(showAggregate);
+
+			if (showStatisticalSignificance && data.size() >= 2) {
+				analyzerResults.calculateStatisticalSignificance(significanceLevel);
 			}
-			
-			if (includeGenerationalDistance) {
-				indicators.add(new GenerationalDistance(problem, referenceSet));
-			}
-			
-			if (includeInvertedGenerationalDistance) {
-				indicators.add(new InvertedGenerationalDistance(problem, referenceSet));
-			}
-			
-			if (includeAdditiveEpsilonIndicator) {
-				indicators.add(new AdditiveEpsilonIndicator(problem, referenceSet));
-			}
-			
-			if (includeMaximumParetoFrontError) {
-				indicators.add(new MaximumParetoFrontError(problem, referenceSet));
-			}
-			
-			if (includeSpacing) {
-				indicators.add(new Spacing(problem));
-			}
-			
-			if (includeContribution) {
-				if (epsilons == null) {
-					indicators.add(new Contribution(referenceSet));
-				} else {
-					indicators.add(new Contribution(referenceSet, epsilons));
-				}
-			}
-			
-			if (includeR1) {
-				indicators.add(new R1Indicator(problem,
-						R1Indicator.getDefaultSubdivisions(problem),
-						referenceSet));
-			}
-			
-			if (includeR2) {
-				indicators.add(new R2Indicator(problem,
-						R2Indicator.getDefaultSubdivisions(problem),
-						referenceSet));
-			}
-			
-			if (includeR3) {
-				indicators.add(new R3Indicator(problem,
-						R3Indicator.getDefaultSubdivisions(problem),
-						referenceSet));
-			}
-			
-			if (indicators.isEmpty()) {
-				System.err.println("no indicators selected");
-				return new AnalyzerResults();
-			}
-			
-			//generate the aggregate sets
-			Map<String, NondominatedPopulation> aggregateSets = new HashMap<String, NondominatedPopulation>();
-			
-			if (showAggregate) {
-				for (String algorithm : data.keySet()) {
-					NondominatedPopulation aggregateSet = newArchive();
-					
-					for (NondominatedPopulation set : data.get(algorithm)) {
-						aggregateSet.addAll(set);
-					}
-					
-					aggregateSets.put(algorithm, aggregateSet);
-				}
-			}
-			
-			//precompute the individual seed metrics, as they are used both
-			//for descriptive statistics and statistical significance tests
-			AnalyzerResults analyzerResults = new AnalyzerResults();
-			
-			for (String algorithm : data.keySet()) {
-				AlgorithmResult algorithmResult = new AlgorithmResult(algorithm);
-				
-				for (Indicator indicator : indicators) {
-					String indicatorName = indicator.getClass().getSimpleName();
-					List<NondominatedPopulation> sets = data.get(algorithm);
-					double[] values = new double[sets.size()];
-					
-					for (int i=0; i<sets.size(); i++) {
-						values[i] = indicator.evaluate(sets.get(i));
-					}
-					
-					algorithmResult.add(new IndicatorResult(indicatorName, values));
-					
-					if (showAggregate) {
-						algorithmResult.get(indicatorName).setAggregateValue(
-								indicator.evaluate(aggregateSets.get(algorithm)));
-					}
-				}
-				
-				analyzerResults.add(algorithmResult);
-			}
-			
-			//precompute the statistical significance of the medians
-			if (showStatisticalSignificance) {
-				List<String> algorithms = new ArrayList<String>(data.keySet());
-				
-				for (Indicator indicator : indicators) {
-					String indicatorName = indicator.getClass().getSimpleName();
-					
-					//insufficient number of samples, skip test
-					if (algorithms.size() < 2) {
-						continue;
-					}
-					
-					KruskalWallisTest kwTest = new KruskalWallisTest(algorithms.size());
-					
-					for (int i=0; i<algorithms.size(); i++) {
-						String algorithm = algorithms.get(i);
-						double[] values = analyzerResults.get(algorithm).get(indicatorName).getValues();
-						
-						kwTest.addAll(values, i);
-					}
-					
-					try {
-						if (!kwTest.test(significanceLevel)) {
-							for (int i=0; i<algorithms.size()-1; i++) {
-								for (int j=i+1; j<algorithms.size(); j++) {
-									analyzerResults.get(algorithms.get(i))
-											.get(indicatorName)
-											.addIndifferentAlgorithm(algorithms.get(j));
-									analyzerResults.get(algorithms.get(j))
-											.get(indicatorName)
-											.addIndifferentAlgorithm(algorithms.get(i));
-								}
-							}
-						} else {
-							for (int i=0; i<algorithms.size()-1; i++) {
-								for (int j=i+1; j<algorithms.size(); j++) {
-									MannWhitneyUTest mwTest = new MannWhitneyUTest();
-									
-									mwTest.addAll(analyzerResults
-											.get(algorithms.get(i))
-											.get(indicatorName).getValues(), 0);
-									mwTest.addAll(analyzerResults
-											.get(algorithms.get(j))
-											.get(indicatorName).getValues(), 1);
-									
-									if (!mwTest.test(significanceLevel)) {
-										analyzerResults.get(algorithms.get(i))
-												.get(indicatorName)
-												.addIndifferentAlgorithm(algorithms.get(j));
-										analyzerResults.get(algorithms.get(j))
-												.get(indicatorName)
-												.addIndifferentAlgorithm(algorithms.get(i));
-									}
-								}
-							}
-						}
-					} catch (RuntimeException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-					
+
 			return analyzerResults;
 		}
 	}
-	
+
 	/**
 	 * Prints the analysis of all data recorded in this analyzer.  
 	 * 
@@ -845,12 +649,12 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		display(ps);
 		return this;
 	}
-	
+
 	@Override
 	public void display(PrintStream ps) {
 		getAnalysis().display(ps);
 	}
-	
+
 	/**
 	 * Clears all data stored in this analyzer.
 	 * 
@@ -860,362 +664,401 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		data.clear();
 		return this;
 	}
-	
+
 	/**
 	 * Stores the results produced by this analyzer.
 	 */
-	public class AnalyzerResults implements Displayable {
+	public class AnalyzerResults implements Formattable<Pair<String, StandardIndicator>> {
 		
+		/**
+		 * The problem.
+		 */
+		private final Problem problem;
+		
+		/**
+		 * The reference set used to compute performance indicators.
+		 */
+		private final NondominatedPopulation referenceSet;
+		
+		/**
+		 * The epsilons used to compute performance indicators, or {@code null} if no epsilon values are configured.
+		 */
+		private final Epsilons epsilons;
+		
+		/**
+		 * The indicators that were computed in these results.
+		 */
+		private final EnumSet<StandardIndicator> selectedIndicators;
+
 		/**
 		 * The results for each algorithm.
 		 */
-		private final List<AlgorithmResult> algorithmResults;
+		private final TreeMap<String, EndOfRunResults> data;
 		
 		/**
-		 * Constructs a new, empty object for storing the results from this analyzer.
+		 * Records the descriptive statistics associated with each end-of-run result.
+		 */
+		private final TreeMap<String, Map<StandardIndicator, DescriptiveStatistics>> statistics;
+		
+		/**
+		 * Records the indicator values for the aggregate of all end-of-run reslts.
+		 */
+		private final TreeMap<String, IndicatorValues> aggregates;
+
+		/**
+		 * Records which algorithms produced statistically similar results.
+		 */
+		private final TreeMap<String, Map<StandardIndicator, Set<String>>> similarities;
+		
+		/**
+		 * Constructs a results object indicating no data available.
 		 */
 		AnalyzerResults() {
+			this(null, null, null, EnumSet.noneOf(StandardIndicator.class));
+		}
+
+		/**
+		 * Constructs a results object for the given problem.  Before returning the constructed object to the caller,
+		 * be sure to add data and perform the appropriate calculations.
+		 */
+		AnalyzerResults(Problem problem, NondominatedPopulation referenceSet, Epsilons epsilons,
+				EnumSet<StandardIndicator> selectedIndicators) {
 			super();
+			this.problem = problem;
+			this.referenceSet = referenceSet;
+			this.epsilons = epsilons;
+			this.selectedIndicators = selectedIndicators;
 			
-			algorithmResults = new ArrayList<AlgorithmResult>();
+			data = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+			statistics = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+			aggregates = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+			similarities = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 		}
 		
+		/**
+		 * Adds a collection of results.  Each result should have a unique algorithm name.
+		 * 
+		 * @param results the collection of results
+		 */
+		void addAll(Collection<EndOfRunResults> results) {
+			for (EndOfRunResults result : results) {
+				add(result);
+			}
+		}
+
+		/**
+		 * Adds the results for an algorithm.  Each result should have a unique algorithm name.  The results are
+		 * copied to keep these results distinct from the {@link Analyzer}.
+		 * 
+		 * @param result the results for the algorithm
+		 */
+		void add(EndOfRunResults result) {
+			data.put(result.getAlgorithmName(), result.copy());
+		}
+		
+		Indicators createIndicators() {
+			Indicators indicators = Indicators.of(problem, referenceSet);
+			indicators.include(selectedIndicators);
+
+			if (selectedIndicators.contains(StandardIndicator.Hypervolume)) {
+				if ((idealPoint != null) && (referencePoint != null)) {
+					indicators.withHypervolume(idealPoint, referencePoint);
+				} else if (referencePoint != null) {
+					indicators.withHypervolume(referencePoint);
+				}
+			}
+
+			if (epsilons != null) {
+				indicators.withEpsilons(epsilons);
+			}
+
+			return indicators;
+		}
+		
+		void calculateIndicators(boolean includeAggregate) {
+			statistics.clear();
+			aggregates.clear();
+			
+			// Initialize the data structure
+			for (String algorithmName : data.keySet()) {
+				Map<StandardIndicator, DescriptiveStatistics> map = new HashMap<>();
+				
+				for (StandardIndicator indicator : selectedIndicators) {
+					map.put(indicator, new DescriptiveStatistics());
+				}
+				
+				statistics.put(algorithmName, map);
+			}
+			
+			// Evaluate the performance indicators
+			Indicators indicators = createIndicators();
+			
+			for (String algorithmName : data.keySet()) {
+				EndOfRunResults results = data.get(algorithmName);
+				
+				for (NondominatedPopulation approximationSet : results.getApproximationSets()) {
+					IndicatorValues indicatorValues = indicators.apply(approximationSet);
+					
+					for (StandardIndicator indicator : selectedIndicators) {
+						statistics.get(algorithmName).get(indicator).addValue(indicatorValues.get(indicator));
+					}
+				}
+				
+				if (includeAggregate) {
+					NondominatedPopulation aggregate = results.getAggregate(epsilons);
+					aggregates.put(algorithmName, indicators.apply(aggregate));
+				}
+			}
+		}
+		
+		void calculateStatisticalSignificance(double significanceLevel) {
+			similarities.clear();
+			
+			List<String> algorithms = new ArrayList<String>(getAlgorithms());
+			EnumSet<StandardIndicator> indicators = getIndicators();
+						
+			// Initialize the data structure
+			for (String algorithmName : algorithms) {
+				Map<StandardIndicator, Set<String>> map = new HashMap<>();
+				
+				for (StandardIndicator indicator : selectedIndicators) {
+					map.put(indicator, new TreeSet<String>(String.CASE_INSENSITIVE_ORDER));
+				}
+				
+				similarities.put(algorithmName, map);
+			}
+			
+			// Perform the statistical tests
+			for (StandardIndicator indicator : indicators) {
+				try {
+					// First use the non-parametric Kruskal-Wallis test to determine if the medians are the same
+					// between N groups (the null hypothesis).  Using this single test first results in less error than
+					// performing all pairwise tests.
+					KruskalWallisTest kwTest = new KruskalWallisTest(algorithms.size());
+		
+					for (int i = 0; i < algorithms.size(); i++) {
+						kwTest.addAll(statistics.get(algorithms.get(i)).get(indicator).getValues(), i);
+					}
+				
+					if (!kwTest.test(significanceLevel)) {
+						// No difference detected, add all pairs as similar
+						for (int i=0; i<algorithms.size()-1; i++) {
+							for (int j=i+1; j<algorithms.size(); j++) {
+								similarities.get(algorithms.get(i)).get(indicator).add(algorithms.get(j));
+								similarities.get(algorithms.get(j)).get(indicator).add(algorithms.get(i));
+							}
+						}
+					} else {
+						// Difference detected, test each pair of algorithms
+						for (int i = 0; i < algorithms.size() - 1; i++) {
+							for (int j = i + 1; j < algorithms.size(); j++) {
+								MannWhitneyUTest mwTest = new MannWhitneyUTest();
+								mwTest.addAll(statistics.get(algorithms.get(i)).get(indicator).getValues(), 0);
+								mwTest.addAll(statistics.get(algorithms.get(j)).get(indicator).getValues(), 1);
+
+								if (!mwTest.test(significanceLevel)) {
+									similarities.get(algorithms.get(i)).get(indicator).add(algorithms.get(j));
+									similarities.get(algorithms.get(j)).get(indicator).add(algorithms.get(i));
+								}
+							}
+						}
+					}
+				} catch (RuntimeException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
 		/**
 		 * Returns the algorithms processed using this analyzer.
 		 * 
 		 * @return the algorithm names
 		 */
-		public List<String> getAlgorithms() {
-			List<String> algorithms = new ArrayList<String>();
-			
-			for (AlgorithmResult result : algorithmResults) {
-				algorithms.add(result.getAlgorithm());
-			}
-			
-			return algorithms;
+		public Set<String> getAlgorithms() {
+			return data.keySet();
 		}
 		
 		/**
-		 * Returns the results for a single algorithm.
+		 * Returns the indicators that are included in these results.
 		 * 
-		 * @param algorithm the name of the algorithm
+		 * @return the indicators
+		 */
+		public EnumSet<StandardIndicator> getIndicators() {
+			return selectedIndicators.clone();
+		}
+
+		/**
+		 * Returns the end-of-run results for an algorithm.
+		 * 
+		 * @param algorithmName the name of the algorithm
 		 * @return the results for the given algorithm
 		 */
-		public AlgorithmResult get(String algorithm) {
-			for (AlgorithmResult result : algorithmResults) {
-				if (result.getAlgorithm().equals(algorithm)) {
-					return result;
+		public EndOfRunResults get(String algorithmName) {
+			return data.get(algorithmName);
+		}
+		
+		/**
+		 * Returns the descriptive statistics for an algorithm.
+		 * 
+		 * @param algorithmName the name of the algorithm
+		 * @param indicator the indicator
+		 * @return the descriptive statistics
+		 */
+		public DescriptiveStatistics getStatistics(String algorithmName, StandardIndicator indicator) {
+			return statistics.get(algorithmName).get(indicator);
+		}
+		
+		/**
+		 * Returns a set of algorithm names that produced statistically similar results as the given algorithm.
+		 * 
+		 * @param algorithmName the name of the algorithm
+		 * @param indicator the indicator
+		 * @return the algorithms with statistically similar results
+		 */
+		public Set<String> getSimilarAlgorithms(String algorithmName, StandardIndicator indicator) {
+			return Collections.unmodifiableSet(similarities.get(algorithmName).get(indicator));
+		}
+
+		@Override
+		public TabularData<Pair<String, StandardIndicator>> asTabularData() {
+			List<Pair<String, StandardIndicator>> keys = new ArrayList<>();
+			
+			for (String algorithm : data.keySet()) {
+				for (StandardIndicator indicator : selectedIndicators) {
+					keys.add(Pair.of(algorithm, indicator));
 				}
 			}
 			
-			return null;
-		}
-		
-		/**
-		 * Adds the results for an algorithm.  Each result should have a unique algorithm name.
-		 * 
-		 * @param result the results for the algorithm
-		 */
-		void add(AlgorithmResult result) {
-			algorithmResults.add(result);
-		}
-		
-		@Override
-		public void display(PrintStream ps) {
-			for (AlgorithmResult algorithmResult : algorithmResults) {
-				algorithmResult.display(ps);
-			}
-		}
-		
-	}
-	
-	/**
-	 * Stores the results for a single algorithm.
-	 */
-	public class AlgorithmResult implements Displayable {
-		
-		/**
-		 * The name of the algorithm.
-		 */
-		private final String algorithm;
-		
-		/**
-		 * The results for each indicator.
-		 */
-		private final List<IndicatorResult> indicatorResults;
-		
-		/**
-		 * Constructs a new, empty object for storing the results of a single algorithm.
-		 * 
-		 * @param algorithm the algorithm name
-		 */
-		public AlgorithmResult(String algorithm) {
-			super();
-			this.algorithm = algorithm;
+			TabularData<Pair<String, StandardIndicator>> table = new TabularData<>(keys);
+			table.addColumn(new Column<Pair<String, StandardIndicator>, String>("Algorithm", x -> x.getKey()));
+			table.addColumn(new Column<Pair<String, StandardIndicator>, String>("Indicator", x -> x.getValue().name()));
 			
-			indicatorResults = new ArrayList<IndicatorResult>();
+			if (selectedStatistics.isEmpty()) {
+				table.addColumn(new Column<Pair<String, StandardIndicator>, Double>("Min",
+						x -> getStatistics(x.getKey(), x.getValue()).getMin()));
+				table.addColumn(new Column<Pair<String, StandardIndicator>, Double>("Median",
+						x -> getStatistics(x.getKey(), x.getValue()).getPercentile(50)));
+				table.addColumn(new Column<Pair<String, StandardIndicator>, Double>("Max",
+						x -> getStatistics(x.getKey(), x.getValue()).getMax()));
+				table.addColumn(new Column<Pair<String, StandardIndicator>, Double>("IQR (+/-)",
+						x -> getStatistics(x.getKey(), x.getValue()).getPercentile(75) -
+						getStatistics(x.getKey(), x.getValue()).getPercentile(25)));
+				table.addColumn(new Column<Pair<String, StandardIndicator>, Long>("Count",
+						x -> getStatistics(x.getKey(), x.getValue()).getN()));
+			} else {
+				for (UnivariateStatistic statistic : selectedStatistics) {
+					table.addColumn(new Column<Pair<String, StandardIndicator>, Double>(
+							statistic.getClass().getSimpleName(),
+							x -> getStatistics(x.getKey(), x.getValue()).apply(statistic)));
+				}
+			}
+			
+			if (aggregates.size() > 0) {
+				table.addColumn(new Column<Pair<String, StandardIndicator>, Double>("Aggregate",
+						x -> aggregates.get(x.getKey()).get(x.getValue())));
+			}
+			
+			if (similarities.size() > 0) {
+				table.addColumn(new Column<Pair<String, StandardIndicator>, String>(
+						"Statistically Similar (a=" + significanceLevel + ")",
+						x -> String.join(", ", getSimilarAlgorithms(x.getKey(), x.getValue()))));
+			}
+			
+			if (showIndividualValues) {
+				table.addColumn(new Column<Pair<String, StandardIndicator>, String>("Values",
+						x -> DoubleStream.of(getStatistics(x.getKey(), x.getValue()).getValues())
+							.mapToObj((double v) -> NumberFormatter.getDefault().format(v))
+							.collect(Collectors.joining(", "))));
+			}
+			
+			return table;
 		}
-		
+
+	}
+
+	/**
+	 * Collection of end-of-run results (i.e., the approximation set) produced by an algorithm across multiple seeds.
+	 */
+	public class EndOfRunResults {
+
+		private final String algorithmName;
+
+		private final List<NondominatedPopulation> approximationSets;
+
 		/**
-		 * Returns the name of the algorithm.
+		 * Constructs a new end-of-run results object for the given algorithm.
+		 * 
+		 * @param algorithmName the name of the algorithm
+		 */
+		public EndOfRunResults(String algorithmName) {
+			super();
+			this.algorithmName = algorithmName;
+
+			approximationSets = new ArrayList<>();
+		}
+
+		/**
+		 * Returns the algorithm name.
 		 * 
 		 * @return the algorithm name
 		 */
-		public String getAlgorithm() {
-			return algorithm;
+		public String getAlgorithmName() {
+			return algorithmName;
 		}
 
 		/**
-		 * Returns the names of the indicators contained within these results.
+		 * Adds an end-of-run approximation set to these results.
 		 * 
-		 * @return a list of the indicator names
+		 * @param approximationSet the end-of-run approximation set
 		 */
-		public List<String> getIndicators() {
-			List<String> indicators = new ArrayList<String>();
-			
-			for (IndicatorResult result : indicatorResults) {
-				indicators.add(result.getIndicator());
-			}
-			
-			return indicators;
+		public void addApproximationSet(NondominatedPopulation approximationSet) {
+			approximationSets.add(approximationSet);
+		}
+
+		/**
+		 * Returns all end-of-run approximation sets contained within these results.
+		 * 
+		 * @return the list of end-of-run approximation sets
+		 */
+		public List<NondominatedPopulation> getApproximationSets() {
+			return approximationSets;
 		}
 		
 		/**
-		 * Returns the results for the given indicator.
+		 * Calculates and returns the end-of-run aggregate set for these results.  This aggregate set combines the
+		 * individual end-of-run results.
 		 * 
-		 * @param indicator the indicator name
-		 * @return the results for the given indicator
+		 * @param epsilons the epsilon values, or {@code null} if no epsilons are specified
+		 * @return the aggregate set
 		 */
-		public IndicatorResult get(String indicator) {
-			for (IndicatorResult result : indicatorResults) {
-				if (result.getIndicator().equals(indicator)) {
-					return result;
-				}
+		public NondominatedPopulation getAggregate(Epsilons epsilons) {
+			NondominatedPopulation aggregate = epsilons == null ?
+					new NondominatedPopulation(new ParetoDominanceComparator()) :
+					new EpsilonBoxDominanceArchive(epsilons);
+			
+			for (NondominatedPopulation approximationSet : getApproximationSets()) {
+				aggregate.addAll(approximationSet);
 			}
 			
-			return null;
+			return aggregate;
 		}
 		
 		/**
-		 * Adds the results for a single indicator.  The name of the indicator should be unique.
+		 * Returns a shallow copy of these results.  Changes made to the {@link Analyzer} will not be reflected in the
+		 * returned copy.
 		 * 
-		 * @param result the indicator result
+		 * @return the copy
 		 */
-		void add(IndicatorResult result) {
-			indicatorResults.add(result);
-		}
-		
-		@Override
-		public void display(PrintStream ps) {
-			ps.print(getAlgorithm());
-			ps.println(':');
+		public EndOfRunResults copy() {
+			EndOfRunResults copy = new EndOfRunResults(getAlgorithmName());
 			
-			for (IndicatorResult indicatorResult : indicatorResults) {
-				indicatorResult.display(ps);
+			for (NondominatedPopulation approximationSet : getApproximationSets()) {
+				copy.addApproximationSet(approximationSet.copy());
 			}
+			
+			return copy;
 		}
 		
 	}
-	
-	/**
-	 * Inner class for storing the results for a single performance indicator.
-	 */
-	public class IndicatorResult implements Displayable {
-		
-		/**
-		 * The name of the indicator.
-		 */
-		private final String indicator;
-		
-		/**
-		 * The computed indicator values.
-		 */
-		private final double[] values;
-		
-		/**
-		 * A list of algorithms whose performance with respect to this indicator are statistically similar to the
-		 * current algorithm.
-		 */
-		private List<String> indifferentAlgorithms;
-		
-		/**
-		 * The indicator value of the aggregate Pareto set, or {@code null} if the aggregate value was not computed.
-		 */
-		private Double aggregateValue;
-		
-		/**
-		 * Constructs a new object for storing the results for a single indicator.
-		 * 
-		 * @param indicator the name of the indicator
-		 * @param values the computed indicator values
-		 */
-		public IndicatorResult(String indicator, double[] values) {
-			super();
-			this.indicator = indicator;
-			this.values = values;
-			
-			indifferentAlgorithms = new ArrayList<String>();
-		}
-		
-		/**
-		 * Returns the computed indicator values.
-		 * 
-		 * @return the indicator values
-		 */
-		public double[] getValues() {
-			return values.clone();
-		}
 
-		/**
-		 * Returns the minimum indicator value.
-		 * 
-		 * @return the minimum indicator value
-		 */
-		public double getMin() {
-			return getStatistic(new Min());
-		}
-		
-		/**
-		 * Returns the median indicator value.
-		 * 
-		 * @return the median indicator value
-		 */
-		public double getMedian() {
-			return getStatistic(new Median());
-		}
-		
-		/**
-		 * Returns the maximum indicator value.
-		 * 
-		 * @return the maximum indicator value
-		 */
-		public double getMax() {
-			return getStatistic(new Max());
-		}
-		
-		/**
-		 * Computes and returns the value of the given univariate statistic.
-		 * 
-		 * @param statistic the univariate statistic to compute
-		 * @return the computed value of the statistic
-		 */
-		public double getStatistic(UnivariateStatistic statistic) {
-			return statistic.evaluate(values);
-		}
-		
-		/**
-		 * Returns the number of samples.
-		 * 
-		 * @return the number of samples
-		 */
-		public int getCount() {
-			return values.length;
-		}
-
-		/**
-		 * Returns a list of algorithms whose performance with respect to this indicator are statistically similar to
-		 * the current algorithm.  This list will only be populated if {@link Analyzer#showStatisticalSignificance()}
-		 * is invoked.
-		 * 
-		 * @return a list of algorithms with statistically similar performance
-		 */
-		public List<String> getIndifferentAlgorithms() {
-			return new ArrayList<String>(indifferentAlgorithms);
-		}
-		
-		/**
-		 * Adds an algorithm with statistically similar performance to the current algorithm.
-		 * 
-		 * @param algorithm the algorithm with statistically similar performance
-		 */
-		void addIndifferentAlgorithm(String algorithm) {
-			indifferentAlgorithms.add(algorithm);
-		}
-
-		/**
-		 * Returns the indicator value of the aggregate Pareto set, or {@code null} if the aggregate value was not
-		 * computed.  This value is only computed if {@link Analyzer#showAggregate()} is invoked.
-		 * 
-		 * @return the aggregate indicator value; or {@code null} if not computed
-		 */
-		public Double getAggregateValue() {
-			return aggregateValue;
-		}
-
-		/**
-		 * Sets the indicator value of the aggregate Pareto set.
-		 * 
-		 * @param aggregateValue the aggregate indicator value
-		 */
-		void setAggregateValue(Double aggregateValue) {
-			this.aggregateValue = aggregateValue;
-		}
-
-		/**
-		 * Returns the indicator name.
-		 * 
-		 * @return the indicator name
-		 */
-		public String getIndicator() {
-			return indicator;
-		}
-		
-		@Override
-		public void display(PrintStream ps) {
-			NumberFormatter formatter = NumberFormatter.getDefault();
-			double[] values = getValues();
-			
-			ps.print("    ");
-			ps.print(getIndicator());
-			ps.print(": ");
-			
-			if (values.length == 0) {
-				ps.print("null");
-			} else if (values.length == 1) {
-				ps.print(values[0]);
-			} else {
-				ps.println();
-				
-				if (showAggregate) {
-					ps.print("        Aggregate: ");
-					ps.println(formatter.format(getAggregateValue()));
-				}
-				
-				if (statistics.isEmpty()) {
-					ps.print("        Min: ");
-					ps.println(formatter.format(getMin()));
-					ps.print("        Median: ");
-					ps.println(formatter.format(getMedian()));
-					ps.print("        Max: ");
-					ps.println(formatter.format(getMax()));
-				} else {
-					for (UnivariateStatistic statistic : statistics) {
-						ps.print("        ");
-						ps.print(statistic.getClass().getSimpleName());
-						ps.print(": ");
-						ps.println(formatter.format(getStatistic(statistic)));
-					}
-				}
-				
-				ps.print("        Count: ");
-				ps.print(formatter.format(getCount()));
-				
-				if (showStatisticalSignificance) {
-					ps.println();
-					ps.print("        Indifferent: ");
-					ps.print(getIndifferentAlgorithms());
-				}
-				
-				if (showIndividualValues) {
-					ps.println();
-					ps.print("        Values: ");
-					ps.print(formatter.format(values));
-				}
-			}
-			
-			ps.println();
-		}
-		
-	}
-	
 }

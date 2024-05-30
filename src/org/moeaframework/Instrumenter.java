@@ -22,6 +22,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -51,10 +52,12 @@ import org.moeaframework.core.indicator.Contribution;
 import org.moeaframework.core.indicator.GenerationalDistance;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.indicator.InvertedGenerationalDistance;
+import org.moeaframework.core.indicator.MaximumParetoFrontError;
 import org.moeaframework.core.indicator.R1Indicator;
 import org.moeaframework.core.indicator.R2Indicator;
 import org.moeaframework.core.indicator.R3Indicator;
 import org.moeaframework.core.indicator.Spacing;
+import org.moeaframework.core.indicator.Indicators.StandardIndicator;
 import org.moeaframework.core.spi.ProblemFactory;
 
 /**
@@ -82,52 +85,12 @@ import org.moeaframework.core.spi.ProblemFactory;
  * Instrumenter to enumerate these objects and access their properties programmatically.
  */
 public class Instrumenter extends ProblemBuilder {
+	
+	/**
+	 * The indicators that have been selected.
+	 */
+	private final EnumSet<StandardIndicator> selectedIndicators;
 
-	/**
-	 * {@code true} if the hypervolume collector is included; {@code false} otherwise.
-	 */
-	private boolean includeHypervolume;
-	
-	/**
-	 * {@code true} if the generational distance collector is included; {@code false} otherwise.
-	 */
-	private boolean includeGenerationalDistance;
-	
-	/**
-	 * {@code true} if the inverted generational distance collector is included; {@code false} otherwise.
-	 */
-	private boolean includeInvertedGenerationalDistance;
-	
-	/**
-	 * {@code true} if the spacing collector is included; {@code false} otherwise.
-	 */
-	private boolean includeSpacing;
-	
-	/**
-	 * {@code true} if the additive &epsilon;-indicator collector is included; {@code false} otherwise.
-	 */
-	private boolean includeAdditiveEpsilonIndicator;
-	
-	/**
-	 * {@code true} if the contribution collector is included; {@code false} otherwise.
-	 */
-	private boolean includeContribution;
-	
-	/**
-	 * {@code true} if the R1 collector is included; {@code false} otherwise.
-	 */
-	private boolean includeR1;
-	
-	/**
-	 * {@code true} if the R2 collector is included; {@code false} otherwise.
-	 */
-	private boolean includeR2;
-	
-	/**
-	 * {@code true} if the R3 collector is included; {@code false} otherwise.
-	 */
-	private boolean includeR3;
-	
 	/**
 	 * {@code true} if the &epsilon;-progress collector is included; {@code false} otherwise.
 	 */
@@ -194,6 +157,8 @@ public class Instrumenter extends ProblemBuilder {
 	 */
 	public Instrumenter() {
 		super();
+		
+		selectedIndicators = EnumSet.noneOf(StandardIndicator.class);
 		
 		frequency = 100;
 		frequencyType = FrequencyType.EVALUATIONS;
@@ -274,7 +239,7 @@ public class Instrumenter extends ProblemBuilder {
 	 * @return a reference to this instrumenter
 	 */
 	public Instrumenter attachHypervolumeCollector() {
-		includeHypervolume = true;
+		selectedIndicators.add(StandardIndicator.Hypervolume);
 		return this;
 	}
 	
@@ -284,7 +249,7 @@ public class Instrumenter extends ProblemBuilder {
 	 * @return a reference to this instrumenter
 	 */
 	public Instrumenter attachGenerationalDistanceCollector() {
-		includeGenerationalDistance = true;
+		selectedIndicators.add(StandardIndicator.GenerationalDistance);
 		return this;
 	}
 	
@@ -294,7 +259,7 @@ public class Instrumenter extends ProblemBuilder {
 	 * @return a reference to this instrumenter
 	 */
 	public Instrumenter attachInvertedGenerationalDistanceCollector() {
-		includeInvertedGenerationalDistance = true;
+		selectedIndicators.add(StandardIndicator.InvertedGenerationalDistance);
 		return this;
 	}
 	
@@ -304,7 +269,7 @@ public class Instrumenter extends ProblemBuilder {
 	 * @return a reference to this instrumenter
 	 */
 	public Instrumenter attachSpacingCollector() {
-		includeSpacing = true;
+		selectedIndicators.add(StandardIndicator.Spacing);
 		return this;
 	}
 	
@@ -314,7 +279,7 @@ public class Instrumenter extends ProblemBuilder {
 	 * @return a reference to this instrumenter
 	 */
 	public Instrumenter attachAdditiveEpsilonIndicatorCollector() {
-		includeAdditiveEpsilonIndicator = true;
+		selectedIndicators.add(StandardIndicator.AdditiveEpsilonIndicator);
 		return this;
 	}
 	
@@ -324,7 +289,17 @@ public class Instrumenter extends ProblemBuilder {
 	 * @return a reference to this instrumenter
 	 */
 	public Instrumenter attachContributionCollector() {
-		includeContribution = true;
+		selectedIndicators.add(StandardIndicator.Contribution);
+		return this;
+	}
+	
+	/**
+	 * Includes the maximum Pareto front error collector when instrumenting algorithms.
+	 * 
+	 * @return a reference to this instrumenter
+	 */
+	public Instrumenter attachMaximumParetoFrontErrorCollector() {
+		selectedIndicators.add(StandardIndicator.MaximumParetoFrontError);
 		return this;
 	}
 	
@@ -334,7 +309,7 @@ public class Instrumenter extends ProblemBuilder {
 	 * @return a reference to this instrumenter
 	 */
 	public Instrumenter attachR1Collector() {
-		includeR1 = true;
+		selectedIndicators.add(StandardIndicator.R1);
 		return this;
 	}
 	
@@ -344,7 +319,7 @@ public class Instrumenter extends ProblemBuilder {
 	 * @return a reference to this instrumenter
 	 */
 	public Instrumenter attachR2Collector() {
-		includeR2 = true;
+		selectedIndicators.add(StandardIndicator.R2);
 		return this;
 	}
 	
@@ -354,14 +329,12 @@ public class Instrumenter extends ProblemBuilder {
 	 * @return a reference to this instrumenter
 	 */
 	public Instrumenter attachR3Collector() {
-		includeR3 = true;
+		selectedIndicators.add(StandardIndicator.R3);
 		return this;
 	}
 	
 	/**
-	 * Includes all indicator collectors when instrumenting algorithms.  This includes hypervolume, generational
-	 * distance, inverted generational distance, spacing, additive &epsilon;-indicator, contribution, and the
-	 * R1, R2, and R3 indicators.
+	 * Includes all indicator collectors when instrumenting algorithms.
 	 * 
 	 * @return a reference to this instrumenter
 	 */
@@ -372,6 +345,7 @@ public class Instrumenter extends ProblemBuilder {
 		attachSpacingCollector();
 		attachAdditiveEpsilonIndicatorCollector();
 		attachContributionCollector();
+		attachMaximumParetoFrontErrorCollector();
 		attachR1Collector();
 		attachR2Collector();
 		attachR3Collector();
@@ -658,9 +632,7 @@ public class Instrumenter extends ProblemBuilder {
 	public InstrumentedAlgorithm instrument(Algorithm algorithm) {
 		List<Collector> collectors = new ArrayList<Collector>();
 		
-		if (includeHypervolume || includeGenerationalDistance || includeInvertedGenerationalDistance ||
-				includeSpacing || includeAdditiveEpsilonIndicator || includeContribution ||
-				includeR1 || includeR2 || includeR3) {
+		if (!selectedIndicators.isEmpty()) {
 			Problem problem = algorithm.getProblem();
 			NondominatedPopulation referenceSet = getReferenceSet();
 			EpsilonBoxDominanceArchive archive = null;
@@ -669,42 +641,46 @@ public class Instrumenter extends ProblemBuilder {
 				archive = (EpsilonBoxDominanceArchive)newArchive();
 			}
 			
-			if (includeHypervolume) {
+			if (selectedIndicators.contains(StandardIndicator.Hypervolume)) {
 				collectors.add(new IndicatorCollector(new Hypervolume(problem, referenceSet), archive));
 			}
 			
-			if (includeGenerationalDistance) {
+			if (selectedIndicators.contains(StandardIndicator.GenerationalDistance)) {
 				collectors.add(new IndicatorCollector(new GenerationalDistance(problem, referenceSet), archive));
 			}
 			
-			if (includeInvertedGenerationalDistance) {
+			if (selectedIndicators.contains(StandardIndicator.InvertedGenerationalDistance)) {
 				collectors.add(new IndicatorCollector(new InvertedGenerationalDistance(problem, referenceSet), archive));
 			}
 			
-			if (includeSpacing) {
+			if (selectedIndicators.contains(StandardIndicator.Spacing)) {
 				collectors.add(new IndicatorCollector(new Spacing(problem), archive));
 			}
 			
-			if (includeAdditiveEpsilonIndicator) {
+			if (selectedIndicators.contains(StandardIndicator.AdditiveEpsilonIndicator)) {
 				collectors.add(new IndicatorCollector(new AdditiveEpsilonIndicator(problem, referenceSet), archive));
 			}
 			
-			if (includeContribution) {
+			if (selectedIndicators.contains(StandardIndicator.Contribution)) {
 				collectors.add(new IndicatorCollector(archive == null ? new Contribution(referenceSet) :
 						new Contribution(referenceSet, archive.getComparator()), archive));
 			}
 			
-			if (includeR1) {
+			if (selectedIndicators.contains(StandardIndicator.MaximumParetoFrontError)) {
+				collectors.add(new IndicatorCollector(new MaximumParetoFrontError(problem, referenceSet), archive));
+			}
+			
+			if (selectedIndicators.contains(StandardIndicator.R1)) {
 				collectors.add(new IndicatorCollector(new R1Indicator(problem,
 						R1Indicator.getDefaultSubdivisions(problem), referenceSet), archive));
 			}
 			
-			if (includeR2) {
+			if (selectedIndicators.contains(StandardIndicator.R2)) {
 				collectors.add(new IndicatorCollector(new R2Indicator(problem,
 						R2Indicator.getDefaultSubdivisions(problem), referenceSet), archive));
 			}
 			
-			if (includeR3) {
+			if (selectedIndicators.contains(StandardIndicator.R3)) {
 				collectors.add(new IndicatorCollector(new R3Indicator(problem,
 						R3Indicator.getDefaultSubdivisions(problem), referenceSet), archive));
 			}

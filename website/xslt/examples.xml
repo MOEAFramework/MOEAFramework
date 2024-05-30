@@ -294,27 +294,11 @@ analyzer.display();
 <!-- output:examples/Example4.java -->
 <pre class="brush: plain; toolbar: false;">
 <![CDATA[
-eMOEA:
-    Hypervolume:
-        Min: 0.318756
-        Median: 0.464230
-        Max: 0.533881
-        Count: 50
-        Indifferent: []
-NSGAII:
-    Hypervolume:
-        Min: 0.319489
-        Median: 0.514978
-        Max: 0.544461
-        Count: 50
-        Indifferent: []
-GDE3:
-    Hypervolume:
-        Min: 0.437182
-        Median: 0.502810
-        Max: 0.531823
-        Count: 50
-        Indifferent: []
+Algorithm Indicator   Min      Median   Max      IQR (+/-) Count Statistically Similar (a=0.05)
+--------- ----------- -------- -------- -------- --------- ----- ------------------------------
+eMOEA     Hypervolume 0.318756 0.464230 0.533881 0.081216  50
+GDE3      Hypervolume 0.437182 0.502810 0.531823 0.031219  50
+NSGAII    Hypervolume 0.319489 0.514978 0.544461 0.031242  50
 ]]>
 </pre>
 </div>

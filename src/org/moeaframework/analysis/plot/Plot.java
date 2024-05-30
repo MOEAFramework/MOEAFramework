@@ -83,6 +83,7 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.indicator.Indicators.StandardIndicator;
 import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.validate.Validate;
 
@@ -952,10 +953,10 @@ public class Plot {
 		DefaultBoxAndWhiskerCategoryDataset dataset = new DefaultBoxAndWhiskerCategoryDataset();
 
 		for (String algorithm : result.getAlgorithms()) {
-			for (String indicator : result.get(algorithm).getIndicators()) {
+			for (StandardIndicator indicator : result.getIndicators()) {
 				List<Double> values = new ArrayList<Double>();
 
-				for (double value : result.get(algorithm).get(indicator).getValues()) {
+				for (double value : result.getStatistics(algorithm, indicator).getValues()) {
 					values.add(value);
 				}
 

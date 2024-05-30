@@ -18,6 +18,7 @@
 package org.moeaframework.core.indicator;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -39,6 +40,63 @@ import org.moeaframework.util.validate.Validate;
  * provided reference set.  See {@link DefaultNormalizer} for ways to customize normalization.
  */
 public class Indicators implements Function<NondominatedPopulation, Indicators.IndicatorValues> {
+	
+	/**
+	 * Enumeration of standard indicators provided by the MOEA Framework.
+	 */
+	public static enum StandardIndicator {
+
+		/**
+		 * Hypervolume.
+		 */
+		Hypervolume,
+		
+		/**
+		 * Generational distance (GD).
+		 */
+		GenerationalDistance,
+		
+		/**
+		 * Inverted generational distance (IGD).
+		 */
+		InvertedGenerationalDistance,
+		
+		/**
+		 * Additive epsilon-indicator (AEI).
+		 */
+		AdditiveEpsilonIndicator,
+		
+		/**
+		 * Spacing.
+		 */
+		Spacing,
+		
+		/**
+		 * Maximum Pareto front error.
+		 */
+		MaximumParetoFrontError,
+		
+		/**
+		 * Pareto set contribution.
+		 */
+		Contribution,
+		
+		/**
+		 * R1 indicator.
+		 */
+		R1,
+		
+		/**
+		 * R2 indicator.
+		 */
+		R2,
+		
+		/**
+		 * R3 indicator.
+		 */
+		R3
+		
+	}
 
 	/**
 	 * Creates an instance of this class that evaluates all performance indicators.
@@ -93,57 +151,11 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	 * The normalizer to normalize populations so that all objectives reside in the range {@code [0, 1]}.
 	 */
 	private final Normalizer normalizer;
-
+	
 	/**
-	 * {@code true} if the hypervolume metric is to be computed; {@code false} otherwise.
+	 * The indicators that have been selected.
 	 */
-	private boolean includeHypervolume;
-
-	/**
-	 * {@code true} if the generational distance metric is to be computed; {@code false} otherwise.
-	 */
-	private boolean includeGenerationalDistance;
-
-	/**
-	 * {@code true} if the inverted generational distance metric is to be computed; {@code false} otherwise.
-	 */
-	private boolean includeInvertedGenerationalDistance;
-
-	/**
-	 * {@code true} if the additive &epsilon;-indicator metric is to be computed; {@code false} otherwise.
-	 */
-	private boolean includeAdditiveEpsilonIndicator;
-
-	/**
-	 * {@code true} if the spacing metric is to be computed; {@code false} otherwise.
-	 */
-	private boolean includeSpacing;
-
-	/**
-	 * {@code true} if the maximum Pareto front error metric is to be computed; {@code false} otherwise.
-	 */
-	private boolean includeMaximumParetoFrontError;
-
-	/**
-	 * {@code true} if the contribution of each approximation set to the reference set is to be computed;
-	 * {@code false} otherwise.
-	 */
-	private boolean includeContribution;
-
-	/**
-	 * {@code true} if the R1 indicator is to be computed; {@code false} otherwise.
-	 */
-	private boolean includeR1;
-
-	/**
-	 * {@code true} if the R2 indicator is to be computed; {@code false} otherwise.
-	 */
-	private boolean includeR2;
-
-	/**
-	 * {@code true} if the R3 indicator is to be computed; {@code false} otherwise.
-	 */
-	private boolean includeR3;
+	private final EnumSet<StandardIndicator> selectedIndicators;
 
 	/**
 	 * The &epsilon; values used by the indicators.
@@ -192,6 +204,8 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 		this.problem = problem;
 		this.referenceSet = referenceSet;
 
+		selectedIndicators = EnumSet.noneOf(StandardIndicator.class);
+		
 		normalizer = DefaultNormalizer.getInstance().getNormalizer(problem, referenceSet);
 		normalizedReferenceSet = normalizer.normalize(referenceSet);
 		
@@ -203,7 +217,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 		IndicatorValues result = new IndicatorValues(approximationSet);
 		NondominatedPopulation normalizedApproximationSet = normalizer.normalize(approximationSet);
 
-		if (includeHypervolume) {
+		if (selectedIndicators.contains(StandardIndicator.Hypervolume)) {
 			if (hypervolume == null) {
 				hypervolume = new Hypervolume(problem, referenceSet);
 			}
@@ -211,31 +225,31 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 			result.hypervolume = hypervolume.evaluate(approximationSet);
 		}
 
-		if (includeGenerationalDistance) {
+		if (selectedIndicators.contains(StandardIndicator.GenerationalDistance)) {
 			result.generationalDistance = GenerationalDistance.evaluate(problem, normalizedApproximationSet,
 					normalizedReferenceSet, Settings.getGDPower());
 		}
 
-		if (includeInvertedGenerationalDistance) {
+		if (selectedIndicators.contains(StandardIndicator.InvertedGenerationalDistance)) {
 			result.invertedGenerationalDistance = InvertedGenerationalDistance.evaluate(problem,
 					normalizedApproximationSet, normalizedReferenceSet, Settings.getIGDPower());
 		}
 
-		if (includeAdditiveEpsilonIndicator) {
+		if (selectedIndicators.contains(StandardIndicator.AdditiveEpsilonIndicator)) {
 			result.additiveEpsilonIndicator = AdditiveEpsilonIndicator.evaluate(problem, normalizedApproximationSet,
 					normalizedReferenceSet);
 		}
 
-		if (includeMaximumParetoFrontError) {
+		if (selectedIndicators.contains(StandardIndicator.MaximumParetoFrontError)) {
 			result.maximumParetoFrontError = MaximumParetoFrontError.evaluate(problem, normalizedApproximationSet,
 					normalizedReferenceSet);
 		}
 
-		if (includeSpacing) {
+		if (selectedIndicators.contains(StandardIndicator.Spacing)) {
 			result.spacing = Spacing.evaluate(problem, approximationSet);
 		}
 
-		if (includeContribution) {
+		if (selectedIndicators.contains(StandardIndicator.Contribution)) {
 			if (contribution == null) {
 				contribution = epsilons == null ? new Contribution(referenceSet) :
 					new Contribution(referenceSet, epsilons);
@@ -244,7 +258,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 			result.contribution = contribution.evaluate(approximationSet);
 		}
 
-		if (includeR1) {
+		if (selectedIndicators.contains(StandardIndicator.R1)) {
 			if (r1 == null) {
 				r1 = new R1Indicator(problem,
 						subdivisions.isPresent() ? subdivisions.get() : RIndicator.getDefaultSubdivisions(problem),
@@ -254,7 +268,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 			result.r1 = r1.evaluate(approximationSet);
 		}
 
-		if (includeR2) {
+		if (selectedIndicators.contains(StandardIndicator.R2)) {
 			if (r2 == null) {
 				r2 = new R2Indicator(problem,
 						subdivisions.isPresent() ? subdivisions.get() : RIndicator.getDefaultSubdivisions(problem),
@@ -264,7 +278,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 			result.r2 = r2.evaluate(approximationSet);
 		}
 
-		if (includeR3) {
+		if (selectedIndicators.contains(StandardIndicator.R3)) {
 			if (r3 == null) {
 				r3 = new R3Indicator(problem,
 						subdivisions.isPresent() ? subdivisions.get() : RIndicator.getDefaultSubdivisions(problem),
@@ -322,12 +336,45 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	}
 	
 	/**
+	 * Returns the performance indicators that will be evaluated.
+	 * 
+	 * @return the selected performance indicators
+	 */
+	public EnumSet<StandardIndicator> getSelectedIndicators() {
+		return selectedIndicators.clone();
+	}
+	
+	/**
+	 * Enables the evaluation of the given performance indicator.
+	 * 
+	 * @return a reference to this object so calls can be chained together
+	 */
+	public Indicators include(StandardIndicator indicator) {
+		selectedIndicators.add(indicator);
+		return this;
+	}
+	
+	/**
+	 * Enables the evaluation of the selected indicators.
+	 * 
+	 * @param indicators the indicators to enable
+	 * @return a reference to this object so calls can be chained together
+	 */
+	public Indicators include(EnumSet<StandardIndicator> indicators) {
+		for (StandardIndicator indicator : indicators) {
+			include(indicator);
+		}
+		
+		return this;
+	}
+	
+	/**
 	 * Enables the evaluation of the hypervolume metric.
 	 * 
 	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators includeHypervolume() {
-		includeHypervolume = true;
+		include(StandardIndicator.Hypervolume);
 		return this;
 	}
 	
@@ -363,7 +410,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators includeGenerationalDistance() {
-		includeGenerationalDistance = true;
+		include(StandardIndicator.GenerationalDistance);
 		return this;
 	}
 
@@ -373,7 +420,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators includeInvertedGenerationalDistance() {
-		includeInvertedGenerationalDistance = true;
+		include(StandardIndicator.InvertedGenerationalDistance);
 		return this;
 	}
 
@@ -383,7 +430,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators includeAdditiveEpsilonIndicator() {
-		includeAdditiveEpsilonIndicator = true;
+		include(StandardIndicator.AdditiveEpsilonIndicator);
 		return this;
 	}
 
@@ -393,7 +440,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators includeMaximumParetoFrontError() {
-		includeMaximumParetoFrontError = true;
+		include(StandardIndicator.MaximumParetoFrontError);
 		return this;
 	}
 
@@ -403,7 +450,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators includeSpacing() {
-		includeSpacing = true;
+		include(StandardIndicator.Spacing);
 		return this;
 	}
 
@@ -413,7 +460,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators includeContribution() {
-		includeContribution = true;
+		include(StandardIndicator.Contribution);
 		return this;
 	}
 
@@ -423,7 +470,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators includeR1() {
-		includeR1 = true;
+		include(StandardIndicator.R1);
 		return this;
 	}
 
@@ -433,7 +480,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators includeR2() {
-		includeR2 = true;
+		include(StandardIndicator.R2);
 		return this;
 	}
 
@@ -443,7 +490,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	 * @return a reference to this object so calls can be chained together
 	 */
 	public Indicators includeR3() {
-		includeR3 = true;
+		include(StandardIndicator.R3);
 		return this;
 	}
 	
@@ -484,7 +531,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	/**
 	 * Collection of indicator results, with values defaulting to {@value Double#NaN} if not included.
 	 */
-	public static class IndicatorValues implements Formattable<Pair<String, Double>> {
+	public static class IndicatorValues implements Formattable<Pair<StandardIndicator, Double>> {
 
 		private final NondominatedPopulation approximationSet;
 
@@ -528,6 +575,27 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 		 */
 		public NondominatedPopulation getApproximationSet() {
 			return approximationSet;
+		}
+		
+		/**
+		 * Returns the indicator value, or {@value Double#NaN} if not configured to compute this metric.
+		 * 
+		 * @param indicator the indicator
+		 * @return the indicator value
+		 */
+		public double get(StandardIndicator indicator) {
+			return switch (indicator) {
+				case Hypervolume -> getHypervolume();
+				case GenerationalDistance -> getGenerationalDistance();
+				case InvertedGenerationalDistance -> getInvertedGenerationalDistance();
+				case AdditiveEpsilonIndicator -> getAdditiveEpsilonIndicator();
+				case Spacing -> getSpacing();
+				case MaximumParetoFrontError -> getMaximumParetoFrontError();
+				case Contribution -> getContribution();
+				case R1 -> getR1();
+				case R2 -> getR2();
+				case R3 -> getR3();
+			};
 		}
 
 		/**
@@ -632,62 +700,30 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 		public TypedProperties asProperties() {
 			TypedProperties properties = new TypedProperties();
 			
-			for (Pair<String, Double> entry : asList()) {
-				properties.setDouble(entry.getKey(), entry.getValue());
+			for (Pair<StandardIndicator, Double> entry : asList()) {
+				properties.setDouble(entry.getKey().name(), entry.getValue());
 			}
 			
 			return properties;
 		}
 
 		@Override
-		public TabularData<Pair<String, Double>> asTabularData() {
-			TabularData<Pair<String, Double>> data = new TabularData<Pair<String, Double>>(asList());
-			data.addColumn(new Column<Pair<String, Double>, String>("Indicator", p -> p.getKey()));
-			data.addColumn(new Column<Pair<String, Double>, Double>("Value", p -> p.getValue()));
+		public TabularData<Pair<StandardIndicator, Double>> asTabularData() {
+			TabularData<Pair<StandardIndicator, Double>> data = new TabularData<Pair<StandardIndicator, Double>>(asList());
+			data.addColumn(new Column<Pair<StandardIndicator, Double>, String>("Indicator", p -> p.getKey().name()));
+			data.addColumn(new Column<Pair<StandardIndicator, Double>, Double>("Value", p -> p.getValue()));
 			return data;
 		}
 		
-		private Iterable<Pair<String, Double>> asList() {
-			List<Pair<String, Double>> results = new ArrayList<Pair<String, Double>>();
-
-			if (!Double.isNaN(hypervolume)) {
-				results.add(Pair.of("Hypervolume", hypervolume));
-			}
-
-			if (!Double.isNaN(generationalDistance)) {
-				results.add(Pair.of("GenerationalDistance", generationalDistance));
-			}
+		private Iterable<Pair<StandardIndicator, Double>> asList() {
+			List<Pair<StandardIndicator, Double>> results = new ArrayList<Pair<StandardIndicator, Double>>();
 			
-			if (!Double.isNaN(invertedGenerationalDistance)) {
-				results.add(Pair.of("InvertedGenerationalDistance", invertedGenerationalDistance));
-			}
-			
-			if (!Double.isNaN(additiveEpsilonIndicator)) {
-				results.add(Pair.of("AdditiveEpsilonIndicator", additiveEpsilonIndicator));
-			}
-			
-			if (!Double.isNaN(spacing)) {
-				results.add(Pair.of("Spacing", spacing));
-			}
-			
-			if (!Double.isNaN(maximumParetoFrontError)) {
-				results.add(Pair.of("MaximumParetoFrontError", maximumParetoFrontError));
-			}
-			
-			if (!Double.isNaN(contribution)) {
-				results.add(Pair.of("Contribution", contribution));
-			}
-			
-			if (!Double.isNaN(r1)) {
-				results.add(Pair.of("R1", r1));
-			}
-			
-			if (!Double.isNaN(r2)) {
-				results.add(Pair.of("R2", r2));
-			}
-			
-			if (!Double.isNaN(r3)) {
-				results.add(Pair.of("R3", r3));
+			for (StandardIndicator indicator : StandardIndicator.values()) {
+				double value = get(indicator);
+				
+				if (!Double.isNaN(value)) {
+					results.add(Pair.of(indicator, value));
+				}
 			}
 			
 			return results;

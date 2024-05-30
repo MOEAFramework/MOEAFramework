@@ -73,17 +73,10 @@ produces the output:
 <!-- output:examples/org/moeaframework/examples/experiment/MultipleSeedsExample.java -->
 
 ```
-NSGAII:
-    Hypervolume:
-        Min: 0.319489
-        Median: 0.514978
-        Max: 0.544461
-        Count: 50
-    GenerationalDistance:
-        Min: 0.000488
-        Median: 0.005468
-        Max: 0.049152
-        Count: 50
+Algorithm Indicator            Min      Median   Max      IQR (+/-) Count
+--------- -------------------- -------- -------- -------- --------- -----
+NSGAII    Hypervolume          0.319489 0.514978 0.544461 0.031242  50
+NSGAII    GenerationalDistance 0.000488 0.005468 0.049152 0.006125  50
 ```
 
 The results from multiple algorithms can be provided and compared:

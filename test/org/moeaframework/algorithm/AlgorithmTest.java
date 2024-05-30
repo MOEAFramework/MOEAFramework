@@ -22,6 +22,7 @@ import org.moeaframework.Assert;
 import org.moeaframework.Assume;
 import org.moeaframework.Executor;
 import org.moeaframework.core.Settings;
+import org.moeaframework.core.indicator.Indicators.StandardIndicator;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.util.TypedProperties;
 
@@ -119,7 +120,6 @@ public abstract class AlgorithmTest {
 						.runSeeds(SEEDS));
 		
 		Analyzer.AnalyzerResults analyzerResults = analyzer.getAnalysis();
-		Analyzer.AlgorithmResult algorithmResult = analyzerResults.get(algorithm1Name);
 		
 		if (Settings.isVerbose()) {
 			analyzerResults.display();
@@ -127,17 +127,17 @@ public abstract class AlgorithmTest {
 		
 		int indifferences = 0;
 		
-		for (String indicator : algorithmResult.getIndicators()) {
-			indifferences += algorithmResult.get(indicator).getIndifferentAlgorithms().size();
+		for (StandardIndicator indicator : analyzerResults.getIndicators()) {
+			indifferences += analyzerResults.getSimilarAlgorithms(algorithm1Name, indicator).size();
 		}
 		
 		if (indifferences < THRESHOLD) {
 			if (allowBetterPerformance) {
 				int outperformance = 0;
 				
-				for (String indicator : algorithmResult.getIndicators()) {
-					double value1 = analyzerResults.get(algorithm1Name).get(indicator).getMedian();
-					double value2 = analyzerResults.get(algorithm2Name).get(indicator).getMedian();
+				for (StandardIndicator indicator : analyzerResults.getIndicators()) {
+					double value1 = analyzerResults.getStatistics(algorithm1Name, indicator).getPercentile(50);
+					double value2 = analyzerResults.getStatistics(algorithm2Name, indicator).getPercentile(50);
 					
 					if (indicator.equals("Spacing") ||
 							indicator.equals("Hypervolume") ||

@@ -27,6 +27,7 @@ import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.indicator.Indicators;
+import org.moeaframework.core.indicator.Indicators.StandardIndicator;
 import org.moeaframework.core.indicator.Indicators.IndicatorValues;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.OptionCompleter;
@@ -144,10 +145,7 @@ public class ExtractData extends CommandLineUtility {
 	
 	private Indicators getIndicators(Problem problem, NondominatedPopulation referenceSet, String[] fields) {
 		Indicators indicators = Indicators.of(problem, referenceSet);
-		
-		OptionCompleter completer = new OptionCompleter("Hypervolume", "GenerationalDistance",
-				"InvertedGenerationalDistance", "AdditiveEpsilonIndicator", "MaximumParetoFrontError", "Spacing",
-				"Contribution", "R1Indicator", "R2Indicator", "R3Indicator");
+		OptionCompleter completer = new OptionCompleter(StandardIndicator.class);
 		
 		for (String field : fields) {
 			String option = completer.lookup(field);
@@ -156,48 +154,21 @@ public class ExtractData extends CommandLineUtility {
 				continue;
 			}
 			
-			switch (option) {
-				case "Hypervolume" -> indicators.includeHypervolume();
-				case "GenerationalDistance" -> indicators.includeGenerationalDistance();
-				case "InvertedGenerationalDistance" -> indicators.includeInvertedGenerationalDistance();
-				case "AdditiveEpsilonIndicator" -> indicators.includeAdditiveEpsilonIndicator();
-				case "MaximumParetoFrontError" -> indicators.includeMaximumParetoFrontError();
-				case "Spacing" -> indicators.includeSpacing();
-				case "Contribution" -> indicators.includeContribution();
-				case "R1Indicator" -> indicators.includeR1();
-				case "R2Indicator" -> indicators.includeR2();
-				case "R3Indicator" -> indicators.includeR3();
-				default -> throw new IllegalStateException();
-			}
+			indicators.include(StandardIndicator.valueOf(option));
 		}
 
 		return indicators;
 	}
 	
 	private double getValue(IndicatorValues values, String indicator) {
-		OptionCompleter completer = new OptionCompleter("Hypervolume", "GenerationalDistance",
-				"InvertedGenerationalDistance", "AdditiveEpsilonIndicator", "MaximumParetoFrontError", "Spacing",
-				"Contribution", "R1Indicator", "R2Indicator", "R3Indicator");
-		
+		OptionCompleter completer = new OptionCompleter(StandardIndicator.class);
 		String option = completer.lookup(indicator);
 		
 		if (option == null) {
 			return Double.NaN;
 		}
 		
-		return switch (option) {
-			case "Hypervolume" -> values.getHypervolume();
-			case "GenerationalDistance" -> values.getGenerationalDistance();
-			case "InvertedGenerationalDistance" -> values.getInvertedGenerationalDistance();
-			case "AdditiveEpsilonIndicator" -> values.getAdditiveEpsilonIndicator();
-			case "MaximumParetoFrontError" -> values.getMaximumParetoFrontError();
-			case "Spacing" -> values.getSpacing();
-			case "Contribution" -> values.getContribution();
-			case "R1Indicator" -> values.getR1();
-			case "R2Indicator" -> values.getR2();
-			case "R3Indicator" -> values.getR3();
-			default -> throw new IllegalStateException();
-		};
+		return values.get(StandardIndicator.valueOf(option));
 	}
 	
 	/**

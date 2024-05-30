@@ -71,6 +71,23 @@ public class OptionCompleter {
 			add(option);
 		}
 	}
+	
+	/**
+	 * Constructs a new option auto-completer initialized to recognize the enumerated values.  Note that the enum
+	 * constants are converted into their string representations, and likewise the returned value of
+	 * {@link #lookup(String)} will be the string representation.  Use {@link Enum#valueOf(Class, String)} to convert
+	 * back into the enumeration, if required.
+	 * 
+	 * @param <T> the enum type
+	 * @param options the enum class
+	 */
+	public <T extends Enum<T>> OptionCompleter(Class<T> options) {
+		this();
+		
+		for (T option : options.getEnumConstants()) {
+			add(option.name());
+		}
+	}
 
 	/**
 	 * Adds an option to this {@code OptionCompleter}. Duplicate options are ignored.
