@@ -38,7 +38,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
-import org.moeaframework.core.indicator.Indicators.StandardIndicator;
+import org.moeaframework.core.indicator.StandardIndicator;
 import org.moeaframework.core.operator.real.UM;
 import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.mock.MockRealProblem;

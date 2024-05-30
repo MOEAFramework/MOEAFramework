@@ -57,7 +57,7 @@ import org.moeaframework.core.indicator.R1Indicator;
 import org.moeaframework.core.indicator.R2Indicator;
 import org.moeaframework.core.indicator.R3Indicator;
 import org.moeaframework.core.indicator.Spacing;
-import org.moeaframework.core.indicator.Indicators.StandardIndicator;
+import org.moeaframework.core.indicator.StandardIndicator;
 import org.moeaframework.core.spi.ProblemFactory;
 
 /**

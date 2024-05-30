@@ -83,7 +83,7 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.indicator.Indicators.StandardIndicator;
+import org.moeaframework.core.indicator.StandardIndicator;
 import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.validate.Validate;
 

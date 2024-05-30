@@ -22,7 +22,7 @@ import org.moeaframework.Assert;
 import org.moeaframework.Assume;
 import org.moeaframework.Executor;
 import org.moeaframework.core.Settings;
-import org.moeaframework.core.indicator.Indicators.StandardIndicator;
+import org.moeaframework.core.indicator.StandardIndicator;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.util.TypedProperties;
 
@@ -139,10 +139,7 @@ public abstract class AlgorithmTest {
 					double value1 = analyzerResults.getStatistics(algorithm1Name, indicator).getPercentile(50);
 					double value2 = analyzerResults.getStatistics(algorithm2Name, indicator).getPercentile(50);
 					
-					if (indicator.equals("Spacing") ||
-							indicator.equals("Hypervolume") ||
-							indicator.equals("Contribution") ||
-							indicator.equals("R1Indicator")) {
+					if (indicator.areLargerValuesPreferred()) {
 						if (value1 >= value2) {
 							outperformance++;
 						}

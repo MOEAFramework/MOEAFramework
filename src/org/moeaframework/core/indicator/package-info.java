@@ -17,88 +17,14 @@
  */
 
 /**
- * Collection of unary quality indicators for comparing the quality of non-dominated approximation sets. The table
- * below shows the supported indicators and key properties. <em>Pareto compliant</em> implies that better indicator
- * values correspond to approximation sets that are preferred by weak Pareto dominance. 
- * 
- * <table style="margin-top: 1em; width: 100%">
- *   <caption>List of quality indicators</caption>
- *   <tr>
- *     <th style="width: 20%; text-align: left">Indicator</th>
- *     <th style="width: 20%; text-align: left">Pareto Compliant</th>
- *     <th style="width: 20%; text-align: left">Reference Set Required</th>
- *     <th style="width: 20%; text-align: left">Normalized</th>
- *     <th style="width: 20%; text-align: left">Target</th>
- *   </tr>
- *   <tr>
- *     <td>{@link org.moeaframework.core.indicator.Hypervolume}</td>
- *     <td>Yes</td>
- *     <td>Yes</td>
- *     <td>Yes</td>
- *     <td>Maximize &rarr; 1</td>
- *   </tr>
- *   <tr>
- *     <td>{@link org.moeaframework.core.indicator.GenerationalDistance}</td>
- *     <td>No</td>
- *     <td>Yes</td>
- *     <td>Yes</td>
- *     <td>Minimize &rarr; 0</td>
- *   </tr>
- *   <tr>
- *     <td>
- *       {@link org.moeaframework.core.indicator.InvertedGenerationalDistance}
- *     </td>
- *     <td>No</td>
- *     <td>Yes</td>
- *     <td>Yes</td>
- *     <td>Minimize &rarr; 0</td>
- *   </tr>
- *   <tr>
- *     <td>
- *       {@link org.moeaframework.core.indicator.AdditiveEpsilonIndicator}
- *     </td>
- *     <td>Yes</td>
- *     <td>No</td>
- *     <td>Yes</td>
- *     <td>Minimize &rarr; 0</td>
- *   </tr>
- *   <tr>
- *     <td>{@link org.moeaframework.core.indicator.MaximumParetoFrontError}</td>
- *     <td>No</td>
- *     <td>Yes</td>
- *     <td>Yes</td>
- *     <td>Minimize &rarr; 0</td>
- *   </tr>
- *   <tr>
- *     <td>{@link org.moeaframework.core.indicator.Spacing}</td>
- *     <td>No</td>
- *     <td>No</td>
- *     <td>No</td>
- *     <td>Minimize &rarr; 0</td>
- *   </tr>
- *   <tr>
- *     <td>{@link org.moeaframework.core.indicator.Contribution}</td>
- *     <td>Yes</td>
- *     <td>Yes</td>
- *     <td>No</td>
- *     <td>Maximize &rarr; 1</td>
- *   </tr>
- *   <tr>
- *     <td>{@link org.moeaframework.core.indicator.R2Indicator}</td>
- *     <td>No</td>
- *     <td>Yes</td>
- *     <td>Yes</td>
- *     <td>Minimize &rarr; -1</td>
- *   </tr>
- * </table>
+ * Collection of unary quality indicators for comparing the quality of non-dominated approximation sets.
  * <p>
  * References:
  * <ol>
- *   <li>Knowles, J. and D. Corne.  "On Metrics for Comparing Non-Dominated 
- *       Sets."  Proceedings of the 2002 Congress on Evolutionary Computation, 
- *       pp. 711-716, 2002.
- *   <li>Coello Coello, C.A. et al.  "Evolutionary Algorithms for Solving 
- *       Multi-Objective Problems."  2nd Edition, Springer, 2007.
+ *   <li>Knowles, J. and D. Corne.  "On Metrics for Comparing Non-Dominated Sets."  Proceedings of the 2002 Congress on
+ *       Evolutionary Computation, pp. 711-716, 2002.
+ *   <li>Coello Coello, C.A. et al.  "Evolutionary Algorithms for Solving Multi-Objective Problems."  2nd Edition,
+ *       Springer, 2007.
  * </ol>
  */
 package org.moeaframework.core.indicator;

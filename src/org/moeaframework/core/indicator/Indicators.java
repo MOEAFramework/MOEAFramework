@@ -42,64 +42,6 @@ import org.moeaframework.util.validate.Validate;
 public class Indicators implements Function<NondominatedPopulation, Indicators.IndicatorValues> {
 	
 	/**
-	 * Enumeration of standard indicators provided by the MOEA Framework.  These constants should match the
-	 * corresponding class names.
-	 */
-	public static enum StandardIndicator {
-
-		/**
-		 * Hypervolume.
-		 */
-		Hypervolume,
-		
-		/**
-		 * Generational distance (GD).
-		 */
-		GenerationalDistance,
-		
-		/**
-		 * Inverted generational distance (IGD).
-		 */
-		InvertedGenerationalDistance,
-		
-		/**
-		 * Additive epsilon-indicator (AEI).
-		 */
-		AdditiveEpsilonIndicator,
-		
-		/**
-		 * Spacing.
-		 */
-		Spacing,
-		
-		/**
-		 * Maximum Pareto front error.
-		 */
-		MaximumParetoFrontError,
-		
-		/**
-		 * Pareto set contribution.
-		 */
-		Contribution,
-		
-		/**
-		 * R1 indicator.
-		 */
-		R1Indicator,
-		
-		/**
-		 * R2 indicator.
-		 */
-		R2Indicator,
-		
-		/**
-		 * R3 indicator.
-		 */
-		R3Indicator
-		
-	}
-
-	/**
 	 * Creates an instance of this class that evaluates all performance indicators.
 	 * 
 	 * @param problem the problem
