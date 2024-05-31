@@ -19,19 +19,16 @@ package org.moeaframework.util;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintStream;
 import java.io.Reader;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.Map.Entry;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -39,8 +36,9 @@ import org.apache.commons.text.StringSubstitutor;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.configuration.ConfigurationException;
-import org.moeaframework.util.format.Displayable;
-import org.moeaframework.util.io.CommentedLineReader;
+import org.moeaframework.util.format.Column;
+import org.moeaframework.util.format.Formattable;
+import org.moeaframework.util.format.TabularData;
 import org.moeaframework.util.io.Resources;
 import org.moeaframework.util.validate.Validate;
 
@@ -56,7 +54,7 @@ import org.moeaframework.util.validate.Validate;
  * 
  * From version 3.0+, keys are case-insensitive.
  */
-public class TypedProperties implements Displayable {
+public class TypedProperties implements Formattable<Entry<String, String>> {
 
 	/**
 	 * The default separator for arrays.
@@ -341,7 +339,7 @@ public class TypedProperties implements Displayable {
 	//
 	//   1. If no truncation is required, the number is parsed as-is.
 	//   2. If the truncation alters the value more than the defined machine precision, Settings.EPS,
-	//      then a warning is optionally displayed
+	//      then a warning is optionally displayed.
 	//   3. If the truncation would alter the value more than 1.0, an exception is thrown. This includes
 	//      trying to parse a value that exceeds the maximum or minimum value that fits within a type.
 	
@@ -1218,7 +1216,6 @@ public class TypedProperties implements Displayable {
 	public void load(Reader reader) throws IOException {
 		Properties properties = new Properties();
 		properties.load(reader);
-		
 		addAll(properties);
 	}
 	
@@ -1231,28 +1228,15 @@ public class TypedProperties implements Displayable {
 	public void store(Writer writer) throws IOException {
 		Properties properties = new Properties();
 		properties.putAll(this.properties);
-		
 		properties.store(writer, null);
 	}
 	
-	/**
-	 * Prints the properties to standard output.
-	 */
 	@Override
-	public void display(PrintStream out) {
-		try (StringWriter stringBuffer = new StringWriter()) {
-			store(stringBuffer);
-		
-			try (CommentedLineReader reader = new CommentedLineReader(new StringReader(stringBuffer.toString()))) {
-				String line = null;
-				
-				while ((line = reader.readLine()) != null) {
-					out.println(line);
-				}
-			}
-		} catch (IOException e) {
-			throw new FrameworkException(e);
-		}
+	public TabularData<Entry<String, String>> asTabularData() {
+		TabularData<Entry<String, String>> table = new TabularData<Entry<String, String>>(properties.entrySet());
+		table.addColumn(new Column<Entry<String, String>, String>("Property", x -> x.getKey()));
+		table.addColumn(new Column<Entry<String, String>, String>("Value", x -> x.getValue()));
+		return table;
 	}
 	
 	/**

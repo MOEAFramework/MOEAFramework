@@ -83,14 +83,16 @@ algorithm.getConfiguration().display();
 ```
 
 ```
-operator=sbx+pm
-pm.distributionIndex=20.0
-pm.rate=0.09090909090909091
-populationSize=100
-sbx.distributionIndex=15.0
-sbx.rate=1.0
-sbx.swap=true
-sbx.symmetric=false
+Property              Value               
+--------------------- ------------------- 
+operator              sbx+pm              
+pm.distributionIndex  20.0                
+pm.rate               0.09090909090909091 
+populationSize        100                 
+sbx.distributionIndex 15.0                
+sbx.rate              1.0                 
+sbx.swap              true                
+sbx.symmetric         false               
 ```
 
 What if we want to run this algorithm with a different configuration?  We can simply call the setter methods.
