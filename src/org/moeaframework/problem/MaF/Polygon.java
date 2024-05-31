@@ -43,7 +43,7 @@ class Polygon {
 	/**
 	 * Constructs a new polygon with the given vertices.
 	 * 
-	 * @param vertices the vertices, in order
+	 * @param vertices the vertices, in counter-clockwise order
 	 */
 	public Polygon(Collection<Vector2D> vertices) {
 		this(vertices.toArray(Vector2D[]::new));
@@ -52,7 +52,7 @@ class Polygon {
 	/**
 	 * Constructs a new polygon with the given vertices.
 	 * 
-	 * @param vertices the vertices, in order
+	 * @param vertices the vertices, in counter-clockwise order
 	 */
 	public Polygon(Vector2D[] vertices) {
 		super();
