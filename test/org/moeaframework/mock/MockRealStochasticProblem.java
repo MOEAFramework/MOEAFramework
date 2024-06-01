@@ -21,7 +21,7 @@ import org.apache.commons.math3.random.MersenneTwister;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
-import org.moeaframework.util.distributed.FutureSolution;
+import org.moeaframework.parallel.FutureSolution;
 
 public class MockRealStochasticProblem extends MockProblem {
 	
@@ -38,7 +38,7 @@ public class MockRealStochasticProblem extends MockProblem {
 			// if it's doing distributed evaluation, we'll get the unique ID that was assigned
 			randSeed = futureSolution.getDistributedEvaluationID(); 
 		} else {
-			// otherwise it's single-threaded), and we just use our own 0-based counter
+			// otherwise it's single-threaded, and we just use our own 0-based counter
 			randSeed = evaluationID++;
 		}
 		

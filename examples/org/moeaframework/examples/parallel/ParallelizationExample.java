@@ -23,8 +23,8 @@ import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.misc.Schaffer;
+import org.moeaframework.parallel.DistributedProblem;
 import org.moeaframework.util.Timer;
-import org.moeaframework.util.distributed.DistributedProblem;
 
 /**
  * Example of parallelizing function evaluations across multiple cores.

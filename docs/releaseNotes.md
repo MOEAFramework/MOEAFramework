@@ -7,10 +7,13 @@ This page documents notable changes introduced in each chronological release of 
   * Adds default operators for mixed type problems.  For example, if given a problem with real and binary decision
     variables, it will not automatically combine SBX and PM for the real values and HUX and BitFlip for binary.
     
-  * Refactors defining standard performance indicators.  These indicators are now defined in the `StandardIndicator`
-    enumeration, and methods updated to accept these enum constants.
+  * Adds an enumeration for performance indicators, `StandardIndicator`, to replace string matching.  This also
+    simplifies configuring code using indicators, using either the enum constants or an `EnumSet`.
     
   * Analyzer results are now displayed in a more condensed table format.
+  
+  * Moves `DistributedProblem` and related classes from `org.moeaframework.util.distributed` to
+    `org.moeaframework.parallel`.  The old package location is deprecated and will be removed in a future release.
 
 
 ## Version 4.2 (26 May 2024)

@@ -17,11 +17,13 @@
  */
 
 /**
- * Provides island model and other parallelization strategies for optimization algorithms.
- * 
- * "Parallel" in this context can also mean running multiple optimization algorithms together in some fashion.
- * That does not necessarily mean these are "parallel" in the computing sense, where work is distributed across
- * multiple cores or machines.  They can and do support such parallelization, but that typically requires integrating
- * with a third-party compute fabric library like Apache Spark or Apache Ignite.
+ * Support for distributed and parallel computing for optimization algorithms.  Two modes are currently supported:
+ * <p>
+ * <strong>Distributed evaluations</strong> - Also known as master-slave or master-worker parallelization, this
+ * distributes individual function evaluations across multiple processors or computers, either locally or remotely.
+ * See {@link DistributedProblem} for details.
+ * <p>
+ * <strong>Island model</strong> - This parallelization strategy runs multiple instances of an algorithm (the islands),
+ * often with some kind of migration strategy to share solutions between the islands.
  */
 package org.moeaframework.parallel;
