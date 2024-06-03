@@ -41,19 +41,24 @@ import org.moeaframework.util.validate.Validate;
 public class ReferenceSetMerger extends CommandLineUtility {
 
 	/**
-	 * The attribute key used to store the file from which each solution originated.
-	 */
-	public static final String SOURCE_ATTRIBUTE = "source";
-
-	/**
-	 * The combined non-dominated population.
+	 * The combined population, used to discard dominated solutions.
 	 */
 	private NondominatedPopulation combinedPopulation;
 
 	/**
-	 * Map storing the original populations.
+	 * Map storing the original source populations.
 	 */
-	private Map<String, Population> populations;
+	private final Map<String, Population> originalPopulations;
+	
+	/**
+	 * Map storing the solutions contributed by each source.
+	 */
+	private final Map<String, Population> contributedPopulations;
+	
+	/**
+	 * Flag indicating the source populations changed and we must call {@link #update()}.
+	 */
+	private boolean modified;
 
 	/**
 	 * Class constructor for merging populations and determining which contributed to the resulting non-dominated
@@ -73,7 +78,8 @@ public class ReferenceSetMerger extends CommandLineUtility {
 		super();
 		this.combinedPopulation = combinedPopulation;
 
-		populations = new HashMap<String, Population>();
+		originalPopulations = new HashMap<String, Population>();
+		contributedPopulations = new HashMap<String, Population>();
 	}
 
 	/**
@@ -84,24 +90,48 @@ public class ReferenceSetMerger extends CommandLineUtility {
 	 * @throws IllegalArgumentException if a population has been added previously with the specified source
 	 */
 	public void add(String source, Population population) {
-		if (populations.containsKey(source)) {
+		if (originalPopulations.containsKey(source)) {
 			Validate.that("source", source).fails("A population with the same source has already been added");
 		}
 
-		populations.put(source, population);
-
-		for (Solution solution : population) {
-			solution.setAttribute(SOURCE_ATTRIBUTE, source);
+		originalPopulations.put(source, population);
+		modified = true;
+	}
+	
+	/**
+	 * Merges the populations and determines the contribution from each source.
+	 */
+	void update() {
+		if (!modified) {
+			return;
+		}
+		
+		combinedPopulation.clear();
+		contributedPopulations.clear();
+		
+		// first pass combines all the solutions to determine the non-dominated front
+		for (Population population : originalPopulations.values()) {
+			combinedPopulation.addAll(population);
+		}
+		
+		// second pass determine the contribution from each source
+		for (String source : originalPopulations.keySet()) {
+			Population population = originalPopulations.get(source);
+			Population contribution = new Population();
 			
-			//print warning if duplicate solutions found
-			for (Solution s : combinedPopulation) {
-				if (solution.euclideanDistance(s) < Settings.EPS) {
-					System.err.println("duplicate solution found");
+			for (Solution solution : population) {
+				for (Solution s : combinedPopulation) {
+					if (solution.euclideanDistance(s) < Settings.EPS) {
+						contribution.add(solution);
+						break;
+					}
 				}
 			}
 			
-			combinedPopulation.add(solution);
+			contributedPopulations.put(source, contribution);
 		}
+		
+		modified = false;
 	}
 
 	/**
@@ -110,6 +140,7 @@ public class ReferenceSetMerger extends CommandLineUtility {
 	 * @return the combined non-dominated population
 	 */
 	public NondominatedPopulation getCombinedPopulation() {
+		update();
 		return combinedPopulation;
 	}
 
@@ -119,7 +150,7 @@ public class ReferenceSetMerger extends CommandLineUtility {
 	 * @return the sources that have been added to the combined non-dominated population
 	 */
 	public Set<String> getSources() {
-		return populations.keySet();
+		return originalPopulations.keySet();
 	}
 
 	/**
@@ -129,7 +160,13 @@ public class ReferenceSetMerger extends CommandLineUtility {
 	 * @return the original population associated with the specified source
 	 */
 	public Population getPopulation(String source) {
-		return populations.get(source);
+		Population population = originalPopulations.get(source);
+		
+		if (population == null) {
+			Validate.that("source", source).fails("No source population with the given name found");
+		}
+		
+		return population;
 	}
 
 	/**
@@ -138,16 +175,16 @@ public class ReferenceSetMerger extends CommandLineUtility {
 	 * @param source the source whose solutions in the combined non-dominated population are returned
 	 * @return the solutions in the combined non-dominated population originating from the specified source
 	 */
-	public NondominatedPopulation getContributionFrom(String source) {
-		NondominatedPopulation result = new NondominatedPopulation();
-
-		for (Solution solution : combinedPopulation) {
-			if (solution.getAttribute(SOURCE_ATTRIBUTE).equals(source)) {
-				result.add(solution);
-			}
+	public Population getContributionFrom(String source) {
+		update();
+		
+		Population contribution = contributedPopulations.get(source);
+		
+		if (contribution == null) {
+			Validate.that("source", source).fails("No source population with the given name found");
 		}
-
-		return result;
+		
+		return contribution;
 	}
 
 	@Override

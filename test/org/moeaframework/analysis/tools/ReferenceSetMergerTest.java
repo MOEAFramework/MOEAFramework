@@ -15,13 +15,12 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.util;
+package org.moeaframework.analysis.tools;
 
 import java.util.List;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.analysis.tools.ReferenceSetMerger;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 import org.moeaframework.mock.MockSolution;
@@ -48,7 +47,6 @@ public class ReferenceSetMergerTest {
 
 		Assert.assertSize(1, merger.getContributionFrom("population1"));
 		Assert.assertSize(2, merger.getContributionFrom("population2"));
-		Assert.assertSize(0, merger.getContributionFrom("population3"));
 		Assert.assertSize(3, merger.getCombinedPopulation());
 		
 		Assert.assertContains(merger.getContributionFrom("population1"), solution2);
@@ -62,6 +60,30 @@ public class ReferenceSetMergerTest {
 		Assert.assertEquals(merger.getPopulation("population2"), population2);
 	}
 	
+	@Test
+	public void testDuplicateSolution() {
+		Solution solution1 = MockSolution.of().withObjectives(1.0, 2.0, 3.0);
+		Solution solution2 = MockSolution.of().withObjectives(1.0, 2.0, 3.0);
+		
+		NondominatedPopulation population1 = new NondominatedPopulation(List.of(solution1));
+		NondominatedPopulation population2 = new NondominatedPopulation(List.of(solution2));
+		
+		ReferenceSetMerger merger = new ReferenceSetMerger();
+		merger.add("population1", population1);
+		merger.add("population2", population2);
+		
+		Assert.assertContains(merger.getSources(), "population1");
+		Assert.assertContains(merger.getSources(), "population2");
+
+		Assert.assertSize(1, merger.getContributionFrom("population1"));
+		Assert.assertSize(1, merger.getContributionFrom("population2"));
+		Assert.assertSize(1, merger.getCombinedPopulation());
+		
+		Assert.assertContains(merger.getContributionFrom("population1"), solution1);
+		Assert.assertContains(merger.getContributionFrom("population2"), solution2);
+		Assert.assertContains(merger.getCombinedPopulation(), solution1);
+	}
+	
 	@Test(expected = IllegalArgumentException.class)
 	public void testDuplicateSourceKey() {
 		NondominatedPopulation population1 = new NondominatedPopulation();
@@ -70,6 +92,15 @@ public class ReferenceSetMergerTest {
 		ReferenceSetMerger merger = new ReferenceSetMerger();
 		merger.add("population", population1);
 		merger.add("population", population2);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testMissingSourceKey() {
+		NondominatedPopulation population1 = new NondominatedPopulation();
+		
+		ReferenceSetMerger merger = new ReferenceSetMerger();
+		merger.add("population1", population1);
+		merger.getContributionFrom("population2");
 	}
 	
 }

@@ -17,6 +17,8 @@
  */
 package org.moeaframework.parallel;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.Executors;
 
 import org.junit.Test;
@@ -59,13 +61,15 @@ public class DistributedProblemTest {
 			
 			// futures are still used even when synchronized, should not be updated yet
 			for (int i = 0; i < N; i++) {
-				((TestableFutureSolution)population.get(i)).assertNotUpdated();
+				TestableFutureSolution solution = (TestableFutureSolution)population.get(i);
+				solution.assertNotUpdated();
 			}
 
 			// verify reads call update
 			for (int i = 0; i < N; i++) {
-				population.get(i).getObjectives();
-				((TestableFutureSolution)population.get(i)).assertUpdated();
+				TestableFutureSolution solution = (TestableFutureSolution)population.get(i);
+				solution.getObjectives();
+				solution.assertUpdated();
 			}
 		}
 	}
@@ -108,6 +112,7 @@ public class DistributedProblemTest {
 		}
 		
 		TestableFutureProblem blockingProblem = new TestableFutureProblem(0);
+		Set<Long> uniqueIds = new HashSet<Long>();
 				
 		try (DistributedProblem problem = new DistributedProblem(blockingProblem, Executors.newFixedThreadPool(P))) {
 			Population population = new Population();
@@ -128,7 +133,9 @@ public class DistributedProblemTest {
 			
 			// futures are not updated yet
 			for (int i = 0; i < N; i++) {
-				((TestableFutureSolution)population.get(i)).assertNotUpdated();
+				TestableFutureSolution solution = (TestableFutureSolution)population.get(i);
+				solution.assertNotUpdated();
+				Assert.assertTrue(uniqueIds.add(solution.getDistributedEvaluationID()));
 			}
 
 			// evaluate should not block the test thread if properly distributed
@@ -136,14 +143,17 @@ public class DistributedProblemTest {
 			
 			// futures are not updated yet
 			for (int i = 0; i < N; i++) {
-				((TestableFutureSolution)population.get(i)).assertNotUpdated();
+				TestableFutureSolution solution = (TestableFutureSolution)population.get(i);
+				solution.assertNotUpdated();
 			}
 
 			// verify reads call update
 			for (int i = 0; i < N; i++) {
-				population.get(i).getObjective(0);
-				population.get(i).getConstraint(0);
-				((TestableFutureSolution)population.get(i)).assertUpdated();
+				TestableFutureSolution solution = (TestableFutureSolution)population.get(i);
+				solution.getObjective(0);
+				solution.getConstraint(0);
+				solution.assertUpdated();
+				Assert.assertTrue(uniqueIds.contains(solution.getDistributedEvaluationID()));
 			}
 		}
 	}

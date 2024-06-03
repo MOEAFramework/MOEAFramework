@@ -20,7 +20,8 @@ package org.moeaframework.core.attribute;
 import org.moeaframework.core.Solution;
 
 /**
- * Operator index attribute.  This is often used to identify which operator(s) produced the solution.
+ * Operator index attribute.  This is used by {@link org.moeaframework.core.operator.AdaptiveMultimethodVariation} to
+ * indicate which operator, based on its index, produced the solution.
  */
 public final class OperatorIndex implements Attribute {
 	
