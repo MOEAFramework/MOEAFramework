@@ -51,7 +51,6 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.YIntervalSeries;
 import org.jfree.data.xy.YIntervalSeriesCollection;
-import org.moeaframework.analysis.collector.IndicatorCollector;
 import org.moeaframework.analysis.collector.Observation;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.util.Localization;
@@ -86,7 +85,7 @@ public class LinePlot extends ResultPlot {
 		/**
 		 * The metric value of this data point.
 		 */
-		private final double value;
+		private final Number value;
 	
 		/**
 		 * Constructs a data point with the specified number of evaluations and metric value.
@@ -94,7 +93,7 @@ public class LinePlot extends ResultPlot {
 		 * @param NFE the number of evaluations of this data point
 		 * @param value the metric value of this data point
 		 */
-		public DataPoint(int NFE, double value) {
+		public DataPoint(int NFE, Number value) {
 			super();
 			this.NFE = NFE;
 			this.value = value;
@@ -109,7 +108,7 @@ public class LinePlot extends ResultPlot {
 			return NFE;
 		}
 
-		public double getValue() {
+		public Number getValue() {
 			return value;
 		}
 		
@@ -164,8 +163,7 @@ public class LinePlot extends ResultPlot {
 			}
 			
 			for (Observation observation : observations) {
-				dataPoints.add(new DataPoint(observation.getNFE(),
-						IndicatorCollector.getIndicatorValue(observation, metric)));
+				dataPoints.add(new DataPoint(observation.getNFE(), (Number)observation.get(metric)));
 			}
 		}
 			
@@ -180,7 +178,7 @@ public class LinePlot extends ResultPlot {
 			DataPoint point = dataPoints.get(index);
 
 			if (point.getNFE() <= currentNFE) {
-				statistics.addValue(point.getValue());
+				statistics.addValue(point.getValue().doubleValue());
 				index++;
 			} else {
 				if (statistics.getN() > 0) {

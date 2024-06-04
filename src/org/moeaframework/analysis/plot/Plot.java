@@ -19,11 +19,11 @@ package org.moeaframework.analysis.plot;
 
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
+import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.RenderingHints;
-import java.awt.Dialog.ModalityType;
 import java.awt.geom.Rectangle2D;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -75,7 +75,6 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.moeaframework.Analyzer;
 import org.moeaframework.Analyzer.AnalyzerResults;
-import org.moeaframework.analysis.collector.IndicatorCollector;
 import org.moeaframework.analysis.collector.Observation;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.analysis.diagnostics.PaintHelper;
@@ -619,9 +618,10 @@ public class Plot {
 		try {
 			for (Observation observation : observations) {
 				xs.add(observation.getNFE());
-				ys.add(IndicatorCollector.getIndicatorValue(observation, metric));
+				ys.add((Number)observation.get(metric));
 			}
 		} catch (ClassCastException e) {
+			System.err.println("Unable to plot " + metric + ", not a numeric type");
 			return this;
 		}
 		
