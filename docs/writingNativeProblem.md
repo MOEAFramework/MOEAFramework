@@ -148,31 +148,35 @@ algorithm.getResult().display();
 ### Decision Variable Types
 
 The templates are only designed to support real-valued decision variables.  That being said, it's certainly possible
-to use different types, you just need to update both the native code and the Java code to pass the correct types.  See
-[JNA Java to Native type mappings](https://github.com/java-native-access/jna/blob/master/www/Mappings.md) for more
-details.
+to use different types, you just need to update both the native and Java code to pass the correct types following the
+[JNA Java to Native type mappings](https://github.com/java-native-access/jna/blob/master/www/Mappings.md).  For
+example, a binary string represented as a `boolean[]` in Java can be passed to C as an integer array (`int*`) where
+`false` and `true` are converted to `0` and `1`, respectively.
 
 ### Required Dependencies
 
-The `Makefile` bundles the shared library in the Java JAR.  If your entire program is contained within the shared
-library, then the JAR file contains everything required to use the problem.  However, any other dependencies like input
-files, executables, and referenced libraries will not be included!  Consequently, these dependencies must be installed
-separately on the system and, if necessary, included in the `PATH` or `LD_LIBRARY_PATH` environment variables so
-they can be discovered.
+The default `Makefile` only bundles the shared library in the Java JAR.  If the entire problem is self-contained in
+the shared library, no further action is needed.  However, if the library uses any external dependencies, such as
+another system library, executable, data file, etc., those will need to be installed separately.  And depending on how
+the program reads / loads these files, they either need to be placed relative to the working directory or included
+in the system's `PATH` or `LD_LIBRARY_PATH` environment variables.
 
 ### Cross-Platform Support
 
-The `Makefile` will only compile the native library for the host system.  The compiled library is placed in
-a directory identifying the system architecture, such as `win32-x86-64`.  A cross-platform version of the JAR can
-be created by compiling the native library on different systems and combining these platform-specific directories into
-a single JAR file.
+The provided `Makefile` will only compile the native library for the host system.  Consequently, the resulting JAR
+will only work on a computer with the same OS and system architecture.  That being said, we can create a cross-platform
+version by compiling the native library on each targeted platform and combining the JAR files.  This works by storing
+the compiled code in separate directories inside the JAR file.  For example, a Windows system with an 64-bit Intel chip
+will compile to the `win32-x86-64/` folder.
 
 ### Issues Loading the Native Library
 
 If you experience errors indicating the library could not be found or loaded, try adding `-Djna.debug_load=true` to
-the `java` command to display debugging logs.
+the `java` command to display debugging logs.  If you are unable to debug the issue using these logs, please file an
+issue and include this output.  The most likely culprits are:
 
-Errors can also occur if targeting the wrong system architecture or using a different calling convention.  The provided
-`Makefile` should handle this correctly, but errors can occur if the library was compiled on a 64-bit architecture but
-used with a 32-bit version of Java, for example.  One workaround is adding `-m32` to the compiler flags to create a
-32-bit version of the library.
+1. Attempting to use the JAR on a different operating system or CPU architecture.  A native library compiled on Windows
+   will not work on Linux, and vice versa.
+2. Mixing 32 and 64-bit architectures.  For example, attempting to use a 64-bit library with a 32-bit version of Java.
+3. Using a different calling convention.  The default for GNU GCC is `cdecl`, but a different convention might be used
+   by different compilers.
