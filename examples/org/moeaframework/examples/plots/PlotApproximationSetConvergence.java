@@ -17,13 +17,9 @@
  */
 package org.moeaframework.examples.plots;
 
-import java.util.Arrays;
-
 import org.moeaframework.Executor;
 import org.moeaframework.Instrumenter;
 import org.moeaframework.analysis.diagnostics.ApproximationSetViewer;
-import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.Settings;
 
 /**
  * Displays an interactive plot showing the convergence of the NSGA-II algorithm on
@@ -46,14 +42,8 @@ public class PlotApproximationSetConvergence {
 				.withMaxEvaluations(10000)
 				.withInstrumenter(instrumenter)
 				.run();
-		
-		NondominatedPopulation referenceSet = instrumenter.getReferenceSet();
-		
-		ApproximationSetViewer viewer = new ApproximationSetViewer(
-				algorithm, Arrays.asList(instrumenter.getObservations()), referenceSet);
-		
-		viewer.setIconImages(Settings.getIcon().getResolutionVariants());
-		viewer.setVisible(true);	
+
+		ApproximationSetViewer.show(algorithm, instrumenter.getReferenceSet(), instrumenter.getObservations());
 	}
 
 }

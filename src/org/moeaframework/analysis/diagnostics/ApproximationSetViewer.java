@@ -42,6 +42,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSplitPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
@@ -172,6 +174,28 @@ ListSelectionListener {
 	 * Maintains a mapping from series key to paints displayed in the plot.
 	 */
 	private PaintHelper paintHelper;
+	
+	/**
+	 * Displays the approximation sets contained in the observations.  In addition to displaying the viewer, this
+	 * method also configures the system look and feel.  Therefore, prefer this static method when creating a 
+	 * standalone version of this window.
+	 * 
+	 * @param name the name or title for the data
+	 * @param results the observations containing approximation set data
+	 * @param referenceSet the reference set for the problem
+	 */
+	public static void show(String name, NondominatedPopulation referenceSet, Observations... observations) {
+		SwingUtilities.invokeLater(() -> {
+			try {
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			} catch (Exception e) {
+				//silently handle
+			}
+				
+			ApproximationSetViewer viewer = new ApproximationSetViewer(name, List.of(observations), referenceSet);
+			viewer.setVisible(true);	
+		});
+	}
 	
 	/**
 	 * Constructs a new window for displaying approximation set dynamics.  This constructor must only be invoked on the
