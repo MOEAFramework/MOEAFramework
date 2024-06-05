@@ -5,7 +5,8 @@ The MOEA Framework was original built to perform sensitivity analysis on MOEAs, 
 > Hadka, D. and Reed, P.  "Diagnostic Assessment of Search Controls and Failure Modes in Many-Objective
 > Evolutionary Optimization."  Evolutionary Computation, 20(3):423-452, 2012.
 
-This document demonstrates how to perform a sensitivity analysis study.  The overall process is depicted below:
+This document demonstrates the basics of performing a sensitivity analysis study on a single algorithm and problem.
+The steps we will perform are depicted below:
 
 ```mermaid
 graph LR
@@ -20,10 +21,12 @@ graph LR
     G --> I["SobolAnalysis<br>(requires saltelli method)"]
 ```
 
+This example can be found at [examples/org/moeaframework/examples/experiment/sensitivity.sh](/examples/org/moeaframework/examples/experiment/sensitivity.sh).
+
 ## Parameter File
 
 We start with a parameter file that defines the parameters being investigated along with the minimum and maximum bounds
-for sampling.
+for sampling.  Note the parameter names must match the configurable properties for the algorithm being studied.
 
 <!-- text:examples/org/moeaframework/examples/experiment/NSGAII_Params.txt -->
 
