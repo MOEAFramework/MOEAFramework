@@ -21,7 +21,8 @@ graph LR
     G --> I["SobolAnalysis<br>(requires saltelli method)"]
 ```
 
-This example can be found at [examples/org/moeaframework/examples/experiment/sensitivity.sh](/examples/org/moeaframework/examples/experiment/sensitivity.sh).
+The full script used in this example can be found at [sensitivity.sh](/examples/org/moeaframework/examples/experiment/sensitivity.sh).
+For more information about any of the commands being run, see the [Command Line Tools reference](commandLineTools.md).
 
 ## Parameter File
 
@@ -73,7 +74,7 @@ java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.Evaluator \
     --epsilon 0.01
 ```
 
-### Computing Metrics
+## Computing Metrics
 
 We typically evaluate the performance of an algorithm using one of the performance indicators (e.g., hypervolume).
 Here, we take the result file produced in the previous step and compute the metrics.
@@ -88,7 +89,7 @@ java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.ResultFileEvalua
     --epsilon 0.01
 ```
 
-### Controllability Analysis
+## Controllability Analysis
 
 In our original sensitivity analysis study, we compared algorithms based on their attainment, efficiency, and
 controllability.  These values are computed using the `Analysis` tool.
@@ -106,7 +107,7 @@ java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.Analysis \
     NSGAII_DTLZ2_Metrics.txt
 ```
 
-### Parameter Sensitivities
+## Parameter Sensitivities
 
 If using the `saltelli` sampling method, we can also compute the first-, second-, and total-order effects of the
 parameters.  This measures how much influence each parameter, or pair, contributes to the performance of the
