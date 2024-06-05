@@ -641,6 +641,27 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	}
 	
 	/**
+	 * Converts the value into the matching Enum constant using an {@link OptionCompleter} to allow partial string
+	 * matching.
+	 * 
+	 * @param <T> the Enum type
+	 * @param enumType the Enum class
+	 * @param value the value as a string
+	 * @return the Enum value
+	 * @throws IllegalArgumentException if the value does not match any enumeration constant
+	 */
+	public static <T extends Enum<?>> T getEnumFromPartialString(Class<T> enumType, String value) {
+		OptionCompleter completer = new OptionCompleter(enumType);
+		String completedValue = completer.lookup(value);
+		
+		if (completedValue == null) {
+			return Validate.that("value", value).failUnsupportedOption(enumType);
+		}
+		
+		return getEnumFromString(enumType, completedValue);
+	}
+	
+	/**
 	 * Returns the value of the property with the specified name as a {@code String} array; or {@code defaultValues} if
 	 * no property with the specified name exists.
 	 * 

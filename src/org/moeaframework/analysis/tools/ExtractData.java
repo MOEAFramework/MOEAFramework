@@ -18,6 +18,7 @@
 package org.moeaframework.analysis.tools;
 
 import java.io.File;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
@@ -30,7 +31,6 @@ import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.indicator.Indicators.IndicatorValues;
 import org.moeaframework.core.indicator.StandardIndicator;
 import org.moeaframework.util.CommandLineUtility;
-import org.moeaframework.util.OptionCompleter;
 import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.validate.Validate;
 
@@ -128,7 +128,7 @@ public class ExtractData extends CommandLineUtility {
 						continue;
 					}
 					
-					double value = getValue(values, fields[i]);
+					double value = getIndicatorValue(values, fields[i]);
 					
 					if (!Double.isNaN(value)) {
 						output.print(value);
@@ -145,30 +145,26 @@ public class ExtractData extends CommandLineUtility {
 	
 	private Indicators getIndicators(Problem problem, NondominatedPopulation referenceSet, String[] fields) {
 		Indicators indicators = Indicators.of(problem, referenceSet);
-		OptionCompleter completer = new OptionCompleter(StandardIndicator.class);
 		
 		for (String field : fields) {
-			String option = completer.lookup(field);
-			
-			if (option == null) {
-				continue;
+			try {
+				StandardIndicator indicator = TypedProperties.getEnumFromPartialString(StandardIndicator.class, field);
+				indicators.include(indicator);
+			} catch (IllegalArgumentException e) {
+				// skip as no matching indicator found
 			}
-			
-			indicators.include(StandardIndicator.valueOf(option));
 		}
 
 		return indicators;
 	}
 	
-	private double getValue(IndicatorValues values, String indicator) {
-		OptionCompleter completer = new OptionCompleter(StandardIndicator.class);
-		String option = completer.lookup(indicator);
-		
-		if (option == null) {
+	private double getIndicatorValue(IndicatorValues values, String name) {
+		try {
+			StandardIndicator indicator = TypedProperties.getEnumFromPartialString(StandardIndicator.class, name);
+			return values.get(indicator);
+		} catch (IllegalArgumentException e) {
 			return Double.NaN;
 		}
-		
-		return values.get(StandardIndicator.valueOf(option));
 	}
 	
 	/**

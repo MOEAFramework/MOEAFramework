@@ -168,6 +168,19 @@ public class TypedPropertiesTest {
 	}
 	
 	@Test
+	public void testEnumPartialMatching() {
+		Assert.assertEquals(TestEnum.FOO, TypedProperties.getEnumFromPartialString(TestEnum.class, "f"));
+		Assert.assertEquals(TestEnum.FOO, TypedProperties.getEnumFromPartialString(TestEnum.class, "foo"));
+		
+		Assert.assertThrows(IllegalArgumentException.class,
+				() -> TypedProperties.getEnumFromPartialString(TestEnum.class, ""));
+		Assert.assertThrows(IllegalArgumentException.class,
+				() -> TypedProperties.getEnumFromPartialString(TestEnum.class, "undefined"));
+		Assert.assertThrows(IllegalArgumentException.class,
+				() -> TypedProperties.getEnumFromPartialString(TestEnum.class, "foobar"));
+	}
+	
+	@Test
 	public void testPrimitives() {
 		properties.setString("string", "foo,bar");
 		properties.setDouble("double", 2.71);

@@ -81,7 +81,7 @@ public class OptionCompleter {
 	 * @param <T> the enum type
 	 * @param options the enum class
 	 */
-	public <T extends Enum<T>> OptionCompleter(Class<T> options) {
+	public <T extends Enum<?>> OptionCompleter(Class<T> options) {
 		this();
 		
 		for (T option : options.getEnumConstants()) {
