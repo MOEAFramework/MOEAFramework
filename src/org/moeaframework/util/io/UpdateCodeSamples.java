@@ -496,6 +496,11 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		private int endingLine;
 		
 		/**
+		 * Identifier for the code block, as an alternative to line numbers.
+		 */
+		private String identifier;
+		
+		/**
 		 * Any additional formatting flags.
 		 */
 		private final EnumSet<FormatFlag> formatFlags;
@@ -525,11 +530,19 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 *   [:-1]        // Copies everything except the last line
 		 *   [:]          // Copies entire file
 		 * }</pre>
+		 * <p>
+		 * A string identifier can also be given, in which case we locate the code block between the comments
+		 * <pre>{@code
+		 *   // begin-example:<id>
+		 *   ... code block
+		 *   // end-example:<id>
+		 * }</pre>
 		 * 
 		 * @param str the string representation of the line numbers
 		 */
 		public void parseLineNumbers(String str) {
-			final Pattern lineNumbers = Pattern.compile("(\\-?[0-9]+)?[:\\\\-](\\-?[0-9]+)?");
+			final Pattern identifierPattern = Pattern.compile("[a-zA-Z\\-_]+");
+			final Pattern lineNumberPattern = Pattern.compile("(\\-?[0-9]+)?[:\\\\-](\\-?[0-9]+)?");
 			
 			if (str == null) {
 				startingLine = FIRST_LINE;
@@ -541,14 +554,22 @@ public class UpdateCodeSamples extends CommandLineUtility {
 				str = str.substring(1, str.length()-1);
 			}
 			
-			Matcher matcher = lineNumbers.matcher(str);
+			Matcher matcher = identifierPattern.matcher(str);
+			
+			if (matcher.matches()) {
+				identifier = str;
+				return;
+			}
+			
+			matcher = lineNumberPattern.matcher(str);
 			
 			if (matcher.matches()) {
 				startingLine = matcher.group(1) != null ? Integer.parseInt(matcher.group(1)) : FIRST_LINE;
 				endingLine = matcher.group(2) != null ? Integer.parseInt(matcher.group(2)) : LAST_LINE;
-			} else {
-				Validate.that("line number range", str).failUnsupportedOption();
+				return;
 			}
+			
+			Validate.that("lines", str).failUnsupportedOption();
 		}
 		
 		/**
@@ -570,6 +591,16 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 */
 		public int getEndingLine() {
 			return endingLine;
+		}
+		
+		/**
+		 * Returns the identifier for the code block.  When set, this identifier is used to identify the section of
+		 * code instead of line numbers.
+		 * 
+		 * @return the identifier
+		 */
+		public String getIdentifier() {
+			return identifier;
 		}
 		
 		/**
@@ -632,16 +663,39 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			int startingLine = getStartingLine();
 			int endingLine = getEndingLine();
 			
+			if (getIdentifier() != null) {
+				String identifier = getIdentifier();
+				
+				startingLine = -1;
+				endingLine = -1;
+				
+				for (int i = 0; i < lines.size(); i++) {
+					if (lines.get(i).contains("begin-example:" + identifier)) {
+						startingLine = i + 1;
+					} else if (lines.get(i).contains("end-example:" + identifier)) {
+						endingLine = i - 1;
+					}
+				}
+				
+				if (startingLine < 0 || endingLine < 0 || endingLine < startingLine) {
+					throw new IOException("failed to find code block identified by '" + identifier + "'");
+				}
+				
+				// offset line numbers since we start at 1
+				startingLine += 1;
+				endingLine += 1;
+			}
+			
 			if (startingLine < 0) {
 				startingLine += lines.size() + 1;
 			} else if (startingLine == 0) {
 				startingLine = 1;
 			}
-			
+				
 			if (endingLine < 0) {
 				endingLine += lines.size();
 			}
-			
+				
 			lines = lines.subList(Math.max(0, startingLine - 1), Math.min(lines.size(), endingLine));
 			
 			if (stripComments()) {

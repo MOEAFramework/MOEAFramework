@@ -183,6 +183,44 @@ public class UpdateCodeSamplesTest {
 	}
 	
 	@Test
+	public void testIdentifier() throws IOException {
+		String input = """
+				public class Foo {
+				    //begin-example:foo
+					public void test() {
+					    int x = 5;
+					}
+					//end-example:foo
+				}
+				""";
+		
+		String expected = """
+				```java
+				public void test() {
+				    int x = 5;
+				}
+				```
+				""";
+		
+		Assert.assertEqualsNormalized(expected, format(Language.Java, FileType.Markdown, "[foo]", input));
+	}
+	
+	@Test(expected = IOException.class)
+	public void testMissingIdentifier() throws IOException {
+		String input = """
+				public class Foo {
+				    //begin-example:foo
+					public void test() {
+					    int x = 5;
+					}
+					//end-example:foo
+				}
+				""";
+		
+		format(Language.Java, FileType.Markdown, "[bar]", input);
+	}
+	
+	@Test
 	public void testHtml() throws IOException {
 		String input = """
 				public void test() {

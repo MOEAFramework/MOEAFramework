@@ -46,13 +46,17 @@ public class FileFormatSnippet {
 		Population population = new Population();
 		population.add(MockSolution.of().withObjectives(1.0, 1.0).build());
 		
+		// begin-example:objectives
 		population.saveObjectives(new File("population.dat"));
 		Population.loadObjectives(new File("population.dat"));
+		// end-example:objectives
 	}
 	
 	@Test
 	public void referenceSet() throws IOException {
+		// begin-example:referenceSet
 		NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet("pf/DTLZ2.2D.pf");
+		// end-example:referenceSet
 	}
 
 	@Test
@@ -60,8 +64,10 @@ public class FileFormatSnippet {
 		Population population = new Population();
 		population.add(MockSolution.of().withObjectives(1.0, 1.0).build());
 		
+		// begin-example:binary
 		population.saveBinary(new File("population.bin"));
 		Population.loadBinary(new File("population.bin"));
+		// end-example:binary
 	}
 	
 	@Test
@@ -69,6 +75,7 @@ public class FileFormatSnippet {
 		Problem problem = new Schaffer();
 		NSGAII algorithm = new NSGAII(problem);
 		
+		// begin-example:resultFile-overwrite
 		try (ResultFileWriter writer = ResultFileWriter.overwrite(problem, new File("result.dat"))) {
 			for (int i = 0; i < 1000; i++) {
 				algorithm.step();
@@ -79,13 +86,17 @@ public class FileFormatSnippet {
 				writer.append(new ResultEntry(algorithm.getResult(), properties));
 			}
 		}
+		// end-example:resultFile-overwrite
 		
+		// begin-example:resultFile-append
 		try (ResultFileWriter writer = ResultFileWriter.append(problem, new File("result.dat"))) {
 			int existingEntries = writer.getNumberOfEntries();
 			
 			// if existingEntries > 0, we are appending to an existing file
 		}
+		// end-example:resultFile-append
 		
+		// begin-example:resultFile-open
 		try (ResultFileReader reader = ResultFileReader.open(problem, new File("result.dat"))) {
 			while (reader.hasNext()) {
 				ResultEntry entry = reader.next();
@@ -94,6 +105,7 @@ public class FileFormatSnippet {
 				NondominatedPopulation set = entry.getPopulation();
 			}
 		}
+		// end-example:resultFile-open
 	}
 	
 	@Test

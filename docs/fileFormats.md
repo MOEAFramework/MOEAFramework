@@ -39,7 +39,7 @@ of the population.
 First, we can use `saveObjectives` and `loadObjectives` to read and write the objective values to a file.
 Each row contains the objective values, separated by spaces, for a solution in the population.
 
-<!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [49:50] -->
+<!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [objectives] -->
 
 ```java
 population.saveObjectives(new File("population.dat"));
@@ -49,7 +49,7 @@ Population.loadObjectives(new File("population.dat"));
 Reference sets, including those defined in the `pf/` folder, are also stored in this manner.  However, for convenience,
 we recommend using the `loadReferenceSet` method, which loads the solutions into a `NondominatedPopulation`:
 
-<!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [55:55] -->
+<!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [referenceSet] -->
 
 ```java
 NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet("pf/DTLZ2.2D.pf");
@@ -58,7 +58,7 @@ NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet("p
 However, note that only saving objective values is lossy, as the decision variables and other attributes of the
 solution are not included.  If instead you need to store the entire contents of a solution, use the binary format:
 
-<!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [63:64] -->
+<!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [binary] -->
 
 ```java
 population.saveBinary(new File("population.bin"));
@@ -77,7 +77,7 @@ any incomplete entries are cleaned up.
 
 Here is an example where we store the approximation set after each iteration of the algorithm:
 
-<!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [72:81] -->
+<!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [resultFile-overwrite] -->
 
 ```java
 try (ResultFileWriter writer = ResultFileWriter.overwrite(problem, new File("result.dat"))) {
@@ -95,7 +95,7 @@ try (ResultFileWriter writer = ResultFileWriter.overwrite(problem, new File("res
 To resume or append to an existing file, replace `overwrite` with `append`.  Note that we can query the number of
 existing entries to determine where to resume.
 
-<!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [83:87] {KeepComments} -->
+<!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [resultFile-append] {KeepComments} -->
 
 ```java
 try (ResultFileWriter writer = ResultFileWriter.append(problem, new File("result.dat"))) {
@@ -107,7 +107,7 @@ try (ResultFileWriter writer = ResultFileWriter.append(problem, new File("result
 
 Use the reader to validate and load the contents of a results file:
 
-<!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [89:96] -->
+<!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [resultFile-open] -->
 
 ```java
 try (ResultFileReader reader = ResultFileReader.open(problem, new File("result.dat"))) {
