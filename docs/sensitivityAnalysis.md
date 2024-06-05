@@ -21,7 +21,7 @@ graph LR
     G --> I["SobolAnalysis<br>(requires saltelli method)"]
 ```
 
-The full script used in this example can be found at [sensitivity.sh](/examples/org/moeaframework/examples/experiment/sensitivity.sh).
+The full script used in this example can be found at [sensitivity.sh](../examples/org/moeaframework/examples/experiment/sensitivity.sh).
 For more information about any of the commands being run, see the [Command Line Tools reference](commandLineTools.md).
 
 ## Parameter File
