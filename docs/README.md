@@ -21,6 +21,7 @@
   * [Mixed Types](miscellaneousTopics.md#mixed-types)
   * [Termination Conditions](miscellaneousTopics.md#termination-conditions)
   * [Reference Sets](miscellaneousTopics.md#reference-sets)
+* [Sensitivity Analysis](sensitivityAnalysis.md)
 * [Troubleshooting](troubleshooting.md)
 
 ## References
@@ -28,6 +29,7 @@
 * [List of Algorithms](listOfAlgorithms.md)
 * [List of Variation Operators](listOfOperators.md)
 * [List of Test Problems](listOfProblems.md)
+* [File Formats](fileFormats.md)
 * [Command Line Tools](commandLineTools.md)
 * [Extensions (JMetal-Plugin, Generalized Decomposition, Hypervolume)](listOfExtensions.md)
 

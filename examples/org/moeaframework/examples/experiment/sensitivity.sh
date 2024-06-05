@@ -33,11 +33,16 @@ java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.ResultFileEvalua
     --problem DTLZ2 \
     --epsilon 0.01
     
-java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.ResultFileInfo \
-    --problem DTLZ2 \
-    NSGAII_DTLZ2_Results.txt
+java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.Analysis \
+    --controllability \
+    --efficiency \
+    --band 100 \
+    --parameterFile examples/org/moeaframework/examples/experiment/NSGAII_Params.txt \
+    --parameters NSGAII_Samples.txt \
+    --metric InvertedGenerationalDistance \
+    NSGAII_DTLZ2_Metrics.txt
 
 java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.SobolAnalysis \
     --parameterFile examples/org/moeaframework/examples/experiment/NSGAII_Params.txt \
     --input NSGAII_DTLZ2_Metrics.txt \
-    --metric hypervolume
+    --metric Hypervolume
