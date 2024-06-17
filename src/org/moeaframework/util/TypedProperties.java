@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.Array;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -69,18 +70,18 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	/**
 	 * Storage of the key-value pairs.
 	 */
-	private final TreeMap<String, String> properties;
+	private final Map<String, String> properties;
 	
 	/**
 	 * The keys that were read from this {@code Properties} object.
 	 */
-	private final TreeSet<String> accessedProperties;
+	private final Set<String> accessedProperties;
 	
 	/**
 	 * Creates a new, empty instance of this class.
 	 */
 	public TypedProperties() {
-		this(DEFAULT_SEPARATOR);
+		this(DEFAULT_SEPARATOR, false);
 	}
 	
 	/**
@@ -89,7 +90,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * @param properties the existing {@code Properties} object
 	 */
 	public TypedProperties(Properties properties) {
-		this(DEFAULT_SEPARATOR);
+		this(DEFAULT_SEPARATOR, false);
 		addAll(properties);
 	}
 	
@@ -97,13 +98,28 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * Creates a new, empty instance of this class using the given separator string for arrays.
 	 * 
 	 * @param separator the separator string
+	 * @param threadSafe if {@code true}, creates a thread-safe version
 	 */
-	TypedProperties(String separator) {
+	TypedProperties(String separator, boolean threadSafe) {
 		super();
 		this.separator = separator;
 
-		this.properties = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
-		this.accessedProperties = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		if (threadSafe) {
+			this.properties = Collections.synchronizedMap(new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER));
+			this.accessedProperties = Collections.synchronizedSet(new TreeSet<String>(String.CASE_INSENSITIVE_ORDER));
+		} else {
+			this.properties = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
+			this.accessedProperties = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		}
+	}
+	
+	/**
+	 * Creates and returns an empty, thread-safe properties object.
+	 * 
+	 * @return a thread-safe version
+	 */
+	public static TypedProperties newThreadSafeInstance() {
+		return new TypedProperties(DEFAULT_SEPARATOR, true);
 	}
 	
 	/**
@@ -155,6 +171,17 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 		}
 		
 		return result;
+	}
+	
+	/**
+	 * Returns a copy of these properties.  This is a shallow copy, the keys and values themselves are not cloned.
+	 * 
+	 * @return the copy
+	 */
+	public TypedProperties copy() {
+		TypedProperties copy = new TypedProperties();
+		copy.addAll(this);
+		return copy;
 	}
 	
 	/**
@@ -1258,6 +1285,15 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 		table.addColumn(new Column<Entry<String, String>, String>("Property", x -> x.getKey()));
 		table.addColumn(new Column<Entry<String, String>, String>("Value", x -> x.getValue()));
 		return table;
+	}
+	
+	/**
+	 * Returns the set of keys for these properties.
+	 * 
+	 * @return the keys
+	 */
+	public Set<String> keySet() {
+		return properties.keySet();
 	}
 	
 	/**

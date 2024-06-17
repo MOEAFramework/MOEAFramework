@@ -49,6 +49,7 @@ public class ObjectValidator<T> extends Validator<T> {
 	 * Asserts the given object is not empty.  An empty object is defined as:
 	 * <ol>
 	 *   <li>A {@code null} value,
+	 *   <li>A empty or blank string,
 	 *   <li>An array with length 0, or
 	 *   <li>An {@link Iterable} that contains no elements, which applies to practically all collection types, .
 	 * </ol>
@@ -57,6 +58,10 @@ public class ObjectValidator<T> extends Validator<T> {
 		isNotNull();
 		
 		T value = getPropertyValue();
+		
+		if (value instanceof String string && string.isBlank()) {
+			throw new IllegalArgumentException("Expected " + getPropertyName() + " to not be empty or blank");
+		}
 		
 		if (value instanceof Iterable<?> iterable && !iterable.iterator().hasNext()) {
 			throw new IllegalArgumentException("Expected collection " + getPropertyName() + " to not be empty");
