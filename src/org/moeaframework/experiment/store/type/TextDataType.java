@@ -9,7 +9,7 @@ import org.moeaframework.experiment.store.DataType;
 import org.moeaframework.experiment.store.Key;
 import org.moeaframework.experiment.store.TransactionalWriter;
 
-public class TextDataType<T> extends DataType2<T> {
+public class TextDataType<T> extends DataType {
 	
 	private TextReader<T> reader;
 	

@@ -2,7 +2,7 @@ package org.moeaframework.experiment.parameter;
 
 import java.util.List;
 
-import org.moeaframework.util.TypedProperties;
+import org.moeaframework.experiment.Sample;
 
 public class Constant<T> extends EnumeratedParameter {
 	
@@ -18,8 +18,8 @@ public class Constant<T> extends EnumeratedParameter {
 	}
 	
 	@Override
-	public List<TypedProperties> enumerate(List<TypedProperties> samples) {
-		for (TypedProperties sample : samples) {
+	public List<Sample> enumerate(List<Sample> samples) {
+		for (Sample sample : samples) {
 			sample.setString(getName(), value.toString());
 		}
 		

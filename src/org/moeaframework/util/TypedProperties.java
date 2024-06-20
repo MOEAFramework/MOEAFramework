@@ -100,7 +100,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * @param separator the separator string
 	 * @param threadSafe if {@code true}, creates a thread-safe version
 	 */
-	TypedProperties(String separator, boolean threadSafe) {
+	protected TypedProperties(String separator, boolean threadSafe) {
 		super();
 		this.separator = separator;
 
@@ -114,9 +114,10 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	}
 	
 	/**
-	 * Creates and returns an empty, thread-safe properties object.
+	 * Creates and returns an empty properties object that is thread-safe.  This is useful when needing thread-safe
+	 * access to a shared properties object, but we recommend creating copies if the properties are mutable.
 	 * 
-	 * @return a thread-safe version
+	 * @return an empty, thread-safe properties object
 	 */
 	public static TypedProperties newThreadSafeInstance() {
 		return new TypedProperties(DEFAULT_SEPARATOR, true);
@@ -132,8 +133,27 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * @param key the key
 	 * @param value the value assigned to the key
 	 * @return a typed properties instance with the specified key-value pair
+	 * @deprecated Use {@link #of(String, String)} instead
 	 */
+	@Deprecated
 	public static TypedProperties withProperty(String key, String value) {
+		TypedProperties properties = new TypedProperties();
+		properties.setString(key, value);
+		return properties;
+	}
+	
+	/**
+	 * Convenience method to quickly construct a typed properties instance with a single key-value pair.  This is
+	 * particularly useful for parsing, for instance, command line arguments:
+	 * <pre>
+	 *   TypedProperties.of("epsilon", commandLine.getOptionValue("epsilon")).getDoubleArray("epsilon");
+	 * </pre>
+	 *   
+	 * @param key the key
+	 * @param value the value assigned to the key
+	 * @return a typed properties instance with the specified key-value pair
+	 */
+	public static TypedProperties of(String key, String value) {
 		TypedProperties properties = new TypedProperties();
 		properties.setString(key, value);
 		return properties;
@@ -171,17 +191,6 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 		}
 		
 		return result;
-	}
-	
-	/**
-	 * Returns a copy of these properties.  This is a shallow copy, the keys and values themselves are not cloned.
-	 * 
-	 * @return the copy
-	 */
-	public TypedProperties copy() {
-		TypedProperties copy = new TypedProperties();
-		copy.addAll(this);
-		return copy;
 	}
 	
 	/**

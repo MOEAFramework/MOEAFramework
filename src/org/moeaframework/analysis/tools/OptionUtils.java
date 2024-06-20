@@ -150,7 +150,7 @@ class OptionUtils {
 	 */
 	public static Epsilons getEpsilons(CommandLine commandLine) {
 		if (commandLine.hasOption("epsilon")) {
-			TypedProperties properties = TypedProperties.withProperty("epsilon", commandLine.getOptionValue("epsilon"));
+			TypedProperties properties = TypedProperties.of("epsilon", commandLine.getOptionValue("epsilon"));
 			return new Epsilons(properties.getDoubleArray("epsilon"));
 		}
 		

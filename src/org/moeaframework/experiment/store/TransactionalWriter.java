@@ -35,7 +35,6 @@ public abstract class TransactionalWriter extends FilterWriter {
 		}
 		
 		super.close();
-		isClosed = true;
 		
 		if (isCommitted) {
 			doCommit();
@@ -43,6 +42,8 @@ public abstract class TransactionalWriter extends FilterWriter {
 			System.err.println("Stream closed without being committed, data being discarded");
 			doRollback();
 		}
+		
+		isClosed = true;
 	}
 	
 	protected abstract void doCommit() throws IOException;

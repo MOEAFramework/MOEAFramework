@@ -6,20 +6,20 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class DataType {
 	
 	public static final DataType SAMPLES = DataType.of("samples");
-	
-	public static final DataType INPUTS = DataType.of("inputs");
-	
+		
 	public static final DataType APPROXIMATION_SET = DataType.of("approximationSet");
 	
 	public static final DataType REFERENCE_SET = DataType.of("referenceSet");
 	
 	public static final DataType INDICATOR_VALUES = DataType.of("indicatorValues");
 	
-	public static final DataType STATISTICS = DataType.of("statistics");
+	public static final DataType DESCRIPTIVE_STATISTICS = DataType.of("descriptiveStatistics");
+	
+	public static final DataType STATISTICAL_COMPARISON = DataType.of("statisticalComparison");
 	
 	protected final String name;
 
-	DataType(String name) {
+	public DataType(String name) {
 		super();
 		this.name = name;
 	}

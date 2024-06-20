@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.moeaframework.experiment.Sample;
 import org.moeaframework.experiment.Samples;
 import org.moeaframework.experiment.store.schema.Schema;
-import org.moeaframework.util.TypedProperties;
 
 public class EnumeratedParameterSet extends ParameterSet<EnumeratedParameter> {
 	
@@ -23,8 +23,8 @@ public class EnumeratedParameterSet extends ParameterSet<EnumeratedParameter> {
 	}
 
 	public Samples generate() {
-		List<TypedProperties> result = new ArrayList<>();
-		result.add(new TypedProperties());
+		List<Sample> result = new ArrayList<>();
+		result.add(new Sample());
 		
 		for (EnumeratedParameter parameter : parameters.values()) {
 			result = parameter.enumerate(result);

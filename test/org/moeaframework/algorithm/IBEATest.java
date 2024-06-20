@@ -43,7 +43,7 @@ public class IBEATest extends JMetalAlgorithmTest {
 		
 		Assert.assertEquals("hypervolume", algorithm.getConfiguration().getString("indicator"));
 		
-		algorithm.applyConfiguration(TypedProperties.withProperty("indicator", "epsilon"));
+		algorithm.applyConfiguration(TypedProperties.of("indicator", "epsilon"));
 		
 		Assert.assertInstanceOf(AdditiveEpsilonIndicatorFitnessEvaluator.class, algorithm.getFitnessEvaluator());
 		Assert.assertEquals("epsilon", algorithm.getConfiguration().getString("indicator"));
@@ -54,7 +54,7 @@ public class IBEATest extends JMetalAlgorithmTest {
 		Problem problem = new MockRealProblem();	
 		IBEA algorithm = new IBEA(problem);
 		
-		algorithm.applyConfiguration(TypedProperties.withProperty("indicator", "foo"));
+		algorithm.applyConfiguration(TypedProperties.of("indicator", "foo"));
 	}
 
 }

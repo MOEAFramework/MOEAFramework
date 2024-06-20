@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.moeaframework.experiment.store.DataType;
 import org.moeaframework.experiment.store.Key;
 import org.moeaframework.experiment.store.schema.Schema;
-import org.moeaframework.util.TypedProperties;
 
 public class FlatFileMap extends FileMap {
 				
@@ -18,18 +17,10 @@ public class FlatFileMap extends FileMap {
 	@Override
 	public File map(Schema schema, Key key, DataType dataType) {
 		String[] segments = key.getSegments(schema);
-		String filename = Arrays.stream(segments).collect(Collectors.joining("_")) + "." + dataType;
+		String filename = Arrays.stream(segments)
+				.map(x -> cleanPathSegment(x))
+				.collect(Collectors.joining("_", "", "." + cleanPathSegment(dataType.toString())));
 		return new File(getRoot(), filename);
-	}
-	
-	@Override
-	void validateManifest(TypedProperties properties) {
-		super.validateManifest(properties);
-	}
-	
-	@Override
-	void createManifest(TypedProperties properties) {
-		super.createManifest(properties);
 	}
 	
 	public static FlatFileMap at(File root) {

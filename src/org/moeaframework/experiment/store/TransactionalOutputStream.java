@@ -35,7 +35,6 @@ public abstract class TransactionalOutputStream extends FilterOutputStream {
 		}
 		
 		super.close();
-		isClosed = true;
 		
 		if (isCommitted) {
 			doCommit();
@@ -43,6 +42,8 @@ public abstract class TransactionalOutputStream extends FilterOutputStream {
 			System.err.println("Stream closed without being committed, data being discarded");
 			doRollback();
 		}
+		
+		isClosed = true;
 	}
 
 	protected abstract void doCommit() throws IOException;

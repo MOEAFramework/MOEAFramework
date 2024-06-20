@@ -2,7 +2,7 @@ package org.moeaframework.experiment.parameter;
 
 import java.util.List;
 
-import org.moeaframework.util.TypedProperties;
+import org.moeaframework.experiment.Sample;
 
 /**
  * Enumerated parameters have a fixed number of values that will all be present in the result.  This is akin to a
@@ -16,6 +16,6 @@ public abstract class EnumeratedParameter extends Parameter {
 		super(name);
 	}
 	
-	public abstract List<TypedProperties> enumerate(List<TypedProperties> samples);
+	public abstract List<Sample> enumerate(List<Sample> samples);
 
 }

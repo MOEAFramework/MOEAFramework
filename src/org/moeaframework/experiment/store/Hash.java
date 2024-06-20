@@ -13,7 +13,7 @@ import java.util.HexFormat;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.util.TypedProperties;
+import org.moeaframework.experiment.Sample;
 
 public class Hash {
 	
@@ -83,13 +83,13 @@ public class Hash {
 		return of(key + "->" + dataType);
 	}
 	
-	public static Hash of(TypedProperties properties) {
+	public static Hash of(Sample sample) {
 		StringBuilder sb = new StringBuilder();
 		
-		for (String key : properties.keySet()) {
+		for (String key : sample.keySet()) {
 			sb.append(key);
 			sb.append("=");
-			sb.append(properties.getString(key));
+			sb.append(sample.getString(key));
 			sb.append("\n");
 		}
 		

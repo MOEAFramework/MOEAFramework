@@ -15,7 +15,6 @@ import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.commons.lang3.StringUtils;
 import org.moeaframework.experiment.store.DataReader;
 import org.moeaframework.experiment.store.DataStore;
 import org.moeaframework.experiment.store.DataWriter;
@@ -24,8 +23,6 @@ import org.moeaframework.experiment.store.Key;
 import org.moeaframework.experiment.store.TransactionalOutputStream;
 import org.moeaframework.experiment.store.TransactionalWriter;
 import org.moeaframework.experiment.store.schema.Schema;
-import org.moeaframework.util.PropertyNotFoundException;
-import org.moeaframework.util.TypedProperties;
 
 public class FileSystemDataStore implements DataStore {
 	
@@ -46,7 +43,6 @@ public class FileSystemDataStore implements DataStore {
 		
 		mkdirLock = new ReentrantLock();
 		
-		fileMap.validateSchema(schema);
 		createOrValidateManifest();
 	}
 	
@@ -80,32 +76,28 @@ public class FileSystemDataStore implements DataStore {
 	}
 	
 	private void createOrValidateManifest() throws IOException, ManifestValidationException {
-		File manifest = new File(fileMap.getRoot(), ".manifest");
+		File file = new File(fileMap.getRoot(), Manifest.FILENAME);
+		Manifest expectedManifest = getManifest();
 		
-		if (manifest.exists()) {	
-			try (FileReader reader = new FileReader(manifest)) {
-				TypedProperties properties = new TypedProperties();
-				properties.load(reader);
-				
-				fileMap.validateManifest(properties);
-				
-				if (!StringUtils.equalsIgnoreCase(schema.toString(), properties.getString("schema"))) {
-					throw new ManifestValidationException("Schemas do not match, expected " + schema + " but was " +
-							properties.getString("schema"));
-				}
-			} catch (PropertyNotFoundException e) {
-				throw new ManifestValidationException("Missing value in manifest", e);
+		if (file.exists()) {	
+			try (FileReader reader = new FileReader(file)) {
+				Manifest actualManifest = new Manifest();
+				actualManifest.load(reader);
+				actualManifest.validate(expectedManifest);
 			}
 		} else {
-			mkdirs(manifest.getParentFile());
+			mkdirs(file.getParentFile());
 			
-			try (FileWriter writer = new FileWriter(manifest)) {
-				TypedProperties properties = new TypedProperties();
-				fileMap.createManifest(properties);
-				properties.setString("schema", schema.toString());
-				properties.store(writer);
+			try (FileWriter writer = new FileWriter(file)) {
+				expectedManifest.store(writer);
 			}
 		}
+	}
+	
+	private Manifest getManifest() {
+		Manifest manifest = fileMap.getManifest();
+		manifest.setString("schema", schema.toString());
+		return manifest;
 	}
 	
 	class FileSystemDataWriter implements DataWriter {

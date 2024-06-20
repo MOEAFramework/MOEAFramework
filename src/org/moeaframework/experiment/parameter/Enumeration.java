@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.moeaframework.util.TypedProperties;
+import org.moeaframework.experiment.Sample;
 
 public class Enumeration<T> extends EnumeratedParameter {
 	
@@ -25,12 +25,12 @@ public class Enumeration<T> extends EnumeratedParameter {
 	}
 
 	@Override
-	public List<TypedProperties> enumerate(List<TypedProperties> samples) {
-		List<TypedProperties> result = new ArrayList<TypedProperties>();
+	public List<Sample> enumerate(List<Sample> samples) {
+		List<Sample> result = new ArrayList<Sample>();
 		
-		for (TypedProperties sample : samples) {
+		for (Sample sample : samples) {
 			for (T value : values) {
-				TypedProperties newSample = new TypedProperties();
+				Sample newSample = new Sample();
 				newSample.addAll(sample);
 				newSample.setString(getName(), value.toString());
 				result.add(newSample);

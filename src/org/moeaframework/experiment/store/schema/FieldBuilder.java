@@ -10,19 +10,19 @@ public class FieldBuilder {
 	}
 	
 	public Field<Integer> asInt() {
-		return new Field<>(name, Integer.class, Integer::valueOf);
+		return new Field<>(name, Integer.class, sample -> sample.getInt(name));
 	}
 	
 	public Field<Long> asLong() {
-		return new Field<>(name, Long.class, Long::valueOf);
+		return new Field<>(name, Long.class, sample -> sample.getLong(name));
 	}
 	
 	public Field<Double> asDecimal() {
-		return new Field<>(name, Double.class, Double::valueOf);
+		return new Field<>(name, Double.class, sample -> sample.getDouble(name));
 	}
 	
 	public Field<String> asString() {
-		return new Field<>(name, String.class, String::valueOf);
+		return new Field<>(name, String.class, sample -> sample.getString(name));
 	}
 
 }

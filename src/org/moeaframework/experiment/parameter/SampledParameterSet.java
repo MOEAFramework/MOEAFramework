@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.moeaframework.experiment.Sample;
 import org.moeaframework.experiment.Samples;
 import org.moeaframework.experiment.store.schema.Schema;
-import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.sequence.Sequence;
 import org.moeaframework.util.validate.Validate;
 
@@ -40,23 +40,23 @@ public class SampledParameterSet extends ParameterSet<Parameter> {
 			}
 		}
 		
-		List<TypedProperties> result = new ArrayList<>();
+		List<Sample> result = new ArrayList<>();
 		
 		// Expand the sampled parameters using the provided sequence generator.
 		if (sampledParameters.size() > 0) {
-			double[][] samples = sequence.generate(numberOfSamples, sampledParameters.size());
+			double[][] sequences = sequence.generate(numberOfSamples, sampledParameters.size());
 			
-			for (double[] sample : samples) {
-				TypedProperties properties = new TypedProperties();
+			for (double[] seq : sequences) {
+				Sample sample = new Sample();
 				
 				for (int i = 0; i < sampledParameters.size(); i++) {
-					sampledParameters.get(i).apply(properties, sample[i]);
+					sampledParameters.get(i).apply(sample, seq[i]);
 				}
 				
-				result.add(properties);
+				result.add(sample);
 			}
 		} else {
-			result.add(new TypedProperties());
+			result.add(new Sample());
 		}
 		
 		// Expand the enumerated parameters.

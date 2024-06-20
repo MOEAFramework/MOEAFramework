@@ -1,45 +1,52 @@
 package org.moeaframework.experiment;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
 import org.moeaframework.experiment.store.DataStore;
+import org.moeaframework.experiment.store.DataStoreException;
 import org.moeaframework.experiment.store.DataType;
 import org.moeaframework.experiment.store.Key;
-import org.moeaframework.experiment.store.TransactionalOutputStream;
+import org.moeaframework.experiment.store.TransactionalWriter;
 import org.moeaframework.experiment.store.schema.Field;
 import org.moeaframework.experiment.store.schema.Schema;
-import org.moeaframework.util.TypedProperties;
 
-public class Samples implements Iterable<TypedProperties> {
+public class Samples implements Iterable<Sample> {
+	
+	private static final String HEADER_TEXT = "Samples: ";
 	
 	private final Schema schema;
 
-	private final List<TypedProperties> samples;
+	private final List<Sample> samples;
 	
 	public Samples(Schema schema) {
 		super();
 		this.schema = schema;
-		this.samples = new ArrayList<>();
+		this.samples = Collections.synchronizedList(new ArrayList<>());
 	}
 	
-	public Samples(Schema schema, Collection<TypedProperties> samples) {
+	public Samples(Schema schema, Collection<Sample> samples) {
 		this(schema);
 		addAll(samples);
+	}
+	
+	public Samples(Schema schema, Iterable<Sample> samples) {
+		this(schema);
+		addAll(samples);
+	}
+	
+	public Schema getSchema() {
+		return schema;
 	}
 	
 	public int size() {
@@ -50,33 +57,37 @@ public class Samples implements Iterable<TypedProperties> {
 		return samples.isEmpty();
 	}
 	
-	public void add(TypedProperties sample) {
+	void add(Sample sample) {
 		this.samples.add(sample);
 	}
 	
-	public void addAll(Collection<TypedProperties> samples) {
+	void addAll(Collection<Sample> samples) {
 		this.samples.addAll(samples);
+	}
+	
+	void addAll(Iterable<Sample> samples) {
+		for (Sample sample : samples) {
+			add(sample);
+		}
 	}
 
 	@Override
-	public Iterator<TypedProperties> iterator() {
-		return samples.iterator();
-	}
-	
-	public Samples copy() {
-		return new Samples(schema, samples);
+	public Iterator<Sample> iterator() {
+		return Collections.unmodifiableList(samples).iterator();
 	}
 	
 	public void save(DataStore dataStore) throws IOException {
-		try (TransactionalOutputStream out = dataStore.writer(Key.of(), DataType.SAMPLES).asBinary();
-				ObjectOutputStream oos = new ObjectOutputStream(out)) {
-			oos.writeInt(size());
+		try (TransactionalWriter out = dataStore.writer(Key.of(), DataType.SAMPLES).asText()) {
+			out.write(HEADER_TEXT);
+			out.write(Integer.toString(samples.size()));
+			out.write(System.lineSeparator());
+			out.write("#");
+			out.write(System.lineSeparator());
 			
-			for (TypedProperties sample : samples) {
-				try (StringWriter writer = new StringWriter()) {
-					sample.store(writer);
-					oos.writeUTF(writer.toString());
-				}
+			for (Sample sample : samples) {
+				sample.store(out);
+				out.write("#");
+				out.write(System.lineSeparator());
 			}
 			
 			out.commit();
@@ -84,16 +95,40 @@ public class Samples implements Iterable<TypedProperties> {
 	}
 	
 	public void load(DataStore dataStore) throws IOException {
-		try (InputStream out = dataStore.reader(Key.of(), DataType.SAMPLES).asBinary();
-				ObjectInputStream ois = new ObjectInputStream(out)) {
-			int size = ois.readInt();
+		samples.clear();
+		
+		try (BufferedReader in = new BufferedReader(dataStore.reader(Key.of(), DataType.SAMPLES).asText())) {
+			StringBuilder content = new StringBuilder();
+			String line = null;
 			
-			for (int i = 0; i < size; i++) {			
-				try (StringReader reader = new StringReader(ois.readUTF())) {
-					TypedProperties sample = new TypedProperties();
-					sample.load(reader);
-					samples.add(sample);
+			if (!(line = in.readLine()).startsWith(HEADER_TEXT)) {
+				throw new DataStoreException("Missing header, not a samples file");
+			}
+			
+			int expectedSize = Integer.parseInt(line.substring(HEADER_TEXT.length()));
+			
+			if (!(line = in.readLine()).startsWith("#")) {
+				throw new DataStoreException("Missing # indicating end of header");
+			}
+			
+			while ((line = in.readLine()) != null) {
+				if (line.startsWith("#")) {
+					try (StringReader reader = new StringReader(content.toString())) {
+						Sample sample = new Sample();
+						sample.load(reader);
+						samples.add(sample);
+					}
+					
+					content = new StringBuilder();
+				} else {
+					content.append(line);
+					content.append(System.lineSeparator());
 				}
+			}
+			
+			if (samples.size() != expectedSize) {
+				throw new DataStoreException("Incorrect number of samples, expected " + expectedSize + " but read " +
+						samples.size());
 			}
 		}
 	}
@@ -102,25 +137,25 @@ public class Samples implements Iterable<TypedProperties> {
 		return distinctValues(schema.get(fieldName));
 	}
 	
-	public <T extends Comparable<T> & Serializable> Collection<T> distinctValues(Field<T> field) {
-		return samples.stream().map(x -> field.valueOf(x.getString(field.getName()))).distinct().toList();
+	public <T extends Comparable<? super T> & Serializable> Collection<T> distinctValues(Field<T> field) {
+		return samples.stream().map(x -> field.valueOf(x)).distinct().toList();
 	}
 	
-	public Collection<Key> getKeys() {
+	public Set<Key> keySet() {
 		Set<Key> keys = new HashSet<Key>();
 		
-		for (TypedProperties sample : samples) {
+		for (Sample sample : samples) {
 			keys.add(Key.from(schema, sample));
 		}
 		
 		return keys;
 	}
 	
-	public TypedProperties get(int index) {
+	public Sample get(int index) {
 		return samples.get(index);
 	}
 	
-	public TypedProperties get(Key key) {
+	public Sample get(Key key) {
 		Samples samples = filter(key);
 		
 		if (samples.size() == 0) {
@@ -132,29 +167,32 @@ public class Samples implements Iterable<TypedProperties> {
 		}
 	}
 	
-	public Map<Key, Samples> partition(int depth) {
+	public Partition<Key, PartitionedSamples> partition(int depth) {
 		if (depth <= 0) {
-			Map<Key, Samples> result = new HashMap<>();
-			result.put(Key.of(), copy());
-			return result;
+			PartitionedSamples partitionedSamples = new PartitionedSamples(schema, Key.of());
+			partitionedSamples.addAll(this);
+			
+			Partition<Key, PartitionedSamples> partition = new Partition<>();
+			partition.put(partitionedSamples.getPartitionKey(), partitionedSamples);
+			return partition;
 		} else {
 			return partition(schema.get(depth - 1));
 		}
 	}
 	
-	public Map<Key, Samples> partition(String fieldName) {
+	public Partition<Key, PartitionedSamples> partition(String fieldName) {
 		return partition(schema.get(fieldName));
 	}
 	
-	public Map<Key, Samples> partition(Field<?> field) {
-		Map<Key, Samples> result = new HashMap<>();
+	public Partition<Key, PartitionedSamples> partition(Field<?> field) {
+		Partition<Key, PartitionedSamples> result = new Partition<>();
 		
-		for (TypedProperties sample : samples) {
+		for (Sample sample : samples) {
 			Key key = Key.prefix(schema, sample, field);
-			Samples samples = result.get(key);
+			PartitionedSamples samples = result.get(key);
 			
 			if (samples == null) {
-				samples = new Samples(schema);
+				samples = new PartitionedSamples(schema, key);
 				result.put(key, samples);
 			}
 			
@@ -164,32 +202,10 @@ public class Samples implements Iterable<TypedProperties> {
 		return result;
 	}
 	
-	public Map<?, Samples> groupBy(String fieldName) {
-		return groupBy(schema.get(fieldName));
-	}
-	
-	public <T extends Comparable<T> & Serializable> Map<T, Samples> groupBy(Field<T> field) {
-		Map<T, Samples> result = new HashMap<>();
-		
-		for (TypedProperties sample : samples) {
-			T value = field.valueOf(sample.getString(field.getName()));
-			Samples samples = result.get(value);
-			
-			if (samples == null) {
-				samples = new Samples(schema);
-				result.put(value, samples);
-			}
-			
-			samples.add(sample);
-		}
-
-		return result;
-	}
-	
-	public Samples filter(Predicate<TypedProperties> predicate) {
+	public Samples filter(Predicate<Sample> predicate) {
 		Samples result = new Samples(schema);
 		
-		for (TypedProperties sample : samples) {
+		for (Sample sample : samples) {
 			if (predicate.test(sample)) {
 				result.add(sample);
 			}
@@ -215,12 +231,12 @@ public class Samples implements Iterable<TypedProperties> {
 		Field<?> field = schema.get(fieldName);
 		
 		return filter(sample -> sample.contains(fieldName) &&
-				field.valueOf(sample.getString(fieldName)).equals(value));
+				field.valueOf(sample).equals(value));
 	}
 	
 	public <T extends Comparable<T> & Serializable> Samples filter(Field<T> field, T value) {
 		return filter(sample -> sample.contains(field.getName()) &&
-				field.valueOf(sample.getString(field.getName())).equals(value));
+				field.valueOf(sample).equals(value));
 	}
 
 }

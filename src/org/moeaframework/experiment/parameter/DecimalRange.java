@@ -1,6 +1,6 @@
 package org.moeaframework.experiment.parameter;
 
-import org.moeaframework.util.TypedProperties;
+import org.moeaframework.experiment.Sample;
 
 public class DecimalRange extends SampledParameter {
 	
@@ -23,7 +23,7 @@ public class DecimalRange extends SampledParameter {
 	}
 	
 	@Override
-	public void apply(TypedProperties sample, double d) {
+	public void apply(Sample sample, double d) {
 		sample.setDouble(getName(), lowerBound + d * (upperBound - lowerBound));
 	}
 	

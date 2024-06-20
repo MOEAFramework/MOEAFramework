@@ -66,19 +66,19 @@ public class SMSEMOATest extends AlgorithmTest {
 		
 		Assert.assertEquals("hypervolumeContribution", algorithm.getConfiguration().getString("indicator"));
 		
-		algorithm.applyConfiguration(TypedProperties.withProperty("indicator", "epsilon"));
+		algorithm.applyConfiguration(TypedProperties.of("indicator", "epsilon"));
 		Assert.assertInstanceOf(AdditiveEpsilonIndicatorFitnessEvaluator.class, algorithm.getFitnessEvaluator());
 		Assert.assertEquals("epsilon", algorithm.getConfiguration().getString("indicator"));
 		
-		algorithm.applyConfiguration(TypedProperties.withProperty("indicator", "hypervolume"));
+		algorithm.applyConfiguration(TypedProperties.of("indicator", "hypervolume"));
 		Assert.assertInstanceOf(HypervolumeFitnessEvaluator.class, algorithm.getFitnessEvaluator());
 		Assert.assertEquals("hypervolume", algorithm.getConfiguration().getString("indicator"));
 		
-		algorithm.applyConfiguration(TypedProperties.withProperty("indicator", "crowding"));
+		algorithm.applyConfiguration(TypedProperties.of("indicator", "crowding"));
 		Assert.assertNull(algorithm.getFitnessEvaluator());
 		Assert.assertEquals("crowding", algorithm.getConfiguration().getString("indicator"));
 		
-		algorithm.applyConfiguration(TypedProperties.withProperty("indicator", "hypervolumeContribution"));
+		algorithm.applyConfiguration(TypedProperties.of("indicator", "hypervolumeContribution"));
 		Assert.assertInstanceOf(HypervolumeContributionFitnessEvaluator.class, algorithm.getFitnessEvaluator());
 	}
 	
@@ -87,7 +87,7 @@ public class SMSEMOATest extends AlgorithmTest {
 		Problem problem = new MockRealProblem();	
 		SMSEMOA algorithm = new SMSEMOA(problem);
 		
-		algorithm.applyConfiguration(TypedProperties.withProperty("indicator", "foo"));
+		algorithm.applyConfiguration(TypedProperties.of("indicator", "foo"));
 	}
 
 }

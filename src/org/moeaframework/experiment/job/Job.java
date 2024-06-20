@@ -1,5 +1,6 @@
 package org.moeaframework.experiment.job;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.Collection;
 
@@ -79,7 +80,7 @@ public abstract class Job {
 		return getName();
 	}
 	
-	public abstract void execute(DataStore dataStore);
+	public abstract void execute(DataStore dataStore) throws IOException;
 	
 	public abstract Collection<DataReference> requires();
 	

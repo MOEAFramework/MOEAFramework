@@ -59,7 +59,7 @@ public abstract class AbstractSingleObjectiveAlgorithmTest<T extends Algorithm &
 	@Test(expected = ConfigurationException.class)
 	public void testConfigurationInvalidIndicator() {
 		T algorithm = createInstance(new MockRealProblem());
-		algorithm.applyConfiguration(TypedProperties.withProperty("method", "foo"));
+		algorithm.applyConfiguration(TypedProperties.of("method", "foo"));
 	}
 	
 	@Test

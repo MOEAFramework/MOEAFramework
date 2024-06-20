@@ -69,7 +69,7 @@ public class CMAESTest extends AlgorithmTest {
 	public void testCheckConsistency() {
 		test("DTLZ2_2",
 				"CMA-ES", new TypedProperties(),
-				"CMA-ES", TypedProperties.withProperty("checkConsistency", "true"),
+				"CMA-ES", TypedProperties.of("checkConsistency", "true"),
 				false, AlgorithmFactory.getInstance());
 	}
 	
@@ -80,15 +80,15 @@ public class CMAESTest extends AlgorithmTest {
 		
 		Assert.assertEquals("crowding", algorithm.getConfiguration().getString("indicator"));
 		
-		algorithm.applyConfiguration(TypedProperties.withProperty("indicator", "epsilon"));
+		algorithm.applyConfiguration(TypedProperties.of("indicator", "epsilon"));
 		Assert.assertInstanceOf(AdditiveEpsilonIndicatorFitnessEvaluator.class, algorithm.getFitnessEvaluator());
 		Assert.assertEquals("epsilon", algorithm.getConfiguration().getString("indicator"));
 		
-		algorithm.applyConfiguration(TypedProperties.withProperty("indicator", "hypervolume"));
+		algorithm.applyConfiguration(TypedProperties.of("indicator", "hypervolume"));
 		Assert.assertInstanceOf(HypervolumeFitnessEvaluator.class, algorithm.getFitnessEvaluator());
 		Assert.assertEquals("hypervolume", algorithm.getConfiguration().getString("indicator"));
 		
-		algorithm.applyConfiguration(TypedProperties.withProperty("indicator", "crowding"));
+		algorithm.applyConfiguration(TypedProperties.of("indicator", "crowding"));
 		Assert.assertNull(algorithm.getFitnessEvaluator());
 	}
 	
@@ -97,7 +97,7 @@ public class CMAESTest extends AlgorithmTest {
 		Problem problem = new MockRealProblem();	
 		CMAES algorithm = new CMAES(problem);
 		
-		algorithm.applyConfiguration(TypedProperties.withProperty("indicator", "foo"));
+		algorithm.applyConfiguration(TypedProperties.of("indicator", "foo"));
 	}
 	
 }

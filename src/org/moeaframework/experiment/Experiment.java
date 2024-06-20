@@ -1,6 +1,8 @@
 package org.moeaframework.experiment;
 
 import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -9,10 +11,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,15 +42,13 @@ public class Experiment {
 
 	private final Set<Job> pendingJobs;
 
-	private final Set<Job> activeJobs;
+	private final Map<Future<Job>, Job> activeJobs;
 
 	private final List<Throwable> suppressedExceptions;
 
 	private final AtomicBoolean isShutdown;
 
 	private final AtomicBoolean isStale;
-
-	private final AtomicBoolean showErrors;
 
 	private JobDispatchThread thread;
 
@@ -59,13 +61,12 @@ public class Experiment {
 		completionService = new ExecutorCompletionService<>(executorService);
 
 		dependencyMap = Collections.synchronizedMap(new HashMap<>());
-		activeJobs = Collections.synchronizedSet(new HashSet<>());
+		activeJobs = Collections.synchronizedMap(new HashMap<>());
 		pendingJobs = Collections.synchronizedSet(new HashSet<>());
 		suppressedExceptions = Collections.synchronizedList(new ArrayList<>());
 
 		isShutdown = new AtomicBoolean();
 		isStale = new AtomicBoolean();
-		showErrors = new AtomicBoolean(true);
 
 		start();
 	}
@@ -82,7 +83,7 @@ public class Experiment {
 
 	private void start() {
 		if (thread != null) {
-			logger.info("Experiment already started");
+			logger.warning("Experiment already started");
 		}
 
 		thread = new JobDispatchThread();
@@ -91,13 +92,13 @@ public class Experiment {
 
 	public void submit(Job job) {
 		if (isShutdown()) {
-			logger.info("Experiment is shutdown, not accepting new jobs!");
+			logger.warning("Experiment is shutdown, not accepting new jobs!");
 			return;
 		}
 
 		if (job.isComplete(dataStore)) {
 			if (job.isStale(dataStore)) {
-				logger.info("Detected stale job " + job + ", removing stale data");
+				logger.info("Detected stale inputs to " + job + ", cleaning up stale output");
 				job.produces().forEach(x -> dataStore.writer(x).delete());
 				isStale.set(true);
 			} else {
@@ -117,9 +118,12 @@ public class Experiment {
 	private void startJob(Job job) {
 		logger.info("Starting " + job);
 
-		completionService.submit(() -> job.execute(dataStore), job);
+		Future<Job> future = completionService.submit(() -> {
+			job.execute(dataStore);
+			return job;
+		});
 
-		activeJobs.add(job);
+		activeJobs.put(future, job);
 		pendingJobs.remove(job);
 	}
 
@@ -133,6 +137,59 @@ public class Experiment {
 			}
 
 			dependencyMap.get(dependency).add(job);
+		}
+	}
+	
+	private void completeJob(Future<Job> future) {
+		try {
+			Job job = future.get();
+			
+			logger.info("Completed " + job);
+			activeJobs.remove(future);
+
+			for (DataReference dependency : job.produces()) {
+				Set<Job> enqueuedJobs = new HashSet<Job>();
+				Set<Job> dependentJobs = dependencyMap.get(dependency);
+
+				if (dependentJobs != null) {
+					for (Job dependentJob : dependentJobs) {
+						if (dependentJob.isReady(dataStore)) {
+							startJob(dependentJob);
+							enqueuedJobs.add(dependentJob);
+						}
+					}
+
+					for (DataReference otherDependency : dependencyMap.keySet().toArray(DataReference[]::new)) {
+						dependencyMap.get(otherDependency).removeAll(enqueuedJobs);
+					}
+				}
+			}
+		} catch (ExecutionException | CancellationException | InterruptedException e) {
+			logger.severe("Failed " + activeJobs.get(future) + ": " + e.getMessage());
+			activeJobs.remove(future);
+			suppressedExceptions.add(e);
+		}
+	}
+	
+	private void checkDeadlock() {
+		if (!activeJobs.isEmpty()) {
+			return;
+		}
+		
+		Job[] pendingJobsArray = pendingJobs.toArray(Job[]::new);
+		boolean hasReadyJobs = false;
+		
+		for (Job job : pendingJobsArray) {
+			if (job.isReady(dataStore)) {
+				logger.warning("Detected ready job in the queue, likely a bug in the Job Dispatch Thread");
+				startJob(job);
+				hasReadyJobs = true;
+			}
+		}
+		
+		if (!hasReadyJobs && pendingJobsArray.length > 0) {
+			logger.warning("Detected potential deadlock! Queue contains " + pendingJobsArray.length +
+					" jobs with unsatisfied requirements.");
 		}
 	}
 
@@ -159,10 +216,6 @@ public class Experiment {
 
 			throw exception;
 		}
-	}
-
-	public void setShowErrors(boolean showErrors) {
-		this.showErrors.set(showErrors);
 	}
 
 	public void shutdownAndWait() throws InterruptedException, ExperimentException {
@@ -210,20 +263,25 @@ public class Experiment {
 			try {
 				dispatchJobs();
 			} catch (Exception e) {
-				handleException(e);
+				logger.severe("Unhandled exception in dispatch thread: " + e.getMessage());
+				suppressedExceptions.add(e);
 			}
 		}
 
 		public void dispatchJobs() {
+			Duration checkDuration = Duration.ofSeconds(15);
+			Instant lastCheck = Instant.now();
+			
 			while (!isShutdown.get() || !activeJobs.isEmpty() || !pendingJobs.isEmpty()) {
 				try {
 					// Convert Sets into Arrays so we can iterate over the jobs in a thread-safe way
-					Job[] activeJobsArray = activeJobs.toArray(Job[]::new);
+					Job[] activeJobsArray = activeJobs.values().toArray(Job[]::new);
 					Job[] pendingJobsArray = pendingJobs.toArray(Job[]::new);
 
 					Map<Class<?>, List<Job>> counts = Stream.concat(
 							Arrays.stream(activeJobsArray),
 							Arrays.stream(pendingJobsArray))
+							.distinct()
 							.collect(Collectors.groupingBy(x -> x.getClass()));
 
 					int totalJobs = counts.values().stream().mapToInt(x -> x.size()).sum();
@@ -232,31 +290,15 @@ public class Experiment {
 						counts.keySet().stream().map(x -> counts.get(x).size() + " " + x.getSimpleName())
 						.collect(Collectors.joining(", ", " (", ")"))));
 
-					Future<Job> completedFuture = completionService.take();
-					Job completedJob = completedFuture.get();
-					activeJobs.remove(completedJob);
-
-					logger.info("Completed " + completedJob);
-
-					for (DataReference dependency : completedJob.produces()) {
-						Set<Job> enqueuedJobs = new HashSet<Job>();
-						Set<Job> dependentJobs = dependencyMap.get(dependency);
-
-						if (dependentJobs != null) {
-							for (Job job : dependencyMap.get(dependency)) {
-								if (job.isReady(dataStore)) {
-									startJob(job);
-									enqueuedJobs.add(job);
-								}
-							}
-
-							for (DataReference otherDependency : dependencyMap.keySet().toArray(DataReference[]::new)) {
-								dependencyMap.get(otherDependency).removeAll(enqueuedJobs);
-							}
-						}
+					long remainingMilliseconds = Instant.now().until(lastCheck.plus(checkDuration), ChronoUnit.MILLIS);
+					Future<Job> completedFuture = completionService.poll(remainingMilliseconds, TimeUnit.MILLISECONDS);
+					lastCheck = Instant.now();
+					
+					if (completedFuture == null) {
+						checkDeadlock();
+					} else {
+						completeJob(completedFuture);
 					}
-				} catch (ExecutionException e) {
-					handleException(e);
 				} catch (InterruptedException e) {
 					// interrupt indicates we are shutting down, but we continue to process remaining jobs
 					continue;
@@ -265,14 +307,6 @@ public class Experiment {
 
 			executorService.shutdown();
 			logger.info("All jobs completed!");
-		}
-
-		protected void handleException(Throwable t) {
-			if (showErrors.get()) {
-				t.printStackTrace();
-			}
-
-			suppressedExceptions.add(t);
 		}
 
 	}

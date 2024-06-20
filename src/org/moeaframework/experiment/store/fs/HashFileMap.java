@@ -6,7 +6,6 @@ import org.moeaframework.experiment.store.DataType;
 import org.moeaframework.experiment.store.Hash;
 import org.moeaframework.experiment.store.Key;
 import org.moeaframework.experiment.store.schema.Schema;
-import org.moeaframework.util.TypedProperties;
 
 public class HashFileMap extends FileMap {
 
@@ -44,19 +43,10 @@ public class HashFileMap extends FileMap {
 	}
 	
 	@Override
-	void validateManifest(TypedProperties properties) {
-		super.validateManifest(properties);
-		
-		if (prefixLength != properties.getInt("prefixLength")) {
-			throw new ManifestValidationException("Expected prefix length of " + prefixLength + " but was " +
-					properties.getInt("prefixLength"));
-		}
-	}
-	
-	@Override
-	void createManifest(TypedProperties properties) {
-		super.createManifest(properties);
-		properties.setInt("prefixLength", prefixLength);
+	protected Manifest getManifest() {
+		Manifest manifest = super.getManifest();
+		manifest.setInt("prefixLength", prefixLength);
+		return manifest;
 	}
 
 }

@@ -5,8 +5,10 @@ import java.util.function.Function;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.moeaframework.experiment.Sample;
+import org.moeaframework.experiment.store.Key;
 
-public class Field<T extends Comparable<T> & Serializable> {
+public class Field<T extends Comparable<? super T> & Serializable> {
 	
 	public static final Field<String> ALGORITHM = Field.named("algorithm").asString();
 	
@@ -18,9 +20,9 @@ public class Field<T extends Comparable<T> & Serializable> {
 	
 	private final Class<T> type;
 	
-	private final Function<String, T> valueOf;
+	private final Function<Sample, T> valueOf;
 	
-	Field(String name, Class<T> type, Function<String, T> valueOf) {
+	Field(String name, Class<T> type, Function<Sample, T> valueOf) {
 		super();
 		this.name = name;
 		this.type = type;
@@ -31,8 +33,20 @@ public class Field<T extends Comparable<T> & Serializable> {
 		return type.cast(object);
 	}
 	
-	public T valueOf(String string) {
-		return valueOf.apply(string);
+	public boolean isDefined(Sample sample) {
+		return sample.contains(name);
+	}
+	
+	public boolean isDefined(Key key) {
+		return key.defines(this);
+	}
+	
+	public T valueOf(Sample sample) {
+		return valueOf.apply(sample);
+	}
+	
+	public T valueOf(Key key) {
+		return key.get(this);
 	}
 	
 	public String getName() {

@@ -6,7 +6,6 @@ import java.io.OutputStream;
 import java.util.Collection;
 import java.util.List;
 
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.experiment.store.DataReference;
 import org.moeaframework.experiment.store.DataStore;
 import org.moeaframework.experiment.store.DataType;
@@ -37,17 +36,10 @@ public class PrintJob extends Job {
 	}
 
 	@Override
-	public void execute(DataStore dataStore) {
+	public void execute(DataStore dataStore) throws IOException {
 		try (InputStream in = dataStore.reader(key, dataType).asBinary()) {
 			in.transferTo(out);
-		} catch (IOException e) {
-			throw new FrameworkException(e);
 		}
-	}
-
-	@Override
-	public boolean isComplete(DataStore dataStore) {
-		return false;
 	}
 
 	@Override

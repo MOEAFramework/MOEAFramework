@@ -1,52 +1,53 @@
 package org.moeaframework.experiment.job;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Epsilons;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.Population;
+import org.moeaframework.core.Problem;
+import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.experiment.Samples;
 import org.moeaframework.experiment.store.DataReference;
 import org.moeaframework.experiment.store.DataStore;
 import org.moeaframework.experiment.store.DataType;
 import org.moeaframework.experiment.store.Key;
-import org.moeaframework.experiment.store.TransactionalOutputStream;
+import org.moeaframework.util.TypedProperties;
 
 public class MergeApproximationSetsJob extends Job {
 			
 	private final Collection<Key> inputs;
 	
-	private final Epsilons epsilons;
+	private final String problemName;
 	
-	public MergeApproximationSetsJob(Key key, Collection<Key> inputs, Epsilons epsilons) {
+	public MergeApproximationSetsJob(Key key, Samples samples, String problemName) {
+		this(key, samples.keySet(), problemName);
+	}
+	
+	public MergeApproximationSetsJob(Key key, Collection<Key> inputs, String problemName) {
 		super(key);
 		this.inputs = inputs;
-		this.epsilons = epsilons;
+		this.problemName = problemName;
 	}
 
 	@Override
-	public void execute(DataStore dataStore) {
-		NondominatedPopulation combinedApproximationSet = epsilons == null ? new NondominatedPopulation() :
-				new EpsilonBoxDominanceArchive(epsilons);
-		
-		for (Key input : inputs) {
-			try (InputStream in = dataStore.reader(input, DataType.APPROXIMATION_SET).asBinary()) {
-				combinedApproximationSet.addAll(Population.loadBinary(in));
-			} catch (IOException e) {
-				throw new FrameworkException(e);
+	public void execute(DataStore dataStore) throws IOException {
+		try (Problem problem = ProblemFactory.getInstance().getProblem(problemName)) {
+			Epsilons epsilons = ProblemFactory.getInstance().getEpsilons(problemName);
+			
+			NondominatedPopulation combinedApproximationSet = epsilons == null ?
+					new NondominatedPopulation() :
+					new EpsilonBoxDominanceArchive(epsilons);
+			
+			for (Key input : inputs) {
+				combinedApproximationSet.addAll(JobUtils.loadApproximationSet(dataStore, input, problem));
 			}
-		}
-		
-		try (TransactionalOutputStream out = dataStore.writer(key, DataType.APPROXIMATION_SET).asBinary()) {
-			combinedApproximationSet.saveBinary(out);
-			out.commit();
-		} catch (Exception e) {
-			throw new FrameworkException(e);
+			
+			JobUtils.saveApproximationSet(dataStore, key, problem, combinedApproximationSet,
+					TypedProperties.of("epsilons", epsilons.toString()));
 		}
 	}
 

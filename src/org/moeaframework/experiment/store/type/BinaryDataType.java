@@ -9,7 +9,7 @@ import org.moeaframework.experiment.store.DataType;
 import org.moeaframework.experiment.store.Key;
 import org.moeaframework.experiment.store.TransactionalOutputStream;
 
-public class BinaryDataType<T> extends DataType2<T> {
+public class BinaryDataType<T> extends DataType {
 	
 	private BinaryReader<T> reader;
 	
@@ -22,13 +22,13 @@ public class BinaryDataType<T> extends DataType2<T> {
 	}
 	
 	public T read(DataStore dataStore, Key key) throws IOException {
-		try (InputStream in = dataStore.reader(key, DataType.of(getName())).asBinary()) {
+		try (InputStream in = dataStore.reader(key, this).asBinary()) {
 			return reader.read(in);
 		}
 	}
 	
 	public void write(DataStore dataStore, Key key, T value) throws IOException {
-		try (TransactionalOutputStream out = dataStore.writer(key, DataType.of(getName())).asBinary()) {
+		try (TransactionalOutputStream out = dataStore.writer(key, this).asBinary()) {
 			writer.write(out, value);
 			out.commit();
 		}

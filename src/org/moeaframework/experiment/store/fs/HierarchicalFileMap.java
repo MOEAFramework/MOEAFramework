@@ -5,7 +5,6 @@ import java.io.File;
 import org.moeaframework.experiment.store.DataType;
 import org.moeaframework.experiment.store.Key;
 import org.moeaframework.experiment.store.schema.Schema;
-import org.moeaframework.util.TypedProperties;
 
 /**
  * Stores files in a hierarchical structure.  The keys define the directory structure and the data type defines the
@@ -19,24 +18,14 @@ public class HierarchicalFileMap extends FileMap {
 	
 	@Override
 	public File map(Schema schema, Key key, DataType dataType) {
-		String[] segments = key.getSegments(schema);		
+		String[] segments = key.getSegments(schema);
 		File path = getRoot();
 				
 		for (int i = 0; i < segments.length; i++) {
-			path = new File(path, segments[i]);
+			path = new File(path, cleanPathSegment(segments[i]));
 		}
 			
-		return new File(path, dataType.toString());
-	}
-	
-	@Override
-	void validateManifest(TypedProperties properties) {
-		super.validateManifest(properties);
-	}
-	
-	@Override
-	void createManifest(TypedProperties properties) {
-		super.createManifest(properties);
+		return new File(path, cleanPathSegment(dataType.toString()));
 	}
 	
 	public static HierarchicalFileMap at(File root) {

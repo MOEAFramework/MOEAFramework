@@ -48,7 +48,7 @@ public class TypedPropertiesTest {
 	
 	@Test
 	public void testStaticConstructor() {
-		double[] values = TypedProperties.withProperty("epsilon", "0.01,0.01").getDoubleArray("epsilon", null);
+		double[] values = TypedProperties.of("epsilon", "0.01,0.01").getDoubleArray("epsilon", null);
 		
 		Assert.assertArrayEquals(new double[] { 0.01, 0.01 }, values, TestThresholds.HIGH_PRECISION);
 	}
