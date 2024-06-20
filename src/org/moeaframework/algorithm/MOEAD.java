@@ -424,6 +424,10 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 		if (initialSolutions.length < problem.getNumberOfObjectives()) {
 			throw new AlgorithmInitializationException(this, "popultion size must be >= the number of objectives");
 		}
+		
+		if (initialSolutions.length < neighborhoodSize) {
+			throw new AlgorithmInitializationException(this, "population size must be >= the neighborhood size");
+		}
 
 		initializePopulation(initialSolutions.length);
 		initializeNeighborhoods();
@@ -468,7 +472,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	/**
 	 * Constructs the neighborhoods for all individuals in the population based on the distances between weights.
 	 */
-	private void initializeNeighborhoods() {
+	private void initializeNeighborhoods() {		
 		List<Individual> sortedPopulation = new ArrayList<Individual>(population);
 
 		for (Individual individual : population) {
