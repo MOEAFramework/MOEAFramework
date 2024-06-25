@@ -206,3 +206,30 @@ Processing 399 jobs (200 EvaluateIndicatorsJob, 199 EndOfRunJob)
 ...
 All jobs completed!
 ```
+
+## Stale Data
+
+During an experiment, you may decide to modify some aspects of the experiment.  As a result, data previously stored
+can become stale.  There are some built-in safeguards to detect stale data, such as comparing the timestamps when the
+data was created.  When stale data is detected, the stale files are automatically cleaned up and re-run.  The following
+message is also displayed at the end of the experiment:
+
+> Detected stale data during execution.  Most jobs should automatically clean up and re-evaluate any
+> stale data, but we also recommend re-running the experiment until this message no longer appears.
+
+However, there are some cases that can not be detected and handled automatically, such as removing a parameter.  We
+can force the re-evaluation of all "derivative" jobs.  Our definition of derivative here are jobs that depend on data
+produced by other jobs.  For instance, the job that executes the algorithm is **not** derivative as it depends only
+on the sample input, but jobs performing statistical analysis or plotting results are derivative.
+
+Below is a code snippet showing how we can check if the samples changed, and if so update the stored samples file and
+re-run all derivative jobs.
+
+```java
+Samples samples = parameterSet.generate();
+		
+if (!samples.matchesStoredSamples(dataStore)) {
+	samples.save(dataStore);
+	experiment.markDerivativeJobsAsStale(true);
+}
+```

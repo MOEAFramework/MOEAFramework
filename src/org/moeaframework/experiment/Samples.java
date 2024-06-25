@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.experiment.store.DataStore;
 import org.moeaframework.experiment.store.DataStoreException;
 import org.moeaframework.experiment.store.DataType;
@@ -60,7 +62,7 @@ public class Samples implements Iterable<Sample> {
 	void add(Sample sample) {
 		this.samples.add(sample);
 	}
-	
+
 	void addAll(Collection<Sample> samples) {
 		this.samples.addAll(samples);
 	}
@@ -74,6 +76,35 @@ public class Samples implements Iterable<Sample> {
 	@Override
 	public Iterator<Sample> iterator() {
 		return Collections.unmodifiableList(samples).iterator();
+	}
+	
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(17, 37)
+				.append(schema)
+				.append(samples)
+				.toHashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+
+		if (obj == this) {
+			return true;
+		}
+
+		if (obj.getClass() != getClass()) {
+			return false;
+		}
+
+		Samples rhs = (Samples)obj;
+		return new EqualsBuilder()
+				.append(schema, rhs.schema)
+				.append(samples, rhs.samples)
+				.isEquals();
 	}
 	
 	public void save(DataStore dataStore) throws IOException {
@@ -237,6 +268,17 @@ public class Samples implements Iterable<Sample> {
 	public <T extends Comparable<T> & Serializable> Samples filter(Field<T> field, T value) {
 		return filter(sample -> sample.contains(field.getName()) &&
 				field.valueOf(sample).equals(value));
+	}
+	
+	public boolean matchesStoredSamples(DataStore dataStore) throws IOException {
+		if (!dataStore.contains(Key.of(), DataType.SAMPLES)) {
+			return false;
+		}
+		
+		Samples storedSamples = new Samples(schema);
+		storedSamples.load(dataStore);
+		
+		return equals(storedSamples);
 	}
 
 }

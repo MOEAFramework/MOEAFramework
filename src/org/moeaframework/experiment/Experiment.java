@@ -49,6 +49,8 @@ public class Experiment {
 	private final AtomicBoolean isShutdown;
 
 	private final AtomicBoolean isStale;
+	
+	private final AtomicBoolean markDerivativeJobsAsStale;
 
 	private JobDispatchThread thread;
 
@@ -67,6 +69,7 @@ public class Experiment {
 
 		isShutdown = new AtomicBoolean();
 		isStale = new AtomicBoolean();
+		markDerivativeJobsAsStale = new AtomicBoolean();
 
 		start();
 	}
@@ -97,7 +100,7 @@ public class Experiment {
 		}
 
 		if (job.isComplete(dataStore)) {
-			if (job.isStale(dataStore)) {
+			if ((markDerivativeJobsAsStale.get() && job.requires().size() > 1) || job.isStale(dataStore)) {
 				logger.info("Detected stale inputs to " + job + ", cleaning up stale output");
 				job.produces().forEach(x -> dataStore.writer(x).delete());
 				isStale.set(true);
@@ -216,6 +219,10 @@ public class Experiment {
 
 			throw exception;
 		}
+	}
+	
+	public void markDerivativeJobsAsStale(boolean value) {
+		markDerivativeJobsAsStale.set(value);
 	}
 
 	public void shutdownAndWait() throws InterruptedException, ExperimentException {

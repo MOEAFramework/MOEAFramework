@@ -63,15 +63,18 @@ public class DataStoreExample {
 				Parameter.named("problem").asConstant(problemName),
 				Parameter.named("maxEvaluations").asConstant(25000),
 				Parameter.named("algorithm").withValues("NSGAII", "GDE3", "MOEA/D"),
-				Parameter.named("populationSize").asInt().range(20, 500, 10),
+				Parameter.named("populationSize").asInt().range(20, 750, 10),
 				Parameter.named("seed").asInt().range(0, 10));
 
 		DataStore dataStore = new FileSystemDataStore(schema, HierarchicalFileMap.at(new File("results")));
 		Experiment experiment = new Experiment(dataStore, Executors.newFixedThreadPool(2), LOGGER);
-		
+				
 		Samples samples = parameterSet.generate();
-		samples.save(dataStore);
-		samples.load(dataStore);
+		
+		if (!samples.matchesStoredSamples(dataStore)) {
+			samples.save(dataStore);
+			experiment.markDerivativeJobsAsStale(true);
+		}
 		
 		for (Sample sample : samples) {
 			Key key = Key.from(schema, sample);
