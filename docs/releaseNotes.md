@@ -2,10 +2,10 @@
 
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
-## Version 4.3 (TBD)
+## Version 4.3 (27 June 2024)
 
   * Adds default operators for mixed type problems.  For example, if given a problem with real and binary decision
-    variables, it will not automatically combine SBX and PM for the real values and HUX and BitFlip for binary.
+    variables, we will now automatically combine SBX and PM for the real values and HUX and BitFlip for binary.
     
   * Adds an enumeration for performance indicators, `StandardIndicator`, to replace string matching.  This also
     simplifies configuring code using indicators, using either the enum constants or an `EnumSet`.

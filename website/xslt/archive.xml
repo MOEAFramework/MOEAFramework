@@ -32,6 +32,15 @@
     <th>Downloads</th>
   </tr>
   <tr>
+  	<td>4.2</td>
+  	<td>26 May 2024</td>
+  	<td>
+      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v4.2/MOEAFramework-4.2.tar.gz">Binary</a> |
+      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v4.2/MOEAFramework-4.2-Source.tar.gz">Source</a> |
+      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v4.2/MOEAFramework-4.2-Demo.jar">Demo</a>
+  	</td>
+  </tr>
+  <tr>
   	<td>4.1</td>
   	<td>06 May 2024</td>
   	<td>
