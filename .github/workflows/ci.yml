@@ -35,6 +35,7 @@ env:
   MIN_JAVA_VERSION: 17
   JAVA_DISTRIBUTION: ${{ inputs.java-distribution || 'zulu' }}
   ALL_TESTS: ${{ inputs.all-tests || 'false' }}
+  COCO_VERSION: v2.6.3
 
 jobs:
   ant-tests:
@@ -72,6 +73,7 @@ jobs:
         sudo rm /usr/bin/javah
 
         git clone https://github.com/numbbo/coco
+        git checkout tags/${{ env.COCO_VERSION }}
         cd coco
         python do.py run-java
           
