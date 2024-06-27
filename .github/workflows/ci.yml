@@ -72,8 +72,7 @@ jobs:
       run: |
         sudo rm /usr/bin/javah
 
-        git clone https://github.com/numbbo/coco
-        git checkout tags/${{ env.COCO_VERSION }}
+        git clone --branch ${{ env.COCO_VERSION }} --single-branch https://github.com/numbbo/coco
         cd coco
         python do.py run-java
           
