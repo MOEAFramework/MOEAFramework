@@ -80,7 +80,7 @@ jobs:
       - name: Publish Maven artifacts to staging
         if: ${{ inputs.publish_maven }}
         run: |
-          pushd maven
+          mv maven/${BUILD_NAME}-${BUILD_VERSION}.pom pom.xml
           mvn --batch-mode deploy
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
