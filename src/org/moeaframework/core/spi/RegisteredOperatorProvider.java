@@ -53,7 +53,7 @@ public class RegisteredOperatorProvider extends OperatorProvider {
 	/**
 	 * Mapping of operators names to a constructor function.
 	 */
-	private final TreeMap<String, BiFunction<TypedProperties, Problem, Variation>> constructorMap;
+	private final Map<String, BiFunction<TypedProperties, Problem, Variation>> constructorMap;
 	
 	/**
 	 * Constructs a new, empty operator provider.

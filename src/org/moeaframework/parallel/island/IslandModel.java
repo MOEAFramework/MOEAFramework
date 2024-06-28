@@ -19,6 +19,7 @@ package org.moeaframework.parallel.island;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.moeaframework.parallel.island.migration.Migration;
 import org.moeaframework.parallel.island.topology.Topology;
 

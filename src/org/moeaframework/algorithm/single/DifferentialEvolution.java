@@ -119,7 +119,9 @@ public class DifferentialEvolution extends SingleObjectiveEvolutionaryAlgorithm 
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * Replaces the variation operator to be used by this algorithm.
+	 * 
+	 * @param variation the variation operator
 	 */
 	public void setVariation(DifferentialEvolutionVariation variation) {
 		super.setVariation(variation);

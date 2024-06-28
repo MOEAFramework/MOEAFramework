@@ -19,6 +19,7 @@ package org.moeaframework.parallel.island.migration;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Selection;

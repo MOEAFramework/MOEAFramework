@@ -19,6 +19,7 @@ package org.moeaframework.core.indicator;
 
 import java.util.Comparator;
 import java.util.Iterator;
+
 import org.moeaframework.core.Indicator;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;

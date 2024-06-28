@@ -19,6 +19,7 @@ package org.moeaframework.core.spi;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -37,12 +38,12 @@ public class RegisteredAlgorithmProvider extends AlgorithmProvider {
 	/**
 	 * Mapping of algorithm names to a constructor function.
 	 */
-	private final TreeMap<String, BiFunction<TypedProperties, Problem, Algorithm>> constructorMap;
+	private final Map<String, BiFunction<TypedProperties, Problem, Algorithm>> constructorMap;
 	
 	/**
 	 * Collection of algorithms to appear in the diagnostic tool.
 	 */
-	private final TreeSet<String> diagnosticToolAlgorithms;
+	private final Set<String> diagnosticToolAlgorithms;
 	
 	/**
 	 * Creates a new, empty problem provider.

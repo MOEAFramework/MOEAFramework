@@ -512,7 +512,7 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 			if ("hypervolume".equalsIgnoreCase(indicator)) {
 				setFitnessEvaluator(new HypervolumeFitnessEvaluator(problem));
 			} else if ("epsilon".equalsIgnoreCase(indicator)) {
-				setFitnessEvaluator(fitnessEvaluator = new AdditiveEpsilonIndicatorFitnessEvaluator(problem));
+				setFitnessEvaluator(new AdditiveEpsilonIndicatorFitnessEvaluator(problem));
 			} else if ("crowding".equalsIgnoreCase(indicator)) {
 				setFitnessEvaluator(null);
 			} else {

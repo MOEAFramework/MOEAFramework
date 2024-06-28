@@ -17,6 +17,7 @@
  */
 package org.moeaframework.analysis;
 
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
@@ -68,7 +69,7 @@ public class DefaultEpsilons implements Formattable<Entry<String, Epsilons>> {
 		INSTANCE = instance;
 	}
 		
-	private final TreeMap<String, Epsilons> overrides;
+	private final Map<String, Epsilons> overrides;
 	
 	private DefaultEpsilons() {
 		super();
@@ -169,7 +170,7 @@ public class DefaultEpsilons implements Formattable<Entry<String, Epsilons>> {
 
 	@Override
 	public TabularData<Entry<String, Epsilons>> asTabularData() {
-		TreeMap<String, Epsilons> orderedData = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		Map<String, Epsilons> orderedData = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 		
 		for (String problemName : ProblemFactory.getInstance().getAllRegisteredProblems()) {
 			orderedData.put(problemName, DefaultEpsilons.getInstance().getEpsilons(problemName));

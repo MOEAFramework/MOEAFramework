@@ -22,6 +22,8 @@ import java.util.NoSuchElementException;
 
 /**
  * An iterator that produces the concatenation of multiple iterators.
+ * 
+ * @param <T> the type contained in the iterator
  */
 public class Concaterator<T> implements Iterator<T> {
 	

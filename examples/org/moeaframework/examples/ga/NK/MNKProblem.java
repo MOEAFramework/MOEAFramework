@@ -50,11 +50,10 @@ import org.moeaframework.util.validate.Validate;
  * the multiobjective (MNK) case when M > 1, each objective is a separate
  * NK-model.
  * <p>
- * This code is derived from the ANSI C code developed by Martin Pelikan
- * available from <http://medal-lab.org/software.php>.  It is able to save and
- * load instance files in the same format.  Note that this implementation
- * does not divide the final fitness value by N, as some formulations of the
- * NK-model specify.
+ * This code is derived from the <a href="http://medal-lab.org">ANSI C code
+ * developed by Martin Pelikan</a>.  It is able to save and load instance
+ * files in the same format.  Note that this implementation does not divide
+ * the final fitness value by N, as some formulations of the NK-model specify.
  * <p>
  * References:
  * <ol>
