@@ -215,7 +215,7 @@ public class PISAHypervolume extends NormalizedIndicator {
 	/**
 	 * The internal, un-normalized hypervolume calculation.  While this method is public, we do not encourage its use
 	 * since incorrect arguments can cause unexpected behavior.  Instead, use the
-	 * {@link PISAHypervolume(Problem, NondominatedPopulation)} constructor to create a normalizing version of the
+	 * {@link #PISAHypervolume(Problem, NondominatedPopulation)} constructor to create a normalizing version of the
 	 * hypervolume calculation.
 	 * 
 	 * @param population the population

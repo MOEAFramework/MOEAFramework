@@ -59,7 +59,7 @@ public class BBOB2016Test {
 	}
 
 	/**
-	 * This test runs against the Coco Framework <https://github.com/numbbo/coco>.  To use, run:
+	 * This test runs against the <a href="https://github.com/numbbo/coco">Coco Framework</a>.  To use, run:
 	 * <pre>
 	 *   git clone https://github.com/numbbo/coco
 	 *   cd coco

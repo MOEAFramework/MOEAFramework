@@ -19,6 +19,7 @@ package org.moeaframework.algorithm;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
+
 import org.moeaframework.algorithm.pso.OMOPSO;
 import org.moeaframework.algorithm.pso.SMPSO;
 import org.moeaframework.algorithm.sa.AMOSA;

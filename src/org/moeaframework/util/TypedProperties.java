@@ -69,12 +69,12 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	/**
 	 * Storage of the key-value pairs.
 	 */
-	private final TreeMap<String, String> properties;
+	private final Map<String, String> properties;
 	
 	/**
 	 * The keys that were read from this {@code Properties} object.
 	 */
-	private final TreeSet<String> accessedProperties;
+	private final Set<String> accessedProperties;
 	
 	/**
 	 * Creates a new, empty instance of this class.

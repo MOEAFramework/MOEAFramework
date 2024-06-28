@@ -17,8 +17,6 @@
  */
 package org.moeaframework.analysis.io;
 
-import static org.moeaframework.analysis.io.ResultFileWriter.ENCODING_WARNING;
-
 import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.File;
@@ -35,6 +33,8 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.util.TypedProperties;
+
+import static org.moeaframework.analysis.io.ResultFileWriter.ENCODING_WARNING;
 
 /**
  * Reads result files created by {@link ResultFileWriter}.

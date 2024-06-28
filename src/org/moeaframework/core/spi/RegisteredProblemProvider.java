@@ -20,6 +20,7 @@ package org.moeaframework.core.spi;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -43,22 +44,22 @@ public class RegisteredProblemProvider extends ProblemProvider {
 	/**
 	 * Mapping of problem names to a constructor function.
 	 */
-	private final TreeMap<String, Supplier<Problem>> constructorMap;
+	private final Map<String, Supplier<Problem>> constructorMap;
 	
 	/**
 	 * Mapping of problem names to their reference set.
 	 */
-	private final TreeMap<String, String> referenceSetMap;
+	private final Map<String, String> referenceSetMap;
 	
 	/**
 	 * Mapping of problem names to their epsilons.
 	 */
-	private final TreeMap<String, Epsilons> epsilonsMap;
+	private final Map<String, Epsilons> epsilonsMap;
 	
 	/**
 	 * Collection of problems to appear in the diagnostic tool.
 	 */
-	private final TreeSet<String> diagnosticToolProblems;
+	private final Set<String> diagnosticToolProblems;
 	
 	/**
 	 * Creates a new, empty problem provider.

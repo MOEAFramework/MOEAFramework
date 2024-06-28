@@ -32,11 +32,11 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.indicator.InvertedGenerationalDistance;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.mock.MockRealProblem;
-import org.moeaframework.problem.ScaledProblem;
 import org.moeaframework.problem.DTLZ.DTLZ1;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.DTLZ.DTLZ3;
 import org.moeaframework.problem.DTLZ.DTLZ4;
+import org.moeaframework.problem.ScaledProblem;
 import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 

@@ -136,7 +136,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	/**
 	 * The collection of end-of-run approximation sets.
 	 */
-	private TreeMap<String, EndOfRunResults> data;
+	private Map<String, EndOfRunResults> data;
 
 	/**
 	 * Constructs a new analyzer initialized with default settings.
@@ -697,22 +697,22 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		/**
 		 * The results for each algorithm.
 		 */
-		private final TreeMap<String, EndOfRunResults> data;
+		private final Map<String, EndOfRunResults> data;
 		
 		/**
 		 * Records the descriptive statistics associated with each end-of-run result.
 		 */
-		private final TreeMap<String, Map<StandardIndicator, DescriptiveStatistics>> statistics;
+		private final Map<String, Map<StandardIndicator, DescriptiveStatistics>> statistics;
 		
 		/**
 		 * Records the indicator values for the aggregate of all end-of-run reslts.
 		 */
-		private final TreeMap<String, IndicatorValues> aggregates;
+		private final Map<String, IndicatorValues> aggregates;
 
 		/**
 		 * Records which algorithms produced statistically similar results.
 		 */
-		private final TreeMap<String, Map<StandardIndicator, Set<String>>> similarities;
+		private final Map<String, Map<StandardIndicator, Set<String>>> similarities;
 		
 		/**
 		 * Constructs a results object indicating no data available.

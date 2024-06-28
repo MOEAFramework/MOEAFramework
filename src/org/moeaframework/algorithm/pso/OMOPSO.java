@@ -150,7 +150,10 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * Sets the archive of non-dominated solutions; or {@code null} of no external archive is used.  This value
+	 * can only be set before initialization.
+	 * 
+	 * @param archive the archive or {@code null}.
 	 */
 	protected void setArchive(EpsilonBoxDominanceArchive archive) {
 		super.setArchive(archive);
