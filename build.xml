@@ -39,9 +39,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	<!-- The folder where generated javadoc files are saved -->
 	<property name="javadoc" value="javadoc" />
 	
-	<!-- The folder where maven artifacts are saved -->
-	<property name="maven" value="maven" />
-	
 	<!-- The base/root folder for organizing distributions -->
 	<property name="base" value="${build}/${shortname}-${version}" />
 
@@ -378,27 +375,46 @@ Use of these build scripts requires Apache Ant to be installed.  See
 				manifest="${build}/META-INF/MANIFEST.mf" />
 	</target>
 	
-	<!-- Used by staging.yml to produce the Maven artifacts when releasing a new version -->
-	<target name="package-maven" description="Creates an artifact bundle for upload to Sonatype OSS">
-		<delete dir="${maven}" />
-		<mkdir dir="${maven}" />
-		<property name="artifactId" value="moeaframework" />
+	<target name="build-maven" description="Creates a Maven version of this project for testing / publishing">
+		<delete dir="${build}" />
+		<mkdir dir="${build}" />
 		
-		<copy file="src/pom.xml" tofile="${maven}/${artifactId}-${version}.pom" />
+		<mkdir dir="${build}/src/main/java" />
+		<mkdir dir="${build}/src/main/resources" />
+		<mkdir dir="${build}/src/test/java" />
+		<mkdir dir="${build}/src/test/resources" />
+		<mkdir dir="${build}/examples" />
 		
-		<replace-properties file="${maven}/${artifactId}-${version}.pom" />
-
-		<antcall target="build-binary" />
+		<copy file="src/pom.xml" tofile="${build}/pom.xml" />
+		<replace-properties file="${build}/pom.xml" />
+		
+		<copy todir="${build}/src/main/resources/META-INF">
+			<fileset dir="META-INF" />
+		</copy>
+		
+		<copy todir="${build}/src/main/resources">
+			<fileset dir="src" excludes="**/*.java" />
+		</copy>
+		
+		<copy todir="${build}/src/main/java">
+			<fileset excludes="overview.html" dir="src" />
+		</copy>
+		
+		<copy todir="${build}/src/test/java">
+			<fileset dir="test" />
+		</copy>
+		
+		<copy todir="${build}/src/test/resources">
+			<fileset dir="test" excludes="**/*.java" />
+		</copy>
+		
+		<copy todir="${build}/examples">
+			<fileset dir="examples" />
+		</copy>
+		
 		<copy todir="${build}/pf">
 			<fileset dir="pf" />
 		</copy>
-		<jar destfile="${maven}/${artifactId}-${version}.jar" basedir="${build}" />
-		
-		<antcall target="package-source" />
-		<jar destfile="${maven}/${artifactId}-${version}-sources.jar" basedir="${build}" />
-		
-		<antcall target="build-javadoc" />
-		<jar destfile="${maven}/${artifactId}-${version}-javadoc.jar" basedir="${javadoc}" />
 	</target>
 	
 </project>
