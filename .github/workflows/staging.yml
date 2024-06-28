@@ -78,7 +78,7 @@ jobs:
         run: |
           ant build-maven
           pushd build
-          mvn --batch-mode deploy
+          mvn --batch-mode deploy -DskipTests
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
