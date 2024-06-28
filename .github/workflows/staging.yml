@@ -72,6 +72,7 @@ jobs:
           ant package-demo
           ant package-source
       - name: Generate release notes
+        if: ${{ inputs.publish_github }}
         run: |
           cat docs/releaseNotes.md | awk '/## Version ${{ inputs.version }}/{flag=1; next} /##/{flag=0} flag' > dist/releaseNotes.md
           [ "$(wc -l < dist/releaseNotes.md)" -gt 0 ] || (>&2 echo "Unable to read release notes from docs/releaseNotes.md"; exit -1)
