@@ -16,7 +16,7 @@ on:
         default: true
         type: boolean
       publish_maven:
-        description: 'Create Maven bundle'
+        description: 'Create Maven release'
         default: true
         type: boolean
       skip_validation:
@@ -64,7 +64,7 @@ jobs:
           [ "${{ inputs.version }}" == "$(cat README.md | grep '<version>' | tr -d '<>/[:alpha:][:space:]')" ] || (>&2 echo "Version does not match value in the Maven instructions in README.md"; exit -1)
           [ "${{ inputs.version }}" == "$(cat README.md | grep "search.maven.org" | grep -oEi '[0-9]+\.[0-9]+(\.[0-9]+)?')" ] || (>&2 echo "Version does not match value in the Maven URL in README.md"; exit -1)
           [ "${{ inputs.version }}" == "$(cat docs/releaseNotes.md | grep "## " | head -n 1 | grep -oEi '[0-9]+\.[0-9]+(\.[0-9]+)?')" ] || (>&2 echo "Version does not match value in docs/releaseNotes.md"; exit -1)
-      - name: Build artifacts
+      - name: Build release artifacts
         run: |
           ant package-binary
           ant package-demo
@@ -73,7 +73,7 @@ jobs:
         run: |
           cat docs/releaseNotes.md | awk '/## Version ${{ inputs.version }}/{flag=1; next} /##/{flag=0} flag' > dist/releaseNotes.md
           [ "$(wc -l < dist/releaseNotes.md)" -gt 0 ] || (>&2 echo "Unable to read release notes from docs/releaseNotes.md"; exit -1)
-      - name: Build and Stage Maven artifacts
+      - name: Build and stage Maven artifacts
         if: ${{ inputs.publish_maven }}
         run: |
           ant build-maven
