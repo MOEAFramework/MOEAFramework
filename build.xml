@@ -412,7 +412,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<fileset dir="examples" />
 		</copy>
 		
-		<copy todir="${build}/pf">
+		<copy todir="${build}/src/main/resources/pf">
 			<fileset dir="pf" />
 		</copy>
 	</target>

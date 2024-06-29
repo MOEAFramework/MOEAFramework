@@ -146,6 +146,9 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 		super();
 		this.problem = problem;
 		this.referenceSet = referenceSet;
+		
+		Validate.that("problem", problem).isNotNull();
+		Validate.that("referenceSet", referenceSet).isNotNull();
 
 		selectedIndicators = EnumSet.noneOf(StandardIndicator.class);
 		
