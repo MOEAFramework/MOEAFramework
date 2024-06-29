@@ -231,6 +231,7 @@ public class Resources {
 			}
 			
 			resultFile = File.createTempFile("temp", extension);
+			resultFile.deleteOnExit();
 		}
 
 		try (InputStream input = asStream(owner, resource, ResourceOption.REQUIRED);

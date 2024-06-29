@@ -18,7 +18,9 @@
 package org.moeaframework;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Reader;
 import java.nio.file.Files;
 
 import org.junit.After;
@@ -31,6 +33,8 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.spi.AlgorithmFactoryTestWrapper;
 import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
+import org.moeaframework.util.io.Resources;
+import org.moeaframework.util.io.Resources.ResourceOption;
 
 @RunWith(CIRunner.class)
 public class AnalyzerTest {
@@ -142,24 +146,35 @@ public class AnalyzerTest {
 	
 	@Test
 	public void testReferenceSetFromProblemFactory() throws IOException {
+		File file = getReferenceSetFile("./pf/DTLZ2.2D.pf");
+
 		NondominatedPopulation actual = generate().getReferenceSet();
-		
-		NondominatedPopulation expected = new EpsilonBoxDominanceArchive(0.01, Population.loadObjectives(
-				new File("./pf/DTLZ2.2D.pf")));
+		NondominatedPopulation expected = new EpsilonBoxDominanceArchive(0.01, Population.loadObjectives(file));
 		
 		Assert.assertEquals(expected, actual);
 	}
 	
 	@Test
 	public void testReferenceSetFromFile() throws IOException {
+		File file = getReferenceSetFile("./pf/DTLZ2.2D.pf");
+		
 		NondominatedPopulation actual = generate()
-				.withReferenceSet(new File("./pf/DTLZ1.2D.pf"))
+				.withReferenceSet(file)
 				.getReferenceSet();
 		
-		NondominatedPopulation expected = new EpsilonBoxDominanceArchive(0.01, Population.loadObjectives(
-				new File("./pf/DTLZ1.2D.pf")));
+		NondominatedPopulation expected = new EpsilonBoxDominanceArchive(0.01, Population.loadObjectives(file));
 		
 		Assert.assertEquals(expected, actual);
+	}
+	
+	private File getReferenceSetFile(String resource) throws IOException {
+		File file = new File(resource);
+		
+		if (file.exists()) {
+			return file;
+		} else {
+			return Resources.asFile(getClass(), "./pf/DTLZ2.2D.pf", ResourceOption.REQUIRED, ResourceOption.TEMPORARY);
+		}
 	}
 
 }
