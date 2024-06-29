@@ -18,9 +18,7 @@
 package org.moeaframework;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Reader;
 import java.nio.file.Files;
 
 import org.junit.After;
@@ -146,7 +144,7 @@ public class AnalyzerTest {
 	
 	@Test
 	public void testReferenceSetFromProblemFactory() throws IOException {
-		File file = getReferenceSetFile("./pf/DTLZ2.2D.pf");
+		File file = getReferenceSetFile("pf/DTLZ2.2D.pf");
 
 		NondominatedPopulation actual = generate().getReferenceSet();
 		NondominatedPopulation expected = new EpsilonBoxDominanceArchive(0.01, Population.loadObjectives(file));
@@ -156,7 +154,7 @@ public class AnalyzerTest {
 	
 	@Test
 	public void testReferenceSetFromFile() throws IOException {
-		File file = getReferenceSetFile("./pf/DTLZ2.2D.pf");
+		File file = getReferenceSetFile("pf/DTLZ2.2D.pf");
 		
 		NondominatedPopulation actual = generate()
 				.withReferenceSet(file)
@@ -173,7 +171,7 @@ public class AnalyzerTest {
 		if (file.exists()) {
 			return file;
 		} else {
-			return Resources.asFile(getClass(), "./pf/DTLZ2.2D.pf", ResourceOption.REQUIRED, ResourceOption.TEMPORARY);
+			return Resources.asFile(getClass(), "/" + resource, ResourceOption.REQUIRED, ResourceOption.TEMPORARY);
 		}
 	}
 
