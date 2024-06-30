@@ -31,8 +31,6 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.spi.AlgorithmFactoryTestWrapper;
 import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
-import org.moeaframework.util.io.Resources;
-import org.moeaframework.util.io.Resources.ResourceOption;
 
 @RunWith(CIRunner.class)
 public class AnalyzerTest {
@@ -144,7 +142,7 @@ public class AnalyzerTest {
 	
 	@Test
 	public void testReferenceSetFromProblemFactory() throws IOException {
-		File file = getReferenceSetFile("pf/DTLZ2.2D.pf");
+		File file = TestResources.asFile("pf/DTLZ2.2D.pf");
 
 		NondominatedPopulation actual = generate().getReferenceSet();
 		NondominatedPopulation expected = new EpsilonBoxDominanceArchive(0.01, Population.loadObjectives(file));
@@ -154,7 +152,8 @@ public class AnalyzerTest {
 	
 	@Test
 	public void testReferenceSetFromFile() throws IOException {
-		File file = getReferenceSetFile("pf/DTLZ2.2D.pf");
+		//purposely load DTLZ1 reference set
+		File file = TestResources.asFile("pf/DTLZ1.2D.pf");
 		
 		NondominatedPopulation actual = generate()
 				.withReferenceSet(file)
@@ -163,16 +162,6 @@ public class AnalyzerTest {
 		NondominatedPopulation expected = new EpsilonBoxDominanceArchive(0.01, Population.loadObjectives(file));
 		
 		Assert.assertEquals(expected, actual);
-	}
-	
-	private File getReferenceSetFile(String resource) throws IOException {
-		File file = new File(resource);
-		
-		if (file.exists()) {
-			return file;
-		} else {
-			return Resources.asFile(getClass(), "/" + resource, ResourceOption.REQUIRED, ResourceOption.TEMPORARY);
-		}
 	}
 
 }

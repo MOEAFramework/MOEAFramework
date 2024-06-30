@@ -22,6 +22,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.TestResources;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
@@ -33,10 +34,12 @@ public class ScaledProblemTest {
 	
 	@Test
 	public void testReferenceSetStaysNondominated() throws IOException {
-		NondominatedPopulation original = NondominatedPopulation.loadReferenceSet(new File("./pf/DTLZ2.2D.pf"));
+		File file = TestResources.asFile("pf/DTLZ2.2D.pf");
+		
+		NondominatedPopulation original = NondominatedPopulation.loadReferenceSet(file);
 		
 		ScaledProblem scaledProblem = new ScaledProblem(new DTLZ2(2), 2.0);
-		NondominatedPopulation scaled = scaledProblem.loadScaledReferenceSet(new File("./pf/DTLZ2.2D.pf"));
+		NondominatedPopulation scaled = scaledProblem.loadScaledReferenceSet(file);
 		
 		Assert.assertEquals(original.size(), scaled.size());
 	}

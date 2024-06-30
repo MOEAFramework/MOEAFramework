@@ -195,6 +195,11 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	public Analyzer withReferenceSet(File referenceSetFile) {
 		return (Analyzer)super.withReferenceSet(referenceSetFile);
 	}
+	
+	@Override
+	public Analyzer withReferenceSet(NondominatedPopulation referenceSet) {
+		return (Analyzer)super.withReferenceSet(referenceSet);
+	}
 
 	/**
 	 * Enables the evaluation of the hypervolume metric.

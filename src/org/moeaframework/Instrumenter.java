@@ -478,6 +478,11 @@ public class Instrumenter extends ProblemBuilder {
 	}
 	
 	@Override
+	public Instrumenter withReferenceSet(NondominatedPopulation referenceSet) {
+		return (Instrumenter)super.withReferenceSet(referenceSet);
+	}
+	
+	@Override
 	public Instrumenter withEpsilon(double... epsilon) {
 		return (Instrumenter)super.withEpsilon(epsilon);
 	}

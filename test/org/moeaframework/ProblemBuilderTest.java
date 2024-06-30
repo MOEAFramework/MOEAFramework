@@ -24,7 +24,6 @@ import org.junit.Test;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
@@ -109,13 +108,15 @@ public class ProblemBuilderTest {
 	
 	@Test
 	public void testReferenceSetFromProblemFactory() throws IOException {
+		File file = TestResources.asFile("pf/DTLZ2.2D.pf");
+		
 		NondominatedPopulation actual = new ProblemBuilder()
 				.withEpsilon(0.01)
 				.withProblem("DTLZ2_2")
 				.getReferenceSet();
 
-		NondominatedPopulation expected = new EpsilonBoxDominanceArchive(0.01, Population.loadObjectives(
-				new File("./pf/DTLZ2.2D.pf")));
+		NondominatedPopulation expected = new EpsilonBoxDominanceArchive(0.01,
+				NondominatedPopulation.loadReferenceSet(file));
 		
 		Assert.assertEquals(expected, actual);
 	}
@@ -123,12 +124,14 @@ public class ProblemBuilderTest {
 	@Test
 	public void testReferenceSetFromFile() throws IOException {
 		//purposely load DTLZ1 reference set
+		File file = TestResources.asFile("pf/DTLZ1.2D.pf");
+		
 		NondominatedPopulation actual = new ProblemBuilder()
 				.withProblem("DTLZ2_2")
-				.withReferenceSet(new File("./pf/DTLZ1.2D.pf"))
+				.withReferenceSet(file)
 				.getReferenceSet();
 		
-		NondominatedPopulation expected = NondominatedPopulation.loadReferenceSet(new File("./pf/DTLZ1.2D.pf"));
+		NondominatedPopulation expected = NondominatedPopulation.loadReferenceSet(file);
 		
 		Assert.assertEquals(expected, actual);
 	}

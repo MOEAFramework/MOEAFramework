@@ -24,6 +24,7 @@ import java.io.FileReader;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
+import org.moeaframework.TestResources;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
@@ -146,11 +147,12 @@ public class ExtractDataTest {
 		File input = TempFiles.createFileWithContent(COMPLETE);
 		File output = TempFiles.createFile();
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
+		File referenceSetFile = TestResources.asFile("pf/DTLZ2.2D.pf");
 		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 		
 		ExtractData.main(new String[] {
 			"--dimension", "2",
-			"--reference", new File("./pf/DTLZ2.2D.pf").getAbsolutePath(),
+			"--reference", referenceSetFile.getAbsolutePath(),
 			"--input", input.getPath(),
 			"--output", output.getPath(),
 			"--epsilon", Double.toString(epsilon),
@@ -177,11 +179,12 @@ public class ExtractDataTest {
 		File input = TempFiles.createFileWithContent(COMPLETE);
 		File output = TempFiles.createFile();
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
+		File referenceSetFile = TestResources.asFile("pf/DTLZ2.2D.pf");
 		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 		
 		ExtractData.main(new String[] {
 			"--dimension", "2",
-			"--reference", new File("./pf/DTLZ2.2D.pf").getAbsolutePath(),
+			"--reference", referenceSetFile.getAbsolutePath(),
 			"--input", input.getPath(),
 			"--output", output.getPath(),
 			"Contribution" });
