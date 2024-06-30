@@ -17,7 +17,6 @@
  */
 package org.moeaframework.core.indicator;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
@@ -41,9 +40,10 @@ public class RIndicatorTest {
 		testUtility("./pf/DTLZ2.2D.pf", new RIndicator.LinearWeightedSumUtility(), 0.750497);
 	}
 	
-	public void testUtility(String file, RIndicator.UtilityFunction utilityFunction, double expectedUtility) throws IOException {
+	public void testUtility(String resource, RIndicator.UtilityFunction utilityFunction, double expectedUtility)
+			throws IOException {
 		Problem problem = new MockRealProblem(2);
-		NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet(new File(file));
+		NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet(resource);
 		Normalizer normalizer = new Normalizer(problem, referenceSet);
 		
 		RIndicator indicator = new RIndicator(problem, 500, referenceSet, normalizer, utilityFunction) {

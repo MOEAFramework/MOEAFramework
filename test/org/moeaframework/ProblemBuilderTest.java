@@ -108,15 +108,13 @@ public class ProblemBuilderTest {
 	
 	@Test
 	public void testReferenceSetFromProblemFactory() throws IOException {
-		File file = TestResources.asFile("pf/DTLZ2.2D.pf");
-		
 		NondominatedPopulation actual = new ProblemBuilder()
 				.withEpsilon(0.01)
 				.withProblem("DTLZ2_2")
 				.getReferenceSet();
 
 		NondominatedPopulation expected = new EpsilonBoxDominanceArchive(0.01,
-				NondominatedPopulation.loadReferenceSet(file));
+				NondominatedPopulation.loadReferenceSet("pf/DTLZ2.2D.pf"));
 		
 		Assert.assertEquals(expected, actual);
 	}
@@ -138,7 +136,7 @@ public class ProblemBuilderTest {
 	
 	@Test
 	public void testReferenceSet() throws IOException {
-		NondominatedPopulation expected = NondominatedPopulation.loadReferenceSet(new File("./pf/DTLZ1.2D.pf"));
+		NondominatedPopulation expected = NondominatedPopulation.loadReferenceSet("./pf/DTLZ1.2D.pf");
 		
 		NondominatedPopulation actual = new ProblemBuilder()
 				.withProblem("DTLZ2_2")
@@ -149,10 +147,12 @@ public class ProblemBuilderTest {
 	}
 	
 	@Test
-	public void testWithSameProblemAs() {
+	public void testWithSameProblemAs() throws IOException {
+		File file = TestResources.asFile("pf/DTLZ2.2D.pf");
+		
 		ProblemBuilder builder1 = new ProblemBuilder()
 				.withProblem("DTLZ2_2")
-				.withReferenceSet(new File("./pf/DTLZ1.2D.pf"));
+				.withReferenceSet(file);
 		
 		ProblemBuilder builder2 = new ProblemBuilder()
 				.withSameProblemAs(builder1);

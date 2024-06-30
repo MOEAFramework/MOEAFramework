@@ -24,7 +24,12 @@ import org.moeaframework.util.io.Resources;
 import org.moeaframework.util.io.Resources.ResourceOption;
 
 /**
- * Locates resources used for testing.  This handles Ant vs Maven layouts.
+ * Locates resources used for testing.  These methods handle differences between different distributions, including
+ * <ol>
+ *   <li>Ant source
+ *   <li>Maven source
+ *   <li>JAR file
+ * </ol>
  */
 public class TestResources {
 
@@ -36,8 +41,7 @@ public class TestResources {
 	}
 
 	/**
-	 * Locates the given resource and returns it as a file.  If required, the resource is extracted to a temporary
-	 * file for the duration of the tests.
+	 * Locates the given resource, potentially extracting it to a temporary file, and returns the file.
 	 * 
 	 * @param resource the resource name
 	 * @return the resource file
@@ -55,13 +59,14 @@ public class TestResources {
 	}
 	
 	/**
-	 * Returns the file for a local test resource.
+	 * Locates a local test resource.
 	 *
-	 * @param path the regular (Ant-based) path
-	 * @return the located file
+	 * @param path the resource name
+	 * @return the local file
 	 */
-	public static File getLocalTestResource(String path) {
-		return new File("src/test/resources").exists() ? new File("src/test/resources", path) : new File("test", path);
+	public static File getLocalTestResource(String resource) {
+		return new File("src/test/resources").exists() ? new File("src/test/resources", resource) :
+			new File("test", resource);
 	}
 
 }

@@ -22,6 +22,7 @@ import java.io.File;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
+import org.moeaframework.TestResources;
 import org.moeaframework.analysis.io.MetricFileReader;
 import org.moeaframework.core.FrameworkException;
 
@@ -50,9 +51,11 @@ public class ResultFileEvaluatorTest {
 		File input = TempFiles.createFileWithContent(COMPLETE);
 		File output = TempFiles.createFile();
 		
+		File referenceSetFile = TestResources.asFile("pf/DTLZ2.2D.pf");
+		
 		ResultFileEvaluator.main(new String[] {
 			"--problem", "DTLZ2_2",
-			"--reference", "pf/DTLZ2.2D.pf",
+			"--reference", referenceSetFile.getAbsolutePath(),
 			"--input", input.getAbsolutePath(),
 			"--output", output.getAbsolutePath()});
 		
@@ -70,9 +73,11 @@ public class ResultFileEvaluatorTest {
 		File input = TempFiles.createFileWithContent(EMPTY);
 		File output = TempFiles.createFile();
 		
+		File referenceSetFile = TestResources.asFile("pf/DTLZ2.2D.pf");
+		
 		ResultFileEvaluator.main(new String[] {
 			"--problem", "DTLZ2_2",
-			"--reference", "pf/DTLZ2.2D.pf",
+			"--reference", referenceSetFile.getAbsolutePath(),
 			"--input", input.getAbsolutePath(),
 			"--output", output.getAbsolutePath()});
 		
@@ -86,9 +91,11 @@ public class ResultFileEvaluatorTest {
 		File input = TempFiles.createFileWithContent(COMPLETE);
 		File output = TempFiles.createFile();
 		
+		File referenceSetFile = TestResources.asFile("pf/DTLZ2.3D.pf");
+		
 		ResultFileEvaluator.main(new String[] {
 			"--problem", "DTLZ2_2",
-			"--reference", "pf/DTLZ2.3D.pf",
+			"--reference", referenceSetFile.getAbsolutePath(),
 			"--input", input.getAbsolutePath(),
 			"--output", output.getAbsolutePath()});
 	}

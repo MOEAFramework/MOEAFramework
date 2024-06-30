@@ -17,8 +17,12 @@
  */
 package org.moeaframework.problem;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.TestResources;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProviderNotFoundException;
@@ -36,10 +40,12 @@ public class PropertiesProblemsTest {
 	}
 	
 	@Test
-	public void testWithReferenceSet() {
+	public void testWithReferenceSet() throws IOException {
+		File referenceSetFile = TestResources.asFile("./pf/ZDT1.pf");
+		
 		try (PropertyScope scope = Settings.createScope()
 				.with("org.moeaframework.problem.TestWithReferenceSet.class", "org.moeaframework.problem.ZDT.ZDT1")
-				.with("org.moeaframework.problem.TestWithReferenceSet.referenceSet", "./pf/ZDT1.pf")) {
+				.with("org.moeaframework.problem.TestWithReferenceSet.referenceSet", referenceSetFile.getAbsolutePath())) {
 			Assert.assertNotNull(ProblemFactory.getInstance().getProblem("TestWithReferenceSet"));
 			Assert.assertNotNull(ProblemFactory.getInstance().getReferenceSet("TestWithReferenceSet"));
 		}
@@ -54,11 +60,13 @@ public class PropertiesProblemsTest {
 	}
 	
 	@Test
-	public void testCaseSensitivity() {
+	public void testCaseSensitivity() throws IOException {
+		File referenceSetFile = TestResources.asFile("./pf/ZDT1.pf");
+		
 		try (PropertyScope scope = Settings.createScope()
 				.with("org.moeaframework.problem.problems", "TestCaseSensitivity")
 				.with("org.moeaframework.problem.TestCaseSensitivity.class", "org.moeaframework.problem.ZDT.ZDT1")
-				.with("org.moeaframework.problem.TestCaseSensitivity.referenceSet", "./pf/ZDT1.pf")) {
+				.with("org.moeaframework.problem.TestCaseSensitivity.referenceSet", referenceSetFile.getAbsolutePath())) {
 			Assert.assertNotNull(ProblemFactory.getInstance().getProblem("testcasesensitivity"));
 			Assert.assertNotNull(ProblemFactory.getInstance().getReferenceSet("TESTCASESENSITIVITY"));
 		}
