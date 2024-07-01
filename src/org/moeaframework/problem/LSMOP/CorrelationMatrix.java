@@ -29,7 +29,7 @@ public interface CorrelationMatrix {
 	
 	/**
 	 * Returns an M x M correlation matrix containing values between [0, 1].
-
+	 *
 	 * @param M the dimension
 	 * @return the correlation matrix
 	 */

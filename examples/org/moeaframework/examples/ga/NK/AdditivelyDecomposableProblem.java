@@ -49,9 +49,9 @@ import org.moeaframework.util.validate.Validate;
  * overlap in the subsets between subproblems (epistasis).  Overlap can be
  * expected to increase problem difficulty.
  * <p>
- * This code is derived from the ANSI C code developed by Martin Pelikan
- * available from <http://medal-lab.org/software.php>.  It is able to save and
- * load instance files in the same format.
+ * This code is derived from the <a href="http://medal-lab.org">ANSI C code
+ * developed by Martin Pelikan</a>.  It is able to save and load instance files
+ * in the same format.
  * <p>
  * References:
  * <ol>

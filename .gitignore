@@ -1,6 +1,7 @@
 /.settings/
 /bin/
 /build/
+/coco/
 /dist/
 /javadoc/
 /maven/

@@ -27,7 +27,5 @@
  * compute nodes.  Java frameworks such as <a href="http://www.jppf.org">JPPF</a> and 
  * <a href="http://www.gridgain.com">GridGain</a> provide {@code ExecutorService} interfaces out-of-the-box.  Then, the
  * desired {@code Problem} is decorated with the {@code DistributedProblem} to enable parallel execution.
- * 
- * @deprecated Moved to {@code org.moeaframework.parallel}
  */
 package org.moeaframework.util.distributed;

@@ -31,6 +31,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.EnumSet;
 import java.util.List;
+
 import org.apache.commons.io.FilenameUtils;
 
 /**
@@ -230,6 +231,7 @@ public class Resources {
 			}
 			
 			resultFile = File.createTempFile("temp", extension);
+			resultFile.deleteOnExit();
 		}
 
 		try (InputStream input = asStream(owner, resource, ResourceOption.REQUIRED);

@@ -19,6 +19,7 @@ package org.moeaframework.parallel.util;
 
 import java.security.SecureRandom;
 import java.util.Random;
+
 import org.apache.commons.math3.random.MersenneTwister;
 
 /**

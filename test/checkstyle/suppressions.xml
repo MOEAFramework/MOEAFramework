@@ -4,12 +4,30 @@
   "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 
 <suppressions>
+	<!-- Ignore BBOB2016 code that is copied verbatim from source -->
 	<suppress checks="RegexpHeader" files="src[\\/]org[\\/]moeaframework[\\/]problem[\\/]BBOB2016[\\/]" />
 	<suppress checks="MultipleVariableDeclarationsCheck" files="src[\\/]org[\\/]moeaframework[\\/]problem[\\/]BBOB2016[\\/]" />
 	<suppress checks="RegexpHeader" files="test[\\/]org[\\/]moeaframework[\\/]problem[\\/]BBOB2016[\\/]" />
 	<suppress checks="NeedBraces" files="test[\\/]org[\\/]moeaframework[\\/]problem[\\/]BBOB2016[\\/]" />
+	<suppress checks="HideUtilityClassConstructor" files="test[\\/]org[\\/]moeaframework[\\/]problem[\\/]BBOB2016[\\/]" />
+
+	<!-- Ignore CDTLZ classes that do not follow type naming convensions -->
 	<suppress checks="TypeName" files="src[\\/]org[\\/]moeaframework[\\/]problem[\\/]CDTLZ[\\/]" />
 	<suppress checks="TypeName" files="test[\\/]org[\\/]moeaframework[\\/]problem[\\/]CDTLZ[\\/]" />
+	
+	<!-- Ignore example files without package -->
 	<suppress checks="PackageDeclaration" files="examples[\\/]Example[a-z0-9]+.java" />
+	
+	<!-- Ignore specific checks on test / example code -->
+	<suppress checks="HideUtilityClassConstructor" files="examples" />
+	<suppress checks="JavadocPackage" files="test|examples" />
+	<suppress checks="MissingCtor" files="test|examples" />
+	<suppress checks="JavadocType" files="test|examples" />
+	<suppress checks="JavadocMethod" files="test|examples" />
+	<suppress checks="JavadocVariable" files="test|examples" />
+	<suppress checks="UnusedLocalVariable" files="test" />
+	
+	<!-- Special exclusions for cases we won't fix -->
 	<suppress checks="MultipleVariableDeclarationsCheck" files="src[\\/]org[\\/]moeaframework[\\/]core[\\/]operator[\\/]real[\\/]SBX.java" />
+	<suppress checks="IllegalType" files="src[\\/]org[\\/]moeaframework[\\/]util[\\/]OptionCompleter.java" />
 </suppressions>

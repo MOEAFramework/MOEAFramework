@@ -19,6 +19,7 @@ package org.moeaframework.analysis.tools;
 
 import java.io.File;
 import java.io.IOException;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
@@ -526,7 +527,7 @@ public class SobolAnalysis extends CommandLineUtility {
 	 * 
 	 * @param file the model output file being validated
 	 * @return the number of samples
-	 * @throws IOException
+	 * @throws IOException if an I/O error occurred while processing the file
 	 */
 	private int validate(File file) throws IOException {
 		try (MatrixReader reader = new MatrixReader(file)) {

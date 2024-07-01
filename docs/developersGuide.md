@@ -105,9 +105,14 @@ We also have a custom tool to validate code examples in our Markdown and HTML do
 ### Maven
 
 The MOEA Framework source code is not structured for Maven, but we can produce a Maven-compatible release using the
-`package-maven` target.  We can test the Maven configuration by running the `build-maven-tests` target followed
-by:
+`build-maven` target.  We can run tests with:
 
 ```
+ant -f build.xml build-maven
+cd build
 mvn test
 ```
+
+We use `mvn deploy` to stage each release to Sonatype Nexus, followed by a manual step to approve and release each
+new version to Maven Central for consumption.  Please note it can take a few hours for a new release to be available.
+For more details on the deploy process, see the `staging.yml` workflow file for GitHub Actions.

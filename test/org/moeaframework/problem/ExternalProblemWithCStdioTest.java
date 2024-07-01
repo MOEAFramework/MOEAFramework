@@ -30,6 +30,7 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
 import org.moeaframework.Make;
+import org.moeaframework.TestResources;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Solution;
@@ -45,10 +46,8 @@ import org.moeaframework.problem.ExternalProblem.Builder;
 public class ExternalProblemWithCStdioTest {
 
 	protected File getExecutable(String filename) {
-		try {			
-			File file = new File("src/test/resources").exists() ?
-					new File("src/test/resources/org/moeaframework/problem", filename) :
-					new File("test/org/moeaframework/problem", filename);
+		try {
+			File file = TestResources.getLocalTestResource("org/moeaframework/problem/" + filename);
 			
 			if (!file.exists()) {
 				Assume.assumeMakeExists();

@@ -3,7 +3,7 @@
 ## Prerequisites
 
 Download and install the latest version of Java Development Kit (JDK).  Version 17 or later is required.  For Windows,
-we recommend either [Eclipse Temurin](https://adoptium.net/) or [Azul Zulu](https://www.azul.com/downloads/?package=jdk).\
+we recommend either [Eclipse Temurin](https://adoptium.net/) or [Azul Zulu](https://www.azul.com/downloads/?package=jdk).
 Linux users with Apt can run `sudo apt install default-jdk`.
 
 While not required, we recommend using [Eclipse](http://eclipse.org) as your Java editor.  The instructions found in

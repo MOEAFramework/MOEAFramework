@@ -181,8 +181,8 @@ ListSelectionListener {
 	 * standalone version of this window.
 	 * 
 	 * @param name the name or title for the data
-	 * @param results the observations containing approximation set data
 	 * @param referenceSet the reference set for the problem
+	 * @param observations the observations containing approximation set data
 	 */
 	public static void show(String name, NondominatedPopulation referenceSet, Observations... observations) {
 		SwingUtilities.invokeLater(() -> {

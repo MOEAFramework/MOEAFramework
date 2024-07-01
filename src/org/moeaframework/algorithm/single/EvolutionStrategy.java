@@ -95,7 +95,9 @@ public class EvolutionStrategy extends SingleObjectiveEvolutionaryAlgorithm {
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * Replaces the variation operator to be used by this algorithm.
+	 * 
+	 * @param variation the variation operator
 	 */
 	@Property("operator")
 	public void setVariation(SelfAdaptiveNormalVariation variation) {

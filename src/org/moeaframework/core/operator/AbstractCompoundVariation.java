@@ -37,6 +37,8 @@ import org.moeaframework.util.TypedProperties;
  * crossover operators first followed by any mutation operators.
  * <p>
  * Consequently, not all combinations of operators are valid and may result in a runtime exception being thrown.
+ * 
+ * @param <T> the type of variation operators
  */
 public class AbstractCompoundVariation<T extends Variation> implements Variation {
 

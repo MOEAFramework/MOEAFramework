@@ -23,10 +23,10 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.CEC2009.UF1;
 import org.moeaframework.problem.DTLZ.DTLZ2;
-import org.moeaframework.util.RotationMatrixBuilder;
 import org.moeaframework.problem.RotatedProblem;
 import org.moeaframework.problem.ScaledProblem;
 import org.moeaframework.problem.TimingProblem;
+import org.moeaframework.util.RotationMatrixBuilder;
 
 @SuppressWarnings({"unused", "resource"})
 public class ProblemSnippet {

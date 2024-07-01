@@ -17,7 +17,6 @@
  */
 package org.moeaframework.core.indicator;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
@@ -67,7 +66,7 @@ public class R3IndicatorTest extends AbstractIndicatorTest<R3Indicator> {
 
 	@Test
 	public void testCase() throws IOException {
-		NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet(new File("./pf/DTLZ2.2D.pf"));
+		NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet("./pf/DTLZ2.2D.pf");
 		
 		Indicator indicator = createInstance(new MockRealProblem(2), referenceSet);
 		

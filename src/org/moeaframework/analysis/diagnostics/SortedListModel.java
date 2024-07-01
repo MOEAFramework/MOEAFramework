@@ -20,11 +20,11 @@ package org.moeaframework.analysis.diagnostics;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.TreeSet;
 import java.util.Set;
+import java.util.TreeSet;
 
-import javax.swing.ListModel;
 import javax.swing.AbstractListModel;
+import javax.swing.ListModel;
 
 /**
  * A sorted {@link ListModel} which stores only unique entries.

@@ -20,6 +20,7 @@ package org.moeaframework.algorithm.continuation;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
 import org.apache.commons.lang3.event.EventListenerSupport;
 import org.moeaframework.core.EvolutionaryAlgorithm;
 import org.moeaframework.core.NondominatedPopulation;

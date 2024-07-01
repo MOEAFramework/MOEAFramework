@@ -142,22 +142,24 @@ public class AnalyzerTest {
 	
 	@Test
 	public void testReferenceSetFromProblemFactory() throws IOException {
+		File file = TestResources.asFile("pf/DTLZ2.2D.pf");
+
 		NondominatedPopulation actual = generate().getReferenceSet();
-		
-		NondominatedPopulation expected = new EpsilonBoxDominanceArchive(0.01, Population.loadObjectives(
-				new File("./pf/DTLZ2.2D.pf")));
+		NondominatedPopulation expected = new EpsilonBoxDominanceArchive(0.01, Population.loadObjectives(file));
 		
 		Assert.assertEquals(expected, actual);
 	}
 	
 	@Test
 	public void testReferenceSetFromFile() throws IOException {
+		//purposely load DTLZ1 reference set
+		File file = TestResources.asFile("pf/DTLZ1.2D.pf");
+		
 		NondominatedPopulation actual = generate()
-				.withReferenceSet(new File("./pf/DTLZ1.2D.pf"))
+				.withReferenceSet(file)
 				.getReferenceSet();
 		
-		NondominatedPopulation expected = new EpsilonBoxDominanceArchive(0.01, Population.loadObjectives(
-				new File("./pf/DTLZ1.2D.pf")));
+		NondominatedPopulation expected = new EpsilonBoxDominanceArchive(0.01, Population.loadObjectives(file));
 		
 		Assert.assertEquals(expected, actual);
 	}

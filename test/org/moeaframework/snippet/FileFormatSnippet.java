@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
-import org.moeaframework.Executor;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.analysis.io.MetricFileReader;
 import org.moeaframework.analysis.io.MetricFileWriter;
@@ -33,8 +32,6 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.mock.MockSolution;
-import org.moeaframework.problem.CEC2009.UF1;
-import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.misc.Schaffer;
 import org.moeaframework.util.TypedProperties;
 

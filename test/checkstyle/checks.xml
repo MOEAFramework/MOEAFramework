@@ -25,7 +25,7 @@ along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 		<property name="optional" value="false"/>
 	</module>
 
-	<!-- Source code files contain appropriate copyright and license notices -->
+	<!-- Header rules -->
 	<module name="RegexpHeader">
 		<property name="headerFile" value="header.txt" />
 		<property name="fileExtensions" value="java,c,h" />
@@ -36,177 +36,142 @@ along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 	
 	<!-- No trailing whitespace at end of line -->
 	<!-- <module name="RegexpSingleline">
-		<property name="format" value="\s+$"/>
+		<property name="format" value="\w+\s+$"/>
 	</module> -->
 	
 	<!-- Package info files should include javadoc comments -->
-	<!-- This does not work properly when src and test folders share the same
-	     package structure, as the package-info.java files are only in src -->
-	<!-- <module name="JavadocPackage" /> -->
+	<module name="JavadocPackage" />
 	
 	<!-- Ensure consistency among properties files -->
 	<module name="Translation" />
+	<module name="UniqueProperties"/>
 
 	<module name="TreeWalker">
-		<property name="tabWidth" value="4"/>
-	
-		<!-- Explicitly define all imported classes -->
-		<module name="AvoidStarImport" />
+		<property name="tabWidth" value="4" />
 		
-		<!-- No unused imports -->
-		<module name="UnusedImports">
-			<property name="processJavadoc" value="true" />
-		</module>
+		<!-- Annotation rules -->
+		<module name="AnnotationLocation" />
+		<module name="PackageAnnotation" />
+		<module name="MissingDeprecated" />
+		<module name="MissingOverride" />
 		
-		<!-- No redundant imports -->
-		<module name="RedundantImport" />
-		
-		<!-- Prevent empty blocks that do not at least contain a comment -->
+		<!-- Block rules -->
+		<module name="AvoidNestedBlocks" />
 		<module name="EmptyBlock">
-			<property name="option" value="text"/>
+			<property name="option" value="text" />
 		</module>
-		
-		<!-- Ensure all code blocks contain properly formatted braces -->
+		<module name="EmptyCatchBlock" />
 		<module name="NeedBraces" />
 		<module name="LeftCurly" />
 		<module name="RightCurly" />
 		
-		<!-- Deprecation flags must appear as annotations and javadoc tags -->
-		<!-- This currently causes too many false positives when no javadoc
-		     tag exists on overridden methods -->
-		<!-- <module name="MissingDeprecated"/> -->
-		
-		<module name="MissingOverride">
-			<property name="javaFiveCompatibility" value="true"/>
-		</module>
-		
-		<!-- Package annotations should be placed in package-info.java -->
-		<module name="PackageAnnotation"/>
-
-		<!-- Override hashCode when equals is also overridden -->
-		<module name="EqualsHashCode" />
-		
-		<!-- Long constants should use primitive long and not object Long -->
-		<module name="UpperEll" />
-		
-		<!-- Array brackets should be placed immediately following the type
-		     (e.g., String[] names)  -->
-		<module name="ArrayTypeStyle" />
-
-		<!-- The class name and file name must match -->
-		<module name="OuterTypeFilename"/>
-		
-		<!-- Modifiers should be in the JLS defined order -->
-		<module name="ModifierOrder" />
-
-		<!-- Prevent unnecessary whitespace -->
-		<module name="GenericWhitespace"/>
-		<module name="MethodParamPad"/>
-		<module name="ParenPad"/>
-		<module name="TypecastParenPad"/>
-		
-		<!-- Equals methods must use Object parameter -->
-		<module name="CovariantEquals"/>
-		
-		<!-- No empty ; statements -->
-		<module name="EmptyStatement"/>
-		
-		<!-- Constructors must be explicitly defined -->
-		<!-- Several instances exist that should be fixed -->
-		<!-- <module name="MissingCtor"/> -->
-		
-		<!-- <module name="EqualsAvoidNull"/> -->
-		
-		<!-- No magic numbers -->
-		<!-- The source currently contains too many magic numbers -->
-		<!-- <module name="MagicNumber"/> -->
-		
-		<!-- Control variables in for loops should not be modified -->
-		<!-- Several instances exist that should be fixed -->
-		<module name="ModifiedControlVariable"/>
-		
-		<!-- Do not wrap boolean return statements in conditional statement -->
-		<module name="SimplifyBooleanExpression" />
-		<module name="SimplifyBooleanReturn"/>
-		
-		<!-- Never compare strings with == or != -->
-		<module name="StringLiteralEquality"/>
-		
-		<!-- Ensure clone and finalize methods call super -->
-		<module name="SuperClone"/>
-		<module name="SuperFinalize"/>
-		
-		<!-- Every package must have a package declaration -->
-		<module name="PackageDeclaration"/>
-		
-		<!-- Contents of a class/interface appear in a standard order -->
-		<!-- <module name="DeclarationOrder"/> -->
-		
-		<!-- Switch statements should be structured correctly -->
-		<module name="DefaultComesLast"/>
-		<module name="MissingSwitchDefault"/>
-		<module name="FallThrough" />
-
-		<!-- Only one variable declaration is allowed per line -->
-		<module name="MultipleVariableDeclarations"/>
-		
-		<!-- Only one statement is allowed per line -->
-		<module name="OneStatementPerLine"/>
-		
-		<!-- Classes with only static methods must hide constructor -->
-		<!-- <module name="HideUtilityClassConstructor" /> -->
-		
-		<!-- All variables in an exception are final -->
-		<module name="MutableException"/>
-		
-		<!-- Classes with private constructors should be final -->
-		<!-- <module name="FinalClass"/> -->
-		
-		<module name="InterfaceIsType"/>
-
-		<!--
-		<module name="JavadocType">
-			<property name="scope" value="protected" />
-		</module>
-		<module name="JavadocMethod">
-			<property name="scope" value="protected" />
-		</module>
-		<module name="JavadocVariable">
-			<property name="scope" value="protected" />
-		</module>
-		-->
-		
-		<!-- Naming conventions -->
-		<!-- More of the naming conventions should be used, but this must wait
-		     till a major release as some names are public -->
-		<module name="ClassTypeParameterName" />
-		<module name="PackageName" />
-		<module name="MethodTypeParameterName" />
-		<module name="TypeName" />
-	
-		<!-- Fields should not be public -->
+		<!-- Class rules -->
+		<module name="HideUtilityClassConstructor" />
+		<module name="InterfaceIsType" />
+		<module name="MutableException" />
+		<module name="OneTopLevelClass" />
 		<module name="VisibilityModifier">
 			<property name="protectedAllowed" value="true" />
 			<property name="packageAllowed" value="true" />
 		</module>
 		
-		<!-- Prevent importing from the sun.* packages -->
-		<module name="IllegalImport" />
-		
-		<!-- Use the factory methods to create booleans and strings -->
+		<!-- Code rules -->
+		<module name="AvoidDoubleBraceInitialization" />
+		<module name="ConstructorsDeclarationGrouping" />
+		<module name="CovariantEquals" />
+		<!-- <module name="DeclarationOrder" /> -->
+		<module name="DefaultComesLast" />
+		<module name="EmptyStatement" />
+		<!-- <module name="EqualsAvoidNull" /> -->
+		<module name="EqualsHashCode" />
+		<module name="FallThrough" />
 		<module name="IllegalInstantiation">
-            <property name="classes" value="java.lang.Boolean, java.lang.String"/>
+            <property name="classes" value="java.lang.Boolean, java.lang.String" />
         </module>
+		<module name="IllegalType" />
+        <module name="InnerAssignment" />
+		<!-- <module name="MagicNumber" /> -->
+		<!-- <module name="MissingCtor" /> -->
+		<module name="MissingSwitchDefault" />
+		<module name="ModifiedControlVariable" />
+		<module name="MultipleVariableDeclarations" />
+		<module name="NoClone" />
+		<module name="NoFinalizer" />
+		<module name="OneStatementPerLine" />
+		<module name="PackageDeclaration" />
+		<module name="SimplifyBooleanExpression" />
+		<module name="SimplifyBooleanReturn" />
+		<module name="StringLiteralEquality" />
+		<module name="SuperClone" />
+		<module name="SuperFinalize" />
+		<module name="UnnecessarySemicolonAfterOuterTypeDeclaration" />
+		<module name="UnnecessarySemicolonAfterTypeMemberDeclaration" />
+		<module name="UnnecessarySemicolonInEnumeration" />
+		<module name="UnnecessarySemicolonInTryWithResources" />
+		<module name="UnusedLocalVariable" />
 		
-		<!-- Avoid using these types explicitly, use their interfaces instead -->
-		<!-- <module name="IllegalType">
-			<property name="format" value="^$"/>
-			<property name="illegalClassNames" value="java.util.GregorianCalendar, java.util.Hashtable, java.util.HashSet, java.util.HashMap, java.util.ArrayList, java.util.LinkedHashMap, java.util.LinkedHashSet, java.util.TreeSet, java.util.TreeMap, java.util.Vector"/>
-        </module> -->
-        
-        <!-- Avoid using nested blocks (blocks without control statement) -->
-        <module name="AvoidNestedBlocks" />
-        
-        <!-- <module name="InnerAssignment" /> -->
+		<!-- Import rules -->
+		<module name="AvoidStarImport" />
+		<module name="RedundantImport" />
+		<module name="IllegalImport" />
+		<module name="UnusedImports" />
+		<module name="ImportOrder">
+			<property name="groups" value="/^java\./,javax,org" />
+			<property name="separated" value="true" />
+			<property name="option" value="bottom" />
+		</module>
+		
+		<!-- Javadoc rules -->
+		<!-- <module name="InvalidJavadocPosition" /> -->
+		<module name="JavadocBlockTagLocation" />
+		<module name="JavadocContentLocation" />
+		<module name="JavadocMethod">
+			<property name="accessModifiers" value="public, protected" />
+		</module>
+		<module name="JavadocMissingLeadingAsterisk" />
+		<module name="JavadocMissingWhitespaceAfterAsterisk" />
+		<module name="JavadocType">
+			<property name="scope" value="protected" />
+		</module>
+		<module name="JavadocVariable">
+			<property name="scope" value="protected" />
+		</module>
+		<module name="NonEmptyAtclauseDescription" />
+		
+		<!-- Miscellaneous rules -->
+		<module name="ArrayTypeStyle" />
+		<module name="CommentsIndentation" />
+		<module name="NoCodeInFile" />
+		<module name="OuterTypeFilename" />
+		<module name="UpperEll" />
+
+		<!-- Modifier rules -->
+		<module name="ModifierOrder" />
+		<!-- <module name="RedundantModifier" /> -->
+
+		<!-- Naming convention rules -->
+		<!-- More of the naming conventions should be used, but this must wait till a major release as some names are public -->
+		<!-- <module name="CatchParameterName" /> -->
+		<module name="ClassTypeParameterName" />
+		<!-- <module name="ConstantName" /> -->
+		<!-- <module name="IllegalIdentifierName" /> -->
+		<module name="InterfaceTypeParameterName" />
+		<!-- <module name="LambdaParameterName" /> -->
+		<!-- <module name="LocalFinalVariableName" /> -->
+		<!-- <module name="LocalVariableName" /> -->
+		<!-- <module name="MemberName" /> -->
+		<!-- <module name="MethodName" /> -->
+		<module name="MethodTypeParameterName" />
+		<module name="PackageName" />
+		<!-- <module name="ParameterName" /> -->
+		<!-- <module name="StaticVariableName" /> -->
+		<module name="TypeName" />
+		
+		<!-- Whitespace rules -->
+		<module name="GenericWhitespace" />
+		<module name="MethodParamPad" />
+		<module name="NoWhitespaceBeforeCaseDefaultColon" />
+		<module name="ParenPad" />
+		<module name="TypecastParenPad" />
 	</module>
 </module>

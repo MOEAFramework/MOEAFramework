@@ -19,6 +19,7 @@ package org.moeaframework.util.weights;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.commons.math3.primes.Primes;
 import org.moeaframework.util.validate.Validate;
 

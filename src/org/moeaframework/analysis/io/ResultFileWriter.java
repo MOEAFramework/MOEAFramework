@@ -57,18 +57,18 @@ import org.moeaframework.util.io.CommentedLineReader;
  */
 public class ResultFileWriter implements OutputWriter {
 	
-    /**
-     * The message displayed when an unsupported decision variable type is encountered.
-     */
+	/**
+	 * The message displayed when an unsupported decision variable type is encountered.
+	 */
 	static final String ENCODING_WARNING = 
 			"unsupported decision variable type, could cause unexpected behavior or data loss";
-	
+
 	/**
 	 * The message displayed when excluding the decision variables when saving a result file.
 	 */
 	static final String NO_VARIABLES_WARNING =
 			"saving result file without variables, could cause unexpected behavior or data loss";
-	
+
 	/**
 	 * Settings for this result file.
 	 */

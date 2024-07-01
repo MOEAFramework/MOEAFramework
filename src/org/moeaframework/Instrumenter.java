@@ -44,9 +44,9 @@ import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.PeriodicAction.FrequencyType;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.PeriodicAction.FrequencyType;
 import org.moeaframework.core.indicator.AdditiveEpsilonIndicator;
 import org.moeaframework.core.indicator.Contribution;
 import org.moeaframework.core.indicator.GenerationalDistance;
@@ -475,6 +475,11 @@ public class Instrumenter extends ProblemBuilder {
 	@Override
 	public Instrumenter withReferenceSet(File referenceSetFile) {
 		return (Instrumenter)super.withReferenceSet(referenceSetFile);
+	}
+	
+	@Override
+	public Instrumenter withReferenceSet(NondominatedPopulation referenceSet) {
+		return (Instrumenter)super.withReferenceSet(referenceSet);
 	}
 	
 	@Override
