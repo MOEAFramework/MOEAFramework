@@ -2,6 +2,12 @@
 
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
+## Version 4.4 (TBD)
+
+  * Introduces a new `clustering` package, with implementations of single-linkage clustering and K-means++.  This
+    also refactors the clustering implementation used by AMOSA.
+
+
 ## Version 4.3 (27 June 2024)
 
   * Adds default operators for mixed type problems.  For example, if given a problem with real and binary decision

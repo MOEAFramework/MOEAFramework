@@ -18,10 +18,8 @@
 package org.moeaframework.algorithm;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -34,7 +32,6 @@ import org.moeaframework.core.Selection;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
-import org.moeaframework.core.attribute.Attribute;
 import org.moeaframework.core.attribute.Fitness;
 import org.moeaframework.core.attribute.NormalizedObjectives;
 import org.moeaframework.core.attribute.Rank;
@@ -47,6 +44,8 @@ import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.util.LinearAlgebra;
 import org.moeaframework.util.Vector;
+import org.moeaframework.util.clustering.CachedDistanceMeasure;
+import org.moeaframework.util.clustering.DistanceMeasure;
 
 /**
  * Implementation of AGE-MOEA-II, which is an adaptive evolutionary algorithm that estimates the Pareto front geometry
@@ -240,24 +239,19 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 
 			// Estimate the front geometry
 			p = fitGeometry(front, extremePoints);
+			
+			// Measure distance using proximity and diversity scores
+			DistanceMeasure<Solution> distances = new CachedDistanceMeasure<>((i, j) -> {
+				double proximity = minkowskiDistance(i, zeros, p);
 
-			// Proximity Score
-			double[] proximity = new double[front.size()];
+				double[] first = projectPoint(NormalizedObjectives.getAttribute(i), p);
+				double[] second = projectPoint(NormalizedObjectives.getAttribute(j), p);
+				double[] midpt = projectPoint(Vector.divide(Vector.add(first, second), 2.0), p);
 
-			for (int i = 0; i < front.size(); i++) {
-				proximity[i] = minkowskiDistance(front.get(i), zeros, p);
-			}
+				return (minkowskiDistance(first, midpt, 2.0) + minkowskiDistance(midpt, second, 2.0)) / proximity;
+			}, false);
 
-			// Diversity Score
-			DistanceMap<Solution> distances = getPairwiseDistances(front, p);
-
-			for (int i = 0; i < front.size() - 1; i++) {
-				for (int j = i + 1; j < front.size(); j++) {
-					distances.set(front.get(i), front.get(j), distances.get(front.get(i), front.get(j)) / proximity[i]);
-				}
-			}
-
-			// Survival Score
+			// Survival score
 			List<Solution> remaining = front.asList();
 			List<Solution> assigned = new ArrayList<Solution>();
 
@@ -447,37 +441,6 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 		}
 
 		/**
-		 * Returns a distance map containing the Geodesic distances between solutions.
-		 * 
-		 * @param front the current front
-		 * @param p the curvature of the L_p manifold
-		 * @return the distance map
-		 */
-		protected DistanceMap<Solution> getPairwiseDistances(Population front, double p) {
-			DistanceMap<Solution> distances = new DistanceMap<Solution>();
-
-			for (Solution solution : front) {
-				double[] objectives = NormalizedObjectives.getAttribute(solution);
-				double[] projection = projectPoint(objectives, p);
-
-				ProjectedObjectives.setAttribute(solution, projection);
-			}
-
-			for (int i = 0; i < front.size() - 1; i++) {
-				for (int j = i + 1; j < front.size(); j++) {
-					double[] point1 = ProjectedObjectives.getAttribute(front.get(i));
-					double[] point2 = ProjectedObjectives.getAttribute(front.get(j));
-					double[] midpt = projectPoint(Vector.divide(Vector.add(point1, point2), 2.0), p);
-
-					distances.set(front.get(i), front.get(j),
-							minkowskiDistance(point1, midpt, 2.0) + minkowskiDistance(midpt, point2, 2.0));
-				}
-			}
-
-			return distances;
-		}
-
-		/**
 		 * Identifies and computes the score for the next solution.  This is based on Algorithm 2 in the original
 		 * AGE-MOEA paper.
 		 * 
@@ -486,7 +449,7 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 		 * @param remaining solutions that are remaining and need to be assigned a score
 		 * @return the next solution to assign a score
 		 */
-		protected Pair<Solution, Double> findNextSolutionToScore(DistanceMap<Solution> distances,
+		protected Pair<Solution, Double> findNextSolutionToScore(DistanceMeasure<Solution> distances,
 				List<Solution> assigned, List<Solution> remaining) {
 			double bestScore = 0.0;
 			Solution bestSolution = null;
@@ -496,7 +459,7 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 				double min2 = Double.POSITIVE_INFINITY;
 
 				for (Solution assignedSolution : assigned) {
-					double distance = distances.get(remainingSolution, assignedSolution);
+					double distance = distances.compute(remainingSolution, assignedSolution);
 
 					if (distance < min1) {
 						min2 = min1;
@@ -603,62 +566,6 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 			}
 
 			return numerator / denominator;
-		}
-
-	}
-
-	/**
-	 * Stores symmetric distances between objects.
-	 * 
-	 * @param <T> the type of object being stored
-	 */
-	static class DistanceMap<T> {
-
-		private final Map<Pair<T, T>, Double> distances;
-
-		public DistanceMap() {
-			super();
-			distances = new HashMap<Pair<T, T>, Double>();
-		}
-
-		// Use the hashCode to order the arguments, allowing symmetric distances
-		private final Pair<T, T> getKey(T first, T second) {
-			return first.hashCode() < second.hashCode() ? Pair.of(first, second) : Pair.of(second, first);
-		}
-
-		public void set(T first, T second, double distance) {
-			distances.put(getKey(first, second), distance);
-		}
-
-		public double get(T first, T second) {
-			Double result = distances.get(getKey(first, second));
-			
-			if (result == null) {
-				throw new IllegalArgumentException("No distance stored for key " + getKey(first, second));
-			}
-			
-			return result;
-		}
-
-	}
-
-	/**
-	 * Attribute for storing the projected objective values.
-	 */
-	static final class ProjectedObjectives implements Attribute {
-
-		public static final String ATTRIBUTE_NAME = "projectedObjectives";
-
-		private ProjectedObjectives() {
-			super();
-		}
-
-		public static final void setAttribute(Solution solution, double[] value) {
-			solution.setAttribute(ATTRIBUTE_NAME, value);
-		}
-
-		public static final double[] getAttribute(Solution solution) {
-			return (double[])solution.getAttribute(ATTRIBUTE_NAME);
 		}
 
 	}

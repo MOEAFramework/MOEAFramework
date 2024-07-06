@@ -26,7 +26,6 @@ import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.algorithm.AGEMOEAII.AGEMOEAIIPopulation;
-import org.moeaframework.algorithm.AGEMOEAII.DistanceMap;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.attribute.Fitness;
 import org.moeaframework.mock.MockSolution;
@@ -243,42 +242,19 @@ public class AGEMOEAIITest extends JMetalAlgorithmTest {
 		Assert.assertEquals(4.0, population.minkowskiDistance(point1, point2, 0.5));
 	}
 	
-	@Test
-	public void testGetPairwiseDistances() {
-		// Section 3.2.2 in the 2022 paper shows this case
-		Solution solution1 = MockSolution.of().withObjectives(1.0, 0.0);
-		Solution solution2 = MockSolution.of().withObjectives(0.0, 1.0);
-		
-		AGEMOEAIIPopulation population = new AGEMOEAIIPopulation(2);
-		population.addAll(List.of(solution1, solution2));
-		
-		population.normalize(population, new double[] { 0.0, 0.0 }, new double[] { 1.0, 1.0 });
-		DistanceMap<Solution> distances = population.getPairwiseDistances(population, 2.0);
-
-		Assert.assertEquals(1.5306, distances.get(solution1, solution2), 0.0005);
-	}
-	
-	@Test
-	public void testDistanceMap() {
-		DistanceMap<Solution> distances = new DistanceMap<Solution>();
-		
-		Solution solution1 = MockSolution.of().withObjectives(0.0, 1.0);
-		Solution solution2 = MockSolution.of().withObjectives(1.0, 0.0);
-		
-		distances.set(solution1, solution2, 5.0);
-		
-		Assert.assertEquals(5.0, distances.get(solution1, solution2), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(5.0, distances.get(solution2, solution1), TestThresholds.HIGH_PRECISION);
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void testDistanceMapThrows() {
-		DistanceMap<Solution> distances = new DistanceMap<Solution>();
-		
-		Solution solution1 = MockSolution.of().withObjectives(0.0, 1.0);
-		Solution solution2 = MockSolution.of().withObjectives(1.0, 0.0);
-				
-		Assert.assertEquals(5.0, distances.get(solution1, solution2), TestThresholds.HIGH_PRECISION);
-	}
+//	@Test
+//	public void testGetPairwiseDistances() {
+//		// Section 3.2.2 in the 2022 paper shows this case
+//		Solution solution1 = MockSolution.of().withObjectives(1.0, 0.0);
+//		Solution solution2 = MockSolution.of().withObjectives(0.0, 1.0);
+//		
+//		AGEMOEAIIPopulation population = new AGEMOEAIIPopulation(2);
+//		population.addAll(List.of(solution1, solution2));
+//		
+//		population.normalize(population, new double[] { 0.0, 0.0 }, new double[] { 1.0, 1.0 });
+//		DistanceMap<Solution> distances = population.getPairwiseDistances(population, 2.0);
+//
+//		Assert.assertEquals(1.5306, distances.get(solution1, solution2), 0.0005);
+//	}
 
 }

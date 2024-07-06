@@ -29,6 +29,7 @@ import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.util.clustering.Clustering;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -442,8 +443,11 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 		}
 	}
 
+	/**
+	 * Form clusters using single-linkage clustering and truncate the size of the archive.
+	 */
 	private void cluster() {
-		this.archive = new SingleLinkageClustering(archive).cluster(hardLimit);
+		Clustering.singleLinkage().truncate(hardLimit, archive);
 	}
 
 }
