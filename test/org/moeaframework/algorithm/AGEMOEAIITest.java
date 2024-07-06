@@ -19,7 +19,6 @@ package org.moeaframework.algorithm;
 
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.Assert;
@@ -30,6 +29,7 @@ import org.moeaframework.algorithm.AGEMOEAII.AGEMOEAIIPopulation;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.attribute.Fitness;
 import org.moeaframework.mock.MockSolution;
+import org.moeaframework.util.clustering.DistanceMeasure;
 
 @RunWith(CIRunner.class)
 @Retryable
@@ -170,34 +170,12 @@ public class AGEMOEAIITest extends JMetalAlgorithmTest {
 	}
 	
 	@Test
-	public void testTruncationKeepsCentralPointConvex() {
+	public void testTruncationKeepsCentralPoint() {
 		Solution solution1 = MockSolution.of().withObjectives(1.0, 0.0);
 		Solution solution2 = MockSolution.of().withObjectives(0.0, 1.0);
 		Solution solution3 = MockSolution.of().withObjectives(0.75, 0.25);
 		Solution solution4 = MockSolution.of().withObjectives(0.25, 0.75);
 		Solution solution5 = MockSolution.of().withObjectives(0.35, 0.35);
-
-		AGEMOEAIIPopulation population = new AGEMOEAIIPopulation(2);
-		population.addAll(List.of(solution1, solution2, solution3, solution4, solution5));
-
-		population.truncate(3);
-
-		Assert.assertSize(3, population);
-		Assert.assertTrue(population.contains(solution1));
-		Assert.assertTrue(population.contains(solution2));
-		Assert.assertFalse(population.contains(solution3));
-		Assert.assertFalse(population.contains(solution4));
-		Assert.assertTrue(population.contains(solution5));
-	}
-	
-	@Test
-	@Ignore
-	public void testTruncationKeepsCentralPointConcave() {
-		Solution solution1 = MockSolution.of().withObjectives(1.0, 0.0);
-		Solution solution2 = MockSolution.of().withObjectives(0.0, 1.0);
-		Solution solution3 = MockSolution.of().withObjectives(0.75, 0.25);
-		Solution solution4 = MockSolution.of().withObjectives(0.25, 0.75);
-		Solution solution5 = MockSolution.of().withObjectives(0.65, 0.65);
 
 		AGEMOEAIIPopulation population = new AGEMOEAIIPopulation(2);
 		population.addAll(List.of(solution1, solution2, solution3, solution4, solution5));
@@ -244,19 +222,18 @@ public class AGEMOEAIITest extends JMetalAlgorithmTest {
 		Assert.assertEquals(4.0, population.minkowskiDistance(point1, point2, 0.5));
 	}
 	
-//	@Test
-//	public void testGetPairwiseDistances() {
-//		// Section 3.2.2 in the 2022 paper shows this case
-//		Solution solution1 = MockSolution.of().withObjectives(1.0, 0.0);
-//		Solution solution2 = MockSolution.of().withObjectives(0.0, 1.0);
-//		
-//		AGEMOEAIIPopulation population = new AGEMOEAIIPopulation(2);
-//		population.addAll(List.of(solution1, solution2));
-//		
-//		population.normalize(population, new double[] { 0.0, 0.0 }, new double[] { 1.0, 1.0 });
-//		DistanceMap<Solution> distances = population.getPairwiseDistances(population, 2.0);
-//
-//		Assert.assertEquals(1.5306, distances.get(solution1, solution2), 0.0005);
-//	}
+	@Test
+	public void testDistanceMeasure() {
+		// Section 3.2.2 in the 2022 paper shows this case
+		Solution solution1 = MockSolution.of().withObjectives(1.0, 0.0);
+		Solution solution2 = MockSolution.of().withObjectives(0.0, 1.0);
+		
+		AGEMOEAIIPopulation population = new AGEMOEAIIPopulation(2);
+		population.addAll(List.of(solution1, solution2));
+		population.normalize(population, new double[] { 0.0, 0.0 }, new double[] { 1.0, 1.0 });
+		
+		DistanceMeasure<Solution> distances = population.getDistanceMeasure(2.0);
+		Assert.assertEquals(1.5306, distances.compute(solution1, solution2), 0.0005);
+	}
 
 }

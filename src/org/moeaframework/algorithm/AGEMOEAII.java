@@ -240,17 +240,8 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 			// Estimate the front geometry
 			p = fitGeometry(front, extremePoints);
 			
-			// Measure distance using proximity and diversity scores.  Since the distance between the i-th and j-th
-			// solutions is divided by the proximity of the i-th solution, this is **not symmetric**.
-			DistanceMeasure<Solution> distances = new CachedDistanceMeasure<>((i, j) -> {
-				double proximity = minkowskiDistance(i, zeros, p);
-
-				double[] first = projectPoint(NormalizedObjectives.getAttribute(i), p);
-				double[] second = projectPoint(NormalizedObjectives.getAttribute(j), p);
-				double[] midpt = projectPoint(Vector.divide(Vector.add(first, second), 2.0), p);
-
-				return (minkowskiDistance(first, midpt, 2.0) + minkowskiDistance(midpt, second, 2.0)) / proximity;
-			}, false);
+			// Measure distance using proximity and diversity scores.
+			DistanceMeasure<Solution> distances = getDistanceMeasure(p);
 
 			// Survival score
 			List<Solution> remaining = front.asList();
@@ -268,6 +259,26 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 				assigned.add(result.getKey());
 				remaining.remove(result.getKey());
 			}
+		}
+		
+		/**
+		 * Combines the proximity and diversity scores into a distance measure.  These scores are based on the Geodesic
+		 * distance using the estimated geometry of the front.  Also note this distance measure is <strong>not</strong>
+		 * symmetric!
+		 * 
+		 * @param p the estimated curvature of the L_p manifold
+		 * @return the distance measure
+		 */
+		DistanceMeasure<Solution> getDistanceMeasure(double p) {
+			return new CachedDistanceMeasure<>((i, j) -> {
+				double proximity = minkowskiDistance(i, zeros, p);
+
+				double[] first = projectPoint(NormalizedObjectives.getAttribute(i), p);
+				double[] second = projectPoint(NormalizedObjectives.getAttribute(j), p);
+				double[] midpt = projectPoint(Vector.divide(Vector.add(first, second), 2.0), p);
+
+				return (minkowskiDistance(first, midpt, 2.0) + minkowskiDistance(midpt, second, 2.0)) / proximity;
+			}, false);
 		}
 
 		/**
@@ -461,7 +472,7 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 
 				for (Solution assignedSolution : assigned) {
 					double distance = distances.compute(remainingSolution, assignedSolution);
-
+					
 					if (distance < min1) {
 						min2 = min1;
 						min1 = distance;
@@ -469,13 +480,13 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 						min2 = distance;
 					}
 				}
-
+				
 				if (min1 + min2 >= bestScore) {
 					bestScore = min1 + min2;
 					bestSolution = remainingSolution;
 				}
 			}
-			
+						
 			return Pair.of(bestSolution, bestScore);
 		}
 
