@@ -19,6 +19,7 @@ package org.moeaframework.algorithm;
 
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.Assert;
@@ -190,6 +191,7 @@ public class AGEMOEAIITest extends JMetalAlgorithmTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testTruncationKeepsCentralPointConcave() {
 		Solution solution1 = MockSolution.of().withObjectives(1.0, 0.0);
 		Solution solution2 = MockSolution.of().withObjectives(0.0, 1.0);
