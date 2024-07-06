@@ -33,15 +33,35 @@ public class Cluster implements Iterable<ClusterableSolution> {
 	private final DistanceMeasure<ClusterableSolution> distanceMeasure;
 	
 	private final List<ClusterableSolution> members;
-		
+	
+	/**
+	 * Internal constructor creating a cluster with the given solution.
+	 * 
+	 * @param distanceMeasure the distance measure used to construct the cluster
+	 * @param solution the solution used to initialize this cluster
+	 */
 	Cluster(DistanceMeasure<ClusterableSolution> distanceMeasure, ClusterableSolution solution) {
 		this(distanceMeasure, List.of(solution));
 	}
 	
+	/**
+	 * Internal constructor creating a cluster with the given solutions.
+	 * 
+	 * @param distanceMeasure the distance measure used to construct the cluster
+	 * @param solutions the solutions to include in the cluster
+	 * @throws IllegalArgumentException if no solutions were provided
+	 */
 	Cluster(DistanceMeasure<ClusterableSolution> distanceMeasure, ClusterableSolution[] solutions) {
 		this(distanceMeasure, List.of(solutions));
 	}
 	
+	/**
+	 * Internal constructor creating a cluster with the given solutions.
+	 * 
+	 * @param distanceMeasure the distance measure used to construct the cluster
+	 * @param solutions the solutions to include in the cluster
+	 * @throws IllegalArgumentException if no solutions were provided
+	 */
 	Cluster(DistanceMeasure<ClusterableSolution> distanceMeasure, Iterable<ClusterableSolution> solutions) {
 		super();
 		this.distanceMeasure = distanceMeasure;
@@ -54,6 +74,11 @@ public class Cluster implements Iterable<ClusterableSolution> {
 		}
 	}
 	
+	/**
+	 * Internal copy constructor.
+	 * 
+	 * @param cluster the cluster to copy
+	 */
 	Cluster(Cluster cluster) {
 		this(cluster.distanceMeasure, cluster);
 	}
@@ -72,16 +97,33 @@ public class Cluster implements Iterable<ClusterableSolution> {
 		return members.iterator();
 	}
 	
+	/**
+	 * Adds a new clusterable solution to this cluster.
+	 * 
+	 * @param solution the solution to add
+	 */
 	public void add(ClusterableSolution solution) {
 		members.add(solution);
 	}
 
+	/**
+	 * Adds a collection of clusterable solutions to this cluster.
+	 * 
+	 * @param solutions the solutions to add
+	 */
 	public void addAll(Iterable<ClusterableSolution> solutions) {
 		for (ClusterableSolution solution : solutions) {
 			add(solution);
 		}
 	}
 	
+	/**
+	 * Returns the clusterable solution at the given index.
+	 * 
+	 * @param index the index
+	 * @return the clusterable solution at the given index
+	 * @throws IndexOutOfBoundsException if the index is out of bounds
+	 */
 	public ClusterableSolution get(int index) {
 		return members.get(index);
 	}

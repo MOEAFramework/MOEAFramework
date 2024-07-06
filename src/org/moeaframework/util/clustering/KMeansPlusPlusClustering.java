@@ -39,6 +39,11 @@ public class KMeansPlusPlusClustering implements Clustering {
 	
 	private final ApacheDistanceMeasure<ClusterableSolution> distanceMeasure;
 
+	/**
+	 * Constructs a new K-means++ clustering method.
+	 * 
+	 * @param distanceMeasure the distance measure used to construct the cluster
+	 */
 	public KMeansPlusPlusClustering(ApacheDistanceMeasure<ClusterableSolution> distanceMeasure) {
 		super();
 		this.distanceMeasure = distanceMeasure;

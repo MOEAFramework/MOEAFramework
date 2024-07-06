@@ -24,7 +24,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * Wraps a {@link DistanceMeasure} to cache or memoize the calculations in memory.  This is similar to using a
- * precomputed distance matrix, except the distance calculations are performed in a lazy manner.
+ * precomputed distance matrix, except the distance calculations are performed lazily.
  * 
  * @param <T> the type of object being stored
  */
@@ -36,6 +36,13 @@ public class CachedDistanceMeasure<T> implements DistanceMeasure<T> {
 	
 	private final Map<Pair<T, T>, Double> distanceCache;
 
+	/**
+	 * Wraps the provided distance measure with a cached version.
+	 * 
+	 * @param distanceMeasure the uncached distance measure
+	 * @param isSymmetric {@code true} if the distance measure is symmetric; see {@link CachedDistanceMeasure} for the
+	 *        definition of symmetry.
+	 */
 	public CachedDistanceMeasure(DistanceMeasure<T> distanceMeasure, boolean isSymmetric) {
 		super();
 		this.distanceMeasure = distanceMeasure;

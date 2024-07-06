@@ -35,6 +35,11 @@ public class SingleLinkageClustering implements Clustering {
 	
 	private final DistanceMeasure<ClusterableSolution> distanceMeasure;
 
+	/**
+	 * Constructs a new single-linkage clustering method.
+	 * 
+	 * @param distanceMeasure the distance measure used to construct the cluster
+	 */
 	public SingleLinkageClustering(DistanceMeasure<ClusterableSolution> distanceMeasure) {
 		super();
 		this.distanceMeasure = distanceMeasure;

@@ -240,7 +240,8 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 			// Estimate the front geometry
 			p = fitGeometry(front, extremePoints);
 			
-			// Measure distance using proximity and diversity scores
+			// Measure distance using proximity and diversity scores.  Since the distance between the i-th and j-th
+			// solutions is divided by the proximity of the i-th solution, this is **not symmetric**.
 			DistanceMeasure<Solution> distances = new CachedDistanceMeasure<>((i, j) -> {
 				double proximity = minkowskiDistance(i, zeros, p);
 

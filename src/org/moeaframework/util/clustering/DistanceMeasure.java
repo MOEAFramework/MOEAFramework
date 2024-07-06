@@ -88,7 +88,7 @@ public interface DistanceMeasure<T> {
 	 * 
 	 * @param <T> the type, which must be {@link Clusterable}
 	 */
-	public static class ApacheDistanceMeasure<T extends Clusterable> implements DistanceMeasure<T>,
+	static class ApacheDistanceMeasure<T extends Clusterable> implements DistanceMeasure<T>,
 	org.apache.commons.math3.ml.distance.DistanceMeasure {
 		
 		private static final long serialVersionUID = 5873759932277642726L;
