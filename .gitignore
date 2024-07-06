@@ -24,6 +24,7 @@ lib/pisa-plugin-*.jar
 lib/gd-*.jar
 lib/nashorn-*.jar
 lib/asm-*.jar
+lib/jfreesvg-*.jar
 lib/junit-*.jar
 lib/hamcrest-*.jar
 test/checkstyle/checkstyle-*.jar
