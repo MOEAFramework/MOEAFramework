@@ -44,10 +44,13 @@ public class ObjectValidatorTest {
 		Validate.that("foo", new double[1]).isNotEmpty();
 		Validate.that("foo", List.of(5)).isNotEmpty();
 		Validate.that("foo", new Object()).isNotEmpty();
+		Validate.that("foo", "bar").isNotEmpty();
 		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", null).isNotEmpty());
 		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", new double[0]).isNotEmpty());
 		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", List.of()).isNotEmpty());
 		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", new Population()).isNotEmpty());
+		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", "").isNotEmpty());
+		Assert.assertThrows(IllegalArgumentException.class, () -> Validate.that("foo", " \t\r\n").isNotEmpty());
 	}
 	
 	@Test
