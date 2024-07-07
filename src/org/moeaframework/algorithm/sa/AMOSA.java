@@ -216,7 +216,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 		Solution[] initialSolutions = initialization.initialize((int)(gamma * softLimit));
 		evaluateAll(initialSolutions);
 
-		//refine all initial solutions and add into pareto set: archive
+		// Refine all initial solutions and add into pareto set: archive
 		for (int i = 0; i < initialSolutions.length; i++) {
 			for (int j = 0; j < numberOfHillClimbingIterationsForRefinement; j++) {
 				Solution child = mutation.mutate(initialSolutions[i]);
@@ -230,7 +230,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 			archive.add(initialSolutions[i]);
 		}
 
-		//if archive is bigger than hard limit (HL), apply clustering
+		// If archive is bigger than hard limit (HL), apply clustering
 		if (archive.size() > hardLimit) {
 			clusterAndTruncate();
 		}
@@ -244,13 +244,12 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 			Solution newPoint = mutation.mutate(currentPoint);
 			evaluate(newPoint);
 
-			// r is the array of range of each Objective in the archive along with newPoint
 			double[] r = calculateR(newPoint);
 
 			// Check The domination status of newPoint and currentPoint
 			int comparisonResult = comparator.compare(currentPoint, newPoint);
 
-			if (comparisonResult == -1) {
+			if (comparisonResult < 0) {
 				// Case 1: currentPoint dominates newPoint 
 				double averageDeltaDominance = calculateAverageDeltaDominance(newPoint, r);
 				double probability = 1.0 / (1.0 + Math.exp(averageDeltaDominance * temperature));
@@ -263,7 +262,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 				DominationAmount dominationAmount = calculateDominationAmounts(newPoint);
 
 				if (dominationAmount.getDominatedAmount() > 0) {
-					// Case 2(a): newPoint is dominated by k(k>=1) points in the archive
+					// Case 2(a): newPoint is dominated by k >= 1 points in the archive
 					double averageDeltaDominance = calculateAverageDeltaDominance(newPoint, r);
 					double probability = 1.0 / (1.0 + Math.exp(averageDeltaDominance * temperature));
 
@@ -279,7 +278,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 						clusterAndTruncate();
 					}
 				} else if (dominationAmount.getDominatesAmount() > 0) {
-					// Case 2(c): newPoint dominates by k(k>=1) points of the archive
+					// Case 2(c): newPoint dominates k >= 1 points of the archive
 					currentPoint = newPoint;
 					archive.add(currentPoint);
 				}
@@ -288,7 +287,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 				DominationAmount dominationAmount = calculateDominationAmounts(newPoint);
 
 				if (dominationAmount.getDominatedAmount() > 0) {
-					// Case 3(a): newPoint is dominated by k(k>=1) points in the archive
+					// Case 3(a): newPoint is dominated by k >= 1 points in the archive
 					MinimumDeltaDominance minimumDeltaDominance = calculateMinimumDeltaDominance(newPoint, r);
 					double probability = 1.0 / (1.0 + Math.exp(-1.0 * minimumDeltaDominance.getMinimumDeltaDominance()));
 
@@ -307,7 +306,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 						clusterAndTruncate();
 					}
 				} else if (dominationAmount.getDominatesAmount() > 0) {
-					// Case 3(c): newPoint dominates by k(k>=1) points of the archive
+					// Case 3(c): newPoint dominates k >= 1 points of the archive
 					currentPoint = newPoint;
 					archive.add(currentPoint);
 				}
@@ -325,13 +324,18 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	}
 	
 	/**
-	 * Form clusters using single-linkage clustering and truncate the size of the archive.
+	 * Construct clusters using single-linkage clustering and truncate the size of the archive.
 	 */
 	private void clusterAndTruncate() {
 		Clustering.singleLinkage().truncate(hardLimit, archive);
 	}
 
-	//with respect to III.C. Amount of Domination
+	/**
+	 * Calculates the range of each objective for all the solutions in the archive and the new point.
+	 * 
+	 * @param newPoint the new point
+	 * @return the range of each objective
+	 */
 	private double[] calculateR(Solution newPoint) {
 		double[] r = new double[newPoint.getNumberOfObjectives()];
 		double[] worsts = new double[newPoint.getNumberOfObjectives()];
@@ -357,9 +361,16 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 		return r;
 	}
 
-	//calculates delta dominanance between 2 given solutions with respect to III.C. Amount of Domination
+	/**
+	 * Calculates the delta dominance between the two given solutions.
+	 * 
+	 * @param solutionA the first solution
+	 * @param solutionB the second solution
+	 * @param r the range of each objective
+	 * @return the calculated delta dominance value
+	 */
 	private double calculateDeltaDominance(Solution solutionA, Solution solutionB, double[] r) {
-		double deltaDominance = 0d;
+		double deltaDominance = 0.0;
 
 		for (int i = 0; i < solutionA.getNumberOfObjectives(); i++) {
 			deltaDominance *= Math.abs(solutionA.getObjective(i) - solutionB.getObjective(i)) / r[i];
@@ -368,8 +379,13 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 		return deltaDominance;
 	}
 
-	// Calculates total delta dominance between the given solution and all solutions in the archive with respect to
-	// III.C. Amount of Domination.  Has if control to be able to support both calculations at cases {1} and {2a}.
+	/**
+	 * Calculates the average delta dominance between the given point and all solutions in the archive.
+	 * 
+	 * @param newPoint the new point
+	 * @param r the range of the objectives
+	 * @return the average delta dominance
+	 */
 	private double calculateAverageDeltaDominance(Solution newPoint, double[] r) {
 		double totalDeltaDominance = 0.0;
 		int k = 0;
@@ -389,6 +405,33 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 		return totalDeltaDominance / k;
 	}
 
+	/**
+	 * Calculates the minimum delta dominance between the given point and all solutions in the archive, returning
+	 * the minimum value and the index of the solution in the archive.
+	 * 
+	 * @param newPoint the new point
+	 * @param r the range of the objectives
+	 * @return the minimum delta dominance
+	 */
+	private MinimumDeltaDominance calculateMinimumDeltaDominance(Solution newPoint, double[] r) {
+		MinimumDeltaDominance minimumDeltaDominance = new MinimumDeltaDominance();
+
+		for (int i = 0; i < archive.size(); i++) {
+			if (comparator.compare(newPoint, archive.get(i)) < 0) {
+				double deltaDominance = calculateDeltaDominance(newPoint, archive.get(i), r);
+				minimumDeltaDominance.update(deltaDominance, i);
+			}
+		}
+
+		return minimumDeltaDominance;
+	}
+	
+	/**
+	 * Calculates the number of points in the archive that dominate and are dominated by the new point.
+	 * 
+	 * @param newPoint the new point
+	 * @return the dominance amounts for the new point with respect to the archive
+	 */
 	private DominationAmount calculateDominationAmounts(Solution newPoint) {
 		DominationAmount dominationAmount = new DominationAmount();
 
@@ -403,19 +446,6 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 		}
 
 		return dominationAmount;
-	}
-
-	private MinimumDeltaDominance calculateMinimumDeltaDominance(Solution newPoint, double[] r) {
-		MinimumDeltaDominance minimumDeltaDominance = new MinimumDeltaDominance();
-
-		for (int i = 0; i < archive.size(); i++) {
-			if (comparator.compare(newPoint, archive.get(i)) < 0) {
-				double deltaDominance = calculateDeltaDominance(newPoint, archive.get(i), r);
-				minimumDeltaDominance.update(deltaDominance, i);
-			}
-		}
-
-		return minimumDeltaDominance;
 	}
 	
 	private class DominationAmount {
