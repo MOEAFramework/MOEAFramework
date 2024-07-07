@@ -55,7 +55,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	
 	<!-- List of libraries included in every distribution -->
 	<path id="libraries">
-		<fileset dir="lib" excludes="junit-*.jar,hamcrest-*.jar,checkstyle-*.jar,nashorn-*.jar,asm-*.jar,jmetal-plugin-*.jar,pisa-plugin-*.jar,gd-*.jar" />
+		<fileset dir="lib" excludes="junit-*.jar,hamcrest-*.jar,checkstyle-*.jar,nashorn-*.jar,jfreesvg-*.jar,asm-*.jar,jmetal-plugin-*.jar,pisa-plugin-*.jar,gd-*.jar" />
 	</path>
 
 	<!-- Generates the Javadoc webpages -->
@@ -390,10 +390,11 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		
 		<copy todir="${build}/src/main/resources/META-INF">
 			<fileset dir="META-INF" />
+			<path refid="requiredfiles" />
 		</copy>
 		
-		<copy todir="${build}/src/main/resources">
-			<fileset dir="src" excludes="**/*.java" />
+		<copy todir="${build}/src/main/resources" includeEmptyDirs="false">
+			<fileset dir="src" excludes="**/*.java,launch-diagnostic-tool.bat,macros.xml,pom.xml" />
 		</copy>
 		
 		<copy todir="${build}/src/main/java">
@@ -404,7 +405,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<fileset dir="test" />
 		</copy>
 		
-		<copy todir="${build}/src/test/resources">
+		<copy todir="${build}/src/test/resources" includeEmptyDirs="false">
 			<fileset dir="test" excludes="**/*.java" />
 		</copy>
 		
