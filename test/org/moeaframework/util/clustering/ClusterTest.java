@@ -27,6 +27,11 @@ import org.moeaframework.mock.MockSolution;
 
 public class ClusterTest {
 	
+	@Test(expected = IllegalArgumentException.class)
+	public void testAtLeastOneSolution() {
+		new Cluster(DistanceMeasure.euclideanDistance(), List.of());
+	}
+	
 	@Test
 	public void test() {
 		Solution s1 = MockSolution.of().withObjectives(0.0, 1.0);
@@ -37,6 +42,9 @@ public class ClusterTest {
 				List.of(s1, s2, s3).stream().map(ClusterableSolution::withObjectives).toList());
 		
 		Assert.assertEquals(3, cluster.size());
+		Assert.assertSame(s1, cluster.get(0).getSolution());
+		Assert.assertSame(s2, cluster.get(1).getSolution());
+		Assert.assertSame(s3, cluster.get(2).getSolution());
 		Assert.assertArrayEquals(new double[] { 0.0, 0.0 }, cluster.getCenter(), TestThresholds.HIGH_PRECISION);
 		Assert.assertSame(s3, cluster.getRepresentativeMember().getSolution());
 	}
@@ -56,6 +64,25 @@ public class ClusterTest {
 		Assert.assertEquals(0.0, c1.distanceTo(c1));
 		Assert.assertEquals(Math.sqrt(2.0), c1.distanceTo(c2));
 		Assert.assertEquals(Math.sqrt(2.0), c2.distanceTo(c1));
+	}
+	
+	@Test
+	public void testCopyConstructor() {
+		Solution s1 = MockSolution.of().withObjectives(0.0, 1.0);
+		Solution s2 = MockSolution.of().withObjectives(0.0, -1.0);
+		
+		Cluster c1 = new Cluster(DistanceMeasure.euclideanDistance(),
+				List.of(s1).stream().map(ClusterableSolution::withObjectives).toList());
+		
+		Cluster c2 = new Cluster(c1);
+		
+		Assert.assertEquals(1, c2.size());
+		Assert.assertSame(s1, c2.get(0).getSolution());
+		
+		c2.add(ClusterableSolution.withObjectives(s2));
+		
+		Assert.assertEquals(2, c2.size());
+		Assert.assertEquals(1, c1.size());
 	}
 	
 }

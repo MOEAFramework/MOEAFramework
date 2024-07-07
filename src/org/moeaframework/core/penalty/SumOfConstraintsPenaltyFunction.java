@@ -38,7 +38,7 @@ public class SumOfConstraintsPenaltyFunction implements PenaltyFunction {
 	/**
 	 * Constructs a new penalty function based on the sum of constraint violations.
 	 * 
-	 * @param offset the initial offset applied to all penalties
+	 * @param offset the base offset applied to all penalties
 	 */
 	public SumOfConstraintsPenaltyFunction(double offset) {
 		super();
@@ -48,7 +48,7 @@ public class SumOfConstraintsPenaltyFunction implements PenaltyFunction {
 	/**
 	 * Sets the base penalty applied to all infeasible solutions.
 	 * 
-	 * @param offset the constant offset applied to all penalties
+	 * @param offset the base offset applied to all penalties
 	 */
 	public void setOffset(double offset) {
 		Validate.that("offset", offset).isGreaterThanOrEqualTo(0.0);
@@ -58,7 +58,7 @@ public class SumOfConstraintsPenaltyFunction implements PenaltyFunction {
 	/**
 	 * Returns the base penalty applied to all infeasible solutions.
 	 * 
-	 * @return the constant offset applied to all penalties
+	 * @return the base offset applied to all penalties
 	 */
 	public double getOffset() {
 		return offset;

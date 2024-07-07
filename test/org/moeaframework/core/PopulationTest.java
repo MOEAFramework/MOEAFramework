@@ -162,6 +162,17 @@ public class PopulationTest {
 
 		Assert.assertTrue(population.isEmpty());
 	}
+	
+	@Test
+	public void testAsList() {
+		List<Solution> list = population.asList();
+		
+		Assert.assertSize(population.size(), list);
+		Assert.assertSame(population.get(0), list.get(0));
+		Assert.assertSame(population.get(1), list.get(1));
+		Assert.assertSame(population.get(2), list.get(2));
+		Assert.assertSame(population.get(3), list.get(3));
+	}
 
 	@Test
 	public void testSortAndTruncate() {

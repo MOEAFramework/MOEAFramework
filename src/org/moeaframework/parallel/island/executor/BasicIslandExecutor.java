@@ -56,7 +56,7 @@ public class BasicIslandExecutor implements IslandExecutor {
 	}
 
 	@Override
-	public NondominatedPopulation run(final int maxEvaluations) {
+	public NondominatedPopulation run(int maxEvaluations) {
 		final int evaluationsPerIsland = maxEvaluations / islands.size();
 			
 		//start threads to process each island
