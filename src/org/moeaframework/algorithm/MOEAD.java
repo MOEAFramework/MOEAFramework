@@ -50,7 +50,13 @@ import org.moeaframework.util.weights.WeightGenerator;
 
 /**
  * Implementation of MOEA/D, the multiobjective evolutionary algorithm with decomposition.  This implementation
- * supports both the original MOEA/D specification from [1] as well as the utility-based search extension from [2].
+ * supports two variants:
+ * <ol>
+ *   <li>With the default settings, this implementation is equivalent to MOEA/D-DE as specified in [1].  The "-DE"
+ *       refers to the use of the differential evolutionary search operator.
+ *   <li>When given a non-negative {@link #updateUtility}, this enables the utility-based search extension described
+ *       in [2].  
+ * </ol>
  * <p>
  * References:
  * <ol>
