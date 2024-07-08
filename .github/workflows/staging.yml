@@ -54,18 +54,22 @@ jobs:
         run: |
           shortname=$(cat META-INF/build.properties | awk '{split($0,a," = "); if (a[1]=="shortname") print tolower(a[2])}' |  tr -d '[:space:]')
           version=$(cat META-INF/build.properties | awk '{split($0,a," = "); if (a[1]=="version") print tolower(a[2])}' |  tr -d '[:space:]')
+          year=$(date +%Y)
           [ -n "${shortname}" ] || (>&2 echo "Unable to read shortname from build.properties"; exit -1)
           [ -n "${version}" ] || (>&2 echo "Unable to read version from build.properties"; exit -1)
           echo "BUILD_NAME=${shortname}" >> $GITHUB_ENV
           echo "BUILD_VERSION=${version}" >> $GITHUB_ENV
-      - name: Validate version number
+          echo "BUILD_YEAR=${year}" >> $GITHUB_ENV
+      - name: Validate publishing info
         if: ${{ ! inputs.skip_validation }}
         run: |
           echo "${{ inputs.version }}" | grep -E '^[0-9]+\.[0-9]+(\.[0-9]+)?$' || (>&2 echo "Invalid version number format"; exit -1)
           [ "${{ inputs.version }}" == "${BUILD_VERSION}" ] || (>&2 echo "Version does not match value in build.properties"; exit -1)
           [ "${{ inputs.version }}" == "$(cat README.md | grep '<version>' | tr -d '<>/[:alpha:][:space:]')" ] || (>&2 echo "Version does not match value in the Maven instructions in README.md"; exit -1)
           [ "${{ inputs.version }}" == "$(cat README.md | grep "search.maven.org" | grep -oEi '[0-9]+\.[0-9]+(\.[0-9]+)?')" ] || (>&2 echo "Version does not match value in the Maven URL in README.md"; exit -1)
+          [ "${{ inputs.version }}" == "$(cat README.md | grep "(Version " | grep -oEi '[0-9]+\.[0-9]+(\.[0-9]+)?')" ] || (>&2 echo "Version does not match value in the citation in README.md"; exit -1)
           [ "${{ inputs.version }}" == "$(cat docs/releaseNotes.md | grep "## " | head -n 1 | grep -oEi '[0-9]+\.[0-9]+(\.[0-9]+)?')" ] || (>&2 echo "Version does not match value in docs/releaseNotes.md"; exit -1)
+          [ "(${BUILD_YEAR})" == "$(cat README.md | grep "(Version " | grep -oEi '\([0-9]{4}\)')" ] || (>&2 echo "Publish year does not match value in the citation in README.md"; exit -1)
       - name: Build release artifacts
         run: |
           ant package-binary
