@@ -95,6 +95,11 @@ public interface DistanceMeasure<T> {
 
 		private final CachedDistanceMeasure<double[]> cache;
 		
+		/**
+		 * Constructs a new distance measure implemented by Apache Commons Math.
+		 * 
+		 * @param measure the underlying distance measure
+		 */
 		public ApacheDistanceMeasure(org.apache.commons.math3.ml.distance.DistanceMeasure measure) {
 			super();
 			cache = new CachedDistanceMeasure<>(measure::compute, true);

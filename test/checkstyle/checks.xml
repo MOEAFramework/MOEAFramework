@@ -85,6 +85,13 @@ along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 		<!-- <module name="EqualsAvoidNull" /> -->
 		<module name="EqualsHashCode" />
 		<module name="FallThrough" />
+		<!--
+		<module name="HiddenField">
+			<property name="ignoreAbstractMethods" value="true" />
+			<property name="ignoreConstructorParameter" value="true" />
+			<property name="ignoreSetter" value="true" />
+		</module>
+		-->
 		<module name="IllegalInstantiation">
             <property name="classes" value="java.lang.Boolean, java.lang.String" />
         </module>
