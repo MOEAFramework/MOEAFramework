@@ -167,11 +167,16 @@ public class PopulationTest {
 	public void testAsList() {
 		List<Solution> list = population.asList();
 		
+		// list content is identical to population
 		Assert.assertSize(population.size(), list);
 		Assert.assertSame(population.get(0), list.get(0));
 		Assert.assertSame(population.get(1), list.get(1));
 		Assert.assertSame(population.get(2), list.get(2));
 		Assert.assertSame(population.get(3), list.get(3));
+		
+		// changes to list do not affect population
+		list.clear();
+		Assert.assertEquals(4, population.size());
 	}
 
 	@Test
