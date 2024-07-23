@@ -205,7 +205,7 @@ public class Examples {
 				ParallelizationExample.class,
 				"examples/org/moeaframework/examples/parallel/ParallelizationExample.java"));
 		
-		examples.add(new Example(
+		examples.add(new TerminalExample(
 				resourceBundle.getString("island.name"),
 				resourceBundle.getString("island.description"),
 				IslandModelExample.class,
