@@ -160,5 +160,15 @@ public class IshibuchiTestInstances {
 		return new InvertedGenerationalDistance(new ProblemStub(2), referenceSet, Normalizer.none(), 1.0)
 				.evaluate(approximationSet);
 	}
+	
+	public static double computeGDPlus(NondominatedPopulation referenceSet, NondominatedPopulation approximationSet) {
+		return new GenerationalDistancePlus(new ProblemStub(2), referenceSet, Normalizer.none())
+				.evaluate(approximationSet);
+	}
+	
+	public static double computeIGDPlus(NondominatedPopulation referenceSet, NondominatedPopulation approximationSet) {
+		return new InvertedGenerationalDistancePlus(new ProblemStub(2), referenceSet, Normalizer.none())
+				.evaluate(approximationSet);
+	}
 
 }

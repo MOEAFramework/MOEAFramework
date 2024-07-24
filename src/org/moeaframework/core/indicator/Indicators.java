@@ -175,10 +175,20 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 			result.generationalDistance = GenerationalDistance.evaluate(problem, normalizedApproximationSet,
 					normalizedReferenceSet, Settings.getGDPower());
 		}
+		
+		if (selectedIndicators.contains(StandardIndicator.GenerationalDistancePlus)) {
+			result.generationalDistancePlus = GenerationalDistancePlus.evaluate(problem, normalizedApproximationSet,
+					normalizedReferenceSet);
+		}
 
 		if (selectedIndicators.contains(StandardIndicator.InvertedGenerationalDistance)) {
 			result.invertedGenerationalDistance = InvertedGenerationalDistance.evaluate(problem,
 					normalizedApproximationSet, normalizedReferenceSet, Settings.getIGDPower());
+		}
+		
+		if (selectedIndicators.contains(StandardIndicator.InvertedGenerationalDistancePlus)) {
+			result.invertedGenerationalDistancePlus = InvertedGenerationalDistancePlus.evaluate(problem,
+					normalizedApproximationSet, normalizedReferenceSet);
 		}
 
 		if (selectedIndicators.contains(StandardIndicator.AdditiveEpsilonIndicator)) {
@@ -360,6 +370,16 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 		include(StandardIndicator.GenerationalDistance);
 		return this;
 	}
+	
+	/**
+	 * Enables the evaluation of the generational distance plus metric.
+	 * 
+	 * @return a reference to this object so calls can be chained together
+	 */
+	public Indicators includeGenerationalDistancePlus() {
+		include(StandardIndicator.GenerationalDistancePlus);
+		return this;
+	}
 
 	/**
 	 * Enables the evaluation of the inverted generational distance metric.
@@ -368,6 +388,16 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	 */
 	public Indicators includeInvertedGenerationalDistance() {
 		include(StandardIndicator.InvertedGenerationalDistance);
+		return this;
+	}
+	
+	/**
+	 * Enables the evaluation of the inverted generational distance plus metric.
+	 * 
+	 * @return a reference to this object so calls can be chained together
+	 */
+	public Indicators includeInvertedGenerationalDistancePlus() {
+		include(StandardIndicator.InvertedGenerationalDistancePlus);
 		return this;
 	}
 
@@ -468,6 +498,8 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	 */
 	public Indicators includeAllMetrics() {
 		includeStandardMetrics();
+		includeGenerationalDistancePlus();
+		includeInvertedGenerationalDistancePlus();
 		includeR1();
 		includeR2();
 		includeR3();
@@ -484,7 +516,9 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 
 		private double hypervolume;
 		private double generationalDistance;
+		private double generationalDistancePlus;
 		private double invertedGenerationalDistance;
+		private double invertedGenerationalDistancePlus;
 		private double additiveEpsilonIndicator;
 		private double spacing;
 		private double maximumParetoFrontError;
@@ -505,7 +539,9 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 
 			hypervolume = Double.NaN;
 			generationalDistance = Double.NaN;
+			generationalDistancePlus = Double.NaN;
 			invertedGenerationalDistance = Double.NaN;
+			invertedGenerationalDistancePlus = Double.NaN;
 			additiveEpsilonIndicator = Double.NaN;
 			spacing = Double.NaN;
 			maximumParetoFrontError = Double.NaN;
@@ -534,7 +570,9 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 			return switch (indicator) {
 				case Hypervolume -> getHypervolume();
 				case GenerationalDistance -> getGenerationalDistance();
+				case GenerationalDistancePlus -> getGenerationalDistancePlus();
 				case InvertedGenerationalDistance -> getInvertedGenerationalDistance();
+				case InvertedGenerationalDistancePlus -> getInvertedGenerationalDistancePlus();
 				case AdditiveEpsilonIndicator -> getAdditiveEpsilonIndicator();
 				case Spacing -> getSpacing();
 				case MaximumParetoFrontError -> getMaximumParetoFrontError();
@@ -562,6 +600,16 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 		public double getGenerationalDistance() {
 			return generationalDistance;
 		}
+		
+		/**
+		 * Returns the generational distance plus value, or {@value Double#NaN} if not configured to compute this
+		 * metric.
+		 * 
+		 * @return the generational distance plus value
+		 */
+		public double getGenerationalDistancePlus() {
+			return generationalDistancePlus;
+		}
 
 		/**
 		 * Returns the inverted generational distance value, or {@value Double#NaN} if not configured to compute this
@@ -571,6 +619,16 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 		 */
 		public double getInvertedGenerationalDistance() {
 			return invertedGenerationalDistance;
+		}
+		
+		/**
+		 * Returns the inverted generational distance plus value, or {@value Double#NaN} if not configured to compute
+		 * this metric
+		 * 
+		 * @return the inverted generational distance plus value
+		 */
+		public double getInvertedGenerationalDistancePlus() {
+			return invertedGenerationalDistancePlus;
 		}
 
 		/**

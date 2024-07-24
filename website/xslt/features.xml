@@ -368,7 +368,9 @@ new problems written in Java or other languages can be easily incorporated.</p>
     <td style="font-weight: bold;">Performance Indicators</td>
     <td>Hypervolume<br />
         Generational Distance (GD)<br />
+        Generational Distance Plus (GD+)<br />
         Inverted Generational Distance (IGD)<br />
+        Inverted Generational Distance Plus (IGD+)<br />
         Additive &epsilon;-Indicator<br />
         Contribution<br />
         Maximum Pareto Front Error<br />

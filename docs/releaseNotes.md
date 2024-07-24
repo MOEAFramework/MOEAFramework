@@ -6,6 +6,9 @@ This page documents notable changes introduced in each chronological release of 
 
   * Introduces a new `clustering` package, with implementations of single-linkage clustering and K-means++.  This
     also refactors the clustering implementation used by AMOSA.
+    
+  * Adds support for the GD+ and IGD+ performance indicators.  These "plus" variants utilize a different distance
+    measure resulting in weakly Pareto compliant variants of the original GD and IGD indicators.
 
 
 ## Version 4.3 (27 June 2024)
