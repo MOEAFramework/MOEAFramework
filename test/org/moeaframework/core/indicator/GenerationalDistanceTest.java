@@ -78,5 +78,53 @@ public class GenerationalDistanceTest extends AbstractIndicatorTest<Generational
 		Indicator indicator = createInstance(problem, referenceSet);
 		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
 	}
+	
+	@Test
+	public void testIshibuchi() {
+		Assert.assertEquals(5.099, IshibuchiTestInstances.computeGD(IshibuchiTestInstances.Example1RefSet,
+				IshibuchiTestInstances.Example1SetA), TestThresholds.LOW_PRECISION);
+		
+		Assert.assertEquals(3.162, IshibuchiTestInstances.computeGD(IshibuchiTestInstances.Example1RefSet,
+				IshibuchiTestInstances.Example1SetB), TestThresholds.LOW_PRECISION);
+		
+		Assert.assertEquals(5.099, IshibuchiTestInstances.computeGD(IshibuchiTestInstances.Example2RefSet,
+				IshibuchiTestInstances.Example2SetA), TestThresholds.LOW_PRECISION);
+		
+		Assert.assertEquals(3.162, IshibuchiTestInstances.computeGD(IshibuchiTestInstances.Example2RefSet,
+				IshibuchiTestInstances.Example2SetB), TestThresholds.LOW_PRECISION);
+		
+		Assert.assertEquals(1.414, IshibuchiTestInstances.computeGD(IshibuchiTestInstances.Example1RefSet,
+				IshibuchiTestInstances.Example3SetD), TestThresholds.LOW_PRECISION);
+		
+		Assert.assertEquals(1.805, IshibuchiTestInstances.computeGD(IshibuchiTestInstances.Example4RefSet,
+				IshibuchiTestInstances.Example4SetA), TestThresholds.LOW_PRECISION);
+		
+		Assert.assertEquals(2.434, IshibuchiTestInstances.computeGD(IshibuchiTestInstances.Example4RefSet,
+				IshibuchiTestInstances.Example4SetB), TestThresholds.LOW_PRECISION);
+		
+		Assert.assertEquals(5.099, IshibuchiTestInstances.computeGD(IshibuchiTestInstances.Example5RefSet,
+				IshibuchiTestInstances.Example5SetA), TestThresholds.LOW_PRECISION);
+		
+		Assert.assertEquals(4.328, IshibuchiTestInstances.computeGD(IshibuchiTestInstances.Example5RefSet,
+				IshibuchiTestInstances.Example5SetB), TestThresholds.LOW_PRECISION);
+		
+		Assert.assertEquals(3.162, IshibuchiTestInstances.computeGD(IshibuchiTestInstances.Example6RefSet,
+				IshibuchiTestInstances.Example6SetA), TestThresholds.LOW_PRECISION);
+		
+		Assert.assertEquals(2.236, IshibuchiTestInstances.computeGD(IshibuchiTestInstances.Example6RefSet,
+				IshibuchiTestInstances.Example6SetB), TestThresholds.LOW_PRECISION);
+		
+		Assert.assertEquals(6.318, IshibuchiTestInstances.computeGD(IshibuchiTestInstances.Example8RefSet,
+				IshibuchiTestInstances.Example8SetA), TestThresholds.LOW_PRECISION);
+		
+		Assert.assertEquals(5.0, IshibuchiTestInstances.computeGD(IshibuchiTestInstances.Example8RefSet,
+				IshibuchiTestInstances.Example8SetB), TestThresholds.LOW_PRECISION);
+		
+		Assert.assertEquals(6.318, IshibuchiTestInstances.computeGD(IshibuchiTestInstances.Example9RefSet,
+				IshibuchiTestInstances.Example9SetA), TestThresholds.LOW_PRECISION);
+		
+		Assert.assertEquals(2.828, IshibuchiTestInstances.computeGD(IshibuchiTestInstances.Example9RefSet,
+				IshibuchiTestInstances.Example9SetB), TestThresholds.LOW_PRECISION);
+	}
 
 }

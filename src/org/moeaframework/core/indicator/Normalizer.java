@@ -25,6 +25,8 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
+import org.moeaframework.problem.ProblemStub;
+import org.moeaframework.util.Vector;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -240,6 +242,39 @@ public class Normalizer {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Returns a normalizer that does not perform any normalization, instead using the objective values as-is.
+	 * 
+	 * @param problem the problem
+	 * @return the normalizer
+	 */
+	public static Normalizer none() {
+		return new NullNormalizer();
+	}
+	
+	/**
+	 * The "null" normalizer, which is used to disable normalization.  The {@link #normalize} methods simply return
+	 * the provided population unchanged.
+	 */
+	static class NullNormalizer extends Normalizer {
+
+		public NullNormalizer() {
+			// These arguments are unused and only meant to bypass validations in the constructor
+			super(new ProblemStub(1), Vector.of(1, 0.0), Vector.of(1, 1.0));
+		}
+
+		@Override
+		public NondominatedPopulation normalize(NondominatedPopulation population) {
+			return population;
+		}
+
+		@Override
+		public Population normalize(Population population) {
+			return population;
+		}
+		
 	}
 
 }
