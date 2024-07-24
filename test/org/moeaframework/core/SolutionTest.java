@@ -364,6 +364,17 @@ public class SolutionTest {
 		Assert.assertEquals(0.0, s2.manhattanDistance(s2), TestThresholds.HIGH_PRECISION);
 	}
 	
+	@Test
+	public void testChebyshevDistance() {
+		Solution s1 = MockSolution.of().withObjectives(0.0, 1.0, 0.0);
+		Solution s2 = MockSolution.of().withObjectives(0.0, 0.0, -1.0);
+
+		Assert.assertEquals(1.0, s1.chebyshevDistance(s2), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, s2.chebyshevDistance(s1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, s1.chebyshevDistance(s1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, s2.chebyshevDistance(s2), TestThresholds.HIGH_PRECISION);
+	}
+	
 	@Test(expected = IllegalArgumentException.class)
 	public void testEuclideanDistanceThrowsIfLengthDiffers() {
 		Solution s1 = MockSolution.of().withObjectives(0.0, 1.0, 0.0);
@@ -376,6 +387,13 @@ public class SolutionTest {
 		Solution s1 = MockSolution.of().withObjectives(0.0, 1.0, 0.0);
 		Solution s2 = MockSolution.of().withObjectives(0.0, -1.0);
 		s1.manhattanDistance(s2);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testChebyshevDistanceThrowsIfLengthDiffers() {
+		Solution s1 = MockSolution.of().withObjectives(0.0, 1.0, 0.0);
+		Solution s2 = MockSolution.of().withObjectives(0.0, -1.0);
+		s1.chebyshevDistance(s2);
 	}
 	
 	@Test

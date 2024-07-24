@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.SerializationUtils;
+import org.moeaframework.util.clustering.DistanceMeasure;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;
@@ -402,7 +403,7 @@ public class Solution implements Formattable<Solution>, Serializable {
 	}
 	
 	/**
-	 * Computes the Euclidean distance between two solutions in objective space.  
+	 * Computes the Euclidean distance (or L<sub>2</sub>)-norm) between two solutions in objective space.  
 	 * 
 	 * @param otherSolution the other solution
 	 * @return the Euclidean distance in objective space
@@ -413,7 +414,7 @@ public class Solution implements Formattable<Solution>, Serializable {
 	}
 	
 	/**
-	 * Computes the Manhattan distance between two solutions in objective space.
+	 * Computes the Manhattan distance (or L<sub>1</sub>-norm) between two solutions in objective space.
 	 * 
 	 * @param otherSolution the other solution
 	 * @return the Manhattan distance in objective space
@@ -421,6 +422,26 @@ public class Solution implements Formattable<Solution>, Serializable {
 	 */
 	public double manhattanDistance(Solution otherSolution) {
 		return distanceTo(otherSolution, 1.0);
+	}
+	
+	/**
+	 * Computes the Chebyshev distance (or L<sub>inf</sub>-norm) between two solutions in objective space.
+	 * 
+	 * @param otherSolution the other solution
+	 * @return the Chebyshev distance in objective space
+	 * @throws IllegalArgumentException if the solutions have differing numbers of objectives
+	 */
+	public double chebyshevDistance(Solution otherSolution) {
+		Validate.that("otherSolution.getNumberOfObjectives()", otherSolution.getNumberOfObjectives())
+			.isEqualTo("this.getNumberOfObjectives()", getNumberOfObjectives());
+		
+		double max = 0.0;
+		
+		for (int i = 0; i < getNumberOfObjectives(); i++) {
+			max = Math.max(max, Math.abs(getObjective(i) - otherSolution.getObjective(i)));
+		}
+		
+		return max;
 	}
 
 	/**
@@ -453,10 +474,22 @@ public class Solution implements Formattable<Solution>, Serializable {
 	 * @return the Euclidean distance
 	 */
 	public double distanceToNearestSolution(Population population) {
+		return distanceToNearestSolution(population, Solution::euclideanDistance);
+	}
+	
+	/**
+	 * Returns the distance, as calculated by the given distance measure, from this solution to the nearest solution in
+	 * the population.
+	 * 
+	 * @param population the population
+	 * @param distanceMeasure the measure of distance between two solutions
+	 * @return the distance
+	 */
+	public double distanceToNearestSolution(Population population, DistanceMeasure<Solution> distanceMeasure) {
 		double minimum = Double.POSITIVE_INFINITY;
 
 		for (Solution otherSolution : population) {
-			minimum = Math.min(minimum, euclideanDistance(otherSolution));
+			minimum = Math.min(minimum, distanceMeasure.compute(this, otherSolution));
 		}
 
 		return minimum;

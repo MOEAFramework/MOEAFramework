@@ -31,8 +31,8 @@ import org.moeaframework.mock.MockRealProblem;
 public class RIndicatorTest {
 	
 	@Test
-	public void testChebychev() throws IOException {
-		testUtility("./pf/DTLZ2.2D.pf", new RIndicator.ChebychevUtility(), 0.782451);
+	public void testChebyshev() throws IOException {
+		testUtility("./pf/DTLZ2.2D.pf", new RIndicator.ChebyshevUtility(), 0.782451);
 	}
 	
 	@Test

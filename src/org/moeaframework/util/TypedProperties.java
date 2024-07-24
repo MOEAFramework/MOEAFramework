@@ -1293,7 +1293,8 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	}
 	
 	/**
-	 * Prints a warning if any properties were not accessed.  For example:
+	 * Prints a warning if any properties were not accessed.  This only considers properties at the time this method
+	 * is invoked, so a removed but unaccessed property would not cause a warning.  For example:
 	 * <pre>
 	 *     TypedProperties properties = new TypedProperties();
 	 *     ... write properties ...
@@ -1312,7 +1313,10 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	}
 	
 	/**
-	 * Throws a {@link ConfigurationException} if any properties were not accessed.
+	 * Similar to {@link #warnIfUnaccessedProperties()}, except throws a {@link ConfigurationException} if any
+	 * properties were not accessed.
+	 * 
+	 * @throws ConfigurationException if at least one property was not accessed
 	 */
 	public void throwIfUnaccessedProperties() {
 		Set<String> orphanedProperties = getUnaccessedProperties();
