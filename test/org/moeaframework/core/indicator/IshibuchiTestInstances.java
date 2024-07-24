@@ -11,7 +11,7 @@ import org.moeaframework.problem.ProblemStub;
 //   Optimization, Part I, pp. 110-125, Guimarães, Portugal, March 29-April 1, 2015.
 //
 // Note that the paper uses GD and IGD indicators with powers of 1 and no normalization.  Custom versions of these
-// indicators should be used when compating results against the paper.
+// indicators should be used when comparing results against the paper.
 public class IshibuchiTestInstances {
 	
 	public static final NondominatedPopulation Example1RefSet;
