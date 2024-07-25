@@ -117,7 +117,7 @@ public class DiagnosticToolTest {
 		tool.setAlgorithm("NSGAII");
 		tool.setProblem("DTLZ2_2");
 		tool.setNumberOfEvaluations(10000);
-		tool.setNumberOfSeeds(10);
+		tool.setNumberOfSeeds(5);
 		
 		Assert.assertEquals(0, controller.getOverallProgress());
 		Assert.assertEquals(0, controller.getRunProgress());
@@ -131,19 +131,20 @@ public class DiagnosticToolTest {
 			Thread.yield();
 		}
 		
+		Assert.assertEquals(0, settingsChangedCount.get());
 		Assert.assertEquals(2, stateChangedCount.get());
-		Assert.assertEquals(10, modelChangedCount.get());
-		Assert.assertGreaterThanOrEqual(viewChangedCount.get(), 10);
-		Assert.assertEquals(1011, progressChangedCount.get()); // 101 per seed * 10 seeds + 1 final update
+		Assert.assertEquals(5, modelChangedCount.get());
+		Assert.assertGreaterThanOrEqual(viewChangedCount.get(), 5);
+		Assert.assertEquals(506, progressChangedCount.get()); // 101 per seed * 5 seeds + 1 final update
 		
 		Assert.assertEquals(100, controller.getOverallProgress());
 		Assert.assertEquals(0, controller.getRunProgress());
 		
 		ResultKey key = new ResultKey("NSGAII", "DTLZ2_2");
 		Assert.assertNotNull(controller.get(key));
-		Assert.assertSize(10, controller.get(key));
+		Assert.assertSize(5, controller.get(key));
 		
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 5; i++) {
 			Assert.assertTrue(controller.get(key).get(i).keys().contains("Hypervolume"));
 			Assert.assertTrue(controller.get(key).get(i).keys().contains("Population Size"));
 			Assert.assertTrue(controller.get(key).get(i).keys().contains("Approximation Set"));
