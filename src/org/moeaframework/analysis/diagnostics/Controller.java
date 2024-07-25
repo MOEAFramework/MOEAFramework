@@ -224,35 +224,35 @@ public class Controller {
 	}
 	
 	/**
-	 * Fires a {@code SETTINGS_CHANGED} controller event.
+	 * Fires a {@link ControllerEvent.Type#SETTINGS_CHANGED} controller event.
 	 */
 	protected void fireSettingsChangedEvent() {
 		fireEvent(new ControllerEvent(this, ControllerEvent.Type.SETTINGS_CHANGED));
 	}
 	
 	/**
-	 * Fires a {@code MODEL_CHANGED} controller event.
+	 * Fires a {@link ControllerEvent.Type#MODEL_CHANGED} controller event.
 	 */
 	protected void fireModelChangedEvent() {
 		fireEvent(new ControllerEvent(this, ControllerEvent.Type.MODEL_CHANGED));
 	}
 	
 	/**
-	 * Fires a {@code STATE_CHANGED} controller event.
+	 * Fires a {@link ControllerEvent.Type#STATE_CHANGED} controller event.
 	 */
 	protected void fireStateChangedEvent() {
 		fireEvent(new ControllerEvent(this, ControllerEvent.Type.STATE_CHANGED));
 	}
 	
 	/**
-	 * Fires a {@code PROGRESS_CHANGED} controller event.
+	 * Fires a {@link ControllerEvent.Type#PROGRESS_CHANGED} controller event.
 	 */
 	protected void fireProgressChangedEvent() {
 		fireEvent(new ControllerEvent(this, ControllerEvent.Type.PROGRESS_CHANGED));
 	}
 	
 	/**
-	 * Fires a {@code VIEW_CHANGED} controller event.
+	 * Fires a {@link ControllerEvent.Type#VIEW_CHANGED} controller event.
 	 */
 	protected void fireViewChangedEvent() {
 		fireEvent(new ControllerEvent(this, ControllerEvent.Type.VIEW_CHANGED));
@@ -269,7 +269,7 @@ public class Controller {
 	
 	/**
 	 * Adds a new result to this controller.  If the specified key already exists, the observation is appended to the
-	 * existing results.  A {@code MODEL_CHANGED} event is fired.
+	 * existing results.  A {@link ControllerEvent.Type#MODEL_CHANGED} event is fired.
 	 * 
 	 * @param key the result key identifying the algorithm and problem associated with these results
 	 * @param observation the observation storing the results
@@ -299,7 +299,7 @@ public class Controller {
 	}
 	
 	/**
-	 * Clears all results from this collector.  A {@code MODEL_CHANGED} event is fired.
+	 * Clears all results from this collector.  A {@link ControllerEvent.Type#MODEL_CHANGED} event is fired.
 	 */
 	public void clear() {
 		if (results.isEmpty()) {
@@ -374,7 +374,7 @@ public class Controller {
 	}
 	
 	/**
-	 * Loads all results stored in the specified file.  A {@code MODEL_CHANGED} event is fired.
+	 * Loads all results stored in the specified file.  A {@link ControllerEvent.Type#MODEL_CHANGED} event is fired.
 	 * 
 	 * @param file the file containing the results to load
 	 * @throws IOException if an I/O error occurred
@@ -399,7 +399,7 @@ public class Controller {
 	}
 	
 	/**
-	 * Updates the progress of this controller.  A {@code PROGRESS_CHANGED} event is fired.
+	 * Updates the progress of this controller.  A {@link ControllerEvent.Type#PROGRESS_CHANGED} event is fired.
 	 * 
 	 * @param currentEvaluation the current evaluation number
 	 * @param currentSeed the current seed number
@@ -430,7 +430,7 @@ public class Controller {
 					.withEpsilons(epsilons)
 					.showAggregate()
 					.showStatisticalSignificance();
-			
+						
 			if (getIncludeHypervolume()) {
 				analyzer.includeHypervolume();
 			}
@@ -696,6 +696,7 @@ public class Controller {
 	public void setShowLastTrace(boolean showLastTrace) {
 		this.showLastTrace = showLastTrace;
 		
+		fireSettingsChangedEvent();
 		fireViewChangedEvent();
 	}
 

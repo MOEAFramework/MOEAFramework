@@ -445,28 +445,19 @@ public class ActionFactory {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//do nothing
-			}
-			
-		};
-		
-		final Timer timer = new Timer(1000, new ActionListener() {
-
-			final double DIVISOR = 1024*1024;
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
+				final double divisor = 1024*1024;
 				long free = Runtime.getRuntime().freeMemory();
 				long total = Runtime.getRuntime().totalMemory();
 				long max = Runtime.getRuntime().maxMemory();
-				double used = (total - free) / DIVISOR;
-				double available = max / DIVISOR;
+				double used = (total - free) / divisor;
+				double available = max / divisor;
 
 				memoryUsageAction.putValue(Action.NAME, localization.getString("text.memory", used, available));
 			}
 			
-		});
+		};
 		
+		final Timer timer = new Timer(1000, memoryUsageAction);
 		timer.setRepeats(true);
 		timer.setCoalesce(true);
 		timer.start();
