@@ -247,8 +247,7 @@ public class Normalizer {
 	/**
 	 * Returns a normalizer that does not perform any normalization, instead using the objective values as-is.
 	 * 
-	 * @param problem the problem
-	 * @return the normalizer
+	 * @return the constructed normalizer
 	 */
 	public static Normalizer none() {
 		return new NullNormalizer();
