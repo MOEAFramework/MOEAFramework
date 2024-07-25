@@ -32,6 +32,11 @@ public class ControllerEvent extends EventObject {
 	public static enum Type {
 		
 		/**
+		 * Indicates one or more settings were changed.
+		 */
+		SETTINGS_CHANGED,
+		
+		/**
 		 * Indicates the state of the controller changed.  The state changes when an evaluation job starts and stops.
 		 * The state can be determined by invoking {@link Controller#isRunning()}.
 		 */

@@ -329,6 +329,11 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		
 		algorithm.setEditable(true);
 		problem.setEditable(true);
+		
+		controller.fireSettingsChangedEvent();
+		controller.fireStateChangedEvent();
+		controller.fireModelChangedEvent();
+		controller.fireViewChangedEvent();
 	}
 	
 	/**

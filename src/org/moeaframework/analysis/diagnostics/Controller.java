@@ -224,6 +224,13 @@ public class Controller {
 	}
 	
 	/**
+	 * Fires a {@code SETTINGS_CHANGED} controller event.
+	 */
+	protected void fireSettingsChangedEvent() {
+		fireEvent(new ControllerEvent(this, ControllerEvent.Type.SETTINGS_CHANGED));
+	}
+	
+	/**
 	 * Fires a {@code MODEL_CHANGED} controller event.
 	 */
 	protected void fireModelChangedEvent() {
@@ -708,6 +715,7 @@ public class Controller {
 	 */
 	public void setIncludeHypervolume(boolean includeHypervolume) {
 		this.includeHypervolume = includeHypervolume;
+		fireSettingsChangedEvent();
 	}
 
 	/**
@@ -727,6 +735,7 @@ public class Controller {
 	 */
 	public void setIncludeGenerationalDistance(boolean includeGenerationalDistance) {
 		this.includeGenerationalDistance = includeGenerationalDistance;
+		fireSettingsChangedEvent();
 	}
 	
 	/**
@@ -746,6 +755,7 @@ public class Controller {
 	 */
 	public void setIncludeGenerationalDistancePlus(boolean includeGenerationalDistancePlus) {
 		this.includeGenerationalDistancePlus = includeGenerationalDistancePlus;
+		fireSettingsChangedEvent();
 	}
 
 	/**
@@ -767,6 +777,7 @@ public class Controller {
 	 */
 	public void setIncludeInvertedGenerationalDistance(boolean includeInvertedGenerationalDistance) {
 		this.includeInvertedGenerationalDistance = includeInvertedGenerationalDistance;
+		fireSettingsChangedEvent();
 	}
 	
 	/**
@@ -788,6 +799,7 @@ public class Controller {
 	 */
 	public void setIncludeInvertedGenerationalDistancePlus(boolean includeInvertedGenerationalDistancePlus) {
 		this.includeInvertedGenerationalDistancePlus = includeInvertedGenerationalDistancePlus;
+		fireSettingsChangedEvent();
 	}
 
 	/**
@@ -806,6 +818,7 @@ public class Controller {
 	 */
 	public void setIncludeSpacing(boolean includeSpacing) {
 		this.includeSpacing = includeSpacing;
+		fireSettingsChangedEvent();
 	}
 
 	/**
@@ -825,6 +838,7 @@ public class Controller {
 	 */
 	public void setIncludeAdditiveEpsilonIndicator(boolean includeAdditiveEpsilonIndicator) {
 		this.includeAdditiveEpsilonIndicator = includeAdditiveEpsilonIndicator;
+		fireSettingsChangedEvent();
 	}
 
 	/**
@@ -844,6 +858,7 @@ public class Controller {
 	 */
 	public void setIncludeContribution(boolean includeContribution) {
 		this.includeContribution = includeContribution;
+		fireSettingsChangedEvent();
 	}
 	
 	/**
@@ -862,6 +877,7 @@ public class Controller {
 	 */
 	public void setIncludeR1(boolean includeR1) {
 		this.includeR1 = includeR1;
+		fireSettingsChangedEvent();
 	}
 	
 	/**
@@ -880,6 +896,7 @@ public class Controller {
 	 */
 	public void setIncludeR2(boolean includeR2) {
 		this.includeR2 = includeR2;
+		fireSettingsChangedEvent();
 	}
 	
 	/**
@@ -898,6 +915,7 @@ public class Controller {
 	 */
 	public void setIncludeR3(boolean includeR3) {
 		this.includeR3 = includeR3;
+		fireSettingsChangedEvent();
 	}
 
 	/**
@@ -917,6 +935,7 @@ public class Controller {
 	 */
 	public void setIncludeEpsilonProgress(boolean includeEpsilonProgress) {
 		this.includeEpsilonProgress = includeEpsilonProgress;
+		fireSettingsChangedEvent();
 	}
 
 	/**
@@ -936,6 +955,7 @@ public class Controller {
 	 */
 	public void setIncludeAdaptiveMultimethodVariation(boolean includeAdaptiveMultimethodVariation) {
 		this.includeAdaptiveMultimethodVariation = includeAdaptiveMultimethodVariation;
+		fireSettingsChangedEvent();
 	}
 
 	/**
@@ -955,6 +975,7 @@ public class Controller {
 	 */
 	public void setIncludeAdaptiveTimeContinuation(boolean includeAdaptiveTimeContinuation) {
 		this.includeAdaptiveTimeContinuation = includeAdaptiveTimeContinuation;
+		fireSettingsChangedEvent();
 	}
 
 	/**
@@ -973,6 +994,7 @@ public class Controller {
 	 */
 	public void setIncludeElapsedTime(boolean includeElapsedTime) {
 		this.includeElapsedTime = includeElapsedTime;
+		fireSettingsChangedEvent();
 	}
 
 	/**
@@ -992,6 +1014,7 @@ public class Controller {
 	 */
 	public void setIncludeApproximationSet(boolean includeApproximationSet) {
 		this.includeApproximationSet = includeApproximationSet;
+		fireSettingsChangedEvent();
 	}
 
 	/**
@@ -1010,6 +1033,7 @@ public class Controller {
 	 */
 	public void setIncludePopulationSize(boolean includePopulationSize) {
 		this.includePopulationSize = includePopulationSize;
+		fireSettingsChangedEvent();
 	}
 	
 	/**
@@ -1050,6 +1074,7 @@ public class Controller {
 		if (this.showIndividualTraces != showIndividualTraces) {
 			this.showIndividualTraces = showIndividualTraces;
 			
+			fireSettingsChangedEvent();
 			fireViewChangedEvent();
 		}
 	}
