@@ -88,9 +88,19 @@ public class Controller {
 	private boolean includeGenerationalDistance = true;
 	
 	/**
+	 * {@code true} if the generational distance indicator plus collector is included; {@code false} otherwise.
+	 */
+	private boolean includeGenerationalDistancePlus = true;
+	
+	/**
 	 * {@code true} if the inverted generational distance indicator collector is included; {@code false} otherwise.
 	 */
 	private boolean includeInvertedGenerationalDistance = true;
+	
+	/**
+	 * {@code true} if the inverted generational distance plus indicator collector is included; {@code false} otherwise.
+	 */
+	private boolean includeInvertedGenerationalDistancePlus = true;
 	
 	/**
 	 * {@code true} if the spacing indicator collector is included; {@code false} otherwise.
@@ -422,8 +432,16 @@ public class Controller {
 				analyzer.includeGenerationalDistance();
 			}
 			
+			if (getIncludeGenerationalDistancePlus()) {
+				analyzer.includeGenerationalDistancePlus();
+			}
+			
 			if (getIncludeInvertedGenerationalDistance()) {
 				analyzer.includeInvertedGenerationalDistance();
+			}
+			
+			if (getIncludeInvertedGenerationalDistancePlus()) {
+				analyzer.includeInvertedGenerationalDistancePlus();
 			}
 			
 			if (getIncludeSpacing()) {
@@ -515,8 +533,16 @@ public class Controller {
 						instrumenter.attachGenerationalDistanceCollector();
 					}
 					
+					if (getIncludeGenerationalDistancePlus()) {
+						instrumenter.attachGenerationalDistancePlusCollector();
+					}
+					
 					if (getIncludeInvertedGenerationalDistance()) {
 						instrumenter.attachInvertedGenerationalDistanceCollector();
+					}
+					
+					if (getIncludeInvertedGenerationalDistancePlus()) {
+						instrumenter.attachInvertedGenerationalDistancePlusCollector();
 					}
 					
 					if (getIncludeSpacing()) {
@@ -702,6 +728,25 @@ public class Controller {
 	public void setIncludeGenerationalDistance(boolean includeGenerationalDistance) {
 		this.includeGenerationalDistance = includeGenerationalDistance;
 	}
+	
+	/**
+	 * Returns {@code true} if the generational distance indicator plus collector is included; {@code false} otherwise.
+	 * 
+	 * @return {@code true} if the generational distance indicator plus collector is included; {@code false} otherwise
+	 */
+	public boolean getIncludeGenerationalDistancePlus() {
+		return includeGenerationalDistancePlus;
+	}
+	
+	/**
+	 * Sets the inclusion of the generational distance plus indicator collector.
+	 * 
+	 * @param includeGenerationalDistancePlus {@code true} if the generational distance plus indicator collector is
+	 *        included; {@code false} otherwise
+	 */
+	public void setIncludeGenerationalDistancePlus(boolean includeGenerationalDistancePlus) {
+		this.includeGenerationalDistancePlus = includeGenerationalDistancePlus;
+	}
 
 	/**
 	 * Returns {@code true} if the inverted generational distance indicator collector is included; {@code false}
@@ -722,6 +767,27 @@ public class Controller {
 	 */
 	public void setIncludeInvertedGenerationalDistance(boolean includeInvertedGenerationalDistance) {
 		this.includeInvertedGenerationalDistance = includeInvertedGenerationalDistance;
+	}
+	
+	/**
+	 * Returns {@code true} if the inverted generational distance plus indicator collector is included; {@code false}
+	 * otherwise.
+	 * 
+	 * @return {@code true} if the inverted generational distance plus indicator collector is included; {@code false}
+	 *         otherwise
+	 */
+	public boolean getIncludeInvertedGenerationalDistancePlus() {
+		return includeInvertedGenerationalDistancePlus;
+	}
+
+	/**
+	 * Sets the inclusion of the inverted generational distance plus indicator collector.
+	 * 
+	 * @param includeInvertedGenerationalDistancePlus {@code true} if the inverted generational distance plus indicator
+	 *        collector is included; {@code false} otherwise
+	 */
+	public void setIncludeInvertedGenerationalDistancePlus(boolean includeInvertedGenerationalDistancePlus) {
+		this.includeInvertedGenerationalDistancePlus = includeInvertedGenerationalDistancePlus;
 	}
 
 	/**

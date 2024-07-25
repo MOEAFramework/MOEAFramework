@@ -235,8 +235,8 @@ public class InstrumenterTest {
 		
 		Observations observations = instrumenter.getObservations();
 				
-		Assert.assertSize(14, observations.keys());
-		
+		Assert.assertSize(16, observations.keys());
+
 		for (StandardIndicator indicator : StandardIndicator.values()) {
 			Assert.assertTrue("Missing observation for " + indicator.name(), observations.keys().contains(indicator.name()));
 		}

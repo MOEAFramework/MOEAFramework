@@ -160,7 +160,9 @@ public class DiagnosticToolTest {
 		
 		testToggleAction(controller, actionFactory.getIncludeHypervolumeAction(), c -> c.getIncludeHypervolume());
 		testToggleAction(controller, actionFactory.getIncludeGenerationalDistanceAction(), c -> c.getIncludeGenerationalDistance());
+		testToggleAction(controller, actionFactory.getIncludeGenerationalDistancePlusAction(), c -> c.getIncludeGenerationalDistancePlus());
 		testToggleAction(controller, actionFactory.getIncludeInvertedGenerationalDistanceAction(), c -> c.getIncludeInvertedGenerationalDistance());
+		testToggleAction(controller, actionFactory.getIncludeInvertedGenerationalDistancePlusAction(), c -> c.getIncludeInvertedGenerationalDistancePlus());
 		testToggleAction(controller, actionFactory.getIncludeContributionAction(), c -> c.getIncludeContribution());
 		testToggleAction(controller, actionFactory.getIncludeSpacingAction(), c -> c.getIncludeSpacing());
 		testToggleAction(controller, actionFactory.getIncludeAdditiveEpsilonIndicatorAction(), c -> c.getIncludeAdditiveEpsilonIndicator());

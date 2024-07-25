@@ -111,9 +111,19 @@ public class ActionFactory implements ControllerListener {
 	private Action includeGenerationalDistanceAction;
 	
 	/**
+	 * The action to toggle the inclusion of the generational distance plus indicator collector.
+	 */
+	private Action includeGenerationalDistancePlusAction;
+	
+	/**
 	 * The action to toggle the inclusion of the inverted generational distance indicator collector.
 	 */
 	private Action includeInvertedGenerationalDistanceAction;
+	
+	/**
+	 * The action to toggle the inclusion of the inverted generational distance plus indicator collector.
+	 */
+	private Action includeInvertedGenerationalDistancePlusAction;
 	
 	/**
 	 * The action to toggle the inclusion the spacing indicator collector.
@@ -346,7 +356,9 @@ public class ActionFactory implements ControllerListener {
 			public void actionPerformed(ActionEvent e) {
 				includeHypervolumeAction.putValue(Action.SELECTED_KEY, true);
 				includeGenerationalDistanceAction.putValue(Action.SELECTED_KEY, true);
+				includeGenerationalDistancePlusAction.putValue(Action.SELECTED_KEY, true);
 				includeInvertedGenerationalDistanceAction.putValue(Action.SELECTED_KEY, true);
+				includeInvertedGenerationalDistancePlusAction.putValue(Action.SELECTED_KEY, true);
 				includeSpacingAction.putValue(Action.SELECTED_KEY, true);
 				includeAdditiveEpsilonIndicatorAction.putValue(Action.SELECTED_KEY, true);
 				includeContributionAction.putValue(Action.SELECTED_KEY, true);
@@ -356,7 +368,9 @@ public class ActionFactory implements ControllerListener {
 				
 				controller.setIncludeHypervolume(true);
 				controller.setIncludeGenerationalDistance(true);
+				controller.setIncludeGenerationalDistancePlus(true);
 				controller.setIncludeInvertedGenerationalDistance(true);
+				controller.setIncludeInvertedGenerationalDistancePlus(true);
 				controller.setIncludeSpacing(true);
 				controller.setIncludeAdditiveEpsilonIndicator(true);
 				controller.setIncludeContribution(true);
@@ -380,7 +394,9 @@ public class ActionFactory implements ControllerListener {
 			public void actionPerformed(ActionEvent e) {
 				includeHypervolumeAction.putValue(Action.SELECTED_KEY, false);
 				includeGenerationalDistanceAction.putValue(Action.SELECTED_KEY, false);
+				includeGenerationalDistancePlusAction.putValue(Action.SELECTED_KEY, false);
 				includeInvertedGenerationalDistanceAction.putValue(Action.SELECTED_KEY, false);
+				includeInvertedGenerationalDistancePlusAction.putValue(Action.SELECTED_KEY, false);
 				includeSpacingAction.putValue(Action.SELECTED_KEY, false);
 				includeAdditiveEpsilonIndicatorAction.putValue(Action.SELECTED_KEY, false);
 				includeContributionAction.putValue(Action.SELECTED_KEY, false);
@@ -390,7 +406,9 @@ public class ActionFactory implements ControllerListener {
 				
 				controller.setIncludeHypervolume(false);
 				controller.setIncludeGenerationalDistance(false);
+				controller.setIncludeGenerationalDistancePlus(false);
 				controller.setIncludeInvertedGenerationalDistance(false);
+				controller.setIncludeInvertedGenerationalDistancePlus(false);
 				controller.setIncludeSpacing(false);
 				controller.setIncludeAdditiveEpsilonIndicator(false);
 				controller.setIncludeContribution(false);
@@ -435,6 +453,23 @@ public class ActionFactory implements ControllerListener {
 			
 		};
 		
+		includeGenerationalDistancePlusAction = new AbstractAction() {
+
+			private static final long serialVersionUID = -2806617806526620465L;
+
+			{
+				putValue(Action.NAME, localization.getString("action.includeGenerationalDistancePlus.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeGenerationalDistancePlus.description"));
+				putValue(Action.SELECTED_KEY, controller.getIncludeGenerationalDistancePlus());
+			}
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.setIncludeGenerationalDistancePlus((Boolean)getValue(Action.SELECTED_KEY));
+			}
+			
+		};
+		
 		includeInvertedGenerationalDistanceAction = new AbstractAction() {
 
 			private static final long serialVersionUID = -4264252375261182056L;
@@ -448,6 +483,23 @@ public class ActionFactory implements ControllerListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.setIncludeInvertedGenerationalDistance((Boolean)getValue(Action.SELECTED_KEY));
+			}
+
+		};
+		
+		includeInvertedGenerationalDistancePlusAction = new AbstractAction() {
+
+			private static final long serialVersionUID = -4815720762975333566L;
+
+			{
+				putValue(Action.NAME, localization.getString("action.includeInvertedGenerationalDistancePlus.name"));
+				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeInvertedGenerationalDistancePlus.description"));
+				putValue(Action.SELECTED_KEY, controller.getIncludeInvertedGenerationalDistancePlus());
+			}
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.setIncludeInvertedGenerationalDistancePlus((Boolean)getValue(Action.SELECTED_KEY));
 			}
 
 		};
@@ -907,6 +959,15 @@ public class ActionFactory implements ControllerListener {
 	public Action getIncludeGenerationalDistanceAction() {
 		return includeGenerationalDistanceAction;
 	}
+	
+	/**
+	 * Returns the action to toggle the inclusion of the generational distance plus indicator collector.
+	 * 
+	 * @return the action to toggle the inclusion of the generational distance plus indicator collector
+	 */
+	public Action getIncludeGenerationalDistancePlusAction() {
+		return includeGenerationalDistancePlusAction;
+	}
 
 	/**
 	 * Returns the action to toggle the inclusion of the inverted generational distance indicator collector.
@@ -915,6 +976,15 @@ public class ActionFactory implements ControllerListener {
 	 */
 	public Action getIncludeInvertedGenerationalDistanceAction() {
 		return includeInvertedGenerationalDistanceAction;
+	}
+	
+	/**
+	 * Returns the action to toggle the inclusion of the inverted generational distance plus indicator collector.
+	 * 
+	 * @return the action to toggle the inclusion of the inverted generational distance plus indicator collector
+	 */
+	public Action getIncludeInvertedGenerationalDistancePlusAction() {
+		return includeInvertedGenerationalDistancePlusAction;
 	}
 
 	/**

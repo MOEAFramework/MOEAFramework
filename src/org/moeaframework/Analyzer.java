@@ -220,6 +220,16 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		selectedIndicators.add(StandardIndicator.GenerationalDistance);
 		return this;
 	}
+	
+	/**
+	 * Enables the evaluation of the generational distance plus metric.
+	 * 
+	 * @return a reference to this analyzer
+	 */
+	public Analyzer includeGenerationalDistancePlus() {
+		selectedIndicators.add(StandardIndicator.GenerationalDistancePlus);
+		return this;
+	}
 
 	/**
 	 * Enables the evaluation of the inverted generational distance metric.
@@ -228,6 +238,16 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 */
 	public Analyzer includeInvertedGenerationalDistance() {
 		selectedIndicators.add(StandardIndicator.InvertedGenerationalDistance);
+		return this;
+	}
+	
+	/**
+	 * Enables the evaluation of the inverted generational distance plus metric.
+	 * 
+	 * @return a reference to this analyzer
+	 */
+	public Analyzer includeInvertedGenerationalDistancePlus() {
+		selectedIndicators.add(StandardIndicator.InvertedGenerationalDistancePlus);
 		return this;
 	}
 
@@ -309,7 +329,9 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	public Analyzer includeAllMetrics() {
 		includeHypervolume();
 		includeGenerationalDistance();
+		includeGenerationalDistancePlus();
 		includeInvertedGenerationalDistance();
+		includeInvertedGenerationalDistancePlus();
 		includeAdditiveEpsilonIndicator();
 		includeMaximumParetoFrontError();
 		includeSpacing();

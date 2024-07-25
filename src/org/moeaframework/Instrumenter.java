@@ -50,8 +50,10 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.indicator.AdditiveEpsilonIndicator;
 import org.moeaframework.core.indicator.Contribution;
 import org.moeaframework.core.indicator.GenerationalDistance;
+import org.moeaframework.core.indicator.GenerationalDistancePlus;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.indicator.InvertedGenerationalDistance;
+import org.moeaframework.core.indicator.InvertedGenerationalDistancePlus;
 import org.moeaframework.core.indicator.MaximumParetoFrontError;
 import org.moeaframework.core.indicator.R1Indicator;
 import org.moeaframework.core.indicator.R2Indicator;
@@ -254,12 +256,32 @@ public class Instrumenter extends ProblemBuilder {
 	}
 	
 	/**
+	 * Includes the generational distance plus collector when instrumenting algorithms.
+	 * 
+	 * @return a reference to this instrumenter
+	 */
+	public Instrumenter attachGenerationalDistancePlusCollector() {
+		selectedIndicators.add(StandardIndicator.GenerationalDistancePlus);
+		return this;
+	}
+	
+	/**
 	 * Includes the inverted generational distance collector when instrumenting algorithms.
 	 * 
 	 * @return a reference to this instrumenter
 	 */
 	public Instrumenter attachInvertedGenerationalDistanceCollector() {
 		selectedIndicators.add(StandardIndicator.InvertedGenerationalDistance);
+		return this;
+	}
+	
+	/**
+	 * Includes the inverted generational distance plus collector when instrumenting algorithms.
+	 * 
+	 * @return a reference to this instrumenter
+	 */
+	public Instrumenter attachInvertedGenerationalDistancePlusCollector() {
+		selectedIndicators.add(StandardIndicator.InvertedGenerationalDistancePlus);
 		return this;
 	}
 	
@@ -341,7 +363,9 @@ public class Instrumenter extends ProblemBuilder {
 	public Instrumenter attachAllMetricCollectors() {
 		attachHypervolumeCollector();
 		attachGenerationalDistanceCollector();
+		attachGenerationalDistancePlusCollector();
 		attachInvertedGenerationalDistanceCollector();
+		attachInvertedGenerationalDistancePlusCollector();
 		attachSpacingCollector();
 		attachAdditiveEpsilonIndicatorCollector();
 		attachContributionCollector();
@@ -654,8 +678,18 @@ public class Instrumenter extends ProblemBuilder {
 				collectors.add(new IndicatorCollector(new GenerationalDistance(problem, referenceSet), archive));
 			}
 			
+			if (selectedIndicators.contains(StandardIndicator.GenerationalDistancePlus)) {
+				collectors.add(new IndicatorCollector(new GenerationalDistancePlus(problem, referenceSet), archive));
+			}
+			
 			if (selectedIndicators.contains(StandardIndicator.InvertedGenerationalDistance)) {
-				collectors.add(new IndicatorCollector(new InvertedGenerationalDistance(problem, referenceSet), archive));
+				collectors.add(new IndicatorCollector(
+						new InvertedGenerationalDistance(problem, referenceSet), archive));
+			}
+			
+			if (selectedIndicators.contains(StandardIndicator.InvertedGenerationalDistancePlus)) {
+				collectors.add(new IndicatorCollector(
+						new InvertedGenerationalDistancePlus(problem, referenceSet), archive));
 			}
 			
 			if (selectedIndicators.contains(StandardIndicator.Spacing)) {
