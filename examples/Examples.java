@@ -36,7 +36,7 @@ import org.moeaframework.examples.gp.regression.SexticExample;
 import org.moeaframework.examples.gui.Example;
 import org.moeaframework.examples.gui.ExamplesGUI;
 import org.moeaframework.examples.gui.TerminalExample;
-import org.moeaframework.examples.parallel.IslandModelExample;
+import org.moeaframework.examples.parallel.CompareIslandModelAndSerialExample;
 import org.moeaframework.examples.parallel.ParallelizationExample;
 
 /**
@@ -205,11 +205,11 @@ public class Examples {
 				ParallelizationExample.class,
 				"examples/org/moeaframework/examples/parallel/ParallelizationExample.java"));
 		
-		examples.add(new TerminalExample(
+		examples.add(new Example(
 				resourceBundle.getString("island.name"),
 				resourceBundle.getString("island.description"),
-				IslandModelExample.class,
-				"examples/org/moeaframework/examples/parallel/IslandModelExample.java"));
+				CompareIslandModelAndSerialExample.class,
+				"examples/org/moeaframework/examples/parallel/CompareIslandModelAndSerialExample.java"));
 		
 		examples.add(new Example(
 				resourceBundle.getString("diagnostic.name"),
