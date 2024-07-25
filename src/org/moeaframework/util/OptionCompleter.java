@@ -122,10 +122,14 @@ public class OptionCompleter {
 			String optionPrefix = option.substring(0, Math.min(option.length(), partial.length()));
 			
 			if (comparator.compare(optionPrefix, partial) == 0) {
-				if (result == null) {
+				if (optionPrefix.length() == option.length()) {
+					// exact matches are immediately returned
+					return option;
+				} else if (result == null) {
+					// partial matches are tracked in case there are duplicates
 					result = option;
 				} else {
-					// more than one potential options matched
+					// multiple partial matches found
 					return null;
 				}
 			}
