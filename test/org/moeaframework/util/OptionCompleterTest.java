@@ -55,6 +55,14 @@ public class OptionCompleterTest {
 		OptionCompleter completer = new OptionCompleter("subset", "superset");
 		Assert.assertEquals(null, completer.lookup(""));
 	}
+	
+	@Test
+	public void testOverlappingOption() {
+		OptionCompleter completer = new OptionCompleter("sub", "subset");
+		Assert.assertEquals(null, completer.lookup("su"));
+		Assert.assertEquals("sub", completer.lookup("sub"));
+		Assert.assertEquals("subset", completer.lookup("subs"));
+	}
 
 	@Test
 	public void testAdd() {
