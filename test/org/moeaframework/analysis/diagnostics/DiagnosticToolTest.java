@@ -40,6 +40,8 @@ public class DiagnosticToolTest {
 	
 	private AtomicBoolean isRunning = new AtomicBoolean(false);
 	
+	private AtomicInteger settingsChangedCount = new AtomicInteger();
+	
 	private AtomicInteger stateChangedCount = new AtomicInteger();
 	
 	private AtomicInteger viewChangedCount = new AtomicInteger();
@@ -105,6 +107,7 @@ public class DiagnosticToolTest {
 					case MODEL_CHANGED -> modelChangedCount.incrementAndGet();
 					case VIEW_CHANGED -> viewChangedCount.incrementAndGet();
 					case PROGRESS_CHANGED -> progressChangedCount.incrementAndGet();
+					case SETTINGS_CHANGED -> settingsChangedCount.incrementAndGet();
 					default -> Assert.fail("Unexpected controller event type " + event.getType());
 				}
 			}
