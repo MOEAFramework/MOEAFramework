@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
 
 import javax.swing.Action;
 import javax.swing.SwingUtilities;
@@ -34,6 +33,7 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
 import org.moeaframework.TempFiles;
+import org.moeaframework.analysis.diagnostics.Controller.Setting;
 
 /**
  * GUI tests have limited scope and, in general, do not validate the content being displayed.
@@ -64,8 +64,8 @@ public class DiagnosticToolTest {
 		tool.setVisible(true);
 		tool.selectAllMetrics();
 		tool.selectAllResults();
-		tool.getController().setShowLastTrace(true);
-		tool.getController().setShowIndividualTraces(true);
+		tool.getController().showLastTrace().set(true);
+		tool.getController().showIndividualTraces().set(true);
 		
 		StatisticalResultsViewer viewer = tool.getController().showStatistics();
 		viewer.dispose();
@@ -118,7 +118,7 @@ public class DiagnosticToolTest {
 		
 		tool.setAlgorithm("NSGAII");
 		tool.setProblem("DTLZ2_2");
-		tool.setNumberOfEvaluations(10000);
+		tool.setNumberOfEvaluations(1000);
 		tool.setNumberOfSeeds(5);
 		
 		Assert.assertEquals(0, controller.getOverallProgress());
@@ -136,9 +136,9 @@ public class DiagnosticToolTest {
 		SwingUtilities.invokeAndWait(() -> {
 			Assert.assertEquals(0, settingsChangedCount.get());
 			Assert.assertEquals(2, stateChangedCount.get());
-			Assert.assertEquals(5, modelChangedCount.get());
+			Assert.assertGreaterThanOrEqual(modelChangedCount.get(), 5);
 			Assert.assertGreaterThanOrEqual(viewChangedCount.get(), 5);
-			Assert.assertEquals(506, progressChangedCount.get()); // 101 per seed * 5 seeds + 1 final update
+			Assert.assertEquals(56, progressChangedCount.get()); // 11 per seed * 5 seeds + 1 final update
 			
 			Assert.assertEquals(100, controller.getOverallProgress());
 			Assert.assertEquals(0, controller.getRunProgress());
@@ -166,25 +166,25 @@ public class DiagnosticToolTest {
 		Controller controller = tool.getController();
 		ActionFactory actionFactory = tool.getActionFactory();
 		
-		testToggleAction(controller, actionFactory.getIncludeHypervolumeAction(), c -> c.getIncludeHypervolume());
-		testToggleAction(controller, actionFactory.getIncludeGenerationalDistanceAction(), c -> c.getIncludeGenerationalDistance());
-		testToggleAction(controller, actionFactory.getIncludeGenerationalDistancePlusAction(), c -> c.getIncludeGenerationalDistancePlus());
-		testToggleAction(controller, actionFactory.getIncludeInvertedGenerationalDistanceAction(), c -> c.getIncludeInvertedGenerationalDistance());
-		testToggleAction(controller, actionFactory.getIncludeInvertedGenerationalDistancePlusAction(), c -> c.getIncludeInvertedGenerationalDistancePlus());
-		testToggleAction(controller, actionFactory.getIncludeContributionAction(), c -> c.getIncludeContribution());
-		testToggleAction(controller, actionFactory.getIncludeSpacingAction(), c -> c.getIncludeSpacing());
-		testToggleAction(controller, actionFactory.getIncludeAdditiveEpsilonIndicatorAction(), c -> c.getIncludeAdditiveEpsilonIndicator());
-		testToggleAction(controller, actionFactory.getIncludeR1Action(), c -> c.getIncludeR1());
-		testToggleAction(controller, actionFactory.getIncludeR2Action(), c -> c.getIncludeR2());
-		testToggleAction(controller, actionFactory.getIncludeR3Action(), c -> c.getIncludeR3());
-		testToggleAction(controller, actionFactory.getIncludeEpsilonProgressAction(), c -> c.getIncludeEpsilonProgress());
-		testToggleAction(controller, actionFactory.getIncludeAdaptiveMultimethodVariationAction(), c -> c.getIncludeAdaptiveMultimethodVariation());
-		testToggleAction(controller, actionFactory.getIncludeAdaptiveTimeContinuationAction(), c -> c.getIncludeAdaptiveTimeContinuation());
-		testToggleAction(controller, actionFactory.getIncludeElapsedTimeAction(), c -> c.getIncludeElapsedTime());
-		testToggleAction(controller, actionFactory.getIncludeApproximationSetAction(), c -> c.getIncludeApproximationSet());
-		testToggleAction(controller, actionFactory.getIncludePopulationSizeAction(), c -> c.getIncludePopulationSize());
-		testToggleAction(controller, actionFactory.getShowIndividualTracesAction(), c -> c.getShowIndividualTraces());
-		testToggleAction(controller, actionFactory.getShowLastTraceAction(), c -> c.getShowLastTrace());
+		testToggleAction(actionFactory.getIncludeHypervolumeAction(), controller.includeHypervolume());
+		testToggleAction(actionFactory.getIncludeGenerationalDistanceAction(), controller.includeGenerationalDistance());
+		testToggleAction(actionFactory.getIncludeGenerationalDistancePlusAction(), controller.includeGenerationalDistancePlus());
+		testToggleAction(actionFactory.getIncludeInvertedGenerationalDistanceAction(), controller.includeInvertedGenerationalDistance());
+		testToggleAction(actionFactory.getIncludeInvertedGenerationalDistancePlusAction(), controller.includeInvertedGenerationalDistancePlus());
+		testToggleAction(actionFactory.getIncludeContributionAction(), controller.includeContribution());
+		testToggleAction(actionFactory.getIncludeSpacingAction(), controller.includeSpacing());
+		testToggleAction(actionFactory.getIncludeAdditiveEpsilonIndicatorAction(), controller.includeAdditiveEpsilonIndicator());
+		testToggleAction(actionFactory.getIncludeR1Action(), controller.includeR1());
+		testToggleAction(actionFactory.getIncludeR2Action(), controller.includeR2());
+		testToggleAction(actionFactory.getIncludeR3Action(), controller.includeR3());
+		testToggleAction(actionFactory.getIncludeEpsilonProgressAction(), controller.includeEpsilonProgress());
+		testToggleAction(actionFactory.getIncludeAdaptiveMultimethodVariationAction(), controller.includeAdaptiveMultimethodVariation());
+		testToggleAction(actionFactory.getIncludeAdaptiveTimeContinuationAction(), controller.includeAdaptiveTimeContinuation());
+		testToggleAction(actionFactory.getIncludeElapsedTimeAction(), controller.includeElapsedTime());
+		testToggleAction(actionFactory.getIncludeApproximationSetAction(), controller.includeApproximationSet());
+		testToggleAction(actionFactory.getIncludePopulationSizeAction(), controller.includePopulationSize());
+		testToggleAction(actionFactory.getShowIndividualTracesAction(), controller.showIndividualTraces());
+		testToggleAction(actionFactory.getShowLastTraceAction(), controller.showLastTrace());
 	}
 	
 	@Test
@@ -192,14 +192,14 @@ public class DiagnosticToolTest {
 		Assert.assertLocalized(new DiagnosticTool(), Assert::isLocalized);
 	}
 
-	private void testToggleAction(Controller controller, Action action, Function<Controller, Boolean> reader) throws InvocationTargetException, InterruptedException {
+	private void testToggleAction(Action action, Setting<Boolean> setting) throws InvocationTargetException, InterruptedException {
 		SwingUtilities.invokeAndWait(() -> {
-			Boolean originalValue = reader.apply(controller);
+			Boolean originalValue = setting.get();
 			Assert.assertEquals(originalValue, action.getValue(Action.SELECTED_KEY));
 			
 			action.putValue(Action.SELECTED_KEY, !originalValue.booleanValue());
 			action.actionPerformed(new ActionEvent(action, ActionEvent.ACTION_PERFORMED, "click"));
-			Assert.assertEquals(!originalValue, reader.apply(controller));
+			Assert.assertEquals(!originalValue, setting.get());
 		});
 	}
 

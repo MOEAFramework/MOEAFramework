@@ -36,6 +36,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.commons.io.FilenameUtils;
 import org.moeaframework.Instrumenter;
+import org.moeaframework.analysis.diagnostics.Controller.Setting;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.util.Localization;
 
@@ -290,84 +291,50 @@ public class ActionFactory {
 		aboutDialogAction = new RunnableAction("about", frame::showAbout);
 		
 		enableAllIndicatorsAction = new RunnableAction("enableAllIndicators", () -> {
-			controller.setIncludeHypervolume(true);
-			controller.setIncludeGenerationalDistance(true);
-			controller.setIncludeGenerationalDistancePlus(true);
-			controller.setIncludeInvertedGenerationalDistance(true);
-			controller.setIncludeInvertedGenerationalDistancePlus(true);
-			controller.setIncludeSpacing(true);
-			controller.setIncludeAdditiveEpsilonIndicator(true);
-			controller.setIncludeContribution(true);
-			controller.setIncludeR1(true);
-			controller.setIncludeR2(true);
-			controller.setIncludeR3(true);
+			controller.includeHypervolume().set(true);
+			controller.includeGenerationalDistance().set(true);
+			controller.includeGenerationalDistancePlus().set(true);
+			controller.includeInvertedGenerationalDistance().set(true);
+			controller.includeInvertedGenerationalDistancePlus().set(true);
+			controller.includeSpacing().set(true);
+			controller.includeAdditiveEpsilonIndicator().set(true);
+			controller.includeContribution().set(true);
+			controller.includeR1().set(true);
+			controller.includeR2().set(true);
+			controller.includeR3().set(true);
 		});
 		
 		disableAllIndicatorsAction = new RunnableAction("disableAllIndicators", () -> {
-			controller.setIncludeHypervolume(false);
-			controller.setIncludeGenerationalDistance(false);
-			controller.setIncludeGenerationalDistancePlus(false);
-			controller.setIncludeInvertedGenerationalDistance(false);
-			controller.setIncludeInvertedGenerationalDistancePlus(false);
-			controller.setIncludeSpacing(false);
-			controller.setIncludeAdditiveEpsilonIndicator(false);
-			controller.setIncludeContribution(false);
-			controller.setIncludeR1(false);
-			controller.setIncludeR2(false);
-			controller.setIncludeR3(false);
+			controller.includeHypervolume().set(false);
+			controller.includeGenerationalDistance().set(false);
+			controller.includeGenerationalDistancePlus().set(false);
+			controller.includeInvertedGenerationalDistance().set(false);
+			controller.includeInvertedGenerationalDistancePlus().set(false);
+			controller.includeSpacing().set(false);
+			controller.includeAdditiveEpsilonIndicator().set(false);
+			controller.includeContribution().set(false);
+			controller.includeR1().set(false);
+			controller.includeR2().set(false);
+			controller.includeR3().set(false);
 		});
 		
-		includeHypervolumeAction = new ToggleAction("includeHypervolume",
-				controller::getIncludeHypervolume,
-				controller::setIncludeHypervolume);
-		includeGenerationalDistanceAction = new ToggleAction("includeGenerationalDistance",
-				controller::getIncludeGenerationalDistance,
-				controller::setIncludeGenerationalDistance);		
-		includeGenerationalDistancePlusAction = new ToggleAction("includeGenerationalDistancePlus",
-				controller::getIncludeGenerationalDistancePlus,
-				controller::setIncludeGenerationalDistancePlus);
-		includeInvertedGenerationalDistanceAction = new ToggleAction("includeInvertedGenerationalDistance",
-				controller::getIncludeInvertedGenerationalDistance,
-				controller::setIncludeInvertedGenerationalDistance);
-		includeInvertedGenerationalDistancePlusAction = new ToggleAction("includeInvertedGenerationalDistancePlus",
-				controller::getIncludeInvertedGenerationalDistancePlus,
-				controller::setIncludeInvertedGenerationalDistancePlus);
-		includeSpacingAction = new ToggleAction("includeSpacing",
-				controller::getIncludeSpacing,
-				controller::setIncludeSpacing);
-		includeAdditiveEpsilonIndicatorAction = new ToggleAction("includeAdditiveEpsilonIndicator",
-				controller::getIncludeAdditiveEpsilonIndicator,
-				controller::setIncludeAdditiveEpsilonIndicator);
-		includeContributionAction = new ToggleAction("includeContribution",
-				controller::getIncludeContribution,
-				controller::setIncludeContribution);
-		includeR1Action = new ToggleAction("includeR1",
-				controller::getIncludeR1,
-				controller::setIncludeR1);
-		includeR2Action = new ToggleAction("includeR2",
-				controller::getIncludeR2,
-				controller::setIncludeR2);
-		includeR3Action = new ToggleAction("includeR3",
-				controller::getIncludeR3,
-				controller::setIncludeR3);
-		includeEpsilonProgressAction = new ToggleAction("includeEpsilonProgress",
-				controller::getIncludeEpsilonProgress,
-				controller::setIncludeEpsilonProgress);
-		includeAdaptiveMultimethodVariationAction = new ToggleAction("includeAdaptiveMultimethodVariation",
-				controller::getIncludeAdaptiveMultimethodVariation,
-				controller::setIncludeAdaptiveMultimethodVariation);
-		includeAdaptiveTimeContinuationAction = new ToggleAction("includeAdaptiveTimeContinuation",
-				controller::getIncludeAdaptiveTimeContinuation,
-				controller::setIncludeAdaptiveTimeContinuation);
-		includeElapsedTimeAction = new ToggleAction("includeElapsedTime",
-				controller::getIncludeElapsedTime,
-				controller::setIncludeElapsedTime);
-		includePopulationSizeAction = new ToggleAction("includePopulationSize",
-				controller::getIncludePopulationSize,
-				controller::setIncludePopulationSize);		
-		includeApproximationSetAction = new ToggleAction("includeApproximationSet",
-				controller::getIncludeApproximationSet,
-				controller::setIncludeApproximationSet);
+		includeHypervolumeAction = new ToggleAction("includeHypervolume", controller.includeHypervolume());
+		includeGenerationalDistanceAction = new ToggleAction("includeGenerationalDistance", controller.includeGenerationalDistance());	
+		includeGenerationalDistancePlusAction = new ToggleAction("includeGenerationalDistancePlus", controller.includeGenerationalDistancePlus());
+		includeInvertedGenerationalDistanceAction = new ToggleAction("includeInvertedGenerationalDistance", controller.includeInvertedGenerationalDistance());
+		includeInvertedGenerationalDistancePlusAction = new ToggleAction("includeInvertedGenerationalDistancePlus", controller.includeInvertedGenerationalDistancePlus());
+		includeSpacingAction = new ToggleAction("includeSpacing", controller.includeSpacing());
+		includeAdditiveEpsilonIndicatorAction = new ToggleAction("includeAdditiveEpsilonIndicator", controller.includeAdditiveEpsilonIndicator());
+		includeContributionAction = new ToggleAction("includeContribution", controller.includeContribution());
+		includeR1Action = new ToggleAction("includeR1", controller.includeR1());
+		includeR2Action = new ToggleAction("includeR2", controller.includeR2());
+		includeR3Action = new ToggleAction("includeR3", controller.includeR3());
+		includeEpsilonProgressAction = new ToggleAction("includeEpsilonProgress", controller.includeEpsilonProgress());
+		includeAdaptiveMultimethodVariationAction = new ToggleAction("includeAdaptiveMultimethodVariation", controller.includeAdaptiveMultimethodVariation());
+		includeAdaptiveTimeContinuationAction = new ToggleAction("includeAdaptiveTimeContinuation", controller.includeAdaptiveTimeContinuation());
+		includeElapsedTimeAction = new ToggleAction("includeElapsedTime", controller.includeElapsedTime());
+		includePopulationSizeAction = new ToggleAction("includePopulationSize", controller.includePopulationSize());	
+		includeApproximationSetAction = new ToggleAction("includeApproximationSet", controller.includeApproximationSet());
 		
 		runAction = new RunnableAction("run", controller::run) {
 
@@ -424,15 +391,11 @@ public class ActionFactory {
 			
 		};
 		
-		showLastTraceAction = new ToggleAction("showLastTrace",
-				controller::getShowLastTrace,
-				controller::setShowLastTrace);
-		showIndividualTracesAction = new ToggleAction("showIndividualTraces",
-				controller::getShowIndividualTraces,
-				controller::setShowIndividualTraces);
+		showLastTraceAction = new ToggleAction("showLastTrace", controller.showLastTrace());
+		showIndividualTracesAction = new ToggleAction("showIndividualTraces", controller.showIndividualTraces());
 		showQuantilesAction = new ToggleAction("showQuantiles",
-				() -> !controller.getShowIndividualTraces(),
-				(b) -> controller.setShowIndividualTraces(!b));
+				() -> !controller.showIndividualTraces().get(),
+				(b) -> controller.showIndividualTraces().set(!b));
 		
 		memoryUsageAction = new AbstractAction() {
 
@@ -835,6 +798,10 @@ public class ActionFactory {
 		private final Supplier<Boolean> getter;
 		
 		private final Consumer<Boolean> setter;
+		
+		public ToggleAction(String id, Setting<Boolean> setting) {
+			this(id, () -> setting.get(), (b) -> setting.set(b));
+		}
 
 		public ToggleAction(String id, Supplier<Boolean> getter, Consumer<Boolean> setter) {
 			super(id);

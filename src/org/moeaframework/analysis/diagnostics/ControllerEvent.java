@@ -32,7 +32,7 @@ public class ControllerEvent extends EventObject {
 	public static enum Type {
 		
 		/**
-		 * Indicates one or more settings were changed.
+		 * Indicates one or more settings were changed, typically requiring GUI elements to update.
 		 */
 		SETTINGS_CHANGED,
 		

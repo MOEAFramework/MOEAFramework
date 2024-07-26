@@ -73,94 +73,94 @@ public class Controller {
 	private Observations lastObservation;
 	
 	/**
-	 * {@code true} if the last run's trace should be drawn separately; {@code false} otherwise.
+	 * The setting for displaying the last run's trace.
 	 */
-	private boolean showLastTrace = false;
+	private final Setting<Boolean> showLastTrace;
 	
 	/**
-	 * {@code true} if the hypervolume indicator collector is included; {@code false} otherwise.
+	 * The setting for collecting the hypervolume indicator.
 	 */
-	private boolean includeHypervolume = true;
+	private final Setting<Boolean> includeHypervolume;
 	
 	/**
-	 * {@code true} if the generational distance indicator collector is included; {@code false} otherwise.
+	 * The setting for collecting the generational distance (GD) indicator.
 	 */
-	private boolean includeGenerationalDistance = true;
+	private final Setting<Boolean> includeGenerationalDistance;
 	
 	/**
-	 * {@code true} if the generational distance indicator plus collector is included; {@code false} otherwise.
+	 * The setting for collecting the generational distance plus (GD+) indicator.
 	 */
-	private boolean includeGenerationalDistancePlus = true;
+	private final Setting<Boolean> includeGenerationalDistancePlus;
 	
 	/**
-	 * {@code true} if the inverted generational distance indicator collector is included; {@code false} otherwise.
+	 * The setting for collecting the inverted generational distance plus (IGD) indicator.
 	 */
-	private boolean includeInvertedGenerationalDistance = true;
+	private final Setting<Boolean> includeInvertedGenerationalDistance;
 	
 	/**
-	 * {@code true} if the inverted generational distance plus indicator collector is included; {@code false} otherwise.
+	 * The setting for collecting the inverted generational distance plus (IGD+) indicator.
 	 */
-	private boolean includeInvertedGenerationalDistancePlus = true;
+	private final Setting<Boolean> includeInvertedGenerationalDistancePlus;
 	
 	/**
-	 * {@code true} if the spacing indicator collector is included; {@code false} otherwise.
+	 * The setting for collecting the spacing indicator.
 	 */
-	private boolean includeSpacing = true;
+	private final Setting<Boolean> includeSpacing;
 	
 	/**
-	 * {@code true} if the additive &epsilon;-indicator collector is included; {@code false} otherwise.
+	 * The setting for collecting the additive epsilon indicator.
 	 */
-	private boolean includeAdditiveEpsilonIndicator = true;
+	private final Setting<Boolean> includeAdditiveEpsilonIndicator;
 	
 	/**
-	 * {@code true} if the contribution indicator collector is included; {@code false} otherwise.
+	 * The setting for collecting the contribution indicator.
 	 */
-	private boolean includeContribution = true;
+	private final Setting<Boolean> includeContribution;
 	
 	/**
-	 * {@code true} if the R1 indicator collector is included; {@code false} otherwise.
+	 * The setting for collecting the R1 indicator.
 	 */
-	private boolean includeR1 = false;
+	private final Setting<Boolean> includeR1;
 	
 	/**
-	 * {@code true} if the R2 indicator collector is included; {@code false} otherwise.
+	 * The setting for collecting the R2 indicator.
 	 */
-	private boolean includeR2 = true;
+	private final Setting<Boolean> includeR2;
 	
 	/**
-	 * {@code true} if the R3 indicator collector is included; {@code false} otherwise.
+	 * The setting for collecting the R3 indicator.
 	 */
-	private boolean includeR3 = false;
+	private final Setting<Boolean> includeR3;
 	
 	/**
-	 * {@code true} if the &epsilon;-progress collector is included; {@code false} otherwise.
+	 * The setting for collecting epsilon progress metrics.
 	 */
-	private boolean includeEpsilonProgress = true;
+	private final Setting<Boolean> includeEpsilonProgress;
 	
 	/**
-	 * {@code true} if the adaptive multimethod variation collector is included; {@code false} otherwise.
+	 * The setting for collecting adaptive multimethod variation probabilities.
 	 */
-	private boolean includeAdaptiveMultimethodVariation = true;
+	private final Setting<Boolean> includeAdaptiveMultimethodVariation;
 	
 	/**
-	 * {@code true} if the adaptive time continuation collector is included; {@code false} otherwise.
+	 * The setting for collecting adaptive time continuation metrics.
 	 */
-	private boolean includeAdaptiveTimeContinuation = true;
+	private final Setting<Boolean> includeAdaptiveTimeContinuation;
 	
 	/**
-	 * {@code true} if the elapsed time collector is included; {@code false} otherwise.
+	 * The setting for collecting the elapsed runtime.
 	 */
-	private boolean includeElapsedTime = true;
+	private final Setting<Boolean> includeElapsedTime;
 	
 	/**
-	 * {@code true} if the approximation set collector is included; {@code false} otherwise.
+	 * The setting for collecting the approximation set.
 	 */
-	private boolean includeApproximationSet = true;
+	private final Setting<Boolean> includeApproximationSet;
 	
 	/**
-	 * {@code true} if the population size collector is included; {@code false} otherwise.
+	 * The setting for collecting the population / archive sizes.
 	 */
-	private boolean includePopulationSize = true;
+	private final Setting<Boolean> includePopulationSize;
 	
 	/**
 	 * The run progress of the current job being evaluated.
@@ -185,7 +185,7 @@ public class Controller {
 	/**
 	 * Toggles between showing individual trace lines when {@code true} and quantiles when {@code false}.
 	 */
-	private boolean showIndividualTraces;
+	private final Setting<Boolean> showIndividualTraces;
 	
 	/**
 	 * The executor for the current run.
@@ -203,6 +203,26 @@ public class Controller {
 		
 		listeners = EventListenerSupport.create(ControllerListener.class);
 		results = new HashMap<ResultKey, List<Observations>>();
+		
+		showLastTrace = new Setting<Boolean>(false, ControllerEvent.Type.SETTINGS_CHANGED, ControllerEvent.Type.VIEW_CHANGED);
+		showIndividualTraces = new Setting<Boolean>(false, ControllerEvent.Type.SETTINGS_CHANGED, ControllerEvent.Type.VIEW_CHANGED);
+		includeHypervolume = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeGenerationalDistance = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeGenerationalDistancePlus = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeInvertedGenerationalDistance = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeInvertedGenerationalDistancePlus = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeSpacing = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeAdditiveEpsilonIndicator = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeContribution = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeR1 = new Setting<Boolean>(false, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeR2 = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeR3 = new Setting<Boolean>(false, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeEpsilonProgress = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeAdaptiveMultimethodVariation = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeAdaptiveTimeContinuation = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeElapsedTime = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeApproximationSet = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includePopulationSize = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
 	}
 	
 	/**
@@ -431,47 +451,47 @@ public class Controller {
 					.showAggregate()
 					.showStatisticalSignificance();
 						
-			if (getIncludeHypervolume()) {
+			if (includeHypervolume().get()) {
 				analyzer.includeHypervolume();
 			}
 			
-			if (getIncludeGenerationalDistance()) {
+			if (includeGenerationalDistance().get()) {
 				analyzer.includeGenerationalDistance();
 			}
 			
-			if (getIncludeGenerationalDistancePlus()) {
+			if (includeGenerationalDistancePlus().get()) {
 				analyzer.includeGenerationalDistancePlus();
 			}
 			
-			if (getIncludeInvertedGenerationalDistance()) {
+			if (includeInvertedGenerationalDistance().get()) {
 				analyzer.includeInvertedGenerationalDistance();
 			}
 			
-			if (getIncludeInvertedGenerationalDistancePlus()) {
+			if (includeInvertedGenerationalDistancePlus().get()) {
 				analyzer.includeInvertedGenerationalDistancePlus();
 			}
 			
-			if (getIncludeSpacing()) {
+			if (includeSpacing().get()) {
 				analyzer.includeSpacing();
 			}
 			
-			if (getIncludeAdditiveEpsilonIndicator()) {
+			if (includeAdditiveEpsilonIndicator().get()) {
 				analyzer.includeAdditiveEpsilonIndicator();
 			}
 			
-			if (getIncludeContribution()) {
+			if (includeContribution().get()) {
 				analyzer.includeContribution();
 			}
 			
-			if (getIncludeR1()) {
+			if (includeR1().get()) {
 				analyzer.includeR1();
 			}
 			
-			if (getIncludeR2()) {
+			if (includeR2().get()) {
 				analyzer.includeR2();
 			}
 			
-			if (getIncludeR3()) {
+			if (includeR3().get()) {
 				analyzer.includeR3();
 			}
 			
@@ -532,71 +552,71 @@ public class Controller {
 							.withFrequency(100)
 							.withProblem(problemName);
 					
-					if (getIncludeHypervolume()) {
+					if (includeHypervolume().get()) {
 						instrumenter.attachHypervolumeCollector();
 					}
 					
-					if (getIncludeGenerationalDistance()) {
+					if (includeGenerationalDistance().get()) {
 						instrumenter.attachGenerationalDistanceCollector();
 					}
 					
-					if (getIncludeGenerationalDistancePlus()) {
+					if (includeGenerationalDistancePlus().get()) {
 						instrumenter.attachGenerationalDistancePlusCollector();
 					}
 					
-					if (getIncludeInvertedGenerationalDistance()) {
+					if (includeInvertedGenerationalDistance().get()) {
 						instrumenter.attachInvertedGenerationalDistanceCollector();
 					}
 					
-					if (getIncludeInvertedGenerationalDistancePlus()) {
+					if (includeInvertedGenerationalDistancePlus().get()) {
 						instrumenter.attachInvertedGenerationalDistancePlusCollector();
 					}
 					
-					if (getIncludeSpacing()) {
+					if (includeSpacing().get()) {
 						instrumenter.attachSpacingCollector();
 					}
 					
-					if (getIncludeAdditiveEpsilonIndicator()) {
+					if (includeAdditiveEpsilonIndicator().get()) {
 						instrumenter.attachAdditiveEpsilonIndicatorCollector();
 					}
 					
-					if (getIncludeContribution()) {
+					if (includeContribution().get()) {
 						instrumenter.attachContributionCollector();
 					}
 					
-					if (getIncludeR1()) {
+					if (includeR1().get()) {
 						instrumenter.attachR1Collector();
 					}
 					
-					if (getIncludeR2()) {
+					if (includeR2().get()) {
 						instrumenter.attachR2Collector();
 					}
 					
-					if (getIncludeR3()) {
+					if (includeR3().get()) {
 						instrumenter.attachR3Collector();
 					}
 					
-					if (getIncludeEpsilonProgress()) {
+					if (includeEpsilonProgress().get()) {
 						instrumenter.attachEpsilonProgressCollector();
 					}
 					
-					if (getIncludeAdaptiveMultimethodVariation()) {
+					if (includeAdaptiveMultimethodVariation().get()) {
 						instrumenter.attachAdaptiveMultimethodVariationCollector();
 					}
 					
-					if (getIncludeAdaptiveTimeContinuation()) {
+					if (includeAdaptiveTimeContinuation().get()) {
 						instrumenter.attachAdaptiveTimeContinuationCollector();
 					}
 					
-					if (getIncludeElapsedTime()) {
+					if (includeElapsedTime().get()) {
 						instrumenter.attachElapsedTimeCollector();
 					}
 					
-					if (getIncludeApproximationSet()) {
+					if (includeApproximationSet().get()) {
 						instrumenter.attachApproximationSetCollector();
 					}
 					
-					if (getIncludePopulationSize()) {
+					if (includePopulationSize().get()) {
 						instrumenter.attachPopulationSizeCollector();
 					}
 					
@@ -680,361 +700,165 @@ public class Controller {
 	}
 
 	/**
-	 * Returns {@code true} if the last run's trace is displayed; {@code false} otherwise.
+	 * Returns the setting for displaying the last trace.
 	 * 
-	 * @return {@code true} if the last run's trace is displayed; {@code false} otherwise
+	 * @return the setting object
 	 */
-	public boolean getShowLastTrace() {
+	public Setting<Boolean> showLastTrace() {
 		return showLastTrace;
 	}
 
 	/**
-	 * Sets the display of the last run's trace.
+	 * Returns the setting for collecting the hypervolume indicator.
 	 * 
-	 * @param showLastTrace {@code true} if the last run's trace is displayed; {@code false} otherwise
+	 * @return the setting object
 	 */
-	public void setShowLastTrace(boolean showLastTrace) {
-		this.showLastTrace = showLastTrace;
-		
-		fireSettingsChangedEvent();
-		fireViewChangedEvent();
-	}
-
-	/**
-	 * Returns {@code true} if the hypervolume indicator collector is included; {@code false} otherwise.
-	 * 
-	 * @return {@code true} if the hypervolume indicator collector is included; {@code false} otherwise
-	 */
-	public boolean getIncludeHypervolume() {
+	public Setting<Boolean> includeHypervolume() {
 		return includeHypervolume;
 	}
 
 	/**
-	 * Sets the inclusion of the hypervolume indicator collector.
+	 * Returns the setting for collecting the generational distance (GD) indicator.
 	 * 
-	 * @param includeHypervolume {@code true} if the hypervolume collector is included; {@code false} otherwise
+	 * @return the setting object
 	 */
-	public void setIncludeHypervolume(boolean includeHypervolume) {
-		this.includeHypervolume = includeHypervolume;
-		fireSettingsChangedEvent();
-	}
-
-	/**
-	 * Returns {@code true} if the generational distance indicator collector is included; {@code false} otherwise.
-	 * 
-	 * @return {@code true} if the generational distance indicator collector is included; {@code false} otherwise
-	 */
-	public boolean getIncludeGenerationalDistance() {
+	public Setting<Boolean> includeGenerationalDistance() {
 		return includeGenerationalDistance;
 	}
-
-	/**
-	 * Sets the inclusion of the generational distance indicator collector.
-	 * 
-	 * @param includeGenerationalDistance {@code true} if the generational distance indicator collector is included;
-	 *        {@code false} otherwise
-	 */
-	public void setIncludeGenerationalDistance(boolean includeGenerationalDistance) {
-		this.includeGenerationalDistance = includeGenerationalDistance;
-		fireSettingsChangedEvent();
-	}
 	
 	/**
-	 * Returns {@code true} if the generational distance indicator plus collector is included; {@code false} otherwise.
+	 * Returns the setting for collecting the generational distance plus (GD+) indicator.
 	 * 
-	 * @return {@code true} if the generational distance indicator plus collector is included; {@code false} otherwise
+	 * @return the setting object
 	 */
-	public boolean getIncludeGenerationalDistancePlus() {
+	public Setting<Boolean> includeGenerationalDistancePlus() {
 		return includeGenerationalDistancePlus;
 	}
-	
-	/**
-	 * Sets the inclusion of the generational distance plus indicator collector.
-	 * 
-	 * @param includeGenerationalDistancePlus {@code true} if the generational distance plus indicator collector is
-	 *        included; {@code false} otherwise
-	 */
-	public void setIncludeGenerationalDistancePlus(boolean includeGenerationalDistancePlus) {
-		this.includeGenerationalDistancePlus = includeGenerationalDistancePlus;
-		fireSettingsChangedEvent();
-	}
 
 	/**
-	 * Returns {@code true} if the inverted generational distance indicator collector is included; {@code false}
-	 * otherwise.
+	 * Returns the setting for collecting the inverted generational distance (IGD) indicator.
 	 * 
-	 * @return {@code true} if the inverted generational distance indicator collector is included; {@code false}
-	 *         otherwise
+	 * @return the setting object
 	 */
-	public boolean getIncludeInvertedGenerationalDistance() {
+	public Setting<Boolean> includeInvertedGenerationalDistance() {
 		return includeInvertedGenerationalDistance;
 	}
-
-	/**
-	 * Sets the inclusion of the inverted generational distance indicator collector.
-	 * 
-	 * @param includeInvertedGenerationalDistance {@code true} if the inverted generational distance indicator
-	 *        collector is included; {@code false} otherwise
-	 */
-	public void setIncludeInvertedGenerationalDistance(boolean includeInvertedGenerationalDistance) {
-		this.includeInvertedGenerationalDistance = includeInvertedGenerationalDistance;
-		fireSettingsChangedEvent();
-	}
 	
 	/**
-	 * Returns {@code true} if the inverted generational distance plus indicator collector is included; {@code false}
-	 * otherwise.
+	 * Returns the setting for collecting the inverted generational distance plus (IGD+) indicator.
 	 * 
-	 * @return {@code true} if the inverted generational distance plus indicator collector is included; {@code false}
-	 *         otherwise
+	 * @return the setting object
 	 */
-	public boolean getIncludeInvertedGenerationalDistancePlus() {
+	public Setting<Boolean> includeInvertedGenerationalDistancePlus() {
 		return includeInvertedGenerationalDistancePlus;
 	}
 
 	/**
-	 * Sets the inclusion of the inverted generational distance plus indicator collector.
+	 * Returns the setting for collecting the spacing indicator.
 	 * 
-	 * @param includeInvertedGenerationalDistancePlus {@code true} if the inverted generational distance plus indicator
-	 *        collector is included; {@code false} otherwise
+	 * @return the setting object
 	 */
-	public void setIncludeInvertedGenerationalDistancePlus(boolean includeInvertedGenerationalDistancePlus) {
-		this.includeInvertedGenerationalDistancePlus = includeInvertedGenerationalDistancePlus;
-		fireSettingsChangedEvent();
-	}
-
-	/**
-	 * Returns {@code true} if the spacing indicator collector is included; {@code false} otherwise.
-	 * 
-	 * @return {@code true} if the spacing indicator collector is included; {@code false} otherwise
-	 */
-	public boolean getIncludeSpacing() {
+	public Setting<Boolean> includeSpacing() {
 		return includeSpacing;
 	}
 
 	/**
-	 * Sets the inclusion of the spacing indicator collector.
+	 * Returns the setting for collecting the additive epsilon indicator.
 	 * 
-	 * @param includeSpacing {@code true} if the spacing indicator collector is included; {@code false} otherwise
+	 * @return the setting object
 	 */
-	public void setIncludeSpacing(boolean includeSpacing) {
-		this.includeSpacing = includeSpacing;
-		fireSettingsChangedEvent();
-	}
-
-	/**
-	 * Returns {@code true} if the additive &epsilon;-indicator collector is included; {@code false} otherwise.
-	 * 
-	 * @return {@code true} if the additive &epsilon;-indicator collector is included; {@code false} otherwise
-	 */
-	public boolean getIncludeAdditiveEpsilonIndicator() {
+	public Setting<Boolean> includeAdditiveEpsilonIndicator() {
 		return includeAdditiveEpsilonIndicator;
 	}
 
 	/**
-	 * Sets the inclusion of the additive &epsilon;-indicator collector.
+	 * Returns the setting for collecting the contribution indicator.
 	 * 
-	 * @param includeAdditiveEpsilonIndicator {@code true} if the additive  &epsilon;-indicator collector is included;
-	 *        {@code false} otherwise
+	 * @return the setting object
 	 */
-	public void setIncludeAdditiveEpsilonIndicator(boolean includeAdditiveEpsilonIndicator) {
-		this.includeAdditiveEpsilonIndicator = includeAdditiveEpsilonIndicator;
-		fireSettingsChangedEvent();
-	}
-
-	/**
-	 * Returns {@code true} if the contribution indicator collector is included; {@code false} otherwise.
-	 * 
-	 * @return {@code true} if the contribution indicator collector is included; {@code false} otherwise
-	 */
-	public boolean getIncludeContribution() {
+	public Setting<Boolean> includeContribution() {
 		return includeContribution;
-	}
-
-	/**
-	 * Sets the inclusion of the contribution indicator collector.
-	 * 
-	 * @param includeContribution {@code true} if the contribution indicator collector is included; {@code false}
-	 *        otherwise
-	 */
-	public void setIncludeContribution(boolean includeContribution) {
-		this.includeContribution = includeContribution;
-		fireSettingsChangedEvent();
 	}
 	
 	/**
-	 * Returns {@code true} if the R1 indicator collector is included; {@code false} otherwise.
+	 * Returns the setting for collecting the R1 indicator.
 	 * 
-	 * @return {@code true} if the R1 indicator collector is included; {@code false} otherwise
+	 * @return the setting object
 	 */
-	public boolean getIncludeR1() {
+	public Setting<Boolean> includeR1() {
 		return includeR1;
 	}
 	
 	/**
-	 * Sets the inclusion of the R1 indicator collector.
+	 * Returns the setting for collecting the R2 indicator.
 	 * 
-	 * @param includeR1 {@code true} if the R1 indicator collector is included; {@code false} otherwise
+	 * @return the setting object
 	 */
-	public void setIncludeR1(boolean includeR1) {
-		this.includeR1 = includeR1;
-		fireSettingsChangedEvent();
-	}
-	
-	/**
-	 * Returns {@code true} if the R2 indicator collector is included; {@code false} otherwise.
-	 * 
-	 * @return {@code true} if the R2 indicator collector is included; {@code false} otherwise
-	 */
-	public boolean getIncludeR2() {
+	public Setting<Boolean> includeR2() {
 		return includeR2;
 	}
 	
 	/**
-	 * Sets the inclusion of the R2 indicator collector.
+	 * Returns the setting for collecting the R3 indicator.
 	 * 
-	 * @param includeR2 {@code true} if the R2 indicator collector is included; {@code false} otherwise
+	 * @return the setting object
 	 */
-	public void setIncludeR2(boolean includeR2) {
-		this.includeR2 = includeR2;
-		fireSettingsChangedEvent();
-	}
-	
-	/**
-	 * Returns {@code true} if the R3 indicator collector is included; {@code false} otherwise.
-	 * 
-	 * @return {@code true} if the R3 indicator collector is included; {@code false} otherwise
-	 */
-	public boolean getIncludeR3() {
+	public Setting<Boolean> includeR3() {
 		return includeR3;
-	}
-	
-	/**
-	 * Sets the inclusion of the R3 indicator collector.
-	 * 
-	 * @param includeR3 {@code true} if the R3 indicator collector is included; {@code false} otherwise
-	 */
-	public void setIncludeR3(boolean includeR3) {
-		this.includeR3 = includeR3;
-		fireSettingsChangedEvent();
 	}
 
 	/**
-	 * Returns {@code true} if the &epsilon;-progress collector is included; {@code false} otherwise.
+	 * Returns the setting for collecting epsilon progress metrics.
 	 * 
-	 * @return {@code true} if the &epsilon;-progress collector is included; {@code false} otherwise
+	 * @return the setting object
 	 */
-	public boolean getIncludeEpsilonProgress() {
+	public Setting<Boolean> includeEpsilonProgress() {
 		return includeEpsilonProgress;
 	}
 
 	/**
-	 * Sets the inclusion of the &epsilon;-progress collector.
+	 * Returns the setting for collecting adaptive multimethod variation probabilities.
 	 * 
-	 * @param includeEpsilonProgress {@code true} if the &epsilon;-progress collector is included; {@code false}
-	 *        otherwise
+	 * @return the setting object
 	 */
-	public void setIncludeEpsilonProgress(boolean includeEpsilonProgress) {
-		this.includeEpsilonProgress = includeEpsilonProgress;
-		fireSettingsChangedEvent();
-	}
-
-	/**
-	 * Returns {@code true} if the adaptive multimethod variation collector is included; {@code false} otherwise.
-	 * 
-	 * @return {@code true} if the adaptive multimethod variation collector is included; {@code false} otherwise
-	 */
-	public boolean getIncludeAdaptiveMultimethodVariation() {
+	public Setting<Boolean> includeAdaptiveMultimethodVariation() {
 		return includeAdaptiveMultimethodVariation;
 	}
 
 	/**
-	 * Sets the inclusion of the adaptive multimethod variation collector.
+	 * Returns the setting for collecting adaptive time continuation metrics.
 	 * 
-	 * @param includeAdaptiveMultimethodVariation {@code true} if the adaptive multimethod variation collector is
-	 *        included; {@code false} otherwise
+	 * @return the setting object
 	 */
-	public void setIncludeAdaptiveMultimethodVariation(boolean includeAdaptiveMultimethodVariation) {
-		this.includeAdaptiveMultimethodVariation = includeAdaptiveMultimethodVariation;
-		fireSettingsChangedEvent();
-	}
-
-	/**
-	 * Returns {@code true} if the adaptive time continuation collector is included; {@code false} otherwise.
-	 * 
-	 * @return {@code true} if the adaptive time continuation collector is included; {@code false} otherwise
-	 */
-	public boolean getIncludeAdaptiveTimeContinuation() {
+	public Setting<Boolean> includeAdaptiveTimeContinuation() {
 		return includeAdaptiveTimeContinuation;
 	}
 
 	/**
-	 * Sets the inclusion of the adaptive time continuation collector.
+	 * Returns the setting for collecting the elapsed runtime.
 	 * 
-	 * @param includeAdaptiveTimeContinuation {@code true} if the adaptive time continuation collector is included;
-	 *        {@code false} otherwise
+	 * @return the setting object
 	 */
-	public void setIncludeAdaptiveTimeContinuation(boolean includeAdaptiveTimeContinuation) {
-		this.includeAdaptiveTimeContinuation = includeAdaptiveTimeContinuation;
-		fireSettingsChangedEvent();
-	}
-
-	/**
-	 * Returns {@code true} if the elapsed time collector is included; {@code false} otherwise.
-	 * 
-	 * @return {@code true} if the elapsed time collector is included; {@code false} otherwise
-	 */
-	public boolean getIncludeElapsedTime() {
+	public Setting<Boolean> includeElapsedTime() {
 		return includeElapsedTime;
 	}
 
 	/**
-	 * Sets the inclusion of the elapsed time collector.
+	 * Returns the setting for collecting the approximation set.
 	 * 
-	 * @param includeElapsedTime {@code true} if the elapsed time collector is included; {@code false} otherwise
+	 * @return the setting object
 	 */
-	public void setIncludeElapsedTime(boolean includeElapsedTime) {
-		this.includeElapsedTime = includeElapsedTime;
-		fireSettingsChangedEvent();
-	}
-
-	/**
-	 * Returns {@code true} if the approximation set collector is included; {@code false} otherwise.
-	 * 
-	 * @return {@code true} if the approximation set collector is included; {@code false} otherwise
-	 */
-	public boolean getIncludeApproximationSet() {
+	public Setting<Boolean> includeApproximationSet() {
 		return includeApproximationSet;
 	}
 
 	/**
-	 * Sets the inclusion of the approximation set collector.
+	 * Returns the setting for collecting the population / archive size.
 	 * 
-	 * @param includeApproximationSet {@code true} if the approximation set collector is included; {@code false}
-	 *        otherwise
+	 * @return the setting object
 	 */
-	public void setIncludeApproximationSet(boolean includeApproximationSet) {
-		this.includeApproximationSet = includeApproximationSet;
-		fireSettingsChangedEvent();
-	}
-
-	/**
-	 * Returns {@code true} if the population size collector is included; {@code false} otherwise.
-	 * 
-	 * @return {@code true} if the population size collector is included; {@code false} otherwise
-	 */
-	public boolean getIncludePopulationSize() {
+	public Setting<Boolean> includePopulationSize() {
 		return includePopulationSize;
-	}
-
-	/**
-	 * Sets the inclusion of the population size collector.
-	 * 
-	 * @param includePopulationSize {@code true} if the population size collector is included; {@code false} otherwise
-	 */
-	public void setIncludePopulationSize(boolean includePopulationSize) {
-		this.includePopulationSize = includePopulationSize;
-		fireSettingsChangedEvent();
 	}
 	
 	/**
@@ -1058,26 +882,12 @@ public class Controller {
 	}
 
 	/**
-	 * Returns {@code true} if individual traces are shown; {@code false} if quantiles are shown.
+	 * Returns the setting for displaying individual traces versus quantiles.
 	 * 
-	 * @return {@code true} if individual traces are shown; {@code false} if quantiles are shown
+	 * @return the setting object
 	 */
-	public boolean getShowIndividualTraces() {
+	public Setting<Boolean> showIndividualTraces() {
 		return showIndividualTraces;
-	}
-
-	/**
-	 * Set to {@code true} to show individual traces; {@code false} to show quantiles.
-	 * 
-	 * @param showIndividualTraces {@code true} to show individual traces; {@code false} to show quantiles
-	 */
-	public void setShowIndividualTraces(boolean showIndividualTraces) {
-		if (this.showIndividualTraces != showIndividualTraces) {
-			this.showIndividualTraces = showIndividualTraces;
-			
-			fireSettingsChangedEvent();
-			fireViewChangedEvent();
-		}
 	}
 
 	/**
@@ -1099,6 +909,39 @@ public class Controller {
 				message, 
 				"Error", 
 				JOptionPane.ERROR_MESSAGE);
+	}
+	
+	/**
+	 * Represents a mutable value or setting that can optionally fire events when the value changes.
+	 * 
+	 * @param <T> the underlying type of the setting
+	 */
+	public class Setting<T> {
+		
+		private T value;
+		
+		private List<ControllerEvent.Type> eventTypes;
+		
+		public Setting(T value, ControllerEvent.Type... eventTypes) {
+			super();
+			this.value = value;
+			this.eventTypes = List.of(eventTypes);
+		}
+		
+		public void set(T newValue) {
+			if (!value.equals(newValue)) {
+				value = newValue;
+				
+				for (ControllerEvent.Type eventType : eventTypes) {
+					fireEvent(new ControllerEvent(Controller.this, eventType));
+				}
+			}
+		}
+		
+		public T get() {
+			return value;
+		}
+		
 	}
 
 }
