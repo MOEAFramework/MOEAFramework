@@ -94,6 +94,9 @@ public class DiagnosticToolTest {
 		DiagnosticTool tool = new DiagnosticTool();
 		Controller controller = tool.getController();
 		
+		// Wait for event queue to clear before tracking events
+		SwingUtilities.invokeAndWait(() -> {});
+		
 		controller.addControllerListener(new ControllerListener() {
 
 			@Override
@@ -133,30 +136,28 @@ public class DiagnosticToolTest {
 			Thread.yield();
 		}
 		
-		SwingUtilities.invokeAndWait(() -> {
-			Assert.assertEquals(0, settingsChangedCount.get());
-			Assert.assertEquals(2, stateChangedCount.get());
-			Assert.assertGreaterThanOrEqual(modelChangedCount.get(), 5);
-			Assert.assertGreaterThanOrEqual(viewChangedCount.get(), 5);
-			Assert.assertEquals(56, progressChangedCount.get()); // 11 per seed * 5 seeds + 1 final update
-			
-			Assert.assertEquals(100, controller.getOverallProgress());
-			Assert.assertEquals(0, controller.getRunProgress());
-			
-			ResultKey key = new ResultKey("NSGAII", "DTLZ2_2");
-			Assert.assertNotNull(controller.get(key));
-			Assert.assertSize(5, controller.get(key));
-			
-			for (int i = 0; i < 5; i++) {
-				Assert.assertTrue(controller.get(key).get(i).keys().contains("Hypervolume"));
-				Assert.assertTrue(controller.get(key).get(i).keys().contains("Population Size"));
-				Assert.assertTrue(controller.get(key).get(i).keys().contains("Approximation Set"));
-			}
-			
-			Assert.assertContains(tool.getSelectedResults(), key);
-			Assert.assertNotNull(controller.getLastObservation());
-		});
-		
+		Assert.assertEquals(0, settingsChangedCount.get());
+		Assert.assertEquals(2, stateChangedCount.get());
+		Assert.assertGreaterThanOrEqual(modelChangedCount.get(), 5);
+		Assert.assertGreaterThanOrEqual(viewChangedCount.get(), 5);
+		Assert.assertEquals(56, progressChangedCount.get()); // 11 per seed * 5 seeds + 1 final update
+
+		Assert.assertEquals(100, controller.getOverallProgress());
+		Assert.assertEquals(0, controller.getRunProgress());
+
+		ResultKey key = new ResultKey("NSGAII", "DTLZ2_2");
+		Assert.assertNotNull(controller.get(key));
+		Assert.assertSize(5, controller.get(key));
+
+		for (int i = 0; i < 5; i++) {
+			Assert.assertTrue(controller.get(key).get(i).keys().contains("Hypervolume"));
+			Assert.assertTrue(controller.get(key).get(i).keys().contains("Population Size"));
+			Assert.assertTrue(controller.get(key).get(i).keys().contains("Approximation Set"));
+		}
+
+		Assert.assertContains(tool.getSelectedResults(), key);
+		Assert.assertNotNull(controller.getLastObservation());
+
 		return tool;
 	}
 	
