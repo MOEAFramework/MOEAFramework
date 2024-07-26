@@ -985,7 +985,11 @@ public class Controller {
 			super(value, eventTypes);
 		}
 		
-		public InvertedToggle invert() {
+		public void flip() {
+			set(!get());
+		}
+		
+		public Toggle invert() {
 			return new InvertedToggle(this);
 		}
 		
@@ -993,15 +997,14 @@ public class Controller {
 	
 	/**
 	 * An inverted version of a toggle.  For example, if the underlying value of a {@link Toggle} is {@code false}, then
-	 * the inverse is {@code true}.  This setting does not actually store any value, but instead delegates to the
-	 * original toggle.
+	 * the inverse is {@code true}.  This class delegates to the original toggle for storing values and firing events.
 	 */
-	class InvertedToggle implements Setting<Boolean> {
+	class InvertedToggle extends Toggle {
 		
 		private final Toggle original;
 
 		public InvertedToggle(Toggle original) {
-			super();
+			super(false);
 			this.original = original;
 		}
 		
@@ -1010,10 +1013,12 @@ public class Controller {
 			original.set(!newValue);
 		}
 		
+		@Override
 		public Boolean get() {
 			return !original.get();
 		}
 		
+		@Override
 		public Toggle invert() {
 			return original;
 		}
