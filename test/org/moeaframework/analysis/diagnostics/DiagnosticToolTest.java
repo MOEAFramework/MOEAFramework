@@ -20,11 +20,13 @@ package org.moeaframework.analysis.diagnostics;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
 import javax.swing.Action;
+import javax.swing.SwingUtilities;
 
 import org.jfree.ui.about.AboutDialog;
 import org.junit.Before;
@@ -56,7 +58,7 @@ public class DiagnosticToolTest {
 	}
 	
 	@Test
-	public void testWithDisplay() throws InterruptedException {
+	public void testWithDisplay() throws InterruptedException, InvocationTargetException {
 		// Render the UI and display plots to check for any errors
 		DiagnosticTool tool = runTest();
 		tool.setVisible(true);
@@ -75,12 +77,12 @@ public class DiagnosticToolTest {
 	}
 	
 	@Test
-	public void testWithoutDisplay() throws InterruptedException {
+	public void testWithoutDisplay() throws InterruptedException, InvocationTargetException {
 		runTest();
 	}
 	
 	@Test
-	public void testSaveLoadData() throws IOException, InterruptedException {
+	public void testSaveLoadData() throws IOException, InterruptedException, InvocationTargetException {
 		DiagnosticTool tool = runTest();
 		
 		File tempFile = TempFiles.createFile();
@@ -88,7 +90,7 @@ public class DiagnosticToolTest {
 		tool.getController().loadData(tempFile);
 	}
 	
-	public DiagnosticTool runTest() throws InterruptedException {
+	public DiagnosticTool runTest() throws InterruptedException, InvocationTargetException {
 		DiagnosticTool tool = new DiagnosticTool();
 		Controller controller = tool.getController();
 		
@@ -131,33 +133,35 @@ public class DiagnosticToolTest {
 			Thread.yield();
 		}
 		
-		Assert.assertEquals(0, settingsChangedCount.get());
-		Assert.assertEquals(2, stateChangedCount.get());
-		Assert.assertEquals(5, modelChangedCount.get());
-		Assert.assertGreaterThanOrEqual(viewChangedCount.get(), 5);
-		Assert.assertEquals(506, progressChangedCount.get()); // 101 per seed * 5 seeds + 1 final update
-		
-		Assert.assertEquals(100, controller.getOverallProgress());
-		Assert.assertEquals(0, controller.getRunProgress());
-		
-		ResultKey key = new ResultKey("NSGAII", "DTLZ2_2");
-		Assert.assertNotNull(controller.get(key));
-		Assert.assertSize(5, controller.get(key));
-		
-		for (int i = 0; i < 5; i++) {
-			Assert.assertTrue(controller.get(key).get(i).keys().contains("Hypervolume"));
-			Assert.assertTrue(controller.get(key).get(i).keys().contains("Population Size"));
-			Assert.assertTrue(controller.get(key).get(i).keys().contains("Approximation Set"));
-		}
-		
-		Assert.assertContains(tool.getSelectedResults(), key);
-		Assert.assertNotNull(controller.getLastObservation());
+		SwingUtilities.invokeAndWait(() -> {
+			Assert.assertEquals(0, settingsChangedCount.get());
+			Assert.assertEquals(2, stateChangedCount.get());
+			Assert.assertEquals(5, modelChangedCount.get());
+			Assert.assertGreaterThanOrEqual(viewChangedCount.get(), 5);
+			Assert.assertEquals(506, progressChangedCount.get()); // 101 per seed * 5 seeds + 1 final update
+			
+			Assert.assertEquals(100, controller.getOverallProgress());
+			Assert.assertEquals(0, controller.getRunProgress());
+			
+			ResultKey key = new ResultKey("NSGAII", "DTLZ2_2");
+			Assert.assertNotNull(controller.get(key));
+			Assert.assertSize(5, controller.get(key));
+			
+			for (int i = 0; i < 5; i++) {
+				Assert.assertTrue(controller.get(key).get(i).keys().contains("Hypervolume"));
+				Assert.assertTrue(controller.get(key).get(i).keys().contains("Population Size"));
+				Assert.assertTrue(controller.get(key).get(i).keys().contains("Approximation Set"));
+			}
+			
+			Assert.assertContains(tool.getSelectedResults(), key);
+			Assert.assertNotNull(controller.getLastObservation());
+		});
 		
 		return tool;
 	}
 	
 	@Test
-	public void testToggleActions() {
+	public void testToggleActions() throws InvocationTargetException, InterruptedException {
 		DiagnosticTool tool = new DiagnosticTool();
 		Controller controller = tool.getController();
 		ActionFactory actionFactory = tool.getActionFactory();
@@ -188,13 +192,15 @@ public class DiagnosticToolTest {
 		Assert.assertLocalized(new DiagnosticTool(), Assert::isLocalized);
 	}
 
-	private void testToggleAction(Controller controller, Action action, Function<Controller, Boolean> reader) {
-		Boolean originalValue = reader.apply(controller);
-		Assert.assertEquals(originalValue, action.getValue(Action.SELECTED_KEY));
-		
-		action.putValue(Action.SELECTED_KEY, !originalValue.booleanValue());
-		action.actionPerformed(new ActionEvent(action, ActionEvent.ACTION_PERFORMED, "click"));
-		Assert.assertEquals(!originalValue, reader.apply(controller));
+	private void testToggleAction(Controller controller, Action action, Function<Controller, Boolean> reader) throws InvocationTargetException, InterruptedException {
+		SwingUtilities.invokeAndWait(() -> {
+			Boolean originalValue = reader.apply(controller);
+			Assert.assertEquals(originalValue, action.getValue(Action.SELECTED_KEY));
+			
+			action.putValue(Action.SELECTED_KEY, !originalValue.booleanValue());
+			action.actionPerformed(new ActionEvent(action, ActionEvent.ACTION_PERFORMED, "click"));
+			Assert.assertEquals(!originalValue, reader.apply(controller));
+		});
 	}
 
 }

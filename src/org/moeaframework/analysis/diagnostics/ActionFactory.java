@@ -18,7 +18,6 @@
 package org.moeaframework.analysis.diagnostics;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -792,8 +791,11 @@ public class ActionFactory {
 
 		private static final long serialVersionUID = 4030882078395416151L;
 		
+		protected final String id;
+		
 		public LocalizedAction(String id) {
 			super();
+			this.id = id;
 			
 			putValue(Action.NAME, localization.getString("action." + id + ".name"));
 			putValue(Action.SHORT_DESCRIPTION, localization.getString("action." + id + ".description"));
