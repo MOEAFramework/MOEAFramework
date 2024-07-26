@@ -393,9 +393,7 @@ public class ActionFactory {
 		
 		showLastTraceAction = new ToggleAction("showLastTrace", controller.showLastTrace());
 		showIndividualTracesAction = new ToggleAction("showIndividualTraces", controller.showIndividualTraces());
-		showQuantilesAction = new ToggleAction("showQuantiles",
-				() -> !controller.showIndividualTraces().get(),
-				(b) -> controller.showIndividualTraces().set(!b));
+		showQuantilesAction = new ToggleAction("showQuantiles", controller.showIndividualTraces().invert());
 		
 		memoryUsageAction = new AbstractAction() {
 

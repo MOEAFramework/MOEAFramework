@@ -50,6 +50,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.progress.ProgressEvent;
 import org.moeaframework.util.progress.ProgressListener;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * The controller manages the underlying data model, performs the evaluation of jobs, and notifies any listeners when
@@ -75,92 +76,97 @@ public class Controller {
 	/**
 	 * The setting for displaying the last run's trace.
 	 */
-	private final Setting<Boolean> showLastTrace;
+	private final Toggle showLastTrace;
 	
 	/**
 	 * The setting for collecting the hypervolume indicator.
 	 */
-	private final Setting<Boolean> includeHypervolume;
+	private final Toggle includeHypervolume;
 	
 	/**
 	 * The setting for collecting the generational distance (GD) indicator.
 	 */
-	private final Setting<Boolean> includeGenerationalDistance;
+	private final Toggle includeGenerationalDistance;
 	
 	/**
 	 * The setting for collecting the generational distance plus (GD+) indicator.
 	 */
-	private final Setting<Boolean> includeGenerationalDistancePlus;
+	private final Toggle includeGenerationalDistancePlus;
 	
 	/**
 	 * The setting for collecting the inverted generational distance plus (IGD) indicator.
 	 */
-	private final Setting<Boolean> includeInvertedGenerationalDistance;
+	private final Toggle includeInvertedGenerationalDistance;
 	
 	/**
 	 * The setting for collecting the inverted generational distance plus (IGD+) indicator.
 	 */
-	private final Setting<Boolean> includeInvertedGenerationalDistancePlus;
+	private final Toggle includeInvertedGenerationalDistancePlus;
 	
 	/**
 	 * The setting for collecting the spacing indicator.
 	 */
-	private final Setting<Boolean> includeSpacing;
+	private final Toggle includeSpacing;
 	
 	/**
 	 * The setting for collecting the additive epsilon indicator.
 	 */
-	private final Setting<Boolean> includeAdditiveEpsilonIndicator;
+	private final Toggle includeAdditiveEpsilonIndicator;
 	
 	/**
 	 * The setting for collecting the contribution indicator.
 	 */
-	private final Setting<Boolean> includeContribution;
+	private final Toggle includeContribution;
 	
 	/**
 	 * The setting for collecting the R1 indicator.
 	 */
-	private final Setting<Boolean> includeR1;
+	private final Toggle includeR1;
 	
 	/**
 	 * The setting for collecting the R2 indicator.
 	 */
-	private final Setting<Boolean> includeR2;
+	private final Toggle includeR2;
 	
 	/**
 	 * The setting for collecting the R3 indicator.
 	 */
-	private final Setting<Boolean> includeR3;
+	private final Toggle includeR3;
 	
 	/**
 	 * The setting for collecting epsilon progress metrics.
 	 */
-	private final Setting<Boolean> includeEpsilonProgress;
+	private final Toggle includeEpsilonProgress;
 	
 	/**
 	 * The setting for collecting adaptive multimethod variation probabilities.
 	 */
-	private final Setting<Boolean> includeAdaptiveMultimethodVariation;
+	private final Toggle includeAdaptiveMultimethodVariation;
 	
 	/**
 	 * The setting for collecting adaptive time continuation metrics.
 	 */
-	private final Setting<Boolean> includeAdaptiveTimeContinuation;
+	private final Toggle includeAdaptiveTimeContinuation;
 	
 	/**
 	 * The setting for collecting the elapsed runtime.
 	 */
-	private final Setting<Boolean> includeElapsedTime;
+	private final Toggle includeElapsedTime;
 	
 	/**
 	 * The setting for collecting the approximation set.
 	 */
-	private final Setting<Boolean> includeApproximationSet;
+	private final Toggle includeApproximationSet;
 	
 	/**
 	 * The setting for collecting the population / archive sizes.
 	 */
-	private final Setting<Boolean> includePopulationSize;
+	private final Toggle includePopulationSize;
+	
+	/**
+	 * Toggles between showing individual trace lines when {@code true} and quantiles when {@code false}.
+	 */
+	private final Toggle showIndividualTraces;
 	
 	/**
 	 * The run progress of the current job being evaluated.
@@ -183,11 +189,6 @@ public class Controller {
 	private final DiagnosticTool frame;
 	
 	/**
-	 * Toggles between showing individual trace lines when {@code true} and quantiles when {@code false}.
-	 */
-	private final Setting<Boolean> showIndividualTraces;
-	
-	/**
 	 * The executor for the current run.
 	 */
 	private Executor executor;
@@ -204,25 +205,25 @@ public class Controller {
 		listeners = EventListenerSupport.create(ControllerListener.class);
 		results = new HashMap<ResultKey, List<Observations>>();
 		
-		showLastTrace = new Setting<Boolean>(false, ControllerEvent.Type.SETTINGS_CHANGED, ControllerEvent.Type.VIEW_CHANGED);
-		showIndividualTraces = new Setting<Boolean>(false, ControllerEvent.Type.SETTINGS_CHANGED, ControllerEvent.Type.VIEW_CHANGED);
-		includeHypervolume = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeGenerationalDistance = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeGenerationalDistancePlus = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeInvertedGenerationalDistance = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeInvertedGenerationalDistancePlus = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeSpacing = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeAdditiveEpsilonIndicator = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeContribution = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeR1 = new Setting<Boolean>(false, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeR2 = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeR3 = new Setting<Boolean>(false, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeEpsilonProgress = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeAdaptiveMultimethodVariation = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeAdaptiveTimeContinuation = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeElapsedTime = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeApproximationSet = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includePopulationSize = new Setting<Boolean>(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		showLastTrace = new Toggle(false, ControllerEvent.Type.SETTINGS_CHANGED, ControllerEvent.Type.VIEW_CHANGED);
+		showIndividualTraces = new Toggle(false, ControllerEvent.Type.SETTINGS_CHANGED, ControllerEvent.Type.VIEW_CHANGED);
+		includeHypervolume = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeGenerationalDistance = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeGenerationalDistancePlus = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeInvertedGenerationalDistance = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeInvertedGenerationalDistancePlus = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeSpacing = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeAdditiveEpsilonIndicator = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeContribution = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeR1 = new Toggle(false, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeR2 = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeR3 = new Toggle(false, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeEpsilonProgress = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeAdaptiveMultimethodVariation = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeAdaptiveTimeContinuation = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeElapsedTime = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeApproximationSet = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includePopulationSize = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
 	}
 	
 	/**
@@ -704,7 +705,7 @@ public class Controller {
 	 * 
 	 * @return the setting object
 	 */
-	public Setting<Boolean> showLastTrace() {
+	public Toggle showLastTrace() {
 		return showLastTrace;
 	}
 
@@ -713,7 +714,7 @@ public class Controller {
 	 * 
 	 * @return the setting object
 	 */
-	public Setting<Boolean> includeHypervolume() {
+	public Toggle includeHypervolume() {
 		return includeHypervolume;
 	}
 
@@ -722,7 +723,7 @@ public class Controller {
 	 * 
 	 * @return the setting object
 	 */
-	public Setting<Boolean> includeGenerationalDistance() {
+	public Toggle includeGenerationalDistance() {
 		return includeGenerationalDistance;
 	}
 	
@@ -731,7 +732,7 @@ public class Controller {
 	 * 
 	 * @return the setting object
 	 */
-	public Setting<Boolean> includeGenerationalDistancePlus() {
+	public Toggle includeGenerationalDistancePlus() {
 		return includeGenerationalDistancePlus;
 	}
 
@@ -740,7 +741,7 @@ public class Controller {
 	 * 
 	 * @return the setting object
 	 */
-	public Setting<Boolean> includeInvertedGenerationalDistance() {
+	public Toggle includeInvertedGenerationalDistance() {
 		return includeInvertedGenerationalDistance;
 	}
 	
@@ -749,7 +750,7 @@ public class Controller {
 	 * 
 	 * @return the setting object
 	 */
-	public Setting<Boolean> includeInvertedGenerationalDistancePlus() {
+	public Toggle includeInvertedGenerationalDistancePlus() {
 		return includeInvertedGenerationalDistancePlus;
 	}
 
@@ -758,7 +759,7 @@ public class Controller {
 	 * 
 	 * @return the setting object
 	 */
-	public Setting<Boolean> includeSpacing() {
+	public Toggle includeSpacing() {
 		return includeSpacing;
 	}
 
@@ -767,7 +768,7 @@ public class Controller {
 	 * 
 	 * @return the setting object
 	 */
-	public Setting<Boolean> includeAdditiveEpsilonIndicator() {
+	public Toggle includeAdditiveEpsilonIndicator() {
 		return includeAdditiveEpsilonIndicator;
 	}
 
@@ -776,7 +777,7 @@ public class Controller {
 	 * 
 	 * @return the setting object
 	 */
-	public Setting<Boolean> includeContribution() {
+	public Toggle includeContribution() {
 		return includeContribution;
 	}
 	
@@ -785,7 +786,7 @@ public class Controller {
 	 * 
 	 * @return the setting object
 	 */
-	public Setting<Boolean> includeR1() {
+	public Toggle includeR1() {
 		return includeR1;
 	}
 	
@@ -794,7 +795,7 @@ public class Controller {
 	 * 
 	 * @return the setting object
 	 */
-	public Setting<Boolean> includeR2() {
+	public Toggle includeR2() {
 		return includeR2;
 	}
 	
@@ -803,7 +804,7 @@ public class Controller {
 	 * 
 	 * @return the setting object
 	 */
-	public Setting<Boolean> includeR3() {
+	public Toggle includeR3() {
 		return includeR3;
 	}
 
@@ -812,7 +813,7 @@ public class Controller {
 	 * 
 	 * @return the setting object
 	 */
-	public Setting<Boolean> includeEpsilonProgress() {
+	public Toggle includeEpsilonProgress() {
 		return includeEpsilonProgress;
 	}
 
@@ -821,7 +822,7 @@ public class Controller {
 	 * 
 	 * @return the setting object
 	 */
-	public Setting<Boolean> includeAdaptiveMultimethodVariation() {
+	public Toggle includeAdaptiveMultimethodVariation() {
 		return includeAdaptiveMultimethodVariation;
 	}
 
@@ -830,7 +831,7 @@ public class Controller {
 	 * 
 	 * @return the setting object
 	 */
-	public Setting<Boolean> includeAdaptiveTimeContinuation() {
+	public Toggle includeAdaptiveTimeContinuation() {
 		return includeAdaptiveTimeContinuation;
 	}
 
@@ -839,7 +840,7 @@ public class Controller {
 	 * 
 	 * @return the setting object
 	 */
-	public Setting<Boolean> includeElapsedTime() {
+	public Toggle includeElapsedTime() {
 		return includeElapsedTime;
 	}
 
@@ -848,7 +849,7 @@ public class Controller {
 	 * 
 	 * @return the setting object
 	 */
-	public Setting<Boolean> includeApproximationSet() {
+	public Toggle includeApproximationSet() {
 		return includeApproximationSet;
 	}
 
@@ -857,8 +858,17 @@ public class Controller {
 	 * 
 	 * @return the setting object
 	 */
-	public Setting<Boolean> includePopulationSize() {
+	public Toggle includePopulationSize() {
 		return includePopulationSize;
+	}
+	
+	/**
+	 * Returns the setting for displaying individual traces versus quantiles.
+	 * 
+	 * @return the setting object
+	 */
+	public Toggle showIndividualTraces() {
+		return showIndividualTraces;
 	}
 	
 	/**
@@ -879,15 +889,6 @@ public class Controller {
 	 */
 	public int getOverallProgress() {
 		return overallProgress;
-	}
-
-	/**
-	 * Returns the setting for displaying individual traces versus quantiles.
-	 * 
-	 * @return the setting object
-	 */
-	public Setting<Boolean> showIndividualTraces() {
-		return showIndividualTraces;
 	}
 
 	/**
@@ -912,22 +913,52 @@ public class Controller {
 	}
 	
 	/**
-	 * Represents a mutable value or setting that can optionally fire events when the value changes.
+	 * Represents a setting that can be configured programmatically or through user interaction in the UI.
 	 * 
 	 * @param <T> the underlying type of the setting
 	 */
-	public class Setting<T> {
+	public interface Setting<T> {
+		
+		/**
+		 * Sets the value of the setting.
+		 * 
+		 * @param newValue the new value
+		 */
+		void set(T newValue);
+		
+		/**
+		 * Gets the value of the setting.
+		 * 
+		 * @return the current value
+		 */
+		T get();
+		
+	}
+	
+	/**
+	 * Abstract setting that can optionally fire events when the value changes.
+	 *  
+	 * @param <T> the underlying type of the setting
+	 */
+	abstract class AbstractSetting<T> implements Setting<T> {
 		
 		private T value;
 		
 		private List<ControllerEvent.Type> eventTypes;
 		
-		public Setting(T value, ControllerEvent.Type... eventTypes) {
-			super();
-			this.value = value;
-			this.eventTypes = List.of(eventTypes);
+		public AbstractSetting(T value, ControllerEvent.Type... eventTypes) {
+			this(value, List.of(eventTypes));
 		}
 		
+		public AbstractSetting(T value, List<ControllerEvent.Type> eventTypes) {
+			super();
+			this.value = value;
+			this.eventTypes = eventTypes;
+			
+			Validate.that("value", value).isNotNull();
+		}
+		
+		@Override
 		public void set(T newValue) {
 			if (!value.equals(newValue)) {
 				value = newValue;
@@ -938,8 +969,53 @@ public class Controller {
 			}
 		}
 		
+		@Override
 		public T get() {
 			return value;
+		}
+		
+	}
+	
+	/**
+	 * A togglable setting representing a binary state (on/off, true/false, enabled/disabled).
+	 */
+	class Toggle extends AbstractSetting<Boolean> {
+		
+		public Toggle(boolean value, ControllerEvent.Type... eventTypes) {
+			super(value, eventTypes);
+		}
+		
+		public InvertedToggle invert() {
+			return new InvertedToggle(this);
+		}
+		
+	}
+	
+	/**
+	 * An inverted version of a toggle.  For example, if the underlying value of a {@link Toggle} is {@code false}, then
+	 * the inverse is {@code true}.  This setting does not actually store any value, but instead delegates to the
+	 * original toggle.
+	 */
+	class InvertedToggle implements Setting<Boolean> {
+		
+		private final Toggle original;
+
+		public InvertedToggle(Toggle original) {
+			super();
+			this.original = original;
+		}
+		
+		@Override
+		public void set(Boolean newValue) {
+			original.set(!newValue);
+		}
+		
+		public Boolean get() {
+			return !original.get();
+		}
+		
+		public Toggle invert() {
+			return original;
 		}
 		
 	}
