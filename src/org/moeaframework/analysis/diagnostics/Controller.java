@@ -209,9 +209,9 @@ public class Controller {
 		showIndividualTraces = new Toggle(false, ControllerEvent.Type.SETTINGS_CHANGED, ControllerEvent.Type.VIEW_CHANGED);
 		includeHypervolume = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
 		includeGenerationalDistance = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeGenerationalDistancePlus = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeGenerationalDistancePlus = new Toggle(false, ControllerEvent.Type.SETTINGS_CHANGED);
 		includeInvertedGenerationalDistance = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeInvertedGenerationalDistancePlus = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeInvertedGenerationalDistancePlus = new Toggle(false, ControllerEvent.Type.SETTINGS_CHANGED);
 		includeSpacing = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
 		includeAdditiveEpsilonIndicator = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
 		includeContribution = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);

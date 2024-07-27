@@ -362,15 +362,15 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		metrics.addSeparator();
 		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeHypervolumeAction()));
 		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeGenerationalDistanceAction()));
-		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeGenerationalDistancePlusAction()));
 		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeInvertedGenerationalDistanceAction()));
-		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeInvertedGenerationalDistancePlusAction()));
 		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeSpacingAction()));
 		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeAdditiveEpsilonIndicatorAction()));
 		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeContributionAction()));
 		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeR1Action()));
 		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeR2Action()));
 		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeR3Action()));
+		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeGenerationalDistancePlusAction()));
+		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeInvertedGenerationalDistancePlusAction()));
 		metrics.addSeparator();
 		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeEpsilonProgressAction()));
 		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeAdaptiveMultimethodVariationAction()));
