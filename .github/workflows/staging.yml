@@ -43,6 +43,12 @@ jobs:
           server-password: MAVEN_PASSWORD
           gpg-private-key: ${{ secrets.GPG_SIGNING_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
+      - name: Install required software
+        run: |
+          sudo apt install xmlstarlet
+      - name: Install required software
+        run: |
+          sudo apt install xmlstarlet
       - name: Setup Git and GitHub CLI
         run: |
           gh auth setup-git
@@ -119,6 +125,25 @@ jobs:
               dist/MOEAFramework-${{ inputs.version }}.tar.gz \
               dist/MOEAFramework-${{ inputs.version }}-Demo.jar \
               dist/MOEAFramework-${{ inputs.version }}-Source.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+      - name: Trigger integration tests
+        run: |
+          branch_name="moeaframework-v${{ inputs.version }}"
+          pushd ..
+          gh repo clone MOEAFramework/IntegrationTests
+          pushd IntegrationTests
+          git checkout ${branch_name} || git checkout -b ${branch_name}
+          
+          xmlstarlet edit --inplace -N x="http://maven.apache.org/POM/4.0.0" --update '//x:project/x:dependencies/x:dependency[x:artifactId="moeaframework"]/x:version' --value "${{ inputs.version }}" pom.xml
+
+          git add .
+          
+          if [[ -n "$(git status -s)" ]]; then
+            git commit -m "Update for MOEAFramework v${{ inputs.version }}"
+            git push origin ${branch_name}
+            gh pr create --head ${branch_name} --fill --repo MOEAFramework/IntegrationTests || true
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
       - name: Upload release artifacts
