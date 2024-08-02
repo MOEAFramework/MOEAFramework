@@ -32,7 +32,6 @@ jobs:
   stage:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
       - name: Setup release
         uses: MOEAFramework/.github/actions/setup-release@main
         with:
