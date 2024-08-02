@@ -51,7 +51,6 @@ jobs:
           - os: macos-${{ inputs.macos-version || '13' }}
             java: 21
     steps:
-    - uses: actions/checkout@v4
     - name: Setup build
       uses: MOEAFramework/.github/actions/setup-build@main
       with:
@@ -95,7 +94,6 @@ jobs:
   maven-tests:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
     - name: Setup build
       uses: MOEAFramework/.github/actions/setup-build@main
       with:
@@ -125,7 +123,6 @@ jobs:
   content-tests:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
     - name: Setup build
       uses: MOEAFramework/.github/actions/setup-build@main
       with:
@@ -156,7 +153,6 @@ jobs:
         include:
           - os: macos-${{ inputs.macos-version || '13' }}
     steps:
-    - uses: actions/checkout@v4
     - name: Setup build
       uses: MOEAFramework/.github/actions/setup-build@main
       with:
@@ -188,7 +184,6 @@ jobs:
   package-tests:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
     - name: Setup build
       uses: MOEAFramework/.github/actions/setup-build@main
       with:
