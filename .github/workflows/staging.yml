@@ -46,19 +46,19 @@ jobs:
           skip-validation: ${{ inputs.skip-validation }}
       - name: Build release artifacts
         if: ${{ inputs.publish-github }}
-        run: |
-          ant package-binary
-          ant package-demo
-          ant package-source
+        uses: MOEAFramework/.github/actions/run-ant@main
+        with:
+          target: package-binary package-demo package-source
       - name: Generate release notes
         if: ${{ inputs.publish-github }}
         run: |
           cat docs/releaseNotes.md | awk '/## Version ${{ inputs.version }}/{flag=1; next} /##/{flag=0} flag' > dist/releaseNotes.md
           [ "$(wc -l < dist/releaseNotes.md)" -gt 0 ] || (>&2 echo "Unable to read release notes from docs/releaseNotes.md"; exit -1)
-      - name: Prepare Maven
+      - name: Setup Maven project
         if: ${{ inputs.publish-maven }}
-        run: |
-          ant build-maven
+        uses: MOEAFramework/.github/actions/run-ant@main
+        with:
+          target: build-maven
       - name: Build and stage Maven artifacts
         if: ${{ inputs.publish-maven }}
         uses: MOEAFramework/.github/actions/publish-maven@main
@@ -72,11 +72,14 @@ jobs:
         uses: MOEAFramework/.github/actions/publish-github@main
         with:
           github-pat: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup website
+        if: ${{ inputs.publish-website }}
+        uses: MOEAFramework/.github/actions/run-ant@main
+        with:
+          target: package-website
       - name: Stage website
         if: ${{ inputs.publish-website }}
         run: |
-          ant package-website
-          
           pushd ..
           gh repo clone MOEAFramework/Website
           pushd Website
