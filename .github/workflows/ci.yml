@@ -65,7 +65,10 @@ jobs:
     - name: Set up Python dependencies
       run: python -m pip install pandas
     - name: Download Java test dependencies
-      run: ant -f test.xml download-all
+      uses: MOEAFramework/.github/actions/run-ant@main
+      with:
+        file: test.xml
+        target: download-all
     - name: Set up Coco Framework (Linux)
       if: runner.os == 'Linux'
       run: |
@@ -83,7 +86,9 @@ jobs:
         sudo mkdir -p /usr/java/packages/lib/
         sudo mv libCocoJNI.so /usr/java/packages/lib/
     - name: Test with Ant - Java ${{ matrix.java }}
-      run: ant -f test.xml
+      uses: MOEAFramework/.github/actions/run-ant@main
+      with:
+        file: test.xml
     - name: Upload test results
       uses: actions/upload-artifact@v4
       if: always()
@@ -108,7 +113,9 @@ jobs:
     - name: Set up Python dependencies
       run: python -m pip install pandas
     - name: Prepare Maven project
-      run: ant -f build.xml build-maven
+      uses: MOEAFramework/.github/actions/run-ant@main
+      with:
+        target: build-maven
     - name: Run Maven tests
       run: |
         cd build
@@ -129,7 +136,9 @@ jobs:
         java-version: ${{ env.MIN_JAVA_VERSION }}
         java-distribution: ${{ env.JAVA_DISTRIBUTION }}
     - name: Validate docs
-      run: ant -f build.xml validate-docs
+      uses: MOEAFramework/.github/actions/run-ant@main
+      with:
+        target: validate-docs
     - name: Validate links
       uses: gaurav-nelson/github-action-markdown-link-check@v1
       with:
@@ -159,7 +168,9 @@ jobs:
         java-version: ${{ env.MIN_JAVA_VERSION }}
         java-distribution: ${{ env.JAVA_DISTRIBUTION }}
     - name: Package binary
-      run: ant -f build.xml package-binary
+      uses: MOEAFramework/.github/actions/run-ant@main
+      with:
+        target: package-binary
     - name: Compiler info
       run: gcc --version
     - name: Test examples
@@ -190,10 +201,18 @@ jobs:
         java-version: ${{ env.MIN_JAVA_VERSION }}
         java-distribution: ${{ env.JAVA_DISTRIBUTION }}
     - name: Package binary
-      run: ant -f build.xml package-binary
+      uses: MOEAFramework/.github/actions/run-ant@main
+      with:
+        target: package-binary
     - name: Package source
-      run: ant -f build.xml package-source
+      uses: MOEAFramework/.github/actions/run-ant@main
+      with:
+        target: package-source
     - name: Package demo
-      run: ant -f build.xml package-demo
+      uses: MOEAFramework/.github/actions/run-ant@main
+      with:
+        target: package-demo
     - name: Package website
-      run: ant -f build.xml package-website
+      uses: MOEAFramework/.github/actions/run-ant@main
+      with:
+        target: package-website
