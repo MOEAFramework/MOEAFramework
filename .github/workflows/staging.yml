@@ -7,112 +7,83 @@ on:
         type: string
         description: The version to publish
         required: true
-      publish_website:
+      publish-website:
         description: 'Create draft Website release'
         default: true
         type: boolean 
-      publish_github:
+      publish-github:
         description: 'Create draft GitHub release'
         default: true
         type: boolean
-      publish_maven:
+      publish-maven:
         description: 'Create Maven release'
         default: true
         type: boolean
-      trigger_tests:
+      trigger-tests:
         description: 'Trigger integration tests'
         default: true
         type: boolean
-      skip_validation:
+      skip-validation:
         description: 'Skip version validations'
         default: false
         type: boolean
-        
-env:
-  MIN_JAVA_VERSION: 17        # Minimum supported Java version
-  JAVA_DISTRIBUTION: zulu     # Java distribution used in tests
 
 jobs:
   stage:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK ${{ env.MIN_JAVA_VERSION }}
-        uses: actions/setup-java@v4
+      - name: Setup release
+        uses: MOEAFramework/.github/actions/setup-release@main
         with:
-          java-version: ${{ env.MIN_JAVA_VERSION }}
-          distribution: ${{ env.JAVA_DISTRIBUTION }}
-          server-id: ossrh
-          server-username: MAVEN_USERNAME
-          server-password: MAVEN_PASSWORD
-          gpg-private-key: ${{ secrets.GPG_SIGNING_KEY }}
-          gpg-passphrase: MAVEN_GPG_PASSPHRASE
-      - name: Install required software
-        run: |
-          sudo apt install xmlstarlet
-      - name: Setup Git and GitHub CLI
-        run: |
-          gh auth setup-git
-          git config --global user.email "${{ secrets.EMAIL }}"
-          git config --global user.name "${{ secrets.USERNAME }}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
-      - name: Get project settings
-        run: |
-          shortname=$(cat META-INF/build.properties | awk '{split($0,a," = "); if (a[1]=="shortname") print tolower(a[2])}' |  tr -d '[:space:]')
-          version=$(cat META-INF/build.properties | awk '{split($0,a," = "); if (a[1]=="version") print tolower(a[2])}' |  tr -d '[:space:]')
-          year=$(date +%Y)
-          [ -n "${shortname}" ] || (>&2 echo "Unable to read shortname from build.properties"; exit -1)
-          [ -n "${version}" ] || (>&2 echo "Unable to read version from build.properties"; exit -1)
-          echo "BUILD_NAME=${shortname}" >> $GITHUB_ENV
-          echo "BUILD_VERSION=${version}" >> $GITHUB_ENV
-          echo "BUILD_YEAR=${year}" >> $GITHUB_ENV
-      - name: Validate publishing info
-        if: ${{ ! inputs.skip_validation }}
-        run: |
-          echo "${{ inputs.version }}" | grep -E '^[0-9]+\.[0-9]+(\.[0-9]+)?$' || (>&2 echo "Invalid version number format"; exit -1)
-          [ "${{ inputs.version }}" == "${BUILD_VERSION}" ] || (>&2 echo "Version does not match value in build.properties"; exit -1)
-          [ "${{ inputs.version }}" == "$(cat README.md | grep '<version>' | tr -d '<>/[:alpha:][:space:]')" ] || (>&2 echo "Version does not match value in the Maven instructions in README.md"; exit -1)
-          [ "${{ inputs.version }}" == "$(cat README.md | grep "search.maven.org" | grep -oEi '[0-9]+\.[0-9]+(\.[0-9]+)?')" ] || (>&2 echo "Version does not match value in the Maven URL in README.md"; exit -1)
-          [ "${{ inputs.version }}" == "$(cat README.md | grep "(Version " | grep -oEi '[0-9]+\.[0-9]+(\.[0-9]+)?')" ] || (>&2 echo "Version does not match value in the citation in README.md"; exit -1)
-          [ "${{ inputs.version }}" == "$(cat docs/releaseNotes.md | grep "## " | head -n 1 | grep -oEi '[0-9]+\.[0-9]+(\.[0-9]+)?')" ] || (>&2 echo "Version does not match value in docs/releaseNotes.md"; exit -1)
-          [ "(${BUILD_YEAR})" == "$(cat README.md | grep "(Version " | grep -oEi '\([0-9]{4}\)')" ] || (>&2 echo "Publish year does not match value in the citation in README.md"; exit -1)
+          email: ${{ secrets.EMAIL }}
+          username: ${{ secrets.USERNAME }}
+          github-pat: ${{ secrets.PAT }}
+          gpg-signing-key: ${{ secrets.GPG_SIGNING_KEY }}
+      - name: Get project info
+        uses: MOEAFramework/.github/actions/get-project-info@main
+        with:
+          expected-version: ${{ inputs.version }}
+          skip-validation: ${{ inputs.skip-validation }}
       - name: Build release artifacts
-        if: ${{ inputs.publish_github }}
-        run: |
-          ant package-binary
-          ant package-demo
-          ant package-source
-      - name: Upload release artifacts
-        if: ${{ inputs.publish_github }}
-        uses: actions/upload-artifact@v4
+        if: ${{ inputs.publish-github }}
+        uses: MOEAFramework/.github/actions/run-ant@main
         with:
-          name: Release artifacts
-          path: dist/
+          target: package-binary package-demo package-source
       - name: Generate release notes
-        if: ${{ inputs.publish_github }}
+        if: ${{ inputs.publish-github }}
         run: |
           cat docs/releaseNotes.md | awk '/## Version ${{ inputs.version }}/{flag=1; next} /##/{flag=0} flag' > dist/releaseNotes.md
           [ "$(wc -l < dist/releaseNotes.md)" -gt 0 ] || (>&2 echo "Unable to read release notes from docs/releaseNotes.md"; exit -1)
+      - name: Setup Maven project
+        if: ${{ inputs.publish-maven }}
+        uses: MOEAFramework/.github/actions/run-ant@main
+        with:
+          target: build-maven
       - name: Build and stage Maven artifacts
-        if: ${{ inputs.publish_maven }}
-        run: |
-          ant build-maven
-          pushd build
-          mvn --batch-mode deploy -Dmaven.test.skip=true
-        env:
-          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        if: ${{ inputs.publish-maven }}
+        uses: MOEAFramework/.github/actions/publish-maven@main
+        with:
+          directory: build
+          ossrh-username: ${{ secrets.OSSRH_USERNAME }}
+          ossrh-password: ${{ secrets.OSSRH_TOKEN }}
+          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
+      - name: Stage GitHub release
+        if: ${{ inputs.publish-github }}
+        uses: MOEAFramework/.github/actions/publish-github@main
+        with:
+          github-pat: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup website
+        if: ${{ inputs.publish-website }}
+        uses: MOEAFramework/.github/actions/run-ant@main
+        with:
+          target: package-website
       - name: Stage website
-        if: ${{ inputs.publish_website }}
+        if: ${{ inputs.publish-website }}
         run: |
-          ant package-website
-          
           pushd ..
           gh repo clone MOEAFramework/Website
           pushd Website
-          git checkout v${{ inputs.version }} || git checkout -b v${{ inputs.version }}
+          git checkout v${BUILD_VERSION} || git checkout -b v${BUILD_VERSION}
           
           rm -rf *
           cp -R ../MOEAFramework/build/* .
@@ -120,38 +91,13 @@ jobs:
           git add .
           
           if [[ -n "$(git status -s)" ]]; then
-            git commit -m "Update for v${{ inputs.version }}"
-            git push origin v${{ inputs.version }}
-            gh pr create --head v${{ inputs.version }} --fill --repo MOEAFramework/Website || true
+            git commit -m "Update for v${BUILD_VERSION}"
+            git push origin v${BUILD_VERSION}
+            gh pr create --head v${BUILD_VERSION} --fill --repo MOEAFramework/Website || true
           fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
-      - name: Stage GitHub release
-        if: ${{ inputs.publish_github }}
-        run: |
-          gh release create "v${{ inputs.version }}" --draft --title "Version ${{ inputs.version }}" --notes-file dist/releaseNotes.md \
-              dist/MOEAFramework-${{ inputs.version }}.tar.gz \
-              dist/MOEAFramework-${{ inputs.version }}-Demo.jar \
-              dist/MOEAFramework-${{ inputs.version }}-Source.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
       - name: Trigger integration tests
-        if: ${{ inputs.trigger_tests }}
-        run: |
-          branch_name="moeaframework-v${{ inputs.version }}"
-          pushd ..
-          gh repo clone MOEAFramework/IntegrationTests
-          pushd IntegrationTests
-          git checkout ${branch_name} || git checkout -b ${branch_name}
-          
-          xmlstarlet edit --inplace -N x="http://maven.apache.org/POM/4.0.0" --update '//x:project/x:dependencies/x:dependency[x:artifactId="moeaframework"]/x:version' --value "${{ inputs.version }}" pom.xml
-
-          git add .
-          
-          if [[ -n "$(git status -s)" ]]; then
-            git commit -m "Update for MOEAFramework v${{ inputs.version }}"
-            git push origin ${branch_name}
-            gh pr create --head ${branch_name} --fill --repo MOEAFramework/IntegrationTests || true
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
+        uses: MOEAFramework/.github/actions/integration-test@main
+        with:
+          github-pat: ${{ secrets.PAT }}
