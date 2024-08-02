@@ -83,7 +83,7 @@ jobs:
           pushd ..
           gh repo clone MOEAFramework/Website
           pushd Website
-          git checkout v${{ inputs.version }} || git checkout -b v${{ inputs.version }}
+          git checkout v${BUILD_VERSION} || git checkout -b v${BUILD_VERSION}
           
           rm -rf *
           cp -R ../MOEAFramework/build/* .
@@ -91,9 +91,9 @@ jobs:
           git add .
           
           if [[ -n "$(git status -s)" ]]; then
-            git commit -m "Update for v${{ inputs.version }}"
-            git push origin v${{ inputs.version }}
-            gh pr create --head v${{ inputs.version }} --fill --repo MOEAFramework/Website || true
+            git commit -m "Update for v${BUILD_VERSION}"
+            git push origin v${BUILD_VERSION}
+            gh pr create --head v${BUILD_VERSION} --fill --repo MOEAFramework/Website || true
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
