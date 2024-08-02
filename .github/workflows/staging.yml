@@ -50,9 +50,6 @@ jobs:
       - name: Install required software
         run: |
           sudo apt install xmlstarlet
-      - name: Install required software
-        run: |
-          sudo apt install xmlstarlet
       - name: Setup Git and GitHub CLI
         run: |
           gh auth setup-git
