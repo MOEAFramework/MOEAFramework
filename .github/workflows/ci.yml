@@ -145,13 +145,11 @@ jobs:
         folder-path: docs/
         file-path: README.md
     - name: Run Checkstyle
-      run: |
-        cd test/checkstyle
-        checkstyle_result=0
-        ant -f build.xml check-style || checkstyle_result=$?
-        if [ "$checkstyle_result" -ne "0" ]; then
-          echo "::warning title=Checkstyle failed::Checkstyle identified one ore more violations, see logs for details!"
-        fi
+      uses: MOEAFramework/.github/actions/run-ant@main
+      with:
+        directory: test/checkstyle
+        target: check-style
+        warning: Checkstyle identified one ore more violations, see logs for details!
 
   example-tests:
     runs-on: ${{ matrix.os }}
