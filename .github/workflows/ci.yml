@@ -21,6 +21,18 @@ on:
           - 'temurin'
           - 'oracle'
         default: 'zulu'
+      java-version:
+        type: choice
+        required: true
+        description: Java version
+        options:
+          - '17'
+          - '18'
+          - '19'
+          - '20'
+          - '21'
+          - '22'
+        default: '17'
       macos-version:
         type: choice
         required: true
@@ -32,8 +44,6 @@ on:
         default: '13'
         
 env:
-  MIN_JAVA_VERSION: 17
-  JAVA_DISTRIBUTION: ${{ inputs.java-distribution || 'zulu' }}
   ALL_TESTS: ${{ inputs.all-tests || 'false' }}
   COCO_VERSION: v2.6.3
 
@@ -55,15 +65,10 @@ jobs:
       uses: MOEAFramework/.github/actions/setup-build@main
       with:
         java-version: ${{ matrix.java }}
-        java-distribution: ${{ env.JAVA_DISTRIBUTION }}
-    - name: Set up Matlab
-      uses: matlab-actions/setup-matlab@v1
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10' # 3.12 removes distutils which may be required by some dependencies
-    - name: Set up Python dependencies
-      run: python -m pip install pandas
+        java-distribution: ${{ inputs.java-distribution }}
+        setup-matlab: true
+        setup-python: true
+        python-dependencies: pandas
     - name: Download Java test dependencies
       uses: MOEAFramework/.github/actions/run-ant@main
       with:
@@ -102,16 +107,11 @@ jobs:
     - name: Setup build
       uses: MOEAFramework/.github/actions/setup-build@main
       with:
-        java-version: ${{ env.MIN_JAVA_VERSION }}
-        java-distribution: ${{ env.JAVA_DISTRIBUTION }}
-    - name: Set up Matlab
-      uses: matlab-actions/setup-matlab@v1
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10' # 3.12 removes distutils which may be required by some dependencies
-    - name: Set up Python dependencies
-      run: python -m pip install pandas
+        java-version: ${{ inputs.java-version }}
+        java-distribution: ${{ inputs.java-distribution }}
+        setup-matlab: true
+        setup-python: true
+        python-dependencies: pandas
     - name: Prepare Maven project
       uses: MOEAFramework/.github/actions/run-ant@main
       with:
@@ -133,8 +133,8 @@ jobs:
     - name: Setup build
       uses: MOEAFramework/.github/actions/setup-build@main
       with:
-        java-version: ${{ env.MIN_JAVA_VERSION }}
-        java-distribution: ${{ env.JAVA_DISTRIBUTION }}
+        java-version: ${{ inputs.java-version }}
+        java-distribution: ${{ inputs.java-distribution }}
     - name: Validate docs
       uses: MOEAFramework/.github/actions/run-ant@main
       with:
@@ -163,8 +163,8 @@ jobs:
     - name: Setup build
       uses: MOEAFramework/.github/actions/setup-build@main
       with:
-        java-version: ${{ env.MIN_JAVA_VERSION }}
-        java-distribution: ${{ env.JAVA_DISTRIBUTION }}
+        java-version: ${{ inputs.java-version }}
+        java-distribution: ${{ inputs.java-distribution }}
     - name: Package binary
       uses: MOEAFramework/.github/actions/run-ant@main
       with:
@@ -196,8 +196,8 @@ jobs:
     - name: Setup build
       uses: MOEAFramework/.github/actions/setup-build@main
       with:
-        java-version: ${{ env.MIN_JAVA_VERSION }}
-        java-distribution: ${{ env.JAVA_DISTRIBUTION }}
+        java-version: ${{ inputs.java-version }}
+        java-distribution: ${{ inputs.java-distribution }}
     - name: Package binary
       uses: MOEAFramework/.github/actions/run-ant@main
       with:
