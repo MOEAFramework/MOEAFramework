@@ -33,8 +33,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup release
-        uses: MOEAFramework/.github/actions/setup-release@main
+        uses: MOEAFramework/.github/actions/setup-build@main
         with:
+          setup-git: true
           email: ${{ secrets.EMAIL }}
           username: ${{ secrets.USERNAME }}
           github-token: ${{ secrets.PAT }}
@@ -85,7 +86,7 @@ jobs:
           repository: Website
           branch-name: v${{ env.BUILD_VERSION }}
           message: Update for v${{ env.BUILD_VERSION }}
-          github-token: ${{ secrets. }}
+          github-token: ${{ secrets.PAT }}
       - name: Trigger integration tests
         if: ${{ inputs.trigger-tests }}
         uses: MOEAFramework/.github/actions/integration-test@main
