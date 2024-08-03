@@ -90,7 +90,7 @@ jobs:
 
         sudo mkdir -p /usr/java/packages/lib/
         sudo mv libCocoJNI.so /usr/java/packages/lib/
-    - name: Test with Ant - Java ${{ matrix.java }}
+    - name: Run Ant tests
       uses: MOEAFramework/.github/actions/run-ant@main
       with:
         file: test.xml
