@@ -87,6 +87,7 @@ jobs:
           message: Update for v${{ env.BUILD_VERSION }}
           github-pat: ${{ secrets.PAT }}
       - name: Trigger integration tests
+        if: ${{ inputs.trigger-tests }}
         uses: MOEAFramework/.github/actions/integration-test@main
         with:
           github-pat: ${{ secrets.PAT }}
