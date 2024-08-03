@@ -79,24 +79,13 @@ jobs:
           target: package-website
       - name: Stage website
         if: ${{ inputs.publish-website }}
-        run: |
-          pushd ..
-          gh repo clone MOEAFramework/Website
-          pushd Website
-          git checkout v${BUILD_VERSION} || git checkout -b v${BUILD_VERSION}
-          
-          rm -rf *
-          cp -R ../MOEAFramework/build/* .
-          
-          git add .
-          
-          if [[ -n "$(git status -s)" ]]; then
-            git commit -m "Update for v${BUILD_VERSION}"
-            git push origin v${BUILD_VERSION}
-            gh pr create --head v${BUILD_VERSION} --fill --repo MOEAFramework/Website || true
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
+        uses: MOEAFramework/.github/actions/sync-repo@main
+        with:
+          directory: ../MOEAFramework/build/
+          repository: Website
+          branch-name: v${{ env.BUILD_VERSION }}
+          message: Update for v${{ env.BUILD_VERSION }}
+          github-pat: ${{ secrets.PAT }}
       - name: Trigger integration tests
         uses: MOEAFramework/.github/actions/integration-test@main
         with:
