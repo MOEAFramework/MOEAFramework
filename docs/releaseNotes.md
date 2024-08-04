@@ -2,7 +2,7 @@
 
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
-## Version 4.4 (TBD)
+## Version 4.4 (4 Aug 2024)
 
   * Introduces a new `clustering` package, with implementations of single-linkage clustering and K-means++.  This
     also refactors the clustering implementation used by AMOSA.
