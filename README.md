@@ -24,7 +24,7 @@ Its key features includes:
 
 If you use this software in your work, please cite it as follows (APA style):
 
-> Hadka, D. (2024). MOEA Framework: A Free and Open Source Java Framework for Multiobjective Optimization (Version 4.3) [Computer software].  Retrieved from https<span>://</span>github.com/MOEAFramework/MOEAFramework.
+> Hadka, D. (2024). MOEA Framework: A Free and Open Source Java Framework for Multiobjective Optimization (Version 4.4) [Computer software].  Retrieved from https<span>://</span>github.com/MOEAFramework/MOEAFramework.
 
 ### Download ###
 
@@ -36,11 +36,11 @@ The latest release can be downloaded from our [website](http://moeaframework.org
 <dependency>
     <groupId>org.moeaframework</groupId>
     <artifactId>moeaframework</artifactId>
-    <version>4.3</version>
+    <version>4.4</version>
 </dependency>
 ```
 
-Visit the [Maven distribution page](https://search.maven.org/artifact/org.moeaframework/moeaframework/4.3/jar)
+Visit the [Maven distribution page](https://search.maven.org/artifact/org.moeaframework/moeaframework/4.4/jar)
 for setup instructions for other package management tools.
 
 ### Documentation ###
