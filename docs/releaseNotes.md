@@ -10,6 +10,11 @@ This page documents notable changes introduced in each chronological release of 
   * Adds support for the GD+ and IGD+ performance indicators.  These "plus" variants utilize a different distance
     measure resulting in weakly Pareto compliant variants of the original GD and IGD indicators.
 
+  * Updates all dependencies to their latest versions.
+
+  * Fixes bug in Maven packaging that caused version 4.3 artifacts to exclude the Pareto front files.  Added
+    integration tests to validate releases.
+
 
 ## Version 4.3 (27 June 2024)
 
