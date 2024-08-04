@@ -66,6 +66,7 @@ jobs:
         uses: MOEAFramework/.github/actions/publish-maven@main
         with:
           directory: build
+          skip-tests: true
           ossrh-username: ${{ secrets.OSSRH_USERNAME }}
           ossrh-password: ${{ secrets.OSSRH_TOKEN }}
           gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
