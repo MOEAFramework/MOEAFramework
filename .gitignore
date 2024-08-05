@@ -28,3 +28,19 @@ lib/jfreesvg-*.jar
 lib/junit-*.jar
 lib/hamcrest-*.jar
 test/checkstyle/checkstyle-*.jar
+
+# IntelliJ IDEA files
+.idea
+out/
+.idea/
+.idea_modules/
+*.iml
+*.ipr
+*.iws
+
+# Visual Studio Code
+.vscode/
+.code-workspace
+
+# OS X
+.DS_Store
