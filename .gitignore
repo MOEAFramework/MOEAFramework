@@ -1,10 +1,7 @@
-/.settings/
-/bin/
 /build/
 /coco/
 /dist/
 /javadoc/
-/maven/
 /native/
 /results/
 /test-results/
@@ -17,7 +14,6 @@
 *.class
 *.state
 *.exe
-.pydevproject
 jMetal.log*
 lib/jmetal-plugin-*.jar
 lib/pisa-plugin-*.jar
@@ -29,7 +25,12 @@ lib/junit-*.jar
 lib/hamcrest-*.jar
 test/checkstyle/checkstyle-*.jar
 
-# IntelliJ IDEA files
+# Eclipse
+/.settings/
+/bin/
+.pydevproject
+
+# IntelliJ IDEA
 .idea
 out/
 .idea/
