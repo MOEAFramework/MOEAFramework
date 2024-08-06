@@ -74,6 +74,12 @@
 			<version>%jfreechart.version%</version>
 		</dependency>
 		<dependency>
+			<groupId>org.jfree</groupId>
+			<artifactId>jfreesvg</artifactId>
+			<version>%jfreesvg.version%</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
 			<groupId>net.java.dev.jna</groupId>
 			<artifactId>jna</artifactId>
 			<version>%jna.version%</version>
