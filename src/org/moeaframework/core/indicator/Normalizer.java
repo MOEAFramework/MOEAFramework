@@ -25,21 +25,15 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.problem.ProblemStub;
 import org.moeaframework.util.Vector;
 import org.moeaframework.util.validate.Validate;
 
 /**
  * Normalizes populations so that all objectives reside in the range {@code [0, 1]}.  This normalization ignores
- * infeasible solutions, so the resulting normalized population contains no infeasible solutions.  A reference set
+ * infeasible solutions, so the resulting normalized population contains only feasible solutions.  A reference set
  * should be used to ensure the normalization is uniformly applied.
  */
 public class Normalizer {
-	
-	/**
-	 * The problem.
-	 */
-	private final Problem problem;
 	
 	/**
 	 * A delta added to the maximum value (used when computing the reference point for hypervolume calculations).
@@ -65,17 +59,50 @@ public class Normalizer {
 	 * Constructs a normalizer for normalizing populations so that all objectives reside in the range {@code [0, 1]}.
 	 * This constructor derives the minimum and maximum bounds from the given population.
 	 * 
-	 * @param problem the problem
 	 * @param population the population defining the minimum and maximum bounds
 	 * @throws IllegalArgumentException if the population set contains fewer than two solutions, or if there exists
 	 *         an objective with an empty range
 	 */
-	public Normalizer(Problem problem, Population population) {
+	public Normalizer(Population population) {
 		super();
-		this.problem = problem;
 		this.delta = 0.0;
 		this.referencePoint = null;
 
+		calculateRanges(population);		
+		checkRanges();
+	}
+	
+	/**
+	 * Constructs a normalizer for normalizing populations so that all objectives reside in the range {@code [0, 1]}.
+	 * This constructor derives the minimum and maximum bounds from the given population.
+	 * 
+	 * @param problem the problem
+	 * @param population the population defining the minimum and maximum bounds
+	 * @throws IllegalArgumentException if the population set contains fewer than two solutions, or if there exists
+	 *         an objective with an empty range
+	 * @deprecated Use {@link #Normalizer(Population)} instead
+	 */
+	@Deprecated
+	public Normalizer(Problem problem, Population population) {
+		this(population);
+	}
+	
+	/**
+	 * Constructs a normalizer for normalizing populations so that all objectives reside in the range {@code [0, 1]}.
+	 * This constructor derives the minimum and maximum bounds from the given population and a given delta.  This
+	 * delta offsets the maximum bounds, typically for hypervolume calculations, to ensure there is a non-zero distance
+	 * between the extremal points and the reference point.
+	 * 
+	 * @param population the population defining the minimum and maximum bounds
+	 * @param delta a delta added to the maximum value
+	 * @throws IllegalArgumentException if the population set contains fewer than two solutions, or if there exists
+	 *         an objective with an empty range
+	 */
+	public Normalizer(Population population, double delta) {
+		super();
+		this.delta = delta;
+		this.referencePoint = null;
+		
 		calculateRanges(population);		
 		checkRanges();
 	}
@@ -91,13 +118,29 @@ public class Normalizer {
 	 * @param delta a delta added to the maximum value
 	 * @throws IllegalArgumentException if the population set contains fewer than two solutions, or if there exists
 	 *         an objective with an empty range
+	 * @deprecated Use {@link #Normalizer(Population, double)} instead
 	 */
+	@Deprecated
 	public Normalizer(Problem problem, Population population, double delta) {
+		this(population, delta);
+	}
+	
+	/**
+	 * Constructs a normalizer for normalizing populations so that all objectives reside in the range {@code [0, 1]}.
+	 * This constructor derives the minimum and maximum bounds from the given population and a given reference point.
+	 * This is typically used by hypervolume calculations, which measures the volume of spacing between each solution
+	 * and the reference point.
+	 * 
+	 * @param population the population defining the minimum and maximum bounds
+	 * @param referencePoint the reference point; if {@code null}, the bounds are based on the population
+	 * @throws IllegalArgumentException if the population set contains fewer than two solutions, or if there exists
+	 *         an objective with an empty range
+	 */
+	public Normalizer(Population population, double[] referencePoint) {
 		super();
-		this.problem = problem;
-		this.delta = delta;
-		this.referencePoint = null;
-		
+		this.delta = 0.0;
+		this.referencePoint = referencePoint == null ? null : referencePoint.clone();
+
 		calculateRanges(population);		
 		checkRanges();
 	}
@@ -113,14 +156,27 @@ public class Normalizer {
 	 * @param referencePoint the reference point; if {@code null}, the bounds are based on the population
 	 * @throws IllegalArgumentException if the population set contains fewer than two solutions, or if there exists
 	 *         an objective with an empty range
+	 * @deprecated Use {@link #Normalizer(Population, double[])} instead
 	 */
+	@Deprecated
 	public Normalizer(Problem problem, Population population, double[] referencePoint) {
+		this(population, referencePoint);
+	}
+	
+	/**
+	 * Constructs a normalizer for normalizing population so that all objectives reside in the range {@code [0, 1]}.
+	 * This constructor allows defining the minimum and maximum bounds explicitly.
+	 * 
+	 * @param minimum the minimum bounds of each objective
+	 * @param maximum the maximum bounds of each objective
+	 */
+	public Normalizer(double[] minimum, double[] maximum) {
 		super();
-		this.problem = problem;
 		this.delta = 0.0;
-		this.referencePoint = referencePoint == null ? null : referencePoint.clone();
-
-		calculateRanges(population);		
+		this.referencePoint = null;
+		this.minimum = minimum.clone();
+		this.maximum = maximum.clone();
+		
 		checkRanges();
 	}
 	
@@ -131,21 +187,11 @@ public class Normalizer {
 	 * @param problem the problem
 	 * @param minimum the minimum bounds of each objective
 	 * @param maximum the maximum bounds of each objective
+	 * @deprecated Use {@link #Normalizer(double[], double[])} instead
 	 */
+	@Deprecated
 	public Normalizer(Problem problem, double[] minimum, double[] maximum) {
-		super();
-		this.problem = problem;
-		this.delta = 0.0;
-		this.referencePoint = null;
-		this.minimum = new double[problem.getNumberOfObjectives()];
-		this.maximum = new double[problem.getNumberOfObjectives()];
-		
-		for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
-			this.minimum[j] = minimum[j >= minimum.length ? minimum.length-1 : j];
-			this.maximum[j] = maximum[j >= maximum.length ? maximum.length-1 : j];
-		}
-		
-		checkRanges();
+		this(minimum, maximum);
 	}
 	
 	/**
@@ -168,18 +214,18 @@ public class Normalizer {
 		maximum = feasibleSolutions.getUpperBounds();
 		
 		if (referencePoint != null) {
-			for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
+			for (int j = 0; j < maximum.length; j++) {
 				maximum[j] = referencePoint[j >= referencePoint.length ? referencePoint.length-1 : j];
 			}
 		} else if (delta > 0.0) {
-			for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
+			for (int j = 0; j < maximum.length; j++) {
 				maximum[j] += delta * (maximum[j] - minimum[j]);
 			}
 		}
 		
 		if (Settings.isVerbose()) {
-			System.err.println("Normalizer for " + problem.getName() + " created with bounds " +
-					Arrays.toString(minimum) + " and " + Arrays.toString(maximum));
+			System.err.println("Normalizer created with bounds " + Arrays.toString(minimum) + " and " +
+					Arrays.toString(maximum));
 		}
 	}
 	
@@ -189,7 +235,9 @@ public class Normalizer {
 	 * @throws IllegalArgumentException if any objective has a range that is smaller than machine precision
 	 */
 	private void checkRanges() {
-		for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
+		Validate.that("minimum.length", minimum.length).isEqualTo("maximum.length", maximum.length);
+		
+		for (int i = 0; i < maximum.length; i++) {
 			if (Math.abs(maximum[i] - minimum[i]) < Settings.EPS) {
 				Validate.fail("Unable to compute bounds for normalization, objective " + i +
 						" is degenerate with identical lower and upper bounds");
@@ -237,15 +285,29 @@ public class Normalizer {
 			if (solution.violatesConstraints()) {
 				iterator.remove();
 			} else {
-				for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
-					solution.setObjective(j, (solution.getObjective(j) - minimum[j]) / (maximum[j] - minimum[j]));
+				for (int j = 0; j < solution.getNumberOfObjectives(); j++) {
+					double minimum = this.minimum[j >= this.minimum.length ? this.minimum.length-1 : j];
+					double maximum = this.maximum[j >= this.maximum.length ? this.maximum.length-1 : j];
+					solution.setObjective(j, (solution.getObjective(j) - minimum) / (maximum - minimum));
 				}
 			}
 		}
 	}
 	
 	/**
-	 * Returns a normalizer that does not perform any normalization, instead using the objective values as-is.
+	 * Constructs a normalizer with explicit lower and upper bounds.  Note that if the length of the given arrays
+	 * does not match the required number of objectives, the last value is repeated for all remaining objectives.
+	 * 
+	 * @param minimum the minimum bounds of each objective
+	 * @param maximum the maximum bounds of each objective
+	 * @return the constructed normalizer
+	 */
+	public static Normalizer of(double[] minimum, double[] maximum) {
+		return new Normalizer(minimum, maximum);
+	}
+	
+	/**
+	 * Constructs a normalizer that does not perform any normalization, instead using the objective values as-is.
 	 * 
 	 * @return the constructed normalizer
 	 */
@@ -261,7 +323,7 @@ public class Normalizer {
 
 		public NullNormalizer() {
 			// These arguments are unused and only meant to bypass validations in the constructor
-			super(new ProblemStub(1), Vector.of(1, 0.0), Vector.of(1, 1.0));
+			super(Vector.of(1, 0.0), Vector.of(1, 1.0));
 		}
 
 		@Override

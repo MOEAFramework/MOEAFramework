@@ -106,7 +106,7 @@ public abstract class IndicatorFitnessEvaluator implements FitnessEvaluator {
 	 */
 	@Override
 	public void evaluate(Population population) {
-		Normalizer normalizer = new Normalizer(problem, population);
+		Normalizer normalizer = new Normalizer(population);
 		Population normalizedPopulation = normalizer.normalize(population);
 
 		// compute fitness components

@@ -49,7 +49,7 @@ public class Hypervolume implements Indicator {
 	 * @param referencePoint the reference point
 	 */
 	public Hypervolume(Problem problem, NondominatedPopulation referenceSet, double[] referencePoint) {
-		this(problem, new Normalizer(problem, referenceSet, referencePoint));
+		this(problem, new Normalizer(referenceSet, referencePoint));
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class Hypervolume implements Indicator {
 	 * @param maximum the maximum bounds of the set
 	 */
 	public Hypervolume(Problem problem, double[] minimum, double[] maximum) {
-		this(problem, new Normalizer(problem, minimum, maximum));
+		this(problem, new Normalizer(minimum, maximum));
 	}
 	
 	/**

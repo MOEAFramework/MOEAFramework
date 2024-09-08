@@ -21,6 +21,7 @@
   * [Mixed Types](miscellaneousTopics.md#mixed-types)
   * [Termination Conditions](miscellaneousTopics.md#termination-conditions)
   * [Reference Sets](miscellaneousTopics.md#reference-sets)
+  * [Normalization](miscellaneousTopics.md#normalization)
 * [Sensitivity Analysis](sensitivityAnalysis.md)
 * [Troubleshooting](troubleshooting.md)
 

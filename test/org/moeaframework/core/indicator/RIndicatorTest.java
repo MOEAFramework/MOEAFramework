@@ -44,7 +44,7 @@ public class RIndicatorTest {
 			throws IOException {
 		Problem problem = new MockRealProblem(2);
 		NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet(resource);
-		Normalizer normalizer = new Normalizer(problem, referenceSet);
+		Normalizer normalizer = new Normalizer(referenceSet);
 		
 		RIndicator indicator = new RIndicator(problem, 500, referenceSet, normalizer, utilityFunction) {
 

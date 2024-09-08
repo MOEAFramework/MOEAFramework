@@ -81,9 +81,9 @@ algorithm.getResult().display();
 
 ## Mixed Types
 
-Some problems may require combining different types of decision variables.  This is supported by the MOEA Framework,
-but it does require some additional setup.  First, when defining the problem, configure the solution with the desired
-types.  Here we setup up a binary integer and a real decision variable.
+While most of the problems presented here use a single decision variable type (e.g., all real-valued numbers), the MOEA
+Framework also supports mixing types.  To see this in action, let's first define a problem that includes a binary integer
+and a real-valued decision variable:
 
 <!-- java:examples/org/moeaframework/examples/misc/MixedTypesExample.java [62:68] -->
 
@@ -108,7 +108,7 @@ double y = EncodingUtils.getReal(solution.getVariable(1));
 
 Lastly, we must configure the variation operators.  Default operators are typically selected, even for mixed types.
 In this example, the default is Simulated Binary Crossover (SBX), Half-Uniform Crossover (HUX), Polynomial Mutation
-(PM), and Bit Flip Mutation (BF) operators.  SBX and PM operate on the real variable whereas HUX and BF operate on the
+(PM), and Bit Flip Mutation (BF).  SBX and PM operate on the real variable whereas HUX and BF operate on the
 binary variable.
 
 We can also explicitly supply a variation operator for mixed types by combining the operators as demonstrated below:
@@ -173,3 +173,44 @@ try (AnalyticalProblem problem = new DTLZ2(3)) {
     archive.saveObjectives(new File("DTLZ2_3_RefSet.txt"));
 }
 ```
+
+## Normalization
+
+When evaluating an approximation set using one of the provided quality / performance indicators, the approximation sets
+are automatically normalized by the bounds of the reference set.  Normalization helps to produce comparable and
+repeatable results across multiple studies.  However, in some exceptional situations, normalization might not be
+feasible (no reference set or insufficient number of solutions) or not desirable (comparing against another study
+that did not use normalization).
+
+By default, we would provide a reference set that defines the bounds for normalization:
+
+<!-- java:examples/org/moeaframework/examples/misc/NormalizationExample.java [44:47] -->
+
+
+```java
+NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet("pf/UF1.dat");
+
+Hypervolume defaultHypervolume = new Hypervolume(problem, referenceSet);
+System.out.println("Normalized by reference set (default): " + defaultHypervolume.evaluate(approximationSet.copy()));
+```
+
+We can also explicitly provide the lower and upper bounds:
+
+<!-- java:examples/org/moeaframework/examples/misc/NormalizationExample.java [50:51] -->
+
+```java
+Hypervolume explicitHypervolume = new Hypervolume(problem, new double[] { 0.0, 0.0 }, new double[] { 2.0, 2.0 });
+System.out.println("Normalized with explicit bounds: " + explicitHypervolume.evaluate(approximationSet));
+```
+
+Or disable normalization:
+
+<!-- java:examples/org/moeaframework/examples/misc/NormalizationExample.java [54:55] -->
+
+```java
+Hypervolume disabledHypervolume = new Hypervolume(problem, Normalizer.none());
+System.out.println("Disabled normalization: " + disabledHypervolume.evaluate(approximationSet));
+```
+
+Also note that we can configure normalization preferences for specific problems globally using the
+`DefaultNormalizer` class.  Refer to the class documentation for usage.

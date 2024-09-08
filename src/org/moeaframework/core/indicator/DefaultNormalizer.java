@@ -114,7 +114,7 @@ public class DefaultNormalizer {
 			return normalizer;
 		}
 		
-		return new Normalizer(problem, referenceSet);
+		return new Normalizer(referenceSet);
 	}
 	
 	/**
@@ -149,10 +149,10 @@ public class DefaultNormalizer {
 						problem.getName());
 			}
 			
-			return new Normalizer(problem, referenceSet, maximum);
+			return new Normalizer(referenceSet, maximum);
 		}
 		
-		return new Normalizer(problem, referenceSet, Settings.getProblemSpecificHypervolumeDelta(problem.getName()));
+		return new Normalizer(referenceSet, Settings.getProblemSpecificHypervolumeDelta(problem.getName()));
 	}
 	
 	/**
@@ -180,7 +180,7 @@ public class DefaultNormalizer {
 		double[] maximum = Settings.getProblemSpecificMaximumBounds(problem.getName());
 
 		if (minimum != null && maximum != null) {
-			return new Normalizer(problem, minimum, maximum);
+			return new Normalizer(minimum, maximum);
 		}
 		
 		return null;
@@ -207,7 +207,7 @@ public class DefaultNormalizer {
 	public void override(String problemName, double[] minimum, double[] maximum) {
 		overrides.add(0, Pair.of(
 				(p) -> p.getName().equalsIgnoreCase(problemName),
-				(p) -> new Normalizer(p, minimum, maximum)));
+				(p) -> new Normalizer(minimum, maximum)));
 	}
 
 	/**
