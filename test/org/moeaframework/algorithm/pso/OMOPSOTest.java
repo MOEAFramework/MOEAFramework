@@ -40,7 +40,7 @@ public class OMOPSOTest extends JMetalAlgorithmTest {
 	// TODO: Temporary fix to supply default epsilon matching JMetal.  Remove once we update jmetal-plugin.
 	@Override
 	public void test(String problem, String algorithm1, String algorithm2, boolean allowBetterPerformance) {
-		test(problem, algorithm1, TypedProperties.withProperty("epsilon", "0.0075"), algorithm2, new TypedProperties(),
+		test(problem, algorithm1, TypedProperties.of("epsilon", "0.0075"), algorithm2, new TypedProperties(),
 				allowBetterPerformance, AlgorithmFactory.getInstance());
 	}
 	
@@ -53,7 +53,7 @@ public class OMOPSOTest extends JMetalAlgorithmTest {
 				algorithm.getConfiguration().getDoubleArray("epsilon"),
 				TestThresholds.HIGH_PRECISION);
 		
-		algorithm.applyConfiguration(TypedProperties.withProperty("epsilon", "0.1"));
+		algorithm.applyConfiguration(TypedProperties.of("epsilon", "0.1"));
 		Assert.assertArrayEquals(new double[] { 0.1 },
 				algorithm.getArchive().getComparator().getEpsilons().toArray(),
 				TestThresholds.HIGH_PRECISION);
@@ -62,7 +62,7 @@ public class OMOPSOTest extends JMetalAlgorithmTest {
 				algorithm.getConfiguration().getDoubleArray("epsilon"),
 				TestThresholds.HIGH_PRECISION);
 
-		algorithm.applyConfiguration(TypedProperties.withProperty("epsilon", "0.1, 0.2"));
+		algorithm.applyConfiguration(TypedProperties.of("epsilon", "0.1, 0.2"));
 		Assert.assertArrayEquals(new double[] { 0.1, 0.2 },
 				algorithm.getArchive().getComparator().getEpsilons().toArray(),
 				TestThresholds.HIGH_PRECISION);

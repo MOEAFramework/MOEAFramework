@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.Array;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -80,7 +81,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * Creates a new, empty instance of this class.
 	 */
 	public TypedProperties() {
-		this(DEFAULT_SEPARATOR);
+		this(DEFAULT_SEPARATOR, false);
 	}
 	
 	/**
@@ -89,7 +90,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * @param properties the existing {@code Properties} object
 	 */
 	public TypedProperties(Properties properties) {
-		this(DEFAULT_SEPARATOR);
+		this(DEFAULT_SEPARATOR, false);
 		addAll(properties);
 	}
 	
@@ -97,27 +98,72 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * Creates a new, empty instance of this class using the given separator string for arrays.
 	 * 
 	 * @param separator the separator string
+	 * @param threadSafe if {@code true}, the constructed instance will be thread-safe
 	 */
-	TypedProperties(String separator) {
+	TypedProperties(String separator, boolean threadSafe) {
 		super();
 		this.separator = separator;
-
-		this.properties = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
-		this.accessedProperties = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		
+		if (threadSafe) {
+			this.properties = Collections.synchronizedMap(new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER));
+			this.accessedProperties = Collections.synchronizedSet(new TreeSet<String>(String.CASE_INSENSITIVE_ORDER));
+		} else {
+			this.properties = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
+			this.accessedProperties = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		}
 	}
 	
 	/**
 	 * Convenience method to quickly construct a typed properties instance with a single key-value pair.  This is
 	 * particularly useful for parsing, for instance, command line arguments:
 	 * <pre>
-	 *   TypedProperties.withProperty("epsilon", commandLine.getOptionValue("epsilon")).getDoubleArray("epsilon");
+	 *   TypedProperties.of("epsilon", commandLine.getOptionValue("epsilon")).getDoubleArray("epsilon");
 	 * </pre>
 	 *   
 	 * @param key the key
 	 * @param value the value assigned to the key
 	 * @return a typed properties instance with the specified key-value pair
+	 * @deprecated use {@link #of(String, String)} instead
 	 */
+	@Deprecated
 	public static TypedProperties withProperty(String key, String value) {
+		return of(key, value);
+	}
+	
+	/**
+	 * Creates and returns an empty properties object that is thread-safe.  This is useful when needing thread-safe
+	 * access to a shared properties object.
+	 * 
+	 * @return an empty, thread-safe properties object
+	 */
+	public static TypedProperties newThreadSafeInstance() {
+		return new TypedProperties(DEFAULT_SEPARATOR, true);
+	}
+	
+	/**
+	 * Convenience method to quickly construct an empty typed properties instance.  The returned instance is mutable
+	 * and can be modified by the caller.
+	 *   
+	 * @return an empty typed properties instance
+	 */
+	public static TypedProperties of() {
+		return new TypedProperties();
+	}
+	
+	/**
+	 * Convenience method to quickly construct a typed properties instance with a single key-value pair.  This is
+	 * particularly useful for parsing, for instance, command line arguments:
+	 * <pre>
+	 *   TypedProperties.of("epsilon", commandLine.getOptionValue("epsilon")).getDoubleArray("epsilon");
+	 * </pre>
+	 * <p>
+	 * The returned instance is mutable and can be modified by the caller.
+	 * 
+	 * @param key the key
+	 * @param value the value assigned to the key
+	 * @return a typed properties instance with the specified key-value pair
+	 */
+	public static TypedProperties of(String key, String value) {
 		TypedProperties properties = new TypedProperties();
 		properties.setString(key, value);
 		return properties;
@@ -155,6 +201,16 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 		}
 		
 		return result;
+	}
+	
+	/**
+	 * Returns the set of keys contained in this properties object.  The set is backed by this properties object, so
+	 * changes to the set, such as removing a key, will also remove the corresponding property.
+	 * 
+	 * @return the keys
+	 */
+	public Set<String> keySet() {
+		return properties.keySet();
 	}
 	
 	/**

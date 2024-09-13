@@ -44,7 +44,7 @@ public class NSGAIITest extends JMetalAlgorithmTest {
 	// Use symmetric SBX to match JMetal's implementation.
 	@Override
 	public void test(String problem, String algorithm1, String algorithm2, boolean allowBetterPerformance) {
-		test(problem, algorithm1, TypedProperties.withProperty("sbx.symmetric", "true"), algorithm2,
+		test(problem, algorithm1, TypedProperties.of("sbx.symmetric", "true"), algorithm2,
 				new TypedProperties(), allowBetterPerformance, AlgorithmFactory.getInstance());
 	}
 	
@@ -57,9 +57,9 @@ public class NSGAIITest extends JMetalAlgorithmTest {
 	public void testSelection() {
 		test("UF1",
 				"NSGAII",
-				TypedProperties.withProperty("withReplacement", "false"),
+				TypedProperties.of("withReplacement", "false"),
 				"NSGAII",
-				TypedProperties.withProperty("withReplacement", "true"),
+				TypedProperties.of("withReplacement", "true"),
 				false,
 				AlgorithmFactory.getInstance());
 	}

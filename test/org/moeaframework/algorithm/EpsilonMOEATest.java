@@ -135,7 +135,7 @@ public class EpsilonMOEATest {
 				algorithm.getConfiguration().getDoubleArray("epsilon"),
 				TestThresholds.HIGH_PRECISION);
 		
-		algorithm.applyConfiguration(TypedProperties.withProperty("epsilon", "0.1"));
+		algorithm.applyConfiguration(TypedProperties.of("epsilon", "0.1"));
 		Assert.assertArrayEquals(new double[] { 0.1 },
 				algorithm.getArchive().getComparator().getEpsilons().toArray(),
 				TestThresholds.HIGH_PRECISION);
@@ -144,7 +144,7 @@ public class EpsilonMOEATest {
 				algorithm.getConfiguration().getDoubleArray("epsilon"),
 				TestThresholds.HIGH_PRECISION);
 
-		algorithm.applyConfiguration(TypedProperties.withProperty("epsilon", "0.1, 0.2"));
+		algorithm.applyConfiguration(TypedProperties.of("epsilon", "0.1, 0.2"));
 		Assert.assertArrayEquals(new double[] { 0.1, 0.2 },
 				algorithm.getArchive().getComparator().getEpsilons().toArray(),
 				TestThresholds.HIGH_PRECISION);

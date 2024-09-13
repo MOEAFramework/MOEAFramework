@@ -19,6 +19,7 @@ package org.moeaframework.util;
 
 import java.io.IOException;
 import java.util.Properties;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.Before;
@@ -48,7 +49,7 @@ public class TypedPropertiesTest {
 	
 	@Test
 	public void testStaticConstructor() {
-		double[] values = TypedProperties.withProperty("epsilon", "0.01,0.01").getDoubleArray("epsilon", null);
+		double[] values = TypedProperties.of("epsilon", "0.01,0.01").getDoubleArray("epsilon", null);
 		
 		Assert.assertArrayEquals(new double[] { 0.01, 0.01 }, values, TestThresholds.HIGH_PRECISION);
 	}
@@ -239,6 +240,19 @@ public class TypedPropertiesTest {
 		Assert.assertArrayEquals(new long[0], properties.getLongArray("long_array_empty", null));
 		Assert.assertArrayEquals(new short[0], properties.getShortArray("short_array_empty", null));
 		Assert.assertArrayEquals(new byte[0], properties.getByteArray("byte_array_empty", null));
+	}
+	
+	@Test
+	public void testGetKeys() {
+		TypedProperties properties = new TypedProperties();
+		properties.setString("foo", "bar");
+		
+		Set<String> keys = properties.keySet();
+		Assert.assertEquals(1, keys.size());
+		Assert.assertContains(keys, "foo");
+		
+		keys.remove("foo");
+		Assert.assertFalse(properties.contains("foo"));
 	}
 	
 	@Test

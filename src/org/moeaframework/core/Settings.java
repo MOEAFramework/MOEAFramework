@@ -72,7 +72,7 @@ public class Settings {
 	/**
 	 * The global properties object.
 	 */
-	public static final TypedProperties PROPERTIES = new TypedProperties();
+	public static final TypedProperties PROPERTIES = TypedProperties.newThreadSafeInstance();
 	
 	/**
 	 * The prefix for all property keys.

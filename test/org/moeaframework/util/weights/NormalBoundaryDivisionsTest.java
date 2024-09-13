@@ -98,7 +98,7 @@ public class NormalBoundaryDivisionsTest {
 	public void testFractionalProperties() {
 		NormalBoundaryDivisions expected = new NormalBoundaryDivisions(100);
 		NormalBoundaryDivisions actual = NormalBoundaryDivisions.tryFromProperties(
-				TypedProperties.withProperty("divisions", "100.2"));
+				TypedProperties.of("divisions", "100.2"));
 		Assert.assertEquals(expected, actual);
 	}
 	
