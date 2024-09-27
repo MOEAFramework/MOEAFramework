@@ -22,40 +22,6 @@ import org.moeaframework.problem.ProblemTest;
 
 public class MaF8Test extends ProblemTest {
 	
-//	@Test
-//	public void test2D() {
-//		Problem problem = new MaF8(2);
-//		
-//		Assert.assertArrayEquals(new double[] { 14.0, 0.0 }, 
-//				evaluateAtLowerBounds(problem).getObjectives(),
-//				0.00001);
-//		
-//		Assert.assertArrayEquals(new double[] { 0.0, 7.0 }, 
-//				evaluateAtUpperBounds(problem).getObjectives(),
-//				0.00001);
-//		
-//		Assert.assertArrayEquals(new double[] { 4.0, 0.0 }, 
-//				evaluateAt(problem, Vector.of(2, 0.5)).getObjectives(),
-//				0.00001);
-//	}
-	
-//	@Test
-//	public void test3D() {
-//		Problem problem = new MaF8(3);
-//		
-//		Assert.assertArrayEquals(new double[] { 28.0, 0.0, 0.0 }, 
-//				evaluateAtLowerBounds(problem).getObjectives(),
-//				0.00001);
-//		
-//		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 7.0 }, 
-//				evaluateAtUpperBounds(problem).getObjectives(),
-//				0.00001);
-//		
-//		Assert.assertArrayEquals(new double[] { 8.0, 0.0, 0.0 }, 
-//				evaluateAt(problem, Vector.of(2, 0.5)).getObjectives(),
-//				0.00001);
-//	}
-	
 	@Test
 	public void testProvider() {
 		assertProblemDefined("MaF8_2", 2, false);
