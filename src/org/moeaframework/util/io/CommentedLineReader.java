@@ -20,6 +20,7 @@ package org.moeaframework.util.io;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.Writer;
 
 /**
  * Read text from a character-input stream, ignoring lines starting with the {@code #} character.  Lines are only
@@ -60,6 +61,22 @@ public class CommentedLineReader extends BufferedReader {
 		}
 
 		return line;
+	}
+	
+	@Override
+	public long transferTo(Writer out) throws IOException {
+		String line = null;
+		String newline = System.lineSeparator();
+		long size = 0;
+
+		while ((line = readLine()) != null) {
+			out.write(line);
+			out.write(newline);
+
+			size += line.length() + newline.length();
+		}
+
+		return size;
 	}
 
 }
