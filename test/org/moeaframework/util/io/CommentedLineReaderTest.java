@@ -45,7 +45,7 @@ public class CommentedLineReaderTest {
 			
 			reader.transferTo(writer);
 			
-			Assert.assertEquals("non-comment line\n", writer.toString());
+			Assert.assertEquals("non-comment line" + System.lineSeparator(), writer.toString());
 			Assert.assertNull(reader.readLine());
 		}
 	}
