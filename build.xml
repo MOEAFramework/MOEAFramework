@@ -137,7 +137,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		</manifest>
 
 		<copy todir="${build}">
-			<fileset excludes="**/*.java,overview.html,launch-diagnostic-tool.bat,macros.xml,pom.xml" dir="src" />
+			<fileset excludes="**/*.java,overview.html,launch-diagnostic-tool.bat,macros.xml,moeaframework.pom" dir="src" />
 		</copy>
 
 		<jar basedir="${build}" manifest="${build}/META-INF/MANIFEST.MF"
@@ -385,7 +385,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<mkdir dir="${build}/src/test/resources" />
 		<mkdir dir="${build}/examples" />
 		
-		<copy file="src/pom.xml" tofile="${build}/pom.xml" />
+		<copy file="src/moeaframework.pom" tofile="${build}/pom.xml" />
 		<replace-properties file="${build}/pom.xml" />
 		
 		<copy todir="${build}/src/main/resources/META-INF">
@@ -394,7 +394,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		</copy>
 		
 		<copy todir="${build}/src/main/resources" includeEmptyDirs="false">
-			<fileset dir="src" excludes="**/*.java,launch-diagnostic-tool.bat,macros.xml,pom.xml" />
+			<fileset dir="src" excludes="**/*.java,launch-diagnostic-tool.bat,macros.xml,moeaframework.pom" />
 		</copy>
 		
 		<copy todir="${build}/src/main/java">

@@ -26,13 +26,13 @@ import org.moeaframework.Assert;
 
 public class CommentedLineReaderTest {
 	
-	private final String normal = "#comment line\nnon-comment line\n# comment line";
+	private final String normalInput = "#comment line\nnon-comment line\n# comment line";
 	
-	private final String allComments = "#comment line\n# comment line";
+	private final String commentedInput = "#comment line\n# comment line";
 
 	@Test
 	public void testReadLineNormalInput() throws IOException {
-		try (CommentedLineReader reader = new CommentedLineReader(new StringReader(normal))) {
+		try (CommentedLineReader reader = new CommentedLineReader(new StringReader(normalInput))) {
 			Assert.assertEquals("non-comment line", reader.readLine());
 			Assert.assertNull(reader.readLine());
 		}
@@ -40,7 +40,7 @@ public class CommentedLineReaderTest {
 	
 	@Test
 	public void testTransferToNormalInput() throws IOException {
-		try (CommentedLineReader reader = new CommentedLineReader(new StringReader(normal));
+		try (CommentedLineReader reader = new CommentedLineReader(new StringReader(normalInput));
 				StringWriter writer = new StringWriter()) {
 			
 			reader.transferTo(writer);
@@ -68,14 +68,14 @@ public class CommentedLineReaderTest {
 	
 	@Test
 	public void testReadLineEmptyFileWithComment() throws IOException {
-		try (CommentedLineReader reader = new CommentedLineReader(new StringReader(allComments))) {
+		try (CommentedLineReader reader = new CommentedLineReader(new StringReader(commentedInput))) {
 			Assert.assertNull(reader.readLine());
 		}
 	}
 	
 	@Test
 	public void testTransferToEmptyFileWithComment() throws IOException {
-		try (CommentedLineReader reader = new CommentedLineReader(new StringReader(allComments));
+		try (CommentedLineReader reader = new CommentedLineReader(new StringReader(commentedInput));
 				StringWriter writer = new StringWriter()) {
 			reader.transferTo(writer);
 			Assert.assertEquals("", writer.toString());
