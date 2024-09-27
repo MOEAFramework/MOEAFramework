@@ -27,6 +27,10 @@ package org.moeaframework.util;
  *       properties.setInt("populationSize", 500);
  *   }
  * </pre>
+ * * <p>
+ * <strong>Scopes are not thread-safe or thread-local.</strong>  This means two threads referencing the same
+ * underlying {@link TypedProperties} object will both see modifications made within the scope.  If this is
+ * a concern, create a copy of the properties before use.
  */
 public class PropertyScope implements AutoCloseable {
 	
