@@ -979,9 +979,7 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 	public void step() {
 		// Since unlike other algorithms, the initialize() method does not produce an initial population.  To remain
 		// consistent, we override the step() method so that iterate() is called after initialize().
-		if (isTerminated()) {
-			throw new AlgorithmTerminationException(this, "algorithm already terminated");
-		} else if (!isInitialized()) {
+		if (!isInitialized()) {
 			initialize();
 			iterate();
 		} else {

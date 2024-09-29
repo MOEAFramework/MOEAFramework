@@ -125,24 +125,17 @@ public abstract class AbstractCollectorTest<T extends Collector> {
 			TypedProperties properties = new TypedProperties();
 			properties.setInt("maxEvaluations", numberOfEvaluations);
 
-			Algorithm algorithm = null;
+			Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, properties, problem);
+			shouldAttach = shouldAttach(algorithm);
 
-			try {
-				algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, properties, problem);
-				shouldAttach = shouldAttach(algorithm);
+			InstrumentedAlgorithm instrumentedAlgorithm = instrumenter.instrument(algorithm);
 
-				InstrumentedAlgorithm instrumentedAlgorithm = instrumenter.instrument(algorithm);
-
-				while (instrumentedAlgorithm.getNumberOfEvaluations() < numberOfEvaluations) {
-					instrumentedAlgorithm.step();
-				}
-				
-				observations = instrumentedAlgorithm.getObservations();
-			} finally {
-				if (algorithm != null) {
-					algorithm.terminate();
-				}
+			while (instrumentedAlgorithm.getNumberOfEvaluations() < numberOfEvaluations) {
+				instrumentedAlgorithm.step();
 			}
+				
+			observations = instrumentedAlgorithm.getObservations();
+			algorithm.terminate();
 		}
 		
 		Assert.assertEquals(algorithmName + ": incorrect number of attachments",

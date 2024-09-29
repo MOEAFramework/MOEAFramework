@@ -215,9 +215,8 @@ public class Evaluator extends CommandLineUtility {
 		algorithm.run(maxEvaluations);
 		long endTime = System.nanoTime();
 
-		// extract the result and free any resources
+		// extract the result
 		NondominatedPopulation result = algorithm.getResult();
-		algorithm.terminate();
 
 		// apply epsilon-dominance if required
 		if (properties.contains("epsilon")) {

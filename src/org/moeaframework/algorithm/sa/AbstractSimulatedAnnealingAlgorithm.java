@@ -23,7 +23,6 @@ import java.io.ObjectOutputStream;
 
 import org.moeaframework.algorithm.AbstractAlgorithm;
 import org.moeaframework.algorithm.AlgorithmInitializationException;
-import org.moeaframework.algorithm.AlgorithmTerminationException;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
@@ -255,16 +254,11 @@ public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgori
 	
 	@Override
 	public void step() {
-		if (isTerminated()) {
-			throw new AlgorithmTerminationException(this, "algorithm already terminated");
-		} else if (!isInitialized()) {
+		if (!isInitialized()) {
 			initialize();
+		} else if (terminationCondition != null && terminationCondition.shouldTerminate(this)) {
+			terminate();
 		} else {
-			if (terminationCondition != null && terminationCondition.shouldTerminate(this)) {
-				terminate();
-				return;
-			}
-			
 			iterate();
 			temperature = coolingSchedule.nextTemperature(temperature);
 		}

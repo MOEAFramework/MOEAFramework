@@ -46,7 +46,10 @@ public interface Algorithm extends Stateful {
 	 * Performs one logical step of this algorithm. The amount of work performed depends on the implementation. One
 	 * invocation of this method may produce one or many trial solutions.
 	 * <p>
-	 * This method should not be invoked when {@link #isTerminated()} returns {@code true}.
+	 * In general, calling this method after {@link #terminate()} is permitted.  When this happens,
+	 * {@link #isTerminated()} is reset.  We recommend checking {@link #isTerminated()} after each step to detect when
+	 * termination conditions are reached.  However, if the implementation is unable to continue, this method should
+	 * throw {@link AlgorithmTerminationException}.
 	 */
 	public void step();
 	
@@ -70,8 +73,16 @@ public interface Algorithm extends Stateful {
 	public default void run(TerminationCondition terminationCondition) {
 		terminationCondition.initialize(this);
 		
+		if (isTerminated() && !terminationCondition.shouldTerminate(this)) {
+			step();
+		}
+		
 		while (!isTerminated() && !terminationCondition.shouldTerminate(this)) {
 			step();
+		}
+		
+		if (!isTerminated()) {
+			terminate();
 		}
 	}
 	
@@ -114,17 +125,15 @@ public interface Algorithm extends Stateful {
 	public int getNumberOfEvaluations();
 
 	/**
-	 * Returns {@code true} if this algorithm is terminated; {@code false} otherwise.
+	 * Returns {@code true} if this algorithm has reached its termination condition; {@code false} otherwise.
 	 * 
-	 * @return {@code true} if this algorithm is terminated; {@code false} otherwise
+	 * @return {@code true} if this algorithm has reached its termination condition; {@code false} otherwise
 	 * @see #terminate()
 	 */
 	public boolean isTerminated();
 
 	/**
-	 * Terminates this algorithm. Implementations should use this method to free any underlying resources; however,
-	 * the {@link #getResult()} and {@link #getNumberOfEvaluations()} methods are still required to work after
-	 * termination.
+	 * Called when the termination condition is reached and the run is complete.
 	 */
 	public void terminate();
 	

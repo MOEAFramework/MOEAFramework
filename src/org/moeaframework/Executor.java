@@ -719,53 +719,45 @@ public class Executor extends ProblemBuilder {
 	 */
 	protected NondominatedPopulation runSingleSeed(int seed, int numberOfSeeds) {
 		Validate.that("algorithmName", algorithmName).isNotNull();
-		
-		Algorithm algorithm = null;
+		AlgorithmFactory algorithmFactory = this.algorithmFactory != null ?
+				this.algorithmFactory : AlgorithmFactory.getInstance();
 		
 		try (Problem problem = getDistributedProblemInstance()) {
 			properties.clearAccessedProperties();
 				
 			NondominatedPopulation result = newArchive();
-				
-			try {					
-				if (algorithmFactory == null) {
-					algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, properties, problem);
-				} else {
-					algorithm = algorithmFactory.getAlgorithm(algorithmName, properties, problem);
-				}
+			Algorithm algorithm = algorithmFactory.getAlgorithm(algorithmName, properties, problem);
 
-				if (checkpointFile != null) {
-					algorithm = new Checkpoints(algorithm, checkpointFile, checkpointFrequency);
-				}
-					
-				if (instrumenter != null) {
-					algorithm = instrumenter.instrument(algorithm);
-				}
-					
-				TerminationCondition terminationCondition = createTerminationCondition();
-				terminationCondition.initialize(algorithm);
-					
-				properties.warnIfUnaccessedProperties();
-				progress.setCurrentAlgorithm(algorithm);
-
-				while (!algorithm.isTerminated() && !terminationCondition.shouldTerminate(algorithm)) {
-					// stop and return null if canceled and not yet complete
-					if (isCanceled.get()) {
-						return null;
-					}
-						
-					algorithm.step();
-					progress.setCurrentNFE(algorithm.getNumberOfEvaluations());
-				}
-
-				result.addAll(algorithm.getResult());
-					
-				progress.setCurrentAlgorithm(null);
-			} finally {
-				if (algorithm != null && !algorithm.isTerminated()) {
-					algorithm.terminate();
-				}
+			if (checkpointFile != null) {
+				algorithm = new Checkpoints(algorithm, checkpointFile, checkpointFrequency);
 			}
+					
+			if (instrumenter != null) {
+				algorithm = instrumenter.instrument(algorithm);
+			}
+					
+			TerminationCondition terminationCondition = createTerminationCondition();
+			terminationCondition.initialize(algorithm);
+					
+			properties.warnIfUnaccessedProperties();
+			progress.setCurrentAlgorithm(algorithm);
+
+			while (!algorithm.isTerminated() && !terminationCondition.shouldTerminate(algorithm)) {
+				// stop and return null if canceled and not yet complete
+				if (isCanceled.get()) {
+					return null;
+				}
+						
+				algorithm.step();
+				progress.setCurrentNFE(algorithm.getNumberOfEvaluations());
+			}
+			
+			if (!algorithm.isTerminated()) {
+				algorithm.terminate();
+			}
+
+			result.addAll(algorithm.getResult());
+			progress.setCurrentAlgorithm(null);
 				
 			return result;
 		}

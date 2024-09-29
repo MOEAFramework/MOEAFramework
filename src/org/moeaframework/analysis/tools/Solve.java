@@ -431,7 +431,6 @@ public class Solve extends CommandLineUtility {
 
 		// open the resources and begin processing
 		Problem problem = null;
-		Algorithm algorithm = null;
 		File file = new File(commandLine.getOptionValue("output"));
 		
 		try {
@@ -446,20 +445,14 @@ public class Solve extends CommandLineUtility {
 				return;
 			}
 
-			try {
-				algorithm = AlgorithmFactory.getInstance().getAlgorithm(
-						commandLine.getOptionValue("algorithm"),
-						properties,
-						problem);
+			Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(
+					commandLine.getOptionValue("algorithm"),
+					properties,
+					problem);
 
-				try (ResultFileWriter writer = ResultFileWriter.overwrite(problem, file)) {
-					algorithm = new RuntimeCollector(algorithm, runtimeFrequency, writer);
-					algorithm.run(maxEvaluations);
-				}
-			} finally {
-				if (algorithm != null) {
-					algorithm.terminate();
-				}
+			try (ResultFileWriter writer = ResultFileWriter.overwrite(problem, file)) {
+				algorithm = new RuntimeCollector(algorithm, runtimeFrequency, writer);
+				algorithm.run(maxEvaluations);
 			}
 		} catch (ParseException e) {
 			throw new IOException(e);

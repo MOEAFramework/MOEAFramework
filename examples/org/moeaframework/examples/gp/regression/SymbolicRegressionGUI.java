@@ -292,19 +292,15 @@ public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 		GeneticAlgorithm algorithm = new GeneticAlgorithm(problem);
 		algorithm.setInitialPopulationSize(500);
 		
-		try {
-			// run the GP solver
-			while ((generation < maxGenerations) && !gui.isCanceled()) {
-				algorithm.step();
-				generation++;
+		// run the GP solver
+		while ((generation < maxGenerations) && !gui.isCanceled()) {
+			algorithm.step();
+			generation++;
 
-				gui.update(algorithm.getResult().get(0), generation, maxGenerations);
-			}
-		} finally {
-			if (algorithm != null) {
-				algorithm.terminate();
-			}
+			gui.update(algorithm.getResult().get(0), generation, maxGenerations);
 		}
+
+		algorithm.terminate();
 	}
 
 }

@@ -154,13 +154,31 @@ public class AbstractAlgorithmTest {
 		algorithm.terminate();
 	}
 
-	@Test(expected = AlgorithmException.class)
-	public void testGuardStepAfterTerminate() {
+	public void testStepAfterTermination() {
 		AbstractAlgorithm algorithm = new TestAbstractAlgorithm();
 
 		algorithm.step();
 		algorithm.terminate();
+		
+		Assert.assertTrue(algorithm.isTerminated());
+		
 		algorithm.step();
+		
+		Assert.assertFalse(algorithm.isTerminated());
+		
+		algorithm.terminate();
+		
+		Assert.assertTrue(algorithm.isTerminated());
+	}
+	
+	public void testRunAfterTermination() {
+		AbstractAlgorithm algorithm = new TestAbstractAlgorithm();
+
+		algorithm.run(100);
+		Assert.assertTrue(algorithm.isTerminated());
+		algorithm.run(100);
+		Assert.assertTrue(algorithm.isTerminated());
+		Assert.assertEquals(200, algorithm.getNumberOfEvaluations());
 	}
 
 	@Test(expected = AlgorithmException.class)

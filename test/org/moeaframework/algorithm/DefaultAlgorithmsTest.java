@@ -336,7 +336,6 @@ public class DefaultAlgorithmsTest {
 		Assert.assertFalse(algorithm.isTerminated());
 		
 		algorithm.run(NFE);
-		algorithm.terminate();
 		
 		if (!(algorithm instanceof AMOSA)) {
 			Assert.assertTrue((algorithm.getNumberOfEvaluations() - NFE) < 200);
