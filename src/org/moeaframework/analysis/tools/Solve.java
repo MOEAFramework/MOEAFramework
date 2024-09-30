@@ -28,6 +28,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang3.StringUtils;
+import org.moeaframework.algorithm.extension.FrequencyType;
 import org.moeaframework.algorithm.extension.RuntimeCollectorExtension;
 import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.core.Algorithm;
@@ -449,7 +450,8 @@ public class Solve extends CommandLineUtility {
 					problem);
 
 			try (ResultFileWriter writer = ResultFileWriter.overwrite(problem, file)) {
-				algorithm.addExtension(new RuntimeCollectorExtension(runtimeFrequency, writer));
+				algorithm.addExtension(new RuntimeCollectorExtension(writer,
+						runtimeFrequency, FrequencyType.EVALUATIONS));
 				algorithm.run(maxEvaluations);
 			}
 		} catch (ParseException e) {

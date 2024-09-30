@@ -45,11 +45,12 @@ public class RuntimeCollectorExtension extends PeriodicExtension {
 	/**
 	 * Constructs a new wrapper to collect runtime dynamics.
 	 * 
-	 * @param frequency the frequency at which the runtime snapshots are recorded
 	 * @param writer the result file writer where the runtime information is stored
+	 * @param frequency the frequency at which the runtime snapshots are recorded
+	 * @param frequencyType the type of frequency
 	 */
-	public RuntimeCollectorExtension(int frequency, ResultFileWriter writer) {
-		super(frequency, FrequencyType.EVALUATIONS);
+	public RuntimeCollectorExtension(ResultFileWriter writer, int frequency, FrequencyType frequencyType) {
+		super(frequency, frequencyType);
 		this.writer = writer;
 		
 		timer = new StopWatch();

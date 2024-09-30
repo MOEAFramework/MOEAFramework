@@ -52,6 +52,17 @@ NFE: 900, Nondominated Solutions: 100
 NFE: 1000, Nondominated Solutions: 100
 ```
 
+## Extension Points
+
+The following extension points are provided:
+
+* `onRegister` - Called when registering the extension.  This can be used to perform any type checking, validation,
+  or initial setup of the algorithm.
+* `onInitialize` - Called during initialization.  For instance, this can be used to modify the initial population or
+  state of the algorithm.
+* `onStep` - Called after each step (or iteration) of the algorithm.
+* `onTerminate` - Called when the termination conditions are reached at the end of a run.
+
 ## Built-in Extensions
 
 ### Logging
@@ -90,4 +101,20 @@ algorithm.addExtension(new CheckpointExtension(checkpointFile, 1000));
 algorithm.run(1000000 - algorithm.getNumberOfEvaluations());
 ```
 
+### Runtime Collector
+
+Records the intermediate approximation sets as an algorithm runs, saving them to a result file.
+
+<!-- java:examples/org/moeaframework/examples/extensions/RuntimeCollectorExample.java [36:43] -->
+
+```java
+Problem problem = new Srinivas();
+File file = new File("runtime.dat");
+
+try (ResultFileWriter writer = ResultFileWriter.overwrite(problem, file)) {
+    NSGAII algorithm = new NSGAII(problem);
+    algorithm.addExtension(new RuntimeCollectorExtension(writer, 1000, FrequencyType.EVALUATIONS));
+    algorithm.run(100000);
+}
+```
 
