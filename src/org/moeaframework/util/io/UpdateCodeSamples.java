@@ -82,6 +82,8 @@ import org.moeaframework.util.validate.Validate;
 public class UpdateCodeSamples extends CommandLineUtility {
 	
 	private static final long DEFAULT_SEED = 123456;
+	
+	private static final String LINE_SEPARATOR = "\n";
 
 	private static final String[] DEFAULT_CLASSPATH = new String[] { "lib/*", "build", "examples" };
 	
@@ -260,7 +262,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 					boolean contentChanged = diff(oldContent, newContent);
 					fileChanged |= contentChanged;
 					
-					writer.write(String.join(System.lineSeparator(), newContent));
+					writer.write(String.join(LINE_SEPARATOR, newContent));
 					writer.newLine();
 				}
 			}
@@ -788,7 +790,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @return the updated code block
 		 */
 		public List<String> stripComments(List<String> lines) {
-			String content = String.join(System.lineSeparator(), lines);
+			String content = String.join(LINE_SEPARATOR, lines);
 			content = stripComments(content);
 			
 			List<String> result = new ArrayList<String>(content.lines().toList());
@@ -802,7 +804,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @return the updated code block
 		 */
 		public List<String> stripIndentation(List<String> lines) {
-			String content = String.join(System.lineSeparator(), lines);
+			String content = String.join(LINE_SEPARATOR, lines);
 			content = content.stripIndent();
 			return new ArrayList<String>(content.lines().toList());
 		}

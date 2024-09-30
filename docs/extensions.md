@@ -58,8 +58,7 @@ The following extension points are provided:
 
 * `onRegister` - Called when registering the extension.  This can be used to perform any type checking, validation,
   or initial setup of the algorithm.
-* `onInitialize` - Called during initialization.  For instance, this can be used to modify the initial population or
-  state of the algorithm.
+* `onInitialize` - Called during initialization, typically after the algorithm produces the initial population.
 * `onStep` - Called after each step (or iteration) of the algorithm.
 * `onTerminate` - Called when the termination conditions are reached at the end of a run.
 

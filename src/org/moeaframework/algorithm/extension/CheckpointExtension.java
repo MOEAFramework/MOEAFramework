@@ -40,15 +40,26 @@ public class CheckpointExtension extends PeriodicExtension {
 	 * The file containing the checkpoint states.
 	 */
 	private final File stateFile;
+	
+	/**
+	 * Creates a new checkpoint extension.
+	 * 
+	 * @param stateFile the file containing the checkpoint states
+	 * @param frequency the number of objective function evaluations between checkpoints
+	 */
+	public CheckpointExtension(File stateFile, int frequency) {
+		this(stateFile, frequency, FrequencyType.EVALUATIONS);
+	}
 
 	/**
 	 * Creates a new checkpoint extension.
 	 * 
 	 * @param stateFile the file containing the checkpoint states
-	 * @param checkpointFrequency the number of objective function evaluations between checkpoints
+	 * @param frequency the frequency of checkpoints
+	 * @param frequencyType the type of frequency
 	 */
-	public CheckpointExtension(File stateFile, int checkpointFrequency) {
-		super(checkpointFrequency, FrequencyType.EVALUATIONS);
+	public CheckpointExtension(File stateFile, int frequency, FrequencyType frequencyType) {
+		super(frequency, frequencyType);
 		this.stateFile = stateFile;
 	}
 

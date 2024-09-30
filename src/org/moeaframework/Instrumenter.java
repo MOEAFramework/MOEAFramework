@@ -32,6 +32,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.moeaframework.algorithm.extension.FrequencyType;
 import org.moeaframework.analysis.collector.AdaptiveMultimethodVariationCollector;
 import org.moeaframework.analysis.collector.AdaptiveTimeContinuationCollector;
+import org.moeaframework.analysis.collector.AdaptiveTimeContinuationExtensionCollector;
 import org.moeaframework.analysis.collector.ApproximationSetCollector;
 import org.moeaframework.analysis.collector.Collector;
 import org.moeaframework.analysis.collector.ElapsedTimeCollector;
@@ -661,6 +662,7 @@ public class Instrumenter extends ProblemBuilder {
 	 * @return the instrumented algorithm
 	 * @throws IllegalArgumentException if no reference set is available or could not be loaded
 	 */
+	@SuppressWarnings("deprecation")
 	public <T extends Algorithm> InstrumentedAlgorithm<T> instrument(T algorithm) {
 		Validate.that("algorithm", algorithm).isNotNull();
 		
@@ -740,6 +742,7 @@ public class Instrumenter extends ProblemBuilder {
 		
 		if (includeAdaptiveTimeContinuation) {
 			collectors.add(new AdaptiveTimeContinuationCollector());
+			collectors.add(new AdaptiveTimeContinuationExtensionCollector());
 		}
 	
 		if (includeElapsedTime) {

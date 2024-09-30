@@ -7,6 +7,9 @@ This page documents notable changes introduced in each chronological release of 
   * Changes the behavior of algorithm termination.  Previously, once an algorithm reached its termination condition
     and called `terminate()`, it could no longer be used.  With this release, the termination flag is reset if one
     continues to use the algorithm (by calling `algorithm.step()` or `algorithm.run(...)`).
+    
+  * Adds extension mechanism to replace algorithm wrappers.  Extensions can be written to plug into specific "extension
+    points".
 
 
 ## Version 4.4 (4 Aug 2024)
