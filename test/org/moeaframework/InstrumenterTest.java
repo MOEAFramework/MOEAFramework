@@ -17,9 +17,6 @@
  */
 package org.moeaframework;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
@@ -32,15 +29,15 @@ import org.moeaframework.analysis.collector.Collector;
 import org.moeaframework.analysis.collector.Observation;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.indicator.StandardIndicator;
 import org.moeaframework.core.operator.real.UM;
 import org.moeaframework.core.selection.TournamentSelection;
+import org.moeaframework.mock.MockAlgorithm;
+import org.moeaframework.mock.MockAlgorithmWithExtensions;
 import org.moeaframework.mock.MockRealProblem;
 
 public class InstrumenterTest {
@@ -84,56 +81,7 @@ public class InstrumenterTest {
 		
 	}
 	
-	public static class EmptyAlgorithm implements Algorithm {
-
-		@Override
-		public Problem getProblem() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public NondominatedPopulation getResult() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void step() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void evaluate(Solution solution) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public int getNumberOfEvaluations() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public boolean isTerminated() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void terminate() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void saveState(ObjectOutputStream stream) throws IOException {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
-			throw new UnsupportedOperationException();
-		}
-		
-	}
-	
-	public static class SimpleAlgorithm extends EmptyAlgorithm {
+	public static class SimpleAlgorithm extends MockAlgorithmWithExtensions {
 		
 		protected Variation variation = new UM(1.0);
 		
@@ -165,20 +113,20 @@ public class InstrumenterTest {
 		collector = null;
 	}
 
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void testInstrumentNull() {
 		new Instrumenter().attach(collector).instrument(null);
-		Assert.assertSize(0, collector.getInstrumentedObjects());
 	}
 	
 	@Test
 	public void testInstrumentEmptyAlgorithm() {
-		EmptyAlgorithm algorithm = new EmptyAlgorithm();
+		MockAlgorithm algorithm = new MockAlgorithmWithExtensions();
 		new Instrumenter().attach(collector).instrument(algorithm);
 		
 		Set<Object> instrumentedObjects = collector.getInstrumentedObjects();
-		Assert.assertSize(1, instrumentedObjects);
+		Assert.assertSize(2, instrumentedObjects);
 		Assert.assertContains(instrumentedObjects, algorithm);
+		Assert.assertContains(instrumentedObjects, algorithm.getExtensions());
 	}
 	
 	@Test
@@ -188,25 +136,27 @@ public class InstrumenterTest {
 		
 		Set<Object> instrumentedObjects = collector.getInstrumentedObjects();
 		
-		Assert.assertSize(7, instrumentedObjects);
+		Assert.assertSize(8, instrumentedObjects);
 		Assert.assertContains(instrumentedObjects, algorithm);
 		Assert.assertContains(instrumentedObjects, algorithm.variation);
 		Assert.assertContains(instrumentedObjects, algorithm.selection);
 		Assert.assertContains(instrumentedObjects, algorithm.selection.getComparator());
 		Assert.assertContains(instrumentedObjects, algorithm.problem);
+		Assert.assertContains(instrumentedObjects, algorithm.getExtensions());
 	}
 	
 	@Test
 	public void testSynthetic() {
-		Algorithm algorithm = new EmptyAlgorithm() {
+		Algorithm algorithm = new MockAlgorithmWithExtensions() {
 			//anonymous class, which will contain a synthetic field "this" pointing to InstrumenterTest
 		}; 
 		
 		new Instrumenter().attach(collector).instrument(algorithm);
 		
 		Set<Object> instrumentedObjects = collector.getInstrumentedObjects();
-		Assert.assertSize(1, instrumentedObjects);
+		Assert.assertSize(2, instrumentedObjects);
 		Assert.assertContains(instrumentedObjects, algorithm);
+		Assert.assertContains(instrumentedObjects, algorithm.getExtensions());
 	}
 	
 	@Test

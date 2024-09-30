@@ -335,7 +335,7 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm implements 
 	}
 
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		super.initialize();
 		
 		Solution[] initialParticles = new RandomInitialization(problem).initialize(swarmSize);

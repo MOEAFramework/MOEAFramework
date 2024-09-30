@@ -42,7 +42,7 @@ Instrumenter instrumenter = new Instrumenter()
 
 NSGAII algorithm = new NSGAII(problem);
 
-InstrumentedAlgorithm instrumentedAlgorithm = instrumenter.instrument(algorithm);
+InstrumentedAlgorithm<NSGAII> instrumentedAlgorithm = instrumenter.instrument(algorithm);
 instrumentedAlgorithm.run(10000);
 
 Observations observations = instrumenter.getObservations();

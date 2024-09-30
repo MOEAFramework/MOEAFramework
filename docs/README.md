@@ -14,8 +14,8 @@
   * [Natively-Compiled Functions](writingNativeProblem.md)
   * [Calling Executable with Standard I/O or Sockets](writingExternalProblem.md)
 * [Adding New Algorithms](addingAlgorithms.md)
+* [Creating and Using Extensions](extensions.md)
 * [Miscellaneous Topics](miscellaneousTopics.md)
-  * [Checkpoints](miscellaneousTopics.md#checkpoints)
   * [Saving and Formatting Results](miscellaneousTopics.md#saving-and-formatting-results)
   * [Injecting Initial Solutions](miscellaneousTopics.md#injecting-initial-solutions)
   * [Mixed Types](miscellaneousTopics.md#mixed-types)
@@ -32,7 +32,7 @@
 * [List of Test Problems](listOfProblems.md)
 * [File Formats](fileFormats.md)
 * [Command Line Tools](commandLineTools.md)
-* [Extensions (JMetal-Plugin, Generalized Decomposition, Hypervolume)](listOfExtensions.md)
+* [Plugins](listOfPlugins.md)
 
 ## Developers
 

@@ -18,7 +18,7 @@
 package org.moeaframework.analysis.collector;
 
 import org.moeaframework.Assert;
-import org.moeaframework.algorithm.continuation.AdaptiveTimeContinuation;
+import org.moeaframework.algorithm.continuation.AdaptiveTimeContinuationExtension;
 import org.moeaframework.core.Algorithm;
 
 public class AdaptiveTimeContinuationCollectorTest extends AbstractCollectorTest<AdaptiveTimeContinuationCollector> {
@@ -35,7 +35,7 @@ public class AdaptiveTimeContinuationCollectorTest extends AbstractCollectorTest
 	
 	@Override
 	public boolean shouldAttach(Algorithm algorithm) {
-		return algorithm instanceof AdaptiveTimeContinuation;
+		return algorithm.getExtensions().get(AdaptiveTimeContinuationExtension.class) != null;
 	}
 
 }

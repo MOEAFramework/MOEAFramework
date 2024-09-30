@@ -23,38 +23,32 @@ import java.io.IOException;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
+import org.moeaframework.algorithm.extension.CheckpointExtension;
+import org.moeaframework.algorithm.extension.Extension;
+import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 import org.moeaframework.mock.MockRealProblem;
 
 public class AbstractAlgorithmTest {
 
-	/**
-	 * Test {@code AbstractAlgorithm} that counts the number of times the {@code iterate} method is invoked.
-	 */
 	private static class TestAbstractAlgorithm extends AbstractAlgorithm {
 
-		/**
-		 * The number of times the {@code iterate} method is invoked.
-		 */
-		private int iterated;
+		private int numberOfIterations;
 
-		/**
-		 * Constructs a test {@code AbstractAlgorithm}.
-		 */
 		public TestAbstractAlgorithm() {
 			super(new MockRealProblem(2));
 		}
 		
 		@Override
-		protected void initialize() {
+		public void initialize() {
 			super.initialize();
 			numberOfEvaluations += 100;
 		}
 
 		@Override
 		public void iterate() {
-			iterated++;
+			numberOfIterations++;
 			numberOfEvaluations += 100;
 		}
 
@@ -63,15 +57,46 @@ public class AbstractAlgorithmTest {
 			throw new UnsupportedOperationException();
 		}
 
-		/**
-		 * Returns the number of times the iterate method is invoked.
-		 * 
-		 * @return the number of times the iterate method is invoked
-		 */
-		public int getIterated() {
-			return iterated;
+		public int getNumberOfIterations() {
+			return numberOfIterations;
 		}
 
+	}
+	
+	private static class TestExtension implements Extension {
+		
+		private int registerCount = 0;
+		private int stepCount = 0;
+		private int initializeCount = 0;
+		private int terminateCount = 0;
+
+		@Override
+		public void onRegister(Algorithm algorithm) {
+			registerCount++;
+		}
+
+		@Override
+		public void onStep(Algorithm algorithm) {
+			stepCount++;
+		}
+
+		@Override
+		public void onInitialize(Algorithm algorithm) {
+			initializeCount++;
+		}
+
+		@Override
+		public void onTerminate(Algorithm algorithm) {
+			terminateCount++;
+		}
+		
+		public void assertCalls(int expectedSteps) {
+			Assert.assertEquals(1, registerCount);
+			Assert.assertEquals(1, initializeCount);
+			Assert.assertEquals(expectedSteps, stepCount);
+			Assert.assertEquals(1, terminateCount);
+		}
+		
 	}
 
 	@Test
@@ -91,7 +116,7 @@ public class AbstractAlgorithmTest {
 
 		Assert.assertTrue(algorithm.isInitialized());
 		Assert.assertFalse(algorithm.isTerminated());
-		Assert.assertEquals(2, algorithm.getIterated());
+		Assert.assertEquals(2, algorithm.getNumberOfIterations());
 
 		algorithm.terminate();
 
@@ -111,7 +136,7 @@ public class AbstractAlgorithmTest {
 
 		Assert.assertTrue(algorithm.isInitialized());
 		Assert.assertFalse(algorithm.isTerminated());
-		Assert.assertEquals(1, algorithm.getIterated());
+		Assert.assertEquals(1, algorithm.getNumberOfIterations());
 
 		algorithm.terminate();
 
@@ -213,15 +238,30 @@ public class AbstractAlgorithmTest {
 	public void testResumable() throws IOException {
 		File file = TempFiles.createFile();
 		
-		Checkpoints checkpoints = new Checkpoints(new TestAbstractAlgorithm(), file, 0);
-		Assert.assertEquals(0, checkpoints.getNumberOfEvaluations());
+		Algorithm algorithm = new TestAbstractAlgorithm();
+		algorithm.addExtension(new CheckpointExtension(file, 0));
+		Assert.assertEquals(0, algorithm.getNumberOfEvaluations());
 		
-		checkpoints.step();
-		checkpoints.step();
+		algorithm.step();
+		algorithm.step();
 		Assert.assertFileWithContent(file);
 		
-		checkpoints = new Checkpoints(new TestAbstractAlgorithm(), file, 0);
-		Assert.assertEquals(200, checkpoints.getNumberOfEvaluations());
+		algorithm = new TestAbstractAlgorithm();
+		algorithm.addExtension(new CheckpointExtension(file, 0));
+		Assert.assertEquals(200, algorithm.getNumberOfEvaluations());
+	}
+	
+	@Test
+	public void testExtensions() {
+		TestExtension extension = new TestExtension();
+		
+		Algorithm algorithm = new TestAbstractAlgorithm();
+		algorithm.addExtension(extension);
+		algorithm.step();
+		algorithm.step();
+		algorithm.terminate();
+		
+		extension.assertCalls(2);
 	}
 
 }

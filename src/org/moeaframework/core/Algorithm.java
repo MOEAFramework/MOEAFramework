@@ -19,6 +19,9 @@ package org.moeaframework.core;
 
 import java.util.Arrays;
 
+import org.moeaframework.algorithm.AlgorithmInitializationException;
+import org.moeaframework.algorithm.AlgorithmTerminationException;
+import org.moeaframework.algorithm.extension.Extensible;
 import org.moeaframework.core.termination.MaxFunctionEvaluations;
 
 /**
@@ -26,7 +29,7 @@ import org.moeaframework.core.termination.MaxFunctionEvaluations;
  * steps, though the amount of work performed by each step depends on the algorithm. For example, an algorithm
  * may completely solve a problem in one step or may require hundreds of thousands of steps.
  */
-public interface Algorithm extends Stateful {
+public interface Algorithm extends Stateful, Extensible {
 
 	/**
 	 * Returns the problem being solved by this algorithm.
@@ -41,15 +44,34 @@ public interface Algorithm extends Stateful {
 	 * @return the current best-known result
 	 */
 	public NondominatedPopulation getResult();
+	
+	/**
+	 * Returns {@code true} if this algorithm has been initialized; {@code false} otherwise.
+	 * 
+	 * @return {@code true} if this algorithm has been initialized; {@code false} otherwise
+	 * @see #initialize()
+	 */
+	public boolean isInitialized();
+	
+	/**
+	 * Performs any initialization that is required by this algorithm.  This method should only be called once, though
+	 * the specific implementation may choose to no-op or throw {@link AlgorithmInitializationException} if called
+	 * multiple times.
+	 * <p>
+	 * Implementations should always call {@code super.initialize()} to ensure the algorithm is initialized correctly.
+	 * 
+	 * @throws AlgorithmInitializationException if the algorithm has already been initialized
+	 */
+	public void initialize();
 
 	/**
-	 * Performs one logical step of this algorithm. The amount of work performed depends on the implementation. One
+	 * Performs one logical step of this algorithm.  The amount of work performed depends on the implementation.  One
 	 * invocation of this method may produce one or many trial solutions.
 	 * <p>
-	 * In general, calling this method after {@link #terminate()} is permitted.  When this happens,
-	 * {@link #isTerminated()} is reset.  We recommend checking {@link #isTerminated()} after each step to detect when
-	 * termination conditions are reached.  However, if the implementation is unable to continue, this method should
-	 * throw {@link AlgorithmTerminationException}.
+	 * If this method is called before the algorithm is initialized, {@link #initialize()} will be called automatically.
+	 * Furthermore, this method can be called after {@link #terminate()}.  This often happens when a user calls
+	 * {@link #run(TerminationCondition)} multiple times.  If, however, the implementation can not continue after
+	 * being terminated, it should throw {@link AlgorithmTerminationException}.
 	 */
 	public void step();
 	
@@ -133,7 +155,11 @@ public interface Algorithm extends Stateful {
 	public boolean isTerminated();
 
 	/**
-	 * Called when the termination condition is reached and the run is complete.
+	 * Called when the termination condition is reached and the run is complete.  This method is automatically called
+	 * when using {@link #run(TerminationCondition)}, but can also be invoked directly if executing the algorithm
+	 * step-by-step with {@link #step()}.
+	 * <p>
+	 * Implementations should always call {@code super.terminate()} to ensure the algorithm is terminated correctly.
 	 */
 	public void terminate();
 	

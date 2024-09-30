@@ -17,12 +17,12 @@
  */
 package org.moeaframework.analysis.collector;
 
-import org.moeaframework.algorithm.continuation.AdaptiveTimeContinuation;
+import org.moeaframework.algorithm.continuation.AdaptiveTimeContinuationExtension;
 import org.moeaframework.algorithm.continuation.RestartEvent;
 import org.moeaframework.algorithm.continuation.RestartListener;
 
 /**
- * Collects the number of restart events resulting from {@link AdaptiveTimeContinuation}.
+ * Collects the number of restart events resulting from {@link AdaptiveTimeContinuationExtension}.
  */
 public class AdaptiveTimeContinuationCollector implements Collector, RestartListener {
 
@@ -33,7 +33,7 @@ public class AdaptiveTimeContinuationCollector implements Collector, RestartList
 	
 	/**
 	 * Constructs an unattached collector for recording the number of restart events resulting from
-	 * {@code AdaptiveTimeContinuation}.
+	 * {@code AdaptiveTimeContinuationExtension}.
 	 */
 	public AdaptiveTimeContinuationCollector() {
 		super();
@@ -41,14 +41,14 @@ public class AdaptiveTimeContinuationCollector implements Collector, RestartList
 	
 	/**
 	 * Constructs a collector for recording the number of restart events resulting from the specified
-	 * {@code AdaptiveTimeContinuation} instance.
+	 * {@code AdaptiveTimeContinuationExtension} instance.
 	 * 
-	 * @param algorithm the algorithm this collector records data from
+	 * @param extension the extension this collector records data from
 	 */
-	public AdaptiveTimeContinuationCollector(AdaptiveTimeContinuation algorithm) {
+	public AdaptiveTimeContinuationCollector(AdaptiveTimeContinuationExtension extension) {
 		super();
 
-		algorithm.addRestartListener(this);
+		extension.addRestartListener(this);
 	}
 
 	@Override
@@ -63,12 +63,12 @@ public class AdaptiveTimeContinuationCollector implements Collector, RestartList
 
 	@Override
 	public AttachPoint getAttachPoint() {
-		return AttachPoint.isSubclass(AdaptiveTimeContinuation.class);
+		return AttachPoint.isSubclass(AdaptiveTimeContinuationExtension.class);
 	}
 
 	@Override
 	public Collector attach(Object object) {
-		return new AdaptiveTimeContinuationCollector((AdaptiveTimeContinuation)object);
+		return new AdaptiveTimeContinuationCollector((AdaptiveTimeContinuationExtension)object);
 	}
 	
 	/**

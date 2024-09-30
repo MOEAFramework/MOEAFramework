@@ -17,7 +17,7 @@
  */
 package org.moeaframework.algorithm;
 
-import org.moeaframework.algorithm.continuation.AdaptiveTimeContinuation;
+import org.moeaframework.algorithm.continuation.AdaptiveTimeContinuationExtension;
 import org.moeaframework.analysis.DefaultEpsilons;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Initialization;
@@ -30,7 +30,6 @@ import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.configuration.Configurable;
-import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.real.UM;
 import org.moeaframework.core.selection.TournamentSelection;
@@ -48,7 +47,7 @@ import org.moeaframework.util.TypedProperties;
  *       Monitoring Design."  Advances in Water Resources, 29(6):792-807, 2006.
  * </ol>
  */
-public class EpsilonNSGAII extends AdaptiveTimeContinuation implements Configurable {
+public class EpsilonNSGAII extends NSGAII implements Configurable {
 	
 	/**
 	 * Constructs a new &epsilon;-NSGA-II instance with default settings.
@@ -90,71 +89,10 @@ public class EpsilonNSGAII extends AdaptiveTimeContinuation implements Configura
 			EpsilonBoxDominanceArchive archive, Selection selection, Variation variation,
 			Initialization initialization, int windowSize, int maxWindowSize, double injectionRate,
 			int minimumPopulationSize, int maximumPopulationSize) {
-		super(new NSGAII(problem, initialPopulationSize, population, archive, selection, variation, initialization),
-				windowSize, maxWindowSize, injectionRate, minimumPopulationSize, maximumPopulationSize,
-				new UniformSelection(), new UM(1.0));
-	}
-	
-	@Override
-	protected NSGAII getAlgorithm() {
-		return (NSGAII)super.getAlgorithm();
-	}
-
-	@Override
-	public NondominatedSortingPopulation getPopulation() {
-		return (NondominatedSortingPopulation)super.getPopulation();
-	}
-	
-	/**
-	 * Returns the variation operator currently in use by this algorithm.
-	 * 
-	 * @return the variation operator
-	 */
-	public Variation getVariation() {
-		return getAlgorithm().getVariation();
-	}
-	
-	/**
-	 * Replaces the variation operator to be used by this algorithm.
-	 * 
-	 * @param variation the variation operator
-	 */
-	@Property("operator")
-	public void setVariation(Variation variation) {
-		getAlgorithm().setVariation(variation);
-	}
-	
-	/**
-	 * Returns the initial population size.
-	 * 
-	 * @return the initial population size
-	 */
-	public int getInitialPopulationSize() {
-		return getAlgorithm().getInitialPopulationSize();
-	}
-	
-	/**
-	 * Sets the initial population size.  This value can not be set after initialization.
-	 * 
-	 * @param initialPopulationSize the initial population size
-	 */
-	@Property("populationSize")
-	public void setInitialPopulationSize(int initialPopulationSize) {
-		getAlgorithm().setInitialPopulationSize(initialPopulationSize);
-	}
-	
-	@Override
-	public EpsilonBoxDominanceArchive getArchive() {
-		return (EpsilonBoxDominanceArchive)super.getAlgorithm().getArchive();
-	}
-	
-	/**
-	 * Sets the archive used by this algorithm.  This value can not be set after initialization.
-	 * 
-	 * @param archive the archive
-	 */
-	public void setArchive(EpsilonBoxDominanceArchive archive) {
-		getAlgorithm().setArchive(archive);
+		super(problem, initialPopulationSize, population, archive, selection, variation, initialization);
+		
+		addExtension(new AdaptiveTimeContinuationExtension(windowSize, maxWindowSize, injectionRate,
+				minimumPopulationSize, maximumPopulationSize, new UniformSelection(), new UM(1.0)));
 	}
 	
 	@Override

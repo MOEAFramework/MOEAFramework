@@ -37,14 +37,9 @@ public class RestartEvent extends EventObject {
 	 * @param source the source of this restart event
 	 * @param type the type of this restart event
 	 */
-	public RestartEvent(AdaptiveTimeContinuation source, RestartType type) {
+	public RestartEvent(Object source, RestartType type) {
 		super(source);
 		this.type = type;
-	}
-
-	@Override
-	public AdaptiveTimeContinuation getSource() {
-		return (AdaptiveTimeContinuation)super.getSource();
 	}
 
 	/**

@@ -447,6 +447,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			command.add("java");
 			command.add("-classpath");
 			command.add(getClassPath(classpath));
+			command.add("-D" + Settings.KEY_HIDE_TIMESTAMP + "=true");
 			command.add("-D" + Settings.KEY_PRNG_SEED + "=" + seed);
 			
 			if (options.language.equals(Language.Help)) {

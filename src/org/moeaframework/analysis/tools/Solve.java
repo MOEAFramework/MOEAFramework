@@ -28,14 +28,12 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang3.StringUtils;
-import org.moeaframework.analysis.io.ResultEntry;
+import org.moeaframework.algorithm.extension.RuntimeCollectorExtension;
 import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.PeriodicAction;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
@@ -451,7 +449,7 @@ public class Solve extends CommandLineUtility {
 					problem);
 
 			try (ResultFileWriter writer = ResultFileWriter.overwrite(problem, file)) {
-				algorithm = new RuntimeCollector(algorithm, runtimeFrequency, writer);
+				algorithm.addExtension(new RuntimeCollectorExtension(runtimeFrequency, writer));
 				algorithm.run(maxEvaluations);
 			}
 		} catch (ParseException e) {
@@ -461,54 +459,6 @@ public class Solve extends CommandLineUtility {
 				problem.close();
 			}
 		}
-	}
-
-	/**
-	 * Wraps an algorithm to write the approximation set and periodic intervals.
-	 */
-	private static class RuntimeCollector extends PeriodicAction {
-		
-		/**
-		 * The result file writer where the runtime information is stored.
-		 */
-		private final ResultFileWriter writer;
-
-		/**
-		 * The time, in nanoseconds, this collector was created.  This roughly corresponds to the time the algorithm
-		 * starts, assuming that the algorithm is run immediately following its setup.
-		 */
-		private final long startTime;
-
-		/**
-		 * Constructs a new wrapper to collect runtime dynamics.
-		 * 
-		 * @param algorithm the wrapped algorithm
-		 * @param frequency the frequency at which the runtime snapshots are recorded
-		 * @param writer the result file writer where the runtime information is stored
-		 */
-		public RuntimeCollector(Algorithm algorithm, int frequency, ResultFileWriter writer) {
-			super(algorithm, frequency, FrequencyType.EVALUATIONS);
-			this.writer = writer;
-			
-			startTime = System.nanoTime();
-		}
-
-		@Override
-		public void doAction() {
-			double elapsedTime = (System.nanoTime() - startTime) * 1e-9;
-			NondominatedPopulation result = algorithm.getResult();
-
-			TypedProperties properties = new TypedProperties();
-			properties.setInt("NFE", algorithm.getNumberOfEvaluations());
-			properties.setDouble("ElapsedTime", elapsedTime);
-
-			try {
-				writer.append(new ResultEntry(result, properties));
-			} catch (IOException e) {
-				throw new FrameworkException(e);
-			}
-		}
-		
 	}
 
 	/**

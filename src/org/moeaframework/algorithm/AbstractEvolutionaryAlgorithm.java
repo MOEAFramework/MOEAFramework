@@ -105,7 +105,7 @@ Configurable {
 	}
 
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		super.initialize();
 		
 		if (variation == null) {

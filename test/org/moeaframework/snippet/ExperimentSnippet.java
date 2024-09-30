@@ -93,7 +93,7 @@ public class ExperimentSnippet {
 				
 		NSGAII algorithm = new NSGAII(problem);
 				
-		InstrumentedAlgorithm instrumentedAlgorithm = instrumenter.instrument(algorithm);
+		InstrumentedAlgorithm<?> instrumentedAlgorithm = instrumenter.instrument(algorithm);
 		instrumentedAlgorithm.run(10000);
 				
 		Observations observations = instrumenter.getObservations();

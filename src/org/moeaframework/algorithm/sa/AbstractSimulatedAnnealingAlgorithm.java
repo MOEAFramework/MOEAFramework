@@ -237,7 +237,7 @@ public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgori
 	}
 	
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		super.initialize();
 		
 		if (mutation == null) {
@@ -258,10 +258,13 @@ public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgori
 			initialize();
 		} else if (terminationCondition != null && terminationCondition.shouldTerminate(this)) {
 			terminate();
+			return;
 		} else {
 			iterate();
 			temperature = coolingSchedule.nextTemperature(temperature);
 		}
+		
+		getExtensions().onStep();
 	}
 	
 	@Override

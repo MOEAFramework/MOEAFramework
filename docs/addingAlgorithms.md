@@ -71,34 +71,34 @@ evaluations by applying the Uniform Mutation (UM) operator.
 <!-- java:examples/org/moeaframework/examples/algorithm/PeriodicActionExample.java [40-67] -->
 
 ```java
-Problem problem = new UF1();
-NSGAII algorithm = new NSGAII(problem);
+public static void main(String[] args) {
+    Problem problem = new UF1();
+    NSGAII algorithm = new NSGAII(problem);
 
-PeriodicAction randomizer = new PeriodicAction(algorithm, 1000, FrequencyType.EVALUATIONS) {
+    algorithm.addExtension(new PeriodicExtension(10, FrequencyType.STEPS) {
 
-    @Override
-    public void doAction() {
-        System.out.println("Injecting randomness at NFE " + getNumberOfEvaluations());
+        @Override
+        public void doAction(Algorithm algorithm) {
+            System.out.println("Injecting randomness at NFE " + algorithm.getNumberOfEvaluations());
 
-        NSGAII algorithm = (NSGAII)getAlgorithm();
-        NondominatedSortingPopulation population = algorithm.getPopulation();
+            NondominatedSortingPopulation population = ((NSGAII)algorithm).getPopulation();
 
-        Population offspring = new Population();
-        UM mutation = new UM(1.0 / getProblem().getNumberOfVariables());
+            Population offspring = new Population();
+            UM mutation = new UM(1.0 / algorithm.getProblem().getNumberOfVariables());
 
-        for (Solution solution : population) {
-            offspring.add(mutation.mutate(solution));
+            for (Solution solution : population) {
+                offspring.add(mutation.mutate(solution));
+            }
+
+            algorithm.evaluateAll(offspring);
+            population.addAll(offspring);
+            population.truncate(offspring.size());
         }
 
-        evaluateAll(offspring);
-        population.addAll(offspring);
-        population.truncate(offspring.size());
-    }
+    });
 
-};
-
-randomizer.run(10000);
-randomizer.getResult().display();
+    algorithm.run(10000);
+    algorithm.getResult().display();
 ```
 
 > [!TIP]

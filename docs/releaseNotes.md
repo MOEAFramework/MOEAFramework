@@ -2,6 +2,13 @@
 
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
+## Version 4.5 (TBD)
+
+  * Changes the behavior of algorithm termination.  Previously, once an algorithm reached its termination condition
+    and called `terminate()`, it could no longer be used.  With this release, the termination flag is reset if one
+    continues to use the algorithm (by calling `algorithm.step()` or `algorithm.run(...)`).
+
+
 ## Version 4.4 (4 Aug 2024)
 
   * Introduces a new `clustering` package, with implementations of single-linkage clustering and K-means++.  This

@@ -15,79 +15,26 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.core;
-
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+package org.moeaframework.algorithm.extension;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.PeriodicAction.FrequencyType;
+import org.moeaframework.core.Algorithm;
+import org.moeaframework.mock.MockAlgorithm;
+import org.moeaframework.mock.MockAlgorithmWithExtensions;;
 
-public class PeriodicActionTest {
+public class PeriodicExtensionTest {
 	
-	public static class MockAlgorithm implements Algorithm {
-		
-		private int numberOfEvaluations;
-
-		@Override
-		public Problem getProblem() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public NondominatedPopulation getResult() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void step() {
-			numberOfEvaluations += 10;
-		}
-
-		@Override
-		public void evaluate(Solution solution) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public int getNumberOfEvaluations() {
-			return numberOfEvaluations;
-		}
-
-		@Override
-		public boolean isTerminated() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void terminate() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void saveState(ObjectOutputStream stream) throws IOException {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
-			throw new UnsupportedOperationException();
-		}
-		
-	}
-	
-	public static class TestPeriodicAction extends PeriodicAction {
+	public static class TestPeriodicExtension extends PeriodicExtension {
 		
 		private int numberOfActions;
 
-		public TestPeriodicAction(int frequency, FrequencyType frequencyType) {
-			super(new MockAlgorithm(), frequency, frequencyType);
+		public TestPeriodicExtension(int frequency, FrequencyType frequencyType) {
+			super(frequency, frequencyType);
 		}
 
 		@Override
-		public void doAction() {
+		public void doAction(Algorithm algorithm) {
 			numberOfActions++;
 		}
 
@@ -138,13 +85,17 @@ public class PeriodicActionTest {
 	}
 	
 	public void test(int frequency, FrequencyType type, int expected) {
-		TestPeriodicAction algorithm = new TestPeriodicAction(frequency, type);
+		MockAlgorithm algorithm = new MockAlgorithmWithExtensions();
+		
+		TestPeriodicExtension extension = new TestPeriodicExtension(frequency, type);
+		algorithm.addExtension(extension);
+		
 		
 		for (int i=0; i<1000; i++) {
 			algorithm.step();
 		}
 		
-		Assert.assertEquals(expected, algorithm.getNumberOfActions());
+		Assert.assertEquals(expected, extension.getNumberOfActions());
 	}
 	
 }
