@@ -196,6 +196,13 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		return fileChanged;
 	}
 	
+	/**
+	 * Determines the line separator in use by the source file, avoiding unnecessary diffs in generated files.
+	 * 
+	 * @param file the file
+	 * @return the line separator
+	 * @throws IOException if an I/O error occurred while reading the file
+	 */
 	private String determineLineSeparator(File file) throws IOException {
 		String content = Files.readString(file.toPath());
 		
