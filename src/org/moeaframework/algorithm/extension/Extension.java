@@ -17,8 +17,6 @@
  */
 package org.moeaframework.algorithm.extension;
 
-import java.util.function.Consumer;
-
 import org.moeaframework.core.Algorithm;
 
 /**
@@ -93,23 +91,6 @@ public interface Extension {
 	 */
 	public default void onTerminate(Algorithm algorithm) {
 		
-	}
-	
-	/**
-	 * Functional interface for creating a callback from a function that is executed each step.
-	 * 
-	 * @param callback the callback function
-	 * @return the extension that calls the function each step
-	 */
-	public static Extension callback(Consumer<Algorithm> callback) {
-		return new Extension() {
-			
-			@Override
-			public void onStep(Algorithm algorithm) {
-				callback.accept(algorithm);
-			}
-			
-		};
 	}
 
 }

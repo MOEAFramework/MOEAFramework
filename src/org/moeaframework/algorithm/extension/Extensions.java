@@ -31,37 +31,76 @@ import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.util.TypedProperties;
 
 /**
- * A collection of {@link Extension} associated with an {@link Algorithm}.
+ * A collection of {@link Extension} associated with an {@link Algorithm}.  Extensions implementing {@link Stateful}
+ * and/or {@link Configurable} will be handled appropriately.
  */
 public class Extensions implements Iterable<Extension>, Stateful, Configurable {
 	
+	/**
+	 * The algorithm the extensions are associated with.
+	 */
 	private final Algorithm algorithm;
 	
+	/**
+	 * The list of extensions.
+	 */
 	private final List<Extension> extensions;
 	
+	/**
+	 * Constructs a new collection of {@link Extension}
+	 * 
+	 * @param algorithm the algorithm associated with the extensions
+	 */
 	public Extensions(Algorithm algorithm) {
 		super();
 		this.algorithm = algorithm;
 		this.extensions = new ArrayList<Extension>();
 	}
 	
+	/**
+	 * Adds the extension and invokes its {@link Extension#onRegister(Algorithm)} method.
+	 * 
+	 * @param extension the extension to add
+	 */
 	public void add(Extension extension) {
 		extensions.add(extension);
 		extension.onRegister(algorithm);
 	}
 	
+	/**
+	 * Removes the extension.
+	 * 
+	 * @param extension the extension to remove
+	 */
 	public void remove(Extension extension) {
 		extensions.remove(extension);
 	}
 	
+	/**
+	 * Removes all extensions of the given type (including any that inherit from the type).
+	 * 
+	 * @param extensionType the extension type to remove
+	 */
 	public void remove(Class<? extends Extension> extensionType) {
 		removeIf((e) -> extensionType.isInstance(e));
 	}
 	
+	/**
+	 * Removes all extensions matching the given filter.
+	 * 
+	 * @param filter the filter, returning {@code true} to remove the extension
+	 */
 	public void removeIf(Predicate<? super Extension> filter) {
 		extensions.removeIf(filter);
 	}
 	
+	/**
+	 * Gets the extension of the given type.  If there are multiple matching extensions, only the first is returned.
+	 * 
+	 * @param <T> the type of extension
+	 * @param extensionType the type of the extension
+	 * @return the extension, or {@code null} if no matches found
+	 */
 	public <T extends Extension> T get(Class<T> extensionType) {
 		for (Extension extension : extensions) {
 			if (extensionType.isInstance(extension)) {
@@ -72,18 +111,27 @@ public class Extensions implements Iterable<Extension>, Stateful, Configurable {
 		return null;
 	}
 	
+	/**
+	 * Invokes the {@link Extension#onStep(Algorithm)} method for all registered extensions.
+	 */
 	public void onStep() {
 		for (Extension extension : extensions) {
 			extension.onStep(algorithm);
 		}
 	}
 	
+	/**
+	 * Invokes the {@link Extension#onInitialize(Algorithm)} method for all registered extensions.
+	 */
 	public void onInitialize() {
 		for (Extension extension : extensions) {
 			extension.onInitialize(algorithm);
 		}
 	}
 	
+	/**
+	 * Invokes the {@link Extension#onTerminate(Algorithm)} method for all registered extensions.
+	 */
 	public void onTerminate() {
 		for (Extension extension : extensions) {
 			extension.onTerminate(algorithm);

@@ -15,36 +15,29 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.algorithm.extension;
+package org.moeaframework.examples.extensions;
+
+import java.io.IOException;
+import org.moeaframework.algorithm.NSGAII;
+import org.moeaframework.algorithm.extension.CallbackExtension;
+import org.moeaframework.algorithm.extension.LoggingExtension;
+import org.moeaframework.problem.misc.Srinivas;
 
 /**
- * Interface for algorithms that support extensibility.
+ * Demonstrates using the callback extension with logging.
  */
-public interface Extensible {
+public class CallbackExtensionExample {
 	
-	/**
-	 * Returns the extensions associated with the algorithm.
-	 * 
-	 * @return the extensions
-	 */
-	public Extensions getExtensions();
-	
-	/**
-	 * Adds the given extension and invokes its {@link Extension#onRegister(org.moeaframework.core.Algorithm)} method.
-	 * 
-	 * @param extension the extension to add
-	 */
-	public default void addExtension(Extension extension) {
-		getExtensions().add(extension);
-	}
-	
-	/**
-	 * Removes the given extension.
-	 * 
-	 * @param extension the extension to remove
-	 */
-	public default void removeExtension(Extension extension) {
-		getExtensions().remove(extension);
+	public static void main(String[] args) throws IOException {
+		NSGAII algorithm = new NSGAII(new Srinivas());
+		
+		algorithm.addExtension(new LoggingExtension());
+		algorithm.addExtension(new CallbackExtension((a) -> {
+			LoggingExtension.info(a, "NFE: {0}, Nondominated Solutions: {1}",
+					algorithm.getNumberOfEvaluations(), algorithm.getResult().size());
+		}));
+		
+		algorithm.run(10000);
 	}
 
 }

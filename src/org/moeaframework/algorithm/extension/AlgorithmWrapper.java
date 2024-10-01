@@ -27,15 +27,33 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.configuration.Configurable;
 
+/**
+ * Wrapper for an algorithm.  Unless overridden, all methods call the same method on the wrapped instance.
+ * 
+ * @param <T> the type of the wrapped algorithm
+ */
 public class AlgorithmWrapper<T extends Algorithm> implements Algorithm, Configurable {
 
+	/**
+	 * The wrapped instance.
+	 */
 	private final T algorithm;
 
+	/**
+	 * Wraps the given algorithm.
+	 * 
+	 * @param algorithm the algorithm to wrap
+	 */
 	public AlgorithmWrapper(T algorithm) {
 		super();
 		this.algorithm = algorithm;
 	}
 	
+	/**
+	 * Returns the wrapped instance.
+	 * 
+	 * @return the wrapped instance
+	 */
 	public T getAlgorithm() {
 		return algorithm;
 	}

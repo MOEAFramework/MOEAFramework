@@ -23,6 +23,7 @@ import java.io.ObjectOutputStream;
 
 import org.apache.commons.lang3.event.EventListenerSupport;
 import org.moeaframework.algorithm.extension.FrequencyType;
+import org.moeaframework.algorithm.extension.LoggingExtension;
 import org.moeaframework.algorithm.extension.PeriodicExtension;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.EvolutionaryAlgorithm;
@@ -307,6 +308,9 @@ public class AdaptiveTimeContinuationExtension extends PeriodicExtension impleme
 		} else if (newPopulationSize > maximumPopulationSize) {
 			newPopulationSize = maximumPopulationSize;
 		}
+		
+		LoggingExtension.info(algorithm, "{0} restarting; Type: {1}, New Population Size: {2}",
+				algorithm.getClass().getSimpleName(), type, newPopulationSize);
 
 		while (population.size() < newPopulationSize) {
 			Solution[] parents = restartSelection.select(restartVariation.getArity(), archive);

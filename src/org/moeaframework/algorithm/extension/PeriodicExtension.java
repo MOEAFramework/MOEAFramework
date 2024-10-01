@@ -25,7 +25,7 @@ import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Stateful;
 
 /**
- * An extension that performs an action at a fixed frequency, specified either in NFE or iterations.
+ * An extension that performs an action at a fixed frequency, specified by its {@link FrequencyType}.
  */
 public abstract class PeriodicExtension implements Extension, Stateful {
 	

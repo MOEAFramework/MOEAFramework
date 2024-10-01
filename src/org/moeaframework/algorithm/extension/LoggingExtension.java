@@ -17,17 +17,26 @@
  */
 package org.moeaframework.algorithm.extension;
 
+import java.time.Duration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.moeaframework.core.Algorithm;
+import org.moeaframework.util.DurationUtils;
 import org.moeaframework.util.io.OutputHandler;
 
+/**
+ * Extension that logs information about the execution, including the current NFE and elapsed time.  Furthermore, the
+ * static methods can be used to write log messages if the algorithm has logging enabled.
+ */
 public class LoggingExtension implements Extension {
 	
-	public static final long DEFAULT_LOG_FREQUENCY = 1000;
+	/**
+	 * The default logging frequency for status messages.
+	 */
+	public static final Duration DEFAULT_LOG_FREQUENCY = Duration.ofSeconds(1);
 	
 	private final Logger logger;
 	
@@ -37,34 +46,43 @@ public class LoggingExtension implements Extension {
 	
 	private long lastUpdate;
 	
+	/**
+	 * Constructs a new, default logging extension.
+	 */
 	public LoggingExtension() {
 		this("MOEAFramework");
 	}
-	
-	public LoggingExtension(long logFrequency) {
-		this("MOEAFramework", logFrequency);
-	}
-	
-	public LoggingExtension(Class<?> type) {
-		this(type.getName());
-	}
-	
-	public LoggingExtension(Class<?> type, long logFrequency) {
-		this(type.getName(), logFrequency);
-	}
-	
+
+	/**
+	 * Constructs a new logger with the given name.
+	 * 
+	 * @param name the logger name
+	 */
 	public LoggingExtension(String name) {
 		this(name, DEFAULT_LOG_FREQUENCY);
 	}
 	
-	public LoggingExtension(String name, long logFrequency) {
+	/**
+	 * Constructs a new logger with the given name and settings.
+	 * 
+	 * @param name the logger name
+	 * @param logFrequency the frequency to print log messages
+	 */
+	public LoggingExtension(String name, Duration logFrequency) {
 		this(OutputHandler.getLogger(name), logFrequency);
 	}
 	
-	public LoggingExtension(Logger logger, long logFrequency) {
+	/**
+	 * Constructs a new logger with the given name and settings.
+	 * 
+	 * @param logger the logger
+	 * @param logFrequency the frequency to print log messages
+	 * @param frequencyType the type of frequency
+	 */
+	public LoggingExtension(Logger logger, Duration logFrequency) {
 		super();
 		this.logger = logger;
-		this.logFrequency = logFrequency;
+		this.logFrequency = DurationUtils.toMilliseconds(logFrequency);
 		
 		timer = new StopWatch();
 	}
@@ -100,6 +118,75 @@ public class LoggingExtension implements Extension {
                 algorithm.getClass().getSimpleName(),
                 algorithm.getNumberOfEvaluations(),
                 DurationFormatUtils.formatDuration(timer.getTime(), "H:mm:ss", true) });
+	}
+	
+	/**
+	 * Returns the logger used by this extension.
+	 * 
+	 * @return the logger
+	 */
+	public Logger getLogger() {
+		return logger;
+	}
+	
+	/**
+	 * Writes a log message using this extension.
+	 * 
+	 * @param level the log level
+	 * @param message the log message
+	 * @param params additional parameters used to format the log message
+	 */
+	public void log(Level level, String message, Object... params) {
+		logger.log(level, message, params);
+	}
+	
+	/**
+	 * Writes an informational ({@link Level#INFO}) log message if the algorithm has logging enabled.
+	 * 
+	 * @param algorithm the algorithm
+	 * @param message the log message
+	 * @param params additional parameters used to format the log message
+	 */
+	public static void info(Algorithm algorithm, String message, Object... params) {
+		log(algorithm, Level.INFO, message, params);
+	}
+	
+	/**
+	 * Writes a warning ({@link Level#WARNING}) log message if the algorithm has logging enabled.
+	 * 
+	 * @param algorithm the algorithm
+	 * @param message the log message
+	 * @param params additional parameters used to format the log message
+	 */
+	public static void warning(Algorithm algorithm, String message, Object... params) {
+		log(algorithm, Level.WARNING, message, params);
+	}
+	
+	/**
+	 * Writes a severe ({@link Level#SEVERE}) log message if the algorithm has logging enabled.
+	 * 
+	 * @param algorithm the algorithm
+	 * @param message the log message
+	 * @param params additional parameters used to format the log message
+	 */
+	public static void severe(Algorithm algorithm, String message, Object... params) {
+		log(algorithm, Level.SEVERE, message, params);
+	}
+	
+	/**
+	 * Writes a log message if the algorithm has logging enabled.
+	 * 
+	 * @param algorithm the algorithm
+	 * @param level the log level
+	 * @param message the log message
+	 * @param params additional parameters used to format the log message
+	 */
+	public static void log(Algorithm algorithm, Level level, String message, Object... params) {
+		LoggingExtension extension = algorithm.getExtensions().get(LoggingExtension.class);
+		
+		if (extension != null) {
+			extension.log(level, message, params);
+		}
 	}
 
 }

@@ -76,6 +76,25 @@ algorithm.addExtension(new LoggingExtension());
 algorithm.run(100000);
 ```
 
+### Callback Function
+
+The callback extension allows running arbitrary commands after each step.  Observe in this example how we can write
+custom log messages:
+
+<!-- java:examples/org/moeaframework/examples/extensions/CallbackExtensionExample.java [32:40] -->
+
+```java
+NSGAII algorithm = new NSGAII(new Srinivas());
+
+algorithm.addExtension(new LoggingExtension());
+algorithm.addExtension(new CallbackExtension((a) -> {
+    LoggingExtension.info(a, "NFE: {0}, Nondominated Solutions: {1}",
+            algorithm.getNumberOfEvaluations(), algorithm.getResult().size());
+}));
+
+algorithm.run(10000);
+```
+
 ### Checkpoints
 
 Checkpoints are useful when performing expensive or long-running optimizations.  This will periodically save
