@@ -49,7 +49,7 @@ public interface Algorithm extends Stateful {
 	 * In general, calling this method after {@link #terminate()} is permitted.  When this happens,
 	 * {@link #isTerminated()} is reset.  We recommend checking {@link #isTerminated()} after each step to detect when
 	 * termination conditions are reached.  However, if the implementation is unable to continue, this method should
-	 * throw {@link AlgorithmTerminationException}.
+	 * throw {@code AlgorithmTerminationException}.
 	 */
 	public void step();
 	

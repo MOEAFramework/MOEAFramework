@@ -123,11 +123,10 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	}
 
 	/**
-	 * This method first checks if the algorithm is initialized.  If not, the {@link #initialize()} method is invoked.
-	 * Once initialized, all subsequent calls to {@code step} invoke {@link #iterate()}.  Implementations should
-	 * override the {@code initialize} and {@code iterate} methods in preference to modifying this method.
+	 * {@inheritDoc}
 	 * <p>
-	 * Calling this method after {@link #terminate()} will reset the termination flag.
+	 * Avoid overriding this method in subclasses.  Instead, prefer overriding {@link #initialize()} and
+	 * {@link #iterate()} with any algorithm-specific details.
 	 */
 	@Override
 	public void step() {
@@ -152,7 +151,7 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	}
 
 	/**
-	 * Implementations should always invoke {@code super.terminate()} to ensure the hierarchy is terminated correctly.
+	 * Implementations should always invoke {@code super.terminate()} to ensure the algorithm is terminated correctly.
 	 */
 	@Override
 	public void terminate() {
