@@ -43,7 +43,10 @@ import org.moeaframework.core.PeriodicAction;
  *     algorithm.step();
  *   }
  * </pre>
+ * 
+ * @deprecated Use {@link CheckpointExtension} instead
  */
+@Deprecated
 public class Checkpoints extends PeriodicAction {
 
 	/**

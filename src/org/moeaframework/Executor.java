@@ -26,7 +26,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.moeaframework.algorithm.Checkpoints;
+import org.moeaframework.algorithm.extension.CheckpointExtension;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
@@ -729,11 +729,11 @@ public class Executor extends ProblemBuilder {
 			Algorithm algorithm = algorithmFactory.getAlgorithm(algorithmName, properties, problem);
 
 			if (checkpointFile != null) {
-				algorithm = new Checkpoints(algorithm, checkpointFile, checkpointFrequency);
+				algorithm.addExtension(new CheckpointExtension(checkpointFile, checkpointFrequency));
 			}
 					
 			if (instrumenter != null) {
-				algorithm = instrumenter.instrument(algorithm);
+				instrumenter.instrument(algorithm);
 			}
 					
 			TerminationCondition terminationCondition = createTerminationCondition();

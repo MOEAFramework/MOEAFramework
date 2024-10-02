@@ -237,7 +237,7 @@ public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgori
 	}
 	
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		super.initialize();
 		
 		if (mutation == null) {

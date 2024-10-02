@@ -18,24 +18,24 @@
 package org.moeaframework.analysis.collector;
 
 import org.moeaframework.Assert;
-import org.moeaframework.algorithm.continuation.AdaptiveTimeContinuation;
+import org.moeaframework.algorithm.continuation.AdaptiveTimeContinuationExtension;
 import org.moeaframework.core.Algorithm;
 
-public class AdaptiveTimeContinuationCollectorTest extends AbstractCollectorTest<AdaptiveTimeContinuationCollector> {
+public class AdaptiveTimeContinuationExtensionCollectorTest extends AbstractCollectorTest<AdaptiveTimeContinuationExtensionCollector> {
 	
 	@Override
 	public void validate(Observation observation) {
-		Assert.assertGreaterThanOrEqual(AdaptiveTimeContinuationCollector.getNumberOfRestarts(observation), 0);
+		Assert.assertGreaterThanOrEqual(AdaptiveTimeContinuationExtensionCollector.getNumberOfRestarts(observation), 0);
 	}
 	
 	@Override
-	public AdaptiveTimeContinuationCollector createInstance() {
-		return new AdaptiveTimeContinuationCollector();
+	public AdaptiveTimeContinuationExtensionCollector createInstance() {
+		return new AdaptiveTimeContinuationExtensionCollector();
 	}
 	
 	@Override
 	public boolean shouldAttach(Algorithm algorithm) {
-		return algorithm instanceof AdaptiveTimeContinuation;
+		return algorithm.getExtensions().get(AdaptiveTimeContinuationExtension.class) != null;
 	}
 
 }

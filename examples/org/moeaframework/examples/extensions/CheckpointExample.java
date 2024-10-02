@@ -15,38 +15,37 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.examples.misc;
+package org.moeaframework.examples.extensions;
 
 import java.io.File;
 import java.io.IOException;
 
-import org.moeaframework.algorithm.Checkpoints;
 import org.moeaframework.algorithm.NSGAII;
+import org.moeaframework.algorithm.extension.CheckpointExtension;
+import org.moeaframework.algorithm.extension.LoggingExtension;
 import org.moeaframework.problem.misc.Srinivas;
 
 /**
  * Demonstrates using checkpoints to allow saving and resuming the state of an algorithm.
  * This is useful for long-running experiments that need to tolerate interruptions.
- * 
- * Try running this example a few times.  Observe how the starting NFE picks up where the
- * prior run finished.
  */
 public class CheckpointExample {
 	
 	public static void main(String[] args) throws IOException {
 		File checkpointFile = new File("checkpoint.dat");
+		checkpointFile.delete();
 
 		NSGAII algorithm = new NSGAII(new Srinivas());
-		Checkpoints checkpoints = new Checkpoints(algorithm, checkpointFile, 1000);
-
-		if (checkpointFile.exists()) {
-		    System.out.println("Checkpoint file exists, resuming previous run at " +
-		        checkpoints.getNumberOfEvaluations() + " evaluations!");
-		} else {
-		    System.out.println("No checkpoint file, starting new run!");
-		}
-
-		checkpoints.run(1000000);
+		algorithm.addExtension(new LoggingExtension());
+		algorithm.addExtension(new CheckpointExtension(checkpointFile, 1000));
+		algorithm.run(500000);
+		
+		System.out.println("========== End of first run ==========");
+		
+		algorithm = new NSGAII(new Srinivas());
+		algorithm.addExtension(new LoggingExtension());
+		algorithm.addExtension(new CheckpointExtension(checkpointFile, 1000));
+		algorithm.run(1000000 - algorithm.getNumberOfEvaluations());
 	}
 
 }

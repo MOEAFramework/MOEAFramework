@@ -128,7 +128,7 @@ public class RepeatedSingleObjective extends AbstractAlgorithm {
 	}
 	
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		super.initialize();
 		
 		// call iterate to force each algorithm to initialize

@@ -1,36 +1,5 @@
 # Other Topics
 
-## Checkpoints
-
-Checkpoints are useful when performing expensive or long-running optimizations.  This will periodically save
-the state of the optimization to a file, which can be resumed at a later point if the run is interrupted.
-
-<!-- java:examples/org/moeaframework/examples/misc/CheckpointExample.java [37:49] -->
-
-```java
-File checkpointFile = new File("checkpoint.dat");
-
-NSGAII algorithm = new NSGAII(new Srinivas());
-Checkpoints checkpoints = new Checkpoints(algorithm, checkpointFile, 1000);
-
-if (checkpointFile.exists()) {
-    System.out.println("Checkpoint file exists, resuming previous run at " +
-        checkpoints.getNumberOfEvaluations() + " evaluations!");
-} else {
-    System.out.println("No checkpoint file, starting new run!");
-}
-
-checkpoints.run(1000000);
-```
-
-If we run this example a few times, you will see the output:
-
-```
-No checkpoint file, starting new run!
-Checkpoint file exists, resuming previous run at 1000000 evaluations!
-Checkpoint file exists, resuming previous run at 2000000 evaluations!
-```
-
 ## Saving and Formatting Results
 
 In many of the examples, you likely noticed we displayed results using `algorithm.getResult().display()`.

@@ -26,7 +26,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
-import org.moeaframework.algorithm.continuation.EpsilonProgressContinuation;
+import org.moeaframework.algorithm.continuation.EpsilonProgressContinuationExtension;
+import org.moeaframework.algorithm.extension.CheckpointExtension;
+import org.moeaframework.algorithm.extension.FrequencyType;
 import org.moeaframework.algorithm.sa.AMOSA;
 import org.moeaframework.analysis.DefaultEpsilons;
 import org.moeaframework.analysis.collector.IndicatorCollector;
@@ -388,15 +390,15 @@ public class DefaultAlgorithmsTest {
 		
 		// second, run the algorithm using checkpoints
 		File file = TempFiles.createFile();
-		Checkpoints checkpoints = null;
 		PRNG.setSeed(seed);
-
+		
 		for (int i = 0; i < STEPS; i++) {
-			checkpoints = new Checkpoints(AlgorithmFactory.getInstance().getAlgorithm(name, properties, problem), file, 0);
-			checkpoints.step();
+			algorithm = AlgorithmFactory.getInstance().getAlgorithm(name, properties, problem);
+			algorithm.addExtension(new CheckpointExtension(file, 0));
+			algorithm.step();
 		}
 		
-		NondominatedPopulation checkpointResult = checkpoints.getResult();
+		NondominatedPopulation checkpointResult = algorithm.getResult();
 		
 		// finally, compare the two results
 		Assert.assertEquals(normalResult, checkpointResult);
@@ -410,7 +412,8 @@ public class DefaultAlgorithmsTest {
 		// first, run the algorithm normally
 		PRNG.setSeed(seed);
 		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, new TypedProperties(), problem);
-		InstrumentedAlgorithm instrumentedAlgorithm = new InstrumentedAlgorithm(algorithm, 100);
+		InstrumentedAlgorithm<?> instrumentedAlgorithm = new InstrumentedAlgorithm<>(algorithm);
+		instrumentedAlgorithm.registerExtension(100, FrequencyType.EVALUATIONS);
 		instrumentedAlgorithm.addCollector(new IndicatorCollector(new Hypervolume(problem, referenceSet)).attach(algorithm));
 		
 		for (int i = 0; i < STEPS; i++) {
@@ -421,16 +424,17 @@ public class DefaultAlgorithmsTest {
 		
 		// second, run the algorithm using checkpoints
 		File file = TempFiles.createFile();
-		Checkpoints checkpoints = null;
 		PRNG.setSeed(seed);
 
 		for (int i = 0; i < STEPS; i++) {
 			algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, new TypedProperties(), problem);
-			instrumentedAlgorithm = new InstrumentedAlgorithm(algorithm, 100);
+			
+			instrumentedAlgorithm = new InstrumentedAlgorithm<>(algorithm);
+			instrumentedAlgorithm.registerExtension(100, FrequencyType.EVALUATIONS);
 			instrumentedAlgorithm.addCollector(new IndicatorCollector(new Hypervolume(problem, referenceSet)).attach(algorithm));
-			checkpoints = new Checkpoints(instrumentedAlgorithm, file, 0);
-
-			checkpoints.step();
+			
+			algorithm.addExtension(new CheckpointExtension(file, 0));
+			algorithm.step();
 		}
 		
 		Observations checkpointResult = instrumentedAlgorithm.getObservations();
@@ -466,9 +470,9 @@ public class DefaultAlgorithmsTest {
 	
 				Variation variation = OperatorFactory.getInstance().getVariation(null, new TypedProperties(), problem);
 	
-				NSGAII nsgaii = new NSGAII(problem, 100, population, archive, selection, variation, initialization);
-	
-				return new EpsilonProgressContinuation(nsgaii, 100, 100, 4.0, 100, 10000, new UniformSelection(), new UM(1.0));
+				NSGAII algorithm = new NSGAII(problem, 100, population, archive, selection, variation, initialization);
+				algorithm.addExtension(new EpsilonProgressContinuationExtension(100, 100, 4.0, 100, 10000, new UniformSelection(), new UM(1.0)));
+				return algorithm;
 			} else {
 				return super.getAlgorithm(name, properties, problem);
 			}

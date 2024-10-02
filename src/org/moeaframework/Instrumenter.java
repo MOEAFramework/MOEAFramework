@@ -29,14 +29,17 @@ import java.util.Set;
 import java.util.Stack;
 
 import org.apache.commons.lang3.StringUtils;
+import org.moeaframework.algorithm.extension.FrequencyType;
 import org.moeaframework.analysis.collector.AdaptiveMultimethodVariationCollector;
 import org.moeaframework.analysis.collector.AdaptiveTimeContinuationCollector;
+import org.moeaframework.analysis.collector.AdaptiveTimeContinuationExtensionCollector;
 import org.moeaframework.analysis.collector.ApproximationSetCollector;
 import org.moeaframework.analysis.collector.Collector;
 import org.moeaframework.analysis.collector.ElapsedTimeCollector;
 import org.moeaframework.analysis.collector.EpsilonProgressCollector;
 import org.moeaframework.analysis.collector.IndicatorCollector;
 import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
+import org.moeaframework.analysis.collector.InstrumentedExtension;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.analysis.collector.PopulationCollector;
 import org.moeaframework.analysis.collector.PopulationSizeCollector;
@@ -44,7 +47,6 @@ import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.PeriodicAction.FrequencyType;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.indicator.AdditiveEpsilonIndicator;
@@ -61,6 +63,7 @@ import org.moeaframework.core.indicator.R3Indicator;
 import org.moeaframework.core.indicator.Spacing;
 import org.moeaframework.core.indicator.StandardIndicator;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Instruments algorithms with {@link Collector}s which record information about the runtime behavior of algorithms.
@@ -536,15 +539,16 @@ public class Instrumenter extends ProblemBuilder {
 	 * <p>
 	 * This method is reentrant.
 	 * 
-	 * @param algorithm the instrumented algorithm
+	 * @param algorithm the algorithm
+	 * @param extension the extension responsible for collecting the data
 	 * @param collectors the collectors to be attached
 	 * @param visited the set of visited objects, which may include the current object when traversing its superclasses
 	 * @param parents the objects in which the current object is contained
 	 * @param object the current object undergoing reflection
 	 * @param type the superclass whose members are being reflected; or {@code null} if the base type is to be used
 	 */
-	protected void instrument(InstrumentedAlgorithm algorithm, List<Collector> collectors, Set<Object> visited, 
-			Stack<Object> parents, Object object, Class<?> type) {
+	protected void instrument(Algorithm algorithm, InstrumentedExtension extension, List<Collector> collectors,
+			Set<Object> visited, Stack<Object> parents, Object object, Class<?> type) {
 		if (object == null) {
 			return;
 		} else if ((type == null) || (type.equals(object.getClass()))) {
@@ -569,12 +573,12 @@ public class Instrumenter extends ProblemBuilder {
 		} else if (type.isArray()) {
 			//recursively walk the elements in the array
 			for (int i=0; i<Array.getLength(object); i++) {
-				instrument(algorithm, collectors, visited, parents, Array.get(object, i), null);
+				instrument(algorithm, extension, collectors, visited, parents, Array.get(object, i), null);
 			}
 		} else if (object instanceof Collection<?> collection) {
 			//recursively walk the elements in the array
 			for (Object element : collection) {
-				instrument(algorithm, collectors, visited, parents, element, null);
+				instrument(algorithm, extension, collectors, visited, parents, element, null);
 			}
 		}
 		
@@ -605,7 +609,7 @@ public class Instrumenter extends ProblemBuilder {
 			//attach any matching collectors
 			for (Collector collector : collectors) {
 				if (collector.getAttachPoint().matches(parents, object)) {
-					algorithm.addCollector(collector.attach(object));
+					extension.addCollector(collector.attach(object));
 				}
 			}
 			
@@ -622,7 +626,7 @@ public class Instrumenter extends ProblemBuilder {
 		Class<?> superclass = type.getSuperclass();
 		
 		if (superclass != null) {
-			instrument(algorithm, collectors, visited, parents, object, superclass);
+			instrument(algorithm, extension, collectors, visited, parents, object, superclass);
 		}
 		
 		//recursively walk fields
@@ -637,7 +641,7 @@ public class Instrumenter extends ProblemBuilder {
 			field.setAccessible(true);
 			
 			try {
-				instrument(algorithm, collectors, visited, parents, field.get(object), null);
+				instrument(algorithm, extension, collectors, visited, parents, field.get(object), null);
 			} catch (IllegalArgumentException e) {
 				//should never occur since object is of the specified type
 				e.printStackTrace();
@@ -658,7 +662,10 @@ public class Instrumenter extends ProblemBuilder {
 	 * @return the instrumented algorithm
 	 * @throws IllegalArgumentException if no reference set is available or could not be loaded
 	 */
-	public InstrumentedAlgorithm instrument(Algorithm algorithm) {
+	@SuppressWarnings("deprecation")
+	public <T extends Algorithm> InstrumentedAlgorithm<T> instrument(T algorithm) {
+		Validate.that("algorithm", algorithm).isNotNull();
+		
 		List<Collector> collectors = new ArrayList<Collector>();
 		
 		if (!selectedIndicators.isEmpty()) {
@@ -735,6 +742,7 @@ public class Instrumenter extends ProblemBuilder {
 		
 		if (includeAdaptiveTimeContinuation) {
 			collectors.add(new AdaptiveTimeContinuationCollector());
+			collectors.add(new AdaptiveTimeContinuationExtensionCollector());
 		}
 	
 		if (includeElapsedTime) {
@@ -759,9 +767,11 @@ public class Instrumenter extends ProblemBuilder {
 		
 		collectors.addAll(customCollectors);
 		
-		InstrumentedAlgorithm instrumentedAlgorithm = new InstrumentedAlgorithm(algorithm, frequency, frequencyType);
+		InstrumentedExtension extension = new InstrumentedExtension(frequency, frequencyType);
+		instrument(algorithm, extension, collectors, new HashSet<Object>(), new Stack<Object>(), algorithm, null);
 		
-		instrument(instrumentedAlgorithm, collectors, new HashSet<Object>(), new Stack<Object>(), algorithm, null);
+		InstrumentedAlgorithm<T> instrumentedAlgorithm = new InstrumentedAlgorithm<T>(algorithm);
+		instrumentedAlgorithm.addExtension(extension);
 		
 		observations = instrumentedAlgorithm.getObservations();
 		

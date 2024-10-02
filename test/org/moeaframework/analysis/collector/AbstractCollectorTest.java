@@ -127,15 +127,15 @@ public abstract class AbstractCollectorTest<T extends Collector> {
 
 			Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, properties, problem);
 			shouldAttach = shouldAttach(algorithm);
-
-			InstrumentedAlgorithm instrumentedAlgorithm = instrumenter.instrument(algorithm);
+			
+			InstrumentedAlgorithm<?> instrumentedAlgorithm = instrumenter.instrument(algorithm);
 
 			while (instrumentedAlgorithm.getNumberOfEvaluations() < numberOfEvaluations) {
 				instrumentedAlgorithm.step();
 			}
-				
+			
 			observations = instrumentedAlgorithm.getObservations();
-			algorithm.terminate();
+			instrumentedAlgorithm.terminate();
 		}
 		
 		Assert.assertEquals(algorithmName + ": incorrect number of attachments",

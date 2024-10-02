@@ -15,25 +15,36 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.algorithm;
+package org.moeaframework.algorithm.extension;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.junit.Test;
-import org.moeaframework.Assert;
-import org.moeaframework.TempFiles;
-import org.moeaframework.mock.MockRealProblem;
-
-public class CheckpointsTest {
-
-	@Test
-	public void testInvalidStateFileSuppressesError() throws IOException {
-		File file = TempFiles.createFile().withContent("foo");
-		Checkpoints checkpoints = new Checkpoints(new NSGAII(new MockRealProblem(2)), file, 100);
-		
-		Assert.assertNotNull(checkpoints);
-		Assert.assertEquals(0, checkpoints.getNumberOfEvaluations());
+/**
+ * Interface for algorithms that support extensibility.
+ */
+public interface Extensible {
+	
+	/**
+	 * Returns the extensions associated with the algorithm.
+	 * 
+	 * @return the extensions
+	 */
+	public Extensions getExtensions();
+	
+	/**
+	 * Adds the given extension and invokes its {@link Extension#onRegister(org.moeaframework.core.Algorithm)} method.
+	 * 
+	 * @param extension the extension to add
+	 */
+	public default void addExtension(Extension extension) {
+		getExtensions().add(extension);
+	}
+	
+	/**
+	 * Removes the given extension.
+	 * 
+	 * @param extension the extension to remove
+	 */
+	public default void removeExtension(Extension extension) {
+		getExtensions().remove(extension);
 	}
 
 }

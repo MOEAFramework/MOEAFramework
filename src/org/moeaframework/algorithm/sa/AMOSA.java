@@ -210,7 +210,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	}
 
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		super.initialize();
 
 		Solution[] initialSolutions = initialization.initialize((int)(gamma * softLimit));

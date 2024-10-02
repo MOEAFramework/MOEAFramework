@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import org.moeaframework.algorithm.extension.Extensions;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
@@ -60,6 +61,11 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	 * {@code true} if the {@link #terminate()} method has been invoked; {@code false} otherwise.
 	 */
 	protected boolean terminated;
+	
+	/**
+	 * The extensions registered with this algorithm.
+	 */
+	private final Extensions extensions;
 
 	/**
 	 * Constructs an abstract algorithm for solving the specified problem.
@@ -71,6 +77,7 @@ public abstract class AbstractAlgorithm implements Algorithm {
 		
 		Validate.that("problem", problem).isNotNull();
 		this.problem = problem;
+		this.extensions = new Extensions(this);
 	}
 
 	@Override
@@ -89,23 +96,14 @@ public abstract class AbstractAlgorithm implements Algorithm {
 		return problem;
 	}
 
-	/**
-	 * Performs any initialization that is required by this algorithm.  This method is called automatically on the
-	 * first invocation of {@link #step()}.  Implementations should always invoke {@code super.initialize()} to ensure
-	 * the algorithm is initialized correctly.
-	 * 
-	 * @throws AlgorithmInitializationException if the algorithm has already been initialized
-	 */
-	protected void initialize() {
+	@Override
+	public void initialize() {
 		assertNotInitialized();
 		initialized = true;
+		extensions.onInitialize();
 	}
 
-	/**
-	 * Returns {@code true} if the {@link #initialize()} method has been invoked; {@code false} otherwise.
-	 * 
-	 * @return {@code true} if the {@link #initialize()} method has been invoked; {@code false} otherwise
-	 */
+	@Override
 	public boolean isInitialized() {
 		return initialized;
 	}
@@ -137,6 +135,8 @@ public abstract class AbstractAlgorithm implements Algorithm {
 		} else {
 			iterate();
 		}
+		
+		extensions.onStep();
 	}
 
 	/**
@@ -150,9 +150,6 @@ public abstract class AbstractAlgorithm implements Algorithm {
 		return terminated;
 	}
 
-	/**
-	 * Implementations should always invoke {@code super.terminate()} to ensure the algorithm is terminated correctly.
-	 */
 	@Override
 	public void terminate() {
 		if (terminated) {
@@ -160,6 +157,12 @@ public abstract class AbstractAlgorithm implements Algorithm {
 		}
 
 		terminated = true;
+		extensions.onTerminate();
+	}
+	
+	@Override
+	public Extensions getExtensions() {
+		return extensions;
 	}
 	
 	@Override
@@ -170,6 +173,8 @@ public abstract class AbstractAlgorithm implements Algorithm {
 		
 		Stateful.writeTypeSafety(stream, this);
 		stream.writeInt(numberOfEvaluations);
+		
+		extensions.saveState(stream);
 	}
 
 	@Override
@@ -179,6 +184,8 @@ public abstract class AbstractAlgorithm implements Algorithm {
 		
 		Stateful.checkTypeSafety(stream, this);
 		numberOfEvaluations = stream.readInt();
+		
+		extensions.loadState(stream);
 	}
 
 }

@@ -17,14 +17,9 @@
  */
 package org.moeaframework.core.spi;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-
+import org.moeaframework.algorithm.extension.AlgorithmWrapper;
 import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Solution;
 import org.moeaframework.util.TypedProperties;
 
 /**
@@ -41,52 +36,12 @@ public class AlgorithmFactoryTestWrapper extends AlgorithmFactory {
 	public synchronized Algorithm getAlgorithm(String name, TypedProperties properties, Problem problem) {
 		final Algorithm algorithm = super.getAlgorithm(name, properties, problem);
 		
-		return new Algorithm() {
-			
-			@Override
-			public Problem getProblem() {
-				return algorithm.getProblem();
-			}
-
-			@Override
-			public NondominatedPopulation getResult() {
-				return algorithm.getResult();
-			}
-
-			@Override
-			public void step() {
-				algorithm.step();
-			}
-
-			@Override
-			public void evaluate(Solution solution) {
-				algorithm.evaluate(solution);
-			}
-
-			@Override
-			public int getNumberOfEvaluations() {
-				return algorithm.getNumberOfEvaluations();
-			}
-
-			@Override
-			public boolean isTerminated() {
-				return algorithm.isTerminated();
-			}
+		return new AlgorithmWrapper<>(algorithm) {
 
 			@Override
 			public void terminate() {
-				algorithm.terminate();
+				super.terminate();
 				terminateCount++;
-			}
-
-			@Override
-			public void saveState(ObjectOutputStream stream) throws IOException {
-				algorithm.saveState(stream);
-			}
-
-			@Override
-			public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
-				algorithm.loadState(stream);
 			}
 			
 		};

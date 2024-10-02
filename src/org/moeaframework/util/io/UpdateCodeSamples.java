@@ -234,7 +234,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			System.out.println("Skipping " + file + ", not a recognized extension");
 			return fileChanged;
 		}
-		
+				
 		System.out.println("Processing " + file);
 		File tempFile = File.createTempFile("temp", null);
 		
@@ -370,8 +370,8 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	 * @return the code block
 	 * @throws IOException if an I/O error occurred while reading the file
 	 */
-	private List<String> getNextCodeBlock(BufferedReader reader, BufferedWriter writer, FileType fileType, String lineSeparator)
-			throws IOException {
+	private List<String> getNextCodeBlock(BufferedReader reader, BufferedWriter writer, FileType fileType,
+			String lineSeparator) throws IOException {
 		List<String> content = new ArrayList<String>();
 		String line = null;
 		boolean inCodeBlock = false;

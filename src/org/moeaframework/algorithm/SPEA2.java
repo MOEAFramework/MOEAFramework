@@ -163,7 +163,7 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 	}
 
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		super.initialize();
 		
 		fitnessEvaluator.evaluate(getPopulation());

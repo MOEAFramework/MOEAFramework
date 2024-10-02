@@ -164,7 +164,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	}
 
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		super.initialize();
 
 		generateWeights();

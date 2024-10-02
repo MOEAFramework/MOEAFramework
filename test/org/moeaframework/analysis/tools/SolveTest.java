@@ -194,7 +194,7 @@ public class SolveTest {
 			}
 		}
 		
-		Assert.assertEquals(count, 10);
+		Assert.assertEquals(10, count);
 	}
 
 }

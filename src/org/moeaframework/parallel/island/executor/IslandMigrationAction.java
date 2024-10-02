@@ -19,14 +19,16 @@ package org.moeaframework.parallel.island.executor;
 
 import java.util.List;
 
-import org.moeaframework.core.PeriodicAction;
+import org.moeaframework.algorithm.extension.FrequencyType;
+import org.moeaframework.algorithm.extension.PeriodicExtension;
+import org.moeaframework.core.Algorithm;
 import org.moeaframework.parallel.island.Island;
 import org.moeaframework.parallel.island.IslandModel;
 
 /**
- * A periodic action that triggers island migrations.
+ * Extension that triggers island migrations.
  */
-class IslandMigrationAction extends PeriodicAction {
+class IslandMigrationExtension extends PeriodicExtension {
 
 	/**
 	 * The island associated with this migration action.
@@ -44,14 +46,14 @@ class IslandMigrationAction extends PeriodicAction {
 	 * @param island the island associated with this migration action
 	 * @param model the island model
 	 */
-	public IslandMigrationAction(Island island, IslandModel model) {
-		super(island.getAlgorithm(), model.getMigrationFrequency(), FrequencyType.EVALUATIONS);
+	public IslandMigrationExtension(Island island, IslandModel model) {
+		super(model.getMigrationFrequency(), FrequencyType.EVALUATIONS);
 		this.island = island;
 		this.model = model;
 	}
 
 	@Override
-	public void doAction() {
+	public void doAction(Algorithm algorithm) {
 		List<Island> islands = model.getIslands();
 
 		//no migrations if there is only one island

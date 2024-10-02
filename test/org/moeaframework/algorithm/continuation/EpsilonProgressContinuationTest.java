@@ -17,23 +17,17 @@
  */
 package org.moeaframework.algorithm.continuation;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 import org.moeaframework.Assert;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
-import org.moeaframework.core.EpsilonBoxEvolutionaryAlgorithm;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Population;
-import org.moeaframework.core.Problem;
-import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.real.UM;
 import org.moeaframework.core.selection.UniformSelection;
+import org.moeaframework.mock.MockEpsilonBoxEvolutionaryAlgorithm;
 import org.moeaframework.mock.MockSolution;
 
 public class EpsilonProgressContinuationTest {
@@ -42,78 +36,18 @@ public class EpsilonProgressContinuationTest {
 	
 	protected EpsilonBoxDominanceArchive archive;
 	
-	protected MockAlgorithm algorithm;
+	protected MockEpsilonBoxEvolutionaryAlgorithm algorithm;
 	
-	protected EpsilonProgressContinuation adaptiveTimeContinuation;
+	protected EpsilonProgressContinuationExtension epsilonProgressContinuation;
 	
 	protected int numberOfRestarts;
-	
-	private class MockAlgorithm implements EpsilonBoxEvolutionaryAlgorithm {
-
-		@Override
-		public Population getPopulation() {
-			return population;
-		}
-
-		@Override
-		public Problem getProblem() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public NondominatedPopulation getResult() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void step() {
-			//do nothing
-		}
-
-		@Override
-		public void evaluate(Solution solution) {
-			//do nothing
-		}
-
-		@Override
-		public int getNumberOfEvaluations() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public boolean isTerminated() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void terminate() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public EpsilonBoxDominanceArchive getArchive() {
-			return archive;
-		}
-
-		@Override
-		public void saveState(ObjectOutputStream stream) throws IOException {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
-			throw new UnsupportedOperationException();
-		}
 		
-	}
-	
 	@Before
 	public void setUp() {
 		population = new Population();
 		archive = new EpsilonBoxDominanceArchive(0.5);
-		algorithm = new MockAlgorithm();
-		adaptiveTimeContinuation = new EpsilonProgressContinuation(
-				algorithm,
+		algorithm = new MockEpsilonBoxEvolutionaryAlgorithm(population, archive);
+		epsilonProgressContinuation = new EpsilonProgressContinuationExtension(
 				10,
 				100,
 				4.0,
@@ -122,7 +56,7 @@ public class EpsilonProgressContinuationTest {
 				new UniformSelection(),
 				new UM(1.0));
 		
-		adaptiveTimeContinuation.addRestartListener(new RestartListener() {
+		epsilonProgressContinuation.addRestartListener(new RestartListener() {
 
 			@Override
 			public void restarted(RestartEvent event) {
@@ -131,6 +65,7 @@ public class EpsilonProgressContinuationTest {
 			
 		});
 		
+		algorithm.addExtension(epsilonProgressContinuation);
 		numberOfRestarts = 0;
 	}
 	
@@ -139,7 +74,7 @@ public class EpsilonProgressContinuationTest {
 		population = null;
 		archive = null;
 		algorithm = null;
-		adaptiveTimeContinuation = null;
+		epsilonProgressContinuation = null;
 	}
 
 	@Test
@@ -160,7 +95,7 @@ public class EpsilonProgressContinuationTest {
 				archive.add(MockSolution.of().withObjectives(PRNG.nextDouble(0.01, 0.49), PRNG.nextDouble(0.51, 0.99)));
 			}
 			
-			adaptiveTimeContinuation.step();
+			algorithm.step();
 		}
 		
 		//note that the first two solutions count towards eps-progress
@@ -192,7 +127,7 @@ public class EpsilonProgressContinuationTest {
 				archive.add(MockSolution.of().withObjectives(PRNG.nextDouble(0.01, 0.49), PRNG.nextDouble(0.51, 0.99)));
 			}
 			
-			adaptiveTimeContinuation.step();
+			algorithm.step();
 		}
 		
 		Assert.assertEquals(8, numberOfRestarts);

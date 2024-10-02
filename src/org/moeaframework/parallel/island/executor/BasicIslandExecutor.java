@@ -25,6 +25,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.parallel.island.Island;
@@ -67,13 +68,10 @@ public class BasicIslandExecutor implements IslandExecutor {
 
 				@Override
 				public NondominatedPopulation call() {
-					IslandMigrationAction action = new IslandMigrationAction(island, model);
-					
-					while (action.getNumberOfEvaluations() < evaluationsPerIsland) {
-						action.step();
-					}
-					
-					return action.getResult();
+					Algorithm algorithm = island.getAlgorithm();
+					algorithm.addExtension(new IslandMigrationExtension(island, model));
+					algorithm.run(evaluationsPerIsland);
+					return algorithm.getResult();
 				}
 				
 			}));

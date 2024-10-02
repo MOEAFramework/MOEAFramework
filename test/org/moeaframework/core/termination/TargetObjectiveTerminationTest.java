@@ -20,6 +20,7 @@ package org.moeaframework.core.termination;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.mock.MockAlgorithm;
 import org.moeaframework.mock.MockSolution;
 
 public class TargetObjectiveTerminationTest {

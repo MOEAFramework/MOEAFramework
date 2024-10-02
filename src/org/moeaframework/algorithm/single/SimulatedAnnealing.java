@@ -131,7 +131,7 @@ public class SimulatedAnnealing extends AbstractSimulatedAnnealingAlgorithm {
 	}
 
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		super.initialize();
 		
 		currentPoint = initialization.initialize(1)[0];

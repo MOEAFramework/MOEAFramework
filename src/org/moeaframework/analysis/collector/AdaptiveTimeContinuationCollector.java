@@ -23,7 +23,10 @@ import org.moeaframework.algorithm.continuation.RestartListener;
 
 /**
  * Collects the number of restart events resulting from {@link AdaptiveTimeContinuation}.
+ * 
+ * @deprecated Use {@link AdaptiveTimeContinuationExtensionCollector} instead
  */
+@Deprecated
 public class AdaptiveTimeContinuationCollector implements Collector, RestartListener {
 
 	/**
