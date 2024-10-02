@@ -82,6 +82,8 @@ import org.moeaframework.util.validate.Validate;
 public class UpdateCodeSamples extends CommandLineUtility {
 	
 	private static final long DEFAULT_SEED = 123456;
+	
+	private static final String DEFAULT_LINE_SEPARATOR = "\n";
 
 	private static final String[] DEFAULT_CLASSPATH = new String[] { "lib/*", "build", "examples" };
 	
@@ -195,6 +197,27 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	}
 	
 	/**
+	 * Determines the line separator in use by the source file, avoiding unnecessary diffs in generated files.
+	 * 
+	 * @param file the file
+	 * @return the line separator
+	 * @throws IOException if an I/O error occurred while reading the file
+	 */
+	private String determineLineSeparator(File file) throws IOException {
+		String content = Files.readString(file.toPath());
+
+	    if (content.matches("(?s).*(\\r\\n).*")) {
+	        return "\r\n";
+	    } else if (content.matches("(?s).*(\\n).*")) {
+	        return "\n";
+	    } else if (content.matches("(?s).*(\\r).*")) {
+	        return "\r";
+	    } else {
+	        return DEFAULT_LINE_SEPARATOR;
+	    }
+	}
+	
+	/**
 	 * Processes a single file, validating or updating code samples.  The file is skipped if the file type is
 	 * not recognized.
 	 * 
@@ -215,13 +238,15 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		System.out.println("Processing " + file);
 		File tempFile = File.createTempFile("temp", null);
 		
+		String lineSeparator = determineLineSeparator(file);
+		
 		try (BufferedReader reader = new BufferedReader(new FileReader(file));
 			 BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
 			String line = null;
 			
 			while ((line = reader.readLine()) != null) {
 				writer.write(line);
-				writer.newLine();
+				writer.write(lineSeparator);
 				
 				Matcher matcher = REGEX.matcher(line);
 								
@@ -255,13 +280,13 @@ public class UpdateCodeSamples extends CommandLineUtility {
 					
 					// compare old and new content
 					List<String> newContent = options.format(content, fileType);
-					List<String> oldContent = getNextCodeBlock(reader, writer, fileType);
+					List<String> oldContent = getNextCodeBlock(reader, writer, fileType, lineSeparator);
 					
 					boolean contentChanged = diff(oldContent, newContent);
 					fileChanged |= contentChanged;
 					
-					writer.write(String.join(System.lineSeparator(), newContent));
-					writer.newLine();
+					writer.write(String.join(lineSeparator, newContent));
+					writer.write(lineSeparator);
 				}
 			}
 		}
@@ -341,10 +366,11 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	 * @param reader the reader for the original file
 	 * @param writer the writer for the modified file
 	 * @param fileType the file type
+	 * @param lineSeparator the line separator
 	 * @return the code block
 	 * @throws IOException if an I/O error occurred while reading the file
 	 */
-	private List<String> getNextCodeBlock(BufferedReader reader, BufferedWriter writer, FileType fileType)
+	private List<String> getNextCodeBlock(BufferedReader reader, BufferedWriter writer, FileType fileType, String lineSeparator)
 			throws IOException {
 		List<String> content = new ArrayList<String>();
 		String line = null;
@@ -362,7 +388,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 				}
 			} else {
 				writer.write(line);
-				writer.newLine();
+				writer.write(lineSeparator);
 				
 				if (!line.trim().isEmpty()) {
 					throw new IOException("Expected code block but found '" + line + "'");
@@ -787,7 +813,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @return the updated code block
 		 */
 		public List<String> stripComments(List<String> lines) {
-			String content = String.join(System.lineSeparator(), lines);
+			String content = String.join(DEFAULT_LINE_SEPARATOR, lines);
 			content = stripComments(content);
 			
 			List<String> result = new ArrayList<String>(content.lines().toList());
@@ -801,7 +827,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @return the updated code block
 		 */
 		public List<String> stripIndentation(List<String> lines) {
-			String content = String.join(System.lineSeparator(), lines);
+			String content = String.join(DEFAULT_LINE_SEPARATOR, lines);
 			content = content.stripIndent();
 			return new ArrayList<String>(content.lines().toList());
 		}
