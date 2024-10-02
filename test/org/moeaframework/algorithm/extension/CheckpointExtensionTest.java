@@ -30,7 +30,7 @@ public class CheckpointExtensionTest {
 
 	@Test
 	public void testInvalidStateFileSuppressesError() throws IOException {
-		File file = TempFiles.createFileWithContent("foo");
+		File file = TempFiles.createFile().withContent("foo");
 		
 		NSGAII algorithm = new NSGAII(new MockRealProblem(2));
 		algorithm.addExtension(new CheckpointExtension(file, 100));

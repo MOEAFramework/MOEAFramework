@@ -34,6 +34,8 @@ import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.misc.Schaffer;
 import org.moeaframework.util.TypedProperties;
 
+import static org.moeaframework.TempFiles.File;
+
 @SuppressWarnings("unused")
 public class FileFormatSnippet {
 	

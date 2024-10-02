@@ -138,7 +138,7 @@ public class SettingsTest {
 	public void testPropertiesFile() throws IOException {
 		Assert.assertFalse(Settings.PROPERTIES.contains("org.moeaframework.test.test_property_in_file"));
 		
-		File file = TempFiles.createFileWithContent("org.moeaframework.test.test_property_in_file=foo");
+		File file = TempFiles.createFile().withContent("org.moeaframework.test.test_property_in_file=foo");
 		System.setProperty(Settings.KEY_CONFIGURATION_FILE, file.getAbsolutePath());
 		Settings.reload();
 		

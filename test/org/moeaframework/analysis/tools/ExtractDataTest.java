@@ -69,7 +69,7 @@ public class ExtractDataTest {
 	
 	@Test
 	public void testComplete() throws Exception {
-		File input = TempFiles.createFileWithContent(COMPLETE);
+		File input = TempFiles.createFile().withContent(COMPLETE);
 		File output = TempFiles.createFile();
 		
 		ExtractData.main(new String[] {
@@ -91,7 +91,7 @@ public class ExtractDataTest {
 		ProblemFactoryTestWrapper problemFactory = new ProblemFactoryTestWrapper();
 		ProblemFactory.setInstance(problemFactory);
 		
-		File input = TempFiles.createFileWithContent(COMPLETE);
+		File input = TempFiles.createFile().withContent(COMPLETE);
 		File output = TempFiles.createFile();
 		
 		ExtractData.main(new String[] {
@@ -106,7 +106,7 @@ public class ExtractDataTest {
 	
 	@Test
 	public void testMetrics() throws Exception {
-		File input = TempFiles.createFileWithContent(COMPLETE);
+		File input = TempFiles.createFile().withContent(COMPLETE);
 		File output = TempFiles.createFile();
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
@@ -144,7 +144,7 @@ public class ExtractDataTest {
 	@Test
 	public void testContributionWithEpsilon() throws Exception {
 		double epsilon = 0.1;
-		File input = TempFiles.createFileWithContent(COMPLETE);
+		File input = TempFiles.createFile().withContent(COMPLETE);
 		File output = TempFiles.createFile();
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		File referenceSetFile = TestResources.asFile("pf/DTLZ2.2D.pf");
@@ -176,7 +176,7 @@ public class ExtractDataTest {
 	
 	@Test
 	public void testContributionWithoutEpsilon() throws Exception {
-		File input = TempFiles.createFileWithContent(COMPLETE);
+		File input = TempFiles.createFile().withContent(COMPLETE);
 		File output = TempFiles.createFile();
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		File referenceSetFile = TestResources.asFile("pf/DTLZ2.2D.pf");

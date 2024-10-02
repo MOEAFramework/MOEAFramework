@@ -31,8 +31,8 @@ public class SimpleStatisticsTest {
 	
 	@Test
 	public void testNormal() throws Exception {
-		File input1 = TempFiles.createFileWithContent("0.0 0.0 0.0\n1.0 1.0 1.0");
-		File input2 = TempFiles.createFileWithContent("0.0 0.0 0.0\n0.0 0.5 1.0\n");
+		File input1 = TempFiles.createFile().withContent("0.0 0.0 0.0\n1.0 1.0 1.0");
+		File input2 = TempFiles.createFile().withContent("0.0 0.0 0.0\n0.0 0.5 1.0\n");
 		File output = TempFiles.createFile();
 		
 		SimpleStatistics.main(new String[] {
@@ -49,8 +49,8 @@ public class SimpleStatisticsTest {
 	
 	@Test(expected = IOException.class)
 	public void testMissingEntries() throws Exception {
-		File input1 = TempFiles.createFileWithContent("0.0 0.0 0.0\n1.0 1.0 1.0");
-		File input2 = TempFiles.createFileWithContent("0.0 0.0\n0.0 0.5 1.0\n");
+		File input1 = TempFiles.createFile().withContent("0.0 0.0 0.0\n1.0 1.0 1.0");
+		File input2 = TempFiles.createFile().withContent("0.0 0.0\n0.0 0.5 1.0\n");
 		File output = TempFiles.createFile();
 		
 		SimpleStatistics.main(new String[] {
@@ -62,8 +62,8 @@ public class SimpleStatisticsTest {
 	
 	@Test(expected = IOException.class)
 	public void testEmptyFile() throws Exception {
-		File input1 = TempFiles.createFileWithContent("0.0 0.0 0.0\n1.0 1.0 1.0");
-		File input2 = TempFiles.createFileWithContent("");
+		File input1 = TempFiles.createFile().withContent("0.0 0.0 0.0\n1.0 1.0 1.0");
+		File input2 = TempFiles.createFile().withContent("");
 		File output = TempFiles.createFile();
 		
 		SimpleStatistics.main(new String[] {
@@ -75,8 +75,8 @@ public class SimpleStatisticsTest {
 	
 	@Test(expected = IOException.class)
 	public void testMissingRows() throws Exception {
-		File input1 = TempFiles.createFileWithContent("0.0 0.0 0.0\n1.0 1.0 1.0");
-		File input2 = TempFiles.createFileWithContent("0.0 0.0 0.0\n");
+		File input1 = TempFiles.createFile().withContent("0.0 0.0 0.0\n1.0 1.0 1.0");
+		File input2 = TempFiles.createFile().withContent("0.0 0.0 0.0\n");
 		File output = TempFiles.createFile();
 		
 		SimpleStatistics.main(new String[] {
@@ -97,8 +97,8 @@ public class SimpleStatisticsTest {
 	
 	@Test(expected = FrameworkException.class)
 	public void testInvalidEntry() throws Exception {
-		File input1 = TempFiles.createFileWithContent("0.0 0.0 0.0\n1.0 1.0 1.0");
-		File input2 = TempFiles.createFileWithContent("0.0 foo 0.0\n0.0 0.5 1.0");
+		File input1 = TempFiles.createFile().withContent("0.0 0.0 0.0\n1.0 1.0 1.0");
+		File input2 = TempFiles.createFile().withContent("0.0 foo 0.0\n0.0 0.5 1.0");
 		File output = TempFiles.createFile();
 		
 		SimpleStatistics.main(new String[] {
@@ -110,8 +110,8 @@ public class SimpleStatisticsTest {
 	
 	@Test
 	public void testInfinityAndNaN() throws Exception {
-		File input1 = TempFiles.createFileWithContent("0.0 0.0 0.0\n1.0 Infinity 1.0");
-		File input2 = TempFiles.createFileWithContent("0.0 0.0 NaN\n0.0 0.5 1.0\n");
+		File input1 = TempFiles.createFile().withContent("0.0 0.0 0.0\n1.0 Infinity 1.0");
+		File input2 = TempFiles.createFile().withContent("0.0 0.0 NaN\n0.0 0.5 1.0\n");
 		File output = TempFiles.createFile();
 		
 		SimpleStatistics.main(new String[] {
@@ -128,8 +128,8 @@ public class SimpleStatisticsTest {
 	
 	@Test
 	public void testInfinityAndNaNIgnoring() throws Exception {
-		File input1 = TempFiles.createFileWithContent("0.0 0.0 0.0\n1.0 Infinity 1.0");
-		File input2 = TempFiles.createFileWithContent("0.0 0.0 NaN\n0.0 0.5 1.0\n");
+		File input1 = TempFiles.createFile().withContent("0.0 0.0 0.0\n1.0 Infinity 1.0");
+		File input2 = TempFiles.createFile().withContent("0.0 0.0 NaN\n0.0 0.5 1.0\n");
 		File output = TempFiles.createFile();
 		
 		SimpleStatistics.main(new String[] {
@@ -147,8 +147,8 @@ public class SimpleStatisticsTest {
 	
 	@Test
 	public void testInfinityMaximum() throws Exception {
-		File input1 = TempFiles.createFileWithContent("0.0 0.0 0.0\n1.0 Infinity 1.0");
-		File input2 = TempFiles.createFileWithContent("0.0 0.0 0.0\n0.0 0.5 1.0\n");
+		File input1 = TempFiles.createFile().withContent("0.0 0.0 0.0\n1.0 Infinity 1.0");
+		File input2 = TempFiles.createFile().withContent("0.0 0.0 0.0\n0.0 0.5 1.0\n");
 		File output = TempFiles.createFile();
 		
 		SimpleStatistics.main(new String[] {

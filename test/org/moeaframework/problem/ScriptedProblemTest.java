@@ -47,14 +47,14 @@ public class ScriptedProblemTest {
 	@SuppressWarnings("resource")
 	@Test(expected = ScriptException.class)
 	public void testNoExtension() throws ScriptException, IOException {
-		File file = TempFiles.createFileWithContent("", "");
+		File file = TempFiles.createFileWithExtension("").withContent("");
 		new ScriptedProblem(file);
 	}
 	
 	@SuppressWarnings("resource")
 	@Test(expected = ScriptException.class)
 	public void testNoEngineForExtension() throws ScriptException, IOException {
-		File file = TempFiles.createFileWithContent("", ".noscriptinglang");
+		File file = TempFiles.createFileWithExtension(".noscriptinglang").withContent("");
 		new ScriptedProblem(file);
 	}
 	
