@@ -252,13 +252,13 @@ public class UpdateCodeSamplesTest {
 	}
 	
 	public void fullTest(boolean update) throws Exception {
-		File codeFile = TempFiles.createFileWithContent("""
+		File codeFile = TempFiles.createFileWithExtension(".java").withContent("""
 				public void test() {
 				    int x = 5;
 				}
-				""", ".java");
+				""");
 		
-		File markdownFile = TempFiles.createFileWithContent("""
+		File markdownFile = TempFiles.createFileWithExtension(".md").withContent("""
 				# Test
 				This is a test.
 				
@@ -270,7 +270,7 @@ public class UpdateCodeSamplesTest {
 				```java
 				old content
 				```
-				""", ".md");
+				""");
 		
 		String expected = """
 				# Test

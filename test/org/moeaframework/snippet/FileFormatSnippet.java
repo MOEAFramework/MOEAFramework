@@ -17,7 +17,6 @@
  */
 package org.moeaframework.snippet;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
@@ -34,6 +33,8 @@ import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.misc.Schaffer;
 import org.moeaframework.util.TypedProperties;
+
+import static org.moeaframework.TempFiles.File;
 
 @SuppressWarnings("unused")
 public class FileFormatSnippet {

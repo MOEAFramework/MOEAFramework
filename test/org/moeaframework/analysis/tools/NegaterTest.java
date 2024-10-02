@@ -31,7 +31,7 @@ public class NegaterTest {
     
     @Test
     public void testSingleNegation() throws Exception {
-        File file = TempFiles.createFileWithContent("0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 -5.12e10 0.5 0.000001");
+        File file = TempFiles.createFile().withContent("0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 -5.12e10 0.5 0.000001");
         
         Negater.main(new String[] {
                "-d", "1,1,0,1",
@@ -46,7 +46,7 @@ public class NegaterTest {
     
     @Test
     public void testDoubleNegation() throws Exception {
-        File file = TempFiles.createFileWithContent("0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 -5.12e10 0.5 0.000001");
+        File file = TempFiles.createFile().withContent("0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 -5.12e10 0.5 0.000001");
         File copy = TempFiles.createFile();
         
         Files.copy(file.toPath(), copy.toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -66,7 +66,7 @@ public class NegaterTest {
     
     @Test
     public void testNoOverwriteOnError1() throws Exception {
-        File file = TempFiles.createFileWithContent("0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 -5.12e10 0.5");
+        File file = TempFiles.createFile().withContent("0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 -5.12e10 0.5");
         File copy = TempFiles.createFile();
         
         Files.copy(file.toPath(), copy.toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -82,7 +82,7 @@ public class NegaterTest {
 
     @Test
     public void testNoOverwriteOnError2() throws Exception {
-        File file = TempFiles.createFileWithContent("0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 0,1,2 0.5 0.000001");
+        File file = TempFiles.createFile().withContent("0.0 0.1 -0.1 -0.1\n#foo bar\n5.12e-10 0,1,2 0.5 0.000001");
         File copy = TempFiles.createFile();
         
         Files.copy(file.toPath(), copy.toPath(), StandardCopyOption.REPLACE_EXISTING);

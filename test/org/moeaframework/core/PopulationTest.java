@@ -257,7 +257,7 @@ public class PopulationTest {
 	
 	@Test
 	public void testReadWhitespace() throws IOException {
-		File file = TempFiles.createFileWithContent("0   1 \t 2\n\t   3 4 5 \t\n");
+		File file = TempFiles.createFile().withContent("0   1 \t 2\n\t   3 4 5 \t\n");
 		Population population = Population.loadObjectives(file);
 		
 		Assert.assertArrayEquals(new double[] {0.0, 1.0, 2.0}, population.get(0).getObjectives(), TestThresholds.HIGH_PRECISION);

@@ -90,22 +90,22 @@ public class ParameterFileTest {
 
 	@Test
 	public void testFileComplete() throws IOException {
-		validateComplete(new ParameterFile(TempFiles.createFileWithContent(COMPLETE)));
+		validateComplete(new ParameterFile(TempFiles.createFile().withContent(COMPLETE)));
 	}
 
 	@Test(expected = IOException.class)
 	public void testFileMissingEntry() throws IOException {
-		new ParameterFile(TempFiles.createFileWithContent(MISSING_ENTRY));
+		new ParameterFile(TempFiles.createFile().withContent(MISSING_ENTRY));
 	}
 
 	@Test(expected = IOException.class)
 	public void testFileMissingLine() throws IOException {
-		new ParameterFile(TempFiles.createFileWithContent(MISSING_LINE));
+		new ParameterFile(TempFiles.createFile().withContent(MISSING_LINE));
 	}
 
 	@Test(expected = NumberFormatException.class)
 	public void testFileInvalidEntry() throws IOException {
-		new ParameterFile(TempFiles.createFileWithContent(INVALID_ENTRY));
+		new ParameterFile(TempFiles.createFile().withContent(INVALID_ENTRY));
 	}
 
 }

@@ -29,7 +29,7 @@ public class CheckpointsTest {
 
 	@Test
 	public void testInvalidStateFileSuppressesError() throws IOException {
-		File file = TempFiles.createFileWithContent("foo");
+		File file = TempFiles.createFile().withContent("foo");
 		Checkpoints checkpoints = new Checkpoints(new NSGAII(new MockRealProblem(2)), file, 100);
 		
 		Assert.assertNotNull(checkpoints);

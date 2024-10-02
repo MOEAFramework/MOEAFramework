@@ -69,28 +69,28 @@ public class MetricFileReaderTest {
 
 	@Test
 	public void testFileComplete() throws IOException {
-		try (MetricFileReader reader = new MetricFileReader(TempFiles.createFileWithContent(COMPLETE))) {
+		try (MetricFileReader reader = new MetricFileReader(TempFiles.createFile().withContent(COMPLETE))) {
 			validateComplete(reader);
 		}
 	}
 
 	@Test
 	public void testFileMissingEntry() throws IOException {
-		try (MetricFileReader reader = new MetricFileReader(TempFiles.createFileWithContent(MISSING_ENTRY))) {
+		try (MetricFileReader reader = new MetricFileReader(TempFiles.createFile().withContent(MISSING_ENTRY))) {
 			validateIncomplete(reader);
 		}
 	}
 
 	@Test
 	public void testFileMissingLine() throws IOException {
-		try (MetricFileReader reader = new MetricFileReader(TempFiles.createFileWithContent(MISSING_LINE))) {
+		try (MetricFileReader reader = new MetricFileReader(TempFiles.createFile().withContent(MISSING_LINE))) {
 			validateIncomplete(reader);
 		}
 	}
 
 	@Test
 	public void testFileInvalidEntry() throws IOException {
-		try (MetricFileReader reader = new MetricFileReader(TempFiles.createFileWithContent(INVALID_ENTRY))) {
+		try (MetricFileReader reader = new MetricFileReader(TempFiles.createFile().withContent(INVALID_ENTRY))) {
 			validateIncomplete(reader);
 		}
 	}

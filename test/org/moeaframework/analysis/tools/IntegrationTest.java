@@ -73,7 +73,7 @@ public class IntegrationTest {
 	@Test
 	public void test() throws Exception {
 		//create the sample file
-		File parameterDescriptionFile = TempFiles.createFileWithContent(PARAMETER_FILE);
+		File parameterDescriptionFile = TempFiles.createFile().withContent(PARAMETER_FILE);
 		File parameterFile = TempFiles.createFile();
 		
 		SampleGenerator.main(new String[] { 
@@ -207,7 +207,7 @@ public class IntegrationTest {
 	@Test
 	public void testSensitivity() throws Exception {
 		//create the sample file
-		File parameterDescriptionFile = TempFiles.createFileWithContent(PARAMETER_FILE);
+		File parameterDescriptionFile = TempFiles.createFile().withContent(PARAMETER_FILE);
 		File parameterFile = TempFiles.createFile();
 		
 		SampleGenerator.main(new String[] { 
@@ -285,7 +285,7 @@ public class IntegrationTest {
 	@Test
 	public void testClosedAndTerminated() throws Exception {
 		//create the sample file
-		File parameterDescriptionFile = TempFiles.createFileWithContent(PARAMETER_FILE);
+		File parameterDescriptionFile = TempFiles.createFile().withContent(PARAMETER_FILE);
 		File parameterFile = TempFiles.createFile();
 		
 		SampleGenerator.main(new String[] { 
@@ -370,7 +370,7 @@ public class IntegrationTest {
 	
 	@Test
 	public void testRuntimeEvaluator() throws Exception {
-		File parameterDescriptionFile = TempFiles.createFileWithContent("sbx.rate 0.0 1.0");
+		File parameterDescriptionFile = TempFiles.createFile().withContent("sbx.rate 0.0 1.0");
 		File parameterFile = TempFiles.createFile();
 		
 		SampleGenerator.main(new String[] { 
