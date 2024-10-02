@@ -37,15 +37,9 @@ import org.moeaframework.core.Settings;
 public class OutputHandler extends StreamHandler {
 
 	public static void updateConfiguration(boolean force) {
-		String format = "[%1$tc] %4$s: %5$s%n";
-		
-		if (Settings.PROPERTIES.getBoolean(Settings.KEY_HIDE_TIMESTAMP, false)) {
-			format = "%4$s: %5$s%n";
-		}
-		
 		final String loggingConfiguration = String.join("\n",
 				"handlers=" + OutputHandler.class.getName(),
-				"java.util.logging.SimpleFormatter.format=" + format);
+				"java.util.logging.SimpleFormatter.format=[%1$tc] %4$s: %5$s%n");
 
 		try (InputStream in = IOUtils.toInputStream(loggingConfiguration, StandardCharsets.UTF_8)) {
 			LogManager.getLogManager().updateConfiguration(in, (k) -> (o, n) -> o == null || force ? n : o);

@@ -97,11 +97,6 @@ public class Settings {
 	public static final String KEY_PRNG_SEED = createKey(KEY_PREFIX, "core", "prng", "seed");
 	
 	/**
-	 * The property key for hiding the timestamp in logged output.
-	 */
-	public static final String KEY_HIDE_TIMESTAMP = createKey(KEY_PREFIX, "util", "io", "hide_timestamp");
-	
-	/**
 	 * The property key for setting the display width of help messages from command line tools.
 	 */
 	public static final String KEY_HELP_WIDTH = createKey(KEY_PREFIX, "core", "help", "width");
