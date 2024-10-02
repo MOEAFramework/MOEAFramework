@@ -34,6 +34,8 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.operator.real.UM;
+import org.moeaframework.core.selection.UniformSelection;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -97,9 +99,16 @@ public class AdaptiveTimeContinuationExtension extends PeriodicExtension impleme
 	 * The collection of listeners notified when a restart occurs.
 	 */
 	private final EventListenerSupport<RestartListener> listeners;
+	
+	/**
+	 * Creates the adaptive time continuation extension with default settings.
+	 */
+	public AdaptiveTimeContinuationExtension() {
+		this(100, 100, 0.25, 100, 10000, new UniformSelection(), new UM(1.0));
+	}
 
 	/**
-	 * Decorates the specified algorithm with adaptive time continuation.
+	 * Creates the adaptive time continuation extension.
 	 * 
 	 * @param algorithm the algorithm being decorated
 	 * @param windowSize the number of iterations between invocations of {@code check}

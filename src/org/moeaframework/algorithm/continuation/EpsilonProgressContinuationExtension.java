@@ -44,9 +44,16 @@ public class EpsilonProgressContinuationExtension extends AdaptiveTimeContinuati
 	 * The number of &epsilon;-progress improvements since the last invocation of {@code check}.
 	 */
 	private int improvementsAtLastCheck;
+	
+	/**
+	 * Creates the &epsilon;-progress triggered time continuation extension with default settings.
+	 */
+	public EpsilonProgressContinuationExtension() {
+		super();
+	}
 
 	/**
-	 * Decorates the specified algorithm with &epsilon;-progress triggered time continuation.
+	 * Creates the &epsilon;-progress triggered time continuation extension.
 	 * 
 	 * @param windowSize the number of iterations between invocations of {@code check}
 	 * @param maxWindowSize the maximum number of iterations allowed since the last restart before forcing a restart

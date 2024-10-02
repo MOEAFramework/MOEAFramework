@@ -136,3 +136,21 @@ try (ResultFileWriter writer = ResultFileWriter.overwrite(problem, file)) {
 }
 ```
 
+### Time Continuation
+
+Adaptive time continuation (along with epsilon-progress continuation) adds dynamic restarts, wherein we periodically
+resize and inject random solutions into the population to avoid or escape local optima.  The epsilon-progress version
+also triggers restarts if no improvements are detected after some time.
+
+<!-- java:examples/org/moeaframework/examples/extensions/AdaptiveTimeContinuationExample.java [36:42] -->
+
+```java
+NSGAII algorithm = new NSGAII(new DTLZ2(2));
+algorithm.setArchive(new EpsilonBoxDominanceArchive(0.01));
+
+algorithm.addExtension(new LoggingExtension());
+algorithm.addExtension(new AdaptiveTimeContinuationExtension());
+
+algorithm.run(100000);
+```
+

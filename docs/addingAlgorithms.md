@@ -48,7 +48,7 @@ The two key components are:
 1. The constructor, which configures the algorithm.  This includes setting the initial population size, the type of
    population (non-dominated sorting), the initialization strategy, and the variation operator(s).
 2. The `iterate` method, which defines one iteration of the algorithm.  Here we randomly select one parent from the
-   populuation, mutate it using Polynomial Mutation (PM), add it back into the population, and truncate the worst
+   population, mutate it using Polynomial Mutation (PM), add it back into the population, and truncate the worst
    solution from the population.
 
 Then, to use this algorithm, we simply construct it like we would any other:
@@ -63,46 +63,6 @@ algorithm.getResult().display();
 
 ## Extending Algorithms
 
-We can also modify or extend existing optimization algorithms.  One such means is writing a new subclass that extends
-the existing algorithm.  Or, as demonstrated below, we can use the provided `PeriodicAction` wrapper to perform
-some operation at a fixed frequency.  Here, we inject additional randomness into the population every 1,000 function
-evaluations by applying the Uniform Mutation (UM) operator.
-
-<!-- java:examples/org/moeaframework/examples/algorithm/PeriodicActionExample.java [40-67] -->
-
-```java
-public static void main(String[] args) {
-    Problem problem = new UF1();
-    NSGAII algorithm = new NSGAII(problem);
-
-    algorithm.addExtension(new PeriodicExtension(10, FrequencyType.STEPS) {
-
-        @Override
-        public void doAction(Algorithm algorithm) {
-            System.out.println("Injecting randomness at NFE " + algorithm.getNumberOfEvaluations());
-
-            NondominatedSortingPopulation population = ((NSGAII)algorithm).getPopulation();
-
-            Population offspring = new Population();
-            UM mutation = new UM(1.0 / algorithm.getProblem().getNumberOfVariables());
-
-            for (Solution solution : population) {
-                offspring.add(mutation.mutate(solution));
-            }
-
-            algorithm.evaluateAll(offspring);
-            population.addAll(offspring);
-            population.truncate(offspring.size());
-        }
-
-    });
-
-    algorithm.run(10000);
-    algorithm.getResult().display();
-```
-
-> [!TIP]
-> Avoid making changes to a population while iterating over its contents.  This will likely result in a 
-> `ConcurrentModificationException`.  Instead, collect all offspring and add them back into the population by
-> calling `addAll`.  Furthermore, by calling `evaluateAll` on all offspring, we can also parallelize function
-> evaluations!
+In version 4.5, a new extension mechanism was added that allows us to extend existing algorithms with new capabilities.
+The benefit is we can share extensions and extend algorithms without needing to introduce a new class.  For more
+details, see the [extensions](extensions.md) page.
