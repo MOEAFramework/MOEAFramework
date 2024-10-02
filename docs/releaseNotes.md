@@ -2,6 +2,19 @@
 
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
+## Version 4.5 (TBD)
+
+  * Introduce extensions.  These are reusble components that extend or augment the functionality of an algorithm
+    without needing to create new classes.
+    
+  * Redefines the `algorithm.terminate()` method to be called whenever termination conditions are reached.  Also permits
+    algorithms to continue running after being terminated.
+    
+  * Moves the `initialize()` method into `Algorithm`.  Consequently, the visibility also changes from `protected` to
+    `public`.  This may cause compilation errors in code overriding `initialize()`, but can be fixed by changing the
+    visibility modifier to `public`.
+    
+
 ## Version 4.4 (4 Aug 2024)
 
   * Introduces a new `clustering` package, with implementations of single-linkage clustering and K-means++.  This
