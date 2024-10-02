@@ -205,7 +205,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	 */
 	private String determineLineSeparator(File file) throws IOException {
 		String content = Files.readString(file.toPath());
-		
+
 	    if (content.matches("(?s).*(\\r\\n).*")) {
 	        return "\r\n";
 	    } else if (content.matches("(?s).*(\\n).*")) {
@@ -234,11 +234,11 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			System.out.println("Skipping " + file + ", not a recognized extension");
 			return fileChanged;
 		}
-		
-		String lineSeparator = determineLineSeparator(file);
-		
+				
 		System.out.println("Processing " + file);
 		File tempFile = File.createTempFile("temp", null);
+		
+		String lineSeparator = determineLineSeparator(file);
 		
 		try (BufferedReader reader = new BufferedReader(new FileReader(file));
 			 BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
