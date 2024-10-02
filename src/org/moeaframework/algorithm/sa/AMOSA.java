@@ -239,7 +239,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 	}
 
 	@Override
-	protected void iterate() {
+	protected void iterate(double temperature) {
 		for (int i = 0; i < numberOfIterationsPerTemperature; i++) {
 			Solution newPoint = mutation.mutate(currentPoint);
 			evaluate(newPoint);

@@ -31,7 +31,6 @@ import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Stateful;
 import org.moeaframework.core.comparator.AggregateConstraintComparator;
 import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.FitnessComparator;
@@ -581,10 +580,7 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 		Validate.that("diagD (initial standard deviations)", StatUtils.min(diagD)).isGreaterThan(0.0);
 	}
 
-	@Override
-	public void initialize() {
-		super.initialize();
-		
+	protected void initializeState() {
 		int N = problem.getNumberOfVariables();
 		Solution prototypeSolution = problem.newSolution();
 		
@@ -686,6 +682,15 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 		}
 		
 		postInitChecks();
+	}
+	
+	@Override
+	public void initialize() {
+		super.initialize();
+		initializeState();
+		
+		// Run one iteration to produce the initial population.
+		iterate();
 	}
 
 	/**
@@ -976,20 +981,6 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 	}
 	
 	@Override
-	public void step() {
-		// Since unlike other algorithms, the initialize() method does not produce an initial population.  To remain
-		// consistent, we override the step() method so that iterate() is called after initialize().
-		if (!isInitialized()) {
-			initialize();
-			iterate();
-		} else {
-			iterate();
-		}
-		
-		getExtensions().onStep();
-	}
-	
-	@Override
 	public NondominatedPopulation getResult() {
 		return archive;
 	}
@@ -1266,8 +1257,8 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 	
 	@Override
 	public void saveState(ObjectOutputStream stream) throws IOException {
-		Stateful.writeTypeSafety(stream, this);
-		stream.writeInt(numberOfEvaluations);
+		super.saveState(stream);
+
 		stream.writeObject(xmean);
 		stream.writeInt(iteration);
 		stream.writeDouble(sigma);
@@ -1286,11 +1277,11 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 
 	@Override
 	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
-		Stateful.checkTypeSafety(stream, this);
-		numberOfEvaluations = stream.readInt();
+		super.loadState(stream);
+
 		xmean = (double[])stream.readObject();
 		
-		initialize();
+		initializeState();
 		
 		iteration = stream.readInt();
 		sigma = stream.readDouble();

@@ -68,10 +68,10 @@ public interface Algorithm extends Stateful, Extensible {
 	 * Performs one logical step of this algorithm.  The amount of work performed depends on the implementation.  One
 	 * invocation of this method may produce one or many trial solutions.
 	 * <p>
-	 * If this method is called before the algorithm is initialized, {@link #initialize()} will be called automatically.
-	 * Furthermore, this method can be called after {@link #terminate()}.  This often happens when a user calls
-	 * {@link #run(TerminationCondition)} multiple times.  If, however, the implementation can not continue after
-	 * being terminated, it should throw {@link AlgorithmTerminationException}.
+	 * In general, calling this method after {@link #terminate()} is permitted.  When this happens,
+	 * {@link #isTerminated()} is reset.  We recommend checking {@link #isTerminated()} after each step to detect when
+	 * termination conditions are reached.  However, if the implementation is unable to continue, this method should
+	 * throw {@link AlgorithmTerminationException}.
 	 */
 	public void step();
 	

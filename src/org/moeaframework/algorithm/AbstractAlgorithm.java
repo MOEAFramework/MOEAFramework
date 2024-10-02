@@ -120,6 +120,12 @@ public abstract class AbstractAlgorithm implements Algorithm {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Avoid overriding this method in subclasses.  Instead, prefer overriding {@link #initialize()} and
+	 * {@link #iterate()} with any algorithm-specific details.
+	 */
 	@Override
 	public void step() {
 		terminated = false;

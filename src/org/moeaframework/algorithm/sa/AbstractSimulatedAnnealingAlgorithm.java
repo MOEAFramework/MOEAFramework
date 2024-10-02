@@ -253,19 +253,23 @@ public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgori
 	}
 	
 	@Override
-	public void step() {
-		if (!isInitialized()) {
-			initialize();
-		} else if (terminationCondition != null && terminationCondition.shouldTerminate(this)) {
+	protected void iterate() {
+		if (terminationCondition != null && terminationCondition.shouldTerminate(this)) {
 			terminate();
 			return;
-		} else {
-			iterate();
-			temperature = coolingSchedule.nextTemperature(temperature);
 		}
 		
-		getExtensions().onStep();
+		iterate(temperature);
+		
+		temperature = coolingSchedule.nextTemperature(temperature);
 	}
+	
+	/**
+	 * Performs one iteration of this SA instance using the given temperature.
+	 * 
+	 * @param temperature the current temperature
+	 */
+	protected abstract void iterate(double temperature);
 	
 	@Override
 	public NondominatedPopulation getResult() {
