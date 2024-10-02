@@ -45,7 +45,7 @@ NSGAII algorithm = new NSGAII(problem);
 InstrumentedAlgorithm<NSGAII> instrumentedAlgorithm = instrumenter.instrument(algorithm);
 instrumentedAlgorithm.run(10000);
 
-Observations observations = instrumenter.getObservations();
+Observations observations = instrumentedAlgorithm.getObservations();
 
 new Plot()
     .add(observations)

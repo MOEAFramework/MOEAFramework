@@ -148,7 +148,7 @@ We can also plot these results:
 <!-- java:examples/org/moeaframework/examples/plots/PlotRuntimeDynamics.java [50:54] -->
 
 ```java
-Observations observations = instrumenter.getObservations();
+Observations observations = instrumentedAlgorithm.getObservations();
 
 new Plot()
     .add(observations)
