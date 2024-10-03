@@ -22,13 +22,18 @@ import org.moeaframework.Executor;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Variation;
+import org.moeaframework.core.configuration.Property;
+import org.moeaframework.examples.algorithm.RandomWalker;
 import org.moeaframework.problem.CEC2009.UF1;
+import org.moeaframework.problem.misc.Srinivas;
 
 @SuppressWarnings("unused")
 public class AlgorithmSnippet {
 
 	@Test
 	public void direct() {
+		// begin-example:direct
 		Problem problem = new UF1();
 
 		NSGAII algorithm = new NSGAII(problem);
@@ -36,16 +41,27 @@ public class AlgorithmSnippet {
 		algorithm.run(10000);
 
 		NondominatedPopulation result = algorithm.getResult();
+		// end-example:direct
 	}
 	
 	@Test
 	public void executor() {
+		// begin-example:executor
 		NondominatedPopulation results = new Executor()
 			    .withProblem("UF1")
 			    .withAlgorithm("NSGA-II")
 			    .withProperty("populationSize", 250)
 			    .withMaxEvaluations(10000)
 			    .run();
+		// end-example:executor
+	}
+	
+	@Test
+	public void randomWalkerConfiguration() {
+		// begin-example:configuration
+		RandomWalker algorithm = new RandomWalker(new Srinivas());
+		algorithm.getConfiguration().display();
+		// end-example:configuration
 	}
 	
 }

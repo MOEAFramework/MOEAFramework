@@ -28,7 +28,6 @@ import java.util.logging.SimpleFormatter;
 import java.util.logging.StreamHandler;
 
 import org.apache.commons.io.IOUtils;
-import org.moeaframework.core.Settings;
 
 /**
  * Java Logging {@link Handler} with some more sensible defaults (in my opinion), including (1) sending logs to

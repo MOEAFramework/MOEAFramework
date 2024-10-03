@@ -67,12 +67,14 @@ import org.moeaframework.util.validate.Validate;
  *   ```}</pre>
  * <p>
  * The format of the comment is:
- * <pre>{@code <!-- <language>:<filename> [<startingLine>:<endingLine>] {<flag>,...} -->}</pre>
+ * <pre>{@code <!-- <language>:<filename> [<startingLine>:<endingLine>|<id>] {<flag>,...} -->}</pre>
  * <ul>
  *   <li>{@code <language>} is the name of the programming language.  A special case is {@code output}, which
  *       compiles, executes, and captures the output of the program.
  *   <li>{@code [<startingLine>:<endingLine>]} specifies the line numbers, starting at index 1, to extract from the
  *       file.  If no line numbers are provided, the entire content is copied.
+ *   <li>Alternatively, if an identifier is given instead of line numbers, the content enclosed by the comments
+ *       {@code // begin-example:<id>} and {@code // end-example:<id>} is copied.
  *   <li>{@code {<flag>,...}} specifies additional formatting options, such as {@code {keepComments}}.
  * </ul>
  * This utility can be run in validate-only mode or update mode.  In validate mode, any changes to the files will

@@ -1,21 +1,19 @@
-# Adding and Extending Algorithms
-
-This page details how to add new optimization algorithms or extend the functionality of existing algorithms.
-
-## Adding a New Algorithm
+# Adding New Algorithms
 
 We can introduce new optimization algorithms by implementing the `Algorithm` interface.  Instead of
 implementing this interface directly, there are several abstract classes that provide common functionality, including
 `AbstractAlgorithm` and `AbstractEvolutionaryAlgorithm`.
 
+## Implementing the Algorithm
+
 For this example, we're going to create a simple algorithm that just randomly mutates solutions in the population
 using the Polynomial Mutation (PM) operator.  We'll call this the `RandomWalker` algorithm.  Since this algorithm
 will maintain a population of solutions, we can build this from the `AbstractEvolutionaryAlgorithm`:
 
-<!-- java:examples/org/moeaframework/examples/algorithm/NewAlgorithmExample.java [36:65] -->
+<!-- java:examples/org/moeaframework/examples/algorithm/RandomWalker.java [33:62] -->
 
 ```java
-public static class RandomWalker extends AbstractEvolutionaryAlgorithm {
+public class RandomWalker extends AbstractEvolutionaryAlgorithm {
 
     public RandomWalker(Problem problem) {
         super(problem,
@@ -50,10 +48,12 @@ The two key components are:
 2. The `iterate` method, which defines one iteration of the algorithm.  Here we randomly select one parent from the
    population, mutate it using Polynomial Mutation (PM), add it back into the population, and truncate the worst
    solution from the population.
+   
+## Running the Algorithm
 
 Then, to use this algorithm, we simply construct it like we would any other:
 
-<!-- java:examples/org/moeaframework/examples/algorithm/NewAlgorithmExample.java [68:70] -->
+<!-- java:examples/org/moeaframework/examples/algorithm/RandomWalkerExample.java [28:30] -->
 
 ```java
 RandomWalker algorithm = new RandomWalker(new Srinivas());
@@ -61,8 +61,50 @@ algorithm.run(10000);
 algorithm.getResult().display();
 ```
 
-## Extending Algorithms
+## Configuring the Algorithm
 
-In version 4.5, a new extension mechanism was added that allows us to extend existing algorithms with new capabilities.
-The benefit is we can share extensions and extend algorithms without needing to introduce a new class.  For more
-details, see the [extensions](extensions.md) page.
+Like all algorithms defined in the MOEA Framework, we initialized the default settings in the constructor.  However,
+these settings can not be changed unless we make them configurable.  We accomplish this by adding setter methods for
+each property:
+
+<!-- java:examples/org/moeaframework/examples/algorithm/ConfigurableRandomWalker.java [34:44] -->
+
+```java
+@Override
+@Property("populationSize")
+public void setInitialPopulationSize(int initialPopulationSize) {
+    super.setInitialPopulationSize(initialPopulationSize);
+}
+
+@Override
+@Property("operator")
+public void setVariation(Variation variation) {
+    super.setVariation(variation);
+}
+```
+
+Also note the `@Properrty` annotation.  The MOEA Framework provides a Configuration API for inspecting or configuring
+an algorithm.  We can get the current configuration of an algorithm as follows:
+
+<!-- java:test/org/moeaframework/snippet/AlgorithmSnippet.java [configuration] -->
+
+```java
+RandomWalker algorithm = new RandomWalker(new Srinivas());
+algorithm.getConfiguration().display();
+```
+
+<!-- output:examples/org/moeaframework/examples/algorithm/ConfigurableRandomWalkerExample.java -->
+
+```
+Property             Value
+-------------------- -----
+operator             pm
+pm.distributionIndex 20.0
+pm.rate              0.5
+populationSize       100
+```
+
+Here, we find the two properties we added, `populationSize` and `operator`, in addition to the settings for the
+polynomial mutation (pm) operator.
+
+
