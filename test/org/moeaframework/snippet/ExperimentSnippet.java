@@ -17,7 +17,6 @@
  */
 package org.moeaframework.snippet;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
@@ -31,6 +30,8 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.problem.CEC2009.UF1;
+
+import static org.moeaframework.TempFiles.File;
 
 @SuppressWarnings("unused")
 public class ExperimentSnippet {
