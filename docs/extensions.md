@@ -1,6 +1,7 @@
-# Extensions
+# Creating and Using Extensions
 
-Please verify you are using version 4.5 or newer to use extensions.
+> [!IMPORTANT]  
+> Extensions were introduced in version 4.5.  Please upgrade if using an earlier version.
 
 ## What are Extensions?
 
