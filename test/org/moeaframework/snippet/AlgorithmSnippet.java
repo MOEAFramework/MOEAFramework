@@ -24,7 +24,6 @@ import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.examples.algorithm.RandomWalker;
 import org.moeaframework.problem.CEC2009.UF1;
 import org.moeaframework.problem.misc.Srinivas;
 
@@ -54,14 +53,6 @@ public class AlgorithmSnippet {
 			    .withMaxEvaluations(10000)
 			    .run();
 		// end-example:executor
-	}
-	
-	@Test
-	public void randomWalkerConfiguration() {
-		// begin-example:configuration
-		RandomWalker algorithm = new RandomWalker(new Srinivas());
-		algorithm.getConfiguration().display();
-		// end-example:configuration
 	}
 	
 }

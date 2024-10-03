@@ -86,10 +86,9 @@ public void setVariation(Variation variation) {
 Also note the `@Property` annotations.  The MOEA Framework provides a Configuration API for inspecting and configuring
 these properties.  We can get the current configuration as follows:
 
-<!-- java:test/org/moeaframework/snippet/AlgorithmSnippet.java [configuration] -->
+<!-- java:examples/org/moeaframework/examples/algorithm/ConfigurableRandomWalkerExample.java [29:29] -->
 
 ```java
-RandomWalker algorithm = new RandomWalker(new Srinivas());
 algorithm.getConfiguration().display();
 ```
 
