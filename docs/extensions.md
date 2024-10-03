@@ -1,6 +1,6 @@
 # Extensions
 
-Extensions were introduced in version 4.5.  Please update to this version to use extensions!
+Please verify you are using version 4.5 or newer to use extensions.
 
 ## What are Extensions?
 

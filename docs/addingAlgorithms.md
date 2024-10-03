@@ -83,8 +83,8 @@ public void setVariation(Variation variation) {
 }
 ```
 
-Also note the `@Properrty` annotation.  The MOEA Framework provides a Configuration API for inspecting or configuring
-an algorithm.  We can get the current configuration of an algorithm as follows:
+Also note the `@Property` annotations.  The MOEA Framework provides a Configuration API for inspecting and configuring
+these properties.  We can get the current configuration as follows:
 
 <!-- java:test/org/moeaframework/snippet/AlgorithmSnippet.java [configuration] -->
 
@@ -104,7 +104,7 @@ pm.rate              0.5
 populationSize       100
 ```
 
-Here, we find the two properties we added, `populationSize` and `operator`, in addition to the settings for the
-polynomial mutation (pm) operator.
+Here, we find the two properties we added, `populationSize` and `operator`.  Two additional properties for the
+Polynomial Mutation (PM) operator, those prefixed with `pm.`, are also included automatically.
 
 
