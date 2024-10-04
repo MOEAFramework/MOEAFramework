@@ -2,7 +2,7 @@
 
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
-## Version 4.5 (TBD)
+## Version 4.5 (4 Oct 2024)
 
   * Introduce extensions.  These are reusble components that extend or augment the functionality of an algorithm
     without needing to create new classes.
@@ -13,6 +13,9 @@ This page documents notable changes introduced in each chronological release of 
   * Moves the `initialize()` method into `Algorithm`.  Consequently, the visibility also changes from `protected` to
     `public`.  This may cause compilation errors in code overriding `initialize()`, but can be fixed by changing the
     visibility modifier to `public`.
+    
+  * No longer require a `Problem` instance when constructing a `Normalizer`.  Adds static methods to normalize using
+    bounds (`Normalizer.of(minimum, maximum)`) or disable normalization (`Normalization.none()`).
     
 
 ## Version 4.4 (4 Aug 2024)

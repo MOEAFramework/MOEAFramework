@@ -36,11 +36,11 @@ The latest release can be downloaded from our [website](http://moeaframework.org
 <dependency>
     <groupId>org.moeaframework</groupId>
     <artifactId>moeaframework</artifactId>
-    <version>4.4</version>
+    <version>4.5</version>
 </dependency>
 ```
 
-Visit the [Maven distribution page](https://search.maven.org/artifact/org.moeaframework/moeaframework/4.4/jar)
+Visit the [Maven distribution page](https://search.maven.org/artifact/org.moeaframework/moeaframework/4.5/jar)
 for setup instructions for other package management tools.
 
 ### Documentation ###
