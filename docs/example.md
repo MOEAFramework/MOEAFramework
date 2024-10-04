@@ -52,18 +52,20 @@ indicators.apply(approximationSet).display();
 <!-- output:examples/Example2.java -->
 
 ```
-Indicator                    Value
----------------------------- --------
-Hypervolume                  0.209256
-GenerationalDistance         0.001027
-InvertedGenerationalDistance 0.004491
-AdditiveEpsilonIndicator     0.010052
-Spacing                      0.005918
-MaximumParetoFrontError      0.042614
-Contribution                 0.000000
-R1Indicator                  0.446108
-R2Indicator                  0.000276
-R3Indicator                  0.000419
+Indicator                        Value
+-------------------------------- --------
+Hypervolume                      0.209256
+GenerationalDistance             0.001027
+GenerationalDistancePlus         0.002517
+InvertedGenerationalDistance     0.004491
+InvertedGenerationalDistancePlus 0.002956
+AdditiveEpsilonIndicator         0.010052
+Spacing                          0.005918
+MaximumParetoFrontError          0.042614
+Contribution                     0.000000
+R1Indicator                      0.446108
+R2Indicator                      0.000276
+R3Indicator                      0.000419
 ```
 
 ## Configuring Algorithms

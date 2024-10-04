@@ -59,8 +59,8 @@ public class ObjectValidator<T> extends Validator<T> {
 		
 		T value = getPropertyValue();
 		
-		if (value instanceof String string && string.isBlank()) {
-			throw new IllegalArgumentException("Expected " + getPropertyName() + " to not be empty or blank");
+		if (value instanceof String str && str.isBlank()) {
+			throw new IllegalArgumentException("Expected string " + getPropertyName() + " to not be empty");
 		}
 		
 		if (value instanceof Iterable<?> iterable && !iterable.iterator().hasNext()) {

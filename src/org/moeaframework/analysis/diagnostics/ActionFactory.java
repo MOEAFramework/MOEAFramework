@@ -18,13 +18,14 @@
 package org.moeaframework.analysis.diagnostics;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -35,13 +36,14 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.commons.io.FilenameUtils;
 import org.moeaframework.Instrumenter;
+import org.moeaframework.analysis.diagnostics.Controller.Setting;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.util.Localization;
 
 /**
  * Collection of actions used by the diagnostic tool.
  */
-public class ActionFactory implements ControllerListener {
+public class ActionFactory {
 	
 	/**
 	 * The localization instance for produce locale-specific strings.
@@ -111,9 +113,19 @@ public class ActionFactory implements ControllerListener {
 	private Action includeGenerationalDistanceAction;
 	
 	/**
+	 * The action to toggle the inclusion of the generational distance plus indicator collector.
+	 */
+	private Action includeGenerationalDistancePlusAction;
+	
+	/**
 	 * The action to toggle the inclusion of the inverted generational distance indicator collector.
 	 */
 	private Action includeInvertedGenerationalDistanceAction;
+	
+	/**
+	 * The action to toggle the inclusion of the inverted generational distance plus indicator collector.
+	 */
+	private Action includeInvertedGenerationalDistancePlusAction;
 	
 	/**
 	 * The action to toggle the inclusion the spacing indicator collector.
@@ -232,563 +244,156 @@ public class ActionFactory implements ControllerListener {
 		this.controller = controller;
 		
 		initialize();
-		
-		controller.addControllerListener(this);
 	}
 	
 	/**
 	 * Initializes the actions used by this action factory.
 	 */
 	protected void initialize() {
-		saveAction = new AbstractAction() {
+		saveAction = new RunnableAction("save", () -> {
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setFileFilter(FILTER);
 
-			private static final long serialVersionUID = -1909996187887919230L;
-			
-			{
-				putValue(Action.NAME, localization.getString("action.save.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.save.description"));
-			}
+			int result = fileChooser.showSaveDialog(frame);
 
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setFileFilter(FILTER);
-				
-				int result = fileChooser.showSaveDialog(frame);
-				
-				if (result == JFileChooser.APPROVE_OPTION) {
-					File file = fileChooser.getSelectedFile();
-						
-					if (!FilenameUtils.getExtension(file.getName()).equalsIgnoreCase(EXTENSION)) {
-						file = new File(file.getParent(), file.getName() + "." + EXTENSION);
-					}
-					
-					try {
-						controller.saveData(file);
-					} catch (IOException e) {
-						controller.handleException(e);
-					}
+			if (result == JFileChooser.APPROVE_OPTION) {
+				File file = fileChooser.getSelectedFile();
+
+				if (!FilenameUtils.getExtension(file.getName()).equalsIgnoreCase(EXTENSION)) {
+					file = new File(file.getParent(), file.getName() + "." + EXTENSION);
+				}
+
+				try {
+					controller.saveData(file);
+				} catch (IOException e) {
+					controller.handleException(e);
 				}
 			}
-			
-		};
+		});
 		
-		loadAction = new AbstractAction() {
+		loadAction = new RunnableAction("load", () -> {
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setFileFilter(FILTER);
 
-			private static final long serialVersionUID = 6667076082827906472L;
-			
-			{
-				putValue(Action.NAME, localization.getString("action.load.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.load.description"));
-			}
+			int result = fileChooser.showOpenDialog(frame);
 
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setFileFilter(FILTER);
-				
-				int result = fileChooser.showOpenDialog(frame);
-				
-				if (result == JFileChooser.APPROVE_OPTION) {
-					try {
-						controller.loadData(fileChooser.getSelectedFile());
-					} catch (IOException e) {
-						controller.handleException(e);
-					}
+			if (result == JFileChooser.APPROVE_OPTION) {
+				try {
+					controller.loadData(fileChooser.getSelectedFile());
+				} catch (IOException e) {
+					controller.handleException(e);
 				}
 			}
-			
-		};
+		});
 		
-		exitAction = new AbstractAction() {
-
-			private static final long serialVersionUID = -8388268233198826720L;
-			
-			{
-				putValue(Action.NAME, localization.getString("action.exit.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.exit.description"));
-			}
-
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				frame.dispose();
-			}
-			
-		};
+		exitAction = new RunnableAction("exit", frame::dispose);
+		selectAllResultsAction = new RunnableAction("selectAll", frame::selectAllResults);
+		aboutDialogAction = new RunnableAction("about", frame::showAbout);
 		
-		showLastTraceAction = new AbstractAction() {
-
-			private static final long serialVersionUID = -6068811236087074314L;
-			
-			{
-				putValue(Action.NAME, localization.getString("action.showLastTrace.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.showLastTrace.description"));
-				putValue(Action.SELECTED_KEY, controller.getShowLastTrace());
-			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.setShowLastTrace((Boolean)getValue(Action.SELECTED_KEY));
-			}
-			
-		};
+		enableAllIndicatorsAction = new RunnableAction("enableAllIndicators", () -> {
+			controller.includeHypervolume().set(true);
+			controller.includeGenerationalDistance().set(true);
+			controller.includeGenerationalDistancePlus().set(true);
+			controller.includeInvertedGenerationalDistance().set(true);
+			controller.includeInvertedGenerationalDistancePlus().set(true);
+			controller.includeSpacing().set(true);
+			controller.includeAdditiveEpsilonIndicator().set(true);
+			controller.includeContribution().set(true);
+			controller.includeR1().set(true);
+			controller.includeR2().set(true);
+			controller.includeR3().set(true);
+		});
 		
-		enableAllIndicatorsAction = new AbstractAction() {
-
-			private static final long serialVersionUID = -6068811236087074314L;
-			
-			{
-				putValue(Action.NAME, localization.getString("action.enableAllIndicators.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.enableAllIndicators.description"));
-			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				includeHypervolumeAction.putValue(Action.SELECTED_KEY, true);
-				includeGenerationalDistanceAction.putValue(Action.SELECTED_KEY, true);
-				includeInvertedGenerationalDistanceAction.putValue(Action.SELECTED_KEY, true);
-				includeSpacingAction.putValue(Action.SELECTED_KEY, true);
-				includeAdditiveEpsilonIndicatorAction.putValue(Action.SELECTED_KEY, true);
-				includeContributionAction.putValue(Action.SELECTED_KEY, true);
-				includeR1Action.putValue(Action.SELECTED_KEY, true);
-				includeR2Action.putValue(Action.SELECTED_KEY, true);
-				includeR3Action.putValue(Action.SELECTED_KEY, true);
-				
-				controller.setIncludeHypervolume(true);
-				controller.setIncludeGenerationalDistance(true);
-				controller.setIncludeInvertedGenerationalDistance(true);
-				controller.setIncludeSpacing(true);
-				controller.setIncludeAdditiveEpsilonIndicator(true);
-				controller.setIncludeContribution(true);
-				controller.setIncludeR1(true);
-				controller.setIncludeR2(true);
-				controller.setIncludeR3(true);
-			}
-			
-		};
+		disableAllIndicatorsAction = new RunnableAction("disableAllIndicators", () -> {
+			controller.includeHypervolume().set(false);
+			controller.includeGenerationalDistance().set(false);
+			controller.includeGenerationalDistancePlus().set(false);
+			controller.includeInvertedGenerationalDistance().set(false);
+			controller.includeInvertedGenerationalDistancePlus().set(false);
+			controller.includeSpacing().set(false);
+			controller.includeAdditiveEpsilonIndicator().set(false);
+			controller.includeContribution().set(false);
+			controller.includeR1().set(false);
+			controller.includeR2().set(false);
+			controller.includeR3().set(false);
+		});
 		
-		disableAllIndicatorsAction = new AbstractAction() {
-
-			private static final long serialVersionUID = 5291581694356532809L;
-			
-			{
-				putValue(Action.NAME, localization.getString("action.disableAllIndicators.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.disableAllIndicators.description"));
-			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				includeHypervolumeAction.putValue(Action.SELECTED_KEY, false);
-				includeGenerationalDistanceAction.putValue(Action.SELECTED_KEY, false);
-				includeInvertedGenerationalDistanceAction.putValue(Action.SELECTED_KEY, false);
-				includeSpacingAction.putValue(Action.SELECTED_KEY, false);
-				includeAdditiveEpsilonIndicatorAction.putValue(Action.SELECTED_KEY, false);
-				includeContributionAction.putValue(Action.SELECTED_KEY, false);
-				includeR1Action.putValue(Action.SELECTED_KEY, false);
-				includeR2Action.putValue(Action.SELECTED_KEY, false);
-				includeR3Action.putValue(Action.SELECTED_KEY, false);
-				
-				controller.setIncludeHypervolume(false);
-				controller.setIncludeGenerationalDistance(false);
-				controller.setIncludeInvertedGenerationalDistance(false);
-				controller.setIncludeSpacing(false);
-				controller.setIncludeAdditiveEpsilonIndicator(false);
-				controller.setIncludeContribution(false);
-				controller.setIncludeR1(false);
-				controller.setIncludeR2(false);
-				controller.setIncludeR3(false);
-			}
-			
-		};
+		includeHypervolumeAction = new ToggleAction("includeHypervolume", controller.includeHypervolume());
+		includeGenerationalDistanceAction = new ToggleAction("includeGenerationalDistance", controller.includeGenerationalDistance());	
+		includeGenerationalDistancePlusAction = new ToggleAction("includeGenerationalDistancePlus", controller.includeGenerationalDistancePlus());
+		includeInvertedGenerationalDistanceAction = new ToggleAction("includeInvertedGenerationalDistance", controller.includeInvertedGenerationalDistance());
+		includeInvertedGenerationalDistancePlusAction = new ToggleAction("includeInvertedGenerationalDistancePlus", controller.includeInvertedGenerationalDistancePlus());
+		includeSpacingAction = new ToggleAction("includeSpacing", controller.includeSpacing());
+		includeAdditiveEpsilonIndicatorAction = new ToggleAction("includeAdditiveEpsilonIndicator", controller.includeAdditiveEpsilonIndicator());
+		includeContributionAction = new ToggleAction("includeContribution", controller.includeContribution());
+		includeR1Action = new ToggleAction("includeR1", controller.includeR1());
+		includeR2Action = new ToggleAction("includeR2", controller.includeR2());
+		includeR3Action = new ToggleAction("includeR3", controller.includeR3());
+		includeEpsilonProgressAction = new ToggleAction("includeEpsilonProgress", controller.includeEpsilonProgress());
+		includeAdaptiveMultimethodVariationAction = new ToggleAction("includeAdaptiveMultimethodVariation", controller.includeAdaptiveMultimethodVariation());
+		includeAdaptiveTimeContinuationAction = new ToggleAction("includeAdaptiveTimeContinuation", controller.includeAdaptiveTimeContinuation());
+		includeElapsedTimeAction = new ToggleAction("includeElapsedTime", controller.includeElapsedTime());
+		includePopulationSizeAction = new ToggleAction("includePopulationSize", controller.includePopulationSize());	
+		includeApproximationSetAction = new ToggleAction("includeApproximationSet", controller.includeApproximationSet());
 		
-		includeHypervolumeAction = new AbstractAction() {
-
-			private static final long serialVersionUID = -8388268233198826720L;
-
-			{
-				putValue(Action.NAME, localization.getString("action.includeHypervolume.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeHypervolume.description"));
-				putValue(Action.SELECTED_KEY, controller.getIncludeHypervolume());
-			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.setIncludeHypervolume((Boolean)getValue(Action.SELECTED_KEY));
-			}
-			
-		};
-		
-		includeGenerationalDistanceAction = new AbstractAction() {
-
-			private static final long serialVersionUID = 6577840439300886142L;
-
-			{
-				putValue(Action.NAME, localization.getString("action.includeGenerationalDistance.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeGenerationalDistance.description"));
-				putValue(Action.SELECTED_KEY, controller.getIncludeGenerationalDistance());
-			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.setIncludeGenerationalDistance((Boolean)getValue(Action.SELECTED_KEY));
-			}
-			
-		};
-		
-		includeInvertedGenerationalDistanceAction = new AbstractAction() {
-
-			private static final long serialVersionUID = -4264252375261182056L;
-
-			{
-				putValue(Action.NAME, localization.getString("action.includeInvertedGenerationalDistance.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeInvertedGenerationalDistance.description"));
-				putValue(Action.SELECTED_KEY, controller.getIncludeInvertedGenerationalDistance());
-			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.setIncludeInvertedGenerationalDistance((Boolean)getValue(Action.SELECTED_KEY));
-			}
-
-		};
-		
-		includeSpacingAction = new AbstractAction() {
-
-			private static final long serialVersionUID = 3256132970071591253L;
-
-			{
-				putValue(Action.NAME, localization.getString("action.includeSpacing.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeSpacing.description"));
-				putValue(Action.SELECTED_KEY, controller.getIncludeSpacing());
-			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.setIncludeSpacing((Boolean)getValue(Action.SELECTED_KEY));
-			}
-
-		};
-		
-		includeAdditiveEpsilonIndicatorAction = new AbstractAction() {
-
-			private static final long serialVersionUID = -4612470190342088537L;
-
-			{
-				putValue(Action.NAME, localization.getString("action.includeAdditiveEpsilonIndicator.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeAdditiveEpsilonIndicator.description"));
-				putValue(Action.SELECTED_KEY, controller.getIncludeAdditiveEpsilonIndicator());
-			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.setIncludeAdditiveEpsilonIndicator((Boolean)getValue(Action.SELECTED_KEY));
-			}
-
-		};
-		
-		includeContributionAction = new AbstractAction() {
-
-			private static final long serialVersionUID = 7751303429555416136L;
-
-			{
-				putValue(Action.NAME, localization.getString("action.includeContribution.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeContribution.description"));
-				putValue(Action.SELECTED_KEY, controller.getIncludeContribution());
-			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.setIncludeContribution((Boolean)getValue(Action.SELECTED_KEY));
-			}
-
-		};
-		
-		includeR1Action = new AbstractAction() {
-
-			private static final long serialVersionUID = 7307447492866764644L;
-
-			{
-				putValue(Action.NAME, localization.getString("action.includeR1.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeR1.description"));
-				putValue(Action.SELECTED_KEY, controller.getIncludeR1());
-			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.setIncludeR1((Boolean)getValue(Action.SELECTED_KEY));
-			}
-
-		};
-		
-		includeR2Action = new AbstractAction() {
-
-			private static final long serialVersionUID = -5385083123364658233L;
-
-			{
-				putValue(Action.NAME, localization.getString("action.includeR2.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeR2.description"));
-				putValue(Action.SELECTED_KEY, controller.getIncludeR2());
-			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.setIncludeR2((Boolean)getValue(Action.SELECTED_KEY));
-			}
-
-		};
-		
-		includeR3Action = new AbstractAction() {
-
-			private static final long serialVersionUID = -2777143619264295330L;
-
-			{
-				putValue(Action.NAME, localization.getString("action.includeR3.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeR3.description"));
-				putValue(Action.SELECTED_KEY, controller.getIncludeR3());
-			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.setIncludeR3((Boolean)getValue(Action.SELECTED_KEY));
-			}
-
-		};
-		
-		includeEpsilonProgressAction = new AbstractAction() {
-
-			private static final long serialVersionUID = -2514670979923374486L;
-
-			{
-				putValue(Action.NAME, localization.getString("action.includeEpsilonProgress.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeEpsilonProgress.description"));
-				putValue(Action.SELECTED_KEY, controller.getIncludeEpsilonProgress());
-			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.setIncludeEpsilonProgress((Boolean)getValue(Action.SELECTED_KEY));
-			}
-
-		};
-		
-		includeAdaptiveMultimethodVariationAction = new AbstractAction() {
-
-			private static final long serialVersionUID = -2295024482426435226L;
-
-			{
-				putValue(Action.NAME, localization.getString("action.includeAdaptiveMultimethodVariation.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeAdaptiveMultimethodVariation.description"));
-				putValue(Action.SELECTED_KEY, controller.getIncludeAdaptiveMultimethodVariation());
-			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.setIncludeAdaptiveMultimethodVariation((Boolean)getValue(Action.SELECTED_KEY));
-			}
-
-		};
-		
-		includeAdaptiveTimeContinuationAction = new AbstractAction() {
-
-			private static final long serialVersionUID = 3178255679435336378L;
-
-			{
-				putValue(Action.NAME, localization.getString("action.includeAdaptiveTimeContinuation.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeAdaptiveTimeContinuation.description"));
-				putValue(Action.SELECTED_KEY, controller.getIncludeAdaptiveTimeContinuation());
-			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.setIncludeAdaptiveTimeContinuation((Boolean)getValue(Action.SELECTED_KEY));
-			}
-
-		};
-		
-		includeElapsedTimeAction = new AbstractAction() {
-
-			private static final long serialVersionUID = -664733245004881369L;
-
-			{
-				putValue(Action.NAME, localization.getString("action.includeElapsedTime.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeElapsedTime.description"));
-				putValue(Action.SELECTED_KEY, controller.getIncludeElapsedTime());
-			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.setIncludeElapsedTime((Boolean)getValue(Action.SELECTED_KEY));
-			}
-
-		};
-		
-		includePopulationSizeAction = new AbstractAction() {
-
-			private static final long serialVersionUID = 567786863596776287L;
-
-			{
-				putValue(Action.NAME, localization.getString("action.includePopulationSize.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includePopulationSize.description"));
-				putValue(Action.SELECTED_KEY, controller.getIncludePopulationSize());
-			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.setIncludePopulationSize((Boolean)getValue(Action.SELECTED_KEY));
-			}
-
-		};
-		
-		includeApproximationSetAction = new AbstractAction() {
-
-			private static final long serialVersionUID = 567786863596776287L;
-
-			{
-				putValue(Action.NAME, localization.getString("action.includeApproximationSet.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.includeApproximationSet.description"));
-				putValue(Action.SELECTED_KEY, controller.getIncludeApproximationSet());
-			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.setIncludeApproximationSet((Boolean)getValue(Action.SELECTED_KEY));
-			}
-
-		};
-		
-		runAction = new AbstractAction() {
+		runAction = new RunnableAction("run", controller::run) {
 
 			private static final long serialVersionUID = -3966834246075639069L;
 			
-			{
-				putValue(Action.NAME, localization.getString("action.run.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.run.description"));
+			@Override
+			public void controllerStateChanged(ControllerEvent event) {
 				setEnabled(!controller.isRunning());
 			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.run();
-			}
 			
 		};
 		
-		cancelAction = new AbstractAction() {
-
-			private static final long serialVersionUID = 3035060554253471054L;
+		cancelAction = new RunnableAction("cancel", controller::cancel) {
 			
-			{
-				putValue(Action.NAME, localization.getString("action.cancel.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.cancel.description"));
+			private static final long serialVersionUID = 1490880962056609890L;
+
+			@Override
+			public void controllerStateChanged(ControllerEvent event) {
 				setEnabled(controller.isRunning());
 			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.cancel();
-			}
 			
 		};
 		
-		clearAction = new AbstractAction() {
+		clearAction = new RunnableAction("clear", controller::clear) {
 
 			private static final long serialVersionUID = 3770122212031491835L;
 			
-			{
-				putValue(Action.NAME, localization.getString("action.clear.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.clear.description"));
+			@Override
+			public void controllerStateChanged(ControllerEvent event) {
 				setEnabled(!controller.isRunning());
 			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.clear();
-			}
 			
 		};
 		
-		showStatisticsAction = new AbstractAction() {
-
+		showStatisticsAction = new RunnableAction("showStatistics", controller::showStatistics) {
+			
 			private static final long serialVersionUID = 6836221261899470110L;
 			
-			{
-				putValue(Action.NAME, localization.getString("action.showStatistics.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.showStatistics.description"));
-				setEnabled(false);
-			}
-
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.showStatistics();
+			public void controllerStateChanged(ControllerEvent event) {
+				if (event.getType().equals(ControllerEvent.Type.VIEW_CHANGED) ||
+						event.getType().equals(ControllerEvent.Type.MODEL_CHANGED)) {
+					Set<String> problems = new HashSet<String>();
+					Set<String> algorithms = new HashSet<String>();
+					
+					for (ResultKey key : frame.getSelectedResults()) {
+						problems.add(key.getProblem());
+						algorithms.add(key.getAlgorithm());
+					}
+										
+					setEnabled((problems.size() == 1) && (algorithms.size() > 1));
+				}
 			}
 			
 		};
 		
-		selectAllResultsAction = new AbstractAction() {
-
-			private static final long serialVersionUID = 8538384599545194314L;
-			
-			{
-				putValue(Action.NAME, localization.getString("action.selectAll.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.selectAll.description"));
-			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				frame.selectAllResults();
-			}
-			
-		};
-		
-		aboutDialogAction = new AbstractAction() {
-
-			private static final long serialVersionUID = -7768030811303579787L;
-			
-			{
-				putValue(Action.NAME, localization.getString("action.about.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.about.description"));
-			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				frame.showAbout();
-			}
-			
-		};
-		
-		showIndividualTracesAction = new AbstractAction() {
-
-			private static final long serialVersionUID = 7197923975477668385L;
-			
-			{
-				putValue(Action.NAME, localization.getString("action.showIndividualTraces.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.showIndividualTraces.description"));
-				putValue(Action.SELECTED_KEY, controller.getShowIndividualTraces());
-			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.setShowIndividualTraces(true);
-			}
-			
-		};
-		
-		showQuantilesAction = new AbstractAction() {
-
-			private static final long serialVersionUID = -7733483777432591099L;
-			
-			{
-				putValue(Action.NAME, localization.getString("action.showQuantiles.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.showQuantiles.description"));
-				putValue(Action.SELECTED_KEY, !controller.getShowIndividualTraces());
-			}
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controller.setShowIndividualTraces(false);
-			}
-			
-		};
+		showLastTraceAction = new ToggleAction("showLastTrace", controller.showLastTrace());
+		showIndividualTracesAction = new ToggleAction("showIndividualTraces", controller.showIndividualTraces());
+		showQuantilesAction = new ToggleAction("showQuantiles", controller.showIndividualTraces().invert());
 		
 		memoryUsageAction = new AbstractAction() {
 
@@ -800,28 +405,19 @@ public class ActionFactory implements ControllerListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//do nothing
-			}
-			
-		};
-		
-		final Timer timer = new Timer(1000, new ActionListener() {
-
-			final double DIVISOR = 1024*1024;
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
+				final double divisor = 1024*1024;
 				long free = Runtime.getRuntime().freeMemory();
 				long total = Runtime.getRuntime().totalMemory();
 				long max = Runtime.getRuntime().maxMemory();
-				double used = (total - free) / DIVISOR;
-				double available = max / DIVISOR;
+				double used = (total - free) / divisor;
+				double available = max / divisor;
 
 				memoryUsageAction.putValue(Action.NAME, localization.getString("text.memory", used, available));
 			}
 			
-		});
+		};
 		
+		final Timer timer = new Timer(1000, memoryUsageAction);
 		timer.setRepeats(true);
 		timer.setCoalesce(true);
 		timer.start();
@@ -907,6 +503,15 @@ public class ActionFactory implements ControllerListener {
 	public Action getIncludeGenerationalDistanceAction() {
 		return includeGenerationalDistanceAction;
 	}
+	
+	/**
+	 * Returns the action to toggle the inclusion of the generational distance plus indicator collector.
+	 * 
+	 * @return the action to toggle the inclusion of the generational distance plus indicator collector
+	 */
+	public Action getIncludeGenerationalDistancePlusAction() {
+		return includeGenerationalDistancePlusAction;
+	}
 
 	/**
 	 * Returns the action to toggle the inclusion of the inverted generational distance indicator collector.
@@ -915,6 +520,15 @@ public class ActionFactory implements ControllerListener {
 	 */
 	public Action getIncludeInvertedGenerationalDistanceAction() {
 		return includeInvertedGenerationalDistanceAction;
+	}
+	
+	/**
+	 * Returns the action to toggle the inclusion of the inverted generational distance plus indicator collector.
+	 * 
+	 * @return the action to toggle the inclusion of the inverted generational distance plus indicator collector
+	 */
+	public Action getIncludeInvertedGenerationalDistancePlusAction() {
+		return includeInvertedGenerationalDistancePlusAction;
 	}
 
 	/**
@@ -1104,37 +718,25 @@ public class ActionFactory implements ControllerListener {
 	 * @return the action to display the approximation set for the given result
 	 */
 	public Action getShowApproximationSetAction(final ResultKey key) {
-		return new AbstractAction() {
+		return new RunnableAction("showApproximationSet", () -> {
+			NondominatedPopulation referenceSet = null;
 
-			private static final long serialVersionUID = 1680529848835103744L;
-			
-			{
-				putValue(Action.NAME, localization.getString("action.showApproximationSet.name"));
-				putValue(Action.SHORT_DESCRIPTION, localization.getString("action.showApproximationSet.description"));
+			try {
+				Instrumenter instrumenter = new Instrumenter().withProblem(key.getProblem());
+
+				referenceSet = instrumenter.getReferenceSet();
+			} catch (Exception ex) {
+				//silently handle if no reference set is available
 			}
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				NondominatedPopulation referenceSet = null;
-				
-				try {
-					Instrumenter instrumenter = new Instrumenter().withProblem(key.getProblem());
-					
-					referenceSet = instrumenter.getReferenceSet();
-				} catch (Exception ex) {
-					//silently handle if no reference set is available
-				}
-				
-				ApproximationSetViewer viewer = new ApproximationSetViewer(
-						key.toString(),
-						controller.get(key), 
-						referenceSet);
-				viewer.setLocationRelativeTo(frame);
-				viewer.setIconImages(frame.getIconImages());
-				viewer.setVisible(true);
-			}
-			
-		};
+			ApproximationSetViewer viewer = new ApproximationSetViewer(
+					key.toString(),
+					controller.get(key), 
+					referenceSet);
+			viewer.setLocationRelativeTo(frame);
+			viewer.setIconImages(frame.getIconImages());
+			viewer.setVisible(true);
+		});
 	}
 	
 	/**
@@ -1145,25 +747,78 @@ public class ActionFactory implements ControllerListener {
 	public Action getSelectAllResultsAction() {
 		return selectAllResultsAction;
 	}
+	
+	private abstract class LocalizedAction extends AbstractAction implements ControllerListener {
 
-	@Override
-	public void controllerStateChanged(ControllerEvent event) {
-		if (event.getType().equals(ControllerEvent.Type.STATE_CHANGED)) {
-			getRunAction().setEnabled(!controller.isRunning());
-			getCancelAction().setEnabled(controller.isRunning());
-			getClearAction().setEnabled(!controller.isRunning());
-		} else if (event.getType().equals(ControllerEvent.Type.VIEW_CHANGED) ||
-				event.getType().equals(ControllerEvent.Type.MODEL_CHANGED)) {
-			Set<String> problems = new HashSet<String>();
-			Set<String> algorithms = new HashSet<String>();
+		private static final long serialVersionUID = 4030882078395416151L;
+		
+		protected final String id;
+		
+		public LocalizedAction(String id) {
+			super();
+			this.id = id;
 			
-			for (ResultKey key : frame.getSelectedResults()) {
-				problems.add(key.getProblem());
-				algorithms.add(key.getAlgorithm());
-			}
+			putValue(Action.NAME, localization.getString("action." + id + ".name"));
+			putValue(Action.SHORT_DESCRIPTION, localization.getString("action." + id + ".description"));
 			
-			getShowStatisticsAction().setEnabled((problems.size() == 1) && (algorithms.size() > 1));
+			controller.addControllerListener(this);
 		}
+		
+	}
+	
+	private class RunnableAction extends LocalizedAction {
+		
+		private static final long serialVersionUID = 3633238192124429111L;
+		
+		private final Runnable runnable;
+		
+		public RunnableAction(String id, Runnable runnable) {
+			super(id);
+			this.runnable = runnable;
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			runnable.run();
+		}
+		
+		@Override
+		public void controllerStateChanged(ControllerEvent event) {
+			// do nothing
+		}
+		
+	}
+	
+	private class ToggleAction extends LocalizedAction {
+		
+		private static final long serialVersionUID = -992336279525967638L;
+
+		private final Supplier<Boolean> getter;
+		
+		private final Consumer<Boolean> setter;
+		
+		public ToggleAction(String id, Setting<Boolean> setting) {
+			this(id, () -> setting.get(), (b) -> setting.set(b));
+		}
+
+		public ToggleAction(String id, Supplier<Boolean> getter, Consumer<Boolean> setter) {
+			super(id);
+			this.getter = getter;
+			this.setter = setter;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			setter.accept((Boolean)getValue(Action.SELECTED_KEY));
+		}
+		
+		@Override
+		public void controllerStateChanged(ControllerEvent event) {
+			if (event.getType().equals(ControllerEvent.Type.SETTINGS_CHANGED)) {
+				putValue(Action.SELECTED_KEY, getter.get());
+			}
+		}
+		
 	}
 	
 }

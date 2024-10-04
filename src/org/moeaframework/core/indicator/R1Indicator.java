@@ -47,7 +47,7 @@ public class R1Indicator extends RIndicator {
 	private double epsilon;
 
 	/**
-	 * Constructs a new R1 indicator using the Chebychev utility function.  The default normalization procedure, as
+	 * Constructs a new R1 indicator using the Chebyshev utility function.  The default normalization procedure, as
 	 * specified by {@link DefaultNormalizer}, is used.
 	 * 
 	 * @param problem the problem
@@ -55,7 +55,7 @@ public class R1Indicator extends RIndicator {
 	 * @param referenceSet the reference set
 	 */
 	public R1Indicator(Problem problem, int subdivisions, NondominatedPopulation referenceSet) {
-		this(problem, subdivisions, referenceSet, null, new ChebychevUtility(), DEFAULT_EPSILON);
+		this(problem, subdivisions, referenceSet, null, new ChebyshevUtility(), DEFAULT_EPSILON);
 	}
 	
 	/**

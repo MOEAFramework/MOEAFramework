@@ -34,7 +34,7 @@ import org.moeaframework.core.Problem;
 public class R2Indicator extends RIndicator {
 
 	/**
-	 * Constructs a new R2 indicator using the Chebychev utility function.  The default normalization procedure, as
+	 * Constructs a new R2 indicator using the Chebyshev utility function.  The default normalization procedure, as
 	 * specified by {@link DefaultNormalizer}, is used.
 	 * 
 	 * @param problem the problem
@@ -42,7 +42,7 @@ public class R2Indicator extends RIndicator {
 	 * @param referenceSet the reference set
 	 */
 	public R2Indicator(Problem problem, int subdivisions, NondominatedPopulation referenceSet) {
-		this(problem, subdivisions, referenceSet, null, new ChebychevUtility());
+		this(problem, subdivisions, referenceSet, null, new ChebyshevUtility());
 	}
 	
 	/**

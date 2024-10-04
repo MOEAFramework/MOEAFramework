@@ -30,8 +30,8 @@ public class LocalizationTest {
 	@Test
 	public void testInstanceMethods() {
 		Localization english = Localization.getLocalization(LocalizationTest.class);
-		Localization spanish = Localization.getLocalization(LocalizationTest.class, new Locale("ES"));
-		Localization german = Localization.getLocalization(LocalizationTest.class, new Locale("DE"));
+		Localization spanish = Localization.getLocalization(LocalizationTest.class, Locale.forLanguageTag("es"));
+		Localization german = Localization.getLocalization(LocalizationTest.class, Locale.forLanguageTag("de"));
 
 		//test without arguments
 		Assert.assertEquals("hello, world", english.getString("test"));
@@ -65,12 +65,12 @@ public class LocalizationTest {
 		Assert.assertEquals("hello, static Foo", Localization.getString(LocalizationTest.class, "testArgument", "Foo"));
 		Assert.assertTrue(Localization.containsKey(LocalizationTest.class, "test"));
 
-		Locale.setDefault(new Locale("ES"));
+		Locale.setDefault(Locale.forLanguageTag("es"));
 		Assert.assertEquals("hola, estático mundo", Localization.getString(LocalizationTest.class, "test"));
 		Assert.assertEquals("hola, estático Foo", Localization.getString(LocalizationTest.class, "testArgument", "Foo"));
 		Assert.assertTrue(Localization.containsKey(LocalizationTest.class, "test"));
 
-		Locale.setDefault(new Locale("DE"));
+		Locale.setDefault(Locale.forLanguageTag("de"));
 		Assert.assertEquals("hello, static world", Localization.getString(LocalizationTest.class, "test"));
 		Assert.assertEquals("hello, static Foo", Localization.getString(LocalizationTest.class, "testArgument", "Foo"));
 		Assert.assertTrue(Localization.containsKey(LocalizationTest.class, "test"));

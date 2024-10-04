@@ -50,6 +50,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.progress.ProgressEvent;
 import org.moeaframework.util.progress.ProgressListener;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * The controller manages the underlying data model, performs the evaluation of jobs, and notifies any listeners when
@@ -73,84 +74,99 @@ public class Controller {
 	private Observations lastObservation;
 	
 	/**
-	 * {@code true} if the last run's trace should be drawn separately; {@code false} otherwise.
+	 * The setting for displaying the last run's trace.
 	 */
-	private boolean showLastTrace = false;
+	private final Toggle showLastTrace;
 	
 	/**
-	 * {@code true} if the hypervolume indicator collector is included; {@code false} otherwise.
+	 * The setting for collecting the hypervolume indicator.
 	 */
-	private boolean includeHypervolume = true;
+	private final Toggle includeHypervolume;
 	
 	/**
-	 * {@code true} if the generational distance indicator collector is included; {@code false} otherwise.
+	 * The setting for collecting the generational distance (GD) indicator.
 	 */
-	private boolean includeGenerationalDistance = true;
+	private final Toggle includeGenerationalDistance;
 	
 	/**
-	 * {@code true} if the inverted generational distance indicator collector is included; {@code false} otherwise.
+	 * The setting for collecting the generational distance plus (GD+) indicator.
 	 */
-	private boolean includeInvertedGenerationalDistance = true;
+	private final Toggle includeGenerationalDistancePlus;
 	
 	/**
-	 * {@code true} if the spacing indicator collector is included; {@code false} otherwise.
+	 * The setting for collecting the inverted generational distance plus (IGD) indicator.
 	 */
-	private boolean includeSpacing = true;
+	private final Toggle includeInvertedGenerationalDistance;
 	
 	/**
-	 * {@code true} if the additive &epsilon;-indicator collector is included; {@code false} otherwise.
+	 * The setting for collecting the inverted generational distance plus (IGD+) indicator.
 	 */
-	private boolean includeAdditiveEpsilonIndicator = true;
+	private final Toggle includeInvertedGenerationalDistancePlus;
 	
 	/**
-	 * {@code true} if the contribution indicator collector is included; {@code false} otherwise.
+	 * The setting for collecting the spacing indicator.
 	 */
-	private boolean includeContribution = true;
+	private final Toggle includeSpacing;
 	
 	/**
-	 * {@code true} if the R1 indicator collector is included; {@code false} otherwise.
+	 * The setting for collecting the additive epsilon indicator.
 	 */
-	private boolean includeR1 = false;
+	private final Toggle includeAdditiveEpsilonIndicator;
 	
 	/**
-	 * {@code true} if the R2 indicator collector is included; {@code false} otherwise.
+	 * The setting for collecting the contribution indicator.
 	 */
-	private boolean includeR2 = true;
+	private final Toggle includeContribution;
 	
 	/**
-	 * {@code true} if the R3 indicator collector is included; {@code false} otherwise.
+	 * The setting for collecting the R1 indicator.
 	 */
-	private boolean includeR3 = false;
+	private final Toggle includeR1;
 	
 	/**
-	 * {@code true} if the &epsilon;-progress collector is included; {@code false} otherwise.
+	 * The setting for collecting the R2 indicator.
 	 */
-	private boolean includeEpsilonProgress = true;
+	private final Toggle includeR2;
 	
 	/**
-	 * {@code true} if the adaptive multimethod variation collector is included; {@code false} otherwise.
+	 * The setting for collecting the R3 indicator.
 	 */
-	private boolean includeAdaptiveMultimethodVariation = true;
+	private final Toggle includeR3;
 	
 	/**
-	 * {@code true} if the adaptive time continuation collector is included; {@code false} otherwise.
+	 * The setting for collecting epsilon progress metrics.
 	 */
-	private boolean includeAdaptiveTimeContinuation = true;
+	private final Toggle includeEpsilonProgress;
 	
 	/**
-	 * {@code true} if the elapsed time collector is included; {@code false} otherwise.
+	 * The setting for collecting adaptive multimethod variation probabilities.
 	 */
-	private boolean includeElapsedTime = true;
+	private final Toggle includeAdaptiveMultimethodVariation;
 	
 	/**
-	 * {@code true} if the approximation set collector is included; {@code false} otherwise.
+	 * The setting for collecting adaptive time continuation metrics.
 	 */
-	private boolean includeApproximationSet = true;
+	private final Toggle includeAdaptiveTimeContinuation;
 	
 	/**
-	 * {@code true} if the population size collector is included; {@code false} otherwise.
+	 * The setting for collecting the elapsed runtime.
 	 */
-	private boolean includePopulationSize = true;
+	private final Toggle includeElapsedTime;
+	
+	/**
+	 * The setting for collecting the approximation set.
+	 */
+	private final Toggle includeApproximationSet;
+	
+	/**
+	 * The setting for collecting the population / archive sizes.
+	 */
+	private final Toggle includePopulationSize;
+	
+	/**
+	 * Toggles between showing individual trace lines when {@code true} and quantiles when {@code false}.
+	 */
+	private final Toggle showIndividualTraces;
 	
 	/**
 	 * The run progress of the current job being evaluated.
@@ -173,11 +189,6 @@ public class Controller {
 	private final DiagnosticTool frame;
 	
 	/**
-	 * Toggles between showing individual trace lines when {@code true} and quantiles when {@code false}.
-	 */
-	private boolean showIndividualTraces;
-	
-	/**
 	 * The executor for the current run.
 	 */
 	private Executor executor;
@@ -193,6 +204,26 @@ public class Controller {
 		
 		listeners = EventListenerSupport.create(ControllerListener.class);
 		results = new HashMap<ResultKey, List<Observations>>();
+		
+		showLastTrace = new Toggle(false, ControllerEvent.Type.SETTINGS_CHANGED, ControllerEvent.Type.VIEW_CHANGED);
+		showIndividualTraces = new Toggle(false, ControllerEvent.Type.SETTINGS_CHANGED, ControllerEvent.Type.VIEW_CHANGED);
+		includeHypervolume = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeGenerationalDistance = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeGenerationalDistancePlus = new Toggle(false, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeInvertedGenerationalDistance = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeInvertedGenerationalDistancePlus = new Toggle(false, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeSpacing = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeAdditiveEpsilonIndicator = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeContribution = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeR1 = new Toggle(false, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeR2 = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeR3 = new Toggle(false, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeEpsilonProgress = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeAdaptiveMultimethodVariation = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeAdaptiveTimeContinuation = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeElapsedTime = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includeApproximationSet = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
+		includePopulationSize = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
 	}
 	
 	/**
@@ -214,28 +245,35 @@ public class Controller {
 	}
 	
 	/**
-	 * Fires a {@code MODEL_CHANGED} controller event.
+	 * Fires a {@link ControllerEvent.Type#SETTINGS_CHANGED} controller event.
+	 */
+	protected void fireSettingsChangedEvent() {
+		fireEvent(new ControllerEvent(this, ControllerEvent.Type.SETTINGS_CHANGED));
+	}
+	
+	/**
+	 * Fires a {@link ControllerEvent.Type#MODEL_CHANGED} controller event.
 	 */
 	protected void fireModelChangedEvent() {
 		fireEvent(new ControllerEvent(this, ControllerEvent.Type.MODEL_CHANGED));
 	}
 	
 	/**
-	 * Fires a {@code STATE_CHANGED} controller event.
+	 * Fires a {@link ControllerEvent.Type#STATE_CHANGED} controller event.
 	 */
 	protected void fireStateChangedEvent() {
 		fireEvent(new ControllerEvent(this, ControllerEvent.Type.STATE_CHANGED));
 	}
 	
 	/**
-	 * Fires a {@code PROGRESS_CHANGED} controller event.
+	 * Fires a {@link ControllerEvent.Type#PROGRESS_CHANGED} controller event.
 	 */
 	protected void fireProgressChangedEvent() {
 		fireEvent(new ControllerEvent(this, ControllerEvent.Type.PROGRESS_CHANGED));
 	}
 	
 	/**
-	 * Fires a {@code VIEW_CHANGED} controller event.
+	 * Fires a {@link ControllerEvent.Type#VIEW_CHANGED} controller event.
 	 */
 	protected void fireViewChangedEvent() {
 		fireEvent(new ControllerEvent(this, ControllerEvent.Type.VIEW_CHANGED));
@@ -252,7 +290,7 @@ public class Controller {
 	
 	/**
 	 * Adds a new result to this controller.  If the specified key already exists, the observation is appended to the
-	 * existing results.  A {@code MODEL_CHANGED} event is fired.
+	 * existing results.  A {@link ControllerEvent.Type#MODEL_CHANGED} event is fired.
 	 * 
 	 * @param key the result key identifying the algorithm and problem associated with these results
 	 * @param observation the observation storing the results
@@ -282,7 +320,7 @@ public class Controller {
 	}
 	
 	/**
-	 * Clears all results from this collector.  A {@code MODEL_CHANGED} event is fired.
+	 * Clears all results from this collector.  A {@link ControllerEvent.Type#MODEL_CHANGED} event is fired.
 	 */
 	public void clear() {
 		if (results.isEmpty()) {
@@ -357,7 +395,7 @@ public class Controller {
 	}
 	
 	/**
-	 * Loads all results stored in the specified file.  A {@code MODEL_CHANGED} event is fired.
+	 * Loads all results stored in the specified file.  A {@link ControllerEvent.Type#MODEL_CHANGED} event is fired.
 	 * 
 	 * @param file the file containing the results to load
 	 * @throws IOException if an I/O error occurred
@@ -382,7 +420,7 @@ public class Controller {
 	}
 	
 	/**
-	 * Updates the progress of this controller.  A {@code PROGRESS_CHANGED} event is fired.
+	 * Updates the progress of this controller.  A {@link ControllerEvent.Type#PROGRESS_CHANGED} event is fired.
 	 * 
 	 * @param currentEvaluation the current evaluation number
 	 * @param currentSeed the current seed number
@@ -413,40 +451,48 @@ public class Controller {
 					.withEpsilons(epsilons)
 					.showAggregate()
 					.showStatisticalSignificance();
-			
-			if (getIncludeHypervolume()) {
+						
+			if (includeHypervolume().get()) {
 				analyzer.includeHypervolume();
 			}
 			
-			if (getIncludeGenerationalDistance()) {
+			if (includeGenerationalDistance().get()) {
 				analyzer.includeGenerationalDistance();
 			}
 			
-			if (getIncludeInvertedGenerationalDistance()) {
+			if (includeGenerationalDistancePlus().get()) {
+				analyzer.includeGenerationalDistancePlus();
+			}
+			
+			if (includeInvertedGenerationalDistance().get()) {
 				analyzer.includeInvertedGenerationalDistance();
 			}
 			
-			if (getIncludeSpacing()) {
+			if (includeInvertedGenerationalDistancePlus().get()) {
+				analyzer.includeInvertedGenerationalDistancePlus();
+			}
+			
+			if (includeSpacing().get()) {
 				analyzer.includeSpacing();
 			}
 			
-			if (getIncludeAdditiveEpsilonIndicator()) {
+			if (includeAdditiveEpsilonIndicator().get()) {
 				analyzer.includeAdditiveEpsilonIndicator();
 			}
 			
-			if (getIncludeContribution()) {
+			if (includeContribution().get()) {
 				analyzer.includeContribution();
 			}
 			
-			if (getIncludeR1()) {
+			if (includeR1().get()) {
 				analyzer.includeR1();
 			}
 			
-			if (getIncludeR2()) {
+			if (includeR2().get()) {
 				analyzer.includeR2();
 			}
 			
-			if (getIncludeR3()) {
+			if (includeR3().get()) {
 				analyzer.includeR3();
 			}
 			
@@ -507,63 +553,71 @@ public class Controller {
 							.withFrequency(100)
 							.withProblem(problemName);
 					
-					if (getIncludeHypervolume()) {
+					if (includeHypervolume().get()) {
 						instrumenter.attachHypervolumeCollector();
 					}
 					
-					if (getIncludeGenerationalDistance()) {
+					if (includeGenerationalDistance().get()) {
 						instrumenter.attachGenerationalDistanceCollector();
 					}
 					
-					if (getIncludeInvertedGenerationalDistance()) {
+					if (includeGenerationalDistancePlus().get()) {
+						instrumenter.attachGenerationalDistancePlusCollector();
+					}
+					
+					if (includeInvertedGenerationalDistance().get()) {
 						instrumenter.attachInvertedGenerationalDistanceCollector();
 					}
 					
-					if (getIncludeSpacing()) {
+					if (includeInvertedGenerationalDistancePlus().get()) {
+						instrumenter.attachInvertedGenerationalDistancePlusCollector();
+					}
+					
+					if (includeSpacing().get()) {
 						instrumenter.attachSpacingCollector();
 					}
 					
-					if (getIncludeAdditiveEpsilonIndicator()) {
+					if (includeAdditiveEpsilonIndicator().get()) {
 						instrumenter.attachAdditiveEpsilonIndicatorCollector();
 					}
 					
-					if (getIncludeContribution()) {
+					if (includeContribution().get()) {
 						instrumenter.attachContributionCollector();
 					}
 					
-					if (getIncludeR1()) {
+					if (includeR1().get()) {
 						instrumenter.attachR1Collector();
 					}
 					
-					if (getIncludeR2()) {
+					if (includeR2().get()) {
 						instrumenter.attachR2Collector();
 					}
 					
-					if (getIncludeR3()) {
+					if (includeR3().get()) {
 						instrumenter.attachR3Collector();
 					}
 					
-					if (getIncludeEpsilonProgress()) {
+					if (includeEpsilonProgress().get()) {
 						instrumenter.attachEpsilonProgressCollector();
 					}
 					
-					if (getIncludeAdaptiveMultimethodVariation()) {
+					if (includeAdaptiveMultimethodVariation().get()) {
 						instrumenter.attachAdaptiveMultimethodVariationCollector();
 					}
 					
-					if (getIncludeAdaptiveTimeContinuation()) {
+					if (includeAdaptiveTimeContinuation().get()) {
 						instrumenter.attachAdaptiveTimeContinuationCollector();
 					}
 					
-					if (getIncludeElapsedTime()) {
+					if (includeElapsedTime().get()) {
 						instrumenter.attachElapsedTimeCollector();
 					}
 					
-					if (getIncludeApproximationSet()) {
+					if (includeApproximationSet().get()) {
 						instrumenter.attachApproximationSetCollector();
 					}
 					
-					if (getIncludePopulationSize()) {
+					if (includePopulationSize().get()) {
 						instrumenter.attachPopulationSizeCollector();
 					}
 					
@@ -647,303 +701,174 @@ public class Controller {
 	}
 
 	/**
-	 * Returns {@code true} if the last run's trace is displayed; {@code false} otherwise.
+	 * Returns the setting for displaying the last trace.
 	 * 
-	 * @return {@code true} if the last run's trace is displayed; {@code false} otherwise
+	 * @return the setting object
 	 */
-	public boolean getShowLastTrace() {
+	public Toggle showLastTrace() {
 		return showLastTrace;
 	}
 
 	/**
-	 * Sets the display of the last run's trace.
+	 * Returns the setting for collecting the hypervolume indicator.
 	 * 
-	 * @param showLastTrace {@code true} if the last run's trace is displayed; {@code false} otherwise
+	 * @return the setting object
 	 */
-	public void setShowLastTrace(boolean showLastTrace) {
-		this.showLastTrace = showLastTrace;
-		
-		fireViewChangedEvent();
-	}
-
-	/**
-	 * Returns {@code true} if the hypervolume indicator collector is included; {@code false} otherwise.
-	 * 
-	 * @return {@code true} if the hypervolume indicator collector is included; {@code false} otherwise
-	 */
-	public boolean getIncludeHypervolume() {
+	public Toggle includeHypervolume() {
 		return includeHypervolume;
 	}
 
 	/**
-	 * Sets the inclusion of the hypervolume indicator collector.
+	 * Returns the setting for collecting the generational distance (GD) indicator.
 	 * 
-	 * @param includeHypervolume {@code true} if the hypervolume collector is included; {@code false} otherwise
+	 * @return the setting object
 	 */
-	public void setIncludeHypervolume(boolean includeHypervolume) {
-		this.includeHypervolume = includeHypervolume;
-	}
-
-	/**
-	 * Returns {@code true} if the generational distance indicator collector is included; {@code false} otherwise.
-	 * 
-	 * @return {@code true} if the generational distance indicator collector is included; {@code false} otherwise
-	 */
-	public boolean getIncludeGenerationalDistance() {
+	public Toggle includeGenerationalDistance() {
 		return includeGenerationalDistance;
 	}
-
+	
 	/**
-	 * Sets the inclusion of the generational distance indicator collector.
+	 * Returns the setting for collecting the generational distance plus (GD+) indicator.
 	 * 
-	 * @param includeGenerationalDistance {@code true} if the generational distance indicator collector is included;
-	 *        {@code false} otherwise
+	 * @return the setting object
 	 */
-	public void setIncludeGenerationalDistance(boolean includeGenerationalDistance) {
-		this.includeGenerationalDistance = includeGenerationalDistance;
+	public Toggle includeGenerationalDistancePlus() {
+		return includeGenerationalDistancePlus;
 	}
 
 	/**
-	 * Returns {@code true} if the inverted generational distance indicator collector is included; {@code false}
-	 * otherwise.
+	 * Returns the setting for collecting the inverted generational distance (IGD) indicator.
 	 * 
-	 * @return {@code true} if the inverted generational distance indicator collector is included; {@code false}
-	 *         otherwise
+	 * @return the setting object
 	 */
-	public boolean getIncludeInvertedGenerationalDistance() {
+	public Toggle includeInvertedGenerationalDistance() {
 		return includeInvertedGenerationalDistance;
 	}
-
+	
 	/**
-	 * Sets the inclusion of the inverted generational distance indicator collector.
+	 * Returns the setting for collecting the inverted generational distance plus (IGD+) indicator.
 	 * 
-	 * @param includeInvertedGenerationalDistance {@code true} if the inverted generational distance indicator
-	 *        collector is included; {@code false} otherwise
+	 * @return the setting object
 	 */
-	public void setIncludeInvertedGenerationalDistance(boolean includeInvertedGenerationalDistance) {
-		this.includeInvertedGenerationalDistance = includeInvertedGenerationalDistance;
+	public Toggle includeInvertedGenerationalDistancePlus() {
+		return includeInvertedGenerationalDistancePlus;
 	}
 
 	/**
-	 * Returns {@code true} if the spacing indicator collector is included; {@code false} otherwise.
+	 * Returns the setting for collecting the spacing indicator.
 	 * 
-	 * @return {@code true} if the spacing indicator collector is included; {@code false} otherwise
+	 * @return the setting object
 	 */
-	public boolean getIncludeSpacing() {
+	public Toggle includeSpacing() {
 		return includeSpacing;
 	}
 
 	/**
-	 * Sets the inclusion of the spacing indicator collector.
+	 * Returns the setting for collecting the additive epsilon indicator.
 	 * 
-	 * @param includeSpacing {@code true} if the spacing indicator collector is included; {@code false} otherwise
+	 * @return the setting object
 	 */
-	public void setIncludeSpacing(boolean includeSpacing) {
-		this.includeSpacing = includeSpacing;
-	}
-
-	/**
-	 * Returns {@code true} if the additive &epsilon;-indicator collector is included; {@code false} otherwise.
-	 * 
-	 * @return {@code true} if the additive &epsilon;-indicator collector is included; {@code false} otherwise
-	 */
-	public boolean getIncludeAdditiveEpsilonIndicator() {
+	public Toggle includeAdditiveEpsilonIndicator() {
 		return includeAdditiveEpsilonIndicator;
 	}
 
 	/**
-	 * Sets the inclusion of the additive &epsilon;-indicator collector.
+	 * Returns the setting for collecting the contribution indicator.
 	 * 
-	 * @param includeAdditiveEpsilonIndicator {@code true} if the additive  &epsilon;-indicator collector is included;
-	 *        {@code false} otherwise
+	 * @return the setting object
 	 */
-	public void setIncludeAdditiveEpsilonIndicator(boolean includeAdditiveEpsilonIndicator) {
-		this.includeAdditiveEpsilonIndicator = includeAdditiveEpsilonIndicator;
-	}
-
-	/**
-	 * Returns {@code true} if the contribution indicator collector is included; {@code false} otherwise.
-	 * 
-	 * @return {@code true} if the contribution indicator collector is included; {@code false} otherwise
-	 */
-	public boolean getIncludeContribution() {
+	public Toggle includeContribution() {
 		return includeContribution;
-	}
-
-	/**
-	 * Sets the inclusion of the contribution indicator collector.
-	 * 
-	 * @param includeContribution {@code true} if the contribution indicator collector is included; {@code false}
-	 *        otherwise
-	 */
-	public void setIncludeContribution(boolean includeContribution) {
-		this.includeContribution = includeContribution;
 	}
 	
 	/**
-	 * Returns {@code true} if the R1 indicator collector is included; {@code false} otherwise.
+	 * Returns the setting for collecting the R1 indicator.
 	 * 
-	 * @return {@code true} if the R1 indicator collector is included; {@code false} otherwise
+	 * @return the setting object
 	 */
-	public boolean getIncludeR1() {
+	public Toggle includeR1() {
 		return includeR1;
 	}
 	
 	/**
-	 * Sets the inclusion of the R1 indicator collector.
+	 * Returns the setting for collecting the R2 indicator.
 	 * 
-	 * @param includeR1 {@code true} if the R1 indicator collector is included; {@code false} otherwise
+	 * @return the setting object
 	 */
-	public void setIncludeR1(boolean includeR1) {
-		this.includeR1 = includeR1;
-	}
-	
-	/**
-	 * Returns {@code true} if the R2 indicator collector is included; {@code false} otherwise.
-	 * 
-	 * @return {@code true} if the R2 indicator collector is included; {@code false} otherwise
-	 */
-	public boolean getIncludeR2() {
+	public Toggle includeR2() {
 		return includeR2;
 	}
 	
 	/**
-	 * Sets the inclusion of the R2 indicator collector.
+	 * Returns the setting for collecting the R3 indicator.
 	 * 
-	 * @param includeR2 {@code true} if the R2 indicator collector is included; {@code false} otherwise
+	 * @return the setting object
 	 */
-	public void setIncludeR2(boolean includeR2) {
-		this.includeR2 = includeR2;
-	}
-	
-	/**
-	 * Returns {@code true} if the R3 indicator collector is included; {@code false} otherwise.
-	 * 
-	 * @return {@code true} if the R3 indicator collector is included; {@code false} otherwise
-	 */
-	public boolean getIncludeR3() {
+	public Toggle includeR3() {
 		return includeR3;
-	}
-	
-	/**
-	 * Sets the inclusion of the R3 indicator collector.
-	 * 
-	 * @param includeR3 {@code true} if the R3 indicator collector is included; {@code false} otherwise
-	 */
-	public void setIncludeR3(boolean includeR3) {
-		this.includeR3 = includeR3;
 	}
 
 	/**
-	 * Returns {@code true} if the &epsilon;-progress collector is included; {@code false} otherwise.
+	 * Returns the setting for collecting epsilon progress metrics.
 	 * 
-	 * @return {@code true} if the &epsilon;-progress collector is included; {@code false} otherwise
+	 * @return the setting object
 	 */
-	public boolean getIncludeEpsilonProgress() {
+	public Toggle includeEpsilonProgress() {
 		return includeEpsilonProgress;
 	}
 
 	/**
-	 * Sets the inclusion of the &epsilon;-progress collector.
+	 * Returns the setting for collecting adaptive multimethod variation probabilities.
 	 * 
-	 * @param includeEpsilonProgress {@code true} if the &epsilon;-progress collector is included; {@code false}
-	 *        otherwise
+	 * @return the setting object
 	 */
-	public void setIncludeEpsilonProgress(boolean includeEpsilonProgress) {
-		this.includeEpsilonProgress = includeEpsilonProgress;
-	}
-
-	/**
-	 * Returns {@code true} if the adaptive multimethod variation collector is included; {@code false} otherwise.
-	 * 
-	 * @return {@code true} if the adaptive multimethod variation collector is included; {@code false} otherwise
-	 */
-	public boolean getIncludeAdaptiveMultimethodVariation() {
+	public Toggle includeAdaptiveMultimethodVariation() {
 		return includeAdaptiveMultimethodVariation;
 	}
 
 	/**
-	 * Sets the inclusion of the adaptive multimethod variation collector.
+	 * Returns the setting for collecting adaptive time continuation metrics.
 	 * 
-	 * @param includeAdaptiveMultimethodVariation {@code true} if the adaptive multimethod variation collector is
-	 *        included; {@code false} otherwise
+	 * @return the setting object
 	 */
-	public void setIncludeAdaptiveMultimethodVariation(boolean includeAdaptiveMultimethodVariation) {
-		this.includeAdaptiveMultimethodVariation = includeAdaptiveMultimethodVariation;
-	}
-
-	/**
-	 * Returns {@code true} if the adaptive time continuation collector is included; {@code false} otherwise.
-	 * 
-	 * @return {@code true} if the adaptive time continuation collector is included; {@code false} otherwise
-	 */
-	public boolean getIncludeAdaptiveTimeContinuation() {
+	public Toggle includeAdaptiveTimeContinuation() {
 		return includeAdaptiveTimeContinuation;
 	}
 
 	/**
-	 * Sets the inclusion of the adaptive time continuation collector.
+	 * Returns the setting for collecting the elapsed runtime.
 	 * 
-	 * @param includeAdaptiveTimeContinuation {@code true} if the adaptive time continuation collector is included;
-	 *        {@code false} otherwise
+	 * @return the setting object
 	 */
-	public void setIncludeAdaptiveTimeContinuation(boolean includeAdaptiveTimeContinuation) {
-		this.includeAdaptiveTimeContinuation = includeAdaptiveTimeContinuation;
-	}
-
-	/**
-	 * Returns {@code true} if the elapsed time collector is included; {@code false} otherwise.
-	 * 
-	 * @return {@code true} if the elapsed time collector is included; {@code false} otherwise
-	 */
-	public boolean getIncludeElapsedTime() {
+	public Toggle includeElapsedTime() {
 		return includeElapsedTime;
 	}
 
 	/**
-	 * Sets the inclusion of the elapsed time collector.
+	 * Returns the setting for collecting the approximation set.
 	 * 
-	 * @param includeElapsedTime {@code true} if the elapsed time collector is included; {@code false} otherwise
+	 * @return the setting object
 	 */
-	public void setIncludeElapsedTime(boolean includeElapsedTime) {
-		this.includeElapsedTime = includeElapsedTime;
-	}
-
-	/**
-	 * Returns {@code true} if the approximation set collector is included; {@code false} otherwise.
-	 * 
-	 * @return {@code true} if the approximation set collector is included; {@code false} otherwise
-	 */
-	public boolean getIncludeApproximationSet() {
+	public Toggle includeApproximationSet() {
 		return includeApproximationSet;
 	}
 
 	/**
-	 * Sets the inclusion of the approximation set collector.
+	 * Returns the setting for collecting the population / archive size.
 	 * 
-	 * @param includeApproximationSet {@code true} if the approximation set collector is included; {@code false}
-	 *        otherwise
+	 * @return the setting object
 	 */
-	public void setIncludeApproximationSet(boolean includeApproximationSet) {
-		this.includeApproximationSet = includeApproximationSet;
-	}
-
-	/**
-	 * Returns {@code true} if the population size collector is included; {@code false} otherwise.
-	 * 
-	 * @return {@code true} if the population size collector is included; {@code false} otherwise
-	 */
-	public boolean getIncludePopulationSize() {
+	public Toggle includePopulationSize() {
 		return includePopulationSize;
 	}
-
+	
 	/**
-	 * Sets the inclusion of the population size collector.
+	 * Returns the setting for displaying individual traces versus quantiles.
 	 * 
-	 * @param includePopulationSize {@code true} if the population size collector is included; {@code false} otherwise
+	 * @return the setting object
 	 */
-	public void setIncludePopulationSize(boolean includePopulationSize) {
-		this.includePopulationSize = includePopulationSize;
+	public Toggle showIndividualTraces() {
+		return showIndividualTraces;
 	}
 	
 	/**
@@ -967,28 +892,6 @@ public class Controller {
 	}
 
 	/**
-	 * Returns {@code true} if individual traces are shown; {@code false} if quantiles are shown.
-	 * 
-	 * @return {@code true} if individual traces are shown; {@code false} if quantiles are shown
-	 */
-	public boolean getShowIndividualTraces() {
-		return showIndividualTraces;
-	}
-
-	/**
-	 * Set to {@code true} to show individual traces; {@code false} to show quantiles.
-	 * 
-	 * @param showIndividualTraces {@code true} to show individual traces; {@code false} to show quantiles
-	 */
-	public void setShowIndividualTraces(boolean showIndividualTraces) {
-		if (this.showIndividualTraces != showIndividualTraces) {
-			this.showIndividualTraces = showIndividualTraces;
-			
-			fireViewChangedEvent();
-		}
-	}
-
-	/**
 	 * Handles an exception, possibly displaying a dialog box containing details of the exception.
 	 * 
 	 * @param e the exception
@@ -1007,6 +910,119 @@ public class Controller {
 				message, 
 				"Error", 
 				JOptionPane.ERROR_MESSAGE);
+	}
+	
+	/**
+	 * Represents a setting that can be configured programmatically or through user interaction in the UI.
+	 * 
+	 * @param <T> the underlying type of the setting
+	 */
+	public interface Setting<T> {
+		
+		/**
+		 * Sets the value of the setting.
+		 * 
+		 * @param newValue the new value
+		 */
+		void set(T newValue);
+		
+		/**
+		 * Gets the value of the setting.
+		 * 
+		 * @return the current value
+		 */
+		T get();
+		
+	}
+	
+	/**
+	 * Abstract setting that can optionally fire events when the value changes.
+	 *  
+	 * @param <T> the underlying type of the setting
+	 */
+	abstract class AbstractSetting<T> implements Setting<T> {
+		
+		private T value;
+		
+		private List<ControllerEvent.Type> eventTypes;
+		
+		public AbstractSetting(T value, ControllerEvent.Type... eventTypes) {
+			this(value, List.of(eventTypes));
+		}
+		
+		public AbstractSetting(T value, List<ControllerEvent.Type> eventTypes) {
+			super();
+			this.value = value;
+			this.eventTypes = eventTypes;
+			
+			Validate.that("value", value).isNotNull();
+		}
+		
+		@Override
+		public void set(T newValue) {
+			if (!value.equals(newValue)) {
+				value = newValue;
+				
+				for (ControllerEvent.Type eventType : eventTypes) {
+					fireEvent(new ControllerEvent(Controller.this, eventType));
+				}
+			}
+		}
+		
+		@Override
+		public T get() {
+			return value;
+		}
+		
+	}
+	
+	/**
+	 * A togglable setting representing a binary state (on/off, true/false, enabled/disabled).
+	 */
+	class Toggle extends AbstractSetting<Boolean> {
+		
+		public Toggle(boolean value, ControllerEvent.Type... eventTypes) {
+			super(value, eventTypes);
+		}
+		
+		public void flip() {
+			set(!get());
+		}
+		
+		public Toggle invert() {
+			return new InvertedToggle(this);
+		}
+		
+	}
+	
+	/**
+	 * An inverted version of a toggle.  For example, if the underlying value of a {@link Toggle} is {@code false}, then
+	 * the inverse is {@code true}.  This class delegates to the original toggle for storing values and firing events.
+	 */
+	class InvertedToggle extends Toggle {
+		
+		private final Toggle original;
+
+		public InvertedToggle(Toggle original) {
+			super(false);
+			this.original = original;
+		}
+		
+		@Override
+		public void set(Boolean newValue) {
+			original.set(!newValue);
+		}
+		
+		@Override
+		public Boolean get() {
+			return !original.get();
+		}
+		
+		@Override
+		public Toggle invert() {
+			return original;
+		}
+		
 	}
 
 }

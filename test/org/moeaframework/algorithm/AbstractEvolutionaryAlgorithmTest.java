@@ -23,6 +23,7 @@ import java.io.IOException;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
+import org.moeaframework.algorithm.extension.CheckpointExtension;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
@@ -62,22 +63,20 @@ public class AbstractEvolutionaryAlgorithmTest {
 		NondominatedPopulation lastArchive = new NondominatedPopulation();
 		Population lastPopulation = new Population();
 		int lastNFE = 0;
-		AbstractEvolutionaryAlgorithm algorithm = null;
-		Checkpoints checkpoints = null;
 
 		for (int i = 0; i < 10; i++) {
-			algorithm = newInstance();
-			checkpoints = new Checkpoints(algorithm, file, 0);
+			AbstractEvolutionaryAlgorithm algorithm = newInstance();
+			algorithm.addExtension(new CheckpointExtension(file, 0));
 
-			Assert.assertEquals(lastNFE, checkpoints.getNumberOfEvaluations());
-			Assert.assertEquals(lastResult, checkpoints.getResult());
+			Assert.assertEquals(lastNFE, algorithm.getNumberOfEvaluations());
+			Assert.assertEquals(lastResult, algorithm.getResult());
 			Assert.assertEquals(lastArchive, algorithm.getArchive());
 			Assert.assertEquals(lastPopulation, algorithm.getPopulation());
 
-			checkpoints.step();
+			algorithm.step();
 
-			lastNFE = checkpoints.getNumberOfEvaluations();
-			lastResult = checkpoints.getResult();
+			lastNFE = algorithm.getNumberOfEvaluations();
+			lastResult = algorithm.getResult();
 			lastArchive = algorithm.getArchive();
 			lastPopulation = algorithm.getPopulation();
 		}

@@ -13,7 +13,7 @@ Below lists the optimization algorithms provided by the MOEA Framework organized
   * Other - [AGE-MOEA-II](#age-moea-ii), [AMOSA](#amosa), [CMA-ES](#cma-es), [MSOPS](#msops), [RSO](#rso), [Random](#random)
 * Single-objective - [GA](#ga), [ES](#es), [DE](#de), [SA](#sa), [CMA-ES](#cma-es)
 
-In addition, the MOEA Framework provides [JMetal and PISA extensions](listOfExtensions.md) to enable additional
+In addition, the MOEA Framework provides [JMetal and PISA plugins](listOfPlugins.md) to enable additional
 algorithms.
 
 ## Instantiating an Algorithm
@@ -22,7 +22,7 @@ Each algorithm has a collection of parameters (called properties) used to config
 population size, mutation and crossover rates, etc.  We can create and configure these algorithms by calling their
 setter methods:
 
-<!-- java:test/org/moeaframework/snippet/AlgorithmSnippet.java [32:38] -->
+<!-- java:test/org/moeaframework/snippet/AlgorithmSnippet.java [direct] -->
 
 ```java
 Problem problem = new UF1();
@@ -37,7 +37,7 @@ NondominatedPopulation result = algorithm.getResult();
 Alternatively, we can use the `Executor` class and configure algorithms by setting the properties.  See
 [Running Experiments](runningExperiments.md) for more details on using the `Executor`.
 
-<!-- java:test/org/moeaframework/snippet/AlgorithmSnippet.java [43:48] -->
+<!-- java:test/org/moeaframework/snippet/AlgorithmSnippet.java [executor] -->
 
 ```java
 NondominatedPopulation results = new Executor()

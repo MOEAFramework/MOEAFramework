@@ -1,21 +1,19 @@
-# Adding and Extending Algorithms
-
-This page details how to add new optimization algorithms or extend the functionality of existing algorithms.
-
-## Adding a New Algorithm
+# Adding New Algorithms
 
 We can introduce new optimization algorithms by implementing the `Algorithm` interface.  Instead of
 implementing this interface directly, there are several abstract classes that provide common functionality, including
 `AbstractAlgorithm` and `AbstractEvolutionaryAlgorithm`.
 
+## Implementing the Algorithm
+
 For this example, we're going to create a simple algorithm that just randomly mutates solutions in the population
 using the Polynomial Mutation (PM) operator.  We'll call this the `RandomWalker` algorithm.  Since this algorithm
 will maintain a population of solutions, we can build this from the `AbstractEvolutionaryAlgorithm`:
 
-<!-- java:examples/org/moeaframework/examples/algorithm/NewAlgorithmExample.java [36:65] -->
+<!-- java:examples/org/moeaframework/examples/algorithm/RandomWalker.java [33:62] -->
 
 ```java
-public static class RandomWalker extends AbstractEvolutionaryAlgorithm {
+public class RandomWalker extends AbstractEvolutionaryAlgorithm {
 
     public RandomWalker(Problem problem) {
         super(problem,
@@ -48,12 +46,14 @@ The two key components are:
 1. The constructor, which configures the algorithm.  This includes setting the initial population size, the type of
    population (non-dominated sorting), the initialization strategy, and the variation operator(s).
 2. The `iterate` method, which defines one iteration of the algorithm.  Here we randomly select one parent from the
-   populuation, mutate it using Polynomial Mutation (PM), add it back into the population, and truncate the worst
+   population, mutate it using Polynomial Mutation (PM), add it back into the population, and truncate the worst
    solution from the population.
+   
+## Running the Algorithm
 
 Then, to use this algorithm, we simply construct it like we would any other:
 
-<!-- java:examples/org/moeaframework/examples/algorithm/NewAlgorithmExample.java [68:70] -->
+<!-- java:examples/org/moeaframework/examples/algorithm/RandomWalkerExample.java [28:30] -->
 
 ```java
 RandomWalker algorithm = new RandomWalker(new Srinivas());
@@ -61,48 +61,49 @@ algorithm.run(10000);
 algorithm.getResult().display();
 ```
 
-## Extending Algorithms
+## Configuring the Algorithm
 
-We can also modify or extend existing optimization algorithms.  One such means is writing a new subclass that extends
-the existing algorithm.  Or, as demonstrated below, we can use the provided `PeriodicAction` wrapper to perform
-some operation at a fixed frequency.  Here, we inject additional randomness into the population every 1,000 function
-evaluations by applying the Uniform Mutation (UM) operator.
+Like all algorithms defined in the MOEA Framework, we initialized the default settings in the constructor.  However,
+these settings can not be changed unless we make them configurable.  We accomplish this by adding setter methods for
+each property:
 
-<!-- java:examples/org/moeaframework/examples/algorithm/PeriodicActionExample.java [40-67] -->
+<!-- java:examples/org/moeaframework/examples/algorithm/ConfigurableRandomWalker.java [34:44] -->
 
 ```java
-Problem problem = new UF1();
-NSGAII algorithm = new NSGAII(problem);
+@Override
+@Property("populationSize")
+public void setInitialPopulationSize(int initialPopulationSize) {
+    super.setInitialPopulationSize(initialPopulationSize);
+}
 
-PeriodicAction randomizer = new PeriodicAction(algorithm, 1000, FrequencyType.EVALUATIONS) {
-
-    @Override
-    public void doAction() {
-        System.out.println("Injecting randomness at NFE " + getNumberOfEvaluations());
-
-        NSGAII algorithm = (NSGAII)getAlgorithm();
-        NondominatedSortingPopulation population = algorithm.getPopulation();
-
-        Population offspring = new Population();
-        UM mutation = new UM(1.0 / getProblem().getNumberOfVariables());
-
-        for (Solution solution : population) {
-            offspring.add(mutation.mutate(solution));
-        }
-
-        evaluateAll(offspring);
-        population.addAll(offspring);
-        population.truncate(offspring.size());
-    }
-
-};
-
-randomizer.run(10000);
-randomizer.getResult().display();
+@Override
+@Property("operator")
+public void setVariation(Variation variation) {
+    super.setVariation(variation);
+}
 ```
 
-> [!TIP]
-> Avoid making changes to a population while iterating over its contents.  This will likely result in a 
-> `ConcurrentModificationException`.  Instead, collect all offspring and add them back into the population by
-> calling `addAll`.  Furthermore, by calling `evaluateAll` on all offspring, we can also parallelize function
-> evaluations!
+Also note the `@Property` annotations.  The MOEA Framework provides a Configuration API for inspecting and configuring
+these properties.  We can get the current configuration as follows:
+
+<!-- java:examples/org/moeaframework/examples/algorithm/ConfigurableRandomWalkerExample.java [29:29] -->
+
+```java
+algorithm.getConfiguration().display();
+```
+
+<!-- output:examples/org/moeaframework/examples/algorithm/ConfigurableRandomWalkerExample.java -->
+
+```
+Property             Value
+-------------------- -----
+operator             pm
+pm.distributionIndex 20.0
+pm.rate              0.5
+populationSize       100
+```
+
+Here, we find the two properties we added, `populationSize` and `operator`.  Two additional properties for the
+Polynomial Mutation (PM) operator, those prefixed with `pm.`, are also included automatically.
+
+

@@ -82,7 +82,7 @@ public class GeneticAlgorithm extends SingleObjectiveEvolutionaryAlgorithm {
 	}
 
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		super.initialize();
 
 		eliteSolution = getPopulation().get(0);

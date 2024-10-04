@@ -55,7 +55,7 @@ public abstract class AbstractHypervolumeTest<T extends Indicator> extends Abstr
 		Problem problem = new MockRealProblem(2);
 		
 		testDefaultBounds(createInstance(problem,
-				new Normalizer(problem, new double[] { 0.0, 0.0 }, new double[] { 1.0, 1.0 })));
+				new Normalizer(new double[] { 0.0, 0.0 }, new double[] { 1.0, 1.0 })));
 	}
 	
 	@Test
@@ -63,7 +63,7 @@ public abstract class AbstractHypervolumeTest<T extends Indicator> extends Abstr
 		Problem problem = new MockRealProblem(2);
 		
 		testExpandedBounds(createInstance(problem,
-				new Normalizer(problem, getDefaultReferenceSet(), new double[] { 2.0, 2.0 })));
+				new Normalizer(getDefaultReferenceSet(), new double[] { 2.0, 2.0 })));
 	}
 	
 	@Test
@@ -71,7 +71,7 @@ public abstract class AbstractHypervolumeTest<T extends Indicator> extends Abstr
 		Problem problem = new MockRealProblem(2);
 		
 		testExpandedBounds(createInstance(problem,
-				new Normalizer(problem, new double[] { 0.0, 0.0 }, new double[] { 2.0, 2.0 })));
+				new Normalizer(new double[] { 0.0, 0.0 }, new double[] { 2.0, 2.0 })));
 	}
 	
 	@Test

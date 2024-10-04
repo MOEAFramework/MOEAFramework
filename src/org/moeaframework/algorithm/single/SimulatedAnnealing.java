@@ -131,7 +131,7 @@ public class SimulatedAnnealing extends AbstractSimulatedAnnealingAlgorithm {
 	}
 
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		super.initialize();
 		
 		currentPoint = initialization.initialize(1)[0];
@@ -143,7 +143,7 @@ public class SimulatedAnnealing extends AbstractSimulatedAnnealingAlgorithm {
 	}
 
 	@Override
-	protected void iterate() {
+	protected void iterate(double temperature) {
 		for (int i = 0; i < numberOfIterationsPerTemperature; i++) {
 			Solution newPoint = mutation.mutate(currentPoint);
 			evaluate(newPoint);

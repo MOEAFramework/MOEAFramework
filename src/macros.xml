@@ -46,9 +46,9 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		
 		<sequential>
 			<get src="@{src}" dest="@{dest}" />
-			<checksum file="@{dest}" property="@{sha1}" algorithm="SHA-1" verifyProperty="checksum.valid"/>
-			<delete unless:true="${checksum.valid}" file="@{dest}" />
-			<fail unless:true="${checksum.valid}" message="Invalid checksum for @{dest}" />
+			<checksum file="@{dest}" property="@{sha1}" algorithm="SHA-1" verifyProperty="@{src}.checksum.valid"/>
+			<delete unless:true="${@{src}.checksum.valid}" file="@{dest}" />
+			<fail unless:true="${@{src}.checksum.valid}" message="Invalid checksum for @{dest}" />
 		</sequential>
 	</macrodef>
 	

@@ -17,22 +17,16 @@
  */
 package org.moeaframework.algorithm.continuation;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 import org.moeaframework.Assert;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
-import org.moeaframework.core.EpsilonBoxEvolutionaryAlgorithm;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
-import org.moeaframework.core.Problem;
-import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.real.UM;
 import org.moeaframework.core.selection.UniformSelection;
+import org.moeaframework.mock.MockEpsilonBoxEvolutionaryAlgorithm;
 import org.moeaframework.mock.MockSolution;
 
 public class AdaptiveTimeContinuationTest {
@@ -41,84 +35,18 @@ public class AdaptiveTimeContinuationTest {
 	
 	protected EpsilonBoxDominanceArchive archive;
 	
-	protected MockAlgorithm algorithm;
+	protected MockEpsilonBoxEvolutionaryAlgorithm algorithm;
 	
-	protected AdaptiveTimeContinuation adaptiveTimeContinuation;
+	protected AdaptiveTimeContinuationExtension adaptiveTimeContinuation;
 	
 	protected int numberOfRestarts;
-	
-	private class MockAlgorithm implements EpsilonBoxEvolutionaryAlgorithm {
-		
-		private int numberOfIterations;
-
-		@Override
-		public Population getPopulation() {
-			return population;
-		}
-
-		@Override
-		public Problem getProblem() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public NondominatedPopulation getResult() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void step() {
-			numberOfIterations++;
-		}
-
-		@Override
-		public void evaluate(Solution solution) {
-			//do nothing
-		}
-
-		@Override
-		public int getNumberOfEvaluations() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public boolean isTerminated() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void terminate() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public EpsilonBoxDominanceArchive getArchive() {
-			return archive;
-		}
-
-		public int getNumberOfIterations() {
-			return numberOfIterations;
-		}
-
-		@Override
-		public void saveState(ObjectOutputStream stream) throws IOException {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
-			throw new UnsupportedOperationException();
-		}
-		
-	}
 	
 	@Before
 	public void setUp() {
 		population = new Population();
 		archive = new EpsilonBoxDominanceArchive(0.01);
-		algorithm = new MockAlgorithm();
-		adaptiveTimeContinuation = new AdaptiveTimeContinuation(
-				algorithm,
+		algorithm = new MockEpsilonBoxEvolutionaryAlgorithm(population, archive);
+		adaptiveTimeContinuation = new AdaptiveTimeContinuationExtension(
 				10,
 				100,
 				0.25,
@@ -136,6 +64,7 @@ public class AdaptiveTimeContinuationTest {
 			
 		});
 		
+		algorithm.addExtension(adaptiveTimeContinuation);
 		numberOfRestarts = 0;
 	}
 	
@@ -159,10 +88,10 @@ public class AdaptiveTimeContinuationTest {
 		archive.add(MockSolution.of().withObjectives(0.0, 1.0));
 		
 		for (int i=0; i<1000; i++) {
-			adaptiveTimeContinuation.step();
+			algorithm.step();
 		}
 		
-		Assert.assertEquals(1000, algorithm.getNumberOfIterations());
+		Assert.assertEquals(1000, algorithm.getNumberOfSteps());
 		Assert.assertEquals(10, numberOfRestarts);
 	}
 	
@@ -179,7 +108,7 @@ public class AdaptiveTimeContinuationTest {
 		archive.add(MockSolution.of().withObjectives(1.0, 0.0));
 		
 		for (int i=0; i<10; i++) {
-			adaptiveTimeContinuation.step();
+			algorithm.step();
 		}
 		
 		Assert.assertEquals(0, numberOfRestarts);
@@ -188,19 +117,19 @@ public class AdaptiveTimeContinuationTest {
 		population.remove(0);
 		
 		for (int i=0; i<9; i++) {
-			adaptiveTimeContinuation.step();
+			algorithm.step();
 		}
 		
 		Assert.assertEquals(0, numberOfRestarts);
 		
 		//checked on 10th step
-		adaptiveTimeContinuation.step();
+		algorithm.step();
 		Assert.assertEquals(1, numberOfRestarts);
 		Assert.assertEquals(8, population.size());
 		
 		//no other restarts should occur up to maxWindowSize
 		for (int i=0; i<99; i++) {
-			adaptiveTimeContinuation.step();
+			algorithm.step();
 		}
 		
 		Assert.assertEquals(1, numberOfRestarts);
@@ -215,7 +144,7 @@ public class AdaptiveTimeContinuationTest {
 		archive.add(MockSolution.of().withObjectives(0.0, 1.0));
 		
 		for (int i=0; i<100; i++) {
-			adaptiveTimeContinuation.step();
+			algorithm.step();
 		}
 		
 		Assert.assertEquals(1, numberOfRestarts);
@@ -230,7 +159,7 @@ public class AdaptiveTimeContinuationTest {
 		archive.add(MockSolution.of().withObjectives(0.0, 1.0));
 		
 		for (int i=0; i<100; i++) {
-			adaptiveTimeContinuation.step();
+			algorithm.step();
 		}
 		
 		Assert.assertEquals(1, numberOfRestarts);
@@ -243,7 +172,7 @@ public class AdaptiveTimeContinuationTest {
 	@Test(expected=IllegalArgumentException.class)
 	public void testEmptyArchive() {
 		for (int i=0; i<100; i++) {
-			adaptiveTimeContinuation.step();
+			algorithm.step();
 		}
 	}
 	
@@ -262,7 +191,7 @@ public class AdaptiveTimeContinuationTest {
 		archive.add(MockSolution.of().withObjectives(0.0, 1.0));
 		
 		for (int i=0; i<1000; i++) {
-			adaptiveTimeContinuation.step();
+			algorithm.step();
 		}
 		
 		Assert.assertEquals(10, numberOfRestarts);

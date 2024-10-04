@@ -329,6 +329,10 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		
 		algorithm.setEditable(true);
 		problem.setEditable(true);
+		
+		controller.fireSettingsChangedEvent();
+		controller.fireModelChangedEvent();
+		controller.fireViewChangedEvent();
 	}
 	
 	/**
@@ -365,6 +369,8 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeR1Action()));
 		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeR2Action()));
 		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeR3Action()));
+		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeGenerationalDistancePlusAction()));
+		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeInvertedGenerationalDistancePlusAction()));
 		metrics.addSeparator();
 		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeEpsilonProgressAction()));
 		metrics.add(new JCheckBoxMenuItem(actionFactory.getIncludeAdaptiveMultimethodVariationAction()));

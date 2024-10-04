@@ -77,14 +77,14 @@ public abstract class RIndicator extends NormalizedIndicator {
 	}
 	
 	/**
-	 * Chebychev (also referred to as Tchebycheff) utility function.
+	 * Chebyshev (also referred to as Chebychev or Tchebycheff) utility function.
 	 */
-	public static class ChebychevUtility implements UtilityFunction {
+	public static class ChebyshevUtility implements UtilityFunction {
 		
 		/**
-		 * Constructs an instance of the Chebychev utility function.
+		 * Constructs an instance of the Chebyshev utility function.
 		 */
-		public ChebychevUtility() {
+		public ChebyshevUtility() {
 			super();
 		}
 

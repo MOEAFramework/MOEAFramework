@@ -36,9 +36,21 @@ public enum StandardIndicator {
 	GenerationalDistance(false, false, true),
 	
 	/**
+	 * Generational distance plus (GD+), which modifies the distance calculation used by GD to construct a weakly
+	 * Pareto compliance version of the indicator.  The ideal approximation set has a distance of {@code 0.0}.
+	 */
+	GenerationalDistancePlus(false, true, true),
+	
+	/**
 	 * Inverted generational distance (IGD).  The ideal approximation set has a distance of {@code 0.0}.
 	 */
 	InvertedGenerationalDistance(false, false, true),
+	
+	/**
+	 * Inverted generational distance plus (IGD+), which modifies the distance calculation used by GD to construct a
+	 * weakly Pareto compliance version of the indicator.  The ideal approximation set has a distance of {@code 0.0}.
+	 */
+	InvertedGenerationalDistancePlus(false, true, true),
 	
 	/**
 	 * Additive epsilon-indicator (AEI).  The ideal approximation set has a value of {@code 0.0}.

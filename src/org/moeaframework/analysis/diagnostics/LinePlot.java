@@ -216,7 +216,7 @@ public class LinePlot extends ResultPlot {
 		XYDataset dataset = null;
 		
 		//generate the plot data
-		if (controller.getShowIndividualTraces()) {
+		if (controller.showIndividualTraces().get()) {
 			dataset = new DefaultTableXYDataset();
 			
 			for (ResultKey key : frame.getSelectedResults()) {
@@ -243,7 +243,7 @@ public class LinePlot extends ResultPlot {
 		final XYPlot plot = chart.getXYPlot();
 		
 		//setup the series renderer
-		if (controller.getShowIndividualTraces()) {
+		if (controller.showIndividualTraces().get()) {
 			XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(true, false);
 			
 			for (int i=0; i<dataset.getSeriesCount(); i++) {
@@ -305,8 +305,8 @@ public class LinePlot extends ResultPlot {
 		plot.setDomainAxis(domainAxis);
 		
 		//add overlay
-		if (controller.getShowLastTrace() && 
-				!controller.getShowIndividualTraces() &&
+		if (controller.showLastTrace().get() && 
+				!controller.showIndividualTraces().get() &&
 				(controller.getLastObservation() != null) && 
 				controller.getLastObservation().keys().contains(metric)) {
 			DefaultTableXYDataset dataset2 = new DefaultTableXYDataset();

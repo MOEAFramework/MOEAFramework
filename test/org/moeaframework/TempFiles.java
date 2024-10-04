@@ -17,7 +17,6 @@
  */
 package org.moeaframework;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,14 +26,55 @@ import java.util.List;
 
 /**
  * Static methods for creating temporary files and directories.  All files and directories produced using these methods
- * are automatically deleted on exit.  Any content placed in directories will be deleted, even if the file was not
- * produced by these methods.
+ * are automatically deleted on exit.  Any content placed in a temporary directory will be deleted, even if the file
+ * was not produced by these methods.
  */
 public class TempFiles {
 	
-	private static final List<File> filesToCleanup = new ArrayList<File>();
+	private static final List<java.io.File> filesToCleanup;
+	
+	private static final java.io.File tempDirectory;
 	
 	private static Thread cleanupThread;
+	
+	static {
+		filesToCleanup = new ArrayList<java.io.File>();
+		
+		cleanupThread = new Thread() {
+
+			@Override
+			public void run() {
+				// process in reverse order (use reversed() if updating to Java 21+)
+				while (!filesToCleanup.isEmpty()) {
+					java.io.File file = filesToCleanup.remove(filesToCleanup.size() - 1);
+					
+					if (file.exists()) {
+						try {
+							if (file.isDirectory()) {
+								Files.walk(file.toPath())
+									.sorted(Comparator.reverseOrder())
+									.map(Path::toFile)
+									.forEach(java.io.File::delete);
+							} else {
+								file.delete();
+							}
+						} catch (IOException e) {
+							System.err.println(e);
+						}
+					}
+				}
+			}
+			
+		};
+		
+		Runtime.getRuntime().addShutdownHook(cleanupThread);
+		
+		try {
+			tempDirectory = TempFiles.createDirectory();
+		} catch (IOException e) {
+			throw new AssertionError(e);
+		}
+	}
 	
 	private TempFiles() {
 		super();
@@ -45,65 +85,64 @@ public class TempFiles {
 			extension = "." + extension;
 		}
 		
-		File file = File.createTempFile("test", extension);
+		java.io.File file = java.io.File.createTempFile("test", extension);
 		file.delete(); // remove the empty file
 		deleteOnExit(file);
-		return file;
+		return new File(file);
 	}
 
 	public static File createFile() throws IOException {
 		return createFileWithExtension(null);
 	}
-
-	public static File createFileWithContent(String data) throws IOException {
-		return createFileWithContent(data, null);
-	}
-	
-	public static File createFileWithContent(String data, String extension) throws IOException {
-		File file = createFileWithExtension(extension);
-		Files.writeString(file.toPath(), data);
-		return file;
-	}
 	
 	public static File createDirectory() throws IOException {
-		File directory = Files.createTempDirectory("test").toFile();
+		java.io.File directory = Files.createTempDirectory("test").toFile();
 		deleteOnExit(directory);
-		return directory;
+		return new File(directory);
 	}
 	
-	private static void deleteOnExit(File file) {
-		if (cleanupThread == null) {
-			cleanupThread = new Thread() {
-
-				@Override
-				public void run() {
-					// process in reverse order (use reversed() if updating to Java 21+)
-					while (!filesToCleanup.isEmpty()) {
-						File file = filesToCleanup.remove(filesToCleanup.size() - 1);
-						
-						if (file.exists()) {
-							try {
-								if (file.isDirectory()) {
-									Files.walk(file.toPath())
-										.sorted(Comparator.reverseOrder())
-										.map(Path::toFile)
-										.forEach(File::delete);
-								} else {
-									file.delete();
-								}
-							} catch (IOException e) {
-								System.err.println(e);
-							}
-						}
-					}
-				}
-				
-			};
-			
-			Runtime.getRuntime().addShutdownHook(cleanupThread);
+	private static void deleteOnExit(java.io.File file) {
+		filesToCleanup.add(file);
+	}
+	
+	/**
+	 * Intended to look and feel like {@link java.io.File} for code examples, but redirect to a temporary location to
+	 * avoid polluting the source tree.  To use:
+	 * <pre>
+	 *     # Remove the Java import:
+	 *     import java.io.File;
+	 *     
+	 *     # And import this class instead:
+	 *     import static org.moeaframework.TempFiles.File;
+     * </pre>
+	 */
+	public static class File extends java.io.File {
+	
+		private static final long serialVersionUID = 7856173549658560374L;
+	
+		public File(String name) throws IOException {
+			this(convertPath(name));
 		}
 		
-		filesToCleanup.add(file);
+		File(java.io.File file) {
+			super(file.getParent(), file.getName());
+		}
+		
+		private static final java.io.File convertPath(String name) {
+			java.io.File file = new java.io.File(name);
+			
+			if (file.exists()) {
+				return file;
+			} else {
+				return new java.io.File(tempDirectory, name);
+			}
+		}
+		
+		public File withContent(String content) throws IOException {
+			Files.writeString(toPath(), content);
+			return this;
+		}
+	
 	}
 
 }

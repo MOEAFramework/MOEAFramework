@@ -21,11 +21,16 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import org.moeaframework.algorithm.extension.Extensions;
+
 /**
  * Decorates an algorithm to perform some action periodically throughout the execution of the algorithm.  Note that
  * due to the underlying implementation of the algorithm, the action may be invoked less frequently than requested
  * or not at all.
+ * 
+ * @deprecated Use {@link PeriodicExtension} instead
  */
+@Deprecated
 public abstract class PeriodicAction implements Algorithm {
 	
 	/**
@@ -106,6 +111,16 @@ public abstract class PeriodicAction implements Algorithm {
 	public NondominatedPopulation getResult() {
 		return algorithm.getResult();
 	}
+	
+	@Override
+	public boolean isInitialized() {
+		return algorithm.isInitialized();
+	}
+	
+	@Override
+	public void initialize() {
+		algorithm.initialize();
+	}
 
 	@Override
 	public void step() {
@@ -156,6 +171,11 @@ public abstract class PeriodicAction implements Algorithm {
 	@Override
 	public void terminate() {
 		algorithm.terminate();
+	}
+	
+	@Override
+	public Extensions getExtensions() {
+		return algorithm.getExtensions();
 	}
 	
 	/**

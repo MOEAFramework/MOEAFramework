@@ -2,6 +2,36 @@
 
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
+## Version 4.5 (4 Oct 2024)
+
+  * Introduce extensions.  These are reusble components that extend or augment the functionality of an algorithm
+    without needing to create new classes.
+    
+  * Redefines the `algorithm.terminate()` method to be called whenever termination conditions are reached.  Also permits
+    algorithms to continue running after being terminated.
+    
+  * Moves the `initialize()` method into `Algorithm`.  Consequently, the visibility also changes from `protected` to
+    `public`.  This may cause compilation errors in code overriding `initialize()`, but can be fixed by changing the
+    visibility modifier to `public`.
+    
+  * No longer require a `Problem` instance when constructing a `Normalizer`.  Adds static methods to normalize using
+    bounds (`Normalizer.of(minimum, maximum)`) or disable normalization (`Normalization.none()`).
+    
+
+## Version 4.4 (4 Aug 2024)
+
+  * Introduces a new `clustering` package, with implementations of single-linkage clustering and K-means++.  This
+    also refactors the clustering implementation used by AMOSA.
+    
+  * Adds support for the GD+ and IGD+ performance indicators.  These "plus" variants utilize a different distance
+    measure resulting in weakly Pareto compliant variants of the original GD and IGD indicators.
+
+  * Updates all dependencies to their latest versions.
+
+  * Fixes bug in Maven packaging that caused version 4.3 artifacts to exclude the Pareto front files.  Added
+    integration tests to validate releases.
+
+
 ## Version 4.3 (27 June 2024)
 
   * Adds default operators for mixed type problems.  For example, if given a problem with real and binary decision

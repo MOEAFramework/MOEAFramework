@@ -130,7 +130,7 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 	}
 
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		super.initialize();
 		
 		// rank the solutions

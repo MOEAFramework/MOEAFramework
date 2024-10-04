@@ -48,7 +48,7 @@ public class ResultFileEvaluatorTest {
 	
 	@Test
 	public void testComplete() throws Exception {
-		File input = TempFiles.createFileWithContent(COMPLETE);
+		File input = TempFiles.createFile().withContent(COMPLETE);
 		File output = TempFiles.createFile();
 		
 		File referenceSetFile = TestResources.asFile("pf/DTLZ2.2D.pf");
@@ -70,7 +70,7 @@ public class ResultFileEvaluatorTest {
 	
 	@Test
 	public void testEmpty() throws Exception {
-		File input = TempFiles.createFileWithContent(EMPTY);
+		File input = TempFiles.createFile().withContent(EMPTY);
 		File output = TempFiles.createFile();
 		
 		File referenceSetFile = TestResources.asFile("pf/DTLZ2.2D.pf");
@@ -88,7 +88,7 @@ public class ResultFileEvaluatorTest {
 	
 	@Test(expected = FrameworkException.class)
 	public void testIncorrectNumberOfObjectives() throws Exception {
-		File input = TempFiles.createFileWithContent(COMPLETE);
+		File input = TempFiles.createFile().withContent(COMPLETE);
 		File output = TempFiles.createFile();
 		
 		File referenceSetFile = TestResources.asFile("pf/DTLZ2.3D.pf");

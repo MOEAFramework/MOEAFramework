@@ -56,7 +56,9 @@ public class IndicatorsTest {
 		
 		Assert.assertTrue(Double.isNaN(values.getHypervolume()));
 		Assert.assertTrue(Double.isNaN(values.getGenerationalDistance()));
+		Assert.assertTrue(Double.isNaN(values.getGenerationalDistancePlus()));
 		Assert.assertTrue(Double.isNaN(values.getInvertedGenerationalDistance()));
+		Assert.assertTrue(Double.isNaN(values.getInvertedGenerationalDistancePlus()));
 		Assert.assertTrue(Double.isNaN(values.getAdditiveEpsilonIndicator()));
 		Assert.assertTrue(Double.isNaN(values.getSpacing()));
 		Assert.assertTrue(Double.isNaN(values.getMaximumParetoFrontError()));
@@ -77,7 +79,9 @@ public class IndicatorsTest {
 		
 		Assert.assertFalse(Double.isNaN(values.getHypervolume()));
 		Assert.assertFalse(Double.isNaN(values.getGenerationalDistance()));
+		Assert.assertTrue(Double.isNaN(values.getGenerationalDistancePlus()));
 		Assert.assertFalse(Double.isNaN(values.getInvertedGenerationalDistance()));
+		Assert.assertTrue(Double.isNaN(values.getInvertedGenerationalDistancePlus()));
 		Assert.assertFalse(Double.isNaN(values.getAdditiveEpsilonIndicator()));
 		Assert.assertFalse(Double.isNaN(values.getSpacing()));
 		Assert.assertFalse(Double.isNaN(values.getMaximumParetoFrontError()));
@@ -98,7 +102,9 @@ public class IndicatorsTest {
 		
 		Assert.assertFalse(Double.isNaN(values.getHypervolume()));
 		Assert.assertFalse(Double.isNaN(values.getGenerationalDistance()));
+		Assert.assertFalse(Double.isNaN(values.getGenerationalDistancePlus()));
 		Assert.assertFalse(Double.isNaN(values.getInvertedGenerationalDistance()));
+		Assert.assertFalse(Double.isNaN(values.getInvertedGenerationalDistancePlus()));
 		Assert.assertFalse(Double.isNaN(values.getAdditiveEpsilonIndicator()));
 		Assert.assertFalse(Double.isNaN(values.getSpacing()));
 		Assert.assertFalse(Double.isNaN(values.getMaximumParetoFrontError()));
@@ -108,7 +114,7 @@ public class IndicatorsTest {
 		Assert.assertFalse(Double.isNaN(values.getR3()));
 		
 		Assert.assertSame(testApproximationSet, values.getApproximationSet());
-		Assert.assertEquals(10, values.asProperties().size());
+		Assert.assertEquals(12, values.asProperties().size());
 	}
 	
 	@Test

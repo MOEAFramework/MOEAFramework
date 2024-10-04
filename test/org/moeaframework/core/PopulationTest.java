@@ -162,6 +162,22 @@ public class PopulationTest {
 
 		Assert.assertTrue(population.isEmpty());
 	}
+	
+	@Test
+	public void testAsList() {
+		List<Solution> list = population.asList();
+		
+		// list content is identical to population
+		Assert.assertSize(population.size(), list);
+		Assert.assertSame(population.get(0), list.get(0));
+		Assert.assertSame(population.get(1), list.get(1));
+		Assert.assertSame(population.get(2), list.get(2));
+		Assert.assertSame(population.get(3), list.get(3));
+		
+		// changes to list do not affect population
+		list.clear();
+		Assert.assertEquals(4, population.size());
+	}
 
 	@Test
 	public void testSortAndTruncate() {
@@ -241,7 +257,7 @@ public class PopulationTest {
 	
 	@Test
 	public void testReadWhitespace() throws IOException {
-		File file = TempFiles.createFileWithContent("0   1 \t 2\n\t   3 4 5 \t\n");
+		File file = TempFiles.createFile().withContent("0   1 \t 2\n\t   3 4 5 \t\n");
 		Population population = Population.loadObjectives(file);
 		
 		Assert.assertArrayEquals(new double[] {0.0, 1.0, 2.0}, population.get(0).getObjectives(), TestThresholds.HIGH_PRECISION);

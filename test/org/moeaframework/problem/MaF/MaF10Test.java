@@ -17,6 +17,7 @@
  */
 package org.moeaframework.problem.MaF;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.problem.ProblemTest;
 
@@ -31,6 +32,7 @@ public class MaF10Test extends ProblemTest {
 	}
 	
 	@Test
+	@Ignore("JMetal produces incorrect solutions for some results, see notes for WFG1Test")
 	public void testAgainstJMetal() {
 		assumeProblemDefined("MaF10_3-JMetal");
 		testAgainstJMetal("MaF10_3");

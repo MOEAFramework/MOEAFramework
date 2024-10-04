@@ -52,7 +52,10 @@ import org.moeaframework.util.validate.Validate;
  *   <li>Kollat, J. B., and Reed, P. M.  "Comparison of Multi-Objective Evolutionary Algorithms for Long-Term
  *       Monitoring Design."  Advances in Water Resources, 29(6):792-807, 2006.
  * </ol>
+ * 
+ * @deprecated Use {@link AdaptiveTimeContinuationExtension} instead
  */
+@Deprecated
 public class AdaptiveTimeContinuation extends PeriodicAction implements EvolutionaryAlgorithm, Configurable {
 
 	/**

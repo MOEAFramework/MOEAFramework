@@ -19,6 +19,7 @@ package org.moeaframework.core.termination;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.mock.MockAlgorithm;
 
 public class MaxFunctionEvaluationsTest {
 

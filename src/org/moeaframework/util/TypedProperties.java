@@ -98,12 +98,12 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * Creates a new, empty instance of this class using the given separator string for arrays.
 	 * 
 	 * @param separator the separator string
-	 * @param threadSafe if {@code true}, creates a thread-safe version
+	 * @param threadSafe if {@code true}, the constructed instance will be thread-safe
 	 */
 	protected TypedProperties(String separator, boolean threadSafe) {
 		super();
 		this.separator = separator;
-
+		
 		if (threadSafe) {
 			this.properties = Collections.synchronizedMap(new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER));
 			this.accessedProperties = Collections.synchronizedSet(new TreeSet<String>(String.CASE_INSENSITIVE_ORDER));
@@ -114,8 +114,25 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	}
 	
 	/**
+	 * Convenience method to quickly construct a typed properties instance with a single key-value pair.  This is
+	 * particularly useful for parsing, for instance, command line arguments:
+	 * <pre>
+	 *   TypedProperties.of("epsilon", commandLine.getOptionValue("epsilon")).getDoubleArray("epsilon");
+	 * </pre>
+	 *   
+	 * @param key the key
+	 * @param value the value assigned to the key
+	 * @return a typed properties instance with the specified key-value pair
+	 * @deprecated use {@link #of(String, String)} instead
+	 */
+	@Deprecated
+	public static TypedProperties withProperty(String key, String value) {
+		return of(key, value);
+	}
+	
+	/**
 	 * Creates and returns an empty properties object that is thread-safe.  This is useful when needing thread-safe
-	 * access to a shared properties object, but we recommend creating copies if the properties are mutable.
+	 * access to a shared properties object.
 	 * 
 	 * @return an empty, thread-safe properties object
 	 */
@@ -124,22 +141,13 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	}
 	
 	/**
-	 * Convenience method to quickly construct a typed properties instance with a single key-value pair.  This is
-	 * particularly useful for parsing, for instance, command line arguments:
-	 * <pre>
-	 *   TypedProperties.withProperty("epsilon", commandLine.getOptionValue("epsilon")).getDoubleArray("epsilon");
-	 * </pre>
+	 * Convenience method to quickly construct an empty typed properties instance.  The returned instance is mutable
+	 * and can be modified by the caller.
 	 *   
-	 * @param key the key
-	 * @param value the value assigned to the key
-	 * @return a typed properties instance with the specified key-value pair
-	 * @deprecated Use {@link #of(String, String)} instead
+	 * @return an empty typed properties instance
 	 */
-	@Deprecated
-	public static TypedProperties withProperty(String key, String value) {
-		TypedProperties properties = new TypedProperties();
-		properties.setString(key, value);
-		return properties;
+	public static TypedProperties of() {
+		return new TypedProperties();
 	}
 	
 	/**
@@ -191,6 +199,16 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 		}
 		
 		return result;
+	}
+	
+	/**
+	 * Returns the set of keys contained in this properties object.  The set is backed by this properties object, so
+	 * changes to the set, such as removing a key, will also remove the corresponding property.
+	 * 
+	 * @return the keys
+	 */
+	public Set<String> keySet() {
+		return properties.keySet();
 	}
 	
 	/**
@@ -1297,15 +1315,6 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	}
 	
 	/**
-	 * Returns the set of keys for these properties.
-	 * 
-	 * @return the keys
-	 */
-	public Set<String> keySet() {
-		return properties.keySet();
-	}
-	
-	/**
 	 * Clears the tracking information for properties that have been accessed.
 	 */
 	public void clearAccessedProperties() {
@@ -1338,7 +1347,8 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	}
 	
 	/**
-	 * Prints a warning if any properties were not accessed.  For example:
+	 * Prints a warning if any properties were not accessed.  This only considers properties at the time this method
+	 * is invoked, so a removed but unaccessed property would not cause a warning.  For example:
 	 * <pre>
 	 *     TypedProperties properties = new TypedProperties();
 	 *     ... write properties ...
@@ -1357,7 +1367,10 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	}
 	
 	/**
-	 * Throws a {@link ConfigurationException} if any properties were not accessed.
+	 * Similar to {@link #warnIfUnaccessedProperties()}, except throws a {@link ConfigurationException} if any
+	 * properties were not accessed.
+	 * 
+	 * @throws ConfigurationException if at least one property was not accessed
 	 */
 	public void throwIfUnaccessedProperties() {
 		Set<String> orphanedProperties = getUnaccessedProperties();

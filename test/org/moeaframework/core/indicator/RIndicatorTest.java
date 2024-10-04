@@ -31,8 +31,8 @@ import org.moeaframework.mock.MockRealProblem;
 public class RIndicatorTest {
 	
 	@Test
-	public void testChebychev() throws IOException {
-		testUtility("./pf/DTLZ2.2D.pf", new RIndicator.ChebychevUtility(), 0.782451);
+	public void testChebyshev() throws IOException {
+		testUtility("./pf/DTLZ2.2D.pf", new RIndicator.ChebyshevUtility(), 0.782451);
 	}
 	
 	@Test
@@ -44,7 +44,7 @@ public class RIndicatorTest {
 			throws IOException {
 		Problem problem = new MockRealProblem(2);
 		NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet(resource);
-		Normalizer normalizer = new Normalizer(problem, referenceSet);
+		Normalizer normalizer = new Normalizer(referenceSet);
 		
 		RIndicator indicator = new RIndicator(problem, 500, referenceSet, normalizer, utilityFunction) {
 

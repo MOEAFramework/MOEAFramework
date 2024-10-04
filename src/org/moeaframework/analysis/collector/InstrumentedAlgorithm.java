@@ -17,54 +17,33 @@
  */
 package org.moeaframework.analysis.collector;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.List;
-
+import org.moeaframework.algorithm.extension.AlgorithmWrapper;
+import org.moeaframework.algorithm.extension.FrequencyType;
 import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.PeriodicAction;
 
 /**
- * Decorates an algorithm to periodically collect information about its runtime behavior.  The {@code NFE} field is
- * automatically recorded by this class.
+ * Wraps an algorithm to indicate it is instrumented to collect runtime data.
  */
-public class InstrumentedAlgorithm extends PeriodicAction {
+public class InstrumentedAlgorithm<T extends Algorithm> extends AlgorithmWrapper<T> {
 	
 	/**
-	 * The observations recorded from this algorithm.
-	 */
-	private Observations observations;
-	
-	/**
-	 * The collectors responsible for recording the necessary information.
-	 */
-	private List<Collector> collectors;
-
-	/**
-	 * Decorates the specified algorithm to periodically collect information about its runtime behavior.  Frequency is
-	 * given in number of evaluations.
+	 * Wraps the given algorithm to create an instrumented version.
 	 * 
-	 * @param algorithm the algorithm to decorate
-	 * @param frequency the frequency, in evaluations, that data is collected
+	 * @param algorithm the algorithm
 	 */
-	public InstrumentedAlgorithm(Algorithm algorithm, int frequency) {
-		this(algorithm, frequency, FrequencyType.EVALUATIONS);
+	public InstrumentedAlgorithm(T algorithm) {
+		super(algorithm);
 	}
 	
-	/**
-	 * Decorates the specified algorithm to periodically collect information about its runtime behavior.
-	 * 
-	 * @param algorithm the algorithm to decorate
-	 * @param frequency the frequency that data is collected
-	 * @param frequencyType if frequency is defined by EVALUATIONS or STEPS
-	 */
-	public InstrumentedAlgorithm(Algorithm algorithm, int frequency, FrequencyType frequencyType) {
-		super(algorithm, frequency, frequencyType);
+	public InstrumentedExtension registerExtension(int frequency, FrequencyType frequencyType) {
+		InstrumentedExtension extension = getExtensions().get(InstrumentedExtension.class);
 		
-		observations = new Observations();
-		collectors = new ArrayList<Collector>();
+		if (extension == null) {
+			extension = new InstrumentedExtension(frequency, frequencyType);
+			getExtensions().add(extension);
+		}
+		
+		return extension;
 	}
 	
 	/**
@@ -74,7 +53,7 @@ public class InstrumentedAlgorithm extends PeriodicAction {
 	 * @param collector the collector
 	 */
 	public void addCollector(Collector collector) {
-		collectors.add(collector);
+		getExtensions().get(InstrumentedExtension.class).addCollector(collector);
 	}
 	
 	/**
@@ -83,30 +62,7 @@ public class InstrumentedAlgorithm extends PeriodicAction {
 	 * @return the observations
 	 */
 	public Observations getObservations() {
-		return observations;
-	}
-
-	@Override
-	public void doAction() {
-		Observation observation = new Observation(algorithm.getNumberOfEvaluations());
-		
-		for (Collector collector : collectors) {
-			collector.collect(observation);
-		}
-		
-		observations.add(observation);
-	}
-	
-	@Override
-	public void saveState(ObjectOutputStream stream) throws IOException {
-		super.saveState(stream);
-		stream.writeObject(observations);
-	}
-
-	@Override
-	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
-		super.loadState(stream);
-		observations = (Observations)stream.readObject();
+		return getExtensions().get(InstrumentedExtension.class).getObservations();
 	}
 	
 }

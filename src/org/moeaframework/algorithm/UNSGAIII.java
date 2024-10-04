@@ -91,7 +91,7 @@ public class UNSGAIII extends NSGAIII {
 	}
 	
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		super.initialize();
 		getPopulation().updateNiches();
 	}

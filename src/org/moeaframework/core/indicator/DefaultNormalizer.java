@@ -24,10 +24,9 @@ import java.util.function.Predicate;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
-import org.moeaframework.util.Vector;
+import org.moeaframework.core.indicator.Normalizer.NullNormalizer;
 
 /**
  * Class for constructing normalizers, allowing users to override defaults for specific problems.  The search order is:
@@ -115,7 +114,7 @@ public class DefaultNormalizer {
 			return normalizer;
 		}
 		
-		return new Normalizer(problem, referenceSet);
+		return new Normalizer(referenceSet);
 	}
 	
 	/**
@@ -150,10 +149,10 @@ public class DefaultNormalizer {
 						problem.getName());
 			}
 			
-			return new Normalizer(problem, referenceSet, maximum);
+			return new Normalizer(referenceSet, maximum);
 		}
 		
-		return new Normalizer(problem, referenceSet, Settings.getProblemSpecificHypervolumeDelta(problem.getName()));
+		return new Normalizer(referenceSet, Settings.getProblemSpecificHypervolumeDelta(problem.getName()));
 	}
 	
 	/**
@@ -174,14 +173,14 @@ public class DefaultNormalizer {
 		}
 		
 		if (Settings.isNormalizationDisabled(problem.getName())) {
-			return new NullNormalizer(problem);
+			return Normalizer.none();
 		}
 		
 		double[] minimum = Settings.getProblemSpecificMinimumBounds(problem.getName());
 		double[] maximum = Settings.getProblemSpecificMaximumBounds(problem.getName());
 
 		if (minimum != null && maximum != null) {
-			return new Normalizer(problem, minimum, maximum);
+			return new Normalizer(minimum, maximum);
 		}
 		
 		return null;
@@ -208,7 +207,7 @@ public class DefaultNormalizer {
 	public void override(String problemName, double[] minimum, double[] maximum) {
 		overrides.add(0, Pair.of(
 				(p) -> p.getName().equalsIgnoreCase(problemName),
-				(p) -> new Normalizer(p, minimum, maximum)));
+				(p) -> new Normalizer(minimum, maximum)));
 	}
 
 	/**
@@ -228,32 +227,7 @@ public class DefaultNormalizer {
 	public void disableNormalization(String problemName) {
 		overrides.add(0, Pair.of(
 				(p) -> p.getName().equalsIgnoreCase(problemName),
-				(p) -> new NullNormalizer(p)));
-	}
-	
-	/**
-	 * The "null" normalizer, which is used to disable normalization.  The {@link #normalize} methods simply return
-	 * the provided population unchanged.
-	 */
-	private static class NullNormalizer extends Normalizer {
-
-		public NullNormalizer(Problem problem) {
-			super(problem,
-					// The minimum / maximum bounds provided below will be ignored
-					Vector.of(problem.getNumberOfObjectives(), 0.0),
-					Vector.of(problem.getNumberOfObjectives(), 1.0));
-		}
-
-		@Override
-		public NondominatedPopulation normalize(NondominatedPopulation population) {
-			return population;
-		}
-
-		@Override
-		public Population normalize(Population population) {
-			return population;
-		}
-		
+				(p) -> Normalizer.none()));
 	}
 
 }

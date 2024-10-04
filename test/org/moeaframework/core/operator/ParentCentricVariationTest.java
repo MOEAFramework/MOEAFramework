@@ -17,17 +17,15 @@
  */
 package org.moeaframework.core.operator;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.math3.ml.clustering.CentroidCluster;
-import org.apache.commons.math3.ml.clustering.DoublePoint;
-import org.apache.commons.math3.ml.clustering.KMeansPlusPlusClusterer;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.util.clustering.Cluster;
+import org.moeaframework.util.clustering.Clustering;
 
 /**
  * Provides test methods for checking if the offspring form clusters around each parent.
@@ -36,24 +34,15 @@ public abstract class ParentCentricVariationTest<T extends Variation> extends Di
 
 	@Override
 	protected void checkDistribution(Solution[] parents, Solution[] offspring) {
-		List<DoublePoint> points = new ArrayList<DoublePoint>();
-
-		for (Solution solution : offspring) {
-			points.add(new DoublePoint(EncodingUtils.getReal(solution)));
-		}
-
-		KMeansPlusPlusClusterer<DoublePoint> clusterer = 
-				new KMeansPlusPlusClusterer<DoublePoint>(parents.length, 100);
-
-		List<CentroidCluster<DoublePoint>> clusters = clusterer.cluster(points);
-
+		List<Cluster> clusters = Clustering.kMeansPlusPlus().clusterVariables(parents.length, offspring);
+		
 		for (Solution solution : parents) {
 			boolean match = false;
 
 			for (int i = 0; i < clusters.size(); i++) {
 				boolean allEqual = true;
 
-				double[] centroid = clusters.get(i).getCenter().getPoint();
+				double[] centroid = clusters.get(i).getCenter();
 				double[] parent = EncodingUtils.getReal(solution);
 
 				for (int j = 0; j < parent.length; j++) {

@@ -28,7 +28,7 @@ public class OutputWriterTest {
 
 	@Test
 	public void testReplaceDestinationNotExists() throws IOException {
-		File source = TempFiles.createFileWithContent("foo");
+		File source = TempFiles.createFile().withContent("foo");
 		File destination = TempFiles.createFile();
 		
 		Assert.assertTrue(OutputWriter.replace(source, destination));
@@ -40,8 +40,8 @@ public class OutputWriterTest {
 	
 	@Test
 	public void testReplaceDestinationIsIdentical() throws IOException {
-		File source = TempFiles.createFileWithContent("foo");
-		File destination = TempFiles.createFileWithContent("foo");
+		File source = TempFiles.createFile().withContent("foo");
+		File destination = TempFiles.createFile().withContent("foo");
 		long lastModified = destination.lastModified();
 		
 		Assert.assertFalse(OutputWriter.replace(source, destination));
@@ -54,8 +54,8 @@ public class OutputWriterTest {
 	
 	@Test
 	public void testReplaceDestinationIsDifferent() throws IOException {
-		File source = TempFiles.createFileWithContent("foo");
-		File destination = TempFiles.createFileWithContent("bar");
+		File source = TempFiles.createFile().withContent("foo");
+		File destination = TempFiles.createFile().withContent("bar");
 		
 		Assert.assertTrue(OutputWriter.replace(source, destination));
 		
@@ -67,7 +67,7 @@ public class OutputWriterTest {
 	@Test(expected = IOException.class)
 	public void testReplaceSourceNotFound() throws IOException {
 		File source = TempFiles.createFile();
-		File destination = TempFiles.createFileWithContent("bar");
+		File destination = TempFiles.createFile().withContent("bar");
 		
 		OutputWriter.replace(source, destination);
 	}

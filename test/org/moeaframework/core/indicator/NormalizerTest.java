@@ -22,7 +22,6 @@ import org.moeaframework.Assert;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Settings;
 import org.moeaframework.mock.MockSolution;
-import org.moeaframework.problem.ProblemStub;
 
 public class NormalizerTest {
 	
@@ -32,7 +31,7 @@ public class NormalizerTest {
 		population.add(MockSolution.of().withObjectives(0.0, 1.0));
 		population.add(MockSolution.of().withObjectives(1.0, 0.0));
 		
-		Normalizer normalizer = new Normalizer(new ProblemStub(2), population);
+		Normalizer normalizer = new Normalizer(population);
 		NondominatedPopulation result = normalizer.normalize(population);
 		
 		Assert.assertNotSame(population, result);
@@ -46,7 +45,7 @@ public class NormalizerTest {
 		population.add(MockSolution.of().withObjectives(0.0, 1.0));
 		population.add(MockSolution.of().withObjectives(1.0, 0.0));
 		
-		Normalizer normalizer = new Normalizer(new ProblemStub(2), population);
+		Normalizer normalizer = new Normalizer(population);
 		
 		Assert.assertEquals(population, normalizer.normalize(population));
 	}
@@ -58,7 +57,7 @@ public class NormalizerTest {
 		population.add(MockSolution.of().withObjectives(10.0, -0.1));
 		population.add(MockSolution.of().withObjectives(5.0, 0.0));
 		
-		Normalizer normalizer = new Normalizer(new ProblemStub(2), population);
+		Normalizer normalizer = new Normalizer(population);
 		
 		NondominatedPopulation expected = new NondominatedPopulation();
 		expected.add(MockSolution.of().withObjectives(0.0, 1.0));
@@ -75,7 +74,7 @@ public class NormalizerTest {
 		population.add(MockSolution.of().withObjectives(10.0, -0.1));
 		population.add(MockSolution.of().withObjectives(5.0, 0.0));
 		
-		Normalizer normalizer = new Normalizer(new ProblemStub(2), population, new double[] { 20.0, 0.2 });
+		Normalizer normalizer = new Normalizer(population, new double[] { 20.0, 0.2 });
 		
 		NondominatedPopulation expected = new NondominatedPopulation();
 		expected.add(MockSolution.of().withObjectives(0.0, 0.6666666));
@@ -92,7 +91,7 @@ public class NormalizerTest {
 		population.add(MockSolution.of().withObjectives(10.0, -0.1));
 		population.add(MockSolution.of().withObjectives(5.0, 0.0));
 		
-		Normalizer normalizer = new Normalizer(new ProblemStub(2), new double[] { 0.0, -0.2 }, new double[] { 20.0, 0.2 });
+		Normalizer normalizer = new Normalizer(new double[] { 0.0, -0.2 }, new double[] { 20.0, 0.2 });
 		
 		NondominatedPopulation expected = new NondominatedPopulation();
 		expected.add(MockSolution.of().withObjectives(0.0, 0.75));
@@ -104,7 +103,7 @@ public class NormalizerTest {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testConstructorEmptyReferenceSet() {
-		new Normalizer(new ProblemStub(2), new NondominatedPopulation());
+		new Normalizer(new NondominatedPopulation());
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
@@ -112,7 +111,7 @@ public class NormalizerTest {
 		NondominatedPopulation population = new NondominatedPopulation();
 		population.add(MockSolution.of().withObjectives(0.0, 1.0));
 		
-		new Normalizer(new ProblemStub(2), population);
+		new Normalizer(population);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
@@ -121,7 +120,7 @@ public class NormalizerTest {
 		population.add(MockSolution.of().withObjectives(1.0, 1.0));
 		population.add(MockSolution.of().withObjectives(0.0, 1.0 + Settings.EPS/2.0));
 		
-		new Normalizer(new ProblemStub(2), population);
+		new Normalizer(population);
 	}
 
 }

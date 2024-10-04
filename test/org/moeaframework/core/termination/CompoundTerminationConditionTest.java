@@ -22,6 +22,7 @@ import java.time.Duration;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Wait;
+import org.moeaframework.mock.MockAlgorithm;
 
 public class CompoundTerminationConditionTest {
 	

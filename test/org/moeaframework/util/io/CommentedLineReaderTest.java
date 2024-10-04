@@ -19,32 +19,66 @@ package org.moeaframework.util.io;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.io.StringWriter;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
 
 public class CommentedLineReaderTest {
+	
+	private final String normalInput = "#comment line\nnon-comment line\n# comment line";
+	
+	private final String commentedInput = "#comment line\n# comment line";
 
 	@Test
-	public void testNormalInput() throws IOException {
-		try (CommentedLineReader reader = new CommentedLineReader(
-				new StringReader("#comment line\nnon-comment line\n# comment line"))) {
+	public void testReadLineNormalInput() throws IOException {
+		try (CommentedLineReader reader = new CommentedLineReader(new StringReader(normalInput))) {
 			Assert.assertEquals("non-comment line", reader.readLine());
 			Assert.assertNull(reader.readLine());
 		}
 	}
 	
 	@Test
-	public void testEmptyFile() throws IOException {
+	public void testTransferToNormalInput() throws IOException {
+		try (CommentedLineReader reader = new CommentedLineReader(new StringReader(normalInput));
+				StringWriter writer = new StringWriter()) {
+			
+			reader.transferTo(writer);
+			
+			Assert.assertEquals("non-comment line" + System.lineSeparator(), writer.toString());
+			Assert.assertNull(reader.readLine());
+		}
+	}
+	
+	@Test
+	public void testReadLineEmptyFile() throws IOException {
 		try (CommentedLineReader reader = new CommentedLineReader(new StringReader(""))) {
 			Assert.assertNull(reader.readLine());
 		}
 	}
 	
 	@Test
-	public void testEmptyFileWithComment() throws IOException {
-		try (CommentedLineReader reader = new CommentedLineReader(new StringReader("#comment line\n# comment line"))) {
+	public void testTransferToEmptyFile() throws IOException {
+		try (CommentedLineReader reader = new CommentedLineReader(new StringReader(""));
+				StringWriter writer = new StringWriter()) {
+			reader.transferTo(writer);
+			Assert.assertEquals("", writer.toString());
+		}
+	}
+	
+	@Test
+	public void testReadLineEmptyFileWithComment() throws IOException {
+		try (CommentedLineReader reader = new CommentedLineReader(new StringReader(commentedInput))) {
 			Assert.assertNull(reader.readLine());
+		}
+	}
+	
+	@Test
+	public void testTransferToEmptyFileWithComment() throws IOException {
+		try (CommentedLineReader reader = new CommentedLineReader(new StringReader(commentedInput));
+				StringWriter writer = new StringWriter()) {
+			reader.transferTo(writer);
+			Assert.assertEquals("", writer.toString());
 		}
 	}
 	

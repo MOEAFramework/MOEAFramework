@@ -1,10 +1,7 @@
-/.settings/
-/bin/
 /build/
 /coco/
 /dist/
 /javadoc/
-/maven/
 /native/
 /results/
 /test-results/
@@ -17,13 +14,34 @@
 *.class
 *.state
 *.exe
-.pydevproject
 jMetal.log*
 lib/jmetal-plugin-*.jar
 lib/pisa-plugin-*.jar
 lib/gd-*.jar
 lib/nashorn-*.jar
 lib/asm-*.jar
+lib/jfreesvg-*.jar
 lib/junit-*.jar
 lib/hamcrest-*.jar
 test/checkstyle/checkstyle-*.jar
+
+# Eclipse
+/.settings/
+/bin/
+.pydevproject
+
+# IntelliJ IDEA
+.idea
+out/
+.idea/
+.idea_modules/
+*.iml
+*.ipr
+*.iws
+
+# Visual Studio Code
+.vscode/
+.code-workspace
+
+# OS X
+.DS_Store

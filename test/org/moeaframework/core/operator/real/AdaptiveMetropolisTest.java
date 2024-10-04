@@ -17,16 +17,11 @@
  */
 package org.moeaframework.core.operator.real;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.math3.linear.CholeskyDecomposition;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
-import org.apache.commons.math3.ml.clustering.CentroidCluster;
-import org.apache.commons.math3.ml.clustering.Cluster;
-import org.apache.commons.math3.ml.clustering.DoublePoint;
-import org.apache.commons.math3.ml.clustering.KMeansPlusPlusClusterer;
 import org.apache.commons.math3.stat.correlation.Covariance;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,6 +32,8 @@ import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.ParentCentricVariationTest;
 import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.util.clustering.Cluster;
+import org.moeaframework.util.clustering.Clustering;
 
 @RunWith(CIRunner.class)
 public class AdaptiveMetropolisTest extends ParentCentricVariationTest<AdaptiveMetropolis> {
@@ -116,12 +113,11 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest<AdaptiveM
 	 * @param cluster the cluster
 	 * @return the covariance matrix for the specified cluster
 	 */
-	private RealMatrix getCovariance(Cluster<DoublePoint> cluster) {
-		List<DoublePoint> points = cluster.getPoints();
-		RealMatrix rm = MatrixUtils.createRealMatrix(points.size(), 2);
+	private RealMatrix getCovariance(Cluster cluster) {
+		RealMatrix rm = MatrixUtils.createRealMatrix(cluster.size(), 2);
 		
-		for (int i=0; i<points.size(); i++) {
-			rm.setRow(i, points.get(i).getPoint());
+		for (int i=0; i < cluster.size(); i++) {
+			rm.setRow(i, cluster.get(i).getPoint());
 		}
 		
 		return new Covariance(rm).getCovarianceMatrix();
@@ -158,20 +154,11 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest<AdaptiveM
 		AdaptiveMetropolis am = new AdaptiveMetropolis(3, TestThresholds.SAMPLES, jumpRateCoefficient);
 
 		Solution[] parents = new Solution[] { newSolution(0.0, 0.0), newSolution(0.0, 5.0), newSolution(2.0, 0.0) };
-
 		Solution[] offspring = am.evolve(parents);
 		
-		List<DoublePoint> points = new ArrayList<DoublePoint>();
+		List<Cluster> clusters = Clustering.kMeansPlusPlus().clusterVariables(parents.length, offspring);
 
-		for (Solution solution : offspring) {
-			points.add(new DoublePoint(EncodingUtils.getReal(solution)));
-		}
-
-		KMeansPlusPlusClusterer<DoublePoint> clusterer = new KMeansPlusPlusClusterer<DoublePoint>(parents.length, 100);
-
-		List<CentroidCluster<DoublePoint>> clusters = clusterer.cluster(points);
-
-		for (CentroidCluster<DoublePoint> cluster : clusters) {
+		for (Cluster cluster : clusters) {
 			Assert.assertEquals(getCovariance(cluster), getCovariance(parents, jumpRateCoefficient),
 					TestThresholds.LOW_PRECISION);
 		}
