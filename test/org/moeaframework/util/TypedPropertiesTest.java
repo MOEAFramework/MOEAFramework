@@ -17,7 +17,10 @@
  */
 package org.moeaframework.util;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.Properties;
 import java.util.Set;
 
@@ -398,6 +401,10 @@ public class TypedPropertiesTest {
 		
 		Assert.assertEquals(clone, properties);
 		Assert.assertEquals(clone.hashCode(), properties.hashCode());
+		
+		clone.setString("foo", "bar");
+		
+		Assert.assertNotEquals(clone, properties);
 	}
 	
 	@Test
@@ -405,6 +412,35 @@ public class TypedPropertiesTest {
 		properties.setString("\u0130", "found");
 		Assert.assertEquals("found", properties.getString("\u0069"));
 		Assert.assertEquals("found", properties.getString("\u0131"));
+	}
+	
+	@Test
+	public void testStoreLoad() throws IOException {
+		try (StringWriter writer = new StringWriter()) {
+			properties.store(writer);
+			
+			try (StringReader reader = new StringReader(writer.toString())) {
+				TypedProperties copy = new TypedProperties();
+				copy.load(reader);
+				
+				Assert.assertEquals(properties, copy);
+			}
+		}
+	}
+	
+	@Test
+	public void testStoreRemovesComments() throws IOException {
+		try (StringWriter writer = new StringWriter()) {
+			properties.store(writer);
+			
+			try (BufferedReader reader = new BufferedReader(new StringReader(writer.toString()))) {
+				String line = null;
+				
+				while ((line = reader.readLine()) != null) {
+					Assert.assertFalse(line.startsWith("#"));
+				}
+			}
+		}
 	}
 
 	private enum TestEnum {

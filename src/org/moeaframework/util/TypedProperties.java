@@ -20,6 +20,8 @@ package org.moeaframework.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Array;
 import java.util.Collections;
@@ -40,6 +42,7 @@ import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;
+import org.moeaframework.util.io.CommentedLineReader;
 import org.moeaframework.util.io.Resources;
 import org.moeaframework.util.validate.Validate;
 
@@ -1303,9 +1306,15 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public void store(Writer writer) throws IOException {
-		Properties properties = new Properties();
-		properties.putAll(this.properties);
-		properties.store(writer, null);
+		try (StringWriter buffer = new StringWriter()) {
+			Properties properties = new Properties();
+			properties.putAll(this.properties);
+			properties.store(buffer, null);
+			
+			try (CommentedLineReader reader = CommentedLineReader.wrap(new StringReader(buffer.toString()))) {
+				reader.transferTo(writer);
+			}
+		}
 	}
 	
 	@Override

@@ -17,6 +17,7 @@
  */
 package org.moeaframework.analysis.io;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -33,7 +34,6 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.util.TypedProperties;
-import org.moeaframework.util.io.CommentedLineReader;
 
 /**
  * Writes result files. A result file contains one or more entries consisting of a non-dominated population and
@@ -233,11 +233,11 @@ public class ResultFileWriter implements OutputWriter {
 	 * @throws IOException if an I/O error occurred
 	 */
 	private void printProperties(TypedProperties properties) throws IOException {
-		// using Properties#store is a roundabout way, but this ensures special characters are stored safely
-		try (StringWriter stringBuffer = new StringWriter()) {
-			properties.store(stringBuffer);
+		// using TypedProperties#store ensures special characters are stored safely
+		try (StringWriter buffer = new StringWriter()) {
+			properties.store(buffer);
 		
-			try (CommentedLineReader reader = new CommentedLineReader(new StringReader(stringBuffer.toString()))) {
+			try (BufferedReader reader = new BufferedReader(new StringReader(buffer.toString()))) {
 				String line = null;
 				while ((line = reader.readLine()) != null) {
 					writer.print("//");
