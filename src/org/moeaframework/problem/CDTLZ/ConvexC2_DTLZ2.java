@@ -17,8 +17,8 @@
  */
 package org.moeaframework.problem.CDTLZ;
 
-import org.moeaframework.core.Constraint;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.constraint.GreaterThanOrEqual;
 import org.moeaframework.core.variable.RealVariable;
 
 /**
@@ -58,6 +58,8 @@ public class ConvexC2_DTLZ2 extends ConvexDTLZ2 {
 		for (int i = 0; i < numberOfVariables; i++) {
 			solution.setVariable(i, new RealVariable(0.0, 1.0));
 		}
+		
+		solution.setConstraint(0, GreaterThanOrEqual.to(0.0));
 
 		return solution;
 	}
@@ -70,18 +72,17 @@ public class ConvexC2_DTLZ2 extends ConvexDTLZ2 {
 		double c = 0.0;
 		
 		for (int i = 0; i < numberOfObjectives; i++) {
-			lambda += solution.getObjective(i);
+			lambda += solution.getObjectiveValue(i);
 		}
 		
 		lambda /= numberOfObjectives;
 		
 		for (int i = 0; i < numberOfObjectives; i++) {
-			c += Math.pow(solution.getObjective(i) - lambda, 2.0);
+			c += Math.pow(solution.getObjectiveValue(i) - lambda, 2.0);
 		}
 		
 		c -= Math.pow(getR(), 2.0);
-		
-		solution.setConstraint(0, Constraint.greaterThanOrEqual(c, 0.0));
+		solution.setConstraintValue(0, c);
 	}
 	
 	private double getR() {

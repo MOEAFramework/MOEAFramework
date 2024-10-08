@@ -270,7 +270,7 @@ public class SymbolicRegression extends AbstractProblem {
 			difference = Double.POSITIVE_INFINITY;
 		}
 
-		solution.setObjective(0, difference);
+		solution.setObjectiveValue(0, difference);
 	}
 
 	@Override

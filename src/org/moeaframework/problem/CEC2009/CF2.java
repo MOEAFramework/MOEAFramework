@@ -17,8 +17,8 @@
  */
 package org.moeaframework.problem.CEC2009;
 
-import org.moeaframework.core.Constraint;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.constraint.GreaterThanOrEqual;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
@@ -52,8 +52,8 @@ public class CF2 extends AbstractProblem {
 
 		CEC2009.CF2(x, f, c, numberOfVariables);
 
-		solution.setObjectives(f);
-		solution.setConstraint(0, Constraint.greaterThanOrEqual(c[0], 0.0));
+		solution.setObjectiveValues(f);
+		solution.setConstraintValues(c);
 	}
 
 	@Override
@@ -64,6 +64,8 @@ public class CF2 extends AbstractProblem {
 		for (int i = 1; i < numberOfVariables; i++) {
 			solution.setVariable(i, new RealVariable(-1.0, 1.0));
 		}
+		
+		solution.setConstraint(0, GreaterThanOrEqual.to(0.0));
 
 		return solution;
 	}

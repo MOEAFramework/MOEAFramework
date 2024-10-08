@@ -95,6 +95,8 @@ public class TabularData<T> implements Displayable {
 
 		addFormatter(NumberFormatter.getDefault());
 		addFormatter(new VariableFormatter(this));
+		addFormatter(new ObjectiveFormatter(this));
+		addFormatter(new ConstraintFormatter(this));
 	}
 
 	/**

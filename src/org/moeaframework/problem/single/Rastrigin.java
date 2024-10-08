@@ -58,7 +58,7 @@ public class Rastrigin extends AbstractSingleObjectiveProblem {
 			sum += Math.pow(x[i], 2.0) - A * Math.cos(2.0 * Math.PI * x[i]);
 		}
 		
-		solution.setObjective(0, A * numberOfVariables + sum);
+		solution.setObjectiveValue(0, A * numberOfVariables + sum);
 	}
 
 	@Override

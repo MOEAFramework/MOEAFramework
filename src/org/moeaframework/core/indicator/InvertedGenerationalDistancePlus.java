@@ -49,7 +49,8 @@ public class InvertedGenerationalDistancePlus extends NormalizedIndicator {
 			double sum = 0.0;
 
 			for (int i = 0; i < approximationPoint.getNumberOfObjectives(); i++) {
-				sum += Math.pow(Math.max(approximationPoint.getObjective(i) - referencePoint.getObjective(i), 0.0),
+				sum += Math.pow(
+						Math.max(approximationPoint.getObjectiveValue(i) - referencePoint.getObjectiveValue(i), 0.0),
 						2.0);
 			}
 

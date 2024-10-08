@@ -68,7 +68,7 @@ public class AttractiveSector extends BBOBFunction {
 			}
 		}
 		
-		solution.setObjective(0, result);
+		solution.setObjectiveValue(0, result);
 	}
 
 }

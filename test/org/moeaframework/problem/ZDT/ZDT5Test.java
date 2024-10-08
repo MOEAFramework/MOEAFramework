@@ -30,11 +30,11 @@ public class ZDT5Test extends ProblemTest {
 		Problem problem = new ZDT5();
 		
 		Assert.assertArrayEquals(new double[] { 1.0, 20.0 },
-				MockSolution.of(problem).atLowerBounds().evaluate().getObjectives(),
+				MockSolution.of(problem).atLowerBounds().evaluate().getObjectiveValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 31.0, 10.0/31.0 },
-				MockSolution.of(problem).atUpperBounds().evaluate().getObjectives(),
+				MockSolution.of(problem).atUpperBounds().evaluate().getObjectiveValues(),
 				0.000001);
 	}
 

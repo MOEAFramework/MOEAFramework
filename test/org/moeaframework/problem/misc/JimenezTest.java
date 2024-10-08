@@ -30,19 +30,19 @@ public class JimenezTest extends ProblemTest {
 		Problem problem = new Jimenez();
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 0.0 }, 
-				evaluateAt(problem, 0.0, 0.0).getObjectives(),
+				evaluateAt(problem, 0.0, 0.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 200.0, 75.0 }, 
-				evaluateAt(problem, 0.0, 0.0).getConstraints(),
+				evaluateAt(problem, 0.0, 0.0).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { -400.0, -500.0 }, 
-				evaluateAt(problem, 50.0, 50.0).getObjectives(),
+				evaluateAt(problem, 50.0, 50.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 150.0, 100.0, 0.0, 0.0 }, 
-				evaluateAt(problem, 50.0, 50.0).getConstraints(),
+				evaluateAt(problem, 50.0, 50.0).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
 	}
 

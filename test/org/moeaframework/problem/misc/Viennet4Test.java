@@ -35,27 +35,27 @@ public class Viennet4Test extends ProblemTest {
 		Problem problem = new Viennet4();
 		
 		Assert.assertArrayEquals(new double[] { 66.0/13.0, -2266.0/175.0, 460.0/27.0 }, 
-				evaluateAt(problem, 0.0, 0.0).getObjectives(),
+				evaluateAt(problem, 0.0, 0.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 0.0 }, 
-				evaluateAt(problem, 0.0, 0.0).getConstraints(),
+				evaluateAt(problem, 0.0, 0.0).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 282.0/13.0, -33818.0/2975.0, 406.0/27.0 }, 
-				evaluateAt(problem, -4.0, -4.0).getObjectives(),
+				evaluateAt(problem, -4.0, -4.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, -3.0, 0.0 }, 
-				evaluateAt(problem, -4.0, -4.0).getConstraints(),
+				evaluateAt(problem, -4.0, -4.0).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 90.0/13.0, -1418.0/119.0, 622.0/27.0 }, 
-				evaluateAt(problem, 4.0, 4.0).getObjectives(),
+				evaluateAt(problem, 4.0, 4.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { -16.0, 0.0, 0.0 }, 
-				evaluateAt(problem, 4.0, 4.0).getConstraints(),
+				evaluateAt(problem, 4.0, 4.0).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
 	}
 

@@ -30,11 +30,11 @@ public class MurataTest extends ProblemTest {
 		Problem problem = new Murata();
 
 		Assert.assertArrayEquals(new double[] { 2.0, 5.0 }, 
-				evaluateAt(problem, 1.0, 1.0).getObjectives(),
+				evaluateAt(problem, 1.0, 1.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 4.0, 1.0 }, 
-				evaluateAt(problem, 4.0, 2.0).getObjectives(),
+				evaluateAt(problem, 4.0, 2.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 	}
 

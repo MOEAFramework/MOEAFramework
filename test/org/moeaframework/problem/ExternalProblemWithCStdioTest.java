@@ -88,8 +88,8 @@ public class ExternalProblemWithCStdioTest {
 					problem.evaluate(solution);
 					
 					//check objectives and constraints
-					Assert.assertArrayEquals(new double[] { i+1, 1e-10/(i+1) }, solution.getObjectives(), TestThresholds.HIGH_PRECISION);
-					Assert.assertArrayEquals(new double[] { 1e10*(i+1) }, solution.getConstraints(), TestThresholds.HIGH_PRECISION);
+					Assert.assertArrayEquals(new double[] { i+1, 1e-10/(i+1) }, solution.getObjectiveValues(), TestThresholds.HIGH_PRECISION);
+					Assert.assertArrayEquals(new double[] { 1e10*(i+1) }, solution.getConstraintValues(), TestThresholds.HIGH_PRECISION);
 					
 					//check the debug stream
 					String debugLine = debugReader.readLine();

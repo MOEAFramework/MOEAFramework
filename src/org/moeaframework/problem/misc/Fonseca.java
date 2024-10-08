@@ -56,8 +56,8 @@ public class Fonseca extends AbstractProblem implements AnalyticalProblem {
 		double f1 = 1.0 - Math.exp(-Math.pow(x-1.0, 2.0) - Math.pow(y+1.0, 2.0));
 		double f2 = 1.0 - Math.exp(-Math.pow(x+1.0, 2.0) - Math.pow(y-1.0, 2.0));
 		
-		solution.setObjective(0, f1);
-		solution.setObjective(1, f2);
+		solution.setObjectiveValue(0, f1);
+		solution.setObjectiveValue(1, f2);
 	}
 
 	@Override

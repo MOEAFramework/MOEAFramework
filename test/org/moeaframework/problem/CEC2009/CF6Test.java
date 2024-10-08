@@ -29,19 +29,19 @@ public class CF6Test extends ProblemTest {
 		Problem problem = new CF6();
 		
 		Assert.assertArrayEquals(new double[] { 16.0, 21.0 }, 
-				evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.001);
 		
 		Assert.assertArrayEquals(new double[] { -1.2929, -1.5 },
-				evaluateAtLowerBounds(problem).getConstraints(),
+				evaluateAtLowerBounds(problem).getConstraintValues(),
 				0.0001);
 		
 		Assert.assertArrayEquals(new double[] { 21.064, 11.751 }, 
-				evaluateAtUpperBounds(problem).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.001);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 0.0 }, // Raw value: -1.5298, -1.2392
-				evaluateAtUpperBounds(problem).getConstraints(),
+				evaluateAtUpperBounds(problem).getConstraintValues(),
 				0.001);
 	}
 

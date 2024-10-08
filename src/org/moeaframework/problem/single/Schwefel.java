@@ -58,7 +58,7 @@ public class Schwefel extends AbstractSingleObjectiveProblem {
 			sum += x[i] * Math.sin(Math.sqrt(Math.abs(x[i])));
 		}
 		
-		solution.setObjective(0, 418.9829 * numberOfVariables - sum);
+		solution.setObjectiveValue(0, 418.9829 * numberOfVariables - sum);
 	}
 
 	@Override

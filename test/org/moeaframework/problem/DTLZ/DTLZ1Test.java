@@ -33,11 +33,11 @@ public class DTLZ1Test extends ProblemTest {
 		Problem problem = new DTLZ1(3);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 63.0 }, 
-				evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 63.0, 0.0, 0.0 }, 
-				evaluateAtUpperBounds(problem).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.000001);
 	}
 
@@ -81,7 +81,7 @@ public class DTLZ1Test extends ProblemTest {
 	}
 	
 	protected static void assertParetoFrontSolution(Solution solution) {
-		double sum = StatUtils.sum(solution.getObjectives());
+		double sum = StatUtils.sum(solution.getObjectiveValues());
 		Assert.assertEquals(0.5, sum, TestThresholds.LOW_PRECISION);
 	}
 

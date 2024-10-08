@@ -59,7 +59,7 @@ public class Griewank extends AbstractSingleObjectiveProblem {
 			product *= Math.cos(x[i] / Math.sqrt(i+1));
 		}
 		
-		solution.setObjective(0, sum - product + 1.0);
+		solution.setObjectiveValue(0, sum - product + 1.0);
 	}
 
 	@Override

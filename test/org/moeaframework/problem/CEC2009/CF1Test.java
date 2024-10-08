@@ -38,19 +38,19 @@ public class CF1Test extends ProblemTest {
 		Problem problem = new CF1();
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 1.0 }, 
-				evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 0.0 }, 
-				evaluateAtLowerBounds(problem).getConstraints(),
+				evaluateAtLowerBounds(problem).getConstraintValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 1.0, 0.0 }, 
-				evaluateAtUpperBounds(problem).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 2.4493e-15 }, 
-				evaluateAtUpperBounds(problem).getConstraints(),
+				evaluateAtUpperBounds(problem).getConstraintValues(),
 				0.000001);
 	}
 

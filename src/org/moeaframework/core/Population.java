@@ -46,6 +46,8 @@ import org.apache.commons.io.input.CloseShieldInputStream;
 import org.apache.commons.io.input.CloseShieldReader;
 import org.apache.commons.io.output.CloseShieldOutputStream;
 import org.apache.commons.io.output.CloseShieldWriter;
+import org.moeaframework.core.constraint.Constraint;
+import org.moeaframework.core.objective.Objective;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;
@@ -348,10 +350,10 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 		
 		for (Solution solution : this) {
 			if (lower == null) {
-				lower = solution.getObjectives(); // the returned array is a copy
+				lower = solution.getObjectiveValues(); // the returned array is a copy
 			} else {
 				for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
-					lower[i] = Math.min(lower[i], solution.getObjective(i));
+					lower[i] = Math.min(lower[i], solution.getObjectiveValue(i));
 				}
 			}
 		}
@@ -374,10 +376,10 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 		
 		for (Solution solution : this) {
 			if (upper == null) {
-				upper = solution.getObjectives(); // the returned array is a copy
+				upper = solution.getObjectiveValues(); // the returned array is a copy
 			} else {
 				for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
-					upper[i] = Math.max(upper[i], solution.getObjective(i));
+					upper[i] = Math.max(upper[i], solution.getObjectiveValue(i));
 				}
 			}
 		}
@@ -456,12 +458,12 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 			
 			for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
 				final int index = i;
-				data.addColumn(new Column<Solution, Double>("Obj" + (index+1), s -> s.getObjective(index)));
+				data.addColumn(new Column<Solution, Objective>("Obj" + (index+1), s -> s.getObjective(index)));
 			}
 			
 			for (int i = 0; i < solution.getNumberOfConstraints(); i++) {
 				final int index = i;
-				data.addColumn(new Column<Solution, Double>("Constr" + (index+1), s -> s.getConstraint(index)));
+				data.addColumn(new Column<Solution, Constraint>("Constr" + (index+1), s -> s.getConstraint(index)));
 			}
 		}
 		

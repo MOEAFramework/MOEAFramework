@@ -29,15 +29,15 @@ public class QuagliarellaTest extends ProblemTest {
 		Problem problem = new Quagliarella(1);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 4.716 }, 
-				evaluateAt(problem, 0.0).getObjectives(),
+				evaluateAt(problem, 0.0).getObjectiveValues(),
 				0.001);
 		
 		Assert.assertArrayEquals(new double[] { 5.378, 7.817 }, 
-				evaluateAt(problem, -5.12).getObjectives(),
+				evaluateAt(problem, -5.12).getObjectiveValues(),
 				0.001);
 		
 		Assert.assertArrayEquals(new double[] { 5.378, 5.513 }, 
-				evaluateAt(problem, 5.12).getObjectives(),
+				evaluateAt(problem, 5.12).getObjectiveValues(),
 				0.001);
 	}
 

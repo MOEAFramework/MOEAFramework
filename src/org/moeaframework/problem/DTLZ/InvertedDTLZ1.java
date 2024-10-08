@@ -48,14 +48,14 @@ public class InvertedDTLZ1 extends DTLZ1 {
 		
 		// apply the transformation to create the inverted version
 		double[] x = EncodingUtils.getReal(solution);
-		double[] f = solution.getObjectives();
+		double[] f = solution.getObjectiveValues();
 		double g = g1(x);
 		
 		for (int i = 0; i < numberOfObjectives; i++) {
 			f[i] = 0.5 * (1.0 + g) - f[i];
 		}
 		
-		solution.setObjectives(f);
+		solution.setObjectiveValues(f);
 	}
 
 }

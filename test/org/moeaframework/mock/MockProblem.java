@@ -42,7 +42,7 @@ public abstract class MockProblem extends AbstractProblem {
 		int value = solution.getVariable(0).hashCode();
 				
 		for (int i = 0; i < getNumberOfObjectives(); i++) {
-			solution.setObjective(i, i % 2 == 0 ? value : Integer.MAX_VALUE - value);
+			solution.setObjectiveValue(i, i % 2 == 0 ? value : Integer.MAX_VALUE - value);
 		}
 		
 		count.incrementAndGet();

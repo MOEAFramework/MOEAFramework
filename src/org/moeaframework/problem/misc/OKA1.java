@@ -47,8 +47,8 @@ public class OKA1 extends AbstractProblem {
 		double x1 = Math.cos(Math.PI / 12.0) * x[0] - Math.sin(Math.PI / 12.0) * x[1];
 		double x2 = Math.sin(Math.PI / 12.0) * x[0] + Math.cos(Math.PI / 12.0) * x[1];
 
-		solution.setObjective(0, x1);
-		solution.setObjective(1, Math.sqrt(2.0 * Math.PI) - Math.sqrt(Math.abs(x1)) +
+		solution.setObjectiveValue(0, x1);
+		solution.setObjectiveValue(1, Math.sqrt(2.0 * Math.PI) - Math.sqrt(Math.abs(x1)) +
 				2.0 * Math.pow(Math.abs(x2 - 3.0 * Math.cos(x1) - 3), 1.0 / 3.0));
 	}
 

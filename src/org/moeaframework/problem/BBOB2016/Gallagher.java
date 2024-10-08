@@ -127,7 +127,7 @@ public class Gallagher extends BBOBFunction {
 			ftrue = f;
 		}
 		
-		solution.setObjective(0, ftrue*ftrue + penalty);
+		solution.setObjectiveValue(0, ftrue*ftrue + penalty);
 	}
 
 }

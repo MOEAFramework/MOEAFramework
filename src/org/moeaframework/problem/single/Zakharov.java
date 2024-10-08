@@ -55,7 +55,7 @@ public class Zakharov extends AbstractSingleObjectiveProblem {
 			sum2 += 0.5 * (i+1) * x[i];
 		}
 		
-		solution.setObjective(0, sum1 + Math.pow(sum2, 2.0) + Math.pow(sum2, 4.0));
+		solution.setObjectiveValue(0, sum1 + Math.pow(sum2, 2.0) + Math.pow(sum2, 4.0));
 	}
 
 	@Override

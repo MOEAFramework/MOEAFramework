@@ -738,12 +738,12 @@ public abstract class ExternalProblem implements Problem {
 			int index = 0;
 
 			for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
-				solution.setObjective(i, Double.parseDouble(tokens[index]));
+				solution.setObjectiveValue(i, Double.parseDouble(tokens[index]));
 				index++;
 			}
 			
 			for (int i = 0; i < solution.getNumberOfConstraints(); i++) {
-				solution.setConstraint(i, Double.parseDouble(tokens[index]));
+				solution.setConstraintValue(i, Double.parseDouble(tokens[index]));
 				index++;
 			}
 		} catch (IOException | NumberFormatException e) {

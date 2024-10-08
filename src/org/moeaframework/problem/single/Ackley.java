@@ -43,7 +43,7 @@ public class Ackley extends AbstractSingleObjectiveProblem {
 		double x = EncodingUtils.getReal(solution.getVariable(0));
 		double y = EncodingUtils.getReal(solution.getVariable(1));
 		
-		solution.setObjective(0, -20.0 * Math.exp(-0.2 * Math.sqrt(0.5 * (x*x + y*y))) -
+		solution.setObjectiveValue(0, -20.0 * Math.exp(-0.2 * Math.sqrt(0.5 * (x*x + y*y))) -
 				Math.exp(0.5 * (Math.cos(2.0 * Math.PI * x) + Math.cos(2.0 * Math.PI * y))) +
 				Math.E + 20.0);
 	}

@@ -20,6 +20,7 @@ package org.moeaframework.examples.misc;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.constraint.LessThanOrEqual;
 import org.moeaframework.core.operator.CompoundVariation;
 import org.moeaframework.core.operator.binary.BitFlip;
 import org.moeaframework.core.operator.binary.HUX;
@@ -52,10 +53,10 @@ public class MixedTypesExample {
 			double c1 = Math.pow(x, 2.0) + Math.pow(y, 2.0) - 225.0;
 			double c2 = x - 3.0*y + 10.0;
 			
-			solution.setObjective(0, f1);
-			solution.setObjective(1, f2);
-			solution.setConstraint(0, c1 <= 0.0 ? 0.0 : c1);
-			solution.setConstraint(1, c2 <= 0.0 ? 0.0 : c2);
+			solution.setObjectiveValue(0, f1);
+			solution.setObjectiveValue(1, f2);
+			solution.setConstraintValue(0, c1);
+			solution.setConstraintValue(1, c2);
 		}
 
 		@Override
@@ -64,6 +65,8 @@ public class MixedTypesExample {
 			
 			solution.setVariable(0, EncodingUtils.newBinaryInt(-20, 20));
 			solution.setVariable(1, EncodingUtils.newReal(-20.0, 20.0));
+			solution.setConstraint(0, LessThanOrEqual.to(0.0));
+			solution.setConstraint(1, LessThanOrEqual.to(0.0));
 			
 			return solution;
 		}

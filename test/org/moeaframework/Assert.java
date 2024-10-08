@@ -57,6 +57,8 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.constraint.Constraint;
+import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.variable.Program;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.io.CommentedLineReader;
@@ -111,6 +113,26 @@ public class Assert extends org.junit.Assert {
 	
 	public static void assertEquals(double expected, double actual) {
 		assertEquals(expected, actual, TestThresholds.HIGH_PRECISION);
+	}
+	
+	public static void assertEquals(Objective expected, Objective actual, double epsilon) {
+		assertEquals(expected.getClass(), actual.getClass());
+		assertEquals(expected.getValue(), actual.getValue(), epsilon);
+	}
+	
+	public static void assertEquals(Constraint expected, Constraint actual, double epsilon) {
+		assertEquals(expected.getClass(), actual.getClass());
+		assertEquals(expected.getValue(), actual.getValue(), epsilon);
+	}
+	
+	public static void assertEquals(String message, Objective expected, Objective actual, double epsilon) {
+		assertEquals(message, expected.getClass(), actual.getClass());
+		assertEquals(message, expected.getValue(), actual.getValue(), epsilon);
+	}
+	
+	public static void assertEquals(String message, Constraint expected, Constraint actual, double epsilon) {
+		assertEquals(message, expected.getClass(), actual.getClass());
+		assertEquals(message, expected.getValue(), actual.getValue(), epsilon);
 	}
 	
 	public static void assertEquals(double[][] expected, double[][] actual) {
@@ -172,13 +194,13 @@ public class Assert extends org.junit.Assert {
 		}
 		
 		for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
-			if (Double.isNaN(solution.getObjective(i))) {
+			if (Double.isNaN(solution.getObjectiveValue(i))) {
 				fail("Solution has NaN for objective value at index " + i);
 			}
 		}
 		
 		for (int i = 0; i < solution.getNumberOfConstraints(); i++) {
-			if (Double.isNaN(solution.getConstraint(i))) {
+			if (Double.isNaN(solution.getConstraintValue(i))) {
 				fail("Solution has NaN for constraint value at index " + i);
 			}
 		}

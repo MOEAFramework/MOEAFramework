@@ -36,7 +36,7 @@ public class LexicographicalComparator implements Comparator<Solution> {
 	@Override
 	public int compare(Solution a, Solution b) {
 		for (int i = 0; i < a.getNumberOfObjectives(); i++) {
-			int flag = Double.compare(a.getObjective(i), b.getObjective(i));
+			int flag = a.getObjective(i).compareTo(b.getObjective(i));
 			
 			if (flag != 0) {
 				return flag;

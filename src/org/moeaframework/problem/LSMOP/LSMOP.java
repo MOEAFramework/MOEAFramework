@@ -235,7 +235,7 @@ public abstract class LSMOP implements Problem {
 		// Transform the raw objective values using the Pareto Front geometry
 		double[] F = geometry.apply(M, G, A, x_f);
 						
-		solution.setObjectives(F);
+		solution.setObjectiveValues(F);
 	}
 
 }

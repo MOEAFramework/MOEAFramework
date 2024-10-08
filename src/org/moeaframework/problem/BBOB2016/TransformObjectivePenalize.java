@@ -70,7 +70,7 @@ public class TransformObjectivePenalize extends BBOBTransformation {
 		function.evaluate(solution);
 		
 		for (int i = 0; i < numberOfObjectives; i++) {
-			solution.setObjective(i, solution.getObjective(i) + factor*penalty);
+			solution.setObjectiveValue(i, solution.getObjectiveValue(i) + factor*penalty);
 		}
 	}
 

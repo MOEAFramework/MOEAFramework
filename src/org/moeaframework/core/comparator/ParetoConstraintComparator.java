@@ -37,7 +37,7 @@ public class ParetoConstraintComparator implements DominanceComparator {
 		boolean dominate2 = false;
 
 		for (int i = 0; i < solution1.getNumberOfConstraints(); i++) {
-			int flag = Double.compare(Math.abs(solution1.getConstraint(i)), Math.abs(solution2.getConstraint(i)));
+			int flag = solution1.getConstraint(i).compareTo(solution2.getConstraint(i));
 			
 			if (flag < 0) {
 				dominate1 = true;

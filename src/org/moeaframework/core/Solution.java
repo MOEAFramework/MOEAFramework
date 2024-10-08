@@ -23,6 +23,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.SerializationUtils;
+import org.moeaframework.core.constraint.Constraint;
+import org.moeaframework.core.constraint.Equal;
+import org.moeaframework.core.objective.Minimize;
+import org.moeaframework.core.objective.Objective;
 import org.moeaframework.util.clustering.DistanceMeasure;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;
@@ -49,12 +53,12 @@ public class Solution implements Formattable<Solution>, Serializable {
 	/**
 	 * The objectives of this solution.
 	 */
-	private final double[] objectives;
+	private final Objective[] objectives;
 
 	/**
 	 * The constraints of this solution.
 	 */
-	private final double[] constraints;
+	private final Constraint[] constraints;
 
 	/**
 	 * The attributes of this solutions.
@@ -85,8 +89,8 @@ public class Solution implements Formattable<Solution>, Serializable {
 		Validate.that("numberOfConstraints", numberOfConstraints).isGreaterThanOrEqualTo(0);
 		
 		variables = new Variable[numberOfVariables];
-		objectives = new double[numberOfObjectives];
-		constraints = new double[numberOfConstraints];
+		objectives = new Objective[numberOfObjectives];
+		constraints = new Constraint[numberOfConstraints];
 		attributes = new HashMap<String, Serializable>();
 	}
 
@@ -99,15 +103,15 @@ public class Solution implements Formattable<Solution>, Serializable {
 		this(solution.getNumberOfVariables(), solution.getNumberOfObjectives(), solution.getNumberOfConstraints());
 
 		for (int i = 0; i < solution.getNumberOfVariables(); i++) {
-			setVariable(i, solution.getVariable(i).copy());
+			setVariable(i, solution.getVariable(i) == null ? null : solution.getVariable(i).copy());
 		}
 
 		for (int i = 0; i < getNumberOfObjectives(); i++) {
-			setObjective(i, solution.getObjective(i));
+			setObjective(i, solution.getObjective(i) == null ? null : solution.getObjective(i).copy());
 		}
 
 		for (int i = 0; i < getNumberOfConstraints(); i++) {
-			setConstraint(i, solution.getConstraint(i));
+			setConstraint(i, solution.getConstraint(i) == null ? null : solution.getConstraint(i).copy());
 		}
 	}
 
@@ -169,18 +173,6 @@ public class Solution implements Formattable<Solution>, Serializable {
 	}
 
 	/**
-	 * Returns the objective at the specified index.
-	 * 
-	 * @param index index of the objective to return
-	 * @return the objective at the specified index
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         {@code (index < 0) || (index >= getNumberOfObjectives())}
-	 */
-	public double getObjective(int index) {
-		return objectives[index];
-	}
-
-	/**
 	 * Returns the variable at the specified index.
 	 * 
 	 * @param index index of the variable to return
@@ -191,43 +183,7 @@ public class Solution implements Formattable<Solution>, Serializable {
 	public Variable getVariable(int index) {
 		return variables[index];
 	}
-
-	/**
-	 * Sets the objective at the specified index.
-	 * 
-	 * @param index index of the objective to set
-	 * @param objective the new value of the objective being set
-	 * @throws IndexOutOfBoundsException if the index is out of range
-	 *         {@code (index < 0) || (index >= getNumberOfObjectives())}
-	 */
-	public void setObjective(int index, double objective) {
-		objectives[index] = objective;
-	}
-
-	/**
-	 * Sets all objectives of this solution.
-	 * 
-	 * @param objectives the new objectives for this solution
-	 * @throws IllegalArgumentException if {@code objectives.length != getNumberOfObjectives()}
-	 */
-	public void setObjectives(double[] objectives) {
-		Validate.that("objectives.length", objectives.length).isEqualTo(getNumberOfObjectives());
-
-		for (int i = 0; i < objectives.length; i++) {
-			this.objectives[i] = objectives[i];
-		}
-	}
-
-	/**
-	 * Returns an array containing the objectives of this solution. Modifying the returned array will not modify
-	 * the internal state of this solution.
-	 * 
-	 * @return an array containing the objectives of this solution
-	 */
-	public double[] getObjectives() {
-		return objectives.clone();
-	}
-
+	
 	/**
 	 * Sets the variable at the specified index.
 	 * 
@@ -238,6 +194,92 @@ public class Solution implements Formattable<Solution>, Serializable {
 	 */
 	public void setVariable(int index, Variable variable) {
 		variables[index] = variable;
+	}
+	
+	/**
+	 * Returns the objective at the specified index.
+	 * 
+	 * @param index index of the objective to return
+	 * @return the objective at the specified index
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         {@code (index < 0) || (index >= getNumberOfObjectives())}
+	 */
+	public Objective getObjective(int index) {
+		return objectives[index];
+	}
+
+	/**
+	 * Sets the objective at the specified index.
+	 * 
+	 * @param index index of the objective to set
+	 * @param objective the new value of the objective being set
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         {@code (index < 0) || (index >= getNumberOfObjectives())}
+	 */
+	public void setObjective(int index, Objective objective) {
+		objectives[index] = objective;
+	}
+	
+	/**
+	 * Returns the objective value at the specified index.
+	 * 
+	 * @param index index of the objective to return
+	 * @return the objective value at the specified index
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         {@code (index < 0) || (index >= getNumberOfObjectives())}
+	 */
+	public double getObjectiveValue(int index) {
+		if (objectives[index] == null) {
+			return Double.NaN;
+		}
+		
+		return objectives[index].getValue();
+	}
+
+	/**
+	 * Sets the objective value at the specified index.
+	 * 
+	 * @param index index of the objective to set
+	 * @param objective the new value of the objective being set
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         {@code (index < 0) || (index >= getNumberOfObjectives())}
+	 */
+	public void setObjectiveValue(int index, double objective) {
+		if (objectives[index] == null) {
+			objectives[index] = new Minimize();
+		}
+		
+		objectives[index].setValue(objective);
+	}
+
+	/**
+	 * Sets all objective values of this solution.
+	 * 
+	 * @param objectives the new objective values for this solution
+	 * @throws IllegalArgumentException if {@code objectives.length != getNumberOfObjectives()}
+	 */
+	public void setObjectiveValues(double[] objectives) {
+		Validate.that("objectives.length", objectives.length).isEqualTo(getNumberOfObjectives());
+
+		for (int i = 0; i < objectives.length; i++) {
+			setObjectiveValue(i, objectives[i]);
+		}
+	}
+
+	/**
+	 * Returns an array containing the objective values of this solution. Modifying the returned array will not modify
+	 * the internal state of this solution.
+	 * 
+	 * @return an array containing the objective values of this solution
+	 */
+	public double[] getObjectiveValues() {
+		double[] objectives = new double[this.objectives.length];
+		
+		for (int i = 0; i < objectives.length; i++) {
+			objectives[i] = getObjectiveValue(i);
+		}
+		
+		return objectives;
 	}
 	
 	/**
@@ -258,7 +300,7 @@ public class Solution implements Formattable<Solution>, Serializable {
 	 */
 	public boolean violatesConstraints() {
 		for (int i = 0; i < getNumberOfConstraints(); i++) {
-			if (getConstraint(i) != Constraint.SATISFIED) {
+			if (getConstraint(i).isViolation()) {
 				return true;
 			}
 		}
@@ -276,12 +318,12 @@ public class Solution implements Formattable<Solution>, Serializable {
 		double sum = 0.0;
 		
 		for (int i = 0; i < getNumberOfConstraints(); i++) {
-			sum += Math.abs(getConstraint(i));
+			sum += getConstraint(i).getMagnitudeOfViolation();
 		}
 		
 		return sum;
 	}
-
+	
 	/**
 	 * Returns the constraint at the specified index.
 	 * 
@@ -290,34 +332,10 @@ public class Solution implements Formattable<Solution>, Serializable {
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         {@code (index < 0) || (index >= getNumberOfConstraints())}
 	 */
-	public double getConstraint(int index) {
+	public Constraint getConstraint(int index) {
 		return constraints[index];
 	}
-
-	/**
-	 * Sets all constraints of this solution.
-	 * 
-	 * @param constraints the new constraints for this solution
-	 * @throws IllegalArgumentException if {@code constraints.length != getNumberOfConstraints()}
-	 */
-	public void setConstraints(double[] constraints) {
-		Validate.that("constraints.length", constraints.length).isEqualTo(getNumberOfConstraints());
-
-		for (int i = 0; i < constraints.length; i++) {
-			this.constraints[i] = constraints[i];
-		}
-	}
-
-	/**
-	 * Returns an array containing the constraints of this solution. Modifying the returned array will not modify
-	 * the internal state of this solution.
-	 * 
-	 * @return an array containing the constraints of this solution
-	 */
-	public double[] getConstraints() {
-		return constraints.clone();
-	}
-
+	
 	/**
 	 * Sets the constraint at the specified index.
 	 * 
@@ -326,8 +344,70 @@ public class Solution implements Formattable<Solution>, Serializable {
 	 * @throws IndexOutOfBoundsException if the index is out of range
 	 *         {@code (index < 0) || (index >= getNumberOfConstraints())}
 	 */
-	public void setConstraint(int index, double constraint) {
+	public void setConstraint(int index, Constraint constraint) {
 		constraints[index] = constraint;
+	}
+
+	/**
+	 * Returns the constraint value at the specified index.
+	 * 
+	 * @param index index of the variable to be returned
+	 * @return the constraint value at the specified index
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         {@code (index < 0) || (index >= getNumberOfConstraints())}
+	 */
+	public double getConstraintValue(int index) {
+		if (constraints[index] == null) {
+			return Double.NaN;
+		}
+		
+		return constraints[index].getValue();
+	}
+	
+	/**
+	 * Sets the constraint value at the specified index.
+	 * 
+	 * @param index the index of the constraint being set
+	 * @param constraint the new value of the constraint being set
+	 * @throws IndexOutOfBoundsException if the index is out of range
+	 *         {@code (index < 0) || (index >= getNumberOfConstraints())}
+	 */
+	public void setConstraintValue(int index, double constraint) {
+		if (constraints[index] == null) {
+			constraints[index] = Equal.to(0.0);
+		}
+		
+		constraints[index].setValue(constraint);
+	}
+
+	/**
+	 * Sets all constraint values of this solution.
+	 * 
+	 * @param constraints the new constraint values for this solution
+	 * @throws IllegalArgumentException if {@code constraints.length != getNumberOfConstraints()}
+	 */
+	public void setConstraintValues(double[] constraints) {
+		Validate.that("constraints.length", constraints.length).isEqualTo(getNumberOfConstraints());
+
+		for (int i = 0; i < constraints.length; i++) {
+			setConstraintValue(i, constraints[i]);
+		}
+	}
+
+	/**
+	 * Returns an array containing the constraint values of this solution. Modifying the returned array will not modify
+	 * the internal state of this solution.
+	 * 
+	 * @return an array containing the constraint values of this solution
+	 */
+	public double[] getConstraintValues() {
+		double[] constraints = new double[this.constraints.length];
+		
+		for (int i = 0; i < constraints.length; i++) {
+			constraints[i] = getConstraintValue(i);
+		}
+		
+		return constraints;
 	}
 
 	/**
@@ -438,7 +518,7 @@ public class Solution implements Formattable<Solution>, Serializable {
 		double max = 0.0;
 		
 		for (int i = 0; i < getNumberOfObjectives(); i++) {
-			max = Math.max(max, Math.abs(getObjective(i) - otherSolution.getObjective(i)));
+			max = Math.max(max, Math.abs(getObjectiveValue(i) - otherSolution.getObjectiveValue(i)));
 		}
 		
 		return max;
@@ -460,7 +540,7 @@ public class Solution implements Formattable<Solution>, Serializable {
 		double distance = 0.0;
 
 		for (int i = 0; i < getNumberOfObjectives(); i++) {
-			distance += Math.pow(Math.abs(getObjective(i) - otherSolution.getObjective(i)), power);
+			distance += Math.pow(Math.abs(getObjectiveValue(i) - otherSolution.getObjectiveValue(i)), power);
 		}
 
 		return Math.pow(distance, 1.0 / power);
@@ -506,12 +586,12 @@ public class Solution implements Formattable<Solution>, Serializable {
 			
 		for (int i = 0; i < getNumberOfObjectives(); i++) {
 			final int index = i;
-			data.addColumn(new Column<Solution, Double>("Obj" + (index+1), s -> s.getObjective(index)));
+			data.addColumn(new Column<Solution, Objective>("Obj" + (index+1), s -> s.getObjective(index)));
 		}
 			
 		for (int i = 0; i < getNumberOfConstraints(); i++) {
 			final int index = i;
-			data.addColumn(new Column<Solution, Double>("Constr" + (index+1), s -> s.getConstraint(index)));
+			data.addColumn(new Column<Solution, Constraint>("Constr" + (index+1), s -> s.getConstraint(index)));
 		}
 		
 		return data;

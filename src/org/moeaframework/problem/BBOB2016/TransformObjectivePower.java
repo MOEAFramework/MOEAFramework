@@ -51,7 +51,7 @@ public class TransformObjectivePower extends BBOBTransformation {
 		function.evaluate(solution);
 		
 		for (int i = 0; i < numberOfObjectives; i++) {
-			solution.setObjective(i, Math.pow(solution.getObjective(i), exponent));
+			solution.setObjectiveValue(i, Math.pow(solution.getObjectiveValue(i), exponent));
 		}
 	}
 

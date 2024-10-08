@@ -29,19 +29,19 @@ public class CF3Test extends ProblemTest {
 		Problem problem = new CF3();
 		
 		Assert.assertArrayEquals(new double[] { 61.268, 57.495 }, 
-				evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.001);
 		
 		Assert.assertArrayEquals(new double[] { 0.0 }, // Raw value: -3809.2 
-				evaluateAtLowerBounds(problem).getConstraints(),
+				evaluateAtLowerBounds(problem).getConstraintValues(),
 				0.001);
 		
 		Assert.assertArrayEquals(new double[] { 15.851, 17.1 }, 
-				evaluateAtUpperBounds(problem).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.001);
 		
 		Assert.assertArrayEquals(new double[] { 0.0 }, // Raw value: -266.53 
-				evaluateAtUpperBounds(problem).getConstraints(),
+				evaluateAtUpperBounds(problem).getConstraintValues(),
 				0.001);
 	}
 

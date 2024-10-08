@@ -50,7 +50,7 @@ public class UF2 extends AbstractProblem {
 
 		CEC2009.UF2(x, f, numberOfVariables);
 
-		solution.setObjectives(f);
+		solution.setObjectiveValues(f);
 	}
 
 	@Override

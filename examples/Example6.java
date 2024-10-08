@@ -16,9 +16,9 @@
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.core.Constraint;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.constraint.LessThanOrEqual;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
@@ -52,12 +52,12 @@ public class Example6 {
 			double c2 = x - 3.0*y;
 			
 			// set the objective values - these are being minimized
-			solution.setObjective(0, f1);
-			solution.setObjective(1, f2);
+			solution.setObjectiveValue(0, f1);
+			solution.setObjectiveValue(1, f2);
 			
-			// set the constraints - use the methods in the Constraint class for convenience
-			solution.setConstraint(0, Constraint.lessThanOrEqual(c1, 225.0));
-			solution.setConstraint(1, Constraint.lessThanOrEqual(c2, -10.0));
+			// set the constraints
+			solution.setConstraintValue(0, c1);
+			solution.setConstraintValue(1, c2);
 		}
 
 		/**
@@ -71,6 +71,9 @@ public class Example6 {
 			
 			solution.setVariable(0, new RealVariable(-20.0, 20.0));
 			solution.setVariable(1, new RealVariable(-20.0, 20.0));
+			
+			solution.setConstraint(0, LessThanOrEqual.to(225.0));
+			solution.setConstraint(1, LessThanOrEqual.to(-10.0));
 			
 			return solution;
 		}

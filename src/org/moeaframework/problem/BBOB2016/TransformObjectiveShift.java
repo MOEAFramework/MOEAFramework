@@ -51,7 +51,7 @@ public class TransformObjectiveShift extends BBOBTransformation {
 		function.evaluate(solution);
 		
 		for (int i = 0; i < numberOfObjectives; i++) {
-			solution.setObjective(i, solution.getObjective(i) + offset);
+			solution.setObjectiveValue(i, solution.getObjectiveValue(i) + offset);
 		}
 	}
 

@@ -49,7 +49,7 @@ public class TransformObjectiveOscillate extends BBOBTransformation {
 		function.evaluate(solution);
 		
 		for (int i = 0; i < numberOfObjectives; i++) {
-			double y = solution.getObjective(i);
+			double y = solution.getObjectiveValue(i);
 			
 			if (y != 0.0) {
 				double tmp = Math.log(Math.abs(y)) / ALPHA;
@@ -63,7 +63,7 @@ public class TransformObjectiveOscillate extends BBOBTransformation {
 				}
 			}
 			
-			solution.setObjective(i, y);
+			solution.setObjectiveValue(i, y);
 		}
 	}
 

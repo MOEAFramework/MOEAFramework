@@ -67,7 +67,7 @@ public class Schwefel extends BBOBFunction {
 			sum += x[i] * Math.sin(Math.sqrt(Math.abs(x[i])));
 		}
 		
-		solution.setObjective(0, 0.01 * (penalty + 418.9828872724339 - sum / x.length));
+		solution.setObjectiveValue(0, 0.01 * (penalty + 418.9828872724339 - sum / x.length));
 	}
 
 }

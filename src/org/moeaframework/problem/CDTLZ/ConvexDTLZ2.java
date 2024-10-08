@@ -50,10 +50,10 @@ public class ConvexDTLZ2 extends DTLZ2 {
 		super.evaluate(solution);
 		
 		for (int i = 0; i < numberOfObjectives-1; i++) {
-			solution.setObjective(i, Math.pow(solution.getObjective(i), 4.0));
+			solution.setObjectiveValue(i, Math.pow(solution.getObjectiveValue(i), 4.0));
 		}
 		
-		solution.setObjective(numberOfObjectives-1, Math.pow(solution.getObjective(numberOfObjectives-1), 2.0));
+		solution.setObjectiveValue(numberOfObjectives-1, Math.pow(solution.getObjectiveValue(numberOfObjectives-1), 2.0));
 	}
 
 	@Override

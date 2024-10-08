@@ -17,8 +17,8 @@
  */
 package org.moeaframework.problem.CDTLZ;
 
-import org.moeaframework.core.Constraint;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.constraint.LessThanOrEqual;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 
@@ -61,20 +61,20 @@ public class C2_DTLZ2 extends DTLZ2 {
 		double v2 = 0.0;
 		
 		for (int i = 0; i < numberOfObjectives; i++) {
-			double sum = Math.pow(solution.getObjective(i)-1.0, 2.0);
+			double sum = Math.pow(solution.getObjectiveValue(i)-1.0, 2.0);
 			
 			for (int j = 0; j < numberOfObjectives; j++) {
 				if (i != j) {
-					sum += Math.pow(solution.getObjective(j), 2.0);
+					sum += Math.pow(solution.getObjectiveValue(j), 2.0);
 				}
 			}
 			
 			v1 = Math.min(v1, sum - Math.pow(r, 2.0));
-			v2 += Math.pow(solution.getObjective(i) - 1.0 / Math.sqrt(numberOfObjectives), 2.0);
+			v2 += Math.pow(solution.getObjectiveValue(i) - 1.0 / Math.sqrt(numberOfObjectives), 2.0);
 		}
 		
 		double c = Math.min(v1, v2 - Math.pow(r, 2.0));
-		solution.setConstraint(0, Constraint.lessThanOrEqual(c, 0.0));
+		solution.setConstraintValue(0, c);
 	}
 
 	@Override
@@ -84,6 +84,8 @@ public class C2_DTLZ2 extends DTLZ2 {
 		for (int i = 0; i < numberOfVariables; i++) {
 			solution.setVariable(i, new RealVariable(0.0, 1.0));
 		}
+		
+		solution.setConstraint(0, LessThanOrEqual.to(0.0));
 
 		return solution;
 	}

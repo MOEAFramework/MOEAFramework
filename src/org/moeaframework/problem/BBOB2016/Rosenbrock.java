@@ -61,7 +61,7 @@ public class Rosenbrock extends BBOBFunction {
 			s2 += tmp*tmp;
 		}
 		
-		solution.setObjective(0, 100.0*s1 + s2);
+		solution.setObjectiveValue(0, 100.0*s1 + s2);
 	}
 
 }

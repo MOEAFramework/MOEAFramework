@@ -29,19 +29,19 @@ public class CF5Test extends ProblemTest {
 		Problem problem = new CF5();
 		
 		Assert.assertArrayEquals(new double[] { 32.0, 35.0 }, 
-				evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.001);
 		
 		Assert.assertArrayEquals(new double[] { -1.75 },
-				evaluateAtLowerBounds(problem).getConstraints(),
+				evaluateAtLowerBounds(problem).getConstraintValues(),
 				0.0001);
 		
 		Assert.assertArrayEquals(new double[] { 43.258, 23.279 }, 
-				evaluateAtUpperBounds(problem).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.001);
 		
 		Assert.assertArrayEquals(new double[] { 0.0 }, // Raw value: -1.2798
-				evaluateAtUpperBounds(problem).getConstraints(),
+				evaluateAtUpperBounds(problem).getConstraintValues(),
 				0.001);
 	}
 

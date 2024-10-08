@@ -120,7 +120,7 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 		double[] beta = getBeta(y, G);       // Distance
 		double[] f = evaluateF(alpha, beta); // Fitness values
 		
-		solution.setObjectives(f);
+		solution.setObjectiveValues(f);
 	}
 
 	@Override

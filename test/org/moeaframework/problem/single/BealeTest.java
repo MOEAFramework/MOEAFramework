@@ -30,8 +30,8 @@ public class BealeTest extends ProblemTest {
 	public void test() {		
 		try (AbstractSingleObjectiveProblem problem = new Beale()) {
 			for (Solution solution : problem.getReferenceSet()) {
-				Assert.assertEquals(0.0, solution.getObjective(0), TestThresholds.HIGH_PRECISION);
-				Assert.assertGreaterThan(MockSolution.of(solution).addNoise(0.1).evaluate(problem).getObjective(0), 0.0);
+				Assert.assertEquals(0.0, solution.getObjectiveValue(0), TestThresholds.HIGH_PRECISION);
+				Assert.assertGreaterThan(MockSolution.of(solution).addNoise(0.1).evaluate(problem).getObjectiveValue(0), 0.0);
 			}
 		}
 	}

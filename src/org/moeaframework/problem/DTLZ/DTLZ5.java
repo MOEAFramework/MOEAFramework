@@ -83,7 +83,7 @@ public class DTLZ5 extends DTLZ implements AnalyticalProblem {
 			}
 		}
 
-		solution.setObjectives(f);
+		solution.setObjectiveValues(f);
 	}
 
 	@Override

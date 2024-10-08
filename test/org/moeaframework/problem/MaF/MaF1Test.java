@@ -30,15 +30,15 @@ public class MaF1Test extends ProblemTest {
 		Problem problem = new MaF1(2);
 		
 		Assert.assertArrayEquals(new double[] { 3.5, 0.0 }, 
-				evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 3.5 }, 
-				evaluateAtUpperBounds(problem).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 0.5, 0.5 }, 
-				evaluateAt(problem, Vector.of(11, 0.5)).getObjectives(),
+				evaluateAt(problem, Vector.of(11, 0.5)).getObjectiveValues(),
 				0.000001);
 	}
 	
@@ -47,15 +47,15 @@ public class MaF1Test extends ProblemTest {
 		Problem problem = new MaF1(3);
 		
 		Assert.assertArrayEquals(new double[] { 3.5, 3.5, 0.0 }, 
-				evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 3.5, 3.5 }, 
-				evaluateAtUpperBounds(problem).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 0.75, 0.75, 0.5 }, 
-				evaluateAt(problem, Vector.of(12, 0.5)).getObjectives(),
+				evaluateAt(problem, Vector.of(12, 0.5)).getObjectiveValues(),
 				0.000001);
 	}
 	

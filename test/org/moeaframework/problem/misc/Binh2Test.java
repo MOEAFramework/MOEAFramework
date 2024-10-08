@@ -30,19 +30,19 @@ public class Binh2Test extends ProblemTest {
 		Problem problem = new Binh2();
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 50.0 }, 
-				evaluateAt(problem, 0.0, 0.0).getObjectives(),
+				evaluateAt(problem, 0.0, 0.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 0.0 }, 
-				evaluateAt(problem, 0.0, 0.0).getConstraints(),
+				evaluateAt(problem, 0.0, 0.0).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 136.0, 4.0 }, 
-				evaluateAt(problem, 5.0, 3.0).getObjectives(),
+				evaluateAt(problem, 5.0, 3.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 0.0 }, 
-				evaluateAt(problem, 5.0, 3.0).getConstraints(),
+				evaluateAt(problem, 5.0, 3.0).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
 	}
 

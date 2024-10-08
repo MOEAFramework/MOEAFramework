@@ -220,7 +220,7 @@ public class UF11 extends AbstractProblem {
 		
 		//convert the DTLZ2 results back to UF11
 		for (int i=0; i<numberOfObjectives; i++) {
-			solution.setObjective(i, 2.0 / (1.0 + Math.exp(-psum[i])) * (transformedSolution.getObjective(i) + 1));
+			solution.setObjectiveValue(i, 2.0 / (1.0 + Math.exp(-psum[i])) * (transformedSolution.getObjectiveValue(i) + 1));
 		}
 	}
 

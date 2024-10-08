@@ -17,8 +17,8 @@
  */
 package org.moeaframework.problem.misc;
 
-import org.moeaframework.core.Constraint;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.constraint.LessThanOrEqual;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.AnalyticalProblem;
@@ -61,11 +61,11 @@ public class Binh4 extends AbstractProblem implements AnalyticalProblem {
 		double c1 = -Math.pow(x, 2.0) - Math.pow(y - 0.5, 2.0) + 9.0;
 		double c2 = Math.pow(x - 1.0, 2.0) + Math.pow(y - 0.5, 2.0) - 6.25;
 		
-		solution.setObjective(0, f1);
-		solution.setObjective(1, f2);
-		solution.setObjective(2, f3);
-		solution.setConstraint(0, Constraint.lessThanOrEqual(c1, 0.0));
-		solution.setConstraint(1, Constraint.lessThanOrEqual(c2, 0.0));
+		solution.setObjectiveValue(0, f1);
+		solution.setObjectiveValue(1, f2);
+		solution.setObjectiveValue(2, f3);
+		solution.setConstraintValue(0, c1);
+		solution.setConstraintValue(1, c2);
 	}
 
 	@Override
@@ -74,6 +74,9 @@ public class Binh4 extends AbstractProblem implements AnalyticalProblem {
 		
 		solution.setVariable(0, EncodingUtils.newReal(-10.0, 10.0));
 		solution.setVariable(1, EncodingUtils.newReal(-10.0, 10.0));
+		
+		solution.setConstraint(0, LessThanOrEqual.to(0.0));
+		solution.setConstraint(1, LessThanOrEqual.to(0.0));
 		
 		return solution;
 	}

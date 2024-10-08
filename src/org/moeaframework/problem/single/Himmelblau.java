@@ -45,7 +45,7 @@ public class Himmelblau extends AbstractSingleObjectiveProblem {
 		double x = EncodingUtils.getReal(solution.getVariable(0));
 		double y = EncodingUtils.getReal(solution.getVariable(1));
 		
-		solution.setObjective(0, Math.pow(x*x + y - 11.0, 2.0) + Math.pow(x + y*y - 7.0, 2.0));
+		solution.setObjectiveValue(0, Math.pow(x*x + y - 11.0, 2.0) + Math.pow(x + y*y - 7.0, 2.0));
 	}
 
 	@Override

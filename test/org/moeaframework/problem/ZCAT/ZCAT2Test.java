@@ -30,19 +30,19 @@ public class ZCAT2Test extends ProblemTest {
 		Problem problem = new ZCAT2(3);
 		
 		Assert.assertArrayEquals(new double[] { 0.899010, 3.319721, 9.681510 }, 
-				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.0)).getObjectives(),
+				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.0)).getObjectiveValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 3.068842, 13.617866, 39.546382 }, 
-				evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 4.557605, 12.335284, 28.544560 }, 
-				evaluateAtUpperBounds(problem).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 0.510119, 6.700950, 8.757382 }, 
-				evaluateAt(problem, 0.409519, -0.399485, -0.598600, 1.475202, 2.129033, 0.389652, 1.588484, 2.721019, 2.726736, -0.989393, 0.971742, 0.208670, -4.267586, -1.728728, 5.776280, 7.685571, -3.674203, -6.267180, -3.172444, 4.419399, -5.321201, -10.188576, -7.062947, 1.830685, -12.292856, -2.882929, 4.314947, 12.395295, 12.192725, 3.839024).getObjectives(),
+				evaluateAt(problem, 0.409519, -0.399485, -0.598600, 1.475202, 2.129033, 0.389652, 1.588484, 2.721019, 2.726736, -0.989393, 0.971742, 0.208670, -4.267586, -1.728728, 5.776280, 7.685571, -3.674203, -6.267180, -3.172444, 4.419399, -5.321201, -10.188576, -7.062947, 1.830685, -12.292856, -2.882929, 4.314947, 12.395295, 12.192725, 3.839024).getObjectiveValues(),
 				0.0001);
 	}
 	

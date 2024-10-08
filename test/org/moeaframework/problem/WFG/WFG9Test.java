@@ -28,11 +28,11 @@ public class WFG9Test extends WFGTest {
 		Problem problem = new WFG9(2);
 		
 		Assert.assertArrayEquals(new double[] { 0.338736, 4.169488 }, 
-				evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 0.338736, 4.169488 }, 
-				evaluateAtUpperBounds(problem).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.000001);
 	}
 

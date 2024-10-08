@@ -407,13 +407,13 @@ ListSelectionListener {
 		int selection = axis == 0 ? xAxisSelection.getSelectedIndex() : yAxisSelection.getSelectedIndex();
 		
 		if (selection < solution.getNumberOfObjectives()) {
-			return solution.getObjective(selection);
+			return solution.getObjectiveValue(selection);
 		} else {
 			selection -= solution.getNumberOfObjectives();
 		}
 		
 		if (selection < solution.getNumberOfConstraints()) {
-			return solution.getConstraint(selection);
+			return solution.getConstraintValue(selection);
 		} else {
 			selection -= solution.getNumberOfConstraints();
 		}

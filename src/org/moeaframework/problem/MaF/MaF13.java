@@ -78,7 +78,7 @@ public class MaF13 extends AbstractProblem implements AnalyticalProblem {
 			f[i] = Math.pow(f[0], 2.0) + Math.pow(f[1], 10.0) + Math.pow(f[2], 10.0) + 2 * func(y, 3, 1, numberOfVariables);
 		}
 
-		solution.setObjectives(f);
+		solution.setObjectiveValues(f);
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class MaF13 extends AbstractProblem implements AnalyticalProblem {
 		Solution solution = new Solution(0, getNumberOfObjectives());
 		
 		for (int i = 0; i < getNumberOfObjectives(); i++) {
-			solution.setObjective(i, i < 3 ? p[i] : remainder);
+			solution.setObjectiveValue(i, i < 3 ? p[i] : remainder);
 		}
 		
 		return solution;

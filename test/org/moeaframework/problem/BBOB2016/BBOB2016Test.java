@@ -127,10 +127,10 @@ public class BBOB2016Test {
 					System.out.println("Detected difference (MOEA Framework / Coco):");
 					System.out.println("  > Variables: " + Arrays.toString(EncodingUtils.getReal(solution)) + " / " +
 							Arrays.toString(EncodingUtils.getReal(cocoSolution)));
-					System.out.println("  > Objectives: " + Arrays.toString(solution.getObjectives()) + " / " +
-							Arrays.toString(cocoSolution.getObjectives()));
-					System.out.println("  > Constraints: " + Arrays.toString(solution.getConstraints()) + " / " +
-							Arrays.toString(cocoSolution.getConstraints()));
+					System.out.println("  > Objectives: " + Arrays.toString(solution.getObjectiveValues()) + " / " +
+							Arrays.toString(cocoSolution.getObjectiveValues()));
+					System.out.println("  > Constraints: " + Arrays.toString(solution.getConstraintValues()) + " / " +
+							Arrays.toString(cocoSolution.getConstraintValues()));
 					
 					throw e;
 				}

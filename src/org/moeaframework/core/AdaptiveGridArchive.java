@@ -318,7 +318,7 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 		int index = 0;
 
 		for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-			double value = solution.getObjective(i);
+			double value = solution.getObjectiveValue(i);
 
 			if ((value < minimum[i]) || (value > maximum[i])) {
 				return -1;

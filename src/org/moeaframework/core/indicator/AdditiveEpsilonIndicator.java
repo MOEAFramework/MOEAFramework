@@ -78,7 +78,7 @@ public class AdditiveEpsilonIndicator extends NormalizedIndicator {
 				double eps_k = 0.0;
 
 				for (int k = 0; k < problem.getNumberOfObjectives(); k++) {
-					eps_k = Math.max(eps_k, solution2.getObjective(k) - solution1.getObjective(k));
+					eps_k = Math.max(eps_k, solution2.getObjectiveValue(k) - solution1.getObjectiveValue(k));
 				}
 
 				eps_j = Math.min(eps_j, eps_k);

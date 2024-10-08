@@ -23,7 +23,6 @@ import java.io.InputStream;
 import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
-import org.moeaframework.util.Vector;
 import org.moeaframework.util.io.Resources;
 import org.moeaframework.util.io.Resources.ResourceOption;
 
@@ -55,10 +54,7 @@ public class KnapsackExample {
 		// print the results
 		for (int i = 0; i < result.size(); i++) {
 			Solution solution = result.get(i);
-			double[] objectives = solution.getObjectives();
-					
-			// negate objectives to return them to their maximized form
-			objectives = Vector.negate(objectives);
+			double[] objectives = solution.getObjectiveValues();
 					
 			System.out.println("Solution " + (i+1) + ":");
 			System.out.println("    Sack 1 Profit: " + objectives[0]);

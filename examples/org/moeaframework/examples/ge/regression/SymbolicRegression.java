@@ -262,7 +262,7 @@ public class SymbolicRegression extends AbstractProblem {
 
 		if (program == null) {
 			// the codon did not produce a valid grammar; penalize the solution
-			solution.setObjective(0, Double.POSITIVE_INFINITY);
+			solution.setObjectiveValue(0, Double.POSITIVE_INFINITY);
 		} else {
 			double difference = 0.0;
 			double[] approximatedY = getApproximatedY(program);
@@ -278,7 +278,7 @@ public class SymbolicRegression extends AbstractProblem {
 				difference = Double.POSITIVE_INFINITY;
 			}
 
-			solution.setObjective(0, difference);
+			solution.setObjectiveValue(0, difference);
 		}
 	}
 

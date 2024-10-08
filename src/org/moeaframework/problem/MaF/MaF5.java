@@ -64,7 +64,7 @@ public class MaF5 extends DTLZ implements AnalyticalProblem {
 			f[i] = Math.pow(a, numberOfObjectives - i) * f[i];
 		}
 
-		solution.setObjectives(f);
+		solution.setObjectiveValues(f);
 	}
 	
 	@Override

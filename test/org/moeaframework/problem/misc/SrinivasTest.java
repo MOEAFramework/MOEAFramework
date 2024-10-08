@@ -35,27 +35,27 @@ public class SrinivasTest extends ProblemTest {
 		Problem problem = new Srinivas();
 		
 		Assert.assertArrayEquals(new double[] { 7.0, -1.0 }, 
-				evaluateAt(problem, 0.0, 0.0).getObjectives(),
+				evaluateAt(problem, 0.0, 0.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 10.0 }, 
-				evaluateAt(problem, 0.0, 0.0).getConstraints(),
+				evaluateAt(problem, 0.0, 0.0).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 927.0, -621.0 }, 
-				evaluateAt(problem, -20.0, -20.0).getObjectives(),
+				evaluateAt(problem, -20.0, -20.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 575.0, 50.0 }, 
-				evaluateAt(problem, -20.0, -20.0).getConstraints(),
+				evaluateAt(problem, -20.0, -20.0).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 687.0, -181.0 }, 
-				evaluateAt(problem, 20.0, 20.0).getObjectives(),
+				evaluateAt(problem, 20.0, 20.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 575.0, 0.0 }, 
-				evaluateAt(problem, 20.0, 20.0).getConstraints(),
+				evaluateAt(problem, 20.0, 20.0).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
 	}
 

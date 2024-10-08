@@ -74,7 +74,7 @@ public class DTLZ7 extends DTLZ implements AnalyticalProblem {
 		
 		f[numberOfObjectives - 1] = (1.0 + g) * h;
 
-		solution.setObjectives(f);
+		solution.setObjectiveValues(f);
 	}
 
 	@Override

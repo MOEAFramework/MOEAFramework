@@ -107,7 +107,7 @@ public class MaF9 extends AbstractProblem implements AnalyticalProblem {
 			f[i] = polygon.getLine(i).distance(point);
 		}
 		
-		solution.setObjectives(f);
+		solution.setObjectiveValues(f);
 	}
 	
 	Vector2D repair(Solution solution) {

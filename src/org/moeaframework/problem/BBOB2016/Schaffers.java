@@ -59,7 +59,7 @@ public class Schaffers extends BBOBFunction {
 			result += Math.pow(tmp, 0.25) * (1.0 + Math.pow(Math.sin(50.0 * Math.pow(tmp, 0.1)), 2.0));
 		}
 		
-		solution.setObjective(0, Math.pow(result / (x.length - 1.0), 2.0));
+		solution.setObjectiveValue(0, Math.pow(result / (x.length - 1.0), 2.0));
 	}
 
 }

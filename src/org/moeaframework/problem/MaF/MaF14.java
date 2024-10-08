@@ -53,7 +53,7 @@ public class MaF14 extends LSMOP implements AnalyticalProblem {
 		double[] f = Vector.uniform(getNumberOfObjectives());
 		
 		Solution solution = new Solution(0, getNumberOfObjectives());
-		solution.setObjectives(f);
+		solution.setObjectiveValues(f);
 		return solution;
 	}
 

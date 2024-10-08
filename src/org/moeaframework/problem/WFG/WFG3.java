@@ -52,7 +52,7 @@ public class WFG3 extends WFG {
 	public void evaluate(Solution solution) {
 		double[] v = EncodingUtils.getReal(solution);
 		double[] f = Problems.WFG3(v, k, M);
-		solution.setObjectives(f);
+		solution.setObjectiveValues(f);
 	}
 
 	@Override

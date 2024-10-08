@@ -30,15 +30,15 @@ public class ViennetTest extends ProblemTest {
 		Problem problem = new Viennet();
 		
 		Assert.assertArrayEquals(new double[] { 1.0, 2.0, 3.0 }, 
-				evaluateAt(problem, 0.0, 0.0).getObjectives(),
+				evaluateAt(problem, 0.0, 0.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 13.0, 6.0, 15.0 }, 
-				evaluateAt(problem, -2.0, -2.0).getObjectives(),
+				evaluateAt(problem, -2.0, -2.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 5.0, 14.0, 7.0 }, 
-				evaluateAt(problem, 2.0, 2.0).getObjectives(),
+				evaluateAt(problem, 2.0, 2.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 	}
 

@@ -59,7 +59,7 @@ public class DifferentPowers extends BBOBFunction {
 			sum += Math.pow(Math.abs(x[i]), exponent);
 		}
 		
-		solution.setObjective(0, Math.sqrt(sum));
+		solution.setObjectiveValue(0, Math.sqrt(sum));
 	}
 
 }

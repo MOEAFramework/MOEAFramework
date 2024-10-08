@@ -230,7 +230,7 @@ public abstract class ProblemTest {
 			// JMetal only recognizes negative values as violating constraints, therefore fix the sign
 			// before performing exact comparisons.
 			if (exactConstraints && problemA.getNumberOfConstraints() > 0) {
-				double[] constraints = solutionA.getConstraints();
+				double[] constraints = solutionA.getConstraintValues();
 				
 				for (int j = 0; j < constraints.length; j++) {
 					if (constraints[j] > 0.0) {
@@ -238,7 +238,7 @@ public abstract class ProblemTest {
 					}
 				}
 				
-				solutionA.setConstraints(constraints);
+				solutionA.setConstraintValues(constraints);
 			}
 			
 			try {
@@ -247,10 +247,10 @@ public abstract class ProblemTest {
 				System.out.println("Solution comparison failed!");
 				System.out.println("  Problem: " + problemA.getName());
 				System.out.println("  Variables: " + formatVariables(solutionA));
-				System.out.println("  Objectives: " + Arrays.toString(solutionA.getObjectives()) + " / " +
-						Arrays.toString(solutionB.getObjectives()));
-				System.out.println("  Constraints: " + Arrays.toString(solutionA.getConstraints()) + " / " +
-						Arrays.toString(solutionB.getConstraints()));
+				System.out.println("  Objectives: " + Arrays.toString(solutionA.getObjectiveValues()) + " / " +
+						Arrays.toString(solutionB.getObjectiveValues()));
+				System.out.println("  Constraints: " + Arrays.toString(solutionA.getConstraintValues()) + " / " +
+						Arrays.toString(solutionB.getConstraintValues()));
 				
 				throw e;
 			}
@@ -287,8 +287,8 @@ public abstract class ProblemTest {
 			if (exactConstraints) {
 				Assert.assertEquals(solutionA.getConstraint(i), solutionB.getConstraint(i), TestThresholds.LOW_PRECISION);
 			} else {
-				// only check if constraints are feasible (== 0) or infeasible (!= 0)
-				Assert.assertEquals(solutionA.getConstraint(i) != 0, solutionB.getConstraint(i) != 0);
+				// only check if constraints are feasible or not
+				Assert.assertEquals(solutionA.getConstraint(i).isViolation(), solutionB.getConstraint(i).isViolation());
 			}
 		}
 	}

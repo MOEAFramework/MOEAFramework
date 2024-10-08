@@ -40,7 +40,7 @@ public class ParetoObjectiveComparator implements DominanceComparator {
 		boolean dominate2 = false;
 
 		for (int i = 0; i < solution1.getNumberOfObjectives(); i++) {
-			int flag = Double.compare(solution1.getObjective(i), solution2.getObjective(i));
+			int flag = solution1.getObjective(i).compareTo(solution2.getObjective(i));
 			
 			if (flag < 0) {
 				dominate1 = true;

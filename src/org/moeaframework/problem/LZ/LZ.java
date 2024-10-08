@@ -100,7 +100,7 @@ public abstract class LZ extends AbstractProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		solution.setObjectives(evaluate(EncodingUtils.getReal(solution)));
+		solution.setObjectiveValues(evaluate(EncodingUtils.getReal(solution)));
 	}
 
 	@Override

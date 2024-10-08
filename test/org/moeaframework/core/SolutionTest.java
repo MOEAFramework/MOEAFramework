@@ -39,10 +39,10 @@ public class SolutionTest {
 		solution = new Solution(1, 2, 2);
 
 		solution.setVariable(0, new RealVariable(0.5, 0.0, 1.0));
-		solution.setObjective(0, 1.0);
-		solution.setObjective(1, 2.0);
-		solution.setConstraint(0, 0.0);
-		solution.setConstraint(1, 1.0);
+		solution.setObjectiveValue(0, 1.0);
+		solution.setObjectiveValue(1, 2.0);
+		solution.setConstraintValue(0, 0.0);
+		solution.setConstraintValue(1, 1.0);
 
 		solution.setAttribute("foo", "bar");
 	}
@@ -59,17 +59,17 @@ public class SolutionTest {
 	}
 
 	@Test
-	public void testGetObjective() {
+	public void testGetObjectiveValue() {
 		Assert.assertEquals(2, solution.getNumberOfObjectives());
-		Assert.assertEquals(1.0, solution.getObjective(0), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(2.0, solution.getObjective(1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, solution.getObjectiveValue(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(2.0, solution.getObjectiveValue(1), TestThresholds.HIGH_PRECISION);
 	}
 
 	@Test
-	public void testGetConstraint() {
+	public void testGetConstraintValue() {
 		Assert.assertEquals(2, solution.getNumberOfConstraints());
-		Assert.assertEquals(0.0, solution.getConstraint(0), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(1.0, solution.getConstraint(1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, solution.getConstraintValue(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, solution.getConstraintValue(1), TestThresholds.HIGH_PRECISION);
 	}
 
 	@Test
@@ -79,20 +79,20 @@ public class SolutionTest {
 	}
 
 	@Test
-	public void testSetObjective() {
-		solution.setObjective(1, 1.5);
-		Assert.assertEquals(1.5, solution.getObjective(1), TestThresholds.HIGH_PRECISION);
+	public void testSetObjectiveValue() {
+		solution.setObjectiveValue(1, 1.5);
+		Assert.assertEquals(1.5, solution.getObjectiveValue(1), TestThresholds.HIGH_PRECISION);
 	}
 
 	@Test
-	public void testSetConstraint() {
-		solution.setConstraint(1, 2.0);
-		Assert.assertEquals(2.0, solution.getConstraint(1), TestThresholds.HIGH_PRECISION);
+	public void testSetConstraintValue() {
+		solution.setConstraintValue(1, 2.0);
+		Assert.assertEquals(2.0, solution.getConstraintValue(1), TestThresholds.HIGH_PRECISION);
 	}
 
 	@Test
-	public void testGetObjectives() {
-		double[] objectives = solution.getObjectives();
+	public void testGetObjectiveValues() {
+		double[] objectives = solution.getObjectiveValues();
 
 		// returned array contains correct data
 		Assert.assertEquals(2, objectives.length);
@@ -101,12 +101,12 @@ public class SolutionTest {
 
 		// returned array is independent from internal state
 		objectives[0] = 0.0;
-		Assert.assertEquals(1.0, solution.getObjective(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, solution.getObjectiveValue(0), TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test
-	public void testGetConstraints() {
-		double[] constraints = solution.getConstraints();
+	public void testGetConstraintValues() {
+		double[] constraints = solution.getConstraintValues();
 
 		// returned array contains correct data
 		Assert.assertEquals(2, constraints.length);
@@ -115,37 +115,37 @@ public class SolutionTest {
 
 		// returned array is independent from internal state
 		constraints[0] = 1.0;
-		Assert.assertEquals(0.0, solution.getConstraint(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, solution.getConstraintValue(0), TestThresholds.HIGH_PRECISION);
 	}
 
 	@Test
-	public void testSetObjectives() {
+	public void testSetObjectiveValues() {
 		double[] objectives = new double[] { 3.0, 4.0 };
-		solution.setObjectives(objectives);
+		solution.setObjectiveValues(objectives);
 
 		// stored array contains correct data
 		Assert.assertEquals(2, solution.getNumberOfObjectives());
-		Assert.assertEquals(3.0, solution.getObjective(0), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(4.0, solution.getObjective(1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(3.0, solution.getObjectiveValue(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(4.0, solution.getObjectiveValue(1), TestThresholds.HIGH_PRECISION);
 
 		// stored array is independent from external state
 		objectives[0] = 0.0;
-		Assert.assertEquals(3.0, solution.getObjective(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(3.0, solution.getObjectiveValue(0), TestThresholds.HIGH_PRECISION);
 	}
 
 	@Test
-	public void testSetConstraints() {
+	public void testSetConstraintValues() {
 		double[] constraints = new double[] { 3.0, 4.0 };
-		solution.setConstraints(constraints);
+		solution.setConstraintValues(constraints);
 
 		// stored array contains correct data
 		Assert.assertEquals(2, solution.getNumberOfConstraints());
-		Assert.assertEquals(3.0, solution.getConstraint(0), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(4.0, solution.getConstraint(1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(3.0, solution.getConstraintValue(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(4.0, solution.getConstraintValue(1), TestThresholds.HIGH_PRECISION);
 
 		// stored array is independent from external state
 		constraints[0] = 0.0;
-		Assert.assertEquals(3.0, solution.getConstraint(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(3.0, solution.getConstraintValue(0), TestThresholds.HIGH_PRECISION);
 	}
 
 	@Test
@@ -213,12 +213,12 @@ public class SolutionTest {
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSetObjectiveBoundsChecking1() {
-		solution.setObjective(2, 1.0);
+		solution.setObjectiveValue(2, 1.0);
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSetObjectiveBoundsChecking2() {
-		solution.setObjective(-1, 1.0);
+		solution.setObjectiveValue(-1, 1.0);
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
@@ -233,17 +233,17 @@ public class SolutionTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetObjectivesBoundsChecking() {
-		solution.setObjectives(new double[] { 0.0, 1.0, 2.0 });
+		solution.setObjectiveValues(new double[] { 0.0, 1.0, 2.0 });
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSetConstraintBoundsChecking1() {
-		solution.setConstraint(2, 1.0);
+		solution.setConstraintValue(2, 1.0);
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSetConstraintBoundsChecking2() {
-		solution.setConstraint(-1, 1.0);
+		solution.setConstraintValue(-1, 1.0);
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
@@ -258,7 +258,7 @@ public class SolutionTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetConstraintsBoundsChecking() {
-		solution.setConstraints(new double[] { 0.0, 1.0, 2.0 });
+		solution.setConstraintValues(new double[] { 0.0, 1.0, 2.0 });
 	}
 	
 	@Test
@@ -310,7 +310,7 @@ public class SolutionTest {
 	public void testIsFeasible() {
 		Assert.assertFalse(solution.isFeasible());
 
-		solution.setConstraint(1, 0.0);
+		solution.setConstraintValue(1, 0.0);
 		Assert.assertTrue(solution.isFeasible());
 
 		// solution with no constraints
@@ -321,7 +321,7 @@ public class SolutionTest {
 	public void testViolatesConstraints() {
 		Assert.assertTrue(solution.violatesConstraints());
 
-		solution.setConstraint(1, 0.0);
+		solution.setConstraintValue(1, 0.0);
 		Assert.assertFalse(solution.violatesConstraints());
 
 		// solution with no constraints
@@ -332,10 +332,10 @@ public class SolutionTest {
 	public void testSumOfConstraintViolations() {
 		Assert.assertEquals(1.0, solution.getSumOfConstraintViolations(), TestThresholds.HIGH_PRECISION);
 		
-		solution.setConstraint(0, -1.0);
+		solution.setConstraintValue(0, -1.0);
 		Assert.assertEquals(2.0, solution.getSumOfConstraintViolations(), TestThresholds.HIGH_PRECISION);
 
-		solution.setConstraints(new double[] { 0.0, 0.0 });
+		solution.setConstraintValues(new double[] { 0.0, 0.0 });
 		Assert.assertEquals(0.0, solution.getSumOfConstraintViolations(), TestThresholds.HIGH_PRECISION);
 
 		// solution with no constraints

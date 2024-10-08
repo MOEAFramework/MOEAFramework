@@ -75,7 +75,7 @@ public class ClusterableSolution implements Clusterable {
 	 * @return the clusterable solution based on the objective values
 	 */
 	public static ClusterableSolution withObjectives(Solution solution) {
-		return new ClusterableSolution(solution, solution.getObjectives());
+		return new ClusterableSolution(solution, solution.getObjectiveValues());
 	}
 	
 	/**

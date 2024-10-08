@@ -39,7 +39,7 @@ public class FeasibilityRatioTest {
 
 			@Override
 			public void evaluate(Solution solution) {
-				solution.setConstraint(0, 0.0);
+				solution.setConstraintValue(0, 0.0);
 			}
 
 			@Override
@@ -60,7 +60,7 @@ public class FeasibilityRatioTest {
 
 			@Override
 			public void evaluate(Solution solution) {
-				solution.setConstraint(0, -1.0);
+				solution.setConstraintValue(0, -1.0);
 			}
 
 			@Override
@@ -83,7 +83,7 @@ public class FeasibilityRatioTest {
 
 			@Override
 			public void evaluate(Solution solution) {
-				solution.setConstraint(0, (count++) % 4 == 0 ? 0.0 : -1.0);
+				solution.setConstraintValue(0, (count++) % 4 == 0 ? 0.0 : -1.0);
 			}
 
 			@Override

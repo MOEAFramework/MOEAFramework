@@ -60,7 +60,7 @@ public class MaF1 extends DTLZ implements AnalyticalProblem {
 			f[i] *= 1.0 + g;
 		}
 
-		solution.setObjectives(f);
+		solution.setObjectiveValues(f);
 	}
 	
 	@Override

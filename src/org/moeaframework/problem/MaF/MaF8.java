@@ -56,7 +56,7 @@ public class MaF8 extends AbstractProblem implements AnalyticalProblem {
 			f[i] = polygon.getVertex(i).distance(point);
 		}
 		
-		solution.setObjectives(f);
+		solution.setObjectiveValues(f);
 	}
 
 	@Override

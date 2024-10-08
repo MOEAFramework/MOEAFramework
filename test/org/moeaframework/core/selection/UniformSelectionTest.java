@@ -61,7 +61,7 @@ public class UniformSelectionTest {
 
 		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
 			Solution solution = selection.select(1, population)[0];
-			counts[(int)solution.getObjective(0)]++;
+			counts[(int)solution.getObjectiveValue(0)]++;
 		}
 
 		for (int i = 0; i < 3; i++) {

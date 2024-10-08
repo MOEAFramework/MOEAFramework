@@ -76,7 +76,7 @@ public class MaF15 extends LSMOP implements AnalyticalProblem {
 		}
 		
 		Solution solution = new Solution(0, getNumberOfObjectives());
-		solution.setObjectives(f);
+		solution.setObjectiveValues(f);
 		return solution;
 	}
 

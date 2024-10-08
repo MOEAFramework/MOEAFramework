@@ -42,10 +42,7 @@ public class ObjectiveComparator implements DominanceComparator, Comparator<Solu
 
 	@Override
 	public int compare(Solution solution1, Solution solution2) {
-		double value1 = solution1.getObjective(objective);
-		double value2 = solution2.getObjective(objective);
-
-		return Double.compare(value1, value2);
+		return solution1.getObjective(objective).compareTo(solution2.getObjective(objective));
 	}
 
 }

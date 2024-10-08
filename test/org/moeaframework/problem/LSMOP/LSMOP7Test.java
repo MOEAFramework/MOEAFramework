@@ -30,15 +30,15 @@ public class LSMOP7Test extends ProblemTest {
 		Problem problem = new LSMOP7(2);
 		
 		Assert.assertArrayEquals(new double[] { 1.9655, 0.0 }, 
-				evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.0001);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 120761.0 }, 
-				evaluateAtUpperBounds(problem).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				1.0);
 		
 		Assert.assertArrayEquals(new double[] { 34197.0, 34197.0 }, 
-				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectives(),
+				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectiveValues(),
 				1.0);
 	}
 	
@@ -47,15 +47,15 @@ public class LSMOP7Test extends ProblemTest {
 		Problem problem = new LSMOP7(3);
 		
 		Assert.assertArrayEquals(new double[] { 1.9677, 0.0, 0.0 }, 
-				evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.0001);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 1.4864 }, 
-				evaluateAtUpperBounds(problem).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.0001);
 		
 		Assert.assertArrayEquals(new double[] { 21967.0, 21967.0, 1.0 }, 
-				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectives(),
+				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectiveValues(),
 				1.0);
 	}
 	
@@ -64,15 +64,15 @@ public class LSMOP7Test extends ProblemTest {
 		Problem problem = new LSMOP7(4);
 		
 		Assert.assertArrayEquals(new double[] { 1.9630, 0.0, 0.0, 0.0 }, 
-				evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.0001);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 0.0, 9086.0 }, 
-				evaluateAtUpperBounds(problem).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				1.0);
 		
 		Assert.assertArrayEquals(new double[] { 14394.0, 14394.0, 26546.0, 37541.0 }, 
-				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectives(),
+				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectiveValues(),
 				1.0);
 	}
 	

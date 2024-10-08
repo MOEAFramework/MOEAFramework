@@ -29,11 +29,11 @@ public class OKA2Test extends ProblemTest {
 		Problem problem = new OKA2();
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 3.0/4.0 + Math.pow(5.0, 1.0/3.0) }, 
-				evaluateAt(problem, 0.0, 0.0, 0.0).getObjectives(),
+				evaluateAt(problem, 0.0, 0.0, 0.0).getObjectiveValues(),
 				0.0001);
 		
 		Assert.assertArrayEquals(new double[] { Math.PI/2.0, 7.0/16.0 + Math.pow(5.0, 1.0/3.0) }, 
-				evaluateAt(problem, Math.PI/2.0, 0.0, 0.0).getObjectives(),
+				evaluateAt(problem, Math.PI/2.0, 0.0, 0.0).getObjectiveValues(),
 				0.0001);
 	}
 

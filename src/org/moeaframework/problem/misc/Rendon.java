@@ -54,8 +54,8 @@ public class Rendon extends AbstractProblem {
 		double f1 = 1.0 / (Math.pow(x, 2.0) + Math.pow(y, 2.0) + 1.0);
 		double f2 = Math.pow(x, 2.0) + 3.0*Math.pow(y, 2.0) + 1.0;
 		
-		solution.setObjective(0, f1);
-		solution.setObjective(1, f2);
+		solution.setObjectiveValue(0, f1);
+		solution.setObjectiveValue(1, f2);
 	}
 
 	@Override

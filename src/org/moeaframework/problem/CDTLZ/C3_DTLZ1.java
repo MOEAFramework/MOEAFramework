@@ -17,8 +17,8 @@
  */
 package org.moeaframework.problem.CDTLZ;
 
-import org.moeaframework.core.Constraint;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.constraint.GreaterThanOrEqual;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.DTLZ.DTLZ1;
 
@@ -57,15 +57,15 @@ public class C3_DTLZ1 extends DTLZ1 {
 		super.evaluate(solution);
 		
 		for (int j = 0; j < numberOfObjectives; j++) {
-			double c = solution.getObjective(j) - 1;
+			double c = solution.getObjectiveValue(j) - 1;
 			
 			for (int i = 0; i < numberOfObjectives; i++) {
 				if (i != j) {
-					c += solution.getObjective(i)/0.5;
+					c += solution.getObjectiveValue(i)/0.5;
 				}
 			}
 			
-			solution.setConstraint(j, Constraint.greaterThanOrEqual(c, 0.0));
+			solution.setConstraintValue(j, c);
 		}
 	}
 
@@ -75,6 +75,10 @@ public class C3_DTLZ1 extends DTLZ1 {
 
 		for (int i = 0; i < numberOfVariables; i++) {
 			solution.setVariable(i, new RealVariable(0.0, 1.0));
+		}
+		
+		for (int i = 0; i < numberOfObjectives; i++) {
+			solution.setConstraint(i, GreaterThanOrEqual.to(0.0));
 		}
 
 		return solution;

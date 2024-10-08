@@ -30,19 +30,19 @@ public class BelegunduTest extends ProblemTest {
 		Problem problem = new Belegundu();
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 0.0 }, 
-				evaluateAt(problem, 0.0, 0.0).getObjectives(),
+				evaluateAt(problem, 0.0, 0.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 0.0 }, 
-				evaluateAt(problem, 0.0, 0.0).getConstraints(),
+				evaluateAt(problem, 0.0, 0.0).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { -7.0, 13.0 }, 
-				evaluateAt(problem, 5.0, 3.0).getObjectives(),
+				evaluateAt(problem, 5.0, 3.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 1.0 }, 
-				evaluateAt(problem, 5.0, 3.0).getConstraints(),
+				evaluateAt(problem, 5.0, 3.0).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
 	}
 

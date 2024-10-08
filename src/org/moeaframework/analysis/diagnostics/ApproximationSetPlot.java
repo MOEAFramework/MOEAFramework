@@ -91,9 +91,9 @@ public class ApproximationSetPlot extends ResultPlot {
 				
 				for (Solution solution : population) {
 					if (solution.getNumberOfObjectives() == 1) {
-						series.add(solution.getObjective(0), solution.getObjective(0));
+						series.add(solution.getObjectiveValue(0), solution.getObjectiveValue(0));
 					} else if (solution.getNumberOfObjectives() > 1) {
-						series.add(solution.getObjective(0), solution.getObjective(1));
+						series.add(solution.getObjectiveValue(0), solution.getObjectiveValue(1));
 					}
 				}
 				
@@ -140,7 +140,7 @@ public class ApproximationSetPlot extends ResultPlot {
 				XYSeries series = new XYSeries(localization.getString("text.last"), false, true);
 				
 				for (Solution solution : population) {
-					series.add(solution.getObjective(0), solution.getObjective(1));
+					series.add(solution.getObjectiveValue(0), solution.getObjectiveValue(1));
 				}
 				
 				dataset2.addSeries(series);

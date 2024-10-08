@@ -82,9 +82,9 @@ public class ExternalProblemTest {
 				Solution solution = problem.newSolution();
 				problem.evaluate(solution);
 				
-				Assert.assertEquals(0.2, solution.getObjective(0), TestThresholds.HIGH_PRECISION);
-				Assert.assertEquals(0.8, solution.getObjective(1), TestThresholds.HIGH_PRECISION);
-				Assert.assertEquals(0.5, solution.getConstraint(0), TestThresholds.HIGH_PRECISION);
+				Assert.assertEquals(0.2, solution.getObjectiveValue(0), TestThresholds.HIGH_PRECISION);
+				Assert.assertEquals(0.8, solution.getObjectiveValue(1), TestThresholds.HIGH_PRECISION);
+				Assert.assertEquals(0.5, solution.getConstraintValue(0), TestThresholds.HIGH_PRECISION);
 			}
 			
 			Assert.assertEquals(100, problem.getCallCount());

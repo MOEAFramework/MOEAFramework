@@ -33,15 +33,15 @@ public class InvertedDTLZ1Test extends ProblemTest {
 		Problem problem = new InvertedDTLZ1(3);
 		
 		Assert.assertArrayEquals(new double[] { 63.0, 63.0, 0.0 }, 
-				evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 63.0, 63.0 }, 
-				evaluateAtUpperBounds(problem).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 0.375, 0.375, 0.25 }, 
-				evaluateAt(problem, Vector.of(7, 0.5)).getObjectives(),
+				evaluateAt(problem, Vector.of(7, 0.5)).getObjectiveValues(),
 				0.000001);
 	}
 	
@@ -58,7 +58,7 @@ public class InvertedDTLZ1Test extends ProblemTest {
 	}
 	
 	protected static void assertParetoFrontSolution(Solution solution) {
-		double sum = StatUtils.sum(solution.getObjectives());
+		double sum = StatUtils.sum(solution.getObjectiveValues());
 		Assert.assertEquals(0.5 * (solution.getNumberOfObjectives() - 1), sum, TestThresholds.LOW_PRECISION);
 	}
 

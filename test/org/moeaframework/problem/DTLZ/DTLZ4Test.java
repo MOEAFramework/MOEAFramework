@@ -32,11 +32,11 @@ public class DTLZ4Test extends ProblemTest {
 		Problem problem = new DTLZ4(10, 3);
 		
 		Assert.assertArrayEquals(new double[] { 3.0, 0.0, 0.0 }, 
-				evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 3.0 }, 
-				evaluateAtUpperBounds(problem).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.000001);
 	}
 
@@ -83,7 +83,7 @@ public class DTLZ4Test extends ProblemTest {
 		double sum = 0.0;
 		
 		for (int j = 0; j < solution.getNumberOfObjectives(); j++) {
-			sum += Math.pow(solution.getObjective(j), 2.0);
+			sum += Math.pow(solution.getObjectiveValue(j), 2.0);
 		}
 
 		Assert.assertEquals(1.0, Math.sqrt(sum), TestThresholds.LOW_PRECISION);

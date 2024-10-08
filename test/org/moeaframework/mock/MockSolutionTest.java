@@ -42,8 +42,8 @@ public class MockSolutionTest {
 		Assert.assertEquals(0, mockSolution.getNumberOfVariables());
 		Assert.assertEquals(2, mockSolution.getNumberOfObjectives());
 		Assert.assertEquals(1, mockSolution.getNumberOfConstraints());
-		Assert.assertArrayEquals(new double[] { 0.0, 1.0 }, mockSolution.getObjectives(), TestThresholds.HIGH_PRECISION);
-		Assert.assertArrayEquals(new double[] { 1.0 }, mockSolution.getConstraints(), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 0.0, 1.0 }, mockSolution.getObjectiveValues(), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 1.0 }, mockSolution.getConstraintValues(), TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertEquals(mockSolution, mockSolution.build());
 		Assert.assertEquals(mockSolution, mockSolution.copy());
@@ -58,12 +58,12 @@ public class MockSolutionTest {
 				.withConstraints(0.0);
 		
 		EncodingUtils.setReal(mockSolution, new double[] { 0.5 });
-		mockSolution.setObjective(0, 1.0);
-		mockSolution.setConstraint(0, 1.0);
+		mockSolution.setObjectiveValue(0, 1.0);
+		mockSolution.setConstraintValue(0, 1.0);
 		
 		Assert.assertEquals(0.5, EncodingUtils.getReal(mockSolution.getVariable(0)), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(1.0, mockSolution.getObjective(0), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(1.0, mockSolution.getConstraint(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, mockSolution.getObjectiveValue(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, mockSolution.getConstraintValue(0), TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -89,7 +89,7 @@ public class MockSolutionTest {
 		Assert.assertEquals(2, mockSolution.getNumberOfObjectives());
 		Assert.assertEquals(0, mockSolution.getNumberOfConstraints());
 		
-		Assert.assertArrayEquals(new double[] { 1.0, 0.0 }, mockSolution.getObjectives(), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 1.0, 0.0 }, mockSolution.getObjectiveValues(), TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test(expected = AssertionError.class)

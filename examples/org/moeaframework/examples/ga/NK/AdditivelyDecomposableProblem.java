@@ -29,6 +29,7 @@ import org.apache.commons.math3.stat.StatUtils;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.objective.Maximize;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.util.validate.Validate;
 
@@ -182,7 +183,7 @@ public class AdditivelyDecomposableProblem implements Problem {
 			result += function[i/step][index];
 		}
 		
-		solution.setObjective(0, -result);
+		solution.setObjectiveValue(0, result);
 	}
 	
 	/**
@@ -363,6 +364,7 @@ public class AdditivelyDecomposableProblem implements Problem {
 	public Solution newSolution() {
 		Solution solution = new Solution(1, 1, 0);
 		solution.setVariable(0, EncodingUtils.newBinary(n));
+		solution.setObjective(0, new Maximize());
 		return solution;
 	}
 

@@ -32,11 +32,11 @@ public class WFG1Test extends WFGTest {
 		Problem problem = new WFG1(2);
 		
 		Assert.assertArrayEquals(new double[] { 1.0, 5.0 }, 
-				evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 3.0, 1.0 }, 
-				evaluateAtUpperBounds(problem).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.000001);
 	}
 
@@ -82,7 +82,7 @@ public class WFG1Test extends WFGTest {
 		
 		problem.evaluate(solution);
 		
-		Assert.assertArrayEquals(new double[] { 2.96206, 0.967335 }, solution.getObjectives(), 0.00001);
+		Assert.assertArrayEquals(new double[] { 2.96206, 0.967335 }, solution.getObjectiveValues(), 0.00001);
 	}
 	
 	@Test(expected = AssertionError.class)
@@ -94,7 +94,7 @@ public class WFG1Test extends WFGTest {
 		
 		problem.evaluate(solution);
 		
-		Assert.assertArrayEquals(new double[] { 2.96206, 0.967335 }, solution.getObjectives(), 0.00001);
+		Assert.assertArrayEquals(new double[] { 2.96206, 0.967335 }, solution.getObjectiveValues(), 0.00001);
 	}
 
 }

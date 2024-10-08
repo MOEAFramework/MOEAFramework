@@ -17,8 +17,9 @@
  */
 package org.moeaframework.problem.misc;
 
-import org.moeaframework.core.Constraint;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.constraint.LessThanOrEqual;
+import org.moeaframework.core.objective.Maximize;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 
@@ -30,7 +31,7 @@ import org.moeaframework.problem.AbstractProblem;
  *   <li>Connected and curved Pareto set
  *   <li>Curved Pareto front
  *   <li>Constrained
- *   <li>Maximization (objectives are negated)
+ *   <li>Maximization
  * </ul>
  * <p>
  * References:
@@ -55,10 +56,10 @@ public class Tamaki extends AbstractProblem {
 		double z = ((RealVariable)solution.getVariable(2)).getValue();
 		double c = Math.pow(x, 2.0) + Math.pow(y, 2.0) + Math.pow(z, 2.0) - 1.0;
 		
-		solution.setObjective(0, -x);
-		solution.setObjective(1, -y);
-		solution.setObjective(2, -z);
-		solution.setConstraint(0, Constraint.lessThanOrEqual(c, 0.0));
+		solution.setObjectiveValue(0, x);
+		solution.setObjectiveValue(1, y);
+		solution.setObjectiveValue(2, z);
+		solution.setConstraintValue(0, c);
 	}
 
 	@Override
@@ -68,6 +69,12 @@ public class Tamaki extends AbstractProblem {
 		solution.setVariable(0, new RealVariable(0.0, 1.0));
 		solution.setVariable(1, new RealVariable(0.0, 1.0));
 		solution.setVariable(2, new RealVariable(0.0, 1.0));
+		
+		solution.setObjective(0, new Maximize());
+		solution.setObjective(1, new Maximize());
+		solution.setObjective(2, new Maximize());
+		
+		solution.setConstraint(0, LessThanOrEqual.to(0.0));
 		
 		return solution;
 	}

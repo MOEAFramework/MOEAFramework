@@ -560,8 +560,8 @@ public class Plot {
 		
 		for (Solution solution : population) {
 			if (solution.isFeasible()) {
-				xs.add(solution.getObjective(x));
-				ys.add(solution.getObjective(y));
+				xs.add(solution.getObjectiveValue(x));
+				ys.add(solution.getObjectiveValue(y));
 			}
 		}
 		

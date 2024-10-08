@@ -23,6 +23,8 @@ import java.util.concurrent.Future;
 
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.constraint.Constraint;
+import org.moeaframework.core.objective.Objective;
 
 /**
  * Represents a {@link Solution} evaluated asynchronously.  Calls to methods requiring the evaluated results, such as
@@ -97,8 +99,8 @@ public class FutureSolution extends Solution {
 				Solution solution = future.get();
 				future = null;
 				
-				setObjectives(solution.getObjectives());
-				setConstraints(solution.getConstraints());
+				setObjectiveValues(solution.getObjectiveValues());
+				setConstraintValues(solution.getConstraintValues());
 				
 				for (Map.Entry<String, Serializable> entry : solution.getAttributes().entrySet()) {
 					setAttribute(entry.getKey(), entry.getValue());
@@ -114,27 +116,39 @@ public class FutureSolution extends Solution {
 		update();
 		return new FutureSolution(this);
 	}
-
+	
 	@Override
-	public double[] getObjectives() {
+	public double[] getObjectiveValues() {
 		update();
-		return super.getObjectives();
+		return super.getObjectiveValues();
 	}
 
 	@Override
-	public double[] getConstraints() {
+	public double[] getConstraintValues() {
 		update();
-		return super.getConstraints();
+		return super.getConstraintValues();
+	}
+	
+	@Override
+	public double getObjectiveValue(int index) {
+		update();
+		return super.getObjectiveValue(index);
+	}
+	
+	@Override
+	public double getConstraintValue(int index) {
+		update();
+		return super.getConstraintValue(index);
 	}
 
 	@Override
-	public double getObjective(int index) {
+	public Objective getObjective(int index) {
 		update();
 		return super.getObjective(index);
 	}
 	
 	@Override
-	public double getConstraint(int index) {
+	public Constraint getConstraint(int index) {
 		update();
 		return super.getConstraint(index);
 	}

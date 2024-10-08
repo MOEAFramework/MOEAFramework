@@ -17,8 +17,8 @@
  */
 package org.moeaframework.problem.misc;
 
-import org.moeaframework.core.Constraint;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.constraint.GreaterThanOrEqual;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 
@@ -69,14 +69,14 @@ public class Osyczka2 extends AbstractProblem {
 		double c5 = 4.0 - Math.pow(x3 - 3.0, 2.0) - x4;
 		double c6 = Math.pow(x5 - 3.0, 2.0) + x6 - 4.0;
 		
-		solution.setObjective(0, f1);
-		solution.setObjective(1, f2);
-		solution.setConstraint(0, Constraint.greaterThanOrEqual(c1, 0.0));
-		solution.setConstraint(1, Constraint.greaterThanOrEqual(c2, 0.0));
-		solution.setConstraint(2, Constraint.greaterThanOrEqual(c3, 0.0));
-		solution.setConstraint(3, Constraint.greaterThanOrEqual(c4, 0.0));
-		solution.setConstraint(4, Constraint.greaterThanOrEqual(c5, 0.0));
-		solution.setConstraint(5, Constraint.greaterThanOrEqual(c6, 0.0));
+		solution.setObjectiveValue(0, f1);
+		solution.setObjectiveValue(1, f2);
+		solution.setConstraintValue(0, c1);
+		solution.setConstraintValue(1, c2);
+		solution.setConstraintValue(2, c3);
+		solution.setConstraintValue(3, c4);
+		solution.setConstraintValue(4, c5);
+		solution.setConstraintValue(5, c6);
 	}
 
 	@Override
@@ -89,6 +89,13 @@ public class Osyczka2 extends AbstractProblem {
 		solution.setVariable(3, new RealVariable(0.0, 6.0));
 		solution.setVariable(4, new RealVariable(1.0, 5.0));
 		solution.setVariable(5, new RealVariable(0.0, 10.0));
+		
+		solution.setConstraint(0, GreaterThanOrEqual.to(0.0));
+		solution.setConstraint(1, GreaterThanOrEqual.to(0.0));
+		solution.setConstraint(2, GreaterThanOrEqual.to(0.0));
+		solution.setConstraint(3, GreaterThanOrEqual.to(0.0));
+		solution.setConstraint(4, GreaterThanOrEqual.to(0.0));
+		solution.setConstraint(5, GreaterThanOrEqual.to(0.0));
 		
 		return solution;
 	}

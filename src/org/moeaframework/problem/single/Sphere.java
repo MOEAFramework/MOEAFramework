@@ -52,7 +52,7 @@ public class Sphere extends AbstractSingleObjectiveProblem {
 			sum += Math.pow(x[i], 2.0);
 		}
 		
-		solution.setObjective(0, sum);
+		solution.setObjectiveValue(0, sum);
 	}
 
 	@Override

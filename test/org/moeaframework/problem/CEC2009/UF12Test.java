@@ -40,7 +40,7 @@ public class UF12Test extends ProblemTest {
 			
 			problem.evaluate(solution);
 			
-			Assert.assertArrayEquals(f, solution.getObjectives(), TestThresholds.LOW_PRECISION);
+			Assert.assertArrayEquals(f, solution.getObjectiveValues(), TestThresholds.LOW_PRECISION);
 		}
 	}
 	

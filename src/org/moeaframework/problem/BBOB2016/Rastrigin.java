@@ -59,7 +59,7 @@ public class Rastrigin extends BBOBFunction {
 			tmp2 += x[i] * x[i];
 		}
 		
-		solution.setObjective(0, 10.0 * (x.length - tmp1) + tmp2);
+		solution.setObjectiveValue(0, 10.0 * (x.length - tmp1) + tmp2);
 	}
 
 }

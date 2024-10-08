@@ -30,15 +30,15 @@ public class RendonTest extends ProblemTest {
 		Problem problem = new Rendon();
 		
 		Assert.assertArrayEquals(new double[] { 1.0, 1.0 }, 
-				evaluateAt(problem, 0.0, 0.0).getObjectives(),
+				evaluateAt(problem, 0.0, 0.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 1.0/19.0, 37.0 }, 
-				evaluateAt(problem, -3.0, -3.0).getObjectives(),
+				evaluateAt(problem, -3.0, -3.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 1.0/19.0, 37.0 }, 
-				evaluateAt(problem, 3.0, 3.0).getObjectives(),
+				evaluateAt(problem, 3.0, 3.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 	}
 

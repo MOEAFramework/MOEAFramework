@@ -59,7 +59,7 @@ public class Rosenbrock extends AbstractSingleObjectiveProblem {
 			sum += 100*Math.pow(x[i+1] - x[i]*x[i], 2.0) + Math.pow(1 - x[i], 2.0);
 		}
 		
-		solution.setObjective(0, sum);
+		solution.setObjectiveValue(0, sum);
 	}
 
 	@Override

@@ -83,8 +83,8 @@ public class MockSolution extends Solution {
 
 		MockSolution mock = new MockSolution(solution);
 		mock.withVariables(variables);
-		mock.withObjectives(solution.getObjectives());
-		mock.withConstraints(solution.getConstraints());
+		mock.withObjectives(solution.getObjectiveValues());
+		mock.withConstraints(solution.getConstraintValues());
 		mock.addAttributes(solution.getAttributes());
 		return mock;
 	}
@@ -304,50 +304,50 @@ public class MockSolution extends Solution {
 	}
 
 	@Override
-	public double getObjective(int index) {
+	public double getObjectiveValue(int index) {
 		throwIfObjectivesNotSet();
 		return objectives.get()[index];
 	}
 
 	@Override
-	public void setObjective(int index, double objective) {
+	public void setObjectiveValue(int index, double objective) {
 		throwIfReadOnly();
 		throwIfObjectivesNotSet();
 		objectives.get()[index] = objective;
 	}
 
 	@Override
-	public void setObjectives(double[] objectives) {
+	public void setObjectiveValues(double[] objectives) {
 		throwIfReadOnly();
 		this.objectives = Optional.of(objectives);
 	}
 
 	@Override
-	public double[] getObjectives() {
+	public double[] getObjectiveValues() {
 		throwIfObjectivesNotSet();
 		return objectives.get().clone();
 	}
 
 	@Override
-	public double getConstraint(int index) {
+	public double getConstraintValue(int index) {
 		throwIfConstraintsNotSet();
 		return constraints.get()[index];
 	}
 
 	@Override
-	public void setConstraints(double[] constraints) {
+	public void setConstraintValues(double[] constraints) {
 		throwIfReadOnly();
 		this.constraints = Optional.of(constraints);
 	}
 
 	@Override
-	public double[] getConstraints() {
+	public double[] getConstraintValues() {
 		throwIfConstraintsNotSet();
 		return constraints.get().clone();
 	}
 
 	@Override
-	public void setConstraint(int index, double constraint) {
+	public void setConstraintValue(int index, double constraint) {
 		throwIfReadOnly();
 		throwIfConstraintsNotSet();
 		constraints.get()[index] = constraint;
@@ -397,11 +397,11 @@ public class MockSolution extends Solution {
 		}
 
 		if (objectives.isPresent()) {
-			solution.setObjectives(objectives.get());
+			solution.setObjectiveValues(objectives.get());
 		}
 
 		if (constraints.isPresent()) {
-			solution.setConstraints(constraints.get());
+			solution.setConstraintValues(constraints.get());
 		}
 
 		solution.addAttributes(getAttributes());

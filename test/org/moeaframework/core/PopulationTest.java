@@ -185,13 +185,13 @@ public class PopulationTest {
 
 			@Override
 			public int compare(Solution o1, Solution o2) {
-				return Double.compare(o1.getObjective(0), o2.getObjective(0));
+				return Double.compare(o1.getObjectiveValue(0), o2.getObjectiveValue(0));
 			}
 
 		});
 
 		Assert.assertSize(1, population);
-		Assert.assertEquals(1.0, population.get(0).getObjective(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, population.get(0).getObjectiveValue(0), TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -230,7 +230,7 @@ public class PopulationTest {
 		Assert.assertEquals(population.size(), population2.size());
 
 		for (int i = 0; i < population.size(); i++) {
-			Assert.assertArrayEquals(population.get(i).getObjectives(), population2.get(i).getObjectives(),
+			Assert.assertArrayEquals(population.get(i).getObjectiveValues(), population2.get(i).getObjectiveValues(),
 					TestThresholds.LOW_PRECISION);
 		}
 	}
@@ -260,8 +260,8 @@ public class PopulationTest {
 		File file = TempFiles.createFile().withContent("0   1 \t 2\n\t   3 4 5 \t\n");
 		Population population = Population.loadObjectives(file);
 		
-		Assert.assertArrayEquals(new double[] {0.0, 1.0, 2.0}, population.get(0).getObjectives(), TestThresholds.HIGH_PRECISION);
-		Assert.assertArrayEquals(new double[] {3.0, 4.0, 5.0}, population.get(1).getObjectives(), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] {0.0, 1.0, 2.0}, population.get(0).getObjectiveValues(), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] {3.0, 4.0, 5.0}, population.get(1).getObjectiveValues(), TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -269,11 +269,11 @@ public class PopulationTest {
 		Assert.assertFalse(population.removeAll(s -> false));
 		Assert.assertSize(4, population);
 		
-		Assert.assertTrue(population.removeAll(s -> s.getObjective(0) < 3.0));
+		Assert.assertTrue(population.removeAll(s -> s.getObjectiveValue(0) < 3.0));
 		Assert.assertSize(2, population);
 		
 		for (Solution solution : population) {
-			Assert.assertGreaterThanOrEqual(solution.getObjective(0), 3.0);
+			Assert.assertGreaterThanOrEqual(solution.getObjectiveValue(0), 3.0);
 		}
 		
 		Assert.assertTrue(population.removeAll(s -> true));
@@ -286,12 +286,12 @@ public class PopulationTest {
 		Assert.assertSize(4, filtered);
 		Assert.assertEquals(filtered, population);
 		
-		filtered = population.filter(s -> s.getObjective(0) >= 3.0);
+		filtered = population.filter(s -> s.getObjectiveValue(0) >= 3.0);
 		Assert.assertSize(2, filtered);
 		Assert.assertSize(4, population);
 		
 		for (Solution solution : filtered) {
-			Assert.assertGreaterThanOrEqual(solution.getObjective(0), 3.0);
+			Assert.assertGreaterThanOrEqual(solution.getObjectiveValue(0), 3.0);
 		}
 		
 		filtered = population.filter(s -> false);

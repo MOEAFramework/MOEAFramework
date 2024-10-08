@@ -51,9 +51,9 @@ public class Binh3 extends AbstractProblem {
 		double x = ((RealVariable)solution.getVariable(0)).getValue();
 		double y = ((RealVariable)solution.getVariable(1)).getValue();
 		
-		solution.setObjective(0, x - 1e6);
-		solution.setObjective(1, y - 2e-6);
-		solution.setObjective(2, x*y - 2.0);
+		solution.setObjectiveValue(0, x - 1e6);
+		solution.setObjectiveValue(1, y - 2e-6);
+		solution.setObjectiveValue(2, x*y - 2.0);
 	}
 
 	@Override

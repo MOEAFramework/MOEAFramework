@@ -69,8 +69,8 @@ public class Quagliarella extends AbstractProblem {
 			A2 += Math.pow(x[i] - 1.5, 2.0) - 10.0*Math.cos(2.0*Math.PI*(x[i] - 1.5)) + 10;
 		}
 		
-		solution.setObjective(0, Math.sqrt(A1 / numberOfVariables));
-		solution.setObjective(1, Math.sqrt(A2 / numberOfVariables));
+		solution.setObjectiveValue(0, Math.sqrt(A1 / numberOfVariables));
+		solution.setObjectiveValue(1, Math.sqrt(A2 / numberOfVariables));
 	}
 
 	@Override

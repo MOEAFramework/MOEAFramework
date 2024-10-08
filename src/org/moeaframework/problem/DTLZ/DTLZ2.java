@@ -65,7 +65,7 @@ public class DTLZ2 extends DTLZ implements AnalyticalProblem {
 			}
 		}
 
-		solution.setObjectives(f);
+		solution.setObjectiveValues(f);
 	}
 
 	@Override

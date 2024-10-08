@@ -64,7 +64,7 @@ public class MaF4 extends DTLZ implements AnalyticalProblem {
 			f[i] = Math.pow(a, i + 1) * (1.0 - f[i]) * (1.0 + g);
 		}
 
-		solution.setObjectives(f);
+		solution.setObjectiveValues(f);
 	}
 	
 	@Override

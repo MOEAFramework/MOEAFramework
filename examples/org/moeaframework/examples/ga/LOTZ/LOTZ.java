@@ -18,6 +18,7 @@
 package org.moeaframework.examples.ga.LOTZ;
 
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.objective.Maximize;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.AbstractProblem;
 
@@ -66,15 +67,16 @@ public class LOTZ extends AbstractProblem {
 			}
 		}
 		
-		// subtract from numberOfBits to convert to minimization problem
-		solution.setObjective(0, numberOfBits - ones);
-		solution.setObjective(1, numberOfBits - zeros);
+		solution.setObjectiveValue(0, ones);
+		solution.setObjectiveValue(1, zeros);
 	}
 	
 	@Override
 	public Solution newSolution() {
-		Solution solution = new Solution(numberOfVariables, numberOfObjectives);
+		Solution solution = new Solution(1, 2);
 		solution.setVariable(0, EncodingUtils.newBinary(numberOfBits));
+		solution.setObjective(0, new Maximize());
+		solution.setObjective(1, new Maximize());
 		return solution;
 	}
 	

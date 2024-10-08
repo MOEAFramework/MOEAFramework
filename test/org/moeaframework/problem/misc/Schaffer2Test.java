@@ -30,19 +30,19 @@ public class Schaffer2Test extends ProblemTest {
 		Problem problem = new Schaffer2();
 		
 		Assert.assertArrayEquals(new double[] { 5.0, 100.0 }, 
-				evaluateAt(problem, -5).getObjectives(),
+				evaluateAt(problem, -5).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 9.0 }, 
-				evaluateAt(problem, 2).getObjectives(),
+				evaluateAt(problem, 2).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 1.0 }, 
-				evaluateAt(problem, 4).getObjectives(),
+				evaluateAt(problem, 4).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 6.0, 25.0 }, 
-				evaluateAt(problem, 10).getObjectives(),
+				evaluateAt(problem, 10).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 	}
 

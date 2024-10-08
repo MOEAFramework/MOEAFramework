@@ -30,11 +30,11 @@ public class Binh3Test extends ProblemTest {
 		Problem problem = new Binh3();
 		
 		Assert.assertArrayEquals(new double[] { 1e-6-1e6, -1e-6, 1e-12-2.0 }, 
-				evaluateAt(problem, 1e-6, 1e-6).getObjectives(),
+				evaluateAt(problem, 1e-6, 1e-6).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 1e6-2e-6, 1e12-2.0 }, 
-				evaluateAt(problem, 1e6, 1e6).getObjectives(),
+				evaluateAt(problem, 1e6, 1e6).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 	}
 

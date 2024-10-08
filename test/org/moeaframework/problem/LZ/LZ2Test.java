@@ -29,11 +29,11 @@ public class LZ2Test extends ProblemTest {
 		Problem problem = new LZ2();
 		
 		Assert.assertArrayEquals(new double[] { 5.537164, 6.773366 }, 
-				evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 1.462836, 0.366369 }, 
-				evaluateAtUpperBounds(problem).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.000001);
 	}
 

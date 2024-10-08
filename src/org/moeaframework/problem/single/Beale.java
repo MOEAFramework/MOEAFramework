@@ -38,7 +38,7 @@ public class Beale extends AbstractSingleObjectiveProblem {
 		double x = EncodingUtils.getReal(solution.getVariable(0));
 		double y = EncodingUtils.getReal(solution.getVariable(1));
 		
-		solution.setObjective(0, Math.pow(1.5 - x + x*y, 2.0) + Math.pow(2.25 - x + x*y*y, 2.0)
+		solution.setObjectiveValue(0, Math.pow(1.5 - x + x*y, 2.0) + Math.pow(2.25 - x + x*y*y, 2.0)
 				+ Math.pow(2.625 - x + x*y*y*y, 2.0));
 	}
 

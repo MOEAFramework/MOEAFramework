@@ -29,11 +29,11 @@ public class UF5Test extends ProblemTest {
 		Problem problem = new UF5();
 		
 		Assert.assertArrayEquals(new double[] { 13.245562, 13.759313 }, 
-				evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.000001);
 		
 		Assert.assertArrayEquals(new double[] { 3.431569, 2.610657 }, 
-				evaluateAtUpperBounds(problem).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.000001);
 	}
 

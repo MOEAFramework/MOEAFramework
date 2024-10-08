@@ -56,8 +56,8 @@ public class Murata extends AbstractProblem implements AnalyticalProblem {
 		double f1 = 2.0 * Math.sqrt(x);
 		double f2 = x * (1.0 - y) + 5.0;
 		
-		solution.setObjective(0, f1);
-		solution.setObjective(1, f2);
+		solution.setObjectiveValue(0, f1);
+		solution.setObjectiveValue(1, f2);
 	}
 
 	@Override

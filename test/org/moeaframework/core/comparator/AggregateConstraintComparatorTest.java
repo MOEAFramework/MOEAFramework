@@ -43,9 +43,9 @@ public class AggregateConstraintComparatorTest {
 		Solution solution2 = new Solution(0, 0, 1);
 		Solution solution3 = new Solution(0, 0, 1);
 
-		solution1.setConstraint(0, 0.0);
-		solution2.setConstraint(0, 1.0);
-		solution3.setConstraint(0, -1.0);
+		solution1.setConstraintValue(0, 0.0);
+		solution2.setConstraintValue(0, 1.0);
+		solution3.setConstraintValue(0, -1.0);
 
 		Assert.assertTrue(comparator.compare(solution1, solution2) < 0);
 		Assert.assertTrue(comparator.compare(solution1, solution3) < 0);
@@ -60,10 +60,10 @@ public class AggregateConstraintComparatorTest {
 		Solution solution3 = new Solution(0, 0, 1);
 		Solution solution4 = new Solution(0, 0, 1);
 
-		solution1.setConstraint(0, 0.0);
-		solution2.setConstraint(0, 0.0);
-		solution3.setConstraint(0, 1.0);
-		solution4.setConstraint(0, -1.0);
+		solution1.setConstraintValue(0, 0.0);
+		solution2.setConstraintValue(0, 0.0);
+		solution3.setConstraintValue(0, 1.0);
+		solution4.setConstraintValue(0, -1.0);
 
 		Assert.assertTrue(comparator.compare(solution1, solution2) == 0);
 		Assert.assertTrue(comparator.compare(solution2, solution1) == 0);

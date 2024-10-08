@@ -35,19 +35,19 @@ public class TanakaTest extends ProblemTest {
 		Problem problem = new Tanaka();
 		
 		Assert.assertArrayEquals(new double[] { 0.1, 0.1 }, 
-				evaluateAt(problem, 0.1, 0.1).getObjectives(),
+				evaluateAt(problem, 0.1, 0.1).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 1.08, 0.0 }, 
-				evaluateAt(problem, 0.1, 0.1).getConstraints(),
+				evaluateAt(problem, 0.1, 0.1).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { Math.PI, Math.PI }, 
-				evaluateAt(problem, Math.PI, Math.PI).getObjectives(),
+				evaluateAt(problem, Math.PI, Math.PI).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 13.456 }, 
-				evaluateAt(problem, Math.PI, Math.PI).getConstraints(),
+				evaluateAt(problem, Math.PI, Math.PI).getConstraintValues(),
 				0.001);
 	}
 

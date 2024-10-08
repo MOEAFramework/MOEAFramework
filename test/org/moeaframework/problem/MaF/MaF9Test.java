@@ -43,15 +43,15 @@ public class MaF9Test extends ProblemTest {
 		Assert.assertSize(0, problem.invalidRegions);
 		
 		Assert.assertArrayEquals(new double[] { 9999.5, 3659.75404, 13660.75404 }, 
-				evaluateAtLowerBounds(problem).getObjectives(),
+				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.00001);
 		
 		Assert.assertArrayEquals(new double[] { 10000.5, 3660.75404, 13659.75404 }, 
-				evaluateAtUpperBounds(problem).getObjectives(),
+				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.00001);
 		
 		Assert.assertArrayEquals(new double[] { 0.5, 0.5, 0.5 }, 
-				evaluateAt(problem, Vector.of(2, 0.0)).getObjectives(),
+				evaluateAt(problem, Vector.of(2, 0.0)).getObjectiveValues(),
 				0.00001);
 	}
 	
@@ -84,7 +84,7 @@ public class MaF9Test extends ProblemTest {
 		Assert.assertFalse(problem.isInvalid(new Vector2D(10.0, 10.0)));
 		
 		Assert.assertArrayEquals(new double[] { 13.017, 9.0489, 1.2613, 7.3715, 13.5518, 14.9191, 10.9511, 3.1634, 5.4693, 11.6497}, 
-				evaluateAt(problem, Vector.of(2, 10.0)).getObjectives(),
+				evaluateAt(problem, Vector.of(2, 10.0)).getObjectiveValues(),
 				0.001);
 	}
 	

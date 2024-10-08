@@ -39,10 +39,10 @@ public class AdditivelyDecomposableExample {
 		// sort the results so the solutions appear in order
 		result.sort(new LexicographicalComparator());
 		
-		// print the bit string and the objective values
+		// print the bit string and the objective value
 		for (Solution solution : result) {
 			System.out.println(solution.getVariable(0) + " " + 
-					-solution.getObjective(0));
+					solution.getObjectiveValue(0));
 		}
 	}
 

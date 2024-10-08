@@ -57,7 +57,7 @@ public class Sphere extends BBOBFunction {
 			result += x[i] * x[i];
 		}
 		
-		solution.setObjective(0, result);
+		solution.setObjectiveValue(0, result);
 	}
 
 }

@@ -68,7 +68,7 @@ public class DistributedProblemTest {
 			// verify reads call update
 			for (int i = 0; i < N; i++) {
 				TestableFutureSolution solution = (TestableFutureSolution)population.get(i);
-				solution.getObjectives();
+				solution.getObjectiveValues();
 				solution.assertUpdated();
 			}
 		}
@@ -175,7 +175,7 @@ public class DistributedProblemTest {
 		GeneticAlgorithm algorithm = new GeneticAlgorithm(problem);
 		algorithm.run(1000);
 		
-		return algorithm.getResult().get(0).getObjective(0); // one optimum for a single objective problem
+		return algorithm.getResult().get(0).getObjectiveValue(0); // one optimum for a single objective problem
 	}
 
 }
