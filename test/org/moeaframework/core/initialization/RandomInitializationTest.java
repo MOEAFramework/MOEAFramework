@@ -27,15 +27,15 @@ import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.Program;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.mock.MockProblem;
 import org.moeaframework.mock.MockUnsupportedVariable;
-import org.moeaframework.problem.ProblemStub;
 import org.moeaframework.util.tree.Rules;
 
 public class RandomInitializationTest {
 
 	@Test
 	public void testMixedType() {
-		Problem problem = new ProblemStub(6) {
+		Problem problem = new MockProblem(6, 0) {
 			
 			@SuppressWarnings("serial")
 			@Override

@@ -22,8 +22,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
+import org.moeaframework.mock.MockProblem;
 import org.moeaframework.mock.MockSolution;
-import org.moeaframework.problem.ProblemStub;
 
 public class AdaptiveGridArchiveTest {
 
@@ -31,7 +31,7 @@ public class AdaptiveGridArchiveTest {
 
 	@Before
 	public void setUp() {
-		problem = new ProblemStub(2);
+		problem = new MockProblem(2);
 	}
 
 	@After
@@ -155,7 +155,7 @@ public class AdaptiveGridArchiveTest {
 	
 	@Test(expected=FrameworkException.class)
 	public void testOverflow() {
-		new AdaptiveGridArchive(100, new ProblemStub(4), 256);
+		new AdaptiveGridArchive(100, new MockProblem(4), 256);
 	}
 	
 	@Test

@@ -23,8 +23,8 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
+import org.moeaframework.mock.MockProblem;
 import org.moeaframework.mock.MockSolution;
-import org.moeaframework.problem.ProblemStub;
 
 public class AdditiveEpsilonIndicatorFitnessEvaluatorTest {
 	
@@ -32,7 +32,7 @@ public class AdditiveEpsilonIndicatorFitnessEvaluatorTest {
 	
 	@Before
 	public void setUp() {
-		fitness = new AdditiveEpsilonIndicatorFitnessEvaluator(new ProblemStub(3));
+		fitness = new AdditiveEpsilonIndicatorFitnessEvaluator(new MockProblem(3));
 	}
 	
 	@After

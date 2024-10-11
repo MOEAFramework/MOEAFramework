@@ -18,8 +18,8 @@
 package org.moeaframework.core.indicator;
 
 import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.mock.MockProblem;
 import org.moeaframework.mock.MockSolution;
-import org.moeaframework.problem.ProblemStub;
 
 // Test instances found in Section 4 in:
 //
@@ -169,22 +169,22 @@ public class IshibuchiTestInstances {
 	}
 	
 	public static double computeGD(NondominatedPopulation referenceSet, NondominatedPopulation approximationSet) {
-		return new GenerationalDistance(new ProblemStub(2), referenceSet, Normalizer.none(), 1.0)
+		return new GenerationalDistance(new MockProblem(2), referenceSet, Normalizer.none(), 1.0)
 				.evaluate(approximationSet);
 	}
 	
 	public static double computeIGD(NondominatedPopulation referenceSet, NondominatedPopulation approximationSet) {
-		return new InvertedGenerationalDistance(new ProblemStub(2), referenceSet, Normalizer.none(), 1.0)
+		return new InvertedGenerationalDistance(new MockProblem(2), referenceSet, Normalizer.none(), 1.0)
 				.evaluate(approximationSet);
 	}
 	
 	public static double computeGDPlus(NondominatedPopulation referenceSet, NondominatedPopulation approximationSet) {
-		return new GenerationalDistancePlus(new ProblemStub(2), referenceSet, Normalizer.none())
+		return new GenerationalDistancePlus(new MockProblem(2), referenceSet, Normalizer.none())
 				.evaluate(approximationSet);
 	}
 	
 	public static double computeIGDPlus(NondominatedPopulation referenceSet, NondominatedPopulation approximationSet) {
-		return new InvertedGenerationalDistancePlus(new ProblemStub(2), referenceSet, Normalizer.none())
+		return new InvertedGenerationalDistancePlus(new MockProblem(2), referenceSet, Normalizer.none())
 				.evaluate(approximationSet);
 	}
 

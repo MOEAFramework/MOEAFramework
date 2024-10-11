@@ -26,6 +26,10 @@ public class MockProblem extends AbstractProblem {
 	
 	private final AtomicInteger count;
 	
+	public MockProblem(int numberOfObjectives) {
+		this(0, numberOfObjectives);
+	}
+	
 	public MockProblem(int numberOfVariables, int numberOfObjectives) {
 		this(numberOfVariables, numberOfObjectives, 0);
 	}
