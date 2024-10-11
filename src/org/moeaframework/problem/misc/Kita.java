@@ -31,7 +31,7 @@ import org.moeaframework.problem.AbstractProblem;
  *   <li>Disconnected Pareto set
  *   <li>Disconnected and concave Pareto front
  *   <li>Constrained
- *   <li>Maximization
+ *   <li>Maximized
  * </ul>
  * <p>
  * References:

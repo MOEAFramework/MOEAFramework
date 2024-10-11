@@ -33,7 +33,7 @@ import org.moeaframework.problem.AnalyticalProblem;
  *   <li>Connected and symmetric Pareto set
  *   <li>Convex Pareto front
  *   <li>Constrained
- *   <li>Maximization
+ *   <li>Maximized
  * </ul>
  * <p>
  * References:
@@ -58,7 +58,7 @@ public class Obayashi extends AbstractProblem implements AnalyticalProblem {
 	public void evaluate(Solution solution) {
 		double x = EncodingUtils.getReal(solution.getVariable(0));
 		double y = EncodingUtils.getReal(solution.getVariable(1));
-		double c = Math.pow(x, 2.0) + Math.pow(y, 2.0) - 1.0;
+		double c = Math.pow(x, 2.0) + Math.pow(y, 2.0);
 		
 		solution.setObjectiveValue(0, x);
 		solution.setObjectiveValue(1, y);
@@ -75,7 +75,7 @@ public class Obayashi extends AbstractProblem implements AnalyticalProblem {
 		solution.setObjective(0, new Maximize());
 		solution.setObjective(1, new Maximize());
 		
-		solution.setConstraint(0, LessThanOrEqual.to(0.0));
+		solution.setConstraint(0, LessThanOrEqual.to(1.0));
 		
 		return solution;
 	}

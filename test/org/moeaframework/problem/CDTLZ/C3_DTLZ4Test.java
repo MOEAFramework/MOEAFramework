@@ -38,17 +38,21 @@ public class C3_DTLZ4Test extends ProblemTest {
 				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.000001);
 		
-		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 0.0 }, 
+		Assert.assertArrayEquals(new double[] { 0.265625, 4.0625, 4.0625 }, 
 				evaluateAtLowerBounds(problem).getConstraintValues(),
 				0.000001);
+				
+		Assert.assertTrue(evaluateAtLowerBounds(problem).isFeasible());
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 2.25 }, 
 				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.000001);
 		
-		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 0.0 }, 
+		Assert.assertArrayEquals(new double[] { 4.0625, 4.0625, 0.265625 }, 
 				evaluateAtUpperBounds(problem).getConstraintValues(),
-				0.000001);		
+				0.000001);	
+		
+		Assert.assertTrue(evaluateAtUpperBounds(problem).isFeasible());
 	}
 
 }

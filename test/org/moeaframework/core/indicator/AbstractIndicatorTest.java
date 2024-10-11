@@ -100,7 +100,7 @@ public abstract class AbstractIndicatorTest<T extends Indicator> {
 			array[i] = new double[solution.getNumberOfObjectives()];
 
 			for (int j = 0; j < solution.getNumberOfObjectives(); j++) {
-				array[i][j] = solution.getObjective(j);
+				array[i][j] = solution.getObjectiveValue(j);
 			}
 		}
 

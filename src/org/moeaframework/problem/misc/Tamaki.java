@@ -31,7 +31,7 @@ import org.moeaframework.problem.AbstractProblem;
  *   <li>Connected and curved Pareto set
  *   <li>Curved Pareto front
  *   <li>Constrained
- *   <li>Maximization
+ *   <li>Maximized
  * </ul>
  * <p>
  * References:
@@ -54,7 +54,7 @@ public class Tamaki extends AbstractProblem {
 		double x = ((RealVariable)solution.getVariable(0)).getValue();
 		double y = ((RealVariable)solution.getVariable(1)).getValue();
 		double z = ((RealVariable)solution.getVariable(2)).getValue();
-		double c = Math.pow(x, 2.0) + Math.pow(y, 2.0) + Math.pow(z, 2.0) - 1.0;
+		double c = Math.pow(x, 2.0) + Math.pow(y, 2.0) + Math.pow(z, 2.0);
 		
 		solution.setObjectiveValue(0, x);
 		solution.setObjectiveValue(1, y);
@@ -74,7 +74,7 @@ public class Tamaki extends AbstractProblem {
 		solution.setObjective(1, new Maximize());
 		solution.setObjective(2, new Maximize());
 		
-		solution.setConstraint(0, LessThanOrEqual.to(0.0));
+		solution.setConstraint(0, LessThanOrEqual.to(1.0));
 		
 		return solution;
 	}

@@ -18,7 +18,7 @@
 package org.moeaframework.problem.misc;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.constraint.LessThanOrEqual;
+import org.moeaframework.core.constraint.GreaterThan;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 
@@ -57,10 +57,9 @@ public class Viennet4 extends AbstractProblem {
 		double f2 = Math.pow(x + y - 3.0, 2.0) / 175.0 + Math.pow(2.0*y - x, 2.0) / 17.0 - 13.0;
 		double f3 = Math.pow(3.0*x - 2.0*y + 4.0, 2.0) / 8.0 + Math.pow(x - y + 1.0, 2.0) / 27.0 + 15.0;
 		
-		//subtract Double.MIN_VALUE so that the constraint is satisfied only if its values is strictly greater than 0
-		double c1 = -4.0*x + 4.0 - y - Double.MIN_VALUE;
-		double c2 = x + 1.0 - Double.MIN_VALUE;
-		double c3 = y - x + 2.0 - Double.MIN_VALUE;
+		double c1 = -4.0*x + 4.0 - y;
+		double c2 = x + 1.0;
+		double c3 = y - x + 2.0;
 		
 		solution.setObjectiveValue(0, f1);
 		solution.setObjectiveValue(1, f2);
@@ -77,9 +76,9 @@ public class Viennet4 extends AbstractProblem {
 		solution.setVariable(0, new RealVariable(-4.0, 4.0));
 		solution.setVariable(1, new RealVariable(-4.0, 4.0));
 		
-		solution.setConstraint(0, LessThanOrEqual.to(0.0));
-		solution.setConstraint(1, LessThanOrEqual.to(0.0));
-		solution.setConstraint(2, LessThanOrEqual.to(0.0));
+		solution.setConstraint(0, GreaterThan.value(0.0));
+		solution.setConstraint(1, GreaterThan.value(0.0));
+		solution.setConstraint(2, GreaterThan.value(0.0));
 		
 		return solution;
 	}

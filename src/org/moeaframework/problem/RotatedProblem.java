@@ -123,14 +123,14 @@ public class RotatedProblem extends ProblemWrapper {
 		super.evaluate(temp);
 		
 		//extract the results
-		solution.setObjectives(temp.getObjectives());
+		solution.setObjectiveValues(temp.getObjectiveValues());
 		
 		for (int i = 0; i < super.getNumberOfConstraints(); i++) {
-			solution.setConstraint(i, temp.getConstraint(i));
+			solution.setConstraintValue(i, temp.getConstraintValue(i));
 		}
 		
 		//set the bounds violation constraint
-		solution.setConstraint(super.getNumberOfConstraints(), boundsViolation);
+		solution.setConstraintValue(super.getNumberOfConstraints(), boundsViolation);
 	}
 
 	@Override

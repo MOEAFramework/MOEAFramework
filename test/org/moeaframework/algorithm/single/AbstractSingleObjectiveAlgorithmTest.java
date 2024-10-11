@@ -74,7 +74,7 @@ public abstract class AbstractSingleObjectiveAlgorithmTest<T extends Algorithm &
 		Solution solution = algorithm.getResult().get(0);
 		
 		Assert.assertArrayEquals(new double[] { 1.0, 1.0 }, EncodingUtils.getReal(solution), 0.1);
-		Assert.assertArrayEquals(new double[] { 0.0 }, solution.getObjectives(), 0.1);
+		Assert.assertArrayEquals(new double[] { 0.0 }, solution.getObjectiveValues(), 0.1);
 	}
 
 }

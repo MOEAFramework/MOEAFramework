@@ -47,7 +47,7 @@ public class SumOfConstraintsPenaltyFunctionTest {
 	
 	@Test
 	public void testNoConstraints() {
-		Solution solution = MockSolution.of().withConstraints();
+		Solution solution = MockSolution.of();
 		
 		Assert.assertEquals(0.0, penaltyFunction.calculate(solution), TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(0.0, Penalty.getAttribute(solution), TestThresholds.HIGH_PRECISION);

@@ -36,6 +36,8 @@ public class CF9Test extends ProblemTest {
 				evaluateAtLowerBounds(problem).getConstraintValues(),
 				0.0001);
 		
+		Assert.assertFalse(evaluateAtLowerBounds(problem).isFeasible());
+		
 		Assert.assertArrayEquals(new double[] { 2.77032, 0.67968, 2.37687 }, 
 				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.001);
@@ -43,6 +45,8 @@ public class CF9Test extends ProblemTest {
 		Assert.assertArrayEquals(new double[] { -3.6999 },
 				evaluateAtUpperBounds(problem).getConstraintValues(),
 				0.001);
+		
+		Assert.assertFalse(evaluateAtUpperBounds(problem).isFeasible());
 	}
 
 	@Test

@@ -30,20 +30,24 @@ public class ObayashiTest extends ProblemTest {
 		Problem problem = new Obayashi();
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 0.0 }, 
-				evaluateAt(problem, 0.0, 0.0).getObjectiveValues(),
+				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 0.0 }, 
-				evaluateAt(problem, 0.0, 0.0).getConstraintValues(),
+				evaluateAtLowerBounds(problem).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { -1.0, -1.0 }, 
-				evaluateAt(problem, 1.0, 1.0).getObjectiveValues(),
+		Assert.assertTrue(evaluateAtLowerBounds(problem).isFeasible());
+		
+		Assert.assertArrayEquals(new double[] { 1.0, 1.0 }, 
+				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { 1.0 }, 
-				evaluateAt(problem, 1.0, 1.0).getConstraintValues(),
+		Assert.assertArrayEquals(new double[] { 2.0 }, 
+				evaluateAtUpperBounds(problem).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
+		
+		Assert.assertFalse(evaluateAtUpperBounds(problem).isFeasible());
 	}
 
 }

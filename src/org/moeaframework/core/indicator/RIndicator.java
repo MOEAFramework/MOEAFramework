@@ -68,7 +68,7 @@ public abstract class RIndicator extends NormalizedIndicator {
 			double sum = 0.0;
 			
 			for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
-				sum += weights[i] * solution.getObjective(i);
+				sum += solution.getObjective(i).applyWeight(weights[i]);
 			}
 			
 			return 1.0 - sum;
@@ -93,7 +93,7 @@ public abstract class RIndicator extends NormalizedIndicator {
 			double max = 0.0;
 			
 			for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
-				max = Math.max(max, weights[i] * solution.getObjective(i));
+				max = Math.max(max, solution.getObjective(i).applyWeight(weights[i]));
 			}
 			
 			return 1.0 - max;

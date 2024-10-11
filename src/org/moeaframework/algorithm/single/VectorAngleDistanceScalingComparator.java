@@ -81,7 +81,7 @@ public class VectorAngleDistanceScalingComparator extends AbstractAggregateObjec
 	 * @return the fitness, where smaller values are preferred
 	 */
 	public static final double calculateFitness(Solution solution, double[] weights, double q) {
-		double[] objectives = solution.getObjectives();
+		double[] objectives = solution.getCanonicalObjectiveValues();
 		double magnitude = Vector.magnitude(objectives);
 		double cosine = Vector.dot(weights, Vector.divide(objectives, magnitude));
 		

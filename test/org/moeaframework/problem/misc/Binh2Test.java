@@ -33,17 +33,21 @@ public class Binh2Test extends ProblemTest {
 				evaluateAt(problem, 0.0, 0.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { 0.0, 0.0 }, 
+		Assert.assertArrayEquals(new double[] { 0.0, -65.3 }, 
 				evaluateAt(problem, 0.0, 0.0).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
+		
+		Assert.assertTrue(evaluateAt(problem, 0.0, 0.0).isFeasible());
 		
 		Assert.assertArrayEquals(new double[] { 136.0, 4.0 }, 
 				evaluateAt(problem, 5.0, 3.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { 0.0, 0.0 }, 
+		Assert.assertArrayEquals(new double[] { -16.0, -37.3 }, 
 				evaluateAt(problem, 5.0, 3.0).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
+		
+		Assert.assertTrue(evaluateAt(problem, 5.0, 3.0).isFeasible());
 	}
 
 }

@@ -82,20 +82,20 @@ public class ResultFileWriterTest {
 		((RealVariable)solution1.getVariable(0)).setValue(0.0);
 		((BinaryVariable)solution1.getVariable(1)).set(2, true);
 		((Permutation)solution1.getVariable(2)).swap(0, 2);
-		solution1.setObjectives(new double[] { 0.0, 1.0 });
+		solution1.setObjectiveValues(new double[] { 0.0, 1.0 });
 		
 		solution2 = problem.newSolution();
 		((RealVariable)solution1.getVariable(0)).setValue(1.0);
 		((BinaryVariable)solution1.getVariable(1)).set(1, true);
 		((Permutation)solution1.getVariable(2)).swap(0, 1);
-		solution2.setObjectives(new double[] { 1.0, 0.0 });
+		solution2.setObjectiveValues(new double[] { 1.0, 0.0 });
 		
 		solution3 = problem.newSolution();
 		((RealVariable)solution1.getVariable(0)).setValue(0.5);
 		((BinaryVariable)solution1.getVariable(1)).set(1, true);
 		((Permutation)solution1.getVariable(2)).swap(1, 2);
-		solution3.setObjectives(new double[] { 0.5, 0.5 });
-		solution3.setConstraints(new double[] { -1.0 });
+		solution3.setObjectiveValues(new double[] { 0.5, 0.5 });
+		solution3.setConstraintValues(new double[] { -1.0 });
 	}
 
 	@After
@@ -195,8 +195,8 @@ public class ResultFileWriterTest {
 		}
 		
 		population.clear();
-		population.add(MockSolution.of().withObjectives(solution1.getObjectives()));
-		population.add(MockSolution.of().withObjectives(solution2.getObjectives()));
+		population.add(MockSolution.of().withObjectives(solution1.getObjectiveValues()).withConstraints(solution1.getConstraintValues()));
+		population.add(MockSolution.of().withObjectives(solution2.getObjectiveValues()).withConstraints(solution2.getConstraintValues()));
 		
 		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
 			ResultEntry entry = reader.next();
@@ -331,7 +331,7 @@ public class ResultFileWriterTest {
 		
 		Solution solution = problem.newSolution();
 		((RealVariable)solution.getVariable(0)).setValue(0.5);
-		solution.setObjectives(new double[] { 0.0, 1.0 });
+		solution.setObjectiveValues(new double[] { 0.0, 1.0 });
 		population.add(solution);
 		
 		try (ResultFileWriter writer = ResultFileWriter.append(problem, file)) {
@@ -341,7 +341,7 @@ public class ResultFileWriterTest {
 		try (ResultFileReader reader = ResultFileReader.open(problem, file)) {
 			ResultEntry entry = reader.next();
 			Assert.assertEquals(1, entry.getPopulation().size());
-			Assert.assertArrayEquals(solution.getObjectives(), entry.getPopulation().get(0).getObjectives(),
+			Assert.assertArrayEquals(solution.getObjectiveValues(), entry.getPopulation().get(0).getObjectiveValues(),
 					TestThresholds.HIGH_PRECISION);
 			Assert.assertEquals(solution.getVariable(0), entry.getPopulation().get(0).getVariable(0));
 		}

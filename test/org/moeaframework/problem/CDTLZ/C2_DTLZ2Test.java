@@ -46,6 +46,8 @@ public class C2_DTLZ2Test extends ProblemTest {
 				evaluateAtLowerBounds(problem).getConstraintValues(),
 				0.000001);
 		
+		Assert.assertFalse(evaluateAtLowerBounds(problem).isFeasible());
+		
 		Assert.assertArrayEquals(new double[] { 1.31228981e-32, 2.14313190e-16, 3.5 }, 
 				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.000001);
@@ -53,6 +55,8 @@ public class C2_DTLZ2Test extends ProblemTest {
 		Assert.assertArrayEquals(new double[] { 6.09 }, 
 				evaluateAtUpperBounds(problem).getConstraintValues(),
 				0.000001);
+		
+		Assert.assertFalse(evaluateAtUpperBounds(problem).isFeasible());
 	}
 	
 	@Test

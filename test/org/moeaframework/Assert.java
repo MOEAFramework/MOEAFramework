@@ -116,22 +116,22 @@ public class Assert extends org.junit.Assert {
 	}
 	
 	public static void assertEquals(Objective expected, Objective actual, double epsilon) {
-		assertEquals(expected.getClass(), actual.getClass());
+		assertTrue(expected.getClass().isInstance(actual) || actual.getClass().isInstance(expected));
 		assertEquals(expected.getValue(), actual.getValue(), epsilon);
 	}
 	
 	public static void assertEquals(Constraint expected, Constraint actual, double epsilon) {
-		assertEquals(expected.getClass(), actual.getClass());
+		assertTrue(expected.getClass().isInstance(actual) || actual.getClass().isInstance(expected));
 		assertEquals(expected.getValue(), actual.getValue(), epsilon);
 	}
 	
 	public static void assertEquals(String message, Objective expected, Objective actual, double epsilon) {
-		assertEquals(message, expected.getClass(), actual.getClass());
+		assertTrue(message, expected.getClass().isInstance(actual) || actual.getClass().isInstance(expected));
 		assertEquals(message, expected.getValue(), actual.getValue(), epsilon);
 	}
 	
 	public static void assertEquals(String message, Constraint expected, Constraint actual, double epsilon) {
-		assertEquals(message, expected.getClass(), actual.getClass());
+		assertTrue(message, expected.getClass().isInstance(actual) || actual.getClass().isInstance(expected));
 		assertEquals(message, expected.getValue(), actual.getValue(), epsilon);
 	}
 	

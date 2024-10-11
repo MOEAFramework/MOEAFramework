@@ -29,7 +29,7 @@ import org.moeaframework.problem.AbstractProblem;
  * <ul>
  *   <li>Disconnected Pareto set
  *   <li>Disconnected and convex Pareto front
- *   <li>Maximization (objectives are negated)
+ *   <li>Maximized
  * </ul>
  * <p>
  * References:

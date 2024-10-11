@@ -342,16 +342,16 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 		double[] bests = new double[newPoint.getNumberOfObjectives()];
 
 		for (int i = 0; i < newPoint.getNumberOfObjectives(); i++) {
-			worsts[i] = newPoint.getObjective(i);
-			bests[i] = newPoint.getObjective(i);
+			worsts[i] = newPoint.getObjective(i).getCanonicalValue();
+			bests[i] = newPoint.getObjective(i).getCanonicalValue();
 		}
 
 		for (int i = 0; i < newPoint.getNumberOfObjectives(); i++) {
 			for (int j = 0; j < archive.size(); j++) {
-				if (archive.get(j).getObjective(i) < bests[i]) {
-					bests[i] = archive.get(j).getObjective(i);
-				} else if (archive.get(j).getObjective(i) > worsts[i]) {
-					worsts[i] = archive.get(j).getObjective(i);
+				if (archive.get(j).getObjective(i).getCanonicalValue() < bests[i]) {
+					bests[i] = archive.get(j).getObjective(i).getCanonicalValue();
+				} else if (archive.get(j).getObjective(i).getCanonicalValue() > worsts[i]) {
+					worsts[i] = archive.get(j).getObjective(i).getCanonicalValue();
 				}
 			}
 
@@ -373,7 +373,8 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 		double deltaDominance = 0.0;
 
 		for (int i = 0; i < solutionA.getNumberOfObjectives(); i++) {
-			deltaDominance *= Math.abs(solutionA.getObjective(i) - solutionB.getObjective(i)) / r[i];
+			deltaDominance *= Math.abs(solutionA.getObjective(i).getCanonicalValue() -
+					solutionB.getObjective(i).getCanonicalValue()) / r[i];
 		}
 
 		return deltaDominance;

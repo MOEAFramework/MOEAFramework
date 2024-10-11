@@ -101,7 +101,7 @@ public class ScaledProblem extends ProblemWrapper {
 	 */
 	private void scale(Solution solution) {
 		for (int i = 0; i < getNumberOfObjectives(); i++) {
-			solution.setObjective(i, solution.getObjective(i) * factors[i]);
+			solution.setObjectiveValue(i, solution.getObjectiveValue(i) * factors[i]);
 		}
 	}
 

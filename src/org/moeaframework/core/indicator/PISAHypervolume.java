@@ -87,7 +87,7 @@ public class PISAHypervolume extends NormalizedIndicator {
 	 */
 	protected static void invert(Problem problem, Solution solution) {
 		for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
-			double value = solution.getObjective(j);
+			double value = solution.getObjectiveValue(j);
 
 			if (value < 0.0) {
 				value = 0.0;
@@ -95,7 +95,7 @@ public class PISAHypervolume extends NormalizedIndicator {
 				value = 1.0;
 			}
 
-			solution.setObjective(j, 1.0 - value);
+			solution.setObjectiveValue(j, 1.0 - value);
 		}
 	}
 
@@ -117,10 +117,12 @@ public class PISAHypervolume extends NormalizedIndicator {
 			if (worseInAnyObjective) {
 				break;
 			}
+			
+			int flag = solution1.getObjective(i).compareTo(solution2.getObjective(i));
 
-			if (solution1.getObjective(i) > solution2.getObjective(i)) {
+			if (flag > 0) {
 				betterInAnyObjective = true;
-			} else if (solution1.getObjective(i) < solution2.getObjective(i)) {
+			} else if (flag < 0) {
 				worseInAnyObjective = true;
 			}
 		}
@@ -182,10 +184,10 @@ public class PISAHypervolume extends NormalizedIndicator {
 	 * in 'front'.
 	 */
 	private static double surfaceUnchangedTo(List<Solution> population, int numberOfSolutions, int objective) {
-		double min = population.get(0).getObjective(objective);
+		double min = population.get(0).getObjectiveValue(objective);
 
 		for (int i = 1; i < numberOfSolutions; i++) {
-			min = Math.min(min, population.get(i).getObjective(objective));
+			min = Math.min(min, population.get(i).getObjectiveValue(objective));
 		}
 
 		return min;
@@ -203,7 +205,7 @@ public class PISAHypervolume extends NormalizedIndicator {
 		int n = numberOfSolutions;
 
 		for (int i = 0; i < n; i++) {
-			if (population.get(i).getObjective(objective) <= threshold) {
+			if (population.get(i).getObjectiveValue(objective) <= threshold) {
 				n--;
 				swap(population, i, n);
 			}
@@ -234,7 +236,7 @@ public class PISAHypervolume extends NormalizedIndicator {
 
 			double tempVolume = 0.0;
 			if (numberOfObjectives < 3) {
-				tempVolume = population.get(0).getObjective(0);
+				tempVolume = population.get(0).getObjectiveValue(0);
 			} else {
 				tempVolume = calculateHypervolume(population, numberOfNondominatedPoints, numberOfObjectives - 1);
 			}
@@ -266,7 +268,7 @@ public class PISAHypervolume extends NormalizedIndicator {
 		outer: for (Solution solution : approximationSet) {
 			//prune any solutions which exceed the Nadir point
 			for (int i=0; i<solution.getNumberOfObjectives(); i++) {
-				if (solution.getObjective(i) > 1.0) {
+				if (solution.getObjectiveValue(i) > 1.0) {
 					continue outer;
 				}
 			}

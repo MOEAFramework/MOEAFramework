@@ -51,7 +51,7 @@ public class CMAESTest extends AlgorithmTest {
 		Solution solution = algorithm.getResult().get(0);
 		
 		Assert.assertArrayEquals(new double[] { 1.0, 1.0 }, EncodingUtils.getReal(solution), 0.001);
-		Assert.assertArrayEquals(new double[] { 0.0 }, solution.getObjectives(), 0.001);
+		Assert.assertArrayEquals(new double[] { 0.0 }, solution.getObjectiveValues(), 0.001);
 	}
 
 	@Test

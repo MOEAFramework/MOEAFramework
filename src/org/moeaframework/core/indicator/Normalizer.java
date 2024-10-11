@@ -288,7 +288,7 @@ public class Normalizer {
 				for (int j = 0; j < solution.getNumberOfObjectives(); j++) {
 					double minimum = this.minimum[j >= this.minimum.length ? this.minimum.length-1 : j];
 					double maximum = this.maximum[j >= this.maximum.length ? this.maximum.length-1 : j];
-					solution.setObjective(j, (solution.getObjective(j) - minimum) / (maximum - minimum));
+					solution.setObjective(j, solution.getObjective(j).normalize(minimum, maximum));
 				}
 			}
 		}
@@ -328,6 +328,7 @@ public class Normalizer {
 
 		@Override
 		public NondominatedPopulation normalize(NondominatedPopulation population) {
+			// TODO: This should now return NormalizedObjective with the canonical value
 			return population;
 		}
 

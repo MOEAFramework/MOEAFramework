@@ -26,6 +26,7 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.attribute.Fitness;
 import org.moeaframework.core.indicator.PISAHypervolume;
+import org.moeaframework.core.objective.NormalizedObjective;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -111,8 +112,8 @@ public class HypervolumeContributionFitnessEvaluator implements FitnessEvaluator
 			Solution newSolution = solution.copy();
 			
 			for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-				newSolution.setObjective(i,
-						(max[i] - (newSolution.getObjective(i) - min[i]) + offset) / (max[i] - min[i]));
+				NormalizedObjective obj = newSolution.getObjective(i).normalize(min[i], max[i]);
+				obj.setValue(1.0 - obj.getValue() + offset);
 			}
 
 			result.add(newSolution);

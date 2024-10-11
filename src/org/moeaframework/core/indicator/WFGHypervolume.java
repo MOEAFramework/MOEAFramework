@@ -81,7 +81,7 @@ public class WFGHypervolume implements Indicator {
 			
 			//prune any solutions which exceed the reference point
 			for (int i=0; i<solution.getNumberOfObjectives(); i++) {
-				if (solution.getObjective(i) > referencePoint[i]) {
+				if (solution.getObjective(i).compareTo(referencePoint[i]) > 0) {
 					iterator.remove();
 					break;
 				}
@@ -109,20 +109,21 @@ public class WFGHypervolume implements Indicator {
 		
 		if (slice == 1) {
 			// special case - O(1) calculation for the 1-dimension case
-			volume = referencePoint[0] - pointList.get(0).getObjective(0);
+			volume = pointList.get(0).getObjective(0).distanceTo(referencePoint[0]);
 		} else if (slice == 2) {
 			// special case - O(n) calculation for the 2-dimension case
-			volume = (referencePoint[0] - pointList.get(0).getObjective(0)) *
-					(referencePoint[1] - pointList.get(0).getObjective(1));
+			volume = pointList.get(0).getObjective(0).distanceTo(referencePoint[0]) *
+					pointList.get(0).getObjective(1).distanceTo(referencePoint[1]);
 			
 			for (int i = 1; i < pointList.size(); i++) {
-				volume += (referencePoint[0] - pointList.get(i).getObjective(0)) *
-						(pointList.get(i-1).getObjective(1) - pointList.get(i).getObjective(1));
+				volume += pointList.get(i).getObjective(0).distanceTo(referencePoint[0]) *
+						pointList.get(i-1).getObjective(1).distanceTo(pointList.get(i).getObjective(1));
 			}
 		} else {
 			// recursive case for 3+ dimensions
 			for (int i = pointList.size() - 1; i >= 0; i--) {
-				volume += (referencePoint[slice-1] - pointList.get(i).getObjective(slice-1)) * exclhv(pointList, i, slice-1);
+				volume += pointList.get(i).getObjective(slice-1).distanceTo(referencePoint[slice-1]) *
+						exclhv(pointList, i, slice-1);
 			}
 		}
 		
@@ -141,7 +142,7 @@ public class WFGHypervolume implements Indicator {
 		double volume = 1.0;
 		
 		for (int i = 0; i < slice; i++) {
-			volume *= (referencePoint[i] - point.getObjective(i));
+			volume *= point.getObjective(i).distanceTo(referencePoint[i]);
 		}
 		
 		return volume;
@@ -178,7 +179,7 @@ public class WFGHypervolume implements Indicator {
 			Solution slicedSolution = new Solution(0, slice);
 			
 			for (int j = 0; j < slice; j++) {
-				slicedSolution.setObjective(j, worse(pointList.get(k), pointList.get(k + i + 1), j));
+				slicedSolution.setObjectiveValue(j, worse(pointList.get(k), pointList.get(k + i + 1), j));
 			}
 			
 			result.add(slicedSolution);
@@ -197,10 +198,8 @@ public class WFGHypervolume implements Indicator {
 	 * @return the worse (larger) objective value
 	 */
 	private double worse(Solution point1, Solution point2, int objective) {
-		double objective1 = point1.getObjective(objective);
-		double objective2 = point2.getObjective(objective);
-		
-		return objective1 > objective2 ? objective1 : objective2;
+		int flag = point1.getObjective(objective).compareTo(point2.getObjective(objective));
+		return flag > 0 ? point1.getObjectiveValue(objective) : point2.getObjectiveValue(objective);
 	}
 	
 	/**
@@ -219,7 +218,7 @@ public class WFGHypervolume implements Indicator {
 		@Override
 		public int compare(Solution solution1, Solution solution2) {
 			for (int i = slice - 1; i >= 0; i--) {
-				int flag = Double.compare(solution1.getObjective(i), solution2.getObjective(i));
+				int flag = solution1.getObjective(i).compareTo(solution2.getObjective(i));
 
 				if (flag != 0) {
 					return -flag;

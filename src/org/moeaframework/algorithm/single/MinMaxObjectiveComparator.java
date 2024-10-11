@@ -52,8 +52,8 @@ public class MinMaxObjectiveComparator extends AbstractAggregateObjectiveCompara
 		double max = Double.NEGATIVE_INFINITY;
 
 		for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
-			max = Math.max(max, Math.max(weights[i >= weights.length ? weights.length-1 : i], 0.0001)
-					* solution.getObjective(i));
+			max = Math.max(max, solution.getObjective(i).applyWeight(
+					Math.max(weights[i >= weights.length ? weights.length-1 : i], 0.0001)));
 		}
 
 		return max;

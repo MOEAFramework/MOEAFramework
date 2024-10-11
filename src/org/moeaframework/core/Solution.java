@@ -24,8 +24,6 @@ import java.util.Map;
 
 import org.apache.commons.lang3.SerializationUtils;
 import org.moeaframework.core.constraint.Constraint;
-import org.moeaframework.core.constraint.Equal;
-import org.moeaframework.core.objective.Minimize;
 import org.moeaframework.core.objective.Objective;
 import org.moeaframework.util.clustering.DistanceMeasure;
 import org.moeaframework.util.format.Column;
@@ -196,6 +194,14 @@ public class Solution implements Formattable<Solution>, Serializable {
 		variables[index] = variable;
 	}
 	
+	private Objective getObjectiveOrDefault(int index) {
+		if (objectives[index] == null) {
+			objectives[index] = Objective.createDefault();
+		}
+		
+		return objectives[index];
+	}
+	
 	/**
 	 * Returns the objective at the specified index.
 	 * 
@@ -205,7 +211,7 @@ public class Solution implements Formattable<Solution>, Serializable {
 	 *         {@code (index < 0) || (index >= getNumberOfObjectives())}
 	 */
 	public Objective getObjective(int index) {
-		return objectives[index];
+		return getObjectiveOrDefault(index);
 	}
 
 	/**
@@ -229,11 +235,7 @@ public class Solution implements Formattable<Solution>, Serializable {
 	 *         {@code (index < 0) || (index >= getNumberOfObjectives())}
 	 */
 	public double getObjectiveValue(int index) {
-		if (objectives[index] == null) {
-			return Double.NaN;
-		}
-		
-		return objectives[index].getValue();
+		return getObjectiveOrDefault(index).getValue();
 	}
 
 	/**
@@ -245,11 +247,19 @@ public class Solution implements Formattable<Solution>, Serializable {
 	 *         {@code (index < 0) || (index >= getNumberOfObjectives())}
 	 */
 	public void setObjectiveValue(int index, double objective) {
-		if (objectives[index] == null) {
-			objectives[index] = new Minimize();
-		}
-		
-		objectives[index].setValue(objective);
+		getObjectiveOrDefault(index).setValue(objective);
+	}
+	
+	/**
+	 * Sets all objective values of this solution.
+	 * 
+	 * @param objectives the new objective values for this solution
+	 * @throws IllegalArgumentException if {@code objectives.length != getNumberOfObjectives()}
+	 * @deprecated use {@link #setObjectiveValues(double[]) instead
+	 */
+	@Deprecated
+	public void setObjectives(double[] objectives) {
+		setObjectiveValues(objectives);
 	}
 
 	/**
@@ -267,19 +277,35 @@ public class Solution implements Formattable<Solution>, Serializable {
 	}
 
 	/**
-	 * Returns an array containing the objective values of this solution. Modifying the returned array will not modify
+	 * Returns an array containing the objective values of this solution.  Modifying the returned array will not modify
 	 * the internal state of this solution.
 	 * 
 	 * @return an array containing the objective values of this solution
 	 */
 	public double[] getObjectiveValues() {
-		double[] objectives = new double[this.objectives.length];
+		double[] result = new double[objectives.length];
 		
 		for (int i = 0; i < objectives.length; i++) {
-			objectives[i] = getObjectiveValue(i);
+			result[i] = getObjectiveValue(i);
 		}
 		
-		return objectives;
+		return result;
+	}
+	
+	/**
+	 * Returns an array containing the canonical objective values of this solution.  See
+	 * {@link Objective#getCanonicalValue() for more details.
+	 * 
+	 * @return an array containing the canonical objective values of this solution
+	 */
+	public double[] getCanonicalObjectiveValues() {
+		double[] result = new double[this.objectives.length];
+		
+		for (int i = 0; i < objectives.length; i++) {
+			result[i] = getObjective(i).getCanonicalValue();
+		}
+		
+		return result;
 	}
 	
 	/**
@@ -324,6 +350,14 @@ public class Solution implements Formattable<Solution>, Serializable {
 		return sum;
 	}
 	
+	private Constraint getConstraintOrDefault(int index) {
+		if (constraints[index] == null) {
+			constraints[index] = Constraint.createDefault();
+		}
+		
+		return constraints[index];
+	}
+	
 	/**
 	 * Returns the constraint at the specified index.
 	 * 
@@ -333,7 +367,7 @@ public class Solution implements Formattable<Solution>, Serializable {
 	 *         {@code (index < 0) || (index >= getNumberOfConstraints())}
 	 */
 	public Constraint getConstraint(int index) {
-		return constraints[index];
+		return getConstraintOrDefault(index);
 	}
 	
 	/**
@@ -357,11 +391,7 @@ public class Solution implements Formattable<Solution>, Serializable {
 	 *         {@code (index < 0) || (index >= getNumberOfConstraints())}
 	 */
 	public double getConstraintValue(int index) {
-		if (constraints[index] == null) {
-			return Double.NaN;
-		}
-		
-		return constraints[index].getValue();
+		return getConstraintOrDefault(index).getValue();
 	}
 	
 	/**
@@ -373,11 +403,19 @@ public class Solution implements Formattable<Solution>, Serializable {
 	 *         {@code (index < 0) || (index >= getNumberOfConstraints())}
 	 */
 	public void setConstraintValue(int index, double constraint) {
-		if (constraints[index] == null) {
-			constraints[index] = Equal.to(0.0);
-		}
-		
-		constraints[index].setValue(constraint);
+		getConstraintOrDefault(index).setValue(constraint);
+	}
+	
+	/**
+	 * Sets all constraint values of this solution.
+	 * 
+	 * @param constraints the new constraint values for this solution
+	 * @throws IllegalArgumentException if {@code constraints.length != getNumberOfConstraints()}
+	 * @deprecated use {@link #setConstraintValues(double[]) instead
+	 */
+	@Deprecated
+	public void setConstraints(double[] constraints) {
+		setConstraintValues(constraints);
 	}
 
 	/**

@@ -81,7 +81,7 @@ public class NativeHypervolume extends NormalizedIndicator {
 	 */
 	protected static void invert(Problem problem, Solution solution) {
 		for (int j = 0; j < problem.getNumberOfObjectives(); j++) {
-			double value = solution.getObjective(j);
+			double value = solution.getObjectiveValue(j);
 
 			if (value < 0.0) {
 				value = 0.0;
@@ -89,7 +89,7 @@ public class NativeHypervolume extends NormalizedIndicator {
 				value = 1.0;
 			}
 
-			solution.setObjective(j, 1.0 - value);
+			solution.setObjectiveValue(j, 1.0 - value);
 		}
 	}
 
@@ -118,7 +118,7 @@ public class NativeHypervolume extends NormalizedIndicator {
 		outer: for (Solution solution : approximationSet) {
 			//prune any solutions which exceed the Nadir point
 			for (int i=0; i<solution.getNumberOfObjectives(); i++) {
-				if (solution.getObjective(i) > 1.0) {
+				if (solution.getObjectiveValue(i) > 1.0) {
 					continue outer;
 				}
 			}
@@ -173,7 +173,7 @@ public class NativeHypervolume extends NormalizedIndicator {
 				Solution referencePoint = new Solution(0, problem.getNumberOfObjectives());
 
 				for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-					referencePoint.setObjective(i, nadirPoint);
+					referencePoint.setObjectiveValue(i, nadirPoint);
 				}
 
 				new Population(List.of(referencePoint)).saveObjectives(referencePointFile);

@@ -50,7 +50,7 @@ public class LinearObjectiveComparator extends AbstractAggregateObjectiveCompara
 		double fitness = 0.0;
 		
 		for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
-			fitness += weights[i >= weights.length ? weights.length-1 : i] * solution.getObjective(i);
+			fitness += solution.getObjective(i).applyWeight(weights[i >= weights.length ? weights.length-1 : i]);
 		}
 		
 		return fitness;

@@ -179,8 +179,8 @@ public class ReferenceVectorGuidedPopulation extends Population {
 		
 		for (Solution solution : this) {
 			for (int i = 0; i < numberOfObjectives; i++) {
-				zmin[i] = Math.min(zmin[i], solution.getObjective(i));
-				zmax[i] = Math.max(zmax[i], solution.getObjective(i));
+				zmin[i] = Math.min(zmin[i], solution.getObjective(i).getCanonicalValue());
+				zmax[i] = Math.max(zmax[i], solution.getObjective(i).getCanonicalValue());
 			}
 		}
 		
@@ -248,7 +248,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 			}
 
 			for (int i = 0; i < numberOfObjectives; i++) {
-				idealPoint[i] = Math.min(idealPoint[i], solution.getObjective(i));
+				idealPoint[i] = Math.min(idealPoint[i], solution.getObjective(i).getCanonicalValue());
 			}
 		}
 	}
@@ -259,7 +259,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	 */
 	protected void translateByIdealPoint() {
 		for (Solution solution : this) {
-			double[] objectives = solution.getObjectives();
+			double[] objectives = solution.getCanonicalObjectiveValues();
 
 			for (int i = 0; i < numberOfObjectives; i++) {
 				objectives[i] -= idealPoint[i];

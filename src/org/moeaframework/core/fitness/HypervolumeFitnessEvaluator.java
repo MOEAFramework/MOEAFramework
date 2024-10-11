@@ -101,11 +101,11 @@ public class HypervolumeFitnessEvaluator extends IndicatorFitnessEvaluator {
 	 */
 	public double calculateHypervolume(Solution solution1, Solution solution2, int d) {
 		double max = rho;
-		double a = solution1.getObjective(d - 1);
+		double a = solution1.getObjective(d - 1).getCanonicalValue();
 		double b = max;
 
 		if (solution2 != null) {
-			b = solution2.getObjective(d - 1);
+			b = solution2.getObjective(d - 1).getCanonicalValue();
 		}
 
 		double volume = 0.0;

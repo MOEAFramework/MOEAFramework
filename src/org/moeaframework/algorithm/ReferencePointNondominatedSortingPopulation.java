@@ -39,6 +39,7 @@ import org.moeaframework.core.attribute.NormalizedObjectives;
 import org.moeaframework.core.attribute.Rank;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.RankComparator;
+import org.moeaframework.core.objective.Objective;
 import org.moeaframework.util.LinearAlgebra;
 import org.moeaframework.util.Vector;
 import org.moeaframework.util.validate.Validate;
@@ -179,7 +180,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 				.isEqualTo(numberOfObjectives);
 
 			for (int i = 0; i < numberOfObjectives; i++) {
-				idealPoint[i] = Math.min(idealPoint[i], solution.getObjective(i));
+				idealPoint[i] = Objective.ideal(idealPoint[i], solution.getObjective(i));
 			}
 		}
 	}
@@ -190,7 +191,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	 */
 	protected void translateByIdealPoint() {
 		for (Solution solution : this) {
-			double[] objectives = solution.getObjectives();
+			double[] objectives = solution.getCanonicalObjectiveValues();
 
 			for (int i = 0; i < numberOfObjectives; i++) {
 				objectives[i] -= idealPoint[i];
@@ -339,7 +340,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 				for (int i = 0; i < numberOfObjectives; i++) {
 					intercepts[i] = Math.max(
 							Math.max(intercepts[i], Settings.EPS),
-							solution.getObjective(i));
+							solution.getObjective(i).getCanonicalValue());
 				}
 			}
 		}

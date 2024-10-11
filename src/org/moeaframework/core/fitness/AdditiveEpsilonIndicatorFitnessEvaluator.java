@@ -74,7 +74,8 @@ public class AdditiveEpsilonIndicatorFitnessEvaluator extends IndicatorFitnessEv
 		double eps = Double.NEGATIVE_INFINITY;
 
 		for (int i = 0; i < getProblem().getNumberOfObjectives(); i++) {
-			double temp_eps = solution1.getObjective(i) - solution2.getObjective(i);
+			double temp_eps = solution1.getObjective(i).getCanonicalValue() -
+					solution2.getObjective(i).getCanonicalValue();
 
 			if (temp_eps > eps) {
 				eps = temp_eps;

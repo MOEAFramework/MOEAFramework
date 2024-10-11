@@ -33,17 +33,21 @@ public class BelegunduTest extends ProblemTest {
 				evaluateAt(problem, 0.0, 0.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { 0.0, 0.0 }, 
+		Assert.assertArrayEquals(new double[] { -1.0, -7.0 }, 
 				evaluateAt(problem, 0.0, 0.0).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
+		
+		Assert.assertTrue(evaluateAt(problem, 0.0, 0.0).isFeasible());
 		
 		Assert.assertArrayEquals(new double[] { -7.0, 13.0 }, 
 				evaluateAt(problem, 5.0, 3.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { 0.0, 1.0 }, 
+		Assert.assertArrayEquals(new double[] { -3.0, 1.0 }, 
 				evaluateAt(problem, 5.0, 3.0).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
+		
+		Assert.assertFalse(evaluateAt(problem, 5.0, 3.0).isFeasible());
 	}
 
 }

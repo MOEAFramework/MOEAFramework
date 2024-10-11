@@ -36,13 +36,17 @@ public class CF4Test extends ProblemTest {
 				evaluateAtLowerBounds(problem).getConstraintValues(),
 				0.0001);
 		
+		Assert.assertFalse(evaluateAtLowerBounds(problem).isFeasible());
+		
 		Assert.assertArrayEquals(new double[] { 7.6963, 8.4898 }, 
 				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.001);
 		
-		Assert.assertArrayEquals(new double[] { 0.0 }, // Raw value: -0.011020
+		Assert.assertArrayEquals(new double[] { 0.011020 },
 				evaluateAtUpperBounds(problem).getConstraintValues(),
 				0.001);
+		
+		Assert.assertTrue(evaluateAtUpperBounds(problem).isFeasible());
 	}
 
 	@Test

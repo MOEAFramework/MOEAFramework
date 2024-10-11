@@ -29,6 +29,8 @@ import java.io.InputStreamReader;
 import java.time.Duration;
 import java.util.Properties;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
@@ -84,6 +86,16 @@ public class Settings {
 	 * if unset.
 	 */
 	public static final String KEY_CONFIGURATION_FILE = createKey(KEY_PREFIX, "configuration");
+	
+	/**
+	 * The property key storing the version.
+	 */
+	public static final String KEY_VERSION = createKey(KEY_PREFIX, "version");
+	
+	/**
+	 * The property key storing the major version.
+	 */
+	public static final String KEY_MAJOR_VERSION = createKey(KEY_PREFIX, "major_version");
 	
 	/**
 	 * The property key for enabling verbose logging.
@@ -253,6 +265,28 @@ public class Settings {
 		} catch (IOException e) {
 			throw new FrameworkException(e);
 		}
+		
+		// inject build properties
+		try {
+			String version = TypedProperties.loadBuildProperties().getString("version");
+			
+			if (version == null) {
+				throw new FrameworkException("unable to load version, please ensure META-INF/ is included in build path");
+			}
+			
+			PROPERTIES.setString(KEY_VERSION, version);
+			
+			Pattern pattern = Pattern.compile("([0-9]+)\\.([0-9]+)");
+			Matcher matcher = pattern.matcher(version);
+			
+			if (!matcher.matches()) {
+				throw new FrameworkException("version must be in 'major.minor' format");
+			}
+			
+			PROPERTIES.setString(KEY_MAJOR_VERSION, matcher.group(1));
+		} catch (IOException e) {
+			throw new FrameworkException(e);
+		}
 	}
 	
 	/**
@@ -269,6 +303,24 @@ public class Settings {
 	 */
 	public static boolean isVerbose() {
 		return PROPERTIES.getBoolean(KEY_VERBOSE, false);
+	}
+	
+	/**
+	 * Returns the current version.
+	 * 
+	 * @return the version
+	 */
+	public static String getVersion() {
+		return PROPERTIES.getString(KEY_VERSION);
+	}
+	
+	/**
+	 * Returns the major version number.
+	 * 
+	 * @return the major version
+	 */
+	public static int getMajorVersion() {
+		return PROPERTIES.getInt(KEY_MAJOR_VERSION);
 	}
 	
 	/**

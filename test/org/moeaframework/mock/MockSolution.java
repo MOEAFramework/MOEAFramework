@@ -18,6 +18,7 @@
 package org.moeaframework.mock;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -29,6 +30,8 @@ import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
+import org.moeaframework.core.constraint.Constraint;
+import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.EncodingUtils;
@@ -53,9 +56,9 @@ public class MockSolution extends Solution {
 
 	private Optional<Variable[]> variables;
 
-	private Optional<double[]> objectives;
+	private Optional<Objective[]> objectives;
 
-	private Optional<double[]> constraints;
+	private Optional<Constraint[]> constraints;
 
 	private boolean readOnly;
 
@@ -75,16 +78,12 @@ public class MockSolution extends Solution {
 	}
 
 	public static MockSolution of(Solution solution) {
-		Variable[] variables = new Variable[solution.getNumberOfVariables()];
-
-		for (int i = 0; i < solution.getNumberOfVariables(); i++) {
-			variables[i] = solution.getVariable(i).copy();
-		}
+		Solution copy = solution.copy();
 
 		MockSolution mock = new MockSolution(solution);
-		mock.withVariables(variables);
-		mock.withObjectives(solution.getObjectiveValues());
-		mock.withConstraints(solution.getConstraintValues());
+		mock.withVariables(IntStream.range(0, copy.getNumberOfVariables()).mapToObj(solution::getVariable).toArray(Variable[]::new));
+		mock.withObjectives(IntStream.range(0, copy.getNumberOfObjectives()).mapToObj(solution::getObjective).toArray(Objective[]::new));
+		mock.withConstraints(IntStream.range(0, copy.getNumberOfConstraints()).mapToObj(solution::getConstraint).toArray(Constraint[]::new));
 		mock.addAttributes(solution.getAttributes());
 		return mock;
 	}
@@ -206,13 +205,39 @@ public class MockSolution extends Solution {
 		this.variables = Optional.of(variables);
 		return this;
 	}
+	
+	public MockSolution withObjectives(Objective... objectives) {
+		if (solution.isPresent() && objectives.length != solution.get().getNumberOfObjectives()) {
+			Assert.fail("Invalid mock usage: incorrect number of objectives");
+		}
+		
+		this.objectives = Optional.of(objectives);
+		return this;
+	}
 
 	public MockSolution withObjectives(double... objectives) {
 		if (solution.isPresent() && objectives.length != solution.get().getNumberOfObjectives()) {
 			Assert.fail("Invalid mock usage: incorrect number of objectives");
 		}
-
-		this.objectives = Optional.of(objectives);
+		
+		this.objectives = Optional.of(new Objective[objectives.length]);
+		
+		for (int i = 0; i < objectives.length; i++) {
+			Objective objective = solution.isPresent() ? solution.get().getObjective(i).copy() : Objective.createDefault();
+			objective.setValue(objectives[i]);
+			
+			this.objectives.get()[i] = objective;
+		}
+		
+		return this;
+	}
+	
+	public MockSolution withConstraints(Constraint... constraints) {
+		if (solution.isPresent() && constraints.length != solution.get().getNumberOfConstraints()) {
+			Assert.fail("Invalid mock usage: incorrect number of constraints");
+		}
+		
+		this.constraints = Optional.of(constraints);
 		return this;
 	}
 
@@ -220,8 +245,16 @@ public class MockSolution extends Solution {
 		if (solution.isPresent() && constraints.length != solution.get().getNumberOfConstraints()) {
 			Assert.fail("Invalid mock usage: incorrect number of constraints");
 		}
-
-		this.constraints = Optional.of(constraints);
+		
+		this.constraints = Optional.of(new Constraint[constraints.length]);
+		
+		for (int i = 0; i < constraints.length; i++) {
+			Constraint constraint = solution.isPresent() ? solution.get().getConstraint(i).copy() : Constraint.createDefault();
+			constraint.setValue(constraints[i]);
+			
+			this.constraints.get()[i] = constraint;
+		}
+		
 		return this;
 	}
 
@@ -231,10 +264,10 @@ public class MockSolution extends Solution {
 		}
 
 		if (constraints.isEmpty()) {
-			this.constraints = Optional.of(new double[solution.isPresent() ? solution.get().getNumberOfConstraints() : 1]);
+			withConstraints(new double[solution.isPresent() ? solution.get().getNumberOfConstraints() : 1]);
 		}
 
-		this.constraints.get()[0] = 1.0;
+		this.constraints.get()[0].setValue(1.0);
 		return this;
 	}
 
@@ -302,55 +335,93 @@ public class MockSolution extends Solution {
 		throwIfVariablesNotSet();
 		return variables.get();
 	}
-
+	
 	@Override
-	public double getObjectiveValue(int index) {
+	public Objective getObjective(int index) {
 		throwIfObjectivesNotSet();
 		return objectives.get()[index];
 	}
 
 	@Override
-	public void setObjectiveValue(int index, double objective) {
+	public double getObjectiveValue(int index) {
+		throwIfObjectivesNotSet();
+		return objectives.get()[index].getValue();
+	}
+	
+	@Override
+	public void setObjective(int index, Objective objective) {
 		throwIfReadOnly();
 		throwIfObjectivesNotSet();
 		objectives.get()[index] = objective;
 	}
 
 	@Override
+	public void setObjectiveValue(int index, double objective) {
+		throwIfReadOnly();
+		throwIfObjectivesNotSet();
+		objectives.get()[index].setValue(objective);
+	}
+
+	@Override
 	public void setObjectiveValues(double[] objectives) {
 		throwIfReadOnly();
-		this.objectives = Optional.of(objectives);
+				
+		for (int i = 0; i < objectives.length; i++) {
+			this.objectives.get()[i].setValue(objectives[i]);
+		}
 	}
 
 	@Override
 	public double[] getObjectiveValues() {
 		throwIfObjectivesNotSet();
-		return objectives.get().clone();
+		return Arrays.stream(objectives.get()).mapToDouble(o -> o.getValue()).toArray();
 	}
-
+	
 	@Override
-	public double getConstraintValue(int index) {
+	public double[] getCanonicalObjectiveValues() {
+		throwIfObjectivesNotSet();
+		return Arrays.stream(objectives.get()).mapToDouble(o -> o.getCanonicalValue()).toArray();
+	}
+	
+	@Override
+	public Constraint getConstraint(int index) {
 		throwIfConstraintsNotSet();
 		return constraints.get()[index];
 	}
 
 	@Override
+	public double getConstraintValue(int index) {
+		throwIfConstraintsNotSet();
+		return constraints.get()[index].getValue();
+	}
+
+	@Override
 	public void setConstraintValues(double[] constraints) {
 		throwIfReadOnly();
-		this.constraints = Optional.of(constraints);
+				
+		for (int i = 0; i < constraints.length; i++) {
+			this.constraints.get()[i].setValue(constraints[i]);
+		}
 	}
 
 	@Override
 	public double[] getConstraintValues() {
 		throwIfConstraintsNotSet();
-		return constraints.get().clone();
+		return Arrays.stream(constraints.get()).mapToDouble(c -> c.getValue()).toArray();
+	}
+	
+	@Override
+	public void setConstraint(int index, Constraint constraint) {
+		throwIfReadOnly();
+		throwIfConstraintsNotSet();
+		constraints.get()[index] = constraint;
 	}
 
 	@Override
 	public void setConstraintValue(int index, double constraint) {
 		throwIfReadOnly();
 		throwIfConstraintsNotSet();
-		constraints.get()[index] = constraint;
+		constraints.get()[index].setValue(constraint);
 	}
 
 	@Override
@@ -397,11 +468,15 @@ public class MockSolution extends Solution {
 		}
 
 		if (objectives.isPresent()) {
-			solution.setObjectiveValues(objectives.get());
+			for (int i = 0; i < getNumberOfObjectives(); i++) {
+				solution.setObjective(i, objectives.get()[i].copy());
+			}
 		}
 
 		if (constraints.isPresent()) {
-			solution.setConstraintValues(constraints.get());
+			for (int i = 0; i < getNumberOfConstraints(); i++) {
+				solution.setConstraint(i, constraints.get()[i].copy());
+			}
 		}
 
 		solution.addAttributes(getAttributes());

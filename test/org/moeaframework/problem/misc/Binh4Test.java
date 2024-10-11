@@ -33,25 +33,31 @@ public class Binh4Test extends ProblemTest {
 				evaluateAt(problem, 0.0, 0.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { 8.75, 0.0 }, 
+		Assert.assertArrayEquals(new double[] { 8.75, -5.0 }, 
 				evaluateAt(problem, 0.0, 0.0).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
+		
+		Assert.assertFalse(evaluateAt(problem, 0.0, 0.0).isFeasible());
 		
 		Assert.assertArrayEquals(new double[] { 111.5, -987.75, 10012.625 }, 
 				evaluateAt(problem, -10.0, -10.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { 0.0, 225.0 }, 
+		Assert.assertArrayEquals(new double[] { -201.25, 225.0 }, 
 				evaluateAt(problem, -10.0, -10.0).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
+		
+		Assert.assertFalse(evaluateAt(problem, -10.0, -10.0).isFeasible());
 		
 		Assert.assertArrayEquals(new double[] { 91.5, 992.25, 9992.625 }, 
 				evaluateAt(problem, 10.0, 10.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { 0.0, 165.0 }, 
+		Assert.assertArrayEquals(new double[] { -181.25, 165.0 }, 
 				evaluateAt(problem, 10.0, 10.0).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
+		
+		Assert.assertFalse(evaluateAt(problem, 10.0, 10.0).isFeasible());
 	}
 
 }

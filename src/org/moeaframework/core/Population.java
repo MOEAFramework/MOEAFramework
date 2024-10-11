@@ -498,7 +498,8 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 						output.write(" ");
 					}
 					
-					output.write(Double.toString(solution.getObjective(i)));
+					// TODO: Fix for Objective
+					output.write(Double.toString(solution.getObjectiveValue(i)));
 				}
 
 				output.newLine();
@@ -538,7 +539,8 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, St
 				Solution solution = new Solution(0, tokens.length);
 	
 				for (int i = 0; i < tokens.length; i++) {
-					solution.setObjective(i, Double.parseDouble(tokens[i]));
+					// TODO: Fix for Objective
+					solution.setObjectiveValue(i, Double.parseDouble(tokens[i]));
 				}
 	
 				population.add(solution);

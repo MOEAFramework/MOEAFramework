@@ -305,7 +305,7 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 				Solution minSolution = null;
 
 				for (Solution solution : front) {
-					double distance = Vector.pointLineDistance(solution.getObjectives(), weights);
+					double distance = Vector.pointLineDistance(solution.getCanonicalObjectiveValues(), weights);
 
 					if (distance < minDistance) {
 						minDistance = distance;
@@ -340,7 +340,7 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 					b[i] = 1.0;
 
 					for (int j = 0; j < numberOfObjectives; j++) {
-						A[i][j] = extremePoints[i].getObjective(j);
+						A[i][j] = extremePoints[i].getObjective(j).getCanonicalValue();
 					}
 				}
 				
@@ -355,7 +355,7 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 
 			if (degenerate) {
 				for (int i = 0; i < numberOfObjectives; i++) {
-					intercepts[i] = extremePoints[i].getObjective(i);
+					intercepts[i] = extremePoints[i].getObjective(i).getCanonicalValue();
 				}
 			}
 
@@ -372,10 +372,10 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 		 */
 		protected void normalize(Population front, double[] idealPoint, double[] intercepts) {
 			for (Solution solution : front) {
-				double[] objectives = solution.getObjectives();
+				double[] objectives = new double[numberOfObjectives];
 
 				for (int i = 0; i < numberOfObjectives; i++) {
-					objectives[i] = (objectives[i] - idealPoint[i]) / (intercepts[i] - idealPoint[i]);
+					objectives[i] = solution.getObjective(i).normalize(idealPoint[i], intercepts[i]).getValue();
 				}
 
 				NormalizedObjectives.setAttribute(solution, objectives);

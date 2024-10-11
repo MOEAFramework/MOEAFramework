@@ -55,7 +55,7 @@ public class ScaledProblemTest {
 		problem.evaluate(solution);
 		scaledProblem.evaluate(scaledSolution);
 		
-		Assert.assertArrayEquals(solution.getObjectives(), scaledSolution.getObjectives(), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(solution.getObjectiveValues(), scaledSolution.getObjectiveValues(), TestThresholds.HIGH_PRECISION);
 	}
 
 }

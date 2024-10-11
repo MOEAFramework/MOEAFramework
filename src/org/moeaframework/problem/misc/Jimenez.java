@@ -33,7 +33,7 @@ import org.moeaframework.problem.AnalyticalProblem;
  *   <li>Connected and symmetric Pareto set
  *   <li>Convex Pareto front
  *   <li>Constrained
- *   <li>Maximization
+ *   <li>Maximized
  * </ul>
  * <p>
  * References:

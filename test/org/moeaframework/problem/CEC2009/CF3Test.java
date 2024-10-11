@@ -32,17 +32,21 @@ public class CF3Test extends ProblemTest {
 				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.001);
 		
-		Assert.assertArrayEquals(new double[] { 0.0 }, // Raw value: -3809.2 
+		Assert.assertArrayEquals(new double[] { 3809.229 },
 				evaluateAtLowerBounds(problem).getConstraintValues(),
 				0.001);
+		
+		Assert.assertTrue(evaluateAtLowerBounds(problem).isFeasible());
 		
 		Assert.assertArrayEquals(new double[] { 15.851, 17.1 }, 
 				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.001);
 		
-		Assert.assertArrayEquals(new double[] { 0.0 }, // Raw value: -266.53 
+		Assert.assertArrayEquals(new double[] { 266.531 },
 				evaluateAtUpperBounds(problem).getConstraintValues(),
 				0.001);
+		
+		Assert.assertTrue(evaluateAtUpperBounds(problem).isFeasible());
 	}
 
 	@Test

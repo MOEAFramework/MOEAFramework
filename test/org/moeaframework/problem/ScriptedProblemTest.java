@@ -106,7 +106,7 @@ public class ScriptedProblemTest {
 		variable.setValue(Math.PI / 10);
 		problem.evaluate(solution);
 		
-		Assert.assertEquals(variable.getValue(), solution.getObjective(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(variable.getValue(), solution.getObjectiveValue(0), TestThresholds.HIGH_PRECISION);
 	}
 
 }

@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.AbstractProblem;
 
-public abstract class MockProblem extends AbstractProblem {
+public class MockProblem extends AbstractProblem {
 	
 	private final AtomicInteger count;
 	

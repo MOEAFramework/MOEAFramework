@@ -31,6 +31,7 @@ import java.util.Optional;
 
 import org.apache.commons.cli.CommandLine;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variable;
 import org.moeaframework.util.TypedProperties;
@@ -133,6 +134,9 @@ public class ResultFileWriter implements OutputWriter {
 			writer = new PrintWriter(new BufferedWriter(new FileWriter(file)), true);
 			
 			// print header information
+			writer.print("# Version = ");
+			writer.println(Settings.getMajorVersion());
+			
 			writer.print("# Problem = ");
 			writer.println(problem.getName());
 			
@@ -143,6 +147,9 @@ public class ResultFileWriter implements OutputWriter {
 			
 			writer.print("# Objectives = ");
 			writer.println(problem.getNumberOfObjectives());
+			
+			writer.print("# Constraints = ");
+			writer.println(problem.getNumberOfConstraints());
 		}
 	}
 
@@ -203,26 +210,42 @@ public class ResultFileWriter implements OutputWriter {
 	 * @param solution the solution
 	 */
 	private void printSolution(Solution solution) {
+		boolean writeSeparator = false;
+		
 		if (settings.isIncludeVariables()) {
 			// write decision variables
 			for (int i = 0; i < solution.getNumberOfVariables(); i++) {
-				if (i > 0) {
+				if (writeSeparator) {
 					writer.print(' ');
 				}
 
 				writer.print(encode(solution.getVariable(i)));
+				writeSeparator = true;
 			}
 		}
 
 		// write objectives
 		for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
-			if ((i > 0) || (settings.isIncludeVariables() && (solution.getNumberOfVariables() > 0))) {
+			if (writeSeparator) {
 				writer.print(' ');
 			}
 
-			writer.print(solution.getObjective(i));
+			// TODO: Fix for Objective
+			writer.print(solution.getObjective(i).getValue());
+			writeSeparator = true;
 		}
 
+		// write constraints
+		for (int i = 0; i < solution.getNumberOfConstraints(); i++) {
+			if (writeSeparator) {
+				writer.print(' ');
+			}
+
+			// TODO: Fix for Constraint
+			writer.print(solution.getConstraint(i).getValue());
+			writeSeparator = true;
+		}
+		
 		writer.println();
 	}
 	
