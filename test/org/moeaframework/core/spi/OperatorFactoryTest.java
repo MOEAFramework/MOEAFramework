@@ -40,9 +40,9 @@ import org.moeaframework.mock.MockGrammarProblem;
 import org.moeaframework.mock.MockMixedBinaryProblem;
 import org.moeaframework.mock.MockMultiTypeProblem;
 import org.moeaframework.mock.MockPermutationProblem;
+import org.moeaframework.mock.MockProblem;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockUnsupportedVariable;
-import org.moeaframework.problem.ProblemStub;
 import org.moeaframework.util.TypedProperties;
 
 public class OperatorFactoryTest extends AbstractFactoryTest<OperatorProvider, OperatorFactory> {
@@ -160,7 +160,7 @@ public class OperatorFactoryTest extends AbstractFactoryTest<OperatorProvider, O
 	
 	@Test
 	public void testUnknownType() {
-		Problem problem = new ProblemStub(1) {
+		Problem problem = new MockProblem(1, 0) {
 			
 			@Override
 			public Solution newSolution() {
@@ -177,14 +177,14 @@ public class OperatorFactoryTest extends AbstractFactoryTest<OperatorProvider, O
 	
 	@Test
 	public void testEmptyType() {
-		Problem problem = new ProblemStub(0);
+		Problem problem = new MockProblem(0);
 		Assert.assertNull(createFactory().lookupVariationHint(problem));
 		Assert.assertNull(createFactory().getVariation(null, new TypedProperties(), problem));
 	}
 	
 	@Test(expected = ProviderNotFoundException.class)
 	public void testNonexistentOperator() {
-		Problem problem = new ProblemStub(0);
+		Problem problem = new MockProblem(0);
 		createFactory().getVariation("sbx+test_fake_operator", new TypedProperties(), problem);
 	}
 
