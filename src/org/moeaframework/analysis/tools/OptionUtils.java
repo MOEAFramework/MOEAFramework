@@ -22,7 +22,6 @@ import java.io.IOException;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Epsilons;
@@ -30,7 +29,6 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.ProblemFactory;
-import org.moeaframework.problem.ProblemStub;
 import org.moeaframework.util.TypedProperties;
 
 /**
@@ -43,34 +41,16 @@ class OptionUtils {
 	}
 	
 	/**
-	 * Adds an option group for specifying problems, either explicitly by name or by the dimensionality (using a
-	 * problem stub).
+	 * Adds an option to specify the problem.
 	 * 
 	 * @param options the current set of options
-	 * @param allowStub if {@code true}, use a problem stub to handle data files just using the problem dimensionality
 	 */
-	public static void addProblemOption(Options options, boolean allowStub) {
-		if (allowStub) {
-			OptionGroup group = new OptionGroup();
-			group.setRequired(true);
-			group.addOption(Option.builder("b")
-					.longOpt("problem")
-					.hasArg()
-					.argName("name")
-					.build());
-			group.addOption(Option.builder("d")
-					.longOpt("dimension")
-					.hasArg()
-					.argName("number")
-					.build());
-			options.addOptionGroup(group);
-		} else {
-			options.addOption(Option.builder("b")
-					.longOpt("problem")
-					.hasArg()
-					.argName("name")
-					.build());
-		}
+	public static void addProblemOption(Options options) {
+		options.addOption(Option.builder("b")
+				.longOpt("problem")
+				.hasArg()
+				.argName("name")
+				.build());
 	}
 	
 	/**
@@ -103,16 +83,16 @@ class OptionUtils {
 	 * Creates the problem instance specified on the command line.
 	 * 
 	 * @param commandLine the command line inputs
-	 * @param allowStub if {@code true}, use a problem stub to handle data files just using the problem dimensionality
+	 * @param allowMissing if {@code true}, returns {@code null} if the option is missing
 	 * @return the problem instance
 	 */
-	public static Problem getProblemInstance(CommandLine commandLine, boolean allowStub) {
+	public static Problem getProblemInstance(CommandLine commandLine, boolean allowMissing) {
 		if (commandLine.hasOption("problem")) {
 			return ProblemFactory.getInstance().getProblem(commandLine.getOptionValue("problem"));
 		}
 		
-		if (allowStub && commandLine.hasOption("dimension")) {
-			return new ProblemStub(Integer.parseInt(commandLine.getOptionValue("dimension")));
+		if (allowMissing) {
+			return null;
 		}
 		
 		throw new FrameworkException("no problem specified");

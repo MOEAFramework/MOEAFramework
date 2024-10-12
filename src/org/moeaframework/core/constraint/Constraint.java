@@ -20,11 +20,26 @@ package org.moeaframework.core.constraint;
 import java.io.Serializable;
 
 import org.moeaframework.core.FrameworkException;
+import org.moeaframework.util.DefinedType;
 
-public interface Constraint extends Comparable<Constraint>, Serializable {
-		
+/**
+ * Defines a constraint.  While all constraints are assigned a value, the interpretation of that value with respect to
+ * feasibility depends on the specific constraint type.
+ */
+public interface Constraint extends Comparable<Constraint>, Serializable, DefinedType {
+	
+	/**
+	 * Returns the value of this constraint.
+	 * 
+	 * @return the value of this constraint
+	 */
 	public double getValue();
 	
+	/**
+	 * Sets the value of this constraint.
+	 * 
+	 * @param value the value of this constraint
+	 */
 	public void setValue(double value);
 	
 	/**
@@ -35,8 +50,18 @@ public interface Constraint extends Comparable<Constraint>, Serializable {
 	 */
 	public double getMagnitudeOfViolation();
 	
+	/**
+	 * Returns a copy of this constraint.
+	 * 
+	 * @return the copy
+	 */
 	public Constraint copy();
 	
+	/**
+	 * Returns {@code true} if this constraint is violated; {@code false} otherwise.
+	 * 
+	 * @return {@code true} if this constraint is violated; {@code false} otherwise
+	 */
 	public default boolean isViolation() {
 		return getMagnitudeOfViolation() != 0.0;
 	}
@@ -51,6 +76,11 @@ public interface Constraint extends Comparable<Constraint>, Serializable {
 		return Double.compare(getMagnitudeOfViolation(), other.getMagnitudeOfViolation());
 	}
 	
+	/**
+	 * Returns the default constraint, which is equivalent to {@code Equal.to(0.0)}.
+	 * 
+	 * @return the default constraint
+	 */
 	public static Constraint createDefault() {
 		return new Equal(0.0);
 	}

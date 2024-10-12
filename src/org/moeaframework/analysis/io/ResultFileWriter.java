@@ -33,7 +33,10 @@ import org.apache.commons.cli.CommandLine;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
+import org.moeaframework.core.constraint.Constraint;
+import org.moeaframework.core.objective.Objective;
+import org.moeaframework.core.variable.Variable;
+import org.moeaframework.util.DefinedType;
 import org.moeaframework.util.TypedProperties;
 
 /**
@@ -132,24 +135,58 @@ public class ResultFileWriter implements OutputWriter {
 			// if the file doesn't exist or we are not appending, create a new file and print the header
 			numberOfEntries = 0;
 			writer = new PrintWriter(new BufferedWriter(new FileWriter(file)), true);
-			
+						
 			// print header information
-			writer.print("# Version = ");
-			writer.println(Settings.getMajorVersion());
+			TypedProperties header = TypedProperties.newInsertionOrderInstance();
+			header.setInt("Version", Settings.getMajorVersion());
+			header.setString("Problem", problem.getName());
+			header.setInt("NumberOfVariables", problem.getNumberOfVariables());
+			header.setInt("NumberOfObjectives", problem.getNumberOfObjectives());
+			header.setInt("NumberOfConstraints", problem.getNumberOfConstraints());
 			
-			writer.print("# Problem = ");
-			writer.println(problem.getName());
+			Solution prototype = problem.newSolution();
 			
-			if (settings.isIncludeVariables()) {
-				writer.print("# Variables = ");
-				writer.println(problem.getNumberOfVariables());
+			for (int i = 0; i < problem.getNumberOfVariables(); i++) {
+				try {
+					header.setString("Variable." + (i+1) + ".Definition",
+							prototype.getVariable(i).getDefinition());
+				} catch (UnsupportedOperationException e) {
+					header.setString("Variable." + (i+1) + ".Definition",
+							DefinedType.createUnsupportedDefinition(Variable.class,
+									prototype.getVariable(i).getClass()));
+
+				}
 			}
 			
-			writer.print("# Objectives = ");
-			writer.println(problem.getNumberOfObjectives());
+			for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
+				try {
+					header.setString("Objective." + (i+1) + ".Definition",
+							prototype.getObjective(i).getDefinition());
+				} catch (UnsupportedOperationException e) {
+					header.setString("Objective." + (i+1) + ".Definition",
+							DefinedType.createUnsupportedDefinition(Objective.class,
+									prototype.getObjective(i).getClass()));
+
+				}
+			}
 			
-			writer.print("# Constraints = ");
-			writer.println(problem.getNumberOfConstraints());
+			for (int i = 0; i < problem.getNumberOfConstraints(); i++) {
+				try {
+					header.setString("Constraint." + (i+1) + ".Definition",
+							prototype.getConstraint(i).getDefinition());
+				} catch (UnsupportedOperationException e) {
+					header.setString("Constraint." + (i+1) + ".Definition",
+							DefinedType.createUnsupportedDefinition(Constraint.class,
+									prototype.getConstraint(i).getClass()));
+
+				}
+			}
+			
+			if (!settings.isIncludeVariables()) {
+				header.setBoolean("ExcludeVariables", true);
+			}
+
+			printProperties(header, "# ");
 		}
 	}
 
@@ -192,7 +229,7 @@ public class ResultFileWriter implements OutputWriter {
 
 		//write entry
 		if ((properties != null) && !properties.isEmpty()) {
-			printProperties(properties);
+			printProperties(properties, "//");
 		}
 		
 		if (!feasibleSolutions.isEmpty()) {
@@ -230,7 +267,6 @@ public class ResultFileWriter implements OutputWriter {
 				writer.print(' ');
 			}
 
-			// TODO: Fix for Objective
 			writer.print(solution.getObjective(i).getValue());
 			writeSeparator = true;
 		}
@@ -241,7 +277,6 @@ public class ResultFileWriter implements OutputWriter {
 				writer.print(' ');
 			}
 
-			// TODO: Fix for Constraint
 			writer.print(solution.getConstraint(i).getValue());
 			writeSeparator = true;
 		}
@@ -255,7 +290,7 @@ public class ResultFileWriter implements OutputWriter {
 	 * @param properties the properties
 	 * @throws IOException if an I/O error occurred
 	 */
-	private void printProperties(TypedProperties properties) throws IOException {
+	private void printProperties(TypedProperties properties, String prefix) throws IOException {
 		// using TypedProperties#store ensures special characters are stored safely
 		try (StringWriter buffer = new StringWriter()) {
 			properties.store(buffer);
@@ -263,7 +298,7 @@ public class ResultFileWriter implements OutputWriter {
 			try (BufferedReader reader = new BufferedReader(new StringReader(buffer.toString()))) {
 				String line = null;
 				while ((line = reader.readLine()) != null) {
-					writer.print("//");
+					writer.print(prefix);
 					writer.println(line);
 				}
 			}

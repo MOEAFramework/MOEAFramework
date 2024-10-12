@@ -21,11 +21,11 @@ import java.util.List;
 
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
 import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.variable.Program;
+import org.moeaframework.core.variable.Variable;
 import org.moeaframework.util.tree.Node;
 import org.moeaframework.util.tree.Rules;
 import org.moeaframework.util.validate.Validate;

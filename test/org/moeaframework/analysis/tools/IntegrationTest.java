@@ -156,7 +156,6 @@ public class IntegrationTest {
 				"-r", combinedFile.getPath() });
 		
 		ResultFileEvaluator.main(new String[] {
-				"-d", "2",
 				"-i", resultFile2.getPath(),
 				"-o", metricFile2.getPath(),
 				"-r", combinedFile.getPath() });

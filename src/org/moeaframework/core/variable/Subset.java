@@ -26,7 +26,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Variable;
+import org.moeaframework.util.DefinedType;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -341,6 +341,15 @@ public class Subset implements Variable {
 			}
 
 			return result;
+		}
+	}
+	
+	@Override
+	public String getDefinition() {
+		if (l == u) {
+			return DefinedType.createDefinition(Variable.class, Subset.class, l, n);
+		} else {
+			return DefinedType.createDefinition(Variable.class, Subset.class, l, u, n);
 		}
 	}
 	

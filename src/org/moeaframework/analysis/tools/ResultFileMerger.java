@@ -46,7 +46,7 @@ public class ResultFileMerger extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		OptionUtils.addProblemOption(options, true);
+		OptionUtils.addProblemOption(options);
 		OptionUtils.addEpsilonOption(options);
 		
 		options.addOption(Option.builder("o")
@@ -67,9 +67,15 @@ public class ResultFileMerger extends CommandLineUtility {
 		NondominatedPopulation mergedSet = OptionUtils.getArchive(commandLine);
 
 		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true)) {
+			Problem problemRef = null;
+			
 			// read in result files
 			for (String filename : commandLine.getArgs()) {
 				try (ResultFileReader reader = new ResultFileReader(problem, new File(filename))) {
+					if (problemRef == null) {
+						problemRef = reader.getProblem();
+					}
+					
 					while (reader.hasNext()) {
 						mergedSet.addAll(reader.next().getPopulation());
 					}
@@ -80,7 +86,7 @@ public class ResultFileMerger extends CommandLineUtility {
 
 			// output merged set
 			if (commandLine.hasOption("resultFile")) {			
-				try (ResultFileWriter writer = ResultFileWriter.overwrite(problem, output)) {
+				try (ResultFileWriter writer = ResultFileWriter.overwrite(problemRef, output)) {
 					writer.append(new ResultEntry(mergedSet));
 				}
 			} else {

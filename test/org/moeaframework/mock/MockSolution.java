@@ -29,7 +29,6 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
 import org.moeaframework.core.constraint.Constraint;
 import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
@@ -38,6 +37,7 @@ import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.core.variable.Subset;
+import org.moeaframework.core.variable.Variable;
 
 /**
  * Utility for mocking or building solutions for tests.  This can be used as a drop-in replacement for {@link Solution}

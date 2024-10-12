@@ -21,7 +21,6 @@ import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.TerminationCondition;
 
 /**
  * Terminates a run when at least one solution in the result is equal to or within some allowed difference (epsilon)

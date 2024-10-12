@@ -19,10 +19,10 @@ package org.moeaframework.core.operator;
 
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.variable.Variable;
 import org.moeaframework.util.validate.Validate;
 
 /**

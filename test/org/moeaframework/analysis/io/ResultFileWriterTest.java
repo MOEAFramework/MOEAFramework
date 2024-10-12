@@ -38,17 +38,18 @@ import org.moeaframework.analysis.io.ResultFileWriter.ResultFileWriterSettings;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.Program;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.core.variable.Variable;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.mock.MockUnsupportedVariable;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.util.TypedProperties;
+import org.moeaframework.util.TypedPropertiesTest;
 import org.moeaframework.util.tree.Rules;
 
 public class ResultFileWriterTest {
@@ -113,7 +114,7 @@ public class ResultFileWriterTest {
 		NondominatedPopulation population = new NondominatedPopulation();
 
 		TypedProperties properties = new TypedProperties();
-		properties.setString("\"'!@#$=:%^&*()\\\r\n//\t ", "\"'!@#$=:%^&*()\\\r\n//\t ");
+		properties.setString(TypedPropertiesTest.SPECIAL_CHARACTERS, TypedPropertiesTest.SPECIAL_CHARACTERS);
 		
 		try (ResultFileWriter writer = ResultFileWriter.append(problem, file)) {
 			writer.append(new ResultEntry(population, properties));

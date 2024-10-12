@@ -20,7 +20,7 @@ package org.moeaframework.core.initialization;
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
+import org.moeaframework.core.variable.Variable;
 
 /**
  * Initializes all built-in decision variables randomly. This invokes {@link Variable#randomize()} on each decision

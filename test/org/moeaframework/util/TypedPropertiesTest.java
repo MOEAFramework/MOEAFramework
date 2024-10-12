@@ -33,6 +33,8 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.configuration.ConfigurationException;
 
 public class TypedPropertiesTest {
+	
+	public static final String SPECIAL_CHARACTERS = "\"'!@#$=:%^&*()\\\r\n//\t ";
 
 	private TypedProperties properties;
 
@@ -429,7 +431,7 @@ public class TypedPropertiesTest {
 	}
 	
 	@Test
-	public void testStoreRemovesComments() throws IOException {
+	public void testStoreNoComments() throws IOException {
 		try (StringWriter writer = new StringWriter()) {
 			properties.store(writer);
 			
@@ -437,9 +439,102 @@ public class TypedPropertiesTest {
 				String line = null;
 				
 				while ((line = reader.readLine()) != null) {
-					Assert.assertFalse(line.startsWith("#"));
+					Assert.assertFalse(line.startsWith("#") || line.startsWith("!"));
 				}
 			}
+		}
+	}
+	
+	@Test
+	public void testSpecialCharacters() throws IOException {
+		TypedProperties properties = new TypedProperties();
+		properties.setString(SPECIAL_CHARACTERS, SPECIAL_CHARACTERS);
+		
+		try (StringWriter writer = new StringWriter()) {
+			properties.store(writer);
+			
+			try (StringReader reader = new StringReader(writer.toString())) {
+				TypedProperties copy = new TypedProperties();
+				copy.load(reader);
+				
+				Assert.assertEquals(properties, copy);
+			}
+		}
+	}
+	
+	@Test
+	public void testEmptyValue() throws IOException {
+		String input = "foo=";
+				
+		TypedProperties expected = new TypedProperties();
+		expected.setString("foo", "");
+		
+		try (StringReader reader = new StringReader(input)) {
+			TypedProperties properties = new TypedProperties();
+			properties.load(reader);
+			
+			Assert.assertEquals(expected, properties);
+		}
+	}
+	
+	@Test
+	public void testBlankValue() throws IOException {
+		String input = "foo=   ";
+				
+		TypedProperties expected = new TypedProperties();
+		expected.setString("foo", "");
+		
+		try (StringReader reader = new StringReader(input)) {
+			TypedProperties properties = new TypedProperties();
+			properties.load(reader);
+			
+			Assert.assertEquals(expected, properties);
+		}
+	}
+	
+	@Test
+	public void testSpaceValue() throws IOException {
+		String input = "foo= \\ ";
+				
+		TypedProperties expected = new TypedProperties();
+		expected.setString("foo", " ");
+		
+		try (StringReader reader = new StringReader(input)) {
+			TypedProperties properties = new TypedProperties();
+			properties.load(reader);
+			
+			Assert.assertEquals(expected, properties);
+		}
+	}
+	
+	@Test
+	public void testWhitespace() throws IOException {
+		// Per the Properties load behavior, the trailing whitespace is retained
+		String input = " foo = bar ";
+				
+		TypedProperties expected = new TypedProperties();
+		expected.setString("foo", "bar ");
+		
+		try (StringReader reader = new StringReader(input)) {
+			TypedProperties properties = new TypedProperties();
+			properties.load(reader);
+			
+			Assert.assertEquals(expected, properties);
+		}
+	}
+	
+	@Test
+	public void testWhitespaceEscaped() throws IOException {
+		String input = "\\ foo\\ =\\ bar\\ ";
+				
+		TypedProperties expected = new TypedProperties();
+		expected.setString(" foo ", " bar ");
+		
+		try (StringReader reader = new StringReader(input)) {
+			TypedProperties properties = new TypedProperties();
+			properties.load(reader);
+			
+			Assert.assertEquals(expected, properties);
 		}
 	}
 

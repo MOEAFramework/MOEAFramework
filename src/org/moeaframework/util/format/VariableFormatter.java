@@ -17,9 +17,9 @@
  */
 package org.moeaframework.util.format;
 
-import org.moeaframework.core.Variable;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.core.variable.Variable;
 
 /**
  * Formatter for {@link Variable}s.  Primarily, this uses the registered formatter, if any, for numeric types.

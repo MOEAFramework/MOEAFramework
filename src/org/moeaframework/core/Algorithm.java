@@ -23,6 +23,7 @@ import org.moeaframework.algorithm.AlgorithmInitializationException;
 import org.moeaframework.algorithm.AlgorithmTerminationException;
 import org.moeaframework.algorithm.extension.Extensible;
 import org.moeaframework.core.termination.MaxFunctionEvaluations;
+import org.moeaframework.core.termination.TerminationCondition;
 
 /**
  * Interface for an optimization algorithm. An optimization algorithm operates by performing a series of optimization

@@ -41,8 +41,13 @@ solution.getConstraint(i).isViolation();
 solution.getConstraint(i).getMagnitudeOfViolation();
 ```
 
-## File Format
+## Result Files
 
 Along with the added objective and constraint types, all output formats changed to also store this information, as it
 is now required to correctly load and interpret the stored values.
 
+## CLI Tools
+
+Some CLI tools could be given either the problem name (`--problem DTLZ2_2`) or the number of objectives (`--dimension 2`).
+Starting with version 5, the `--dimension` option is removed.  Commands that previously supported `--dimension` will now
+reconstruct the problem definition from the result file.

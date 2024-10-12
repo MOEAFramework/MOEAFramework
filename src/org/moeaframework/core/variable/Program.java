@@ -26,7 +26,6 @@ import java.util.Base64;
 
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Variable;
 import org.moeaframework.util.tree.Environment;
 import org.moeaframework.util.tree.NOP;
 import org.moeaframework.util.tree.Node;
@@ -108,6 +107,11 @@ public class Program extends Node implements Variable {
 		}
 		
 		setArgument(0, root);
+	}
+	
+	@Override
+	public String getDefinition() {
+		throw new UnsupportedOperationException();
 	}
 	
 	@Override

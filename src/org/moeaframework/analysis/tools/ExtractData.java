@@ -52,7 +52,7 @@ public class ExtractData extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		OptionUtils.addProblemOption(options, true);
+		OptionUtils.addProblemOption(options);
 		OptionUtils.addReferenceSetOption(options);
 		OptionUtils.addEpsilonOption(options);
 		
@@ -91,7 +91,7 @@ public class ExtractData extends CommandLineUtility {
 				ResultFileReader input = new ResultFileReader(problem, new File(commandLine.getOptionValue("input")));
 				OutputLogger output = new OutputLogger(commandLine.getOptionValue("output"))) {
 			NondominatedPopulation referenceSet = OptionUtils.getReferenceSet(commandLine);
-			Indicators indicators = getIndicators(problem, referenceSet, fields);
+			Indicators indicators = getIndicators(input.getProblem(), referenceSet, fields);
 
 			if (epsilons != null) {
 				indicators.withEpsilons(epsilons);

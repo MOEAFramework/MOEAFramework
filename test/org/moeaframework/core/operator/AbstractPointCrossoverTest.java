@@ -21,9 +21,9 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.core.variable.Variable;
 
 public abstract class AbstractPointCrossoverTest<T extends Variation> extends AbstractOperatorTest<T, RealVariable> {
 	

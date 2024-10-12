@@ -21,7 +21,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Variable;
+import org.moeaframework.util.DefinedType;
 import org.moeaframework.util.grammar.ContextFreeGrammar;
 import org.moeaframework.util.validate.Validate;
 
@@ -242,6 +242,11 @@ public class Grammar implements Variable {
 		for (int i = 0; i < codon.length; i++) {
 			codon[i] = PRNG.nextInt(getMaximumValue());
 		}
+	}
+	
+	@Override
+	public String getDefinition() {
+		return DefinedType.createDefinition(Variable.class, Grammar.class, size());
 	}
 	
 	@Override

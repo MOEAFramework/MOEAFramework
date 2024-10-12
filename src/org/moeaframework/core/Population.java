@@ -48,6 +48,7 @@ import org.apache.commons.io.output.CloseShieldOutputStream;
 import org.apache.commons.io.output.CloseShieldWriter;
 import org.moeaframework.core.constraint.Constraint;
 import org.moeaframework.core.objective.Objective;
+import org.moeaframework.core.variable.Variable;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;

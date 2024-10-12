@@ -54,7 +54,7 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 
-		OptionUtils.addProblemOption(options, true);
+		OptionUtils.addProblemOption(options);
 		OptionUtils.addEpsilonOption(options);
 
 		options.addOption(Option.builder("o")

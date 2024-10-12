@@ -20,7 +20,7 @@ package org.moeaframework.core.variable;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Variable;
+import org.moeaframework.util.DefinedType;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -118,6 +118,11 @@ public class RealVariable implements Variable {
 	@Override
 	public RealVariable copy() {
 		return new RealVariable(value, lowerBound, upperBound);
+	}
+	
+	@Override
+	public String getDefinition() {
+		return DefinedType.createDefinition(Variable.class, RealVariable.class, lowerBound, upperBound);
 	}
 
 	@Override

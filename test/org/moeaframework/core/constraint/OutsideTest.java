@@ -41,7 +41,7 @@ public class OutsideTest {
 		
 		Assert.assertEquals(expected, actual);
 		
-		actual.setValue(0.0);
+		actual.setValue(5.0);
 		Assert.assertNotEquals(expected, actual);
 	}
 	

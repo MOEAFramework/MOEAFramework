@@ -29,9 +29,9 @@ import org.moeaframework.Assume;
 import org.moeaframework.Capture;
 import org.moeaframework.Capture.CaptureResult;
 import org.moeaframework.TempFiles;
-import org.moeaframework.core.Variable;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.core.variable.Variable;
 
 public class TabularDataTest {
 	

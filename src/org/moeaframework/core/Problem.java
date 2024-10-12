@@ -17,6 +17,8 @@
  */
 package org.moeaframework.core;
 
+import org.moeaframework.core.variable.Variable;
+
 /**
  * Interface for defining optimization problems.  All methods must be thread safe.
  */

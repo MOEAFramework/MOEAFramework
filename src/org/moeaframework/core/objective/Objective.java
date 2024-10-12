@@ -19,6 +19,8 @@ package org.moeaframework.core.objective;
 
 import java.io.Serializable;
 
+import org.moeaframework.util.DefinedType;
+
 /**
  * Defines an objective for optimization, including the value and the direction.
  * <p>
@@ -28,22 +30,68 @@ import java.io.Serializable;
  * For example, the canonical value for a maximized objective could be the negated value, as minimizing the negated
  * value is equivalent to maximizing the original value.
  */
-public interface Objective extends Comparable<Objective>, Serializable {
+public interface Objective extends Comparable<Objective>, Serializable, DefinedType {
+	
+	// TODO: Add tests
 	
 	public double getValue();
 	
 	public void setValue(double value);
 	
+	/**
+	 * Returns the canonical value of this objective.
+	 * 
+	 * @return the canonical value
+	 */
 	public double getCanonicalValue();
 	
+	/**
+	 * Returns a copy of this objective.
+	 * 
+	 * @return the copy
+	 */
 	public Objective copy();
 	
+	/**
+	 * Similar to {@link Comparable#compareTo(Object)}, compares this objective to a given value.
+	 * 
+	 * @param value the value
+	 * @return {@code -1}, {@code 0}, or {@code 1} depending if this objective is less than, equal to, or greater than
+	 *         the given value
+	 */
 	public int compareTo(double value);
-		
+	
+	/**
+	 * Returns a normalized objective that is:
+	 * <ol>
+	 *   <li>scaled between the minimum and maximum bounds, typically producing a value falling between
+	 *       {@code [0, 1]}, and
+	 *   <li>has an ideal or target value of {@code Double#NEGATIVE_INFINITY}.
+	 * </ol>
+	 * 
+	 * @param minimum the minimum bound
+	 * @param maximum the maximum bound
+	 * @return the normalized objective
+	 */
 	public NormalizedObjective normalize(double minimum, double maximum);
 	
+	/**
+	 * Returns the index used by epsilon-dominance.  This is used by
+	 * {@link org.moeaframework.core.EpsilonBoxDominanceArchive} in its dominance calculations.
+	 * 
+	 * @param epsilon the epsilon value
+	 * @return the index
+	 */
 	public int getEpsilonIndex(double epsilon);
 	
+	/**
+	 * The distance this objective must change, in the direction of the ideal value, to fall within the next epsilon
+	 * box.  This is used by {@link org.moeaframework.core.EpsilonBoxDominanceArchive} when comparing solutions within
+	 * the same epsilon box.
+	 * 
+	 * @param epsilon the epsilon value
+	 * @return the distance
+	 */
 	public double getEpsilonDistance(double epsilon);
 	
 	public double applyWeight(double weight);

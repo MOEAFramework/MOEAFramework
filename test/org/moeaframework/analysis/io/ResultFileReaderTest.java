@@ -128,16 +128,6 @@ public class ResultFileReaderTest {
 			#
 			""";
 
-	public static final String OLDSTYLE_PROPERTIES = """
-			# Problem = Test
-			# Variables = 3
-			# Objectives = 2
-			// foo
-			0.0 00100 2,1,0 0.0 1.0
-			1.0 01000 1,0,2 1.0 0.0
-			#
-			""";
-
 	public static final String EMPTY = "";
 
 	public static final String EMPTY_ENTRY = """
@@ -316,16 +306,6 @@ public class ResultFileReaderTest {
 			validateProperties(reader, properties);
 		}
 	}
-	
-	@Test
-	public void testReaderOldStyleProperties() throws IOException {
-		TypedProperties properties = new TypedProperties();
-		properties.setString("foo", "");
-
-		try (ResultFileReader reader = new ResultFileReader(problem, TempFiles.createFile().withContent(OLDSTYLE_PROPERTIES))) {
-			validateProperties(reader, properties);
-		}
-	}
 
 	@Test
 	public void testReaderEmptyFile() throws IOException {
@@ -395,8 +375,8 @@ public class ResultFileReaderTest {
 	
 	private void validateCompleteNoVariables(ResultFileReader reader) throws IOException {
 		population.clear();
-		population.add(MockSolution.of().withObjectives(0.0, 1.0));
-		population.add(MockSolution.of().withObjectives(1.0, 0.0));
+		population.add(MockSolution.of().withObjectives(0.0, 1.0).withConstraints(0.0));
+		population.add(MockSolution.of().withObjectives(1.0, 0.0).withConstraints(0.0));
 		
 		Assert.assertTrue(reader.hasNext());
 		Assert.assertEquals(population, reader.next().getPopulation());

@@ -35,8 +35,10 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
@@ -61,6 +63,7 @@ import org.moeaframework.core.constraint.Constraint;
 import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.variable.Program;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.io.CommentedLineReader;
 
 public class Assert extends org.junit.Assert {
@@ -113,6 +116,31 @@ public class Assert extends org.junit.Assert {
 	
 	public static void assertEquals(double expected, double actual) {
 		assertEquals(expected, actual, TestThresholds.HIGH_PRECISION);
+	}
+	
+	public static void assertEquals(TypedProperties expected, TypedProperties actual) {
+		if (!expected.equals(actual)) {
+			Set<String> keys = new HashSet<String>();
+			keys.addAll(expected.keySet());
+			keys.addAll(actual.keySet());
+			
+			for (String key : keys) {
+				if (!actual.contains(key)) {
+					Assert.fail("Expected key '" + key + "' missing from properties");
+				}
+				
+				if (!expected.contains(key)) {
+					Assert.fail("Unexpected key '" + key + "' found in properties");
+				}
+				
+				if (!expected.getString(key).equals(actual.getString(key))) {
+					Assert.fail("Values for key '" + key + "' differ, expected '" + expected.getString(key) +
+							"' but was '" + actual.getString(key) + "'");
+				}
+			}
+			
+			Assert.fail("Properties are different");
+		}
 	}
 	
 	public static void assertEquals(Objective expected, Objective actual, double epsilon) {
@@ -178,12 +206,16 @@ public class Assert extends org.junit.Assert {
 				}
 			}
 		}
-				
-		assertEquals("The expected population contains solutions not found in the actual population:",
-				expected.size(), expectedMatches.cardinality());
 		
-		assertEquals("The actual population contains solutions not found in the expected population:",
-				actual.size(), actualMatches.cardinality());
+		if ((expected.size() != expectedMatches.cardinality()) || (actual.size() != actualMatches.cardinality())) {			
+			System.out.println("Expected:");
+			expected.display();
+			
+			System.out.println("Actual:");
+			actual.display();
+			
+			Assert.fail("The content of the two polutions differs");
+		}
 	}
 	
 	public static void assertNoNaN(Solution solution) {

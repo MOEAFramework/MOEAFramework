@@ -26,16 +26,17 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
+import org.moeaframework.core.constraint.Constraint;
+import org.moeaframework.core.objective.Objective;
+import org.moeaframework.core.variable.Variable;
 import org.moeaframework.problem.ProblemStub;
+import org.moeaframework.util.DefinedType;
 import org.moeaframework.util.TypedProperties;
 
 import static org.moeaframework.analysis.io.ResultFileWriter.ENCODING_WARNING;
@@ -43,26 +44,24 @@ import static org.moeaframework.analysis.io.ResultFileWriter.ENCODING_WARNING;
 /**
  * Reads result files created by {@link ResultFileWriter}.
  * <p>
- * This reader is expected to gracefully recover from incomplete or improperly formatted files. Unless a serious I/O
- * error occurred, this reader will attempt to load the file to the last valid entry. This requirement enables a
- * {@code ResultWriter} to resume processing at a valid state.
+ * By default, this will attempt to gracefully recover from incomplete or improperly formatted files.  Unless a serious
+ * I/O error occurred, this reader will attempt to load the file to the last valid entry.  This requirement enables a
+ * {@code ResultWriter} to resume processing at a valid state.  {@link #setErrorsAreFatal(boolean)} and
+ * {@link #setWarningsAreFatal(boolean)} can be used to change this default behavior.
  * 
  * @see ResultFileWriter
  */
 public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Iterable<ResultEntry> {
 
 	/**
-	 * If {@code false}, any errors are suppressed and remaining entries are ignored.  This is the default when
-	 * attempting to recover a corrupted or incomplete result file.  If {@code true}, an exception is thrown and
-	 * processing terminates.
+	 * Specifies how to handle errors.
 	 */
-	private final boolean errorsAreFatal;
+	private boolean errorsAreFatal;
 	
 	/**
-	 * If {@code false}, any validation warnings are logged but ignored.  If {@code true}, an exception is thrown and
-	 * processing terminates.
+	 * Specifies how to handle warnings.
 	 */
-	private final boolean warningsAreFatal;
+	private boolean warningsAreFatal;
 	
 	/**
 	 * The internal stream for reading data from the file.
@@ -72,7 +71,7 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	/**
 	 * The problem.
 	 */
-	private final Problem problem;
+	private Problem problem;
 
 	/**
 	 * The last line read from the internal stream.
@@ -98,24 +97,62 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	 * {@code true} if the warning for unsupported decision variables was displayed; {@code false} otherwise.
 	 */
 	private boolean printedWarning;
+	
+	/**
+	 * Constructs a result file reader for reading the approximation sets from the specified result file.
+	 * 
+	 * @param file the file containing the results
+	 * @throws IOException if an I/O error occurred
+	 */
+	public ResultFileReader(File file) throws IOException {
+		this(null, file);
+	}
 
 	/**
 	 * Constructs a result file reader for reading the approximation sets from the specified result file.
 	 * 
-	 * @param problem the problem
+	 * @param problem the problem, if {@code null} a problem "stub" will be generated
 	 * @param file the file containing the results
 	 * @throws IOException if an I/O error occurred
 	 */
 	public ResultFileReader(Problem problem, File file) throws IOException {
 		super();
 		this.problem = problem;
-		this.errorsAreFatal = false;
-		this.warningsAreFatal = false;
 		
 		reader = new BufferedReader(new FileReader(file));
 		readHeader();
 	}
+	
+	/**
+	 * Returns the problem instance used by this reader.  Will return a {@link ProblemStub} that was reconstructed from
+	 * the result file.
+	 * 
+	 * @return the problem instance
+	 */
+	public Problem getProblem() {
+		return problem;
+	}
 
+	/**
+	 * If {@code false}, any errors are suppressed and remaining entries are ignored.  If {@code true}, an exception is
+	 * thrown and processing terminates.
+	 * 
+	 * @param errorsAreFatal the new setting
+	 */
+	public void setErrorsAreFatal(boolean errorsAreFatal) {
+		this.errorsAreFatal = errorsAreFatal;
+	}
+	
+	/**
+	 * If {@code false}, any warnings are logged but processing continues.  If {@code true}, an exception is thrown
+	 * and processing terminates.
+	 * 
+	 * @param warningsAreFatal the new setting
+	 */
+	public void setWarningsAreFatal(boolean warningsAreFatal) {
+		this.warningsAreFatal = warningsAreFatal;
+	}
+	
 	@Override
 	public void close() throws IOException {
 		reader.close();
@@ -154,60 +191,84 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 		error = true;
 	}
 	
-	private void readHeader() throws IOException {
-		Pattern pattern = Pattern.compile("^#\\s*([a-z0-9_\\-]+)\\s*=\\s*(.*)$", Pattern.CASE_INSENSITIVE);
-		
+	private void readHeader() throws IOException {		
 		if (line == null) {
 			line = reader.readLine();
 		}
+
+		// Read the header content
+		StringWriter stringBuffer = new StringWriter();
 		
 		while ((line != null) && line.startsWith("#")) {
-			Matcher matcher = pattern.matcher(line);
+			stringBuffer.write(line.substring(1).trim());
+			stringBuffer.write('\n');
+
+			line = reader.readLine();
+		}
+
+		TypedProperties header = TypedProperties.newInsertionOrderInstance();
+		header.load(new StringReader(stringBuffer.toString()));
+		
+		// Validate the header content
+		version = header.getInt("Version", 0);
+		
+		if (version > Settings.getMajorVersion()) {
+			warn("Result file created with newer version (file: " + version + ", software: " +
+					Settings.getMajorVersion() + ")");
+		}
+		
+		String problemName = header.getString("Problem", "");
+		int numberOfVariables = header.getInt("NumberOfVariables", header.getInt("Variables", 0));
+		int numberOfObjectives = header.getInt("NumberOfObjectives", header.getInt("Objectives", 0));
+		int numberOfConstraints = header.getInt("NumberOfConstraints", header.getInt("Constraints", 0));
+		
+		if (problem == null) {
+			ProblemStub stub = new ProblemStub(problemName, numberOfVariables, numberOfObjectives, numberOfConstraints);
 			
-			if (matcher.matches()) {
-				String key = matcher.group(1);
-				String value = matcher.group(2);
-				
-				if (key.equalsIgnoreCase("Version")) {
-					version = Integer.parseInt(value);
-					
-					if (version > Settings.getMajorVersion()) {
-						warn("Result file created with newer version (" + version + ")");
-					}
-				} else if (problem instanceof ProblemStub) {
-					// skip validations if using the ProblemStub
-				} else if (key.equalsIgnoreCase("Problem")) {
-					if (!value.isBlank() && !value.equalsIgnoreCase(problem.getName())) {
-						warn("Problem defined in result file does not match problem (given: " +
-								value + ", expected: " + problem.getName());
-					}
-				} else if (key.equalsIgnoreCase("Variables")) {
-					int numberOfVariables = Integer.parseInt(value);
-					
-					if (numberOfVariables != problem.getNumberOfVariables()) {
-						warn("Number of variables in result file does not match problem (given: " +
-								numberOfVariables + ", expected: " + problem.getNumberOfVariables());
-					}
-				} else if (key.equalsIgnoreCase("Objectives")) {
-					int numberOfObjectives = Integer.parseInt(value);
-					
-					if (numberOfObjectives != problem.getNumberOfObjectives()) {
-						warn("Number of objectives in result file does not match problem (given: " +
-								numberOfObjectives + ", expected: " + problem.getNumberOfObjectives());
-					}
-				} else if (key.equalsIgnoreCase("Constraints")) {
-					int numberOfConstraints= Integer.parseInt(value);
-					
-					if (numberOfConstraints != problem.getNumberOfConstraints()) {
-						warn("Number of constraints in result file does not match problem (given: " +
-								numberOfConstraints + ", expected: " + problem.getNumberOfConstraints());
-					}
+			for (int i = 0; i < numberOfVariables; i++) {
+				if (header.contains("Variable." + (i+1) + ".Definition")) {
+					stub.setVariableDefinition(i, DefinedType.createInstance(Variable.class,
+							header.getString("Variable." + (i+1) + ".Definition")));
 				}
-			} else {
-				warn("Malformed header line, ignoring: " + line);
 			}
 			
-			line = reader.readLine();
+			for (int i = 0; i < numberOfObjectives; i++) {
+				if (header.contains("Objective." + (i+1) + ".Definition")) {
+					stub.setObjectiveDefinition(i, DefinedType.createInstance(Objective.class,
+							header.getString("Objective." + (i+1) + ".Definition")));
+				}
+			}
+			
+			for (int i = 0; i < numberOfConstraints; i++) {
+				if (header.contains("Constraint." + (i+1) + ".Definition")) {
+					stub.setConstraintDefinition(i, DefinedType.createInstance(Constraint.class,
+							header.getString("Constraint." + (i+1) + ".Definition")));
+				}
+			}
+			
+			problem = stub;
+		} else {
+			if (problemName != null && problem.getName() != null && 
+					!problemName.isEmpty() && !problem.getName().isEmpty() &&
+					!problemName.equalsIgnoreCase(problem.getName())) {
+				warn("Problem defined in result file does not match problem (given: '" +
+						problemName + "', expected: '" + problem.getName() + "')");
+			}
+			
+			if (numberOfVariables > 0 && numberOfVariables != problem.getNumberOfVariables()) {
+				warn("Number of variables in result file does not match problem (given: " +
+						numberOfVariables + ", expected: " + problem.getNumberOfVariables() + ")");
+			}
+			
+			if (numberOfObjectives > 0 && numberOfObjectives != problem.getNumberOfObjectives()) {
+				warn("Number of objectives in result file does not match problem (given: " +
+						numberOfObjectives + ", expected: " + problem.getNumberOfObjectives() + ")");
+			}
+			
+			if (numberOfConstraints > 0 && numberOfConstraints != problem.getNumberOfConstraints()) {
+				warn("Number of constraints in result file does not match problem (given: " +
+						numberOfConstraints + ", expected: " + problem.getNumberOfConstraints() + ")");
+			}
 		}
 	}
 
@@ -280,35 +341,37 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 				includesConstraints = true;
 			} else if (version < 5 && entries.length == problem.getNumberOfVariables() + problem.getNumberOfObjectives()) {
 				includesVariables = true;
-			} else if (problem instanceof ProblemStub && entries.length >= problem.getNumberOfObjectives()) {
-				// TODO: How to handle this case?????  ProblemStub only specifies objectives.  In the past, we pulled off
-				// the last N entries, but with constraints being written we don't necessarily know where to start.
-				// Can we get rid of ProblemSub and instead use the header info from the file?
-				index = entries.length - problem.getNumberOfObjectives();
 			} else if (entries.length != problem.getNumberOfObjectives()) {
 				return null;
 			}
 			
-			if (includesVariables) {
-				solution = problem.newSolution();
-			} else {
-				solution = new Solution(0, problem.getNumberOfObjectives(), problem.getNumberOfConstraints());
-			}
+			Solution prototype = problem.newSolution();
+			
+			solution = new Solution(
+					includesVariables ? problem.getNumberOfVariables() : 0,
+					problem.getNumberOfObjectives(),
+					problem.getNumberOfConstraints());
 			
 			if (includesVariables) {
 				for (int i = 0; i < problem.getNumberOfVariables(); i++) {
-					solution.setVariable(i, decode(solution.getVariable(i), entries[index++]));
+					solution.setVariable(i, decode(prototype.getVariable(i), entries[index++]));
 				}
 			}
 
 			for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-				solution.setObjectiveValue(i, Double.parseDouble(entries[index++]));
+				Objective objective = prototype.getObjective(i);
+				objective.setValue(Double.parseDouble(entries[index++]));
+				solution.setObjective(i, objective);
 			}
 			
-			if (includesConstraints) {
-				for (int i = 0; i < problem.getNumberOfConstraints(); i++) {
-					solution.setConstraintValue(i, Double.parseDouble(entries[index++]));
+			for (int i = 0; i < problem.getNumberOfConstraints(); i++) {
+				Constraint constraint = prototype.getConstraint(i);
+				
+				if (includesConstraints) {
+					constraint.setValue(Double.parseDouble(entries[index++]));
 				}
+				
+				solution.setConstraint(i, constraint);
 			}
 		} catch (Exception e) {
 			error(e.getMessage());
@@ -353,7 +416,7 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	public Variable decode(Variable variable, String string) {
 		if (string.equals("-")) {
 			if (!printedWarning) {
-				warn(ENCODING_WARNING);
+				System.err.println(ENCODING_WARNING);
 				printedWarning = true;
 			}
 		} else {

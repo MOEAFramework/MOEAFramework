@@ -21,8 +21,8 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
 import org.moeaframework.core.Variation;
+import org.moeaframework.core.variable.Variable;
 import org.moeaframework.mock.MockUnsupportedVariable;
 
 public abstract class AbstractOperatorTest<T extends Variation, S extends Variable> {

@@ -15,16 +15,18 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.core;
+package org.moeaframework.core.variable;
 
 import java.io.Serializable;
+
+import org.moeaframework.util.DefinedType;
 
 /**
  * Interface for decision variables. This interface ensures independent copies of decision variables can be
  * constructed.  Implementations are strongly encouraged to also override {@link Object#equals(Object)} and
  * {@link Object#hashCode()}.
  */
-public interface Variable extends Serializable {
+public interface Variable extends Serializable, DefinedType {
 
 	/**
 	 * Returns an independent copy of this decision variable. It is required that {@code x.copy()} is completely

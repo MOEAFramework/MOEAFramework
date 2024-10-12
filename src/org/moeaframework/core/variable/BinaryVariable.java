@@ -22,7 +22,7 @@ import java.util.BitSet;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Variable;
+import org.moeaframework.util.DefinedType;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -156,6 +156,11 @@ public class BinaryVariable implements Variable {
 		BinaryVariable copy = new BinaryVariable(numberOfBits);
 		copy.bitSet.or(bitSet);
 		return copy;
+	}
+	
+	@Override
+	public String getDefinition() {
+		return DefinedType.createDefinition(Variable.class, BinaryVariable.class, numberOfBits);
 	}
 	
 	@Override

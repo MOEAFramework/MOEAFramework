@@ -56,7 +56,7 @@ public class ARFFConverter extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		OptionUtils.addProblemOption(options, true);
+		OptionUtils.addProblemOption(options);
 		
 		options.addOption(Option.builder("i")
 				.longOpt("input")
@@ -141,6 +141,8 @@ public class ARFFConverter extends CommandLineUtility {
 			}
 		}
 		
+		// TODO: Write constraints
+		
 		writer.println("@DATA");
 	}
 	
@@ -179,7 +181,7 @@ public class ARFFConverter extends CommandLineUtility {
 					writer.print(",");
 				}
 				
-				writer.print(solution.getObjective(i));
+				writer.print(solution.getObjective(i).getValue());
 			}
 			
 			writer.println();
@@ -203,15 +205,14 @@ public class ARFFConverter extends CommandLineUtility {
 			}
 		}
 		
-		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true)) {
+		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true);
+				ResultFileReader input = new ResultFileReader(problem, new File(commandLine.getOptionValue("input")));
+				PrintWriter output = new PrintWriter(new FileWriter(commandLine.getOptionValue("output")))) {
 			// read in the last entry from the result file
 			NondominatedPopulation population = null;
 			
-			try (ResultFileReader reader = new ResultFileReader(problem,
-						new File(commandLine.getOptionValue("input")))) {
-				while (reader.hasNext()) {
-					population = reader.next().getPopulation();
-				}
+			while (input.hasNext()) {
+				population = input.next().getPopulation();
 			}
 			
 			// check if the population is empty
@@ -220,10 +221,8 @@ public class ARFFConverter extends CommandLineUtility {
 			}
 			
 			// write the ARFF file
-			try (PrintWriter writer = new PrintWriter(new FileWriter(commandLine.getOptionValue("output")))) {
-				printHeader(problem, reduced, attributes, writer);
-				printData(problem, reduced, population, writer);
-			}
+			printHeader(input.getProblem(), reduced, attributes, output);
+			printData(input.getProblem(), reduced, population, output);
 		}
 	}
 	

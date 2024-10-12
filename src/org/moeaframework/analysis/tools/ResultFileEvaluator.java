@@ -51,7 +51,7 @@ public class ResultFileEvaluator extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		OptionUtils.addProblemOption(options, true);
+		OptionUtils.addProblemOption(options);
 		OptionUtils.addReferenceSetOption(options);
 		OptionUtils.addEpsilonOption(options);
 		
@@ -89,18 +89,18 @@ public class ResultFileEvaluator extends CommandLineUtility {
 		NondominatedPopulation referenceSet = OptionUtils.getReferenceSet(commandLine);
 
 		// open the resources and begin processing
-		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true)) {
+		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true);
+				ResultFileReader reader = new ResultFileReader(problem, inputFile)) {
 			// validate the reference set
 			for (Solution solution : referenceSet) {
-				if (solution.getNumberOfObjectives() != problem.getNumberOfObjectives()) {
+				if (solution.getNumberOfObjectives() != reader.getProblem().getNumberOfObjectives()) {
 					throw new FrameworkException("reference set contains invalid number of objectives");
 				}
 			}
 
-			Indicators indicator = Indicators.standard(problem, referenceSet);
+			Indicators indicator = Indicators.standard(reader.getProblem(), referenceSet);
 
-			try (ResultFileReader reader = new ResultFileReader(problem, inputFile);
-					MetricFileWriter writer = MetricFileWriter.append(indicator, outputFile)) {
+			try (MetricFileWriter writer = MetricFileWriter.append(indicator, outputFile)) {
 				// resume at the last good output
 				for (int i = 0; i < writer.getNumberOfEntries(); i++) {
 					if (reader.hasNext()) {

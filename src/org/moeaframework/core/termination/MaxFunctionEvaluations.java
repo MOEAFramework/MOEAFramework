@@ -18,7 +18,6 @@
 package org.moeaframework.core.termination;
 
 import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.TerminationCondition;
 
 /**
  * Terminates a run when the maximum number of function evaluations is exceeded.

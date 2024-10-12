@@ -66,7 +66,7 @@ public class Evaluator extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		OptionUtils.addProblemOption(options, false);
+		OptionUtils.addProblemOption(options);
 		OptionUtils.addReferenceSetOption(options);
 		OptionUtils.addEpsilonOption(options);
 

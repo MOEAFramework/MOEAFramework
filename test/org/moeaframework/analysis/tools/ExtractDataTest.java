@@ -37,7 +37,7 @@ import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
 public class ExtractDataTest {
 	
 	public static final String COMPLETE = """
-		# Problem = DTLZ2
+		# Problem = DTLZ2_2
 		# Variables = 11
 		# Objectives = 2
 		//ElapsedTime=0.0125
@@ -53,7 +53,7 @@ public class ExtractDataTest {
 		""";
 	
 	public static final String MISSING_PROPERTY = """
-		# Problem = DTLZ2
+		# Problem = DTLZ2_2
 		# Variables = 11
 		# Objectives = 2
 		//ElapsedTime=0.0125
@@ -151,7 +151,7 @@ public class ExtractDataTest {
 		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 		
 		ExtractData.main(new String[] {
-			"--dimension", "2",
+			"--problem", "DTLZ2_2",
 			"--reference", referenceSetFile.getAbsolutePath(),
 			"--input", input.getPath(),
 			"--output", output.getPath(),
@@ -183,7 +183,7 @@ public class ExtractDataTest {
 		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 		
 		ExtractData.main(new String[] {
-			"--dimension", "2",
+			"--problem", "DTLZ2_2",
 			"--reference", referenceSetFile.getAbsolutePath(),
 			"--input", input.getPath(),
 			"--output", output.getPath(),

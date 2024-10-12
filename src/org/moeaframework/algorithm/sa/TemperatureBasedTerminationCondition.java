@@ -19,9 +19,9 @@ package org.moeaframework.algorithm.sa;
 
 import org.moeaframework.algorithm.AlgorithmInitializationException;
 import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.TerminationCondition;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.termination.TerminationCondition;
 import org.moeaframework.util.validate.Validate;
 
 /**

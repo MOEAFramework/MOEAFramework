@@ -17,7 +17,7 @@
  */
 package org.moeaframework.mock;
 
-import org.moeaframework.core.Variable;
+import org.moeaframework.core.variable.Variable;
 
 public class MockUnsupportedVariable implements Variable {
 
@@ -40,6 +40,11 @@ public class MockUnsupportedVariable implements Variable {
 	
 	@Override
 	public void decode(String value) {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public String getDefinition() {
 		throw new UnsupportedOperationException();
 	}
 	

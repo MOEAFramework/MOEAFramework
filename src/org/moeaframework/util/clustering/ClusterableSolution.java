@@ -19,9 +19,9 @@ package org.moeaframework.util.clustering;
 
 import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.core.variable.Variable;
 import org.moeaframework.util.validate.Validate;
 
 /**

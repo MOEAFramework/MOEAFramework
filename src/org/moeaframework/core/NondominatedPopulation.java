@@ -25,6 +25,7 @@ import java.util.Iterator;
 
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.variable.Variable;
 import org.moeaframework.util.io.Resources;
 
 /**

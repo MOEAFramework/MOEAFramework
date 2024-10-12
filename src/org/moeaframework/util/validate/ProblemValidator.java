@@ -18,7 +18,7 @@
 package org.moeaframework.util.validate;
 
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Variable;
+import org.moeaframework.core.variable.Variable;
 
 /**
  * Validator for {@link Problem}s.

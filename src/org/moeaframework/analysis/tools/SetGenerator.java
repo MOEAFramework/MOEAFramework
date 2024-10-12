@@ -48,7 +48,7 @@ public class SetGenerator extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		OptionUtils.addProblemOption(options, false);
+		OptionUtils.addProblemOption(options);
 		OptionUtils.addEpsilonOption(options);
 		
 		options.addOption(Option.builder("n")

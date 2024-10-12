@@ -20,12 +20,12 @@ package org.moeaframework.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Array;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -36,6 +36,13 @@ import java.util.TreeSet;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.text.StringSubstitutor;
+import org.apache.commons.text.translate.AggregateTranslator;
+import org.apache.commons.text.translate.CharSequenceTranslator;
+import org.apache.commons.text.translate.EntityArrays;
+import org.apache.commons.text.translate.LookupTranslator;
+import org.apache.commons.text.translate.OctalUnescaper;
+import org.apache.commons.text.translate.UnicodeEscaper;
+import org.apache.commons.text.translate.UnicodeUnescaper;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.configuration.ConfigurationException;
@@ -59,6 +66,53 @@ import org.moeaframework.util.validate.Validate;
  * From version 3.0+, keys are case-insensitive.
  */
 public class TypedProperties implements Formattable<Entry<String, String>> {
+	
+	private static final CharSequenceTranslator ESCAPE_KEY;
+	private static final CharSequenceTranslator ESCAPE_VALUE;
+	private static final CharSequenceTranslator UNESCAPE;
+	
+	static {
+		final Map<CharSequence, CharSequence> characterMap = new HashMap<>();
+		characterMap.put("\b", "\\b");
+		characterMap.put("\n", "\\n");
+		characterMap.put("\t", "\\t");
+		characterMap.put("\f", "\\f");
+		characterMap.put("\r", "\\r");
+		characterMap.put("=", "\\=");
+		characterMap.put(":", "\\:");
+		characterMap.put("#", "\\#");
+		characterMap.put("!", "\\!");
+		
+		final Map<CharSequence, CharSequence> escapeMap = new HashMap<>();
+		escapeMap.put("\"", "\\\"");
+		escapeMap.put("\\", "\\\\");
+		
+		final Map<CharSequence, CharSequence> unescapeMap = new HashMap<>();
+		unescapeMap.put("\\\\", "\\");
+		unescapeMap.put("\\\"", "\"");
+		unescapeMap.put("\\'", "'");
+		unescapeMap.put("\\", "");
+		
+		final Map<CharSequence, CharSequence> keyEscapeMap = new HashMap<>();
+		keyEscapeMap.put(" ", "\\ ");
+		
+		ESCAPE_KEY = new AggregateTranslator(
+				new LookupTranslator(Collections.unmodifiableMap(keyEscapeMap)),
+				new LookupTranslator(Collections.unmodifiableMap(escapeMap)),
+				new LookupTranslator(Collections.unmodifiableMap(characterMap)),
+				UnicodeEscaper.outsideOf(32, 0x7f));
+		
+		ESCAPE_VALUE = new AggregateTranslator(
+				new LookupTranslator(Collections.unmodifiableMap(escapeMap)),
+				new LookupTranslator(Collections.unmodifiableMap(characterMap)),
+				UnicodeEscaper.outsideOf(32, 0x7f));
+
+		UNESCAPE = new AggregateTranslator(
+				new OctalUnescaper(),
+				new UnicodeUnescaper(),
+				new LookupTranslator(EntityArrays.invert(characterMap)),
+				new LookupTranslator(Collections.unmodifiableMap(unescapeMap)));
+	}
 
 	/**
 	 * The default separator for arrays.
@@ -84,7 +138,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * Creates a new, empty instance of this class.
 	 */
 	public TypedProperties() {
-		this(DEFAULT_SEPARATOR, false);
+		this(DEFAULT_SEPARATOR, false, true);
 	}
 	
 	/**
@@ -93,7 +147,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * @param properties the existing {@code Properties} object
 	 */
 	public TypedProperties(Properties properties) {
-		this(DEFAULT_SEPARATOR, false);
+		this(DEFAULT_SEPARATOR, false, true);
 		addAll(properties);
 	}
 	
@@ -103,17 +157,24 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * @param separator the separator string
 	 * @param threadSafe if {@code true}, the constructed instance will be thread-safe
 	 */
-	TypedProperties(String separator, boolean threadSafe) {
+	TypedProperties(String separator, boolean threadSafe, boolean isSorted) {
 		super();
 		this.separator = separator;
 		
+		Map<String, String> tempProperties = isSorted ?
+				new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER) :
+				new LinkedHashMap<String, String>();
+		Set<String> tempAccessedProperties = isSorted ?
+				new TreeSet<String>(String.CASE_INSENSITIVE_ORDER) :
+				new LinkedHashSet<String>();
+		
 		if (threadSafe) {
-			this.properties = Collections.synchronizedMap(new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER));
-			this.accessedProperties = Collections.synchronizedSet(new TreeSet<String>(String.CASE_INSENSITIVE_ORDER));
-		} else {
-			this.properties = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
-			this.accessedProperties = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+			tempProperties = Collections.synchronizedMap(tempProperties);
+			tempAccessedProperties = Collections.synchronizedSet(tempAccessedProperties);
 		}
+		
+		this.properties = tempProperties;
+		this.accessedProperties = tempAccessedProperties;
 	}
 	
 	/**
@@ -140,7 +201,16 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * @return an empty, thread-safe properties object
 	 */
 	public static TypedProperties newThreadSafeInstance() {
-		return new TypedProperties(DEFAULT_SEPARATOR, true);
+		return new TypedProperties(DEFAULT_SEPARATOR, true, true);
+	}
+	
+	/**
+	 * Creates and returns an empty properties object that is sorted in insertion order.
+	 * 
+	 * @return an empty, thread-safe properties object
+	 */
+	public static TypedProperties newInsertionOrderInstance() {
+		return new TypedProperties(DEFAULT_SEPARATOR, false, false);
 	}
 	
 	/**
@@ -1294,9 +1364,64 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public void load(Reader reader) throws IOException {
-		Properties properties = new Properties();
-		properties.load(reader);
-		addAll(properties);
+		CommentedLineReader lineReader = CommentedLineReader.wrap(reader);
+		String line = null;
+		
+		while ((line = lineReader.readLine()) != null) {
+			boolean precedingBackslash = false;
+			
+			for (int i = 0; i < line.length(); i++) {
+				char c = line.charAt(i);
+				
+				if ((c == '=' || c == ':') && !precedingBackslash) {
+					String key = line.substring(0, i);
+					String value = line.substring(i+1);
+
+					key = stripUnescapedWhitespace(key, true);
+					value = stripUnescapedWhitespace(value, false);
+							
+					properties.put(UNESCAPE.translate(key), UNESCAPE.translate(value));
+				}
+				
+				precedingBackslash = c == '\\' ? !precedingBackslash : false;
+			}
+		}
+	}
+	
+	/**
+	 * Strips any leading and trailing (if {@code isKey = false}) whitespace that is not escaped.
+	 * 
+	 * @param str the string
+	 * @param isKey {@code true} if the string is a key; {@code false} if the string is value
+	 * @return the stripped string
+	 */
+	private String stripUnescapedWhitespace(String str, boolean isKey) {
+		int start = 0;
+		int end = str.length();
+		
+		while (start < end) {
+			char c = str.charAt(start);
+			
+			if (c != ' ' && c != '\t' && c != '\f') {
+				break;
+			}
+			
+			start += 1;
+		}
+		
+		if (isKey) {
+			while (end > start) {
+				char c = str.charAt(end - 1);
+				
+				if ((c != ' ' && c != '\t' && c != '\f') || (end - 2 > start && str.charAt(end - 2) == '\\')) {
+					break;
+				}
+				
+				end -= 1;
+			}
+		}
+		
+		return str.substring(start, end);
 	}
 	
 	/**
@@ -1306,14 +1431,11 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public void store(Writer writer) throws IOException {
-		try (StringWriter buffer = new StringWriter()) {
-			Properties properties = new Properties();
-			properties.putAll(this.properties);
-			properties.store(buffer, null);
-			
-			try (CommentedLineReader reader = CommentedLineReader.wrap(new StringReader(buffer.toString()))) {
-				reader.transferTo(writer);
-			}
+		for (Map.Entry<String, String> entry : properties.entrySet()) {
+			writer.write(ESCAPE_KEY.translate(entry.getKey()));
+			writer.write("=");
+			writer.write(ESCAPE_VALUE.translate(entry.getValue()));
+			writer.write(System.lineSeparator());
 		}
 	}
 	

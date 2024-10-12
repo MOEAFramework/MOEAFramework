@@ -22,6 +22,7 @@ import java.util.BitSet;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.PRNG;
+import org.moeaframework.util.DefinedType;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -198,6 +199,11 @@ public class BinaryIntegerVariable extends BinaryVariable {
 	}
 	
 	@Override
+	public String getDefinition() {
+		return DefinedType.createDefinition(Variable.class, BinaryIntegerVariable.class, lowerBound, upperBound);
+	}
+	
+	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
 				.append(lowerBound)
@@ -222,7 +228,7 @@ public class BinaryIntegerVariable extends BinaryVariable {
 					.isEquals();
 		}
 	}
-
+	
 	@Override
 	public String toString() {
 		return Integer.toString(getValue());

@@ -21,7 +21,6 @@ import java.util.Arrays;
 import java.util.BitSet;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
 import org.moeaframework.util.validate.Validate;
 
 /**

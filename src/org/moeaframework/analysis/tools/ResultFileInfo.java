@@ -43,7 +43,7 @@ public class ResultFileInfo extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		OptionUtils.addProblemOption(options, true);
+		OptionUtils.addProblemOption(options);
 		
 		options.addOption(Option.builder("o")
 				.longOpt("output")

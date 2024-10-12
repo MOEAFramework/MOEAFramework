@@ -25,7 +25,6 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variable;
 
 public class EncodingUtilsTest {
 

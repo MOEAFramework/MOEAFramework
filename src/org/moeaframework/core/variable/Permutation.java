@@ -22,7 +22,7 @@ import java.util.BitSet;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Variable;
+import org.moeaframework.util.DefinedType;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -217,6 +217,11 @@ public class Permutation implements Variable {
 	@Override
 	public void randomize() {
 		PRNG.shuffle(permutation);
+	}
+	
+	@Override
+	public String getDefinition() {
+		return DefinedType.createDefinition(Variable.class, Permutation.class, size());
 	}
 	
 	@Override
