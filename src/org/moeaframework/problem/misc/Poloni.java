@@ -18,6 +18,7 @@
 package org.moeaframework.problem.misc;
 
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.objective.Maximize;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 
@@ -62,8 +63,8 @@ public class Poloni extends AbstractProblem {
 		double f1 = 1 + Math.pow(A1 - B1, 2.0) + Math.pow(A2 - B2, 2.0);
 		double f2 = Math.pow(x + 3.0, 2.0) + Math.pow(y + 1.0, 2.0);
 		
-		solution.setObjectiveValue(0, f1);
-		solution.setObjectiveValue(1, f2);
+		solution.setObjectiveValue(0, -f1);
+		solution.setObjectiveValue(1, -f2);
 	}
 
 	@Override
@@ -72,6 +73,9 @@ public class Poloni extends AbstractProblem {
 		
 		solution.setVariable(0, new RealVariable(-Math.PI, Math.PI));
 		solution.setVariable(1, new RealVariable(-Math.PI, Math.PI));
+		
+		solution.setObjective(0, new Maximize());
+		solution.setObjective(1, new Maximize());
 		
 		return solution;
 	}

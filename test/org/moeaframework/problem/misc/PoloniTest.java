@@ -28,16 +28,15 @@ public class PoloniTest extends ProblemTest {
 	public void test() {
 		Problem problem = new Poloni();
 		
-		// since this is a maximization problem, these values are negated
-		Assert.assertArrayEquals(new double[] { 38.1791, 10.0 }, 
+		Assert.assertArrayEquals(new double[] { -38.1791, -10.0 }, 
 				evaluateAt(problem, 0.0, 0.0).getObjectiveValues(),
 				0.0001);
 		
-		Assert.assertArrayEquals(new double[] { 9.4566, 54.8719 }, 
+		Assert.assertArrayEquals(new double[] { -9.4566, -54.8719 }, 
 				evaluateAt(problem, Math.PI, Math.PI).getObjectiveValues(),
 				0.0001);
 		
-		Assert.assertArrayEquals(new double[] { 9.4566, 4.6064 }, 
+		Assert.assertArrayEquals(new double[] { -9.4566, -4.6064 }, 
 				evaluateAt(problem, -Math.PI, -Math.PI).getObjectiveValues(),
 				0.0001);
 	}

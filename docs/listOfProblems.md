@@ -235,9 +235,6 @@ Viennet2 | 2 | 3 | 0 | Real | `new Viennet2()` | <img src="imgs/Viennet2.png" wi
 Viennet3 | 2 | 3 | 0 | Real | `new Viennet3()` | <img src="imgs/Viennet3.png" width="100" />
 Viennet4 | 2 | 3 | 3 | Real | `new Viennet4()` | <img src="imgs/Viennet4.png" width="100" />
 
-Note that several of these problems are maximized.  Since the MOEA Framework only supports minimization, the
-objective values are negated!
-
 ## BBOB-2016
 
 Contains the 55 bi-objective problems from the "bbob-biobj" test suite presented at the GECCO 2016 BBOB

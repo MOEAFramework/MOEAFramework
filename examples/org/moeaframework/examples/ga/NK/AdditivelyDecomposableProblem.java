@@ -299,8 +299,7 @@ public class AdditivelyDecomposableProblem implements Problem {
 	}
 	
 	/**
-	 * Uses dynamic programming to compute the optimum value.  Note that since
-	 * the fitness function is maximized, the returned value is negated.
+	 * Uses dynamic programming to compute the optimum value.
 	 * 
 	 * @return the optimum value
 	 */
