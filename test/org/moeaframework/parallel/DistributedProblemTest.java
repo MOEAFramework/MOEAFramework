@@ -29,9 +29,9 @@ import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.mock.MockRealStochasticProblem;
+import org.moeaframework.problem.Problem;
 
 @RunWith(CIRunner.class)
 @Retryable

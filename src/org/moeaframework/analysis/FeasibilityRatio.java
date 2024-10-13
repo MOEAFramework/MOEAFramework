@@ -17,9 +17,9 @@
  */
 package org.moeaframework.analysis;
 
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.RandomInitialization;
+import org.moeaframework.problem.Problem;
 
 /**
  * Computes the feasibility ratio of a given problem, which takes a random sampling of solutions and computes the

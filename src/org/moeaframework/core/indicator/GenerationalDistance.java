@@ -17,9 +17,9 @@
  */
 package org.moeaframework.core.indicator;
 
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.problem.Problem;
 
 /**
  * Generational distance (GD) indicator. Represents average distance from solutions in an approximation set to the

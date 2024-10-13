@@ -21,8 +21,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.moeaframework.algorithm.Algorithm;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.TypedProperties;
+import org.moeaframework.problem.Problem;
 
 /**
  * Defines an SPI for algorithms. Algorithms are identified by a unique name and may be given optional

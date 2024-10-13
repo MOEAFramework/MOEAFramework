@@ -20,10 +20,10 @@ package org.moeaframework.snippet;
 import org.junit.Test;
 import org.moeaframework.Executor;
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.operator.Variation;
 import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.CEC2009.UF1;
 import org.moeaframework.problem.misc.Srinivas;
 

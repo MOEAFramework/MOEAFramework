@@ -20,9 +20,9 @@ package org.moeaframework.util.weights;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.math3.util.CombinatoricsUtils;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.configuration.ConfigurationException;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.util.validate.Validate;
 
 /**

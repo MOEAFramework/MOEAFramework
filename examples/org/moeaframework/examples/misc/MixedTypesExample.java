@@ -18,7 +18,6 @@
 package org.moeaframework.examples.misc;
 
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.constraint.LessThanOrEqual;
 import org.moeaframework.core.operator.CompoundVariation;
@@ -28,6 +27,7 @@ import org.moeaframework.core.operator.real.PM;
 import org.moeaframework.core.operator.real.SBX;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.problem.Problem;
 
 /**
  * Demonstrates solving a problem with mixed types.  In this example, we recreate the

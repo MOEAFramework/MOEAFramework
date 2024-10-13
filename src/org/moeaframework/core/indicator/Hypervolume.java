@@ -17,9 +17,9 @@
  */
 package org.moeaframework.core.indicator;
 
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.problem.Problem;
 
 /**
  * Hypervolume indicator.  Represents the volume of objective space dominated by solutions in the approximation set.

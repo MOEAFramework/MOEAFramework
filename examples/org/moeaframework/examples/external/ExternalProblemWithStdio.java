@@ -22,10 +22,10 @@ import java.io.IOException;
 
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.ExternalProblem;
+import org.moeaframework.problem.Problem;
 
 /**
  * Demonstrates how problems can be defined externally to the MOEA Framework.

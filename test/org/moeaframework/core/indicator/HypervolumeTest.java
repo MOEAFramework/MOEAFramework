@@ -20,10 +20,10 @@ package org.moeaframework.core.indicator;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.util.PropertyScope;
 
 public class HypervolumeTest {

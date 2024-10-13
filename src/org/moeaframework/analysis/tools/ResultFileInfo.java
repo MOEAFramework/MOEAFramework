@@ -23,7 +23,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.analysis.io.ResultFileReader;
-import org.moeaframework.core.Problem;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.util.CommandLineUtility;
 
 /**

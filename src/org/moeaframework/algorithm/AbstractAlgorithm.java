@@ -22,9 +22,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.moeaframework.algorithm.extension.Extensions;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Stateful;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.util.validate.Validate;
 
 /**

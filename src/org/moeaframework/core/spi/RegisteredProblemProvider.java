@@ -27,8 +27,8 @@ import java.util.TreeSet;
 import java.util.function.Supplier;
 
 import org.moeaframework.core.Epsilons;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.problem.Problem;
 
 /**
  * Problem provider that lets callers register problems by name.  For example:

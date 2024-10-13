@@ -19,7 +19,7 @@ package org.moeaframework.problem.LZ;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.Problem;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.ProblemTest;
 
 public class LZ2Test extends ProblemTest {

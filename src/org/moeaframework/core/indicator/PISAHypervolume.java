@@ -20,9 +20,9 @@ package org.moeaframework.core.indicator;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.problem.Problem;
 
 /*
  * Portions of this source code are derived from the PISA library.  The PISA

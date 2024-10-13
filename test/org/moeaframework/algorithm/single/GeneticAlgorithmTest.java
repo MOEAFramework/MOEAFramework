@@ -19,9 +19,9 @@ package org.moeaframework.algorithm.single;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.mock.MockRealProblem;
+import org.moeaframework.problem.Problem;
 
 public class GeneticAlgorithmTest extends AbstractSingleObjectiveAlgorithmTest<GeneticAlgorithm> {
 	

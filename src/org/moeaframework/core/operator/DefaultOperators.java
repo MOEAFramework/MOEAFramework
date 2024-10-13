@@ -21,7 +21,6 @@ import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 import org.moeaframework.algorithm.single.SelfAdaptiveNormalVariation;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.ConfigurationException;
@@ -53,6 +52,7 @@ import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.Program;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.core.variable.Subset;
+import org.moeaframework.problem.Problem;
 
 /**
  * Default provider of operators.

@@ -17,9 +17,9 @@
  */
 package org.moeaframework.core.spi;
 
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.AnalyticalProblem;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.ProblemWrapper;
 
 /**

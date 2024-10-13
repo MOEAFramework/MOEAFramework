@@ -24,7 +24,6 @@ import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.algorithm.NSGAIII;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.operator.CompoundVariation;
 import org.moeaframework.core.operator.Mutation;
@@ -34,6 +33,7 @@ import org.moeaframework.core.operator.binary.BitFlip;
 import org.moeaframework.core.operator.binary.HUX;
 import org.moeaframework.mock.MockMultiTypeProblem;
 import org.moeaframework.mock.MockRealProblem;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.ZDT.ZDT5;
 
 public class ConfigurationTest {

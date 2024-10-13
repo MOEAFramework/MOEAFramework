@@ -23,7 +23,6 @@ import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
 import org.moeaframework.core.DefaultEpsilons;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
@@ -38,6 +37,7 @@ import org.moeaframework.core.population.Population;
 import org.moeaframework.core.selection.Selection;
 import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.util.validate.Validate;
 
 /**

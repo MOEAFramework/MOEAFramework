@@ -20,7 +20,6 @@ package org.moeaframework.problem;
 import java.io.File;
 import java.io.IOException;
 
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.ProblemProvider;

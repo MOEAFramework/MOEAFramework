@@ -24,7 +24,6 @@ import java.util.Set;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.math3.linear.SingularMatrixException;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.attribute.Fitness;
@@ -42,6 +41,7 @@ import org.moeaframework.core.population.Population;
 import org.moeaframework.core.selection.Selection;
 import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.util.LinearAlgebra;
 import org.moeaframework.util.Vector;
 import org.moeaframework.util.clustering.CachedDistanceMeasure;

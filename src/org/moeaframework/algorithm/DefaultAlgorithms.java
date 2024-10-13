@@ -28,11 +28,11 @@ import org.moeaframework.algorithm.single.EvolutionStrategy;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.algorithm.single.RepeatedSingleObjective;
 import org.moeaframework.algorithm.single.SimulatedAnnealing;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.spi.RegisteredAlgorithmProvider;
+import org.moeaframework.problem.Problem;
 
 /**
  * A provider of default algorithms.  Refer to {@code docs/algorithms.md} or the Javadoc for the specifics of

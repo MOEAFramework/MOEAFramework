@@ -19,8 +19,8 @@ package org.moeaframework.problem.DTLZ;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.ProblemTest;
 
 public class DTLZ7Test extends ProblemTest {

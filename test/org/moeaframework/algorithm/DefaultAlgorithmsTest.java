@@ -36,7 +36,6 @@ import org.moeaframework.analysis.collector.Observation;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.core.DefaultEpsilons;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.CrowdingComparator;
@@ -63,6 +62,7 @@ import org.moeaframework.mock.MockPermutationProblem;
 import org.moeaframework.mock.MockProgramProblem;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockSubsetProblem;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 
 /**

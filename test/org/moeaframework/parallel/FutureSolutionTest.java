@@ -27,8 +27,8 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.ProblemWrapper;
 
 public class FutureSolutionTest {

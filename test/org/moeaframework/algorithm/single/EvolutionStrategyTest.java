@@ -17,7 +17,7 @@
  */
 package org.moeaframework.algorithm.single;
 
-import org.moeaframework.core.Problem;
+import org.moeaframework.problem.Problem;
 
 public class EvolutionStrategyTest extends AbstractSingleObjectiveAlgorithmTest<EvolutionStrategy> {
 	

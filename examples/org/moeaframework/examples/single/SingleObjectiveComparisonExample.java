@@ -23,7 +23,7 @@ import org.moeaframework.algorithm.single.DifferentialEvolution;
 import org.moeaframework.algorithm.single.EvolutionStrategy;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.algorithm.single.SimulatedAnnealing;
-import org.moeaframework.core.Problem;
+import org.moeaframework.problem.Problem;
 
 /**
  * Compares the final solutions found using the different single-objective optimizers.

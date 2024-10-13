@@ -24,7 +24,7 @@ import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.analysis.plot.Plot;
-import org.moeaframework.core.Problem;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 
 /**

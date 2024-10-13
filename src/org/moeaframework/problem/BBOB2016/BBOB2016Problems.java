@@ -25,9 +25,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.ProblemProvider;
+import org.moeaframework.problem.Problem;
 
 /* 
  * The following source code is derived from the Coco Framework available at <https://github.com/numbbo/coco> under the

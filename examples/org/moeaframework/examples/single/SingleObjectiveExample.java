@@ -20,7 +20,7 @@ package org.moeaframework.examples.single;
 import java.io.IOException;
 
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
-import org.moeaframework.core.Problem;
+import org.moeaframework.problem.Problem;
 
 /**
  * Demonstrates solving a single-objective problem using a genetic algorithm.

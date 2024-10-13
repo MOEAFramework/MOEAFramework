@@ -26,7 +26,6 @@ import java.util.stream.IntStream;
 import org.apache.commons.lang3.reflect.TypeUtils;
 import org.moeaframework.Assert;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.constraint.Constraint;
@@ -38,6 +37,7 @@ import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.core.variable.Subset;
 import org.moeaframework.core.variable.Variable;
+import org.moeaframework.problem.Problem;
 
 /**
  * Utility for mocking or building solutions for tests.  This can be used as a drop-in replacement for {@link Solution}

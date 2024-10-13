@@ -19,7 +19,6 @@ package org.moeaframework.core.initialization;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Grammar;
@@ -28,6 +27,7 @@ import org.moeaframework.core.variable.Program;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.mock.MockProblem;
 import org.moeaframework.mock.MockUnsupportedVariable;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.util.tree.Rules;
 
 public class RandomInitializationTest {

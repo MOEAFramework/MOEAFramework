@@ -26,9 +26,9 @@ import java.util.Iterator;
 import org.apache.commons.math3.exception.MathArithmeticException;
 import org.apache.commons.math3.util.ArithmeticUtils;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.util.Vector;
 
 // TODO: if the capacity is significantly less than the number of divisions,

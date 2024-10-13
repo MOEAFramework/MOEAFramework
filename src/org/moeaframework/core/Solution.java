@@ -27,6 +27,7 @@ import org.moeaframework.core.constraint.Constraint;
 import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.core.variable.Variable;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.util.clustering.DistanceMeasure;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;

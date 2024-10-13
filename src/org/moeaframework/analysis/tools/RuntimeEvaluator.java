@@ -38,9 +38,9 @@ import org.moeaframework.analysis.io.SampleReader;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.validate.Validate;
 

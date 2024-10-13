@@ -27,13 +27,13 @@ import java.util.TreeMap;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.operator.CompoundVariation;
 import org.moeaframework.core.operator.Variation;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.Variable;
+import org.moeaframework.problem.Problem;
 
 /**
  * Operator provider that lets callers register operators by name.

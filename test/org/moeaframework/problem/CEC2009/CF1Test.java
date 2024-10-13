@@ -19,7 +19,7 @@ package org.moeaframework.problem.CEC2009;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.Problem;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.ProblemTest;
 
 /**

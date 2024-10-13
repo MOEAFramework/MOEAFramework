@@ -19,9 +19,9 @@
 import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.operator.real.PCX;
 import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 
 /**

@@ -17,7 +17,7 @@
  */
 package org.moeaframework.util.validate;
 
-import org.moeaframework.core.Problem;
+import org.moeaframework.problem.Problem;
 
 /**
  * Static methods for creating validators of parameters, arguments, or inputs.  Each method produces a validator for

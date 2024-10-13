@@ -27,11 +27,11 @@ import org.moeaframework.CIRunner;
 import org.moeaframework.Counter;
 import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockSolution;
+import org.moeaframework.problem.Problem;
 
 @RunWith(CIRunner.class)
 @Retryable

@@ -21,8 +21,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.moeaframework.core.Epsilons;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.RegisteredProblemProvider;
+import org.moeaframework.problem.Problem;
 
 /**
  * Problem provider for the DTLZ test problems.

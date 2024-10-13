@@ -17,8 +17,6 @@
  */
 package org.moeaframework.problem;
 
-import org.moeaframework.core.Problem;
-
 /**
  * Abstract class for a {@link Problem}.  For simplicity, most problems should extend {@code AbstractProblem} rather
  * than implement the {@code Problem} interface directly.  At a minimum, only the {@link #newSolution()} and

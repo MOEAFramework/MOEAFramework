@@ -20,7 +20,6 @@ package org.moeaframework.problem;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 
 /**

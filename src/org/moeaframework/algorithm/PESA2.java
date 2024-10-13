@@ -27,7 +27,6 @@ import java.util.NoSuchElementException;
 
 import org.apache.commons.math3.util.ArithmeticUtils;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
@@ -39,6 +38,7 @@ import org.moeaframework.core.population.AdaptiveGridArchive;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.core.selection.Selection;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.problem.Problem;
 
 /**
  * Implementation of the Pareto Envelope-based Selection Algorithm (PESA2).

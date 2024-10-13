@@ -20,12 +20,12 @@ package org.moeaframework.algorithm;
 import java.util.Arrays;
 
 import org.moeaframework.algorithm.extension.Extensible;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Stateful;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.termination.MaxFunctionEvaluations;
 import org.moeaframework.core.termination.TerminationCondition;
+import org.moeaframework.problem.Problem;
 
 /**
  * Interface for an optimization algorithm. An optimization algorithm operates by performing a series of optimization

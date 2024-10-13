@@ -20,7 +20,6 @@ package org.moeaframework.problem;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProblemProvider;

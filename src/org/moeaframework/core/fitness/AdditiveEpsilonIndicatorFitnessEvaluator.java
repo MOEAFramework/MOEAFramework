@@ -17,8 +17,8 @@
  */
 package org.moeaframework.core.fitness;
 
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.problem.Problem;
 
 /**
  * Indicator-based fitness using the additive &epsilon;-indicator.

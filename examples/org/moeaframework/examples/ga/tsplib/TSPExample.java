@@ -32,12 +32,12 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.AbstractProblem;
+import org.moeaframework.problem.Problem;
 
 /**
  * Demonstration of optimizing a TSP problem using the MOEA Framework

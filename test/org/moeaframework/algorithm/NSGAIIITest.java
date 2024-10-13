@@ -26,7 +26,6 @@ import org.apache.commons.math3.stat.descriptive.rank.Min;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.indicator.InvertedGenerationalDistance;
 import org.moeaframework.core.population.NondominatedPopulation;
@@ -36,6 +35,7 @@ import org.moeaframework.problem.DTLZ.DTLZ1;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.DTLZ.DTLZ3;
 import org.moeaframework.problem.DTLZ.DTLZ4;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.ScaledProblem;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 

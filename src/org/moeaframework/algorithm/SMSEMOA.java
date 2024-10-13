@@ -19,7 +19,6 @@ package org.moeaframework.algorithm;
 
 import java.util.Comparator;
 
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
@@ -43,6 +42,7 @@ import org.moeaframework.core.population.Population;
 import org.moeaframework.core.selection.Selection;
 import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.problem.Problem;
 
 /**
  * Implementation of the S-metric Selection MOEA (SMS-MOEA).  The S metric is also known as the hypervolume indicator.

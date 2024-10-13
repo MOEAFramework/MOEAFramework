@@ -22,11 +22,11 @@ import java.io.IOException;
 
 import org.junit.Test;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.ZDT.ZDT5;
 

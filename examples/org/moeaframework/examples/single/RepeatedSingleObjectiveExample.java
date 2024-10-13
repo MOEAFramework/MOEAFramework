@@ -22,7 +22,7 @@ import java.io.IOException;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.algorithm.single.MinMaxDominanceComparator;
 import org.moeaframework.algorithm.single.RepeatedSingleObjective;
-import org.moeaframework.core.Problem;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 
 /**

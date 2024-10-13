@@ -19,7 +19,6 @@ package org.moeaframework.algorithm;
 
 import org.moeaframework.algorithm.continuation.AdaptiveTimeContinuationExtension;
 import org.moeaframework.core.DefaultEpsilons;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.comparator.ChainedComparator;
@@ -36,6 +35,7 @@ import org.moeaframework.core.selection.Selection;
 import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.core.selection.UniformSelection;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.problem.Problem;
 
 /**
  * Implements the &epsilon;-NSGA-II algorithm.  This algorithm extends NSGA-II with an &epsilon;-dominance archive and

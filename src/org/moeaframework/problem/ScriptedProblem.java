@@ -29,8 +29,6 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import org.moeaframework.core.Problem;
-
 /**
  * Permits interfacing with problems implemented by one of the many scripting languages supported by the Java Scripting
  * APIs.

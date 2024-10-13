@@ -17,9 +17,9 @@
  */
 package org.moeaframework.core.indicator;
 
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.util.clustering.DistanceMeasure;
 
 /**

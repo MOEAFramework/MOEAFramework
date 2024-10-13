@@ -26,7 +26,6 @@ import java.util.ListIterator;
 
 import org.apache.commons.math3.util.KthSelector;
 import org.apache.commons.math3.util.Pair;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.attribute.Fitness;
@@ -43,6 +42,7 @@ import org.moeaframework.core.population.Population;
 import org.moeaframework.core.selection.Selection;
 import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.util.validate.Validate;
 
 /**

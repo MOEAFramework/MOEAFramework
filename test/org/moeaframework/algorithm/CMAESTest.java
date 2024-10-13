@@ -22,7 +22,6 @@ import org.junit.runner.RunWith;
 import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
 import org.moeaframework.IgnoreOnCI;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.configuration.ConfigurationException;
@@ -32,6 +31,7 @@ import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.mock.MockRealProblem;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.single.Rosenbrock;
 
 @RunWith(CIRunner.class)

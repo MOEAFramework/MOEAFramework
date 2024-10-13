@@ -17,7 +17,6 @@
  */
 package org.moeaframework.algorithm.single;
 
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
@@ -28,6 +27,7 @@ import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.core.selection.DifferentialEvolutionSelection;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.util.validate.Validate;
 
 /**

@@ -20,8 +20,8 @@ package org.moeaframework.problem.ZCAT;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.RegisteredProblemProvider;
+import org.moeaframework.problem.Problem;
 
 /**
  * Problem provider for the ZCAT test problems.

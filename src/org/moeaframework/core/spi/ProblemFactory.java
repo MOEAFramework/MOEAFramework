@@ -22,8 +22,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.moeaframework.core.Epsilons;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.problem.Problem;
 
 /**
  * Factory for creating optimization problem instances and their corresponding reference sets, if known.  Problems

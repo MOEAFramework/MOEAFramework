@@ -18,7 +18,6 @@
 package org.moeaframework.algorithm;
 
 import org.apache.commons.math3.util.ArithmeticUtils;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.comparator.DominanceComparator;
@@ -29,6 +28,7 @@ import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.population.AdaptiveGridArchive;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.problem.Problem;
 
 /**
  * Implementation of the (1+1) Pareto Archived Evolution Strategy (PAES).  PAES uses an adaptive grid archive to

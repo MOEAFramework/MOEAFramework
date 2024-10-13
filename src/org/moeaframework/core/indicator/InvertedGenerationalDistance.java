@@ -17,9 +17,9 @@
  */
 package org.moeaframework.core.indicator;
 
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.problem.Problem;
 
 /**
  * Inverted generational distance (IGD) indicator. Represents average distance from solutions in the reference set to

@@ -20,9 +20,9 @@ package org.moeaframework.problem.CDTLZ;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.ProblemProvider;
+import org.moeaframework.problem.Problem;
 
 /**
  * Problem provider for the constrained DTLZ test problems.

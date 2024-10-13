@@ -19,10 +19,10 @@ package org.moeaframework.snippet;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.CEC2009.UF1;
 import org.moeaframework.problem.DTLZ.DTLZ2;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.RotatedProblem;
 import org.moeaframework.problem.ScaledProblem;
 import org.moeaframework.problem.TimingProblem;

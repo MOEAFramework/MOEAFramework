@@ -20,8 +20,8 @@ package org.moeaframework.problem.LSMOP;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.spi.RegisteredProblemProvider;
+import org.moeaframework.problem.Problem;
 
 /**
  * Problem provider for the LSMOP test problems.  Similar to other scalable problem suites, append {@code _M} to the

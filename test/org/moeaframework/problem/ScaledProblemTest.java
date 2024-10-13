@@ -24,7 +24,6 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestResources;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.DTLZ.DTLZ2;

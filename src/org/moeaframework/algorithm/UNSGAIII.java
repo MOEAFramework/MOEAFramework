@@ -18,7 +18,6 @@
 package org.moeaframework.algorithm;
 
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.attribute.Niche;
 import org.moeaframework.core.attribute.NicheDistance;
@@ -31,6 +30,7 @@ import org.moeaframework.core.operator.Variation;
 import org.moeaframework.core.population.ReferencePointNondominatedSortingPopulation;
 import org.moeaframework.core.selection.Selection;
 import org.moeaframework.core.selection.TournamentSelection;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
 /**

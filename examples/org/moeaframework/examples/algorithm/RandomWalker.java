@@ -19,12 +19,12 @@ package org.moeaframework.examples.algorithm;
 
 import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.population.NondominatedSortingPopulation;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.problem.Problem;
 
 /**
  * The "random walker" algorithm, which uses the polynomial mutation (pm) operator to produce one random offspring

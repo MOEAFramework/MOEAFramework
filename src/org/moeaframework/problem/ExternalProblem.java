@@ -37,7 +37,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.output.CloseShieldOutputStream;
 import org.apache.commons.lang3.SystemUtils;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.BinaryVariable;

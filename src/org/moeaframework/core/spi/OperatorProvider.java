@@ -17,9 +17,9 @@
  */
 package org.moeaframework.core.spi;
 
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.operator.Variation;
+import org.moeaframework.problem.Problem;
 
 /**
  * Defines an SPI for initializing different operators.  Operators are identified by a unique name.  The methods of

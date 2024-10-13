@@ -26,10 +26,10 @@ import java.io.Reader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.objective.Maximize;
 import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.util.io.CommentedLineReader;
 
 /**

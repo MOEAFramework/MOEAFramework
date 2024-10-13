@@ -18,10 +18,10 @@
 package org.moeaframework.examples.misc;
 
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.InjectedInitialization;
 import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 
 /**

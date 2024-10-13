@@ -19,12 +19,12 @@ package org.moeaframework.core.spi;
 
 import java.util.ServiceConfigurationError;
 
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.operator.CompoundMutation;
 import org.moeaframework.core.operator.CompoundVariation;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.operator.Variation;
+import org.moeaframework.problem.Problem;
 
 /**
  * Factory for creating and variation (e.g., crossover and mutation) operator instances.

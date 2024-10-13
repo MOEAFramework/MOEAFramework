@@ -19,7 +19,7 @@ package org.moeaframework.problem.WFG;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.Problem;
+import org.moeaframework.problem.Problem;
 
 public class WFG9Test extends WFGTest {
 	

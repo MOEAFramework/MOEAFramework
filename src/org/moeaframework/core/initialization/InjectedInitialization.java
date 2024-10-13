@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.problem.Problem;
 
 /**
  * Initialization method that injects pre-defined solutions into the initial population.  This is typically used to

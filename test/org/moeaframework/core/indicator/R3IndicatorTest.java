@@ -21,10 +21,10 @@ import java.io.IOException;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockSolution;
+import org.moeaframework.problem.Problem;
 
 /**
  * The raw values used here were produced using the PISA r-ind.exe program.

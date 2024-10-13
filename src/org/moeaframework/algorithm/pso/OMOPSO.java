@@ -20,7 +20,6 @@ package org.moeaframework.algorithm.pso;
 import org.moeaframework.core.DefaultEpsilons;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.comparator.CrowdingComparator;
@@ -31,6 +30,7 @@ import org.moeaframework.core.fitness.FitnessBasedArchive;
 import org.moeaframework.core.operator.TypeSafeMutation;
 import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.util.validate.Validate;
 
 /**

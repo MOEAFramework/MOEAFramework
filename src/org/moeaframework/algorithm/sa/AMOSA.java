@@ -18,7 +18,6 @@
 package org.moeaframework.algorithm.sa;
 
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
@@ -29,6 +28,7 @@ import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.util.clustering.Clustering;
 import org.moeaframework.util.validate.Validate;
 

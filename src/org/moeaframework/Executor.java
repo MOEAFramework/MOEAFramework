@@ -28,7 +28,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.extension.CheckpointExtension;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.AlgorithmFactory;
@@ -38,6 +37,7 @@ import org.moeaframework.core.termination.MaxElapsedTime;
 import org.moeaframework.core.termination.MaxFunctionEvaluations;
 import org.moeaframework.core.termination.TerminationCondition;
 import org.moeaframework.parallel.DistributedProblem;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.util.progress.ProgressHelper;
 import org.moeaframework.util.progress.ProgressListener;
 import org.moeaframework.util.validate.Validate;

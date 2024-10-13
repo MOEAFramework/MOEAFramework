@@ -20,9 +20,9 @@ package org.moeaframework.algorithm;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.mock.MockRealProblem;
+import org.moeaframework.problem.Problem;
 
 public class EpsilonNSGAIITest {
 	

@@ -27,10 +27,10 @@ import java.util.Arrays;
 
 import org.apache.commons.math3.stat.StatUtils;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.objective.Maximize;
 import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.util.validate.Validate;
 
 /* The following code is derived from derived from the ANSI C code developed

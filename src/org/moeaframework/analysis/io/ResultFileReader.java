@@ -29,7 +29,6 @@ import java.util.NoSuchElementException;
 
 import org.moeaframework.core.DefinedType;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
@@ -37,6 +36,7 @@ import org.moeaframework.core.constraint.Constraint;
 import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.variable.Variable;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.ProblemStub;
 import org.moeaframework.util.ErrorHandler;
 

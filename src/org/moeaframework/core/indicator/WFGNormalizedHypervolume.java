@@ -19,8 +19,8 @@ package org.moeaframework.core.indicator;
 
 import java.util.Arrays;
 
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.problem.Problem;
 
 /**
  * Fast hypervolume calculation published by the Walking Fish Group (WFG).  This version is normalized by the bounds of

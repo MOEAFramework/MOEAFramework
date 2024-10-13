@@ -29,7 +29,6 @@ import org.moeaframework.analysis.collector.AttachPoint;
 import org.moeaframework.analysis.collector.Collector;
 import org.moeaframework.analysis.collector.Observation;
 import org.moeaframework.analysis.collector.Observations;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.indicator.StandardIndicator;
 import org.moeaframework.core.operator.Variation;
@@ -39,6 +38,7 @@ import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.mock.MockAlgorithm;
 import org.moeaframework.mock.MockAlgorithmWithExtensions;
 import org.moeaframework.mock.MockRealProblem;
+import org.moeaframework.problem.Problem;
 
 public class InstrumenterTest {
 	

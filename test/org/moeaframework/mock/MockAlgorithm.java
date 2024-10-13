@@ -23,9 +23,9 @@ import java.io.ObjectOutputStream;
 
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.extension.Extensions;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.problem.Problem;
 
 public class MockAlgorithm implements Algorithm {
 	

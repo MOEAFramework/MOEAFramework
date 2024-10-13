@@ -33,7 +33,6 @@ import org.moeaframework.Assume;
 import org.moeaframework.CIRunner;
 import org.moeaframework.TempFiles;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.io.Resources;

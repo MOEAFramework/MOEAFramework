@@ -26,11 +26,11 @@ import java.util.List;
 
 import org.apache.commons.text.StringTokenizer;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.population.Population;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.util.io.RedirectStream;
 
 /**

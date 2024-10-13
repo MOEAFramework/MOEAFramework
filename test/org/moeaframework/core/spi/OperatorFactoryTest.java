@@ -19,7 +19,6 @@ package org.moeaframework.core.spi;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.configuration.ConfigurationException;
@@ -44,6 +43,7 @@ import org.moeaframework.mock.MockPermutationProblem;
 import org.moeaframework.mock.MockProblem;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockUnsupportedVariable;
+import org.moeaframework.problem.Problem;
 
 public class OperatorFactoryTest extends AbstractFactoryTest<OperatorProvider, OperatorFactory> {
 

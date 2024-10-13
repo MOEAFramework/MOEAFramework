@@ -22,11 +22,11 @@ import java.util.Arrays;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.problem.Problem;
 
 public class BBOB2016Test {
 

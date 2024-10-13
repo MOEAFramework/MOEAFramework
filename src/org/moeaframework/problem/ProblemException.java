@@ -18,7 +18,6 @@
 package org.moeaframework.problem;
 
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.core.Problem;
 
 /**
  * An exception that originated from a problem.

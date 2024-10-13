@@ -20,7 +20,6 @@ package org.moeaframework.core.indicator;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.Initialization;
 import org.moeaframework.core.initialization.RandomInitialization;
@@ -30,6 +29,7 @@ import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.mock.MockConstraintProblem;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockSolution;
+import org.moeaframework.problem.Problem;
 
 public abstract class AbstractIndicatorTest<T extends Indicator> {
 	

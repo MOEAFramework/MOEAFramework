@@ -17,9 +17,9 @@
  */
 package org.moeaframework.examples.algorithm;
 
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.operator.Variation;
+import org.moeaframework.problem.Problem;
 
 /**
  * A configurable version of the "random walker" algorithm, providing setters and properties for the population size

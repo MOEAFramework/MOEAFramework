@@ -22,6 +22,7 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;

@@ -18,7 +18,6 @@
 package org.moeaframework.algorithm.pso;
 
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.CrowdingComparator;
@@ -28,6 +27,7 @@ import org.moeaframework.core.fitness.FitnessBasedArchive;
 import org.moeaframework.core.operator.real.PM;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.problem.Problem;
 
 /**
  * Implementation of SMPSO, the speed-constrained multi-objective particle swarm optimizer.

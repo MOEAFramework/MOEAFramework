@@ -20,7 +20,7 @@ package org.moeaframework.problem.misc;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.core.Problem;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.ProblemTest;
 
 public class Binh3Test extends ProblemTest {

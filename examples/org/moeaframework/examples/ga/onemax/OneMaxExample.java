@@ -18,8 +18,8 @@
 package org.moeaframework.examples.ga.onemax;
 
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.termination.TargetObjectiveTermination;
+import org.moeaframework.problem.Problem;
 
 /**
  * Example of binary optimization on the {@link OneMax} problem.  The goal of

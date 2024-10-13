@@ -24,7 +24,6 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.algorithm.extension.CheckpointExtension;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.initialization.Initialization;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.Variation;
@@ -32,6 +31,7 @@ import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.problem.Problem;
 
 public class AbstractEvolutionaryAlgorithmTest {
 

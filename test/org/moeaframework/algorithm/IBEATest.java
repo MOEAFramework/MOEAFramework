@@ -22,11 +22,11 @@ import org.junit.runner.RunWith;
 import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
 import org.moeaframework.mock.MockRealProblem;
+import org.moeaframework.problem.Problem;
 
 @RunWith(CIRunner.class)
 @Retryable

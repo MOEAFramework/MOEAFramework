@@ -22,13 +22,13 @@ import org.moeaframework.Assert;
 import org.moeaframework.Assume;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.AlgorithmTest;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.mock.MockRealProblem;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.single.Rosenbrock;
 
 public abstract class AbstractSingleObjectiveAlgorithmTest<T extends Algorithm & Configurable> extends AlgorithmTest {

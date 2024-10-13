@@ -17,8 +17,8 @@
  */
 package org.moeaframework.core.indicator;
 
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.problem.Problem;
 
 /**
  * Maximum Pareto front error metric. Represents the maximum distance from solutions in an approximation set to the

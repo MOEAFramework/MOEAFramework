@@ -20,9 +20,9 @@ package org.moeaframework.examples.parallel;
 import java.util.stream.IntStream;
 
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.parallel.DistributedProblem;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.misc.Schaffer;
 import org.moeaframework.util.Timer;
 

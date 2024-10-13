@@ -22,8 +22,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.moeaframework.algorithm.Algorithm;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.TypedProperties;
+import org.moeaframework.problem.Problem;
 
 /**
  * Factory for creating algorithm instances. See {@link AlgorithmProvider} for details on adding new providers.

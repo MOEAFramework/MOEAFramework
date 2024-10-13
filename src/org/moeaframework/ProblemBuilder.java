@@ -24,11 +24,11 @@ import java.lang.reflect.InvocationTargetException;
 import org.apache.commons.lang3.reflect.ConstructorUtils;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.ProblemWrapper;
 
 /**
