@@ -37,6 +37,7 @@ import org.moeaframework.core.constraint.Constraint;
 import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.variable.Variable;
 import org.moeaframework.util.DefinedType;
+import org.moeaframework.util.ErrorHandler;
 import org.moeaframework.util.TypedProperties;
 
 /**
@@ -89,9 +90,9 @@ public class ResultFileWriter implements OutputWriter {
 	private int numberOfEntries;
 	
 	/**
-	 * {@code true} if the warning for unsupported decision variables was displayed; {@code false} otherwise.
+	 * The error handler.
 	 */
-	private boolean printedWarning;
+	private final ErrorHandler errorHandler;
 	
 	/**
 	 * Constructs a result file writer for writing the decision variables and objectives of a sequence of
@@ -106,6 +107,9 @@ public class ResultFileWriter implements OutputWriter {
 	public ResultFileWriter(Problem problem, File file, ResultFileWriterSettings settings) throws IOException {
 		super();
 		this.settings = settings;
+		
+		errorHandler = new ErrorHandler();
+		errorHandler.setSuppressDuplicates(true);
 		
 		if (!settings.isIncludeVariables()) {
 			System.err.println(NO_VARIABLES_WARNING);
@@ -188,6 +192,15 @@ public class ResultFileWriter implements OutputWriter {
 
 			printProperties(header, "# ");
 		}
+	}
+	
+	/**
+	 * Returns the error handler used by this reader.
+	 * 
+	 * @return the error handler
+	 */
+	public ErrorHandler getErrorHandler() {
+		return errorHandler;
 	}
 
 	/**
@@ -321,12 +334,8 @@ public class ResultFileWriter implements OutputWriter {
 	public String encode(Variable variable) {
 		try {
 			return variable.encode();
-		} catch (Exception e) {				
-			if (!printedWarning) {
-				System.err.println(ENCODING_WARNING);
-				printedWarning = true;
-			}
-			
+		} catch (Exception e) {
+			errorHandler.warn(ENCODING_WARNING);
 			return "-";
 		}
 	}

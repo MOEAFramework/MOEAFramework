@@ -37,6 +37,7 @@ import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.variable.Variable;
 import org.moeaframework.problem.ProblemStub;
 import org.moeaframework.util.DefinedType;
+import org.moeaframework.util.ErrorHandler;
 import org.moeaframework.util.TypedProperties;
 
 import static org.moeaframework.analysis.io.ResultFileWriter.ENCODING_WARNING;
@@ -52,16 +53,6 @@ import static org.moeaframework.analysis.io.ResultFileWriter.ENCODING_WARNING;
  * @see ResultFileWriter
  */
 public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Iterable<ResultEntry> {
-
-	/**
-	 * Specifies how to handle errors.
-	 */
-	private boolean errorsAreFatal;
-	
-	/**
-	 * Specifies how to handle warnings.
-	 */
-	private boolean warningsAreFatal;
 	
 	/**
 	 * The internal stream for reading data from the file.
@@ -87,16 +78,17 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	 * The version of the file.  This value is written starting in version 5, and will default to {@code 0} otherwise.
 	 */
 	private int version;
-
-	/**
-	 * {@code true} if an error occurred parsing the result file; {@code false} otherwise.
-	 */
-	private boolean error;
 	
 	/**
-	 * {@code true} if the warning for unsupported decision variables was displayed; {@code false} otherwise.
+	 * When set, indicates the file is using the legacy, objective-only file format produced by
+	 * {@link org.moeaframework.core.Population#saveObjectives(File)}.
 	 */
-	private boolean printedWarning;
+	private boolean legacyFormat;
+
+	/**
+	 * The error handler.
+	 */
+	private final ErrorHandler errorHandler;
 	
 	/**
 	 * Constructs a result file reader for reading the approximation sets from the specified result file.
@@ -107,7 +99,7 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	public ResultFileReader(File file) throws IOException {
 		this(null, file);
 	}
-
+	
 	/**
 	 * Constructs a result file reader for reading the approximation sets from the specified result file.
 	 * 
@@ -116,41 +108,45 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	 * @throws IOException if an I/O error occurred
 	 */
 	public ResultFileReader(Problem problem, File file) throws IOException {
+		this(problem, file, false);
+	}
+
+	/**
+	 * Constructs a result file reader for reading the approximation sets from the specified result file.
+	 * 
+	 * @param problem the problem, if {@code null} a problem "stub" will be generated
+	 * @param file the file containing the results
+	 * @param allowLegacyFormat allows reading legacy file formats for backwards compatibility
+	 * @throws IOException if an I/O error occurred
+	 */
+	protected ResultFileReader(Problem problem, File file, boolean allowLegacyFormat) throws IOException {
 		super();
 		this.problem = problem;
 		
+		errorHandler = new ErrorHandler();
+		errorHandler.setSuppressDuplicates(true);
+		
 		reader = new BufferedReader(new FileReader(file));
-		readHeader();
+		readHeader(allowLegacyFormat);
 	}
 	
 	/**
-	 * Returns the problem instance used by this reader.  Will return a {@link ProblemStub} that was reconstructed from
-	 * the result file.
+	 * Returns the problem instance used by this reader.  This is either the problem instance passed into the
+	 * constructor or a {@link ProblemStub} if the problem was reconstructed from the result file.
 	 * 
 	 * @return the problem instance
 	 */
 	public Problem getProblem() {
 		return problem;
 	}
-
-	/**
-	 * If {@code false}, any errors are suppressed and remaining entries are ignored.  If {@code true}, an exception is
-	 * thrown and processing terminates.
-	 * 
-	 * @param errorsAreFatal the new setting
-	 */
-	public void setErrorsAreFatal(boolean errorsAreFatal) {
-		this.errorsAreFatal = errorsAreFatal;
-	}
 	
 	/**
-	 * If {@code false}, any warnings are logged but processing continues.  If {@code true}, an exception is thrown
-	 * and processing terminates.
+	 * Returns the error handler used by this reader.
 	 * 
-	 * @param warningsAreFatal the new setting
+	 * @return the error handler
 	 */
-	public void setWarningsAreFatal(boolean warningsAreFatal) {
-		this.warningsAreFatal = warningsAreFatal;
+	public ErrorHandler getErrorHandler() {
+		return errorHandler;
 	}
 	
 	@Override
@@ -174,24 +170,7 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 		return this;
 	}
 	
-	private void warn(String message) {
-		if (warningsAreFatal) {
-			throw new FrameworkException(message);
-		}
-		
-		System.err.println(message);
-	}
-	
-	private void error(String message) {
-		if (errorsAreFatal) {
-			throw new FrameworkException(message);
-		}
-		
-		System.err.println(message);
-		error = true;
-	}
-	
-	private void readHeader() throws IOException {		
+	private void readHeader(boolean allowLegacyFormat) throws IOException {		
 		if (line == null) {
 			line = reader.readLine();
 		}
@@ -213,14 +192,18 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 		version = header.getInt("Version", 0);
 		
 		if (version > Settings.getMajorVersion()) {
-			warn("Result file created with newer version (file: " + version + ", software: " +
-					Settings.getMajorVersion() + ")");
+			errorHandler.warn("Result file created with newer version (file: {0}, software: {1})",
+					version, Settings.getMajorVersion());
 		}
 		
 		String problemName = header.getString("Problem", "");
 		int numberOfVariables = header.getInt("NumberOfVariables", header.getInt("Variables", 0));
 		int numberOfObjectives = header.getInt("NumberOfObjectives", header.getInt("Objectives", 0));
 		int numberOfConstraints = header.getInt("NumberOfConstraints", header.getInt("Constraints", 0));
+		
+		if (allowLegacyFormat && version == 0 && numberOfVariables == 0 && numberOfObjectives == 0 && numberOfConstraints == 0) {
+			legacyFormat = true;
+		}
 		
 		if (problem == null) {
 			ProblemStub stub = new ProblemStub(problemName, numberOfVariables, numberOfObjectives, numberOfConstraints);
@@ -251,23 +234,23 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 			if (problemName != null && problem.getName() != null && 
 					!problemName.isEmpty() && !problem.getName().isEmpty() &&
 					!problemName.equalsIgnoreCase(problem.getName())) {
-				warn("Problem defined in result file does not match problem (given: '" +
-						problemName + "', expected: '" + problem.getName() + "')");
+				errorHandler.warn("Problem defined in result file does not match problem (given: '{0}', expected: '{1}')",
+						problemName, problem.getName());
 			}
 			
 			if (numberOfVariables > 0 && numberOfVariables != problem.getNumberOfVariables()) {
-				warn("Number of variables in result file does not match problem (given: " +
-						numberOfVariables + ", expected: " + problem.getNumberOfVariables() + ")");
+				errorHandler.warn("Number of variables in result file does not match problem (given: {0}, expected: {1})",
+						numberOfVariables, problem.getNumberOfVariables());
 			}
 			
 			if (numberOfObjectives > 0 && numberOfObjectives != problem.getNumberOfObjectives()) {
-				warn("Number of objectives in result file does not match problem (given: " +
-						numberOfObjectives + ", expected: " + problem.getNumberOfObjectives() + ")");
+				errorHandler.warn("Number of objectives in result file does not match problem (given: {0}, expected: {1})",
+						numberOfObjectives, problem.getNumberOfObjectives());
 			}
 			
 			if (numberOfConstraints > 0 && numberOfConstraints != problem.getNumberOfConstraints()) {
-				warn("Number of constraints in result file does not match problem (given: " +
-						numberOfConstraints + ", expected: " + problem.getNumberOfConstraints() + ")");
+				errorHandler.warn("Number of constraints in result file does not match problem (given: {0}, expected: {1})",
+						numberOfConstraints, problem.getNumberOfConstraints());
 			}
 		}
 	}
@@ -298,7 +281,7 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 				Solution solution = parseSolution(line);
 				
 				if (solution == null) {
-					error("unable to parse solution, ignoring remaining entries in the file");
+					errorHandler.error("Failed to parse solution, ignoring remaining entries in the file");
 					return null;
 				} else {
 					population.add(solution);
@@ -313,6 +296,10 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 
 		// return population only if non-empty and terminated by a #
 		if ((line == null) || !line.startsWith("#")) {
+			if (legacyFormat && population.size() > 0) {
+				return new ResultEntry(population, properties);
+			}
+			
 			return null;
 		} else {
 			return new ResultEntry(population, properties);
@@ -341,7 +328,8 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 				includesConstraints = true;
 			} else if (version < 5 && entries.length == problem.getNumberOfVariables() + problem.getNumberOfObjectives()) {
 				includesVariables = true;
-			} else if (entries.length != problem.getNumberOfObjectives()) {
+			} else if (!legacyFormat && entries.length != problem.getNumberOfObjectives()) {
+				errorHandler.error("Failed to parse solution, incorrect number of entries ({0}) found", entries.length);
 				return null;
 			}
 			
@@ -349,22 +337,20 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 			
 			solution = new Solution(
 					includesVariables ? problem.getNumberOfVariables() : 0,
-					problem.getNumberOfObjectives(),
+					legacyFormat ? entries.length : problem.getNumberOfObjectives(),
 					problem.getNumberOfConstraints());
 			
-			if (includesVariables) {
-				for (int i = 0; i < problem.getNumberOfVariables(); i++) {
-					solution.setVariable(i, decode(prototype.getVariable(i), entries[index++]));
-				}
+			for (int i = 0; i < solution.getNumberOfVariables(); i++) {
+				solution.setVariable(i, decode(prototype.getVariable(i), entries[index++]));
 			}
 
-			for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-				Objective objective = prototype.getObjective(i);
+			for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
+				Objective objective = legacyFormat ? Objective.createDefault() : prototype.getObjective(i);
 				objective.setValue(Double.parseDouble(entries[index++]));
 				solution.setObjective(i, objective);
 			}
 			
-			for (int i = 0; i < problem.getNumberOfConstraints(); i++) {
+			for (int i = 0; i < solution.getNumberOfConstraints(); i++) {
 				Constraint constraint = prototype.getConstraint(i);
 				
 				if (includesConstraints) {
@@ -372,9 +358,9 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 				}
 				
 				solution.setConstraint(i, constraint);
-			}
+			}			
 		} catch (Exception e) {
-			error(e.getMessage());
+			errorHandler.error(e);
 			return null;
 		}
 
@@ -384,7 +370,7 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	@Override
 	public boolean hasNext() {
 		try {
-			if (error) {
+			if (errorHandler.isError()) {
 				return false;
 			}
 
@@ -415,10 +401,7 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	 */
 	public Variable decode(Variable variable, String string) {
 		if (string.equals("-")) {
-			if (!printedWarning) {
-				System.err.println(ENCODING_WARNING);
-				printedWarning = true;
-			}
+			errorHandler.warn(ENCODING_WARNING);
 		} else {
 			variable.decode(string);
 		}
@@ -436,6 +419,18 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	 */
 	public static ResultFileReader open(Problem problem, File file) throws IOException {
 		return new ResultFileReader(problem, file);
+	}
+	
+	/**
+	 * Opens the result file for reading, supporting older legacy file formats.
+	 * 
+	 * @param problem the problem
+	 * @param file the file containing the results
+	 * @return the reader
+	 * @throws IOException if an I/O error occurred
+	 */
+	public static ResultFileReader openLegacy(Problem problem, File file) throws IOException {
+		return new ResultFileReader(problem, file, true);
 	}
 
 }

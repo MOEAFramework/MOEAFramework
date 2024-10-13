@@ -33,6 +33,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.mock.MockUnsupportedVariable;
 import org.moeaframework.problem.AbstractProblem;
@@ -435,6 +436,30 @@ public class ResultFileReaderTest {
 			
 			MockUnsupportedVariable uv = new MockUnsupportedVariable();
 			reader.decode(uv, "-");
+		}
+	}
+	
+	@Test
+	public void testLegacyWithoutProblem() throws IOException {
+		File file = TempFiles.createFile().withContent("0.0 1.0\n1.0 0.0");
+		
+		try (ResultFileReader reader = ResultFileReader.openLegacy(null, file)) {
+			ResultEntry entry = reader.next();
+			
+			Assert.assertEquals(2, entry.getPopulation().size());
+			Assert.assertEquals(0, entry.getProperties().size());
+		}
+	}
+	
+	@Test
+	public void testLegacyWithProblem() throws IOException {
+		File file = TempFiles.createFile().withContent("0.0 1.0\n1.0 0.0");
+		
+		try (ResultFileReader reader = ResultFileReader.openLegacy(new MockRealProblem(2), file)) {
+			ResultEntry entry = reader.next();
+			
+			Assert.assertEquals(2, entry.getPopulation().size());
+			Assert.assertEquals(0, entry.getProperties().size());
 		}
 	}
 	
