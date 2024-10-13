@@ -26,6 +26,7 @@ import org.moeaframework.TestThresholds;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.CompoundVariation;
 import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
@@ -34,7 +35,6 @@ import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockSolution;
-import org.moeaframework.util.TypedProperties;
 
 public class EpsilonMOEATest {
 	

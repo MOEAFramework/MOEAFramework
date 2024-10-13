@@ -20,9 +20,9 @@ package org.moeaframework.algorithm.single;
 import java.util.Comparator;
 
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.configuration.ConfigurationException;
-import org.moeaframework.util.TypedProperties;
 
 /**
  * Compares solutions based on a computed aggregate fitness from the objective values.  Examples could include weighted

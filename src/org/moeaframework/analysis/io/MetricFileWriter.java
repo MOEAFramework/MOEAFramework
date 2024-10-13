@@ -24,9 +24,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Optional;
 
+import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.indicator.Indicators.IndicatorValues;
-import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.validate.Validate;
 
 /**

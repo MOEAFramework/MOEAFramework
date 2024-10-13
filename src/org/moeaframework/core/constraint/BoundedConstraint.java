@@ -19,8 +19,8 @@ package org.moeaframework.core.constraint;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.moeaframework.core.DefinedType;
 import org.moeaframework.core.Settings;
-import org.moeaframework.util.DefinedType;
 
 public abstract class BoundedConstraint extends AbstractConstraint {
 

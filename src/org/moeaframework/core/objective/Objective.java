@@ -19,7 +19,7 @@ package org.moeaframework.core.objective;
 
 import java.io.Serializable;
 
-import org.moeaframework.util.DefinedType;
+import org.moeaframework.core.DefinedType;
 
 /**
  * Defines an objective for optimization, including the value and the direction.

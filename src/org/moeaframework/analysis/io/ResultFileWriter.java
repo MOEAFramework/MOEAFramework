@@ -30,15 +30,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.cli.CommandLine;
+import org.moeaframework.core.DefinedType;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.constraint.Constraint;
 import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.variable.Variable;
-import org.moeaframework.util.DefinedType;
 import org.moeaframework.util.ErrorHandler;
-import org.moeaframework.util.TypedProperties;
 
 /**
  * Writes result files. A result file contains one or more entries consisting of a non-dominated population and

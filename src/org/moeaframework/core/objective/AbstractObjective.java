@@ -19,7 +19,7 @@ package org.moeaframework.core.objective;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.moeaframework.util.DefinedType;
+import org.moeaframework.core.DefinedType;
 
 public abstract class AbstractObjective implements Objective {
 	

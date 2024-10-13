@@ -24,6 +24,7 @@ import org.moeaframework.CIRunner;
 import org.moeaframework.IgnoreOnCI;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
 import org.moeaframework.core.fitness.HypervolumeFitnessEvaluator;
@@ -32,7 +33,6 @@ import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.problem.single.Rosenbrock;
-import org.moeaframework.util.TypedProperties;
 
 @RunWith(CIRunner.class)
 public class CMAESTest extends AlgorithmTest {

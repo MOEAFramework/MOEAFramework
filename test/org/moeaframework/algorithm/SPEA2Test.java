@@ -26,6 +26,7 @@ import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.attribute.Fitness;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.population.Population;
@@ -33,7 +34,6 @@ import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockSolution;
-import org.moeaframework.util.TypedProperties;
 
 @RunWith(CIRunner.class)
 @Retryable

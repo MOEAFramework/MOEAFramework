@@ -25,12 +25,12 @@ import org.junit.runner.RunWith;
 import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
 import org.moeaframework.core.fitness.HypervolumeContributionFitnessEvaluator;
 import org.moeaframework.core.fitness.HypervolumeFitnessEvaluator;
 import org.moeaframework.mock.MockRealProblem;
-import org.moeaframework.util.TypedProperties;
 
 @RunWith(CIRunner.class)
 public class SMSEMOATest extends AlgorithmTest {

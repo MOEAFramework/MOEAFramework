@@ -26,12 +26,12 @@ import org.moeaframework.algorithm.sa.TemperatureBasedTerminationCondition;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.initialization.Initialization;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.spi.OperatorFactory;
-import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.validate.Validate;
 
 /**

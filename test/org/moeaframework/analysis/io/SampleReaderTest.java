@@ -27,7 +27,7 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.util.TypedProperties;
+import org.moeaframework.core.TypedProperties;
 
 public class SampleReaderTest {
 

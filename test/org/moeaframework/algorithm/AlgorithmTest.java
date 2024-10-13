@@ -22,9 +22,9 @@ import org.moeaframework.Assert;
 import org.moeaframework.Assume;
 import org.moeaframework.Executor;
 import org.moeaframework.core.Settings;
+import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.indicator.StandardIndicator;
 import org.moeaframework.core.spi.AlgorithmFactory;
-import org.moeaframework.util.TypedProperties;
 
 /**
  * Methods for comparing two algorithm implementations statistically.

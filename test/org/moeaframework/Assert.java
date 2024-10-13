@@ -58,12 +58,12 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.constraint.Constraint;
 import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.core.variable.Program;
 import org.moeaframework.core.variable.RealVariable;
-import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.io.CommentedLineReader;
 
 public class Assert extends org.junit.Assert {

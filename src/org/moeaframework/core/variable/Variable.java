@@ -19,7 +19,7 @@ package org.moeaframework.core.variable;
 
 import java.io.Serializable;
 
-import org.moeaframework.util.DefinedType;
+import org.moeaframework.core.DefinedType;
 
 /**
  * Interface for decision variables. This interface ensures independent copies of decision variables can be

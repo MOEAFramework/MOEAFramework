@@ -19,8 +19,8 @@ package org.moeaframework.core.constraint;
 
 import java.io.Serializable;
 
+import org.moeaframework.core.DefinedType;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.util.DefinedType;
 
 /**
  * Defines a constraint.  While all constraints are assigned a value, the interpretation of that value with respect to

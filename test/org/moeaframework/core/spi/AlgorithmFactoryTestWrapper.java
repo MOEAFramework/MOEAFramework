@@ -20,7 +20,7 @@ package org.moeaframework.core.spi;
 import org.moeaframework.algorithm.extension.AlgorithmWrapper;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
-import org.moeaframework.util.TypedProperties;
+import org.moeaframework.core.TypedProperties;
 
 /**
  * Algorithm factory that instruments {@link Algorithm} instances with testing code.

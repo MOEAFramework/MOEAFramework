@@ -29,9 +29,9 @@ import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.TypedProperties;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockSolution;
-import org.moeaframework.util.TypedProperties;
 
 @RunWith(CIRunner.class)
 @Retryable

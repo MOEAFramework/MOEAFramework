@@ -26,11 +26,11 @@ import org.apache.commons.text.WordUtils;
 import org.moeaframework.algorithm.single.SelfAdaptiveNormalVariation;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.operator.Variation;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
 import org.moeaframework.core.spi.OperatorFactory;
-import org.moeaframework.util.TypedProperties;
 
 /**
  * Utility methods for scanning classes to identify properties, reading the configured values, or setting new values.

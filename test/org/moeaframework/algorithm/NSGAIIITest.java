@@ -28,6 +28,7 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.indicator.InvertedGenerationalDistance;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.AlgorithmFactory;
@@ -37,7 +38,6 @@ import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.DTLZ.DTLZ3;
 import org.moeaframework.problem.DTLZ.DTLZ4;
 import org.moeaframework.problem.ScaledProblem;
-import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
 public class NSGAIIITest {

@@ -23,10 +23,10 @@ import org.moeaframework.Instrumenter;
 import org.moeaframework.algorithm.DefaultAlgorithms;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.RegisteredAlgorithmProvider;
-import org.moeaframework.util.TypedProperties;
 
 /**
  * Helper functions for testing collectors.  This primarily ensures that the collectors attach to the correct

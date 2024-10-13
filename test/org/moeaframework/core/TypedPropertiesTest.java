@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.util;
+package org.moeaframework.core;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,8 +30,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.configuration.ConfigurationException;
+import org.moeaframework.util.PropertyNotFoundException;
 
 public class TypedPropertiesTest {
 	

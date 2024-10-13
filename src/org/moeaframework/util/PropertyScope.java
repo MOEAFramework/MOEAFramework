@@ -17,6 +17,8 @@
  */
 package org.moeaframework.util;
 
+import org.moeaframework.core.TypedProperties;
+
 /**
  * Creates a scope for a {@link TypedProperties}, allowing the properties to be temporarily overridden
  * within the scope.  These should typically be used within try-with-resources so the scope is automatically

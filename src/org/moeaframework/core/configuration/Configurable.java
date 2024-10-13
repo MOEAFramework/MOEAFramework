@@ -17,7 +17,7 @@
  */
 package org.moeaframework.core.configuration;
 
-import org.moeaframework.util.TypedProperties;
+import org.moeaframework.core.TypedProperties;
 
 /**
  * Interface for classes that can be configured either explicitly by overriding the methods defined by this

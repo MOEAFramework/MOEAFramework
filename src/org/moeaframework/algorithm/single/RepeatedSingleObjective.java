@@ -27,9 +27,9 @@ import java.util.function.BiFunction;
 import org.moeaframework.algorithm.AbstractAlgorithm;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.AlgorithmFactory;
-import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.weights.RandomGenerator;
 import org.moeaframework.util.weights.WeightGenerator;
 

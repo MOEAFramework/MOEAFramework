@@ -15,12 +15,11 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.util;
+package org.moeaframework.core;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.constraint.Constraint;
 import org.moeaframework.core.constraint.LessThan;
 import org.moeaframework.core.objective.Minimize;
@@ -49,7 +48,7 @@ public class DefinedTypeTest {
 	@Test
 	public void testDifferentPackage() {
 		Assert.assertInstanceOf(TestConstraint.class, DefinedType.createInstance(Constraint.class,
-				"org.moeaframework.util.DefinedTypeTest$TestConstraint(2.0)"));
+				"org.moeaframework.core.DefinedTypeTest$TestConstraint(2.0)"));
 	}
 	
 	@Test
@@ -86,7 +85,7 @@ public class DefinedTypeTest {
 	public void testCreateDefinition() {
 		Assert.assertEquals("Minimize", DefinedType.createDefinition(Objective.class, Minimize.class));
 		Assert.assertEquals("LessThan(2.0)", DefinedType.createDefinition(Constraint.class, LessThan.class, 2.0));
-		Assert.assertEquals("org.moeaframework.util.DefinedTypeTest$TestConstraint(2.0)",
+		Assert.assertEquals("org.moeaframework.core.DefinedTypeTest$TestConstraint(2.0)",
 				DefinedType.createDefinition(Constraint.class, TestConstraint.class, 2.0));
 	}
 	
@@ -109,7 +108,6 @@ public class DefinedTypeTest {
 		
 		private final String str;
 		
-		@SuppressWarnings("unused")
 		public TestStringArgument(String str) {
 			super();
 			this.str = str;

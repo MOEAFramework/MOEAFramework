@@ -22,7 +22,7 @@ import java.util.Set;
 
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
-import org.moeaframework.util.TypedProperties;
+import org.moeaframework.core.TypedProperties;
 
 /**
  * Defines an SPI for algorithms. Algorithms are identified by a unique name and may be given optional

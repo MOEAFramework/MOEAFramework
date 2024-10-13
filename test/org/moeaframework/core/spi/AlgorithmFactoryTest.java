@@ -20,8 +20,8 @@ package org.moeaframework.core.spi;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.core.TypedProperties;
 import org.moeaframework.mock.MockRealProblem;
-import org.moeaframework.util.TypedProperties;
 
 /**
  * Note that most of the functionality is indirectly tested by other test functions.

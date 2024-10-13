@@ -19,8 +19,8 @@ package org.moeaframework.core.spi;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.core.TypedProperties;
 import org.moeaframework.mock.MockRealProblem;
-import org.moeaframework.util.TypedProperties;
 
 public class IndirectAlgorithmProviderTest {
 	

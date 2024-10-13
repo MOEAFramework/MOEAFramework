@@ -22,7 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Problem;
-import org.moeaframework.util.TypedProperties;
+import org.moeaframework.core.TypedProperties;
 
 /**
  * Algorithm provider that avoids creating runtime dependencies on external libraries.  It accomplishes this by

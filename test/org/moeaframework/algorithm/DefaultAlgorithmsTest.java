@@ -38,6 +38,7 @@ import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
@@ -64,7 +65,6 @@ import org.moeaframework.mock.MockProgramProblem;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockSubsetProblem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
-import org.moeaframework.util.TypedProperties;
 
 /**
  * Tests basic functionality of all default algorithms, including:

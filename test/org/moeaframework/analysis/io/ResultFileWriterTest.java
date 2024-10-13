@@ -37,6 +37,8 @@ import org.moeaframework.Wait;
 import org.moeaframework.analysis.io.ResultFileWriter.ResultFileWriterSettings;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.TypedProperties;
+import org.moeaframework.core.TypedPropertiesTest;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.BinaryVariable;
@@ -48,8 +50,6 @@ import org.moeaframework.core.variable.Variable;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.mock.MockUnsupportedVariable;
 import org.moeaframework.problem.AbstractProblem;
-import org.moeaframework.util.TypedProperties;
-import org.moeaframework.util.TypedPropertiesTest;
 import org.moeaframework.util.tree.Rules;
 
 public class ResultFileWriterTest {

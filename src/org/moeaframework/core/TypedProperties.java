@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.util;
+package org.moeaframework.core;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,9 +43,10 @@ import org.apache.commons.text.translate.LookupTranslator;
 import org.apache.commons.text.translate.OctalUnescaper;
 import org.apache.commons.text.translate.UnicodeEscaper;
 import org.apache.commons.text.translate.UnicodeUnescaper;
-import org.moeaframework.core.FrameworkException;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.configuration.ConfigurationException;
+import org.moeaframework.util.OptionCompleter;
+import org.moeaframework.util.PropertyNotFoundException;
+import org.moeaframework.util.PropertyScope;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;

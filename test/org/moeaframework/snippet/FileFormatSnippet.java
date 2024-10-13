@@ -27,12 +27,12 @@ import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.misc.Schaffer;
-import org.moeaframework.util.TypedProperties;
 
 import static org.moeaframework.TempFiles.File;
 

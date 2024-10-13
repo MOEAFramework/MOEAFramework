@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
-import org.moeaframework.util.TypedProperties;
+import org.moeaframework.core.TypedProperties;
 
 /**
  * Constructs a variation operator applying two or more variations sequentially.  This is often used for mixed-type

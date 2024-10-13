@@ -25,7 +25,7 @@ import java.util.Iterator;
 
 import org.moeaframework.analysis.tools.SampleGenerator;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.util.TypedProperties;
+import org.moeaframework.core.TypedProperties;
 
 /**
  * Reads the parameter samples from the output of {@link SampleGenerator}. The column ordering in the sample file

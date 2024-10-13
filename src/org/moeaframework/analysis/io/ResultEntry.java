@@ -17,8 +17,8 @@
  */
 package org.moeaframework.analysis.io;
 
+import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.population.NondominatedPopulation;
-import org.moeaframework.util.TypedProperties;
 
 /**
  * An entry in a result file. This captures the non-dominated population along with properties associated with the

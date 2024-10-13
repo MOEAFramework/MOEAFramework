@@ -37,6 +37,7 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.variable.EncodingUtils;
@@ -44,7 +45,6 @@ import org.moeaframework.core.variable.Variable;
 import org.moeaframework.problem.ExternalProblem;
 import org.moeaframework.problem.ExternalProblem.Builder;
 import org.moeaframework.util.CommandLineUtility;
-import org.moeaframework.util.TypedProperties;
 
 /**
  * Command line utility for solving an optimization problem using any of the supported optimization algorithms.  This

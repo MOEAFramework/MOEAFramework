@@ -28,7 +28,7 @@ import java.util.function.BiFunction;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Problem;
-import org.moeaframework.util.TypedProperties;
+import org.moeaframework.core.TypedProperties;
 
 /**
  * Algorithm provider that lets callers register algorithms by name.

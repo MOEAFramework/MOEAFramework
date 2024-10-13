@@ -27,8 +27,8 @@ import java.util.function.Predicate;
 
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Stateful;
+import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.configuration.Configurable;
-import org.moeaframework.util.TypedProperties;
 
 /**
  * A collection of {@link Extension} associated with an {@link Algorithm}.  Extensions implementing {@link Stateful}
