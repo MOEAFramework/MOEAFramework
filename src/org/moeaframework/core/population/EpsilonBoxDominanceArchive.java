@@ -15,13 +15,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.core;
+package org.moeaframework.core.population;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Iterator;
 
+import org.moeaframework.core.Epsilons;
+import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.EpsilonBoxDominanceComparator;
 
 /**

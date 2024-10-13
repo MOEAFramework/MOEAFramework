@@ -21,9 +21,9 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 import org.moeaframework.core.Indicator;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.population.NondominatedPopulation;
 
 /**
  * Fast hypervolume calculation published by the Walking Fish Group (WFG).  This implementation includes all

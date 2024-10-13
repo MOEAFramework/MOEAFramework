@@ -26,8 +26,8 @@ import org.moeaframework.Instrumenter;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
 import org.moeaframework.analysis.collector.Observations;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.problem.CEC2009.UF1;
 

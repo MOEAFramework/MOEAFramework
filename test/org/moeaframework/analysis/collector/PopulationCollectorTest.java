@@ -20,7 +20,7 @@ package org.moeaframework.analysis.collector;
 import org.moeaframework.Assert;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.EvolutionaryAlgorithm;
-import org.moeaframework.core.Population;
+import org.moeaframework.core.population.Population;
 
 public class PopulationCollectorTest extends AbstractCollectorTest<PopulationCollector> {
 	

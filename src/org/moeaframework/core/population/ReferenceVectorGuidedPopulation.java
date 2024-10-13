@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.algorithm;
+package org.moeaframework.core.population;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -26,7 +26,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.attribute.NormalizedObjectives;
 import org.moeaframework.util.Vector;

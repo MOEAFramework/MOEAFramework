@@ -21,8 +21,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.population.Population;
 
 public class DifferentialEvolutionSelectionTest {
 

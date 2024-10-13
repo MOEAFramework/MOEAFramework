@@ -24,9 +24,9 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.util.CommandLineUtility;
 

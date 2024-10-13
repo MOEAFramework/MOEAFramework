@@ -33,8 +33,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
-import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.indicator.Hypervolume;
+import org.moeaframework.core.population.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.PropertyScope;

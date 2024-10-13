@@ -21,12 +21,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.moeaframework.core.FitnessEvaluator;
-import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.attribute.Fitness;
 import org.moeaframework.core.indicator.PISAHypervolume;
 import org.moeaframework.core.objective.NormalizedObjective;
+import org.moeaframework.core.population.Population;
 import org.moeaframework.util.validate.Validate;
 
 /**

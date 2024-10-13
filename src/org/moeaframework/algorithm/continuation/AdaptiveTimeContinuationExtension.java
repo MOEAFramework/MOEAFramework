@@ -27,14 +27,14 @@ import org.moeaframework.algorithm.extension.LoggingExtension;
 import org.moeaframework.algorithm.extension.PeriodicExtension;
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.EvolutionaryAlgorithm;
-import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.Population;
 import org.moeaframework.core.Selection;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.operator.real.UM;
+import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.core.population.Population;
 import org.moeaframework.core.selection.UniformSelection;
 import org.moeaframework.util.validate.Validate;
 

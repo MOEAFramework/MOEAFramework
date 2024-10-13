@@ -21,8 +21,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.moeaframework.core.Epsilons;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.population.NondominatedPopulation;
 
 /**
  * Defines an SPI for creating named optimization problems. Problems are identified by a unique name. The methods of

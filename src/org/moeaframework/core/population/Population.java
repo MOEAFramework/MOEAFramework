@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.core;
+package org.moeaframework.core.population;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -46,6 +46,8 @@ import org.apache.commons.io.input.CloseShieldInputStream;
 import org.apache.commons.io.input.CloseShieldReader;
 import org.apache.commons.io.output.CloseShieldOutputStream;
 import org.apache.commons.io.output.CloseShieldWriter;
+import org.moeaframework.core.Solution;
+import org.moeaframework.core.Stateful;
 import org.moeaframework.core.constraint.Constraint;
 import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.variable.Variable;

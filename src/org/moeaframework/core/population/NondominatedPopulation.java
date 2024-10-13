@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.core;
+package org.moeaframework.core.population;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Iterator;
 
+import org.moeaframework.core.Settings;
+import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.variable.Variable;
@@ -130,6 +132,15 @@ public class NondominatedPopulation extends Population {
 	public NondominatedPopulation(DominanceComparator comparator, Iterable<? extends Solution> iterable) {
 		this(comparator);
 		addAll(iterable);
+	}
+	
+	/**
+	 * Returns how duplicate solutions are handled.  Defaults to {@link Settings#getDuplicateMode()}.
+	 * 
+	 * @return how duplicate solutions are handled
+	 */
+	public DuplicateMode getDuplicateMode() {
+		return duplicateMode;
 	}
 
 	/**

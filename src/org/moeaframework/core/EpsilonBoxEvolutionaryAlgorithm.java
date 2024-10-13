@@ -17,6 +17,8 @@
  */
 package org.moeaframework.core;
 
+import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
+
 /**
  * Interface for evolutionary algorithms using an &epsilon;-box dominance archive.
  */

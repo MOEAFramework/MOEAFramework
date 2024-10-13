@@ -25,6 +25,7 @@ import java.util.Map;
 import org.apache.commons.lang3.SerializationUtils;
 import org.moeaframework.core.constraint.Constraint;
 import org.moeaframework.core.objective.Objective;
+import org.moeaframework.core.population.Population;
 import org.moeaframework.core.variable.Variable;
 import org.moeaframework.util.clustering.DistanceMeasure;
 import org.moeaframework.util.format.Column;

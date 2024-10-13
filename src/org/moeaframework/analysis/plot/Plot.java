@@ -79,10 +79,10 @@ import org.moeaframework.analysis.collector.Observation;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.analysis.diagnostics.PaintHelper;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.core.Population;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.indicator.StandardIndicator;
+import org.moeaframework.core.population.Population;
 import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.validate.Validate;
 

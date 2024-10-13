@@ -18,7 +18,6 @@
 package org.moeaframework.algorithm.pso;
 
 import org.moeaframework.analysis.DefaultEpsilons;
-import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
@@ -29,6 +28,7 @@ import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.fitness.CrowdingDistanceFitnessEvaluator;
 import org.moeaframework.core.fitness.FitnessBasedArchive;
 import org.moeaframework.core.operator.TypeSafeMutation;
+import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.TypedProperties;
 import org.moeaframework.util.validate.Validate;

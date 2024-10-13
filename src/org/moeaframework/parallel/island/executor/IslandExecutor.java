@@ -19,7 +19,7 @@ package org.moeaframework.parallel.island.executor;
 
 import java.io.Closeable;
 
-import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.population.NondominatedPopulation;
 
 /**
  * Executes an island model strategy.  This class is responsible for taking the conceptual design of the island model,

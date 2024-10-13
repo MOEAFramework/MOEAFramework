@@ -17,9 +17,9 @@
  */
 package org.moeaframework.core.indicator;
 
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.population.NondominatedPopulation;
 
 /**
  * Computes the R1 indicator.  The R1 indicator measures the fraction of utility functions where the population is

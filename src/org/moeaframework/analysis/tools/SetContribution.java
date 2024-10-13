@@ -23,8 +23,8 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.core.Epsilons;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.indicator.Contribution;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.format.NumberFormatter;
 

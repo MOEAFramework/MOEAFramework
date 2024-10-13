@@ -32,7 +32,7 @@ import org.moeaframework.Executor;
 import org.moeaframework.Instrumenter;
 import org.moeaframework.TempFiles;
 import org.moeaframework.analysis.collector.Observations;
-import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.population.NondominatedPopulation;
 
 /**
  * These tests do not check for the correctness of the plots, only that the code runs without error.

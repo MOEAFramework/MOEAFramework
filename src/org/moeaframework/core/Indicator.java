@@ -17,6 +17,8 @@
  */
 package org.moeaframework.core;
 
+import org.moeaframework.core.population.NondominatedPopulation;
+
 /**
  * Interface for a unary quality indicator.
  */

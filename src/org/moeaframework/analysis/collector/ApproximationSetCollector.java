@@ -20,10 +20,10 @@ package org.moeaframework.analysis.collector;
 import java.util.ArrayList;
 
 import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Epsilons;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
+import org.moeaframework.core.population.NondominatedPopulation;
 
 /**
  * Collects approximation sets from an {@link Algorithm}.

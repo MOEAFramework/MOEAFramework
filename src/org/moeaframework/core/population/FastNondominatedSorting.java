@@ -15,11 +15,12 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.core;
+package org.moeaframework.core.population;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.moeaframework.core.Solution;
 import org.moeaframework.core.attribute.Rank;
 import org.moeaframework.core.comparator.DominanceComparator;
 

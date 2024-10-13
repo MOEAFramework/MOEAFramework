@@ -19,8 +19,8 @@ package org.moeaframework.core.indicator;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Settings;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.mock.MockSolution;
 
 public class NormalizerTest {

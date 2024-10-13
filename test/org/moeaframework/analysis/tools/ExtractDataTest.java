@@ -26,11 +26,11 @@ import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.TestResources;
 import org.moeaframework.analysis.io.ResultFileReader;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.indicator.Contribution;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.indicator.Indicators.IndicatorValues;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
 

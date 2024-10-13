@@ -17,12 +17,12 @@
  */
 package org.moeaframework.core.fitness;
 
-import org.moeaframework.core.FastNondominatedSorting;
 import org.moeaframework.core.FitnessEvaluator;
-import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.attribute.CrowdingDistance;
 import org.moeaframework.core.attribute.Fitness;
+import org.moeaframework.core.population.FastNondominatedSorting;
+import org.moeaframework.core.population.Population;
 
 /**
  * Assigns fitness values based on the crowding distance from fast non-dominated sorting.

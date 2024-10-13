@@ -77,7 +77,7 @@ public interface Objective extends Comparable<Objective>, Serializable, DefinedT
 	
 	/**
 	 * Returns the index used by epsilon-dominance.  This is used by
-	 * {@link org.moeaframework.core.EpsilonBoxDominanceArchive} in its dominance calculations.
+	 * {@link org.moeaframework.core.population.EpsilonBoxDominanceArchive} in its dominance calculations.
 	 * 
 	 * @param epsilon the epsilon value
 	 * @return the index
@@ -86,7 +86,7 @@ public interface Objective extends Comparable<Objective>, Serializable, DefinedT
 	
 	/**
 	 * The distance this objective must change, in the direction of the ideal value, to fall within the next epsilon
-	 * box.  This is used by {@link org.moeaframework.core.EpsilonBoxDominanceArchive} when comparing solutions within
+	 * box.  This is used by {@link org.moeaframework.core.population.EpsilonBoxDominanceArchive} when comparing solutions within
 	 * the same epsilon box.
 	 * 
 	 * @param epsilon the epsilon value

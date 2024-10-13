@@ -17,9 +17,9 @@
  */
 package org.moeaframework.mock;
 
-import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.EpsilonBoxEvolutionaryAlgorithm;
-import org.moeaframework.core.Population;
+import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
+import org.moeaframework.core.population.Population;
 
 public class MockEpsilonBoxEvolutionaryAlgorithm extends MockAlgorithmWithExtensions implements EpsilonBoxEvolutionaryAlgorithm {
 	

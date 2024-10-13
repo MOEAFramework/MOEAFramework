@@ -25,9 +25,9 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.algorithm.single.LinearDominanceComparator;
-import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.population.Population;
 import org.moeaframework.mock.MockSolution;
 
 public class TournamentSelectionTest {

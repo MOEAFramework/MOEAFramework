@@ -17,7 +17,7 @@
  */
 package org.moeaframework.analysis.io;
 
-import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.util.TypedProperties;
 
 /**

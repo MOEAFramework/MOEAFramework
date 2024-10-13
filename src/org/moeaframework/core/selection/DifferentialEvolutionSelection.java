@@ -18,10 +18,10 @@
 package org.moeaframework.core.selection;
 
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Population;
 import org.moeaframework.core.Selection;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
+import org.moeaframework.core.population.Population;
 import org.moeaframework.util.validate.Validate;
 
 /**

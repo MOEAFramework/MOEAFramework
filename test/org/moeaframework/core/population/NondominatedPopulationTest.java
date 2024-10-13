@@ -15,13 +15,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.core;
+package org.moeaframework.core.population;
 
 import java.util.BitSet;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
+import org.moeaframework.core.Settings;
+import org.moeaframework.core.Solution;
+import org.moeaframework.core.population.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.mock.MockBinaryProblem;
 import org.moeaframework.mock.MockSolution;

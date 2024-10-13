@@ -43,9 +43,7 @@ import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.analysis.collector.PopulationCollector;
 import org.moeaframework.analysis.collector.PopulationSizeCollector;
 import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Epsilons;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.indicator.AdditiveEpsilonIndicator;
@@ -61,6 +59,8 @@ import org.moeaframework.core.indicator.R2Indicator;
 import org.moeaframework.core.indicator.R3Indicator;
 import org.moeaframework.core.indicator.Spacing;
 import org.moeaframework.core.indicator.StandardIndicator;
+import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.validate.Validate;
 

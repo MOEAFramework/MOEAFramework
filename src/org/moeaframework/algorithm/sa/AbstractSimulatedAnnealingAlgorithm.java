@@ -24,12 +24,12 @@ import java.io.ObjectOutputStream;
 import org.moeaframework.algorithm.AbstractAlgorithm;
 import org.moeaframework.algorithm.AlgorithmInitializationException;
 import org.moeaframework.core.Initialization;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.operator.Mutation;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.util.validate.Validate;
 
 /**

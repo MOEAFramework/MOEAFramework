@@ -25,8 +25,8 @@ import org.apache.commons.cli.Options;
 import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.analysis.io.ResultFileWriter;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.util.CommandLineUtility;
 
 /**

@@ -22,8 +22,8 @@ import java.io.IOException;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.core.Indicator;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockSolution;
 

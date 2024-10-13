@@ -24,6 +24,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.mock.MockSolution;
 

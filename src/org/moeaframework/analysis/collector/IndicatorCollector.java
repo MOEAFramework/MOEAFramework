@@ -18,8 +18,8 @@
 package org.moeaframework.analysis.collector;
 
 import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Indicator;
+import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
 
 /**
  * Collects performance indicator values from an {@link Algorithm}.

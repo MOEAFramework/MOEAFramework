@@ -21,10 +21,10 @@ import java.io.IOException;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.indicator.Indicators.IndicatorValues;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 
 /**

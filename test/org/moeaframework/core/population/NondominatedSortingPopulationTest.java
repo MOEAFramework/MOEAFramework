@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.core;
+package org.moeaframework.core.population;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.NondominatedSortingComparator;
 import org.moeaframework.mock.MockSolution;
 

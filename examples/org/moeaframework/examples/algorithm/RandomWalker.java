@@ -18,12 +18,12 @@
 package org.moeaframework.examples.algorithm;
 
 import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
-import org.moeaframework.core.NondominatedSortingPopulation;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.RandomInitialization;
+import org.moeaframework.core.population.NondominatedSortingPopulation;
 import org.moeaframework.core.spi.OperatorFactory;
 
 /**

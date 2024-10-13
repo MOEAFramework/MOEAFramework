@@ -18,8 +18,8 @@
 package org.moeaframework.core.indicator;
 
 import org.moeaframework.core.Indicator;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.population.NondominatedPopulation;
 
 /**
  * Abstract class for indicators that require normalized approximation and reference sets.

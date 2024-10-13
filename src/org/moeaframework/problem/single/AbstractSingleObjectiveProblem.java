@@ -17,7 +17,7 @@
  */
 package org.moeaframework.problem.single;
 
-import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.util.validate.Validate;
 

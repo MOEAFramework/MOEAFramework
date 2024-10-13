@@ -17,8 +17,8 @@
  */
 package org.moeaframework.core.indicator;
 
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.population.NondominatedPopulation;
 
 public class PISAHypervolumeTest extends AbstractHypervolumeTest<PISAHypervolume> {
 

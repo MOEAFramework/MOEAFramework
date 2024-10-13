@@ -19,7 +19,7 @@ package org.moeaframework.analysis.collector;
 
 import org.moeaframework.Assert;
 import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.population.NondominatedPopulation;
 
 public class ApproximationSetCollectorTest extends AbstractCollectorTest<ApproximationSetCollector> {
 	

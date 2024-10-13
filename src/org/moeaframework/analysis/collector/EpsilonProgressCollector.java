@@ -17,8 +17,8 @@
  */
 package org.moeaframework.analysis.collector;
 
-import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.EpsilonBoxEvolutionaryAlgorithm;
+import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
 
 /**
  * Collects the number of &epsilon;-progress improvements detected in an {@link EpsilonBoxEvolutionaryAlgorithm}.

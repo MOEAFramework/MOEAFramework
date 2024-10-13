@@ -19,8 +19,8 @@ package org.moeaframework.problem;
 
 import java.lang.reflect.InvocationTargetException;
 
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.ProblemProvider;
 import org.moeaframework.core.spi.ProviderNotFoundException;
 

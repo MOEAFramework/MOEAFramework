@@ -19,9 +19,9 @@ package org.moeaframework.core.spi;
 
 import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
 import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.initialization.RandomInitialization;
+import org.moeaframework.core.population.Population;
 import org.moeaframework.util.TypedProperties;
 
 /**

@@ -22,7 +22,7 @@ import java.io.IOException;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.algorithm.continuation.AdaptiveTimeContinuationExtension;
 import org.moeaframework.algorithm.extension.LoggingExtension;
-import org.moeaframework.core.EpsilonBoxDominanceArchive;
+import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 
 /**

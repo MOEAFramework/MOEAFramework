@@ -18,8 +18,6 @@
 package org.moeaframework.algorithm;
 
 import org.apache.commons.math3.util.ArithmeticUtils;
-import org.moeaframework.core.AdaptiveGridArchive;
-import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
@@ -27,6 +25,8 @@ import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.Mutation;
+import org.moeaframework.core.population.AdaptiveGridArchive;
+import org.moeaframework.core.population.Population;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.util.TypedProperties;
 

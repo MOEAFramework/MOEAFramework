@@ -20,9 +20,9 @@ package org.moeaframework.examples.misc;
 import java.io.File;
 import java.io.IOException;
 
-import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Epsilons;
-import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 

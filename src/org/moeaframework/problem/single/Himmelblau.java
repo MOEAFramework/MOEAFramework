@@ -19,8 +19,8 @@ package org.moeaframework.problem.single;
 
 import java.util.List;
 
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.variable.EncodingUtils;
 
 /**

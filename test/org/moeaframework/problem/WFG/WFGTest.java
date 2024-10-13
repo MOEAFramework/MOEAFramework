@@ -20,8 +20,8 @@ package org.moeaframework.problem.WFG;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
+import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.core.population.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.ProblemTest;
 

@@ -15,17 +15,19 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.core;
+package org.moeaframework.core.population;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
+import org.moeaframework.core.Settings;
+import org.moeaframework.core.Solution;
 import org.moeaframework.core.attribute.CrowdingDistance;
 import org.moeaframework.core.attribute.Rank;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ObjectiveComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.population.NondominatedPopulation.DuplicateMode;
 
 /**
  * Non-dominated sorting algorithm for dominance depth ranking. Assigns the {@code rank} and {@code crowdingDistance}

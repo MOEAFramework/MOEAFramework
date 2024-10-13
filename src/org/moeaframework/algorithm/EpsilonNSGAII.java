@@ -19,9 +19,7 @@ package org.moeaframework.algorithm;
 
 import org.moeaframework.algorithm.continuation.AdaptiveTimeContinuationExtension;
 import org.moeaframework.analysis.DefaultEpsilons;
-import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Initialization;
-import org.moeaframework.core.NondominatedSortingPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Selection;
 import org.moeaframework.core.Settings;
@@ -32,6 +30,8 @@ import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.real.UM;
+import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
+import org.moeaframework.core.population.NondominatedSortingPopulation;
 import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.core.selection.UniformSelection;
 import org.moeaframework.core.spi.OperatorFactory;

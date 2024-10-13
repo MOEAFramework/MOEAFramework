@@ -21,10 +21,10 @@ import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
-import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
 import org.moeaframework.problem.DTLZ.DTLZ2;

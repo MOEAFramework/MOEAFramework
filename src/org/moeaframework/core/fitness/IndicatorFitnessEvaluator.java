@@ -19,11 +19,11 @@ package org.moeaframework.core.fitness;
 
 import org.moeaframework.core.FitnessEvaluator;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.attribute.Fitness;
 import org.moeaframework.core.indicator.Normalizer;
+import org.moeaframework.core.population.Population;
 
 /**
  * Abstract class for assigning fitness based on a binary indicator.  This class combines the pair-wise fitness of

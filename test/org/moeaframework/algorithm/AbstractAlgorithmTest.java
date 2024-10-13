@@ -26,8 +26,8 @@ import org.moeaframework.TempFiles;
 import org.moeaframework.algorithm.extension.CheckpointExtension;
 import org.moeaframework.algorithm.extension.Extension;
 import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.mock.MockRealProblem;
 
 public class AbstractAlgorithmTest {

@@ -23,12 +23,12 @@ import java.io.ObjectOutputStream;
 
 import org.moeaframework.core.EvolutionaryAlgorithm;
 import org.moeaframework.core.Initialization;
-import org.moeaframework.core.NondominatedPopulation;
-import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Configurable;
+import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.core.population.Population;
 import org.moeaframework.util.validate.Validate;
 
 /**

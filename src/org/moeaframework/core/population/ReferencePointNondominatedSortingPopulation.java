@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.algorithm;
+package org.moeaframework.core.population;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -28,9 +28,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.math3.linear.SingularMatrixException;
-import org.moeaframework.core.NondominatedSortingPopulation;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Population;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.attribute.Niche;

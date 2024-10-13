@@ -21,9 +21,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.attribute.Fitness;
+import org.moeaframework.core.population.Population;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockSolution;
 

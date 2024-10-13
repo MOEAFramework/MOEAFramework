@@ -17,8 +17,8 @@
  */
 package org.moeaframework.problem.single;
 
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.RegisteredProblemProvider;
 
 /**

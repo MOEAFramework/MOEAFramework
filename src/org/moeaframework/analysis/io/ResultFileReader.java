@@ -28,12 +28,12 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.constraint.Constraint;
 import org.moeaframework.core.objective.Objective;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.variable.Variable;
 import org.moeaframework.problem.ProblemStub;
 import org.moeaframework.util.DefinedType;
@@ -81,7 +81,7 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	
 	/**
 	 * When set, indicates the file is using the legacy, objective-only file format produced by
-	 * {@link org.moeaframework.core.Population#saveObjectives(File)}.
+	 * {@link org.moeaframework.core.population.Population#saveObjectives(File)}.
 	 */
 	private boolean legacyFormat;
 

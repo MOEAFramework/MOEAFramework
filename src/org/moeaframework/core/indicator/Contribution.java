@@ -17,13 +17,13 @@
  */
 package org.moeaframework.core.indicator;
 
-import org.moeaframework.core.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.Indicator;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.EpsilonBoxDominanceComparator;
+import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.util.validate.Validate;
 
 /**

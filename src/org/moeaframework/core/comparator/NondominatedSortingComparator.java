@@ -19,8 +19,8 @@ package org.moeaframework.core.comparator;
 
 import java.util.Comparator;
 
-import org.moeaframework.core.FastNondominatedSorting;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.population.FastNondominatedSorting;
 
 /**
  * Compares two solutions using their rank and crowding distance. Rank is the primary comparison criteria and the

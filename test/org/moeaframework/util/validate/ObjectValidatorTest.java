@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.Population;
+import org.moeaframework.core.population.Population;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.core.variable.Variable;

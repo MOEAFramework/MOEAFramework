@@ -27,8 +27,8 @@ import org.moeaframework.Assert;
 import org.moeaframework.Assume;
 import org.moeaframework.analysis.collector.Observation;
 import org.moeaframework.analysis.collector.Observations;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.mock.MockSolution;
 
 /**

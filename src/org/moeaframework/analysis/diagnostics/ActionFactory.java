@@ -37,7 +37,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.commons.io.FilenameUtils;
 import org.moeaframework.Instrumenter;
 import org.moeaframework.analysis.diagnostics.Controller.Setting;
-import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.util.Localization;
 
 /**

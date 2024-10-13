@@ -17,9 +17,9 @@
  */
 package org.moeaframework.problem;
 
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.population.NondominatedPopulation;
 
 /**
  * Interface for problems whose Pareto optimal set is known analytically, providing the {@link #generate} method for

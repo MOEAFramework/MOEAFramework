@@ -29,6 +29,7 @@ import org.moeaframework.core.comparator.AggregateConstraintComparator;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.RankComparator;
 import org.moeaframework.core.initialization.RandomInitialization;
+import org.moeaframework.core.population.ReferencePointNondominatedSortingPopulation;
 import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 

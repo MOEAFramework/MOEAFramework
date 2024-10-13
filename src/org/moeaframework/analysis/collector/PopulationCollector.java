@@ -20,8 +20,8 @@ package org.moeaframework.analysis.collector;
 import java.util.ArrayList;
 
 import org.moeaframework.core.EvolutionaryAlgorithm;
-import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.population.Population;
 
 /**
  * Collects the population from an {@link EvolutionaryAlgorithm}.

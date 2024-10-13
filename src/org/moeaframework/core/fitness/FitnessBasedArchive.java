@@ -18,11 +18,11 @@
 package org.moeaframework.core.fitness;
 
 import org.moeaframework.core.FitnessEvaluator;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.FitnessComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.population.NondominatedPopulation;
 
 /**
  * Maintains a non-dominated archive of solutions with a maximum capacity.  If the size exceeds the capacity, one or

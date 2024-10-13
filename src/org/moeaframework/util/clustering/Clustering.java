@@ -20,8 +20,8 @@ package org.moeaframework.util.clustering;
 import java.util.List;
 
 import org.apache.commons.lang3.stream.Streams;
-import org.moeaframework.core.Population;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.population.Population;
 
 /**
  * Interface for a clustering algorithm.

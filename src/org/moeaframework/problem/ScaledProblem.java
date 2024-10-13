@@ -20,9 +20,9 @@ package org.moeaframework.problem;
 import java.io.File;
 import java.io.IOException;
 
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.population.NondominatedPopulation;
 
 /**
  * Decorator to create scaled variants of problems.  The {@code i}-th objective is scaled by a factor of

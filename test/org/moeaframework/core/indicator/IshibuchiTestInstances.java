@@ -17,7 +17,7 @@
  */
 package org.moeaframework.core.indicator;
 
-import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.mock.MockProblem;
 import org.moeaframework.mock.MockSolution;
 

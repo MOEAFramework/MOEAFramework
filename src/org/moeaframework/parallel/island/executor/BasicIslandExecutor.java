@@ -27,7 +27,7 @@ import java.util.concurrent.Future;
 
 import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.core.NondominatedPopulation;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.parallel.island.Island;
 import org.moeaframework.parallel.island.IslandModel;
 

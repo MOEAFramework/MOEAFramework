@@ -21,10 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Population;
 import org.moeaframework.core.Selection;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.population.Population;
 import org.moeaframework.parallel.island.Island;
 
 /**

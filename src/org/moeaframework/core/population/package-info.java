@@ -15,34 +15,8 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.core.selection;
-
-import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Selection;
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.population.Population;
 
 /**
- * Uniform selection operator. Solutions are selected from the population with equal probability.
+ * Collection of populations and archives.
  */
-public class UniformSelection implements Selection {
-
-	/**
-	 * Constructs a uniform selection operator.
-	 */
-	public UniformSelection() {
-		super();
-	}
-
-	@Override
-	public Solution[] select(int arity, Population population) {
-		Solution[] result = new Solution[arity];
-
-		for (int i = 0; i < arity; i++) {
-			result[i] = population.get(PRNG.nextInt(population.size()));
-		}
-
-		return result;
-	}
-
-}
+package org.moeaframework.core.population;

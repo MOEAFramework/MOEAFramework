@@ -20,10 +20,10 @@ package org.moeaframework.examples.misc;
 import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.indicator.Normalizer;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.CEC2009.UF1;
 
 /**

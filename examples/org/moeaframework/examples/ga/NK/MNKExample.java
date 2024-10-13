@@ -18,9 +18,9 @@
 package org.moeaframework.examples.ga.NK;
 
 import org.moeaframework.Executor;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.LexicographicalComparator;
+import org.moeaframework.core.population.NondominatedPopulation;
 
 /**
  * Example of binary optimization on the single or multi-objective NK-landscape

@@ -21,8 +21,8 @@ import java.util.List;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.mock.MockSolution;
 
 public class ReferenceSetMergerTest {

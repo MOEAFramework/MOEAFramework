@@ -20,8 +20,8 @@ package org.moeaframework.core.spi;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Problem;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.mock.MockRealProblem;
 
 /**

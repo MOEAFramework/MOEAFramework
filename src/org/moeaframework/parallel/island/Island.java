@@ -18,7 +18,7 @@
 package org.moeaframework.parallel.island;
 
 import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.Population;
+import org.moeaframework.core.population.Population;
 import org.moeaframework.parallel.util.ImmigrationQueue;
 
 /**

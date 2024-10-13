@@ -19,7 +19,6 @@ package org.moeaframework.algorithm;
 
 import org.moeaframework.core.Initialization;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Population;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Selection;
 import org.moeaframework.core.Solution;
@@ -31,6 +30,8 @@ import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.AbstractCompoundVariation;
 import org.moeaframework.core.operator.real.PM;
 import org.moeaframework.core.operator.real.SBX;
+import org.moeaframework.core.population.Population;
+import org.moeaframework.core.population.ReferencePointNondominatedSortingPopulation;
 import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.util.TypedProperties;

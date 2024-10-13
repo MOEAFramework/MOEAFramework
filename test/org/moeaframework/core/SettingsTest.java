@@ -24,7 +24,8 @@ import java.util.Set;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
-import org.moeaframework.core.NondominatedPopulation.DuplicateMode;
+import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.core.population.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.util.PropertyScope;
 
 /**
@@ -95,7 +96,7 @@ public class SettingsTest {
 		try (PropertyScope scope = Settings.createScope()
 				.with(Settings.KEY_DUPLICATE_MODE, DuplicateMode.ALLOW_DUPLICATES.name().toLowerCase())) {
 			Assert.assertEquals(DuplicateMode.ALLOW_DUPLICATES, Settings.getDuplicateMode());
-			Assert.assertEquals(DuplicateMode.ALLOW_DUPLICATES, new NondominatedPopulation().duplicateMode);
+			Assert.assertEquals(DuplicateMode.ALLOW_DUPLICATES, new NondominatedPopulation().getDuplicateMode());
 		}
 	}
 	
