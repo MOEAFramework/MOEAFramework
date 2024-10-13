@@ -56,15 +56,6 @@ public class VectorTest {
 	}
 
 	@Test
-	public void testNegate() {
-		Assert.assertArrayEquals(new double[0], Vector.negate(new double[0]), TestThresholds.HIGH_PRECISION);
-
-		Assert.assertArrayEquals(new double[] { -2.0, 0.0, 2.0 },
-				Vector.negate(new double[] { 2.0, 0.0, -2.0 }),
-				TestThresholds.HIGH_PRECISION);
-	}
-
-	@Test
 	public void testDivide() {
 		Assert.assertArrayEquals(new double[0], Vector.divide(new double[0], 2.0), TestThresholds.HIGH_PRECISION);
 

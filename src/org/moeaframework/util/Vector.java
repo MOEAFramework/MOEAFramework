@@ -146,16 +146,6 @@ public class Vector {
 	}
 
 	/**
-	 * Returns the negation of the specified vector, {@code -u}. This is equivalent to calling {@code multiply(-1, u)}.
-	 * 
-	 * @param u the vector
-	 * @return the negation of the specified vector, {@code -u}
-	 */
-	public static double[] negate(double[] u) {
-		return multiply(-1.0, u);
-	}
-
-	/**
 	 * Returns the scalar division of the specified vector, {@code u / a}.
 	 * 
 	 * @param u the vector

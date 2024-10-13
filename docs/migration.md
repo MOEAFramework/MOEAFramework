@@ -41,13 +41,28 @@ solution.getConstraint(i).isViolation();
 solution.getConstraint(i).getMagnitudeOfViolation();
 ```
 
-## Result Files
+## File Formats
 
-Along with the added objective and constraint types, all output formats changed to also store this information, as it
-is now required to correctly load and interpret the stored values.
+With the addition of the objective and constraint types, the "result file" format has been updated to record this
+information:
 
-## CLI Tools
+```
+# Version=5
+# Problem=TestProblem
+# NumberOfVariables=2
+# NumberOfObjectives=2
+# NumberOfConstraints=0
+# Variable.1.Definition=RealVariable(0.0,1.0)
+# Variable.2.Definition=RealVariable(0.0,1.0)
+# Objective.1.Definition=Minimize
+# Objective.2.Definition=Minimize
+```
 
-Some CLI tools could be given either the problem name (`--problem DTLZ2_2`) or the number of objectives (`--dimension 2`).
-Starting with version 5, the `--dimension` option is removed.  Commands that previously supported `--dimension` will now
-reconstruct the problem definition from the result file.
+This new format contains all the necessary information to process and interpret the solutions contained in the file.
+Consequently, the "result file" is now the preferred and only supported file format.  This also means:
+
+1. The supplied Pareto front files in `./pf/` are updated to use the new format
+2. The `saveObjectives` / `loadObjectives` and `saveBinary` and `loadBinary` methods for saving populations are removed.
+3. Maximized objectives no longer need to be negated.  The `Negater` CLI tools is also removed.
+4. CLI tools that process result files no longer accept the `--dimension` argument, as the dimension and type
+   information is available in the header.
