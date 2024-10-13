@@ -29,18 +29,17 @@ Calculates the best, attainment, efficiency and controllability metrics.  The fo
 <!-- help:src/org/moeaframework/analysis/tools/ARFFConverter.java [:-2] -->
 
 ```
-usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ARFFConverter -b <name> | -d <number>  [-h] -i <file>
-       [-n <arg>] -o <file> [-r]
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ARFFConverter [-b <name>] [-h] -i <file> [-n <arg>] -o
+       <file> [-r]
 
 Converts a result file into an ARFF file.  The following options are available:
 
- -b,--problem <name>       Problem name
- -d,--dimension <number>   Number of objectives
- -h,--help                 Display help information
- -i,--input <file>         Input file
- -n,--names <arg>          Names of the variables and objectives
- -o,--output <file>        Output file
- -r,--reduced              Only output objectives
+ -b,--problem <name>   Problem name
+ -h,--help             Display help information
+ -i,--input <file>     Input file
+ -n,--names <arg>      Names of the variables and objectives
+ -o,--output <file>    Output file
+ -r,--reduced          Only output objectives
 ```
 
 ## BuildProblem
@@ -97,14 +96,13 @@ Evaluates an optimization algorithm on the specified problem.  The following opt
 <!-- help:src/org/moeaframework/analysis/tools/ExtractData.java [:-2] -->
 
 ```
-usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ExtractData -b <name> | -d <number>  [-e <e1,e2,...>]
-       [-h] -i <file> [-n] [-o <file>] [-r <file>] [-s <value>]
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ExtractData [-b <name>] [-e <e1,e2,...>] [-h] -i <file>
+       [-n] [-o <file>] [-r <file>] [-s <value>]
 
 Extracts metadata and/or performance metrics from a result file, storing the data in a spreadsheet-like format.  The
 following options are available:
 
  -b,--problem <name>        Problem name
- -d,--dimension <number>    Number of objectives
  -e,--epsilon <e1,e2,...>   Epsilon values for epsilon-dominance
  -h,--help                  Display help information
  -i,--input <file>          Input file
@@ -112,20 +110,6 @@ following options are available:
  -o,--output <file>         Output file
  -r,--reference <file>      Reference set file
  -s,--separator <value>     Separator between entries
-```
-
-## Negater
-
-<!-- help:src/org/moeaframework/analysis/tools/Negater.java [:-2] -->
-
-```
-usage: java -classpath "lib/*" org.moeaframework.analysis.tools.Negater -d <d1,d2,...> [-h]
-
-Negates the specified columns in a file.  This allows maximized objectives to be treated as minimized objectives, since
-minimizing the negation is equivalent to maximizing the original objective.  The following options are available:
-
- -d,--direction <d1,d2,...>   Comma-separated direction flags (0=unchanged, 1=negate)
- -h,--help                    Display help information
 ```
 
 ## ReferenceSetMerger
@@ -150,15 +134,14 @@ reference contributed.  The following options are available:
 <!-- help:src/org/moeaframework/analysis/tools/ResultFileEvaluator.java [:-2] -->
 
 ```
-usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileEvaluator -b <name> | -d <number>  [-e
-       <e1,e2,...>] [-f] [-h] -i <file> -o <file> [-r <file>]
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileEvaluator [-b <name>] [-e <e1,e2,...>] [-f]
+       [-h] -i <file> -o <file> [-r <file>]
 
 Evaluates the approximation sets stored in a result file, outputting a metric file containing the hypervolume,
 generational distance, inverted generational distance, spacing, additive epsilon-indicator, and maximum Pareto front
 error performance indicators.  The following options are available:
 
  -b,--problem <name>        Problem name
- -d,--dimension <number>    Number of objectives
  -e,--epsilon <e1,e2,...>   Epsilon values for epsilon-dominance
  -f,--force                 Continue processing if the file timestamp check fails
  -h,--help                  Display help information
@@ -172,14 +155,13 @@ error performance indicators.  The following options are available:
 <!-- help:src/org/moeaframework/analysis/tools/ResultFileInfo.java [:-2] -->
 
 ```
-usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileInfo -b <name> | -d <number>  [-h] [-o <file>]
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileInfo [-b <name>] [-h] [-o <file>]
 
 Outputs the number of approximation sets stored in a result file.  The following options are available:
 
- -b,--problem <name>       Problem name
- -d,--dimension <number>   Number of objectives
- -h,--help                 Display help information
- -o,--output <file>        Output file
+ -b,--problem <name>   Problem name
+ -h,--help             Display help information
+ -o,--output <file>    Output file
 ```
 
 ## ResultFileMerger
@@ -187,14 +169,13 @@ Outputs the number of approximation sets stored in a result file.  The following
 <!-- help:src/org/moeaframework/analysis/tools/ResultFileMerger.java [:-2] -->
 
 ```
-usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileMerger -b <name> | -d <number>  [-e
-       <e1,e2,...>] [-h] -o <file> [-r]
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileMerger [-b <name>] [-e <e1,e2,...>] [-h] -o
+       <file> [-r]
 
 Merges the approximation sets contained in one or more result files to produce the combined reference set.  The
 following options are available:
 
  -b,--problem <name>        Problem name
- -d,--dimension <number>    Number of objectives
  -e,--epsilon <e1,e2,...>   Epsilon values for epsilon-dominance
  -h,--help                  Display help information
  -o,--output <file>         Output file containing the merged set
@@ -206,8 +187,8 @@ following options are available:
 <!-- help:src/org/moeaframework/analysis/tools/ResultFileSeedMerger.java [:-2] -->
 
 ```
-usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileSeedMerger -b <name> | -d <number>  [-e
-       <e1,e2,...>] [-h] -o <file>
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileSeedMerger [-b <name>] [-e <e1,e2,...>] [-h]
+       -o <file>
 
 Merges the approximation sets contained in one or more result files across each seed, where each result file is
 generated by a different seed.  Unlike ResultFileMerger that merges all approximation sets into one reference set, this
@@ -215,7 +196,6 @@ utility merges each entry across its seeds.  The output will contain N approxima
 approximation sets.  The following options are available:
 
  -b,--problem <name>        Problem name
- -d,--dimension <number>    Number of objectives
  -e,--epsilon <e1,e2,...>   Epsilon values for epsilon-dominance
  -h,--help                  Display help information
  -o,--output <file>         Output file

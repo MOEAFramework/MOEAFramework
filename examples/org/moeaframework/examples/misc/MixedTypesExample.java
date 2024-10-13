@@ -65,6 +65,7 @@ public class MixedTypesExample {
 			
 			solution.setVariable(0, EncodingUtils.newBinaryInt(-20, 20));
 			solution.setVariable(1, EncodingUtils.newReal(-20.0, 20.0));
+			
 			solution.setConstraint(0, LessThanOrEqual.to(0.0));
 			solution.setConstraint(1, LessThanOrEqual.to(0.0));
 			

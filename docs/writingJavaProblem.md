@@ -21,7 +21,7 @@ $$ \begin{align} \text{Minimize } &f_1 = (x - 2)^2 + (y - 1)^2 + 2 \\\ &f_2 = 9x
 which has two decision variables, `x` and `y`, two objectives, `f1` and `f2`, and two constraints, `c1` and `c2`.
 Programming this using the MOEA Framework would look something like:
 
-<!-- java:examples/Example6.java [32:78] -->
+<!-- java:examples/Example6.java [32:81] -->
 
 ```java
 public static class Srinivas extends AbstractProblem {
@@ -40,11 +40,11 @@ public static class Srinivas extends AbstractProblem {
         double c1 = Math.pow(x, 2.0) + Math.pow(y, 2.0);
         double c2 = x - 3.0*y;
 
-        solution.setObjective(0, f1);
-        solution.setObjective(1, f2);
+        solution.setObjectiveValue(0, f1);
+        solution.setObjectiveValue(1, f2);
 
-        solution.setConstraint(0, Constraint.lessThanOrEqual(c1, 225.0));
-        solution.setConstraint(1, Constraint.lessThanOrEqual(c2, -10.0));
+        solution.setConstraintValue(0, c1);
+        solution.setConstraintValue(1, c2);
     }
 
     @Override
@@ -54,6 +54,9 @@ public static class Srinivas extends AbstractProblem {
         solution.setVariable(0, new RealVariable(-20.0, 20.0));
         solution.setVariable(1, new RealVariable(-20.0, 20.0));
 
+        solution.setConstraint(0, LessThanOrEqual.to(225.0));
+        solution.setConstraint(1, LessThanOrEqual.to(-10.0));
+
         return solution;
     }
 
@@ -62,7 +65,7 @@ public static class Srinivas extends AbstractProblem {
 
 We can solve this problem by passing it directly to the constructor of an optimization algorithm, such as NSGA-II:
 
-<!-- java:examples/Example6.java [81:86] -->
+<!-- java:examples/Example6.java [84:89] -->
 
 ```java
 Problem problem = new Srinivas();

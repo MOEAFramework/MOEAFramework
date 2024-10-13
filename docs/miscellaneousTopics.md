@@ -54,7 +54,7 @@ While most of the problems presented here use a single decision variable type (e
 Framework also supports mixing types.  To see this in action, let's first define a problem that includes a binary integer
 and a real-valued decision variable:
 
-<!-- java:examples/org/moeaframework/examples/misc/MixedTypesExample.java [62:68] -->
+<!-- java:examples/org/moeaframework/examples/misc/MixedTypesExample.java [63:73] -->
 
 ```java
 public Solution newSolution() {
@@ -63,12 +63,16 @@ public Solution newSolution() {
     solution.setVariable(0, EncodingUtils.newBinaryInt(-20, 20));
     solution.setVariable(1, EncodingUtils.newReal(-20.0, 20.0));
 
+    solution.setConstraint(0, LessThanOrEqual.to(0.0));
+    solution.setConstraint(1, LessThanOrEqual.to(0.0));
+
     return solution;
+}
 ```
 
 The `evaluate` method would also need to read the correct types:
 
-<!-- java:examples/org/moeaframework/examples/misc/MixedTypesExample.java [48:49] -->
+<!-- java:examples/org/moeaframework/examples/misc/MixedTypesExample.java [49:50] -->
 
 ```java
 int x = EncodingUtils.getInt(solution.getVariable(0));
@@ -82,7 +86,7 @@ binary variable.
 
 We can also explicitly supply a variation operator for mixed types by combining the operators as demonstrated below:
 
-<!-- java:examples/org/moeaframework/examples/misc/MixedTypesExample.java [74:80] -->
+<!-- java:examples/org/moeaframework/examples/misc/MixedTypesExample.java [78:84] -->
 
 ```java
 Problem problem = new MixedTypesSrinivasProblem();
