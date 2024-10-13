@@ -34,7 +34,6 @@ import org.moeaframework.analysis.collector.IndicatorCollector;
 import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
 import org.moeaframework.analysis.collector.Observation;
 import org.moeaframework.analysis.collector.Observations;
-import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.DefaultEpsilons;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;

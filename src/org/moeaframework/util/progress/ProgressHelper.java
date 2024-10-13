@@ -20,7 +20,7 @@ package org.moeaframework.util.progress;
 import org.apache.commons.lang3.event.EventListenerSupport;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.moeaframework.Executor;
-import org.moeaframework.core.Algorithm;
+import org.moeaframework.algorithm.Algorithm;
 
 /**
  * Helper for notifying any {@link ProgressListener} when the evaluation progress of an {@link Executor} changes.  This

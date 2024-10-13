@@ -28,7 +28,7 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
-import org.moeaframework.core.Algorithm;
+import org.moeaframework.algorithm.Algorithm;
 
 /**
  * Adds checkpoint functionality to an algorithm where the state is periodically recorded in a state file.  If the

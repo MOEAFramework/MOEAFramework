@@ -30,7 +30,7 @@ public interface Extensible {
 	public Extensions getExtensions();
 	
 	/**
-	 * Adds the given extension and invokes its {@link Extension#onRegister(org.moeaframework.core.Algorithm)} method.
+	 * Adds the given extension and invokes its {@link Extension#onRegister} method.
 	 * 
 	 * @param extension the extension to add
 	 */

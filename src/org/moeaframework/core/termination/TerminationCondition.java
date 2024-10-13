@@ -17,7 +17,7 @@
  */
 package org.moeaframework.core.termination;
 
-import org.moeaframework.core.Algorithm;
+import org.moeaframework.algorithm.Algorithm;
 
 /**
  * Interface used to implement conditions for when an algorithm should terminate.  The {@code initialize} method is

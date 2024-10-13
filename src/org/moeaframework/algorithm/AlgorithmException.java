@@ -17,7 +17,6 @@
  */
 package org.moeaframework.algorithm;
 
-import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.FrameworkException;
 
 /**

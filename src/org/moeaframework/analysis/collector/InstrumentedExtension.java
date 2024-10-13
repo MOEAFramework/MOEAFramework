@@ -23,9 +23,9 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.extension.FrequencyType;
 import org.moeaframework.algorithm.extension.PeriodicExtension;
-import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Stateful;
 
 /**

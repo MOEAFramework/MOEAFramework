@@ -17,9 +17,9 @@
  */
 package org.moeaframework.analysis.collector;
 
+import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.EpsilonBoxEvolutionaryAlgorithm;
 import org.moeaframework.algorithm.EpsilonNSGAII;
-import org.moeaframework.core.Algorithm;
 
 public class EpsilonProgressCollectorTest extends AbstractCollectorTest<EpsilonProgressCollector> {
 	

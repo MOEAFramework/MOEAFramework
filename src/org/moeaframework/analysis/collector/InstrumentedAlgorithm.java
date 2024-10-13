@@ -17,9 +17,9 @@
  */
 package org.moeaframework.analysis.collector;
 
+import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.extension.AlgorithmWrapper;
 import org.moeaframework.algorithm.extension.FrequencyType;
-import org.moeaframework.core.Algorithm;
 
 /**
  * Wraps an algorithm to indicate it is instrumented to collect runtime data.

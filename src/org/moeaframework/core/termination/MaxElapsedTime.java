@@ -19,7 +19,7 @@ package org.moeaframework.core.termination;
 
 import java.time.Duration;
 
-import org.moeaframework.core.Algorithm;
+import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.util.DurationUtils;
 
 /**

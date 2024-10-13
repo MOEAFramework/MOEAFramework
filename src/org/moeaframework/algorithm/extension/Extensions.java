@@ -25,7 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 
-import org.moeaframework.core.Algorithm;
+import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.core.Stateful;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.configuration.Configurable;

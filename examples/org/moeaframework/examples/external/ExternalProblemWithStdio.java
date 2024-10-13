@@ -20,8 +20,8 @@ package org.moeaframework.examples.external;
 import java.io.File;
 import java.io.IOException;
 
+import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;

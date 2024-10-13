@@ -20,7 +20,7 @@ package org.moeaframework.core.spi;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.moeaframework.core.Algorithm;
+import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.TypedProperties;
 

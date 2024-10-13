@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.Stack;
 
 import org.apache.commons.lang3.StringUtils;
+import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.extension.FrequencyType;
 import org.moeaframework.analysis.collector.AdaptiveMultimethodVariationCollector;
 import org.moeaframework.analysis.collector.AdaptiveTimeContinuationExtensionCollector;
@@ -42,7 +43,6 @@ import org.moeaframework.analysis.collector.InstrumentedExtension;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.analysis.collector.PopulationCollector;
 import org.moeaframework.analysis.collector.PopulationSizeCollector;
-import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;

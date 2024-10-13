@@ -19,7 +19,7 @@ package org.moeaframework.algorithm.extension;
 
 import java.util.function.Consumer;
 
-import org.moeaframework.core.Algorithm;
+import org.moeaframework.algorithm.Algorithm;
 
 /**
  * Extension that invokes a callback function every iteration.

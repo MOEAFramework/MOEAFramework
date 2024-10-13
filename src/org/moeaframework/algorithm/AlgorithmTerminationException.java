@@ -17,8 +17,6 @@
  */
 package org.moeaframework.algorithm;
 
-import org.moeaframework.core.Algorithm;
-
 /**
  * An exception that originated from an algorithm during termination.
  */

@@ -26,7 +26,6 @@ import org.apache.commons.math3.stat.descriptive.rank.Min;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.indicator.InvertedGenerationalDistance;

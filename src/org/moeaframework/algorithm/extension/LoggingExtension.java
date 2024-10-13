@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.lang3.time.StopWatch;
-import org.moeaframework.core.Algorithm;
+import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.util.DurationUtils;
 import org.moeaframework.util.io.OutputHandler;
 

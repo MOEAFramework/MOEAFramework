@@ -28,7 +28,6 @@ import org.moeaframework.algorithm.single.EvolutionStrategy;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.algorithm.single.RepeatedSingleObjective;
 import org.moeaframework.algorithm.single.SimulatedAnnealing;
-import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;

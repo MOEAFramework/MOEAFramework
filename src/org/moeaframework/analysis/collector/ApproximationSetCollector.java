@@ -19,7 +19,7 @@ package org.moeaframework.analysis.collector;
 
 import java.util.ArrayList;
 
-import org.moeaframework.core.Algorithm;
+import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.EpsilonBoxDominanceArchive;

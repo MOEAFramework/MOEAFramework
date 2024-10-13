@@ -20,9 +20,9 @@ package org.moeaframework.algorithm.extension;
 import java.io.IOException;
 
 import org.apache.commons.lang3.time.StopWatch;
+import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileWriter;
-import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.population.NondominatedPopulation;

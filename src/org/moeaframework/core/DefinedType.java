@@ -43,10 +43,6 @@ import org.apache.commons.text.StringTokenizer;
  * The {@link #createInstance(Class, String)} method is used to reconstruct the class from this string representation.
  * Each constructor is checked to see if the given arguments can be converted into the required parameter type.  The
  * type must implement a static {@code valueOf(String)} method, which includes all primitives.
- * <p>
- * While this shares some similarities with {@link java.io.Serializable}, the two serve different purposes.
- * Serialization produces a binary encoding of the entire state of an object, whereas this class produces a
- * human-readable string that uses constructors to recreate the object.
  */
 public interface DefinedType {
 

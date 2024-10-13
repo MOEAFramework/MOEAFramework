@@ -17,7 +17,7 @@
  */
 package org.moeaframework.core.termination;
 
-import org.moeaframework.core.Algorithm;
+import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.NondominatedPopulation;

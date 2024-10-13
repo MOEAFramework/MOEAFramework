@@ -19,9 +19,9 @@ package org.moeaframework.examples.extensions;
 
 import java.io.IOException;
 
+import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.algorithm.extension.Extension;
-import org.moeaframework.core.Algorithm;
 import org.moeaframework.problem.misc.Srinivas;
 
 /**

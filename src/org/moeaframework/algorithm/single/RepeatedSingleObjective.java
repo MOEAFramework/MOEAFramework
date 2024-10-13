@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.function.BiFunction;
 
 import org.moeaframework.algorithm.AbstractAlgorithm;
-import org.moeaframework.core.Algorithm;
+import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.population.NondominatedPopulation;

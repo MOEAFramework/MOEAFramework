@@ -17,7 +17,7 @@
  */
 package org.moeaframework.analysis.collector;
 
-import org.moeaframework.core.Algorithm;
+import org.moeaframework.algorithm.Algorithm;
 
 public class AdaptiveMultimethodVariationCollectorTest extends AbstractCollectorTest<AdaptiveMultimethodVariationCollector> {
 	

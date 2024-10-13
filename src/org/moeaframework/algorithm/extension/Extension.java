@@ -17,7 +17,7 @@
  */
 package org.moeaframework.algorithm.extension;
 
-import org.moeaframework.core.Algorithm;
+import org.moeaframework.algorithm.Algorithm;
 
 /**
  * Extensions are a flexible alternative to wrappers when extending or augmenting the functionality of an algorithm.

@@ -17,7 +17,7 @@
  */
 package org.moeaframework.algorithm.extension;
 
-import org.moeaframework.core.Algorithm;
+import org.moeaframework.algorithm.Algorithm;
 
 /**
  * Defines the type of frequency.

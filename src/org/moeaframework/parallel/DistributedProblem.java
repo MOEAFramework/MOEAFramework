@@ -36,7 +36,7 @@ import org.moeaframework.problem.ProblemWrapper;
  * <p>
  * Internally, this works by using {@link java.util.concurrent.Future}s, via the {@link FutureSolution} wrapper,
  * to allow performing the evaluations asynchronously until the result is required.  To best utilize this feature,
- * implementations should prefer calling {@link org.moeaframework.core.Algorithm#evaluateAll(Solution[])} to submit
+ * implementations should prefer calling {@link org.moeaframework.algorithm.Algorithm#evaluateAll(Solution[])} to submit
  * all solutions at once for evaluation.
  * <p>
  * Any {@code ExecutorService} can be used.  For example, {@link Executors} provides various options for distributing

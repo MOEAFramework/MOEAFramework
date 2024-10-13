@@ -19,7 +19,7 @@ package org.moeaframework.algorithm.continuation;
 
 import java.util.EventListener;
 
-import org.moeaframework.core.Algorithm;
+import org.moeaframework.algorithm.Algorithm;
 
 /**
  * The listener interface for receiving time continuation (restart) events. The {@link #restarted} method is called

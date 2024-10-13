@@ -22,11 +22,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.apache.commons.lang3.event.EventListenerSupport;
+import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.EvolutionaryAlgorithm;
 import org.moeaframework.algorithm.extension.FrequencyType;
 import org.moeaframework.algorithm.extension.LoggingExtension;
 import org.moeaframework.algorithm.extension.PeriodicExtension;
-import org.moeaframework.core.Algorithm;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.Property;

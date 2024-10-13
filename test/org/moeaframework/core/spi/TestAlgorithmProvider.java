@@ -18,7 +18,7 @@
 package org.moeaframework.core.spi;
 
 import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
-import org.moeaframework.core.Algorithm;
+import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.initialization.RandomInitialization;
