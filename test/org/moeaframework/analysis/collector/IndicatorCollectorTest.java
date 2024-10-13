@@ -20,7 +20,7 @@ package org.moeaframework.analysis.collector;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.Indicator;
+import org.moeaframework.core.indicator.Indicator;
 import org.moeaframework.core.population.NondominatedPopulation;
 
 public class IndicatorCollectorTest extends AbstractCollectorTest<IndicatorCollector> {

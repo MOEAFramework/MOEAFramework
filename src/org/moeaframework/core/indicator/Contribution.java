@@ -18,7 +18,6 @@
 package org.moeaframework.core.indicator;
 
 import org.moeaframework.core.Epsilons;
-import org.moeaframework.core.Indicator;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.EpsilonBoxDominanceComparator;

@@ -17,7 +17,6 @@
  */
 package org.moeaframework.core.operator;
 
-import org.moeaframework.core.Variation;
 import org.moeaframework.core.variable.Subset;
 
 public abstract class AbstractSubsetOperatorTest<T extends Variation> extends AbstractOperatorTest<T, Subset> {

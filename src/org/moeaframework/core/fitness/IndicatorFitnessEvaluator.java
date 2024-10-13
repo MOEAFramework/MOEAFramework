@@ -17,7 +17,6 @@
  */
 package org.moeaframework.core.fitness;
 
-import org.moeaframework.core.FitnessEvaluator;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;

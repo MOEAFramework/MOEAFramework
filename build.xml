@@ -418,4 +418,16 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		</copy>
 	</target>
 	
+	<target name="clean" description="Clean all temporary build files">
+		<delete dir="bin" quiet="true" />
+		<delete dir="build" quiet="true" />
+		<delete dir="dist" quiet="true" />
+		<delete dir="javadoc" quiet="true" />
+		<delete>
+		  	<fileset dir="examples" includes="**/*.class"/>
+			<fileset dir="src" includes="**/*.class"/>
+			<fileset dir="test" includes="**/*.class"/>
+		</delete>
+	</target>
+	
 </project>

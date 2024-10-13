@@ -20,7 +20,6 @@ package org.moeaframework.core.indicator;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.core.Indicator;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.population.NondominatedPopulation;

@@ -22,7 +22,6 @@ import java.util.function.Supplier;
 
 import org.moeaframework.algorithm.single.SelfAdaptiveNormalVariation;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.core.operator.binary.BitFlip;

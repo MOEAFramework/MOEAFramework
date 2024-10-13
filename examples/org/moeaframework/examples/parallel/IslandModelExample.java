@@ -21,10 +21,10 @@ import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Selection;
 import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.selection.Selection;
 import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.parallel.island.Island;
 import org.moeaframework.parallel.island.IslandModel;

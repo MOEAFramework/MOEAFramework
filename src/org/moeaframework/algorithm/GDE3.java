@@ -17,12 +17,12 @@
  */
 package org.moeaframework.algorithm;
 
-import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.initialization.Initialization;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
 import org.moeaframework.core.population.NondominatedSortingPopulation;

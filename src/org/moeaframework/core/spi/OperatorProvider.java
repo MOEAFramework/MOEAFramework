@@ -18,7 +18,7 @@
 package org.moeaframework.core.spi;
 
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Variation;
+import org.moeaframework.core.operator.Variation;
 import org.moeaframework.util.TypedProperties;
 
 /**

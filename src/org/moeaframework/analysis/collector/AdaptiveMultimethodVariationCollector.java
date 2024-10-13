@@ -17,8 +17,8 @@
  */
 package org.moeaframework.analysis.collector;
 
-import org.moeaframework.core.Variation;
 import org.moeaframework.core.operator.AdaptiveMultimethodVariation;
+import org.moeaframework.core.operator.Variation;
 
 /**
  * Collects the individual operator probabilities from {@link AdaptiveMultimethodVariation}.

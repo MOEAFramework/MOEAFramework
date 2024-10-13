@@ -20,7 +20,6 @@ package org.moeaframework.core.operator;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variation;
 
 /**
  * Provides test methods for checking if the offspring are centered around the centroid of the parents.

@@ -17,7 +17,6 @@
  */
 package org.moeaframework.core.operator;
 
-import org.moeaframework.core.Variation;
 import org.moeaframework.core.variable.Program;
 import org.moeaframework.util.tree.Rules;
 

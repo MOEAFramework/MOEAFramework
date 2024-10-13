@@ -22,7 +22,6 @@ import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variation;
 import org.moeaframework.mock.MockSolution;
 
 public class CompoundVariationTest {

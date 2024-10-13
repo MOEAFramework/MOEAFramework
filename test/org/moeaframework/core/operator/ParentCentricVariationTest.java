@@ -22,7 +22,6 @@ import java.util.List;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variation;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.util.clustering.Cluster;
 import org.moeaframework.util.clustering.Clustering;

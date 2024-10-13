@@ -18,8 +18,8 @@
 package org.moeaframework.analysis.collector;
 
 import org.moeaframework.Assert;
+import org.moeaframework.algorithm.EvolutionaryAlgorithm;
 import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.EvolutionaryAlgorithm;
 
 public class PopulationSizeCollectorTest extends AbstractCollectorTest<PopulationSizeCollector> {
 	

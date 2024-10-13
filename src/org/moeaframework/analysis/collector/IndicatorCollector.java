@@ -18,7 +18,7 @@
 package org.moeaframework.analysis.collector;
 
 import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.Indicator;
+import org.moeaframework.core.indicator.Indicator;
 import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
 
 /**

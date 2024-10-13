@@ -17,19 +17,19 @@
  */
 package org.moeaframework.algorithm;
 
-import org.moeaframework.core.Initialization;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
-import org.moeaframework.core.Selection;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variation;
 import org.moeaframework.core.attribute.Niche;
 import org.moeaframework.core.attribute.NicheDistance;
 import org.moeaframework.core.comparator.AggregateConstraintComparator;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.RankComparator;
+import org.moeaframework.core.initialization.Initialization;
 import org.moeaframework.core.initialization.RandomInitialization;
+import org.moeaframework.core.operator.Variation;
 import org.moeaframework.core.population.ReferencePointNondominatedSortingPopulation;
+import org.moeaframework.core.selection.Selection;
 import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 

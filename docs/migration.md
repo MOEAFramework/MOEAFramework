@@ -66,3 +66,12 @@ Consequently, the "result file" is now the preferred and only supported file for
 3. Maximized objectives no longer need to be negated.  The `Negater` CLI tools is also removed.
 4. CLI tools that process result files no longer accept the `--dimension` argument, as the dimension and type
    information is available in the header.
+   
+## Class Organization
+
+Some interfaces and classes have been moved to follow a more standard organization.  If you find some imports failing
+due to the class not being found, simply remove that import and use your IDE to find the new location.  The new layout
+places the interface, abstract classes, and implementations all in the same package.  For example, `Population`,
+`NondominatedPopulation`, and all related population and archive classes can be found in the new
+`org.moeaframework.core.population` package.
+

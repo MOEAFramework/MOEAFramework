@@ -29,8 +29,8 @@ import java.util.stream.Collectors;
 
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variation;
 import org.moeaframework.core.operator.CompoundVariation;
+import org.moeaframework.core.operator.Variation;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.Variable;
 import org.moeaframework.util.TypedProperties;

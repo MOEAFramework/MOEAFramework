@@ -20,7 +20,6 @@ package org.moeaframework.core.fitness;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.moeaframework.core.FitnessEvaluator;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.attribute.Fitness;

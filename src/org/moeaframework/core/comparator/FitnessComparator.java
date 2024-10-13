@@ -19,9 +19,9 @@ package org.moeaframework.core.comparator;
 
 import java.util.Comparator;
 
-import org.moeaframework.core.FitnessEvaluator;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.attribute.Fitness;
+import org.moeaframework.core.fitness.FitnessEvaluator;
 
 /**
  * Compares two solutions based on their fitness value.

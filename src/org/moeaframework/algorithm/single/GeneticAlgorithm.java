@@ -21,13 +21,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Comparator;
 
-import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.initialization.Initialization;
 import org.moeaframework.core.initialization.RandomInitialization;
+import org.moeaframework.core.operator.Variation;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.core.selection.TournamentSelection;

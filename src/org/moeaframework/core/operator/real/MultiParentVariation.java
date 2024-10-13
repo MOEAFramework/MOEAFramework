@@ -17,8 +17,8 @@
  */
 package org.moeaframework.core.operator.real;
 
-import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.operator.Variation;
 import org.moeaframework.util.validate.Validate;
 
 /**

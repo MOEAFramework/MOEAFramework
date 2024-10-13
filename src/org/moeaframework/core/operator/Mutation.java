@@ -18,7 +18,6 @@
 package org.moeaframework.core.operator;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variation;
 
 /**
  * Identifies mutation operators that evolve exactly one parent.

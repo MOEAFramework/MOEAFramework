@@ -18,7 +18,6 @@
 package org.moeaframework.core.operator;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variation;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.Vector;

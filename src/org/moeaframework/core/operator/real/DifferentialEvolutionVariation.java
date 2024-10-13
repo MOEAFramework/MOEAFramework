@@ -19,9 +19,9 @@ package org.moeaframework.core.operator.real;
 
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variation;
 import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.operator.Variation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.validate.Validate;
 

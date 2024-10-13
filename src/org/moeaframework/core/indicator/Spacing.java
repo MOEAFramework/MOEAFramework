@@ -18,7 +18,6 @@
 package org.moeaframework.core.indicator;
 
 import org.apache.commons.math3.stat.StatUtils;
-import org.moeaframework.core.Indicator;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.NondominatedPopulation;

@@ -22,7 +22,6 @@ import java.util.Arrays;
 import org.apache.commons.math3.stat.StatUtils;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.Variation;
 import org.moeaframework.core.attribute.OperatorIndex;
 import org.moeaframework.core.population.Population;
 

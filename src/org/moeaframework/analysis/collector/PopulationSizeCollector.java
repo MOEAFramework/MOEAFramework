@@ -17,7 +17,7 @@
  */
 package org.moeaframework.analysis.collector;
 
-import org.moeaframework.core.EvolutionaryAlgorithm;
+import org.moeaframework.algorithm.EvolutionaryAlgorithm;
 
 /**
  * Collects the population size and archive size, if available, from an {@link EvolutionaryAlgorithm}.

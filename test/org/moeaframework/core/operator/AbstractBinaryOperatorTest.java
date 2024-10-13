@@ -17,7 +17,6 @@
  */
 package org.moeaframework.core.operator;
 
-import org.moeaframework.core.Variation;
 import org.moeaframework.core.variable.BinaryVariable;
 
 public abstract class AbstractBinaryOperatorTest<T extends Variation> extends AbstractOperatorTest<T, BinaryVariable> {

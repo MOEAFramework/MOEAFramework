@@ -19,7 +19,6 @@ package org.moeaframework.core.initialization;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.Initialization;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.BinaryVariable;

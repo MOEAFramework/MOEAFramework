@@ -15,7 +15,9 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.core;
+package org.moeaframework.core.initialization;
+
+import org.moeaframework.core.Solution;
 
 /**
  * Interface for an initialization routine. Initialization routines generate the initial population used by an

@@ -19,7 +19,7 @@ package org.moeaframework.analysis.collector;
 
 import java.util.ArrayList;
 
-import org.moeaframework.core.EvolutionaryAlgorithm;
+import org.moeaframework.algorithm.EvolutionaryAlgorithm;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.Population;
 

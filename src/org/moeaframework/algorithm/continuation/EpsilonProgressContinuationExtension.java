@@ -21,10 +21,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import org.moeaframework.algorithm.EpsilonBoxEvolutionaryAlgorithm;
 import org.moeaframework.core.Algorithm;
-import org.moeaframework.core.EpsilonBoxEvolutionaryAlgorithm;
-import org.moeaframework.core.Selection;
-import org.moeaframework.core.Variation;
+import org.moeaframework.core.operator.Variation;
+import org.moeaframework.core.selection.Selection;
 import org.moeaframework.util.validate.Validate;
 
 /**

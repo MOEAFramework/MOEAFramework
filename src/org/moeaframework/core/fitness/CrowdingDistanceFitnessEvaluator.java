@@ -17,7 +17,6 @@
  */
 package org.moeaframework.core.fitness;
 
-import org.moeaframework.core.FitnessEvaluator;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.attribute.CrowdingDistance;
 import org.moeaframework.core.attribute.Fitness;
