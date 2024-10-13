@@ -17,7 +17,7 @@
  */
 package org.moeaframework.algorithm.pso;
 
-import org.moeaframework.analysis.DefaultEpsilons;
+import org.moeaframework.core.DefaultEpsilons;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;

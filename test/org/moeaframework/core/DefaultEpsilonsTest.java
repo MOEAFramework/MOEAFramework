@@ -15,13 +15,10 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis;
+package org.moeaframework.core;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.Epsilons;
-import org.moeaframework.core.Problem;
-import org.moeaframework.core.Settings;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.util.PropertyScope;

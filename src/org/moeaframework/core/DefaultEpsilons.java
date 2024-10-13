@@ -15,15 +15,12 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis;
+package org.moeaframework.core;
 
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import org.moeaframework.core.Epsilons;
-import org.moeaframework.core.Problem;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;

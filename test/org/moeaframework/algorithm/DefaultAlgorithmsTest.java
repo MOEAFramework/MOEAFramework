@@ -30,12 +30,12 @@ import org.moeaframework.algorithm.continuation.EpsilonProgressContinuationExten
 import org.moeaframework.algorithm.extension.CheckpointExtension;
 import org.moeaframework.algorithm.extension.FrequencyType;
 import org.moeaframework.algorithm.sa.AMOSA;
-import org.moeaframework.analysis.DefaultEpsilons;
 import org.moeaframework.analysis.collector.IndicatorCollector;
 import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
 import org.moeaframework.analysis.collector.Observation;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.core.Algorithm;
+import org.moeaframework.core.DefaultEpsilons;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.TypedProperties;

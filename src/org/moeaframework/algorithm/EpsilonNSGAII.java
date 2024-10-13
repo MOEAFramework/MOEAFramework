@@ -18,7 +18,7 @@
 package org.moeaframework.algorithm;
 
 import org.moeaframework.algorithm.continuation.AdaptiveTimeContinuationExtension;
-import org.moeaframework.analysis.DefaultEpsilons;
+import org.moeaframework.core.DefaultEpsilons;
 import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
