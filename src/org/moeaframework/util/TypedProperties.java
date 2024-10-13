@@ -198,7 +198,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * Creates and returns an empty properties object that is thread-safe.  This is useful when needing thread-safe
 	 * access to a shared properties object.
 	 * 
-	 * @return an empty, thread-safe properties object
+	 * @return the typed properties instance
 	 */
 	public static TypedProperties newThreadSafeInstance() {
 		return new TypedProperties(DEFAULT_SEPARATOR, true, true);
@@ -207,17 +207,26 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	/**
 	 * Creates and returns an empty properties object that is sorted in insertion order.
 	 * 
-	 * @return an empty, thread-safe properties object
+	 * @return the typed properties instance
 	 */
 	public static TypedProperties newInsertionOrderInstance() {
 		return new TypedProperties(DEFAULT_SEPARATOR, false, false);
 	}
 	
 	/**
+	 * Creates and returns an empty properties object.
+	 * 
+	 * @return the typed properties instance
+	 */
+	public static TypedProperties newInstance() {
+		return new TypedProperties();
+	}
+	
+	/**
 	 * Convenience method to quickly construct an empty typed properties instance.  The returned instance is mutable
 	 * and can be modified by the caller.
 	 *   
-	 * @return an empty typed properties instance
+	 * @return the typed properties instance
 	 */
 	public static TypedProperties of() {
 		return new TypedProperties();
