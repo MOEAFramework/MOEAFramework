@@ -178,23 +178,6 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	}
 	
 	/**
-	 * Convenience method to quickly construct a typed properties instance with a single key-value pair.  This is
-	 * particularly useful for parsing, for instance, command line arguments:
-	 * <pre>
-	 *   TypedProperties.of("epsilon", commandLine.getOptionValue("epsilon")).getDoubleArray("epsilon");
-	 * </pre>
-	 *   
-	 * @param key the key
-	 * @param value the value assigned to the key
-	 * @return a typed properties instance with the specified key-value pair
-	 * @deprecated use {@link #of(String, String)} instead
-	 */
-	@Deprecated
-	public static TypedProperties withProperty(String key, String value) {
-		return of(key, value);
-	}
-	
-	/**
 	 * Creates and returns an empty properties object that is thread-safe.  This is useful when needing thread-safe
 	 * access to a shared properties object.
 	 * 

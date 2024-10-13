@@ -233,20 +233,6 @@ public class TabularData<T> implements Displayable {
 	}
 
 	/**
-	 * Saves the data to a CSV file.
-	 * 
-	 * @param file the resulting file
-	 * @throws IOException if an I/O error occurred while writing the file
-	 * @deprecated Use {@link #save(TableFormat, File)} instead
-	 */
-	@Deprecated
-	public void saveCSV(File file) throws IOException {
-		try (PrintStream out = new PrintStream(new FileOutputStream(file))) {
-			toCSV(out);
-		}
-	}
-
-	/**
 	 * Writes the data formatted as CSV.
 	 * 
 	 * @param out the output stream

@@ -31,7 +31,6 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
@@ -565,51 +564,6 @@ public abstract class ExternalProblem implements Problem {
 	protected final Instance instance;
 
 	/**
-	 * Constructs an external problem using {@code new ProcessBuilder(command).start()}.  If the command contains
-	 * arguments, the arguments should be passed in as separate strings, such as
-	 * <pre>
-	 *   new ExternalProblem("command", "arg1", "arg2");
-	 * </pre>
-	 * 
-	 * @param command a specified system command
-	 * @throws IOException if an I/O error occured
-	 * @deprecated Use the {@link #ExternalProblem(Builder)} constructor
-	 */
-	@Deprecated
-	public ExternalProblem(String... command) throws IOException {
-		this(new Builder().withCommand(command));
-	}
-	
-	/**
-	 * Constructs an external problem that connects to a remote process via sockets.  The remote process should be
-	 * instantiated and already listening to the designated port number prior to invoking this constructor.
-	 * 
-	 * @param host the host name of the remote system; or {@code null} to use the local host
-	 * @param port the port number
-	 * @throws UnknownHostException if the IP address of the specified host could not be determined
-	 * @throws IOException if an I/O error occurred
-	 * @deprecated Use the {@link #ExternalProblem(Builder)} constructor
-	 */
-	@Deprecated
-	public ExternalProblem(String host, int port) throws IOException, UnknownHostException {
-		this(new Builder().withSocket(host, port));
-	}
-	
-	/**
-	 * Constructs an external problem that connects to a remote process via sockets.  The remote process should be
-	 * instantiated and already listening to the designated port number prior to invoking this constructor.
-	 * 
-	 * @param address the IP address of the remote system
-	 * @param port the port number
-	 * @throws IOException if an I/O error occurred
-	 * @deprecated Use the {@link #ExternalProblem(Builder)} constructor
-	 */
-	@Deprecated
-	public ExternalProblem(InetAddress address, int port) throws IOException {
-		this(new Builder().withSocket(address, port));
-	}
-
-	/**
 	 * Constructs an external problem using the specified builder.
 	 * 
 	 * @param builder the builder that defines the process and/or socket address
@@ -617,47 +571,6 @@ public abstract class ExternalProblem implements Problem {
 	public ExternalProblem(Builder builder) {
 		super();
 		instance = builder.build();
-	}
-	
-	/**
-	 * Constructs an external problem using the specified process.
-	 * 
-	 * @param process the process used to evaluate solutions
-	 * @deprecated Use the {@link #ExternalProblem(Builder)} constructor
-	 */
-	@Deprecated
-	protected ExternalProblem(Process process) {
-		this(process.getInputStream(), process.getOutputStream());
-		RedirectStream.redirect(process.getErrorStream(), System.err);
-	}
-	
-
-	/**
-	 * Constructs an external problem using the specified input and output streams.
-	 * 
-	 * @param input the input stream
-	 * @param output the output stream
-	 * @deprecated Use the {@link #ExternalProblem(Builder)} constructor
-	 */
-	@Deprecated
-	protected ExternalProblem(InputStream input, OutputStream output) {
-		this(new Builder().withIOStreams(input, output));
-	}
-	
-	/**
-	 * Sets the output stream used to write debugging information.  If {@code null}, disables debugging.  The debug
-	 * stream is not closed by this class and must be managed by the caller.
-	 * 
-	 * @param stream the output stream
-	 * @deprecated Enable debugging by calling {@link Builder#withDebugging()}
-	 */
-	@Deprecated
-	public void setDebugStream(OutputStream stream) {		
-		if (stream == null) {
-			instance.builder.debug = null;
-		} else {
-			instance.builder.debug = new PrintStream(stream);
-		}
 	}
 
 	/**

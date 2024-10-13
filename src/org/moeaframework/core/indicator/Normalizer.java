@@ -22,7 +22,6 @@ import java.util.Iterator;
 
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Population;
-import org.moeaframework.core.Problem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.util.Vector;
@@ -74,21 +73,6 @@ public class Normalizer {
 	
 	/**
 	 * Constructs a normalizer for normalizing populations so that all objectives reside in the range {@code [0, 1]}.
-	 * This constructor derives the minimum and maximum bounds from the given population.
-	 * 
-	 * @param problem the problem
-	 * @param population the population defining the minimum and maximum bounds
-	 * @throws IllegalArgumentException if the population set contains fewer than two solutions, or if there exists
-	 *         an objective with an empty range
-	 * @deprecated Use {@link #Normalizer(Population)} instead
-	 */
-	@Deprecated
-	public Normalizer(Problem problem, Population population) {
-		this(population);
-	}
-	
-	/**
-	 * Constructs a normalizer for normalizing populations so that all objectives reside in the range {@code [0, 1]}.
 	 * This constructor derives the minimum and maximum bounds from the given population and a given delta.  This
 	 * delta offsets the maximum bounds, typically for hypervolume calculations, to ensure there is a non-zero distance
 	 * between the extremal points and the reference point.
@@ -105,24 +89,6 @@ public class Normalizer {
 		
 		calculateRanges(population);		
 		checkRanges();
-	}
-	
-	/**
-	 * Constructs a normalizer for normalizing populations so that all objectives reside in the range {@code [0, 1]}.
-	 * This constructor derives the minimum and maximum bounds from the given population and a given delta.  This
-	 * delta offsets the maximum bounds, typically for hypervolume calculations, to ensure there is a non-zero distance
-	 * between the extremal points and the reference point.
-	 * 
-	 * @param problem the problem
-	 * @param population the population defining the minimum and maximum bounds
-	 * @param delta a delta added to the maximum value
-	 * @throws IllegalArgumentException if the population set contains fewer than two solutions, or if there exists
-	 *         an objective with an empty range
-	 * @deprecated Use {@link #Normalizer(Population, double)} instead
-	 */
-	@Deprecated
-	public Normalizer(Problem problem, Population population, double delta) {
-		this(population, delta);
 	}
 	
 	/**
@@ -146,24 +112,6 @@ public class Normalizer {
 	}
 	
 	/**
-	 * Constructs a normalizer for normalizing populations so that all objectives reside in the range {@code [0, 1]}.
-	 * This constructor derives the minimum and maximum bounds from the given population and a given reference point.
-	 * This is typically used by hypervolume calculations, which measures the volume of spacing between each solution
-	 * and the reference point.
-	 * 
-	 * @param problem the problem
-	 * @param population the population defining the minimum and maximum bounds
-	 * @param referencePoint the reference point; if {@code null}, the bounds are based on the population
-	 * @throws IllegalArgumentException if the population set contains fewer than two solutions, or if there exists
-	 *         an objective with an empty range
-	 * @deprecated Use {@link #Normalizer(Population, double[])} instead
-	 */
-	@Deprecated
-	public Normalizer(Problem problem, Population population, double[] referencePoint) {
-		this(population, referencePoint);
-	}
-	
-	/**
 	 * Constructs a normalizer for normalizing population so that all objectives reside in the range {@code [0, 1]}.
 	 * This constructor allows defining the minimum and maximum bounds explicitly.
 	 * 
@@ -178,20 +126,6 @@ public class Normalizer {
 		this.maximum = maximum.clone();
 		
 		checkRanges();
-	}
-	
-	/**
-	 * Constructs a normalizer for normalizing population so that all objectives reside in the range {@code [0, 1]}.
-	 * This constructor allows defining the minimum and maximum bounds explicitly.
-	 * 
-	 * @param problem the problem
-	 * @param minimum the minimum bounds of each objective
-	 * @param maximum the maximum bounds of each objective
-	 * @deprecated Use {@link #Normalizer(double[], double[])} instead
-	 */
-	@Deprecated
-	public Normalizer(Problem problem, double[] minimum, double[] maximum) {
-		this(minimum, maximum);
 	}
 	
 	/**

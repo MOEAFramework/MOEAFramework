@@ -195,14 +195,6 @@ public class Settings {
 	
 	/**
 	 * The property key for enabling debugging info when running external problems.
-	 * 
-	 * @deprecated Use {@link #KEY_EXTERNAL_PROBLEM_DEBUGGING} instead
-	 */
-	@Deprecated
-	public static final String KEY_EXTERNAL_PROBLEM_DEBUGGING_DEPRECATED = createKey(KEY_PREFIX, "problem", "external_problem_debugging");
-	
-	/**
-	 * The property key for enabling debugging info when running external problems.
 	 */
 	public static final String KEY_EXTERNAL_PROBLEM_DEBUGGING = createKey(KEY_PROBLEM_PREFIX, "external", "enable_debugging");
 	
@@ -587,8 +579,7 @@ public class Settings {
 	 * @return {@code true} if debugging for external problems is enabled; {@code false} otherwise
 	 */
 	public static boolean isExternalProblemDebuggingEnabled() {
-		return PROPERTIES.getBoolean(KEY_EXTERNAL_PROBLEM_DEBUGGING,
-				PROPERTIES.getBoolean(KEY_EXTERNAL_PROBLEM_DEBUGGING_DEPRECATED, false));
+		return PROPERTIES.getBoolean(KEY_EXTERNAL_PROBLEM_DEBUGGING, false);
 	}
 	
 	/**
