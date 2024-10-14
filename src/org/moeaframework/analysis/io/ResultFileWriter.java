@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.cli.CommandLine;
-import org.moeaframework.core.DefinedType;
+import org.moeaframework.core.Constructable;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
@@ -156,7 +156,7 @@ public class ResultFileWriter implements OutputWriter {
 							prototype.getVariable(i).getDefinition());
 				} catch (UnsupportedOperationException e) {
 					header.setString("Variable." + (i+1) + ".Definition",
-							DefinedType.createUnsupportedDefinition(Variable.class,
+							Constructable.createUnsupportedDefinition(Variable.class,
 									prototype.getVariable(i).getClass()));
 
 				}
@@ -168,7 +168,7 @@ public class ResultFileWriter implements OutputWriter {
 							prototype.getObjective(i).getDefinition());
 				} catch (UnsupportedOperationException e) {
 					header.setString("Objective." + (i+1) + ".Definition",
-							DefinedType.createUnsupportedDefinition(Objective.class,
+							Constructable.createUnsupportedDefinition(Objective.class,
 									prototype.getObjective(i).getClass()));
 
 				}
@@ -180,7 +180,7 @@ public class ResultFileWriter implements OutputWriter {
 							prototype.getConstraint(i).getDefinition());
 				} catch (UnsupportedOperationException e) {
 					header.setString("Constraint." + (i+1) + ".Definition",
-							DefinedType.createUnsupportedDefinition(Constraint.class,
+							Constructable.createUnsupportedDefinition(Constraint.class,
 									prototype.getConstraint(i).getClass()));
 
 				}

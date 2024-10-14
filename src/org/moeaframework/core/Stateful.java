@@ -23,7 +23,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 /**
- * Interface for objects that can save and load their state.
+ * Interface for objects that can save and load their state from a file or stream.
  */
 public interface Stateful {
 	

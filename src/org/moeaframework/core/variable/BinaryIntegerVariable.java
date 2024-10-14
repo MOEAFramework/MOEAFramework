@@ -21,7 +21,7 @@ import java.util.BitSet;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.moeaframework.core.DefinedType;
+import org.moeaframework.core.Constructable;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.util.validate.Validate;
 
@@ -200,7 +200,7 @@ public class BinaryIntegerVariable extends BinaryVariable {
 	
 	@Override
 	public String getDefinition() {
-		return DefinedType.createDefinition(Variable.class, BinaryIntegerVariable.class, lowerBound, upperBound);
+		return Constructable.createDefinition(Variable.class, BinaryIntegerVariable.class, lowerBound, upperBound);
 	}
 	
 	@Override

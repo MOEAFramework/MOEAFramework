@@ -19,7 +19,7 @@ package org.moeaframework.core.variable;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.moeaframework.core.DefinedType;
+import org.moeaframework.core.Constructable;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.util.grammar.ContextFreeGrammar;
@@ -246,7 +246,7 @@ public class Grammar implements Variable {
 	
 	@Override
 	public String getDefinition() {
-		return DefinedType.createDefinition(Variable.class, Grammar.class, size());
+		return Constructable.createDefinition(Variable.class, Grammar.class, size());
 	}
 	
 	@Override

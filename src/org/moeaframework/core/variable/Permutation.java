@@ -21,7 +21,7 @@ import java.util.BitSet;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.moeaframework.core.DefinedType;
+import org.moeaframework.core.Constructable;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.util.validate.Validate;
 
@@ -221,7 +221,7 @@ public class Permutation implements Variable {
 	
 	@Override
 	public String getDefinition() {
-		return DefinedType.createDefinition(Variable.class, Permutation.class, size());
+		return Constructable.createDefinition(Variable.class, Permutation.class, size());
 	}
 	
 	@Override

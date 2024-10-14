@@ -42,7 +42,7 @@ import org.moeaframework.util.validate.Validate;
  * Solutions should only be constructed in {@link Problem#newSolution()} or cloned from an existing solution with
  * {@link #copy()}.  This ensures the solutions and configured correctly for the given optimization problem.
  */
-public class Solution implements Formattable<Solution>, Serializable {
+public class Solution implements Copyable<Solution>, Formattable<Solution>, Serializable {
 
 	private static final long serialVersionUID = -1192586435663892479L;
 

@@ -18,7 +18,7 @@ function getNumberOfConstraints() {
 }
 
 function evaluate(solution) {
-	solution.setObjective(0, solution.getVariable(0).getValue());
+	solution.setObjectiveValue(0, solution.getVariable(0).getValue());
 }
 
 function newSolution() {

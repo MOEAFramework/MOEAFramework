@@ -19,24 +19,15 @@ package org.moeaframework.core.variable;
 
 import java.io.Serializable;
 
-import org.moeaframework.core.DefinedType;
+import org.moeaframework.core.Constructable;
+import org.moeaframework.core.Copyable;
 
 /**
  * Interface for decision variables. This interface ensures independent copies of decision variables can be
  * constructed.  Implementations are strongly encouraged to also override {@link Object#equals(Object)} and
  * {@link Object#hashCode()}.
  */
-public interface Variable extends Serializable, DefinedType {
-
-	/**
-	 * Returns an independent copy of this decision variable. It is required that {@code x.copy()} is completely
-	 * independent from {@code x}. This means any method invoked on {@code x.copy()} in no way alters the state
-	 * of {@code x} and vice versa. It is typically the case that {@code x.copy().getClass() == x.getClass()} and
-	 * {@code x.copy().equals(x)}.
-	 * 
-	 * @return an independent copy of this decision variable
-	 */
-	public Variable copy();
+public interface Variable extends Copyable<Variable>, Serializable, Constructable {
 	
 	/**
 	 * Randomly assign the value of this variable.  In general, the randomization should follow a uniform distribution.

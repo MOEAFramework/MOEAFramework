@@ -19,14 +19,15 @@ package org.moeaframework.core.constraint;
 
 import java.io.Serializable;
 
-import org.moeaframework.core.DefinedType;
+import org.moeaframework.core.Constructable;
+import org.moeaframework.core.Copyable;
 import org.moeaframework.core.FrameworkException;
 
 /**
  * Defines a constraint.  While all constraints are assigned a value, the interpretation of that value with respect to
  * feasibility depends on the specific constraint type.
  */
-public interface Constraint extends Comparable<Constraint>, Serializable, DefinedType {
+public interface Constraint extends Comparable<Constraint>, Copyable<Constraint>, Serializable, Constructable {
 	
 	/**
 	 * Returns the value of this constraint.
@@ -49,13 +50,6 @@ public interface Constraint extends Comparable<Constraint>, Serializable, Define
 	 * @return the magnitude of constraint violation
 	 */
 	public double getMagnitudeOfViolation();
-	
-	/**
-	 * Returns a copy of this constraint.
-	 * 
-	 * @return the copy
-	 */
-	public Constraint copy();
 	
 	/**
 	 * Returns {@code true} if this constraint is violated; {@code false} otherwise.

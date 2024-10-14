@@ -28,11 +28,8 @@ import org.apache.commons.lang3.reflect.MethodUtils;
 import org.apache.commons.text.StringTokenizer;
 
 /**
- * Interface for objects that can be reconstructed from a string representation.
- * <p>
- * The string representation mimics a Java constructor call, with a few differences.  It begins with the class' simple
- * name or fully-qualified name (i.e., including the package), followed by an optional list of arguments in
- * parenthesis.  For example, all of the following are valid representations:
+ * Interface for objects that can be constructed from a string representation.  The string representation mimics a Java
+ * constructor call, such as:
  * <pre>
  *   "Minimize"
  *   "org.moeaframework.core.objective.Minimize"
@@ -40,11 +37,19 @@ import org.apache.commons.text.StringTokenizer;
  *   "org.moeaframework.core.constraint.LessThan(2.0)"
  * </pre>
  * <p>
- * The {@link #createInstance(Class, String)} method is used to reconstruct the class from this string representation.
- * Each constructor is checked to see if the given arguments can be converted into the required parameter type.  The
- * type must implement a static {@code valueOf(String)} method, which includes all primitives.
+ * There are a few key differences, including:
+ * <ol>
+ *   <li>Either the class' simple name or fully-qualified name that includes the package is permitted.  The class
+ *       must reside in the same package as the return type in order to use the shorter simple name.
+ *   <li>Parenthesis can be omitted if using the no-arg constructor. 
+ *   <li>The first constructor that matches the supplied arguments is called; therefore, avoid defining multiple
+ *       constructors with overlapping types (e.g., int and double).
+ * <p>
+ * While we recommend only using primitive types for the constructor arguments, any type implementing {@code toString()}
+ * and a static {@code valueOf(String)} method is supported.  These types should throw {@link IllegalArgumentException}
+ * if the supplied string is not compatible with the type.
  */
-public interface DefinedType {
+public interface Constructable {
 
 	/**
 	 * Returns the string representation, or definition, of this object.
@@ -53,9 +58,17 @@ public interface DefinedType {
 	 */
 	public String getDefinition();
 	
-	private static <T> String getRelativeClassPath(Class<T> parentType, Class<? extends T> instanceType) {
+	/**
+	 * Trims off the package name if the instance is contained within the same package as the parent.
+	 * 
+	 * @param <T> the type
+	 * @param parentType the parent type, which if {@code null} will always produce a fully-qualified class name
+	 * @param instanceType the instance type
+	 * @return the relative class name
+	 */
+	private static <T> String toClassName(Class<T> parentType, Class<? extends T> instanceType) {
 		String name = instanceType.getName();
-		String prefix = parentType.getPackageName() + ".";
+		String prefix = parentType == null ? "" : parentType.getPackageName() + ".";
 		
 		if (name.startsWith(prefix)) {
 			name = name.substring(prefix.length());
@@ -67,21 +80,45 @@ public interface DefinedType {
 	/**
 	 * Creates a string representation the displays the type but indicates it is not supported.
 	 * 
-	 * @param <T> the expected type
-	 * @param parentType the parent type
+	 * @param <T> the type
+	 * @param instanceType the instance type
+	 * @return the string representation
+	 */
+	public static String createUnsupportedDefinition(Class<?> instanceType) {
+		return createUnsupportedDefinition(null, instanceType);
+	}
+	
+	/**
+	 * Creates a string representation the displays the type but indicates it is not supported.
+	 * 
+	 * @param <T> the type
+	 * @param parentType the parent type, which if {@code null} will always produce a fully-qualified class name
 	 * @param instanceType the instance type
 	 * @return the string representation
 	 */
 	public static <T> String createUnsupportedDefinition(Class<T> parentType, Class<? extends T> instanceType) {
-		return "!" + getRelativeClassPath(parentType, instanceType);
+		return "!" + toClassName(parentType, instanceType);
 	}
 	
 	/**
 	 * Creates a string representation based on the given parent and instance type along with the constructor
 	 * arguments.
 	 * 
-	 * @param <T> the expected type
-	 * @param parentType the parent type
+	 * @param <T> the type
+	 * @param instanceType the instance type
+	 * @param arguments the arguments, if any, passed to the constructor
+	 * @return the string representation
+	 */
+	public static String createDefinition(Class<?> instanceType, Object... arguments) {
+		return createDefinition(null, instanceType, arguments);
+	}
+	
+	/**
+	 * Creates a string representation based on the given parent and instance type along with the constructor
+	 * arguments.
+	 * 
+	 * @param <T> the type
+	 * @param parentType the parent type, which if {@code null} will always produce a fully-qualified class name
 	 * @param instanceType the instance type
 	 * @param arguments the arguments, if any, passed to the constructor
 	 * @return the string representation
@@ -89,7 +126,7 @@ public interface DefinedType {
 	public static <T> String createDefinition(Class<T> parentType, Class<? extends T> instanceType,
 			Object... arguments) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(getRelativeClassPath(parentType, instanceType));
+		sb.append(toClassName(parentType, instanceType));
 		
 		if (arguments != null && arguments.length > 0) {
 			sb.append("(");
@@ -121,12 +158,12 @@ public interface DefinedType {
 	/**
 	 * Reconstructs the object using its string representation produced by {@link #getDefinition()}.
 	 * 
-	 * @param <T> the expected type
-	 * @param type the class of the type
+	 * @param <T> the type
+	 * @param returnType the return type
 	 * @param definition the string representation of the object
 	 * @return the reconstructed object, or {@code null} if reconstruction is not supported
 	 */
-	public static <T> T createInstance(Class<T> type, String definition) {
+	public static <T> T createInstance(Class<T> returnType, String definition) {
 		// split out arguments
 		String[] arguments = new String[0];
 		int startIndex = definition.indexOf('(');
@@ -147,7 +184,7 @@ public interface DefinedType {
 
 		// convert to a fully-qualified class name
 		if (!definition.contains(".")) {
-			definition = type.getPackageName() + "." + definition;
+			definition = returnType.getPackageName() + "." + definition;
 		}
 
 		// locate the class
@@ -178,7 +215,7 @@ public interface DefinedType {
 				}
 				
 				try {
-					return type.cast(ConstructorUtils.invokeConstructor(definitionClass, castArguments));
+					return returnType.cast(ConstructorUtils.invokeConstructor(definitionClass, castArguments));
 				} catch (IllegalAccessException | IllegalArgumentException | InstantiationException | 
 						InvocationTargetException | NoSuchMethodException e) {
 					continue;

@@ -19,7 +19,7 @@ package org.moeaframework.core.objective;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.moeaframework.core.DefinedType;
+import org.moeaframework.core.Constructable;
 
 public abstract class AbstractObjective implements Objective {
 	
@@ -48,7 +48,7 @@ public abstract class AbstractObjective implements Objective {
 	
 	@Override
 	public String getDefinition() {
-		return DefinedType.createDefinition(Objective.class, getClass());
+		return Constructable.createDefinition(Objective.class, getClass());
 	}
 	
 	@Override

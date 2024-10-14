@@ -19,7 +19,8 @@ package org.moeaframework.core.objective;
 
 import java.io.Serializable;
 
-import org.moeaframework.core.DefinedType;
+import org.moeaframework.core.Constructable;
+import org.moeaframework.core.Copyable;
 
 /**
  * Defines an objective for optimization, including the value and the direction.
@@ -30,7 +31,7 @@ import org.moeaframework.core.DefinedType;
  * For example, the canonical value for a maximized objective could be the negated value, as minimizing the negated
  * value is equivalent to maximizing the original value.
  */
-public interface Objective extends Comparable<Objective>, Serializable, DefinedType {
+public interface Objective extends Comparable<Objective>, Copyable<Objective>, Serializable, Constructable {
 	
 	// TODO: Add tests
 	
@@ -44,13 +45,6 @@ public interface Objective extends Comparable<Objective>, Serializable, DefinedT
 	 * @return the canonical value
 	 */
 	public double getCanonicalValue();
-	
-	/**
-	 * Returns a copy of this objective.
-	 * 
-	 * @return the copy
-	 */
-	public Objective copy();
 	
 	/**
 	 * Similar to {@link Comparable#compareTo(Object)}, compares this objective to a given value.

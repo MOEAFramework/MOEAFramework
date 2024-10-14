@@ -46,6 +46,7 @@ import org.apache.commons.io.input.CloseShieldInputStream;
 import org.apache.commons.io.input.CloseShieldReader;
 import org.apache.commons.io.output.CloseShieldOutputStream;
 import org.apache.commons.io.output.CloseShieldWriter;
+import org.moeaframework.core.Copyable;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Stateful;
 import org.moeaframework.core.constraint.Constraint;
@@ -59,7 +60,7 @@ import org.moeaframework.util.io.CommentedLineReader;
 /**
  * A collection of solutions and common methods for manipulating the collection.
  */
-public class Population implements Iterable<Solution>, Formattable<Solution>, Stateful {
+public class Population implements Iterable<Solution>, Formattable<Solution>, Copyable<Population>, Stateful {
 
 	/**
 	 * The internal data storage for solutions.

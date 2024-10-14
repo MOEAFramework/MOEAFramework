@@ -29,25 +29,25 @@ public class DefinedTypeTest {
 
 	@Test
 	public void testNoArguments() {
-		Assert.assertInstanceOf(Minimize.class, DefinedType.createInstance(Objective.class, "Minimize"));
-		Assert.assertInstanceOf(Minimize.class, DefinedType.createInstance(Objective.class, "org.moeaframework.core.objective.Minimize"));
+		Assert.assertInstanceOf(Minimize.class, Constructable.createInstance(Objective.class, "Minimize"));
+		Assert.assertInstanceOf(Minimize.class, Constructable.createInstance(Objective.class, "org.moeaframework.core.objective.Minimize"));
 	}
 	
 	@Test
 	public void testArguments() {
-		Assert.assertInstanceOf(LessThan.class, DefinedType.createInstance(Constraint.class, "LessThan(2.0)"));
-		Assert.assertInstanceOf(LessThan.class, DefinedType.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(2.0)"));
-		Assert.assertInstanceOf(LessThan.class, DefinedType.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(2)"));
-		Assert.assertInstanceOf(LessThan.class, DefinedType.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(2, 0.000001)"));
+		Assert.assertInstanceOf(LessThan.class, Constructable.createInstance(Constraint.class, "LessThan(2.0)"));
+		Assert.assertInstanceOf(LessThan.class, Constructable.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(2.0)"));
+		Assert.assertInstanceOf(LessThan.class, Constructable.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(2)"));
+		Assert.assertInstanceOf(LessThan.class, Constructable.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(2, 0.000001)"));
 		
-		LessThan constraint = (LessThan)DefinedType.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(2, 0.000001)");
+		LessThan constraint = (LessThan)Constructable.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(2, 0.000001)");
 		Assert.assertEquals(2.0, constraint.getThreshold(), TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(0.000001, constraint.getEpsilon(), TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test
 	public void testDifferentPackage() {
-		Assert.assertInstanceOf(TestConstraint.class, DefinedType.createInstance(Constraint.class,
+		Assert.assertInstanceOf(TestConstraint.class, Constructable.createInstance(Constraint.class,
 				"org.moeaframework.core.DefinedTypeTest$TestConstraint(2.0)"));
 	}
 	
@@ -55,7 +55,7 @@ public class DefinedTypeTest {
 	public void testString() {
 		String definition = "DefinedTypeTest$TestStringArgument(\"foo, bar\")";
 		
-		TestStringArgument result = DefinedType.createInstance(TestStringArgument.class, definition);
+		TestStringArgument result = Constructable.createInstance(TestStringArgument.class, definition);
 		Assert.assertEquals("foo, bar", result.str);
 		
 		Assert.assertEquals(definition, result.getDefinition());
@@ -63,35 +63,35 @@ public class DefinedTypeTest {
 	
 	@Test
 	public void testUnsupported() {
-		Assert.assertNull(DefinedType.createInstance(Objective.class, "!Foo"));
+		Assert.assertNull(Constructable.createInstance(Objective.class, "!Foo"));
 	}
 	
 	@Test(expected = FrameworkException.class)
 	public void testInvalidArgument() {
-		DefinedType.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(error)");
+		Constructable.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(error)");
 	}
 	
 	@Test(expected = FrameworkException.class)
 	public void testMissingArgument() {
-		DefinedType.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan()");
+		Constructable.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan()");
 	}
 	
 	@Test(expected = FrameworkException.class)
 	public void testAdditionalArgument() {
-		DefinedType.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(2.0, 0.000001, 5.0)");
+		Constructable.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(2.0, 0.000001, 5.0)");
 	}
 	
 	@Test
 	public void testCreateDefinition() {
-		Assert.assertEquals("Minimize", DefinedType.createDefinition(Objective.class, Minimize.class));
-		Assert.assertEquals("LessThan(2.0)", DefinedType.createDefinition(Constraint.class, LessThan.class, 2.0));
+		Assert.assertEquals("Minimize", Constructable.createDefinition(Objective.class, Minimize.class));
+		Assert.assertEquals("LessThan(2.0)", Constructable.createDefinition(Constraint.class, LessThan.class, 2.0));
 		Assert.assertEquals("org.moeaframework.core.DefinedTypeTest$TestConstraint(2.0)",
-				DefinedType.createDefinition(Constraint.class, TestConstraint.class, 2.0));
+				Constructable.createDefinition(Constraint.class, TestConstraint.class, 2.0));
 	}
 	
 	@Test
 	public void testCreateUnsupportedDefinition() {
-		Assert.assertEquals("!Minimize", DefinedType.createUnsupportedDefinition(Objective.class, Minimize.class));
+		Assert.assertEquals("!Minimize", Constructable.createUnsupportedDefinition(Objective.class, Minimize.class));
 	}
 	
 	public static class TestConstraint extends LessThan {
@@ -104,7 +104,7 @@ public class DefinedTypeTest {
 		
 	}
 	
-	public static class TestStringArgument implements DefinedType {
+	public static class TestStringArgument implements Constructable {
 		
 		private final String str;
 		
@@ -115,7 +115,7 @@ public class DefinedTypeTest {
 
 		@Override
 		public String getDefinition() {
-			return DefinedType.createDefinition(TestStringArgument.class, TestStringArgument.class, str);
+			return Constructable.createDefinition(TestStringArgument.class, TestStringArgument.class, str);
 		}
 		
 	}

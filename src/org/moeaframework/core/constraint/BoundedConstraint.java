@@ -19,7 +19,7 @@ package org.moeaframework.core.constraint;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.moeaframework.core.DefinedType;
+import org.moeaframework.core.Constructable;
 import org.moeaframework.core.Settings;
 
 public abstract class BoundedConstraint extends AbstractConstraint {
@@ -62,7 +62,7 @@ public abstract class BoundedConstraint extends AbstractConstraint {
 	
 	@Override
 	public String getDefinition() {
-		return DefinedType.createDefinition(Constraint.class, getClass(), lower, upper, epsilon);
+		return Constructable.createDefinition(Constraint.class, getClass(), lower, upper, epsilon);
 	}
 	
 	@Override
