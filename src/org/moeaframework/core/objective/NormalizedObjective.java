@@ -21,19 +21,13 @@ public class NormalizedObjective extends Minimize {
 	
 	private static final long serialVersionUID = 1030777861399215909L;
 	
-	private final double minimum;
-	
-	private final double maximum;
-	
-	protected NormalizedObjective(double value, double minimum, double maximum) {
+	public NormalizedObjective(double value) {
 		super(value);
-		this.minimum = minimum;
-		this.maximum = maximum;
 	}
 
 	@Override
 	public NormalizedObjective copy() {
-		return new NormalizedObjective(getValue(), minimum, maximum);
+		return new NormalizedObjective(getValue());
 	}
 	
 	@Override
@@ -47,6 +41,10 @@ public class NormalizedObjective extends Minimize {
 	
 	public double getEpsilonDistance(double epsilon) {
 		throw unsupportedOperation("getEpsilonDistance");
+	}
+	
+	public double applyWeight(double weight) {
+		throw unsupportedOperation("applyWeight");
 	}
 	
 	private UnsupportedOperationException unsupportedOperation(String methodName) {

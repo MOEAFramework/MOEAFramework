@@ -101,6 +101,34 @@ public class NormalizerTest {
 		Assert.assertEquals(expected, normalizer.normalize(population));
 	}
 	
+	@Test
+	public void testInfeasibleSolutions() {
+		NondominatedPopulation population = new NondominatedPopulation();
+		population.add(MockSolution.of().withObjectives(0.0, 1.0));
+		population.add(MockSolution.of().withObjectives(0.5, 0.5).withConstraintViolation());
+		population.add(MockSolution.of().withObjectives(1.0, 0.0));
+		
+		Normalizer normalizer = Normalizer.of(new double[] { 0.0, 0.0 }, new double[] { 1.0, 1.0 });
+		
+		NondominatedPopulation expected = new NondominatedPopulation();
+		expected.add(MockSolution.of().withObjectives(0.0, 1.0));
+		expected.add(MockSolution.of().withObjectives(1.0, 0.0));
+		
+		Assert.assertEquals(expected, normalizer.normalize(population));
+	}
+	
+	@Test
+	public void testNullNormalizer() {
+		NondominatedPopulation population = new NondominatedPopulation();
+		population.add(MockSolution.of().withObjectives(0.0, 0.0));
+		population.add(MockSolution.of().withObjectives(10.0, -10.0));
+		population.add(MockSolution.of().withObjectives(5.0, 0.0));
+		
+		Normalizer normalizer = Normalizer.none();
+		
+		Assert.assertEquals(population, normalizer.normalize(population));
+	}
+	
 	@Test(expected=IllegalArgumentException.class)
 	public void testConstructorEmptyReferenceSet() {
 		new Normalizer(new NondominatedPopulation());

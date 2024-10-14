@@ -22,15 +22,16 @@ import java.util.Iterator;
 
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.objective.NormalizedObjective;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.util.Vector;
 import org.moeaframework.util.validate.Validate;
 
 /**
- * Normalizes populations so that all objectives reside in the range {@code [0, 1]}.  This normalization ignores
- * infeasible solutions, so the resulting normalized population contains only feasible solutions.  A reference set
- * should be used to ensure the normalization is uniformly applied.
+ * Normalizes populations so that all objectives reside in the range {@code [0, 1]} with the optimum directed towards
+ * {@value Double#NEGATIVE_INFINITY}.  Infeasible solutions are removed prior to normalization.  Bounds are derived
+ * from the supplied population, which should typically be a reference set for consistency.
  */
 public class Normalizer {
 	
@@ -59,7 +60,7 @@ public class Normalizer {
 	 * This constructor derives the minimum and maximum bounds from the given population.
 	 * 
 	 * @param population the population defining the minimum and maximum bounds
-	 * @throws IllegalArgumentException if the population set contains fewer than two solutions, or if there exists
+	 * @throws IllegalArgumentException if the population contains fewer than two feasible solutions, or if there exists
 	 *         an objective with an empty range
 	 */
 	public Normalizer(Population population) {
@@ -79,7 +80,7 @@ public class Normalizer {
 	 * 
 	 * @param population the population defining the minimum and maximum bounds
 	 * @param delta a delta added to the maximum value
-	 * @throws IllegalArgumentException if the population set contains fewer than two solutions, or if there exists
+	 * @throws IllegalArgumentException if the population contains fewer than two feasible solutions, or if there exists
 	 *         an objective with an empty range
 	 */
 	public Normalizer(Population population, double delta) {
@@ -99,7 +100,7 @@ public class Normalizer {
 	 * 
 	 * @param population the population defining the minimum and maximum bounds
 	 * @param referencePoint the reference point; if {@code null}, the bounds are based on the population
-	 * @throws IllegalArgumentException if the population set contains fewer than two solutions, or if there exists
+	 * @throws IllegalArgumentException if the population contains fewer than two feasible solutions, or if there exists
 	 *         an objective with an empty range
 	 */
 	public Normalizer(Population population, double[] referencePoint) {
@@ -133,7 +134,7 @@ public class Normalizer {
 	 * value of each objective.
 	 * 
 	 * @param population the population defining the minimum and maximum bounds
-	 * @throws IllegalArgumentException if the population contains fewer than two solutions
+	 * @throws IllegalArgumentException if the population contains fewer than two feasible solutions
 	 */
 	private void calculateRanges(Population population) {
 		Population feasibleSolutions = new Population(population);
@@ -210,7 +211,7 @@ public class Normalizer {
 	 * 
 	 * @param population the unnormalized population
 	 */
-	private void normalizeInPlace(Population population) {
+	protected void normalizeInPlace(Population population) {
 		Iterator<Solution> iterator = population.iterator();
 		
 		while (iterator.hasNext()) {
@@ -219,13 +220,25 @@ public class Normalizer {
 			if (solution.violatesConstraints()) {
 				iterator.remove();
 			} else {
-				for (int j = 0; j < solution.getNumberOfObjectives(); j++) {
-					double minimum = this.minimum[j >= this.minimum.length ? this.minimum.length-1 : j];
-					double maximum = this.maximum[j >= this.maximum.length ? this.maximum.length-1 : j];
-					solution.setObjective(j, solution.getObjective(j).normalize(minimum, maximum));
+				for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
+					double minimum = this.minimum[i >= this.minimum.length ? this.minimum.length-1 : i];
+					double maximum = this.maximum[i >= this.maximum.length ? this.maximum.length-1 : i];
+					solution.setObjective(i, solution.getObjective(i).normalize(minimum, maximum));
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Constructs a normalizer with bounds derived from the given population, typically a reference set.
+	 * 
+	 * @param population the population defining the minimum and maximum bounds
+	 * @return the normalizer
+	 * @throws IllegalArgumentException if the population contains fewer than two feasible solutions, or if there exists
+	 *         an objective with an empty range
+	 */
+	public static Normalizer of(Population population) {
+		return new Normalizer(population);
 	}
 	
 	/**
@@ -234,7 +247,7 @@ public class Normalizer {
 	 * 
 	 * @param minimum the minimum bounds of each objective
 	 * @param maximum the maximum bounds of each objective
-	 * @return the constructed normalizer
+	 * @return the normalizer
 	 */
 	public static Normalizer of(double[] minimum, double[] maximum) {
 		return new Normalizer(minimum, maximum);
@@ -243,15 +256,15 @@ public class Normalizer {
 	/**
 	 * Constructs a normalizer that does not perform any normalization, instead using the objective values as-is.
 	 * 
-	 * @return the constructed normalizer
+	 * @return the normalizer
 	 */
 	public static Normalizer none() {
 		return new NullNormalizer();
 	}
 	
 	/**
-	 * The "null" normalizer, which is used to disable normalization.  The {@link #normalize} methods simply return
-	 * the provided population unchanged.
+	 * The "null" normalizer, which is used to disable normalization.  It still removes infeasible solutions and
+	 * converts objectives to {@link NormalizedObjective}, but does not scale the values.
 	 */
 	static class NullNormalizer extends Normalizer {
 
@@ -259,16 +272,21 @@ public class Normalizer {
 			// These arguments are unused and only meant to bypass validations in the constructor
 			super(Vector.of(1, 0.0), Vector.of(1, 1.0));
 		}
-
-		@Override
-		public NondominatedPopulation normalize(NondominatedPopulation population) {
-			// TODO: This should now return NormalizedObjective with the canonical value
-			return population;
-		}
-
-		@Override
-		public Population normalize(Population population) {
-			return population;
+		
+		protected void normalizeInPlace(Population population) {
+			Iterator<Solution> iterator = population.iterator();
+			
+			while (iterator.hasNext()) {
+				Solution solution = iterator.next();
+				
+				if (solution.violatesConstraints()) {
+					iterator.remove();
+				} else {
+					for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
+						solution.setObjective(i, new NormalizedObjective(solution.getObjective(i).getCanonicalValue()));
+					}
+				}
+			}
 		}
 		
 	}

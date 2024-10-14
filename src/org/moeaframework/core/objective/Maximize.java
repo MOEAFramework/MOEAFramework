@@ -46,7 +46,7 @@ public class Maximize extends AbstractObjective {
 	
 	@Override
 	public NormalizedObjective normalize(double minimum, double maximum) {
-		return new NormalizedObjective(1.0 - (getValue() - minimum) / (maximum - minimum), minimum, maximum);
+		return new NormalizedObjective(1.0 - (getValue() - minimum) / (maximum - minimum));
 	}
 	
 	@Override
