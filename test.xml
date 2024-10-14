@@ -104,11 +104,11 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<condition property="jmetal-plugin.supported">
 			<and>
 				<javaversion atleast="17" />
-				<matches pattern="[0-4]\.[0-9]+" string="${version}"/>
+				<matches pattern="[0-4]\.[0-9]+" string="${version}" /> <!-- TODO: Remove once JMetal-Plugin supports 5.0 -->
 			</and>
 		</condition>
 
-		<echo unless:true="${jmetal-plugin.supported}">jmetal-plugin requires Java &gt;= 17 and MOEA Framework &lt;= 5.0. Skipping download!</echo>
+		<echo unless:true="${jmetal-plugin.supported}">jmetal-plugin requires Java &gt;= 17 and MOEA Framework &lt; 5.0. Skipping download!</echo>
 		
 		<sequential if:true="${jmetal-plugin.supported}">
 			<secure-get src="${jmetal-plugin.url}" dest="lib/jmetal-plugin-${jmetal-plugin.version}-jar-with-dependencies.jar"
