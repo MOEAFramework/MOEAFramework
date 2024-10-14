@@ -20,6 +20,11 @@ package org.moeaframework.core.constraint;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+/**
+ * Abstract class for constraints.  The value is initialized to {@value Double#NaN}, which serves to indicate the
+ * constraint has not been set.  While not required, implementations should consider {@value Double#NaN} to be
+ * feasible.
+ */
 public abstract class AbstractConstraint implements Constraint {
 
 	private static final long serialVersionUID = -9233514055091031L;
@@ -28,16 +33,15 @@ public abstract class AbstractConstraint implements Constraint {
 			
 	public AbstractConstraint() {
 		super();
-		
-		// TODO: For consistency with older versions, constraints default to 0.0 instead of NaN.  However, it could be
-		// useful to default to NaN and warn if used, as that should indicate a user error.
-		this.value = 0.0; //Double.NaN;
+		this.value = Double.NaN;
 	}
 	
+	@Override
 	public void setValue(double value) {
 		this.value = value;
 	}
 	
+	@Override
 	public double getValue() {
 		return value;
 	}
@@ -46,11 +50,7 @@ public abstract class AbstractConstraint implements Constraint {
 		setValue(value);
 		return this;
 	}
-	
-	public abstract double getMagnitudeOfViolation();
-	
-	public abstract Constraint copy();
-	
+
 	@Override
 	public String toString() {
 		return getClass().getSimpleName() + "(" +  value + ")";

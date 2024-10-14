@@ -32,19 +32,20 @@ public class NormalizedObjective extends Minimize {
 	
 	@Override
 	public NormalizedObjective normalize(double minimum, double maximum) {
+		// Prevent normalizing an already normalized objective
 		throw unsupportedOperation("normalize");
 	}
 	
+	@Override
 	public int getEpsilonIndex(double epsilon) {
+		// Not allowed since epsilon is not scaled
 		throw unsupportedOperation("getEpsilonIndex");
 	}
 	
+	@Override
 	public double getEpsilonDistance(double epsilon) {
+		// Not allowed since epsilon is not scaled
 		throw unsupportedOperation("getEpsilonDistance");
-	}
-	
-	public double applyWeight(double weight) {
-		throw unsupportedOperation("applyWeight");
 	}
 	
 	private UnsupportedOperationException unsupportedOperation(String methodName) {

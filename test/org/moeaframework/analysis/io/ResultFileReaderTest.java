@@ -376,8 +376,8 @@ public class ResultFileReaderTest {
 	
 	private void validateCompleteNoVariables(ResultFileReader reader) throws IOException {
 		population.clear();
-		population.add(MockSolution.of().withObjectives(0.0, 1.0).withConstraints(0.0));
-		population.add(MockSolution.of().withObjectives(1.0, 0.0).withConstraints(0.0));
+		population.add(MockSolution.of().withObjectives(0.0, 1.0).withConstraints(Double.NaN));
+		population.add(MockSolution.of().withObjectives(1.0, 0.0).withConstraints(Double.NaN));
 		
 		Assert.assertTrue(reader.hasNext());
 		Assert.assertEquals(population, reader.next().getPopulation());

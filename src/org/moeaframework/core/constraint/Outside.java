@@ -35,6 +35,10 @@ public class Outside extends BoundedConstraint {
 
 	@Override
 	public double getMagnitudeOfViolation() {
+		if (Double.isNaN(value)) {
+			return 0.0;
+		}
+		
 		double diffLower = Math.abs(lower - value);
 		double diffUpper = Math.abs(upper - value);
 		

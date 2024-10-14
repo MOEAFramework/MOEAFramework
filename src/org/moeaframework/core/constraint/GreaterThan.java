@@ -35,6 +35,10 @@ public class GreaterThan extends ThresholdConstraint {
 
 	@Override
 	public double getMagnitudeOfViolation() {
+		if (Double.isNaN(value)) {
+			return 0.0;
+		}
+		
 		double diff = Math.abs(value - threshold);
 		return value > threshold && diff > epsilon ? 0.0 : Math.nextUp(diff);
 	}

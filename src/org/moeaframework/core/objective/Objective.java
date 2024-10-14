@@ -35,8 +35,18 @@ public interface Objective extends Comparable<Objective>, Copyable<Objective>, S
 	
 	// TODO: Add tests
 	
+	/**
+	 * Returns the objective value.
+	 * 
+	 * @return the objective value
+	 */
 	public double getValue();
 	
+	/**
+	 * Sets the objective value.
+	 * 
+	 * @param value the objective value
+	 */
 	public void setValue(double value);
 	
 	/**

@@ -25,7 +25,8 @@ import org.moeaframework.core.FrameworkException;
 
 /**
  * Defines a constraint.  While all constraints are assigned a value, the interpretation of that value with respect to
- * feasibility depends on the specific constraint type.
+ * feasibility depends on the specific constraint type.  Thus, callers should prefer using specific methods provided
+ * by this interface than checking the value itself.
  */
 public interface Constraint extends Comparable<Constraint>, Copyable<Constraint>, Serializable, Constructable {
 	

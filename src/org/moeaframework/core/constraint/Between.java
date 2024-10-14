@@ -35,6 +35,10 @@ public class Between extends BoundedConstraint {
 
 	@Override
 	public double getMagnitudeOfViolation() {
+		if (Double.isNaN(value)) {
+			return 0.0;
+		}
+		
 		if (value < lower) {
 			double diff = Math.abs(lower - value);
 			return diff <= epsilon ? 0.0 : diff;

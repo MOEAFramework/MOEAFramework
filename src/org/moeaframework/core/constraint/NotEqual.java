@@ -35,6 +35,10 @@ public class NotEqual extends ThresholdConstraint {
 
 	@Override
 	public double getMagnitudeOfViolation() {
+		if (Double.isNaN(value)) {
+			return 0.0;
+		}
+		
 		double diff = Math.abs(value - threshold);
 		return diff <= epsilon ? 1.0 : 0.0;
 	}
