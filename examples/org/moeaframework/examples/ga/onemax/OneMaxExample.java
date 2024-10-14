@@ -33,8 +33,8 @@ public class OneMaxExample {
 		Problem problem = new OneMax(100);
 		GeneticAlgorithm algorithm = new GeneticAlgorithm(problem);
 		
-		// run until we find a solution with all bits set to 1 (i.e., an objective value of 0)
-		algorithm.run(new TargetObjectiveTermination(new double[] { 0 }));
+		// run until we find a solution with all bits set to 1 (i.e., an objective value of 100)
+		algorithm.run(new TargetObjectiveTermination(new double[] { 100 }));
 		
 		System.out.println("Found optimal solution after " + algorithm.getNumberOfEvaluations() + " evaluations!");
 		System.out.println();

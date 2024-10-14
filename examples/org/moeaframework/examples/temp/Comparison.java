@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.examples.timing;
+package org.moeaframework.examples.temp;
 
 import java.io.IOException;
 
@@ -35,7 +35,7 @@ import org.moeaframework.Executor;
  * In this example, we will compare NSGA-II, GDE3, and eMOEA on the UF1 test problem
  * using the Hypervolume indicator.
  */
-public class ComparisonTest {
+public class Comparison {
 
 	public static void main(String[] args) throws IOException {
 		int seeds = 10;

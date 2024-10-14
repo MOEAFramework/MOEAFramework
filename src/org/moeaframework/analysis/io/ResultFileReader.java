@@ -281,7 +281,7 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 				Solution solution = parseSolution(line);
 				
 				if (solution == null) {
-					errorHandler.error("Failed to parse solution, ignoring remaining entries in the file");
+					errorHandler.error("Unable to parse solution, ignoring remaining entries in the file");
 					return null;
 				} else {
 					population.add(solution);
@@ -329,7 +329,7 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 			} else if (version < 5 && entries.length == problem.getNumberOfVariables() + problem.getNumberOfObjectives()) {
 				includesVariables = true;
 			} else if (!legacyFormat && entries.length != problem.getNumberOfObjectives()) {
-				errorHandler.error("Failed to parse solution, incorrect number of entries ({0}) found", entries.length);
+				errorHandler.error("Unable to parse solution, number of entries ({0}) does not match problem definition", entries.length);
 				return null;
 			}
 			
