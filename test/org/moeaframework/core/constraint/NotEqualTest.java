@@ -28,6 +28,7 @@ public class NotEqualTest {
 		NotEqual expected = NotEqual.to(5.0, 0.1);
 		NotEqual actual = expected.copy();
 		
+		Assert.assertNotSame(expected, actual);
 		Assert.assertEquals(expected.getValue(), actual.getValue(), TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(expected.getThreshold(), actual.getThreshold(), TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(expected.getEpsilon(), actual.getEpsilon(), TestThresholds.HIGH_PRECISION);

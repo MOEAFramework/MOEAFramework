@@ -325,6 +325,7 @@ public class PopulationTest {
 	@Test
 	public void testCopy() {
 		Population copy = population.copy();
+		Assert.assertNotSame(population, copy);
 		Assert.assertEquals(population, copy);
 	}
 

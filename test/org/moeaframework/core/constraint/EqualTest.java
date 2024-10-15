@@ -28,6 +28,7 @@ public class EqualTest {
 		Equal expected = Equal.to(5.0, 0.1);
 		Equal actual = expected.copy();
 		
+		Assert.assertNotSame(expected, actual);
 		Assert.assertEquals(expected.getValue(), actual.getValue(), TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(expected.getThreshold(), actual.getThreshold(), TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(expected.getEpsilon(), actual.getEpsilon(), TestThresholds.HIGH_PRECISION);

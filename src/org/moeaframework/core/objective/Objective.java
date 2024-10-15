@@ -32,9 +32,7 @@ import org.moeaframework.core.Copyable;
  * value is equivalent to maximizing the original value.
  */
 public interface Objective extends Comparable<Objective>, Copyable<Objective>, Serializable, Constructable {
-	
-	// TODO: Add tests
-	
+
 	/**
 	 * Returns the objective value.
 	 * 

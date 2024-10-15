@@ -28,6 +28,7 @@ public class OutsideTest {
 		Outside expected = Outside.values(5.0, 10.0, 0.1);
 		Outside actual = expected.copy();
 		
+		Assert.assertNotSame(expected, actual);
 		Assert.assertEquals(expected.getValue(), actual.getValue(), TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(expected.getLower(), actual.getLower(), TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(expected.getUpper(), actual.getUpper(), TestThresholds.HIGH_PRECISION);
