@@ -21,6 +21,23 @@ in Eclipse.  If you choose to use a different IDE, you might need to install the
 > must be downloaded separately.  Visit https://github.com/junit-team/junit4/wiki/Download-and-Install and download
 > `junit.jar` and `hamcrest.jar` to the `lib/` folder.
 
+### Codespaces
+
+If using GitHub Codespaces (or other compatible system), the following steps can be used to setup the environment:
+
+```
+sdk install java 17-zulu
+sdk install ant
+ant package-binary
+
+# run example
+java -classpath "lib/*:dist/*" examples/Example1.java
+
+# run tests
+ant -f test.xml install-junit
+ant -f test.xml test
+```
+
 ### Checklist
 
 After making and testing your changes locally, the next step is to submit the code for review.  The checklist below
