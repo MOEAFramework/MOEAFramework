@@ -1,3 +1,15 @@
+# Version=5
+# Problem=Osyczka
+# NumberOfVariables=2
+# NumberOfObjectives=2
+# NumberOfConstraints=2
+# Variable.1.Definition=RealVariable(2.0,7.0)
+# Variable.2.Definition=RealVariable(5.0,10.0)
+# Objective.1.Definition=Minimize
+# Objective.2.Definition=Minimize
+# Constraint.1.Definition=GreaterThanOrEqual(0.0,1.0E-10)
+# Constraint.2.Definition=GreaterThanOrEqual(0.0,1.0E-10)
+# ExcludeVariables=true
 27.57666968765549 9.250795580135705
 27.134735331721387 9.284318110939502
 27.743238033939438 9.238751357498252
@@ -98,3 +110,4 @@
 27.43144607641344 9.26154430010221
 28.189426817469858 9.207549385772122
 28.01398270219488 9.21949544057508
+#

@@ -1,21 +1,41 @@
-  0.0000000e+000	  1.0000000e+000	
-  5.0000000e-002	  9.5000000e-001	
-  1.0000000e-001	  9.0000000e-001	
-  1.5000000e-001	  8.5000000e-001	
-  2.0000000e-001	  8.0000000e-001	
-  2.5000000e-001	  7.5000000e-001	
-  3.0000000e-001	  7.0000000e-001	
-  3.5000000e-001	  6.5000000e-001	
-  4.0000000e-001	  6.0000000e-001	
-  4.5000000e-001	  5.5000000e-001	
-  5.0000000e-001	  5.0000000e-001	
-  5.5000000e-001	  4.5000000e-001	
-  6.0000000e-001	  4.0000000e-001	
-  6.5000000e-001	  3.5000000e-001	
-  7.0000000e-001	  3.0000000e-001	
-  7.5000000e-001	  2.5000000e-001	
-  8.0000000e-001	  2.0000000e-001	
-  8.5000000e-001	  1.5000000e-001	
-  9.0000000e-001	  1.0000000e-001	
-  9.5000000e-001	  5.0000000e-002	
-  1.0000000e+000	  0.0000000e+000	
+# Version=5
+# Problem=CF1
+# NumberOfVariables=10
+# NumberOfObjectives=2
+# NumberOfConstraints=1
+# Variable.1.Definition=RealVariable(0.0,1.0)
+# Variable.2.Definition=RealVariable(0.0,1.0)
+# Variable.3.Definition=RealVariable(0.0,1.0)
+# Variable.4.Definition=RealVariable(0.0,1.0)
+# Variable.5.Definition=RealVariable(0.0,1.0)
+# Variable.6.Definition=RealVariable(0.0,1.0)
+# Variable.7.Definition=RealVariable(0.0,1.0)
+# Variable.8.Definition=RealVariable(0.0,1.0)
+# Variable.9.Definition=RealVariable(0.0,1.0)
+# Variable.10.Definition=RealVariable(0.0,1.0)
+# Objective.1.Definition=Minimize
+# Objective.2.Definition=Minimize
+# Constraint.1.Definition=GreaterThanOrEqual(0.0,1.0E-10)
+# ExcludeVariables=true
+0.0 1.0
+0.05 0.95
+0.1 0.9
+0.15 0.85
+0.2 0.8
+0.25 0.75
+0.3 0.7
+0.35 0.65
+0.4 0.6
+0.45 0.55
+0.5 0.5
+0.55 0.45
+0.6 0.4
+0.65 0.35
+0.7 0.3
+0.75 0.25
+0.8 0.2
+0.85 0.15
+0.9 0.1
+0.95 0.05
+1.0 0.0
+#

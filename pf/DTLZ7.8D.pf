@@ -1,3 +1,44 @@
+# Version=5
+# Problem=DTLZ7_8
+# NumberOfVariables=27
+# NumberOfObjectives=8
+# NumberOfConstraints=0
+# Variable.1.Definition=RealVariable(0.0,1.0)
+# Variable.2.Definition=RealVariable(0.0,1.0)
+# Variable.3.Definition=RealVariable(0.0,1.0)
+# Variable.4.Definition=RealVariable(0.0,1.0)
+# Variable.5.Definition=RealVariable(0.0,1.0)
+# Variable.6.Definition=RealVariable(0.0,1.0)
+# Variable.7.Definition=RealVariable(0.0,1.0)
+# Variable.8.Definition=RealVariable(0.0,1.0)
+# Variable.9.Definition=RealVariable(0.0,1.0)
+# Variable.10.Definition=RealVariable(0.0,1.0)
+# Variable.11.Definition=RealVariable(0.0,1.0)
+# Variable.12.Definition=RealVariable(0.0,1.0)
+# Variable.13.Definition=RealVariable(0.0,1.0)
+# Variable.14.Definition=RealVariable(0.0,1.0)
+# Variable.15.Definition=RealVariable(0.0,1.0)
+# Variable.16.Definition=RealVariable(0.0,1.0)
+# Variable.17.Definition=RealVariable(0.0,1.0)
+# Variable.18.Definition=RealVariable(0.0,1.0)
+# Variable.19.Definition=RealVariable(0.0,1.0)
+# Variable.20.Definition=RealVariable(0.0,1.0)
+# Variable.21.Definition=RealVariable(0.0,1.0)
+# Variable.22.Definition=RealVariable(0.0,1.0)
+# Variable.23.Definition=RealVariable(0.0,1.0)
+# Variable.24.Definition=RealVariable(0.0,1.0)
+# Variable.25.Definition=RealVariable(0.0,1.0)
+# Variable.26.Definition=RealVariable(0.0,1.0)
+# Variable.27.Definition=RealVariable(0.0,1.0)
+# Objective.1.Definition=Minimize
+# Objective.2.Definition=Minimize
+# Objective.3.Definition=Minimize
+# Objective.4.Definition=Minimize
+# Objective.5.Definition=Minimize
+# Objective.6.Definition=Minimize
+# Objective.7.Definition=Minimize
+# Objective.8.Definition=Minimize
+# ExcludeVariables=true
 0.8320983873898996 0.8806171393160254 0.835262978200671 0.8691879564391444 0.27921335769705363 0.799772361210138 0.3438257762551719 7.015737750183948
 0.8696040327579526 0.153349085083285 0.8142816883386625 0.06576205634194145 0.17277430822298753 0.8510056409991529 0.874993179057241 8.567283857271125
 0.26922919900281606 0.025016460517748362 0.8600298781164825 0.8103810482118882 0.7602441691058893 0.8821879319976705 0.8743005224068391 7.548238594992462
@@ -352,3 +393,4 @@
 0.3765444299339554 0.24350895795641503 0.26265461319532885 0.037705033622781645 0.878777147161158 0.2775158894049102 0.8783443781605352 11.097037592976687
 0.05940168160860791 0.8465809039349877 0.20540908179788847 0.7826245595560177 0.8790895452873936 0.21061238874088165 0.2335747676200499 9.844304548336567
 0.8235693797980762 0.2043607931450571 0.08651507547333426 0.8370594214903139 0.8420803358583473 0.8575934032866839 0.27867735573110963 8.34715235541677
+#

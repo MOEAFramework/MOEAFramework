@@ -1,3 +1,14 @@
+# Version=5
+# Problem=Obayashi
+# NumberOfVariables=2
+# NumberOfObjectives=2
+# NumberOfConstraints=1
+# Variable.1.Definition=RealVariable(0.0,1.0)
+# Variable.2.Definition=RealVariable(0.0,1.0)
+# Objective.1.Definition=Maximize
+# Objective.2.Definition=Maximize
+# Constraint.1.Definition=LessThanOrEqual(1.0,1.0E-10)
+# ExcludeVariables=true
 0.9425592102290317 0.33403912227825067
 0.7219106490114242 0.6919862822656995
 0.584684612827481 0.8112606877710633
@@ -96,3 +107,4 @@
 0.9480494435097429 0.3181230149814171
 0.9360761414390992 0.35179746648958055
 0.3181120938300668 0.9480531080899691
+#

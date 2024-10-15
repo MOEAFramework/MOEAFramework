@@ -1,3 +1,15 @@
+# Version=5
+# Problem=Tanaka
+# NumberOfVariables=2
+# NumberOfObjectives=2
+# NumberOfConstraints=2
+# Variable.1.Definition=RealVariable(4.9E-324,3.141592653589793)
+# Variable.2.Definition=RealVariable(4.9E-324,3.141592653589793)
+# Objective.1.Definition=Minimize
+# Objective.2.Definition=Minimize
+# Constraint.1.Definition=LessThanOrEqual(0.0,1.0E-10)
+# Constraint.2.Definition=LessThanOrEqual(0.0,1.0E-10)
+# ExcludeVariables=true
 1.0382306834095432 0.042139109050040514
 0.8481991018219674 0.4856671873379734
 0.7603468571303097 0.7137251671928535
@@ -102,3 +114,4 @@
 0.06980805114188748 1.0205618286086464
 0.6820590119953426 0.7694887085598939
 0.7251748698357213 0.7544509106776097
+#

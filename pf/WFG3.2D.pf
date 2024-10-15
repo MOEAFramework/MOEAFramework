@@ -1,3 +1,22 @@
+# Version=5
+# Problem=WFG3_2
+# NumberOfVariables=11
+# NumberOfObjectives=2
+# NumberOfConstraints=0
+# Variable.1.Definition=RealVariable(0.0,2.0)
+# Variable.2.Definition=RealVariable(0.0,4.0)
+# Variable.3.Definition=RealVariable(0.0,6.0)
+# Variable.4.Definition=RealVariable(0.0,8.0)
+# Variable.5.Definition=RealVariable(0.0,10.0)
+# Variable.6.Definition=RealVariable(0.0,12.0)
+# Variable.7.Definition=RealVariable(0.0,14.0)
+# Variable.8.Definition=RealVariable(0.0,16.0)
+# Variable.9.Definition=RealVariable(0.0,18.0)
+# Variable.10.Definition=RealVariable(0.0,20.0)
+# Variable.11.Definition=RealVariable(0.0,22.0)
+# Objective.1.Definition=Minimize
+# Objective.2.Definition=Minimize
+# ExcludeVariables=true
 0.29545325838147246 3.409093483237055
 1.1854175199575603 1.6291649600848794
 1.627876049921189 0.744247900157622
@@ -9998,3 +10017,4 @@
 0.4781198238559808 3.0437603522880385
 0.46831365461628366 3.063372690767433
 0.7351439255693101 2.52971214886138
+#

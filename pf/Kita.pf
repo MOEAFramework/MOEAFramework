@@ -1,3 +1,16 @@
+# Version=5
+# Problem=Kita
+# NumberOfVariables=2
+# NumberOfObjectives=2
+# NumberOfConstraints=3
+# Variable.1.Definition=RealVariable(0.0,7.0)
+# Variable.2.Definition=RealVariable(0.0,7.0)
+# Objective.1.Definition=Maximize
+# Objective.2.Definition=Maximize
+# Constraint.1.Definition=LessThanOrEqual(0.0,1.0E-10)
+# Constraint.2.Definition=LessThanOrEqual(0.0,1.0E-10)
+# Constraint.3.Definition=LessThanOrEqual(0.0,1.0E-10)
+# ExcludeVariables=true
 4.615199056542028 7.930340497846695
 4.77928737275788 7.910229335597563
 6.186024689087687 7.66087891866008
@@ -97,3 +110,4 @@
 3.588503852066015 8.041330755464886
 3.804723880309846 8.020082653321815
 5.992061685892157 7.711188657541234
+#

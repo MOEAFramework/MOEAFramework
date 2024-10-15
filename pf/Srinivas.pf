@@ -1,3 +1,15 @@
+# Version=5
+# Problem=Srinivas
+# NumberOfVariables=2
+# NumberOfObjectives=2
+# NumberOfConstraints=2
+# Variable.1.Definition=RealVariable(-20.0,20.0)
+# Variable.2.Definition=RealVariable(-20.0,20.0)
+# Objective.1.Definition=Minimize
+# Objective.2.Definition=Minimize
+# Constraint.1.Definition=LessThanOrEqual(0.0,1.0E-10)
+# Constraint.2.Definition=LessThanOrEqual(0.0,1.0E-10)
+# ExcludeVariables=true
 221.412351911207 -217.5372620074125
 188.8126549920301 -189.0562997002136
 151.45152088228838 -151.66966679591673
@@ -119,3 +131,4 @@
 97.3149358726403 -97.56099451351643
 100.34806921863546 -100.59618062026037
 85.4148085215485 -85.6640925474989
+#

@@ -1,3 +1,12 @@
+# Version=5
+# Problem=Schaffer
+# NumberOfVariables=1
+# NumberOfObjectives=2
+# NumberOfConstraints=0
+# Variable.1.Definition=RealVariable(-10.0,10.0)
+# Objective.1.Definition=Minimize
+# Objective.2.Definition=Minimize
+# ExcludeVariables=true
 0.05963935575590582 3.0827925447898807
 0.5799799972667651 1.5337232851250846
 0.8199947652898488 1.197852271593945
@@ -98,3 +107,4 @@
 0.6584683384345382 1.4126258568971775
 0.03975540486456989 3.2422051068688145
 0.6338977779036614 1.449189871916272
+#

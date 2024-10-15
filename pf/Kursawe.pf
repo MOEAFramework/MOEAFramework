@@ -1,3 +1,14 @@
+# Version=5
+# Problem=Kursawe
+# NumberOfVariables=3
+# NumberOfObjectives=2
+# NumberOfConstraints=0
+# Variable.1.Definition=RealVariable(-5.0,5.0)
+# Variable.2.Definition=RealVariable(-5.0,5.0)
+# Variable.3.Definition=RealVariable(-5.0,5.0)
+# Objective.1.Definition=Minimize
+# Objective.2.Definition=Minimize
+# ExcludeVariables=true
 -14.710209358587349 -11.225143234362866
 -14.813561853741408 -10.912446092412246
 -15.122131746247195 -9.704643438555514
@@ -98,3 +109,4 @@
 -17.946025567611187 -3.8752761829650946
 -16.279569370645994 -6.818261032415633
 -18.870920431764162 -0.40281415765669915
+#

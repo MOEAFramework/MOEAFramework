@@ -1,1 +1,13 @@
+# Version=5
+# Problem=Binh3
+# NumberOfVariables=2
+# NumberOfObjectives=3
+# NumberOfConstraints=0
+# Variable.1.Definition=RealVariable(1.0E-6,1000000.0)
+# Variable.2.Definition=RealVariable(1.0E-6,1000000.0)
+# Objective.1.Definition=Minimize
+# Objective.2.Definition=Minimize
+# Objective.3.Definition=Minimize
+# ExcludeVariables=true
 0.0 0.0 0.0
+#

@@ -1,3 +1,14 @@
+# Version=5
+# Problem=OKA2
+# NumberOfVariables=3
+# NumberOfObjectives=2
+# NumberOfConstraints=0
+# Variable.1.Definition=RealVariable(-3.141592653589793,3.141592653589793)
+# Variable.2.Definition=RealVariable(-5.0,5.0)
+# Variable.3.Definition=RealVariable(-5.0,5.0)
+# Objective.1.Definition=Minimize
+# Objective.2.Definition=Minimize
+# ExcludeVariables=true
 -3.141592653589793 1.0000050372024025
 0.0 0.8078569831865463
 -0.0010835913305786704 0.8227841186572729
@@ -78,3 +89,4 @@
 1.8132265662735854 0.42025861225019895
 1.8132305495224523 0.40562186548565116
 1.813231587306114 0.4054998732513796
+#

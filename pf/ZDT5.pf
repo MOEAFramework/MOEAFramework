@@ -1,3 +1,22 @@
+# Version=5
+# Problem=ZDT5
+# NumberOfVariables=11
+# NumberOfObjectives=2
+# NumberOfConstraints=0
+# Variable.1.Definition=BinaryVariable(30)
+# Variable.2.Definition=BinaryVariable(5)
+# Variable.3.Definition=BinaryVariable(5)
+# Variable.4.Definition=BinaryVariable(5)
+# Variable.5.Definition=BinaryVariable(5)
+# Variable.6.Definition=BinaryVariable(5)
+# Variable.7.Definition=BinaryVariable(5)
+# Variable.8.Definition=BinaryVariable(5)
+# Variable.9.Definition=BinaryVariable(5)
+# Variable.10.Definition=BinaryVariable(5)
+# Variable.11.Definition=BinaryVariable(5)
+# Objective.1.Definition=Minimize
+# Objective.2.Definition=Minimize
+# ExcludeVariables=true
 1.0 17.0
 27.0 0.6296296296296295
 2.0 8.5
@@ -25,3 +44,4 @@
 16.0 1.0
 17.0 0.9411764705882353
 29.0 0.6206896551724138
+#

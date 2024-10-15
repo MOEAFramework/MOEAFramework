@@ -1,3 +1,27 @@
+# Version=5
+# Problem=Quagliarella
+# NumberOfVariables=16
+# NumberOfObjectives=2
+# NumberOfConstraints=0
+# Variable.1.Definition=RealVariable(-5.12,5.12)
+# Variable.2.Definition=RealVariable(-5.12,5.12)
+# Variable.3.Definition=RealVariable(-5.12,5.12)
+# Variable.4.Definition=RealVariable(-5.12,5.12)
+# Variable.5.Definition=RealVariable(-5.12,5.12)
+# Variable.6.Definition=RealVariable(-5.12,5.12)
+# Variable.7.Definition=RealVariable(-5.12,5.12)
+# Variable.8.Definition=RealVariable(-5.12,5.12)
+# Variable.9.Definition=RealVariable(-5.12,5.12)
+# Variable.10.Definition=RealVariable(-5.12,5.12)
+# Variable.11.Definition=RealVariable(-5.12,5.12)
+# Variable.12.Definition=RealVariable(-5.12,5.12)
+# Variable.13.Definition=RealVariable(-5.12,5.12)
+# Variable.14.Definition=RealVariable(-5.12,5.12)
+# Variable.15.Definition=RealVariable(-5.12,5.12)
+# Variable.16.Definition=RealVariable(-5.12,5.12)
+# Objective.1.Definition=Minimize
+# Objective.2.Definition=Minimize
+# ExcludeVariables=true
 0.7045682948298148 4.616238744619121
 4.586064783326731 0.8019313424405561
 4.109860974687579 2.0692187625856837
@@ -94,3 +118,4 @@
 4.198908947300482 1.8895258052381327
 4.409179383181003 1.3297688000532293
 0.8926516649958119 4.549571076652328
+#

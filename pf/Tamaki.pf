@@ -1,3 +1,16 @@
+# Version=5
+# Problem=Tamaki
+# NumberOfVariables=3
+# NumberOfObjectives=3
+# NumberOfConstraints=1
+# Variable.1.Definition=RealVariable(0.0,1.0)
+# Variable.2.Definition=RealVariable(0.0,1.0)
+# Variable.3.Definition=RealVariable(0.0,1.0)
+# Objective.1.Definition=Maximize
+# Objective.2.Definition=Maximize
+# Objective.3.Definition=Maximize
+# Constraint.1.Definition=LessThanOrEqual(1.0,1.0E-10)
+# ExcludeVariables=true
 0.7265984733779398 0.5428831466916237 0.4208696631465994
 0.26969090447712285 0.7932313307784218 0.5450678248552399
 0.6751515506361779 0.6294668562021505 0.3822332696770398
@@ -102,3 +115,4 @@
 0.24850417576704786 0.09877238129832028 0.9623577307602911
 0.5461574560870016 0.66375076281663 0.49429857801982535
 0.8427114805371213 0.4871892687504885 0.20000620301482377
+#

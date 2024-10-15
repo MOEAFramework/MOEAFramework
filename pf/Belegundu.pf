@@ -1,3 +1,15 @@
+# Version=5
+# Problem=Belegundu
+# NumberOfVariables=2
+# NumberOfObjectives=2
+# NumberOfConstraints=2
+# Variable.1.Definition=RealVariable(0.0,5.0)
+# Variable.2.Definition=RealVariable(0.0,3.0)
+# Objective.1.Definition=Minimize
+# Objective.2.Definition=Minimize
+# Constraint.1.Definition=LessThanOrEqual(0.0,1.0E-10)
+# Constraint.2.Definition=LessThanOrEqual(0.0,1.0E-10)
+# ExcludeVariables=true
 -5.050505050505051 5.050505050505051
 -5.454545454545454 5.454545454545454
 -5.858585858585858 5.858585858585858
@@ -98,3 +110,4 @@
 -4.252577356155271 4.252577360251678
 -5.952478462418895 5.952515305820114
 -8.848123483470138 8.84824272208259
+#

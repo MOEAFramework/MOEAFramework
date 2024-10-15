@@ -1,3 +1,13 @@
+# Version=5
+# Problem=Poloni
+# NumberOfVariables=2
+# NumberOfObjectives=2
+# NumberOfConstraints=0
+# Variable.1.Definition=RealVariable(-3.141592653589793,3.141592653589793)
+# Variable.2.Definition=RealVariable(-3.141592653589793,3.141592653589793)
+# Objective.1.Definition=Maximize
+# Objective.2.Definition=Maximize
+# ExcludeVariables=true
 -7.3841589569420085 -0.7980180860976703
 -4.90673053466789 -1.3199860714549299
 -2.557526558196128 -2.2973706460735
@@ -93,3 +103,4 @@
 -3.9815582486697907 -1.5983156245547616
 -2.896612671127186 -2.0712438725621527
 -3.271423401165457 -1.8794437062519362
+#

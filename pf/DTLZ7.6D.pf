@@ -1,3 +1,40 @@
+# Version=5
+# Problem=DTLZ7_6
+# NumberOfVariables=25
+# NumberOfObjectives=6
+# NumberOfConstraints=0
+# Variable.1.Definition=RealVariable(0.0,1.0)
+# Variable.2.Definition=RealVariable(0.0,1.0)
+# Variable.3.Definition=RealVariable(0.0,1.0)
+# Variable.4.Definition=RealVariable(0.0,1.0)
+# Variable.5.Definition=RealVariable(0.0,1.0)
+# Variable.6.Definition=RealVariable(0.0,1.0)
+# Variable.7.Definition=RealVariable(0.0,1.0)
+# Variable.8.Definition=RealVariable(0.0,1.0)
+# Variable.9.Definition=RealVariable(0.0,1.0)
+# Variable.10.Definition=RealVariable(0.0,1.0)
+# Variable.11.Definition=RealVariable(0.0,1.0)
+# Variable.12.Definition=RealVariable(0.0,1.0)
+# Variable.13.Definition=RealVariable(0.0,1.0)
+# Variable.14.Definition=RealVariable(0.0,1.0)
+# Variable.15.Definition=RealVariable(0.0,1.0)
+# Variable.16.Definition=RealVariable(0.0,1.0)
+# Variable.17.Definition=RealVariable(0.0,1.0)
+# Variable.18.Definition=RealVariable(0.0,1.0)
+# Variable.19.Definition=RealVariable(0.0,1.0)
+# Variable.20.Definition=RealVariable(0.0,1.0)
+# Variable.21.Definition=RealVariable(0.0,1.0)
+# Variable.22.Definition=RealVariable(0.0,1.0)
+# Variable.23.Definition=RealVariable(0.0,1.0)
+# Variable.24.Definition=RealVariable(0.0,1.0)
+# Variable.25.Definition=RealVariable(0.0,1.0)
+# Objective.1.Definition=Minimize
+# Objective.2.Definition=Minimize
+# Objective.3.Definition=Minimize
+# Objective.4.Definition=Minimize
+# Objective.5.Definition=Minimize
+# Objective.6.Definition=Minimize
+# ExcludeVariables=true
 0.7956956830538663 0.6540266240801652 0.8739672455166809 0.8659907744328006 0.23991001145826163 6.081047402467803
 0.6480433779605024 0.31910298430674056 0.9033151631433798 0.8114894010208092 0.20901071747396666 7.478737951720869
 0.8504392578510847 0.8544513593111003 0.6547528342604926 0.24176839117660404 0.31956739500723685 7.25035518150991
@@ -201,3 +238,4 @@
 0.8550576742178422 0.29571948747026594 0.8822560644296799 0.8599354851443768 0.29423980280920137 6.1437960877636355
 0.8177017918652777 0.6585989170218335 0.8719921527066778 0.13583647965820922 0.6195629898406305 7.458704041868345
 0.8391185171956413 0.20574564048696048 0.9138161293958192 0.8248752312964059 0.6539013671147172 6.1256594414913295
+#

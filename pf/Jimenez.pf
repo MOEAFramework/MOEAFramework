@@ -1,3 +1,17 @@
+# Version=5
+# Problem=Jimenez
+# NumberOfVariables=2
+# NumberOfObjectives=2
+# NumberOfConstraints=4
+# Variable.1.Definition=RealVariable(0.0,50.0)
+# Variable.2.Definition=RealVariable(0.0,50.0)
+# Objective.1.Definition=Maximize
+# Objective.2.Definition=Maximize
+# Constraint.1.Definition=LessThanOrEqual(0.0,1.0E-10)
+# Constraint.2.Definition=LessThanOrEqual(0.0,1.0E-10)
+# Constraint.3.Definition=LessThanOrEqual(0.0,1.0E-10)
+# Constraint.4.Definition=LessThanOrEqual(0.0,1.0E-10)
+# ExcludeVariables=true
 245.75090823806522 184.98183523869562
 246.60014495379596 167.9971009240811
 248.7012653928267 125.97469214346648
@@ -98,3 +112,4 @@
 245.85001350496094 182.99972990078112
 245.5501745220258 188.99650955948366
 245.00002296374902 199.99954072501967
+#

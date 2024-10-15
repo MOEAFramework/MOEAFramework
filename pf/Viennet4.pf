@@ -1,3 +1,17 @@
+# Version=5
+# Problem=Viennet4
+# NumberOfVariables=2
+# NumberOfObjectives=3
+# NumberOfConstraints=3
+# Variable.1.Definition=RealVariable(-4.0,4.0)
+# Variable.2.Definition=RealVariable(-4.0,4.0)
+# Objective.1.Definition=Minimize
+# Objective.2.Definition=Minimize
+# Objective.3.Definition=Minimize
+# Constraint.1.Definition=GreaterThan(0.0,1.0E-10)
+# Constraint.2.Definition=GreaterThan(0.0,1.0E-10)
+# Constraint.3.Definition=GreaterThan(0.0,1.0E-10)
+# ExcludeVariables=true
 4.750313233623798 -12.352516962225176 15.378081373395705
 5.14744449878315 -12.755640591545657 15.615554027409052
 4.946555956330515 -12.495735365632259 15.372389390965097
@@ -105,3 +119,4 @@
 5.869852883416888 -12.920068918772948 15.927200601099312
 6.724782792433066 -12.674858514529102 15.043436544746463
 4.622432178710585 -12.77348708338445 16.060710253335717
+#

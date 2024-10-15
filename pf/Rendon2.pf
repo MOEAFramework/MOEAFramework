@@ -1,3 +1,13 @@
+# Version=5
+# Problem=Rendon2
+# NumberOfVariables=2
+# NumberOfObjectives=2
+# NumberOfConstraints=0
+# Variable.1.Definition=RealVariable(-3.0,3.0)
+# Variable.2.Definition=RealVariable(-3.0,3.0)
+# Objective.1.Definition=Minimize
+# Objective.2.Definition=Minimize
+# ExcludeVariables=true
 -2.895274421820698 -6.1984837096336145
 -4.293001100653779 -1.7421459524005583
 -3.0510092211498954 -5.895379617057891
@@ -101,3 +111,4 @@
 -2.492103044094983 -6.757834593992452
 -4.563802634479057 -0.4269160514382504
 -4.725006510554691 0.4256604825654531
+#

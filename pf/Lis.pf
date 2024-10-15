@@ -1,3 +1,13 @@
+# Version=5
+# Problem=Lis
+# NumberOfVariables=2
+# NumberOfObjectives=2
+# NumberOfConstraints=0
+# Variable.1.Definition=RealVariable(-5.0,10.0)
+# Variable.2.Definition=RealVariable(-5.0,10.0)
+# Objective.1.Definition=Minimize
+# Objective.2.Definition=Minimize
+# ExcludeVariables=true
 0.6145510820367158 0.7513125749077272
 0.3834677820284849 0.8279401896446964
 0.028151842627121712 0.840896080106325
@@ -94,3 +104,4 @@
 0.8477227589295807 0.4371709678033259
 0.9170077500910214 0.004542028141055496
 0.3504273130324942 0.831881945229355
+#

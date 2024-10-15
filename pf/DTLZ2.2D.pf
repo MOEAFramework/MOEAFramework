@@ -1,3 +1,22 @@
+# Version=5
+# Problem=DTLZ2_2
+# NumberOfVariables=11
+# NumberOfObjectives=2
+# NumberOfConstraints=0
+# Variable.1.Definition=RealVariable(0.0,1.0)
+# Variable.2.Definition=RealVariable(0.0,1.0)
+# Variable.3.Definition=RealVariable(0.0,1.0)
+# Variable.4.Definition=RealVariable(0.0,1.0)
+# Variable.5.Definition=RealVariable(0.0,1.0)
+# Variable.6.Definition=RealVariable(0.0,1.0)
+# Variable.7.Definition=RealVariable(0.0,1.0)
+# Variable.8.Definition=RealVariable(0.0,1.0)
+# Variable.9.Definition=RealVariable(0.0,1.0)
+# Variable.10.Definition=RealVariable(0.0,1.0)
+# Variable.11.Definition=RealVariable(0.0,1.0)
+# Objective.1.Definition=Minimize
+# Objective.2.Definition=Minimize
+# ExcludeVariables=true
 0.9359991688879257 0.35200220999464243
 0.7838012571718549 0.621011746471691
 0.6949182807119172 0.7190887171499724
@@ -97,3 +116,4 @@
 0.9779996079966488 0.20860672750034068
 0.5034929907183348 0.8639993103570782
 0.9419986089836739 0.33561677650681193
+#

@@ -1,3 +1,13 @@
+# Version=5
+# Problem=Fonseca
+# NumberOfVariables=2
+# NumberOfObjectives=2
+# NumberOfConstraints=0
+# Variable.1.Definition=RealVariable(-4.0,4.0)
+# Variable.2.Definition=RealVariable(-4.0,4.0)
+# Objective.1.Definition=Minimize
+# Objective.2.Definition=Minimize
+# ExcludeVariables=true
 0.8768503632964211 0.8515963886988723
 0.8995772099736526 0.821357672097443
 0.8646806090211467 0.8646488231058482
@@ -107,3 +117,4 @@
 0.8390934806963816 0.8870600592156186
 0.9399794903556771 0.7342705141141217
 0.9996390970185142 1.6773468230901756E-4
+#

@@ -1,3 +1,13 @@
+# Version=5
+# Problem=Murata
+# NumberOfVariables=2
+# NumberOfObjectives=2
+# NumberOfConstraints=0
+# Variable.1.Definition=RealVariable(1.0,4.0)
+# Variable.2.Definition=RealVariable(1.0,2.0)
+# Objective.1.Definition=Minimize
+# Objective.2.Definition=Minimize
+# ExcludeVariables=true
 3.4999963548916924 1.9375063789362166
 3.239998487418426 2.375602450381578
 2.0598271551174734 3.9392780227601643
@@ -98,3 +108,4 @@
 2.658089251635249 3.23364038258529
 2.6999575544032903 3.1775573011051508
 3.3396162401216234 2.211740842178978
+#

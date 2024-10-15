@@ -1,3 +1,34 @@
+# Version=5
+# Problem=DTLZ2_8
+# NumberOfVariables=17
+# NumberOfObjectives=8
+# NumberOfConstraints=0
+# Variable.1.Definition=RealVariable(0.0,1.0)
+# Variable.2.Definition=RealVariable(0.0,1.0)
+# Variable.3.Definition=RealVariable(0.0,1.0)
+# Variable.4.Definition=RealVariable(0.0,1.0)
+# Variable.5.Definition=RealVariable(0.0,1.0)
+# Variable.6.Definition=RealVariable(0.0,1.0)
+# Variable.7.Definition=RealVariable(0.0,1.0)
+# Variable.8.Definition=RealVariable(0.0,1.0)
+# Variable.9.Definition=RealVariable(0.0,1.0)
+# Variable.10.Definition=RealVariable(0.0,1.0)
+# Variable.11.Definition=RealVariable(0.0,1.0)
+# Variable.12.Definition=RealVariable(0.0,1.0)
+# Variable.13.Definition=RealVariable(0.0,1.0)
+# Variable.14.Definition=RealVariable(0.0,1.0)
+# Variable.15.Definition=RealVariable(0.0,1.0)
+# Variable.16.Definition=RealVariable(0.0,1.0)
+# Variable.17.Definition=RealVariable(0.0,1.0)
+# Objective.1.Definition=Minimize
+# Objective.2.Definition=Minimize
+# Objective.3.Definition=Minimize
+# Objective.4.Definition=Minimize
+# Objective.5.Definition=Minimize
+# Objective.6.Definition=Minimize
+# Objective.7.Definition=Minimize
+# Objective.8.Definition=Minimize
+# ExcludeVariables=true
 0.008104514991454643 0.07863859125636907 0.6068005710401473 0.08636024048996786 0.6544932317670801 0.09462163192533697 0.41100982572172073 0.1088188593622596
 0.00377127181611827 0.002528138486629588 0.008244323025558432 0.9869803942825822 0.022799691972735237 0.01985340448966222 0.08986463438187406 0.12958195216873528
 0.03139866140433472 0.34738115512544443 0.8675121745788908 0.18192493637996512 0.15277744976942162 0.15410454330210618 0.18229866105311276 0.11110553703628498
@@ -378,3 +409,4 @@
 0.07675368836364764 0.09749425044678246 0.3777872643824353 0.06207558016400817 0.8785572602886484 0.10083876432320464 0.11350661060166044 0.20763448900346437
 0.12955916635600995 0.21801178679816058 0.1875352486183553 0.09426185213945959 0.6595507879418029 0.6393229568164444 0.1480491360198616 0.16115484889911916
 0.060121524452770005 0.3186509766134539 0.6295398315122775 0.16393982356186418 0.38255912618214605 0.39109301669781676 0.16068759647332037 0.3827852606819476
+#

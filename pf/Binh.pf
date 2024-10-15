@@ -1,3 +1,13 @@
+# Version=5
+# Problem=Binh
+# NumberOfVariables=2
+# NumberOfObjectives=2
+# NumberOfConstraints=0
+# Variable.1.Definition=RealVariable(-5.0,10.0)
+# Variable.2.Definition=RealVariable(-5.0,10.0)
+# Objective.1.Definition=Minimize
+# Objective.2.Definition=Minimize
+# ExcludeVariables=true
 8.427137850926028 17.373178599896345
 18.868434743112424 7.438092495795547
 15.383863522071161 9.915199355586745
@@ -98,3 +108,4 @@
 20.894908623470673 6.249864538915092
 21.377255094536178 5.990322004604246
 6.971337468276591 19.631446016167118
+#

@@ -1,3 +1,13 @@
+# Version=5
+# Problem=Laumanns
+# NumberOfVariables=2
+# NumberOfObjectives=2
+# NumberOfConstraints=0
+# Variable.1.Definition=RealVariable(-50.0,50.0)
+# Variable.2.Definition=RealVariable(-50.0,50.0)
+# Objective.1.Definition=Minimize
+# Objective.2.Definition=Minimize
+# ExcludeVariables=true
 0.5353371246543034 1.608667687483639
 1.449160278241467 0.633917350635065
 0.8385370431254734 1.175670311997029
@@ -98,3 +108,4 @@
 0.8936369811790337 1.1123420047371615
 1.2744679492603948 0.7587745154491139
 0.4192878418196369 1.8291902627477228
+#

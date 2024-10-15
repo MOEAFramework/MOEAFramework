@@ -1,3 +1,32 @@
+# Version=5
+# Problem=DTLZ7_2
+# NumberOfVariables=21
+# NumberOfObjectives=2
+# NumberOfConstraints=0
+# Variable.1.Definition=RealVariable(0.0,1.0)
+# Variable.2.Definition=RealVariable(0.0,1.0)
+# Variable.3.Definition=RealVariable(0.0,1.0)
+# Variable.4.Definition=RealVariable(0.0,1.0)
+# Variable.5.Definition=RealVariable(0.0,1.0)
+# Variable.6.Definition=RealVariable(0.0,1.0)
+# Variable.7.Definition=RealVariable(0.0,1.0)
+# Variable.8.Definition=RealVariable(0.0,1.0)
+# Variable.9.Definition=RealVariable(0.0,1.0)
+# Variable.10.Definition=RealVariable(0.0,1.0)
+# Variable.11.Definition=RealVariable(0.0,1.0)
+# Variable.12.Definition=RealVariable(0.0,1.0)
+# Variable.13.Definition=RealVariable(0.0,1.0)
+# Variable.14.Definition=RealVariable(0.0,1.0)
+# Variable.15.Definition=RealVariable(0.0,1.0)
+# Variable.16.Definition=RealVariable(0.0,1.0)
+# Variable.17.Definition=RealVariable(0.0,1.0)
+# Variable.18.Definition=RealVariable(0.0,1.0)
+# Variable.19.Definition=RealVariable(0.0,1.0)
+# Variable.20.Definition=RealVariable(0.0,1.0)
+# Variable.21.Definition=RealVariable(0.0,1.0)
+# Objective.1.Definition=Minimize
+# Objective.2.Definition=Minimize
+# ExcludeVariables=true
 0.16649852437610943 3.667003160310443
 0.022496129741634355 3.9727698724408245
 0.6974969078601313 3.1026725773856083
@@ -99,3 +128,4 @@
 0.7739345878136025 2.5702713840207734
 0.004326296188625927 3.9954973506378675
 0.2356911084414362 3.576756075394541
+#
