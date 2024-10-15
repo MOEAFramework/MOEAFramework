@@ -22,7 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
 
-import org.moeaframework.util.Concaterator;
+import org.moeaframework.util.Iterators;
 
 /**
  * Abstract factory for service providers.  This contains convenience methods for enumerating the providers using a
@@ -68,7 +68,7 @@ public class AbstractFactory<T> implements Iterable<T> {
 	 * @return the iterator of all registered providers
 	 */
 	public Iterator<T> iterator() {
-		return new Concaterator<T>(customProviders.iterator(), providers.iterator());
+		return Iterators.join(customProviders.iterator(), providers.iterator());
 	}
 	
 	/**

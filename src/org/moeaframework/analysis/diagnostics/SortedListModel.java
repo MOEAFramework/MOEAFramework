@@ -26,6 +26,9 @@ import java.util.TreeSet;
 import javax.swing.AbstractListModel;
 import javax.swing.ListModel;
 
+import org.moeaframework.util.Iterators;
+import org.moeaframework.util.Iterators.IndexedValue;
+
 /**
  * A sorted {@link ListModel} which stores only unique entries.
  *
@@ -97,14 +100,9 @@ public class SortedListModel<T extends Comparable<T>> extends AbstractListModel<
 	 * @return the index of the specified item in this list model
 	 */
 	public int getIndexOf(T item) {
-		Iterator<T> iterator = set.iterator();
-		int index = 0;
-		
-		while (iterator.hasNext()) {
-			if (iterator.next().equals(item)) {
-				return index;
-			} else {
-				index++;
+		for (IndexedValue<T> iv : Iterators.enumerate(set)) {
+			if (iv.getValue().equals(item)) {
+				return iv.getIndex();
 			}
 		}
 		
