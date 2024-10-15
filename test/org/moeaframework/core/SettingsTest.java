@@ -26,7 +26,6 @@ import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.population.NondominatedPopulation.DuplicateMode;
-import org.moeaframework.util.PropertyScope;
 
 /**
  * These tests ensure that valid default settings are provided and there are no errors parsing settings.

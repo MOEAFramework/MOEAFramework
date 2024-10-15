@@ -31,7 +31,6 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.configuration.ConfigurationException;
-import org.moeaframework.util.PropertyNotFoundException;
 
 public class TypedPropertiesTest {
 	

@@ -23,10 +23,10 @@ import java.io.IOException;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestResources;
+import org.moeaframework.core.PropertyScope;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProviderNotFoundException;
-import org.moeaframework.util.PropertyScope;
 
 public class PropertiesProblemsTest {
 	

@@ -37,7 +37,6 @@ import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.population.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
-import org.moeaframework.util.PropertyScope;
 
 /**
  * Global settings used by this framework.

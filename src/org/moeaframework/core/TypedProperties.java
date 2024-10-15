@@ -45,8 +45,6 @@ import org.apache.commons.text.translate.UnicodeEscaper;
 import org.apache.commons.text.translate.UnicodeUnescaper;
 import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.util.OptionCompleter;
-import org.moeaframework.util.PropertyNotFoundException;
-import org.moeaframework.util.PropertyScope;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;

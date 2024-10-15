@@ -22,7 +22,6 @@ import org.moeaframework.Assert;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
-import org.moeaframework.util.PropertyScope;
 
 public class DefaultEpsilonsTest {
 	

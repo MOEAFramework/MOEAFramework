@@ -15,9 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.util;
-
-import org.moeaframework.core.FrameworkException;
+package org.moeaframework.core;
 
 /**
  * Thrown when attempting to read a property and no default value was given.

@@ -15,13 +15,12 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.util;
+package org.moeaframework.core;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.core.TypedProperties;
 
 public class PropertyScopeTest {
 
