@@ -43,6 +43,32 @@ public class MinimizeTest {
 		Assert.assertNotEquals(expected, actual);
 	}
 	
+	@Test
+	public void testGetCanonicalValue() {
+		Assert.assertEquals(1.0, new Minimize(1.0).getCanonicalValue());
+		Assert.assertEquals(-1.0, new Minimize(-1.0).getCanonicalValue());
+	}
+	
+	@Test
+	public void testCompareTo() {
+		Assert.assertEquals(-1, new Minimize(1.0).compareTo(new Minimize(2.0)));
+		Assert.assertEquals(0, new Minimize(1.0).compareTo(new Minimize(1.0)));
+		Assert.assertEquals(1, new Minimize(2.0).compareTo(new Minimize(1.0)));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testCompareToDifferentType() {
+		Assert.assertEquals(-1, new Minimize(1.0).compareTo(new Maximize(2.0)));
+	}
+	
+	@Test
+	public void testNormalize() {
+		Assert.assertEquals(new NormalizedObjective(0.0), new Minimize(0.0).normalize(0.0, 1.0));
+		Assert.assertEquals(new NormalizedObjective(1.0), new Minimize(1.0).normalize(0.0, 1.0));
+		Assert.assertEquals(new NormalizedObjective(0.5), new Minimize(0.5).normalize(0.0, 1.0));
+		Assert.assertEquals(new NormalizedObjective(0.25), new Minimize(0.5).normalize(0.0, 2.0));
+	}
+	
 	// TODO: Fill in tests
 
 }

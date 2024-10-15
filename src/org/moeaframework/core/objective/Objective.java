@@ -25,11 +25,13 @@ import org.moeaframework.core.Copyable;
 /**
  * Defines an objective for optimization, including the value and the direction.
  * <p>
- * Each objective also defines a "canonical" value, which converts the objective value into a minimized form with the
- * ideal or target value of {@value Double#NEGATIVE_INFINITY}.  This is useful as many published codes are developed
- * for a single optimization direction, typically minimization, and can use the canonical value for consistency.
- * For example, the canonical value for a maximized objective could be the negated value, as minimizing the negated
- * value is equivalent to maximizing the original value.
+ * Always prefer using one of the methods, such as {@link #compareTo(Objective)}, for performing operations on
+ * objectives rather than using the value directly, as the methods accounts for the direction.
+ * <p>
+ * However, many published algorithms and codes assume an optimization direction, typically minimization.  In
+ * situations where the provided methods are not sufficient, a "canonical" value is also provided, which converts the
+ * objective value into its minimized form.  For example, the canonical value for a maximized objective is the negated
+ * value, as minimizing the negated value is equivalent to maximizing the original value.
  */
 public interface Objective extends Comparable<Objective>, Copyable<Objective>, Serializable, Constructable {
 
