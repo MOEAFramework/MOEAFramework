@@ -15,26 +15,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.examples.temp;
+package org.moeaframework.temp;
 
 import java.io.IOException;
 
 import org.moeaframework.Analyzer;
 import org.moeaframework.Executor;
 
-/**
- * In Example 2, we computed the hypervolume and generational distance for a single
- * run.  We can perform more extensive experiments comparing multiple algorithms
- * using multiple repetitions to statistically compare results.
- * 
- * Below, we use the Executor and Analyzer classes to help perform this analysis.
- * The Executor creates and runs each of the algorithms, possibly with multiple
- * repetitions (seeds).  The Analyzer collects the resulting Pareto fronts,
- * computes selected quality indicators, and displays the results.
- * 
- * In this example, we will compare NSGA-II, GDE3, and eMOEA on the UF1 test problem
- * using the Hypervolume indicator.
- */
 public class Comparison {
 
 	public static void main(String[] args) throws IOException {
@@ -46,23 +33,19 @@ public class Comparison {
 				"SMS-EMOA", "U-NSGA-III", "VEGA", "DifferentialEvolution", "EvolutionStrategy", "SimulatedAnnealing",
 				"RSO" };
 
-		// setup the Executor to run each test for 10,000 function evaluations
 		Executor executor = new Executor()
 				.withProblem(problem)
 				.withMaxEvaluations(maxEvaluations);
 
-		// setup the Analyzer to measure the hypervolume
 		Analyzer analyzer = new Analyzer()
 				.withProblem(problem)
 				.includeAdditiveEpsilonIndicator()
 				.showStatisticalSignificance();
 
-		// run each algorithm for 50 seeds
 		for (String algorithm : algorithms) {
 			analyzer.addAll(algorithm, executor.withAlgorithm(algorithm).runSeeds(seeds));
 		}
 
-		// display the results
 		analyzer.display();
 	}
 	

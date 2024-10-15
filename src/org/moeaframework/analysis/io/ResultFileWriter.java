@@ -69,12 +69,6 @@ public class ResultFileWriter implements OutputWriter {
 			"unsupported decision variable type, could cause unexpected behavior or data loss";
 
 	/**
-	 * The message displayed when excluding the decision variables when saving a result file.
-	 */
-	static final String NO_VARIABLES_WARNING =
-			"saving result file without variables, could cause unexpected behavior or data loss";
-
-	/**
 	 * Settings for this result file.
 	 */
 	private final ResultFileWriterSettings settings;
@@ -103,17 +97,12 @@ public class ResultFileWriter implements OutputWriter {
 	 * @param settings the settings to use when writing the result file
 	 * @throws IOException if an I/O error occurred
 	 */
-	@SuppressWarnings("resource")
 	public ResultFileWriter(Problem problem, File file, ResultFileWriterSettings settings) throws IOException {
 		super();
 		this.settings = settings;
 		
 		errorHandler = new ErrorHandler();
 		errorHandler.setSuppressDuplicates(true);
-		
-		if (!settings.isIncludeVariables()) {
-			System.err.println(NO_VARIABLES_WARNING);
-		}
 
 		if (file.exists() && settings.isAppend()) {
 			// when appending to an existing file, first copy out all valid entries
@@ -373,8 +362,8 @@ public class ResultFileWriter implements OutputWriter {
 		/**
 		 * {@code true} to enable writing all decision variables; {@code false} otherwise.
 		 */
-		protected final boolean includeVariables;
-		
+		private final boolean includeVariables;
+				
 		/**
 		 * Constructs the default settings object.
 		 */

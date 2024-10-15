@@ -35,6 +35,7 @@ public class MiscProblemProvider extends RegisteredProblemProvider {
 		register("Binh", () -> new Binh(), "pf/Binh.pf");
 		register("Binh2", () -> new Binh2(), "pf/Binh2.pf");
 		register("Binh3", () -> new Binh3(), "pf/Binh3.pf");
+		register("Binh4", () -> new Binh3(), "pf/Binh4.pf");
 		register("Fonseca", () -> new Fonseca(), "pf/Fonseca.pf");
 		register("Fonseca2", () -> new Fonseca2(), "pf/Fonseca2.pf");
 		register("Jimenez", () -> new Jimenez(), "pf/Jimenez.pf");
