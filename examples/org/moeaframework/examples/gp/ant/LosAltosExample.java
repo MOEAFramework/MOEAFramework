@@ -21,8 +21,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.moeaframework.Executor;
-import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.algorithm.single.GeneticAlgorithm;
+import org.moeaframework.core.Solution;
 import org.moeaframework.util.io.Resources;
 import org.moeaframework.util.io.Resources.ResourceOption;
 
@@ -31,13 +31,6 @@ import org.moeaframework.util.io.Resources.ResourceOption;
  */
 public class LosAltosExample {
 	
-	/**
-	 * Starts the example running the ant trail problem.
-	 * 
-	 * @param args the command line arguments
-	 * @throws FileNotFoundException if the ant trail file could not be found
-	 * @throws IOException if an I/O error occurred
-	 */
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		int maxMoves = 500;
 		
@@ -46,15 +39,13 @@ public class LosAltosExample {
 		
 		try (AntProblem problem = new AntProblem(input, maxMoves)) {
 			// solve the ant trail instance
-			NondominatedPopulation results = new Executor()
-					.withProblem(problem)
-					.withAlgorithm("GA")
-					.withProperty("populationSize", 500)
-					.withMaxEvaluations(500000)
-					.run();
+			GeneticAlgorithm algorithm = new GeneticAlgorithm(problem);
+			algorithm.setInitialPopulationSize(500);
+			algorithm.run(500000);
 				
 			// display the result
-			problem.evaluate(results.get(0));
+			Solution solution = algorithm.getResult().get(0);
+			problem.evaluate(solution);
 			problem.displayLastEvaluation();
 		}
 	}

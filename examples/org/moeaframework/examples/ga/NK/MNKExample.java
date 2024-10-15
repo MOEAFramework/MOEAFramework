@@ -17,8 +17,7 @@
  */
 package org.moeaframework.examples.ga.NK;
 
-import org.moeaframework.Executor;
-import org.moeaframework.core.Solution;
+import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.comparator.LexicographicalComparator;
 import org.moeaframework.core.population.NondominatedPopulation;
 
@@ -29,21 +28,14 @@ import org.moeaframework.core.population.NondominatedPopulation;
 public class MNKExample {
 	
 	public static void main(String[] args) {
-		// solve the NK-landscape problem
-		NondominatedPopulation result = new Executor()
-				.withProblemClass(MNKProblem.class, 20, 4)
-				.withAlgorithm("NSGAII")
-				.withMaxEvaluations(100000)
-				.run();
-
-		// sort the results so the solutions appear in order
-		result.sort(new LexicographicalComparator());
+		MNKProblem problem = new MNKProblem(20, 4);
 		
-		// print the bit string and the objective value
-		for (Solution solution : result) {
-			System.out.println(solution.getVariable(0) + " " + 
-					solution.getObjectiveValue(0));
-		}
+		NSGAII algorithm = new NSGAII(problem);
+		algorithm.run(100000);
+		
+		NondominatedPopulation result = algorithm.getResult();
+		result.sort(new LexicographicalComparator());
+		result.display();
 	}
 
 }

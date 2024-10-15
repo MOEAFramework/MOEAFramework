@@ -20,9 +20,7 @@ package org.moeaframework.examples.ga.knapsack;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.moeaframework.Executor;
-import org.moeaframework.core.Solution;
-import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.util.io.Resources;
 import org.moeaframework.util.io.Resources.ResourceOption;
 
@@ -32,34 +30,14 @@ import org.moeaframework.util.io.Resources.ResourceOption;
  */
 public class KnapsackSubsetExample {
 
-	/**
-	 * Starts the example running the knapsack problem.
-	 * 
-	 * @param args the command line arguments
-	 * @throws IOException if an I/O error occurred
-	 */
 	public static void main(String[] args) throws IOException {
-		// open the file containing the knapsack problem instance
-		InputStream input = Resources.asStream(KnapsackSubset.class,
-				"knapsack.100.2", ResourceOption.REQUIRED);
-
-		// solve using NSGA-II
-		NondominatedPopulation result = new Executor()
-				.withProblemClass(KnapsackSubset.class, input)
-				.withAlgorithm("NSGAII")
-				.withMaxEvaluations(50000)
-				.distributeOnAllCores()
-				.run();
-
-		// print the results
-		for (int i = 0; i < result.size(); i++) {
-			Solution solution = result.get(i);
-			double[] objectives = solution.getObjectiveValues();
-					
-			System.out.println("Solution " + (i+1) + ":");
-			System.out.println("    Sack 1 Profit:  " + objectives[0]);
-			System.out.println("    Sack 2 Profit:  " + objectives[1]);
-			System.out.println("    Selected items: " + solution.getVariable(0));
+		try (InputStream input = Resources.asStream(KnapsackSubset.class,
+				"knapsack.100.2", ResourceOption.REQUIRED)) {
+			KnapsackSubset problem = new KnapsackSubset(input);
+			
+			NSGAII algorithm = new NSGAII(problem);
+			algorithm.run(50000);
+			algorithm.getResult().display();
 		}
 	}
 

@@ -31,11 +31,6 @@ import org.apache.commons.math3.analysis.UnivariateFunction;
  */
 public class QuinticExample implements UnivariateFunction {
 	
-	/**
-	 * Runs the Quintic demo problem.
-	 * 
-	 * @param args the command line arguments
-	 */
 	public static void main(String[] args) {
 		SymbolicRegressionGUI.runDemo(new SymbolicRegression(
 				new QuinticExample(), -1.0, 1.0, 100));

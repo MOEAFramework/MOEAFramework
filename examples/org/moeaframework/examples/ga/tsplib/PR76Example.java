@@ -29,12 +29,6 @@ import org.moeaframework.util.io.Resources.ResourceOption;
  */
 public class PR76Example {
 
-	/**
-	 * Starts the example running the TSP problem.
-	 * 
-	 * @param args the command line arguments
-	 * @throws IOException if an I/O error occurred
-	 */
 	public static void main(String[] args) throws IOException {
 		try (InputStream input = Resources.asStream(PR76Example.class,
 				"pr76.tsp", ResourceOption.REQUIRED)) {

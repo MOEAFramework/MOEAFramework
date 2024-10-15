@@ -17,8 +17,7 @@
  */
 package org.moeaframework.examples.ga.LOTZ;
 
-import org.moeaframework.Executor;
-import org.moeaframework.core.Solution;
+import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.comparator.LexicographicalComparator;
 import org.moeaframework.core.population.NondominatedPopulation;
 
@@ -39,21 +38,14 @@ public class LOTZExample {
 
 	public static void main(String[] args) {
 		// solve the LOTZ problem with 10 bits
-		NondominatedPopulation result = new Executor()
-				.withProblemClass(LOTZ.class, 10)
-				.withAlgorithm("NSGAII")
-				.withMaxEvaluations(10000)
-				.run();
-
-		// sort the results so the solutions appear in order
-		result.sort(new LexicographicalComparator());
+		LOTZ problem = new LOTZ(10);
 		
-		// print the bit string and the objective values
-		for (Solution solution : result) {
-			System.out.println(solution.getVariable(0) + " " + 
-					solution.getObjective(0) + " " + 
-					solution.getObjective(1));
-		}
+		NSGAII algorithm = new NSGAII(problem);
+		algorithm.run(10000);
+		
+		NondominatedPopulation result = algorithm.getResult();
+		result.sort(new LexicographicalComparator());
+		result.display();
 	}
 
 }
