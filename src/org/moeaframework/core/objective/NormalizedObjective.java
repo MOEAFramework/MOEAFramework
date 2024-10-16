@@ -21,13 +21,18 @@ public class NormalizedObjective extends Minimize {
 	
 	private static final long serialVersionUID = 1030777861399215909L;
 	
-	public NormalizedObjective(double value) {
-		super(value);
+	public NormalizedObjective(String name) {
+		super(name);
+	}
+	
+	public NormalizedObjective(String name, double value) {
+		super(name);
+		this.value = value;
 	}
 
 	@Override
 	public NormalizedObjective copy() {
-		return new NormalizedObjective(getValue());
+		return new NormalizedObjective(name, value);
 	}
 	
 	@Override

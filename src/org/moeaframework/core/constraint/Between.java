@@ -32,6 +32,14 @@ public class Between extends BoundedConstraint {
 		super(lower, upper, epsilon);
 	}
 	
+	public Between(String name, double lower, double upper) {
+		super(name, lower, upper);
+	}
+	
+	public Between(String name, double lower, double upper, double epsilon) {
+		super(name, lower, upper, epsilon);
+	}
+	
 	public Between(Between copy) {
 		super(copy);
 	}
@@ -66,6 +74,14 @@ public class Between extends BoundedConstraint {
 	
 	public static Between values(double lower, double upper, double epsilon) {
 		return new Between(lower, upper, epsilon);
+	}
+	
+	public static Between values(String name, double lower, double upper) {
+		return new Between(name, lower, upper);
+	}
+	
+	public static Between values(String name, double lower, double upper, double epsilon) {
+		return new Between(name, lower, upper, epsilon);
 	}
 
 }

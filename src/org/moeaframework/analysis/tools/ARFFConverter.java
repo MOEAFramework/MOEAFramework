@@ -30,10 +30,12 @@ import org.apache.commons.cli.Options;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.core.variable.Variable;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.CommandLineUtility;
 
@@ -99,6 +101,8 @@ public class ARFFConverter extends CommandLineUtility {
 			numberOfVariables = 0;
 		}
 		
+		Solution prototype = problem.newSolution();
+		
 		writer.println("% Title: MOEA Framework Data Set");
 		writer.println("% Date: " + new Date());
 		writer.print("@RELATION \"");
@@ -107,8 +111,8 @@ public class ARFFConverter extends CommandLineUtility {
 		
 		if (attributes.size() == numberOfObjectives) {
 			for (int i = 0; i < numberOfVariables; i++) {
-				writer.print("@ATTRIBUTE Var");
-				writer.print(i+1);
+				writer.print("@ATTRIBUTE ");
+				writer.print(Variable.getNameOrDefault(prototype.getVariable(i), i));
 				writer.println(" NUMERIC");
 			}
 			
@@ -129,14 +133,14 @@ public class ARFFConverter extends CommandLineUtility {
 			}
 			
 			for (int i = 0; i < numberOfVariables; i++) {
-				writer.print("@ATTRIBUTE Var");
-				writer.print(i+1);
+				writer.print("@ATTRIBUTE ");
+				writer.print(Variable.getNameOrDefault(prototype.getVariable(i), i));
 				writer.println(" NUMERIC");
 			}
 			
 			for (int i = 0; i < numberOfObjectives; i++) {
-				writer.print("@ATTRIBUTE Obj");
-				writer.print(i+1);
+				writer.print("@ATTRIBUTE ");
+				writer.print(Objective.getNameOrDefault(prototype.getObjective(i), i));
 				writer.println(" NUMERIC");
 			}
 		}

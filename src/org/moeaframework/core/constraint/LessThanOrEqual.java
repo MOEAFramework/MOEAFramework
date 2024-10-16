@@ -32,6 +32,14 @@ public class LessThanOrEqual extends ThresholdConstraint {
 		super(threshold, epsilon);
 	}
 	
+	public LessThanOrEqual(String name, double threshold) {
+		super(name, threshold);
+	}
+	
+	public LessThanOrEqual(String name, double threshold, double epsilon) {
+		super(name, threshold, epsilon);
+	}
+	
 	public LessThanOrEqual(LessThanOrEqual copy) {
 		super(copy);
 	}
@@ -57,6 +65,14 @@ public class LessThanOrEqual extends ThresholdConstraint {
 	
 	public static LessThanOrEqual to(double threshold, double epsilon) {
 		return new LessThanOrEqual(threshold, epsilon);
+	}
+	
+	public static LessThanOrEqual to(String name, double threshold) {
+		return new LessThanOrEqual(name, threshold);
+	}
+	
+	public static LessThanOrEqual to(String name, double threshold, double epsilon) {
+		return new LessThanOrEqual(name, threshold, epsilon);
 	}
 
 }

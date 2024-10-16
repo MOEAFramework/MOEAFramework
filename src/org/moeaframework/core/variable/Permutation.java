@@ -28,7 +28,7 @@ import org.moeaframework.util.validate.Validate;
 /**
  * Decision variable for permutations.
  */
-public class Permutation implements Variable {
+public class Permutation extends AbstractVariable {
 
 	private static final long serialVersionUID = 5690584295426235286L;
 
@@ -195,6 +195,7 @@ public class Permutation implements Variable {
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
+				.appendSuper(super.hashCode())
 				.append(permutation)
 				.toHashCode();
 	}
@@ -209,6 +210,7 @@ public class Permutation implements Variable {
 			Permutation rhs = (Permutation)obj;
 			
 			return new EqualsBuilder()
+					.appendSuper(super.equals(obj))
 					.append(permutation, rhs.permutation)
 					.isEquals();
 		}

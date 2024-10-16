@@ -166,6 +166,11 @@ public class ProblemStub extends AbstractProblem {
 		public String getDefinition() {
 			throw new ProblemStubException();
 		}
+
+		@Override
+		public String getName() {
+			return null;
+		}
 		
 	}
 	

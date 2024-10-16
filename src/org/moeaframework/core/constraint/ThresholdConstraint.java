@@ -40,7 +40,7 @@ public abstract class ThresholdConstraint extends AbstractConstraint {
 	 * @param threhsold the threshold value
 	 */
 	public ThresholdConstraint(double threhsold) {
-		this(threhsold, Settings.EPS);
+		this(null, threhsold);
 	}
 	
 	/**
@@ -50,7 +50,28 @@ public abstract class ThresholdConstraint extends AbstractConstraint {
 	 * @param epsilon the epsilon value
 	 */
 	public ThresholdConstraint(double threshold, double epsilon) {
-		super();
+		this(null, threshold, epsilon);
+	}
+	
+	/**
+	 * Constructs a new threshold constraint.
+	 * 
+	 * @param name the name
+	 * @param threhsold the threshold value
+	 */
+	public ThresholdConstraint(String name, double threhsold) {
+		this(name, threhsold, Settings.EPS);
+	}
+	
+	/**
+	 * Constructs a new threshold constraint.
+	 * 
+	 * @param name the name
+	 * @param threshold the threshold value
+	 * @param epsilon the epsilon value
+	 */
+	public ThresholdConstraint(String name, double threshold, double epsilon) {
+		super(name);
 		this.threshold = threshold;
 		this.epsilon = epsilon;
 	}
@@ -61,7 +82,7 @@ public abstract class ThresholdConstraint extends AbstractConstraint {
 	 * @param copy the copy
 	 */
 	public ThresholdConstraint(ThresholdConstraint copy) {
-		this(copy.threshold, copy.epsilon);
+		this(copy.name, copy.threshold, copy.epsilon);
 		this.value = copy.value;
 	}
 	
@@ -85,7 +106,11 @@ public abstract class ThresholdConstraint extends AbstractConstraint {
 	
 	@Override
 	public String getDefinition() {
-		return Constructable.createDefinition(Constraint.class, getClass(), threshold, epsilon);
+		if (name == null) {
+			return Constructable.createDefinition(Constraint.class, getClass(), threshold, epsilon);
+		} else {
+			return Constructable.createDefinition(Constraint.class, getClass(), name, threshold, epsilon);
+		}
 	}
 	
 	@Override

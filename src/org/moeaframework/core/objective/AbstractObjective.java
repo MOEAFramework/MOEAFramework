@@ -25,15 +25,23 @@ public abstract class AbstractObjective implements Objective {
 	
 	private static final long serialVersionUID = 8819865234325786924L;
 	
+	protected final String name;
+	
 	protected double value;
 	
 	public AbstractObjective() {
-		this(Double.NaN);
+		this(null);
 	}
 	
-	protected AbstractObjective(double value) {
+	protected AbstractObjective(String name) {
 		super();
-		this.value = value;
+		this.name = name;
+		this.value = Double.NaN;
+	}
+	
+	@Override
+	public String getName() {
+		return name;
 	}
 	
 	@Override
@@ -46,9 +54,18 @@ public abstract class AbstractObjective implements Objective {
 		return value;
 	}
 	
+	public Objective withValue(double value) {
+		setValue(value);
+		return this;
+	}
+	
 	@Override
 	public String getDefinition() {
-		return Constructable.createDefinition(Objective.class, getClass());
+		if (name == null) {
+			return Constructable.createDefinition(Objective.class, getClass());
+		} else {
+			return Constructable.createDefinition(Objective.class, getClass(), name);
+		}
 	}
 	
 	@Override
@@ -59,6 +76,7 @@ public abstract class AbstractObjective implements Objective {
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
+				.append(name)
 				.append(value)
 				.toHashCode();
 	}
@@ -73,6 +91,7 @@ public abstract class AbstractObjective implements Objective {
 			AbstractObjective rhs = (AbstractObjective)obj;
 			
 			return new EqualsBuilder()
+					.append(name, rhs.name)
 					.append(value, rhs.value)
 					.isEquals();
 		}

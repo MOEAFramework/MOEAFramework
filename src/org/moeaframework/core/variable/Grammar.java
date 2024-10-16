@@ -31,7 +31,7 @@ import org.moeaframework.util.validate.Validate;
  * 
  * @see ContextFreeGrammar
  */
-public class Grammar implements Variable {
+public class Grammar extends AbstractVariable {
 
 	private static final long serialVersionUID = 1701058698946283174L;
 
@@ -221,7 +221,10 @@ public class Grammar implements Variable {
 	
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(codon).toHashCode();
+		return new HashCodeBuilder()
+				.appendSuper(super.hashCode())
+				.append(codon)
+				.toHashCode();
 	}
 
 	@Override
@@ -233,7 +236,10 @@ public class Grammar implements Variable {
 		} else {
 			Grammar rhs = (Grammar)obj;
 			
-			return new EqualsBuilder().append(codon, rhs.codon).isEquals();
+			return new EqualsBuilder()
+					.appendSuper(super.equals(obj))
+					.append(codon, rhs.codon)
+					.isEquals();
 		}
 	}
 

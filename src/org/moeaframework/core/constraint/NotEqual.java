@@ -32,6 +32,14 @@ public class NotEqual extends ThresholdConstraint {
 		super(threshold, epsilon);
 	}
 	
+	public NotEqual(String name, double threshold) {
+		super(threshold);
+	}
+	
+	public NotEqual(String name, double threshold, double epsilon) {
+		super(threshold, epsilon);
+	}
+	
 	public NotEqual(NotEqual copy) {
 		super(copy);
 	}
@@ -56,6 +64,14 @@ public class NotEqual extends ThresholdConstraint {
 	}
 	
 	public static NotEqual to(double threshold, double epsilon) {
+		return new NotEqual(threshold, epsilon);
+	}
+	
+	public static NotEqual to(String name, double threshold) {
+		return new NotEqual(threshold);
+	}
+	
+	public static NotEqual to(String name, double threshold, double epsilon) {
 		return new NotEqual(threshold, epsilon);
 	}
 

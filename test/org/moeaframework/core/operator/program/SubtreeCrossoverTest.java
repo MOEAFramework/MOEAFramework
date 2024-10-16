@@ -37,21 +37,21 @@ public class SubtreeCrossoverTest extends AbstractProgramOperatorTest<SubtreeCro
 		
 		for (int i = 0; i < 100; i++) {
 			Program program1 = createTestVariable();
-			program1.setArgument(0, program1.getRules().buildTreeFull(Number.class, 4));
+			program1.setBody(program1.getRules().buildTreeFull(Number.class, 4));
 			
 			Program program2 = createTestVariable();
-			program2.setArgument(0, program2.getRules().buildTreeFull(Number.class, 4));
+			program2.setBody(program2.getRules().buildTreeFull(Number.class, 4));
 			
-			int fixedArgument = PRNG.nextInt(program1.getNumberOfArguments());
-			program1.setFixed(true);
-			program1.getArgument(fixedArgument).setFixed(true);
+			int fixedArgument = PRNG.nextInt(program1.getBody().getNumberOfArguments());
+			program1.getBody().setFixed(true);
+			program1.getBody().getArgument(fixedArgument).setFixed(true);
 
-			Assert.assertTrue(program1.isValid());
-			Assert.assertEquals(5, program1.getMinimumHeight());
-			Assert.assertEquals(5, program1.getMaximumHeight());
-			Assert.assertTrue(program2.isValid());
-			Assert.assertEquals(5, program2.getMinimumHeight());
-			Assert.assertEquals(5, program2.getMaximumHeight());
+			Assert.assertTrue(program1.getBody().isValid());
+			Assert.assertEquals(4, program1.getBody().getMinimumHeight());
+			Assert.assertEquals(4, program1.getBody().getMaximumHeight());
+			Assert.assertTrue(program2.getBody().isValid());
+			Assert.assertEquals(4, program2.getBody().getMinimumHeight());
+			Assert.assertEquals(4, program2.getBody().getMaximumHeight());
 			
 			Solution solution1 = new Solution(1, 1);
 			solution1.setVariable(0, program1);
@@ -64,10 +64,10 @@ public class SubtreeCrossoverTest extends AbstractProgramOperatorTest<SubtreeCro
 			
 			Program result = (Program)offspring[0].getVariable(0);
 			
-			Assert.assertTrue(result.isValid());
-			Assert.assertLessThanOrEqual(result.getMaximumHeight(), 5);
-			Assert.assertEquals(program1.getArgument(fixedArgument).getClass(),
-					result.getArgument(fixedArgument).getClass());
+			Assert.assertTrue(result.getBody().isValid());
+			Assert.assertLessThanOrEqual(result.getBody().getMaximumHeight(), 5);
+			Assert.assertEquals(program1.getBody().getArgument(fixedArgument).getClass(),
+					result.getBody().getArgument(fixedArgument).getClass());
 		}
 	}
 

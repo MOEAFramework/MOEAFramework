@@ -75,3 +75,7 @@ places the interface, abstract classes, and implementations all in the same pack
 `NondominatedPopulation`, and all related population and archive classes can be found in the new
 `org.moeaframework.core.population` package.
 
+## Miscellaneous Changes
+
+* Genetic programming's `Problem` class hierarchy changed.  Previously, the `Program` object served as the root node
+  in the program tree.  Now, the root node is accessed by calling `getRoot()` or `setRoot(...)`.

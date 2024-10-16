@@ -20,12 +20,19 @@ package org.moeaframework.core;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Parameter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.reflect.ConstructorUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.text.StringTokenizer;
+import org.moeaframework.util.Iterators;
 
 /**
  * Interface for objects that can be constructed from a string representation.  The string representation mimics a Java
@@ -190,7 +197,7 @@ public interface Constructable {
 		try {
 			Class<?> definitionClass = Class.forName(definition);
 
-			outer: for (Constructor<?> constructor : definitionClass.getConstructors()) {
+			outer: for (Constructor<?> constructor : getOrderedConstructors(definitionClass)) {
 				if (constructor.getParameterCount() != arguments.length) {
 					continue;
 				}
@@ -226,6 +233,63 @@ public interface Constructable {
 		
 		throw new FrameworkException("unable to create " + definition + ", no constructor found matching arguments " +
 				Arrays.toString(arguments));
+	}
+	
+	private static List<Constructor<?>> getOrderedConstructors(Class<?> type) {
+		List<Constructor<?>> result = new ArrayList<Constructor<?>>();
+		
+		for (Constructor<?> constructor : type.getConstructors()) {
+			result.add(constructor);
+		}
+		
+		result.sort(new ConstructorComparator());
+		
+		return result;
+	}
+	
+	static class ConstructorComparator implements Comparator<Constructor<?>> {
+		
+		private static final Map<Class<?>, Integer> ORDER;
+		
+		private static final int LOWEST_ORDER = 999;
+		
+		static {
+			ORDER = new HashMap<Class<?>, Integer>();
+			ORDER.put(byte.class, 0);
+			ORDER.put(Byte.class, 0);
+			ORDER.put(char.class, 1);
+			ORDER.put(Character.class, 1);
+			ORDER.put(short.class, 2);
+			ORDER.put(Short.class, 2);
+			ORDER.put(int.class, 3);
+			ORDER.put(Integer.class, 3);
+			ORDER.put(long.class, 4);
+			ORDER.put(Long.class, 4);
+			ORDER.put(float.class, 5);
+			ORDER.put(Float.class, 5);
+			ORDER.put(double.class, 6);
+			ORDER.put(Double.class, 6);
+			ORDER.put(String.class, 7);
+			ORDER.put(Object.class, LOWEST_ORDER);
+		}
+
+		@Override
+		public int compare(Constructor<?> c1, Constructor<?> c2) {
+			if (c1.getParameterCount() != c2.getParameterCount()) {
+				return Integer.compare(c1.getParameterCount(), c2.getParameterCount());
+			}
+			
+			for (Pair<Parameter, Parameter> pair : Iterators.zip(c1.getParameters(), c2.getParameters())) {
+				if (pair.getLeft().getType() != pair.getRight().getType()) {
+					return Integer.compare(
+							ORDER.getOrDefault(pair.getLeft().getType(), LOWEST_ORDER),
+							ORDER.getOrDefault(pair.getRight().getType(), LOWEST_ORDER));
+				}
+			}
+			
+			return 0;
+		}
+		
 	}
 
 }

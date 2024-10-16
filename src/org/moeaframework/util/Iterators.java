@@ -22,6 +22,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 /**
  * Collection of static methods for dealing with {@link Iterable}s and {@link Iterator}s.
  */
@@ -87,6 +89,18 @@ public class Iterators {
 	 */
 	public static <T> Iterable<IndexedValue<T>> enumerate(Iterable<T> iterable) {
 		return new IndexedIterable<T>(iterable);
+	}
+	
+	public static <T> Iterator<Pair<T, T>> zip(Iterator<T> iterator1, Iterator<T> iterator2) {
+		return new ZipIterator<T>(iterator1, iterator2);
+	}
+	
+	public static <T> Iterable<Pair<T, T>> zip(Iterable<T> iterable1, Iterable<T> iterable2) {
+		return new ZipIterable<T>(iterable1, iterable2);
+	}
+	
+	public static <T> Iterable<Pair<T, T>> zip(T[] array1, T[] array2) {
+		return zip(List.of(array1), List.of(array2));
 	}
 	
 	/**
@@ -244,6 +258,55 @@ public class Iterators {
 		@Override
 		public void remove() {
 			iterator.remove();
+		}
+		
+	}
+	
+	private static class ZipIterable<T> implements Iterable<Pair<T, T>> {
+		
+		private final Iterable<T> iterable1;
+		
+		private final Iterable<T> iterable2;
+		
+		public ZipIterable(Iterable<T> iterable1, Iterable<T> iterable2) {
+			super();
+			this.iterable1 = iterable1;
+			this.iterable2 = iterable2;
+		}
+
+		@Override
+		public Iterator<Pair<T, T>> iterator() {
+			return new ZipIterator<T>(iterable1.iterator(), iterable2.iterator());
+		}
+		
+	}
+	
+	private static class ZipIterator<T> implements Iterator<Pair<T, T>> {
+		
+		private final Iterator<T> iterator1;
+		
+		private final Iterator<T> iterator2;
+				
+		public ZipIterator(Iterator<T> iterator1, Iterator<T> iterator2) {
+			super();
+			this.iterator1 = iterator1;
+			this.iterator2 = iterator2;
+		}
+
+		@Override
+		public boolean hasNext() {
+			return iterator1.hasNext() && iterator2.hasNext();
+		}
+
+		@Override
+		public Pair<T, T> next() {
+			return Pair.of(iterator1.next(), iterator2.next());
+		}
+
+		@Override
+		public void remove() {
+			iterator1.remove();
+			iterator2.remove();
 		}
 		
 	}

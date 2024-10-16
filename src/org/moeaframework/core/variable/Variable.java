@@ -21,13 +21,14 @@ import java.io.Serializable;
 
 import org.moeaframework.core.Constructable;
 import org.moeaframework.core.Copyable;
+import org.moeaframework.core.Named;
 
 /**
  * Interface for decision variables. This interface ensures independent copies of decision variables can be
  * constructed.  Implementations are strongly encouraged to also override {@link Object#equals(Object)} and
  * {@link Object#hashCode()}.
  */
-public interface Variable extends Copyable<Variable>, Serializable, Constructable {
+public interface Variable extends Copyable<Variable>, Serializable, Constructable, Named {
 	
 	/**
 	 * Randomly assign the value of this variable.  In general, the randomization should follow a uniform distribution.
@@ -68,5 +69,9 @@ public interface Variable extends Copyable<Variable>, Serializable, Constructabl
 	 * @param value the value as a string
 	 */
 	public void decode(String value);
+	
+	public static String getNameOrDefault(Variable variable, int index) {
+		return variable.getName() == null ? "Var" + (index + 1) : variable.getName();
+	}
 
 }

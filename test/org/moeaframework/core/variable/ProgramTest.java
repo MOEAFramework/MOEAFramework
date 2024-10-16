@@ -63,9 +63,9 @@ public class ProgramTest {
 	public void testCopy() {
 		Program copy = program.copy();
 		Assert.assertNotSame(copy, program);
-		Assert.assertNotSame(copy.getArgument(0), program.getArgument(0));
-		Assert.assertEquals(copy.getNumberOfArguments(), program.getNumberOfArguments());
-		Assert.assertEquals(copy.getArgument(0).toString(), program.getArgument(0).toString());
+		Assert.assertNotSame(copy.getBody(), program.getBody());
+		Assert.assertEquals(copy.getBody().getNumberOfArguments(), program.getBody().getNumberOfArguments());
+		Assert.assertEquals(copy.getBody().toString(), program.getBody().toString());
 	}
 	
 	@Test
@@ -75,8 +75,8 @@ public class ProgramTest {
 		Program copy = program.copy();
 		copy.decode(encoding);
 		
-		Assert.assertEquals(copy.getNumberOfArguments(), program.getNumberOfArguments());
-		Assert.assertEquals(copy.getArgument(0).toString(), program.getArgument(0).toString());
+		Assert.assertEquals(copy.getBody().getNumberOfArguments(), program.getBody().getNumberOfArguments());
+		Assert.assertEquals(copy.getBody().toString(), program.getBody().toString());
 	}
 	
 	@Test
@@ -87,8 +87,8 @@ public class ProgramTest {
 		Program copy = program.copy();
 		copy.decode(encoding);
 		
-		Assert.assertEquals(copy.getNumberOfArguments(), program.getNumberOfArguments());
-		Assert.assertEquals(copy.getArgument(0).toString(), program.getArgument(0).toString());
+		Assert.assertEquals(copy.getRoot().getNumberOfArguments(), program.getRoot().getNumberOfArguments());
+		Assert.assertEquals(copy.getRoot().toString(), program.getRoot().toString());
 	}
 	
 	private Object testEvaluate(Program program, boolean allowNull) {

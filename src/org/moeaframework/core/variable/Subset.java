@@ -34,7 +34,7 @@ import org.moeaframework.util.validate.Validate;
  * or variable-length, which can contain between {@code l} and {@code u} elements.  Furthermore, the values stored in
  * a subset can range from {@code 0} to {@code n}, where {@code n >= k, u}.
  */
-public class Subset implements Variable {
+public class Subset extends AbstractVariable {
 
 	private static final long serialVersionUID = -4491760813656852414L;
 
@@ -236,6 +236,7 @@ public class Subset implements Variable {
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
+				.appendSuper(super.hashCode())
 				.append(n)
 				.append(members)
 				.toHashCode();
@@ -251,6 +252,7 @@ public class Subset implements Variable {
 			Subset rhs = (Subset)obj;
 
 			return new EqualsBuilder()
+					.appendSuper(super.equals(obj))
 					.append(n, rhs.n)
 					.append(members, rhs.members)
 					.isEquals();

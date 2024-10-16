@@ -457,17 +457,23 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, Co
 			
 			for (int i = 0; i < solution.getNumberOfVariables(); i++) {
 				final int index = i;
-				data.addColumn(new Column<Solution, Variable>("Var" + (index+1), s -> s.getVariable(index)));
+				data.addColumn(new Column<Solution, Variable>(
+						Variable.getNameOrDefault(solution.getVariable(index), index),
+						s -> s.getVariable(index)));
 			}
 			
 			for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
 				final int index = i;
-				data.addColumn(new Column<Solution, Objective>("Obj" + (index+1), s -> s.getObjective(index)));
+				data.addColumn(new Column<Solution, Objective>(
+						Objective.getNameOrDefault(solution.getObjective(index), index),
+						s -> s.getObjective(index)));
 			}
 			
 			for (int i = 0; i < solution.getNumberOfConstraints(); i++) {
 				final int index = i;
-				data.addColumn(new Column<Solution, Constraint>("Constr" + (index+1), s -> s.getConstraint(index)));
+				data.addColumn(new Column<Solution, Constraint>(
+						Constraint.getNameOrDefault(solution.getConstraint(index), index),
+						s -> s.getConstraint(index)));
 			}
 		}
 		

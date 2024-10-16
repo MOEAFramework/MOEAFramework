@@ -32,6 +32,14 @@ public class Outside extends BoundedConstraint {
 		super(lower, upper, epsilon);
 	}
 	
+	public Outside(String name, double lower, double upper) {
+		super(name, lower, upper);
+	}
+	
+	public Outside(String name, double lower, double upper, double epsilon) {
+		super(name, lower, upper, epsilon);
+	}
+	
 	public Outside(Outside copy) {
 		super(copy);
 	}
@@ -71,6 +79,14 @@ public class Outside extends BoundedConstraint {
 	
 	public static Outside values(double lower, double upper, double epsilon) {
 		return new Outside(lower, upper, epsilon);
+	}
+	
+	public static Outside values(String name, double lower, double upper) {
+		return new Outside(name, lower, upper);
+	}
+	
+	public static Outside values(String name, double lower, double upper, double epsilon) {
+		return new Outside(name, lower, upper, epsilon);
 	}
 
 }

@@ -20,6 +20,7 @@ package org.moeaframework.util;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.util.Iterators.IndexedValue;
@@ -99,6 +100,31 @@ public class IteratorsTest {
 		IndexedValue<String> second = it.next();
 		Assert.assertEquals(1, second.getIndex());
 		Assert.assertEquals("second", second.getValue());
+		
+		Assert.assertFalse(it.hasNext());
+		Assert.assertThrows(NoSuchElementException.class, () -> it.next());
+	}
+	
+	@Test
+	public void testEmptyZip() {
+		Iterator<Pair<String, String>> it = Iterators.zip(Iterators.of(), Iterators.of());
+		Assert.assertFalse(it.hasNext());
+		Assert.assertThrows(NoSuchElementException.class, () -> it.next());
+	}
+	
+	@Test
+	public void testZip() {
+		Iterator<Pair<String, String>> it = Iterators.zip(Iterators.of("foo", "hello"), Iterators.of("bar", "world"));
+		
+		Assert.assertTrue(it.hasNext());
+		Pair<String, String> first = it.next();
+		Assert.assertEquals("foo", first.getKey());
+		Assert.assertEquals("bar", first.getValue());
+		
+		Assert.assertTrue(it.hasNext());
+		Pair<String, String> second = it.next();
+		Assert.assertEquals("hello", second.getKey());
+		Assert.assertEquals("world", second.getValue());
 		
 		Assert.assertFalse(it.hasNext());
 		Assert.assertThrows(NoSuchElementException.class, () -> it.next());

@@ -25,8 +25,8 @@ public class Minimize extends AbstractObjective {
 		super();
 	}
 	
-	public Minimize(double value) {
-		super(value);
+	public Minimize(String name) {
+		super(name);
 	}
 	
 	@Override
@@ -41,12 +41,14 @@ public class Minimize extends AbstractObjective {
 
 	@Override
 	public Minimize copy() {
-		return new Minimize(getValue());
+		Minimize copy = new Minimize(name);
+		copy.value = value;
+		return copy;
 	}
 	
 	@Override
 	public NormalizedObjective normalize(double minimum, double maximum) {
-		return new NormalizedObjective((getValue() - minimum) / (maximum - minimum));
+		return new NormalizedObjective(name, (getValue() - minimum) / (maximum - minimum));
 	}
 	
 	@Override
@@ -67,6 +69,16 @@ public class Minimize extends AbstractObjective {
 	@Override
 	public double getIdealValue() {
 		return Double.NEGATIVE_INFINITY;
+	}
+	
+	public static Minimize value() {
+		return new Minimize();
+	}
+	
+	public static Minimize value(double value) {
+		Minimize result = new Minimize();
+		result.value = value;
+		return result;
 	}
 	
 }

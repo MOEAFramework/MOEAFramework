@@ -25,7 +25,7 @@ public class MaximizeTest {
 	
 	@Test
 	public void testCopy() {
-		Maximize expected = new Maximize();
+		Maximize expected = Maximize.value();
 		Maximize actual = expected.copy();
 		
 		Assert.assertNotSame(expected, actual);
@@ -34,7 +34,7 @@ public class MaximizeTest {
 	
 	@Test
 	public void testEquals() {
-		Maximize expected = new Maximize();
+		Maximize expected = Maximize.value();
 		Maximize actual = expected.copy();
 		
 		Assert.assertEquals(expected, actual);
@@ -45,28 +45,28 @@ public class MaximizeTest {
 	
 	@Test
 	public void testGetCanonicalValue() {
-		Assert.assertEquals(-1.0, new Maximize(1.0).getCanonicalValue());
-		Assert.assertEquals(1.0, new Maximize(-1.0).getCanonicalValue());
+		Assert.assertEquals(-1.0, Maximize.value(1.0).getCanonicalValue());
+		Assert.assertEquals(1.0, Maximize.value(-1.0).getCanonicalValue());
 	}
 	
 	@Test
 	public void testCompareTo() {
-		Assert.assertEquals(-1, new Maximize(2.0).compareTo(new Maximize(1.0)));
-		Assert.assertEquals(0, new Maximize(1.0).compareTo(new Maximize(1.0)));
-		Assert.assertEquals(1, new Maximize(1.0).compareTo(new Maximize(2.0)));
+		Assert.assertEquals(-1, Maximize.value(2.0).compareTo(Maximize.value(1.0)));
+		Assert.assertEquals(0, Maximize.value(1.0).compareTo(Maximize.value(1.0)));
+		Assert.assertEquals(1, Maximize.value(1.0).compareTo(Maximize.value(2.0)));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testCompareToDifferentType() {
-		Assert.assertEquals(-1, new Maximize(1.0).compareTo(new Minimize(2.0)));
+		Assert.assertEquals(-1, Maximize.value(1.0).compareTo(Minimize.value(2.0)));
 	}
 	
 	@Test
 	public void testNormalize() {
-		Assert.assertEquals(new NormalizedObjective(1.0), new Maximize(0.0).normalize(0.0, 1.0));
-		Assert.assertEquals(new NormalizedObjective(0.0), new Maximize(1.0).normalize(0.0, 1.0));
-		Assert.assertEquals(new NormalizedObjective(0.5), new Maximize(0.5).normalize(0.0, 1.0));
-		Assert.assertEquals(new NormalizedObjective(0.75), new Maximize(0.5).normalize(0.0, 2.0));
+		Assert.assertEquals(new NormalizedObjective(null, 1.0), Maximize.value(0.0).normalize(0.0, 1.0));
+		Assert.assertEquals(new NormalizedObjective(null, 0.0), Maximize.value(1.0).normalize(0.0, 1.0));
+		Assert.assertEquals(new NormalizedObjective(null, 0.5), Maximize.value(0.5).normalize(0.0, 1.0));
+		Assert.assertEquals(new NormalizedObjective(null, 0.75), Maximize.value(0.5).normalize(0.0, 2.0));
 	}
 	
 	// TODO: Fill in tests

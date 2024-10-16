@@ -26,7 +26,7 @@ import org.moeaframework.util.validate.Validate;
 /**
  * Decision variable for real values.
  */
-public class RealVariable implements Variable {
+public class RealVariable extends AbstractVariable {
 
 	private static final long serialVersionUID = 3141851312155686224L;
 	
@@ -133,6 +133,7 @@ public class RealVariable implements Variable {
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
+				.appendSuper(super.hashCode())
 				.append(lowerBound)
 				.append(upperBound)
 				.append(value)
@@ -149,6 +150,7 @@ public class RealVariable implements Variable {
 			RealVariable rhs = (RealVariable)obj;
 			
 			return new EqualsBuilder()
+					.appendSuper(super.equals(obj))
 					.append(lowerBound, rhs.lowerBound)
 					.append(upperBound, rhs.upperBound)
 					.append(value, rhs.value)

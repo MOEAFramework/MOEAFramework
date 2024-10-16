@@ -75,44 +75,44 @@ public class SubtreeCrossover extends TypeSafeCrossover<Program> {
 		
 		// pick the node to be replaced (destination) from the first parent
 		if (PRNG.nextDouble() <= rules.getFunctionCrossoverProbability()) {
-			int size = program1.getArgument(0).getNumberOfFunctions();
+			int size = program1.getBody().getNumberOfFunctions();
 			
 			if (size == 0) {
 				// no valid crossover, no change is made
 				return;
 			}
 			
-			node = program1.getArgument(0).getFunctionAt(PRNG.nextInt(size));
+			node = program1.getBody().getFunctionAt(PRNG.nextInt(size));
 		} else {
-			int size = program1.getArgument(0).getNumberOfTerminals();
+			int size = program1.getBody().getNumberOfTerminals();
 			
 			if (size == 0) {
 				// no valid crossover, no change is made
 				return;
 			}
 			
-			node = program1.getArgument(0).getTerminalAt(PRNG.nextInt(size));
+			node = program1.getBody().getTerminalAt(PRNG.nextInt(size));
 		}
 		
 		// pick the replacement (source) from the second parent
 		if (PRNG.nextDouble() <= rules.getFunctionCrossoverProbability()) {
-			int size = program2.getArgument(0).getNumberOfFunctions(node.getReturnType());
+			int size = program2.getBody().getNumberOfFunctions(node.getReturnType());
 			
 			if (size == 0) {
 				// no valid crossover, no change is made
 				return;
 			}
 
-			replacement = program2.getArgument(0).getFunctionAt(node.getReturnType(), PRNG.nextInt(size));
+			replacement = program2.getBody().getFunctionAt(node.getReturnType(), PRNG.nextInt(size));
 		} else {
-			int size = program2.getArgument(0).getNumberOfTerminals(node.getReturnType());
+			int size = program2.getBody().getNumberOfTerminals(node.getReturnType());
 			
 			if (size == 0) {
 				// no valid crossover, no change is made
 				return;
 			}
 
-			replacement = program2.getArgument(0).getTerminalAt(node.getReturnType(), PRNG.nextInt(size));
+			replacement = program2.getBody().getTerminalAt(node.getReturnType(), PRNG.nextInt(size));
 		}
 		
 		// if either node is fixed, no change is made

@@ -37,14 +37,14 @@ public class PointMutationTest extends AbstractProgramOperatorTest<PointMutation
 		
 		for (int i = 0; i < 100; i++) {
 			Program program = createTestVariable();
-			program.setArgument(0, program.getRules().buildTreeFull(Number.class, 4));
+			program.setBody(program.getRules().buildTreeFull(Number.class, 4));
 			
-			int fixedNodeIndex = PRNG.nextInt(program.getNumberOfNodes());
-			program.getNodeAt(fixedNodeIndex).setFixed(true);
+			int fixedNodeIndex = PRNG.nextInt(program.getBody().getNumberOfNodes());
+			program.getBody().getNodeAt(fixedNodeIndex).setFixed(true);
 
-			Assert.assertTrue(program.isValid());
-			Assert.assertEquals(5, program.getMinimumHeight());
-			Assert.assertEquals(5, program.getMaximumHeight());
+			Assert.assertTrue(program.getBody().isValid());
+			Assert.assertEquals(4, program.getBody().getMinimumHeight());
+			Assert.assertEquals(4, program.getBody().getMaximumHeight());
 			
 			Solution solution = new Solution(1, 1);
 			solution.setVariable(0, program);
@@ -54,11 +54,11 @@ public class PointMutationTest extends AbstractProgramOperatorTest<PointMutation
 			
 			Program result = (Program)offspring[0].getVariable(0);
 			
-			Assert.assertTrue(result.isValid());
-			Assert.assertEquals(5, result.getMinimumHeight());
-			Assert.assertEquals(5, result.getMaximumHeight());
-			Assert.assertEquals(program.getNodeAt(fixedNodeIndex).getClass(),
-					result.getNodeAt(fixedNodeIndex).getClass());
+			Assert.assertTrue(result.getBody().isValid());
+			Assert.assertEquals(4, result.getBody().getMinimumHeight());
+			Assert.assertEquals(4, result.getBody().getMaximumHeight());
+			Assert.assertEquals(program.getBody().getNodeAt(fixedNodeIndex).getClass(),
+					result.getBody().getNodeAt(fixedNodeIndex).getClass());
 		}
 	}
 

@@ -25,8 +25,8 @@ public class Maximize extends AbstractObjective {
 		super();
 	}
 	
-	protected Maximize(double value) {
-		super(value);
+	protected Maximize(String name) {
+		super(name);
 	}
 	
 	@Override
@@ -41,12 +41,14 @@ public class Maximize extends AbstractObjective {
 
 	@Override
 	public Maximize copy() {
-		return new Maximize(getValue());
+		Maximize copy = new Maximize(name);
+		copy.value = value;
+		return copy;
 	}
 	
 	@Override
 	public NormalizedObjective normalize(double minimum, double maximum) {
-		return new NormalizedObjective(1.0 - (getValue() - minimum) / (maximum - minimum));
+		return new NormalizedObjective(name, 1.0 - (getValue() - minimum) / (maximum - minimum));
 	}
 	
 	@Override
@@ -67,6 +69,16 @@ public class Maximize extends AbstractObjective {
 	@Override
 	public double getIdealValue() {
 		return Double.POSITIVE_INFINITY;
+	}
+	
+	public static Maximize value() {
+		return new Maximize();
+	}
+	
+	public static Maximize value(double value) {
+		Maximize result = new Maximize();
+		result.value = value;
+		return result;
 	}
 	
 }

@@ -23,6 +23,7 @@ import java.util.Iterator;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.objective.NormalizedObjective;
+import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.util.Vector;
@@ -283,7 +284,9 @@ public class Normalizer {
 					iterator.remove();
 				} else {
 					for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
-						solution.setObjective(i, new NormalizedObjective(solution.getObjective(i).getCanonicalValue()));
+						Objective objective = solution.getObjective(i);
+						solution.setObjective(i, new NormalizedObjective(objective.getName(),
+								objective.getCanonicalValue()));
 					}
 				}
 			}

@@ -25,7 +25,7 @@ import org.moeaframework.core.constraint.LessThan;
 import org.moeaframework.core.objective.Minimize;
 import org.moeaframework.core.objective.Objective;
 
-public class DefinedTypeTest {
+public class ConstructableTest {
 
 	@Test
 	public void testNoArguments() {
@@ -48,17 +48,16 @@ public class DefinedTypeTest {
 	@Test
 	public void testDifferentPackage() {
 		Assert.assertInstanceOf(TestConstraint.class, Constructable.createInstance(Constraint.class,
-				"org.moeaframework.core.DefinedTypeTest$TestConstraint(2.0)"));
+				"org.moeaframework.core.ConstructableTest$TestConstraint(2.0)"));
 	}
 	
 	@Test
 	public void testString() {
-		String definition = "DefinedTypeTest$TestStringArgument(\"foo, bar\")";
+		String definition = "ConstructableTest$TestConstraint(\"foo, bar\",2.0)";
 		
-		TestStringArgument result = Constructable.createInstance(TestStringArgument.class, definition);
-		Assert.assertEquals("foo, bar", result.str);
-		
-		Assert.assertEquals(definition, result.getDefinition());
+		TestConstraint result = Constructable.createInstance(TestConstraint.class, definition);
+		Assert.assertEquals("foo, bar", result.getName());
+		Assert.assertEquals(2.0, result.getThreshold(), TestThresholds.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -78,14 +77,14 @@ public class DefinedTypeTest {
 	
 	@Test(expected = FrameworkException.class)
 	public void testAdditionalArgument() {
-		Constructable.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(2.0, 0.000001, 5.0)");
+		Constructable.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(\"foo\", 0.000001, 5.0, \"bar\")");
 	}
 	
 	@Test
 	public void testCreateDefinition() {
 		Assert.assertEquals("Minimize", Constructable.createDefinition(Objective.class, Minimize.class));
 		Assert.assertEquals("LessThan(2.0)", Constructable.createDefinition(Constraint.class, LessThan.class, 2.0));
-		Assert.assertEquals("org.moeaframework.core.DefinedTypeTest$TestConstraint(2.0)",
+		Assert.assertEquals("org.moeaframework.core.ConstructableTest$TestConstraint(2.0)",
 				Constructable.createDefinition(Constraint.class, TestConstraint.class, 2.0));
 	}
 	
@@ -102,20 +101,8 @@ public class DefinedTypeTest {
 			super(threshold);
 		}
 		
-	}
-	
-	public static class TestStringArgument implements Constructable {
-		
-		private final String str;
-		
-		public TestStringArgument(String str) {
-			super();
-			this.str = str;
-		}
-
-		@Override
-		public String getDefinition() {
-			return Constructable.createDefinition(TestStringArgument.class, TestStringArgument.class, str);
+		public TestConstraint(String name, double threshold) {
+			super(name, threshold);
 		}
 		
 	}

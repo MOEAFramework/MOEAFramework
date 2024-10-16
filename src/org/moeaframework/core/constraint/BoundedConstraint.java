@@ -38,18 +38,26 @@ public abstract class BoundedConstraint extends AbstractConstraint {
 	protected final double epsilon;
 
 	public BoundedConstraint(double lower, double upper) {
-		this(lower, upper, Settings.EPS);
+		this(null, lower, upper);
 	}
 	
 	public BoundedConstraint(double lower, double upper, double epsilon) {
-		super();
+		this(null, lower, upper, epsilon);
+	}
+	
+	public BoundedConstraint(String name, double lower, double upper) {
+		this(name, lower, upper, Settings.EPS);
+	}
+	
+	public BoundedConstraint(String name, double lower, double upper, double epsilon) {
+		super(name);
 		this.lower = lower;
 		this.upper = upper;
 		this.epsilon = epsilon;
 	}
 	
 	public BoundedConstraint(BoundedConstraint copy) {
-		this(copy.lower, copy.upper, copy.epsilon);
+		this(copy.name, copy.lower, copy.upper, copy.epsilon);
 		this.value = copy.value;
 	}
 	
@@ -67,7 +75,11 @@ public abstract class BoundedConstraint extends AbstractConstraint {
 	
 	@Override
 	public String getDefinition() {
-		return Constructable.createDefinition(Constraint.class, getClass(), lower, upper, epsilon);
+		if (name == null) {
+			return Constructable.createDefinition(Constraint.class, getClass(), lower, upper, epsilon);
+		} else {
+			return Constructable.createDefinition(Constraint.class, getClass(), name, lower, upper, epsilon);
+		}
 	}
 	
 	@Override

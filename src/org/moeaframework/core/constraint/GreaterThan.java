@@ -32,6 +32,14 @@ public class GreaterThan extends ThresholdConstraint {
 		super(threshold, epsilon);
 	}
 	
+	public GreaterThan(String name, double threshold) {
+		super(name, threshold);
+	}
+	
+	public GreaterThan(String name, double threshold, double epsilon) {
+		super(name, threshold, epsilon);
+	}
+	
 	public GreaterThan(GreaterThan copy) {
 		super(copy);
 	}
@@ -57,6 +65,14 @@ public class GreaterThan extends ThresholdConstraint {
 	
 	public static GreaterThan value(double threshold, double epsilon) {
 		return new GreaterThan(threshold, epsilon);
+	}
+	
+	public static GreaterThan value(String name, double threshold) {
+		return new GreaterThan(name, threshold);
+	}
+	
+	public static GreaterThan value(String name, double threshold, double epsilon) {
+		return new GreaterThan(name, threshold, epsilon);
 	}
 
 }

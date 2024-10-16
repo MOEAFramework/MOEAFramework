@@ -22,13 +22,14 @@ import java.io.Serializable;
 import org.moeaframework.core.Constructable;
 import org.moeaframework.core.Copyable;
 import org.moeaframework.core.FrameworkException;
+import org.moeaframework.core.Named;
 
 /**
  * Defines a constraint.  While all constraints are assigned a value, the interpretation of that value with respect to
  * feasibility depends on the specific constraint type.  Thus, callers should prefer using specific methods provided
  * by this interface than checking the value itself.
  */
-public interface Constraint extends Comparable<Constraint>, Copyable<Constraint>, Serializable, Constructable {
+public interface Constraint extends Comparable<Constraint>, Copyable<Constraint>, Serializable, Constructable, Named {
 	
 	/**
 	 * Returns the value of this constraint.
@@ -78,6 +79,10 @@ public interface Constraint extends Comparable<Constraint>, Copyable<Constraint>
 	 */
 	public static Constraint createDefault() {
 		return new Equal(0.0);
+	}
+	
+	public static String getNameOrDefault(Constraint constraint, int index) {
+		return constraint.getName() == null ? "Constr" + (index + 1) : constraint.getName();
 	}
 	
 }

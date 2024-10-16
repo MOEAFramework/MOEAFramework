@@ -206,6 +206,7 @@ public class BinaryIntegerVariable extends BinaryVariable {
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
+				.appendSuper(super.hashCode())
 				.append(lowerBound)
 				.append(upperBound)
 				.append(getValue())
@@ -222,6 +223,7 @@ public class BinaryIntegerVariable extends BinaryVariable {
 			BinaryIntegerVariable rhs = (BinaryIntegerVariable)obj;
 			
 			return new EqualsBuilder()
+					.appendSuper(super.equals(obj))
 					.append(lowerBound, rhs.lowerBound)
 					.append(upperBound, rhs.upperBound)
 					.append(getValue(), rhs.getValue())

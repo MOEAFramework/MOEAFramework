@@ -29,11 +29,23 @@ public abstract class AbstractConstraint implements Constraint {
 
 	private static final long serialVersionUID = -9233514055091031L;
 	
+	protected final String name;
+	
 	protected double value;
 			
 	public AbstractConstraint() {
+		this(null);
+	}
+	
+	public AbstractConstraint(String name) {
 		super();
+		this.name = name;
 		this.value = Double.NaN;
+	}
+	
+	@Override
+	public String getName() {
+		return name;
 	}
 	
 	@Override
@@ -59,6 +71,7 @@ public abstract class AbstractConstraint implements Constraint {
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
+				.append(name)
 				.append(value)
 				.toHashCode();
 	}
@@ -73,6 +86,7 @@ public abstract class AbstractConstraint implements Constraint {
 			AbstractConstraint rhs = (AbstractConstraint)obj;
 			
 			return new EqualsBuilder()
+					.append(name,  rhs.name)
 					.append(value, rhs.value)
 					.isEquals();
 		}

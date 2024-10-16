@@ -28,7 +28,7 @@ import org.moeaframework.util.validate.Validate;
 /**
  * Decision variable for binary strings.
  */
-public class BinaryVariable implements Variable {
+public class BinaryVariable extends AbstractVariable {
 
 	private static final long serialVersionUID = -682157453241538355L;
 
@@ -166,6 +166,7 @@ public class BinaryVariable implements Variable {
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
+				.appendSuper(super.hashCode())
 				.append(numberOfBits)
 				.append(bitSet)
 				.toHashCode();
@@ -181,6 +182,7 @@ public class BinaryVariable implements Variable {
 			BinaryVariable rhs = (BinaryVariable)obj;
 			
 			return new EqualsBuilder()
+					.appendSuper(super.equals(obj))
 					.append(numberOfBits, rhs.numberOfBits)
 					.append(bitSet, rhs.bitSet)
 					.isEquals();

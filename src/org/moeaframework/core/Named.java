@@ -15,42 +15,19 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.mock;
+package org.moeaframework.core;
 
-import org.moeaframework.core.variable.Variable;
-
-public class MockUnsupportedVariable implements Variable {
-
-	private static final long serialVersionUID = 7614517658356868257L;
-
-	@Override
-	public Variable copy() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public void randomize() {
-		throw new UnsupportedOperationException();
-	}
+/**
+ * Interface for objects that can be named.
+ */
+public interface Named {
 	
-	@Override
-	public String encode() {
-		throw new UnsupportedOperationException();
-	}
-	
-	@Override
-	public void decode(String value) {
-		throw new UnsupportedOperationException();
-	}
-	
-	@Override
-	public String getDefinition() {
-		throw new UnsupportedOperationException();
-	}
+	/**
+	 * Returns the name of this object.  Implementations are allowed to return {@code null} to indicate the object
+	 * is anonymous or has no assigned name.
+	 * 
+	 * @return the name
+	 */
+	public String getName();
 
-	@Override
-	public String getName() {
-		throw new UnsupportedOperationException();
-	}
-	
 }

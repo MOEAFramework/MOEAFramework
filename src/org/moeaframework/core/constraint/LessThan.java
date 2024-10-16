@@ -32,6 +32,14 @@ public class LessThan extends ThresholdConstraint {
 		super(threshold, epsilon);
 	}
 	
+	public LessThan(String name, double threshold) {
+		super(name, threshold);
+	}
+	
+	public LessThan(String name, double threshold, double epsilon) {
+		super(name, threshold, epsilon);
+	}
+	
 	public LessThan(LessThan copy) {
 		super(copy);
 	}
@@ -57,6 +65,14 @@ public class LessThan extends ThresholdConstraint {
 	
 	public static LessThan value(double threshold, double epsilon) {
 		return new LessThan(threshold, epsilon);
+	}
+	
+	public static LessThan value(String name, double threshold) {
+		return new LessThan(name, threshold);
+	}
+	
+	public static LessThan value(String name, double threshold, double epsilon) {
+		return new LessThan(name, threshold, epsilon);
 	}
 
 }

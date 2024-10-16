@@ -21,6 +21,7 @@ import java.io.Serializable;
 
 import org.moeaframework.core.Constructable;
 import org.moeaframework.core.Copyable;
+import org.moeaframework.core.Named;
 
 /**
  * Defines an objective for optimization, including the value and the direction.
@@ -33,7 +34,7 @@ import org.moeaframework.core.Copyable;
  * objective value into its minimized form.  For example, the canonical value for a maximized objective is the negated
  * value, as minimizing the negated value is equivalent to maximizing the original value.
  */
-public interface Objective extends Comparable<Objective>, Copyable<Objective>, Serializable, Constructable {
+public interface Objective extends Comparable<Objective>, Copyable<Objective>, Serializable, Constructable, Named {
 
 	/**
 	 * Returns the objective value.
@@ -142,6 +143,10 @@ public interface Objective extends Comparable<Objective>, Copyable<Objective>, S
 	 */
 	public static Objective createDefault() {
 		return new Minimize();
+	}
+	
+	public static String getNameOrDefault(Objective objective, int index) {
+		return objective.getName() == null ? "Obj" + (index + 1) : objective.getName();
 	}
 	
 }

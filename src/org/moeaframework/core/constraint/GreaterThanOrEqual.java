@@ -32,6 +32,14 @@ public class GreaterThanOrEqual extends ThresholdConstraint {
 		super(threshold, epsilon);
 	}
 	
+	public GreaterThanOrEqual(String name, double threshold) {
+		super(name, threshold);
+	}
+	
+	public GreaterThanOrEqual(String name, double threshold, double epsilon) {
+		super(name, threshold, epsilon);
+	}
+	
 	public GreaterThanOrEqual(GreaterThanOrEqual copy) {
 		super(copy);
 	}
@@ -56,6 +64,14 @@ public class GreaterThanOrEqual extends ThresholdConstraint {
 	}
 	
 	public static GreaterThanOrEqual to(double threshold, double epsilon) {
+		return new GreaterThanOrEqual(threshold, epsilon);
+	}
+	
+	public static GreaterThanOrEqual to(String name, double threshold) {
+		return new GreaterThanOrEqual(threshold);
+	}
+	
+	public static GreaterThanOrEqual to(String name, double threshold, double epsilon) {
 		return new GreaterThanOrEqual(threshold, epsilon);
 	}
 
