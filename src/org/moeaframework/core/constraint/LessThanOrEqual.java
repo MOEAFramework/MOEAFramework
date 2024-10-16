@@ -17,6 +17,9 @@
  */
 package org.moeaframework.core.constraint;
 
+/**
+ * The less than or equal to constraint, or {@code c <= <threshold>}.
+ */
 public class LessThanOrEqual extends ThresholdConstraint {
 
 	private static final long serialVersionUID = -2950482083962039249L;

@@ -17,18 +17,37 @@
  */
 package org.moeaframework.core.constraint;
 
+/**
+ * The equality constraint, or {@code c == <threshold>}.
+ */
 public class Equal extends ThresholdConstraint {
 
 	private static final long serialVersionUID = -2766984574651872793L;
 
+	/**
+	 * Constructs a new equality constraint.
+	 * 
+	 * @param threshold the threshold value
+	 */
 	public Equal(double threshold) {
 		super(threshold);
 	}
 	
+	/**
+	 * Constructs a new equality constraint.
+	 * 
+	 * @param threshold the threshold value
+	 * @param epsilon the epsilon value
+	 */
 	public Equal(double threshold, double epsilon) {
 		super(threshold, epsilon);
 	}
 	
+	/**
+	 * Constructs a copy of an equality constraint.
+	 * 
+	 * @param copy the copy
+	 */
 	public Equal(Equal copy) {
 		super(copy);
 	}

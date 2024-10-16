@@ -17,6 +17,9 @@
  */
 package org.moeaframework.core.constraint;
 
+/**
+ * The between constraint, or {@code <lower> <= c <= <upper>}.
+ */
 public class Between extends BoundedConstraint {
 
 	private static final long serialVersionUID = 192194143362935822L;

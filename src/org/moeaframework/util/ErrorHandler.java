@@ -113,7 +113,7 @@ public class ErrorHandler {
 	 * Controls how exceptions are formatted.  If {@code true}, the full stack trace is displayed.  If {@code false},
 	 * only the message is displayed.
 	 * 
-	 * @param displayFullStackTrace
+	 * @param displayFullStackTrace the new setting
 	 */
 	public void setDisplayFullStackTrace(boolean displayFullStackTrace) {
 		this.displayFullStackTrace = displayFullStackTrace;
@@ -123,7 +123,7 @@ public class ErrorHandler {
 	 * Called when a warning condition is encountered.
 	 * 
 	 * @param message the warning message
-	 * @throws FrameworkException if {@link #warningsAreFatal} is {@code true}
+	 * @throws FrameworkException if {@code warningsAreFatal} is {@code true}
 	 */
 	public void warn(String message) {
 		if (warningsAreFatal) {
@@ -172,7 +172,7 @@ public class ErrorHandler {
 	 * 
 	 * @param pattern the error message pattern used by {@link MessageFormat}
 	 * @param arguments the arguments used to format the message
-	 * @throws FrameworkException if {@code errorssAreFatal} is {@code true}
+	 * @throws FrameworkException if {@code errorsAreFatal} is {@code true}
 	 */
 	public void error(String pattern, Object... arguments) {
 		error(MessageFormat.format(pattern, arguments));
@@ -182,7 +182,7 @@ public class ErrorHandler {
 	 * Called when an exception occurs.
 	 * 
 	 * @param throwable the exception
-	 * @throws FrameworkException if {@code errorssAreFatal} is {@code true}
+	 * @throws FrameworkException if {@code errorsAreFatal} is {@code true}
 	 */
 	public void error(Throwable throwable) {
 		if (displayFullStackTrace) {

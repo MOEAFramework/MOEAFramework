@@ -22,6 +22,11 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.Constructable;
 import org.moeaframework.core.Settings;
 
+/**
+ * Abstract class for bounded constraints of the form {@code <lower> <op> c <op> <upper>}.  To handle numerical
+ * precision when comparing floating-point values, a small epsilon difference is permitted, which by default is
+ * {@link Settings#EPS}.
+ */
 public abstract class BoundedConstraint extends AbstractConstraint {
 
 	private static final long serialVersionUID = -2766984574651872793L;

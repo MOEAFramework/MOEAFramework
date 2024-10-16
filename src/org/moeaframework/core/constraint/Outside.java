@@ -17,6 +17,9 @@
  */
 package org.moeaframework.core.constraint;
 
+/**
+ * The outside constraint, or {@code c < <lower> || c < <upper>}.
+ */
 public class Outside extends BoundedConstraint {
 
 	private static final long serialVersionUID = 7023737068172462391L;

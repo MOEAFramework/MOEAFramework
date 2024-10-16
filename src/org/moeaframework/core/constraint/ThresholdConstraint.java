@@ -22,6 +22,10 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.Constructable;
 import org.moeaframework.core.Settings;
 
+/**
+ * Abstract class for constraints of the form {@code c <op> <threshold>}.  To handle numerical precision when comparing
+ * floating-point values, a small epsilon difference is permitted, which by default is {@link Settings#EPS}.
+ */
 public abstract class ThresholdConstraint extends AbstractConstraint {
 	
 	private static final long serialVersionUID = -6158520548738752673L;
@@ -29,26 +33,52 @@ public abstract class ThresholdConstraint extends AbstractConstraint {
 	protected final double threshold;
 	
 	protected final double epsilon;
-		
+	
+	/**
+	 * Constructs a new threshold constraint.
+	 * 
+	 * @param threhsold the threshold value
+	 */
 	public ThresholdConstraint(double threhsold) {
 		this(threhsold, Settings.EPS);
 	}
 	
+	/**
+	 * Constructs a new threshold constraint.
+	 * 
+	 * @param threshold the threshold value
+	 * @param epsilon the epsilon value
+	 */
 	public ThresholdConstraint(double threshold, double epsilon) {
 		super();
 		this.threshold = threshold;
 		this.epsilon = epsilon;
 	}
 	
+	/**
+	 * Constructs a copy of a threshold constraint.
+	 * 
+	 * @param copy the copy
+	 */
 	public ThresholdConstraint(ThresholdConstraint copy) {
 		this(copy.threshold, copy.epsilon);
 		this.value = copy.value;
 	}
 	
+	/**
+	 * Returns the threshold value.
+	 * 
+	 * @return the threshold value
+	 */
 	public double getThreshold() {
 		return threshold;
 	}
 	
+	/**
+	 * Returns the epsilon value used for numeric precision.
+	 * 
+	 * @return the epsilon value
+	 */
 	public double getEpsilon() {
 		return epsilon;
 	}

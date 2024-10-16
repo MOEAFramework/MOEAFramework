@@ -17,6 +17,9 @@
  */
 package org.moeaframework.core.constraint;
 
+/**
+ * The inequality constraint, or {@code c != <threshold>}.
+ */
 public class NotEqual extends ThresholdConstraint {
 
 	private static final long serialVersionUID = 6500980756384192541L;

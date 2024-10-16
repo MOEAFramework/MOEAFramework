@@ -35,6 +35,13 @@ public class InstrumentedAlgorithm<T extends Algorithm> extends AlgorithmWrapper
 		super(algorithm);
 	}
 	
+	/**
+	 * Registers the extension with the algorithm if one does not already exist.
+	 * 
+	 * @param frequency the frequency
+	 * @param frequencyType the frequency type
+	 * @return the extensio
+	 */
 	public InstrumentedExtension registerExtension(int frequency, FrequencyType frequencyType) {
 		InstrumentedExtension extension = getExtensions().get(InstrumentedExtension.class);
 		
