@@ -17,12 +17,13 @@
  */
 package org.moeaframework.analysis.io;
 
+import org.moeaframework.core.Named;
 import org.moeaframework.util.validate.Validate;
 
 /**
  * Defines a parameter.
  */
-public class Parameter {
+public class Parameter implements Named {
 
 	/**
 	 * The name of this parameter.
@@ -58,6 +59,7 @@ public class Parameter {
 	 * 
 	 * @return the name of this parameter.
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}

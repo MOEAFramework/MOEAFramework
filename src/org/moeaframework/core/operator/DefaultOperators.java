@@ -20,7 +20,6 @@ package org.moeaframework.core.operator;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
-import org.moeaframework.algorithm.single.SelfAdaptiveNormalVariation;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.ConfigurationException;
@@ -39,6 +38,7 @@ import org.moeaframework.core.operator.real.PCX;
 import org.moeaframework.core.operator.real.PM;
 import org.moeaframework.core.operator.real.SBX;
 import org.moeaframework.core.operator.real.SPX;
+import org.moeaframework.core.operator.real.SelfAdaptiveNormalVariation;
 import org.moeaframework.core.operator.real.UM;
 import org.moeaframework.core.operator.real.UNDX;
 import org.moeaframework.core.operator.subset.Add;

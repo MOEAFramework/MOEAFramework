@@ -24,11 +24,11 @@ import org.apache.commons.lang3.reflect.MethodUtils;
 import org.apache.commons.lang3.reflect.TypeUtils;
 import org.apache.commons.text.WordUtils;
 import org.moeaframework.algorithm.Algorithm;
-import org.moeaframework.algorithm.single.SelfAdaptiveNormalVariation;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.operator.Variation;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
+import org.moeaframework.core.operator.real.SelfAdaptiveNormalVariation;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.problem.Problem;
 
