@@ -38,7 +38,6 @@ import java.io.ObjectOutputStream;
  *   <li>Stronger type checking - Serialization will fail at runtime if any type in the object graph does not implement
  *       the {@code Serializable} interface, whereas {@code Stateful} objects must explicitly encode fields.
  * </ol>
- * <p>
  * That all being said, serialization is still useful for parallel or distributed computing, where objects need to be
  * serialized to send to a different process or machine.
  */

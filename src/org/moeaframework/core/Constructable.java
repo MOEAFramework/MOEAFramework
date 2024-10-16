@@ -36,7 +36,6 @@ import org.apache.commons.text.StringTokenizer;
  *   "LessThan(2.0)"
  *   "org.moeaframework.core.constraint.LessThan(2.0)"
  * </pre>
- * <p>
  * There are a few key differences, including:
  * <ol>
  *   <li>Either the class' simple name or fully-qualified name that includes the package is permitted.  The class
@@ -44,7 +43,7 @@ import org.apache.commons.text.StringTokenizer;
  *   <li>Parenthesis can be omitted if using the no-arg constructor. 
  *   <li>The first constructor that matches the supplied arguments is called; therefore, avoid defining multiple
  *       constructors with overlapping types (e.g., int and double).
- * <p>
+ * </ol>
  * While we recommend only using primitive types for the constructor arguments, any type implementing {@code toString()}
  * and a static {@code valueOf(String)} method is supported.  These types should throw {@link IllegalArgumentException}
  * if the supplied string is not compatible with the type.

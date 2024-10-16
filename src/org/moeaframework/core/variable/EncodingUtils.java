@@ -33,7 +33,6 @@ import org.moeaframework.util.validate.Validate;
  * <pre>
  *   double value = getReal(solution.getVariable(i));
  * </pre>
- * <p>
  * Support for integer encodings is now supported using the {@link #newInt(int, int)} or
  * {@link #newBinaryInt(int, int)}.  The former represents integers as floating-point values while the latter uses
  * binary strings.  Both representations are accessed using {@link #getInt(Variable)} and

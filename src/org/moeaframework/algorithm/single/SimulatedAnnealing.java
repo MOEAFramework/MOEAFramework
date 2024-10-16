@@ -39,8 +39,8 @@ import org.moeaframework.util.validate.Validate;
  * <p>
  * References:
  * <ol>
- *   <li> Kirkpatrick, S., Gelatt Jr, C. D., and Vecchi, M. P. (1983). "Optimization by Simulated Annealing". Science.
- *        220 (4598): 671–680.
+ *   <li>Kirkpatrick, S., Gelatt Jr, C. D., and Vecchi, M. P. (1983). "Optimization by Simulated Annealing". Science.
+ *       220 (4598): 671–680.
  * </ol>
  */
 public class SimulatedAnnealing extends AbstractSimulatedAnnealingAlgorithm {

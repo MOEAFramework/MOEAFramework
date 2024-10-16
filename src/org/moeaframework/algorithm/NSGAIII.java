@@ -39,7 +39,7 @@ import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
 /**
  * Implementation of NSGA-III.
- * 
+ * <p>
  * References:
  * <ol>
  *   <li>Deb, K. and Jain, H.  "An Evolutionary Many-Objective Optimization Algorithm Using Reference-Point-Based

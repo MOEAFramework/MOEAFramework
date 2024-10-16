@@ -56,13 +56,13 @@ import org.moeaframework.util.validate.Validate;
  * Stores a collection of key-value pairs similar to {@link Properties} but has support for reading and writing
  * primitive types.  Internally, this handles converting specific types to a string representation that can be saved
  * and read from files.
- * 
+ * <p>
  * In addition to primitive types, arrays of those primitives are also supported using either the default "," separator
  * or a user-configurable string.  Leading and trailing whitespace is automatically trimmed from each entry.
  * <strong>Be mindful that values saved in arrays should not include the separator character(s) - no escaping is
  * performed!</strong>
- * 
- * From version 3.0+, keys are case-insensitive.
+ * <p>
+ * Keys are case-insensitive.
  */
 public class TypedProperties implements Formattable<Entry<String, String>> {
 	

@@ -142,7 +142,7 @@ public class ErrorHandler {
 	 * 
 	 * @param pattern the warning message pattern used by {@link MessageFormat}
 	 * @param arguments the arguments used to format the message
-	 * @throws FrameworkException if {@link #warningsAreFatal} is {@code true}
+	 * @throws FrameworkException if {@code warningsAreFatal} is {@code true}
 	 */
 	public void warn(String pattern, Object... arguments) {
 		warn(MessageFormat.format(pattern, arguments));
@@ -152,7 +152,7 @@ public class ErrorHandler {
 	 * Called when an error condition is encountered.
 	 * 
 	 * @param message the error message
-	 * @throws FrameworkException if {@link #errorsAreFatal} is {@code true}
+	 * @throws FrameworkException if {@code errorsAreFatal} is {@code true}
 	 */
 	public void error(String message) {
 		if (errorsAreFatal) {
@@ -172,7 +172,7 @@ public class ErrorHandler {
 	 * 
 	 * @param pattern the error message pattern used by {@link MessageFormat}
 	 * @param arguments the arguments used to format the message
-	 * @throws FrameworkException if {@link #errorssAreFatal} is {@code true}
+	 * @throws FrameworkException if {@code errorssAreFatal} is {@code true}
 	 */
 	public void error(String pattern, Object... arguments) {
 		error(MessageFormat.format(pattern, arguments));
@@ -182,7 +182,7 @@ public class ErrorHandler {
 	 * Called when an exception occurs.
 	 * 
 	 * @param throwable the exception
-	 * @throws FrameworkException if {@link #errorssAreFatal} is {@code true}
+	 * @throws FrameworkException if {@code errorssAreFatal} is {@code true}
 	 */
 	public void error(Throwable throwable) {
 		if (displayFullStackTrace) {

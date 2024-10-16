@@ -45,7 +45,7 @@ public interface Constraint extends Comparable<Constraint>, Copyable<Constraint>
 	public void setValue(double value);
 	
 	/**
-	 * Returns the magnitude of constraint violation as a non-negative number, with {@value #SATISFIED} representing
+	 * Returns the magnitude of constraint violation as a non-negative number, with {@code 0.0} representing
 	 * satisfied or feasible constraints.  When comparing two constraints, smaller magnitudes are considered better.
 	 * 
 	 * @return the magnitude of constraint violation

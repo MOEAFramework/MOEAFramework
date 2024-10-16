@@ -27,6 +27,10 @@ import java.util.NoSuchElementException;
  */
 public class Iterators {
 	
+	private Iterators() {
+		super();
+	}
+	
 	/**
 	 * Returns an immutable iterator containing the given values.
 	 * 
@@ -55,7 +59,7 @@ public class Iterators {
 	 * Returns an iterable that joins the contents of multiple iterables.
 	 * 
 	 * @param <T> the type of each value
-	 * @param iterators the iterables
+	 * @param iterables the iterables
 	 * @return the joined iterable
 	 */
 	@SafeVarargs

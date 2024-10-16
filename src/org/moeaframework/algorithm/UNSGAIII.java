@@ -36,7 +36,7 @@ import org.moeaframework.util.weights.NormalBoundaryDivisions;
 /**
  * Implementation of the "unified" NSGA-III, or U-NSGA-III, which improves selection pressure by replacing the random
  * selection of NSGA-III with tournament selection.
- * 
+ * <p>
  * References:
  * <ol>
  *   <li>H. Seada and K. Deb. "A Unified Evolutionary Optimization Procedure for Single, Multiple, and Many Objectives."

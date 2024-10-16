@@ -22,7 +22,7 @@ import org.moeaframework.core.TypedProperties;
 /**
  * Interface for classes that can be configured either explicitly by overriding the methods defined by this
  * interface or auto-configurable by using the annotations available in this package.
- * 
+ * <p>
  * With auto-configuration, in addition to processing annotated setters, it will also check each getter method
  * and recursively process any that also implement this interface.  However, it will not scan any collection
  * types, such as {@code Iterable}, {@code Collection}, {@code List}, etc., even if they contain
@@ -34,10 +34,10 @@ public interface Configurable {
 	 * Applies the properties to this instance.  It is strongly recommended to apply a configuration immediately
 	 * after creating the instance, as some properties can not be changed after the class is used.  Exceptions
 	 * may be thrown if attempting to set such properties.
-	 * 
+	 * <p>
 	 * After calling this method, we encourage users to call {@link TypedProperties#warnIfUnaccessedProperties()}
 	 * to verify all properties were processed.  This can identify simple mistakes like typos.
-	 * 
+	 * <p>
 	 * If overriding this method, properties should only be updated if a new value is provided.  Additionally, if
 	 * updating any {@code Configurable} objects inside this object, they should be updated before calling
 	 * {@code super.applyConfiguration(properties)}.

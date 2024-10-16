@@ -77,7 +77,6 @@ public class LoggingExtension implements Extension {
 	 * 
 	 * @param logger the logger
 	 * @param logFrequency the frequency to print log messages
-	 * @param frequencyType the type of frequency
 	 */
 	public LoggingExtension(Logger logger, Duration logFrequency) {
 		super();

@@ -35,6 +35,11 @@ import org.apache.commons.io.IOUtils;
  */
 public class OutputHandler extends StreamHandler {
 
+	/**
+	 * Updates Java's logging configuration with our defaults.
+	 * 
+	 * @param force overwrite any existing settings
+	 */
 	public static void updateConfiguration(boolean force) {
 		final String loggingConfiguration = String.join("\n",
 				"handlers=" + OutputHandler.class.getName(),
@@ -47,6 +52,12 @@ public class OutputHandler extends StreamHandler {
 		}
 	}
 
+	/**
+	 * Returns the logger with the given name.
+	 * 
+	 * @param name the name of the logger
+	 * @return the logger
+	 */
 	public static Logger getLogger(String name) {
 		updateConfiguration(false);
 
@@ -61,6 +72,9 @@ public class OutputHandler extends StreamHandler {
 		return logger;
 	}
 
+	/**
+	 * Constructs a new output logger.
+	 */
     public OutputHandler() {
     	super(System.out, new SimpleFormatter());
     }

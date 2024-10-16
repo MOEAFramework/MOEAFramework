@@ -48,7 +48,6 @@ public class InstrumentedExtension extends PeriodicExtension implements Stateful
 	 * Decorates the specified algorithm to periodically collect information about its runtime behavior.  Frequency is
 	 * given in number of evaluations.
 	 * 
-	 * @param algorithm the algorithm to decorate
 	 * @param frequency the frequency, in evaluations, that data is collected
 	 */
 	public InstrumentedExtension(int frequency) {
@@ -58,7 +57,6 @@ public class InstrumentedExtension extends PeriodicExtension implements Stateful
 	/**
 	 * Decorates the specified algorithm to periodically collect information about its runtime behavior.
 	 * 
-	 * @param algorithm the algorithm to decorate
 	 * @param frequency the frequency that data is collected
 	 * @param frequencyType if frequency is defined by EVALUATIONS or STEPS
 	 */

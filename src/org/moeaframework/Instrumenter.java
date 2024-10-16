@@ -657,6 +657,7 @@ public class Instrumenter extends ProblemBuilder {
 	 * Instruments the specified algorithm, returning an {@link InstrumentedAlgorithm} to be used to execute the
 	 * algorithm and store the data produced by any attached instruments.
 	 * 
+	 * @param <T> the type of the algorithm
 	 * @param algorithm the algorithm to instrument
 	 * @return the instrumented algorithm
 	 * @throws IllegalArgumentException if no reference set is available or could not be loaded

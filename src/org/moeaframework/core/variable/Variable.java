@@ -46,15 +46,16 @@ public interface Variable extends Copyable<Variable>, Serializable, Constructabl
 	 * Encodes the value of this variable as a string.  This should reflect the internal representation of the value
 	 * and not necessarily the actual value.  For example, a binary-encoded integer should display the bits and not the
 	 * integer value.
-	 * 
+	 * <p>
 	 * Implementations should make an effort to display the value in a meaningful format, but that is not required.
 	 * Instead, use {@link #toString()} if a human-readable format is required.
-	 * 
+	 * <p>
 	 * This method along with {@link #decode(String)} are used primarily for storing values in text files.  To make
 	 * parsing easier, the resulting string must:
-	 * 
-	 * 1. Only contain ASCII characters
-	 * 2. Contain no whitespace (no spaces, tabs, newlines, etc.)
+	 * <ol>
+	 *   <li>Only contain ASCII characters
+	 *   <li>Contain no whitespace (no spaces, tabs, newlines, etc.)
+	 * </ol>
 	 * 
 	 * @return the encoded value as a string
 	 */

@@ -29,14 +29,12 @@ import org.moeaframework.algorithm.Algorithm;
  *     Wrapper wrapper = new Wrapper(algorithm);
  *     wrapper.run(10000);
  * <pre>
- * <p>
  * On the other hand, an extension adds new functionality by plugging into specific "extension points":
  * <pre>
  *     Algorithm algorithm = new NSGAII();
  *     algorithm.addExtension(new Extension());
  *     algorithm.run(10000);
  * </pre>
- * <p>
  * There are uses for both, as highlighted below:
  * <ol>
  *   <li>Wrappers can extend or replace any non-final method of the nested object, whereas extensions can only extend
@@ -50,7 +48,6 @@ import org.moeaframework.algorithm.Algorithm;
  *   <li>Extensions offer better encapsulation.  With a wrapper, we potentially reference and call methods directly on
  *       the nested instance, bypassing the wrapper and leading to unexpected results.
  * </ol>
- * <p>
  * All of the methods in this interface have default implementations that no-op.  An extension can simply override the
  * specific methods required.
  */
