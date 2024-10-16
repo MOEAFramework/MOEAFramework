@@ -17,6 +17,7 @@
  */
 package org.moeaframework.core.operator;
 
+import org.moeaframework.core.Named;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.configuration.Configurable;
 
@@ -32,7 +33,7 @@ import org.moeaframework.core.configuration.Configurable;
  * Mixed-type encodings are supported by using type-safe variation operators. Variation operators for each type in the
  * encoding are applied sequentially, each operating on only those variables with the correct type.
  */
-public interface Variation extends Configurable {
+public interface Variation extends Configurable, Named {
 	
 	/**
 	 * Returns the name of this variation operator.  This name should also be used as the prefix for any parameters.
@@ -40,6 +41,7 @@ public interface Variation extends Configurable {
 	 * 
 	 * @return the name of this variation operator
 	 */
+	@Override
 	public String getName();
 
 	/**

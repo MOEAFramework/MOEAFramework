@@ -73,7 +73,8 @@ public interface Constraint extends Comparable<Constraint>, Copyable<Constraint>
 	}
 	
 	/**
-	 * Returns the default constraint, which is equivalent to {@code Equal.to(0.0)}.
+	 * Returns a new instance of the default constraint.  This is the constraint type used if not explicitly
+	 * configured by the problem or user.
 	 * 
 	 * @return the default constraint
 	 */
@@ -81,6 +82,14 @@ public interface Constraint extends Comparable<Constraint>, Copyable<Constraint>
 		return new Equal(0.0);
 	}
 	
+	/**
+	 * Returns the name of the constraint, using either the name assigned to the constraint or deriving the name from
+	 * its index.
+	 * 
+	 * @param constraint the constraint
+	 * @param index the index of the constraint
+	 * @return the name of the constraint
+	 */
 	public static String getNameOrDefault(Constraint constraint, int index) {
 		return constraint.getName() == null ? "Constr" + (index + 1) : constraint.getName();
 	}

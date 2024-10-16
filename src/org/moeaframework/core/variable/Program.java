@@ -34,9 +34,6 @@ import org.moeaframework.util.tree.Rules;
 
 /**
  * A decision variable for programs.  The program is represented as a strongly-typed expression tree.
- * <p>
- * <b>Note: Although {@code Program} extends {@link Node}, the {@code Program} object must never be altered by the
- * optimization algorithm.</b>  Only its arguments can undergo variation.
  */
 public class Program extends AbstractVariable {
 
@@ -73,7 +70,8 @@ public class Program extends AbstractVariable {
 	}
 	
 	/**
-	 * Returns the root node of this program, primarily intended for testing.
+	 * Returns the root node of this program.  The root's main purpose is to act as the parent, or container, for the
+	 * actual program, which we call the body.  This method is intended for testing purposes only.
 	 * 
 	 * @return the root
 	 */
@@ -206,8 +204,7 @@ public class Program extends AbstractVariable {
 	}
 	
 	/**
-	 * Node representing the root of a program.  This is useful to ensure the body has a non-null parent, which is
-	 * required by some variation operators to swap or change the top-level nodes in a program.
+	 * Node representing the root of a program.
 	 */
 	class Root extends Node {
 		

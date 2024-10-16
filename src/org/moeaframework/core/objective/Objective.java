@@ -137,7 +137,8 @@ public interface Objective extends Comparable<Objective>, Copyable<Objective>, S
 	}
 	
 	/**
-	 * Returns a new instance of the default optimization objective.
+	 * Returns a new instance of the default optimization objective.  This is the objective used if not explicitly
+	 * configured by the problem or user.
 	 * 
 	 * @return the default optimization objective
 	 */
@@ -145,6 +146,14 @@ public interface Objective extends Comparable<Objective>, Copyable<Objective>, S
 		return new Minimize();
 	}
 	
+	/**
+	 * Returns the name of the objective, using either the name assigned to the objective or deriving the name from its
+	 * index.
+	 * 
+	 * @param objective the objective
+	 * @param index the index of the objective
+	 * @return the name of the objective
+	 */
 	public static String getNameOrDefault(Objective objective, int index) {
 		return objective.getName() == null ? "Obj" + (index + 1) : objective.getName();
 	}

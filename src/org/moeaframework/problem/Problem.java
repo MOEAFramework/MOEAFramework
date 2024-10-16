@@ -17,19 +17,21 @@
  */
 package org.moeaframework.problem;
 
+import org.moeaframework.core.Named;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.Variable;
 
 /**
  * Interface for defining optimization problems.  All methods must be thread safe.
  */
-public interface Problem extends AutoCloseable {
+public interface Problem extends AutoCloseable, Named {
 
 	/**
-	 * Returns the user-friendly name for this problem.
+	 * Returns the name of this problem.
 	 * 
-	 * @return the user-friendly name for this problem
+	 * @return the name of this problem
 	 */
+	@Override
 	public String getName();
 
 	/**

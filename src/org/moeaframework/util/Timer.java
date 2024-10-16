@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.apache.commons.math3.stat.descriptive.StatisticalSummary;
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
+import org.moeaframework.core.Named;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;
@@ -33,7 +34,7 @@ import org.moeaframework.util.format.TabularData;
  * While this timer internally uses {@link System#nanoTime()} for up to nanosecond accuracy, the values reported are
  * converted into fractional seconds.
  */
-public class Timer implements Formattable<StatisticalSummary> {
+public class Timer implements Formattable<StatisticalSummary>, Named {
 	
 	private static final long NOT_STARTED = -1;
 	
@@ -92,6 +93,7 @@ public class Timer implements Formattable<StatisticalSummary> {
 	 * 
 	 * @return the timer name
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}

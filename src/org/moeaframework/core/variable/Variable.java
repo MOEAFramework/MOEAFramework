@@ -70,6 +70,14 @@ public interface Variable extends Copyable<Variable>, Serializable, Constructabl
 	 */
 	public void decode(String value);
 	
+	/**
+	 * Returns the name of the variable, using either the name assigned to the variable or deriving the name from its
+	 * index.
+	 * 
+	 * @param variable the variable
+	 * @param index the index of the variable
+	 * @return the name of the variable
+	 */
 	public static String getNameOrDefault(Variable variable, int index) {
 		return variable.getName() == null ? "Var" + (index + 1) : variable.getName();
 	}

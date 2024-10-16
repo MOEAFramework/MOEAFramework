@@ -23,8 +23,14 @@ package org.moeaframework.core;
 public interface Named {
 	
 	/**
-	 * Returns the name of this object.  Implementations are allowed to return {@code null} to indicate the object
-	 * is anonymous or has no assigned name.
+	 * Returns the name of this object.  The format for the name depends on the specific implementation, but in
+	 * general we recommend:
+	 * <ol>
+	 *   <li>Prefer using alphanumeric characters including {@code '_'} and {@code '-'}.
+	 *   <li>Avoid whitespace and other control characters.
+	 *   <li>{@code null} can be returned, if allowed by the implementation, to indicate the object is anonymous or
+	 *       has no assigned name.
+	 * </ol>
 	 * 
 	 * @return the name
 	 */
