@@ -235,6 +235,12 @@ public interface Constructable {
 				Arrays.toString(arguments));
 	}
 	
+	/**
+	 * Returns the constructors for the given class in the order they should be matched.
+	 * 
+	 * @param type the class
+	 * @return the constructors
+	 */
 	private static List<Constructor<?>> getOrderedConstructors(Class<?> type) {
 		List<Constructor<?>> result = new ArrayList<Constructor<?>>();
 		
@@ -247,6 +253,9 @@ public interface Constructable {
 		return result;
 	}
 	
+	/**
+	 * Comparator that sorts constructors based on the number of parameters and the types of each parameter.
+	 */
 	static class ConstructorComparator implements Comparator<Constructor<?>> {
 		
 		private static final Map<Class<?>, Integer> ORDER;

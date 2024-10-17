@@ -69,6 +69,31 @@ public class MinimizeTest {
 		Assert.assertEquals(new NormalizedObjective(null, 0.25), Minimize.value(0.5).normalize(0.0, 2.0));
 	}
 	
+	@Test
+	public void testApplyWeight() {
+		Assert.assertEquals(-0.5, Minimize.value(-1.0).applyWeight(0.5));
+		Assert.assertEquals(0.0, Minimize.value(0.0).applyWeight(0.5));
+		Assert.assertEquals(0.5, Minimize.value(1.0).applyWeight(0.5));
+	}
+	
+	@Test
+	public void testGetEpsilonIndex() {
+		Assert.assertEquals(0, Minimize.value(0.0).getEpsilonIndex(0.5));
+		Assert.assertEquals(0, Minimize.value(0.1).getEpsilonIndex(0.5));
+		Assert.assertEquals(1, Minimize.value(0.5).getEpsilonIndex(0.5));
+		Assert.assertEquals(1, Minimize.value(0.6).getEpsilonIndex(0.5));
+		Assert.assertEquals(2, Minimize.value(1.0).getEpsilonIndex(0.5));
+	}
+	
+	@Test
+	public void testGetEpsilonDistance() {
+		Assert.assertEquals(0.0, Minimize.value(0.0).getEpsilonDistance(0.5));
+		Assert.assertEquals(0.1, Minimize.value(0.1).getEpsilonDistance(0.5));
+		Assert.assertEquals(0.0, Minimize.value(0.5).getEpsilonDistance(0.5));
+		Assert.assertEquals(0.1, Minimize.value(0.6).getEpsilonDistance(0.5));
+		Assert.assertEquals(0.0, Minimize.value(1.0).getEpsilonDistance(0.5));
+	}
+	
 	// TODO: Fill in tests
 
 }
