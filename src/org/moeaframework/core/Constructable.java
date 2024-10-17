@@ -49,7 +49,7 @@ import org.moeaframework.util.Iterators;
  *       must reside in the same package as the return type in order to use the shorter simple name.
  *   <li>Parenthesis can be omitted if using the no-arg constructor. 
  *   <li>The first constructor that matches the supplied arguments is called; therefore, avoid defining multiple
- *       constructors with overlapping types (e.g., int and double).
+ *       constructors with indistinguishable string representations (e.g., "2" can be parsed as an integer or double).
  * </ol>
  * While we recommend only using primitive types for the constructor arguments, any type implementing {@code toString()}
  * and a static {@code valueOf(String)} method is supported.  These types should throw {@link IllegalArgumentException}
