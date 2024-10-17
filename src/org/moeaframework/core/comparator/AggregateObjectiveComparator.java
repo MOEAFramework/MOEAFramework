@@ -15,27 +15,17 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.algorithm.single;
+package org.moeaframework.core.comparator;
 
 import java.util.Comparator;
 
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
-import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.configuration.ConfigurationException;
 
 /**
- * Compares solutions based on a computed aggregate fitness from the objective values.  Examples could include weighted
- * linear, weighted min-max, or vector angle distance scaling (VADS).
- * <p>
- * Implementation Note: This interface extends both the {@link DominanceComparator} and {@code Comparator<Solution>}
- * interfaces.  Since both of these interfaces provide identical {@code int compare(Solution, Solution)} methods, you
- * may encounter a compilation error indicating the use of the {@code compare} method is ambiguous.  This is the result
- * of an important distinction between {@code DominanceComparator} and {@code Comparator<Solution>}.
- * {@link DominanceComparator} induces a <i>partial</i> ordering while {@code Comparator<Solution>} provides a
- * <i>total</i> ordering.  In general, the two can not be interchanged except in cases where the
- * {@code DominanceComparator} produces a total ordering, which is the case here.  However, you will need to cast to
- * one of these two interfaces in order to invoke the {@code compare} method and avoid the compilation error.
+ * Compares solutions based on a computed aggregate value from the objective values.  This comparator and its
+ * implementations are intended for use with single-objective algorithms.
  */
 public interface AggregateObjectiveComparator extends DominanceComparator, Comparator<Solution> {
 	
@@ -47,12 +37,12 @@ public interface AggregateObjectiveComparator extends DominanceComparator, Compa
 	public double[] getWeights();
 	
 	/**
-	 * Calculates the aggregate (fitness) value of the solution using this aggregate function.
+	 * Calculates the aggregate value of the solution using this aggregate function.
 	 * 
 	 * @param solution the solution
 	 * @return the aggregate value (smaller is better)
 	 */
-	public double calculateFitness(Solution solution);
+	public double calculate(Solution solution);
 	
 	/**
 	 * Creates an aggregate objective comparator from the given configuration.

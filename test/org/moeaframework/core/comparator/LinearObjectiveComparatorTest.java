@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.algorithm.single;
+package org.moeaframework.core.comparator;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
@@ -26,11 +26,11 @@ import org.moeaframework.mock.MockSolution;
 public class LinearObjectiveComparatorTest {
 	
 	private double calculate(Solution solution, double[] weights) {
-		return LinearObjectiveComparator.calculateFitness(solution, weights);
+		return LinearObjectiveComparator.calculate(solution, weights);
 	}
 	
 	@Test
-	public void testCalculateFitness() {
+	public void testCalculate() {
 		double[] weights = new double[] { 1.0, 1.0 };
 		
 		Assert.assertEquals(calculate(MockSolution.of().withObjectives(0.0, 1.0), weights), 1.0, TestThresholds.LOW_PRECISION);

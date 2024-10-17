@@ -26,12 +26,12 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import org.moeaframework.algorithm.single.MinMaxObjectiveComparator;
-import org.moeaframework.algorithm.single.VectorAngleDistanceScalingComparator;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.attribute.Rank;
+import org.moeaframework.core.comparator.MinMaxObjectiveComparator;
 import org.moeaframework.core.comparator.RankComparator;
+import org.moeaframework.core.comparator.VectorAngleDistanceScalingComparator;
 import org.moeaframework.core.penalty.SumOfConstraintsPenaltyFunction;
 
 /**
@@ -283,8 +283,8 @@ public class MSOPSRankedPopulation extends Population {
 			Solution solution = get(i);
 			
 			for (int j = 0; j < T; j++) {
-				scores[i][j] = MinMaxObjectiveComparator.calculateFitness(solution, weights.get(j));
-				scores[i][j+T] = VectorAngleDistanceScalingComparator.calculateFitness(solution, weights.get(j), 100.0);
+				scores[i][j] = MinMaxObjectiveComparator.calculate(solution, weights.get(j));
+				scores[i][j+T] = VectorAngleDistanceScalingComparator.calculate(solution, weights.get(j), 100.0);
 				maxScore = Math.max(maxScore, Math.max(scores[i][j], scores[i][j+T]));
 			}
 		}

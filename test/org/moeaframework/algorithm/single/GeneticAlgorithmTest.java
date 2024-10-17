@@ -20,6 +20,8 @@ package org.moeaframework.algorithm.single;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.core.TypedProperties;
+import org.moeaframework.core.comparator.AggregateObjectiveComparator;
+import org.moeaframework.core.comparator.MinMaxDominanceComparator;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.problem.Problem;
 

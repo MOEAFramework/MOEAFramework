@@ -19,7 +19,9 @@ package org.moeaframework.algorithm.single;
 
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.comparator.AggregateObjectiveComparator;
 import org.moeaframework.core.comparator.DominanceComparator;
+import org.moeaframework.core.comparator.LinearDominanceComparator;
 import org.moeaframework.core.initialization.Initialization;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;

@@ -19,6 +19,7 @@ package org.moeaframework.algorithm.single;
 
 import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
 import org.moeaframework.core.TypedProperties;
+import org.moeaframework.core.comparator.AggregateObjectiveComparator;
 import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.initialization.Initialization;
 import org.moeaframework.core.operator.Variation;

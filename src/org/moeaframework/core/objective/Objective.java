@@ -28,11 +28,6 @@ import org.moeaframework.core.Named;
  * <p>
  * Always prefer using one of the methods, such as {@link #compareTo(Objective)}, for performing operations on
  * objectives rather than using the value directly, as the methods accounts for the direction.
- * <p>
- * However, many published algorithms and codes assume an optimization direction, typically minimization.  In
- * situations where the provided methods are not sufficient, a "canonical" value is also provided, which converts the
- * objective value into its minimized form.  For example, the canonical value for a maximized objective is the negated
- * value, as minimizing the negated value is equivalent to maximizing the original value.
  */
 public interface Objective extends Comparable<Objective>, Copyable<Objective>, Serializable, Constructable, Named {
 
@@ -52,6 +47,11 @@ public interface Objective extends Comparable<Objective>, Copyable<Objective>, S
 	
 	/**
 	 * Returns the canonical value of this objective.
+	 * <p>
+	 * The canonical value is the objective converted into a minimized form, with the target or ideal towards
+	 * {@value Double#NEGATIVE_INFINITY}.  This allows an implementation to use the numeric value of the objective
+	 * directly, without needing to be aware of the optimization direction.  This works since minimizing {@code -f(x)}
+	 * is equivalent to maximizing {@code f(x)}.
 	 * 
 	 * @return the canonical value
 	 */
@@ -83,23 +83,41 @@ public interface Objective extends Comparable<Objective>, Copyable<Objective>, S
 	/**
 	 * Returns the index used by epsilon-dominance.  This is used by
 	 * {@link org.moeaframework.core.population.EpsilonBoxDominanceArchive} in its dominance calculations.
+	 * <p>
+	 * This calculation is based on the canonical value of the objective, and as such the returned value is
+	 * <strong>minimized</strong>.
 	 * 
 	 * @param epsilon the epsilon value
 	 * @return the index
 	 */
-	public int getEpsilonIndex(double epsilon);
+	public default int getEpsilonIndex(double epsilon) {
+		return (int)Math.floor(getCanonicalValue() / epsilon);
+	}
 	
 	/**
 	 * The distance this objective must change, in the direction of the ideal value, to fall within the next epsilon
-	 * box.  This is used by {@link org.moeaframework.core.population.EpsilonBoxDominanceArchive} when comparing solutions within
-	 * the same epsilon box.
+	 * box.  This is used by {@link org.moeaframework.core.population.EpsilonBoxDominanceArchive} when comparing
+	 * solutions within the same epsilon box.
 	 * 
 	 * @param epsilon the epsilon value
 	 * @return the distance
 	 */
-	public double getEpsilonDistance(double epsilon);
+	public default double getEpsilonDistance(double epsilon) {
+		return Math.abs(getCanonicalValue() - getEpsilonIndex(epsilon) * epsilon);
+	}
 	
-	public double applyWeight(double weight);
+	/**
+	 * Applies a weight to this objective.
+	 * <p>
+	 * This calculation is based on the canonical value of the objective, and as such the returned value is
+	 * <strong>minimized</strong>.
+	 * 
+	 * @param weight the weight
+	 * @return the weighted objective value
+	 */
+	public default double applyWeight(double weight) {
+		return weight * getCanonicalValue();
+	}
 	
 	public double getIdealValue();
 	

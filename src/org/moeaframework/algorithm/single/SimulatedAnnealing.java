@@ -26,6 +26,8 @@ import org.moeaframework.algorithm.sa.TemperatureBasedTerminationCondition;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
+import org.moeaframework.core.comparator.AggregateObjectiveComparator;
+import org.moeaframework.core.comparator.LinearDominanceComparator;
 import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.initialization.Initialization;
 import org.moeaframework.core.initialization.RandomInitialization;
@@ -151,8 +153,8 @@ public class SimulatedAnnealing extends AbstractSimulatedAnnealingAlgorithm {
 			int comparisonResult = ((Comparator<Solution>)comparator).compare(currentPoint, newPoint);
 			
 			if (comparisonResult < 0) {
-				double currentPointFitness = comparator.calculateFitness(currentPoint);
-				double newPointFitness = comparator.calculateFitness(newPoint);
+				double currentPointFitness = comparator.calculate(currentPoint);
+				double newPointFitness = comparator.calculate(newPoint);
 				double probability = Math.exp(-(newPointFitness - currentPointFitness) / temperature);
 				
 				if (PRNG.nextDouble() < probability) {

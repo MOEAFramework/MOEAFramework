@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.algorithm.single;
+package org.moeaframework.core.comparator;
 
 import org.moeaframework.core.Solution;
 
@@ -52,8 +52,8 @@ public abstract class AbstractAggregateObjectiveComparator implements AggregateO
 	
 	@Override
 	public int compare(Solution solution1, Solution solution2) {
-		double fitness1 = calculateFitness(solution1);
-		double fitness2 = calculateFitness(solution2);
+		double fitness1 = calculate(solution1);
+		double fitness2 = calculate(solution2);
 		
 		return Double.compare(fitness1, fitness2);
 	}

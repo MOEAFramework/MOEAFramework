@@ -25,8 +25,13 @@ public class Maximize extends AbstractObjective {
 		super();
 	}
 	
-	protected Maximize(String name) {
+	public Maximize(String name) {
 		super(name);
+	}
+	
+	protected Maximize(String name, double value) {
+		this(name);
+		setValue(value);
 	}
 	
 	@Override
@@ -52,21 +57,6 @@ public class Maximize extends AbstractObjective {
 	}
 	
 	@Override
-	public int getEpsilonIndex(double epsilon) {
-		return (int)Math.floor(-getValue() / epsilon);
-	}
-	
-	@Override
-	public double getEpsilonDistance(double epsilon) {
-		return Math.abs(-getValue() - getEpsilonIndex(epsilon) * epsilon);
-	}
-	
-	@Override
-	public double applyWeight(double weight) {
-		return weight * -getValue();
-	}
-	
-	@Override
 	public double getIdealValue() {
 		return Double.POSITIVE_INFINITY;
 	}
@@ -76,9 +66,15 @@ public class Maximize extends AbstractObjective {
 	}
 	
 	public static Maximize value(double value) {
-		Maximize result = new Maximize();
-		result.value = value;
-		return result;
+		return new Maximize(null, value);
+	}
+	
+	public static Maximize value(String name) {
+		return new Maximize(name);
+	}
+	
+	public static Maximize value(String name, double value) {
+		return new Maximize(name, value);
 	}
 	
 }

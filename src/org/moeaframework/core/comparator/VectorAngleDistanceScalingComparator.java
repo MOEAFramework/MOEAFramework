@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.algorithm.single;
+package org.moeaframework.core.comparator;
 
 import org.moeaframework.core.Solution;
 import org.moeaframework.util.Vector;
@@ -67,12 +67,12 @@ public class VectorAngleDistanceScalingComparator extends AbstractAggregateObjec
 	}
 	
 	@Override
-	public double calculateFitness(Solution solution) {
-		return calculateFitness(solution, weights, q);
+	public double calculate(Solution solution) {
+		return calculate(solution, weights, q);
 	}
 
 	/**
-	 * Computes the vector angle distance scaling aggregate fitness of the solution.  One weight should be given for
+	 * Computes the vector angle distance scaling aggregate value of the solution.  One weight should be given for
 	 * each objective.
 	 * 
 	 * @param solution the solution
@@ -80,7 +80,7 @@ public class VectorAngleDistanceScalingComparator extends AbstractAggregateObjec
 	 * @param q factor for scaling the effects of the angle
 	 * @return the fitness, where smaller values are preferred
 	 */
-	public static final double calculateFitness(Solution solution, double[] weights, double q) {
+	public static final double calculate(Solution solution, double[] weights, double q) {
 		double[] objectives = solution.getCanonicalObjectiveValues();
 		double magnitude = Vector.magnitude(objectives);
 		double cosine = Vector.dot(weights, Vector.divide(objectives, magnitude));

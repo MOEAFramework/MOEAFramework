@@ -29,6 +29,11 @@ public class Minimize extends AbstractObjective {
 		super(name);
 	}
 	
+	protected Minimize(String name, double value) {
+		super(name);
+		setValue(value);
+	}
+	
 	@Override
 	public double getCanonicalValue() {
 		return getValue();
@@ -52,21 +57,6 @@ public class Minimize extends AbstractObjective {
 	}
 	
 	@Override
-	public int getEpsilonIndex(double epsilon) {
-		return (int)Math.floor(getValue() / epsilon);
-	}
-	
-	@Override
-	public double getEpsilonDistance(double epsilon) {
-		return Math.abs(getValue() - getEpsilonIndex(epsilon) * epsilon);
-	}
-
-	@Override
-	public double applyWeight(double weight) {
-		return weight * getValue();
-	}
-	
-	@Override
 	public double getIdealValue() {
 		return Double.NEGATIVE_INFINITY;
 	}
@@ -76,9 +66,15 @@ public class Minimize extends AbstractObjective {
 	}
 	
 	public static Minimize value(double value) {
-		Minimize result = new Minimize();
-		result.value = value;
-		return result;
+		return new Minimize(null, value);
+	}
+	
+	public static Minimize value(String name) {
+		return new Minimize(name);
+	}
+	
+	public static Minimize value(String name, double value) {
+		return new Minimize(name, value);
 	}
 	
 }

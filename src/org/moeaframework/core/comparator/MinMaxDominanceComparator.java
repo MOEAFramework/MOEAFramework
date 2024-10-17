@@ -15,39 +15,37 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.algorithm.single;
+package org.moeaframework.core.comparator;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.comparator.AggregateConstraintComparator;
-import org.moeaframework.core.comparator.ChainedComparator;
 
 /**
- * Version of the weighted linear aggregate function that supports constraints.
+ * Weighted min-max aggregate function that supports constraints.
  * 
  * @see AggregateConstraintComparator
- * @see LinearObjectiveComparator
+ * @see MinMaxObjectiveComparator
  */
-public class LinearDominanceComparator extends ChainedComparator implements AggregateObjectiveComparator {
-
+public class MinMaxDominanceComparator extends ChainedComparator implements AggregateObjectiveComparator {
+	
 	/**
-	 * Constructs a new dominance comparator using a weighted linear aggregate function and constraints.  One weight
+	 * Constructs a new dominance comparator using a weighted min-max aggregate function and constraints.  One weight
 	 * should be given for each objective; if fewer weights are provided, the last weight is repeated for the 
 	 * remaining objectives.  Defaults to weights of {@code 1.0} if none are provided.
 	 * 
 	 * @param weights the weight vector
 	 */
-	public LinearDominanceComparator(double... weights) {
-		super(new AggregateConstraintComparator(), new LinearObjectiveComparator(weights));
+	public MinMaxDominanceComparator(double... weights) {
+		super(new AggregateConstraintComparator(), new MinMaxObjectiveComparator(weights));
 	}
 	
 	@Override
 	public double[] getWeights() {
-		return ((LinearObjectiveComparator)comparators[1]).getWeights();
+		return ((MinMaxObjectiveComparator)comparators[1]).getWeights();
 	}
 	
 	@Override
-	public double calculateFitness(Solution solution) {
-		return ((LinearObjectiveComparator)comparators[1]).calculateFitness(solution);
+	public double calculate(Solution solution) {
+		return ((MinMaxObjectiveComparator)comparators[1]).calculate(solution);
 	}
 
 }

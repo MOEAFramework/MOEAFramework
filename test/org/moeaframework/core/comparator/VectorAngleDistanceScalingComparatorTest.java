@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.algorithm.single;
+package org.moeaframework.core.comparator;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
@@ -26,7 +26,7 @@ import org.moeaframework.util.Vector;
 public class VectorAngleDistanceScalingComparatorTest {
 	
 	private double calculate(Solution solution, double[] weights) {
-		return VectorAngleDistanceScalingComparator.calculateFitness(solution, weights, 100.0);
+		return VectorAngleDistanceScalingComparator.calculate(solution, weights, 100.0);
 	}
 	
 	@Test

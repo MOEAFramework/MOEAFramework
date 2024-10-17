@@ -23,6 +23,8 @@ import java.util.Comparator;
 
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.comparator.AggregateObjectiveComparator;
+import org.moeaframework.core.comparator.LinearDominanceComparator;
 import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.initialization.Initialization;
 import org.moeaframework.core.initialization.RandomInitialization;

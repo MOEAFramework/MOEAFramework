@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.algorithm.single;
+package org.moeaframework.core.comparator;
 
 import org.moeaframework.core.Solution;
 
@@ -34,19 +34,19 @@ public class LinearObjectiveComparator extends AbstractAggregateObjectiveCompara
 	}
 	
 	@Override
-	public double calculateFitness(Solution solution) {
-		return calculateFitness(solution, weights);
+	public double calculate(Solution solution) {
+		return calculate(solution, weights);
 	}
 	
 	/**
-	 * Computes the weighted linear aggregate fitness of the solution.  One weight should be given for each objective;
+	 * Computes the weighted linear aggregate vaalue of the solution.  One weight should be given for each objective;
 	 * if fewer weights are provided, the last weight is repeated for the remaining objectives.
 	 * 
 	 * @param solution the solution
 	 * @param weights the weight vector
 	 * @return the fitness, where smaller values are preferred
 	 */
-	public static final double calculateFitness(Solution solution, double[] weights) {
+	public static final double calculate(Solution solution, double[] weights) {
 		double fitness = 0.0;
 		
 		for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
