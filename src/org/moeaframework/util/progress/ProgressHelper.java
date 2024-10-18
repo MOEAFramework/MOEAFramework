@@ -199,7 +199,7 @@ public class ProgressHelper {
 				(currentTime - startTime) / 1000.0,
 				(statistics.getMean() * percentRemaining) / 1000.0,
 				maxTime >= 0.0 ? maxTime / 1000.0 : maxTime);
-		
+				
 		listeners.fire().progressUpdate(event);
 	}
 	
@@ -242,16 +242,22 @@ public class ProgressHelper {
 		this.currentAlgorithm = algorithm;
 		
 	}
-
 	
 	/**
-	 * Increments the current seed and sets NFE to 0.  This method will generate a progress report.  This method should
-	 * be invoked after every seed completes in order to notify listeners that the seed completed.
+	 * Increments the current seed and sets NFE to 0, indicating the start of the next seed.
 	 */
-	public void nextSeed() {
+	public void startSeed() {
 		currentSeed++;
 		currentNFE = 0;
 		
+		updateStatistics();
+		sendProgressEvent(false);
+	}
+	
+	/**
+	 * This method should be invoked after every seed completes in order to notify listeners that the seed completed.
+	 */
+	public void finishSeed() {
 		updateStatistics();
 		sendProgressEvent(true);
 	}
@@ -271,9 +277,9 @@ public class ProgressHelper {
 		this.maxTime = maxTime;
 		
 		// reset all internal parameters
-		lastSeed = 1;
+		lastSeed = 0;
 		lastNFE = 0;
-		currentSeed = 1;
+		currentSeed = 0;
 		currentNFE = 0;
 		statistics.clear();
 		startTime = System.currentTimeMillis();
@@ -284,7 +290,7 @@ public class ProgressHelper {
 	 * Stops this progress helper.  No other methods should be invoked after calling this method.  However,
 	 * {@link #start(int, int, long)} can be called to reset and restart this progress helper.
 	 */
-	public void stop() {
+	public void finish() {
 		// this currently does nothing, but may be used in the future if we do anything to reduce the number of reports
 		// (i.e., send updates at most once every second)
 	}

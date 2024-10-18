@@ -140,10 +140,10 @@ public class DiagnosticToolTest {
 		Assert.assertEquals(2, stateChangedCount.get());
 		Assert.assertGreaterThanOrEqual(modelChangedCount.get(), 5);
 		Assert.assertGreaterThanOrEqual(viewChangedCount.get(), 5);
-		Assert.assertEquals(56, progressChangedCount.get()); // 11 per seed * 5 seeds + 1 final update
+		Assert.assertEquals(61, progressChangedCount.get()); // 12 per seed * 5 seeds + 1 final update
 
 		Assert.assertEquals(100, controller.getOverallProgress());
-		Assert.assertEquals(0, controller.getRunProgress());
+		Assert.assertEquals(100, controller.getRunProgress());
 
 		ResultKey key = new ResultKey("NSGAII", "DTLZ2_2");
 		Assert.assertNotNull(controller.get(key));

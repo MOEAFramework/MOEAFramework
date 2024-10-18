@@ -96,11 +96,11 @@ public class ExecutorTest {
 			.run();
 		
 		Assert.assertEquals(1, listener.getSeedCount());
-		Assert.assertEquals(11, listener.getCallCount());
-		Assert.assertEquals(0, listener.getLastEvent().getCurrentNFE()); // resets to 0 after calling nextSeed
+		Assert.assertEquals(12, listener.getCallCount());
+		Assert.assertEquals(1000, listener.getLastEvent().getCurrentNFE()); // resets to 0 after calling nextSeed
 		Assert.assertEquals(1000, listener.getLastEvent().getMaxNFE());
 		Assert.assertEquals(1, listener.getLastEvent().getTotalSeeds());
-		Assert.assertEquals(2, listener.getLastEvent().getCurrentSeed()); // TODO: is this OK?
+		Assert.assertEquals(1, listener.getLastEvent().getCurrentSeed());
 		Assert.assertEquals(1.0, listener.getLastEvent().getPercentComplete(), 0.0);
 		Assert.assertEquals(0.0, listener.getLastEvent().getRemainingTime(), 0.0);
 	}
@@ -117,11 +117,11 @@ public class ExecutorTest {
 			.runSeeds(5);
 		
 		Assert.assertEquals(5, listener.getSeedCount());
-		Assert.assertEquals(55, listener.getCallCount());
-		Assert.assertEquals(0, listener.getLastEvent().getCurrentNFE()); // resets to 0 after calling nextSeed
+		Assert.assertEquals(60, listener.getCallCount());
+		Assert.assertEquals(1000, listener.getLastEvent().getCurrentNFE());
 		Assert.assertEquals(1000, listener.getLastEvent().getMaxNFE());
 		Assert.assertEquals(5, listener.getLastEvent().getTotalSeeds());
-		Assert.assertEquals(6, listener.getLastEvent().getCurrentSeed());
+		Assert.assertEquals(5, listener.getLastEvent().getCurrentSeed());
 		Assert.assertEquals(1.0, listener.getLastEvent().getPercentComplete(), 0.0);
 		Assert.assertEquals(0.0, listener.getLastEvent().getRemainingTime(), 0.0);
 	}
@@ -167,8 +167,8 @@ public class ExecutorTest {
 		public void progressUpdate(ProgressEvent event) {
 			if (event.isSeedFinished()) {
 				Assert.assertNull(event.getCurrentAlgorithm());
-				Assert.assertTrue(event.getCurrentSeed() >= 0);
-				Assert.assertTrue(event.getCurrentNFE() == 0);
+				Assert.assertTrue(event.getCurrentSeed() > 0);
+				Assert.assertTrue(event.getCurrentNFE() > 0);
 				seedCount++;
 			} else {
 				Assert.assertNotNull(event.getCurrentAlgorithm());

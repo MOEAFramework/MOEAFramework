@@ -428,9 +428,12 @@ public class Controller {
 	 * @param totalSeeds the total number of seeds
 	 */
 	protected void updateProgress(int currentEvaluation, int currentSeed, int totalEvaluations, int totalSeeds) {
-		runProgress = (int)(100*currentEvaluation/(double)totalEvaluations);
-		overallProgress = (int)(100*(currentSeed > 0 ? currentSeed - 1 : 0)/(double)totalSeeds);
+		double evalPercent = currentEvaluation/(double)totalEvaluations;
+		double seedPercent = (currentSeed > 0 ? currentSeed - 1 : 0)/(double)totalSeeds;
 		
+		runProgress = (int)(100*evalPercent);
+		overallProgress = (int)(100*(seedPercent + evalPercent/(double)totalSeeds));
+				
 		fireProgressChangedEvent();
 	}
 	

@@ -665,10 +665,9 @@ public class Executor extends ProblemBuilder {
 		for (int i = 0; i < numberOfSeeds && !isCanceled.get(); i++) {
 			NondominatedPopulation result = runSingleSeed(i+1, numberOfSeeds);
 			results.add(result);
-			progress.nextSeed();
 		}
 		
-		progress.stop();
+		progress.finish();
 		
 		return results;
 	}
@@ -685,11 +684,8 @@ public class Executor extends ProblemBuilder {
 		long maxTime = properties.getTruncatedLong("maxTime", -1);
 		
 		progress.start(1, maxEvaluations, maxTime);
-		
 		NondominatedPopulation result = runSingleSeed(1, 1);
-		
-		progress.nextSeed();
-		progress.stop();
+		progress.finish();
 		
 		return result;
 	}
@@ -741,6 +737,7 @@ public class Executor extends ProblemBuilder {
 					
 			properties.warnIfUnaccessedProperties();
 			progress.setCurrentAlgorithm(algorithm);
+			progress.startSeed();
 
 			while (!algorithm.isTerminated() && !terminationCondition.shouldTerminate(algorithm)) {
 				// stop and return null if canceled and not yet complete
@@ -757,7 +754,8 @@ public class Executor extends ProblemBuilder {
 			}
 
 			result.addAll(algorithm.getResult());
-			progress.setCurrentAlgorithm(null);
+			progress.setCurrentAlgorithm(null); // TODO: Should we leave this set?
+			progress.finishSeed();
 				
 			return result;
 		}

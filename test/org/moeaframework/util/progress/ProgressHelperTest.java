@@ -83,22 +83,24 @@ public class ProgressHelperTest {
 		// overhead on the first event
 		helper.start(totalSeeds, maxNFE, -1);
 		helper.setCurrentNFE(frequency);
-		helper.stop();
+		helper.finish();
 		events.clear();
 		
 		helper.start(totalSeeds, maxNFE, -1);
 		Timer timer = Timer.startNew();
 		
 		for (int i = 0; i < totalSeeds; i++) {
+			helper.startSeed();
+			
 			for (int j = 0; j <= maxNFE-frequency; j += frequency) {
 				Wait.spinFor(delay);				
 				helper.setCurrentNFE(j+frequency);
 			}
 			
-			helper.nextSeed();
+			helper.finishSeed();
 		}
 				
-		int expectedCount = totalSeeds * (maxNFE/frequency + 1);
+		int expectedCount = totalSeeds * (maxNFE/frequency + 2);
 		double expectedTime = timer.stop();
 		double error = DurationUtils.toSeconds(delay.multipliedBy(2));
 		
@@ -151,13 +153,15 @@ public class ProgressHelperTest {
 		});
 		
 		helper.start(10, 100000, -1);
+		helper.startSeed();
 		helper.setCurrentNFE(0);
 		Wait.spinFor(Duration.ofMillis(50));
 		helper.setCurrentNFE(0);
 		Wait.spinFor(Duration.ofMillis(50));
-		helper.nextSeed();
+		helper.finishSeed();
+		helper.finish();
 		
-		Assert.assertEquals(3, events.size());
+		Assert.assertEquals(4, events.size());
 		Assert.assertTrue(Double.isNaN(events.get(0).getRemainingTime()));
 		Assert.assertTrue(Double.isNaN(events.get(1).getRemainingTime()));
 		Assert.assertTrue(events.get(2).getRemainingTime() > 0.0);
