@@ -22,6 +22,7 @@ import java.io.IOException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.spi.AlgorithmFactoryTestWrapper;
 import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
@@ -163,15 +164,22 @@ public class ExecutorTest {
 		
 		private ProgressEvent lastEvent = null;
 		
+		private Algorithm algorithm = null;
+		
 		@Override
 		public void progressUpdate(ProgressEvent event) {
+			if (event.getCurrentNFE() == 0) {
+				algorithm = event.getCurrentAlgorithm();
+				Assert.assertNotNull(algorithm);
+			} else {
+				Assert.assertSame(algorithm, event.getCurrentAlgorithm());
+			}
+			
 			if (event.isSeedFinished()) {
-				Assert.assertNull(event.getCurrentAlgorithm());
 				Assert.assertTrue(event.getCurrentSeed() > 0);
 				Assert.assertTrue(event.getCurrentNFE() > 0);
 				seedCount++;
 			} else {
-				Assert.assertNotNull(event.getCurrentAlgorithm());
 				Assert.assertTrue(event.getCurrentSeed() >= 0 && event.getCurrentSeed() <= event.getTotalSeeds());
 				Assert.assertTrue(event.getCurrentNFE() >= 0);
 			}

@@ -754,7 +754,6 @@ public class Executor extends ProblemBuilder {
 			}
 
 			result.addAll(algorithm.getResult());
-			progress.setCurrentAlgorithm(null); // TODO: Should we leave this set?
 			progress.finishSeed();
 				
 			return result;
