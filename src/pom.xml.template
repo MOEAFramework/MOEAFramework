@@ -218,6 +218,6 @@
 			<id>ossrh-snapshot</id>
 			<name>Nexus Snapshot Repository</name>
 			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-		</snapshotReposit
+		</snapshotRepository>
 	</distributionManagement>
 </project>
