@@ -390,7 +390,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		
 		<!-- TODO: Remove once JMetal-Plugin supports 5.0 -->
 		<condition property="jmetal-plugin.supported">
-			<matches pattern="[0-4]\.[0-9]+" string="${version}" />
+			<matches pattern="[0-4]\.[0-9]+(-SNAPSHOT)?" string="${version}" />
 		</condition>
 		
 		<echo unless:true="${jmetal-plugin.supported}">jmetal-plugin requires MOEA Framework &lt; 5.0. Removing dependency!</echo>

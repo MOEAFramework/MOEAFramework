@@ -266,7 +266,7 @@ public class Settings {
 			
 			PROPERTIES.setString(KEY_VERSION, version);
 			
-			Pattern pattern = Pattern.compile("([0-9]+)\\.([0-9]+)");
+			Pattern pattern = Pattern.compile("([0-9]+)\\.([0-9]+)(-SNAPSHOT)?");
 			Matcher matcher = pattern.matcher(version);
 			
 			if (!matcher.matches()) {
