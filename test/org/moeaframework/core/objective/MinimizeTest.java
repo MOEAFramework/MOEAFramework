@@ -94,6 +94,18 @@ public class MinimizeTest {
 		Assert.assertEquals(0.0, Minimize.value(1.0).getEpsilonDistance(0.5));
 	}
 	
-	// TODO: Fill in tests
+	@Test
+	public void testDistanceTo() {
+		Assert.assertEquals(0.0, Minimize.value(0.0).distanceTo(0.0));
+		Assert.assertEquals(0.5, Minimize.value(0.0).distanceTo(0.5));
+		Assert.assertEquals(0.5, Minimize.value(0.0).distanceTo(-0.5));
+	}
+	
+	@Test
+	public void testIdeal() {
+		Assert.assertEquals(0.0, Objective.ideal(Minimize.value(0.0), Minimize.value(0.0)).getValue());
+		Assert.assertEquals(0.0, Objective.ideal(Minimize.value(0.0), Minimize.value(0.5)).getValue());
+		Assert.assertEquals(0.0, Objective.ideal(Minimize.value(0.5), Minimize.value(0.0)).getValue());
+	}
 
 }
