@@ -9,7 +9,7 @@ This page documents notable changes introduced in each chronological release of 
 
 ## Version 4.5 (4 Oct 2024)
 
-  * Introduce extensions.  These are reusble components that extend or augment the functionality of an algorithm
+  * Introduce extensions.  These are reusable components that extend or augment the functionality of an algorithm
     without needing to create new classes.
     
   * Redefines the `algorithm.terminate()` method to be called whenever termination conditions are reached.  Also permits

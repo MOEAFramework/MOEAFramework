@@ -2,7 +2,8 @@
 
 ## Contributing
 
-Interested in contributing to the MOEA Framework?  All active development is handled in our GitHub repository at http://github.com/MOEAFramework/MOEAFramework.  Please follow the steps below to ensure your contribution is received
+Interested in contributing to the MOEA Framework?  All active development is handled in our GitHub repository at
+http://github.com/MOEAFramework/MOEAFramework.  Please follow the steps below to ensure your contribution is received
 and merged in a timely manner!
 
 ### Setting up a Development Environment
@@ -18,12 +19,11 @@ in Eclipse.  If you choose to use a different IDE, you might need to install the
 > downloaded from http://ant.apache.org/.
 > 
 > **JUnit 4** for running tests.  Due to licensing differences, JUnit is not provided alongside the MOEA Framework and
-> must be downloaded separately.  Visit https://github.com/junit-team/junit4/wiki/Download-and-Install and download
-> `junit.jar` and `hamcrest.jar` to the `lib/` folder.
+> must be downloaded separately.  Run `ant -f test.xml download-junit` to install JUnit.
 
 ### Codespaces
 
-If using GitHub Codespaces (or other compatible system), the following steps can be used to setup the environment:
+If using GitHub Codespaces (or other compatible system), the following steps can be used to set up the environment:
 
 ```
 sdk install java 17-zulu
@@ -48,7 +48,7 @@ outlines this process:
       your change.
 - [ ] Add any necessary tests to validate your changes.
 - [ ] Include any references or citations in the Javadoc comments.
-- [ ] Include the MOEA Framework copyright header at the beginning of every file.  You may include your or your
+- [ ] Include the MOEA Framework copyright header at the beginning of every file.  You may include your name and/or your
       institution's name in the copyright statement.
 - [ ] Open a [pull request](https://github.com/MOEAFramework/MOEAFramework/pulls) with your changes.
 - [ ] Monitor the pull request to ensure all tests pass and any reviewer feedback is addressed.
@@ -65,6 +65,7 @@ same `{major}` number are expected to be backwards compatible, for example allow
 
 Each release of the MOEA Framework targets a specific version of Java:
 
+* `5.x` - Java 17+
 * `4.x` - Java 17+
 * `3.x` - Java 8+
 * `2.x` - Java 6+ (some features are deprecated in Java 16+ and no longer work)
@@ -73,30 +74,6 @@ To determine if and when to update which Java version we target, we generally lo
 [support roadmap](https://www.oracle.com/java/technologies/java-se-support-roadmap.html) and favor LTS releases.
 While supporting earlier versions limits our use of newer language features, the tradeoff is supporting the widest
 possible audience.
-
-## Service Providers and Configuration
-
-This library uses Java's Service Provider Interface (SPI) to support extensibility.  See `AlgorithmProvider`,
-`ProblemProvider`, and `OperatorProvider`.  To introduce a new algorithm, problem, or operator, one would
-create a custom provider using one of these classes.  Then, add the new class to the appropriate file under
-`META-INF/services`.
-
-All algorithms and operators are expected to be configurable.  This means adding the appropriate setter methods
-as well as using the configuration API.  The configuration API uses reflections to dynamically discover and
-get/set an algorithm's configuration.  The only requirement is adding the `@Property` annotation to each
-setter method.
-
-## Writing Tests
-
-Given our target audience is the scientific community, testing is key for assuring the correctness and accuracy of this
-software.  However, given the stochastic nature of MOEAs, writing reliable unit tests has challenges.  To assist in
-writing tests, we have two constants, `TestThresholds.LOW_PRECISION` and `TestThresholds.HIGH_PRECISION`,
-that standardize the accuracy of tests.  Prefer using `HIGH_PRECISION` whenever possible.
-
-Despite our best efforts, some tests will occasionally fail due to randomness.  For such tests, we encourage adding
-the `@Retryable` attribute, which re-runs the test several times if it fails.  Be sure to also include
-`@RunWith(CIRunner.class)` on the test class.  Tests marked with `@Flaky` fail too frequently for inclusion in
-CI, but can still run manually.
 
 ## Building, Testing, and Packaging
 

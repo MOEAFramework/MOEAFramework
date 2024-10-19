@@ -32,6 +32,15 @@
     <th>Downloads</th>
   </tr>
   <tr>
+  	<td>4.5</td>
+  	<td>4 Oct 2024</td>
+  	<td>
+      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v4.5/MOEAFramework-4.5.tar.gz">Binary</a> |
+      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v4.5/MOEAFramework-4.5-Source.tar.gz">Source</a> |
+      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v4.5/MOEAFramework-4.5-Demo.jar">Demo</a>
+  	</td>
+  </tr>
+  <tr>
   	<td>4.4</td>
   	<td>4 Aug 2024</td>
   	<td>
