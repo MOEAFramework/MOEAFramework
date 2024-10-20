@@ -17,17 +17,18 @@
  */
 package org.moeaframework.problem;
 
-import java.util.Arrays;
 import java.util.function.Consumer;
 
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.initialization.RandomInitialization;
+import org.moeaframework.core.constraint.Constraint;
+import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProviderNotFoundException;
+import org.moeaframework.core.variable.Variable;
 import org.moeaframework.mock.MockSolution;
 
 /**
@@ -216,58 +217,51 @@ public abstract class ProblemTest {
 	 * @param problemB the second problem
 	 * @param exactConstraints if {@code true}, require identical constraint values
 	 */
-	protected void testAgainstJMetal(Problem problemA, Problem problemB, boolean exactConstraints) {
-		RandomInitialization initialization = new RandomInitialization(problemA);
-		
+	protected void testAgainstJMetal(Problem problemA, Problem problemB, boolean exactConstraints) {		
 		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
-			Solution solutionA = initialization.initialize(1)[0];
-			Solution solutionB = solutionA.copy();
+			Solution solutionA = problemA.newSolution();
+			Solution solutionB = problemB.newSolution();
+			
+			for (int j = 0; j < solutionA.getNumberOfVariables(); j++) {
+				solutionA.getVariable(j).randomize();
+				solutionB.setVariable(j, solutionA.getVariable(j).copy());
+			}
 			
 			problemA.evaluate(solutionA);
 			problemB.evaluate(solutionB);
-			
-			// JMetal only recognizes negative values as violating constraints, therefore fix the sign
-			// before performing exact comparisons.
-			if (exactConstraints && problemA.getNumberOfConstraints() > 0) {
-				double[] constraints = solutionA.getConstraintValues();
-				
-				for (int j = 0; j < constraints.length; j++) {
-					if (constraints[j] > 0.0) {
-						constraints[j] = -constraints[j];
-					}
-				}
-				
-				solutionA.setConstraintValues(constraints);
-			}
 			
 			try {
 				compare(solutionA, solutionB, exactConstraints);
 			} catch (AssertionError e) {
 				System.out.println("Solution comparison failed!");
-				System.out.println("  Problem: " + problemA.getName());
-				System.out.println("  Variables: " + formatVariables(solutionA));
-				System.out.println("  Objectives: " + Arrays.toString(solutionA.getObjectiveValues()) + " / " +
-						Arrays.toString(solutionB.getObjectiveValues()));
-				System.out.println("  Constraints: " + Arrays.toString(solutionA.getConstraintValues()) + " / " +
-						Arrays.toString(solutionB.getConstraintValues()));
+				System.out.println("  Problem: " + problemA.getName() + " // " + problemB.getName());
+				
+				for (int j = 0; j < solutionA.getNumberOfVariables(); j++) {
+					System.out.println("  " + Variable.getNameOrDefault(solutionA.getVariable(j), j) + ": " +
+							solutionA.getVariable(j).getDefinition() + " => " + solutionA.getVariable(j).encode() +
+							" // " +
+							solutionB.getVariable(j).getDefinition() + " => " + solutionB.getVariable(j).encode());
+				}
+				
+				for (int j = 0; j < solutionA.getNumberOfObjectives(); j++) {
+					System.out.println("  " + Objective.getNameOrDefault(solutionA.getObjective(j), j) + ": " +
+							solutionA.getObjective(j).getDefinition() + " => " + solutionA.getObjective(j).getValue() +
+							" // " +
+							solutionB.getObjective(j).getDefinition() + " => " + solutionB.getObjective(j).getValue());
+				}
+				
+				for (int j = 0; j < solutionA.getNumberOfConstraints(); j++) {
+					System.out.println("  " + Constraint.getNameOrDefault(solutionA.getConstraint(j), j) + ": " +
+							solutionA.getConstraint(j).getDefinition() + " => " + solutionA.getConstraint(j).getValue() +
+							" // " +
+							solutionB.getConstraint(j).getDefinition() + " => " + solutionB.getConstraint(j).getValue());
+				}
+				
+				System.out.println("  Feasibility: " + solutionA.isFeasible() + " // " + solutionB.isFeasible());
 				
 				throw e;
 			}
 		}
-	}
-	
-	protected String formatVariables(Solution solution) {
-		StringBuilder sb = new StringBuilder();
-		
-		for (int i = 0; i < solution.getNumberOfVariables(); i++) {
-			if (i > 0) {
-				sb.append(" ");
-			}
-			
-			sb.append(solution.getVariable(i).encode());
-		}
-		
-		return sb.toString();
 	}
 
 	/**
@@ -284,7 +278,7 @@ public abstract class ProblemTest {
 		
 		for (int i = 0; i < solutionA.getNumberOfConstraints(); i++) {
 			if (exactConstraints) {
-				Assert.assertEquals(solutionA.getConstraint(i), solutionB.getConstraint(i), TestThresholds.LOW_PRECISION);
+				Assert.assertEquals(solutionA.getConstraint(i).getValue(), solutionB.getConstraint(i).getValue(), TestThresholds.LOW_PRECISION);
 			} else {
 				// only check if constraints are feasible or not
 				Assert.assertEquals(solutionA.getConstraint(i).isViolation(), solutionB.getConstraint(i).isViolation());
