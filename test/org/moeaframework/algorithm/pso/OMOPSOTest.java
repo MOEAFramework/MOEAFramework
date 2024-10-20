@@ -35,11 +35,6 @@ public class OMOPSOTest extends JMetalAlgorithmTest {
 	public OMOPSOTest() {
 		super("OMOPSO");
 	}
-
-	@Override
-	public void test(String problem, String algorithm1, String algorithm2, boolean allowBetterPerformance) {
-		test(problem, algorithm1, algorithm2, allowBetterPerformance);
-	}
 	
 	@Test
 	public void testMaxIterations() {
