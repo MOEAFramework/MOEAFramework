@@ -75,18 +75,9 @@ possible audience.
 
 In addition to Javadoc comments included with source code, we also provide Markdown documentation under the `docs/`
 folder.  When adding example code to the documentation, we strongly recommend using our custom tool to sync examples
-with source code.  This tool looks for special comments embedded in the Markdown that identifies the language,
-source file, and section of code:
-
-````
-<!-- java:examples/Example1.java [33:40] -->
-
-```java
-...
-```
-````
-
-From this, we can then either validate or update the documentation:
+with source code.  This tool looks for special comments embedded in Markdown that identifies the language,
+source file, and section of code, such as `<!-- java:examples/Example1.java [33:40] -->`.  Then, we can either validate
+or update the documentation using:
 
 ```
 ant validate-docs
