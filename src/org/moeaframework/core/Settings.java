@@ -63,6 +63,16 @@ public class Settings {
 	 * The default population size.
 	 */
 	public static final int DEFAULT_POPULATION_SIZE = 100;
+	
+	/**
+	 * The default number of function evaluations, typically used when not given explicitly.
+	 */
+	public static final int DEFAULT_MAX_FUNCTION_EVALUATIONS = 25000;
+	
+	/**
+	 * The default number of iterations, typically used when not given explicitly.
+	 */
+	public static final int DEFAULT_MAX_ITERATIONS = DEFAULT_MAX_FUNCTION_EVALUATIONS / DEFAULT_POPULATION_SIZE;
 
 	/**
 	 * The default configuration file.

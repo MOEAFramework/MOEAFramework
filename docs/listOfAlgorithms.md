@@ -319,7 +319,7 @@ Parameter             | Default Value     | Description
 :-------------------- | :---------------- | :----------
 `populationSize`      | `100`             | The size of the population
 `archiveSize`         | `100`             | The size of the archive
-`maxEvaluations`      | `25000`           | The maximum number of evaluations for adapting non-uniform mutation
+`maxIterations`       | Unset             | The maximum number of iterations for adapting non-uniform mutation
 `mutationProbability` | `1/N`             | The mutation probability for uniform and non-uniform mutation
 `perturbationIndex`   | `0.5`             | Controls the shape of the distribution for uniform and non-uniform mutation
 `epsilon`             | Problem dependent | The $\epsilon$ values used by the $\epsilon$-dominance archive
@@ -404,12 +404,13 @@ with at least two objectives and can only use genetic operators requiring two pa
 Parameter            | Default Value     | Description
 :------------------- | :---------------- | :----------
 `populationSize`     | Unset             | The size of the population.  If unset, the population size is equal to the number of reference vectors
+`maxIterations`      | Unset             | The maximum number of iterations for the angle-penalized distance to transition between convergence and diversity
 `operator`           | Problem dependent | The variation (crossover and/or mutation) operator
 `divisions`          | Problem dependent | The number of divisions
 `divisionsInner`     | Unset             | The number of inner divisions when using the two-layer approach
 `divisionsOuter`     | Unset             | The number of outer divisions when using the two-layer approach
 `alpha`              | `2`               | Controls the rate of change in the angle-penalized distance function
-`adaptFrequency`     | $\texttt{maxEvaluations / (populationSize * 10)}$ | The frequency (in generations) in which the weights are adapted / scaled
+`adaptFrequency`     | `10`              | The frequency (in iterations) in which the weights are adapted / scaled
 
 See the [NSGA-III](#nsga-iii) documentation for details on generating reference vectors and the two-layer approach.
 

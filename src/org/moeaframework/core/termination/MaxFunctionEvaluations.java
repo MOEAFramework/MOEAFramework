@@ -53,5 +53,30 @@ public class MaxFunctionEvaluations implements TerminationCondition {
 	public boolean shouldTerminate(Algorithm algorithm) {
 		return (algorithm.getNumberOfEvaluations() - startingEvaluations) >= maxEvaluations;
 	}
+	
+	/**
+	 * Attempts to determine the maximum number of function evaluations that would execute given the termination
+	 * condition.
+	 * 
+	 * @param terminationCondition the termination condition
+	 * @return the max number of function evaluations, or {@code -1} if the value could not be derived
+	 */
+	public static int derive(TerminationCondition terminationCondition) {
+		if (terminationCondition instanceof MaxFunctionEvaluations maxFunctionEvaluations) {
+			return maxFunctionEvaluations.maxEvaluations;
+		}
+		
+		if (terminationCondition instanceof CompoundTerminationCondition compound) {
+			for (TerminationCondition condition : compound) {
+				int result = derive(condition);
+				
+				if (result >= 0) {
+					return result;
+				}
+			}
+		}
+		
+		return -1;
+	}
 
 }

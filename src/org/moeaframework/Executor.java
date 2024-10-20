@@ -28,6 +28,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.extension.CheckpointExtension;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.AlgorithmFactory;
@@ -631,8 +632,9 @@ public class Executor extends ProblemBuilder {
 		
 		// return the termination conditions
 		if (conditions.size() == 0) {
-			System.err.println("no termination conditions set, setting to 25,000 max evaluations");
-			return new MaxFunctionEvaluations(25000);
+			System.err.println("no termination conditions set, setting to " +
+					Settings.DEFAULT_MAX_FUNCTION_EVALUATIONS + " max evaluations");
+			return new MaxFunctionEvaluations(Settings.DEFAULT_MAX_FUNCTION_EVALUATIONS);
 		} else if (conditions.size() == 1) {
 			return conditions.get(0);
 		} else {

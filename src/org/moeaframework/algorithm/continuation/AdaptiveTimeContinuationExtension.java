@@ -122,7 +122,7 @@ public class AdaptiveTimeContinuationExtension extends PeriodicExtension impleme
 	public AdaptiveTimeContinuationExtension(int windowSize, int maxWindowSize, double injectionRate,
 			int minimumPopulationSize, int maximumPopulationSize, Selection restartSelection,
 			Variation restartVariation) {
-		super(windowSize, FrequencyType.STEPS);
+		super(windowSize, FrequencyType.ITERATIONS);
 		setMaxWindowSize(maxWindowSize);
 		setInjectionRate(injectionRate);
 		setMinimumPopulationSize(minimumPopulationSize);

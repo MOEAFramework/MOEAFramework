@@ -219,8 +219,8 @@ public class ProgressHelper {
 	 * Sets the current seed.  This call will have no affect if the current seed is unchanged.  This method will
 	 * generate a progress report if the current seed changes.
 	 * <p>
-	 * <b>It is strongly recommended that {@link #nextSeed()} is used instead of this method, as {@code nextSeed()}
-	 * sets the current NFE to 0.</b>
+	 * When looping over seeds, we recommend calling {@link #startSeed()} and {@link #finishSeed()} instead of manually
+	 * setting the seed, as these methods ensure all other fields are reset properly at the start of the seed. 
 	 * 
 	 * @param currentSeed the current seed being processed, starting at {@code 1}
 	 */

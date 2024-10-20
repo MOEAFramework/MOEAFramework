@@ -74,7 +74,7 @@ public abstract class PeriodicExtension implements Extension, Stateful {
 	public void onRegister(Algorithm algorithm) {
 		switch (frequencyType) {
 			case EVALUATIONS -> lastInvocation = algorithm.getNumberOfEvaluations();
-			case STEPS -> lastInvocation = 0;
+			case ITERATIONS -> lastInvocation = 0;
 			default -> throw new IllegalStateException();
 		}
 	}
@@ -88,7 +88,7 @@ public abstract class PeriodicExtension implements Extension, Stateful {
 					lastInvocation = algorithm.getNumberOfEvaluations();
 				}
 			}
-			case STEPS -> {
+			case ITERATIONS -> {
 				iteration++;
 				
 				if ((iteration - lastInvocation) >= frequency) {

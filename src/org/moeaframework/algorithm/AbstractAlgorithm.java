@@ -35,7 +35,7 @@ import org.moeaframework.util.validate.Validate;
  *   <li>Use the {@link #evaluate} or {@link #evaluateAll} methods provided by this class. Do not call
  *       {@link Problem#evaluate} directly as that will not count the number of function evaluations correctly.
  *   <li>When possible, prefer evaluating all solutions at once by calling {@link #evaluateAll}. Doing so allows
- *       function evaluations to run in parallel when enabled (see {@code Executor#distributeOnAllCores()}).
+ *       function evaluations to run in parallel when enabled.
  *   <li>Implement the algorithm by overriding the {@link #initialize()} and {@link #iterate()} methods.
  * </ol>
  */

@@ -29,6 +29,8 @@ import org.moeaframework.core.fitness.CrowdingDistanceFitnessEvaluator;
 import org.moeaframework.core.fitness.FitnessBasedArchive;
 import org.moeaframework.core.operator.TypeSafeMutation;
 import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
+import org.moeaframework.core.termination.MaxFunctionEvaluations;
+import org.moeaframework.core.termination.TerminationCondition;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.validate.Validate;
@@ -65,14 +67,14 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 	 * @param maxIterations the maximum number of iterations for scaling non-uniform mutation; typically this should be
 	 *        {@code maxEvaluations / swarmSize}
 	 */
-	public OMOPSO(Problem problem, int maxIterations) {
+	public OMOPSO(Problem problem) {
 		this(problem,
 				Settings.DEFAULT_POPULATION_SIZE,
 				Settings.DEFAULT_POPULATION_SIZE,
 				DefaultEpsilons.getInstance().getEpsilons(problem),
 				1.0 / problem.getNumberOfVariables(),
 				0.5,
-				maxIterations);
+				-1);
 	}
 	
 	/**
@@ -160,15 +162,37 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 	}
 	
 	/**
+	 * Returns the maximum number of iterations for scaling the non-uniform mutation.
+	 * 
+	 * @return the maximum number of iterations for scaling the non-uniform mutation
+	 */
+	public int getMaxIterations() {
+		return nonUniformMutation.maxIterations;
+	}
+	
+	/**
 	 * Sets the maximum number of iterations for scaling the non-uniform mutation.  Typically this should be set to
-	 * {@code maxEvaluations / swarmSize}.
+	 * {@code maxEvaluations / swarmSize}.  However, setting to {@code -1} will derive the value from the termination
+	 * conditions.
 	 * 
 	 * @param maxIterations the maximum number of iterations
 	 */
-	protected void setMaxIterations(int maxIterations) {
-		Validate.that("maxIterations", maxIterations).isGreaterThan(0);
-		
+	@Property
+	public void setMaxIterations(int maxIterations) {
 		nonUniformMutation.maxIterations = maxIterations;
+	}
+	
+	@Override
+	public void run(TerminationCondition terminationCondition) {
+		if (nonUniformMutation.maxIterations < 0) {
+			int maxFunctionEvaluations = MaxFunctionEvaluations.derive(terminationCondition);
+			
+			if (maxFunctionEvaluations >= 0) {
+				nonUniformMutation.maxIterations = maxFunctionEvaluations / getSwarmSize();
+			}
+		}
+		
+		super.run(terminationCondition);
 	}
 	
 	@Override
@@ -236,6 +260,11 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 		}
 		
 		public double getDelta(double difference) {
+			if (maxIterations < 0) {
+				maxIterations = Settings.DEFAULT_MAX_ITERATIONS;
+				System.err.println("maxIterations not configured for OMOPSO, defaulting to " + maxIterations);
+			}
+			
 			int currentIteration = getNumberOfEvaluations() / getSwarmSize();
 			double fraction = currentIteration / (double)maxIterations;
 			

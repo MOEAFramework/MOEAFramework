@@ -71,17 +71,17 @@ public class PeriodicExtensionTest {
 	
 	@Test
 	public void testStepsExact() {
-		test(1, FrequencyType.STEPS, 1000);
+		test(1, FrequencyType.ITERATIONS, 1000);
 	}
 	
 	@Test
 	public void testStepsLarger() {
-		test(10, FrequencyType.STEPS, 100);
+		test(10, FrequencyType.ITERATIONS, 100);
 	}
 	
 	@Test
 	public void testStepsMax() {
-		test(1000, FrequencyType.STEPS, 1);
+		test(1000, FrequencyType.ITERATIONS, 1);
 	}
 	
 	public void test(int frequency, FrequencyType type, int expected) {

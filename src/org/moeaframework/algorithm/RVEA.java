@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.moeaframework.core.PRNG;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.configuration.Property;
@@ -33,6 +34,8 @@ import org.moeaframework.core.operator.Variation;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.core.population.ReferenceVectorGuidedPopulation;
 import org.moeaframework.core.spi.OperatorFactory;
+import org.moeaframework.core.termination.MaxFunctionEvaluations;
+import org.moeaframework.core.termination.TerminationCondition;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.validate.Validate;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
@@ -52,20 +55,20 @@ import org.moeaframework.util.weights.NormalBoundaryDivisions;
  * </ol>
  */
 public class RVEA extends AbstractEvolutionaryAlgorithm {
-	
+		
 	/**
-	 * The current generation;
+	 * The current iteration;
 	 */
-	private int generation;
+	private int iteration;
 	
 	/**
-	 * The maximum number of generations for the angle-penalized distance to transition between convergence and
+	 * The maximum number of iterations for the angle-penalized distance to transition between convergence and
 	 * diversity.
 	 */
-	private final int maxGeneration;
+	private int maxIterations;
 	
 	/**
-	 * The frequency, in generations, that the reference vectors are normalized.
+	 * The frequency, in iterations, that the reference vectors are normalized.
 	 */
 	private int adaptFrequency;
 	
@@ -73,11 +76,10 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 	 * Constructs a new instance of RVEA with default settings.
 	 * 
 	 * @param problem the problem being solved
-	 * @param maxGeneration the maximum number of generations for the angle-penalized distance to transition
-	 *        between convergence and diversity
 	 */
-	public RVEA(Problem problem, int maxGeneration) { // TODO: can we remove maxGenerations?
-		this(problem, NormalBoundaryDivisions.forProblem(problem), maxGeneration);
+	public RVEA(Problem problem) {
+		this(problem, NormalBoundaryDivisions.forProblem(problem));
+
 	}
 	
 	/**
@@ -85,17 +87,15 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 	 * 
 	 * @param problem the problem being solved
 	 * @param divisions the number of divisions used by the reference vector guided population
-	 * @param maxGeneration the maximum number of generations for the angle-penalized distance to transition
-	 *        between convergence and diversity
 	 */
-	public RVEA(Problem problem, NormalBoundaryDivisions divisions, int maxGeneration) {
+	RVEA(Problem problem, NormalBoundaryDivisions divisions) {
 		this(problem,
 				divisions.getNumberOfReferencePoints(problem),
 				new ReferenceVectorGuidedPopulation(problem.getNumberOfObjectives(), divisions),
 				OperatorFactory.getInstance().getVariation(problem),
 				new RandomInitialization(problem),
-				maxGeneration,
-				maxGeneration / 10);
+				-1,
+				10);
 	}
 
 	/**
@@ -106,14 +106,14 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 	 * @param population the population used to store solutions
 	 * @param variation the variation operator
 	 * @param initialization the initialization method
-	 * @param maxGeneration the maximum number of generations for the angle-penalized distance to transition
+	 * @param maxIterations the maximum number of iterations for the angle-penalized distance to transition
 	 *        between convergence and diversity
-	 * @param adaptFrequency the frequency, in generations, that the reference vectors are normalized
+	 * @param adaptFrequency the frequency, in iterations, that the reference vectors are normalized
 	 */
 	public RVEA(Problem problem, int initialPopulationSize, ReferenceVectorGuidedPopulation population,
-			Variation variation, Initialization initialization, int maxGeneration, int adaptFrequency) {
+			Variation variation, Initialization initialization, int maxIterations, int adaptFrequency) {
 		super(problem, initialPopulationSize, population, null, initialization, variation);
-		this.maxGeneration = maxGeneration;
+		this.maxIterations = maxIterations;
 		this.adaptFrequency = adaptFrequency;
 		
 		// catch potential errors
@@ -129,7 +129,12 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 		int populationSize = population.size();
 		
 		// update the scaling factor for computing the angle-penalized distance
-		population.setScalingFactor(Math.min(generation / (double)maxGeneration, 1.0));
+		if (maxIterations < 0) {
+			maxIterations = Settings.DEFAULT_MAX_ITERATIONS;
+			System.err.println("maxIterations not configured for RVEA, defaulting to " + maxIterations);
+		}
+		
+		population.setScalingFactor(Math.min(iteration / (double)maxIterations, 1.0));
 		
 		// create a random permutation of the population indices
 		List<Integer> indices = new ArrayList<Integer>();
@@ -160,31 +165,52 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 		population.truncate();
 		
 		// periodically normalize the reference vectors
-		if ((generation > 0) && (generation % adaptFrequency == 0)) {
+		if ((iteration > 0) && (iteration % adaptFrequency == 0)) {
 			population.adapt();
 		}
 		
-		generation++;
+		iteration++;
 	}
 	
 	/**
-	 * Returns the frequency, in generations, that the reference vectors are normalized.
+	 * Returns the frequency, in iterations, that the reference vectors are normalized.
 	 * 
-	 * @return the frequency, in generations
+	 * @return the frequency, in iterations
 	 */
 	public int getAdaptFrequency() {
 		return adaptFrequency;
 	}
 	
 	/**
-	 * Sets the frequency, in generations, that the reference vectors are normalized.
+	 * Sets the frequency, in iterations, that the reference vectors are normalized.
 	 * 
-	 * @param adaptFrequency the frequency, in generations
+	 * @param adaptFrequency the frequency, in iterations
 	 */
 	@Property
 	public void setAdaptFrequency(int adaptFrequency) {
 		Validate.that("adaptFrequency", adaptFrequency).isGreaterThan(0);
 		this.adaptFrequency = adaptFrequency;
+	}
+	
+	/**
+	 * Returns the maximum number of iterations for the angle-penalized distance to transition between convergence and
+	 * diversity.
+	 * 
+	 * @return the maximum number of iterations
+	 */
+	public int getMaxIterations() {
+		return maxIterations;
+	}
+	
+	/**
+	 * Sets the maximum number of iterations for the angle-penalized distance to transition between convergence and
+	 * diversity.  If set to {@code -1}, the max iterations will be derived from {@link #run(int)}.
+	 * 
+	 * @param maxIterations the maximum number of iterations
+	 */
+	@Property
+	public void setMaxIterations(int maxIterations) {
+		this.maxIterations = maxIterations;
 	}
 	
 	@Override
@@ -204,6 +230,19 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 		super.setInitialPopulationSize(initialPopulationSize);
 	}
 	
+	@Override
+	public void run(TerminationCondition terminationCondition) {
+		if (maxIterations < 0) {
+			int maxFunctionEvaluations = MaxFunctionEvaluations.derive(terminationCondition);
+			
+			if (maxFunctionEvaluations >= 0) {
+				maxIterations = maxFunctionEvaluations / getInitialPopulationSize();
+			}
+		}
+		
+		super.run(terminationCondition);
+	}
+
 	@Override
 	public void applyConfiguration(TypedProperties properties) {		
 		NormalBoundaryDivisions divisions = getPopulation().getDivisions();
@@ -240,14 +279,14 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 	@Override
 	public void saveState(ObjectOutputStream stream) throws IOException {
 		super.saveState(stream);
-		stream.writeInt(generation);
+		stream.writeInt(iteration);
 		getPopulation().saveState(stream);
 	}
 
 	@Override
 	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		super.loadState(stream);
-		generation = stream.readInt();
+		iteration = stream.readInt();
 		getPopulation().loadState(stream);
 	}
 

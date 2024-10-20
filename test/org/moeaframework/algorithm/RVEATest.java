@@ -31,7 +31,7 @@ public class RVEATest {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testConstructorRequiresAtLeastTwoObjectives() {
-		new RVEA(new MockRealProblem(), 100);
+		new RVEA(new MockRealProblem());
 	}
 	
 	@Test(expected=ProviderNotFoundException.class)
@@ -44,9 +44,20 @@ public class RVEATest {
 		Problem problem = new MockRealProblem(2);
 		NormalBoundaryDivisions divisions = NormalBoundaryDivisions.forProblem(problem);
 		
-		RVEA algorithm = new RVEA(problem, 100);
+		RVEA algorithm = new RVEA(problem);
 		
 		Assert.assertEquals(divisions, algorithm.getPopulation().getDivisions());
+	}
+	
+	@Test
+	public void testMaxIterations() {
+		Problem problem = new MockRealProblem(2);
+		
+		RVEA algorithm = new RVEA(problem);
+		Assert.assertEquals(-1, algorithm.getMaxIterations());
+		
+		algorithm.run(10000);
+		Assert.assertEquals(100, algorithm.getMaxIterations());
 	}
 	
 	@Test
@@ -54,16 +65,18 @@ public class RVEATest {
 		Problem problem = new MockRealProblem(2);
 		NormalBoundaryDivisions divisions = new NormalBoundaryDivisions(10);
 		
-		RVEA algorithm = new RVEA(problem, 100);
+		RVEA algorithm = new RVEA(problem);
 		algorithm.applyConfiguration(divisions.toProperties());
-		
 		Assert.assertEquals(divisions, algorithm.getPopulation().getDivisions());
+		
+		algorithm.applyConfiguration(TypedProperties.of("maxIterations", "20"));
+		Assert.assertEquals(20, algorithm.getMaxIterations());
 	}
 	
 	@Test
 	public void testAlpha() {
 		Problem problem = new MockRealProblem(2);		
-		RVEA algorithm = new RVEA(problem, 100);
+		RVEA algorithm = new RVEA(problem);
 		
 		TypedProperties properties = algorithm.getConfiguration();
 		Assert.assertEquals(algorithm.getPopulation().getAlpha(), properties.getDouble("alpha"), TestThresholds.HIGH_PRECISION);

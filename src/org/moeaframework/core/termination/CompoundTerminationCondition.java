@@ -17,12 +17,15 @@
  */
 package org.moeaframework.core.termination;
 
+import java.util.Iterator;
+
 import org.moeaframework.algorithm.Algorithm;
+import org.moeaframework.util.Iterators;
 
 /**
  * Terminates a run when one or more termination conditions are satisfied.
  */
-public class CompoundTerminationCondition implements TerminationCondition {
+public class CompoundTerminationCondition implements TerminationCondition, Iterable<TerminationCondition> {
 	
 	/**
 	 * The termination conditions.
@@ -58,6 +61,11 @@ public class CompoundTerminationCondition implements TerminationCondition {
 		}
 		
 		return shouldTerminate;
+	}
+
+	@Override
+	public Iterator<TerminationCondition> iterator() {
+		return Iterators.of(conditions);
 	}
 
 }

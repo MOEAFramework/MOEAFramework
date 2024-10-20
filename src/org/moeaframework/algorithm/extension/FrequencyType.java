@@ -17,8 +17,6 @@
  */
 package org.moeaframework.algorithm.extension;
 
-import org.moeaframework.algorithm.Algorithm;
-
 /**
  * Defines the type of frequency.
  */
@@ -30,8 +28,8 @@ public enum FrequencyType {
 	EVALUATIONS,
 	
 	/**
-	 * The frequency measures the number of invocations of {@link Algorithm#step()}.
+	 * The frequency measures the number of iterations.
 	 */
-	STEPS
+	ITERATIONS
 	
 }

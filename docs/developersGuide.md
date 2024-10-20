@@ -1,12 +1,25 @@
 # Developer's Guide
 
-## Contributing
-
 Interested in contributing to the MOEA Framework?  All active development is handled in our GitHub repository at
 http://github.com/MOEAFramework/MOEAFramework.  Please follow the steps below to ensure your contribution is received
 and merged in a timely manner!
 
-### Setting up a Development Environment
+## Checklist
+
+To make the process of contributing changes as efficient as possible, please follow this checklist:
+
+- [ ] Acknowledge that your contributions will be included in the MOEA Framework and licensed under the GNU Lesser
+      General Public License.  See `COPYING` for details.
+- [ ] Add any necessary tests to validate your changes.
+- [ ] Include any references or citations in the Javadoc comments.
+- [ ] Include the MOEA Framework copyright header at the beginning of every file.  You may include your name and/or your
+      institution's name in the copyright statement.
+- [ ] Open a [pull request](https://github.com/MOEAFramework/MOEAFramework/pulls) with your changes.
+- [ ] Monitor the pull request to ensure all tests pass and any reviewer feedback is addressed.
+
+If everything looks good, we will approve and merge the changes for you.  Thank you for contributing to this project!
+
+## Setting up a Development Environment
 
 We recommend using [Eclipse](http://eclipse.org/) when working with the MOEA Framework as all dependencies are included
 in Eclipse.  If you choose to use a different IDE, you might need to install the following dependencies separately:
@@ -38,24 +51,7 @@ ant -f test.xml install-junit
 ant -f test.xml test
 ```
 
-### Checklist
-
-After making and testing your changes locally, the next step is to submit the code for review.  The checklist below
-outlines this process:
-
-- [ ] Acknowledge that your contributions will be included in the MOEA Framework and licensed under the GNU Lesser
-      General Public License, version 3 or later.  This also applies to any third-party code or libraries included in
-      your change.
-- [ ] Add any necessary tests to validate your changes.
-- [ ] Include any references or citations in the Javadoc comments.
-- [ ] Include the MOEA Framework copyright header at the beginning of every file.  You may include your name and/or your
-      institution's name in the copyright statement.
-- [ ] Open a [pull request](https://github.com/MOEAFramework/MOEAFramework/pulls) with your changes.
-- [ ] Monitor the pull request to ensure all tests pass and any reviewer feedback is addressed.
-
-If everything looks good, we will approve and merge the changes for you.  Thank you for contributing to this project!
-
-## Versioning
+## Versions
 
 We use [semantic versioning](https://semver.org/) following the pattern `{major}.{minor}`.  Two versions with the
 same `{major}` number are expected to be backwards compatible, for example allowing one to upgrade from `4.0` to
@@ -75,6 +71,29 @@ To determine if and when to update which Java version we target, we generally lo
 While supporting earlier versions limits our use of newer language features, the tradeoff is supporting the widest
 possible audience.
 
+## Documentation
+
+In addition to Javadoc comments included with source code, we also provide Markdown documentation under the `docs/`
+folder.  When adding example code to the documentation, we strongly recommend using our custom tool to sync examples
+with source code.  This tool looks for special comments embedded in the Markdown that identifies the language,
+source file, and section of code:
+
+````
+<!-- java:examples/Example1.java [33:40] -->
+
+```java
+...
+```
+````
+
+From this, we can then either validate or update the documentation:
+
+```
+ant validate-docs
+ant update-docs
+```
+
+
 ## Building, Testing, and Packaging
 
 This project uses Apache Ant to compile, test, and package the code.  If using Eclipse, drag-and-drop `build.xml`
@@ -93,8 +112,13 @@ from `test.xml`, or from the terminal run:
 ant -f test.xml test
 ```
 
-We also have a custom tool to validate code examples in our Markdown and HTML documentation.  Use the
-`validate-docs` and `update-docs` targets to keep the examples in sync.
+We strongly recommend installing all test dependencies by running:
+
+```
+ant -f test.xml download-all
+```
+
+as some tests are skipped if the dependency is not available.
 
 ### Maven
 
@@ -107,6 +131,21 @@ cd build
 mvn test
 ```
 
-We use `mvn deploy` to stage each release to Sonatype Nexus, followed by a manual step to approve and release each
-new version to Maven Central for consumption.  Please note it can take a few hours for a new release to be available.
-For more details on the deploy process, see the `staging.yml` workflow file for GitHub Actions.
+### Continuous Integration
+
+When code changes are pushed to the GitHub repository, our CI tests are automatically run.  These are powered by the
+`ci.yml` workflow, and run all tests against the supported versions of Java, Maven, etc.
+
+### Snapshots
+
+Snapshots are unofficial, development releases of a project primarily used for testing purposes.  Some project call
+these "nightlies" or "nightly builds".  While we do not publish snapshots on a regular cadence and prefer operating
+from the `master` branch, please open an issue on GitHub if you require one.
+
+### Releases
+
+New releases are published by the `staging.yml` workflow file running on GitHub Actions.  This workflow stages the
+artifacts to GitHub Releases and Maven and triggers our [integration tests](https://github.com/MOEAFramework/IntegrationTests).
+After validating the release, we then manually release the new version.
+
+Please note that it can take several hours for the new release to be available for download using Maven.

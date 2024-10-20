@@ -59,11 +59,11 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		register(fromProblem(MSOPS::new), "MSOPS");
 		register(fromProblem(NSGAII::new), "NSGAII", "NSGA-II", "NSGA2");
 		register(fromProblem(NSGAIII::new), "NSGAIII", "NSGA-III", "NSGA3");
-		register(fromProblemWithIterations(OMOPSO::new), "OMOPSO");
+		register(fromProblem(OMOPSO::new), "OMOPSO");
 		register(fromProblem(PAES::new), "PAES");
 		register(fromProblem(PESA2::new), "PESA2");
 		register(fromProblem(RandomSearch::new), "Random");
-		register(fromProblemWithIterations(RVEA::new), "RVEA");
+		register(fromProblem(RVEA::new), "RVEA");
 		register(fromProblem(SMPSO::new), "SMPSO");
 		register(fromProblem(SMSEMOA::new), "SMSEMOA", "SMS-EMOA");
 		register(fromProblem(SPEA2::new), "SPEA2");
@@ -120,24 +120,11 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 			Function<Problem, T> supplier) {
 		return (TypedProperties properties, Problem problem) -> {
 			T algorithm = supplier.apply(problem);
-			algorithm.applyConfiguration(properties);
-			return algorithm;
-		};
-	}
-	
-	/**
-	 * Takes a reference to an algorithm constructor and returns a function that creates configured instances
-	 * of the algorithm.  This variant works with constructors that take a second int argument specifying the
-	 * number of iterations or generations.
-	 * 
-	 * @param <T> the type of algorithm, must implement {@link Algorithm} and {@link Configurable}
-	 * @param supplier reference to the constructor
-	 * @return a function that creates and configures instances of the algorithm
-	 */
-	private <T extends Algorithm & Configurable> BiFunction<TypedProperties, Problem, Algorithm> fromProblemWithIterations(
-			BiFunction<Problem, Integer, T> supplier) {
-		return (TypedProperties properties, Problem problem) -> {
-			T algorithm = supplier.apply(problem, getMaxIterations(properties));
+			
+			if (algorithm.getConfiguration().contains("maxIterations") && !properties.contains("maxIterations")) {
+				properties.setInt("maxIterations", getMaxIterations(properties));
+			}
+			
 			algorithm.applyConfiguration(properties);
 			return algorithm;
 		};
@@ -159,7 +146,9 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		if (properties.contains("maxIterations")) {
 			return properties.getTruncatedInt("maxIterations");
 		} else {
-			int maxEvaluations = properties.getTruncatedInt("maxEvaluations", 25000);
+			int maxEvaluations = properties.getTruncatedInt("maxEvaluations",
+					Settings.DEFAULT_MAX_FUNCTION_EVALUATIONS);
+			
 			int populationSize = properties.getTruncatedInt("populationSize",
 					properties.getTruncatedInt("swarmSize", Settings.DEFAULT_POPULATION_SIZE));
 						

@@ -45,9 +45,21 @@ public class OMOPSOTest extends JMetalAlgorithmTest {
 	}
 	
 	@Test
+	public void testMaxIterations() {
+		Problem problem = new MockRealProblem(2);
+		
+		OMOPSO algorithm = new OMOPSO(problem);
+		Assert.assertEquals(-1, algorithm.getMaxIterations());
+		
+		algorithm.run(10000);
+		Assert.assertEquals(100, algorithm.getMaxIterations());
+	}
+	
+	@Test
 	public void testConfiguration() {
-		Problem problem = new MockRealProblem(2);	
-		OMOPSO algorithm = new OMOPSO(problem, 100);
+		Problem problem = new MockRealProblem(2);
+		
+		OMOPSO algorithm = new OMOPSO(problem);
 		
 		Assert.assertArrayEquals(algorithm.getArchive().getComparator().getEpsilons().toArray(),
 				algorithm.getConfiguration().getDoubleArray("epsilon"),
@@ -70,6 +82,9 @@ public class OMOPSOTest extends JMetalAlgorithmTest {
 		Assert.assertArrayEquals(new double[] { 0.1, 0.2 },
 				algorithm.getConfiguration().getDoubleArray("epsilon"),
 				TestThresholds.HIGH_PRECISION);
+		
+		algorithm.applyConfiguration(TypedProperties.of("maxIterations", "20"));
+		Assert.assertEquals(20, algorithm.getMaxIterations());
 	}
 
 }
