@@ -36,7 +36,6 @@ public class RandomInitializationTest {
 	public void testMixedType() {
 		Problem problem = new MockProblem(6, 0) {
 			
-			@SuppressWarnings("serial")
 			@Override
 			public Solution newSolution() {
 				Rules rules = new Rules();
@@ -50,6 +49,8 @@ public class RandomInitializationTest {
 				solution.setVariable(3, new Grammar(4));
 				solution.setVariable(4, new Program(rules));
 				solution.setVariable(5, new MockUnsupportedVariable() {
+
+					private static final long serialVersionUID = -4706188106116520632L;
 
 					@Override
 					public void randomize() {

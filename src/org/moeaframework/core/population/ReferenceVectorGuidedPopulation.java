@@ -63,12 +63,12 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	/**
 	 * The original, unnormalized reference vectors.
 	 */
-	private List<double[]> originalWeights;
+	private double[][] originalWeights;
 
 	/**
 	 * The normalized reference vectors.
 	 */
-	List<double[]> weights;
+	double[][] weights;
 	
 	/**
 	 * The minimum angle between reference vectors.
@@ -184,22 +184,22 @@ public class ReferenceVectorGuidedPopulation extends Population {
 		}
 		
 		// create the new normalized reference vectors
-		weights.clear();
+		weights = new double[originalWeights.length][];
 		
-		for (double[] weight : originalWeights) {
-			double[] newWeight = weight.clone();
+		for (int i = 0; i < originalWeights.length; i++) {
+			double[] newWeight = originalWeights[i].clone();
 			
-			for (int i = 0; i < numberOfObjectives; i++) {
-				newWeight[i] *= Math.max(0.01, zmax[i] - zmin[i]);
+			for (int j = 0; j < numberOfObjectives; j++) {
+				newWeight[j] *= Math.max(0.01, zmax[j] - zmin[j]);
 			}
 			
-			weights.add(Vector.normalize(newWeight));
+			weights[i] = Vector.normalize(newWeight);
 		}
 		
 		// compute the minimum angles between reference vectors
-		minAngles = new double[weights.size()];
+		minAngles = new double[weights.length];
 		
-		for (int i = 0; i < weights.size(); i++) {
+		for (int i = 0; i < weights.length; i++) {
 			minAngles[i] = smallestAngleBetweenWeights(i);
 		}
 	}
@@ -212,24 +212,25 @@ public class ReferenceVectorGuidedPopulation extends Population {
 		Validate.that("numberOfObjectives", numberOfObjectives).isGreaterThanOrEqualTo(2);
 		
 		// create the reference vectors
-		originalWeights = new NormalBoundaryIntersectionGenerator(numberOfObjectives, divisions).generate();
+		originalWeights = new NormalBoundaryIntersectionGenerator(numberOfObjectives, divisions).generate()
+				.toArray(double[][]::new);
 		
-		for (int i = 0; i < originalWeights.size(); i++) {
-			originalWeights.set(i, Vector.normalize(originalWeights.get(i)));
+		for (int i = 0; i < originalWeights.length; i++) {
+			originalWeights[i] = Vector.normalize(originalWeights[i]);
 		}
 		
 		// create a copy of the reference vectors (so the original reference
 		// vectors remain unchanged when we adapt)
-		weights = new ArrayList<double[]>();
+		weights = new double[originalWeights.length][];
 		
-		for (double[] weight : originalWeights) {
-			weights.add(weight.clone());
+		for (int i = 0; i < originalWeights.length; i++) {
+			weights[i] = originalWeights[i].clone();
 		}
 		
 		// compute the minimum angles between reference vectors
-		minAngles = new double[weights.size()];
+		minAngles = new double[weights.length];
 		
-		for (int i = 0; i < weights.size(); i++) {
+		for (int i = 0; i < weights.length; i++) {
 			minAngles[i] = smallestAngleBetweenWeights(i);
 		}
 	}
@@ -303,7 +304,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	protected List<List<Solution>> associateToReferencePoint(Population population) {
 		List<List<Solution>> result = new ArrayList<List<Solution>>();
 
-		for (int i = 0; i < weights.size(); i++) {
+		for (int i = 0; i < weights.length; i++) {
 			result.add(new ArrayList<Solution>());
 		}
 
@@ -312,8 +313,8 @@ public class ReferenceVectorGuidedPopulation extends Population {
 			double maxDistance = Double.NEGATIVE_INFINITY;
 			int maxIndex = -1;
 
-			for (int i = 0; i < weights.size(); i++) {
-				double distance = cosine(weights.get(i), objectives);
+			for (int i = 0; i < weights.length; i++) {
+				double distance = cosine(weights[i], objectives);
 
 				if (distance > maxDistance) {
 					maxDistance = distance;
@@ -342,9 +343,9 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	protected double smallestAngleBetweenWeights(int index) {
 		double smallestAngle = Double.POSITIVE_INFINITY;
 		
-		for (int i = 0; i < weights.size(); i++) {
+		for (int i = 0; i < weights.length; i++) {
 			if (i != index) {
-				smallestAngle = Math.min(smallestAngle, acosine(weights.get(index), weights.get(i)));
+				smallestAngle = Math.min(smallestAngle, acosine(weights[index], weights[i]));
 			}
 		}
 		
@@ -359,7 +360,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	 * @return the solution with the smallest penalized distance
 	 */
 	protected Solution select(List<Solution> solutions, int index) {
-		double[] weight = weights.get(index);
+		double[] weight = weights[index];
 		double minDistance = Double.POSITIVE_INFINITY;
 		Solution minSolution = null;
 		
@@ -436,6 +437,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 		return result;
 	}
 	
+	@Override
 	public void saveState(ObjectOutputStream stream) throws IOException {
 		super.saveState(stream);
 		stream.writeObject(idealPoint);
@@ -445,12 +447,12 @@ public class ReferenceVectorGuidedPopulation extends Population {
 		stream.writeDouble(scalingFactor);
 	}
 
-	@SuppressWarnings("unchecked")
+	@Override
 	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		super.loadState(stream);
 		idealPoint = (double[])stream.readObject();
-		originalWeights = (List<double[]>)stream.readObject();
-		weights = (List<double[]>)stream.readObject();
+		originalWeights = (double[][])stream.readObject();
+		weights = (double[][])stream.readObject();
 		minAngles = (double[])stream.readObject();
 		scalingFactor = stream.readDouble();
 	}

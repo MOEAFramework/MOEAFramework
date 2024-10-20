@@ -178,9 +178,9 @@ public class ReferenceVectorGuidedPopulationTest {
 
 		population.adapt();
 		
-		Assert.assertArrayEquals(new double[] { 0.0, 1.0 }, population.weights.get(0), TestThresholds.HIGH_PRECISION);
-		Assert.assertArrayEquals(new double[] { 1.0, 0.0 }, population.weights.get(2), TestThresholds.HIGH_PRECISION);
-		Assert.assertLessThanOrEqual(population.weights.get(1)[0], population.weights.get(1)[1]);
+		Assert.assertArrayEquals(new double[] { 0.0, 1.0 }, population.weights[0], TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 1.0, 0.0 }, population.weights[2], TestThresholds.HIGH_PRECISION);
+		Assert.assertLessThanOrEqual(population.weights[1][0], population.weights[1][1]);
 	}
 	
 	@Test

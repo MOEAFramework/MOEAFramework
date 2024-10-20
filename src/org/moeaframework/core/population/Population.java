@@ -52,6 +52,7 @@ import org.moeaframework.core.Stateful;
 import org.moeaframework.core.constraint.Constraint;
 import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.variable.Variable;
+import org.moeaframework.util.SerializationUtils;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;
@@ -732,14 +733,13 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, Co
 
 	@Override
 	public void saveState(ObjectOutputStream stream) throws IOException {
-		stream.writeObject(data);
+		SerializationUtils.writeList(data, stream);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		data.clear();
-		data.addAll((List<Solution>)stream.readObject());
+		data.addAll(SerializationUtils.readList(Solution.class, stream));
 	}
 
 }

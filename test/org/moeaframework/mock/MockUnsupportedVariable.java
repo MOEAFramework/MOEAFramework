@@ -21,7 +21,7 @@ import org.moeaframework.core.variable.Variable;
 
 public class MockUnsupportedVariable implements Variable {
 
-	private static final long serialVersionUID = 7614517658356868257L;
+	private static final long serialVersionUID = -3535574424971543418L;
 
 	@Override
 	public Variable copy() {

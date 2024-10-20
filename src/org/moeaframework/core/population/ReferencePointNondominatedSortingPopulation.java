@@ -82,7 +82,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	/**
 	 * The list of reference points, or weights.
 	 */
-	private List<double[]> weights;
+	private double[][] weights;
 
 	/**
 	 * Constructs an empty population that maintains the {@code rank} attribute for its solutions.
@@ -165,7 +165,8 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 		idealPoint = new double[numberOfObjectives];
 		Arrays.fill(idealPoint, Double.POSITIVE_INFINITY);
 		
-		weights = new NormalBoundaryIntersectionGenerator(numberOfObjectives, divisions).generate();
+		weights = new NormalBoundaryIntersectionGenerator(numberOfObjectives, divisions).generate()
+				.toArray(double[][]::new);
 	}
 
 	/**
@@ -358,7 +359,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	protected List<List<Solution>> associateToReferencePoint(Population population) {
 		List<List<Solution>> result = new ArrayList<List<Solution>>();
 
-		for (int i = 0; i < weights.size(); i++) {
+		for (int i = 0; i < weights.length; i++) {
 			result.add(new ArrayList<Solution>());
 		}
 
@@ -367,8 +368,8 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 			double minDistance = Double.POSITIVE_INFINITY;
 			int minIndex = -1;
 
-			for (int i = 0; i < weights.size(); i++) {
-				double distance = Vector.pointLineDistance(objectives, weights.get(i));
+			for (int i = 0; i < weights.length; i++) {
+				double distance = Vector.pointLineDistance(objectives, weights[i]);
 
 				if (distance < minDistance) {
 					minDistance = distance;
@@ -484,7 +485,7 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 						excluded.add(minIndex);
 					} else {
 						Solution minSolution = findSolutionWithMinimumDistance(potentialMembers.get(minIndex),
-								weights.get(minIndex));
+								weights[minIndex]);
 						add(minSolution);
 						members.get(minIndex).add(minSolution);
 						potentialMembers.get(minIndex).remove(minSolution);
@@ -542,12 +543,11 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 		stream.writeObject(weights);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		super.loadState(stream);
 		idealPoint = (double[])stream.readObject();
-		weights = (List<double[]>)stream.readObject();
+		weights = (double[][])stream.readObject();
 	}
 	
 }

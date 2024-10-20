@@ -25,7 +25,6 @@ import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.algorithm.JMetalAlgorithmTest;
 import org.moeaframework.core.TypedProperties;
-import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.problem.Problem;
 
@@ -37,11 +36,9 @@ public class OMOPSOTest extends JMetalAlgorithmTest {
 		super("OMOPSO");
 	}
 
-	// TODO: Temporary fix to supply default epsilon matching JMetal.  Remove once we update jmetal-plugin.
 	@Override
 	public void test(String problem, String algorithm1, String algorithm2, boolean allowBetterPerformance) {
-		test(problem, algorithm1, TypedProperties.of("epsilon", "0.0075"), algorithm2, new TypedProperties(),
-				allowBetterPerformance, AlgorithmFactory.getInstance());
+		test(problem, algorithm1, algorithm2, allowBetterPerformance);
 	}
 	
 	@Test

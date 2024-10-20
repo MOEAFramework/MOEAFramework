@@ -17,11 +17,12 @@
  */
 package org.moeaframework.analysis.collector;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.moeaframework.algorithm.EvolutionaryAlgorithm;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.Population;
+import org.moeaframework.util.SerializationUtils;
 
 /**
  * Collects the population from an {@link EvolutionaryAlgorithm}.
@@ -63,7 +64,7 @@ public class PopulationCollector implements Collector {
 
 	@Override
 	public void collect(Observation observation) {
-		observation.set("Population", new ArrayList<Solution>(algorithm.getPopulation().copy().asList()));
+		observation.set("Population", SerializationUtils.serializable(algorithm.getPopulation().copy().asList()));
 	}
 	
 	/**
@@ -72,9 +73,9 @@ public class PopulationCollector implements Collector {
 	 * @param observation the observation
 	 * @return the population
 	 */
-	@SuppressWarnings("unchecked")
 	public static Population getPopulation(Observation observation) {
-		return new Population((Iterable<Solution>)observation.get("Population"));
+		List<Solution> solutions = SerializationUtils.castList(Solution.class, observation.get("Population"));
+		return new Population(solutions);
 	}
 
 }

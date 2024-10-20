@@ -102,12 +102,6 @@ public class MetricFileWriter implements OutputWriter {
 	 * {@link MetricFileReader}.
 	 */
 	private static final String SEPARATOR = " ";
-	
-	/**
-	 * Settings for this metric file.
-	 */
-	@SuppressWarnings("unused")
-	private final MetricFileWriterSettings settings;
 
 	/**
 	 * The stream for appending data to the file.
@@ -137,7 +131,6 @@ public class MetricFileWriter implements OutputWriter {
 	public MetricFileWriter(Indicators indicators, File file, MetricFileWriterSettings settings) throws IOException {
 		super();
 		this.indicators = indicators;
-		this.settings = settings;
 		
 		if (file.exists() && settings.isAppend()) {
 			// when appending to an existing file, first copy out all valid entries

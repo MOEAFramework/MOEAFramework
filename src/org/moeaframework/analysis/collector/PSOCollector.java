@@ -17,11 +17,11 @@
  */
 package org.moeaframework.analysis.collector;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.moeaframework.algorithm.pso.AbstractPSOAlgorithm;
 import org.moeaframework.core.Solution;
+import org.moeaframework.util.SerializationUtils;
 
 /**
  * Collects the population from an {@link AbstractPSOAlgorithm}.
@@ -63,9 +63,9 @@ public class PSOCollector implements Collector {
 
 	@Override
 	public void collect(Observation observation) {
-		observation.set("Particles", new ArrayList<Solution>(algorithm.getParticles()));
-		observation.set("LocalBestParticles", new ArrayList<Solution>(algorithm.getLocalBestParticles()));
-		observation.set("Leaders", new ArrayList<Solution>(algorithm.getLeaders()));
+		observation.set("Particles", SerializationUtils.serializable(algorithm.getParticles()));
+		observation.set("LocalBestParticles", SerializationUtils.serializable(algorithm.getLocalBestParticles()));
+		observation.set("Leaders", SerializationUtils.serializable(algorithm.getLeaders()));
 	}
 	
 	/**
@@ -74,9 +74,8 @@ public class PSOCollector implements Collector {
 	 * @param observation the observation
 	 * @return the list of particles
 	 */
-	@SuppressWarnings("unchecked")
 	public static List<Solution> getParticles(Observation observation) {
-		return (List<Solution>)observation.get("Particles");
+		return SerializationUtils.castList(Solution.class, observation.get("Particles"));
 	}
 	
 	/**
@@ -85,9 +84,8 @@ public class PSOCollector implements Collector {
 	 * @param observation the observation
 	 * @return the list of local-best particles
 	 */
-	@SuppressWarnings("unchecked")
 	public static List<Solution> getLocalBestParticles(Observation observation) {
-		return (List<Solution>)observation.get("LocalBestParticles");
+		return SerializationUtils.castList(Solution.class, observation.get("LocalBestParticles"));
 	}
 	
 	/**
@@ -96,9 +94,8 @@ public class PSOCollector implements Collector {
 	 * @param observation the observation
 	 * @return the list of leaders
 	 */
-	@SuppressWarnings("unchecked")
 	public static List<Solution> getLeaders(Observation observation) {
-		return (List<Solution>)observation.get("Leaders");
+		return SerializationUtils.castList(Solution.class, observation.get("Leaders"));
 	}
 
 }

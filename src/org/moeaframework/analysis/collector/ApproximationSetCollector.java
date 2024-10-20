@@ -17,13 +17,14 @@
  */
 package org.moeaframework.analysis.collector;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.util.SerializationUtils;
 
 /**
  * Collects approximation sets from an {@link Algorithm}.
@@ -91,7 +92,7 @@ public class ApproximationSetCollector implements Collector {
 			result = EpsilonBoxDominanceArchive.of(result, epsilons);
 		}
 		
-		observation.set("Approximation Set", new ArrayList<Solution>(result.copy().asList()));
+		observation.set("Approximation Set", SerializationUtils.serializable(result.copy().asList()));
 	}
 	
 	/**
@@ -100,9 +101,8 @@ public class ApproximationSetCollector implements Collector {
 	 * @param observation the observation
 	 * @return the approximation set
 	 */
-	@SuppressWarnings("unchecked")
 	public static NondominatedPopulation getApproximationSet(Observation observation) {
-		Iterable<Solution> solutions = (Iterable<Solution>)observation.get("Approximation Set");
+		List<Solution> solutions = SerializationUtils.castList(Solution.class, observation.get("Approximation Set"));
 		return new NondominatedPopulation(solutions);
 	}
 

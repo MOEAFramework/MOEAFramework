@@ -45,6 +45,7 @@ import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.Problem;
+import org.moeaframework.util.SerializationUtils;
 import org.moeaframework.util.validate.Validate;
 import org.moeaframework.util.weights.RandomGenerator;
 import org.moeaframework.util.weights.WeightGenerator;
@@ -872,16 +873,15 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	@Override
 	public void saveState(ObjectOutputStream stream) throws IOException {
 		super.saveState(stream);
-		stream.writeObject(population);
+		SerializationUtils.writeList(population, stream);
 		stream.writeObject(idealPoint);
 		stream.writeInt(generation);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		super.loadState(stream);
-		population = (List<Individual>)stream.readObject();
+		population = SerializationUtils.readList(Individual.class, stream);
 		idealPoint = (double[])stream.readObject();
 		generation = stream.readInt();
 	}

@@ -71,7 +71,7 @@ public class MSOPSRankedPopulation extends Population {
 	/**
 	 * The weight vectors.
 	 */
-	private List<double[]> weights;
+	private double[][] weights;
 	
 	/**
 	 * The penalty function used to handle constraint violations.
@@ -100,6 +100,16 @@ public class MSOPSRankedPopulation extends Population {
 	 * @param weights the weight vectors
 	 */
 	public MSOPSRankedPopulation(List<double[]> weights) {
+		this(weights.toArray(double[][]::new));
+	}
+	
+	/**
+	 * Constructs an empty population that maintains the {@code rank} and attribute for its solutions using the MSOPS
+	 * ranking method.
+	 * 
+	 * @param weights the weight vectors
+	 */
+	MSOPSRankedPopulation(double[][] weights) {
 		super();
 		this.weights = weights;
 		this.penaltyFunction = new SumOfConstraintsPenaltyFunction();
@@ -198,7 +208,7 @@ public class MSOPSRankedPopulation extends Population {
 	 * @return the number of weight vectors
 	 */
 	public int getNumberOfWeights() {
-		return weights.size();
+		return weights.length;
 	}
 	
 	/**
@@ -214,7 +224,7 @@ public class MSOPSRankedPopulation extends Population {
 		}
 		
 		int P = size();
-		int T = weights.size();
+		int T = weights.length;
 		
 		// first identify the best/closest weight vectors for this solution
 		List<Integer> bestWeights = new ArrayList<Integer>();
@@ -271,7 +281,7 @@ public class MSOPSRankedPopulation extends Population {
 		modified = false;
 		
 		final int P = size();
-		final int T = weights.size();
+		final int T = weights.length;
 		double maxScore = Double.NEGATIVE_INFINITY;
 		
 		scores = new double[P][2*T];
@@ -283,8 +293,8 @@ public class MSOPSRankedPopulation extends Population {
 			Solution solution = get(i);
 			
 			for (int j = 0; j < T; j++) {
-				scores[i][j] = MinMaxObjectiveComparator.calculate(solution, weights.get(j));
-				scores[i][j+T] = VectorAngleDistanceScalingComparator.calculate(solution, weights.get(j), 100.0);
+				scores[i][j] = MinMaxObjectiveComparator.calculate(solution, weights[j]);
+				scores[i][j+T] = VectorAngleDistanceScalingComparator.calculate(solution, weights[j], 100.0);
 				maxScore = Math.max(maxScore, Math.max(scores[i][j], scores[i][j+T]));
 			}
 		}
@@ -386,11 +396,10 @@ public class MSOPSRankedPopulation extends Population {
 		stream.writeBoolean(modified);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		super.loadState(stream);
-		weights = (List<double[]>)stream.readObject();
+		weights = (double[][])stream.readObject();
 		scores = (double[][])stream.readObject();
 		ranks = (int[][])stream.readObject();
 		sortedRanks = (int[][])stream.readObject();
