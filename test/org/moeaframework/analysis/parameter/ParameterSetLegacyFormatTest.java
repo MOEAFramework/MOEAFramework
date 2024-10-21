@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis.io;
+package org.moeaframework.analysis.parameter;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -25,7 +25,7 @@ import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.TestThresholds;
 
-public class ParameterFileTest {
+public class ParameterSetLegacyFormatTest {
 
 	public static final String COMPLETE = """
 			entry1 0.0 1.0
@@ -52,60 +52,63 @@ public class ParameterFileTest {
 			entry3 0.0 1.0
 			""";
 
-	private void validateComplete(ParameterFile pf) {
-		Assert.assertEquals(3, pf.size());
+	private void validateComplete(ParameterSet<?> parameterSet) {
+		Assert.assertEquals(3, parameterSet.size());
 
-		Assert.assertEquals("entry1", pf.get(0).getName());
-		Assert.assertEquals(0.0, pf.get(0).getLowerBound(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(1.0, pf.get(0).getUpperBound(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals("entry1", parameterSet.get(0).getName());
+		Assert.assertInstanceOf(DecimalRange.class, parameterSet.get(0));
+		Assert.assertEquals(0.0, ((DecimalRange)parameterSet.get(0)).getLowerBound(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, ((DecimalRange)parameterSet.get(0)).getUpperBound(), TestThresholds.HIGH_PRECISION);
 
-		Assert.assertEquals("entry2", pf.get(1).getName());
-		Assert.assertEquals(100, pf.get(1).getLowerBound(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(10000, pf.get(1).getUpperBound(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals("entry2", parameterSet.get(1).getName());
+		Assert.assertInstanceOf(DecimalRange.class, parameterSet.get(1));
+		Assert.assertEquals(100, ((DecimalRange)parameterSet.get(1)).getLowerBound(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(10000, ((DecimalRange)parameterSet.get(1)).getUpperBound(), TestThresholds.HIGH_PRECISION);
 
-		Assert.assertEquals("entry3", pf.get(2).getName());
-		Assert.assertEquals(0.0, pf.get(2).getLowerBound(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(1.0, pf.get(2).getUpperBound(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals("entry3", parameterSet.get(2).getName());
+		Assert.assertInstanceOf(DecimalRange.class, parameterSet.get(2));
+		Assert.assertEquals(0.0, ((DecimalRange)parameterSet.get(2)).getLowerBound(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, ((DecimalRange)parameterSet.get(2)).getUpperBound(), TestThresholds.HIGH_PRECISION);
 	}
 
 	@Test
 	public void testReaderComplete() throws IOException {
-		validateComplete(new ParameterFile(new StringReader(COMPLETE)));
+		validateComplete(ParameterSet.load(new StringReader(COMPLETE)));
 	}
 
 	@Test(expected = IOException.class)
 	public void testReaderMissingEntry() throws IOException {
-		new ParameterFile(new StringReader(MISSING_ENTRY));
+		ParameterSet.load(new StringReader(MISSING_ENTRY));
 	}
 
 	@Test(expected = IOException.class)
 	public void testReaderMissingLine() throws IOException {
-		new ParameterFile(new StringReader(MISSING_LINE));
+		ParameterSet.load(new StringReader(MISSING_LINE));
 	}
 
 	@Test(expected = NumberFormatException.class)
 	public void testReaderInvalidEntry() throws IOException {
-		new ParameterFile(new StringReader(INVALID_ENTRY));
+		ParameterSet.load(new StringReader(INVALID_ENTRY));
 	}
 
 	@Test
 	public void testFileComplete() throws IOException {
-		validateComplete(new ParameterFile(TempFiles.createFile().withContent(COMPLETE)));
+		validateComplete(ParameterSet.load(TempFiles.createFile().withContent(COMPLETE)));
 	}
 
 	@Test(expected = IOException.class)
 	public void testFileMissingEntry() throws IOException {
-		new ParameterFile(TempFiles.createFile().withContent(MISSING_ENTRY));
+		ParameterSet.load(TempFiles.createFile().withContent(MISSING_ENTRY));
 	}
 
 	@Test(expected = IOException.class)
 	public void testFileMissingLine() throws IOException {
-		new ParameterFile(TempFiles.createFile().withContent(MISSING_LINE));
+		ParameterSet.load(TempFiles.createFile().withContent(MISSING_LINE));
 	}
 
 	@Test(expected = NumberFormatException.class)
 	public void testFileInvalidEntry() throws IOException {
-		new ParameterFile(TempFiles.createFile().withContent(INVALID_ENTRY));
+		ParameterSet.load(TempFiles.createFile().withContent(INVALID_ENTRY));
 	}
 
 }

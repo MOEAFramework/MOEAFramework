@@ -18,7 +18,6 @@
 package org.moeaframework.analysis.tools;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 
 import org.apache.commons.cli.CommandLine;
@@ -27,11 +26,11 @@ import org.apache.commons.cli.Options;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.analysis.io.MetricFileWriter;
 import org.moeaframework.analysis.io.OutputWriter;
-import org.moeaframework.analysis.io.ParameterFile;
 import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.analysis.io.ResultFileWriter.ResultFileWriterSettings;
-import org.moeaframework.analysis.io.SampleReader;
+import org.moeaframework.analysis.parameter.ParameterSet;
+import org.moeaframework.analysis.sample.Samples;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
@@ -120,12 +119,11 @@ public class Evaluator extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws IOException {
+		File parameterFile = new File(commandLine.getOptionValue("parameterFile"));
 		File outputFile = new File(commandLine.getOptionValue("output"));
 		File inputFile = new File(commandLine.getOptionValue("input"));
 		Epsilons epsilons = OptionUtils.getEpsilons(commandLine);
-
-		ParameterFile parameterFile = new ParameterFile(new File(commandLine.getOptionValue("parameterFile")));
-
+		
 		// sanity check to ensure input hasn't been modified after the output
 		if (!commandLine.hasOption("force") && (outputFile.lastModified() > 0L) && 
 				(inputFile.lastModified() > outputFile.lastModified())) {
@@ -133,8 +131,10 @@ public class Evaluator extends CommandLineUtility {
 		}
 
 		// open the resources and begin processing
-		try (Problem problem = OptionUtils.getProblemInstance(commandLine, false);
-				SampleReader input = new SampleReader(new FileReader(inputFile), parameterFile)) {
+		try (Problem problem = OptionUtils.getProblemInstance(commandLine, false)) {
+			ParameterSet<?> parameterSet = ParameterSet.load(parameterFile);
+			Samples samples = Samples.load(inputFile, parameterSet);
+			
 			try {
 				if (commandLine.hasOption("metrics")) {
 					NondominatedPopulation referenceSet = OptionUtils.getReferenceSet(commandLine);
@@ -143,15 +143,6 @@ public class Evaluator extends CommandLineUtility {
 					output = MetricFileWriter.append(indicators, outputFile);
 				} else {
 					output = new ResultFileWriter(problem, outputFile, ResultFileWriterSettings.from(commandLine));
-				}
-
-				// resume at the last good output
-				for (int i = 0; i < output.getNumberOfEntries(); i++) {
-					if (input.hasNext()) {
-						input.next();
-					} else {
-						throw new FrameworkException("output has more entries than input");
-					}
 				}
 
 				// setup any default parameters
@@ -179,8 +170,8 @@ public class Evaluator extends CommandLineUtility {
 				}
 
 				// process the remaining runs
-				while (input.hasNext()) {
-					TypedProperties properties = input.next();
+				for (int i = output.getNumberOfEntries(); i < samples.size(); i++) {
+					TypedProperties properties = samples.get(i);
 					properties.addAll(defaultProperties);
 
 					process(commandLine.getOptionValue("algorithm"), properties, problem);

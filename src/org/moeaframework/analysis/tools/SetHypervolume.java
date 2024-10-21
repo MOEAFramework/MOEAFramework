@@ -18,6 +18,7 @@
 package org.moeaframework.analysis.tools;
 
 import java.io.File;
+import java.io.PrintWriter;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -77,7 +78,7 @@ public class SetHypervolume extends CommandLineUtility {
 			hypervolume = new Hypervolume(new ProblemStub(referenceSet.get(0).getNumberOfObjectives()), referenceSet);
 		}
 		
-		try (OutputLogger output = new OutputLogger(commandLine.getOptionValue("output"))) {
+		try (PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
 			for (String filename : commandLine.getArgs()) {
 				NondominatedPopulation set = NondominatedPopulation.loadReferenceSet(new File(filename));
 				

@@ -17,6 +17,9 @@
  */
 package org.moeaframework.util;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.lang.Thread.UncaughtExceptionHandler;
 
 import org.apache.commons.cli.CommandLine;
@@ -214,6 +217,30 @@ public abstract class CommandLineUtility {
 	 */
 	protected void setCommandString(String commandString) {
 		this.commandString = commandString;
+	}
+	
+	/**
+	 * Creates and returns a writer for printing output from this command line utility.  The caller is responsible for
+	 * closing this writer.
+	 * 
+	 * @param filename the filename, or {@code null}
+	 * @return the writer
+	 * @throws FileNotFoundException if opening the file for writing failed
+	 */
+	protected PrintWriter createOutputWriter(String filename) throws FileNotFoundException {
+		return createOutputWriter(filename == null ? null : new File(filename));
+	}
+	
+	/**
+	 * Creates and returns a writer for printing output from this command line utility.  The caller is responsible for
+	 * closing this writer.
+	 * 
+	 * @param file the file, or {@code null}
+	 * @return the writer
+	 * @throws FileNotFoundException if opening the file for writing failed
+	 */
+	protected PrintWriter createOutputWriter(File file) throws FileNotFoundException {
+		return file == null ? new PrintWriter(System.out) : new PrintWriter(file);
 	}
 
 }

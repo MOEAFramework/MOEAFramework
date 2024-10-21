@@ -156,7 +156,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * @param separator the separator string
 	 * @param threadSafe if {@code true}, the constructed instance will be thread-safe
 	 */
-	TypedProperties(String separator, boolean threadSafe, boolean isSorted) {
+	protected TypedProperties(String separator, boolean threadSafe, boolean isSorted) {
 		super();
 		this.separator = separator;
 		

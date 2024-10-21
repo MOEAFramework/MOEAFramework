@@ -19,11 +19,14 @@ package org.moeaframework.analysis.tools;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
-import org.moeaframework.analysis.io.ParameterFile;
+import org.moeaframework.analysis.parameter.ParameterSet;
+import org.moeaframework.analysis.parameter.SampledParameterSet;
+import org.moeaframework.analysis.sample.Samples;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.OptionCompleter;
@@ -85,13 +88,15 @@ public class SampleGenerator extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws IOException {
-		ParameterFile parameterFile = new ParameterFile(new File(commandLine.getOptionValue("parameterFile")));
+		File parameterFile = new File(commandLine.getOptionValue("parameterFile"));
+		SampledParameterSet parameterSet = ParameterSet.load(parameterFile);
 
 		int N = Integer.parseInt(commandLine.getOptionValue("numberOfSamples"));
-		int D = parameterFile.size();
 		
 		Validate.that("numberOfSamples", N).isGreaterThan(0);
-		Validate.that("numberOfParameters", D).isGreaterThan(0);
+		Validate.that("numberOfParameters", parameterSet.size()).isGreaterThan(0);
+		
+		parameterSet.throwIfEnumerated();
 		
 		Sequence sequence = null;
 
@@ -108,7 +113,7 @@ public class SampleGenerator extends CommandLineUtility {
 				case "latin" -> sequence = new LatinHypercube();
 				case "sobol" -> sequence = new Sobol();
 				case "saltelli" -> {
-					N *= (2 * D + 2);
+					N *= (2 * parameterSet.size() + 2);
 					sequence = new Saltelli();
 				}
 				default -> throw new IllegalStateException();
@@ -121,20 +126,9 @@ public class SampleGenerator extends CommandLineUtility {
 			PRNG.setSeed(Long.parseLong(commandLine.getOptionValue("seed")));
 		}
 
-		try (OutputLogger output = new OutputLogger(commandLine.getOptionValue("output"))) {
-			double[][] samples = sequence.generate(N, D);
-
-			for (int i = 0; i < N; i++) {
-				for (int j = 0; j < D; j++) {
-					if (j > 0) {
-						output.print(' ');
-					}
-					
-					output.print(parameterFile.get(j).scale(samples[i][j]));
-				}
-
-				output.println();
-			}
+		try (PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
+			Samples samples = parameterSet.generate(N, sequence);
+			samples.save(output);
 		}
 	}
 

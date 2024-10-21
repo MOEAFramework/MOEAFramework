@@ -18,6 +18,7 @@
 package org.moeaframework.analysis.tools;
 
 import java.io.File;
+import java.io.PrintWriter;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -89,7 +90,7 @@ public class ExtractData extends CommandLineUtility {
 		// indicators are prepared, run the data extraction routine
 		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true);
 				ResultFileReader input = new ResultFileReader(problem, new File(commandLine.getOptionValue("input")));
-				OutputLogger output = new OutputLogger(commandLine.getOptionValue("output"))) {
+				PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
 			NondominatedPopulation referenceSet = OptionUtils.getReferenceSet(commandLine);
 			Indicators indicators = getIndicators(input.getProblem(), referenceSet, fields);
 

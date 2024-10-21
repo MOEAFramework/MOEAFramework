@@ -18,6 +18,7 @@
 package org.moeaframework.analysis.tools;
 
 import java.io.File;
+import java.io.PrintWriter;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -57,7 +58,7 @@ public class ResultFileInfo extends CommandLineUtility {
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
 		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true);
-				OutputLogger output = new OutputLogger(commandLine.getOptionValue("output"))) {
+				PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
 			// display info for all result files
 			for (String filename : commandLine.getArgs()) {
 				try (ResultFileReader reader = new ResultFileReader(problem, new File(filename))) {

@@ -19,6 +19,7 @@ package org.moeaframework.analysis.tools;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,11 +29,12 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.analysis.io.MetricFileReader;
 import org.moeaframework.analysis.io.MetricFileWriter;
-import org.moeaframework.analysis.io.Parameter;
-import org.moeaframework.analysis.io.ParameterFile;
-import org.moeaframework.analysis.io.SampleReader;
+import org.moeaframework.analysis.parameter.NumericParameter;
+import org.moeaframework.analysis.parameter.Parameter;
+import org.moeaframework.analysis.parameter.ParameterSet;
+import org.moeaframework.analysis.sample.Sample;
+import org.moeaframework.analysis.sample.Samples;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.core.TypedProperties;
 import org.moeaframework.util.CommandLineUtility;
 
 /**
@@ -47,19 +49,19 @@ import org.moeaframework.util.CommandLineUtility;
 public class Analysis extends CommandLineUtility {
 	
 	/**
-	 * The parameter description file.
+	 * The parameter set.
 	 */
-	private ParameterFile parameterFile;
+	private ParameterSet<?> parameterSet;
+	
+	/**
+	 * The parameter samples.
+	 */
+	private Samples samples;
 
 	/**
 	 * The metrics.
 	 */
 	private double[][] metrics;
-	
-	/**
-	 * The parameters.
-	 */
-	private double[][] parameters;
 	
 	/**
 	 * The index of the metric being analyzed.
@@ -85,17 +87,33 @@ public class Analysis extends CommandLineUtility {
 	}
 	
 	/**
-	 * Returns an array of the parameters in the same order as they appear in {@code parameterFile}.
+	 * Returns an array of the parameter values in the same order as they appear in {@code parameterFile}.
 	 * 
-	 * @param properties the parameters
-	 * @return an array of the parameters in the same order as they appear in {@code parameterFile}
+	 * @param sample the sample
+	 * @return an array of the parameter values in the same order as they appear in {@code parameterFile}
 	 */
-	private double[] toArray(TypedProperties properties) {
-		double[] result = new double[parameterFile.size()];
+	private double[] toArray(Sample sample) {
+		double[] result = new double[parameterSet.size()];
 		
-		for (int i=0; i<parameterFile.size(); i++) {
-			String name = parameterFile.get(i).getName();
-			result[i] = properties.getDouble(name);
+		for (int i=0; i<parameterSet.size(); i++) {
+			NumericParameter<?> parameter = (NumericParameter<?>)parameterSet.get(i);
+			result[i] = parameter.getValue(sample).doubleValue();
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Returns a matrix of the parameter values.
+	 * 
+	 * @param samples the samples
+	 * @return the matrix of parameter values
+	 */
+	private double[][] toMatrix(Samples samples) {
+		double[][] result = new double[samples.size()][];
+		
+		for (int i = 0; i < samples.size(); i++) {
+			result[i] = toArray(samples.get(i));
 		}
 		
 		return result;
@@ -131,25 +149,6 @@ public class Analysis extends CommandLineUtility {
 	}
 	
 	/**
-	 * Returns the parameters from the specified file.
-	 * 
-	 * @param file the parameter file
-	 * @return the parameters from the specified file
-	 * @throws IOException if an I/O error occurred
-	 */
-	private double[][] loadParameters(File file) throws IOException {
-		List<double[]> parameterList = new ArrayList<double[]>();
-		
-		try (SampleReader reader = new SampleReader(file, parameterFile)) {
-			while (reader.hasNext()) {
-				parameterList.add(toArray(reader.next()));
-			}
-		}
-		
-		return parameterList.toArray(double[][]::new);
-	}
-	
-	/**
 	 * Normalizes the parameters, bounding all entries inside the unit hypervolume.  The parameters are normalized in
 	 * place, modifying the array passed as an argument.
 	 * 
@@ -159,10 +158,10 @@ public class Analysis extends CommandLineUtility {
 	private double[][] normalize(double[][] parameters) {
 		for (int i = 0; i < parameters.length; i++) {
 			for (int j = 0; j < parameters[i].length; j++) {
-				Parameter parameter = parameterFile.get(j);
+				NumericParameter<?> parameter = (NumericParameter<?>)parameterSet.get(j);
 				
-				parameters[i][j] = (parameters[i][j] - parameter.getLowerBound()) / 
-						(parameter.getUpperBound() - parameter.getLowerBound());
+				parameters[i][j] = (parameters[i][j] - parameter.getLowerBound().doubleValue()) / 
+						(parameter.getUpperBound().doubleValue() - parameter.getLowerBound().doubleValue());
 			}
 		}
 		
@@ -176,7 +175,7 @@ public class Analysis extends CommandLineUtility {
 	 * @param threshold the threshold value
 	 * @return only those parameters with a corresponding metric value meeting or exceeding a threshold value
 	 */
-	private double[][] threshold(int metric, double threshold) {
+	private double[][] threshold(int metric, double threshold, double[][] parameters) {
 		int count = 0;
 		
 		for (int i = 0; i < metrics.length; i++) {
@@ -237,10 +236,11 @@ public class Analysis extends CommandLineUtility {
 	 * @return the measure of controllability
 	 */
 	private double calculateControllability() {
-		double[][] attainmentVolume = threshold(metric, threshold);
+		double[][] parameters = toMatrix(samples);
+		double[][] attainmentVolume = threshold(metric, threshold, parameters);
 
 		return FractalDimension.computeDimension(normalize(attainmentVolume)) /
-				FractalDimension.computeDimension(parameters);
+				FractalDimension.computeDimension(toMatrix(samples));
 	}
 	
 	/**
@@ -255,11 +255,11 @@ public class Analysis extends CommandLineUtility {
 		int max = -1;
 		int evalIndex = -1;
 
-		for (int i=0; i<parameterFile.size(); i++) {
-			Parameter parameter = parameterFile.get(i);
+		for (int i=0; i<parameterSet.size(); i++) {
+			NumericParameter<?> parameter = (NumericParameter<?>)parameterSet.get(i);
 			
 			if (parameter.getName().equals("maxEvaluations")) {
-				max = (int)parameter.getUpperBound();
+				max = parameter.getUpperBound().intValue();
 				evalIndex = i;
 				break;
 			}
@@ -270,6 +270,7 @@ public class Analysis extends CommandLineUtility {
 		}
 
 		//find lowest band reaching attainment
+		double[][] parameters = toMatrix(samples);
 		int band = max;
 
 		for (int i=0; i<=max-bandWidth; i+=bandWidth) {
@@ -350,8 +351,15 @@ public class Analysis extends CommandLineUtility {
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
 		//parse required parameters
-		parameterFile = new ParameterFile(new File(commandLine.getOptionValue("parameterFile")));
-		parameters = loadParameters(new File(commandLine.getOptionValue("parameters")));
+		parameterSet = ParameterSet.load(new File(commandLine.getOptionValue("parameterFile")));
+		
+		for (Parameter<?> parameter : parameterSet) {
+			if (!(parameter instanceof NumericParameter<?>)) {
+				throw new FrameworkException("only supports numeric parameters");
+			}
+		}
+		
+		samples = Samples.load(new File(commandLine.getOptionValue("parameters")), parameterSet);
 		metric = MetricFileWriter.getMetricIndex(commandLine.getOptionValue("metric"));
 		
 		//parse optional parameters
@@ -372,7 +380,7 @@ public class Analysis extends CommandLineUtility {
 			}
 		}
 		
-		try (OutputLogger output = new OutputLogger(commandLine.getOptionValue("output"))) {
+		try (PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
 			//process all the files listed on the command line
 			String[] filenames = commandLine.getArgs();
 			

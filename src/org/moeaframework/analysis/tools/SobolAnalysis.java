@@ -19,6 +19,7 @@ package org.moeaframework.analysis.tools;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -26,7 +27,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.math3.stat.StatUtils;
 import org.moeaframework.analysis.io.MatrixReader;
 import org.moeaframework.analysis.io.MetricFileWriter;
-import org.moeaframework.analysis.io.ParameterFile;
+import org.moeaframework.analysis.parameter.ParameterSet;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.util.CommandLineUtility;
 
@@ -55,7 +56,7 @@ public class SobolAnalysis extends CommandLineUtility {
 	/**
 	 * Parameters being analyzed.
 	 */
-	private ParameterFile parameterFile;
+	private ParameterSet<?> parameterSet;
 
 	/**
 	 * Number of parameters.
@@ -134,9 +135,9 @@ public class SobolAnalysis extends CommandLineUtility {
 	 * Computes and displays the first-, total-, and second- order Sobol' sensitivities and 50% bootstrap confidence
 	 * intervals.
 	 * 
-	 * @param output the output stream
+	 * @param output the output writer
 	 */
-	private void display(OutputLogger output) {
+	private void display(PrintWriter output) {
 		output.println("Parameter	Sensitivity [Confidence]");
 
 		output.println("First-Order Effects");
@@ -152,7 +153,7 @@ public class SobolAnalysis extends CommandLineUtility {
 			}
 
 			output.print("  ");
-			output.print(parameterFile.get(j).getName());
+			output.print(parameterSet.get(j).getName());
 			output.print(' ');
 			output.print(computeFirstOrder(a0, a1, a2, N));
 			output.print(" [");
@@ -173,7 +174,7 @@ public class SobolAnalysis extends CommandLineUtility {
 			}
 
 			output.print("  ");
-			output.print(parameterFile.get(j).getName());
+			output.print(parameterSet.get(j).getName());
 			output.print(' ');
 			output.print(computeTotalOrder(a0, a1, a2, N));
 			output.print(" [");
@@ -199,9 +200,9 @@ public class SobolAnalysis extends CommandLineUtility {
 				}
 
 				output.print("  ");
-				output.print(parameterFile.get(j).getName());
+				output.print(parameterSet.get(j).getName());
 				output.print(" * ");
-				output.print(parameterFile.get(k).getName());
+				output.print(parameterSet.get(k).getName());
 				output.print(' ');
 				output.print(computeSecondOrder(a0, a1, a2, a3, a4, N));
 				output.print(" [");
@@ -215,9 +216,9 @@ public class SobolAnalysis extends CommandLineUtility {
 	/**
 	 * Computes and displays the first- and total-order Sobol' sensitivities and 50% bootstrap confidence intervals.
 	 * 
-	 * @param output the output stream
+	 * @param output the output writer
 	 */
-	private void displaySimple(OutputLogger output) {
+	private void displaySimple(PrintWriter output) {
 		output.println("First-Order Effects");
 		for (int j = 0; j < P; j++) {
 			double[] a0 = new double[N];
@@ -591,9 +592,9 @@ public class SobolAnalysis extends CommandLineUtility {
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
 		//setup the parameters
-		parameterFile = new ParameterFile(new File(commandLine.getOptionValue("parameterFile")));
+		parameterSet = ParameterSet.load(new File(commandLine.getOptionValue("parameterFile")));
 		index = MetricFileWriter.getMetricIndex(commandLine.getOptionValue("metric"));
-		P = parameterFile.size();
+		P = parameterSet.size();
 		
 		if (commandLine.hasOption("resamples")) {
 			resamples = Integer.parseInt(commandLine.getOptionValue("resamples"));
@@ -604,7 +605,7 @@ public class SobolAnalysis extends CommandLineUtility {
 		N = validate(input);
 		load(input);
 
-		try (OutputLogger output = new OutputLogger(commandLine.getOptionValue("output"))) {
+		try (PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
 			//perform the Sobol analysis and display the results
 			if (commandLine.hasOption("simple")) {
 				displaySimple(output);

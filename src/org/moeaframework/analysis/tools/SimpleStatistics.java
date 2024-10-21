@@ -19,6 +19,7 @@ package org.moeaframework.analysis.tools;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -131,7 +132,7 @@ public class SimpleStatistics extends CommandLineUtility {
 			mode = "average";
 		}
 		
-		try (OutputLogger output = new OutputLogger(commandLine.getOptionValue("output"))) {
+		try (PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
 			//compute the statistics
 			for (int i=0; i<numberOfRows; i++) {
 				for (int j=0; j<numberOfColumns; j++) {

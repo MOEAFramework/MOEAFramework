@@ -18,7 +18,6 @@
 package org.moeaframework.analysis.tools;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 
 import org.apache.commons.cli.CommandLine;
@@ -30,11 +29,11 @@ import org.moeaframework.analysis.collector.ApproximationSetCollector;
 import org.moeaframework.analysis.collector.ElapsedTimeCollector;
 import org.moeaframework.analysis.collector.Observation;
 import org.moeaframework.analysis.collector.Observations;
-import org.moeaframework.analysis.io.ParameterFile;
 import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.analysis.io.ResultFileWriter.ResultFileWriterSettings;
-import org.moeaframework.analysis.io.SampleReader;
+import org.moeaframework.analysis.parameter.ParameterSet;
+import org.moeaframework.analysis.sample.Samples;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
@@ -114,7 +113,7 @@ public class RuntimeEvaluator extends CommandLineUtility {
 	@Override
 	public void run(CommandLine commandLine) throws IOException {
 		String outputFilePattern = commandLine.getOptionValue("output");
-		ParameterFile parameterFile = new ParameterFile(new File(commandLine.getOptionValue("parameterFile")));
+		File parameterFile = new File(commandLine.getOptionValue("parameterFile"));
 		File inputFile = new File(commandLine.getOptionValue("input"));
 		Epsilons epsilons = OptionUtils.getEpsilons(commandLine);
 		
@@ -125,12 +124,12 @@ public class RuntimeEvaluator extends CommandLineUtility {
 		}
 		
 		// open the resources and begin processing
-		try (Problem problem = OptionUtils.getProblemInstance(commandLine, false);
-				SampleReader input = new SampleReader(new FileReader(inputFile), parameterFile)) {
-			int count = 1;
+		try (Problem problem = OptionUtils.getProblemInstance(commandLine, false)) {
+			ParameterSet<?> parameterSet = ParameterSet.load(parameterFile);
+			Samples samples = Samples.load(inputFile, parameterSet);
 
-			while (input.hasNext()) {
-				String outputFileName = String.format(outputFilePattern, count);
+			for (int i = 0; i < samples.size(); i++) {
+				String outputFileName = String.format(outputFilePattern, i+1);
 				System.out.print("Processing " + outputFileName + "...");
 				File outputFile = new File(outputFileName);
 						
@@ -164,15 +163,13 @@ public class RuntimeEvaluator extends CommandLineUtility {
 						PRNG.setSeed(Long.parseLong(commandLine.getOptionValue("seed")));
 					}
 	
-					TypedProperties properties = input.next();
+					TypedProperties properties = samples.get(i);
 					properties.addAll(defaultProperties);
 	
 					process(commandLine.getOptionValue("algorithm"), properties, problem, frequency, output);
 						
 					System.out.println("done.");
 				}
-					
-				count++;
 			}
 		}
 		

@@ -18,6 +18,7 @@
 package org.moeaframework.analysis.tools;
 
 import java.io.File;
+import java.io.PrintWriter;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -78,7 +79,7 @@ public class SetContribution extends CommandLineUtility {
 			contribution = new Contribution(referenceSet);
 		}
 
-		try (OutputLogger output = new OutputLogger(commandLine.getOptionValue("output"))) {
+		try (PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
 			for (String filename : commandLine.getArgs()) {
 				NondominatedPopulation approximationSet = NondominatedPopulation.loadReferenceSet(new File(filename));
 	

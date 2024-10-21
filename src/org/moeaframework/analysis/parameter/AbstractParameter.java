@@ -15,28 +15,20 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis.io;
+package org.moeaframework.analysis.parameter;
 
-import org.junit.Test;
-import org.moeaframework.Assert;
-
-public class ParameterTest {
-
-	@Test
-	public void testScale() {
-		Parameter parameter = new Parameter("foo", 100, 1000);
-		
-		Assert.assertEquals(100, parameter.scale(0.0));
-		Assert.assertEquals(1000, parameter.scale(1.0));
-		Assert.assertEquals(550, parameter.scale(0.5));
+public abstract class AbstractParameter<T> implements Parameter<T> {
+	
+	private final String name;
+	
+	public AbstractParameter(String name) {
+		super();
+		this.name = name;
 	}
 	
-	@Test
-	public void testScaleBoundsCheck() {
-		Parameter parameter = new Parameter("foo", 100, 1000);
-		
-		Assert.assertThrows(IllegalArgumentException.class, () -> parameter.scale(-0.001));
-		Assert.assertThrows(IllegalArgumentException.class, () -> parameter.scale(1.001));
+	@Override
+	public String getName() {
+		return name;
 	}
-
+	
 }
