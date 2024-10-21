@@ -46,12 +46,12 @@ jobs:
           expected-version: ${{ inputs.version }}
           skip-validation: ${{ inputs.skip-validation }}
       - name: Build release artifacts
-        if: ${{ inputs.publish-github && ! endsWith("-SNAPSHOT") }}
+        if: ${{ inputs.publish-github && ! endsWith('-SNAPSHOT') }}
         uses: MOEAFramework/.github/actions/run-ant@main
         with:
           target: package-binary package-demo package-source
       - name: Stage GitHub release
-        if: ${{ inputs.publish-github && ! endsWith("-SNAPSHOT") }}
+        if: ${{ inputs.publish-github && ! endsWith('-SNAPSHOT') }}
         uses: MOEAFramework/.github/actions/publish-github@main
         with:
           release-notes-file: docs/releaseNotes.md
@@ -71,12 +71,12 @@ jobs:
           ossrh-password: ${{ secrets.OSSRH_TOKEN }}
           gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
       - name: Setup website
-        if: ${{ inputs.publish-website && ! endsWith("-SNAPSHOT") }}
+        if: ${{ inputs.publish-website && ! endsWith('-SNAPSHOT') }}
         uses: MOEAFramework/.github/actions/run-ant@main
         with:
           target: package-website
       - name: Stage website
-        if: ${{ inputs.publish-website && ! endsWith("-SNAPSHOT") }}
+        if: ${{ inputs.publish-website && ! endsWith('-SNAPSHOT') }}
         uses: MOEAFramework/.github/actions/sync-repo@main
         with:
           directory: ../MOEAFramework/build/
@@ -85,7 +85,7 @@ jobs:
           message: Update for v${{ env.BUILD_VERSION }}
           github-token: ${{ secrets.PAT }}
       - name: Trigger integration tests
-        if: ${{ inputs.trigger-tests }}
+        if: ${{ inputs.trigger-tests && ! endsWith('-SNAPSHOT') }}
         uses: MOEAFramework/.github/actions/integration-test@main
         with:
           github-token: ${{ secrets.PAT }}
