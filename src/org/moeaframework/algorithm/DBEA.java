@@ -87,7 +87,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	/**
 	 * The reference points (weights).
 	 */
-	List<double[]> weights;
+	double[][] weights;
 	
 	/**
 	 * The solutions that define the corners.
@@ -179,7 +179,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 		NormalBoundaryIntersectionGenerator generator = new NormalBoundaryIntersectionGenerator(
 				problem.getNumberOfObjectives(), divisions);
 		
-		weights = generator.generate();
+		weights = generator.generate().toArray(double[][]::new);
 	}
 	
 	/**
@@ -498,7 +498,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 		
 		for (int i = 0; i < population.size(); i++) {
 			int j = order[i];
-			double[] weight = weights.get(j);
+			double[] weight = weights[j];
 			double[] f1 = normalizedObjectives(population.get(j));
 			
 			double d1_parent = distanceD1(f1, weight);

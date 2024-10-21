@@ -107,7 +107,7 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 	 * @param variation the variation operator
 	 * @param initialization the initialization method
 	 * @param maxIterations the maximum number of iterations for the angle-penalized distance to transition
-	 *        between convergence and diversity
+	 *        between convergence and diversity, set to {@code -1} to derive the value from {@code maxEvaluations}
 	 * @param adaptFrequency the frequency, in iterations, that the reference vectors are normalized
 	 */
 	public RVEA(Problem problem, int initialPopulationSize, ReferenceVectorGuidedPopulation population,

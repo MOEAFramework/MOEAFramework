@@ -64,8 +64,6 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 	 * Constructs a new OMOPSO instance with default settings.
 	 * 
 	 * @param problem the problem
-	 * @param maxIterations the maximum number of iterations for scaling non-uniform mutation; typically this should be
-	 *        {@code maxEvaluations / swarmSize}
 	 */
 	public OMOPSO(Problem problem) {
 		this(problem,
@@ -86,7 +84,8 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 	 * @param epsilons the &epsilon;-values used in the external archive
 	 * @param mutationProbability the mutation probability for uniform and non-uniform mutation
 	 * @param mutationPerturbation the perturbation index for uniform and non-uniform mutation
-	 * @param maxIterations the maximum iterations for scaling the non-uniform mutation
+	 * @param maxIterations the maximum iterations for scaling the non-uniform mutation, set to {@code -1} to derive
+	 *        the value from {@code maxEvaluations}
 	 */
 	public OMOPSO(Problem problem, int swarmSize, int leaderSize, Epsilons epsilons, double mutationProbability,
 			double mutationPerturbation, int maxIterations) {

@@ -48,7 +48,7 @@ public class Iterators {
 	/**
 	 * Returns an iterator that joins the contents of multiple iterators.
 	 * 
-	 * @param <T> the type of each value
+	 * @param <T> the type of each item
 	 * @param iterators the iterators
 	 * @return the joined iterator
 	 */
@@ -60,7 +60,7 @@ public class Iterators {
 	/**
 	 * Returns an iterable that joins the contents of multiple iterables.
 	 * 
-	 * @param <T> the type of each value
+	 * @param <T> the type of each item
 	 * @param iterables the iterables
 	 * @return the joined iterable
 	 */
@@ -70,9 +70,9 @@ public class Iterators {
 	}
 	
 	/**
-	 * Returns an iterator that tracks the index of each value.
+	 * Returns an iterator that tracks the index of each item.
 	 * 
-	 * @param <T> the type of each value
+	 * @param <T> the type of each item
 	 * @param iterator the iterator
 	 * @return the indexed value
 	 */
@@ -81,9 +81,9 @@ public class Iterators {
 	}
 	
 	/**
-	 * Returns an iterable that tracks the index of each value.
+	 * Returns an iterable that tracks the index of each item.
 	 * 
-	 * @param <T> the type of each value
+	 * @param <T> the type of each item
 	 * @param iterable the iterable
 	 * @return the indexed iterable
 	 */
@@ -91,14 +91,49 @@ public class Iterators {
 		return new IndexedIterable<T>(iterable);
 	}
 	
+	/**
+	 * Returns an iterable that tracks the index of each item.
+	 * 
+	 * @param <T> the type of each item
+	 * @param array the array of items
+	 * @return the indexed iterable
+	 */
+	public static <T> Iterable<IndexedValue<T>> enumerate(T[] array) {
+		return new IndexedIterable<T>(List.of(array));
+	}
+	
+	/**
+	 * Returns an iterator that returns pairs of items from two iterators.
+	 * 
+	 * @param <T> the type of each item
+	 * @param iterator1 the first iterator
+	 * @param iterator2 the second iterator
+	 * @return an iterator over pairs
+	 */
 	public static <T> Iterator<Pair<T, T>> zip(Iterator<T> iterator1, Iterator<T> iterator2) {
 		return new ZipIterator<T>(iterator1, iterator2);
 	}
 	
+	/**
+	 * Returns an iterable that returns pairs of items from two iterables.
+	 * 
+	 * @param <T> the type of each item
+	 * @param iterable1 the first iterable
+	 * @param iterable2 the second iterable
+	 * @return an iterable over pairs
+	 */
 	public static <T> Iterable<Pair<T, T>> zip(Iterable<T> iterable1, Iterable<T> iterable2) {
 		return new ZipIterable<T>(iterable1, iterable2);
 	}
 	
+	/**
+	 * Returns an iterable that returns pairs of items from two arrays.
+	 * 
+	 * @param <T> the type of each item
+	 * @param array1 the first array
+	 * @param array2 the second array
+	 * @return an iterable over pairs
+	 */
 	public static <T> Iterable<Pair<T, T>> zip(T[] array1, T[] array2) {
 		return zip(List.of(array1), List.of(array2));
 	}
