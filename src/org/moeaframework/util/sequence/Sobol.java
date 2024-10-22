@@ -20,12 +20,13 @@ package org.moeaframework.util.sequence;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import org.moeaframework.core.FrameworkException;
+import org.moeaframework.util.Iterators;
 import org.moeaframework.util.io.CommentedLineReader;
 import org.moeaframework.util.io.Resources;
 import org.moeaframework.util.io.Resources.ResourceOption;
+import org.moeaframework.util.io.Tokenizer;
 
 /**
  * Generates sequences using the Sobol' low-discrepancy sequence generator. When replacing uniformly random numbers
@@ -76,21 +77,21 @@ public class Sobol implements Sequence {
 				ResourceOption.REQUIRED)) {
 			List<int[]> directions = new ArrayList<int[]>();
 
-			String line = reader.readLine(); // remove header line
+			reader.readLine(); // remove header line
 
-			while ((line = reader.readLine()) != null) {
-				StringTokenizer tokenizer = new StringTokenizer(line);
-				tokenizer.nextToken(); // skip d
-				int s = Integer.parseInt(tokenizer.nextToken());
+			for (String line : Iterators.of(reader)) {
+				Tokenizer tokenizer = new Tokenizer();
+				String[] tokens = tokenizer.decodeToArray(line);
+				
+				// Skip d, parse s, a, and m_i
+				int s = Integer.parseInt(tokens[1]);
+				int[] dirs = new int[s + 1];
 
-				int[] d = new int[s + 1];
-				d[0] = Integer.parseInt(tokenizer.nextToken()); // parse a
-
-				for (int i = 1; i <= s; i++) {
-					d[i] = Integer.parseInt(tokenizer.nextToken()); // parse m_i
+				for (int i = 0; i <= s; i++) {
+					dirs[i] = Integer.parseInt(tokens[2+i]);
 				}
 
-				directions.add(d);
+				directions.add(dirs);
 			}
 
 			Sobol.DIRECTIONS = directions.toArray(int[][]::new);

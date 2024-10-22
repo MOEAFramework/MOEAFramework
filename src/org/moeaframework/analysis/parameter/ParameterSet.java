@@ -28,8 +28,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.text.StringTokenizer;
+import org.moeaframework.util.Iterators;
 import org.moeaframework.util.io.CommentedLineReader;
+import org.moeaframework.util.io.Tokenizer;
 
 public abstract class ParameterSet<T extends Parameter<?>> implements Iterable<T> {
 		
@@ -72,7 +73,7 @@ public abstract class ParameterSet<T extends Parameter<?>> implements Iterable<T
 			}
 		}
 		
-		return null; // TODO: throw?
+		throw new NoSuchParameterException(name);
 	}
 
 	@Override
@@ -102,16 +103,12 @@ public abstract class ParameterSet<T extends Parameter<?>> implements Iterable<T
 	}
 	
 	public static SampledParameterSet load(Reader reader) throws IOException {
+		Tokenizer tokenizer = new Tokenizer();
+		SampledParameterSet parameterSet = new SampledParameterSet();
+		
 		try (CommentedLineReader lineReader = CommentedLineReader.wrap(reader)) {
-			SampledParameterSet parameterSet = new SampledParameterSet();
-			String line = null;
-	
-			while ((line = lineReader.readLine()) != null) {
-				StringTokenizer tokenizer = new StringTokenizer(line);
-				tokenizer.setDelimiterChar(' ');
-				tokenizer.setQuoteChar('"');
-				
-				String[] tokens = tokenizer.getTokenArray();
+			for (String line : Iterators.of(lineReader)) {
+				String[] tokens = tokenizer.decodeToArray(line);
 				Parameter<?> parameter = null;
 				
 				if (tokens.length == 3) {
@@ -161,7 +158,5 @@ public abstract class ParameterSet<T extends Parameter<?>> implements Iterable<T
 			return parameterSet;
 		}
 	}
-	
-	
 
 }

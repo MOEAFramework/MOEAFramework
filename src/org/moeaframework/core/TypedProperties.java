@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -36,20 +37,15 @@ import java.util.TreeSet;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.text.StringSubstitutor;
-import org.apache.commons.text.translate.AggregateTranslator;
-import org.apache.commons.text.translate.CharSequenceTranslator;
-import org.apache.commons.text.translate.EntityArrays;
-import org.apache.commons.text.translate.LookupTranslator;
-import org.apache.commons.text.translate.OctalUnescaper;
-import org.apache.commons.text.translate.UnicodeEscaper;
-import org.apache.commons.text.translate.UnicodeUnescaper;
 import org.moeaframework.core.configuration.ConfigurationException;
+import org.moeaframework.util.Iterators;
 import org.moeaframework.util.OptionCompleter;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;
 import org.moeaframework.util.io.CommentedLineReader;
 import org.moeaframework.util.io.Resources;
+import org.moeaframework.util.io.Tokenizer;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -66,51 +62,15 @@ import org.moeaframework.util.validate.Validate;
  */
 public class TypedProperties implements Formattable<Entry<String, String>> {
 	
-	private static final CharSequenceTranslator ESCAPE_KEY;
-	private static final CharSequenceTranslator ESCAPE_VALUE;
-	private static final CharSequenceTranslator UNESCAPE;
+	private static final Tokenizer TOKENIZER;
 	
 	static {
-		final Map<CharSequence, CharSequence> characterMap = new HashMap<>();
-		characterMap.put("\b", "\\b");
-		characterMap.put("\n", "\\n");
-		characterMap.put("\t", "\\t");
-		characterMap.put("\f", "\\f");
-		characterMap.put("\r", "\\r");
-		characterMap.put("=", "\\=");
-		characterMap.put(":", "\\:");
-		characterMap.put("#", "\\#");
-		characterMap.put("!", "\\!");
-		
-		final Map<CharSequence, CharSequence> escapeMap = new HashMap<>();
-		escapeMap.put("\"", "\\\"");
-		escapeMap.put("\\", "\\\\");
-		
-		final Map<CharSequence, CharSequence> unescapeMap = new HashMap<>();
-		unescapeMap.put("\\\\", "\\");
-		unescapeMap.put("\\\"", "\"");
-		unescapeMap.put("\\'", "'");
-		unescapeMap.put("\\", "");
-		
-		final Map<CharSequence, CharSequence> keyEscapeMap = new HashMap<>();
-		keyEscapeMap.put(" ", "\\ ");
-		
-		ESCAPE_KEY = new AggregateTranslator(
-				new LookupTranslator(Collections.unmodifiableMap(keyEscapeMap)),
-				new LookupTranslator(Collections.unmodifiableMap(escapeMap)),
-				new LookupTranslator(Collections.unmodifiableMap(characterMap)),
-				UnicodeEscaper.outsideOf(32, 0x7f));
-		
-		ESCAPE_VALUE = new AggregateTranslator(
-				new LookupTranslator(Collections.unmodifiableMap(escapeMap)),
-				new LookupTranslator(Collections.unmodifiableMap(characterMap)),
-				UnicodeEscaper.outsideOf(32, 0x7f));
-
-		UNESCAPE = new AggregateTranslator(
-				new OctalUnescaper(),
-				new UnicodeUnescaper(),
-				new LookupTranslator(EntityArrays.invert(characterMap)),
-				new LookupTranslator(Collections.unmodifiableMap(unescapeMap)));
+		TOKENIZER = new Tokenizer();
+		TOKENIZER.escapeChar("=", "\\=");
+		TOKENIZER.escapeChar(":", "\\:");
+		TOKENIZER.escapeChar("#", "\\#");
+		TOKENIZER.escapeChar("!", "\\!");
+		TOKENIZER.setOutputDelimiter("=");
 	}
 
 	/**
@@ -1356,63 +1316,15 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 */
 	public void load(Reader reader) throws IOException {
 		CommentedLineReader lineReader = CommentedLineReader.wrap(reader);
-		String line = null;
 		
-		while ((line = lineReader.readLine()) != null) {
-			boolean precedingBackslash = false;
-			
-			for (int i = 0; i < line.length(); i++) {
-				char c = line.charAt(i);
-				
-				if ((c == '=' || c == ':') && !precedingBackslash) {
-					String key = line.substring(0, i);
-					String value = line.substring(i+1);
-
-					key = stripUnescapedWhitespace(key, true);
-					value = stripUnescapedWhitespace(value, false);
-							
-					properties.put(UNESCAPE.translate(key), UNESCAPE.translate(value));
-				}
-				
-				precedingBackslash = c == '\\' ? !precedingBackslash : false;
-			}
-		}
-	}
-	
-	/**
-	 * Strips any leading and trailing (if {@code isKey = false}) whitespace that is not escaped.
-	 * 
-	 * @param str the string
-	 * @param isKey {@code true} if the string is a key; {@code false} if the string is value
-	 * @return the stripped string
-	 */
-	private String stripUnescapedWhitespace(String str, boolean isKey) {
-		int start = 0;
-		int end = str.length();
-		
-		while (start < end) {
-			char c = str.charAt(start);
-			
-			if (c != ' ' && c != '\t' && c != '\f') {
-				break;
+		for (String line : Iterators.of(lineReader)) {
+			if (line.isBlank()) {
+				continue;
 			}
 			
-			start += 1;
+			String[] tokens = TOKENIZER.decodeToArray(line);
+			properties.put(tokens[0], tokens.length > 1 ? tokens[1] : "");
 		}
-		
-		if (isKey) {
-			while (end > start) {
-				char c = str.charAt(end - 1);
-				
-				if ((c != ' ' && c != '\t' && c != '\f') || (end - 2 > start && str.charAt(end - 2) == '\\')) {
-					break;
-				}
-				
-				end -= 1;
-			}
-		}
-		
-		return str.substring(start, end);
 	}
 	
 	/**
@@ -1423,9 +1335,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 */
 	public void store(Writer writer) throws IOException {
 		for (Map.Entry<String, String> entry : properties.entrySet()) {
-			writer.write(ESCAPE_KEY.translate(entry.getKey()));
-			writer.write("=");
-			writer.write(ESCAPE_VALUE.translate(entry.getValue()));
+			writer.write(TOKENIZER.encode(List.of(entry.getKey(), entry.getValue())));
 			writer.write(System.lineSeparator());
 		}
 	}

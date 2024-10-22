@@ -509,11 +509,11 @@ public class TypedPropertiesTest {
 	
 	@Test
 	public void testWhitespace() throws IOException {
-		// Per the Properties load behavior, the trailing whitespace is retained
+		// This differs slightly from Properties by removing the trailing whitespace in the value
 		String input = " foo = bar ";
 				
 		TypedProperties expected = new TypedProperties();
-		expected.setString("foo", "bar ");
+		expected.setString("foo", "bar");
 		
 		try (StringReader reader = new StringReader(input)) {
 			TypedProperties properties = new TypedProperties();

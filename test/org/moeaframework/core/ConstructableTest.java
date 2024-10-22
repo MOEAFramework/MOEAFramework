@@ -53,7 +53,7 @@ public class ConstructableTest {
 	
 	@Test
 	public void testString() {
-		String definition = "ConstructableTest$TestConstraint(\"foo, bar\",2.0)";
+		String definition = "ConstructableTest$TestConstraint(foo\\,\\ bar,2.0)";
 		
 		TestConstraint result = Constructable.createInstance(TestConstraint.class, definition);
 		Assert.assertEquals("foo, bar", result.getName());
@@ -77,7 +77,7 @@ public class ConstructableTest {
 	
 	@Test(expected = FrameworkException.class)
 	public void testAdditionalArgument() {
-		Constructable.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(\"foo\", 0.000001, 5.0, \"bar\")");
+		Constructable.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(foo, 0.000001, 5.0, bar)");
 	}
 	
 	@Test

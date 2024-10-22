@@ -70,7 +70,6 @@ public class TabularData<T> implements Displayable {
 				new LookupTranslator(escapeLatexMap),
 				new LookupTranslator(escapeStandardMap));
 
-
 		ESCAPE_MARKDOWN = new AggregateTranslator(
 				new LookupTranslator(escapeMarkdownMap),
 				new LookupTranslator(escapeStandardMap));

@@ -31,8 +31,8 @@ import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.reflect.ConstructorUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.commons.text.StringTokenizer;
 import org.moeaframework.util.Iterators;
+import org.moeaframework.util.io.Tokenizer;
 
 /**
  * Interface for objects that can be constructed from a string representation.  The string representation mimics a Java
@@ -132,29 +132,25 @@ public interface Constructable {
 	public static <T> String createDefinition(Class<T> parentType, Class<? extends T> instanceType,
 			Object... arguments) {
 		StringBuilder sb = new StringBuilder();
+		
+		Tokenizer tokenizer = new Tokenizer();
+		tokenizer.setOutputDelimiter(",");
+		
 		sb.append(toClassName(parentType, instanceType));
 		
 		if (arguments != null && arguments.length > 0) {
-			sb.append("(");
+			String[] tokens = new String[arguments.length];
 			
 			for (int i = 0; i < arguments.length; i++) {
-				if (i > 0) {
-					sb.append(",");
-				}
-				
 				if (MethodUtils.getMatchingMethod(arguments[i].getClass(), "toString").getDeclaringClass() == Object.class) {
 					System.err.println(instanceType + " does not override toString()");
 				}
 				
-				String str = arguments[i].toString();
-				
-				if (str.contains(",")) {
-					str = '"' + str + '"';
-				}
-				
-				sb.append(str);
+				tokens[i] = arguments[i].toString();
 			}
 			
+			sb.append("(");
+			sb.append(tokenizer.encode(tokens));
 			sb.append(")");
 		}
 		
@@ -176,10 +172,9 @@ public interface Constructable {
 		int endIndex = definition.lastIndexOf(')');
 
 		if (startIndex > 0 && endIndex > startIndex) {
-			StringTokenizer tokenizer = new StringTokenizer(definition.substring(startIndex + 1, endIndex));
-			tokenizer.setDelimiterChar(',');
-			tokenizer.setQuoteChar('"');
-			arguments = tokenizer.getTokenArray();
+			Tokenizer tokenizer = new Tokenizer();
+			tokenizer.addDelimiter(",");
+			arguments = tokenizer.decodeToArray(definition.substring(startIndex + 1, endIndex));
 			
 			definition = definition.substring(0, startIndex);
 		}

@@ -38,6 +38,7 @@ import org.moeaframework.analysis.parameter.Parameter;
 import org.moeaframework.analysis.parameter.ParameterSet;
 import org.moeaframework.util.Iterators;
 import org.moeaframework.util.io.CommentedLineReader;
+import org.moeaframework.util.io.Tokenizer;
 
 public class Samples implements Iterable<Sample> {
 
@@ -133,11 +134,12 @@ public class Samples implements Iterable<Sample> {
 	}
 	
 	public static Samples load(Reader reader, ParameterSet<?> parameterSet) throws IOException {
+		Tokenizer tokenizer = new Tokenizer();
+		Samples samples = new Samples(parameterSet);
+		
 		try (CommentedLineReader lineReader = CommentedLineReader.wrap(reader)) {
-			Samples samples = new Samples(parameterSet);
-			
 			for (String line : Iterators.of(lineReader)) {
-				String[] tokens = line.trim().split("\\s+");
+				String[] tokens = tokenizer.decodeToArray(line);
 				
 				if (tokens.length != parameterSet.size()) {
 					throw new IOException("invalid line: " + line);
@@ -153,9 +155,9 @@ public class Samples implements Iterable<Sample> {
 				
 				samples.add(sample);
 			}
-			
-			return samples;
 		}
+		
+		return samples;
 	}
 
 	
@@ -166,13 +168,15 @@ public class Samples implements Iterable<Sample> {
 	}
 	
 	public void save(Writer writer) throws IOException {
+		Tokenizer tokenizer = new Tokenizer();
+		
 		for (Sample sample : samples) {
 			for (int i = 0; i < parameterSet.size(); i++) {
 				if (i > 0) {
-					writer.write(' ');
+					writer.write(tokenizer.getOutputDelimiter());
 				}
 				
-				writer.write(sample.getString(parameterSet.get(i).getName()));
+				writer.write(tokenizer.escape(sample.getString(parameterSet.get(i).getName())));
 			}
 			
 			writer.write(System.lineSeparator());
