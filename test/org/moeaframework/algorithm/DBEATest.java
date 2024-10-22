@@ -37,6 +37,7 @@ import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
+import org.moeaframework.util.Iterators;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 
 public class DBEATest {
@@ -207,12 +208,10 @@ public class DBEATest {
 		DBEA.TESTING_MODE = true;
 		DBEA dbea = new DBEA(problem, new NormalBoundaryDivisions(3, 0));
 		dbea.generateWeights();
-		
-		String line = null;
-		
+				
 		// get the initial population from Matlab/Octave
 		try (BufferedReader reader = new BufferedReader(new FileReader(new File(directory, "init_pop.txt")))) {
-			while ((line = reader.readLine()) != null) {
+			for (String line : Iterators.of(reader)) {
 				if (line.isEmpty()) {
 					continue;
 				}
@@ -234,7 +233,7 @@ public class DBEATest {
 		try (BufferedReader reader = new BufferedReader(new FileReader(new File(directory, "init_obj.txt")))) {
 			int index = 0;
 			
-			while ((line = reader.readLine()) != null) {
+			for (String line : Iterators.of(reader)) {
 				if (line.isEmpty()) {
 					continue;
 				}
@@ -260,7 +259,7 @@ public class DBEATest {
 		try (BufferedReader reader = new BufferedReader(new FileReader(new File(directory, "init_corner.txt")))) {
 			int index = 0;
 			
-			while ((line = reader.readLine()) != null) {
+			for (String line : Iterators.of(reader)) {
 				if (line.isEmpty()) {
 					continue;
 				}
@@ -284,7 +283,7 @@ public class DBEATest {
 		dbea.initializeIdealPointAndIntercepts();
 		
 		try (BufferedReader reader = new BufferedReader(new FileReader(new File(directory, "idealpoint.txt")))) {
-			line = reader.readLine();
+			String line = reader.readLine();
 			String[] tokens = line.trim().split("\\s+");
 			
 			for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
@@ -298,7 +297,7 @@ public class DBEATest {
 		}
 		
 		try (BufferedReader reader = new BufferedReader(new FileReader(new File(directory, "intercept.txt")))) {
-			line = reader.readLine();
+			String line = reader.readLine();
 			String[] tokens = line.trim().split("\\s+");
 			
 			for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
@@ -325,7 +324,7 @@ public class DBEATest {
 			Solution child = null;
 			
 			try (BufferedReader reader = new BufferedReader(new FileReader(new File(directory, "child.txt")))) {
-				line = reader.readLine();
+				String line = reader.readLine();
 				String[] tokens = line.trim().split("\\s+");
 				
 				child = problem.newSolution();
@@ -340,7 +339,7 @@ public class DBEATest {
 			boolean dominated = dbea.checkDomination(child);
 			
 			try (BufferedReader reader = new BufferedReader(new FileReader(new File(directory, "dom_flag.txt")))) {
-				line = reader.readLine();
+				String line = reader.readLine();
 				int value = (int)Double.parseDouble(line.trim());
 				
 				if ((value == 1 && !dominated) || (value == 0 && dominated)) {
@@ -355,7 +354,7 @@ public class DBEATest {
 				dbea.updateIdealPointAndIntercepts(child);
 			
 				try (BufferedReader reader = new BufferedReader(new FileReader(new File(directory, "updated_idealpoint.txt")))) {
-					line = reader.readLine();
+					String line = reader.readLine();
 					String[] tokens = line.trim().split("\\s+");
 					
 					for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
@@ -369,7 +368,7 @@ public class DBEATest {
 				}
 				
 				try (BufferedReader reader = new BufferedReader(new FileReader(new File(directory, "updated_intercept.txt")))) {
-					line = reader.readLine();
+					String line = reader.readLine();
 					String[] tokens = line.trim().split("\\s+");
 					
 					for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
@@ -388,7 +387,7 @@ public class DBEATest {
 				try (BufferedReader reader = new BufferedReader(new FileReader(new File(directory, "updated_pop.txt")))) {
 					int index = 0;
 					
-					while ((line = reader.readLine()) != null) {
+					for (String line : Iterators.of(reader)) {
 						if (line.isEmpty()) {
 							continue;
 						}
@@ -411,7 +410,7 @@ public class DBEATest {
 				try (BufferedReader reader = new BufferedReader(new FileReader(new File(directory, "updated_corner.txt")))) {
 					int index = 0;
 					
-					while ((line = reader.readLine()) != null) {
+					for (String line : Iterators.of(reader)) {
 						if (line.isEmpty()) {
 							continue;
 						}

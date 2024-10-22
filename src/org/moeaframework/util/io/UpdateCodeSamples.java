@@ -51,6 +51,7 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.Iterators;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -243,10 +244,8 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		String lineSeparator = determineLineSeparator(file);
 		
 		try (BufferedReader reader = new BufferedReader(new FileReader(file));
-			 BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
-			String line = null;
-			
-			while ((line = reader.readLine()) != null) {
+			 BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {			
+			for (String line : Iterators.of(reader)) {
 				writer.write(line);
 				writer.write(lineSeparator);
 				
@@ -375,10 +374,9 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	private List<String> getNextCodeBlock(BufferedReader reader, BufferedWriter writer, FileType fileType,
 			String lineSeparator) throws IOException {
 		List<String> content = new ArrayList<String>();
-		String line = null;
 		boolean inCodeBlock = false;
 		
-		while ((line = reader.readLine()) != null) {		
+		for (String line : Iterators.of(reader)) {		
 			if (!inCodeBlock && fileType.isStartOfCodeBlock(line)) {
 				content.add(line);
 				inCodeBlock = true;

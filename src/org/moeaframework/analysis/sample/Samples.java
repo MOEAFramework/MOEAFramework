@@ -123,10 +123,7 @@ public class Samples implements Iterable<Sample> {
 				.append(samples, rhs.samples)
 				.isEquals();
 	}
-	
-	// TODO: This assumes values are whitespace separated, which might not be true for all parameters.  Improve
-	// the encoding used.
-	
+
 	public static Samples load(File file, ParameterSet<?> parameterSet) throws FileNotFoundException, IOException {
 		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 			return load(reader, parameterSet);

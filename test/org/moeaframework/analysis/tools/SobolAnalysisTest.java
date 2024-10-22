@@ -30,6 +30,7 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.TestThresholds;
+import org.moeaframework.util.Iterators;
 import org.moeaframework.util.sequence.Saltelli;
 
 public class SobolAnalysisTest {
@@ -235,13 +236,12 @@ public class SobolAnalysisTest {
 	 * @throws IOException if an I/O error occurred
 	 */
 	protected double getEntryValue(File file, String key, int skip) throws IOException {
-		String line = null;
 		Pattern pattern = Pattern.compile("^\\s*" + key + "\\s+" + 
 				Assert.getSpaceSeparatedNumericPattern(1) + "\\s+\\[" + 
 				Assert.getSpaceSeparatedNumericPattern(1) + "\\]\\s*$");
 		
 		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-			while ((line = reader.readLine()) != null) {
+			for (String line : Iterators.of(reader)) {
 				Matcher matcher = pattern.matcher(line);
 				
 				if (matcher.matches()) {

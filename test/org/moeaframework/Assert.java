@@ -64,6 +64,7 @@ import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.core.variable.Program;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.util.Iterators;
 import org.moeaframework.util.io.CommentedLineReader;
 
 public class Assert extends org.junit.Assert {
@@ -429,9 +430,7 @@ public class Assert extends org.junit.Assert {
 		assertFileExists(file);
 		
 		try (CommentedLineReader reader = new CommentedLineReader(new FileReader(file))) {
-			String line = null;
-			
-			while ((line = reader.readLine()) != null) {
+			for (String line : Iterators.of(reader)) {
 				assertStringMatches(line, regex);
 			}
 		}

@@ -67,6 +67,7 @@ import org.jfree.ui.about.ProjectInfo;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
+import org.moeaframework.util.Iterators;
 import org.moeaframework.util.Localization;
 import org.moeaframework.util.io.CommentedLineReader;
 import org.moeaframework.util.io.Resources;
@@ -799,12 +800,11 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 	 */
 	private String loadLicense() throws IOException {
 		StringBuilder sb = new StringBuilder();
-		String line = null;
 		boolean isNewParagraph = false;
 		
 		try (CommentedLineReader reader = Resources.asLineReader(getClass(), "/META-INF/LGPL-LICENSE",
 				ResourceOption.REQUIRED)) {
-			while ((line = reader.readLine()) != null) {
+			for (String line : Iterators.of(reader)) {
 				line = line.trim();
 				
 				if (line.isEmpty()) {

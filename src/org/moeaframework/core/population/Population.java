@@ -52,6 +52,7 @@ import org.moeaframework.core.Stateful;
 import org.moeaframework.core.constraint.Constraint;
 import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.variable.Variable;
+import org.moeaframework.util.Iterators;
 import org.moeaframework.util.SerializationUtils;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;
@@ -543,9 +544,8 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, Co
 	public static Population loadObjectives(Reader reader) throws IOException {
 		try (CommentedLineReader input = CommentedLineReader.wrap(CloseShieldReader.wrap(reader))) {
 			Population population = new Population();
-			String line = null;
 			
-			while ((line = input.readLine()) != null) {
+			for (String line : Iterators.of(input)) {
 				String[] tokens = line.trim().split("\\s+");
 				Solution solution = new Solution(0, tokens.length);
 	

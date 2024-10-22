@@ -31,6 +31,7 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.configuration.ConfigurationException;
+import org.moeaframework.util.Iterators;
 
 public class TypedPropertiesTest {
 	
@@ -436,9 +437,7 @@ public class TypedPropertiesTest {
 			properties.store(writer);
 			
 			try (BufferedReader reader = new BufferedReader(new StringReader(writer.toString()))) {
-				String line = null;
-				
-				while ((line = reader.readLine()) != null) {
+				for (String line : Iterators.of(reader)) {
 					Assert.assertFalse(line.startsWith("#") || line.startsWith("!"));
 				}
 			}

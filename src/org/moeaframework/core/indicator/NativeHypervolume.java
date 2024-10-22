@@ -31,6 +31,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.problem.Problem;
+import org.moeaframework.util.Iterators;
 import org.moeaframework.util.io.RedirectStream;
 
 /**
@@ -233,9 +234,7 @@ public class NativeHypervolume extends NormalizedIndicator {
 		String lastLine = null;
 
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-			String line = null;
-
-			while ((line = reader.readLine()) != null) {
+			for (String line : Iterators.of(reader)) {
 				lastLine = line;
 			}
 		}

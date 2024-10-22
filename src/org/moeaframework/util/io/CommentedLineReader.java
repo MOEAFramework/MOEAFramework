@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 
+import org.moeaframework.util.Iterators;
+
 /**
  * Read text from a character-input stream, ignoring lines starting with the {@code #} character.  Lines are only
  * ignored when using the {@link #readLine} method.
@@ -65,11 +67,10 @@ public class CommentedLineReader extends BufferedReader {
 	
 	@Override
 	public long transferTo(Writer out) throws IOException {
-		String line = null;
 		String newline = System.lineSeparator();
 		long size = 0;
 
-		while ((line = readLine()) != null) {
+		for (String line : Iterators.of(this)) {
 			out.write(line);
 			out.write(newline);
 
