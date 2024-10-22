@@ -17,7 +17,6 @@
  */
 package org.moeaframework.examples.ga.NK;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -30,6 +29,8 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.objective.Maximize;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.Problem;
+import org.moeaframework.util.io.LineReader;
+import org.moeaframework.util.io.Tokenizer;
 import org.moeaframework.util.validate.Validate;
 
 /* The following code is derived from derived from the ANSI C code developed
@@ -213,10 +214,11 @@ public class MNKProblem implements Problem {
 	 *         invalid
 	 */
 	private void load(File file) throws IOException {
-		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+		try (LineReader reader = LineReader.wrap(new FileReader(file))) {
 			// read M, N, and K
+			Tokenizer tokenizer = new Tokenizer();
 			String line = reader.readLine();
-			String[] tokens = line.split("\\s+");
+			String[] tokens = tokenizer.decodeToArray(line);
 
 			if (tokens.length == 2) {
 				M = 1;

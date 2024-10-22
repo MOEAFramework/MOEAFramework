@@ -17,7 +17,6 @@
  */
 package org.moeaframework.analysis.io;
 
-import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileReader;
@@ -39,6 +38,8 @@ import org.moeaframework.core.variable.Variable;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.ProblemStub;
 import org.moeaframework.util.ErrorHandler;
+import org.moeaframework.util.io.LineReader;
+import org.moeaframework.util.io.Tokenizer;
 
 import static org.moeaframework.analysis.io.ResultFileWriter.ENCODING_WARNING;
 
@@ -57,7 +58,12 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	/**
 	 * The internal stream for reading data from the file.
 	 */
-	private final BufferedReader reader;
+	private final LineReader reader;
+	
+	/**
+	 * The tokenizer for parsing lines.
+	 */
+	private final Tokenizer tokenizer;
 	
 	/**
 	 * The problem.
@@ -126,8 +132,10 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 		errorHandler = new ErrorHandler();
 		errorHandler.setSuppressDuplicates(true);
 		
-		reader = new BufferedReader(new FileReader(file));
+		reader = LineReader.wrap(new FileReader(file));
 		readHeader(allowLegacyFormat);
+		
+		tokenizer = new Tokenizer();
 	}
 	
 	/**
@@ -313,7 +321,7 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	 * @return the solution
 	 */
 	private Solution parseSolution(String line) {
-		String[] entries = line.trim().split("\\s+");
+		String[] entries = tokenizer.decodeToArray(line);
 		Solution solution = null;
 		
 		try {

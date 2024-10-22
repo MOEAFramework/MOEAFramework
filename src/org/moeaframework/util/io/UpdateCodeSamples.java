@@ -17,12 +17,11 @@
  */
 package org.moeaframework.util.io;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -51,7 +50,6 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.util.CommandLineUtility;
-import org.moeaframework.util.Iterators;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -243,9 +241,9 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 		String lineSeparator = determineLineSeparator(file);
 		
-		try (BufferedReader reader = new BufferedReader(new FileReader(file));
-			 BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {			
-			for (String line : Iterators.of(reader)) {
+		try (LineReader reader = LineReader.wrap(new FileReader(file));
+			 PrintWriter writer = new PrintWriter(new FileWriter(tempFile))) {			
+			for (String line : reader) {
 				writer.write(line);
 				writer.write(lineSeparator);
 				
@@ -371,12 +369,12 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	 * @return the code block
 	 * @throws IOException if an I/O error occurred while reading the file
 	 */
-	private List<String> getNextCodeBlock(BufferedReader reader, BufferedWriter writer, FileType fileType,
+	private List<String> getNextCodeBlock(LineReader reader, PrintWriter writer, FileType fileType,
 			String lineSeparator) throws IOException {
 		List<String> content = new ArrayList<String>();
 		boolean inCodeBlock = false;
 		
-		for (String line : Iterators.of(reader)) {		
+		for (String line : reader) {		
 			if (!inCodeBlock && fileType.isStartOfCodeBlock(line)) {
 				content.add(line);
 				inCodeBlock = true;

@@ -20,7 +20,6 @@ package org.moeaframework.core;
 import java.awt.Toolkit;
 import java.awt.image.BaseMultiResolutionImage;
 import java.awt.image.MultiResolutionImage;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -250,13 +249,13 @@ public class Settings {
 			File file = new File(resource);
 			
 			if (file.exists()) {
-				try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+				try (FileReader reader = new FileReader(file)) {
 					PROPERTIES.load(reader);
 				}
 			} else {
 				try (InputStream stream = ClassLoader.getSystemResourceAsStream("/" + resource)) {
 					if (stream != null) {
-						try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
+						try (InputStreamReader reader = new InputStreamReader(stream)) {
 							PROPERTIES.load(reader);
 						}
 					}

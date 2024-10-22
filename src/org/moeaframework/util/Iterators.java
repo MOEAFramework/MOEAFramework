@@ -17,15 +17,12 @@
  */
 package org.moeaframework.util;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.moeaframework.core.FrameworkException;
 
 /**
  * Collection of static methods for dealing with {@link Iterable}s and {@link Iterator}s.
@@ -46,16 +43,6 @@ public class Iterators {
 	@SafeVarargs
 	public static <T> Iterator<T> of(T... values) {
 		return List.of(values).iterator();
-	}
-	
-	/**
-	 * Returns an iterable over the lines in a reader.
-	 * 
-	 * @param reader the reader
-	 * @return the iterator over the lines
-	 */
-	public static Iterable<String> of(BufferedReader reader) {
-		return new BufferedReaderIterable(reader);
 	}
 	
 	/**
@@ -190,70 +177,6 @@ public class Iterators {
 		 */
 		public T getValue() {
 			return value;
-		}
-		
-	}
-	
-	private static class BufferedReaderIterable implements Iterable<String> {
-		
-		private final BufferedReader reader;
-		
-		public BufferedReaderIterable(BufferedReader reader) {
-			super();
-			this.reader = reader;
-		}
-
-		@Override
-		public Iterator<String> iterator() {
-			return new BufferedReaderIterator(reader);
-		}
-		
-	}
-	
-	private static class BufferedReaderIterator implements Iterator<String> {
-		
-		private final BufferedReader reader;
-		
-		private String nextLine;
-		
-		public BufferedReaderIterator(BufferedReader reader) {
-			super();
-			this.reader = reader;
-		}
-		
-		private String nextLine() {
-			try {
-				return reader.readLine();
-			} catch (IOException e) {
-				throw new FrameworkException("exception caught while iterating over reader", e);
-			}
-		}
-
-		@Override
-		public boolean hasNext() {
-			if (nextLine == null) {
-				nextLine = nextLine();
-			}
-			
-			return nextLine != null;
-		}
-
-		@Override
-		public String next() {
-			String result = null;
-			
-			if (nextLine != null) {
-				result = nextLine;
-				nextLine = null;
-			} else {
-				result = nextLine();
-			}
-			
-			if (result == null) {
-				throw new NoSuchElementException();
-			}
-			
-			return result;
 		}
 		
 	}

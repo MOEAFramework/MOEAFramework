@@ -17,7 +17,6 @@
  */
 package org.moeaframework.core.indicator;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -31,8 +30,9 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.problem.Problem;
-import org.moeaframework.util.Iterators;
+import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.io.RedirectStream;
+import org.moeaframework.util.io.Tokenizer;
 
 /**
  * Calculates hypervolume using a compiled executable.  This originally was intended to allow use of faster, natively
@@ -231,16 +231,15 @@ public class NativeHypervolume extends NormalizedIndicator {
 	static double invokeNativeProcess(String command) throws IOException {
 		Process process = new ProcessBuilder(parseCommand(command)).start();
 		RedirectStream.redirect(process.getErrorStream(), System.err);
-		String lastLine = null;
 
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-			for (String line : Iterators.of(reader)) {
-				lastLine = line;
-			}
+		try (LineReader lineReader = LineReader.wrap(new InputStreamReader(process.getInputStream()))) {
+			String lastLine = lineReader.last();
+			
+			Tokenizer tokenizer = new Tokenizer();
+			String[] tokens = tokenizer.decodeToArray(lastLine);
+			
+			return Double.parseDouble(tokens[tokens.length - 1]);
 		}
-
-		String[] tokens = lastLine.split("\\s+");
-		return Double.parseDouble(tokens[tokens.length - 1]);
 	}
 
 }

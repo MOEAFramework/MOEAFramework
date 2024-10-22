@@ -22,8 +22,7 @@ import java.io.IOException;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.core.Settings;
-import org.moeaframework.util.Iterators;
-import org.moeaframework.util.io.CommentedLineReader;
+import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.io.Resources;
 import org.moeaframework.util.io.Resources.ResourceOption;
 
@@ -49,8 +48,8 @@ public abstract class AbstractFactoryTest<T, S extends AbstractFactory<T>> {
 	public void testDefaultProviders() throws IOException {
 		String resource = "/META-INF/services/" + getProviderType().getName();
 		
-		try (CommentedLineReader reader = Resources.asLineReader(Settings.class, resource, ResourceOption.REQUIRED)) {	
-			for (String line : Iterators.of(reader)) {
+		try (LineReader lineReader = Resources.asLineReader(Settings.class, resource, ResourceOption.REQUIRED).skipComments()) {	
+			for (String line : lineReader) {
 				System.out.println("Testing existence of provider " + line);
 				Assert.assertTrue(createFactory().hasProvider(line));
 			}

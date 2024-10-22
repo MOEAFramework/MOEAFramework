@@ -17,7 +17,6 @@
  */
 package org.moeaframework.mock;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PipedInputStream;
@@ -36,6 +35,7 @@ import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.core.variable.Subset;
 import org.moeaframework.problem.ExternalProblem;
+import org.moeaframework.util.io.LineReader;
 
 public class MockExternalProblem extends ExternalProblem {
 	
@@ -70,11 +70,13 @@ public class MockExternalProblem extends ExternalProblem {
 
 		thread = new Thread() {
 			public void run() {
-				try (BufferedReader reader = new BufferedReader(new InputStreamReader(pipedReader));
+				try (LineReader reader = LineReader.wrap(new InputStreamReader(pipedReader));
 						PrintStream writer = new PrintStream(pipedWriter)) {
-					String line = null;
-	
-					while (!thread.isInterrupted() && (line = reader.readLine()) != null) {
+					for (String line : reader) {
+						if (thread.isInterrupted()) {
+							break;
+						}
+						
 						Assert.assertStringMatches(line, pattern);
 	
 						writer.println(callback.apply(line));

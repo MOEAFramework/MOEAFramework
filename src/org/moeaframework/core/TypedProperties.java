@@ -38,12 +38,11 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.text.StringSubstitutor;
 import org.moeaframework.core.configuration.ConfigurationException;
-import org.moeaframework.util.Iterators;
 import org.moeaframework.util.OptionCompleter;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;
-import org.moeaframework.util.io.CommentedLineReader;
+import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.io.Resources;
 import org.moeaframework.util.io.Tokenizer;
 import org.moeaframework.util.validate.Validate;
@@ -1315,13 +1314,9 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public void load(Reader reader) throws IOException {
-		CommentedLineReader lineReader = CommentedLineReader.wrap(reader);
+		LineReader lineReader = LineReader.wrap(reader).skipComments().skipBlanks();
 		
-		for (String line : Iterators.of(lineReader)) {
-			if (line.isBlank()) {
-				continue;
-			}
-			
+		for (String line : lineReader) {
 			String[] tokens = TOKENIZER.decodeToArray(line);
 			properties.put(tokens[0], tokens.length > 1 ? tokens[1] : "");
 		}

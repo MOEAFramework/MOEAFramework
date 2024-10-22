@@ -28,8 +28,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.moeaframework.util.Iterators;
-import org.moeaframework.util.io.CommentedLineReader;
+import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.io.Tokenizer;
 
 public abstract class ParameterSet<T extends Parameter<?>> implements Iterable<T> {
@@ -106,8 +105,8 @@ public abstract class ParameterSet<T extends Parameter<?>> implements Iterable<T
 		Tokenizer tokenizer = new Tokenizer();
 		SampledParameterSet parameterSet = new SampledParameterSet();
 		
-		try (CommentedLineReader lineReader = CommentedLineReader.wrap(reader)) {
-			for (String line : Iterators.of(lineReader)) {
+		try (LineReader lineReader = LineReader.wrap(reader).skipComments()) {
+			for (String line : lineReader) {
 				String[] tokens = tokenizer.decodeToArray(line);
 				Parameter<?> parameter = null;
 				

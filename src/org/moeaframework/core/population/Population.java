@@ -52,12 +52,12 @@ import org.moeaframework.core.Stateful;
 import org.moeaframework.core.constraint.Constraint;
 import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.variable.Variable;
-import org.moeaframework.util.Iterators;
 import org.moeaframework.util.SerializationUtils;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;
-import org.moeaframework.util.io.CommentedLineReader;
+import org.moeaframework.util.io.LineReader;
+import org.moeaframework.util.io.Tokenizer;
 
 /**
  * A collection of solutions and common methods for manipulating the collection.
@@ -542,11 +542,12 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, Co
 	 * @throws IOException if an I/O error occurred
 	 */
 	public static Population loadObjectives(Reader reader) throws IOException {
-		try (CommentedLineReader input = CommentedLineReader.wrap(CloseShieldReader.wrap(reader))) {
+		try (LineReader lineReader = LineReader.wrap(CloseShieldReader.wrap(reader)).skipComments()) {
 			Population population = new Population();
+			Tokenizer tokenizer = new Tokenizer();
 			
-			for (String line : Iterators.of(input)) {
-				String[] tokens = line.trim().split("\\s+");
+			for (String line : lineReader) {
+				String[] tokens = tokenizer.decodeToArray(line);
 				Solution solution = new Solution(0, tokens.length);
 	
 				for (int i = 0; i < tokens.length; i++) {

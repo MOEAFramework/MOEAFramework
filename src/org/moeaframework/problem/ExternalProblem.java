@@ -46,6 +46,7 @@ import org.moeaframework.core.variable.Subset;
 import org.moeaframework.core.variable.Variable;
 import org.moeaframework.util.DurationUtils;
 import org.moeaframework.util.io.RedirectStream;
+import org.moeaframework.util.io.Tokenizer;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -561,6 +562,11 @@ public abstract class ExternalProblem implements Problem {
 	 * socket, and streams.
 	 */
 	protected final Instance instance;
+	
+	/**
+	 * The tokenizer for encoding and decoding lines sent to and read from the external process.
+	 */
+	private final Tokenizer tokenizer;
 
 	/**
 	 * Constructs an external problem using the specified builder.
@@ -570,6 +576,7 @@ public abstract class ExternalProblem implements Problem {
 	public ExternalProblem(Builder builder) {
 		super();
 		instance = builder.build();
+		tokenizer = new Tokenizer();
 	}
 
 	/**
@@ -606,12 +613,13 @@ public abstract class ExternalProblem implements Problem {
 		// send variables to external process
 		try {
 			StringBuilder sb = new StringBuilder();
-			
-			sb.append(encode(solution.getVariable(0)));
-			
-			for (int i = 1; i < solution.getNumberOfVariables(); i++) {
-				sb.append(" ");
-				sb.append(encode(solution.getVariable(i)));
+						
+			for (int i = 0; i < solution.getNumberOfVariables(); i++) {
+				if (i > 0) {
+					sb.append(tokenizer.getOutputDelimiter());
+				}
+				
+				sb.append(tokenizer.escape(encode(solution.getVariable(i))));
 			}
 			
 			sb.append(System.lineSeparator());
@@ -641,7 +649,7 @@ public abstract class ExternalProblem implements Problem {
 			debug.print(">> ");
 			debug.println(line);
 			
-			String[] tokens = line.split("\\s+");
+			String[] tokens = tokenizer.decodeToArray(line);
 			
 			if (tokens.length != (solution.getNumberOfObjectives() + solution.getNumberOfConstraints())) {
 				throw new ProblemException(this, "response contained fewer tokens than expected");

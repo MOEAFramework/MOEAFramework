@@ -125,6 +125,15 @@ public class LineReaderTest {
 	}
 	
 	@Test
+	public void testTrim() throws IOException {
+		try (LineReader reader = new LineReader(new StringReader(blankInput)).trim()) {
+			Assert.assertEquals("", reader.readLine());
+			Assert.assertEquals("", reader.readLine());
+			Assert.assertNull(reader.readLine());
+		}
+	}
+	
+	@Test
 	public void testReadLineEmptyFileWithComment() throws IOException {
 		try (LineReader reader = new LineReader(new StringReader(commentedInput)).skipComments()) {
 			Assert.assertNull(reader.readLine());

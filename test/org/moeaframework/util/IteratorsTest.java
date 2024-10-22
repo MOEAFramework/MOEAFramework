@@ -17,9 +17,6 @@
  */
 package org.moeaframework.util;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -45,30 +42,6 @@ public class IteratorsTest {
 		
 		Assert.assertFalse(it.hasNext());
 		Assert.assertThrows(NoSuchElementException.class, () -> it.next());
-	}
-	
-	@Test
-	public void testEmptyReaderOf() throws IOException {
-		try (BufferedReader reader = new BufferedReader(new StringReader(""))) {
-			Iterator<String> it = Iterators.of(reader).iterator();
-			Assert.assertFalse(it.hasNext());
-			Assert.assertThrows(NoSuchElementException.class, () -> it.next());
-		}
-	}
-	
-	@Test
-	public void testReaderOf() throws IOException {
-		try (BufferedReader reader = new BufferedReader(new StringReader("foo\nbar"))) {
-			Iterator<String> it = Iterators.of(reader).iterator();
-			Assert.assertTrue(it.hasNext());
-			Assert.assertEquals("foo", it.next());
-			
-			Assert.assertTrue(it.hasNext());
-			Assert.assertEquals("bar", it.next());
-			
-			Assert.assertFalse(it.hasNext());
-			Assert.assertThrows(NoSuchElementException.class, () -> it.next());
-		}
 	}
 	
 	@Test

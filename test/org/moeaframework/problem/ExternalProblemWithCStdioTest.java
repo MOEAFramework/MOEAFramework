@@ -17,7 +17,6 @@
  */
 package org.moeaframework.problem;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -42,6 +41,7 @@ import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.core.variable.Subset;
 import org.moeaframework.mock.MockUnsupportedVariable;
 import org.moeaframework.problem.ExternalProblem.Builder;
+import org.moeaframework.util.io.LineReader;
 
 public class ExternalProblemWithCStdioTest {
 
@@ -77,7 +77,7 @@ public class ExternalProblemWithCStdioTest {
 		try (PipedOutputStream out = new PipedOutputStream(); PipedInputStream in = new PipedInputStream(out)) {
 			builder.redirectErrorTo(out);
 			
-			try (BufferedReader debugReader = new BufferedReader(new InputStreamReader(in));
+			try (LineReader debugReader = LineReader.wrap(new InputStreamReader(in));
 					TestExternalProblem problem = new TestExternalProblem(builder)) {
 				Initialization initialization = new RandomInitialization(problem);
 		

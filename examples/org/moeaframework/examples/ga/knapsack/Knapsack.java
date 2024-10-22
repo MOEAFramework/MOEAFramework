@@ -30,7 +30,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.objective.Maximize;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.Problem;
-import org.moeaframework.util.io.CommentedLineReader;
+import org.moeaframework.util.io.LineReader;
 
 /**
  * Multiobjective 0/1 knapsack problem. Problem instances are loaded from files
@@ -118,7 +118,7 @@ public class Knapsack implements Problem {
 		String line = null;
 		Matcher matcher = null;
 		
-		try (CommentedLineReader lineReader = new CommentedLineReader(reader)) {
+		try (LineReader lineReader = LineReader.wrap(reader).skipComments()) {
 			line = lineReader.readLine(); // the problem specification line
 			matcher = specificationLine.matcher(line);
 			

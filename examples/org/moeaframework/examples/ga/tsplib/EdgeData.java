@@ -17,13 +17,15 @@
  */
 package org.moeaframework.examples.ga.tsplib;
 
-import java.io.BufferedReader;
 import java.io.EOFException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+
+import org.moeaframework.util.io.LineReader;
+import org.moeaframework.util.io.Tokenizer;
 
 /**
  * Stores the edges in a graph.
@@ -64,19 +66,20 @@ public class EdgeData extends DistanceTable {
 	 * queue.
 	 * 
 	 * @param reader the reader containing the adjacent edge data
+	 * @param tokenizer tokenizer for parsing lines
 	 * @param entries the queue of identifies read by this method
 	 * @throws IOException if an I/O error occurred while reading the adjacent
 	 *         edge data
 	 */
-	private void readNextLine(BufferedReader reader, Queue<Integer> entries)
-			throws IOException {
+	private void readNextLine(LineReader reader, Tokenizer tokenizer,
+			Queue<Integer> entries) throws IOException {
 		String line = reader.readLine();
 		
 		if (line == null) {
 			throw new EOFException("unexpectedly reached EOF");
 		}
 		
-		String[] tokens = line.trim().split("\\s+");
+		String[] tokens = tokenizer.decodeToArray(line);
 		
 		for (int i = 0; i < tokens.length; i++) {
 			entries.offer(Integer.parseInt(tokens[i]));
@@ -84,18 +87,16 @@ public class EdgeData extends DistanceTable {
 	}
 	
 	@Override
-	public void load(BufferedReader reader) throws IOException {
-		String line = null;
+	public void load(LineReader reader) throws IOException {
+		Tokenizer tokenizer = new Tokenizer();
 		
 		switch (format) {
 			case EDGE_LIST -> {
-				while ((line = reader.readLine()) != null) {
-					line = line.trim();
-					
+				for (String line : reader) {
 					if (line.equals("-1")) {
 						break;
 					} else {
-						String[] tokens = line.split("\\s+");
+						String[] tokens = tokenizer.decodeToArray(line);
 						int id1 = Integer.parseInt(tokens[0]);
 						int id2 = Integer.parseInt(tokens[1]);
 						addEdge(id1, id2);
@@ -106,7 +107,7 @@ public class EdgeData extends DistanceTable {
 				int currentId = -1;
 				Queue<Integer> values = new LinkedList<Integer>();
 				
-				readNextLine(reader, values);
+				readNextLine(reader, tokenizer, values);
 					
 				while ((currentId != -1) && (values.peek() != -1)) {
 					if (currentId == -1) {
@@ -122,7 +123,7 @@ public class EdgeData extends DistanceTable {
 					}
 					
 					if (values.isEmpty()) {
-						readNextLine(reader, values);
+						readNextLine(reader, tokenizer, values);
 					}
 				}
 			}

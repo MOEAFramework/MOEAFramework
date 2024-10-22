@@ -43,6 +43,11 @@ public class LineReader extends BufferedReader implements Iterable<String>, Iter
 	private boolean skipBlanks;
 	
 	/**
+	 * When set, trim any leading and trailing whitespace from each line.
+	 */
+	private boolean trim;
+	
+	/**
 	 * The prefix string used to identify comment lines.
 	 */
 	private String commentPrefix;
@@ -86,6 +91,11 @@ public class LineReader extends BufferedReader implements Iterable<String>, Iter
 		return this;
 	}
 	
+	public LineReader trim() {
+		this.trim = true;
+		return this;
+	}
+	
 	public LineReader commentPrefix(String commentPrefix) {
 		Validate.that("commentPrefix", commentPrefix).isNotEmpty();
 		
@@ -126,6 +136,10 @@ public class LineReader extends BufferedReader implements Iterable<String>, Iter
 			// loop until we find the next line
 			while ((line != null) && skipLine(line)) {
 				line = super.readLine();
+			}
+			
+			if (line != null && trim) {
+				line = line.trim();
 			}
 
 			return line;
@@ -172,6 +186,21 @@ public class LineReader extends BufferedReader implements Iterable<String>, Iter
 		}
 
 		return size;
+	}
+	
+	/**
+	 * Returns the last line in the reader, skipping any intermediate lines.
+	 * 
+	 * @return the last line
+	 */
+	public String last() {
+		String result = next();
+		
+		while (hasNext()) {
+			result = next();
+		}
+		
+		return result;
 	}
 
 }

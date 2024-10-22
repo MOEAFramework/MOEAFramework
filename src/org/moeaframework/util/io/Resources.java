@@ -135,10 +135,10 @@ public class Resources {
 	 * @return the reader, or {@code null} if the resource was not found
 	 * @throws IOException if an I/O error occurred
 	 */
-	public static CommentedLineReader asLineReader(Class<?> owner, String resource, ResourceOption... options)
+	public static LineReader asLineReader(Class<?> owner, String resource, ResourceOption... options)
 			throws IOException {
 		Reader reader = asReader(owner, resource, options);
-		return reader == null ? null : CommentedLineReader.wrap(reader);
+		return reader == null ? null : LineReader.wrap(reader);
 	}
 	
 	/**

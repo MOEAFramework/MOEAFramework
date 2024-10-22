@@ -17,13 +17,15 @@
  */
 package org.moeaframework.examples.ga.tsplib;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.moeaframework.util.io.LineReader;
+import org.moeaframework.util.io.Tokenizer;
 
 /**
  * Stores the nodes (by their identifier) that are visited in a tour.  Tours
@@ -51,17 +53,17 @@ public class Tour {
 	 * @param reader the reader that defines this tour
 	 * @throws IOException if an I/O error occurred while reading the tour
 	 */
-	public void load(BufferedReader reader) throws IOException {
-		String line = null;
+	public void load(LineReader reader) throws IOException {
+		Tokenizer tokenizer = new Tokenizer();
 		
-		outer: while ((line = reader.readLine()) != null) {
-			String[] tokens = line.trim().split("\\s+");
+		nextLine: for (String line : reader) {
+			String[] tokens = tokenizer.decodeToArray(line);
 			
 			for (int i = 0; i < tokens.length; i++) {
 				int id = Integer.parseInt(tokens[i]);
 				
 				if (id == -1) {
-					break outer;
+					break nextLine;
 				} else {
 					nodes.add(id);
 				}

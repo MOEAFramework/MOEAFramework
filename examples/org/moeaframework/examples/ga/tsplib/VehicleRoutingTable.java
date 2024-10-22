@@ -17,12 +17,14 @@
  */
 package org.moeaframework.examples.ga.tsplib;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import org.moeaframework.util.io.LineReader;
+import org.moeaframework.util.io.Tokenizer;
 
 /**
  * Stores the demand at each node and identifies the depot nodes for vehicle
@@ -64,10 +66,12 @@ public class VehicleRoutingTable {
 	 * @param reader the reader containing the demands
 	 * @throws IOException if an I/O error occurred while reading the demands
 	 */
-	public void loadDemands(BufferedReader reader) throws IOException {
+	public void loadDemands(LineReader reader) throws IOException {
+		Tokenizer tokenizer = new Tokenizer();
+		
 		for (int i = 0; i < size; i++) {
 			String line = reader.readLine();
-			String[] tokens = line.trim().split("\\s+");
+			String[] tokens = tokenizer.decodeToArray(line);
 			int id = Integer.parseInt(tokens[0]);
 			int demand = Integer.parseInt(tokens[1]);
 			
@@ -82,17 +86,17 @@ public class VehicleRoutingTable {
 	 * @throws IOException if an I/O error occurred while reading the depot
 	 *         list
 	 */
-	public void loadDepots(BufferedReader reader) throws IOException {
-		String line = null;
+	public void loadDepots(LineReader reader) throws IOException {
+		Tokenizer tokenizer = new Tokenizer();
 		
-		outer: while ((line = reader.readLine()) != null) {
-			String[] tokens = line.trim().split("\\s+");
+		nextLine: for (String line : reader) {
+			String[] tokens = tokenizer.decodeToArray(line);
 			
 			for (int i = 0; i < tokens.length; i++) {
 				int id = Integer.parseInt(tokens[i]);
 				
 				if (id == -1) {
-					break outer;
+					break nextLine;
 				} else {
 					depots.add(id);
 				}

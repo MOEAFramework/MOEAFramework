@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 import org.apache.commons.text.translate.AggregateTranslator;
 import org.apache.commons.text.translate.CharSequenceTranslator;
@@ -273,6 +274,16 @@ public class Tokenizer {
 		}
 		
 		return tokens;
+	}
+	
+	public <T> List<T> decode(String line, Function<String, T> conversion) {
+		List<T> result = new ArrayList<T>();
+		
+		for (String token : decode(line)) {
+			result.add(conversion.apply(token));
+		}
+		
+		return result;
 	}
 	
 	/**

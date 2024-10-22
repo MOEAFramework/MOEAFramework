@@ -17,7 +17,6 @@
  */
 package org.moeaframework.examples.ga.NK;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -31,6 +30,8 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.objective.Maximize;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.Problem;
+import org.moeaframework.util.io.LineReader;
+import org.moeaframework.util.io.Tokenizer;
 import org.moeaframework.util.validate.Validate;
 
 /* The following code is derived from derived from the ANSI C code developed
@@ -208,9 +209,10 @@ public class AdditivelyDecomposableProblem implements Problem {
 	 *         invalid
 	 */
 	private void load(File file) throws IOException {
-		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-			// head first line containing n, k, offset
-			String[] tokens = reader.readLine().split("\\s+");
+		try (LineReader reader = LineReader.wrap(new FileReader(file))) {
+			// read first line containing n, k, offset
+			Tokenizer tokenizer = new Tokenizer();
+			String[] tokens = tokenizer.decodeToArray(reader.readLine());
 			
 			if (tokens.length != 3) {
 				throw new IOException("expected 3 values on first line");
@@ -226,7 +228,7 @@ public class AdditivelyDecomposableProblem implements Problem {
 			int numberOfFunctions = (n-k) / (k-overlap) + 1;
 			
 			function = new double[numberOfFunctions][1 << k];
-			tokens = reader.readLine().split("\\s+");
+			tokens = tokenizer.decodeToArray(reader.readLine());
 			
 			if (tokens.length != numberOfFunctions * (1 << k)) {
 				throw new IOException(
@@ -245,7 +247,7 @@ public class AdditivelyDecomposableProblem implements Problem {
 			
 			// read the permutation
 			permutation = new int[n];
-			tokens = reader.readLine().split("\\s+");
+			tokens = tokenizer.decodeToArray(reader.readLine());
 			
 			if (tokens.length != n) {
 				throw new IOException(

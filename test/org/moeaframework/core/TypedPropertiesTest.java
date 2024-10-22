@@ -17,7 +17,6 @@
  */
 package org.moeaframework.core;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -31,7 +30,7 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.configuration.ConfigurationException;
-import org.moeaframework.util.Iterators;
+import org.moeaframework.util.io.LineReader;
 
 public class TypedPropertiesTest {
 	
@@ -436,8 +435,8 @@ public class TypedPropertiesTest {
 		try (StringWriter writer = new StringWriter()) {
 			properties.store(writer);
 			
-			try (BufferedReader reader = new BufferedReader(new StringReader(writer.toString()))) {
-				for (String line : Iterators.of(reader)) {
+			try (LineReader lineReader = LineReader.wrap(new StringReader(writer.toString()))) {
+				for (String line : lineReader) {
 					Assert.assertFalse(line.startsWith("#") || line.startsWith("!"));
 				}
 			}

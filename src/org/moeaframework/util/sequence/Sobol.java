@@ -22,8 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.util.Iterators;
-import org.moeaframework.util.io.CommentedLineReader;
+import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.io.Resources;
 import org.moeaframework.util.io.Resources.ResourceOption;
 import org.moeaframework.util.io.Tokenizer;
@@ -73,13 +72,13 @@ public class Sobol implements Sequence {
 	 * Loads the direction numbers. This is designed to read the file format from Kuo and Joe's site.
 	 */
 	private static void loadDirectionNumbers() throws IOException {
-		try (CommentedLineReader reader = Resources.asLineReader(Sobol.class, DIRECTIONS_RESOURCE,
-				ResourceOption.REQUIRED)) {
+		try (LineReader lineReader = Resources.asLineReader(Sobol.class, DIRECTIONS_RESOURCE,
+				ResourceOption.REQUIRED).skipComments()) {
 			List<int[]> directions = new ArrayList<int[]>();
 
-			reader.readLine(); // remove header line
+			lineReader.readLine(); // remove header line
 
-			for (String line : Iterators.of(reader)) {
+			for (String line : lineReader) {
 				Tokenizer tokenizer = new Tokenizer();
 				String[] tokens = tokenizer.decodeToArray(line);
 				

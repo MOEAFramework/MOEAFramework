@@ -17,7 +17,6 @@
  */
 package org.moeaframework.analysis.tools;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -30,7 +29,7 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.util.Iterators;
+import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.sequence.Saltelli;
 
 public class SobolAnalysisTest {
@@ -240,8 +239,8 @@ public class SobolAnalysisTest {
 				Assert.getSpaceSeparatedNumericPattern(1) + "\\s+\\[" + 
 				Assert.getSpaceSeparatedNumericPattern(1) + "\\]\\s*$");
 		
-		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-			for (String line : Iterators.of(reader)) {
+		try (LineReader lineReader = LineReader.wrap(new FileReader(file))) {
+			for (String line : lineReader) {
 				Matcher matcher = pattern.matcher(line);
 				
 				if (matcher.matches()) {

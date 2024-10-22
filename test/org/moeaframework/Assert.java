@@ -19,12 +19,12 @@ package org.moeaframework;
 
 import java.awt.Component;
 import java.awt.Container;
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.Reader;
 import java.io.Serializable;
 import java.io.StringReader;
 import java.lang.reflect.Array;
@@ -64,8 +64,7 @@ import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.core.variable.Program;
 import org.moeaframework.core.variable.RealVariable;
-import org.moeaframework.util.Iterators;
-import org.moeaframework.util.io.CommentedLineReader;
+import org.moeaframework.util.io.LineReader;
 
 public class Assert extends org.junit.Assert {
 
@@ -429,8 +428,8 @@ public class Assert extends org.junit.Assert {
 	public static void assertLinePattern(File file, String regex) throws IOException {
 		assertFileExists(file);
 		
-		try (CommentedLineReader reader = new CommentedLineReader(new FileReader(file))) {
-			for (String line : Iterators.of(reader)) {
+		try (LineReader lineReader = LineReader.wrap(new FileReader(file)).skipComments()) {
+			for (String line : lineReader) {
 				assertStringMatches(line, regex);
 			}
 		}
@@ -456,21 +455,22 @@ public class Assert extends org.junit.Assert {
 	}
 	
 	public static void assertLineCount(int expected, File file) throws IOException {
-		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+		try (FileReader reader = new FileReader(file)) {
 			assertLineCount("File '" + file + "' contains unexpected line count", expected, reader);
 		}
 	}
 	
 	public static void assertLineCount(int expected, String content) throws IOException {
-		try (BufferedReader reader = new BufferedReader(new StringReader(content))) {
+		try (StringReader reader = new StringReader(content)) {
 			assertLineCount("Content contains unexpected line count", expected, reader);
 		}
 	}
 	
-	private static void assertLineCount(String message, int expected, BufferedReader reader) throws IOException {
+	private static void assertLineCount(String message, int expected, Reader reader) throws IOException {
+		LineReader lineReader = LineReader.wrap(reader);
 		int actual = 0;
 		
-		while (reader.readLine() != null) {
+		while (lineReader.readLine() != null) {
 			actual++;
 		}
 		

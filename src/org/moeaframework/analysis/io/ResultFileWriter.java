@@ -17,7 +17,6 @@
  */
 package org.moeaframework.analysis.io;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -39,7 +38,7 @@ import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.variable.Variable;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.ErrorHandler;
-import org.moeaframework.util.Iterators;
+import org.moeaframework.util.io.LineReader;
 
 /**
  * Writes result files. A result file contains one or more entries consisting of a non-dominated population and
@@ -298,8 +297,8 @@ public class ResultFileWriter implements OutputWriter {
 		try (StringWriter buffer = new StringWriter()) {
 			properties.store(buffer);
 		
-			try (BufferedReader reader = new BufferedReader(new StringReader(buffer.toString()))) {
-				for (String line : Iterators.of(reader)) {
+			try (LineReader lineReader = LineReader.wrap(new StringReader(buffer.toString()))) {
+				for (String line : lineReader) {
 					writer.print(prefix);
 					writer.println(line);
 				}

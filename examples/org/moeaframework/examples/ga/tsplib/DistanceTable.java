@@ -17,8 +17,9 @@
  */
 package org.moeaframework.examples.ga.tsplib;
 
-import java.io.BufferedReader;
 import java.io.IOException;
+
+import org.moeaframework.util.io.LineReader;
 
 /**
  * A distance table provides a lookup of the distances between the nodes in a
@@ -70,7 +71,7 @@ public abstract class DistanceTable {
 	 * @throws IOException if an I/O error occurred while reading the distance
 	 *         table
 	 */
-	public abstract void load(BufferedReader reader) throws IOException;
+	public abstract void load(LineReader reader) throws IOException;
 	
 	/**
 	 * Returns {@code true} if the specified nodes are neighbors; {@code false}

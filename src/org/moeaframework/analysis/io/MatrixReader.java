@@ -29,7 +29,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.util.io.CommentedLineReader;
+import org.moeaframework.util.io.LineReader;
+import org.moeaframework.util.io.Tokenizer;
 
 /**
  * Reader of files containing matrices.  A matrix contains numerical data separated into rows and columns.  The values
@@ -46,7 +47,12 @@ public class MatrixReader implements Iterable<double[]>, Iterator<double[]>, Clo
 	/**
 	 * The underlying reader.
 	 */
-	private final CommentedLineReader reader;
+	private final LineReader reader;
+	
+	/**
+	 * The tokenizer for parsing each line.
+	 */
+	private final Tokenizer tokenizer;
 	
 	/**
 	 * The expected number of columns; or {@code -1} if the matrix has no fixed column count.
@@ -106,8 +112,10 @@ public class MatrixReader implements Iterable<double[]>, Iterator<double[]>, Clo
 	 */
 	public MatrixReader(Reader reader, int numberOfColumns) {
 		super();
-		this.reader = CommentedLineReader.wrap(reader);		
+		this.reader = LineReader.wrap(reader).skipComments().trim();		
 		this.numberOfColumns = numberOfColumns;
+		
+		tokenizer = new Tokenizer();
 	}
 	
 	/**
@@ -170,7 +178,7 @@ public class MatrixReader implements Iterable<double[]>, Iterator<double[]>, Clo
 			return null;
 		}
 
-		String[] tokens = line.trim().split("\\s+");
+		String[] tokens = tokenizer.decodeToArray(line);
 
 		if ((numberOfColumns >= 0) && (tokens.length != numberOfColumns)) {
 			error = true;

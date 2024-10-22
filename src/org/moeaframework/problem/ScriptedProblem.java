@@ -17,7 +17,6 @@
  */
 package org.moeaframework.problem;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -117,7 +116,7 @@ public class ScriptedProblem extends ProblemWrapper {
 	}
 	
 	private static final Problem createInvocableInstance(File file) throws ScriptException, IOException {
-		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+		try (FileReader reader = new FileReader(file)) {
 			ScriptEngine engine = newScriptEngine(file);
 			return createInvocableInstance(engine, reader);
 		}

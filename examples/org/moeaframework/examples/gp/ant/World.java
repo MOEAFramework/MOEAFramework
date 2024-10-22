@@ -17,7 +17,6 @@
  */
 package org.moeaframework.examples.gp.ant;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -25,6 +24,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+
+import org.moeaframework.util.io.LineReader;
+import org.moeaframework.util.io.Tokenizer;
 
 /**
  * The world that the ant occupies.  The world is cyclic, so an ant walking
@@ -142,7 +144,9 @@ public class World {
 	 * @throws IOException if an I/O error occurred
 	 */
 	protected void load(Reader reader) throws IOException {
-		try (BufferedReader lineReader = new BufferedReader(reader)) {
+		Tokenizer tokenizer = new Tokenizer();
+		
+		try (LineReader lineReader = LineReader.wrap(reader)) {
 			//read out the world dimension
 			String line = lineReader.readLine();
 			
@@ -150,7 +154,7 @@ public class World {
 				throw new IOException("trail missing header line");
 			}
 			
-			String[] tokens = line.split("\\s+");
+			String[] tokens = tokenizer.decodeToArray(line);
 			width = Integer.parseInt(tokens[0]);
 			height = Integer.parseInt(tokens[1]);
 			map = new State[width][height];

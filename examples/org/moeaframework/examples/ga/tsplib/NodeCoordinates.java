@@ -17,10 +17,12 @@
  */
 package org.moeaframework.examples.ga.tsplib;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.moeaframework.util.io.LineReader;
+import org.moeaframework.util.io.Tokenizer;
 
 /**
  * Stores the nodes in a TSPLIB problem instance and provides methods for 
@@ -78,10 +80,12 @@ public class NodeCoordinates extends DistanceTable {
 	}
 	
 	@Override
-	public void load(BufferedReader reader) throws IOException {
+	public void load(LineReader reader) throws IOException {
+		Tokenizer tokenizer = new Tokenizer();
+		
 		for (int i = 0; i < size; i++) {
 			String line = reader.readLine();
-			String[] tokens = line.trim().split("\\s+");
+			String[] tokens = tokenizer.decodeToArray(line);
 
 			if (tokens.length != type.getLength() + 1) {
 				throw new IOException(

@@ -17,7 +17,6 @@
  */
 package org.moeaframework.analysis.sample;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,8 +35,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.analysis.parameter.Parameter;
 import org.moeaframework.analysis.parameter.ParameterSet;
-import org.moeaframework.util.Iterators;
-import org.moeaframework.util.io.CommentedLineReader;
+import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.io.Tokenizer;
 
 public class Samples implements Iterable<Sample> {
@@ -125,7 +123,7 @@ public class Samples implements Iterable<Sample> {
 	}
 
 	public static Samples load(File file, ParameterSet<?> parameterSet) throws FileNotFoundException, IOException {
-		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+		try (FileReader reader = new FileReader(file)) {
 			return load(reader, parameterSet);
 		}
 	}
@@ -134,8 +132,8 @@ public class Samples implements Iterable<Sample> {
 		Tokenizer tokenizer = new Tokenizer();
 		Samples samples = new Samples(parameterSet);
 		
-		try (CommentedLineReader lineReader = CommentedLineReader.wrap(reader)) {
-			for (String line : Iterators.of(lineReader)) {
+		try (LineReader lineReader = LineReader.wrap(reader).skipComments()) {
+			for (String line : lineReader) {
 				String[] tokens = tokenizer.decodeToArray(line);
 				
 				if (tokens.length != parameterSet.size()) {

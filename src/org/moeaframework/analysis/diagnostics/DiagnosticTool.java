@@ -67,9 +67,8 @@ import org.jfree.ui.about.ProjectInfo;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
-import org.moeaframework.util.Iterators;
 import org.moeaframework.util.Localization;
-import org.moeaframework.util.io.CommentedLineReader;
+import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.io.Resources;
 import org.moeaframework.util.io.Resources.ResourceOption;
 
@@ -802,11 +801,9 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		StringBuilder sb = new StringBuilder();
 		boolean isNewParagraph = false;
 		
-		try (CommentedLineReader reader = Resources.asLineReader(getClass(), "/META-INF/LGPL-LICENSE",
-				ResourceOption.REQUIRED)) {
-			for (String line : Iterators.of(reader)) {
-				line = line.trim();
-				
+		try (LineReader lineReader = Resources.asLineReader(getClass(), "/META-INF/LGPL-LICENSE",
+				ResourceOption.REQUIRED).skipComments().trim()) {
+			for (String line : lineReader) {
 				if (line.isEmpty()) {
 					isNewParagraph = true;
 				} else {

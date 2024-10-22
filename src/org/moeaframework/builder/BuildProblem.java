@@ -36,8 +36,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.text.StringSubstitutor;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.CommandLineUtility;
-import org.moeaframework.util.Iterators;
-import org.moeaframework.util.io.CommentedLineReader;
+import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.io.Resources;
 import org.moeaframework.util.io.Resources.ResourceOption;
 
@@ -246,8 +245,8 @@ public class BuildProblem extends CommandLineUtility {
 		String manifest = loadResourceAsString(root, "Manifest");
 		manifest = substitutor.replace(manifest);
 
-		try (CommentedLineReader reader = new CommentedLineReader(new StringReader(manifest))) {
-			for (String line : Iterators.of(reader)) {
+		try (LineReader lineReader = LineReader.wrap(new StringReader(manifest)).skipComments()) {
+			for (String line : lineReader) {
 				String[] tokens = line.split("\\s*\\->\\s*");
 				String source = tokens[0];
 				Path target = targetDirectory.resolve(tokens[1]);

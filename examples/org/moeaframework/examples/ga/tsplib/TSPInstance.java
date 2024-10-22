@@ -17,13 +17,14 @@
  */
 package org.moeaframework.examples.ga.tsplib;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.moeaframework.util.io.LineReader;
 
 /**
  * A TSPLIB problem instance.
@@ -141,7 +142,7 @@ public class TSPInstance {
 	 */
 	public TSPInstance(Reader reader) throws IOException {
 		this();
-		load(new BufferedReader(reader));
+		load(reader);
 	}
 	
 	/**
@@ -152,7 +153,7 @@ public class TSPInstance {
 	 *         file
 	 */
 	protected void load(File file) throws IOException {
-		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+		try (FileReader reader = new FileReader(file)) {
 			load(reader);
 		}
 	}
@@ -164,53 +165,51 @@ public class TSPInstance {
 	 * @throws IOException if an I/O error occurred while loading the TSPLIB
 	 *         data
 	 */
-	protected void load(BufferedReader reader) throws IOException {
-		String line = null;
+	protected void load(Reader reader) throws IOException {
+		LineReader lineReader = LineReader.wrap(reader).trim();
 		
-		while ((line = reader.readLine()) != null) {
-			line = line.trim();
-
+		for (String line : lineReader) {
 			if (line.equals("NODE_COORD_SECTION")) {
 				if (nodeCoordinateType == null) {
 					nodeCoordinateType = edgeWeightType.getNodeCoordType();
 				}
 
 				distanceTable = new NodeCoordinates(dimension, edgeWeightType);
-				distanceTable.load(reader);
+				distanceTable.load(lineReader);
 			} else if (line.equals("EDGE_WEIGHT_SECTION")) {
 				if (DataType.SOP.equals(dataType)) {
 					// for whatever reason, SOP instances have an extra line with
 					// the node count
-					reader.readLine();
+					lineReader.readLine();
 				}
 
 				distanceTable = new EdgeWeightMatrix(dimension, edgeWeightFormat);
-				distanceTable.load(reader);
+				distanceTable.load(lineReader);
 			} else if (line.equals("EDGE_DATA_SECTION")) {
 				distanceTable = new EdgeData(dimension, edgeDataFormat);
-				distanceTable.load(reader);
+				distanceTable.load(lineReader);
 			} else if (line.equals("DISPLAY_DATA_SECTION")) {
 				displayData = new NodeCoordinates(dimension, NodeCoordType.TWOD_COORDS, null);
-				displayData.load(reader);
+				displayData.load(lineReader);
 			} else if (line.equals("TOUR_SECTION") || line.equals("-1")) {
 				Tour tour = new Tour();
-				tour.load(reader);
+				tour.load(lineReader);
 				tours.add(tour);
 			} else if (line.equals("FIXED_EDGES_SECTION") || line.matches("^\\s*FIXED_EDGES\\s*\\:\\s*$")) {
 				fixedEdges = new EdgeData(dimension, EdgeDataFormat.EDGE_LIST);
-				fixedEdges.load(reader);
+				fixedEdges.load(lineReader);
 			} else if (line.equals("DEMAND_SECTION")) {
 				if (vehicleRoutingTable == null) {
 					vehicleRoutingTable = new VehicleRoutingTable(dimension);
 				}
 
-				vehicleRoutingTable.loadDemands(reader);
+				vehicleRoutingTable.loadDemands(lineReader);
 			} else if (line.equals("DEPOT_SECTION")) {
 				if (vehicleRoutingTable == null) {
 					vehicleRoutingTable = new VehicleRoutingTable(dimension);
 				}
 
-				vehicleRoutingTable.loadDepots(reader);
+				vehicleRoutingTable.loadDepots(lineReader);
 			} else if (line.equals("EOF")) {
 				break;
 			} else if (line.isEmpty()) {

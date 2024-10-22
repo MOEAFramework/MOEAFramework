@@ -17,11 +17,13 @@
  */
 package org.moeaframework.examples.ga.tsplib;
 
-import java.io.BufferedReader;
 import java.io.EOFException;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
+
+import org.moeaframework.util.io.LineReader;
+import org.moeaframework.util.io.Tokenizer;
 
 /**
  * Stores the edge weight matrix from a TSPLIB problem instance.
@@ -65,11 +67,12 @@ public class EdgeWeightMatrix extends DistanceTable {
 	 * appends the weights to the given queue.
 	 * 
 	 * @param reader the reader containing the edge weights
+	 * @param tokenizer tokenizer for parsing lines
 	 * @param entries the queue of read but unprocessed edge weights
 	 * @throws IOException if an I/O error occurred while reading the edge
 	 *         weights
 	 */
-	private void readNextLine(BufferedReader reader, Queue<Double> entries)
+	private void readNextLine(LineReader reader, Tokenizer tokenizer, Queue<Double> entries)
 			throws IOException {
 		String line = null;
 		
@@ -81,7 +84,7 @@ public class EdgeWeightMatrix extends DistanceTable {
 			}
 		} while ((line = line.trim()).isEmpty());
 		
-		String[] tokens = line.split("\\s+");
+		String[] tokens = tokenizer.decodeToArray(line);
 		
 		for (int i = 0; i < tokens.length; i++) {
 			entries.offer(Double.parseDouble(tokens[i]));
@@ -89,15 +92,16 @@ public class EdgeWeightMatrix extends DistanceTable {
 	}
 	
 	@Override
-	public void load(BufferedReader reader) throws IOException {
+	public void load(LineReader reader) throws IOException {
 		Queue<Double> entries = new LinkedList<Double>();
+		Tokenizer tokenizer = new Tokenizer();
 		
 		switch (format) {
 			case FULL_MATRIX -> {
 				for (int i = 0; i < size; i++) {
 					for (int j = 0; j < size; j++) {
 						if (entries.isEmpty()) {
-							readNextLine(reader, entries);
+							readNextLine(reader, tokenizer, entries);
 						}
 						
 						matrix[i][j] = entries.poll();
@@ -108,7 +112,7 @@ public class EdgeWeightMatrix extends DistanceTable {
 				for (int i = 0; i < size-1; i++) {
 					for (int j = i+1; j < size; j++) {
 						if (entries.isEmpty()) {
-							readNextLine(reader, entries);
+							readNextLine(reader, tokenizer, entries);
 						}
 	
 						matrix[i][j] = entries.poll();
@@ -120,7 +124,7 @@ public class EdgeWeightMatrix extends DistanceTable {
 				for (int i = 0; i < size; i++) {
 					for (int j = i; j < size; j++) {
 						if (entries.isEmpty()) {
-							readNextLine(reader, entries);
+							readNextLine(reader, tokenizer, entries);
 						}
 	
 						matrix[i][j] = entries.poll();
@@ -132,7 +136,7 @@ public class EdgeWeightMatrix extends DistanceTable {
 				for (int i = 1; i<size; i++) {
 					for (int j = 0; j < i; j++) {
 						if (entries.isEmpty()) {
-							readNextLine(reader, entries);
+							readNextLine(reader, tokenizer, entries);
 						}
 	
 						matrix[i][j] = entries.poll();
@@ -144,7 +148,7 @@ public class EdgeWeightMatrix extends DistanceTable {
 				for (int i = 0; i < size; i++) {
 					for (int j = 0; j < i+1; j++) {
 						if (entries.isEmpty()) {
-							readNextLine(reader, entries);
+							readNextLine(reader, tokenizer, entries);
 						}
 	
 						matrix[i][j] = entries.poll();
@@ -156,7 +160,7 @@ public class EdgeWeightMatrix extends DistanceTable {
 				for (int j = 1; j < size; j++) {
 					for (int i = 0; i < j; i++) {
 						if (entries.isEmpty()) {
-							readNextLine(reader, entries);
+							readNextLine(reader, tokenizer, entries);
 						}
 	
 						matrix[i][j] = entries.poll();
@@ -168,7 +172,7 @@ public class EdgeWeightMatrix extends DistanceTable {
 				for (int j = 0; j < size; j++) {
 					for (int i = 0; i < j+1; i++) {
 						if (entries.isEmpty()) {
-							readNextLine(reader, entries);
+							readNextLine(reader, tokenizer, entries);
 						}
 	
 						matrix[i][j] = entries.poll();
@@ -180,7 +184,7 @@ public class EdgeWeightMatrix extends DistanceTable {
 				for (int j = 0; j < size-1; j++) {
 					for (int i = j+1; i < size; i++) {
 						if (entries.isEmpty()) {
-							readNextLine(reader, entries);
+							readNextLine(reader, tokenizer, entries);
 						}
 	
 						matrix[i][j] = entries.poll();
@@ -192,7 +196,7 @@ public class EdgeWeightMatrix extends DistanceTable {
 				for (int j = 0; j < size; j++) {
 					for (int i = j; i < size; i++) {
 						if (entries.isEmpty()) {
-							readNextLine(reader, entries);
+							readNextLine(reader, tokenizer, entries);
 						}
 	
 						matrix[i][j] = entries.poll();

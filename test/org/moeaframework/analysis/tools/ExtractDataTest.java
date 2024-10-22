@@ -17,7 +17,6 @@
  */
 package org.moeaframework.analysis.tools;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 
@@ -33,6 +32,7 @@ import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
 import org.moeaframework.problem.Problem;
+import org.moeaframework.util.io.LineReader;
 
 public class ExtractDataTest {
 	
@@ -78,7 +78,7 @@ public class ExtractDataTest {
 			"--output", output.getPath(),
 			"ElapsedTime", "TotalTime"});
 		
-		try (BufferedReader reader = new BufferedReader(new FileReader(output))) {
+		try (LineReader reader = LineReader.wrap(new FileReader(output))) {
 			Assert.assertEquals("#ElapsedTime TotalTime", reader.readLine());
 			Assert.assertEquals("0.0125 0.214", reader.readLine());
 			Assert.assertEquals("0.01549 0.209186", reader.readLine());
@@ -119,7 +119,7 @@ public class ExtractDataTest {
 		
 		Indicators indicators = Indicators.standard(problem, referenceSet);
 		
-		try (BufferedReader reader = new BufferedReader(new FileReader(output));
+		try (LineReader reader = LineReader.wrap(new FileReader(output));
 				ResultFileReader resultReader = new ResultFileReader(problem, input)) {
 			Assert.assertEquals("#GenerationalDistance Hypervolume Spacing", reader.readLine());
 				
@@ -160,7 +160,7 @@ public class ExtractDataTest {
 
 		Contribution contribution = new Contribution(referenceSet, epsilon);
 		
-		try (BufferedReader reader = new BufferedReader(new FileReader(output));
+		try (LineReader reader = LineReader.wrap(new FileReader(output));
 				ResultFileReader resultReader = new ResultFileReader(problem, input)) {
 			Assert.assertEquals("#Contribution", reader.readLine());
 				
@@ -191,7 +191,7 @@ public class ExtractDataTest {
 		
 		Contribution contribution = new Contribution(referenceSet);
 		
-		try (BufferedReader reader = new BufferedReader(new FileReader(output));
+		try (LineReader reader = LineReader.wrap(new FileReader(output));
 				ResultFileReader resultReader = new ResultFileReader(problem, input)) {
 			Assert.assertEquals("#Contribution", reader.readLine());
 				
