@@ -101,14 +101,44 @@ public class TokenizerTest {
 	
 	@Test
 	public void testEncodeCustomDelimiter() {
-		tokenizer.setOutputDelimiter("=");
+		tokenizer.setDelimiter('=');
 		Assert.assertEquals("foo=bar", tokenizer.encode(List.of("foo", "bar")));
 	}
 	
 	@Test
 	public void testDecodeCustomDelimiter() {
-		tokenizer.addDelimiter("=");
+		tokenizer.setDelimiter('=');
 		Assert.assertEquals(List.of("foo", "bar"), tokenizer.decode("foo = bar"));
+	}
+	
+	@Test
+	public void testLeadingDelimiter() {
+		tokenizer.setDelimiter(',');
+		Assert.assertEquals(List.of("", "foo", "bar"), tokenizer.decode(",foo,bar"));
+	}
+	
+	@Test
+	public void testTrailingDelimiter() {
+		tokenizer.setDelimiter(',');
+		Assert.assertEquals(List.of("foo", "bar", ""), tokenizer.decode("foo,bar, "));
+	}
+	
+	@Test
+	public void testInnerDelimiter() {
+		tokenizer.setDelimiter(',');
+		Assert.assertEquals(List.of("foo", "", "bar"), tokenizer.decode("foo,,bar"));
+	}
+	
+	@Test
+	public void testLeadingWhitespaceRemoval() {
+		tokenizer.setDelimiter('=');
+		Assert.assertEquals(List.of("foo", " "), tokenizer.decode("foo= \\ "));
+	}
+	
+	@Test
+	public void testTrailingWhitespaceRemoval() {
+		tokenizer.setDelimiter('=');
+		Assert.assertEquals(List.of("foo", " "), tokenizer.decode("foo=\\  "));
 	}
 
 }

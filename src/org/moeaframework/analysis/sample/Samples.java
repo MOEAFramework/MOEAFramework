@@ -168,7 +168,7 @@ public class Samples implements Iterable<Sample> {
 		for (Sample sample : samples) {
 			for (int i = 0; i < parameterSet.size(); i++) {
 				if (i > 0) {
-					writer.write(tokenizer.getOutputDelimiter());
+					writer.write(tokenizer.getDelimiter());
 				}
 				
 				writer.write(tokenizer.escape(sample.getString(parameterSet.get(i).getName())));

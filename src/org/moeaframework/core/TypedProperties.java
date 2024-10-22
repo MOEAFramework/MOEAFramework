@@ -61,26 +61,26 @@ import org.moeaframework.util.validate.Validate;
  */
 public class TypedProperties implements Formattable<Entry<String, String>> {
 	
-	private static final Tokenizer TOKENIZER;
+	private static final Tokenizer PROEPRTY_TOKENIZER;
 	
 	static {
-		TOKENIZER = new Tokenizer();
-		TOKENIZER.escapeChar("=", "\\=");
-		TOKENIZER.escapeChar(":", "\\:");
-		TOKENIZER.escapeChar("#", "\\#");
-		TOKENIZER.escapeChar("!", "\\!");
-		TOKENIZER.setOutputDelimiter("=");
+		PROEPRTY_TOKENIZER = new Tokenizer();
+		PROEPRTY_TOKENIZER.escapeChar("=", "\\=");
+		PROEPRTY_TOKENIZER.escapeChar(":", "\\:");
+		PROEPRTY_TOKENIZER.escapeChar("#", "\\#");
+		PROEPRTY_TOKENIZER.escapeChar("!", "\\!");
+		PROEPRTY_TOKENIZER.setDelimiter('=');
 	}
 
 	/**
 	 * The default separator for arrays.
 	 */
-	public static final String DEFAULT_SEPARATOR = ",";
+	public static final char DEFAULT_SEPARATOR = ',';
 
 	/**
-	 * The separator for arrays.
+	 * The tokenizer for parsing arrays.
 	 */
-	private final String separator;
+	private final Tokenizer tokenizer;
 
 	/**
 	 * Storage of the key-value pairs.
@@ -110,14 +110,16 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	}
 	
 	/**
-	 * Creates a new, empty instance of this class using the given separator string for arrays.
+	 * Creates a new, empty instance of this class using the given separator for arrays.
 	 * 
-	 * @param separator the separator string
+	 * @param separator the separator or delimiter for arrays
 	 * @param threadSafe if {@code true}, the constructed instance will be thread-safe
 	 */
-	protected TypedProperties(String separator, boolean threadSafe, boolean isSorted) {
+	protected TypedProperties(char separator, boolean threadSafe, boolean isSorted) {
 		super();
-		this.separator = separator;
+		
+		tokenizer = new Tokenizer();
+		tokenizer.setDelimiter(separator);
 		
 		Map<String, String> tempProperties = isSorted ?
 				new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER) :
@@ -754,16 +756,10 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 
 		if (value == null) {
 			return defaultValues;
-		} else if (value.isEmpty()) {
+		} else if (value.isBlank()) {
 			return new String[0];
 		} else {
-			String[] tokens = value.split(separator, -1);
-
-			for (int i = 0; i < tokens.length; i++) {
-				tokens[i] = tokens[i].trim();
-			}
-
-			return tokens;
+			return tokenizer.decodeToArray(value);
 		}
 	}
 	
@@ -1258,10 +1254,10 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 		
 		for (int i=0; i<Array.getLength(array); i++) {
 			if (i > 0) {
-				sb.append(separator);
+				sb.append(tokenizer.getDelimiter());
 			}
 			
-			sb.append(Array.get(array, i));
+			sb.append(tokenizer.escape(Array.get(array, i).toString()));
 		}
 		
 		return sb.toString();
@@ -1317,7 +1313,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 		LineReader lineReader = LineReader.wrap(reader).skipComments().skipBlanks();
 		
 		for (String line : lineReader) {
-			String[] tokens = TOKENIZER.decodeToArray(line);
+			String[] tokens = PROEPRTY_TOKENIZER.decodeToArray(line);
 			properties.put(tokens[0], tokens.length > 1 ? tokens[1] : "");
 		}
 	}
@@ -1330,7 +1326,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 */
 	public void store(Writer writer) throws IOException {
 		for (Map.Entry<String, String> entry : properties.entrySet()) {
-			writer.write(TOKENIZER.encode(List.of(entry.getKey(), entry.getValue())));
+			writer.write(PROEPRTY_TOKENIZER.encode(List.of(entry.getKey(), entry.getValue())));
 			writer.write(System.lineSeparator());
 		}
 	}

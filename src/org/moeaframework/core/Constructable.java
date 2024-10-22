@@ -134,7 +134,7 @@ public interface Constructable {
 		StringBuilder sb = new StringBuilder();
 		
 		Tokenizer tokenizer = new Tokenizer();
-		tokenizer.setOutputDelimiter(",");
+		tokenizer.setDelimiter(',');
 		
 		sb.append(toClassName(parentType, instanceType));
 		
@@ -173,7 +173,7 @@ public interface Constructable {
 
 		if (startIndex > 0 && endIndex > startIndex) {
 			Tokenizer tokenizer = new Tokenizer();
-			tokenizer.addDelimiter(",");
+			tokenizer.setDelimiter(',');
 			arguments = tokenizer.decodeToArray(definition.substring(startIndex + 1, endIndex));
 			
 			definition = definition.substring(0, startIndex);

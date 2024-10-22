@@ -20,10 +20,8 @@ package org.moeaframework.util.io;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Function;
 
 import org.apache.commons.text.translate.AggregateTranslator;
@@ -33,7 +31,6 @@ import org.apache.commons.text.translate.LookupTranslator;
 import org.apache.commons.text.translate.OctalUnescaper;
 import org.apache.commons.text.translate.UnicodeEscaper;
 import org.apache.commons.text.translate.UnicodeUnescaper;
-import org.moeaframework.core.FrameworkException;
 
 /**
  * Tokenizer for encoding and decoding content on a line, escaping any special characters.
@@ -48,10 +45,8 @@ public class Tokenizer {
 	
 	private final Map<CharSequence, CharSequence> customMap;
 	
-	private final Set<CharSequence> delimiters;
-	
-	private CharSequence outputDelimiter;
-	
+	private char delimiter;
+		
 	private CharSequenceTranslator escapeTranslator;
 	
 	private CharSequenceTranslator unescapeTranslator;
@@ -65,7 +60,6 @@ public class Tokenizer {
 		escapeMap = new HashMap<>();
 		unescapeMap = new HashMap<>();
 		customMap = new HashMap<>();
-		delimiters = new HashSet<>();
 		
 		defaults();
 	}
@@ -96,10 +90,8 @@ public class Tokenizer {
 	 */
 	public void reset() {
 		customMap.clear();
-		delimiters.clear();
-		outputDelimiter = null;
 		
-		addDelimiter(" ");
+		setDelimiter(' ');
 		requireUpdate();
 	}
 	
@@ -160,57 +152,22 @@ public class Tokenizer {
 	}
 	
 	/**
-	 * Adds a new delimiter in addition to any already configured.
+	 * Sets the delimiter, adding it as an escape character if not already configured.
 	 * 
 	 * @param delimiter the delimiter character
 	 */
-	public void addDelimiter(CharSequence delimiter) {
-		if (delimiter.length() != 1) {
-			throw new IllegalArgumentException("delimiter must be single character, given '" + delimiter + "'");
-		}
-		
-		escapeChar(delimiter, "\\" + delimiter);
-		delimiters.add(delimiter);
-		
-		if (outputDelimiter == null) {
-			outputDelimiter = delimiter;
-		}
+	public void setDelimiter(char delimiter) {
+		this.delimiter = delimiter;
+		escapeChar(String.valueOf(delimiter), "\\" + delimiter);
 	}
 	
 	/**
-	 */
-	public void clearDelimiters() {
-		delimiters.clear();
-	}
-	
-	/**
-	 * Sets the delimiter to output when encoding tokens into a string.  The delimiter is also included for decoding,
-	 * if not already configured.
-	 * 
-	 * @param delimiter the delimiter character
-	 */
-	public void setOutputDelimiter(CharSequence delimiter) {
-		addDelimiter(delimiter);
-		outputDelimiter = delimiter;
-	}
-	
-	/**
-	 * Returns the output delimiter used by this tokenizer.
+	 * Returns the delimiter used by this tokenizer.
 	 * 
 	 * @return the delimiter character
 	 */
-	public String getOutputDelimiter() {
-		return outputDelimiter.toString();
-	}
-	
-	/**
-	 * Returns {@code true} if the given character is a delimiter, {@code false} otherwise.
-	 * 
-	 * @param c the character
-	 * @return {@code true} if the given character is a delimiter, {@code false} otherwise
-	 */
-	private boolean isDelimiter(char c) {
-		return delimiters.contains(String.valueOf(c));
+	public String getDelimiter() {
+		return String.valueOf(delimiter);
 	}
 	
 	/**
@@ -236,6 +193,15 @@ public class Tokenizer {
 	
 	/**
 	 * Decodes or parses the string into individual tokens, converting any escaped characters back to their original.
+	 * <p>
+	 * Leading and trailing whitespace are trimmed from the tokens.  Any such whitespace that is part of the token
+	 * needs to be escaped.  For example, {@code "  foo  "} becomes {@code ["foo"]}, but the whitespace can be escaped
+	 * with {@code "\ \ foo\ \ "}.
+	 * <p>
+	 * If the delimiter is a whitespace character, multiple adjacent whitespace are treated as one delimiter.
+	 * However, if the delimiter is a non-whitespace character, each delimiter denotes a new token.  This leads to
+	 * slightly different behavior when dealing with delimiters.  For instance, {@code "foo  bar"} becomes
+	 * {@code ["foo", "bar"]}, but {@code "foo,,bar"} becomes {@code ["foo", "", "bar"]}.
 	 * 
 	 * @param line the line to decode
 	 * @return the tokens
@@ -245,35 +211,76 @@ public class Tokenizer {
 		
 		List<String> tokens = new ArrayList<>();
 		boolean precedingBackslash = false;
-		int lastDelimiter = -1;
+		boolean isToken = false;
+		int startIndex = 0;
+		int endIndex = 0;
 			
-		for (int i = 0; i < line.length(); i++) {
-			char c = line.charAt(i);
-				
-			if (isDelimiter(c) && !precedingBackslash) {
-				String token = line.substring(lastDelimiter + 1, i);
-				
-				if (!token.isBlank()) {
+		while (endIndex < line.length()) {
+			char c = line.charAt(endIndex);
+			
+			if (c != ' ' && c != '\t' && c != '\f') {
+				isToken = true;
+			}
+			
+			if ((c == delimiter) && !precedingBackslash) {
+				if (isToken) {
+					String token = line.substring(startIndex, endIndex);
+					token = stripUnescapedWhitespace(token);
 					token = unescapeTranslator.translate(token);
 					tokens.add(token);
+					
+					// trailing non-whitespace delimiters start next token
+					isToken = !Character.isWhitespace(c);
 				}
 				
-				lastDelimiter = i;
+				startIndex = endIndex + 1;
 			}
 				
 			precedingBackslash = c == '\\' ? !precedingBackslash : false;
+			endIndex += 1;
 		}
 		
-		if (lastDelimiter < line.length() - 1) {
-			String token = line.substring(lastDelimiter + 1);
-			
-			if (!token.isBlank()) {
-				token = unescapeTranslator.translate(token);
-				tokens.add(token);
-			}
+		if (isToken) {
+			String token = line.substring(startIndex);
+			token = stripUnescapedWhitespace(token);
+			token = unescapeTranslator.translate(token);
+			tokens.add(token);
 		}
 		
 		return tokens;
+	}
+
+	/**
+	 * Strips any leading and trailing whitespace that is not escaped.
+	 * 
+	 * @param str the string
+	 * @return the stripped string
+	 */
+	private String stripUnescapedWhitespace(String str) {
+		int start = 0;
+		int end = str.length();
+
+		while (start < end) {
+			char c = str.charAt(start);
+
+			if (c != ' ' && c != '\t' && c != '\f') {
+				break;
+			}
+			
+			start += 1;
+		}
+
+		while (end > start) {
+			char c = str.charAt(end - 1);
+					
+			if ((c != ' ' && c != '\t' && c != '\f') || (end - 2 >= start && str.charAt(end - 2) == '\\')) {
+				break;
+			}
+
+			end -= 1;
+		}
+
+		return str.substring(start, end);
 	}
 	
 	public <T> List<T> decode(String line, Function<String, T> conversion) {
@@ -320,11 +327,7 @@ public class Tokenizer {
 		
 		for (String token : tokens) {
 			if (sb.length() > 0) {
-				if (outputDelimiter == null) {
-					throw new FrameworkException("outputDelimiter not set");
-				}
-				
-				sb.append(outputDelimiter);
+				sb.append(delimiter);
 			}
 			
 			token = escapeTranslator.translate(token);

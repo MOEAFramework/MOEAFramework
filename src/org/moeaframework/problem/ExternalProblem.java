@@ -616,7 +616,7 @@ public abstract class ExternalProblem implements Problem {
 						
 			for (int i = 0; i < solution.getNumberOfVariables(); i++) {
 				if (i > 0) {
-					sb.append(tokenizer.getOutputDelimiter());
+					sb.append(tokenizer.getDelimiter());
 				}
 				
 				sb.append(tokenizer.escape(encode(solution.getVariable(i))));
