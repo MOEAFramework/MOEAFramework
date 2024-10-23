@@ -22,10 +22,10 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -88,15 +88,15 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	private final Map<String, String> properties;
 	
 	/**
-	 * The keys that were read from this {@code Properties} object.
+	 * The keys that were accessed.
 	 */
-	private final Set<String> accessedProperties;
+	private final Set<String> accessedKeys;
 	
 	/**
 	 * Creates a new, empty instance of this class.
 	 */
 	public TypedProperties() {
-		this(DEFAULT_SEPARATOR, false, true);
+		this(DEFAULT_SEPARATOR, false);
 	}
 	
 	/**
@@ -105,7 +105,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * @param properties the existing {@code Properties} object
 	 */
 	public TypedProperties(Properties properties) {
-		this(DEFAULT_SEPARATOR, false, true);
+		this(DEFAULT_SEPARATOR, false);
 		addAll(properties);
 	}
 	
@@ -115,26 +115,22 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * @param separator the separator or delimiter for arrays
 	 * @param threadSafe if {@code true}, the constructed instance will be thread-safe
 	 */
-	protected TypedProperties(char separator, boolean threadSafe, boolean isSorted) {
+	protected TypedProperties(char separator, boolean threadSafe) {
 		super();
 		
 		tokenizer = new Tokenizer();
 		tokenizer.setDelimiter(separator);
 		
-		Map<String, String> tempProperties = isSorted ?
-				new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER) :
-				new LinkedHashMap<String, String>();
-		Set<String> tempAccessedProperties = isSorted ?
-				new TreeSet<String>(String.CASE_INSENSITIVE_ORDER) :
-				new LinkedHashSet<String>();
+		Map<String, String> tempProperties = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
+		Set<String> tempAccessedKeys = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
 		
 		if (threadSafe) {
 			tempProperties = Collections.synchronizedMap(tempProperties);
-			tempAccessedProperties = Collections.synchronizedSet(tempAccessedProperties);
+			tempAccessedKeys = Collections.synchronizedSet(tempAccessedKeys);
 		}
 		
 		this.properties = tempProperties;
-		this.accessedProperties = tempAccessedProperties;
+		this.accessedKeys = tempAccessedKeys;
 	}
 	
 	/**
@@ -144,16 +140,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * @return the typed properties instance
 	 */
 	public static TypedProperties newThreadSafeInstance() {
-		return new TypedProperties(DEFAULT_SEPARATOR, true, true);
-	}
-	
-	/**
-	 * Creates and returns an empty properties object that is sorted in insertion order.
-	 * 
-	 * @return the typed properties instance
-	 */
-	public static TypedProperties newInsertionOrderInstance() {
-		return new TypedProperties(DEFAULT_SEPARATOR, false, false);
+		return new TypedProperties(DEFAULT_SEPARATOR, true);
 	}
 	
 	/**
@@ -245,7 +232,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * @return {@code true} if the specified key is contained in this properties object; {@code false} otherwise
 	 */
 	public boolean contains(String key) {
-		accessedProperties.add(key);
+		accessedKeys.add(key);
 		return properties.containsKey(key);
 	}
 
@@ -260,7 +247,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 */
 	public String getString(String key, String defaultValue) {
 		String value = properties.get(key);
-		accessedProperties.add(key);
+		accessedKeys.add(key);
 
 		if (value == null) {
 			return defaultValue;
@@ -1205,7 +1192,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 */
 	public void clear() {
 		properties.clear();
-		accessedProperties.clear();
+		accessedKeys.clear();
 	}
 	
 	/**
@@ -1325,8 +1312,26 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public void store(Writer writer) throws IOException {
-		for (Map.Entry<String, String> entry : properties.entrySet()) {
-			writer.write(PROEPRTY_TOKENIZER.encode(List.of(entry.getKey(), entry.getValue())));
+		store(writer, null);
+	}
+	
+	/**
+	 * Writes the properties to a writer.
+	 * 
+	 * @param writer the writer
+	 * @param order controls the ordering of keys, or {@code null} for the default
+	 * @throws IOException if an I/O error occurred
+	 */
+	public void store(Writer writer, Comparator<String> order) throws IOException {
+		List<String> keys = new ArrayList<>();
+		keys.addAll(properties.keySet());
+		
+		if (order != null) {
+			keys.sort(order);
+		}
+		
+		for (String key : keys) {
+			writer.write(PROEPRTY_TOKENIZER.encode(List.of(key, properties.get(key))));
 			writer.write(System.lineSeparator());
 		}
 	}
@@ -1343,7 +1348,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * Clears the tracking information for properties that have been accessed.
 	 */
 	public void clearAccessedProperties() {
-		accessedProperties.clear();
+		accessedKeys.clear();
 	}
 	
 	/**
@@ -1354,7 +1359,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 */
 	public Set<String> getAccessedProperties() {
 		Set<String> result = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
-		result.addAll(accessedProperties);
+		result.addAll(accessedKeys);
 		return result;
 	}
 	
@@ -1367,7 +1372,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	public Set<String> getUnaccessedProperties() {
 		Set<String> orphanedProperties = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
 		orphanedProperties.addAll(properties.keySet());
-		orphanedProperties.removeAll(accessedProperties);
+		orphanedProperties.removeAll(accessedKeys);
 		return orphanedProperties;
 	}
 	

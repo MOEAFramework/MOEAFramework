@@ -17,6 +17,8 @@
  */
 package org.moeaframework.analysis.sample;
 
+import org.moeaframework.analysis.store.Key;
+import org.moeaframework.analysis.store.Keyed;
 import org.moeaframework.core.TypedProperties;
 
 /**
@@ -25,16 +27,27 @@ import org.moeaframework.core.TypedProperties;
  * @see Parameter
  * @see Samples
  */
-public class Sample extends TypedProperties {
+public class Sample extends TypedProperties implements Keyed {
 
 	public Sample() {
-		super(TypedProperties.DEFAULT_SEPARATOR, true, true);
+		super(TypedProperties.DEFAULT_SEPARATOR, true);
 	}
 
 	public Sample copy() {
 		Sample copy = new Sample();
 		copy.addAll(this);
 		return copy;
+	}
+
+	@Override
+	public Key getKey() {
+		Key key = new Key();
+		
+		for (String name : keySet()) {
+			key.set(name, getString(name));
+		}
+		
+		return key;
 	}
 
 }

@@ -38,6 +38,7 @@ import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.variable.Variable;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.ErrorHandler;
+import org.moeaframework.util.NumericStringComparator;
 import org.moeaframework.util.io.LineReader;
 
 /**
@@ -130,7 +131,7 @@ public class ResultFileWriter implements OutputWriter {
 			writer = new PrintWriter(new BufferedWriter(new FileWriter(file)), true);
 						
 			// print header information
-			TypedProperties header = TypedProperties.newInsertionOrderInstance();
+			TypedProperties header = TypedProperties.newInstance();
 			header.setInt("Version", Settings.getMajorVersion());
 			header.setString("Problem", problem.getName());
 			header.setInt("NumberOfVariables", problem.getNumberOfVariables());
@@ -147,7 +148,6 @@ public class ResultFileWriter implements OutputWriter {
 					header.setString("Variable." + (i+1) + ".Definition",
 							Constructable.createUnsupportedDefinition(Variable.class,
 									prototype.getVariable(i).getClass()));
-
 				}
 			}
 			
@@ -159,7 +159,6 @@ public class ResultFileWriter implements OutputWriter {
 					header.setString("Objective." + (i+1) + ".Definition",
 							Constructable.createUnsupportedDefinition(Objective.class,
 									prototype.getObjective(i).getClass()));
-
 				}
 			}
 			
@@ -171,7 +170,6 @@ public class ResultFileWriter implements OutputWriter {
 					header.setString("Constraint." + (i+1) + ".Definition",
 							Constructable.createUnsupportedDefinition(Constraint.class,
 									prototype.getConstraint(i).getClass()));
-
 				}
 			}
 			
@@ -293,9 +291,8 @@ public class ResultFileWriter implements OutputWriter {
 	 * @throws IOException if an I/O error occurred
 	 */
 	private void printProperties(TypedProperties properties, String prefix) throws IOException {
-		// using TypedProperties#store ensures special characters are stored safely
 		try (StringWriter buffer = new StringWriter()) {
-			properties.store(buffer);
+			properties.store(buffer, new NumericStringComparator());
 		
 			try (LineReader lineReader = LineReader.wrap(new StringReader(buffer.toString()))) {
 				for (String line : lineReader) {

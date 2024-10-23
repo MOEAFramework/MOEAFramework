@@ -20,7 +20,6 @@ package org.moeaframework.core;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
 
@@ -534,32 +533,6 @@ public class TypedPropertiesTest {
 			
 			Assert.assertEquals(expected, properties);
 		}
-	}
-	
-	@Test
-	public void testAlphabeticalOrdering() {
-		TypedProperties properties = new TypedProperties();
-		properties.setString("z", "val");
-		properties.setString("a", "val");
-		properties.setString("m", "val");
-		
-		Iterator<String> keyIterator = properties.keySet().iterator();
-		Assert.assertEquals("a", keyIterator.next());
-		Assert.assertEquals("m", keyIterator.next());
-		Assert.assertEquals("z", keyIterator.next());
-	}
-	
-	@Test
-	public void testInsertionOrdering() {
-		TypedProperties properties = TypedProperties.newInsertionOrderInstance();
-		properties.setString("z", "val");
-		properties.setString("a", "val");
-		properties.setString("m", "val");
-		
-		Iterator<String> keyIterator = properties.keySet().iterator();
-		Assert.assertEquals("z", keyIterator.next());
-		Assert.assertEquals("a", keyIterator.next());
-		Assert.assertEquals("m", keyIterator.next());
 	}
 
 	private enum TestEnum {
