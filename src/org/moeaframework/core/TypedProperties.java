@@ -1316,7 +1316,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	}
 	
 	/**
-	 * Writes the properties to a writer.
+	 * Writes the properties to a writer, with an optional {@link Comparator} for specifying the ordering.
 	 * 
 	 * @param writer the writer
 	 * @param order controls the ordering of keys, or {@code null} for the default
