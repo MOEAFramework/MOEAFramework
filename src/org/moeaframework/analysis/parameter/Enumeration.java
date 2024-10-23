@@ -81,9 +81,9 @@ public class Enumeration<T> extends AbstractParameter<T> implements EnumeratedPa
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(getName());
-		sb.append(": [");
+		sb.append("(");
 		sb.append(values.stream().map(v -> v.toString()).collect(Collectors.joining(",")));
-		sb.append("]");
+		sb.append(")");
 		return sb.toString();
 	}
 

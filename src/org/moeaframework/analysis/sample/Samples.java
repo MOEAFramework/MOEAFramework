@@ -35,10 +35,13 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.analysis.parameter.Parameter;
 import org.moeaframework.analysis.parameter.ParameterSet;
+import org.moeaframework.util.format.Column;
+import org.moeaframework.util.format.Formattable;
+import org.moeaframework.util.format.TabularData;
 import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.io.Tokenizer;
 
-public class Samples implements Iterable<Sample> {
+public class Samples implements Iterable<Sample>, Formattable<Sample> {
 
 	private final ParameterSet<?> parameterSet;
 
@@ -58,6 +61,10 @@ public class Samples implements Iterable<Sample> {
 	public Samples(ParameterSet<?> parameterSet, Iterable<Sample> samples) {
 		this(parameterSet);
 		addAll(samples);
+	}
+	
+	public ParameterSet<?> getParameterSet() {
+		return parameterSet;
 	}
 
 	public int size() {
@@ -120,6 +127,17 @@ public class Samples implements Iterable<Sample> {
 		return new EqualsBuilder()
 				.append(samples, rhs.samples)
 				.isEquals();
+	}
+	
+	@Override
+	public TabularData<Sample> asTabularData() {
+		TabularData<Sample> table = new TabularData<Sample>(samples);
+		
+		for (Parameter<?> parameter : parameterSet) {
+			table.addColumn(new Column<Sample, Object>(parameter.getName(), x -> parameter.readValue(x)));
+		}
+				
+		return table;
 	}
 
 	public static Samples load(File file, ParameterSet<?> parameterSet) throws FileNotFoundException, IOException {

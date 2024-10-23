@@ -61,7 +61,7 @@ public class Constant<T> extends AbstractParameter<T> implements EnumeratedParam
 	
 	@Override
 	public String toString() {
-		return getName() + ": " + getValue();
+		return getName() + "(" + getValue() + ")";
 	}
 	
 	@Override

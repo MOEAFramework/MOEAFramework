@@ -70,7 +70,7 @@ NumericParameter<Double> {
 	
 	@Override
 	public String toString() {
-		return getName() + ": (" + getLowerBound() + ", " + getUpperBound() + ")";
+		return getName() + "(" + getLowerBound() + ", " + getUpperBound() + ")";
 	}
 	
 	@Override

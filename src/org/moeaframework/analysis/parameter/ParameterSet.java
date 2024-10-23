@@ -59,7 +59,7 @@ public abstract class ParameterSet<T extends Parameter<?>> implements Iterable<T
 		return parameters.size();
 	}
 	
-	public void add(T parameter) {
+	void add(T parameter) {
 		parameters.add(parameter);
 	}
 	

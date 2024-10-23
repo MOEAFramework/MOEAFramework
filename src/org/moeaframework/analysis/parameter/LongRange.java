@@ -70,7 +70,7 @@ public class LongRange extends AbstractParameter<Long> implements SampledParamet
 	
 	@Override
 	public String toString() {
-		return getName() + ": (" + getLowerBound() + ", " + getUpperBound() + ")";
+		return getName() + "(" + getLowerBound() + ", " + getUpperBound() + ")";
 	}
 	
 	@Override
