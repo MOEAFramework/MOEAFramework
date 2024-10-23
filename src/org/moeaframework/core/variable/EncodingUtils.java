@@ -196,7 +196,7 @@ public class EncodingUtils {
 	 * @return a new integer-valued decision variable bounded within the specified range
 	 */
 	public static RealVariable newInt(int lowerBound, int upperBound) {
-		return new RealVariable(lowerBound, Math.nextAfter((double)(upperBound+1), Double.NEGATIVE_INFINITY));
+		return new RealVariable(lowerBound, Math.nextAfter(upperBound + 1, Double.NEGATIVE_INFINITY));
 	}
 	
 	/**

@@ -22,7 +22,6 @@ import java.io.StringReader;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TempFiles;
 import org.moeaframework.TestThresholds;
 
 public class ParameterSetLegacyFormatTest {
@@ -31,6 +30,7 @@ public class ParameterSetLegacyFormatTest {
 			entry1 0.0 1.0
 			#comment 0.0 1.0
 			entry2 100 10000
+			
 			entry3 0.0 1.0
 			""";
 
@@ -40,19 +40,16 @@ public class ParameterSetLegacyFormatTest {
 			entry3 0.0 1.0
 			""";
 
-	public static final String MISSING_LINE = """
-			entry1 0.0 1.0
-			
-			entry3 0.0 1.0
-			""";
-
 	public static final String INVALID_ENTRY = """
 			entry1 0.0 1.0
 			entry2 100foo 10000
 			entry3 0.0 1.0
 			""";
 
-	private void validateComplete(ParameterSet<?> parameterSet) {
+	@Test
+	public void testReaderComplete() throws IOException {
+		ParameterSet<?> parameterSet = ParameterSet.load(new StringReader(COMPLETE));
+		
 		Assert.assertEquals(3, parameterSet.size());
 
 		Assert.assertEquals("entry1", parameterSet.get(0).getName());
@@ -71,44 +68,14 @@ public class ParameterSetLegacyFormatTest {
 		Assert.assertEquals(1.0, ((DecimalRange)parameterSet.get(2)).getUpperBound(), TestThresholds.HIGH_PRECISION);
 	}
 
-	@Test
-	public void testReaderComplete() throws IOException {
-		validateComplete(ParameterSet.load(new StringReader(COMPLETE)));
-	}
-
-	@Test(expected = IOException.class)
-	public void testReaderMissingEntry() throws IOException {
+	@Test(expected = InvalidParameterException.class)
+	public void testMissingEntry() throws IOException {
 		ParameterSet.load(new StringReader(MISSING_ENTRY));
 	}
 
-	@Test(expected = IOException.class)
-	public void testReaderMissingLine() throws IOException {
-		ParameterSet.load(new StringReader(MISSING_LINE));
-	}
-
-	@Test(expected = NumberFormatException.class)
-	public void testReaderInvalidEntry() throws IOException {
+	@Test(expected = InvalidParameterException.class)
+	public void testInvalidEntry() throws IOException {
 		ParameterSet.load(new StringReader(INVALID_ENTRY));
-	}
-
-	@Test
-	public void testFileComplete() throws IOException {
-		validateComplete(ParameterSet.load(TempFiles.createFile().withContent(COMPLETE)));
-	}
-
-	@Test(expected = IOException.class)
-	public void testFileMissingEntry() throws IOException {
-		ParameterSet.load(TempFiles.createFile().withContent(MISSING_ENTRY));
-	}
-
-	@Test(expected = IOException.class)
-	public void testFileMissingLine() throws IOException {
-		ParameterSet.load(TempFiles.createFile().withContent(MISSING_LINE));
-	}
-
-	@Test(expected = NumberFormatException.class)
-	public void testFileInvalidEntry() throws IOException {
-		ParameterSet.load(TempFiles.createFile().withContent(INVALID_ENTRY));
 	}
 
 }

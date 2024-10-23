@@ -97,7 +97,7 @@ public class Analysis extends CommandLineUtility {
 		
 		for (int i=0; i<parameterSet.size(); i++) {
 			NumericParameter<?> parameter = (NumericParameter<?>)parameterSet.get(i);
-			result[i] = parameter.getValue(sample).doubleValue();
+			result[i] = parameter.readValue(sample).doubleValue();
 		}
 		
 		return result;

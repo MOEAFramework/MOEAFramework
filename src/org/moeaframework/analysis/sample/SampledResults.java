@@ -67,7 +67,7 @@ public class SampledResults<T> implements Formattable<Entry<Sample, T>> {
 					
 			right: for (R rightValue : rightValues) {
 				for (Sample sample : results.keySet()) {
-					if (leftParameter.getValue(sample).equals(leftValue) && rightParameter.getValue(sample).equals(rightValue)) {
+					if (leftParameter.readValue(sample).equals(leftValue) && rightParameter.readValue(sample).equals(rightValue)) {
 						row.add(results.get(sample));
 						continue right;
 					}
@@ -90,7 +90,7 @@ public class SampledResults<T> implements Formattable<Entry<Sample, T>> {
 		if (parameters != null) {
 			for (Parameter<?> parameter : parameters) {
 				table.addColumn(new Column<Entry<Sample, T>, Object>(parameter.getName(),
-						x -> parameter.getValue(x.getKey())));
+						x -> parameter.readValue(x.getKey())));
 			}
 		} else if (!results.isEmpty()) {
 			Sample sample = results.keySet().iterator().next();

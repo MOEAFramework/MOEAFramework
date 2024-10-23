@@ -17,7 +17,10 @@
  */
 package org.moeaframework.analysis.parameter;
 
+import java.util.List;
+
 import org.moeaframework.analysis.sample.Sample;
+import org.moeaframework.util.io.Tokenizer;
 import org.moeaframework.util.validate.Validate;
 
 public class DecimalRange extends AbstractParameter<Double> implements SampledParameter<Double>,
@@ -41,12 +44,6 @@ NumericParameter<Double> {
 	@Override
 	public Double getUpperBound() {
 		return upperBound;
-	}
-	
-	@Override
-	public double getNormalizedValue(Sample sample) {
-		double value = getValue(sample);
-		return (value - lowerBound) / (upperBound - lowerBound);
 	}
 	
 	@Override
@@ -74,6 +71,30 @@ NumericParameter<Double> {
 	@Override
 	public String toString() {
 		return getName() + ": (" + getLowerBound() + ", " + getUpperBound() + ")";
+	}
+	
+	@Override
+	public String encode(Tokenizer tokenizer) {
+		return tokenizer.encode(List.of(getName(), "decimal", Double.toString(getLowerBound()),
+				Double.toString(getUpperBound())));
+	}
+	
+	public static DecimalRange decode(Tokenizer tokenizer, String line) {
+		String[] tokens = tokenizer.decodeToArray(line);
+		
+		if (tokens.length < 2) {
+			throw new InvalidParameterException(tokens[0], "missing type");
+		}
+		
+		if (!tokens[1].equalsIgnoreCase("decimal")) {
+			throw new InvalidParameterException(tokens[0], "type does not match 'decimal'");
+		}
+		
+		if (tokens.length != 4) {
+			throw new InvalidParameterException(tokens[0], "ranges require a lower and upper bound");
+		}
+		
+		return new DecimalRange(tokens[0], Double.parseDouble(tokens[2]), Double.parseDouble(tokens[3]));
 	}
 
 }

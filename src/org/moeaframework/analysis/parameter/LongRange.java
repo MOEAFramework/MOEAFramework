@@ -17,7 +17,10 @@
  */
 package org.moeaframework.analysis.parameter;
 
+import java.util.List;
+
 import org.moeaframework.analysis.sample.Sample;
+import org.moeaframework.util.io.Tokenizer;
 import org.moeaframework.util.validate.Validate;
 
 public class LongRange extends AbstractParameter<Long> implements SampledParameter<Long>, NumericParameter<Long> {
@@ -43,12 +46,6 @@ public class LongRange extends AbstractParameter<Long> implements SampledParamet
 	}
 	
 	@Override
-	public double getNormalizedValue(Sample sample) {
-		long value = getValue(sample);
-		return (value - lowerBound) / (double)(upperBound - lowerBound);
-	}
-	
-	@Override
 	public Long parse(String str) {
 		try {
 			long value = Long.parseLong(str);
@@ -68,12 +65,36 @@ public class LongRange extends AbstractParameter<Long> implements SampledParamet
 	public void apply(Sample sample, double scale) {
 		Validate.that("scale", scale).isBetween(0.0, 1.0);
 		sample.setLong(getName(), (long)(lowerBound + scale *
-				(upperBound - lowerBound + Math.nextAfter(1.0, Double.NEGATIVE_INFINITY))));
+				Math.nextAfter(upperBound - lowerBound + 1, Double.NEGATIVE_INFINITY)));
 	}
 	
 	@Override
 	public String toString() {
 		return getName() + ": (" + getLowerBound() + ", " + getUpperBound() + ")";
+	}
+	
+	@Override
+	public String encode(Tokenizer tokenizer) {
+		return tokenizer.encode(List.of(getName(), "long", Long.toString(getLowerBound()),
+				Long.toString(getUpperBound())));
+	}
+	
+	public static LongRange decode(Tokenizer tokenizer, String line) {
+		String[] tokens = tokenizer.decodeToArray(line);
+		
+		if (tokens.length < 2) {
+			throw new InvalidParameterException(tokens[0], "missing type");
+		}
+		
+		if (!tokens[1].equalsIgnoreCase("long")) {
+			throw new InvalidParameterException(tokens[0], "type does not match 'long'");
+		}
+		
+		if (tokens.length != 4) {
+			throw new InvalidParameterException(tokens[0], "ranges require a lower and upper bound");
+		}
+		
+		return new LongRange(tokens[0], Long.parseLong(tokens[2]), Long.parseLong(tokens[3]));
 	}
 
 }

@@ -24,6 +24,6 @@ import org.moeaframework.analysis.sample.Sample;
  */
 public interface SampledParameter<T> extends Parameter<T> {
 	
-	public abstract void apply(Sample sample, double scale);
+	public void apply(Sample sample, double scale);
 
 }

@@ -17,8 +17,6 @@
  */
 package org.moeaframework.analysis.parameter;
 
-import org.moeaframework.analysis.sample.Sample;
-
 /**
  * Interface for parameters that represent a numeric value.
  *
@@ -29,7 +27,5 @@ public interface NumericParameter<T extends Number> extends Parameter<T> {
 	public T getLowerBound();
 	
 	public T getUpperBound();
-		
-	public double getNormalizedValue(Sample sample);
 
 }

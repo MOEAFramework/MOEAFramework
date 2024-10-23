@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.stream.Stream;
 
 import org.apache.commons.text.translate.AggregateTranslator;
 import org.apache.commons.text.translate.CharSequenceTranslator;
@@ -182,7 +182,7 @@ public class Tokenizer {
 	}
 	
 	/**
-	 * Decodes or parses the string into individual tokens, converting any escaped characters back to their original.
+	 * Decodes or parses the string into individual tokens.  See {@link #decode(String)} for details.
 	 * 
 	 * @param line the line to decode
 	 * @return the tokens
@@ -283,16 +283,6 @@ public class Tokenizer {
 		return str.substring(start, end);
 	}
 	
-	public <T> List<T> decode(String line, Function<String, T> conversion) {
-		List<T> result = new ArrayList<T>();
-		
-		for (String token : decode(line)) {
-			result.add(conversion.apply(token));
-		}
-		
-		return result;
-	}
-	
 	/**
 	 * Escapes the characters in a string.
 	 * 
@@ -305,22 +295,33 @@ public class Tokenizer {
 	}
 	
 	/**
-	 * Encodes the tokens into a string, potentially replacing characters with escaped variants.
+	 * Encodes the tokens into a string.  See {@link #encode(Iterable)} for details.
 	 * 
 	 * @param tokens the tokens to encode
-	 * @return the string
+	 * @return the encoded string
 	 */
 	public String encode(String[] tokens) {
 		return encode(List.of(tokens));
 	}
 	
 	/**
-	 * Encodes the tokens into a string, potentially replacing characters with escaped variants.
+	 * Encodes the tokens into a string.  See {@link #encode(Iterable)} for details.
 	 * 
 	 * @param tokens the tokens to encode
-	 * @return the string
+	 * @return the encoded string
 	 */
-	public String encode(List<String> tokens) {
+	public String encode(Stream<String> tokens) {
+		return encode(tokens.toList());
+	}
+	
+	/**
+	 * Encodes the tokens into a string.  Each token will be escaped following the rules of this tokenizer and joined
+	 * into a string separated by the delimiter.
+	 * 
+	 * @param tokens the tokens to encode
+	 * @return the encoded string
+	 */
+	public String encode(Iterable<String> tokens) {
 		update();
 		
 		StringBuilder sb = new StringBuilder();

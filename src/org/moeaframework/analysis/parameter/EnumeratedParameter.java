@@ -29,6 +29,8 @@ import org.moeaframework.analysis.sample.Sample;
  */
 public interface EnumeratedParameter<T> extends Parameter<T> {
 	
-	public abstract List<Sample> enumerate(List<Sample> samples);
+	public List<T> values();
+	
+	public List<Sample> enumerate(List<Sample> samples);
 
 }

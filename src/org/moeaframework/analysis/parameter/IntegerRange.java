@@ -17,7 +17,10 @@
  */
 package org.moeaframework.analysis.parameter;
 
+import java.util.List;
+
 import org.moeaframework.analysis.sample.Sample;
+import org.moeaframework.util.io.Tokenizer;
 import org.moeaframework.util.validate.Validate;
 
 public class IntegerRange extends AbstractParameter<Integer> implements SampledParameter<Integer>,
@@ -44,12 +47,6 @@ NumericParameter<Integer> {
 	}
 	
 	@Override
-	public double getNormalizedValue(Sample sample) {
-		int value = getValue(sample);
-		return (value - lowerBound) / (double)(upperBound - lowerBound);
-	}
-	
-	@Override
 	public Integer parse(String str) {
 		try {
 			int value = Integer.parseInt(str);
@@ -69,12 +66,36 @@ NumericParameter<Integer> {
 	public void apply(Sample sample, double scale) {
 		Validate.that("scale", scale).isBetween(0.0, 1.0);
 		sample.setInt(getName(), (int)(lowerBound + scale *
-				(upperBound - lowerBound + Math.nextAfter(1.0, Double.NEGATIVE_INFINITY))));
+				Math.nextAfter(upperBound - lowerBound + 1, Double.NEGATIVE_INFINITY)));
 	}
 	
 	@Override
 	public String toString() {
 		return getName() + ": (" + getLowerBound() + ", " + getUpperBound() + ")";
+	}
+	
+	@Override
+	public String encode(Tokenizer tokenizer) {
+		return tokenizer.encode(List.of(getName(), "int", Integer.toString(getLowerBound()),
+				Integer.toString(getUpperBound())));
+	}
+	
+	public static IntegerRange decode(Tokenizer tokenizer, String line) {
+		String[] tokens = tokenizer.decodeToArray(line);
+		
+		if (tokens.length < 2) {
+			throw new InvalidParameterException(tokens[0], "missing type");
+		}
+		
+		if (!tokens[1].equalsIgnoreCase("int") ) {
+			throw new InvalidParameterException(tokens[0], "type does not match 'int'");
+		}
+		
+		if (tokens.length != 4) {
+			throw new InvalidParameterException(tokens[0], "ranges require a lower and upper bound");
+		}
+		
+		return new IntegerRange(tokens[0], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]));
 	}
 
 }

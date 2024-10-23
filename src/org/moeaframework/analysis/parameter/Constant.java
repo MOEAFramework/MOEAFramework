@@ -20,6 +20,7 @@ package org.moeaframework.analysis.parameter;
 import java.util.List;
 
 import org.moeaframework.analysis.sample.Sample;
+import org.moeaframework.util.io.Tokenizer;
 
 public class Constant<T> extends AbstractParameter<T> implements EnumeratedParameter<T> {
 	
@@ -54,8 +55,36 @@ public class Constant<T> extends AbstractParameter<T> implements EnumeratedParam
 	}
 	
 	@Override
+	public List<T> values() {
+		return List.of(value);
+	}
+	
+	@Override
 	public String toString() {
 		return getName() + ": " + getValue();
+	}
+	
+	@Override
+	public String encode(Tokenizer tokenizer) {
+		return tokenizer.encode(List.of(getName(), "const", getValue().toString()));
+	}
+	
+	public static Constant<String> decode(Tokenizer tokenizer, String line) {
+		String[] tokens = tokenizer.decodeToArray(line);
+		
+		if (tokens.length < 2) {
+			throw new InvalidParameterException(tokens[0], "missing type");
+		}
+		
+		if (!tokens[1].equalsIgnoreCase("const")) {
+			throw new InvalidParameterException(tokens[0], "type does not match 'const'");
+		}
+		
+		if (tokens.length != 3) {
+			throw new InvalidParameterException(tokens[0], "constants require exactly one value");
+		}
+		
+		return new Constant<String>(tokens[0], tokens[2]);
 	}
 
 }

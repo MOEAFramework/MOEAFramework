@@ -155,7 +155,6 @@ public class Samples implements Iterable<Sample> {
 		return samples;
 	}
 
-	
 	public void save(File file) throws IOException {
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
 			save(writer);

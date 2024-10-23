@@ -17,13 +17,15 @@
  */
 package org.moeaframework.analysis.parameter;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -65,6 +67,13 @@ public abstract class ParameterSet<T extends Parameter<?>> implements Iterable<T
 		return parameters.get(index);
 	}
 	
+	/**
+	 * Returns the parameter with the given name.
+	 * 
+	 * @param name the parameter name
+	 * @return the parameter
+	 * @throws NoSuchParameterException if no parameter matching the name was found
+	 */
 	public T get(String name) {
 		for (T parameter : parameters) {
 			if (parameter.getName().equalsIgnoreCase(name)) {
@@ -95,66 +104,60 @@ public abstract class ParameterSet<T extends Parameter<?>> implements Iterable<T
 		return sb.toString();
 	}
 	
+	/**
+	 * Loads the parameter set.  See {@link #load(Reader) for details.
+	 * 
+	 * @param file the file
+	 * @return the parameter set
+	 * @throws IOException if an I/O error occurred while reading the parameter set
+	 * @throws InvalidParameterException if any parameter was invalid
+	 */
 	public static SampledParameterSet load(File file) throws FileNotFoundException, IOException {
 		try (FileReader reader = new FileReader(file)) {
 			return load(reader);
 		}
 	}
 	
+	/**
+	 * Loads the parameter set.  Parameters can be defined in the following formats:
+	 * <pre>{@code
+	 *   <name> <lb> <ub>                         # Legacy format
+	 *   <name> <type> <lb> <ub>                  # Range
+	 *   <name> const <val>                       # Constant
+	 *   <name> enum <val1> <val2> ... <valN>     # Enumeration
+	 * }</pre>
+	 * 
+	 * @param reader the reader
+	 * @return the parameter set
+	 * @throws IOException if an I/O error occurred while reading the parameter set
+	 * @throws InvalidParameterException if any parameter was invalid
+	 */
 	public static SampledParameterSet load(Reader reader) throws IOException {
 		Tokenizer tokenizer = new Tokenizer();
 		SampledParameterSet parameterSet = new SampledParameterSet();
 		
-		try (LineReader lineReader = LineReader.wrap(reader).skipComments()) {
+		try (LineReader lineReader = LineReader.wrap(reader).skipComments().skipBlanks()) {
 			for (String line : lineReader) {
-				String[] tokens = tokenizer.decodeToArray(line);
-				Parameter<?> parameter = null;
-				
-				if (tokens.length == 3) {
-					// Constant format: <name> <type> <value>
-					if (tokens[1].equalsIgnoreCase("int") || tokens[1].equalsIgnoreCase("integer")) {
-						parameter = new Constant<Integer>(tokens[0], Integer.parseInt(tokens[2]));
-					} else if (tokens[1].equalsIgnoreCase("long")) {
-						parameter = new Constant<Long>(tokens[0], Long.parseLong(tokens[2]));
-					} else if (tokens[1].equalsIgnoreCase("double") || tokens[1].equalsIgnoreCase("decimal")) {
-						parameter = new Constant<Double>(tokens[0], Double.parseDouble(tokens[2]));
-					} else if (tokens[1].equalsIgnoreCase("const") || tokens[1].equalsIgnoreCase("constant")) {
-						parameter = new Constant<String>(tokens[0], tokens[2]);
-					} else if (tokens[1].equalsIgnoreCase("enum") || tokens[1].equalsIgnoreCase("enumeration")) {
-						parameter = new Enumeration<String>(tokens[0], tokens[2]);
-					} else {
-						// Legacy format: <name> <lowerBound> <upperBound>
-						parameter = new DecimalRange(tokens[0], Double.parseDouble(tokens[1]),
-								Double.parseDouble(tokens[2]));
-					}
-				}
-				
-				if (parameter == null && tokens.length == 4) {
-					// Range format: <name> <type> <lowerBound> <upperBound>
-					if (tokens[1].equalsIgnoreCase("int") || tokens[1].equalsIgnoreCase("integer")) {
-						parameter = new IntegerRange(tokens[0], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]));
-					} else if (tokens[1].equalsIgnoreCase("long")) {
-						parameter = new LongRange(tokens[0], Long.parseLong(tokens[2]), Long.parseLong(tokens[3]));
-					} else if (tokens[1].equalsIgnoreCase("double") || tokens[1].equalsIgnoreCase("decimal")) {
-						parameter = new DecimalRange(tokens[0], Double.parseDouble(tokens[2]), Double.parseDouble(tokens[3]));
-					}
-				}
-				
-				if (parameter == null && tokens.length > 3) {
-					// Enumeration format: <name> enum <value1> [... <valueN>]
-					if (tokens[1].equalsIgnoreCase("enum") || tokens[1].equalsIgnoreCase("enumeration")) {
-						parameter = new Enumeration<String>(tokens[0], Arrays.copyOfRange(tokens, 2, tokens.length));
-					}
-				}
-				
-				if (parameter == null) {
-					throw new IOException("invalid line: " + line);
-				}
-
+				Parameter<?> parameter = Parameter.decode(tokenizer, line);
 				parameterSet.add(parameter);
 			}
 	
 			return parameterSet;
+		}
+	}
+	
+	public void save(File file) throws IOException {
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+			save(writer);
+		}
+	}
+	
+	public void save(Writer writer) throws IOException {
+		Tokenizer tokenizer = new Tokenizer();
+		
+		for (T parameter : this) {
+			writer.write(parameter.encode(tokenizer));
+			writer.write(System.lineSeparator());
 		}
 	}
 

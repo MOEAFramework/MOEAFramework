@@ -18,10 +18,13 @@
 package org.moeaframework.analysis.parameter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.moeaframework.analysis.sample.Sample;
+import org.moeaframework.util.io.Tokenizer;
 
 public class Enumeration<T> extends AbstractParameter<T> implements EnumeratedParameter<T> {
 	
@@ -41,6 +44,7 @@ public class Enumeration<T> extends AbstractParameter<T> implements EnumeratedPa
 		return values.size();
 	}
 	
+	@Override
 	public List<T> values() {
 		return values;
 	}
@@ -81,6 +85,29 @@ public class Enumeration<T> extends AbstractParameter<T> implements EnumeratedPa
 		sb.append(values.stream().map(v -> v.toString()).collect(Collectors.joining(",")));
 		sb.append("]");
 		return sb.toString();
+	}
+
+	@Override
+	public String encode(Tokenizer tokenizer) {
+		return tokenizer.encode(Stream.concat(Stream.of(getName(), "enum"), values().stream().map(x -> x.toString())));
+	}
+	
+	public static Enumeration<String> decode(Tokenizer tokenizer, String line) {
+		String[] tokens = tokenizer.decodeToArray(line);
+		
+		if (tokens.length < 2) {
+			throw new InvalidParameterException(tokens[0], "missing type");
+		}
+		
+		if (!tokens[1].equalsIgnoreCase("enum")) {
+			throw new InvalidParameterException(tokens[0], "type does not match 'enum'");
+		}
+		
+		if (tokens.length < 3) {
+			throw new InvalidParameterException(tokens[0], "enumerations require at least one value");
+		}
+		
+		return new Enumeration<String>(tokens[0], Arrays.copyOfRange(tokens, 2, tokens.length));
 	}
 
 }

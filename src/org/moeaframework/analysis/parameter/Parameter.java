@@ -17,11 +17,21 @@
  */
 package org.moeaframework.analysis.parameter;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.apache.commons.lang3.reflect.MethodUtils;
 import org.moeaframework.analysis.sample.Sample;
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Named;
+import org.moeaframework.util.io.Tokenizer;
 
 /**
  * Represents a typed parameter.
+ * <p>
+ * To support saving and loading parameters from a file, all parameters must implement the {@link #encode(Tokenizer)}
+ * method along with a static {@link #decode(Tokenizer, String)} method.
  * 
  * @param <T> the type of the parameter
  * @see Sample
@@ -29,12 +39,21 @@ import org.moeaframework.core.Named;
 public interface Parameter<T> extends Named {
 
 	/**
-	 * Parses this parameter from the given string.
+	 * Parses this parameter value from the given string.
 	 * 
 	 * @param str the string
-	 * @throws InvalidParameterException if the given string is invalid
+	 * @return the parameter value
+	 * @throws InvalidParameterException if the given string is not a valid parameter value
 	 */
 	public T parse(String str);
+	
+	/**
+	 * Encodes this parameter definition in a format suitable for storing in a file.
+	 * 
+	 * @param tokenizer the tokenizer
+	 * @return the string representation
+	 */
+	public String encode(Tokenizer tokenizer);
 	
 	/**
 	 * Reads the parameter value from the given sample.
@@ -42,8 +61,18 @@ public interface Parameter<T> extends Named {
 	 * @param sample the sample
 	 * @return the parameter value
 	 */
-	public default T getValue(Sample sample) {
+	public default T readValue(Sample sample) {
 		return parse(sample.getString(getName()));
+	}
+	
+	/**
+	 * Assigns the parameter value in the given sample.
+	 * 
+	 * @param sample the sample
+	 * @param value the value to assign
+	 */
+	public default void assignValue(Sample sample, T value) {
+		sample.setString(getName(), value.toString());
 	}
 	
 	/**
@@ -55,6 +84,53 @@ public interface Parameter<T> extends Named {
 	 */
 	public static ParameterBuilder named(String name) {
 		return new ParameterBuilder(name);
+	}
+	
+	/**
+	 * Decodes the string representation of a parameter.
+	 * 
+	 * @param tokenizer the tokenizer
+	 * @param line the string representation
+	 * @return the decoded parameter
+	 * @throws InvalidParameterException if the string representation is not a valid parameter
+	 */
+	public static Parameter<?> decode(Tokenizer tokenizer, String line) {
+		String[] tokens = tokenizer.decodeToArray(line);
+		
+		if (tokens.length < 2) {
+			throw new InvalidParameterException(tokens[0], "missing type");
+		}
+		
+		Map<String, Class<?>> types = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		types.put("const", Constant.class);
+		types.put("enum", Enumeration.class);
+		types.put("int", IntegerRange.class);
+		types.put("long", LongRange.class);
+		types.put("decimal", DecimalRange.class);
+		
+		Class<?> type = types.get(tokens[1]);
+		
+		if (type == null) {
+			if (tokens.length == 3) {
+				// legacy format
+				try {
+					double lowerBound = Double.parseDouble(tokens[1]);
+					double upperBound = Double.parseDouble(tokens[2]);
+					return new DecimalRange(tokens[0], lowerBound, upperBound);
+				} catch (NumberFormatException e) {
+					// fall through
+				}
+			}
+			
+			throw new InvalidParameterException(tokens[0], "invalid type '" + tokens[1] + "', expected " +
+					String.join(", ", types.keySet().toArray(String[]::new)));
+		}
+		
+		try {
+			return (Parameter<?>)MethodUtils.invokeStaticMethod(type, "decode", tokenizer, line);
+		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+			throw new FrameworkException("failed to create parameter " + type.getSimpleName(), e);
+		}
 	}
 	
 }

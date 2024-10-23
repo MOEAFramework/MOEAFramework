@@ -114,8 +114,44 @@ public class Assert extends org.junit.Assert {
 				StringUtils.normalizeSpace(expected), StringUtils.normalizeSpace(actual));
 	}
 	
+	public static void assertEquals(Double expected, Double actual) {
+		assertEquals(expected.doubleValue(), actual.doubleValue());
+	}
+	
+	public static void assertEquals(double expected, Double actual) {
+		assertEquals(expected, actual.doubleValue());
+	}
+	
+	public static void assertEquals(Double expected, double actual) {
+		assertEquals(expected.doubleValue(), actual);
+	}
+	
 	public static void assertEquals(double expected, double actual) {
 		assertEquals(expected, actual, TestThresholds.HIGH_PRECISION);
+	}
+	
+	public static void assertEquals(Integer expected, Integer actual) {
+		assertEquals(expected.intValue(), actual.intValue());
+	}
+	
+	public static void assertEquals(int expected, Integer actual) {
+		assertEquals(expected, actual.intValue());
+	}
+	
+	public static void assertEquals(Integer expected, int actual) {
+		assertEquals(expected.intValue(), actual);
+	}
+	
+	public static void assertEquals(Long expected, Long actual) {
+		assertEquals(expected.longValue(), actual.longValue());
+	}
+	
+	public static void assertEquals(int expected, Long actual) {
+		assertEquals(expected, actual.longValue());
+	}
+	
+	public static void assertEquals(Long expected, int actual) {
+		assertEquals(expected.longValue(), actual);
 	}
 	
 	public static void assertEquals(TypedProperties expected, TypedProperties actual) {
