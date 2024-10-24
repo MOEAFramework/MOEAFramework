@@ -61,7 +61,7 @@ public class ResultFileExample {
 				algorithm.setInitialPopulationSize(populationSize);
 				algorithm.run(100000);
 				
-				writer.append(new ResultEntry(algorithm.getResult(), algorithm.getConfiguration()));
+				writer.write(new ResultEntry(algorithm.getResult(), algorithm.getConfiguration()));
 			}
 		}
 		

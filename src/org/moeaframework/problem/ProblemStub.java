@@ -65,6 +65,37 @@ public class ProblemStub extends AbstractProblem {
 		this.constraintDefinitions = new Constraint[numberOfConstraints];
 	}
 	
+	/**
+	 * Constructs a problem stub from the given solution.
+	 * 
+	 * @param solution a sample or prototype solution for the problem
+	 */
+	public ProblemStub(Solution solution) {
+		this("", solution);
+	}
+	
+	/**
+	 * Constructs a problem stub from the given solution.
+	 * 
+	 * @param name the problem name
+	 * @param solution a sample or prototype solution for the problem
+	 */
+	public ProblemStub(String name, Solution solution) {
+		this(name, solution.getNumberOfVariables(), solution.getNumberOfObjectives(), solution.getNumberOfConstraints());
+		
+		for (int i = 0; i < solution.getNumberOfVariables(); i++) {
+			setVariableDefinition(i, solution.getVariable(i).copy());
+		}
+		
+		for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
+			setObjectiveDefinition(i, solution.getObjective(i).copy());
+		}
+		
+		for (int i = 0; i < solution.getNumberOfConstraints(); i++) {
+			setConstraintDefinition(i, solution.getConstraint(i).copy());
+		}
+	}
+	
 	@Override
 	public String getName() {
 		return name;

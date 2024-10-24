@@ -131,7 +131,7 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 						mergedSet.addAll(entries.get(j).get(i));
 					}
 
-					writer.append(new ResultEntry(mergedSet));
+					writer.write(new ResultEntry(mergedSet));
 				}
 			}
 		}

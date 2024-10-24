@@ -21,13 +21,11 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 
-import org.apache.commons.cli.ParseException;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.Wait;
 import org.moeaframework.analysis.io.MetricFileWriter.Metric;
-import org.moeaframework.analysis.io.MetricFileWriter.MetricFileWriterSettings;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.ProblemFactory;
@@ -50,8 +48,8 @@ public class MetricFileWriterTest {
 		try (MetricFileWriter writer = MetricFileWriter.append(indicators, file)) {
 			Assert.assertEquals(0, writer.getNumberOfEntries());
 
-			writer.append(new ResultEntry(approximationSet));
-			writer.append(new ResultEntry(approximationSet));
+			writer.write(new ResultEntry(approximationSet));
+			writer.write(new ResultEntry(approximationSet));
 
 			Assert.assertEquals(2, writer.getNumberOfEntries());
 		}
@@ -73,8 +71,8 @@ public class MetricFileWriterTest {
 		try (MetricFileWriter writer = MetricFileWriter.append(indicators, file)) {
 			Assert.assertEquals(0, writer.getNumberOfEntries());
 
-			writer.append(new ResultEntry(approximationSet));
-			writer.append(new ResultEntry(approximationSet));
+			writer.write(new ResultEntry(approximationSet));
+			writer.write(new ResultEntry(approximationSet));
 
 			Assert.assertEquals(2, writer.getNumberOfEntries());
 		}
@@ -82,7 +80,7 @@ public class MetricFileWriterTest {
 		try (MetricFileWriter writer = MetricFileWriter.append(indicators, file)) {
 			Assert.assertEquals(2, writer.getNumberOfEntries());
 
-			writer.append(new ResultEntry(approximationSet));
+			writer.write(new ResultEntry(approximationSet));
 
 			Assert.assertEquals(3, writer.getNumberOfEntries());
 		}
@@ -109,19 +107,19 @@ public class MetricFileWriterTest {
 		approximationSet.add(MockSolution.of().withObjectives(0.0, 1.0));
 		approximationSet.add(MockSolution.of().withObjectives(1.0, 0.0));
 
-		try (MetricFileWriter writer = MetricFileWriter.overwrite(indicators, file)) {
+		try (MetricFileWriter writer = MetricFileWriter.open(indicators, file)) {
 			Assert.assertEquals(0, writer.getNumberOfEntries());
 
-			writer.append(new ResultEntry(approximationSet));
-			writer.append(new ResultEntry(approximationSet));
+			writer.write(new ResultEntry(approximationSet));
+			writer.write(new ResultEntry(approximationSet));
 
 			Assert.assertEquals(2, writer.getNumberOfEntries());
 		}
 
-		try (MetricFileWriter writer = MetricFileWriter.overwrite(indicators, file)) {
+		try (MetricFileWriter writer = MetricFileWriter.open(indicators, file)) {
 			Assert.assertEquals(0, writer.getNumberOfEntries());
 
-			writer.append(new ResultEntry(approximationSet));
+			writer.write(new ResultEntry(approximationSet));
 
 			Assert.assertEquals(1, writer.getNumberOfEntries());
 		}
@@ -131,15 +129,6 @@ public class MetricFileWriterTest {
 			reader.next();
 			Assert.assertFalse(reader.hasNext());
 		}
-	}
-	
-	@Test
-	public void testSettings() throws ParseException {
-		MetricFileWriterSettings settings = MetricFileWriterSettings.getDefault();
-		Assert.assertTrue(settings.isAppend());
-		
-		settings = MetricFileWriterSettings.overwrite();
-		Assert.assertFalse(settings.isAppend());
 	}
 	
 	@Test
@@ -154,11 +143,11 @@ public class MetricFileWriterTest {
 		approximationSet.add(MockSolution.of().withObjectives(0.0, 1.0));
 		approximationSet.add(MockSolution.of().withObjectives(1.0, 0.0));
 
-		try (MetricFileWriter writer = MetricFileWriter.append(indicators, file)) {
+		try (MetricFileWriter writer = MetricFileWriter.open(indicators, file)) {
 			Assert.assertEquals(0, writer.getNumberOfEntries());
 
-			writer.append(new ResultEntry(approximationSet));
-			writer.append(new ResultEntry(approximationSet));
+			writer.write(new ResultEntry(approximationSet));
+			writer.write(new ResultEntry(approximationSet));
 		}
 		
 		long originalTimestamp = file.lastModified();
@@ -175,7 +164,7 @@ public class MetricFileWriterTest {
 		
 		try (MetricFileWriter writer = MetricFileWriter.append(indicators, file)) {
 			Assert.assertEquals(2, writer.getNumberOfEntries());
-			writer.append(new ResultEntry(approximationSet));
+			writer.write(new ResultEntry(approximationSet));
 		}
 		
 		Assert.assertNotEquals(originalTimestamp, file.lastModified());

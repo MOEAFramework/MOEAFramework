@@ -36,7 +36,7 @@ public class RuntimeCollectorExample {
 		Problem problem = new Srinivas();
 		File file = new File("runtime.dat");
 		
-		try (ResultFileWriter writer = ResultFileWriter.overwrite(problem, file)) {
+		try (ResultFileWriter writer = ResultFileWriter.open(problem, file)) {
 			NSGAII algorithm = new NSGAII(problem);
 			algorithm.addExtension(new RuntimeCollectorExtension(writer, 1000, FrequencyType.EVALUATIONS));
 			algorithm.run(100000);

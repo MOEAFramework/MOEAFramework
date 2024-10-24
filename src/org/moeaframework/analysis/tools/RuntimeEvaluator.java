@@ -31,7 +31,6 @@ import org.moeaframework.analysis.collector.Observation;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileWriter;
-import org.moeaframework.analysis.io.ResultFileWriter.ResultFileWriterSettings;
 import org.moeaframework.analysis.parameter.ParameterSet;
 import org.moeaframework.analysis.sample.Samples;
 import org.moeaframework.core.Epsilons;
@@ -103,9 +102,6 @@ public class RuntimeEvaluator extends CommandLineUtility {
 				.hasArg()
 				.argName("value")
 				.build());
-		options.addOption(Option.builder("n")
-				.longOpt("novariables")
-				.build());
 		
 		return options;
 	}
@@ -131,14 +127,9 @@ public class RuntimeEvaluator extends CommandLineUtility {
 			for (int i = 0; i < samples.size(); i++) {
 				String outputFileName = String.format(outputFilePattern, i+1);
 				System.out.print("Processing " + outputFileName + "...");
-				File outputFile = new File(outputFileName);
+				File outputFile = new File(outputFileName);	
 						
-				if (outputFile.exists()) {
-					outputFile.delete();
-				}	
-						
-				try (ResultFileWriter output = new ResultFileWriter(problem, outputFile,
-						ResultFileWriterSettings.from(commandLine))) {
+				try (ResultFileWriter output = ResultFileWriter.open(problem, outputFile)) {
 					// setup any default parameters
 					TypedProperties defaultProperties = new TypedProperties();
 	
@@ -205,7 +196,7 @@ public class RuntimeEvaluator extends CommandLineUtility {
 			
 			NondominatedPopulation result = ApproximationSetCollector.getApproximationSet(observation);
 			
-			output.append(new ResultEntry(result, metadata));
+			output.write(new ResultEntry(result, metadata));
 		}
 	}
 

@@ -80,14 +80,14 @@ Here is an example where we store the approximation set after each iteration of 
 <!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [resultFile-overwrite] -->
 
 ```java
-try (ResultFileWriter writer = ResultFileWriter.overwrite(problem, new File("result.dat"))) {
+try (ResultFileWriter writer = ResultFileWriter.open(problem, new File("result.dat"))) {
     for (int i = 0; i < 1000; i++) {
         algorithm.step();
 
         TypedProperties properties = new TypedProperties();
         properties.setInt("NFE", algorithm.getNumberOfEvaluations());
 
-        writer.append(new ResultEntry(algorithm.getResult(), properties));
+        writer.write(new ResultEntry(algorithm.getResult(), properties));
     }
 }
 ```

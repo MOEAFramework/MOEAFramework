@@ -449,7 +449,7 @@ public class Solve extends CommandLineUtility {
 					properties,
 					problem);
 
-			try (ResultFileWriter writer = ResultFileWriter.overwrite(problem, file)) {
+			try (ResultFileWriter writer = ResultFileWriter.open(problem, file)) {
 				algorithm.addExtension(new RuntimeCollectorExtension(writer,
 						runtimeFrequency, FrequencyType.EVALUATIONS));
 				algorithm.run(maxEvaluations);

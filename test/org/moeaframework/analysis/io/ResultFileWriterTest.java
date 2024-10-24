@@ -20,13 +20,7 @@ package org.moeaframework.analysis.io;
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
-import java.util.Optional;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +28,6 @@ import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.Wait;
-import org.moeaframework.analysis.io.ResultFileWriter.ResultFileWriterSettings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.TypedPropertiesTest;
@@ -116,8 +109,8 @@ public class ResultFileWriterTest {
 		TypedProperties properties = new TypedProperties();
 		properties.setString(TypedPropertiesTest.SPECIAL_CHARACTERS, TypedPropertiesTest.SPECIAL_CHARACTERS);
 		
-		try (ResultFileWriter writer = ResultFileWriter.append(problem, file)) {
-			writer.append(new ResultEntry(population, properties));
+		try (ResultFileWriter writer = ResultFileWriter.open(problem, file)) {
+			writer.write(new ResultEntry(population, properties));
 		}
 		
 		try (ResultFileReader reader = ResultFileReader.open(problem, file)) {
@@ -132,8 +125,8 @@ public class ResultFileWriterTest {
 		NondominatedPopulation population = new NondominatedPopulation();
 		TypedProperties properties = new TypedProperties();
 		
-		try (ResultFileWriter writer = ResultFileWriter.append(problem, file)) {
-			writer.append(new ResultEntry(population, (TypedProperties)null));
+		try (ResultFileWriter writer = ResultFileWriter.open(problem, file)) {
+			writer.write(new ResultEntry(population, (TypedProperties)null));
 		}
 		
 		try (ResultFileReader reader = ResultFileReader.open(problem, file)) {
@@ -148,8 +141,8 @@ public class ResultFileWriterTest {
 		NondominatedPopulation population = new NondominatedPopulation();
 		TypedProperties properties = new TypedProperties();
 		
-		try (ResultFileWriter writer = ResultFileWriter.append(problem, file)) {
-			writer.append(new ResultEntry(population, properties));
+		try (ResultFileWriter writer = ResultFileWriter.open(problem, file)) {
+			writer.write(new ResultEntry(population, properties));
 		}
 		
 		try (ResultFileReader reader = ResultFileReader.open(problem, file)) {
@@ -168,8 +161,8 @@ public class ResultFileWriterTest {
 		TypedProperties properties = new TypedProperties();
 		properties.setString("foo", "bar");
 		
-		try (ResultFileWriter writer = ResultFileWriter.append(problem, file)) {
-			writer.append(new ResultEntry(population, properties));
+		try (ResultFileWriter writer = ResultFileWriter.open(problem, file)) {
+			writer.write(new ResultEntry(population, properties));
 		}
 		
 		try (ResultFileReader reader = ResultFileReader.open(problem, file)) {
@@ -190,9 +183,9 @@ public class ResultFileWriterTest {
 		TypedProperties properties = new TypedProperties();
 		properties.setString("foo", "bar");
 		
-		try (ResultFileWriter writer = new ResultFileWriter(problem, file,
-				new ResultFileWriterSettings(Optional.empty(), Optional.of(false)))) {
-			writer.append(new ResultEntry(population, properties));
+		try (ResultFileWriter writer = new ResultFileWriter(problem, file)) {
+			writer.setExcludeVariables(true);
+			writer.write(new ResultEntry(population, properties));
 		}
 		
 		population.clear();
@@ -216,8 +209,8 @@ public class ResultFileWriterTest {
 		TypedProperties properties = new TypedProperties();
 		properties.setString("foo", "bar");
 		
-		try (ResultFileWriter writer = ResultFileWriter.append(problem, file)) {
-			writer.append(new ResultEntry(population, properties));
+		try (ResultFileWriter writer = ResultFileWriter.open(problem, file)) {
+			writer.write(new ResultEntry(population, properties));
 		}
 		
 		try (ResultFileReader reader = ResultFileReader.open(problem, file)) {
@@ -238,16 +231,16 @@ public class ResultFileWriterTest {
 		TypedProperties properties = new TypedProperties();
 		properties.setString("foo", "bar");
 
-		try (ResultFileWriter writer = ResultFileWriter.append(problem, file)) {
+		try (ResultFileWriter writer = ResultFileWriter.open(problem, file)) {
 			Assert.assertEquals(0, writer.getNumberOfEntries());
-			writer.append(new ResultEntry(population, properties));
-			writer.append(new ResultEntry(population, properties));
+			writer.write(new ResultEntry(population, properties));
+			writer.write(new ResultEntry(population, properties));
 			Assert.assertEquals(2, writer.getNumberOfEntries());
 		}
 
 		try (ResultFileWriter writer = ResultFileWriter.append(problem, file)) {
 			Assert.assertEquals(2, writer.getNumberOfEntries());
-			writer.append(new ResultEntry(population, properties));
+			writer.write(new ResultEntry(population, properties));
 			Assert.assertEquals(3, writer.getNumberOfEntries());
 		}
 
@@ -284,16 +277,16 @@ public class ResultFileWriterTest {
 		TypedProperties properties = new TypedProperties();
 		properties.setString("foo", "bar");
 
-		try (ResultFileWriter writer = ResultFileWriter.overwrite(problem, file)) {
+		try (ResultFileWriter writer = ResultFileWriter.open(problem, file)) {
 			Assert.assertEquals(0, writer.getNumberOfEntries());
-			writer.append(new ResultEntry(population, properties));
-			writer.append(new ResultEntry(population, properties));
+			writer.write(new ResultEntry(population, properties));
+			writer.write(new ResultEntry(population, properties));
 			Assert.assertEquals(2, writer.getNumberOfEntries());
 		}
 
-		try (ResultFileWriter writer = ResultFileWriter.overwrite(problem, file)) {
+		try (ResultFileWriter writer = ResultFileWriter.open(problem, file)) {
 			Assert.assertEquals(0, writer.getNumberOfEntries());
-			writer.append(new ResultEntry(population, properties));
+			writer.write(new ResultEntry(population, properties));
 			Assert.assertEquals(1, writer.getNumberOfEntries());
 		}
 
@@ -335,8 +328,8 @@ public class ResultFileWriterTest {
 		solution.setObjectiveValues(new double[] { 0.0, 1.0 });
 		population.add(solution);
 		
-		try (ResultFileWriter writer = ResultFileWriter.append(problem, file)) {
-			writer.append(new ResultEntry(population, null));
+		try (ResultFileWriter writer = ResultFileWriter.open(problem, file)) {
+			writer.write(new ResultEntry(population, null));
 		}
 		
 		try (ResultFileReader reader = ResultFileReader.open(problem, file)) {
@@ -365,31 +358,12 @@ public class ResultFileWriterTest {
 		solution.setVariable(5, new Program(rules));
 		solution.setVariable(6, new MockUnsupportedVariable());
 		
-		try (ResultFileWriter writer = ResultFileWriter.overwrite(problem, file)) {
+		try (ResultFileWriter writer = ResultFileWriter.open(problem, file)) {
 			for (int i = 0; i < solution.getNumberOfVariables(); i++) {
 				Variable variable = solution.getVariable(i);
 				Assert.assertFalse(writer.encode(variable).matches("\\s+"));
 			}
 		}
-	}
-	
-	@Test
-	public void testSettings() throws ParseException {
-		ResultFileWriterSettings settings = ResultFileWriterSettings.getDefault();
-		Assert.assertTrue(settings.isAppend());
-		Assert.assertTrue(settings.isIncludeVariables());
-		
-		settings = ResultFileWriterSettings.overwrite();
-		Assert.assertFalse(settings.isAppend());
-		Assert.assertTrue(settings.isIncludeVariables());
-		
-		Options options = new Options();
-		options.addOption(Option.builder().longOpt("novariables").build());
-		
-		CommandLine commandLine = DefaultParser.builder().build().parse(options, new String[] { "--novariables" });
-		settings = ResultFileWriterSettings.from(commandLine);
-		Assert.assertTrue(settings.isAppend());
-		Assert.assertFalse(settings.isIncludeVariables());
 	}
 	
 	@Test
@@ -403,9 +377,9 @@ public class ResultFileWriterTest {
 		TypedProperties properties = new TypedProperties();
 		properties.setString("foo", "bar");
 
-		try (ResultFileWriter writer = ResultFileWriter.append(problem, file)) {
-			writer.append(new ResultEntry(population, properties));
-			writer.append(new ResultEntry(population, properties));
+		try (ResultFileWriter writer = ResultFileWriter.open(problem, file)) {
+			writer.write(new ResultEntry(population, properties));
+			writer.write(new ResultEntry(population, properties));
 		}
 		
 		long originalTimestamp = file.lastModified();
@@ -422,7 +396,7 @@ public class ResultFileWriterTest {
 
 		try (ResultFileWriter writer = ResultFileWriter.append(problem, file)) {
 			Assert.assertEquals(2, writer.getNumberOfEntries());
-			writer.append(new ResultEntry(population, properties));
+			writer.write(new ResultEntry(population, properties));
 		}
 
 		Assert.assertNotEquals(originalTimestamp, file.lastModified());

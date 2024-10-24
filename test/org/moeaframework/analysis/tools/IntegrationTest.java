@@ -18,6 +18,7 @@
 package org.moeaframework.analysis.tools;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import org.junit.After;
@@ -228,6 +229,8 @@ public class IntegrationTest {
 				"-a", "NSGAII",
 				"-b", "DTLZ2_2",
 				"-m" });
+		
+		System.out.println(Files.readString(metricFile.toPath()));
 		
 		Assert.assertLineCount(61, metricFile);
 		Assert.assertLinePattern(metricFile, Assert.getSpaceSeparatedNumericPattern(Metric.getNumberOfMetrics()));

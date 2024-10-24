@@ -119,7 +119,7 @@ public class ResultFileEvaluator extends CommandLineUtility {
 								entry.getProperties());
 					}
 						
-					writer.append(entry);
+					writer.write(entry);
 				}
 			}
 		}

@@ -22,20 +22,19 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Optional;
+import java.io.Writer;
+import java.util.stream.DoubleStream;
+import java.util.stream.Stream;
 
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.indicator.Indicators.IndicatorValues;
+import org.moeaframework.util.io.Tokenizer;
 import org.moeaframework.util.validate.Validate;
 
 /**
  * Writes metric files. A metric file is the output of {@code Evaluator} and contains on each line one or more
  * metrics separated by whitespace from one parameterization.
- * <p>
- * This writer can append the results to the file, if a previous file exists.  By reading the previous file with a
- * {@link MetricFileReader}, this writer will begin appending after the last valid entry. Query the
- * {@link #getNumberOfEntries()} to determine how many valid entries are contained in the file.
  * 
  * @see MetricFileReader
  */
@@ -98,15 +97,14 @@ public class MetricFileWriter implements OutputWriter {
 	}
 	
 	/**
-	 * The character or string that separates entries in a row.  This must be compatible with the separator used by
-	 * {@link MetricFileReader}.
+	 * The tokenizer for formatting lines.
 	 */
-	private static final String SEPARATOR = " ";
+	private final Tokenizer tokenizer;
 
 	/**
 	 * The stream for appending data to the file.
 	 */
-	private PrintWriter writer;
+	private final PrintWriter writer;
 
 	/**
 	 * The indicators to evaluate.
@@ -117,7 +115,7 @@ public class MetricFileWriter implements OutputWriter {
 	 * The number of lines in the file.
 	 */
 	private int numberOfEntries;
-
+	
 	/**
 	 * Constructs an output writer for writing metric files to the specified  file.  If the file already exists,
 	 * a cleanup operation is first performed.  The cleanup operation removes any invalid entries from the file.
@@ -125,49 +123,30 @@ public class MetricFileWriter implements OutputWriter {
 	 * 
 	 * @param indicators the indicators to evaluate
 	 * @param file the file to which the metrics are written
-	 * @param settings the settings for writing metric files
 	 * @throws IOException if an I/O error occurred
 	 */
-	public MetricFileWriter(Indicators indicators, File file, MetricFileWriterSettings settings) throws IOException {
+	public MetricFileWriter(Indicators indicators, File file) throws IOException {
+		this(indicators, new BufferedWriter(new FileWriter(file)));
+	}
+
+	/**
+	 * Constructs an output writer for writing metric files to the specified  file.  If the file already exists,
+	 * a cleanup operation is first performed.  The cleanup operation removes any invalid entries from the file.
+	 * The {@link #getNumberOfEntries()} can then be used to resume evaluation from the last recorded entry.
+	 * 
+	 * @param indicators the indicators to evaluate
+	 * @param writer the writer
+	 * @throws IOException if an I/O error occurred
+	 */
+	public MetricFileWriter(Indicators indicators, Writer writer) throws IOException {
 		super();
 		this.indicators = indicators;
+		this.writer = new PrintWriter(writer);
 		
-		if (file.exists() && settings.isAppend()) {
-			// when appending to an existing file, first copy out all valid entries
-			File tempFile = File.createTempFile("temp", null);
-			
-			try (MetricFileReader reader = new MetricFileReader(file);
-					PrintWriter writer = new PrintWriter(new FileWriter(tempFile))) {
-				appendHeader(writer);
-				
-				while (reader.hasNext()) {
-					double[] data = reader.next();
+		numberOfEntries = 0;
+		tokenizer = new Tokenizer();
 
-					writer.print(data[0]);
-
-					for (int i = 1; i < data.length; i++) {
-						writer.print(SEPARATOR);
-						writer.print(data[i]);
-					}
-
-					writer.println();
-					numberOfEntries++;
-				}
-			}
-
-			// next, replace the original only if any changes were made
-			OutputWriter.replace(tempFile, file);
-
-			// lastly, open the file in append mode
-			writer = new PrintWriter(new BufferedWriter(new FileWriter(file, true)), true);
-		}
-		
-		if (writer == null) {
-			// if the file doesn't exist or we are not appending, create a new file and print the header
-			numberOfEntries = 0;
-			writer = new PrintWriter(new BufferedWriter(new FileWriter(file)), true);
-			appendHeader(writer);
-		}
+		printHeader();
 	}
 
 	@Override
@@ -179,46 +158,38 @@ public class MetricFileWriter implements OutputWriter {
 	 * Evaluates the specified non-dominated population and outputs the resulting metrics to the file.
 	 */
 	@Override
-	public void append(ResultEntry entry) {
+	public void write(ResultEntry entry) {
 		IndicatorValues result = indicators.apply(entry.getPopulation());
-		boolean addSeparator = false;
+		Metric[] metrics = Metric.values();
+		double[] values = new double[metrics.length];
 		
-		for (Metric metric : Metric.values()) {
-			if (addSeparator) {
-				writer.print(SEPARATOR);
-			}
-			
-			writer.print(switch (metric) {
+		for (int i = 0; i < metrics.length; i++) {
+			values[i] = switch (metrics[i]) {
 				case Hypervolume -> result.getHypervolume();
 				case GenerationalDistance -> result.getGenerationalDistance();
 				case InvertedGenerationalDistance -> result.getInvertedGenerationalDistance();
 				case Spacing -> result.getSpacing();
 				case EpsilonIndicator -> result.getAdditiveEpsilonIndicator();
 				case MaximumParetoFrontError -> result.getMaximumParetoFrontError();
-			});
-			
-			addSeparator = true;
+			};
 		}
 
-		writer.println();
+		write(values);
 		numberOfEntries++;
 	}
 	
-	private void appendHeader(PrintWriter writer) {
-		boolean addSeparator = false;
-		
-		writer.print("#");
-		
-		for (Metric metric : Metric.values()) {
-			if (addSeparator) {
-				writer.print(SEPARATOR);
-			}
-			
-			writer.print(metric.name());
-			addSeparator = true;
-		}
-
-		writer.println();
+	protected void write(double[] values) {
+		write(DoubleStream.of(values).mapToObj(x -> Double.toString(x)).toArray(String[]::new));
+	}
+	
+	protected void write(String[] values) {
+		writer.println(tokenizer.encode(values));
+		writer.flush();
+	}
+	
+	protected void printHeader() {
+		writer.print("# ");
+		write(Stream.of(Metric.values()).map(x -> x.name()).toArray(String[]::new));
 	}
 	
 	/**
@@ -244,8 +215,9 @@ public class MetricFileWriter implements OutputWriter {
 	}
 	
 	/**
-	 * Opens the metric file in append mode.  If the file already exists, this writer will validate the contents,
-	 * remove any invalid entries at the end of the file, and report the number of valid entries in the file.
+	 * Opens the metric file in append mode.  If the file already exists, any invalid entries will be removed by
+	 * calling {@link #repair(File)}.  Check {@link #getNumberOfEntries()} to determine the number of valid
+	 * entries in the file.
 	 * 
 	 * @param indicators the indicators to evaluate
 	 * @param file the file
@@ -253,60 +225,64 @@ public class MetricFileWriter implements OutputWriter {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public static MetricFileWriter append(Indicators indicators, File file) throws IOException {
-		return new MetricFileWriter(indicators, file, MetricFileWriterSettings.getDefault());
+		if (!file.exists()) {
+			return open(indicators, file);
+		}
+		
+		int numberOfEntries = repair(file);
+		
+		MetricFileWriter writer = new MetricFileWriter(indicators, new BufferedWriter(new FileWriter(file, true))) {
+
+			protected void printHeader() {
+				// skip header when appending
+			}
+			
+		};
+		
+		writer.numberOfEntries = numberOfEntries;
+		return writer;
 	}
 	
 	/**
-	 * Opens the metric file in overwrite mode.  Any existing file will be deleted.
+	 * Opens the metric file.  Any existing file will be replaced.
 	 * 
 	 * @param indicators the indicators to evaluate
 	 * @param file the file
 	 * @return the metric file writer
 	 * @throws IOException if an I/O error occurred
 	 */
-	public static MetricFileWriter overwrite(Indicators indicators, File file) throws IOException {
-		return new MetricFileWriter(indicators, file, MetricFileWriterSettings.overwrite());
+	public static MetricFileWriter open(Indicators indicators, File file) throws IOException {
+		return new MetricFileWriter(indicators, file);
 	}
 	
 	/**
-	 * The settings used when writing metric files.
+	 * Repairs the contents of the metric file, removing any incomplete or invalid entries from the file.
+	 * 
+	 * @param file the file
+	 * @return the number of valid entries in the file
+	 * @throws IOException if an I/O error occurred
 	 */
-	public static class MetricFileWriterSettings extends OutputWriterSettings {
-		
-		/**
-		 * Constructs the default settings object.
-		 */
-		public MetricFileWriterSettings() {
-			super();
+	public static int repair(File file) throws IOException {
+		if (!file.exists()) {
+			return 0;
 		}
 		
-		/**
-		 * Constructs a new settings object.
-		 * 
-		 * @param append {@code true} to enable append mode, {@code false} otherwise
-		 */
-		public MetricFileWriterSettings(Optional<Boolean> append) {
-			super(append);
+		File tempFile = File.createTempFile("temp", null);
+		int numberOfEntries = 0;
+			
+		try (MetricFileReader reader = new MetricFileReader(file);
+				MetricFileWriter writer = new MetricFileWriter(null, tempFile)) {
+			while (reader.hasNext()) {				
+				double[] data = reader.next();
+				writer.write(data);
+				numberOfEntries++;
+			}
 		}
 
-		/**
-		 * Returns the default settings for writing metric files.
-		 * 
-		 * @return the default settings for writing metric files
-		 */
-		public static MetricFileWriterSettings getDefault() {
-			return new MetricFileWriterSettings();
-		}
-		
-		/**
-		 * Returns the settings with append mode disabled.
-		 * 
-		 * @return the settings with append mode disabled
-		 */
-		public static MetricFileWriterSettings overwrite() {
-			return new MetricFileWriterSettings(Optional.of(false));
-		}
-		
+		// replace the original only if any changes were made
+		OutputWriter.replace(tempFile, file);
+
+		return numberOfEntries;
 	}
 
 }

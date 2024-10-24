@@ -96,6 +96,8 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	 */
 	private final ErrorHandler errorHandler;
 	
+	// TODO: Add reader constructor
+	
 	/**
 	 * Constructs a result file reader for reading the approximation sets from the specified result file.
 	 * 

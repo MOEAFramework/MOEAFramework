@@ -86,8 +86,8 @@ public class ResultFileMerger extends CommandLineUtility {
 
 			// output merged set
 			if (commandLine.hasOption("resultFile")) {			
-				try (ResultFileWriter writer = ResultFileWriter.overwrite(problemRef, output)) {
-					writer.append(new ResultEntry(mergedSet));
+				try (ResultFileWriter writer = ResultFileWriter.open(problemRef, output)) {
+					writer.write(new ResultEntry(mergedSet));
 				}
 			} else {
 				mergedSet.saveObjectives(output);

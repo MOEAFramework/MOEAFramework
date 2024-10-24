@@ -72,7 +72,7 @@ public class RuntimeCollectorExtension extends PeriodicExtension {
 		properties.setDouble("ElapsedTime", elapsedTime);
 
 		try {
-			writer.append(new ResultEntry(result, properties));
+			writer.write(new ResultEntry(result, properties));
 		} catch (IOException e) {
 			throw new FrameworkException(e);
 		}

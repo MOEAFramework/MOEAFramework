@@ -24,11 +24,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import org.apache.commons.cli.CommandLine;
 import org.moeaframework.core.Constructable;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
@@ -55,9 +54,6 @@ import org.moeaframework.util.io.LineReader;
  * <p>
  * Complete entries are always terminated by a line starting with the {@code #} character. Incomplete entries, such
  * as those with the incorrect number of decision variables or objectives, are automatically removed.
- * <p>
- * When appending is enabled, this will attempt to recover any valid records from the previous file. Query the
- * {@link #getNumberOfEntries()} method to determine how many valid entries were recovered.
  * 
  * @see ResultFileReader
  */
@@ -68,16 +64,11 @@ public class ResultFileWriter implements OutputWriter {
 	 */
 	static final String ENCODING_WARNING = 
 			"unsupported decision variable type, could cause unexpected behavior or data loss";
-
-	/**
-	 * Settings for this result file.
-	 */
-	private final ResultFileWriterSettings settings;
 	
 	/**
 	 * The stream for appending data to the file.
 	 */
-	private PrintWriter writer;
+	private final PrintWriter writer;
 
 	/**
 	 * The number of lines in the file.
@@ -90,95 +81,103 @@ public class ResultFileWriter implements OutputWriter {
 	private final ErrorHandler errorHandler;
 	
 	/**
+	 * If set, decision variables are not written.  
+	 */
+	private boolean excludeVariables;
+	
+	/**
 	 * Constructs a result file writer for writing the decision variables and objectives of a sequence of
 	 * non-dominated populations to a file.
 	 * 
 	 * @param problem the problem
 	 * @param file the file to which the results are stored
-	 * @param settings the settings to use when writing the result file
 	 * @throws IOException if an I/O error occurred
 	 */
-	public ResultFileWriter(Problem problem, File file, ResultFileWriterSettings settings) throws IOException {
+	public ResultFileWriter(Problem problem, File file) throws IOException {
+		this(problem, new BufferedWriter(new FileWriter(file)));
+	}
+	
+	/**
+	 * Constructs a result file writer for writing the decision variables and objectives of a sequence of
+	 * non-dominated populations to a writer.
+	 * 
+	 * @param problem the problem
+	 * @param writer the output writer
+	 * @throws IOException if an I/O error occurred
+	 */
+	public ResultFileWriter(Problem problem, Writer writer) throws IOException {
 		super();
-		this.settings = settings;
+		this.writer = new PrintWriter(writer);
 		
 		errorHandler = new ErrorHandler();
 		errorHandler.setSuppressDuplicates(true);
 
-		if (file.exists() && settings.isAppend()) {
-			// when appending to an existing file, first copy out all valid entries
-			File tempFile = File.createTempFile("temp", null);
-
-			try (ResultFileReader reader = ResultFileReader.open(problem, file);
-					ResultFileWriter writer = ResultFileWriter.overwrite(problem, tempFile)) {
-				while (reader.hasNext()) {
-					writer.append(reader.next());
-				}
-
-				numberOfEntries = writer.getNumberOfEntries();
-			}
-
-			// next, replace the original only if any changes were made
-			OutputWriter.replace(tempFile, file);
-
-			// lastly, open the file in append mode
-			writer = new PrintWriter(new BufferedWriter(new FileWriter(file, true)), true);
-		}
+		numberOfEntries = 0;
 		
-		if (writer == null) {
-			// if the file doesn't exist or we are not appending, create a new file and print the header
-			numberOfEntries = 0;
-			writer = new PrintWriter(new BufferedWriter(new FileWriter(file)), true);
-						
-			// print header information
-			TypedProperties header = TypedProperties.newInstance();
-			header.setInt("Version", Settings.getMajorVersion());
-			header.setString("Problem", problem.getName());
-			header.setInt("NumberOfVariables", problem.getNumberOfVariables());
-			header.setInt("NumberOfObjectives", problem.getNumberOfObjectives());
-			header.setInt("NumberOfConstraints", problem.getNumberOfConstraints());
-			
-			Solution prototype = problem.newSolution();
-			
-			for (int i = 0; i < problem.getNumberOfVariables(); i++) {
-				try {
-					header.setString("Variable." + (i+1) + ".Definition",
-							prototype.getVariable(i).getDefinition());
-				} catch (UnsupportedOperationException e) {
-					header.setString("Variable." + (i+1) + ".Definition",
-							Constructable.createUnsupportedDefinition(Variable.class,
-									prototype.getVariable(i).getClass()));
-				}
-			}
-			
-			for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-				try {
-					header.setString("Objective." + (i+1) + ".Definition",
-							prototype.getObjective(i).getDefinition());
-				} catch (UnsupportedOperationException e) {
-					header.setString("Objective." + (i+1) + ".Definition",
-							Constructable.createUnsupportedDefinition(Objective.class,
-									prototype.getObjective(i).getClass()));
-				}
-			}
-			
-			for (int i = 0; i < problem.getNumberOfConstraints(); i++) {
-				try {
-					header.setString("Constraint." + (i+1) + ".Definition",
-							prototype.getConstraint(i).getDefinition());
-				} catch (UnsupportedOperationException e) {
-					header.setString("Constraint." + (i+1) + ".Definition",
-							Constructable.createUnsupportedDefinition(Constraint.class,
-									prototype.getConstraint(i).getClass()));
-				}
-			}
-			
-			if (!settings.isIncludeVariables()) {
-				header.setBoolean("ExcludeVariables", true);
-			}
+		printHeader(problem);
+	}
+	
+	/**
+	 * If set, excludes decision variables from the output.  In general, excluding variables is not recommended as it
+	 * is then impossible to recover the original solution.
+	 * 
+	 * @param excludeVariables {@code true} to exclude decision variables; {@code false} otherwise
+	 */
+	protected void setExcludeVariables(boolean excludeVariables) {
+		this.excludeVariables = excludeVariables;
+	}
+	
+	/**
+	 * Writes the header section to the output.
+	 * 
+	 * @param problem the problem
+	 * @throws IOException if an I/O error occurred
+	 */
+	protected void printHeader(Problem problem) throws IOException {
+		// print header information
+		TypedProperties header = TypedProperties.newInstance();
+		header.setInt("Version", Settings.getMajorVersion());
+		header.setString("Problem", problem.getName());
+		header.setInt("NumberOfVariables", problem.getNumberOfVariables());
+		header.setInt("NumberOfObjectives", problem.getNumberOfObjectives());
+		header.setInt("NumberOfConstraints", problem.getNumberOfConstraints());
 
-			printProperties(header, "# ");
+		Solution prototype = problem.newSolution();
+
+		for (int i = 0; i < problem.getNumberOfVariables(); i++) {
+			try {
+				header.setString("Variable." + (i+1) + ".Definition",
+						prototype.getVariable(i).getDefinition());
+			} catch (UnsupportedOperationException e) {
+				header.setString("Variable." + (i+1) + ".Definition",
+						Constructable.createUnsupportedDefinition(Variable.class,
+								prototype.getVariable(i).getClass()));
+			}
 		}
+
+		for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
+			try {
+				header.setString("Objective." + (i+1) + ".Definition",
+						prototype.getObjective(i).getDefinition());
+			} catch (UnsupportedOperationException e) {
+				header.setString("Objective." + (i+1) + ".Definition",
+						Constructable.createUnsupportedDefinition(Objective.class,
+								prototype.getObjective(i).getClass()));
+			}
+		}
+
+		for (int i = 0; i < problem.getNumberOfConstraints(); i++) {
+			try {
+				header.setString("Constraint." + (i+1) + ".Definition",
+						prototype.getConstraint(i).getDefinition());
+			} catch (UnsupportedOperationException e) {
+				header.setString("Constraint." + (i+1) + ".Definition",
+						Constructable.createUnsupportedDefinition(Constraint.class,
+								prototype.getConstraint(i).getClass()));
+			}
+		}
+
+		printProperties(header, "# ");
 	}
 	
 	/**
@@ -197,18 +196,20 @@ public class ResultFileWriter implements OutputWriter {
 	 * 
 	 * @return the number of entries written to the result file thus far
 	 */
+	@Override
 	public int getNumberOfEntries() {
 		return numberOfEntries;
 	}
 
 	/**
-	 * Appends the decision variables, objectives and optional properties to the output file.  Constraint violating
+	 * Writes the decision variables, objectives and optional properties to the output file.  Constraint violating
 	 * solutions are not recorded.
 	 * 
 	 * @param entry the entry to write
 	 * @throws IOException if an I/O error occurred
 	 */
-	public void append(ResultEntry entry) throws IOException {		
+	@Override
+	public void write(ResultEntry entry) throws IOException {		
 		numberOfEntries++;
 		
 		//generate list of all feasible solutions
@@ -239,6 +240,7 @@ public class ResultFileWriter implements OutputWriter {
 		}
 
 		writer.println('#');
+		writer.flush();
 	}
 	
 	/**
@@ -249,7 +251,7 @@ public class ResultFileWriter implements OutputWriter {
 	private void printSolution(Solution solution) {
 		boolean writeSeparator = false;
 		
-		if (settings.isIncludeVariables()) {
+		if (!excludeVariables) {
 			// write decision variables
 			for (int i = 0; i < solution.getNumberOfVariables(); i++) {
 				if (writeSeparator) {
@@ -300,6 +302,8 @@ public class ResultFileWriter implements OutputWriter {
 					writer.println(line);
 				}
 			}
+			
+			writer.flush();
 		} 
 	}
 
@@ -324,10 +328,23 @@ public class ResultFileWriter implements OutputWriter {
 			return "-";
 		}
 	}
-	
+
 	/**
-	 * Opens the result file in append mode.  If the file already exists, this writer will validate the contents,
-	 * remove any invalid entries at the end of the file, and report the number of valid entries in the file.
+	 * Opens the result file for writing.  Any existing file will be overwritten.
+	 * 
+	 * @param problem the problem
+	 * @param file the file
+	 * @return the result file writer
+	 * @throws IOException if an I/O error occurred
+	 */
+	public static ResultFileWriter open(Problem problem, File file) throws IOException {
+		return new ResultFileWriter(problem, file);
+	}
+
+	/**
+	 * Opens the result file in append mode.  If the file already exists, any invalid entries will be removed by
+	 * calling {@link #repair(Problem, File)}.  Check {@link #getNumberOfEntries()} to determine the number of valid
+	 * entries in the file.
 	 * 
 	 * @param problem the problem
 	 * @param file the file
@@ -335,87 +352,63 @@ public class ResultFileWriter implements OutputWriter {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public static ResultFileWriter append(Problem problem, File file) throws IOException {
-		return new ResultFileWriter(problem, file, ResultFileWriterSettings.getDefault());
+		if (!file.exists()) {
+			return open(problem, file);
+		}
+		
+		int numberOfEntries = repair(problem, file);
+		
+		ResultFileWriter writer = new ResultFileWriter(problem, new BufferedWriter(new FileWriter(file, true))) {
+
+			protected void printHeader(Problem problem) throws IOException {
+				// skip header when appending
+			}
+			
+		};
+		
+		writer.numberOfEntries = numberOfEntries;
+		return writer;
 	}
 	
 	/**
-	 * Opens the result file in overwrite mode.  Any existing file will be deleted.
+	 * Repairs the contents of the result file, removing any incomplete or invalid entries from the file.
 	 * 
-	 * @param problem the problem
 	 * @param file the file
-	 * @return the result file writer
+	 * @return the number of valid entries in the file
 	 * @throws IOException if an I/O error occurred
 	 */
-	public static ResultFileWriter overwrite(Problem problem, File file) throws IOException {
-		return new ResultFileWriter(problem, file, ResultFileWriterSettings.overwrite());
+	public static int repair(File file) throws IOException {
+		return repair(null, file);
 	}
 	
 	/**
-	 * The settings used when writing result files.
+	 * Repairs the contents of the result file, removing any incomplete or invalid entries from the file.
+	 * 
+	 * @param problem the problem, or {@code null} to derive the problem from the result file
+	 * @param file the file
+	 * @return the number of valid entries in the file
+	 * @throws IOException if an I/O error occurred
 	 */
-	public static class ResultFileWriterSettings extends OutputWriterSettings {
-		
-		/**
-		 * {@code true} to enable writing all decision variables; {@code false} otherwise.
-		 */
-		private final boolean includeVariables;
-				
-		/**
-		 * Constructs the default settings object.
-		 */
-		public ResultFileWriterSettings() {
-			this(Optional.empty(), Optional.empty());
+	public static int repair(Problem problem, File file) throws IOException {
+		if (!file.exists()) {
+			return 0;
 		}
 		
-		/**
-		 * Constructs a new result file settings object.
-		 * 
-		 * @param append {@code true} to enable append mode, {@code false} otherwise
-		 * @param includeVariables {@code true} to enable writing all decision variables; {@code false} otherwise
-		 */
-		public ResultFileWriterSettings(Optional<Boolean> append, Optional<Boolean> includeVariables) {
-			super(append);
-			this.includeVariables = includeVariables != null && includeVariables.isPresent() ?
-					includeVariables.get() : true;
-		}
+		File tempFile = File.createTempFile("temp", null);
+		int numberOfEntries = 0;
 		
-		/**
-		 * Returns {@code true} if writing all decision variables; {@code false} otherwise.
-		 * 
-		 * @return {@code true} if writing all decision variables; {@code false} otherwise
-		 */
-		public boolean isIncludeVariables() {
-			return includeVariables;
+		try (ResultFileReader reader = ResultFileReader.open(problem, file);
+				ResultFileWriter writer = ResultFileWriter.open(reader.getProblem(), tempFile)) {
+			while (reader.hasNext()) {
+				writer.write(reader.next());
+				numberOfEntries += 1;
+			}
 		}
+
+		// replace the original only if any changes were made, leaving the timestamp unchanged
+		OutputWriter.replace(tempFile, file);
 		
-		/**
-		 * Returns the default settings for writing result files.
-		 * 
-		 * @return the default settings for writing result files
-		 */
-		public static ResultFileWriterSettings getDefault() {
-			return new ResultFileWriterSettings();
-		}
-		
-		/**
-		 * Returns the settings with append mode disabled.
-		 * 
-		 * @return the settings with append mode disabled
-		 */
-		public static ResultFileWriterSettings overwrite() {
-			return new ResultFileWriterSettings(Optional.of(false), Optional.empty());
-		}
-		
-		/**
-		 * Returns the settings produced from the given command line options.
-		 * 
-		 * @param commandLine the given command line options
-		 * @return the settings
-		 */
-		public static ResultFileWriterSettings from(CommandLine commandLine) {
-			return new ResultFileWriterSettings(Optional.empty(), Optional.of(!commandLine.hasOption("novariables")));
-		}
-		
+		return numberOfEntries;
 	}
 	
 }

@@ -74,14 +74,14 @@ public class FileFormatSnippet {
 		NSGAII algorithm = new NSGAII(problem);
 		
 		// begin-example:resultFile-overwrite
-		try (ResultFileWriter writer = ResultFileWriter.overwrite(problem, new File("result.dat"))) {
+		try (ResultFileWriter writer = ResultFileWriter.open(problem, new File("result.dat"))) {
 			for (int i = 0; i < 1000; i++) {
 				algorithm.step();
 				
 				TypedProperties properties = new TypedProperties();
 				properties.setInt("NFE", algorithm.getNumberOfEvaluations());
 				
-				writer.append(new ResultEntry(algorithm.getResult(), properties));
+				writer.write(new ResultEntry(algorithm.getResult(), properties));
 			}
 		}
 		// end-example:resultFile-overwrite
@@ -112,10 +112,10 @@ public class FileFormatSnippet {
 		NSGAII algorithm = new NSGAII(problem);
 		Indicators indicators = Indicators.standard(problem, NondominatedPopulation.loadReferenceSet("pf/Schaffer.pf"));
 		
-		try (MetricFileWriter writer = MetricFileWriter.overwrite(indicators, new File("metrics.dat"))) {
+		try (MetricFileWriter writer = MetricFileWriter.open(indicators, new File("metrics.dat"))) {
 			for (int i = 0; i < 1000; i++) {
 				algorithm.step();
-				writer.append(new ResultEntry(algorithm.getResult()));
+				writer.write(new ResultEntry(algorithm.getResult()));
 			}
 		}
 		

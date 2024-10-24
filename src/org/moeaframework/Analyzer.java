@@ -545,14 +545,14 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 */
 	public Analyzer saveAs(String name, File resultFile) throws IOException {
 		try (Problem problem = getProblemInstance()) {	
-			try (ResultFileWriter writer = ResultFileWriter.overwrite(problem, resultFile)) {
+			try (ResultFileWriter writer = ResultFileWriter.open(problem, resultFile)) {
 				if (name == null) {
-					writer.append(new ResultEntry(getReferenceSet()));
+					writer.write(new ResultEntry(getReferenceSet()));
 				} else {
 					EndOfRunResults result = data.get(name);
 
 					for (NondominatedPopulation approximationSet : result.getApproximationSets()) {
-						writer.append(new ResultEntry(approximationSet));
+						writer.write(new ResultEntry(approximationSet));
 					}
 				}
 			}

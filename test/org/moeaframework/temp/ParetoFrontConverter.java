@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Map;
-import java.util.Optional;
 import java.util.ServiceLoader;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -30,7 +29,6 @@ import org.moeaframework.analysis.io.OutputWriter;
 import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.analysis.io.ResultFileWriter;
-import org.moeaframework.analysis.io.ResultFileWriter.ResultFileWriterSettings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.ProblemProvider;
@@ -63,10 +61,9 @@ public class ParetoFrontConverter<T> {
 					File tempFile = TempFiles.createFile();
 					
 					try (ResultFileReader reader = ResultFileReader.openLegacy(problem, referenceSetFile);
-							ResultFileWriter writer = new ResultFileWriter(problem, tempFile,
-									new ResultFileWriterSettings(Optional.of(false), Optional.of(false)))) {
+							ResultFileWriter writer = ResultFileWriter.open(problem, tempFile)) {
 						ResultEntry entry = reader.next();
-						writer.append(new ResultEntry(stripConstraints(entry.getPopulation())));
+						writer.write(new ResultEntry(stripConstraints(entry.getPopulation())));
 					}
 					
 					OutputWriter.replace(tempFile, referenceSetFile);

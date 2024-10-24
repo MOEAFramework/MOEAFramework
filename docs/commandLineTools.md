@@ -72,7 +72,7 @@ Constructs the scaffolding for a natively-compiled problem in a target language.
 
 ```
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.Evaluator -a <name> [-b <name>] [-e <e1,e2,...>] [-f]
-       [-h] -i <file> [-m] [-n] -o <file> -p <file> [-r <file>] [-s <value>] [-x <p1=v1;p2=v2;...>]
+       [-h] -i <file> [-m] -o <file> -p <file> [-r <file>] [-s <value>] [-x <p1=v1;p2=v2;...>]
 
 Evaluates an optimization algorithm on the specified problem.  The following options are available:
 
@@ -83,7 +83,6 @@ Evaluates an optimization algorithm on the specified problem.  The following opt
  -h,--help                           Display help information
  -i,--input <file>                   Parameter samples
  -m,--metrics                        Evaluate and output metrics
- -n,--novariables                    Do not output decision variables
  -o,--output <file>                  Output file
  -p,--parameterFile <file>           Parameter description file
  -r,--reference <file>               Reference set file
@@ -207,7 +206,7 @@ approximation sets.  The following options are available:
 
 ```
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.RuntimeEvaluator -a <name> [-b <name>] [-e <e1,e2,...>]
-       [-f <nfe>] [-h] -i <file> [-n] -o <file> -p <file> [-s <value>] [-x <p1=v1;p2=v2;...>]
+       [-f <nfe>] [-h] -i <file> -o <file> -p <file> [-s <value>] [-x <p1=v1;p2=v2;...>]
 
 Records the approximation set at a fixed sampling frequency from each parameterization.  The following options are
 available:
@@ -218,7 +217,6 @@ available:
  -f,--frequency <nfe>                The sampling frequency in function evaluations
  -h,--help                           Display help information
  -i,--input <file>                   Parameter samples
- -n,--novariables                    Do not output decision variables
  -o,--output <file>                  Output file name format with %d replaced by the run index (e.g., result_%d.dat)
  -p,--parameterFile <file>           Parameter description file
  -s,--seed <value>                   Random number seed

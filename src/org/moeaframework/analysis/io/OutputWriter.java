@@ -23,14 +23,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.Optional;
-
-import org.moeaframework.analysis.tools.Evaluator;
 
 /**
- * Writes output files.  As they allow the {@link Evaluator} to automatically resume itself at the last known good
- * result, output writers are expected to cleanup the file and return the number of valid entries through
- * {@link #getNumberOfEntries()}.
+ * Writes output files.
  */
 public interface OutputWriter extends Closeable {
 	
@@ -43,12 +38,12 @@ public interface OutputWriter extends Closeable {
 	public int getNumberOfEntries();
 	
 	/**
-	 * Appends the specified non-dominated population and optional attributes to the file.
+	 * Writes the specified non-dominated population and optional attributes to the file.
 	 * 
 	 * @param entry the non-dominated population and optional attributes
 	 * @throws IOException if an I/O error occurred
 	 */
-	public void append(ResultEntry entry) throws IOException;
+	public void write(ResultEntry entry) throws IOException;
 	
 	/**
 	 * Replaces the destination file with the source file, but only if content is different.  This avoids changing the
@@ -70,44 +65,6 @@ public interface OutputWriter extends Closeable {
 			Files.deleteIfExists(sourcePath);
 			return false;
 		}
-	}
-		
-	/**
-	 * Common settings when creating an output writer.
-	 */
-	public static class OutputWriterSettings {
-		
-		/**
-		 * {@code true} when in append mode (the default), {@code false} otherwise.
-		 */
-		protected final boolean append;
-		
-		/**
-		 * Constructs the default settings object.
-		 */
-		public OutputWriterSettings() {
-			this(Optional.empty());
-		}
-		
-		/**
-		 * Constructs a new settings object.
-		 * 
-		 * @param append {@code true} to enable append mode, {@code false} otherwise
-		 */
-		public OutputWriterSettings(Optional<Boolean> append) {
-			super();
-			this.append = append != null && append.isPresent() ? append.get() : true;
-		}
-		
-		/**
-		 * Returns {@code true} when in append mode (the default), {@code false} otherwise.
-		 * 
-		 * @return {@code true} when in append mode (the default), {@code false} otherwise
-		 */
-		public boolean isAppend() {
-			return append;
-		}
-		
 	}
 
 }

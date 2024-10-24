@@ -28,7 +28,6 @@ import org.moeaframework.analysis.io.MetricFileWriter;
 import org.moeaframework.analysis.io.OutputWriter;
 import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileWriter;
-import org.moeaframework.analysis.io.ResultFileWriter.ResultFileWriterSettings;
 import org.moeaframework.analysis.parameter.ParameterSet;
 import org.moeaframework.analysis.sample.Samples;
 import org.moeaframework.core.Epsilons;
@@ -107,9 +106,6 @@ public class Evaluator extends CommandLineUtility {
 		options.addOption(Option.builder("m")
 				.longOpt("metrics")
 				.build());
-		options.addOption(Option.builder("n")
-				.longOpt("novariables")
-				.build());
 		options.addOption(Option.builder("f")
 				.longOpt("force")
 				.build());
@@ -142,7 +138,7 @@ public class Evaluator extends CommandLineUtility {
 
 					output = MetricFileWriter.append(indicators, outputFile);
 				} else {
-					output = new ResultFileWriter(problem, outputFile, ResultFileWriterSettings.from(commandLine));
+					output = ResultFileWriter.append(problem, outputFile);
 				}
 
 				// setup any default parameters
@@ -221,7 +217,7 @@ public class Evaluator extends CommandLineUtility {
 		timingData.setDouble("TotalTime", (endTime - startTime) / 1e9);
 
 		// write result to output
-		output.append(new ResultEntry(result, timingData));
+		output.write(new ResultEntry(result, timingData));
 	}
 
 	/**
