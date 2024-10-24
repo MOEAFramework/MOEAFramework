@@ -32,7 +32,7 @@ import org.moeaframework.problem.DTLZ.DTLZ2;
 /**
  * Demonstrates running an algorithm with different parameter samples.
  */
-public class SamplingExample {
+public class ParameterSampleExample {
 	
 	public static void main(String[] args) throws Exception {
 		Problem problem = new DTLZ2(2);
