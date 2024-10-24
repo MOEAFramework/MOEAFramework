@@ -91,5 +91,12 @@ public class DecimalRangeTest {
 		
 		Assert.assertEquals("foo decimal 100.0 1000.0", parameter.encode(tokenizer));
 	}
+	
+	@Test
+	public void testApplyPrecision() {
+		Assert.assertEquals(0.0, DecimalRange.applyPrecision(0.000000000000001), 0.0000000000000001);
+		Assert.assertEquals(0.5555555556, DecimalRange.applyPrecision(0.555555555555555), 0.0000000000000001);
+		Assert.assertEquals(1.0, DecimalRange.applyPrecision(0.999999999999999), 0.0000000000000001);
+	}
 
 }

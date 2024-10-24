@@ -21,7 +21,6 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import org.moeaframework.analysis.sample.Sample;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 import org.moeaframework.util.io.Tokenizer;
 import org.moeaframework.util.validate.Validate;
@@ -33,11 +32,6 @@ NumericParameter<Double> {
 	
 	static {
 		int digits = (int)-Math.log10(Settings.EPS);
-		
-		if (digits <= 0) {
-			throw new FrameworkException("failed to compute number of digits of EPS");
-		}
-		
 		FORMAT = new DecimalFormat("#." + "#".repeat(digits));
 	}
 	
