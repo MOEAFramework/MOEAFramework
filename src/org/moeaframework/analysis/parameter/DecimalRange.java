@@ -17,14 +17,29 @@
  */
 package org.moeaframework.analysis.parameter;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import org.moeaframework.analysis.sample.Sample;
+import org.moeaframework.core.FrameworkException;
+import org.moeaframework.core.Settings;
 import org.moeaframework.util.io.Tokenizer;
 import org.moeaframework.util.validate.Validate;
 
 public class DecimalRange extends AbstractParameter<Double> implements SampledParameter<Double>,
 NumericParameter<Double> {
+	
+	private static final DecimalFormat FORMAT;
+	
+	static {
+		int digits = (int)-Math.log10(Settings.EPS);
+		
+		if (digits <= 0) {
+			throw new FrameworkException("failed to compute number of digits of EPS");
+		}
+		
+		FORMAT = new DecimalFormat("#." + "#".repeat(digits));
+	}
 	
 	private final double lowerBound;
 	
@@ -65,7 +80,7 @@ NumericParameter<Double> {
 	@Override
 	public void apply(Sample sample, double scale) {
 		Validate.that("scale", scale).isBetween(0.0, 1.0);
-		sample.setDouble(getName(), lowerBound + scale * (upperBound - lowerBound));
+		sample.setDouble(getName(), applyPrecision(lowerBound + scale * (upperBound - lowerBound)));
 	}
 	
 	@Override
@@ -95,6 +110,17 @@ NumericParameter<Double> {
 		}
 		
 		return new DecimalRange(tokens[0], Double.parseDouble(tokens[2]), Double.parseDouble(tokens[3]));
+	}
+	
+	/**
+	 * Rounds the decimal value using the same precision as {@link Settings#EPS}.  This prevents small errors in the
+	 * floating-point representation / arithmetic from manifesting as different parameter values.
+	 * 
+	 * @param value the original decimal value
+	 * @return the rounded decimal value
+	 */
+	public static double applyPrecision(double value) {
+		return Double.parseDouble(FORMAT.format(value));
 	}
 
 }

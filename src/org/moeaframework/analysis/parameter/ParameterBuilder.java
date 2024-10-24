@@ -139,7 +139,7 @@ public class ParameterBuilder {
 			return of(stream.boxed());
 		}
 		
-		public Enumeration<Integer> of(Stream<Integer> stream) {
+		Enumeration<Integer> of(Stream<Integer> stream) {
 			return new Enumeration<Integer>(name, stream.toList());
 		}
 		
@@ -191,7 +191,7 @@ public class ParameterBuilder {
 			return of(stream.boxed());
 		}
 		
-		public Enumeration<Long> of(Stream<Long> stream) {
+		Enumeration<Long> of(Stream<Long> stream) {
 			return new Enumeration<Long>(name, stream.toList());
 		}
 		
@@ -232,10 +232,10 @@ public class ParameterBuilder {
 		}
 		
 		public Enumeration<Double> of(DoubleStream stream) {
-			return of(stream.boxed());
+			return of(stream.map(x -> DecimalRange.applyPrecision(x)).boxed());
 		}
 		
-		public Enumeration<Double> of(Stream<Double> stream) {
+		Enumeration<Double> of(Stream<Double> stream) {
 			return new Enumeration<Double>(name, stream.toList());
 		}
 		
