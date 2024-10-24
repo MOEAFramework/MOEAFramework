@@ -25,11 +25,11 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.math3.stat.StatUtils;
-import org.moeaframework.analysis.io.MatrixReader;
 import org.moeaframework.analysis.io.MetricFileWriter;
 import org.moeaframework.analysis.parameter.ParameterSet;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.io.MatrixReader;
 
 /**
  * Global sensitivity analysis of blackbox model output using Saltelli's improved Sobol' global variance decomposition

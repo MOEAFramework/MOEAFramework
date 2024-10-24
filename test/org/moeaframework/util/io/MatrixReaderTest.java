@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis.io;
+package org.moeaframework.util.io;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -153,11 +153,11 @@ public class MatrixReaderTest {
 	@Test
 	public void testSuppressExceptions() throws IOException {
 		try (MatrixReader reader = new MatrixReader(new StringReader(UNPARSEABLE))) {
-			reader.setSuppressExceptions(true);
-			
+			reader.getErrorHandler().setWarningsAreFatal(false);
+			reader.getErrorHandler().setErrorsAreFatal(false);
 			reader.next();
 			Assert.assertFalse(reader.hasNext());
-			Assert.assertTrue(reader.isError());
+			Assert.assertTrue(reader.getErrorHandler().isError());
 		}
 	}
 	

@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis.io;
+package org.moeaframework.util.io;
 
 import java.io.Closeable;
 import java.io.File;
@@ -29,8 +29,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.util.io.LineReader;
-import org.moeaframework.util.io.Tokenizer;
+import org.moeaframework.util.ErrorHandler;
 
 /**
  * Reader of files containing matrices.  A matrix contains numerical data separated into rows and columns.  The values
@@ -43,6 +42,11 @@ import org.moeaframework.util.io.Tokenizer;
  * flag.  If exceptions are suppressed, a warning message will be printed.
  */
 public class MatrixReader implements Iterable<double[]>, Iterator<double[]>, Closeable {
+	
+	/**
+	 * Constant used to indicate the number of columns is not known.
+	 */
+	private static final int UNSPECIFIED_COLUMN_COUNT = -1;
 
 	/**
 	 * The underlying reader.
@@ -65,14 +69,9 @@ public class MatrixReader implements Iterable<double[]>, Iterator<double[]>, Clo
 	private double[] nextRow;
 
 	/**
-	 * {@code true} if an error occurred parsing the file; {@code false} otherwise.
+	 * The error handler.
 	 */
-	private boolean error;
-	
-	/**
-	 * {@code true} if errors are suppressed; {@code false} otherwise.  I/O errors will still be thrown.
-	 */
-	private boolean suppressExceptions;
+	private final ErrorHandler errorHandler;
 
 	/**
 	 * Constructs a reader for loading a matrix contained in the specified file.
@@ -81,14 +80,15 @@ public class MatrixReader implements Iterable<double[]>, Iterator<double[]>, Clo
 	 * @throws FileNotFoundException if the file was not found
 	 */
 	public MatrixReader(File file) throws FileNotFoundException {
-		this(new FileReader(file), -1);
+		this(new FileReader(file), UNSPECIFIED_COLUMN_COUNT);
 	}
 	
 	/**
 	 * Constructs a reader for loading a matrix contained in the specified file.
 	 * 
 	 * @param file the file containing the matrix
-	 * @param numberOfColumns the expected number of columns; or {@code -1} if the matrix has no fixed column count
+	 * @param numberOfColumns the expected number of columns; or {@value #UNSPECIFIED_COLUMN_COUNT} if the matrix has
+	 *        no fixed column count
 	 * @throws FileNotFoundException if the file was not found
 	 */
 	public MatrixReader(File file, int numberOfColumns) throws FileNotFoundException {
@@ -101,14 +101,15 @@ public class MatrixReader implements Iterable<double[]>, Iterator<double[]>, Clo
 	 * @param reader the underlying reader
 	 */
 	public MatrixReader(Reader reader) {
-		this(reader, -1);
+		this(reader, UNSPECIFIED_COLUMN_COUNT);
 	}
 
 	/**
 	 * Constructs a reader for loading a matrix accessed through the underlying reader.
 	 * 
 	 * @param reader the underlying reader
-	 * @param numberOfColumns the expected number of columns; or {@code -1} if the matrix has no fixed column count
+	 * @param numberOfColumns the expected number of columns; or {@value #UNSPECIFIED_COLUMN_COUNT} if the matrix has
+	 *        no fixed column count
 	 */
 	public MatrixReader(Reader reader, int numberOfColumns) {
 		super();
@@ -116,6 +117,20 @@ public class MatrixReader implements Iterable<double[]>, Iterator<double[]>, Clo
 		this.numberOfColumns = numberOfColumns;
 		
 		tokenizer = new Tokenizer();
+		
+		errorHandler = new ErrorHandler();
+		errorHandler.setSuppressDuplicates(true);
+		errorHandler.setWarningsAreFatal(false);
+		errorHandler.setErrorsAreFatal(true);
+	}
+	
+	/**
+	 * Returns the error handler used by this reader.
+	 * 
+	 * @return the error handler
+	 */
+	public ErrorHandler getErrorHandler() {
+		return errorHandler;
 	}
 	
 	/**
@@ -140,7 +155,7 @@ public class MatrixReader implements Iterable<double[]>, Iterator<double[]>, Clo
 	@Override
 	public boolean hasNext() {
 		try {
-			if (error) {
+			if (errorHandler.isError()) {
 				return false;
 			}
 
@@ -181,14 +196,9 @@ public class MatrixReader implements Iterable<double[]>, Iterator<double[]>, Clo
 		String[] tokens = tokenizer.decodeToArray(line);
 
 		if ((numberOfColumns >= 0) && (tokens.length != numberOfColumns)) {
-			error = true;
-			
-			if (suppressExceptions) {
-				System.err.println("insufficient number of entries in row, ignoring remaining rows in the file");
-				return null;
-			} else {
-				throw new IOException("insufficient number of entries in row");
-			}
+			errorHandler.error("Insufficient number of entries in row, expected {0} but was {1}",
+					numberOfColumns, tokens.length);
+			return null;
 		}
 
 		double[] entry = new double[tokens.length];
@@ -198,13 +208,8 @@ public class MatrixReader implements Iterable<double[]>, Iterator<double[]>, Clo
 				entry[i] = Double.parseDouble(tokens[i]);
 			}
 		} catch (NumberFormatException e) {
-			error = true;
-			
-			if (suppressExceptions) {
-				return null;
-			} else {
-				throw new IOException("invalid entry in row", e);
-			}
+			errorHandler.error("Failed to parse value: {0}", e.getMessage());
+			return null;
 		}
 
 		return entry;
@@ -233,35 +238,6 @@ public class MatrixReader implements Iterable<double[]>, Iterator<double[]>, Clo
 		}
 			
 		return data.toArray(double[][]::new);
-	}
-	
-	/**
-	 * Returns {@code true} if an error occurred while loading the matrix; {@code false} otherwise.
-	 * 
-	 * @return {@code true} if an error occurred while loading the matrix; {@code false} otherwise
-	 */
-	boolean isError() {
-		return error;
-	}
-	
-	/**
-	 * Returns {@code true} if exceptions are suppressed; {@code false} otherwise.  Low-level I/O exceptions will still
-	 * be thrown.  
-	 * 
-	 * @return {@code true} if exceptions are suppressed; {@code false} otherwise
-	 */
-	boolean isSuppressExceptions() {
-		return suppressExceptions;
-	}
-
-	/**
-	 * Set to {@code true} to suppress exceptions; {@code false} otherwise.  Low-level I/O exceptions will still be
-	 * thrown.
-	 * 
-	 * @param supressExceptions {@code true} if exceptions are suppressed; {@code false} otherwise
-	 */
-	void setSuppressExceptions(boolean suppressExceptions) {
-		this.suppressExceptions = suppressExceptions;
 	}
 
 }

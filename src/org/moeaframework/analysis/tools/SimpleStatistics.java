@@ -27,9 +27,9 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
-import org.moeaframework.analysis.io.MatrixReader;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.OptionCompleter;
+import org.moeaframework.util.io.MatrixReader;
 import org.moeaframework.util.validate.Validate;
 
 /**

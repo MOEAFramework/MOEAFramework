@@ -21,6 +21,7 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Iterator;
@@ -95,9 +96,7 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	 * The error handler.
 	 */
 	private final ErrorHandler errorHandler;
-	
-	// TODO: Add reader constructor
-	
+		
 	/**
 	 * Constructs a result file reader for reading the approximation sets from the specified result file.
 	 * 
@@ -109,6 +108,16 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	}
 	
 	/**
+	 * Constructs a result file reader for reading the approximation sets from the specified reader.
+	 * 
+	 * @param the reader containing the result file
+	 * @throws IOException if an I/O error occurred
+	 */
+	public ResultFileReader(Reader reader) throws IOException {
+		this(null, reader);
+	}
+	
+	/**
 	 * Constructs a result file reader for reading the approximation sets from the specified result file.
 	 * 
 	 * @param problem the problem, if {@code null} a problem "stub" will be generated
@@ -116,28 +125,39 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	 * @throws IOException if an I/O error occurred
 	 */
 	public ResultFileReader(Problem problem, File file) throws IOException {
-		this(problem, file, false);
+		this(problem, new FileReader(file));
+	}
+	
+	/**
+	 * Constructs a result file reader for reading the approximation sets from the specified reader.
+	 * 
+	 * @param problem the problem, if {@code null} a problem "stub" will be generated
+	 * @param reader the reader containing the result file
+	 * @throws IOException if an I/O error occurred
+	 */
+	public ResultFileReader(Problem problem, Reader reader) throws IOException {
+		this(problem, reader, false);
 	}
 
 	/**
 	 * Constructs a result file reader for reading the approximation sets from the specified result file.
 	 * 
 	 * @param problem the problem, if {@code null} a problem "stub" will be generated
-	 * @param file the file containing the results
+	 * @param reader the reader containing the result file
 	 * @param allowLegacyFormat allows reading legacy file formats for backwards compatibility
 	 * @throws IOException if an I/O error occurred
 	 */
-	protected ResultFileReader(Problem problem, File file, boolean allowLegacyFormat) throws IOException {
+	protected ResultFileReader(Problem problem, Reader reader, boolean allowLegacyFormat) throws IOException {
 		super();
 		this.problem = problem;
+		this.reader = LineReader.wrap(reader);
 		
 		errorHandler = new ErrorHandler();
 		errorHandler.setSuppressDuplicates(true);
 		
-		reader = LineReader.wrap(new FileReader(file));
-		readHeader(allowLegacyFormat);
-		
 		tokenizer = new Tokenizer();
+		
+		readHeader(allowLegacyFormat);
 	}
 	
 	/**
@@ -424,7 +444,7 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	 * 
 	 * @param problem the problem
 	 * @param file the file containing the results
-	 * @return the reader
+	 * @return the result file reader
 	 * @throws IOException if an I/O error occurred
 	 */
 	public static ResultFileReader open(Problem problem, File file) throws IOException {
@@ -436,11 +456,11 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	 * 
 	 * @param problem the problem
 	 * @param file the file containing the results
-	 * @return the reader
+	 * @return the result file reader
 	 * @throws IOException if an I/O error occurred
 	 */
 	public static ResultFileReader openLegacy(Problem problem, File file) throws IOException {
-		return new ResultFileReader(problem, file, true);
+		return new ResultFileReader(problem, new FileReader(file), true);
 	}
 
 }

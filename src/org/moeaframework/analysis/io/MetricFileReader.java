@@ -22,6 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.Reader;
 
 import org.moeaframework.analysis.io.MetricFileWriter.Metric;
+import org.moeaframework.util.io.MatrixReader;
 
 /**
  * Reader for metric files produced by {@link MetricFileWriter}.  The file can contain commented lines starting with
@@ -43,7 +44,8 @@ public class MetricFileReader extends MatrixReader {
 	 */
 	public MetricFileReader(File file) throws FileNotFoundException {
 		super(file, Metric.getNumberOfMetrics());
-		setSuppressExceptions(true);
+		getErrorHandler().setWarningsAreFatal(false);
+		getErrorHandler().setErrorsAreFatal(false);
 	}
 
 	/**
@@ -53,7 +55,8 @@ public class MetricFileReader extends MatrixReader {
 	 */
 	public MetricFileReader(Reader reader) {
 		super(reader, Metric.getNumberOfMetrics());
-		setSuppressExceptions(true);
+		getErrorHandler().setWarningsAreFatal(false);
+		getErrorHandler().setErrorsAreFatal(false);
 	}
 	
 	/**
