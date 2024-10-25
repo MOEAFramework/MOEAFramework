@@ -28,7 +28,7 @@ import org.moeaframework.algorithm.Algorithm;
  *     Algorithm algorithm = new NSGAII();
  *     Wrapper wrapper = new Wrapper(algorithm);
  *     wrapper.run(10000);
- * <pre>
+ * </pre>
  * On the other hand, an extension adds new functionality by plugging into specific "extension points":
  * <pre>
  *     Algorithm algorithm = new NSGAII();

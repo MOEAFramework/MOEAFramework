@@ -21,7 +21,7 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.mock.MockAlgorithm;
-import org.moeaframework.mock.MockAlgorithmWithExtensions;;
+import org.moeaframework.mock.MockAlgorithmWithExtensions;
 
 public class PeriodicExtensionTest {
 	

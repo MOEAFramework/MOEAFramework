@@ -21,8 +21,8 @@ import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.operator.real.PCX;
-import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
+import org.moeaframework.problem.Problem;
 
 /**
  * Demonstrates changing the configuration of an algorithm by calling the setter methods.

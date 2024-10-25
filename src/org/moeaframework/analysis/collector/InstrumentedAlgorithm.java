@@ -23,6 +23,8 @@ import org.moeaframework.algorithm.extension.FrequencyType;
 
 /**
  * Wraps an algorithm to indicate it is instrumented to collect runtime data.
+ * 
+ * @param <T> the type of the algorithm
  */
 public class InstrumentedAlgorithm<T extends Algorithm> extends AlgorithmWrapper<T> {
 	
@@ -40,7 +42,7 @@ public class InstrumentedAlgorithm<T extends Algorithm> extends AlgorithmWrapper
 	 * 
 	 * @param frequency the frequency
 	 * @param frequencyType the frequency type
-	 * @return the extensio
+	 * @return the extension
 	 */
 	public InstrumentedExtension registerExtension(int frequency, FrequencyType frequencyType) {
 		InstrumentedExtension extension = getExtensions().get(InstrumentedExtension.class);

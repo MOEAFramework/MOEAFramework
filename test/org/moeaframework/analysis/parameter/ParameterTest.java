@@ -15,27 +15,22 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.examples.plots;
+package org.moeaframework.analysis.parameter;
 
-import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.analysis.plot.Plot;
-import org.moeaframework.problem.DTLZ.DTLZ2;
-import org.moeaframework.problem.Problem;
+import org.junit.Test;
+import org.moeaframework.Assert;
+import org.moeaframework.util.io.Tokenizer;
 
-/**
- * Solves 2-objective DTLZ2 using NSGA-II and displays the approximation set.
- */
-public class PlotApproximationSet {
-
-	public static void main(String[] args) {
-		Problem problem = new DTLZ2(2);
-		
-		NSGAII algorithm = new NSGAII(problem);
-		algorithm.run(10000);
-		
-		new Plot()
-			.add("NSGA-II", algorithm.getResult())
-			.show();
+public class ParameterTest {
+	
+	@Test
+	public void testDecode() {
+		Tokenizer tokenizer = new Tokenizer();
+		Assert.assertInstanceOf(Constant.class, Parameter.decode(tokenizer, "foo const 1"));
+		Assert.assertInstanceOf(Enumeration.class, Parameter.decode(tokenizer, "foo enum 1 2 3"));
+		Assert.assertInstanceOf(IntegerRange.class, Parameter.decode(tokenizer, "foo int 1 2"));
+		Assert.assertInstanceOf(LongRange.class, Parameter.decode(tokenizer, "foo long 1 2"));
+		Assert.assertInstanceOf(DecimalRange.class, Parameter.decode(tokenizer, "foo decimal 1.0 2.0"));
 	}
 
 }

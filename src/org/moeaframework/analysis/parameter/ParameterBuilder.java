@@ -82,7 +82,7 @@ public class ParameterBuilder {
 		return new Enumeration<>(name, values);
 	}
 	
-	static abstract class TypedParameterBuilder {
+	abstract static class TypedParameterBuilder {
 		
 		protected final String name;
 		

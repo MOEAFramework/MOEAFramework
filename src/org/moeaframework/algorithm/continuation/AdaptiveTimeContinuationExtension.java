@@ -110,7 +110,6 @@ public class AdaptiveTimeContinuationExtension extends PeriodicExtension impleme
 	/**
 	 * Creates the adaptive time continuation extension.
 	 * 
-	 * @param algorithm the algorithm being decorated
 	 * @param windowSize the number of iterations between invocations of {@code check}
 	 * @param maxWindowSize the maximum number of iterations allowed since the last restart before forcing a restart
 	 * @param injectionRate the injection rate percentage

@@ -27,8 +27,8 @@ import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.core.variable.Subset;
-import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
+import org.moeaframework.problem.Problem;
 
 @SuppressWarnings("resource")
 public class MockSolutionTest {

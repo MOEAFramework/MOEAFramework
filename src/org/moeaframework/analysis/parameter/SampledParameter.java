@@ -21,6 +21,8 @@ import org.moeaframework.analysis.sample.Sample;
 
 /**
  * Sampled parameters specify a range of possible values that are sampled randomly or according to some sequence.
+ * 
+ * @pram <T> the type of the parameter
  */
 public interface SampledParameter<T> extends Parameter<T> {
 	

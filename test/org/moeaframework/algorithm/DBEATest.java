@@ -34,8 +34,8 @@ import org.moeaframework.core.population.Population;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockSolution;
-import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 

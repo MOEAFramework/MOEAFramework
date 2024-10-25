@@ -258,7 +258,7 @@ public class Solution implements Copyable<Solution>, Formattable<Solution>, Seri
 	 * 
 	 * @param objectives the new objective values for this solution
 	 * @throws IllegalArgumentException if {@code objectives.length != getNumberOfObjectives()}
-	 * @deprecated use {@link #setObjectiveValues(double[]) instead
+	 * @deprecated use {@link #setObjectiveValues(double[])} instead
 	 */
 	@Deprecated
 	public void setObjectives(double[] objectives) {
@@ -297,7 +297,7 @@ public class Solution implements Copyable<Solution>, Formattable<Solution>, Seri
 	
 	/**
 	 * Returns an array containing the canonical objective values of this solution.  See
-	 * {@link Objective#getCanonicalValue() for more details.
+	 * {@link Objective#getCanonicalValue()} for more details.
 	 * 
 	 * @return an array containing the canonical objective values of this solution
 	 */
@@ -414,7 +414,7 @@ public class Solution implements Copyable<Solution>, Formattable<Solution>, Seri
 	 * 
 	 * @param constraints the new constraint values for this solution
 	 * @throws IllegalArgumentException if {@code constraints.length != getNumberOfConstraints()}
-	 * @deprecated use {@link #setConstraintValues(double[]) instead
+	 * @deprecated use {@link #setConstraintValues(double[])} instead
 	 */
 	@Deprecated
 	public void setConstraints(double[] constraints) {

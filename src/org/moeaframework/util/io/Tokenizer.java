@@ -331,8 +331,7 @@ public class Tokenizer {
 				sb.append(delimiter);
 			}
 			
-			token = escapeTranslator.translate(token);
-			sb.append(token);
+			sb.append(escapeTranslator.translate(token));
 		}
 		
 		return sb.toString();

@@ -86,7 +86,6 @@ public interface Constructable {
 	/**
 	 * Creates a string representation the displays the type but indicates it is not supported.
 	 * 
-	 * @param <T> the type
 	 * @param instanceType the instance type
 	 * @return the string representation
 	 */
@@ -110,7 +109,6 @@ public interface Constructable {
 	 * Creates a string representation based on the given parent and instance type along with the constructor
 	 * arguments.
 	 * 
-	 * @param <T> the type
 	 * @param instanceType the instance type
 	 * @param arguments the arguments, if any, passed to the constructor
 	 * @return the string representation

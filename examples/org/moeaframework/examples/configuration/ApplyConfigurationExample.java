@@ -21,8 +21,8 @@ import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.TypedProperties;
-import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
+import org.moeaframework.problem.Problem;
 
 /**
  * Demonstrates applying a configuration stored in {@link TypedProperties}.  You might notice similaries between

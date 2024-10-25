@@ -18,6 +18,7 @@
 package org.moeaframework.examples.extensions;
 
 import java.io.IOException;
+
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.algorithm.extension.CallbackExtension;
 import org.moeaframework.algorithm.extension.LoggingExtension;

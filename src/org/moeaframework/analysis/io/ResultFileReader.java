@@ -110,7 +110,7 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	/**
 	 * Constructs a result file reader for reading the approximation sets from the specified reader.
 	 * 
-	 * @param the reader containing the result file
+	 * @param reader the reader containing the result file
 	 * @throws IOException if an I/O error occurred
 	 */
 	public ResultFileReader(Reader reader) throws IOException {

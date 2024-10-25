@@ -22,8 +22,8 @@ import java.io.IOException;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.algorithm.single.RepeatedSingleObjective;
 import org.moeaframework.core.comparator.MinMaxDominanceComparator;
-import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
+import org.moeaframework.problem.Problem;
 
 /**
  * Another way to solve multi-objective problems using single-objective optimizers is using a process

@@ -75,19 +75,19 @@ public class OutputHandler extends StreamHandler {
 	/**
 	 * Constructs a new output logger.
 	 */
-    public OutputHandler() {
-    	super(System.out, new SimpleFormatter());
-    }
+	public OutputHandler() {
+		super(System.out, new SimpleFormatter());
+	}
 
-    @Override
-    public void publish(LogRecord record) {
-        super.publish(record);
-        flush();
-    }
+	@Override
+	public void publish(LogRecord record) {
+		super.publish(record);
+		flush();
+	}
 
-    @Override
-    public void close() {
-        flush();
-    }
+	@Override
+	public void close() {
+		flush();
+	}
 
 }

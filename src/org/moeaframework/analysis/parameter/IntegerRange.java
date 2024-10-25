@@ -87,7 +87,7 @@ NumericParameter<Integer> {
 			throw new InvalidParameterException(tokens[0], "missing type");
 		}
 		
-		if (!tokens[1].equalsIgnoreCase("int") ) {
+		if (!tokens[1].equalsIgnoreCase("int")) {
 			throw new InvalidParameterException(tokens[0], "type does not match 'int'");
 		}
 		

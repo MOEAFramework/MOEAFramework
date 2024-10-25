@@ -32,6 +32,14 @@ import org.apache.commons.io.output.WriterOutputStream;
 public interface Displayable {
 	
 	/**
+	 * Displays the contents of this object to the given output stream.  This method does not close the underlying
+	 * stream; the caller is responsible for disposing it.
+	 * 
+	 * @param out the output stream
+	 */
+	public void display(PrintStream out);
+	
+	/**
 	 * Formats and prints the content of this object to standard output.  Avoid overriding this method, instead
 	 * implements the display logic in {@link #display(PrintStream)}.
 	 */
@@ -44,7 +52,7 @@ public interface Displayable {
 	 * writer; the caller is responsible for disposing it.
 	 * 
 	 * @param out the writer
-	 * @throws IOException 
+	 * @throws IOException if an I/O error occurred
 	 */
 	public default void display(Writer out) throws IOException {
 		try (WriterOutputStream writer = WriterOutputStream.builder().setWriter(CloseShieldWriter.wrap(out)).get()) {
@@ -57,19 +65,12 @@ public interface Displayable {
 	 * stream; the caller is responsible for disposing it.
 	 * 
 	 * @param out the output writer
+	 * @throws IOException if an I/O error occurred
 	 */
 	public default void display(OutputStream out) throws IOException {
 		try (PrintStream writer = new PrintStream(CloseShieldOutputStream.wrap(out))) {
 			display(writer);
 		}
 	}
-	
-	/**
-	 * Displays the contents of this object to the given output stream.  This method does not close the underlying
-	 * stream; the caller is responsible for disposing it.
-	 * 
-	 * @param out the output stream
-	 */
-	public void display(PrintStream out);
 
 }

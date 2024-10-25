@@ -32,8 +32,8 @@ import org.moeaframework.parallel.island.migration.Migration;
 import org.moeaframework.parallel.island.migration.SingleNeighborMigration;
 import org.moeaframework.parallel.island.topology.FullyConnectedTopology;
 import org.moeaframework.parallel.island.topology.Topology;
-import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.CEC2009.UF1;
+import org.moeaframework.problem.Problem;
 
 /**
  * Demonstrates creating an island-model instance with 8 NSGA-II instances.

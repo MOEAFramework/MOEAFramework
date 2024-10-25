@@ -23,8 +23,8 @@ import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.indicator.Normalizer;
 import org.moeaframework.core.population.NondominatedPopulation;
-import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.CEC2009.UF1;
+import org.moeaframework.problem.Problem;
 
 /**
  * Demonstrates how to customize or disable normalization when computing any of the

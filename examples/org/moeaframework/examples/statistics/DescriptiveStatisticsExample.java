@@ -24,8 +24,8 @@ import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.indicator.Indicators.IndicatorValues;
 import org.moeaframework.core.population.NondominatedPopulation;
-import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
+import org.moeaframework.problem.Problem;
 
 /**
  * Demonstrates collecting descriptive statistics, such as the min, mean, max, median, and inter-quartile range (IQR),

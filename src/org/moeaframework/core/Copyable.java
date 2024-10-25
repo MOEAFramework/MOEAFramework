@@ -19,6 +19,8 @@ package org.moeaframework.core;
 
 /**
  * Interface for objects that can be copied.
+ * 
+ * @param <T> the type of this object
  */
 public interface Copyable<T> {
 	

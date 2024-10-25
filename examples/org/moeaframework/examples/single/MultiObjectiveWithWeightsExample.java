@@ -22,8 +22,8 @@ import java.io.IOException;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.core.comparator.LinearDominanceComparator;
 import org.moeaframework.core.comparator.MinMaxDominanceComparator;
-import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
+import org.moeaframework.problem.Problem;
 
 /**
  * Demonstrates solving a multi-objective problem using a single-objective optimizer by supplying weights.

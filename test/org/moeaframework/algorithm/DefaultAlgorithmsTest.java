@@ -62,8 +62,8 @@ import org.moeaframework.mock.MockPermutationProblem;
 import org.moeaframework.mock.MockProgramProblem;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockSubsetProblem;
-import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
+import org.moeaframework.problem.Problem;
 
 /**
  * Tests basic functionality of all default algorithms, including:

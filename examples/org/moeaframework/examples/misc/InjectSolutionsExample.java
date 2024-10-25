@@ -21,8 +21,8 @@ import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.InjectedInitialization;
 import org.moeaframework.core.variable.EncodingUtils;
-import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
+import org.moeaframework.problem.Problem;
 
 /**
  * Demonstrates how to inject known good solutions into the initial population of an algorithm.  Here, we inject

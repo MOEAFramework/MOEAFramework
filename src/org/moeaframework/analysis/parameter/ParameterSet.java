@@ -34,7 +34,7 @@ import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.io.Tokenizer;
 
 public abstract class ParameterSet<T extends Parameter<?>> implements Iterable<T> {
-		
+	
 	protected final List<T> parameters;
 	
 	public ParameterSet() {
@@ -105,7 +105,7 @@ public abstract class ParameterSet<T extends Parameter<?>> implements Iterable<T
 	}
 	
 	/**
-	 * Loads the parameter set.  See {@link #load(Reader) for details.
+	 * Loads the parameter set.  See {@link #load(Reader)} for details.
 	 * 
 	 * @param file the file
 	 * @return the parameter set

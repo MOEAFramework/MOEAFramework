@@ -20,7 +20,6 @@ package org.moeaframework.algorithm.continuation;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.moeaframework.Assert;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.operator.real.UM;
@@ -30,7 +29,7 @@ import org.moeaframework.core.selection.UniformSelection;
 import org.moeaframework.mock.MockEpsilonBoxEvolutionaryAlgorithm;
 import org.moeaframework.mock.MockSolution;
 
-public class EpsilonProgressContinuationTest {
+public class EpsilonProgressContinuationExtensionTest {
 	
 	protected Population population;
 	

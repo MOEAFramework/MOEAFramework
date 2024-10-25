@@ -42,8 +42,8 @@ import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.Variable;
 import org.moeaframework.problem.ExternalProblem;
-import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.ExternalProblem.Builder;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.util.CommandLineUtility;
 
 /**

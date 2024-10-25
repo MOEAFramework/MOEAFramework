@@ -28,8 +28,8 @@ import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.mock.MockRealProblem;
-import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.CEC2009.UF1;
+import org.moeaframework.problem.Problem;
 
 import static org.moeaframework.TempFiles.File;
 

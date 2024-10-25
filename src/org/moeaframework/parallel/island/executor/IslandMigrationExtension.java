@@ -28,7 +28,7 @@ import org.moeaframework.parallel.island.IslandModel;
 /**
  * Extension that triggers island migrations.
  */
-class IslandMigrationExtension extends PeriodicExtension {
+public class IslandMigrationExtension extends PeriodicExtension {
 
 	/**
 	 * The island associated with this migration action.

@@ -25,8 +25,8 @@ import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.population.NondominatedPopulation;
-import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.CEC2009.UF1;
+import org.moeaframework.problem.Problem;
 
 /**
  * A "result file" is a file format used to store approximation sets along with any associated metadata.
