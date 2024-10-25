@@ -47,11 +47,10 @@ public class ConstantTest {
 		samples.add(new Sample());
 		
 		Constant<Integer> parameter = new Constant<Integer>("foo", 100);
+		parameter.apply(samples);
 		
-		List<Sample> result = parameter.enumerate(samples);
-		
-		Assert.assertSize(1, result);
-		Assert.assertEquals(100, parameter.readValue(result.get(0)));
+		Assert.assertSize(1, samples);
+		Assert.assertEquals(100, parameter.readValue(samples.get(0)));
 	}
 	
 	@Test

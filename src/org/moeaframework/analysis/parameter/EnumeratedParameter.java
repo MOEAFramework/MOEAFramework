@@ -22,15 +22,26 @@ import java.util.List;
 import org.moeaframework.analysis.sample.Sample;
 
 /**
- * Enumerated parameters have a fixed number of values that will all be present in the result.  This is akin to a
- * cross-join.
+ * Interface for enumerated parameters that sample from a fixed set of possible values.
  *
  * @param <T> the type of the parameter
  */
-public interface EnumeratedParameter<T> extends Parameter<T> {
+public interface EnumeratedParameter<T> extends Parameter<T>, SampledParameter<T> {
 	
+	/**
+	 * Returns all possible values produced by this enumeration.
+	 * 
+	 * @return the values
+	 */
 	public List<T> values();
 	
+	/**
+	 * Enumerates the parameters by creating a "cross join" with the existing samples.  If given {@code N} samples as
+	 * input, the result will contain {@code N * values().size()} samples.
+	 * 
+	 * @param samples the input samples
+	 * @return the enumerated samples including this parameter
+	 */
 	public List<Sample> enumerate(List<Sample> samples);
 
 }

@@ -43,27 +43,27 @@ import org.moeaframework.util.io.Tokenizer;
 
 public class Samples implements Iterable<Sample>, Formattable<Sample> {
 
-	private final ParameterSet<?> parameterSet;
+	private final ParameterSet parameterSet;
 
 	private final List<Sample> samples;
 
-	public Samples(ParameterSet<?> parameterSet) {
+	public Samples(ParameterSet parameterSet) {
 		super();
 		this.parameterSet = parameterSet;
 		this.samples = Collections.synchronizedList(new ArrayList<>());
 	}
 
-	public Samples(ParameterSet<?> parameterSet, Collection<Sample> samples) {
+	public Samples(ParameterSet parameterSet, Collection<Sample> samples) {
 		this(parameterSet);
 		addAll(samples);
 	}
 
-	public Samples(ParameterSet<?> parameterSet, Iterable<Sample> samples) {
+	public Samples(ParameterSet parameterSet, Iterable<Sample> samples) {
 		this(parameterSet);
 		addAll(samples);
 	}
 	
-	public ParameterSet<?> getParameterSet() {
+	public ParameterSet getParameterSet() {
 		return parameterSet;
 	}
 
@@ -140,17 +140,17 @@ public class Samples implements Iterable<Sample>, Formattable<Sample> {
 		return table;
 	}
 
-	public static Samples load(File file, ParameterSet<?> parameterSet) throws FileNotFoundException, IOException {
+	public static Samples load(File file, ParameterSet parameterSet) throws FileNotFoundException, IOException {
 		try (FileReader reader = new FileReader(file)) {
 			return load(reader, parameterSet);
 		}
 	}
 	
-	public static Samples load(Reader reader, ParameterSet<?> parameterSet) throws IOException {
+	public static Samples load(Reader reader, ParameterSet parameterSet) throws IOException {
 		Tokenizer tokenizer = new Tokenizer();
 		Samples samples = new Samples(parameterSet);
 		
-		try (LineReader lineReader = LineReader.wrap(reader).skipComments()) {
+		try (LineReader lineReader = LineReader.wrap(reader).skipComments().skipBlanks()) {
 			for (String line : lineReader) {
 				String[] tokens = tokenizer.decodeToArray(line);
 				

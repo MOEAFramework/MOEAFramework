@@ -24,8 +24,18 @@ package org.moeaframework.analysis.parameter;
  */
 public interface NumericParameter<T extends Number> extends Parameter<T> {
 	
+	/**
+	 * The lower bound of this parameter.
+	 * 
+	 * @return the lower bound
+	 */
 	public T getLowerBound();
 	
+	/**
+	 * The upper bound of this parameter.
+	 * 
+	 * @return the upper bound
+	 */
 	public T getUpperBound();
 
 }

@@ -22,7 +22,7 @@ import java.util.List;
 import org.moeaframework.analysis.sample.Sample;
 import org.moeaframework.util.io.Tokenizer;
 
-public class Constant<T> extends AbstractParameter<T> implements EnumeratedParameter<T> {
+public class Constant<T> extends AbstractParameter<T> {
 	
 	private final T value;
 	
@@ -45,18 +45,14 @@ public class Constant<T> extends AbstractParameter<T> implements EnumeratedParam
 		return value;
 	}
 	
-	@Override
-	public List<Sample> enumerate(List<Sample> samples) {
-		for (Sample sample : samples) {
-			sample.setString(getName(), value.toString());
-		}
-		
-		return samples;
+	public void apply(Sample sample) {
+		assignValue(sample, value);
 	}
 	
-	@Override
-	public List<T> values() {
-		return List.of(value);
+	public void apply(List<Sample> samples) {
+		for (Sample sample : samples) {
+			apply(sample);
+		}
 	}
 	
 	@Override

@@ -30,8 +30,14 @@ public abstract class ThresholdConstraint extends AbstractConstraint {
 	
 	private static final long serialVersionUID = -6158520548738752673L;
 
+	/**
+	 * The threshold value for this constraint.
+	 */
 	protected final double threshold;
 	
+	/**
+	 * The epsilon or numerical precision of this constraint.
+	 */
 	protected final double epsilon;
 	
 	/**

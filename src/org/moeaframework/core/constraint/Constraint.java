@@ -46,6 +46,17 @@ public interface Constraint extends Comparable<Constraint>, Copyable<Constraint>
 	public void setValue(double value);
 	
 	/**
+	 * Sets the value of this constraint and returns this instance.
+	 * 
+	 * @param value the value of this constraint
+	 * @return this instance
+	 */
+	public default Constraint withValue(double value) {
+		setValue(value);
+		return this;
+	}
+	
+	/**
 	 * Returns the magnitude of constraint violation as a non-negative number, with {@code 0.0} representing
 	 * satisfied or feasible constraints.  When comparing two constraints, smaller magnitudes are considered better.
 	 * 

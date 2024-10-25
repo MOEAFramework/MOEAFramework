@@ -122,7 +122,7 @@ public interface Parameter<T> extends Named {
 				}
 			}
 			
-			throw new InvalidParameterException(tokens[0], "invalid type '" + tokens[1] + "', expected " +
+			throw new InvalidParameterException(tokens[0], "invalid type '" + tokens[1] + "', valid values: " +
 					String.join(", ", types.keySet().toArray(String[]::new)));
 		}
 		

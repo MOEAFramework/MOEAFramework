@@ -26,7 +26,13 @@ import java.util.stream.Stream;
 import org.moeaframework.analysis.sample.Sample;
 import org.moeaframework.util.io.Tokenizer;
 
-public class Enumeration<T> extends AbstractParameter<T> implements EnumeratedParameter<T> {
+/**
+ * An enumeration of a fixed set of possible values.  This parameter can either be used to enumerate all possible
+ * values or sample according to a sequence.
+ * 
+ * @param <T> the type of each value
+ */
+public class Enumeration<T> extends AbstractParameter<T> implements EnumeratedParameter<T>, SampledParameter<T> {
 	
 	private List<T> values;
 	
@@ -69,12 +75,18 @@ public class Enumeration<T> extends AbstractParameter<T> implements EnumeratedPa
 			for (T value : values) {
 				Sample newSample = new Sample();
 				newSample.addAll(sample);
-				newSample.setString(getName(), value.toString());
+				assignValue(newSample, value);
 				result.add(newSample);
 			}
 		}
 		
 		return result;
+	}
+	
+	@Override
+	public void apply(Sample sample, double scale) {
+		int index = (int)(scale * Math.nextAfter(values.size(), Double.NEGATIVE_INFINITY));
+		assignValue(sample, values.get(index));
 	}
 	
 	@Override

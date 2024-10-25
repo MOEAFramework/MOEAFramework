@@ -57,11 +57,6 @@ public abstract class AbstractConstraint implements Constraint {
 	public double getValue() {
 		return value;
 	}
-	
-	public Constraint withValue(double value) {
-		setValue(value);
-		return this;
-	}
 
 	@Override
 	public String toString() {

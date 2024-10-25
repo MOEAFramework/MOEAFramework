@@ -23,9 +23,9 @@ import java.io.Writer;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileWriter;
-import org.moeaframework.analysis.parameter.EnumeratedParameterSet;
 import org.moeaframework.analysis.parameter.Enumeration;
 import org.moeaframework.analysis.parameter.Parameter;
+import org.moeaframework.analysis.parameter.ParameterSet;
 import org.moeaframework.analysis.sample.Sample;
 import org.moeaframework.analysis.sample.Samples;
 import org.moeaframework.analysis.store.Container;
@@ -51,8 +51,8 @@ public class DataStoreExample {
 		Enumeration<Integer> populationSize = Parameter.named("populationSize").asInt().range(10, 100, 10);
 		Enumeration<Double> sbxRate = Parameter.named("sbx.rate").asDecimal().range(0.0, 1.0, 0.1);
 		
-		EnumeratedParameterSet parameters = new EnumeratedParameterSet(populationSize, sbxRate);
-		Samples samples = parameters.generate();
+		ParameterSet parameters = new ParameterSet(populationSize, sbxRate);
+		Samples samples = parameters.enumerate();
 		
 		DataStore dataStore = new FileSystemDataStore(HierarchicalFileMap.at(new File("results")));
 		

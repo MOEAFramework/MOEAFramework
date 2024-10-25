@@ -25,7 +25,6 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.analysis.parameter.ParameterSet;
-import org.moeaframework.analysis.parameter.SampledParameterSet;
 import org.moeaframework.analysis.sample.Samples;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.util.CommandLineUtility;
@@ -89,14 +88,12 @@ public class SampleGenerator extends CommandLineUtility {
 	@Override
 	public void run(CommandLine commandLine) throws IOException {
 		File parameterFile = new File(commandLine.getOptionValue("parameterFile"));
-		SampledParameterSet parameterSet = ParameterSet.load(parameterFile);
+		ParameterSet parameterSet = ParameterSet.load(parameterFile);
 
 		int N = Integer.parseInt(commandLine.getOptionValue("numberOfSamples"));
 		
 		Validate.that("numberOfSamples", N).isGreaterThan(0);
 		Validate.that("numberOfParameters", parameterSet.size()).isGreaterThan(0);
-		
-		parameterSet.throwIfEnumerated();
 		
 		Sequence sequence = null;
 
@@ -127,7 +124,7 @@ public class SampleGenerator extends CommandLineUtility {
 		}
 
 		try (PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
-			Samples samples = parameterSet.generate(N, sequence);
+			Samples samples = parameterSet.sample(N, sequence);
 			samples.save(output);
 		}
 	}

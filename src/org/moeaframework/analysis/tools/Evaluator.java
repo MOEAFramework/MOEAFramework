@@ -128,7 +128,7 @@ public class Evaluator extends CommandLineUtility {
 
 		// open the resources and begin processing
 		try (Problem problem = OptionUtils.getProblemInstance(commandLine, false)) {
-			ParameterSet<?> parameterSet = ParameterSet.load(parameterFile);
+			ParameterSet parameterSet = ParameterSet.load(parameterFile);
 			Samples samples = Samples.load(inputFile, parameterSet);
 			
 			try {

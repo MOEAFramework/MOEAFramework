@@ -30,7 +30,7 @@ import org.moeaframework.util.format.TabularData;
 
 public class SampledResults<T> implements Formattable<Entry<Sample, T>> {
 
-	private final ParameterSet<?> parameterSet;
+	private final ParameterSet parameterSet;
 	
 	private final Map<Sample, T> results;
 	
@@ -38,7 +38,7 @@ public class SampledResults<T> implements Formattable<Entry<Sample, T>> {
 		this(samples.getParameterSet());
 	}
 
-	public SampledResults(ParameterSet<?> parameterSet) {
+	public SampledResults(ParameterSet parameterSet) {
 		super();
 		this.parameterSet = parameterSet;
 		this.results = Collections.synchronizedMap(new LinkedHashMap<>());

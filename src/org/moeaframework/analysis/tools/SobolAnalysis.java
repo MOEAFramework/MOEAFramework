@@ -56,7 +56,7 @@ public class SobolAnalysis extends CommandLineUtility {
 	/**
 	 * Parameters being analyzed.
 	 */
-	private ParameterSet<?> parameterSet;
+	private ParameterSet parameterSet;
 
 	/**
 	 * Number of parameters.

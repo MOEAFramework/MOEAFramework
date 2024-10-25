@@ -48,7 +48,7 @@ public class ParameterSetLegacyFormatTest {
 
 	@Test
 	public void testReaderComplete() throws IOException {
-		ParameterSet<?> parameterSet = ParameterSet.load(new StringReader(COMPLETE));
+		ParameterSet parameterSet = ParameterSet.load(new StringReader(COMPLETE));
 		
 		Assert.assertEquals(3, parameterSet.size());
 

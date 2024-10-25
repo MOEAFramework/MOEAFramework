@@ -51,7 +51,7 @@ public class Analysis extends CommandLineUtility {
 	/**
 	 * The parameter set.
 	 */
-	private ParameterSet<?> parameterSet;
+	private ParameterSet parameterSet;
 	
 	/**
 	 * The parameter samples.

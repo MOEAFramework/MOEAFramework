@@ -31,10 +31,19 @@ public abstract class BoundedConstraint extends AbstractConstraint {
 
 	private static final long serialVersionUID = -2766984574651872793L;
 	
+	/**
+	 * The lower bound of this constraint.
+	 */
 	protected final double lower;
 	
+	/**
+	 * The upper bound of this constraint.
+	 */
 	protected final double upper;
 	
+	/**
+	 * The epsilon or numerical precision of this constraint.
+	 */
 	protected final double epsilon;
 
 	public BoundedConstraint(double lower, double upper) {
@@ -61,14 +70,29 @@ public abstract class BoundedConstraint extends AbstractConstraint {
 		this.value = copy.value;
 	}
 	
+	/**
+	 * Returns the lower bound of this constraint.
+	 * 
+	 * @return the lower bound
+	 */
 	public double getLower() {
 		return lower;
 	}
 	
+	/**
+	 * Returns the upper bound of this constraint.
+	 * 
+	 * @return the upper bound
+	 */
 	public double getUpper() {
 		return upper;
 	}
 	
+	/**
+	 * Returns the epsilon or numerical precision of this constraint.
+	 * 
+	 * @return the epsilon value
+	 */
 	public double getEpsilon() {
 		return epsilon;
 	}

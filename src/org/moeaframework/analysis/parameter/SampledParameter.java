@@ -20,12 +20,21 @@ package org.moeaframework.analysis.parameter;
 import org.moeaframework.analysis.sample.Sample;
 
 /**
- * Sampled parameters specify a range of possible values that are sampled randomly or according to some sequence.
+ * Interface for parameters that can be sampled randomly or by some sequence.
  * 
  * @pram <T> the type of the parameter
  */
 public interface SampledParameter<T> extends Parameter<T> {
 	
+	/**
+	 * Samples this parameter and assigns the value to the sample.  The scale is a value between {@code 0.0} and
+	 * {@code 1.0}, typically supplied by a {@link org.moeaframework.util.sequence.Sequence}, used to generate the
+	 * sampled value.  As such, a scale of {@code 0.0} typically maps to the smallest parameter value, {@code 1.0} to
+	 * the largest parameter value, and all such values in between.
+	 * 
+	 * @param sample the sample
+	 * @param scale value between {@code 0.0} and {@code 1.0} used to generate the sample
+	 */
 	public void apply(Sample sample, double scale);
 
 }
