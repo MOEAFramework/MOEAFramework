@@ -17,6 +17,7 @@
  */
 package org.moeaframework.analysis.sample;
 
+import org.moeaframework.analysis.parameter.Parameter;
 import org.moeaframework.core.TypedProperties;
 
 /**
@@ -35,6 +36,10 @@ public class Sample extends TypedProperties {
 		Sample copy = new Sample();
 		copy.addAll(this);
 		return copy;
+	}
+	
+	public <T> T get(Parameter<T> parameter) {
+		return parameter.readValue(this);
 	}
 
 }

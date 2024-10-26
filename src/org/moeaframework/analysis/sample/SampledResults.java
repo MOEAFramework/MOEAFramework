@@ -17,23 +17,24 @@
  */
 package org.moeaframework.analysis.sample;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
+import org.moeaframework.analysis.parameter.EnumeratedParameter;
 import org.moeaframework.analysis.parameter.Parameter;
 import org.moeaframework.analysis.parameter.ParameterSet;
+import org.moeaframework.analysis.stream.Groupings;
+import org.moeaframework.analysis.stream.Groups;
+import org.moeaframework.analysis.stream.MutablePartition;
 import org.moeaframework.util.format.Column;
-import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;
 
-public class SampledResults<T> implements Formattable<Entry<Sample, T>> {
+public class SampledResults<T> extends MutablePartition<Sample, T> {
 
 	private final ParameterSet parameterSet;
-	
-	private final Map<Sample, T> results;
-	
+		
 	public SampledResults(Samples samples) {
 		this(samples.getParameterSet());
 	}
@@ -41,31 +42,52 @@ public class SampledResults<T> implements Formattable<Entry<Sample, T>> {
 	public SampledResults(ParameterSet parameterSet) {
 		super();
 		this.parameterSet = parameterSet;
-		this.results = Collections.synchronizedMap(new LinkedHashMap<>());
-	}
-
-	public int size() {
-		return results.size();
 	}
 	
-	public void set(Sample sample, T result) {
-		results.put(sample, result);
+	public <V> Groups<V, Sample, T> groupBy(Parameter<V> parameter) {
+		return groupBy(Groupings.exactValue(parameter));
 	}
+	
+	public <V> Pair<List<V>, List<T>> project(EnumeratedParameter<V> parameter) {
+		List<V> keys = parameter.values();
+		List<T> values = new ArrayList<>();
+				
+		for (V key : keys) {
+			values.add(filter(x -> parameter.readValue(x).equals(key)).single().getValue());
+		}
 
-	public T get(Sample sample) {
-		return results.get(sample);
+		return Pair.of(keys, values);
+	}
+	
+	public <L, R> Triple<List<L>, List<R>, List<List<T>>> project(EnumeratedParameter<L> left, EnumeratedParameter<R> right) {
+		List<L> leftKeys = left.values();
+		List<R> rightKeys = right.values();
+		List<List<T>> values = new ArrayList<>();
+				
+		for (L leftKey : leftKeys) {
+			List<T> row = new ArrayList<>();
+			
+			for (R rightKey : rightKeys) {
+				row.add(filter(x ->
+					left.readValue(x).equals(leftKey) && right.readValue(x).equals(rightKey)).single().getValue());
+			}
+			
+			values.add(row);
+		}
+
+		return Triple.of(leftKeys, rightKeys, values);
 	}
 
 	@Override
-	public TabularData<Entry<Sample, T>> asTabularData() {
-		TabularData<Entry<Sample, T>> table = new TabularData<Entry<Sample, T>>(results.entrySet());
+	public TabularData<Pair<Sample, T>> asTabularData() {
+		TabularData<Pair<Sample, T>> table = new TabularData<Pair<Sample, T>>(content);
 		
 		for (Parameter<?> parameter : parameterSet) {
-			table.addColumn(new Column<Entry<Sample, T>, Object>(parameter.getName(),
+			table.addColumn(new Column<Pair<Sample, T>, Object>(parameter.getName(),
 					x -> parameter.readValue(x.getKey())));
 		}
 		
-		table.addColumn(new Column<Entry<Sample, T>, T>("Result", x -> x.getValue()));
+		table.addColumn(new Column<Pair<Sample, T>, T>("Result", x -> x.getValue()));
 		
 		return table;
 	}
