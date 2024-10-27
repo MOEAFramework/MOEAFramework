@@ -18,6 +18,10 @@ public class Groups<T, K, V> extends ImmutablePartition<T, Partition<K, V>> {
 		this(stream.toList());
 	}
 	
+	public Groups(DataStream<Pair<T, Partition<K, V>>> dataStream) {
+		this(dataStream.stream());
+	}
+	
 	public Partition<K, V> get(T key) {
 		return stream().filter(x -> x.getKey().equals(key)).findAny().get().getValue();
 	}
@@ -36,7 +40,7 @@ public class Groups<T, K, V> extends ImmutablePartition<T, Partition<K, V>> {
 	}
 	
 	public <R> Partition<T, R> measureEach(Function<Stream<V>, R> measure) {
-		return new ImmutablePartition<T, R>(stream().map(x -> Pair.of(x.getKey(), x.getValue().measure(measure))));
+		return new ImmutablePartition<T, R>(stream().map(x -> Pair.of(x.getKey(), measure.apply(x.getValue().values().stream()))));
 	}
 	
 	public Partition<T, V> reduceEach(BinaryOperator<V> op) {

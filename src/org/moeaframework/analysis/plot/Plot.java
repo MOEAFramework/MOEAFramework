@@ -78,6 +78,7 @@ import org.moeaframework.Analyzer.AnalyzerResults;
 import org.moeaframework.analysis.collector.Observation;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.analysis.diagnostics.PaintHelper;
+import org.moeaframework.analysis.stream.Partition;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
@@ -629,6 +630,12 @@ public class Plot {
 		setLabelsIfBlank("NFE", "Value");
 
 		return this;
+	}
+	
+	// TODO: Add plotting methods for data streams
+	public Plot line(String label, Partition<? extends Number, ? extends Number> partition) {
+		partition = partition.sorted();
+		return line(label, partition.keys(), partition.values());
 	}
 	
 	/**

@@ -16,23 +16,29 @@ public class Groupings{
 		return x -> parameter.readValue(x);
 	}
 	
-	@SuppressWarnings("unchecked")
+	public static <T> Function<T, T> exactValue() {
+		return x -> x;
+	}
+	
 	public static <T extends Number> Function<Sample, T> bucket(Parameter<T> parameter, T width) {
+		return bucket(width).compose(x -> parameter.readValue(x));
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T extends Number> Function<T, T> bucket(T width) {
 		return x -> {
-			T value = parameter.readValue(x);
-			
-			if (value instanceof Integer intValue) {
+			if (x instanceof Integer intValue) {
 				Integer intWidth = width.intValue();
 				return (T)(Integer)(intWidth * (intValue / intWidth) + intWidth / 2);
-			} else if (value instanceof Long longValue) {
+			} else if (x instanceof Long longValue) {
 				long longWidth = width.longValue();
 				return (T)(Long)(longWidth * (longValue / longWidth) + longWidth / 2);
-			} else if (value instanceof Float floatValue) {
+			} else if (x instanceof Float floatValue) {
 				float floatWidth = width.floatValue();
-				return (T)(Float)(1.5f * floatWidth * (float)Math.floor(floatValue / floatWidth));
-			} else if (value instanceof Double doubleValue) {
+				return (T)(Float)(floatWidth * (float)Math.floor(floatValue / floatWidth) + floatWidth / 2.0f);
+			} else if (x instanceof Double doubleValue) {
 				double doubleWidth = width.doubleValue();
-				return (T)(Double)(1.5 * doubleWidth * Math.floor(doubleValue / doubleWidth));
+				return (T)(Double)(doubleWidth * Math.floor(doubleValue / doubleWidth) + doubleWidth / 2.0);
 			} else {
 				return Validate.that("x", x).fails("unsupported type: " + x.getClass().getSimpleName());
 			}
@@ -40,14 +46,16 @@ public class Groupings{
 	}
 	
 	public static <T extends Number> Function<Sample, Integer> round(Parameter<T> parameter) {
+		return round().compose(x -> parameter.readValue(x));
+	}
+	
+	public static <T extends Number> Function<T, Integer> round() {
 		return x -> {
-			T value = parameter.readValue(x);
-			
-			if (value instanceof Float || value instanceof Double) {
-				double doubleValue = value.doubleValue();
+			if (x instanceof Float || x instanceof Double) {
+				double doubleValue = x.doubleValue();
 				return (int)Math.round(doubleValue);
 			} else {
-				return value.intValue();
+				return x.intValue();
 			}
 		};
 	}

@@ -53,7 +53,7 @@ public class SampledResults<T> extends MutablePartition<Sample, T> {
 		List<T> values = new ArrayList<>();
 				
 		for (V key : keys) {
-			values.add(filter(x -> parameter.readValue(x).equals(key)).single().getValue());
+			values.add(filter(x -> parameter.readValue(x).equals(key)).any().getValue());
 		}
 
 		return Pair.of(keys, values);
@@ -69,7 +69,7 @@ public class SampledResults<T> extends MutablePartition<Sample, T> {
 			
 			for (R rightKey : rightKeys) {
 				row.add(filter(x ->
-					left.readValue(x).equals(leftKey) && right.readValue(x).equals(rightKey)).single().getValue());
+					left.readValue(x).equals(leftKey) && right.readValue(x).equals(rightKey)).any().getValue());
 			}
 			
 			values.add(row);

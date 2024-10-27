@@ -24,14 +24,15 @@ import org.moeaframework.analysis.parameter.ParameterSet;
 import org.moeaframework.analysis.plot.Plot;
 import org.moeaframework.analysis.sample.Sample;
 import org.moeaframework.analysis.sample.SampledResults;
+import org.moeaframework.analysis.sample.Samples;
+import org.moeaframework.analysis.stream.Groupings;
 import org.moeaframework.analysis.stream.Measures;
 import org.moeaframework.analysis.stream.Partition;
-import org.moeaframework.analysis.sample.Samples;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.population.NondominatedPopulation;
-import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
+import org.moeaframework.problem.DTLZ.DTLZ2;
 
 /**
  * Demonstrates using parameters to run an algorithm with different inputs, collect the results, and generate a plot.
@@ -40,7 +41,6 @@ public class ParameterSampleExample {
 	
 	public static void main(String[] args) throws Exception {
 		Problem problem = new DTLZ2(2);
-		Hypervolume hypervolume = new Hypervolume(problem, NondominatedPopulation.loadReferenceSet("./pf/DTLZ2.2D.pf"));
 		
 		// Sampling population size with 10 random seeds
 		Enumeration<Integer> populationSize = Parameter.named("populationSize").asInt().range(10, 100, 10);
@@ -50,8 +50,8 @@ public class ParameterSampleExample {
 		ParameterSet parameters = new ParameterSet(populationSize, seed);
 		Samples samples = parameters.enumerate();
 		
-		// Run the experiment and collect the hypervolume results
-		SampledResults<Double> results = new SampledResults<>(parameters);
+		// Use streams to evaluate and analyze the results	
+		SampledResults<NondominatedPopulation> results = new SampledResults<>(parameters);
 				
 		for (Sample sample : samples) {
 			PRNG.setSeed(sample.getLong("seed"));
@@ -60,12 +60,15 @@ public class ParameterSampleExample {
 			algorithm.applyConfiguration(sample);
 			algorithm.run(10000);
 			
-			results.add(sample, hypervolume.evaluate(algorithm.getResult()));
+			results.add(sample, algorithm.getResult());
 		}
-								
-		// Average hypervolume by population size
+										
+		// Calculate the hypervolume by population size
+		Hypervolume hypervolume = new Hypervolume(problem, NondominatedPopulation.loadReferenceSet("./pf/DTLZ2.2D.pf"));
+
 		Partition<Integer, Double> avgHypervolume = results
-				.groupBy(populationSize)
+				.map(hypervolume::evaluate)
+				.groupBy(Groupings.exactValue(populationSize))
 				.measureEach(Measures.average())
 				.sorted();
 				
