@@ -105,37 +105,68 @@ public class Iterators {
 	/**
 	 * Returns an iterator that returns pairs of items from two iterators.
 	 * 
-	 * @param <T> the type of each item
+	 * @param <K> the type of the first iterator
+	 * @param <T> the type of the second iterator
 	 * @param iterator1 the first iterator
 	 * @param iterator2 the second iterator
 	 * @return an iterator over pairs
 	 */
-	public static <T> Iterator<Pair<T, T>> zip(Iterator<T> iterator1, Iterator<T> iterator2) {
-		return new ZipIterator<T>(iterator1, iterator2);
+	public static <K, T> Iterator<Pair<K, T>> zip(Iterator<K> iterator1, Iterator<T> iterator2) {
+		return new ZipIterator<K, T>(iterator1, iterator2);
 	}
 	
 	/**
 	 * Returns an iterable that returns pairs of items from two iterables.
 	 * 
-	 * @param <T> the type of each item
+	 * @param <K> the type of the first iterable
+	 * @param <T> the type of the second iterable
 	 * @param iterable1 the first iterable
 	 * @param iterable2 the second iterable
 	 * @return an iterable over pairs
 	 */
-	public static <T> Iterable<Pair<T, T>> zip(Iterable<T> iterable1, Iterable<T> iterable2) {
-		return new ZipIterable<T>(iterable1, iterable2);
+	public static <K, T> Iterable<Pair<K, T>> zip(Iterable<K> iterable1, Iterable<T> iterable2) {
+		return new ZipIterable<K, T>(iterable1, iterable2);
 	}
 	
 	/**
 	 * Returns an iterable that returns pairs of items from two arrays.
 	 * 
-	 * @param <T> the type of each item
+	 * @param <K> the type of the first array
+	 * @param <T> the type of the second array
 	 * @param array1 the first array
 	 * @param array2 the second array
 	 * @return an iterable over pairs
 	 */
-	public static <T> Iterable<Pair<T, T>> zip(T[] array1, T[] array2) {
+	public static <K, T> Iterable<Pair<K, T>> zip(K[] array1, T[] array2) {
 		return zip(List.of(array1), List.of(array2));
+	}
+	
+	/**
+	 * Materializes the given iterator, returning a collection of all the items.
+	 * 
+	 * @param <T> the type of the iterator
+	 * @param iterator the iterator
+	 * @return the collection of items
+	 */
+	public static <T> List<T> materialize(Iterator<T> iterator) {
+		List<T> result = new ArrayList<>();
+		
+		while (iterator.hasNext()) {
+			result.add(iterator.next());
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Materializes the given iterable, returning a collection of all the items.
+	 * 
+	 * @param <T> the type of the iterable
+	 * @param iterable the iterable
+	 * @return the collection of items
+	 */
+	public static <T> List<T> materialize(Iterable<T> iterable) {
+		return materialize(iterable.iterator());
 	}
 	
 	/**
@@ -297,32 +328,32 @@ public class Iterators {
 		
 	}
 	
-	private static class ZipIterable<T> implements Iterable<Pair<T, T>> {
+	private static class ZipIterable<K, T> implements Iterable<Pair<K, T>> {
 		
-		private final Iterable<T> iterable1;
+		private final Iterable<K> iterable1;
 		
 		private final Iterable<T> iterable2;
 		
-		public ZipIterable(Iterable<T> iterable1, Iterable<T> iterable2) {
+		public ZipIterable(Iterable<K> iterable1, Iterable<T> iterable2) {
 			super();
 			this.iterable1 = iterable1;
 			this.iterable2 = iterable2;
 		}
 
 		@Override
-		public Iterator<Pair<T, T>> iterator() {
-			return new ZipIterator<T>(iterable1.iterator(), iterable2.iterator());
+		public Iterator<Pair<K, T>> iterator() {
+			return new ZipIterator<K, T>(iterable1.iterator(), iterable2.iterator());
 		}
 		
 	}
 	
-	private static class ZipIterator<T> implements Iterator<Pair<T, T>> {
+	private static class ZipIterator<K, T> implements Iterator<Pair<K, T>> {
 		
-		private final Iterator<T> iterator1;
+		private final Iterator<K> iterator1;
 		
 		private final Iterator<T> iterator2;
 				
-		public ZipIterator(Iterator<T> iterator1, Iterator<T> iterator2) {
+		public ZipIterator(Iterator<K> iterator1, Iterator<T> iterator2) {
 			super();
 			this.iterator1 = iterator1;
 			this.iterator2 = iterator2;
@@ -334,7 +365,7 @@ public class Iterators {
 		}
 
 		@Override
-		public Pair<T, T> next() {
+		public Pair<K, T> next() {
 			return Pair.of(iterator1.next(), iterator2.next());
 		}
 

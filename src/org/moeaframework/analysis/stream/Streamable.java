@@ -6,11 +6,11 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.tuple.Pair;
 
 /**
- * Main entry point for using data streams.
+ * Interface for classes that support data streams.
  * <p>
  * Data streams are built upon Java's {@link Stream} API, providing a layer for manipulating and analyzing data in
- * a succinct manner.  Streams come in two forms, either a {@link DataStream} that contains only values or a
- * {@link Partition} that contains keyed values.
+ * a succinct manner.  Any class that represents a collection of values can enable data streams by implementing this
+ * interface, or extending from one of the concrete data stream types, such as {@link DataStream} or {@link Partition}.
  * 
  * @param <V> the type of each value in the stream
  */

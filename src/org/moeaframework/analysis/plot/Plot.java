@@ -632,12 +632,6 @@ public class Plot {
 		return this;
 	}
 	
-	// TODO: Add plotting methods for data streams
-	public Plot line(String label, Partition<? extends Number, ? extends Number> partition) {
-		partition = partition.sorted();
-		return line(label, partition.keys(), partition.values());
-	}
-	
 	/**
 	 * Creates a new line plot series.
 	 * 
@@ -975,6 +969,18 @@ public class Plot {
 		plot.setDataset(dataset);
 
 		return this;
+	}
+	
+	/**
+	 * Displays a {@link Partition} as a line chart.
+	 * 
+	 * @param label the label
+	 * @param partition the partition containing x and y data
+	 * @return a reference to this {@code Plot} instance
+	 */
+	public Plot add(String label, Partition<? extends Number, ? extends Number> partition) {
+		partition = partition.sorted();
+		return line(label, partition.keys(), partition.values());
 	}
 
 	/**

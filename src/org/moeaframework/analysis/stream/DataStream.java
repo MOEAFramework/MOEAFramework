@@ -20,7 +20,7 @@ import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;
 
 /**
- * Interface for a data stream containing only values.
+ * A data stream that contains values.
  * 
  * @param <V> the type of each value
  */

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.moeaframework.util.Iterators;
 
 public class ImmutablePartition<K, V> implements Partition<K, V> {
 	
@@ -21,6 +22,10 @@ public class ImmutablePartition<K, V> implements Partition<K, V> {
 	
 	public ImmutablePartition(Stream<Pair<K, V>> stream) {
 		this(stream.toList());
+	}
+	
+	public ImmutablePartition(Iterable<Pair<K, V>> iterable) {
+		this(Iterators.materialize(iterable));
 	}
 	
 	public int size() {

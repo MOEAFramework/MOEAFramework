@@ -18,6 +18,7 @@
 package org.moeaframework.util;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -140,5 +141,16 @@ public class IteratorsTest {
 		Assert.assertThrows(NoSuchElementException.class, () -> it.next());
 	}
 	
+	@Test
+	public void testEmptyMaterialize() {
+		Iterator<String> it = Iterators.of();
+		Assert.assertEquals(List.of(), Iterators.materialize(it));
+	}
+	
+	@Test
+	public void testMaterialize() {
+		Iterator<String> it = Iterators.of("foo", "bar");
+		Assert.assertEquals(List.of("foo", "bar"), Iterators.materialize(it));
+	}
 	
 }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+import org.moeaframework.util.Iterators;
+
 public class ImmutableDataStream<V> implements DataStream<V> {
 	
 	protected final List<V> content;
@@ -19,6 +21,10 @@ public class ImmutableDataStream<V> implements DataStream<V> {
 	
 	public ImmutableDataStream(Stream<V> stream) {
 		this(stream.toList());
+	}
+	
+	public ImmutableDataStream(Iterable<V> iterable) {
+		this(Iterators.materialize(iterable));
 	}
 	
 	@Override

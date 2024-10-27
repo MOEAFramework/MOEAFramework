@@ -13,10 +13,18 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.stream.Streams;
 import org.apache.commons.lang3.tuple.Pair;
+import org.moeaframework.util.Iterators;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;
 
+/**
+ * A partition is a collection of key-value pairs.  The keys serve as the identifier of the value, however unlike a
+ * {@link java.util.Map}, the keys are not unique.
+ * 
+ * @param <K> the type of the partition key
+ * @param <V> the type of the partition value
+ */
 public interface Partition<K, V> extends Streamable<Pair<K, V>>, Formattable<Pair<K, V>> {
 	
 	public int size();
@@ -138,6 +146,18 @@ public interface Partition<K, V> extends Streamable<Pair<K, V>>, Formattable<Pai
 	
 	public static <K, V> Partition<K, V> of(Function<V, K> key, V[] array) {
 		return of(key, Streams.of(array));
+	}
+	
+	public static <K, V> Partition<K, V> zip(List<K> keys, List<V> values) {
+		return zip(keys, values);
+	}
+	
+	public static <K, V> Partition<K, V> zip(Iterable<K> keys, Iterable<V> values) {
+		return new ImmutablePartition<K, V>(Iterators.zip(keys, values));
+	}
+	
+	public static <K, V> Partition<K, V> zip(K[] keys, V[] values) {
+		return zip(keys, values);
 	}
 	
 }
