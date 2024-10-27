@@ -32,6 +32,7 @@ import org.moeaframework.Executor;
 import org.moeaframework.Instrumenter;
 import org.moeaframework.TempFiles;
 import org.moeaframework.analysis.collector.Observations;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.population.NondominatedPopulation;
 
 /**
@@ -90,6 +91,14 @@ public class PlotTest {
 		}
 		
 		runTest(new Plot().heatMap("Test", x, y, z).setXLabel("X").setYLabel("Y"));
+	}
+	
+	@Test
+	public void testHistogram() {
+		double[] x = IntStream.range(0, 10).mapToDouble(i -> (double)i).toArray();
+		double[] y = IntStream.range(0, 10).mapToDouble(i -> PRNG.nextDouble()).toArray();
+		
+		runTest(new Plot().histogram("Test", x, y, 0.5).setXLabel("X").setYLabel("Y"));
 	}
 	
 	@Test
@@ -187,6 +196,7 @@ public class PlotTest {
 		new PlotTest().testOutOfOrder();
 		new PlotTest().testParetoFront();
 		new PlotTest().testHeatMap();
+		new PlotTest().testHistogram();
 		new PlotTest().testAnalyzer();
 		new PlotTest().testObservations();
 	}

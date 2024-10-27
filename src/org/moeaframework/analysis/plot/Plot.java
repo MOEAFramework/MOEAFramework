@@ -60,6 +60,7 @@ import org.jfree.chart.renderer.category.BoxAndWhiskerRenderer;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.xy.StackedXYAreaRenderer;
 import org.jfree.chart.renderer.xy.XYAreaRenderer;
+import org.jfree.chart.renderer.xy.XYBarRenderer;
 import org.jfree.chart.renderer.xy.XYBlockRenderer;
 import org.jfree.chart.renderer.xy.XYDotRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
@@ -78,7 +79,6 @@ import org.moeaframework.Analyzer.AnalyzerResults;
 import org.moeaframework.analysis.collector.Observation;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.analysis.diagnostics.PaintHelper;
-import org.moeaframework.analysis.stream.Partition;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
@@ -247,6 +247,38 @@ public class Plot {
 	}
 	
 	/**
+	 * If the chart has not yet been initialized, creates a histogram chart.  If the chart is already initialized,
+	 * checks if the chart is for XY data.
+	 * 
+	 * @throws FrameworkException if the chart does not support XY data
+	 */
+	private void createHistogramPlot() {
+		if (chart == null) {
+			NumberAxis xAxis = new NumberAxis("");
+			xAxis.setAutoRangeIncludesZero(false);
+			NumberAxis yAxis = new NumberAxis("");
+
+			XYPlot plot = new XYPlot();
+			plot.setDomainAxis(xAxis);
+			plot.setRangeAxis(yAxis);
+
+			XYToolTipGenerator toolTipGenerator = new StandardXYToolTipGenerator();
+
+			XYItemRenderer renderer = new XYBarRenderer();
+			renderer.setDefaultToolTipGenerator(toolTipGenerator);
+			plot.setOrientation(PlotOrientation.VERTICAL);
+			plot.setDomainZeroBaselineVisible(true);
+			plot.setRangeZeroBaselineVisible(true);
+			plot.setRenderer(renderer);
+
+			chart = new JFreeChart("", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
+			ChartFactory.getChartTheme().apply(chart);
+		} else if (!(chart.getPlot() instanceof XYPlot)) {
+			throw new FrameworkException("Can not combine XY plot and categorial plot");
+		}
+	}
+	
+	/**
 	 * If the chart has not yet been initialized, creates a chart for HeatMap data.  If the chart is already
 	 * initialized, checks if the chart is for HeatMap data.
 	 * 
@@ -286,7 +318,7 @@ public class Plot {
 	 * Sets the chart title.
 	 * 
 	 * @param title the title
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	public Plot setTitle(String title) {
 		chart.setTitle(title);
@@ -297,7 +329,7 @@ public class Plot {
 	 * Sets the x-axis label.
 	 * 
 	 * @param label the label for the x-axis
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	public Plot setXLabel(String label) {
 		if (chart.getPlot() instanceof XYPlot) {
@@ -313,7 +345,7 @@ public class Plot {
 	 * Sets the y-axis label.
 	 * 
 	 * @param label the label for the y-axis
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	public Plot setYLabel(String label) {
 		if (chart.getPlot() instanceof XYPlot) {
@@ -329,7 +361,7 @@ public class Plot {
 	 * 
 	 * @param xlabel the label for the x-axis
 	 * @param ylabel the label for the y-axis
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	private Plot setLabelsIfBlank(String xlabel, String ylabel) {
 		if (chart.getPlot() instanceof XYPlot) {
@@ -361,7 +393,7 @@ public class Plot {
 	 * Sets the background paint.
 	 * 
 	 * @param paint the background paint
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	public Plot setBackgroundPaint(Paint paint) {
 		if (chart.getPlot() instanceof XYPlot) {
@@ -377,7 +409,7 @@ public class Plot {
 	 * Sets the grid line paint.
 	 * 
 	 * @param paint the grid line paint
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	public Plot setGridPaint(Paint paint) {
 		if (chart.getPlot() instanceof XYPlot) {
@@ -396,7 +428,7 @@ public class Plot {
 	 * 
 	 * @param min the minimum bound for the x-axis
 	 * @param max the maximum bound for the x-axis
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	public Plot setXLim(double min, double max) {
 		if (chart.getPlot() instanceof XYPlot) {
@@ -411,7 +443,7 @@ public class Plot {
 	 * 
 	 * @param min the minimum bound for the y-axis
 	 * @param max the maximum bound for the y-axis
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	public Plot setYLim(double min, double max) {
 		if (chart.getPlot() instanceof XYPlot) {
@@ -429,7 +461,7 @@ public class Plot {
 	 * @param label the label for the series
 	 * @param x the x values
 	 * @param y the y values
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	public Plot scatter(String label, double[] x, double[] y) {
 		return scatter(label, toList(x), toList(y));
@@ -441,7 +473,7 @@ public class Plot {
 	 * @param label the label for the series
 	 * @param x the x values
 	 * @param y the y values
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	public Plot scatter(String label, List<? extends Number> x, List<? extends Number> y) {
 		return scatter(label, x, y, null);
@@ -455,7 +487,7 @@ public class Plot {
 	 * @param x the x values
 	 * @param y the y values
 	 * @param dataset the dataset, or {@code null} if a new dataset should be created
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	private Plot scatter(String label, List<? extends Number> x, List<? extends Number> y, XYSeriesCollection dataset) {
 		if (dataset == null) {
@@ -534,7 +566,7 @@ public class Plot {
 	 * 
 	 * @param label the label for the series
 	 * @param population the population
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	public Plot add(String label, Population population) {
 		Solution solution = population.get(0);
@@ -553,7 +585,7 @@ public class Plot {
 	 * @param population the population
 	 * @param x the objective to plot on the x-axis
 	 * @param y the objective to plot on the y-axis
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	public Plot add(String label, Population population, int x, int y) {
 		List<Number> xs = new ArrayList<Number>();
@@ -576,7 +608,7 @@ public class Plot {
 	 * Displays the runtime data stored in an {@link Observations} as one or more line plots.
 	 * 
 	 * @param observations the {@code Observations} instance
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	public Plot add(Observations observations) {
 		createXYPlot();
@@ -596,7 +628,7 @@ public class Plot {
 	 * @param label the label for the series
 	 * @param observations the {@code Observations} instance
 	 * @param metric the name of the performance metric to plot
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	public Plot add(String label, Observations observations, String metric) {
 		return add(label, observations, metric, null);
@@ -610,7 +642,7 @@ public class Plot {
 	 * @param observations the {@code Observations} containing the data
 	 * @param metric the name of the performance metric to plot
 	 * @param dataset the dataset, or {@code null} if a new dataset should be created
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	private Plot add(String label, Observations observations, String metric, XYSeriesCollection dataset) {
 		List<Number> xs = new ArrayList<Number>();
@@ -638,7 +670,7 @@ public class Plot {
 	 * @param label the label for the series
 	 * @param x the x values
 	 * @param y the y values
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	public Plot line(String label, double[] x, double[] y) {
 		return line(label, toList(x), toList(y));
@@ -650,7 +682,7 @@ public class Plot {
 	 * @param label the label for the series
 	 * @param x the x values
 	 * @param y the y values
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	public Plot line(String label, List<? extends Number> x, List<? extends Number> y) {
 		return line(label, x, y, null);
@@ -664,7 +696,7 @@ public class Plot {
 	 * @param x the x values
 	 * @param y the y values
 	 * @param dataset the dataset, or {@code null} if a new dataset should be created
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	private Plot line(String label, List<? extends Number> x, List<? extends Number> y, XYSeriesCollection dataset) {
 		if (dataset == null) {
@@ -701,12 +733,86 @@ public class Plot {
 	}
 	
 	/**
+	 * Creates a new histogram plot series.
+	 * 
+	 * @param label the label for the series
+	 * @param x the x values
+	 * @param y the y values
+	 * @param barWidth the width of the bars
+	 * @return a reference to this instance
+	 */
+	public Plot histogram(String label, double[] x, double[] y, double barWidth) {
+		return histogram(label, toList(x), toList(y), barWidth);
+	}
+	
+	/**
+	 * Creates a new line plot series.
+	 * 
+	 * @param label the label for the series
+	 * @param x the x values
+	 * @param y the y values
+	 * @param barWidth the width of the bars
+	 * @return a reference to this instance
+	 */
+	public Plot histogram(String label, List<? extends Number> x, List<? extends Number> y, double barWidth) {
+		return histogram(label, x, y, barWidth, null);
+	}
+	
+	/**
+	 * Creates a new histogram plot series.  The series is added to the given dataset, or if {@code null} a new dataset
+	 * is created.
+	 * 
+	 * @param label the label for the series
+	 * @param x the x values
+	 * @param y the y values
+	 * @param barWidth the width of the bars
+	 * @param dataset the dataset, or {@code null} if a new dataset should be created
+	 * @return a reference to this instance
+	 */
+	private Plot histogram(String label, List<? extends Number> x, List<? extends Number> y, double barWidth,
+			XYSeriesCollection dataset) {
+		if (dataset == null) {
+			createHistogramPlot();
+			currentDataset++;
+			dataset = new XYSeriesCollection();
+		}
+
+		// generate the dataset
+		XYSeries series = new XYSeries(label, false, false);
+		
+		for (int i = 0; i < x.size(); i++) {
+			series.add(x.get(i), y.get(i));
+		}
+
+		dataset.addSeries(series);
+		dataset.setIntervalWidth(barWidth);
+
+		// add the dataset to the plot
+		XYPlot plot = chart.getXYPlot();
+		plot.setDataset(currentDataset, dataset);
+
+		// setup the renderer
+		Paint paint = paintHelper.get(dataset.getSeriesKey(0));
+		XYBarRenderer renderer = new XYBarRenderer();
+		renderer.setAutoPopulateSeriesStroke(false);
+
+		renderer.setDefaultStroke(new BasicStroke(3f, 1, 1));
+		renderer.setDefaultPaint(paint);
+		renderer.setDefaultFillPaint(paint);
+
+		plot.setRenderer(currentDataset, renderer);
+
+		return this;
+	}
+	
+	
+	/**
 	 * Creates a new area plot series.
 	 * 
 	 * @param label the label for the series
 	 * @param x the x values
 	 * @param y the y values
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	public Plot area(String label, double[] x, double[] y) {
 		return area(label, toList(x), toList(y));
@@ -718,7 +824,7 @@ public class Plot {
 	 * @param label the label for the series
 	 * @param x the x values
 	 * @param y the y values
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	public Plot area(String label, List<? extends Number> x, List<? extends Number> y) {
 		return area(label, x, y, null);
@@ -732,7 +838,7 @@ public class Plot {
 	 * @param x the x values
 	 * @param y the y values
 	 * @param dataset the dataset, or {@code null} if a new dataset should be created
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	private Plot area(String label, List<? extends Number> x, List<? extends Number> y, XYSeriesCollection dataset) {
 		if (dataset == null) {
@@ -774,7 +880,7 @@ public class Plot {
 	 * @param label the label for the series
 	 * @param x the x values
 	 * @param y the y values
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	public Plot stacked(String label, double[] x, double[] y) {
 		return stacked(label, toList(x), toList(y));
@@ -786,7 +892,7 @@ public class Plot {
 	 * @param label the label for the series
 	 * @param x the x values
 	 * @param y the y values
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	public Plot stacked(String label, List<? extends Number> x, List<? extends Number> y) {
 		return stacked(label, x, y, null);
@@ -800,7 +906,7 @@ public class Plot {
 	 * @param x the x values
 	 * @param y the y values
 	 * @param dataset the dataset, or {@code null} if a new dataset should be created
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	private Plot stacked(String label, List<? extends Number> x, List<? extends Number> y, DefaultTableXYDataset dataset) {
 		if (dataset == null) {
@@ -851,7 +957,7 @@ public class Plot {
 	 * @param x the x values
 	 * @param y the y values
 	 * @param z the z values
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	public Plot heatMap(String label, double[] x, double[] y, double[][] z) {
 		return heatMap(label, toList(x), toList(y), toList(z));
@@ -865,7 +971,7 @@ public class Plot {
 	 * @param x the x values
 	 * @param y the y values
 	 * @param z the z values
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	public Plot heatMap(String label, List<? extends Number> x, List<? extends Number> y, List<? extends List<? extends Number>> z) {
 		return heatMap(label, x, y, z, null);
@@ -880,7 +986,7 @@ public class Plot {
 	 * @param y the y values
 	 * @param z the z values
 	 * @param dataset the dataset, or {@code null} if a new dataset should be created
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	private Plot heatMap(String label, List<? extends Number> x, List<? extends Number> y, List<? extends List<? extends Number>> z, DefaultXYZDataset dataset) {
 		if (dataset == null) {
@@ -936,7 +1042,7 @@ public class Plot {
 	 * Displays the statistical results from an {@link Analyzer} as a box-and-whisker plot.
 	 * 
 	 * @param analyzer the {@code Analyzer} instance
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	public Plot add(Analyzer analyzer) {
 		return add(analyzer.getAnalysis());
@@ -946,7 +1052,7 @@ public class Plot {
 	 * Displays the statistical results from an {@link AnalyzerResults} as a box-and-whisker plot.
 	 * 
 	 * @param result the {@code AnalyzerResults} instance
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	public Plot add(AnalyzerResults result) {
 		createCategoryPlot();
@@ -970,24 +1076,12 @@ public class Plot {
 
 		return this;
 	}
-	
-	/**
-	 * Displays a {@link Partition} as a line chart.
-	 * 
-	 * @param label the label
-	 * @param partition the partition containing x and y data
-	 * @return a reference to this {@code Plot} instance
-	 */
-	public Plot add(String label, Partition<? extends Number, ? extends Number> partition) {
-		partition = partition.sorted();
-		return line(label, partition.keys(), partition.values());
-	}
 
 	/**
 	 * Modifies the line thickness or point size in the last dataset.  The size is applied to all series in the dataset.
 	 * 
 	 * @param size the size
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	public Plot withSize(float size) {
 		if (chart.getPlot() instanceof XYPlot) {
@@ -1020,7 +1114,7 @@ public class Plot {
 	 * the number of arguments, the arguments are reused as needed.
 	 * 
 	 * @param paint one or more paint instances
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 */
 	public Plot withPaint(Paint... paint) {
 		if (chart.getPlot() instanceof XYPlot) {
@@ -1059,7 +1153,7 @@ public class Plot {
 	 * match one of the supported file types in {@link FileType}.
 	 * 
 	 * @param filename the filename
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 * @throws IOException if an I/O error occurred
 	 */
 	public Plot save(String filename) throws IOException {
@@ -1071,7 +1165,7 @@ public class Plot {
 	 * match one of the supported file types in {@link FileType}.
 	 * 
 	 * @param file the file
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 * @throws IOException if an I/O error occurred
 	 */
 	public Plot save(File file) throws IOException {
@@ -1088,7 +1182,7 @@ public class Plot {
 	 * @param format the image format
 	 * @param width the image width
 	 * @param height the image height
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 * @throws IOException if an I/O error occurred
 	 */
 	public Plot save(File file, String format, int width, int height) throws IOException {
@@ -1102,7 +1196,7 @@ public class Plot {
 	 * @param fileType the image file format
 	 * @param width the image width
 	 * @param height the image height
-	 * @return a reference to this {@code Plot} instance
+	 * @return a reference to this instance
 	 * @throws IOException if an I/O error occurred
 	 */
 	public Plot save(File file, FileType fileType, int width, int height) throws IOException {

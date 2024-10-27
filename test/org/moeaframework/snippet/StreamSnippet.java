@@ -44,11 +44,11 @@ public class StreamSnippet {
 		
 		// Display as a table
 		counts.display();
-		
+				
 		// Render line plot
 		new Plot()
-			.add("Frequency", counts)
-			.show();
+			.histogram("frequency", counts.keys(), counts.values(), 0.075)
+			.showDialog();
 		// end-example:stream
 	}
 }
