@@ -216,18 +216,18 @@ public class ReferenceSetMerger extends CommandLineUtility {
 
 		//read the population files
 		for (String filename : commandLine.getArgs()) {
-			add(filename, Population.loadObjectives(new File(filename)));
+			add(filename, Population.load(new File(filename)));
 		}
 
 		//write combined set to the output file
 		if (commandLine.hasOption("output")) {
-			getCombinedPopulation().saveObjectives(new File(commandLine.getOptionValue("output")));
+			getCombinedPopulation().save(new File(commandLine.getOptionValue("output")));
 		}
 
 		//write diff files
 		if (commandLine.hasOption("diff")) {
 			for (String filename : commandLine.getArgs()) {
-				getContributionFrom(filename).saveObjectives(new File(filename + ".diff"));
+				getContributionFrom(filename).save(new File(filename + ".diff"));
 			}
 		}
 

@@ -28,9 +28,9 @@ import org.moeaframework.util.io.MatrixReader;
  * Reader for metric files produced by {@link MetricFileWriter}.  The file can contain commented lines starting with
  * '#' characters.
  * <p>
- * This reader is expected to gracefully recover from incomplete or improperly formatted files.  Unless a serious I/O
- * error occurred, this reader will attempt to load the file to the last valid entry. This requirement enables a
- * {@code MetricFileWriter} to resume processing at a valid state.
+ * By default, this reader will suppress any errors reading the contents, unless a serious I/O error occurred.
+ * Consequently, reading stops when invalid or incomplete data is detected.  Callers should use
+ * {@link #getErrorHandler()} to check if any errors occurred or to change the error handling behavior.
  * 
  * @see MetricFileWriter
  */

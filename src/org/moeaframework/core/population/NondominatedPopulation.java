@@ -37,7 +37,7 @@ import org.moeaframework.util.io.Resources;
  * added.
  * <p>
  * <strong>Avoid modifying solutions contained in non-dominated populations.</strong>  Since the dominance checks are
- * only performed when adding solutions, modifying an existing solution can violating this contract.
+ * only performed when adding solutions, modifying an existing solution can violating this invariant.
  */
 public class NondominatedPopulation extends Population {
 	
@@ -256,7 +256,7 @@ public class NondominatedPopulation extends Population {
 		} else {
 			try (Reader reader = Resources.asReader(NondominatedPopulation.class, "/" + resource)) {
 				if (reader != null) {
-					return new NondominatedPopulation(Population.loadObjectives(reader));
+					return new NondominatedPopulation(Population.load(reader));
 				}
 			}
 		}
@@ -273,7 +273,7 @@ public class NondominatedPopulation extends Population {
 	 * @throws IOException if an I/O error occurred or the file was not found
 	 */
 	public static NondominatedPopulation loadReferenceSet(File file) throws IOException {
-		return new NondominatedPopulation(Population.loadObjectives(file));
+		return new NondominatedPopulation(Population.load(file));
 	}
 
 }

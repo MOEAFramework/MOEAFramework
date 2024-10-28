@@ -17,19 +17,12 @@
  */
 package org.moeaframework.core.population;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -42,22 +35,25 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
-import org.apache.commons.io.input.CloseShieldInputStream;
 import org.apache.commons.io.input.CloseShieldReader;
-import org.apache.commons.io.output.CloseShieldOutputStream;
 import org.apache.commons.io.output.CloseShieldWriter;
+import org.moeaframework.analysis.io.ResultEntry;
+import org.moeaframework.analysis.io.ResultFileReader;
+import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.core.Copyable;
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Stateful;
 import org.moeaframework.core.constraint.Constraint;
 import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.variable.Variable;
+import org.moeaframework.problem.Problem;
+import org.moeaframework.problem.ProblemStub;
+import org.moeaframework.util.Iterators;
 import org.moeaframework.util.SerializationUtils;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;
-import org.moeaframework.util.io.LineReader;
-import org.moeaframework.util.io.Tokenizer;
 
 /**
  * A collection of solutions and common methods for manipulating the collection.
@@ -483,145 +479,65 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, Co
 	}
 	
 	/**
-	 * Saves the objective vectors of all solutions to the specified file.  Files created using this method should
-	 * only be loaded using the {@link #loadObjectives(File)} method.
+	 * Saves all solutions to the specified result file.  Files created using this method should only be loaded using
+	 * the {@link #load(File)} method.
 	 * 
-	 * @param file the file to which the objective vectors are written
-	 * @throws IOException if an I/O exception occurred
+	 * @param file the file to which the solutions are written
+	 * @throws IOException if an I/O error occurred
 	 */
-	public void saveObjectives(File file) throws IOException {
+	public void save(File file) throws IOException {
 		try (FileWriter writer = new FileWriter(file)) {
-			saveObjectives(writer);
+			save(writer);
 		}
 	}
 	
 	/**
-	 * Saves the objective vectors of all solutions to the writer.  Files created using this method should only be
-	 * loaded using the {@link #loadObjectives(File)} method.  <b>This method does not close the writer!</b>
+	 * Saves all solutions to the specified result file.  Files created using this method should only be loaded using
+	 * the {@link #load(File)} method.
 	 * 
-	 * @param writer the writer to which the objective vectors are written
-	 * @throws IOException if an I/O exception occurred
+	 * @param writer the writer to which the solutions are written
+	 * @throws IOException if an I/O error occurred
 	 */
-	public void saveObjectives(Writer writer) throws IOException {
-		try (BufferedWriter output = new BufferedWriter(CloseShieldWriter.wrap(writer))) {
-			for (Solution solution : this) {
-				for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
-					if (i > 0) {
-						output.write(" ");
-					}
-					
-					// TODO: Fix for Objective
-					output.write(Double.toString(solution.getObjectiveValue(i)));
-				}
-
-				output.newLine();
-			}
+	public void save(Writer writer) throws IOException {
+		Problem problem = isEmpty() ? null : new ProblemStub(get(0));
+		
+		try (ResultFileWriter output = new ResultFileWriter(problem, CloseShieldWriter.wrap(writer))) {
+			output.write(new ResultEntry(this));
 		}
 	}
 	
 	/**
-	 * Loads a set of objective vectors from the specified file.  Files read using this method should only have been
-	 * created using the {@link #saveObjectives(File)} method.
+	 * Loads a population from the specified result file.  If the file contains multiple population entries, only the
+	 * last is returned.  Files read using this method should only have been created using {@link #save(File)}.
 	 * 
-	 * @param file the file containing the objective vectors
-	 * @return a population containing all objective vectors in the specified file
-	 * @throws IOException if an I/O exception occurred
+	 * @param file the file containing the solutions
+	 * @return a population containing all solutions in the specified file
+	 * @throws IOException if an I/O error occurred
 	 */
-	public static Population loadObjectives(File file) throws IOException {
+	public static Population load(File file) throws IOException {
 		try (FileReader reader = new FileReader(file)) {
-			return loadObjectives(reader);
+			return load(reader);
 		}
 	}
 	
 	/**
-	 * Loads the objective vectors contained in the specified reader, returning the resulting population.  <b>This
-	 * method does not close the reader!</b>
+	 * Loads a population from the specified reader.  If the reader contains multiple population entries, only the
+	 * last is returned.  <b>This method does not close the reader!</b>
 	 * 
 	 * @param reader the reader containing the objective vectors
 	 * @return a population containing all objective vectors read
 	 * @throws IOException if an I/O error occurred
+	 * @throws FrameworkException if the reader did not contain a population
 	 */
-	public static Population loadObjectives(Reader reader) throws IOException {
-		try (LineReader lineReader = LineReader.wrap(CloseShieldReader.wrap(reader)).skipComments()) {
-			Population population = new Population();
-			Tokenizer tokenizer = new Tokenizer();
+	public static Population load(Reader reader) throws IOException {
+		try (ResultFileReader input = new ResultFileReader(null, CloseShieldReader.wrap(reader), true)) {
+			ResultEntry entry = Iterators.last(input.iterator());
 			
-			for (String line : lineReader) {
-				String[] tokens = tokenizer.decodeToArray(line);
-				Solution solution = new Solution(0, tokens.length);
-	
-				for (int i = 0; i < tokens.length; i++) {
-					// TODO: Fix for Objective
-					solution.setObjectiveValue(i, Double.parseDouble(tokens[i]));
-				}
-	
-				population.add(solution);
+			if (entry == null) {
+				throw new FrameworkException("result file is empty");
+			} else {
+				return entry.getPopulation();
 			}
-			
-			return population;
-		}
-	}
-	
-	/**
-	 * Saves this population to a file using a binary format.  Unlike the other save and load methods, the binary
-	 * format stores a complete copy of the solutions, including all attributes.  Files written using this method can
-	 * only be read using the {@link #loadBinary} method.
-	 * 
-	 * @param file the file to which the solutions are written
-	 * @throws IOException if an I/O exception occurred
-	 */
-	public void saveBinary(File file) throws IOException {
-		try (FileOutputStream output = new FileOutputStream(file)) {
-			saveBinary(output);
-		}
-	}
-	
-	/**
-	 * Saves this population to an output stream using a binary format.  Unlike the other save and load methods, the
-	 * binary format stores a complete copy of the solutions, including all attributes.  Files written using this
-	 * method can only be read using the {@link #loadBinary} method.  <b>This method does not close the output
-	 * stream!</b>
-	 * 
-	 * @param outputStream the outputStream to which the solutions are written
-	 * @throws IOException if an I/O exception occurred
-	 */
-	public void saveBinary(OutputStream outputStream) throws IOException {
-		try (ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(
-				CloseShieldOutputStream.wrap(outputStream)))) {
-			saveState(oos);
-		}
-	}
-	
-	/**
-	 * Loads a population from the specified file.  Files read using this method should only have been created using
-	 * the {@link #saveBinary} method.
-	 * 
-	 * @param file the file containing the population
-	 * @return a population containing all solutions in the specified file
-	 * @throws IOException if an I/O exception occurred
-	 */
-	public static Population loadBinary(File file) throws IOException {
-		try (FileInputStream input = new FileInputStream(file)) {
-			return loadBinary(input);
-		}
-	}
-	
-	/**
-	 * Loads a population from the specified input stream.  Files read using this method should only have been created
-	 * using the {@link #saveBinary} method.  <b>This method does not close the input stream!</b>
-	 * 
-	 * @param inputStream the input stream containing the population
-	 * @return a population containing all solutions in the specified file
-	 * @throws IOException if an I/O exception occurred
-	 */
-	public static Population loadBinary(InputStream inputStream) throws IOException {
-		try (ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(
-				CloseShieldInputStream.wrap(inputStream)))) {
-			Population population = new Population();
-			population.loadState(ois);
-			return population;
-		} catch (ClassNotFoundException e) {
-			throw new IOException(e);
 		}
 	}
 

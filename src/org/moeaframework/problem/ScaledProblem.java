@@ -90,7 +90,7 @@ public class ScaledProblem extends ProblemWrapper {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public void createScaledReferenceSet(File file, File scaledFile) throws IOException {
-		loadScaledReferenceSet(file).saveObjectives(scaledFile);
+		loadScaledReferenceSet(file).save(scaledFile);
 	}
 	
 	/**

@@ -19,6 +19,7 @@ package org.moeaframework.core.population;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Comparator;
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -225,8 +226,9 @@ public class PopulationTest {
 	public void testSaveLoadObjectives() throws IOException {
 		File file = TempFiles.createFile();
 
-		population.saveObjectives(file);
-		Population population2 = Population.loadObjectives(file);
+		population.save(file);
+		System.out.println(Files.readString(file.toPath()));
+		Population population2 = Population.load(file);
 
 		Assert.assertEquals(population.size(), population2.size());
 
@@ -237,30 +239,29 @@ public class PopulationTest {
 	}
 
 	@Test
-	public void testSaveLoadBinary() throws IOException {		
-		Solution s1 = MockSolution.of()
+	public void testSaveLoadAllTypes() throws IOException {		
+		Solution solution = MockSolution.of()
 				.withVariables(new BinaryVariable(10), new Grammar(5), new Permutation(5), new RealVariable(0.0, 1.0))
 				.withObjectives(1.0, 0.0)
 				.withConstraints(1.0)
 				.build();
 
-		Solution s2 = MockSolution.of().withObjectives(1.0, -1.0).build();
-
 		population.clear();
-		population.addAll(List.of(s1, s2));
+		population.add(solution);
 
 		File file = TempFiles.createFile();
-		population.saveBinary(file);
+		population.save(file);
 		
-		Population population2 = Population.loadBinary(file);
-		Assert.assertEquals(population, population2);
+		Population result = Population.load(file);
+		Assert.assertEquals(population, result);
 	}
 	
 	@Test
 	public void testReadWhitespace() throws IOException {
 		File file = TempFiles.createFile().withContent("0   1 \t 2\n\t   3 4 5 \t\n");
-		Population population = Population.loadObjectives(file);
+		Population population = Population.load(file);
 		
+		Assert.assertSize(2, population);
 		Assert.assertArrayEquals(new double[] {0.0, 1.0, 2.0}, population.get(0).getObjectiveValues(), TestThresholds.HIGH_PRECISION);
 		Assert.assertArrayEquals(new double[] {3.0, 4.0, 5.0}, population.get(1).getObjectiveValues(), TestThresholds.HIGH_PRECISION);
 	}

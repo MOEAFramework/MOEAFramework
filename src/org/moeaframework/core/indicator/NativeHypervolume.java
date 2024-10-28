@@ -20,6 +20,7 @@ package org.moeaframework.core.indicator;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.text.MessageFormat;
 import java.util.List;
 
@@ -162,7 +163,7 @@ public class NativeHypervolume extends NormalizedIndicator {
 			File approximationSetFile = File.createTempFile("approximationSet", null);
 			approximationSetFile.deleteOnExit();
 			
-			population.saveObjectives(approximationSetFile);
+			saveObjectives(approximationSetFile, population);
 			
 			//conditionally generate reference point file
 			File referencePointFile = null;
@@ -177,7 +178,7 @@ public class NativeHypervolume extends NormalizedIndicator {
 					referencePoint.setObjectiveValue(i, nadirPoint);
 				}
 
-				new Population(List.of(referencePoint)).saveObjectives(referencePointFile);
+				saveObjectives(referencePointFile, new Population(List.of(referencePoint)));
 			}
 			
 			//conditionally generate reference point argument
@@ -207,6 +208,30 @@ public class NativeHypervolume extends NormalizedIndicator {
 			return invokeNativeProcess(MessageFormat.format(command, arguments));
 		} catch (IOException e) {
 			throw new FrameworkException(e);
+		}
+	}
+	
+	/**
+	 * Writes the objective values to the file.  This assumes the objectives have been normalized / converted into the
+	 * appropriate format for use by the native hypervolume executable.
+	 * 
+	 * @param file the output file
+	 * @param population the population to save
+	 * @throws IOException if an I/O error occurred
+	 */
+	static void saveObjectives(File file, Population population) throws IOException {
+		try (PrintWriter writer = new PrintWriter(file)) {
+			for (Solution solution : population) {
+				for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
+					if (i > 0) {
+						writer.print(" ");
+					}
+					
+					writer.print(Double.toString(solution.getObjectiveValue(i)));
+				}
+	
+				writer.println();
+			}
 		}
 	}
 	

@@ -117,7 +117,7 @@ public class ExtractData extends CommandLineUtility {
 			while (input.hasNext()) {
 				ResultEntry entry = input.next();
 				TypedProperties properties = entry.getProperties();
-				IndicatorValues values = indicators.apply(entry.getPopulation());
+				IndicatorValues values = indicators.apply(new NondominatedPopulation(entry.getPopulation()));
 
 				for (int i = 0; i < fields.length; i++) {
 					if (i > 0) {

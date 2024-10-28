@@ -23,6 +23,7 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.core.FrameworkException;
+import org.moeaframework.core.population.Population;
 
 public class SetGeneratorTest {
 	
@@ -35,8 +36,8 @@ public class SetGeneratorTest {
 				"-n", "100", 
 				"-o", referenceSet.getPath()});
 		
-		Assert.assertLineCount(100, referenceSet);
-		Assert.assertLinePattern(referenceSet, Assert.getSpaceSeparatedNumericPattern(2));
+		Assert.assertSize(100, Population.load(referenceSet));
+		Assert.assertLinePattern(referenceSet, Assert.getSpaceSeparatedNumericPattern(13));
 	}
 	
 	@Test
@@ -49,7 +50,8 @@ public class SetGeneratorTest {
 				"-e", "0.01",
 				"-o", referenceSet.getPath()});
 		
-		Assert.assertLinePattern(referenceSet, Assert.getSpaceSeparatedNumericPattern(2));
+		Assert.assertTrue(Population.load(referenceSet).size() < 1000);
+		Assert.assertLinePattern(referenceSet, Assert.getSpaceSeparatedNumericPattern(13));
 	}
 	
 	@Test(expected = FrameworkException.class)

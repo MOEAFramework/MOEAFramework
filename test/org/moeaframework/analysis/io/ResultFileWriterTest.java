@@ -215,7 +215,7 @@ public class ResultFileWriterTest {
 		
 		try (ResultFileReader reader = ResultFileReader.open(problem, file)) {
 			ResultEntry entry = reader.next();
-			Assert.assertEquals(0, entry.getPopulation().size());
+			Assert.assertEquals(population, entry.getPopulation());
 			Assert.assertEquals(properties, entry.getProperties());
 		}
 	}

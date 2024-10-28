@@ -40,14 +40,14 @@ import static org.moeaframework.TempFiles.File;
 public class FileFormatSnippet {
 	
 	@Test
-	public void objectives() throws IOException {
+	public void saveLoad() throws IOException {
 		Population population = new Population();
 		population.add(MockSolution.of().withObjectives(1.0, 1.0).build());
 		
-		// begin-example:objectives
-		population.saveObjectives(new File("population.dat"));
-		Population.loadObjectives(new File("population.dat"));
-		// end-example:objectives
+		// begin-example:saveLoad
+		population.save(new File("population.dat"));
+		Population.load(new File("population.dat"));
+		// end-example:saveLoad
 	}
 	
 	@Test
@@ -56,24 +56,13 @@ public class FileFormatSnippet {
 		NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet("pf/DTLZ2.2D.pf");
 		// end-example:referenceSet
 	}
-
-	@Test
-	public void binary() throws IOException {
-		Population population = new Population();
-		population.add(MockSolution.of().withObjectives(1.0, 1.0).build());
-		
-		// begin-example:binary
-		population.saveBinary(new File("population.bin"));
-		Population.loadBinary(new File("population.bin"));
-		// end-example:binary
-	}
 	
 	@Test
 	public void resultFile() throws IOException {
 		Problem problem = new Schaffer();
 		NSGAII algorithm = new NSGAII(problem);
 		
-		// begin-example:resultFile-overwrite
+		// begin-example:resultFile-write
 		try (ResultFileWriter writer = ResultFileWriter.open(problem, new File("result.dat"))) {
 			for (int i = 0; i < 1000; i++) {
 				algorithm.step();
@@ -84,7 +73,7 @@ public class FileFormatSnippet {
 				writer.write(new ResultEntry(algorithm.getResult(), properties));
 			}
 		}
-		// end-example:resultFile-overwrite
+		// end-example:resultFile-write
 		
 		// begin-example:resultFile-append
 		try (ResultFileWriter writer = ResultFileWriter.append(problem, new File("result.dat"))) {
@@ -94,16 +83,16 @@ public class FileFormatSnippet {
 		}
 		// end-example:resultFile-append
 		
-		// begin-example:resultFile-open
+		// begin-example:resultFile-read
 		try (ResultFileReader reader = ResultFileReader.open(problem, new File("result.dat"))) {
 			while (reader.hasNext()) {
 				ResultEntry entry = reader.next();
 				
 				TypedProperties metadata = entry.getProperties();
-				NondominatedPopulation set = entry.getPopulation();
+				Population set = entry.getPopulation();
 			}
 		}
-		// end-example:resultFile-open
+		// end-example:resultFile-read
 	}
 	
 	@Test

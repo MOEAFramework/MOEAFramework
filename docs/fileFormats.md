@@ -31,19 +31,16 @@ algorithm.getResult().save(TableFormat.Json, new File("solution.json"));
 Note that these file formats are only intended to produce output.  They can not be read or loaded back into the MOEA
 Framework.  Prefer using one of the other options documented here for storage purposes.
 
-## Population Contents
+## Populations
 
-The `Population` and `NondominatedPopulation` classes define methods for reading and writing the contents
-of the population.
+The `Population` and `NondominatedPopulation` classes define the `save` and `load` methods for reading and writing the
+contents of a population:
 
-First, we can use `saveObjectives` and `loadObjectives` to read and write the objective values to a file.
-Each row contains the objective values, separated by spaces, for a solution in the population.
-
-<!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [objectives] -->
+<!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [saveLoad] -->
 
 ```java
-population.saveObjectives(new File("population.dat"));
-Population.loadObjectives(new File("population.dat"));
+population.save(new File("population.dat"));
+Population.load(new File("population.dat"));
 ```
 
 Reference sets, including those defined in the `pf/` folder, are also stored in this manner.  However, for convenience,
@@ -55,29 +52,14 @@ we recommend using the `loadReferenceSet` method, which loads the solutions into
 NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet("pf/DTLZ2.2D.pf");
 ```
 
-However, note that only saving objective values is lossy, as the decision variables and other attributes of the
-solution are not included.  If instead you need to store the entire contents of a solution, use the binary format:
-
-<!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [binary] -->
-
-```java
-population.saveBinary(new File("population.bin"));
-Population.loadBinary(new File("population.bin"));
-```
-
 ## Result File
 
-Whereas the above examples show how to store a single population, a "result file" is another file format for storing
-a collection of populations along with any associated metadata.  Many of the command-line tools and the `Analyzer`
-use this file format when saving output.
+This section details the format of the "result file".  This is the format used by the `save` and `load` methods above
+to store individual populations, but the file format also allows storing a collection of populations.  This is
+especially useful when storing runtime dynamics, where a snapshot of the population is taken periodically to track
+progress over time:
 
-This format is useful for storing runtime dynamics, where we snapshot the population every few iterations.
-Additionally, it supports appending to an existing file.  When appending, the contents of the file are validated and
-any incomplete entries are cleaned up.
-
-Here is an example where we store the approximation set after each iteration of the algorithm:
-
-<!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [resultFile-overwrite] -->
+<!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [resultFile-write] -->
 
 ```java
 try (ResultFileWriter writer = ResultFileWriter.open(problem, new File("result.dat"))) {
@@ -92,8 +74,9 @@ try (ResultFileWriter writer = ResultFileWriter.open(problem, new File("result.d
 }
 ```
 
-To resume or append to an existing file, replace `overwrite` with `append`.  Note that we can query the number of
-existing entries to determine where to resume.
+One of the design considerations with result files is having the ability to resume or append data to an existing file.
+When opening a result file in append mode, as demonstrated below, we automatically validate and repair any invalid
+or incomplete entries.  Observe how we can query the number of entries to determine where to resume a previous run:
 
 <!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [resultFile-append] {KeepComments} -->
 
@@ -107,7 +90,7 @@ try (ResultFileWriter writer = ResultFileWriter.append(problem, new File("result
 
 Use the reader to validate and load the contents of a results file:
 
-<!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [resultFile-open] -->
+<!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [resultFile-read] -->
 
 ```java
 try (ResultFileReader reader = ResultFileReader.open(problem, new File("result.dat"))) {
@@ -115,31 +98,37 @@ try (ResultFileReader reader = ResultFileReader.open(problem, new File("result.d
         ResultEntry entry = reader.next();
 
         TypedProperties metadata = entry.getProperties();
-        NondominatedPopulation set = entry.getPopulation();
+        Population set = entry.getPopulation();
     }
 }
 ```
 
 > [!IMPORTANT]  
 > Since result files are automatically validated, both when reading or appending, any incomplete entries or invalid
-> data will discard any remaining content in the file.  Check the number of entries in the file to validate all content
-> was read.
+> data will be discarded.  Always validate the number of entries in the file match what is expected.
 
 ### File Format
 
 This section provides a brief overview of the structure of a result file.  The file starts with a header section
-followed by the body.  Each header line starts with `#` and contains the following information about the problem:
+followed by the body.  Each header line starts with `#` and defines the problem:
 
-```
-# Problem = Schaffer
-# Variables = 1
-# Objectives = 2
+<!-- text:pf/Schaffer.pf [1-8] -->
+
+```text
+# Version=5
+# Problem=Schaffer
+# NumberOfVariables=1
+# NumberOfObjectives=2
+# NumberOfConstraints=0
+# Variable.1.Definition=RealVariable(-10.0,10.0)
+# Objective.1.Definition=Minimize
+# Objective.2.Definition=Minimize
 ```
 
 The header is immediately followed by the body, which contains one or more entries.  Each entry consists of:
 
 1. The metadata, stored as key-value pairs in the format `//<key>=<value>`
-2. The solutions, storing the decision variables and objective values separated by whitespace
+2. The solutions, storing the decision variables, objectives, and constraint values separated by whitespace
 3. A single line containing `#` to indicate the end of the entry
 
 For example:
@@ -165,9 +154,6 @@ For example:
 0.4333809185738704 0.18781902058393168 2.45429534628845
 #
 ```
-
-Note that because the result file only stores `NondominatedPopulation`s, any infeasible solutions are automatically
-discarded and no constraint values are included.
 
 ### Command Line Tools
 

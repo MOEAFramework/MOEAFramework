@@ -143,7 +143,7 @@ try (AnalyticalProblem problem = new DTLZ2(3)) {
         archive.add(problem.generate());
     }
 
-    archive.saveObjectives(new File("DTLZ2_3_RefSet.txt"));
+    archive.save(new File("DTLZ2_3_RefSet.txt"));
 }
 ```
 

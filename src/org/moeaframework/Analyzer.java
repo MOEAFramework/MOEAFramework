@@ -526,7 +526,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 		try (Problem problem = getProblemInstance()) {
 			try (ResultFileReader reader = new ResultFileReader(problem, resultFile)) {	
 				while (reader.hasNext()) {
-					add(name, reader.next().getPopulation());
+					add(name, new NondominatedPopulation(reader.next().getPopulation()));
 				}
 			}
 		}
@@ -595,7 +595,7 @@ public class Analyzer extends ProblemBuilder implements Displayable {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public Analyzer saveReferenceSet(File file) throws IOException {
-		getReferenceSet().saveObjectives(file);
+		getReferenceSet().save(file);
 		return this;
 	}
 

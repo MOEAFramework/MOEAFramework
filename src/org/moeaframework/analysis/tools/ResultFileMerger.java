@@ -84,13 +84,14 @@ public class ResultFileMerger extends CommandLineUtility {
 			
 			File output = new File(commandLine.getOptionValue("output"));
 
+			// TODO: Remove these resultFile options
 			// output merged set
 			if (commandLine.hasOption("resultFile")) {			
 				try (ResultFileWriter writer = ResultFileWriter.open(problemRef, output)) {
 					writer.write(new ResultEntry(mergedSet));
 				}
 			} else {
-				mergedSet.saveObjectives(output);
+				mergedSet.save(output);
 			}
 
 		}

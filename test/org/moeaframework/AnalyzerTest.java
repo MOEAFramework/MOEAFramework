@@ -145,7 +145,7 @@ public class AnalyzerTest {
 		File file = TestResources.asFile("pf/DTLZ2.2D.pf");
 
 		NondominatedPopulation actual = generate().getReferenceSet();
-		NondominatedPopulation expected = new EpsilonBoxDominanceArchive(0.01, Population.loadObjectives(file));
+		NondominatedPopulation expected = new EpsilonBoxDominanceArchive(0.01, Population.load(file));
 		
 		Assert.assertEquals(expected, actual);
 	}
@@ -159,7 +159,7 @@ public class AnalyzerTest {
 				.withReferenceSet(file)
 				.getReferenceSet();
 		
-		NondominatedPopulation expected = new EpsilonBoxDominanceArchive(0.01, Population.loadObjectives(file));
+		NondominatedPopulation expected = new EpsilonBoxDominanceArchive(0.01, Population.load(file));
 		
 		Assert.assertEquals(expected, actual);
 	}

@@ -18,11 +18,11 @@
 package org.moeaframework.analysis.io;
 
 import org.moeaframework.core.TypedProperties;
-import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.core.population.Population;
 
 /**
- * An entry in a result file. This captures the non-dominated population along with properties associated with the
- * entry. The properties could include, for example, the number of function evaluations or performance metrics.
+ * An entry in a result file. This captures the population along with properties associated with the entry.  The
+ * properties could include, for example, the number of function evaluations or performance metrics.
  * 
  * @see ResultFileWriter
  * @see ResultFileReader
@@ -30,9 +30,9 @@ import org.moeaframework.core.population.NondominatedPopulation;
 public class ResultEntry {
 	
 	/**
-	 * The non-dominated population stored in this entry.
+	 * The population stored in this entry.
 	 */
-	private final NondominatedPopulation population;
+	private final Population population;
 	
 	/**
 	 * The auxiliary properties stored in this entry.
@@ -40,39 +40,39 @@ public class ResultEntry {
 	private final TypedProperties properties;
 	
 	/**
-	 * Constructs a result file entry with the specified non-dominated population.
+	 * Constructs a result file entry with the specified population.
 	 * 
-	 * @param population the non-dominated population stored in this entry
+	 * @param population the population stored in this entry
 	 */
-	public ResultEntry(NondominatedPopulation population) {
+	public ResultEntry(Population population) {
 		this(population, new TypedProperties());
 	}
 
 	/**
-	 * Constructs a result file entry with the specified non-dominated population and auxiliary properties.
+	 * Constructs a result file entry with the specified population and properties.
 	 * 
-	 * @param population the non-dominated population stored in this entry
-	 * @param properties the auxiliary properties stored in this entry
+	 * @param population the population stored in this entry
+	 * @param properties the properties stored in this entry
 	 */
-	public ResultEntry(NondominatedPopulation population, TypedProperties properties) {
+	public ResultEntry(Population population, TypedProperties properties) {
 		super();
 		this.population = population;
 		this.properties = properties;
 	}
 
 	/**
-	 * Returns the non-dominated population stored in this entry.
+	 * Returns the population stored in this entry.
 	 * 
-	 * @return the non-dominated population stored in this entry
+	 * @return the population stored in this entry
 	 */
-	public NondominatedPopulation getPopulation() {
+	public Population getPopulation() {
 		return population;
 	}
 
 	/**
-	 * Returns the auxiliary properties stored in this entry.
+	 * Returns the properties stored in this entry.
 	 * 
-	 * @return the auxiliary properties stored in this entry
+	 * @return the properties stored in this entry
 	 */
 	public TypedProperties getProperties() {
 		return properties;

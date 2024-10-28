@@ -80,7 +80,7 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 			List<NondominatedPopulation> data = new ArrayList<NondominatedPopulation>();
 
 			while (reader.hasNext()) {
-				data.add(reader.next().getPopulation());
+				data.add(new NondominatedPopulation(reader.next().getPopulation()));
 			}
 
 			return data;

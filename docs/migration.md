@@ -63,6 +63,7 @@ Consequently, the "result file" is now the preferred and only supported file for
 
 1. The supplied Pareto front files in `./pf/` are updated to use the new format
 2. The `saveObjectives` / `loadObjectives` and `saveBinary` and `loadBinary` methods for saving populations are removed.
+   Instead, simply use `save` and `load`.
 3. Maximized objectives no longer need to be negated.  The `Negater` CLI tools is also removed.
 4. CLI tools that process result files no longer accept the `--dimension` argument, as the dimension and type
    information is available in the header.
@@ -79,3 +80,13 @@ places the interface, abstract classes, and implementations all in the same pack
 
 * Genetic programming's `Problem` class hierarchy changed.  Previously, the `Program` object served as the root node
   in the program tree.  Now, the root node is accessed by calling `getRoot()` or `setRoot(...)`.
+
+  
+  
+## New Features
+
+### Streams
+
+
+### Data Store
+

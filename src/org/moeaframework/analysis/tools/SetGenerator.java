@@ -95,7 +95,7 @@ public class SetGenerator extends CommandLineUtility {
 		}
 		
 		//output set
-		set.saveObjectives(new File(commandLine.getOptionValue("output")));
+		set.save(new File(commandLine.getOptionValue("output")));
 	}
 	
 	/**

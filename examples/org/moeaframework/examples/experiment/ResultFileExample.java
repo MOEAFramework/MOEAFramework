@@ -72,7 +72,7 @@ public class ResultFileExample {
 			while (reader.hasNext()) {
 				ResultEntry entry = reader.next();
 				
-				double value = hypervolume.evaluate(entry.getPopulation());
+				double value = hypervolume.evaluate(new NondominatedPopulation(entry.getPopulation()));
 				int populationSize = entry.getProperties().getInt("populationSize");
 				
 				System.out.println("Hypervolume for populationSize=" + populationSize + " => " + value);

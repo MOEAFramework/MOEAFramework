@@ -29,6 +29,7 @@ import java.util.stream.Stream;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.indicator.Indicators.IndicatorValues;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.util.io.Tokenizer;
 import org.moeaframework.util.validate.Validate;
 
@@ -159,7 +160,7 @@ public class MetricFileWriter implements OutputWriter {
 	 */
 	@Override
 	public void write(ResultEntry entry) {
-		IndicatorValues result = indicators.apply(entry.getPopulation());
+		IndicatorValues result = indicators.apply(new NondominatedPopulation(entry.getPopulation()));
 		Metric[] metrics = Metric.values();
 		double[] values = new double[metrics.length];
 		

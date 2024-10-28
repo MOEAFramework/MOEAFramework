@@ -30,7 +30,7 @@ import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.core.population.Population;
 import org.moeaframework.core.spi.ProblemProvider;
 import org.moeaframework.core.spi.RegisteredProblemProvider;
 import org.moeaframework.mock.MockSolution;
@@ -72,8 +72,8 @@ public class ParetoFrontConverter<T> {
 		}
 	}
 	
-	private static NondominatedPopulation stripConstraints(NondominatedPopulation population) {
-		NondominatedPopulation result = new NondominatedPopulation();
+	private static Population stripConstraints(Population population) {
+		Population result = new Population();
 		
 		for (Solution solution : population) {
 			result.add(MockSolution.of().withObjectives(solution.getObjectiveValues()));

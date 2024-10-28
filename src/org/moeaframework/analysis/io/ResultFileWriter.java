@@ -25,8 +25,6 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.moeaframework.core.Constructable;
 import org.moeaframework.core.Settings;
@@ -34,6 +32,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.constraint.Constraint;
 import org.moeaframework.core.objective.Objective;
+import org.moeaframework.core.population.Population;
 import org.moeaframework.core.variable.Variable;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.ErrorHandler;
@@ -41,19 +40,17 @@ import org.moeaframework.util.NumericStringComparator;
 import org.moeaframework.util.io.LineReader;
 
 /**
- * Writes result files. A result file contains one or more entries consisting of a non-dominated population and
- * optional properties. Entries are separated by one or more consecutive lines starting with the {@code #} character.
- * Text contained on these lines after the {@code #} character are ignored.
+ * Writes result files.  A result file contains one or more entries consisting of a non-dominated population and
+ * optional properties.  Entries are separated by one or more consecutive lines starting with the {@code #} character.
+ * Text contained on these lines after the {@code "#"} character are ignored.
  * <p>
- * An entry contains two pieces of data: 1) properties which are defined on lines starting with {@code //} in the
- * same format as {@link TypedProperties}; and 2) lines containing a sequence of floating-point numbers listing,
- * in order, the real-valued decision variables and objectives. Each decision variable is separated by one or more
- * whitespace characters. Decision variables that can not be encoded appear as {@code -}. The writer will attempt to
- * output the data in a human-readable format, but falls back on Base64 encoded serialized objects to store
- * serializable variables.
+ * Each entry consists of properties, on lines starting with {@code "//"}, and solutions, on all remaining lines.
+ * Properties are stored using the same format as {@link TypedProperties#store(Writer)}.  The decision variables,
+ * objectives, and constraints for each solution are separated by whitespace.  Each decision variable is encoded using
+ * {@link Variable#encode()}.  In the event an error occurs while encoding a decision variable, {@code "-"} is written
+ * and a warning issued.  
  * <p>
- * Complete entries are always terminated by a line starting with the {@code #} character. Incomplete entries, such
- * as those with the incorrect number of decision variables or objectives, are automatically removed.
+ * Complete entries are always terminated by a line starting with the {@code #} character.
  * 
  * @see ResultFileReader
  */
@@ -137,43 +134,46 @@ public class ResultFileWriter implements OutputWriter {
 		// print header information
 		TypedProperties header = TypedProperties.newInstance();
 		header.setInt("Version", Settings.getMajorVersion());
-		header.setString("Problem", problem.getName());
-		header.setInt("NumberOfVariables", problem.getNumberOfVariables());
-		header.setInt("NumberOfObjectives", problem.getNumberOfObjectives());
-		header.setInt("NumberOfConstraints", problem.getNumberOfConstraints());
-
-		Solution prototype = problem.newSolution();
-
-		for (int i = 0; i < problem.getNumberOfVariables(); i++) {
-			try {
-				header.setString("Variable." + (i+1) + ".Definition",
-						prototype.getVariable(i).getDefinition());
-			} catch (UnsupportedOperationException e) {
-				header.setString("Variable." + (i+1) + ".Definition",
-						Constructable.createUnsupportedDefinition(Variable.class,
-								prototype.getVariable(i).getClass()));
+		
+		if (problem != null) {
+			header.setString("Problem", problem.getName());
+			header.setInt("NumberOfVariables", problem.getNumberOfVariables());
+			header.setInt("NumberOfObjectives", problem.getNumberOfObjectives());
+			header.setInt("NumberOfConstraints", problem.getNumberOfConstraints());
+	
+			Solution prototype = problem.newSolution();
+	
+			for (int i = 0; i < problem.getNumberOfVariables(); i++) {
+				try {
+					header.setString("Variable." + (i+1) + ".Definition",
+							prototype.getVariable(i).getDefinition());
+				} catch (UnsupportedOperationException e) {
+					header.setString("Variable." + (i+1) + ".Definition",
+							Constructable.createUnsupportedDefinition(Variable.class,
+									prototype.getVariable(i).getClass()));
+				}
 			}
-		}
-
-		for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-			try {
-				header.setString("Objective." + (i+1) + ".Definition",
-						prototype.getObjective(i).getDefinition());
-			} catch (UnsupportedOperationException e) {
-				header.setString("Objective." + (i+1) + ".Definition",
-						Constructable.createUnsupportedDefinition(Objective.class,
-								prototype.getObjective(i).getClass()));
+	
+			for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
+				try {
+					header.setString("Objective." + (i+1) + ".Definition",
+							prototype.getObjective(i).getDefinition());
+				} catch (UnsupportedOperationException e) {
+					header.setString("Objective." + (i+1) + ".Definition",
+							Constructable.createUnsupportedDefinition(Objective.class,
+									prototype.getObjective(i).getClass()));
+				}
 			}
-		}
-
-		for (int i = 0; i < problem.getNumberOfConstraints(); i++) {
-			try {
-				header.setString("Constraint." + (i+1) + ".Definition",
-						prototype.getConstraint(i).getDefinition());
-			} catch (UnsupportedOperationException e) {
-				header.setString("Constraint." + (i+1) + ".Definition",
-						Constructable.createUnsupportedDefinition(Constraint.class,
-								prototype.getConstraint(i).getClass()));
+	
+			for (int i = 0; i < problem.getNumberOfConstraints(); i++) {
+				try {
+					header.setString("Constraint." + (i+1) + ".Definition",
+							prototype.getConstraint(i).getDefinition());
+				} catch (UnsupportedOperationException e) {
+					header.setString("Constraint." + (i+1) + ".Definition",
+							Constructable.createUnsupportedDefinition(Constraint.class,
+									prototype.getConstraint(i).getClass()));
+				}
 			}
 		}
 
@@ -211,20 +211,12 @@ public class ResultFileWriter implements OutputWriter {
 	@Override
 	public void write(ResultEntry entry) throws IOException {		
 		numberOfEntries++;
-		
-		//generate list of all feasible solutions
-		List<Solution> feasibleSolutions = new ArrayList<Solution>();
-		
-		for (Solution solution : entry.getPopulation()) {
-			if (solution.isFeasible()) {
-				feasibleSolutions.add(solution);
-			}
-		}
-		
+
 		//ensure a non-empty entry is written
+		Population population = entry.getPopulation();
 		TypedProperties properties = entry.getProperties();
 		
-		if (feasibleSolutions.isEmpty() && ((properties == null) || (properties.isEmpty()))) {
+		if (population.isEmpty() && ((properties == null) || (properties.isEmpty()))) {
 			writer.println("//");
 		}
 
@@ -233,8 +225,8 @@ public class ResultFileWriter implements OutputWriter {
 			printProperties(properties, "//");
 		}
 		
-		if (!feasibleSolutions.isEmpty()) {
-			for (Solution solution : feasibleSolutions) {
+		if (!population.isEmpty()) {
+			for (Solution solution : population) {
 				printSolution(solution);
 			}
 		}

@@ -31,13 +31,13 @@ import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.objective.Objective;
-import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.core.variable.Variable;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.Iterators;
 
 /**
  * Converts a result file into an ARFF file that can be loaded into various data mining software (e.g.,
@@ -212,15 +212,10 @@ public class ARFFConverter extends CommandLineUtility {
 		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true);
 				ResultFileReader input = new ResultFileReader(problem, new File(commandLine.getOptionValue("input")));
 				PrintWriter output = new PrintWriter(new FileWriter(commandLine.getOptionValue("output")))) {
-			// read in the last entry from the result file
-			NondominatedPopulation population = null;
-			
-			while (input.hasNext()) {
-				population = input.next().getPopulation();
-			}
+			Population population = Iterators.last(input.iterator()).getPopulation();
 			
 			// check if the population is empty
-			if (population.isEmpty()) {
+			if (population == null || population.isEmpty()) {
 				throw new FrameworkException("population is empty, can not generate ARFF file");
 			}
 			

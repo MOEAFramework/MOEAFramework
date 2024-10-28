@@ -123,14 +123,14 @@ public class ExtractDataTest {
 				ResultFileReader resultReader = new ResultFileReader(problem, input)) {
 			Assert.assertEquals("#GenerationalDistance Hypervolume Spacing", reader.readLine());
 				
-			NondominatedPopulation population = resultReader.next().getPopulation();
+			NondominatedPopulation population = new NondominatedPopulation(resultReader.next().getPopulation());
 			IndicatorValues values = indicators.apply(population);
 			Assert.assertEquals(values.getGenerationalDistance() + " " + 
 					values.getHypervolume() + " " +
 					values.getSpacing(), 
 					reader.readLine());
 				
-			population = resultReader.next().getPopulation();
+			population = new NondominatedPopulation(resultReader.next().getPopulation());
 			values = indicators.apply(population);
 			Assert.assertEquals(values.getGenerationalDistance() + " " + 
 					values.getHypervolume() + " " +
@@ -164,10 +164,10 @@ public class ExtractDataTest {
 				ResultFileReader resultReader = new ResultFileReader(problem, input)) {
 			Assert.assertEquals("#Contribution", reader.readLine());
 				
-			NondominatedPopulation population = resultReader.next().getPopulation();
+			NondominatedPopulation population = new NondominatedPopulation(resultReader.next().getPopulation());
 			Assert.assertEquals("" + contribution.evaluate(population), reader.readLine());
 				
-			population = resultReader.next().getPopulation();
+			population = new NondominatedPopulation(resultReader.next().getPopulation());
 			Assert.assertEquals("" + contribution.evaluate(population), reader.readLine());
 				
 			Assert.assertNull(reader.readLine());
@@ -195,10 +195,10 @@ public class ExtractDataTest {
 				ResultFileReader resultReader = new ResultFileReader(problem, input)) {
 			Assert.assertEquals("#Contribution", reader.readLine());
 				
-			NondominatedPopulation population = resultReader.next().getPopulation();
+			NondominatedPopulation population = new NondominatedPopulation(resultReader.next().getPopulation());
 			Assert.assertEquals("" + contribution.evaluate(population), reader.readLine());
 				
-			population = resultReader.next().getPopulation();
+			population = new NondominatedPopulation(resultReader.next().getPopulation());
 			Assert.assertEquals("" + contribution.evaluate(population), reader.readLine());
 				
 			Assert.assertNull(reader.readLine());

@@ -170,6 +170,34 @@ public class Iterators {
 	}
 	
 	/**
+	 * Returns the last element in the iterator.
+	 * 
+	 * @param <T> the type of the iterator
+	 * @param iterator the iterator
+	 * @return the last element, or {@code null} if the iterator was empty
+	 */
+	public static <T> T last(Iterator<T> iterator) {
+		T last = null;
+		
+		while (iterator.hasNext()) {
+			last = iterator.next();
+		}
+		
+		return last;
+	}
+	
+	/**
+	 * Returns the last element in the iterable.
+	 * 
+	 * @param <T> the type of the iterable
+	 * @param iterable the iterable
+	 * @return the last element, or {@code null} if the iterable was empty
+	 */
+	public static <T> T last(Iterable<T> iterable) {
+		return last(iterable.iterator());
+	}
+	
+	/**
 	 * Associates an index to a value.
 	 * 
 	 * @param <T> the type of the value

@@ -34,7 +34,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.constraint.Constraint;
 import org.moeaframework.core.objective.Objective;
-import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.core.population.Population;
 import org.moeaframework.core.variable.Variable;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.ProblemStub;
@@ -47,10 +47,9 @@ import static org.moeaframework.analysis.io.ResultFileWriter.ENCODING_WARNING;
 /**
  * Reads result files created by {@link ResultFileWriter}.
  * <p>
- * By default, this will attempt to gracefully recover from incomplete or improperly formatted files.  Unless a serious
- * I/O error occurred, this reader will attempt to load the file to the last valid entry.  This requirement enables a
- * {@code ResultWriter} to resume processing at a valid state.  {@link #setErrorsAreFatal(boolean)} and
- * {@link #setWarningsAreFatal(boolean)} can be used to change this default behavior.
+ * By default, this reader will suppress any errors reading the contents, unless a serious I/O error occurred.
+ * Consequently, reading stops when invalid or incomplete data is detected.  Callers should use
+ * {@link #getErrorHandler()} to check if any errors occurred or to change the error handling behavior.
  * 
  * @see ResultFileWriter
  */
@@ -87,8 +86,7 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	private int version;
 	
 	/**
-	 * When set, indicates the file is using the legacy, objective-only file format produced by
-	 * {@link org.moeaframework.core.population.Population#saveObjectives(File)}.
+	 * When set, indicates the file is using the legacy, objective-only file format.
 	 */
 	private boolean legacyFormat;
 
@@ -98,9 +96,9 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	private final ErrorHandler errorHandler;
 		
 	/**
-	 * Constructs a result file reader for reading the approximation sets from the specified result file.
+	 * Constructs a result file reader for reading the contents of the specified result file.
 	 * 
-	 * @param file the file containing the results
+	 * @param file the result file
 	 * @throws IOException if an I/O error occurred
 	 */
 	public ResultFileReader(File file) throws IOException {
@@ -108,7 +106,7 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	}
 	
 	/**
-	 * Constructs a result file reader for reading the approximation sets from the specified reader.
+	 * Constructs a result file reader for reading the contents of the specified result file.
 	 * 
 	 * @param reader the reader containing the result file
 	 * @throws IOException if an I/O error occurred
@@ -118,10 +116,10 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	}
 	
 	/**
-	 * Constructs a result file reader for reading the approximation sets from the specified result file.
+	 * Constructs a result file reader for reading the contents of the specified result file.
 	 * 
 	 * @param problem the problem, if {@code null} a problem "stub" will be generated
-	 * @param file the file containing the results
+	 * @param file the result file
 	 * @throws IOException if an I/O error occurred
 	 */
 	public ResultFileReader(Problem problem, File file) throws IOException {
@@ -129,7 +127,7 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	}
 	
 	/**
-	 * Constructs a result file reader for reading the approximation sets from the specified reader.
+	 * Constructs a result file reader for reading the contents of the specified result file.
 	 * 
 	 * @param problem the problem, if {@code null} a problem "stub" will be generated
 	 * @param reader the reader containing the result file
@@ -140,14 +138,14 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	}
 
 	/**
-	 * Constructs a result file reader for reading the approximation sets from the specified result file.
+	 * Constructs a result file reader for reading the contents of the specified result file.
 	 * 
 	 * @param problem the problem, if {@code null} a problem "stub" will be generated
 	 * @param reader the reader containing the result file
 	 * @param allowLegacyFormat allows reading legacy file formats for backwards compatibility
 	 * @throws IOException if an I/O error occurred
 	 */
-	protected ResultFileReader(Problem problem, Reader reader, boolean allowLegacyFormat) throws IOException {
+	public ResultFileReader(Problem problem, Reader reader, boolean allowLegacyFormat) throws IOException {
 		super();
 		this.problem = problem;
 		this.reader = LineReader.wrap(reader);
@@ -294,7 +292,7 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	 * @throws IOException if an I/O error occurred
 	 */
 	private ResultEntry readNextEntry() throws NumberFormatException, IOException {
-		NondominatedPopulation population = new NondominatedPopulation();
+		Population population = new Population();
 		StringWriter stringBuffer = new StringWriter();
 
 		// ignore any comment lines separating entries
