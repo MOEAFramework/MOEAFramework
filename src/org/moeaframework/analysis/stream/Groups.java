@@ -36,23 +36,28 @@ public class Groups<T, K, V> extends ImmutablePartition<T, Partition<K, V>> {
 	}
 
 	public <R> Groups<T, K, R> mapEach(Function<V, R> op) {
-		return new Groups<T, K, R>(stream().map(x -> Pair.of(x.getKey(), x.getValue().map(op))));
+		return new Groups<T, K, R>(stream().map(x ->
+			Pair.of(x.getKey(), x.getValue().map(op))));
 	}
 	
 	public <R> Partition<T, R> measureEach(Function<Stream<V>, R> measure) {
-		return new ImmutablePartition<T, R>(stream().map(x -> Pair.of(x.getKey(), measure.apply(x.getValue().values().stream()))));
+		return new ImmutablePartition<T, R>(stream().map(x ->
+			Pair.of(x.getKey(), x.getValue().measure(measure))));
 	}
 	
 	public Partition<T, V> reduceEach(BinaryOperator<V> op) {
-		return new ImmutablePartition<T, V>(stream().map(x -> Pair.of(x.getKey(), x.getValue().reduce(op))));
+		return new ImmutablePartition<T, V>(stream().map(x ->
+			Pair.of(x.getKey(), x.getValue().reduce(op))));
 	}
 	
 	public Partition<T, V> reduceEach(V identity, BinaryOperator<V> op) {
-		return new ImmutablePartition<T, V>(stream().map(x -> Pair.of(x.getKey(), x.getValue().reduce(identity, op))));
+		return new ImmutablePartition<T, V>(stream().map(x ->
+			Pair.of(x.getKey(), x.getValue().reduce(identity, op))));
 	}
 	
 	public <R> Groups<T, R, Partition<K, V>> groupEachBy(Function<K, R> grouping) {
-		return new Groups<T, R, Partition<K, V>>(stream().map(x -> Pair.of(x.getKey(), x.getValue().groupBy(grouping))));
+		return new Groups<T, R, Partition<K, V>>(stream().map(x ->
+			Pair.of(x.getKey(), x.getValue().groupBy(grouping))));
 	}
 	
 }

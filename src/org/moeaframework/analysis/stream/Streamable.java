@@ -10,7 +10,7 @@ import org.apache.commons.lang3.tuple.Pair;
  * <p>
  * Data streams are built upon Java's {@link Stream} API, providing a layer for manipulating and analyzing data in
  * a succinct manner.  Any class that represents a collection of values can enable data streams by implementing this
- * interface, or extending from one of the concrete data stream types, such as {@link DataStream} or {@link Partition}.
+ * interface, or extending from one of the data stream types, such as {@link DataStream} or {@link Partition}.
  * 
  * @param <V> the type of each value in the stream
  */

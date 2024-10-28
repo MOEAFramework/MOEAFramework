@@ -98,7 +98,7 @@ public class PlotTest {
 		double[] x = IntStream.range(0, 10).mapToDouble(i -> (double)i).toArray();
 		double[] y = IntStream.range(0, 10).mapToDouble(i -> PRNG.nextDouble()).toArray();
 		
-		runTest(new Plot().histogram("Test", x, y, 0.5).setXLabel("X").setYLabel("Y"));
+		runTest(new Plot().histogram("Test", x, y).setXLabel("X").setYLabel("Y"));
 	}
 	
 	@Test

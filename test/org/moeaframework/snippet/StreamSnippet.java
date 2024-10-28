@@ -47,7 +47,7 @@ public class StreamSnippet {
 				
 		// Render line plot
 		new Plot()
-			.histogram("frequency", counts.keys(), counts.values(), 0.075)
+			.histogram("frequency", counts.keys(), counts.values())
 			.showDialog();
 		// end-example:stream
 	}

@@ -71,12 +71,19 @@ public interface Partition<K, V> extends Streamable<Pair<K, V>>, Formattable<Pai
 		return new ImmutablePartition<K, V>(stream().filter(x -> predicate.test(x.getKey())));
 	}
 
-	public default <T> Groups<T, K, V> groupBy(Function<K, T> grouping) {
+	public default <T> Groups<T, K, V> groupBy(Function<K, T> group) {
 		return new Groups<T, K, V>(stream()
-				.collect(Collectors.groupingBy(x -> grouping.apply(x.getKey())))
+				.collect(Collectors.groupingBy(x -> group.apply(x.getKey())))
 				.entrySet().stream()
 				.map(x -> Pair.of(x.getKey(), new ImmutablePartition<K, V>(x.getValue()))));
 	}
+	
+//	public default <L, R> Groups<Pair<L, R>, K, V> groupBy(Function<K, L> left, Function<K, R> right) {
+//		return new Groups<Pair<L, R>, K, V>(stream()
+//				.collect(Collectors.groupingBy(x -> Pair.of(left.apply(x.getKey()), right.apply(x.getKey()))))
+//				.entrySet().stream()
+//				.map(x -> Pair.of(x.getKey(), new ImmutablePartition<K, V>(x.getValue()))));
+//	}
 			
 	public default V reduce(BinaryOperator<V> op) {
 		return stream().map(Pair::getValue).reduce(op).get();

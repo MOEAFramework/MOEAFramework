@@ -62,8 +62,8 @@ public interface DataStream<V> extends Streamable<V>, Formattable<V> {
 		return new ImmutableDataStream<V>(stream().filter(predicate));
 	}
 	
-	public default <K> Groups<K, K, V> groupBy(Function<V, K> grouping) {
-		return keyedOn(grouping).groupBy(x -> x);
+	public default <K> Groups<K, K, V> groupBy(Function<V, K> group) {
+		return keyedOn(group).groupBy(x -> x);
 	}
 	
 	public default <K> Partition<K, V> keyedOn(Function<V, K> key) {

@@ -17,17 +17,10 @@
  */
 package org.moeaframework.examples.plots;
 
-import java.util.List;
+import java.util.stream.IntStream;
 
-import org.apache.commons.lang3.tuple.Triple;
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.analysis.parameter.Enumeration;
-import org.moeaframework.analysis.parameter.Parameter;
-import org.moeaframework.analysis.parameter.ParameterSet;
 import org.moeaframework.analysis.plot.Plot;
-import org.moeaframework.analysis.sample.Sample;
-import org.moeaframework.analysis.sample.SampledResults;
-import org.moeaframework.analysis.sample.Samples;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.DTLZ.DTLZ2;
@@ -43,28 +36,24 @@ public class PlotControlMap {
 		Problem problem = new DTLZ2(2);
 		Hypervolume hypervolume = new Hypervolume(problem, NondominatedPopulation.loadReferenceSet("./pf/DTLZ2.2D.pf"));
 		
-		Enumeration<Integer> maxEvaluations = Parameter.named("maxEvaluations").asInt().range(100, 5000, 100);
-		Enumeration<Integer> populationSize = Parameter.named("populationSize").asInt().range(2, 100, 4);
+		double[] x = IntStream.range(0, 50).mapToDouble(i -> 100 * (i+1)).toArray(); // maxEvaluations from 100 to 5000
+		double[] y = IntStream.range(0, 50).mapToDouble(i -> 4 * (i+1)).toArray();   // populationSize from 2 to 100
+		double[][] z = new double[x.length][y.length];
 
-		ParameterSet parameters = new ParameterSet(maxEvaluations, populationSize);
-		Samples samples = parameters.enumerate();
-		
-		SampledResults<Double> results = new SampledResults<>(parameters);
+		for (int i = 0; i < x.length; i++) {
+			for (int j = 0; j < y.length; j++) {
+				System.out.println("Evaluating run " + (i * y.length + j + 1) + " of " + (x.length * y.length));
 				
-		for (Sample sample : samples) {
-			NSGAII algorithm = new NSGAII(problem);
-			algorithm.setInitialPopulationSize(sample.get(populationSize));
-			algorithm.run(sample.get(maxEvaluations));
-			
-			results.add(sample, hypervolume.evaluate(algorithm.getResult()));
+				NSGAII algorithm = new NSGAII(problem);
+				algorithm.setInitialPopulationSize((int)y[j]);
+				algorithm.run((int)x[i]);
+				
+				z[i][j] = hypervolume.evaluate(algorithm.getResult());
+			}
 		}
 		
-		// TODO: Return a better data type?
-		Triple<List<Integer>, List<Integer>, List<List<Double>>> projection =
-				results.project(maxEvaluations, populationSize);
-		
 		new Plot()
-			.heatMap("Hypervolume", projection.getLeft(), projection.getMiddle(), projection.getRight())
+			.heatMap("Hypervolume", x, y, z)
 			.setXLabel("Max Evaluations")
 			.setYLabel("Population Size")
 			.show();

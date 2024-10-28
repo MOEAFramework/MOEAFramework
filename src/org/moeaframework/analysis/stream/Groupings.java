@@ -2,6 +2,7 @@ package org.moeaframework.analysis.stream;
 
 import java.util.function.Function;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.moeaframework.analysis.parameter.Parameter;
 import org.moeaframework.analysis.sample.Sample;
 import org.moeaframework.util.validate.Validate;
@@ -10,6 +11,10 @@ public class Groupings{
 	
 	private Groupings() {
 		super();
+	}
+	
+	public static <T, L, R> Function<T, Pair<L, R>> pair(Function<T, L> left, Function<T, R> right) {
+		return x -> Pair.of(left.apply(x), right.apply(x));
 	}
 	
 	public static <T> Function<Sample, T> exactValue(Parameter<T> parameter) {

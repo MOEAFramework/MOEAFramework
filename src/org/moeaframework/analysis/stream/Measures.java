@@ -8,7 +8,13 @@ import org.apache.commons.math3.stat.descriptive.StatisticalSummary;
 import org.apache.commons.math3.stat.descriptive.rank.Median;
 import org.apache.commons.math3.stat.descriptive.rank.Percentile;
 
-// For the sake of simplicity, we assume all streams contain at least one element.
+/**
+ * Standard collection of measurement functions.
+ * <p>
+ * <b>Implementation note:</b> All functions assume the underlying stream contains at least one element, otherwise
+ * {@link java.util.NoSuchElementException} is thrown.  This simplifies the interface since we don't need to return
+ * {@link java.util.Optional} when it's most likely not necessary.
+ */
 public class Measures {
 	
 	private Measures() {

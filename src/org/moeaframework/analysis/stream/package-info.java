@@ -17,6 +17,6 @@
  */
 
 /**
- * Extends Java's {@link java.util.stream.Stream} API providing methods tailored to numerical data.
+ * Streaming API for manipulating and analyzing data.
  */
 package org.moeaframework.analysis.stream;

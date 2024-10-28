@@ -738,11 +738,10 @@ public class Plot {
 	 * @param label the label for the series
 	 * @param x the x values
 	 * @param y the y values
-	 * @param barWidth the width of the bars
 	 * @return a reference to this instance
 	 */
-	public Plot histogram(String label, double[] x, double[] y, double barWidth) {
-		return histogram(label, toList(x), toList(y), barWidth);
+	public Plot histogram(String label, double[] x, double[] y) {
+		return histogram(label, toList(x), toList(y));
 	}
 	
 	/**
@@ -751,11 +750,10 @@ public class Plot {
 	 * @param label the label for the series
 	 * @param x the x values
 	 * @param y the y values
-	 * @param barWidth the width of the bars
 	 * @return a reference to this instance
 	 */
-	public Plot histogram(String label, List<? extends Number> x, List<? extends Number> y, double barWidth) {
-		return histogram(label, x, y, barWidth, null);
+	public Plot histogram(String label, List<? extends Number> x, List<? extends Number> y) {
+		return histogram(label, x, y, null);
 	}
 	
 	/**
@@ -765,11 +763,10 @@ public class Plot {
 	 * @param label the label for the series
 	 * @param x the x values
 	 * @param y the y values
-	 * @param barWidth the width of the bars
 	 * @param dataset the dataset, or {@code null} if a new dataset should be created
 	 * @return a reference to this instance
 	 */
-	private Plot histogram(String label, List<? extends Number> x, List<? extends Number> y, double barWidth,
+	private Plot histogram(String label, List<? extends Number> x, List<? extends Number> y,
 			XYSeriesCollection dataset) {
 		if (dataset == null) {
 			createHistogramPlot();
@@ -779,13 +776,17 @@ public class Plot {
 
 		// generate the dataset
 		XYSeries series = new XYSeries(label, false, false);
+		double minX = Double.MAX_VALUE;
+		double maxX = Double.MIN_VALUE;
 		
 		for (int i = 0; i < x.size(); i++) {
 			series.add(x.get(i), y.get(i));
+			minX = Math.min(minX, x.get(i).doubleValue());
+			maxX = Math.max(maxX, x.get(i).doubleValue());
 		}
 
 		dataset.addSeries(series);
-		dataset.setIntervalWidth(barWidth);
+		dataset.setIntervalWidth(0.75 * (maxX - minX) / x.size());
 
 		// add the dataset to the plot
 		XYPlot plot = chart.getXYPlot();
