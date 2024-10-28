@@ -169,7 +169,7 @@ Outputs the number of approximation sets stored in a result file.  The following
 
 ```
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileMerger [-b <name>] [-e <e1,e2,...>] [-h] -o
-       <file> [-r]
+       <file>
 
 Merges the approximation sets contained in one or more result files to produce the combined reference set.  The
 following options are available:
@@ -178,7 +178,6 @@ following options are available:
  -e,--epsilon <e1,e2,...>   Epsilon values for epsilon-dominance
  -h,--help                  Display help information
  -o,--output <file>         Output file containing the merged set
- -r,--resultFile            Output result file instead of reference set
 ```
 
 ## ResultFileSeedMerger

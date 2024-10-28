@@ -183,7 +183,7 @@ public class ResultFileWriterTest {
 		TypedProperties properties = new TypedProperties();
 		properties.setString("foo", "bar");
 		
-		try (ResultFileWriter writer = new ResultFileWriter(problem, file)) {
+		try (ResultFileWriter writer = ResultFileWriter.open(problem, file)) {
 			writer.setExcludeVariables(true);
 			writer.write(new ResultEntry(population, properties));
 		}

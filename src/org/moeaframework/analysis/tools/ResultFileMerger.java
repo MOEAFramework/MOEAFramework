@@ -55,9 +55,6 @@ public class ResultFileMerger extends CommandLineUtility {
 				.argName("file")
 				.required()
 				.build());
-		options.addOption(Option.builder("r")
-				.longOpt("resultFile")
-				.build());
 		
 		return options;
 	}
@@ -84,16 +81,10 @@ public class ResultFileMerger extends CommandLineUtility {
 			
 			File output = new File(commandLine.getOptionValue("output"));
 
-			// TODO: Remove these resultFile options
 			// output merged set
-			if (commandLine.hasOption("resultFile")) {			
-				try (ResultFileWriter writer = ResultFileWriter.open(problemRef, output)) {
-					writer.write(new ResultEntry(mergedSet));
-				}
-			} else {
-				mergedSet.save(output);
+			try (ResultFileWriter writer = ResultFileWriter.open(problemRef, output)) {
+				writer.write(new ResultEntry(mergedSet));
 			}
-
 		}
 	}
 	

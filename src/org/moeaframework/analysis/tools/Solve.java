@@ -450,8 +450,8 @@ public class Solve extends CommandLineUtility {
 					problem);
 
 			try (ResultFileWriter writer = ResultFileWriter.open(problem, file)) {
-				algorithm.addExtension(new RuntimeCollectorExtension(writer,
-						runtimeFrequency, FrequencyType.EVALUATIONS));
+				algorithm.addExtension(new RuntimeCollectorExtension(writer, runtimeFrequency,
+						FrequencyType.EVALUATIONS));
 				algorithm.run(maxEvaluations);
 			}
 		} catch (ParseException e) {
