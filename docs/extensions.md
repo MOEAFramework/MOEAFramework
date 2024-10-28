@@ -82,7 +82,7 @@ algorithm.run(100000);
 The callback extension allows running arbitrary commands after each step.  Observe in this example how we can write
 custom log messages:
 
-<!-- java:examples/org/moeaframework/examples/extensions/CallbackExtensionExample.java [32:40] -->
+<!-- java:examples/org/moeaframework/examples/extensions/CallbackExtensionExample.java [33:41] -->
 
 ```java
 NSGAII algorithm = new NSGAII(new Srinivas());
