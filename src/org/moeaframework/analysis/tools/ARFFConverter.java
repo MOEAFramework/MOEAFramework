@@ -20,9 +20,7 @@ package org.moeaframework.analysis.tools;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -30,6 +28,7 @@ import org.apache.commons.cli.Options;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.constraint.Constraint;
 import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.core.variable.EncodingUtils;
@@ -72,13 +71,6 @@ public class ARFFConverter extends CommandLineUtility {
 				.argName("file")
 				.required()
 				.build());
-		options.addOption(Option.builder("r")
-				.longOpt("reduced")
-				.build());
-		options.addOption(Option.builder("n")
-				.longOpt("names")
-				.hasArg()
-				.build());
 		
 		return options;
 	}
@@ -87,19 +79,12 @@ public class ARFFConverter extends CommandLineUtility {
 	 * Prints the header lines to the ARFF file.
 	 * 
 	 * @param problem the problem
-	 * @param reduced {@code true} if the decision variables are suppressed; {@code false} if they are written to the
-	 *        output file
-	 * @param attributes the names of the decision variables and/or objectives; the length must match the number of
-	 *        variables, objectives, or both, otherwise default names are used
 	 * @param writer the writer where the output is written
 	 */
-	private void printHeader(Problem problem, boolean reduced, List<String> attributes, PrintWriter writer) {
+	private void printHeader(Problem problem, PrintWriter writer) {
 		int numberOfVariables = problem.getNumberOfVariables();
 		int numberOfObjectives = problem.getNumberOfObjectives();
-		
-		if (reduced) {
-			numberOfVariables = 0;
-		}
+		int numberOfConstraints = problem.getNumberOfConstraints();
 		
 		Solution prototype = problem.newSolution();
 		
@@ -109,43 +94,23 @@ public class ARFFConverter extends CommandLineUtility {
 		writer.print(problem.getName());
 		writer.println("\"");
 		
-		if (attributes.size() == numberOfObjectives) {
-			for (int i = 0; i < numberOfVariables; i++) {
-				writer.print("@ATTRIBUTE ");
-				writer.print(Variable.getNameOrDefault(prototype.getVariable(i), i));
-				writer.println(" NUMERIC");
-			}
+		for (int i = 0; i < numberOfVariables; i++) {
+			writer.print("@ATTRIBUTE ");
+			writer.print(Variable.getNameOrDefault(prototype.getVariable(i), i));
+			writer.println(" NUMERIC");
+		}
 			
-			for (int i = 0; i < numberOfObjectives; i++) {
-				writer.print("@ATTRIBUTE ");
-				writer.print(attributes.get(i));
-				writer.println(" NUMERIC");
-			}
-		} else if (attributes.size() == numberOfVariables + numberOfObjectives) {
-			for (int i = 0; i < numberOfVariables + numberOfObjectives; i++) {
-				writer.print("@ATTRIBUTE ");
-				writer.print(attributes.get(i));
-				writer.println(" NUMERIC");
-			}
-		} else {
-			if (!attributes.isEmpty()) {
-				System.err.println("incorrect number of names, using defaults");
-			}
-			
-			for (int i = 0; i < numberOfVariables; i++) {
-				writer.print("@ATTRIBUTE ");
-				writer.print(Variable.getNameOrDefault(prototype.getVariable(i), i));
-				writer.println(" NUMERIC");
-			}
-			
-			for (int i = 0; i < numberOfObjectives; i++) {
-				writer.print("@ATTRIBUTE ");
-				writer.print(Objective.getNameOrDefault(prototype.getObjective(i), i));
-				writer.println(" NUMERIC");
-			}
+		for (int i = 0; i < numberOfObjectives; i++) {
+			writer.print("@ATTRIBUTE ");
+			writer.print(Objective.getNameOrDefault(prototype.getObjective(i), i));
+			writer.println(" NUMERIC");
 		}
 		
-		// TODO: Write constraints
+		for (int i = 0; i < numberOfConstraints; i++) {
+			writer.print("@ATTRIBUTE ");
+			writer.print(Constraint.getNameOrDefault(prototype.getConstraint(i), i));
+			writer.println(" NUMERIC");
+		}
 		
 		writer.println("@DATA");
 	}
@@ -154,22 +119,19 @@ public class ARFFConverter extends CommandLineUtility {
 	 * Prints the given population as the ARFF data section.
 	 * 
 	 * @param problem the problem
-	 * @param reduced {@code true} if the decision variables are suppressed; {@code false} if they are written to the
-	 *        output file
 	 * @param population the population to write
 	 * @param writer the writer where the output is written
 	 */
-	private void printData(Problem problem, boolean reduced, Population population, PrintWriter writer) {
+	private void printData(Problem problem, Population population, PrintWriter writer) {
 		int numberOfVariables = problem.getNumberOfVariables();
 		int numberOfObjectives = problem.getNumberOfObjectives();
-		
-		if (reduced) {
-			numberOfVariables = 0;
-		}
+		int numberOfConstraints = problem.getNumberOfConstraints();
 		
 		for (Solution solution : population) {
+			boolean includeSeparator = false;
+
 			for (int i = 0; i < numberOfVariables; i++) {
-				if (i > 0) {
+				if (includeSeparator) {
 					writer.print(",");
 				}
 					
@@ -178,14 +140,26 @@ public class ARFFConverter extends CommandLineUtility {
 				} else {
 					writer.print("?");
 				}
+				
+				includeSeparator = true;
 			}
 			
 			for (int i = 0; i < numberOfObjectives; i++) {
-				if ((i > 0) || (numberOfVariables > 0)) {
+				if (includeSeparator) {
 					writer.print(",");
 				}
 				
 				writer.print(solution.getObjective(i).getValue());
+				includeSeparator = true;
+			}
+			
+			for (int i = 0; i < numberOfConstraints; i++) {
+				if (includeSeparator) {
+					writer.print(",");
+				}
+				
+				writer.print(solution.getConstraint(i).getValue());
+				includeSeparator = true;
 			}
 			
 			writer.println();
@@ -194,21 +168,6 @@ public class ARFFConverter extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
-		boolean reduced = false;
-		List<String> attributes = new ArrayList<String>();
-		
-		if (commandLine.hasOption("reduced")) {
-			reduced = true;
-		}
-		
-		if (commandLine.hasOption("names")) {
-			String[] names = commandLine.getOptionValue("names").split(",");
-			
-			for (String name : names) {
-				attributes.add(name.trim());
-			}
-		}
-		
 		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true);
 				ResultFileReader input = new ResultFileReader(problem, new File(commandLine.getOptionValue("input")));
 				PrintWriter output = new PrintWriter(new FileWriter(commandLine.getOptionValue("output")))) {
@@ -220,8 +179,8 @@ public class ARFFConverter extends CommandLineUtility {
 			}
 			
 			// write the ARFF file
-			printHeader(input.getProblem(), reduced, attributes, output);
-			printData(input.getProblem(), reduced, population, output);
+			printHeader(input.getProblem(), output);
+			printData(input.getProblem(), population, output);
 		}
 	}
 	

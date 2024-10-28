@@ -29,17 +29,14 @@ Calculates the best, attainment, efficiency and controllability metrics.  The fo
 <!-- help:src/org/moeaframework/analysis/tools/ARFFConverter.java [:-2] -->
 
 ```
-usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ARFFConverter [-b <name>] [-h] -i <file> [-n <arg>] -o
-       <file> [-r]
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ARFFConverter [-b <name>] [-h] -i <file> -o <file>
 
 Converts a result file into an ARFF file.  The following options are available:
 
  -b,--problem <name>   Problem name
  -h,--help             Display help information
  -i,--input <file>     Input file
- -n,--names <arg>      Names of the variables and objectives
  -o,--output <file>    Output file
- -r,--reduced          Only output objectives
 ```
 
 ## BuildProblem
