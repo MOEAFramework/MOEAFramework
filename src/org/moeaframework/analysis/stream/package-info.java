@@ -18,5 +18,10 @@
 
 /**
  * Streaming API for manipulating and analyzing data.
+ * <p>
+ * This API is inspired by Java's {@link java.util.stream.Stream} API, and uses it under the covers, with a few
+ * modifications.  First and foremost, Java streams only allow one sequence of operations per stream, as it only
+ * evaluates the results when reaching a terminal operation.  This code, instead, materializes the intermediate result
+ * after each operation.
  */
 package org.moeaframework.analysis.stream;

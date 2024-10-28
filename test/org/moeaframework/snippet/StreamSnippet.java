@@ -18,19 +18,13 @@
 package org.moeaframework.snippet;
 
 import org.junit.Test;
-import org.moeaframework.Executor;
-import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.analysis.plot.Plot;
 import org.moeaframework.analysis.stream.DataStream;
 import org.moeaframework.analysis.stream.Groupings;
 import org.moeaframework.analysis.stream.Measures;
 import org.moeaframework.analysis.stream.Partition;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.population.NondominatedPopulation;
-import org.moeaframework.problem.CEC2009.UF1;
-import org.moeaframework.problem.Problem;
 
-@SuppressWarnings("unused")
 public class StreamSnippet {
 
 	@Test

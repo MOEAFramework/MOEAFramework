@@ -17,19 +17,22 @@
  */
 package org.moeaframework.analysis.sample;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+
 import org.apache.commons.lang3.tuple.Pair;
-import org.moeaframework.analysis.parameter.EnumeratedParameter;
 import org.moeaframework.analysis.parameter.Parameter;
 import org.moeaframework.analysis.parameter.ParameterSet;
-import org.moeaframework.analysis.stream.ImmutablePartition;
-import org.moeaframework.analysis.stream.MutablePartition;
 import org.moeaframework.analysis.stream.Partition;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.TabularData;
 
-public class SampledResults<T> extends MutablePartition<Sample, T> {
+public class SampledResults<T> implements Partition<Sample, T> {
 
 	private final ParameterSet parameterSet;
+	
+	private final List<Pair<Sample, T>> results;
 		
 	public SampledResults(Samples samples) {
 		this(samples.getParameterSet());
@@ -38,23 +41,21 @@ public class SampledResults<T> extends MutablePartition<Sample, T> {
 	public SampledResults(ParameterSet parameterSet) {
 		super();
 		this.parameterSet = parameterSet;
+		this.results = new ArrayList<>();
 	}
 	
-	public <V> Partition<V, T> project(EnumeratedParameter<V> parameter) {
-		return new ImmutablePartition<V, T>(parameter.values().stream()
-			.map(x -> Pair.of(x, filter(y -> parameter.readValue(y).equals(x)).any().getValue())));
+	public void add(Sample sample, T result) {
+		results.add(Pair.of(sample, result));
 	}
 	
-	public <L, R> Partition<Pair<L, R>, T> project(EnumeratedParameter<L> left, EnumeratedParameter<R> right) {
-		return new ImmutablePartition<Pair<L, R>, T>(left.values().stream().flatMap(l ->
-			right.values().stream().map(r ->
-				Pair.of(Pair.of(l, r), filter(x ->
-					left.readValue(x).equals(l) && right.readValue(x).equals(r)).any().getValue()))));
+	@Override
+	public Stream<Pair<Sample, T>> stream() {
+		return results.stream();
 	}
 
 	@Override
 	public TabularData<Pair<Sample, T>> asTabularData() {
-		TabularData<Pair<Sample, T>> table = new TabularData<Pair<Sample, T>>(content);
+		TabularData<Pair<Sample, T>> table = new TabularData<Pair<Sample, T>>(results);
 		
 		for (Parameter<?> parameter : parameterSet) {
 			table.addColumn(new Column<Pair<Sample, T>, Object>(parameter.getName(),
