@@ -71,7 +71,7 @@ public class ParameterSampleExample {
 				.groupBy(Groupings.exactValue(populationSize))
 				.measureEach(Measures.average())
 				.sorted();
-				
+		
 		// Display plot
 		new Plot()
 			.line("Average", avgHypervolume)

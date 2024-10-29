@@ -23,6 +23,11 @@ import java.util.stream.Stream;
 
 import org.moeaframework.util.Iterators;
 
+/**
+ * A data stream storing the intermediate, materialized content of the stream.
+ * 
+ * @param <V> the type of each value in the data stream
+ */
 public class ImmutableDataStream<V> implements DataStream<V> {
 	
 	protected final List<V> content;

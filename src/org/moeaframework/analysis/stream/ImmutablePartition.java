@@ -24,6 +24,11 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.tuple.Pair;
 import org.moeaframework.util.Iterators;
 
+/**
+ * A partition storing the intermediate, materialized content of the stream.
+ * 
+ * @param <V> the type of each value in the partition
+ */
 public class ImmutablePartition<K, V> implements Partition<K, V> {
 	
 	protected final List<Pair<K, V>> content;

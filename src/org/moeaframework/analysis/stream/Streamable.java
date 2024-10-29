@@ -23,8 +23,11 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.tuple.Pair;
 
 /**
- * Interface for classes that support data streams.  Classes can implement one of the data structures, such as
- * {@link DataStream} or {@link Partition} directly, or this interface as an entry point for using data streams.
+ * Interface for classes that support data streams.
+ * <p>
+ * Classes are not necessarily required to implement this interface.  They can alternatively extend one of the existing
+ * data structures, such as {@link DataStream} or {@link Partition} directly, or use one of the static {@code of(...)}
+ * methods in the aforementioned classes to convert a collection into a data stream.
  * 
  * @param <V> the type of each value in the stream
  */

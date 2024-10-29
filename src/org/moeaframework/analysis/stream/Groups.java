@@ -26,37 +26,39 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.tuple.Pair;
 
 /**
- * Groups items together by a key.
+ * Groups items together using a "grouping key".  This grouping key can be the same as, or different from, the key
+ * found in the {@link Partition}.
  * 
- * @param <T> the type of the grouping key
+ * @param <G> the type of the grouping key
  * @param <K> the original key type
  * @param <V> the type of each value
  */
-public class Groups<T, K, V> extends ImmutablePartition<T, Partition<K, V>> {
+public class Groups<G, K, V> extends ImmutablePartition<G, Partition<K, V>> {
 	
-	public Groups(List<Pair<T, Partition<K, V>>> content) {
+	public Groups(List<Pair<G, Partition<K, V>>> content) {
 		super(content);
 	}
 
-	public Groups(Stream<Pair<T, Partition<K, V>>> stream) {
+	public Groups(Stream<Pair<G, Partition<K, V>>> stream) {
 		this(stream.toList());
 	}
 	
-	public Groups(DataStream<Pair<T, Partition<K, V>>> dataStream) {
+	public Groups(DataStream<Pair<G, Partition<K, V>>> dataStream) {
 		this(dataStream.stream());
 	}
 	
-	public Partition<K, V> get(T key) {
+	public Partition<K, V> get(G key) {
 		return stream().filter(x -> x.getKey().equals(key)).findAny().get().getValue();
 	}
 	
 	@Override
-	public Groups<T, K, V> sorted() {
-		return new Groups<T, K, V>(stream().sorted());
+	public Groups<G, K, V> sorted() {
+		return new Groups<G, K, V>(stream().sorted());
 	}
 	
-	public Groups<T, K, V> sorted(Comparator<T> comparator) {
-		return new Groups<T, K, V>(stream().sorted((x, y) ->
+	@Override
+	public Groups<G, K, V> sorted(Comparator<G> comparator) {
+		return new Groups<G, K, V>(stream().sorted((x, y) ->
 			comparator.compare(x.getKey(), y.getKey())));
 	}
 
@@ -67,28 +69,57 @@ public class Groups<T, K, V> extends ImmutablePartition<T, Partition<K, V>> {
 	 * @param map the map function
 	 * @return the groups after applying the map function
 	 */
-	public <R> Groups<T, K, R> mapEach(Function<V, R> map) {
-		return new Groups<T, K, R>(stream().map(x ->
+	public <R> Groups<G, K, R> mapEach(Function<V, R> map) {
+		return new Groups<G, K, R>(stream().map(x ->
 			Pair.of(x.getKey(), x.getValue().map(map))));
 	}
 	
-	public <R> Partition<T, R> measureEach(Function<Stream<V>, R> measure) {
-		return new ImmutablePartition<T, R>(stream().map(x ->
+	/**
+	 * Equivalent to calling {@link Partition#measure(Function)} on each group, keeping the grouping intact.
+	 * 
+	 * @param <R> the result type
+	 * @param measure the measurement function
+	 * @return the groups after applying the measurement function
+	 */
+	public <R> Partition<G, R> measureEach(Function<Stream<V>, R> measure) {
+		return new ImmutablePartition<G, R>(stream().map(x ->
 			Pair.of(x.getKey(), x.getValue().measure(measure))));
 	}
 	
-	public Partition<T, V> reduceEach(BinaryOperator<V> op) {
-		return new ImmutablePartition<T, V>(stream().map(x ->
+	/**
+	 * Equivalent to calling {@link Partition#reduce(BinaryOperator)} on each group, keeping the grouping intact.
+	 * 
+	 * @param <V> the result type
+	 * @param op the reduction operator
+	 * @return the groups after applying the reduction operator
+	 */
+	public Partition<G, V> reduceEach(BinaryOperator<V> op) {
+		return new ImmutablePartition<G, V>(stream().map(x ->
 			Pair.of(x.getKey(), x.getValue().reduce(op))));
 	}
 	
-	public Partition<T, V> reduceEach(V identity, BinaryOperator<V> op) {
-		return new ImmutablePartition<T, V>(stream().map(x ->
+	/**
+	 * Equivalent to calling {@link Partition#reduce(Object, BinaryOperator)} on each group, keeping the grouping
+	 * intact.
+	 * 
+	 * @param <V> the result type
+	 * @param op the reduction operator
+	 * @return the groups after applying the reduction operator
+	 */
+	public Partition<G, V> reduceEach(V identity, BinaryOperator<V> op) {
+		return new ImmutablePartition<G, V>(stream().map(x ->
 			Pair.of(x.getKey(), x.getValue().reduce(identity, op))));
 	}
 	
-	public <R> Groups<T, R, Partition<K, V>> groupEachBy(Function<K, R> grouping) {
-		return new Groups<T, R, Partition<K, V>>(stream().map(x ->
+	/**
+	 * Equivalent to calling {@link Partition#groupBy(Function)} on each group, keeping the grouping intact.
+	 * 
+	 * @param <V> the result type
+	 * @param grouping the grouping function
+	 * @return the groups after applying the grouping function
+	 */
+	public <R> Groups<G, R, Partition<K, V>> groupEachBy(Function<K, R> grouping) {
+		return new Groups<G, R, Partition<K, V>>(stream().map(x ->
 			Pair.of(x.getKey(), x.getValue().groupBy(grouping))));
 	}
 	
