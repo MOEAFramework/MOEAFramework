@@ -30,6 +30,10 @@ import java.util.Map.Entry;
 /**
  * Utility methods for serialization, primarily to assist in serializing collections in a type-safe manner and avoiding
  * unchecked casts.
+ * <p>
+ * This utility does not guarantee the exact type of collection is returned during deserialization, only its interface.
+ * For example, if a {@link TreeMap} is serialized, only assume the deserialized object is a {@link Map}.  If a
+ * specific type is required, callers will need to explicitly construct that type.
  */
 public class SerializationUtils {
 
