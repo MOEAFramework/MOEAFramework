@@ -656,7 +656,7 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, Co
 	@Override
 	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		data.clear();
-		data.addAll(SerializationUtils.readList(Solution.class, stream));
+		data.addAll(SerializationUtils.readList(Solution.class, ArrayList::new, stream));
 	}
 
 }

@@ -22,6 +22,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +43,7 @@ public class SerializationUtilsTest {
 			
 			try (ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
 					ObjectInputStream ois = new ObjectInputStream(bais)) {
-				List<String> actual = SerializationUtils.readList(String.class, ois);
+				List<String> actual = SerializationUtils.readList(String.class, ArrayList::new, ois);
 				Assert.assertEquals(expected, actual);
 			}
 		}
@@ -58,7 +60,7 @@ public class SerializationUtilsTest {
 			
 			try (ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
 					ObjectInputStream ois = new ObjectInputStream(bais)) {
-				Map<String, Integer> actual = SerializationUtils.readMap(String.class, Integer.class, ois);
+				Map<String, Integer> actual = SerializationUtils.readMap(String.class, Integer.class, HashMap::new, ois);
 				Assert.assertEquals(expected, actual);
 			}
 		}
@@ -75,7 +77,7 @@ public class SerializationUtilsTest {
 			
 			try (ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
 					ObjectInputStream ois = new ObjectInputStream(bais)) {
-				SerializationUtils.readList(Integer.class, ois);
+				SerializationUtils.readList(Integer.class, ArrayList::new, ois);
 			}
 		}
 	}

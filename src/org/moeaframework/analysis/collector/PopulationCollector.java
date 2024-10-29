@@ -17,7 +17,7 @@
  */
 package org.moeaframework.analysis.collector;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import org.moeaframework.algorithm.EvolutionaryAlgorithm;
 import org.moeaframework.core.Solution;
@@ -74,8 +74,8 @@ public class PopulationCollector implements Collector {
 	 * @return the population
 	 */
 	public static Population getPopulation(Observation observation) {
-		List<Solution> solutions = SerializationUtils.castList(Solution.class, observation.get("Population"));
-		return new Population(solutions);
+		return new Population(SerializationUtils.castList(Solution.class, ArrayList::new,
+				observation.get("Population")));
 	}
 
 }

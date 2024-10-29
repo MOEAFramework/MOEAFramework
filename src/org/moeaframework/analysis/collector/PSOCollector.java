@@ -17,6 +17,7 @@
  */
 package org.moeaframework.analysis.collector;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.moeaframework.algorithm.pso.AbstractPSOAlgorithm;
@@ -75,7 +76,7 @@ public class PSOCollector implements Collector {
 	 * @return the list of particles
 	 */
 	public static List<Solution> getParticles(Observation observation) {
-		return SerializationUtils.castList(Solution.class, observation.get("Particles"));
+		return SerializationUtils.castList(Solution.class, ArrayList::new, observation.get("Particles"));
 	}
 	
 	/**
@@ -85,7 +86,7 @@ public class PSOCollector implements Collector {
 	 * @return the list of local-best particles
 	 */
 	public static List<Solution> getLocalBestParticles(Observation observation) {
-		return SerializationUtils.castList(Solution.class, observation.get("LocalBestParticles"));
+		return SerializationUtils.castList(Solution.class, ArrayList::new, observation.get("LocalBestParticles"));
 	}
 	
 	/**
@@ -95,7 +96,7 @@ public class PSOCollector implements Collector {
 	 * @return the list of leaders
 	 */
 	public static List<Solution> getLeaders(Observation observation) {
-		return SerializationUtils.castList(Solution.class, observation.get("Leaders"));
+		return SerializationUtils.castList(Solution.class, ArrayList::new, observation.get("Leaders"));
 	}
 
 }

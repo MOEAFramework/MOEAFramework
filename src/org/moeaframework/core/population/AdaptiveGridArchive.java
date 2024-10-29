@@ -393,7 +393,7 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 		super.loadState(stream);
 		minimum = (double[])stream.readObject();
 		maximum = (double[])stream.readObject();
-		density = SerializationUtils.readMap(Integer.class, Integer.class, stream);
+		density = SerializationUtils.readMap(Integer.class, Integer.class, HashMap::new, stream);
 	}
 
 }

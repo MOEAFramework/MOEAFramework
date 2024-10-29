@@ -17,7 +17,7 @@
  */
 package org.moeaframework.analysis.collector;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.core.Epsilons;
@@ -102,8 +102,8 @@ public class ApproximationSetCollector implements Collector {
 	 * @return the approximation set
 	 */
 	public static NondominatedPopulation getApproximationSet(Observation observation) {
-		List<Solution> solutions = SerializationUtils.castList(Solution.class, observation.get("Approximation Set"));
-		return new NondominatedPopulation(solutions);
+		return new NondominatedPopulation(SerializationUtils.castList(Solution.class, ArrayList::new,
+				observation.get("Approximation Set")));
 	}
 
 }

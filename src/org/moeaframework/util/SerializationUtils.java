@@ -22,18 +22,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Supplier;
 
 /**
  * Utility methods for serialization, primarily to assist in serializing collections in a type-safe manner and avoiding
  * unchecked casts.
- * <p>
- * This utility does not guarantee the exact type of collection is returned during deserialization, only its interface.
- * For example, if a {@link TreeMap} is serialized, only assume the deserialized object is a {@link Map}.  If a
- * specific type is required, callers will need to explicitly construct that type.
  */
 public class SerializationUtils {
 
@@ -59,18 +55,21 @@ public class SerializationUtils {
 	}
 	
 	/**
-	 * Casts a list with the wildcard {@code <?>} type to a typed list, ensuring each element is if the correct type.
+	 * Casts an object, typically produced via deserialization, to a typed list.
 	 * 
-	 * @param <T> the type of the list
+	 * @param <V> the type of the values
+	 * @param <T> the return type
 	 * @param type the expected type of each element in the list
-	 * @param list the original list of unknown type
+	 * @param generator a supplier responsible for creating an empty list
+	 * @param object the object, which is expected to be a list
 	 * @return the typed list
 	 * @throws ClassCastException if the object is not a list, or any element is not the required type
 	 */
-	public static final <T extends Serializable> List<T> castList(Class<T> type, List<?> list) {
-		List<T> result = new ArrayList<T>();
+	public static final <V extends Serializable, T extends List<V>> T castList(Class<V> type, Supplier<T> generator,
+			Object object) {
+		T result = generator.get();
 		
-		for (Object obj : list) {
+		for (Object obj : ((List<?>)object)) {
 			result.add(type.cast(obj));
 		}
 		
@@ -78,27 +77,14 @@ public class SerializationUtils {
 	}
 	
 	/**
-	 * Casts an object, typically produced via deserialization, to a typed list.
-	 * 
-	 * @param <T> the type of the list
-	 * @param type the expected type of each element in the list
-	 * @param object the object, which is expected to be a list
-	 * @return the typed list
-	 * @throws ClassCastException if the object is not a list, or any element is not the required type
-	 */
-	public static final <T extends Serializable> List<T> castList(Class<T> type, Object object) {
-		return castList(type, (List<?>)object);
-	}
-	
-	/**
 	 * Writes the given list to the object stream.
 	 * 
-	 * @param <T> the type of the list
+	 * @param <V> the type of the values
 	 * @param list the list to serialize
 	 * @param stream the object stream
 	 * @throws IOException if an error occurred while writing the object
 	 */
-	public static final <T extends Serializable> void writeList(List<T> list, ObjectOutputStream stream)
+	public static final <V extends Serializable> void writeList(List<V> list, ObjectOutputStream stream)
 			throws IOException {
 		stream.writeObject(list);
 	}
@@ -106,16 +92,18 @@ public class SerializationUtils {
 	/**
 	 * Reads a list from the object stream.
 	 * 
-	 * @param <T> the type of the list
+	 * @param <V> the type of the values
+	 * @param <T> the return type
 	 * @param type the expected type of each element in the list
+	 * @param generator a supplier responsible for creating an empty list
 	 * @param stream the object stream
 	 * @return the typed list
 	 * @throws IOException if an error occurred while writing the object
 	 * @throws ClassNotFoundException if any type being serialized could not be found
 	 */
-	public static final <T extends Serializable> List<T> readList(Class<T> type, ObjectInputStream stream)
-			throws IOException, ClassNotFoundException {
-		return castList(type, stream.readObject());
+	public static final <V extends Serializable, T extends List<V>> T readList(Class<V> type,
+			Supplier<T> generator, ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		return castList(type, generator, stream.readObject());
 	}
 	
 	/**
@@ -123,37 +111,23 @@ public class SerializationUtils {
 	 * 
 	 * @param <K> the type of the keys
 	 * @param <V> the type of the values
+	 * @param <T> the return type
 	 * @param keyType the expected type of each key
 	 * @param valueType the expected type of each value
-	 * @param map the original map of unknown type
-	 * @return the typed map
-	 * @throws ClassCastException if the object is not a map, or any element is not the required type
-	 */
-	public static final <K extends Serializable, V extends Serializable> Map<K, V> castMap(Class<K> keyType,
-			Class<V> valueType, Map<?, ?> map) {
-		Map<K, V> result = new HashMap<K, V>();
-		
-		for (Entry<?, ?> entry : map.entrySet()) {
-			result.put(keyType.cast(entry.getKey()), valueType.cast(entry.getValue()));
-		}
-		
-		return result;
-	}
-	
-	/**
-	 * Casts a map with the wildcard {@code <?, ?>} type to a typed map, ensuring each element is if the correct type.
-	 * 
-	 * @param <K> the type of the keys
-	 * @param <V> the type of the values
-	 * @param keyType the expected type of each key
-	 * @param valueType the expected type of each value
+	 * @param generator a supplier responsible for creating an empty map
 	 * @param object the object, which is expected to be a map
 	 * @return the typed map
 	 * @throws ClassCastException if the object is not a map, or any element is not the required type
 	 */
-	public static final <K extends Serializable, V extends Serializable> Map<K, V> castMap(Class<K> keyType,
-			Class<V> valueType, Object object) {
-		return castMap(keyType, valueType, (Map<?, ?>)object);
+	public static final <K extends Serializable, V extends Serializable, T extends Map<K, V>> T castMap(
+			Class<K> keyType, Class<V> valueType, Supplier<T> generator, Object object) {
+		T result = generator.get();
+		
+		for (Entry<?, ?> entry : ((Map<?, ?>)object).entrySet()) {
+			result.put(keyType.cast(entry.getKey()), valueType.cast(entry.getValue()));
+		}
+		
+		return result;
 	}
 	
 	/**
@@ -171,18 +145,23 @@ public class SerializationUtils {
 	}
 	
 	/**
-	 * Reads a list from the object stream.
+	 * Reads a map from the object stream.
 	 * 
-	 * @param <T> the type of the list
-	 * @param type the expected type of each element in the list
+	 * @param <K> the type of the keys
+	 * @param <V> the type of the values
+	 * @param <T> the return type
+	 * @param keyType the expected type of each key
+	 * @param valueType the expected type of each value
+	 * @param generator a supplier responsible for creating an empty map
 	 * @param stream the object stream
-	 * @return the typed list
+	 * @return the typed map
 	 * @throws IOException if an error occurred while writing the object
-	 * @throws ClassNotFoundException if any type being serialized could not be found
+	 * @throws ClassNotFoundException if any type being deserialized could not be found
 	 */
-	public static final <K extends Serializable, V extends Serializable> Map<K, V> readMap(Class<K> keyType,
-			Class<V> valueType, ObjectInputStream stream) throws IOException, ClassNotFoundException {
-		return castMap(keyType, valueType, stream.readObject());
+	public static final <K extends Serializable, V extends Serializable, T extends Map<K, V>> T readMap(
+			Class<K> keyType, Class<V> valueType, Supplier<T> generator, ObjectInputStream stream) throws IOException,
+			ClassNotFoundException {
+		return castMap(keyType, valueType, generator, stream.readObject());
 	}
 
 }

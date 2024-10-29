@@ -881,7 +881,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	@Override
 	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		super.loadState(stream);
-		population = SerializationUtils.readList(Individual.class, stream);
+		population = SerializationUtils.readList(Individual.class, ArrayList::new, stream);
 		idealPoint = (double[])stream.readObject();
 		generation = stream.readInt();
 	}
