@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
  * <p>
  * For example, the default string comparator sorts {@code "Val15"} before {@code "Val2"} because the two strings
  * differ at position 3 and compare {@code "1"} to {@code "2"}.  On the other hand, this comparator identifies the
- * two strings contain {@code 15} and {@code 2}, producing a more natual ordering.
+ * two strings contain {@code 15} and {@code 2}, producing a more natural ordering.
  */
 public class NumericStringComparator implements Comparator<String> {
 	

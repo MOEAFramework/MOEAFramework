@@ -79,7 +79,7 @@ public interface Constructable {
 		if (name.startsWith(prefix)) {
 			name = name.substring(prefix.length());
 		}
-		
+				
 		return name;
 	}
 	

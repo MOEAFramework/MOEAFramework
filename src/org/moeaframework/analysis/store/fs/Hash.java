@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis.store;
+package org.moeaframework.analysis.store.fs;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -29,9 +29,10 @@ import java.util.HexFormat;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.moeaframework.analysis.store.Key;
 import org.moeaframework.core.FrameworkException;
 
-public class Hash {
+class Hash {
 	
 	private static final Charset UTF8 = StandardCharsets.UTF_8;
 	

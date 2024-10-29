@@ -57,6 +57,24 @@ public interface Blob {
 	
 	TransactionalOutputStream openOutputStream() throws IOException;
 	
+	public default boolean ifMissing(IOCallback<Blob> callback) throws IOException {
+		if (!exists()) {
+			callback.accept(this);
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public default boolean ifFound(IOCallback<Blob> callback) throws IOException {
+		if (exists()) {
+			callback.accept(this);
+			return true;
+		}
+		
+		return false;
+	}
+	
 	public default void extract(File file) throws IOException {
 		extract(file.toPath());
 	}
@@ -89,6 +107,14 @@ public interface Blob {
 		try (Reader in = openReader()) {
 			callback.accept(in);
 		}
+	}
+	
+	public default boolean extractIfFound(InputStreamCallback callback) throws IOException {
+		return ifFound(b -> b.extract(callback));
+	}
+	
+	public default boolean extractIfFound(ReaderCallback callback) throws IOException {
+		return ifFound(b -> b.extract(callback));
 	}
 	
 	public default <T extends Serializable> T extractObject(Class<T> type) throws IOException {
@@ -148,6 +174,18 @@ public interface Blob {
 			callback.accept(shielded);
 			out.commit();
 		}
+	}
+	
+	public default boolean storeIfMissing(OutputStreamCallback callback) throws IOException {
+		return ifMissing(b -> b.store(callback));
+	}
+	
+	public default boolean storeIfMissing(PrintStreamCallback callback) throws IOException {
+		return ifMissing(b -> b.store(callback));
+	}
+	
+	public default boolean storeIfMissing(WriterCallback callback) throws IOException {
+		return ifMissing(b -> b.store(callback));
 	}
 	
 	public default <T extends Serializable> void storeObject(T value) throws IOException {

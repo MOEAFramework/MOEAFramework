@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.Writer;
 
 import org.moeaframework.algorithm.NSGAII;
+import org.moeaframework.algorithm.NSGAIII;
 import org.moeaframework.analysis.parameter.Enumeration;
 import org.moeaframework.analysis.parameter.Parameter;
 import org.moeaframework.analysis.parameter.ParameterSet;
@@ -30,7 +31,6 @@ import org.moeaframework.analysis.store.Container;
 import org.moeaframework.analysis.store.DataStore;
 import org.moeaframework.analysis.store.Key;
 import org.moeaframework.analysis.store.fs.FileSystemDataStore;
-import org.moeaframework.analysis.store.fs.HierarchicalFileMap;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.DTLZ.DTLZ2;
@@ -51,31 +51,33 @@ public class DataStoreExample {
 		ParameterSet parameters = new ParameterSet(populationSize, sbxRate);
 		Samples samples = parameters.enumerate();
 		
-		DataStore dataStore = new FileSystemDataStore(HierarchicalFileMap.at(new File("results")));
+		DataStore dataStore = new FileSystemDataStore(new File("results"));
 		
 		for (Sample sample : samples) {
-			Key key = sample.getKey().extend("algorithm", "NSGAII");
+			Key key = sample.getKey().extend("algorithm", "NSGAIII");
 			Container container = dataStore.getContainer(key);
 			
-			if (container.exists()) {
-				System.out.println("Found existing container for " + key);
+			if (!container.contains("indicators")) {
+				System.out.println("Evaluating " + key);
+				
+				NSGAII algorithm = new NSGAIII(problem);
+				algorithm.applyConfiguration(sample);
+				algorithm.run(10000);
+								
+				container.getBlob("configuration").store((Writer out) -> {
+					algorithm.getConfiguration().display(out);
+				});
+				
+				container.getBlob("result").store((Writer out) -> {
+					algorithm.getResult().save(out);
+				});
+				
+				container.getBlob("indicators").store((Writer out) -> {
+					indicators.apply(algorithm.getResult()).display(out);
+				});
+			} else {
+				System.out.println("Skipping " + key + ", found in data store");
 			}
-			
-			NSGAII algorithm = new NSGAII(problem);
-			algorithm.applyConfiguration(sample);
-			algorithm.run(10000);
-			
-			container.getBlob("configuration").store((Writer out) -> {
-				algorithm.getConfiguration().display(out);
-			});
-			
-			container.getBlob("result").store((Writer out) -> {
-				algorithm.getResult().save(out);
-			});
-			
-			container.getBlob("indicators").store((Writer out) -> {
-				indicators.apply(algorithm.getResult()).display(out);
-			});
 		}
 	}
 

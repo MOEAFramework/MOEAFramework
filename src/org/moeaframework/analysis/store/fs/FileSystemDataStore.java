@@ -42,21 +42,32 @@ import org.moeaframework.analysis.store.TransactionalWriter;
 import org.moeaframework.core.Settings;
 
 public class FileSystemDataStore implements DataStore {
+	
+	private final Path root;
 		
 	private final FileMap fileMap;
 	
 	private final ReentrantLock mkdirLock;
 		
 	public FileSystemDataStore(File root) throws IOException {
-		this(HashFileMap.at(root));
+		this(root, new HierarchicalFileMap());
+	}
+	
+	public FileSystemDataStore(File root, FileMap fileMap) throws IOException {
+		this(root.toPath(), fileMap);
 	}
 
-	public FileSystemDataStore(FileMap fileMap) throws IOException {
+	public FileSystemDataStore(Path root, FileMap fileMap) throws IOException {
 		super();
+		this.root = root;
 		this.fileMap = fileMap;
 		this.mkdirLock = new ReentrantLock();
 		
 		createOrValidateManifest();
+	}
+	
+	public Path getRoot() {
+		return root;
 	}
 
 	@Override
@@ -79,7 +90,7 @@ public class FileSystemDataStore implements DataStore {
 	}
 	
 	private void createOrValidateManifest() throws IOException, ManifestValidationException {
-		Path path = fileMap.getRoot().resolve(Manifest.FILENAME);
+		Path path = getRoot().resolve(Manifest.FILENAME);
 		Manifest expectedManifest = getManifest();
 		
 		if (Files.exists(path)) {	
@@ -99,8 +110,8 @@ public class FileSystemDataStore implements DataStore {
 	
 	private Manifest getManifest() {
 		Manifest manifest = new Manifest();
-		fileMap.updateManifest(manifest);
 		manifest.setInt("version", Settings.getMajorVersion());
+		manifest.setString("fileMap", fileMap.getDefinition());
 		return manifest;
 	}
 	
@@ -125,12 +136,12 @@ public class FileSystemDataStore implements DataStore {
 		
 		@Override
 		public void create() throws IOException {
-			mkdirs(fileMap.map(key));
+			mkdirs(fileMap.map(getRoot(), key));
 		}
 
 		@Override
 		public boolean exists() throws IOException {
-			return Files.exists(fileMap.map(key));
+			return Files.exists(fileMap.map(getRoot(), key));
 		}
 		
 	}
@@ -164,32 +175,32 @@ public class FileSystemDataStore implements DataStore {
 
 		@Override
 		public boolean exists() throws IOException {
-			return Files.exists(fileMap.map(key, name));
+			return Files.exists(fileMap.map(getRoot(), key, name));
 		}
 
 		@Override
 		public boolean delete() throws IOException {
-			return Files.deleteIfExists(fileMap.map(key, name));
+			return Files.deleteIfExists(fileMap.map(getRoot(), key, name));
 		}
 
 		@Override
 		public Instant lastModified() throws IOException {
-			return Files.getLastModifiedTime(fileMap.map(key, name)).toInstant();
+			return Files.getLastModifiedTime(fileMap.map(getRoot(), key, name)).toInstant();
 		}
 
 		@Override
 		public Reader openReader() throws IOException {
-			return new FileReader(fileMap.map(key, name).toFile());
+			return new FileReader(fileMap.map(getRoot(), key, name).toFile());
 		}
 
 		@Override
 		public InputStream openInputStream() throws IOException {
-			return new FileInputStream(fileMap.map(key, name).toFile());
+			return new FileInputStream(fileMap.map(getRoot(), key, name).toFile());
 		}
 
 		@Override
 		public TransactionalWriter openWriter() throws IOException {
-			Path dest = fileMap.map(key, name);
+			Path dest = fileMap.map(getRoot(), key, name);
 			mkdirs(dest.getParent());
 			
 			Path temp = Files.createTempFile("datastore", null);
@@ -198,7 +209,7 @@ public class FileSystemDataStore implements DataStore {
 
 		@Override
 		public TransactionalOutputStream openOutputStream() throws IOException {
-			Path dest = fileMap.map(key, name);
+			Path dest = fileMap.map(getRoot(), key, name);
 			mkdirs(dest.getParent());
 			
 			Path temp = Files.createTempFile("datastore", null);

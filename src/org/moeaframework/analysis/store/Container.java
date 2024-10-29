@@ -28,7 +28,7 @@ public interface Container {
 	void create() throws IOException;
 	
 	boolean exists() throws IOException;
-	
+		
 	public default boolean contains(String name) throws IOException {
 		return getBlob(name).exists();
 	}

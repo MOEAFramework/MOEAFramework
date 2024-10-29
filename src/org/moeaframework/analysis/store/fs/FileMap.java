@@ -24,35 +24,25 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.moeaframework.analysis.store.Key;
+import org.moeaframework.core.Constructable;
 
-public abstract class FileMap {
+public abstract class FileMap implements Constructable {
 	
 	public static final Comparator<Path> CASE_INSENSITIVE_ORDER = new CaseInsensitivePathComparator();
 	
 	private static final Pattern FILENAME_INVALID_CHAR = Pattern.compile("[\\\\/:\"*?<>|]");
 	
-	protected final Path root;
-	
-	public FileMap(Path root) {
+	public FileMap() {
 		super();
-		this.root = root;
 	}
 	
-	public Path getRoot() {
-		return root;
-	}
+	abstract Path map(Path root, Key key) throws IOException;
+	
+	abstract Path map(Path root, Key key, String name) throws IOException;
 	
 	protected Path toPath(String filename) {
 		Matcher matcher = FILENAME_INVALID_CHAR.matcher(filename);
 		return Path.of(matcher.replaceAll("_"));
-	}
-	
-	abstract Path map(Key key) throws IOException;
-	
-	abstract Path map(Key key, String name) throws IOException;
-	
-	protected void updateManifest(Manifest manifest) {
-		manifest.setString("fileMap", getClass().getName());
 	}
 	
 	protected static class CaseInsensitivePathComparator implements Comparator<Path> {

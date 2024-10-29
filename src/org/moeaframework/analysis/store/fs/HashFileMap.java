@@ -17,35 +17,34 @@
  */
 package org.moeaframework.analysis.store.fs;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import org.moeaframework.analysis.store.Hash;
 import org.moeaframework.analysis.store.Key;
+import org.moeaframework.core.Constructable;
 
 public class HashFileMap extends FileMap {
 
 	private final int prefixLength;
 		
-	protected HashFileMap(Path root, int prefixLength) {
-		super(root);
+	public HashFileMap(int prefixLength) {
+		super();
 		this.prefixLength = prefixLength;
 	}
 	
 	@Override
-	public Path map(Key key) throws IOException {
-		return map(Hash.of(key));
+	public Path map(Path root, Key key) throws IOException {
+		return map(root, Hash.of(key));
 	}
 	
 	@Override
-	public Path map(Key key, String name) throws IOException {
-		return map(Hash.of(key, name));
+	public Path map(Path root, Key key, String name) throws IOException {
+		return map(root, Hash.of(key, name));
 	}
 	
-	private Path map(Hash hash) {
+	private Path map(Path root, Hash hash) {
 		String hexString = hash.toString();
-		Path path = getRoot();
+		Path path = root;
 		
 		if (prefixLength > 0) {
 			String prefix = hexString.substring(0, prefixLength);
@@ -55,26 +54,9 @@ public class HashFileMap extends FileMap {
 		return path.resolve(hexString);
 	}
 	
-	public static HashFileMap at(File root) {
-		return at(root.toPath());
-	}
-	
-	public static HashFileMap at(File root, int prefixLength) {
-		return at(root.toPath(), prefixLength);
-	}
-	
-	public static HashFileMap at(Path root) {
-		return at(root, 2);
-	}
-	
-	public static HashFileMap at(Path root, int prefixLength) {
-		return new HashFileMap(root, prefixLength);
-	}
-	
 	@Override
-	protected void updateManifest(Manifest manifest) {
-		super.updateManifest(manifest);
-		manifest.setInt("prefixLength", prefixLength);
+	public String getDefinition() {
+		return Constructable.createDefinition(FileMap.class, getClass(), prefixLength);
 	}
 
 }
