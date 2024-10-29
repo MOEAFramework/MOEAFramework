@@ -74,7 +74,7 @@ public class ParameterSampleExample {
 				
 		// Display plot
 		new Plot()
-			.line("Average", avgHypervolume.keys(), avgHypervolume.values())
+			.line("Average", avgHypervolume)
 			.setXLabel("Population Size")
 			.setYLabel("Hypervolume")
 			.show();

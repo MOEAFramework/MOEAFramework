@@ -19,9 +19,24 @@
 /**
  * Streaming API for manipulating and analyzing data.
  * <p>
+ * This package provides several data structures for streams, including:
+ * <ol>
+ *   <li>{@link DataStream} - A stream of values,
+ *   <li>{@link Partition} - A stream of key-value pairs, and
+ *   <li>{@link Groups} - A stream of keys mapped to a collection of values.
+ * </ol>
+ * Additionally, this provides static methods for creating {@link Groupings} and aggregating data using
+ * {@link Measures}.  While these methods are intended to be used with the data structures, they may also be used
+ * directly on the underlying {@link Stream}. 
+ * <p>
  * This API is inspired by Java's {@link java.util.stream.Stream} API, and uses it under the covers, with a few
- * modifications.  First and foremost, Java streams only allow one sequence of operations per stream, as it only
- * evaluates the results when reaching a terminal operation.  This code, instead, materializes the intermediate result
- * after each operation.
+ * modifications:
+ * <ul>
+ *   <li>Unlike Java streams, multiple operations are permitted on the same data stream.  This is allowed since any
+ *       intermediate results are materialized after each operation, at the cost of lower performance.
+ *   <li>The original data source can be modified after constructing a data stream, again because intermediate results
+ *       are materialized.
+ *   <li>Parallel streams are not supported, since this code is not designed to be thread-safe.
+ * </ol>
  */
 package org.moeaframework.analysis.stream;

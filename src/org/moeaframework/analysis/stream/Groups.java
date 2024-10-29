@@ -25,6 +25,13 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+/**
+ * Groups items together by a key.
+ * 
+ * @param <T> the type of the grouping key
+ * @param <K> the original key type
+ * @param <V> the type of each value
+ */
 public class Groups<T, K, V> extends ImmutablePartition<T, Partition<K, V>> {
 	
 	public Groups(List<Pair<T, Partition<K, V>>> content) {
@@ -53,9 +60,16 @@ public class Groups<T, K, V> extends ImmutablePartition<T, Partition<K, V>> {
 			comparator.compare(x.getKey(), y.getKey())));
 	}
 
-	public <R> Groups<T, K, R> mapEach(Function<V, R> op) {
+	/**
+	 * Equivalent to calling {@link Partition#map(Function)} on each group, keeping the grouping intact.
+	 * 
+	 * @param <R> the result type
+	 * @param map the map function
+	 * @return the groups after applying the map function
+	 */
+	public <R> Groups<T, K, R> mapEach(Function<V, R> map) {
 		return new Groups<T, K, R>(stream().map(x ->
-			Pair.of(x.getKey(), x.getValue().map(op))));
+			Pair.of(x.getKey(), x.getValue().map(map))));
 	}
 	
 	public <R> Partition<T, R> measureEach(Function<Stream<V>, R> measure) {

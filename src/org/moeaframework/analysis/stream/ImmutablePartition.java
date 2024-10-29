@@ -46,6 +46,11 @@ public class ImmutablePartition<K, V> implements Partition<K, V> {
 	}
 	
 	@Override
+	public int size() {
+		return content.size();
+	}
+	
+	@Override
 	public Stream<Pair<K, V>> stream() {
 		return content.stream();
 	}

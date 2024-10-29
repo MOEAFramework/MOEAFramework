@@ -24,28 +24,72 @@ import org.moeaframework.analysis.parameter.Parameter;
 import org.moeaframework.analysis.sample.Sample;
 import org.moeaframework.util.validate.Validate;
 
+/**
+ * Collection of grouping functions, to be used with {@link DataStream#groupBy(Function)} or
+ * {@link Partition#groupBy(Function)}.
+ */
 public class Groupings{
 	
 	private Groupings() {
 		super();
 	}
 	
+	/**
+	 * Group  items by combining two grouping functions.
+	 * 
+	 * @param <T> the type of each value
+	 * @param <L> the type of the left key
+	 * @param <R> the type of the right key
+	 * @param left the left grouping function
+	 * @param right the right grouping function
+	 * @return the grouping function
+	 */
 	public static <T, L, R> Function<T, Pair<L, R>> pair(Function<T, L> left, Function<T, R> right) {
 		return x -> Pair.of(left.apply(x), right.apply(x));
 	}
 	
+	/**
+	 * Groups items by their exact parameter value.
+	 * 
+	 * @param <T> the type of the parameter
+	 * @param parameter the parameter
+	 * @return the grouping function
+	 */
 	public static <T> Function<Sample, T> exactValue(Parameter<T> parameter) {
 		return x -> parameter.readValue(x);
 	}
 	
+	/**
+	 * Groups items by their exact value.
+	 * 
+	 * @param <T> the type of each value
+	 * @return the grouping function
+	 */
 	public static <T> Function<T, T> exactValue() {
 		return x -> x;
 	}
 	
+	/**
+	 * Groups items into buckets of a fixed width based on their parameter value.
+	 * 
+	 * @param <T> the type of parameter
+	 * @param parameter the parameter
+	 * @param width the bucket width
+	 * @return the grouping function
+	 * @see #bucket(Number)
+	 */
 	public static <T extends Number> Function<Sample, T> bucket(Parameter<T> parameter, T width) {
 		return bucket(width).compose(x -> parameter.readValue(x));
 	}
 	
+	/**
+	 * Groups items into buckets of a fixed width.  The resulting group key will be a representative value for the
+	 * bucket, typically the midpoint between the bucket's lower and upper bounds.
+	 * 
+	 * @param <T> the type of each value
+	 * @param width the bucket width
+	 * @return the grouping function
+	 */
 	@SuppressWarnings("unchecked")
 	public static <T extends Number> Function<T, T> bucket(T width) {
 		return x -> {
@@ -67,10 +111,23 @@ public class Groupings{
 		};
 	}
 	
+	/**
+	 * Groups numeric values by their rounded value.
+	 * 
+	 * @param <T> the type of the parameter
+	 * @param parameter the parameter
+	 * @return the grouping function
+	 */
 	public static <T extends Number> Function<Sample, Integer> round(Parameter<T> parameter) {
 		return round().compose(x -> parameter.readValue(x));
 	}
 	
+	/**
+	 * Groups numeric values by their rounded value.
+	 * 
+	 * @param <T> the type of each value
+	 * @return the grouping function
+	 */
 	public static <T extends Number> Function<T, Integer> round() {
 		return x -> {
 			if (x instanceof Float || x instanceof Double) {

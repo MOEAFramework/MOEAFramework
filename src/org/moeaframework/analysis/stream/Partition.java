@@ -20,6 +20,7 @@ package org.moeaframework.analysis.stream;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
@@ -36,13 +37,14 @@ import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;
 
 /**
- * A partition is a collection of key-value pairs.  The keys serve as the identifier of the value, however unlike a
- * {@link java.util.Map}, the keys are not unique.
+ * A stream of key-value pairs.  Duplicate keys are permitted.
  * 
  * @param <K> the type of the partition key
  * @param <V> the type of the partition value
  */
 public interface Partition<K, V> extends Formattable<Pair<K, V>> {
+	
+	public int size();
 	
 	public Stream<Pair<K, V>> stream();
 	
@@ -62,8 +64,8 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 		return stream().toArray(generator);
 	}
 	
-	public default <R> Partition<K, R> map(Function<V, R> op) {
-		return new ImmutablePartition<K, R>(stream().map(x -> Pair.of(x.getKey(), op.apply(x.getValue()))));
+	public default <R> Partition<K, R> map(Function<V, R> map) {
+		return new ImmutablePartition<K, R>(stream().map(x -> Pair.of(x.getKey(), map.apply(x.getValue()))));
 	}
 			
 	public default Partition<K, V> sorted() {
@@ -82,6 +84,23 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 		return stream().findAny().get();
 	}
 	
+	public default Pair<K, V> singleOrDefault(K defaultKey, V defaultValue) {
+		if (size() == 0) {
+			return Pair.of(defaultKey, defaultValue);
+		} else {
+			return single();
+		}
+	}
+	
+	public default Pair<K, V> single() {
+		if (size() != 1) {
+			throw new UnsupportedOperationException("expected partition to contain exactly one item, but found " +
+					size());
+		}
+		
+		return any();
+	}
+	
 	public default Partition<K, V> filter(Predicate<K> predicate) {
 		return new ImmutablePartition<K, V>(stream().filter(x -> predicate.test(x.getKey())));
 	}
@@ -92,13 +111,6 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 				.entrySet().stream()
 				.map(x -> Pair.of(x.getKey(), new ImmutablePartition<K, V>(x.getValue()))));
 	}
-	
-//	public default <L, R> Groups<Pair<L, R>, K, V> groupBy(Function<K, L> left, Function<K, R> right) {
-//		return new Groups<Pair<L, R>, K, V>(stream()
-//				.collect(Collectors.groupingBy(x -> Pair.of(left.apply(x.getKey()), right.apply(x.getKey()))))
-//				.entrySet().stream()
-//				.map(x -> Pair.of(x.getKey(), new ImmutablePartition<K, V>(x.getValue()))));
-//	}
 			
 	public default V reduce(BinaryOperator<V> op) {
 		return stream().map(Pair::getValue).reduce(op).get();
@@ -152,6 +164,10 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 	
 	public static <V> Partition<V, V> of(V[] array) {
 		return of(Mappings.identity(), array);
+	}
+	
+	public static <K, V> Partition<K, V> of(Map<K, V> map) {
+		return new ImmutablePartition<K, V>(map.entrySet().stream().map(x -> Pair.of(x)));
 	}
 	
 	public static <K, V> Partition<K, V> of(Function<V, K> key, List<V> list) {

@@ -49,6 +49,11 @@ public class SampledResults<T> implements Partition<Sample, T> {
 	}
 	
 	@Override
+	public int size() {
+		return results.size();
+	}
+	
+	@Override
 	public Stream<Pair<Sample, T>> stream() {
 		return results.stream();
 	}

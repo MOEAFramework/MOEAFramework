@@ -37,11 +37,13 @@ import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;
 
 /**
- * A data stream that contains values.
+ * A stream of values.
  * 
  * @param <V> the type of each value
  */
 public interface DataStream<V> extends Formattable<V> {
+	
+	public int size();
 	
 	public Stream<V> stream();
 
@@ -53,8 +55,8 @@ public interface DataStream<V> extends Formattable<V> {
 		return stream().toArray(generator);
 	}
 	
-	public default <R> DataStream<R> map(Function<V, R> mapping) {
-		return new ImmutableDataStream<R>(stream().map(mapping));
+	public default <R> DataStream<R> map(Function<V, R> map) {
+		return new ImmutableDataStream<R>(stream().map(map));
 	}
 	
 	public default DataStream<V> sorted() {
@@ -71,6 +73,23 @@ public interface DataStream<V> extends Formattable<V> {
 	
 	public default V any() {
 		return stream().findAny().get();
+	}
+	
+	public default V singleOrDefault(V defaultValue) {
+		if (size() == 0) {
+			return defaultValue;
+		} else {
+			return single();
+		}
+	}
+	
+	public default V single() {
+		if (size() != 1) {
+			throw new UnsupportedOperationException("expected data stream to contain exactly one item, but found " +
+					size());
+		}
+		
+		return any();
 	}
 	
 	public default DataStream<V> filter(Predicate<V> predicate) {

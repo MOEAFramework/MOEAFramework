@@ -38,6 +38,7 @@ import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.math3.stat.StatUtils;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -79,6 +80,7 @@ import org.moeaframework.Analyzer.AnalyzerResults;
 import org.moeaframework.analysis.collector.Observation;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.analysis.diagnostics.PaintHelper;
+import org.moeaframework.analysis.stream.Partition;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
@@ -454,75 +456,7 @@ public class Plot {
 
 		return this;
 	}
-	
-	/**
-	 * Creates a new scatter plot series.
-	 * 
-	 * @param label the label for the series
-	 * @param x the x values
-	 * @param y the y values
-	 * @return a reference to this instance
-	 */
-	public Plot scatter(String label, double[] x, double[] y) {
-		return scatter(label, toList(x), toList(y));
-	}
-	
-	/**
-	 * Creates a new scatter plot series.
-	 * 
-	 * @param label the label for the series
-	 * @param x the x values
-	 * @param y the y values
-	 * @return a reference to this instance
-	 */
-	public Plot scatter(String label, List<? extends Number> x, List<? extends Number> y) {
-		return scatter(label, x, y, null);
-	}
-	
-	/**
-	 * Creates a new scatter plot series.  The series is added to the given dataset, or if {@code null} a new dataset
-	 * is created.
-	 * 
-	 * @param label the label for the series
-	 * @param x the x values
-	 * @param y the y values
-	 * @param dataset the dataset, or {@code null} if a new dataset should be created
-	 * @return a reference to this instance
-	 */
-	private Plot scatter(String label, List<? extends Number> x, List<? extends Number> y, XYSeriesCollection dataset) {
-		if (dataset == null) {
-			createXYPlot();
-			currentDataset++;
-			dataset = new XYSeriesCollection();
-		}
 		
-		// generate the dataset
-		XYSeries series = new XYSeries(label, false, true);
-		
-		for (int i = 0; i < x.size(); i++) {
-			series.add(x.get(i), y.get(i));
-		}
-
-		dataset.addSeries(series);
-
-		// add the dataset to the plot
-		XYPlot plot = chart.getXYPlot();
-		plot.setDataset(currentDataset, dataset);
-
-		// setup the renderer
-		Paint paint = paintHelper.get(dataset.getSeriesKey(0));
-		XYDotRenderer renderer = new XYDotRenderer();
-
-		renderer.setDotHeight(6);
-		renderer.setDotWidth(6);
-		renderer.setDefaultPaint(paint);
-		renderer.setDefaultFillPaint(paint);
-
-		plot.setRenderer(currentDataset, renderer);
-
-		return this;
-	}
-	
 	/**
 	 * Converts a double array to a list.
 	 * 
@@ -665,6 +599,124 @@ public class Plot {
 	}
 	
 	/**
+	 * Displays the statistical results from an {@link Analyzer} as a box-and-whisker plot.
+	 * 
+	 * @param analyzer the {@code Analyzer} instance
+	 * @return a reference to this instance
+	 */
+	public Plot add(Analyzer analyzer) {
+		return add(analyzer.getAnalysis());
+	}
+
+	/**
+	 * Displays the statistical results from an {@link AnalyzerResults} as a box-and-whisker plot.
+	 * 
+	 * @param result the {@code AnalyzerResults} instance
+	 * @return a reference to this instance
+	 */
+	public Plot add(AnalyzerResults result) {
+		createCategoryPlot();
+
+		DefaultBoxAndWhiskerCategoryDataset dataset = new DefaultBoxAndWhiskerCategoryDataset();
+
+		for (String algorithm : result.getAlgorithms()) {
+			for (StandardIndicator indicator : result.getIndicators()) {
+				List<Double> values = new ArrayList<Double>();
+
+				for (double value : result.getStatistics(algorithm, indicator).getValues()) {
+					values.add(value);
+				}
+
+				dataset.add(values, algorithm, indicator);
+			}
+		}
+
+		CategoryPlot plot = chart.getCategoryPlot();
+		plot.setDataset(dataset);
+
+		return this;
+	}
+
+	/**
+	 * Creates a new scatter plot series.
+	 * 
+	 * @param label the label for the series
+	 * @param x the x values
+	 * @param y the y values
+	 * @return a reference to this instance
+	 */
+	public Plot scatter(String label, double[] x, double[] y) {
+		return scatter(label, toList(x), toList(y));
+	}
+	
+	/**
+	 * Creates a new scatter plot series.
+	 * 
+	 * @param label the label for the series
+	 * @param x the x values
+	 * @param y the y values
+	 * @return a reference to this instance
+	 */
+	public Plot scatter(String label, List<? extends Number> x, List<? extends Number> y) {
+		return scatter(label, x, y, null);
+	}
+	
+	/**
+	 * Creates a new scatter plot series using the keys and values from a {@link Partition}.
+	 * 
+	 * @param label the label for the series
+	 * @param partition the data stream partition
+	 * @return a reference to this instance
+	 */
+	public Plot scatter(String label, Partition<? extends Number, ? extends Number> partition) {
+		return scatter(label, partition.keys(), partition.values(), null);
+	}
+	
+	/**
+	 * Creates a new scatter plot series.  The series is added to the given dataset, or if {@code null} a new dataset
+	 * is created.
+	 * 
+	 * @param label the label for the series
+	 * @param x the x values
+	 * @param y the y values
+	 * @param dataset the dataset, or {@code null} if a new dataset should be created
+	 * @return a reference to this instance
+	 */
+	private Plot scatter(String label, List<? extends Number> x, List<? extends Number> y, XYSeriesCollection dataset) {
+		if (dataset == null) {
+			createXYPlot();
+			currentDataset++;
+			dataset = new XYSeriesCollection();
+		}
+		
+		// generate the dataset
+		XYSeries series = new XYSeries(label, false, true);
+		
+		for (int i = 0; i < x.size(); i++) {
+			series.add(x.get(i), y.get(i));
+		}
+
+		dataset.addSeries(series);
+
+		// add the dataset to the plot
+		XYPlot plot = chart.getXYPlot();
+		plot.setDataset(currentDataset, dataset);
+
+		// setup the renderer
+		Paint paint = paintHelper.get(dataset.getSeriesKey(0));
+		XYDotRenderer renderer = new XYDotRenderer();
+
+		renderer.setDotHeight(6);
+		renderer.setDotWidth(6);
+		renderer.setDefaultPaint(paint);
+		renderer.setDefaultFillPaint(paint);
+
+		plot.setRenderer(currentDataset, renderer);
+
+		return this;
+	}
+	
+	/**
 	 * Creates a new line plot series.
 	 * 
 	 * @param label the label for the series
@@ -686,6 +738,17 @@ public class Plot {
 	 */
 	public Plot line(String label, List<? extends Number> x, List<? extends Number> y) {
 		return line(label, x, y, null);
+	}
+	
+	/**
+	 * Creates a new line plot series using the keys and values from a {@link Partition}.
+	 * 
+	 * @param label the label for the series
+	 * @param partition the data stream partition
+	 * @return a reference to this instance
+	 */
+	public Plot line(String label, Partition<? extends Number, ? extends Number>  partition) {
+		return line(label, partition.keys(), partition.values(), null);
 	}
 	
 	/**
@@ -745,7 +808,7 @@ public class Plot {
 	}
 	
 	/**
-	 * Creates a new line plot series.
+	 * Creates a new histogram plot.
 	 * 
 	 * @param label the label for the series
 	 * @param x the x values
@@ -757,7 +820,18 @@ public class Plot {
 	}
 	
 	/**
-	 * Creates a new histogram plot series.  The series is added to the given dataset, or if {@code null} a new dataset
+	 * Creates a new histogram plot series using the keys and values from a {@link Partition}.
+	 * 
+	 * @param label the label for the series
+	 * @param partition the data stream partition
+	 * @return a reference to this instance
+	 */
+	public Plot histogram(String label, Partition<? extends Number, ? extends Number>  partition) {
+		return histogram(label, partition.keys(), partition.values(), null);
+	}
+	
+	/**
+	 * Creates a new histogram plot.  The series is added to the given dataset, or if {@code null} a new dataset
 	 * is created.
 	 * 
 	 * @param label the label for the series
@@ -832,6 +906,17 @@ public class Plot {
 	}
 	
 	/**
+	 * Creates a new area plot series using the keys and values from a {@link Partition}.
+	 * 
+	 * @param label the label for the series
+	 * @param partition the data stream partition
+	 * @return a reference to this instance
+	 */
+	public Plot area(String label, Partition<? extends Number, ? extends Number>  partition) {
+		return area(label, partition.keys(), partition.values(), null);
+	}
+	
+	/**
 	 * Creates a new area plot series.  The series is added to the given dataset, or if {@code null} a new dataset is
 	 * created.
 	 * 
@@ -897,6 +982,17 @@ public class Plot {
 	 */
 	public Plot stacked(String label, List<? extends Number> x, List<? extends Number> y) {
 		return stacked(label, x, y, null);
+	}
+	
+	/**
+	 * Creates a new stacked area plot series using the keys and values from a {@link Partition}.
+	 * 
+	 * @param label the label for the series
+	 * @param partition the data stream partition
+	 * @return a reference to this instance
+	 */
+	public Plot stacked(String label, Partition<? extends Number, ? extends Number>  partition) {
+		return stacked(label, partition.keys(), partition.values(), null);
 	}
 	
 	/**
@@ -979,6 +1075,31 @@ public class Plot {
 	}
 	
 	/**
+	 * Creates a new heat map series using the keys and values from a {@link Partition}
+	 * 
+	 * @param label the label for the series
+	 * @param partition the data stream partition
+	 * @return a reference to this instance
+	 */
+	public Plot heatMap(String label, Partition<Pair<? extends Number, ? extends Number>, ? extends Number> partition) {
+		List<? extends Number> xs = partition.keys().stream().map(v -> v.getLeft()).distinct().sorted().toList();
+		List<? extends Number> ys = partition.keys().stream().map(v -> v.getRight()).distinct().sorted().toList();
+		List<List<Number>> zs = new ArrayList<>();
+		
+		for (Number x : xs) {
+			List<Number> row = new ArrayList<>();
+			
+			for (Number y : ys) {
+				row.add(partition.filter(v -> v.getLeft().equals(x) && v.getRight().equals(y)).single().getValue());
+			}
+			
+			zs.add(row);
+		}
+		
+		return heatMap(label, xs, ys, zs, null);
+	}
+	
+	/**
 	 * Creates a new heat map series.  The series is added to the given dataset, or if {@code null} a new dataset is
 	 * created.
 	 * 
@@ -1039,45 +1160,7 @@ public class Plot {
 		return this;
 	}
 	
-	/**
-	 * Displays the statistical results from an {@link Analyzer} as a box-and-whisker plot.
-	 * 
-	 * @param analyzer the {@code Analyzer} instance
-	 * @return a reference to this instance
-	 */
-	public Plot add(Analyzer analyzer) {
-		return add(analyzer.getAnalysis());
-	}
-
-	/**
-	 * Displays the statistical results from an {@link AnalyzerResults} as a box-and-whisker plot.
-	 * 
-	 * @param result the {@code AnalyzerResults} instance
-	 * @return a reference to this instance
-	 */
-	public Plot add(AnalyzerResults result) {
-		createCategoryPlot();
-
-		DefaultBoxAndWhiskerCategoryDataset dataset = new DefaultBoxAndWhiskerCategoryDataset();
-
-		for (String algorithm : result.getAlgorithms()) {
-			for (StandardIndicator indicator : result.getIndicators()) {
-				List<Double> values = new ArrayList<Double>();
-
-				for (double value : result.getStatistics(algorithm, indicator).getValues()) {
-					values.add(value);
-				}
-
-				dataset.add(values, algorithm, indicator);
-			}
-		}
-
-		CategoryPlot plot = chart.getCategoryPlot();
-		plot.setDataset(dataset);
-
-		return this;
-	}
-
+	
 	/**
 	 * Modifies the line thickness or point size in the last dataset.  The size is applied to all series in the dataset.
 	 * 

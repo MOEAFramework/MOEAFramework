@@ -45,6 +45,11 @@ public class ImmutableDataStream<V> implements DataStream<V> {
 	}
 	
 	@Override
+	public int size() {
+		return content.size();
+	}
+	
+	@Override
 	public Stream<V> stream() {
 		return content.stream();
 	}
