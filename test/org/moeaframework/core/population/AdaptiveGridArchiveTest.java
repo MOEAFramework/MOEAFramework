@@ -94,8 +94,12 @@ public class AdaptiveGridArchiveTest {
 		archive.add(MockSolution.of(problem).withObjectives(0.7, 0.2));
 		archive.add(MockSolution.of(problem).withObjectives(0.6, 0.3));
 		archive.add(MockSolution.of(problem).withObjectives(0.8, 0.1));
+		
+		Assert.assertEquals(0, archive.getDensity(0));
+		Assert.assertEquals(3, archive.getDensity(1));
+		Assert.assertEquals(1, archive.getDensity(2));
+		Assert.assertEquals(0, archive.getDensity(3));
 
-		Assert.assertArrayEquals(new int[] { 0, 3, 1, 0 }, archive.density);
 		Assert.assertArrayEquals(new double[] { 0.0, 0.1 }, archive.minimum, TestThresholds.HIGH_PRECISION);
 		Assert.assertArrayEquals(new double[] { 0.8, 1.0 }, archive.maximum, TestThresholds.HIGH_PRECISION);
 	}
@@ -112,10 +116,9 @@ public class AdaptiveGridArchiveTest {
 		
 		int index = archive.findIndex(archive.get(0));
 		
-		int[] expectedDensity = new int[4];
-		expectedDensity[index] = 1;
-		
-		Assert.assertArrayEquals(expectedDensity, archive.density);
+		for (int i = 0; i < 4; i++) {
+			Assert.assertEquals(i == index ? 1 : 0, archive.getDensity(i));
+		}
 	}
 
 	@Test
@@ -131,10 +134,9 @@ public class AdaptiveGridArchiveTest {
 		
 		int index = archive.findIndex(archive.get(0));
 		
-		int[] expectedDensity = new int[4];
-		expectedDensity[index] = 1;
-		
-		Assert.assertArrayEquals(expectedDensity, archive.density);
+		for (int i = 0; i < 4; i++) {
+			Assert.assertEquals(i == index ? 1 : 0, archive.getDensity(i));
+		}
 	}
 
 	@Test
@@ -150,10 +152,9 @@ public class AdaptiveGridArchiveTest {
 		
 		int index = archive.findIndex(archive.get(0));
 		
-		int[] expectedDensity = new int[4];
-		expectedDensity[index] = 1;
-		
-		Assert.assertArrayEquals(expectedDensity, archive.density);
+		for (int i = 0; i < 4; i++) {
+			Assert.assertEquals(i == index ? 1 : 0, archive.getDensity(i));
+		}
 	}
 	
 	@Test(expected=FrameworkException.class)

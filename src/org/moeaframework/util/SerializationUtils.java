@@ -22,7 +22,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Utility methods for serialization, primarily to assist in serializing collections in a type-safe manner and avoiding
@@ -93,7 +96,7 @@ public class SerializationUtils {
 	 */
 	public static final <T extends Serializable> void writeList(List<T> list, ObjectOutputStream stream)
 			throws IOException {
-		stream.writeObject(serializable(list));
+		stream.writeObject(list);
 	}
 	
 	/**
@@ -109,6 +112,73 @@ public class SerializationUtils {
 	public static final <T extends Serializable> List<T> readList(Class<T> type, ObjectInputStream stream)
 			throws IOException, ClassNotFoundException {
 		return castList(type, stream.readObject());
+	}
+	
+	/**
+	 * Casts a map with the wildcard {@code <?, ?>} type to a typed map, ensuring each element is if the correct type.
+	 * 
+	 * @param <K> the type of the keys
+	 * @param <V> the type of the values
+	 * @param keyType the expected type of each key
+	 * @param valueType the expected type of each value
+	 * @param map the original map of unknown type
+	 * @return the typed map
+	 * @throws ClassCastException if the object is not a map, or any element is not the required type
+	 */
+	public static final <K extends Serializable, V extends Serializable> Map<K, V> castMap(Class<K> keyType,
+			Class<V> valueType, Map<?, ?> map) {
+		Map<K, V> result = new HashMap<K, V>();
+		
+		for (Entry<?, ?> entry : map.entrySet()) {
+			result.put(keyType.cast(entry.getKey()), valueType.cast(entry.getValue()));
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Casts a map with the wildcard {@code <?, ?>} type to a typed map, ensuring each element is if the correct type.
+	 * 
+	 * @param <K> the type of the keys
+	 * @param <V> the type of the values
+	 * @param keyType the expected type of each key
+	 * @param valueType the expected type of each value
+	 * @param object the object, which is expected to be a map
+	 * @return the typed map
+	 * @throws ClassCastException if the object is not a map, or any element is not the required type
+	 */
+	public static final <K extends Serializable, V extends Serializable> Map<K, V> castMap(Class<K> keyType,
+			Class<V> valueType, Object object) {
+		return castMap(keyType, valueType, (Map<?, ?>)object);
+	}
+	
+	/**
+	 * Writes the given map to the object stream.
+	 * 
+	 * @param <K> the type of the keys
+	 * @param <V> the type of the values
+	 * @param map the map to serialize
+	 * @param stream the object stream
+	 * @throws IOException if an error occurred while writing the object
+	 */
+	public static final <K extends Serializable, V extends Serializable> void writeMap(Map<K, V> map,
+			ObjectOutputStream stream) throws IOException {
+		stream.writeObject(map);
+	}
+	
+	/**
+	 * Reads a list from the object stream.
+	 * 
+	 * @param <T> the type of the list
+	 * @param type the expected type of each element in the list
+	 * @param stream the object stream
+	 * @return the typed list
+	 * @throws IOException if an error occurred while writing the object
+	 * @throws ClassNotFoundException if any type being serialized could not be found
+	 */
+	public static final <K extends Serializable, V extends Serializable> Map<K, V> readMap(Class<K> keyType,
+			Class<V> valueType, ObjectInputStream stream) throws IOException, ClassNotFoundException {
+		return castMap(keyType, valueType, stream.readObject());
 	}
 
 }

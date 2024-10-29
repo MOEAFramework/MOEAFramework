@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
@@ -30,7 +31,7 @@ import org.moeaframework.Assert;
 public class SerializationUtilsTest {
 	
 	@Test
-	public void test() throws IOException, ClassNotFoundException {
+	public void testList() throws IOException, ClassNotFoundException {
 		List<String> expected = List.of("foo");
 		
 		try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
@@ -41,6 +42,23 @@ public class SerializationUtilsTest {
 			try (ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
 					ObjectInputStream ois = new ObjectInputStream(bais)) {
 				List<String> actual = SerializationUtils.readList(String.class, ois);
+				Assert.assertEquals(expected, actual);
+			}
+		}
+	}
+	
+	@Test
+	public void testMap() throws IOException, ClassNotFoundException {
+		Map<String, Integer> expected = Map.of("foo", 1);
+		
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+			try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+				SerializationUtils.writeMap(expected, oos);
+			}
+			
+			try (ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+					ObjectInputStream ois = new ObjectInputStream(bais)) {
+				Map<String, Integer> actual = SerializationUtils.readMap(String.class, Integer.class, ois);
 				Assert.assertEquals(expected, actual);
 			}
 		}

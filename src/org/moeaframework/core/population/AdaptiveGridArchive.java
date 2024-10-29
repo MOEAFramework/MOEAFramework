@@ -20,8 +20,9 @@ package org.moeaframework.core.population;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.apache.commons.math3.exception.MathArithmeticException;
 import org.apache.commons.math3.util.ArithmeticUtils;
@@ -29,10 +30,8 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.problem.Problem;
+import org.moeaframework.util.SerializationUtils;
 import org.moeaframework.util.Vector;
-
-// TODO: if the capacity is significantly less than the number of divisions,
-// using a sparse array would be much more memory efficient.
 
 /**
  * Adaptive grid archive. Divides objective space into a number of grid cells, maintaining a count of the number of
@@ -81,7 +80,7 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 	/**
 	 * The number of solutions in each grid cell.
 	 */
-	protected int[] density;
+	protected Map<Integer, Integer> density;
 
 	/**
 	 * Constructs an adaptive grid archive with the specified capacity with the specified number of divisions along
@@ -98,10 +97,10 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 		this.capacity = capacity;
 		this.problem = problem;
 		this.numberOfDivisions = numberOfDivisions;
-
-		// guard against integer overflow
+		this.density = new HashMap<>();
+		
 		try {
-			density = new int[ArithmeticUtils.pow(numberOfDivisions, problem.getNumberOfObjectives())];
+			ArithmeticUtils.pow(numberOfDivisions, problem.getNumberOfObjectives());
 		} catch (MathArithmeticException e) {
 			throw new FrameworkException("number of divisions (bisections) too large for adaptive grid archive", e);
 		}
@@ -117,8 +116,7 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 	 * @return the maximum number of bisections
 	 */
 	public static int getMaximumBisections(int numberOfObjectives) {
-		long maxLength = Math.min(Runtime.getRuntime().maxMemory() / 4, Integer.MAX_VALUE);
-		return (int)Math.round(Math.log(Math.pow(maxLength, 1.0 / numberOfObjectives)) / Math.log(2.0));
+		return (int)Math.round(Math.log(Math.pow(Integer.MAX_VALUE, 1.0 / numberOfObjectives)) / Math.log(2.0));
 	}
 	
 	/**
@@ -191,13 +189,13 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 			adaptGrid();
 			index = findIndex(solution);
 		} else {
-			density[index]++;
+			incrementDensity(index);
 		}
 		
 		if (size() <= capacity) {
 			// if archive is not exceeding capacity, keep the candidate
 			return true;
-		} else if (density[index] == density[findDensestCell()]) {
+		} else if (getDensity(index) == getDensity(findDensestCell())) {
 			// if the candidate is in the most dense cell, reject the candidate
 			remove(solution);
 			return false;
@@ -215,9 +213,7 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 
 		super.remove(index);
 
-		if (density[gridIndex] > 1) {
-			density[gridIndex]--;
-		} else {
+		if (decrementDensity(gridIndex) == 0) {
 			adaptGrid();
 		}
 	}
@@ -227,11 +223,9 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 		boolean removed = super.remove(solution);
 
 		if (removed) {
-			int index = findIndex(solution);
+			int gridIndex = findIndex(solution);
 			
-			if (density[index] > 1) {
-				density[index]--;
-			} else {
+			if (decrementDensity(gridIndex) == 0) {
 				adaptGrid();
 			}
 		}
@@ -256,7 +250,7 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 		
 		for (int i = 0; i < size(); i++) {
 			int tempIndex = findIndex(get(i));
-			int tempValue = density[tempIndex];
+			int tempValue = getDensity(tempIndex);
 			
 			if (tempValue > value) {
 				value = tempValue;
@@ -278,7 +272,7 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 		int value = -1;
 
 		for (int i = 0; i < size(); i++) {
-			int tempValue = density[findIndex(get(i))];
+			int tempValue = getDensity(findIndex(get(i)));
 
 			if (tempValue > value) {
 				solution = get(i);
@@ -302,10 +296,10 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 			maximum = getUpperBounds();
 		}
 
-		Arrays.fill(density, 0);
+		density.clear();
 
 		for (Solution solution : this) {
-			density[findIndex(solution)]++;
+			incrementDensity(findIndex(solution));
 		}
 	}
 
@@ -347,7 +341,31 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 	 * @return the density of the solution at the given index
 	 */
 	public int getDensity(int index) {
-		return density[index];
+		return density.getOrDefault(index, 0);
+	}
+	
+	/**
+	 * Increments the density at the specified index.
+	 * 
+	 * @param index the solution index
+	 * @return the new density
+	 */
+	private int incrementDensity(int index) {
+		int value = density.getOrDefault(index, 0) + 1;
+		density.put(index, value);
+		return value;
+	}
+	
+	/**
+	 * Decrements the density at the specified index.  The density will not go below {@code 0}.
+	 * 
+	 * @param index the solution index
+	 * @return the new density
+	 */
+	private int decrementDensity(int index) {
+		int value = density.getOrDefault(index, 0) - 1;
+		density.put(index, value < 0 ? 0 : value);
+		return value;
 	}
 	
 	@Override
@@ -367,7 +385,7 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 		super.saveState(stream);
 		stream.writeObject(minimum);
 		stream.writeObject(maximum);
-		stream.writeObject(density);
+		SerializationUtils.writeMap(density, stream);
 	}
 
 	@Override
@@ -375,7 +393,7 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 		super.loadState(stream);
 		minimum = (double[])stream.readObject();
 		maximum = (double[])stream.readObject();
-		density = (int[])stream.readObject();
+		density = SerializationUtils.readMap(Integer.class, Integer.class, stream);
 	}
 
 }
