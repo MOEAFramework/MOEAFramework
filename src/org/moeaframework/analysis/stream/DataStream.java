@@ -138,7 +138,7 @@ public interface DataStream<V> extends Formattable<V> {
 	@Override
 	public default TabularData<V> asTabularData() {
 		TabularData<V> table = new TabularData<V>(stream().toList());
-		table.addColumn(new Column<V, V>("Data", Mappings.identity()));
+		table.addColumn(new Column<V, V>("Data", x -> x));
 		return table;
 	}
 	

@@ -151,19 +151,19 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 	}
 	
 	public static <V> Partition<V, V> of(List<V> list) {
-		return of(Mappings.identity(), list);
+		return of(Groupings.exactValue(), list);
 	}
 	
 	public static <V> Partition<V, V> of(Stream<V> stream) {
-		return of(Mappings.identity(), stream);
+		return of(Groupings.exactValue(), stream);
 	}
 	
 	public static <V> Partition<V, V> of(Iterable<V> iterable) {
-		return of(Mappings.identity(), iterable);
+		return of(Groupings.exactValue(), iterable);
 	}
 	
 	public static <V> Partition<V, V> of(V[] array) {
-		return of(Mappings.identity(), array);
+		return of(Groupings.exactValue(), array);
 	}
 	
 	public static <K, V> Partition<K, V> of(Map<K, V> map) {

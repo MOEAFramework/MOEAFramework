@@ -22,7 +22,6 @@ import java.util.function.Function;
 import org.apache.commons.lang3.tuple.Pair;
 import org.moeaframework.analysis.parameter.Parameter;
 import org.moeaframework.analysis.sample.Sample;
-import org.moeaframework.util.validate.Validate;
 
 /**
  * Collection of grouping functions, to be used with {@link DataStream#groupBy(Function)} or
@@ -69,46 +68,28 @@ public class Groupings{
 		return x -> x;
 	}
 	
-	/**
-	 * Groups items into buckets of a fixed width based on their parameter value.
-	 * 
-	 * @param <T> the type of parameter
-	 * @param parameter the parameter
-	 * @param width the bucket width
-	 * @return the grouping function
-	 * @see #bucket(Number)
-	 */
-	public static <T extends Number> Function<Sample, T> bucket(Parameter<T> parameter, T width) {
+	public static Function<Sample, Integer> bucket(Parameter<Integer> parameter, int width) {
 		return bucket(width).compose(x -> parameter.readValue(x));
 	}
 	
-	/**
-	 * Groups items into buckets of a fixed width.  The resulting group key will be a representative value for the
-	 * bucket, typically the midpoint between the bucket's lower and upper bounds.
-	 * 
-	 * @param <T> the type of each value
-	 * @param width the bucket width
-	 * @return the grouping function
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T extends Number> Function<T, T> bucket(T width) {
-		return x -> {
-			if (x instanceof Integer intValue) {
-				Integer intWidth = width.intValue();
-				return (T)(Integer)(intWidth * (intValue / intWidth) + intWidth / 2);
-			} else if (x instanceof Long longValue) {
-				long longWidth = width.longValue();
-				return (T)(Long)(longWidth * (longValue / longWidth) + longWidth / 2);
-			} else if (x instanceof Float floatValue) {
-				float floatWidth = width.floatValue();
-				return (T)(Float)(floatWidth * (float)Math.floor(floatValue / floatWidth) + floatWidth / 2.0f);
-			} else if (x instanceof Double doubleValue) {
-				double doubleWidth = width.doubleValue();
-				return (T)(Double)(doubleWidth * Math.floor(doubleValue / doubleWidth) + doubleWidth / 2.0);
-			} else {
-				return Validate.that("x", x).fails("unsupported type: " + x.getClass().getSimpleName());
-			}
-		};
+	public static Function<Sample, Long> bucket(Parameter<Long> parameter, long width) {
+		return bucket(width).compose(x -> parameter.readValue(x));
+	}
+	
+	public static Function<Sample, Double> bucket(Parameter<Double> parameter, double width) {
+		return bucket(width).compose(x -> parameter.readValue(x));
+	}
+	
+	public static Function<Integer, Integer> bucket(int width) {
+		return x -> width * (x / width) + width / 2;
+	}
+	
+	public static Function<Long, Long> bucket(long width) {
+		return x -> width * (x / width) + width / 2;
+	}
+	
+	public static Function<Double, Double> bucket(double width) {
+		return x -> width * Math.floor(x / width) + width / 2.0;
 	}
 	
 	/**
@@ -118,7 +99,7 @@ public class Groupings{
 	 * @param parameter the parameter
 	 * @return the grouping function
 	 */
-	public static <T extends Number> Function<Sample, Integer> round(Parameter<T> parameter) {
+	public static Function<Sample, Integer> round(Parameter<Double> parameter) {
 		return round().compose(x -> parameter.readValue(x));
 	}
 	
@@ -128,15 +109,8 @@ public class Groupings{
 	 * @param <T> the type of each value
 	 * @return the grouping function
 	 */
-	public static <T extends Number> Function<T, Integer> round() {
-		return x -> {
-			if (x instanceof Float || x instanceof Double) {
-				double doubleValue = x.doubleValue();
-				return (int)Math.round(doubleValue);
-			} else {
-				return x.intValue();
-			}
-		};
+	public static Function<Double, Integer> round() {
+		return x -> (int)Math.round(x);
 	}
 	
 }

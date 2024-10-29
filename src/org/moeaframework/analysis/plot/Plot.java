@@ -1075,7 +1075,7 @@ public class Plot {
 	}
 	
 	/**
-	 * Creates a new heat map series using the keys and values from a {@link Partition}
+	 * Creates a new heat map series using the keys and values from a {@link Partition}.
 	 * 
 	 * @param label the label for the series
 	 * @param partition the data stream partition
