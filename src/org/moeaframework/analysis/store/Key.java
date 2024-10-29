@@ -15,57 +15,49 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis.sample;
+package org.moeaframework.analysis.store;
 
 import java.util.Set;
+import java.util.TreeSet;
 
-import org.moeaframework.analysis.parameter.Parameter;
-import org.moeaframework.analysis.store.AbstractKey;
-import org.moeaframework.analysis.store.Key;
-import org.moeaframework.analysis.store.Keyed;
-import org.moeaframework.core.TypedProperties;
+public interface Key {
 
-/**
- * A single parameter sample.
- * 
- * @see Parameter
- * @see Samples
- */
-public class Sample extends TypedProperties implements Keyed {
-
-	public Sample() {
-		super(TypedProperties.DEFAULT_SEPARATOR, true);
-	}
-
-	public Sample copy() {
-		Sample copy = new Sample();
-		copy.addAll(this);
-		return copy;
+	public Set<String> indices();
+	
+	public Comparable<?> get(String index);
+	
+	public default Key extend(String name, Comparable<?> value) {
+		return new ExtendedKey(this, name, value);
 	}
 	
-	public <T> T get(Parameter<T> parameter) {
-		return parameter.readValue(this);
-	}
-
-	@Override
-	public Key getKey() {
-		return new SampleKey();
-	}
-
-	class SampleKey extends AbstractKey {
+	static class ExtendedKey extends AbstractKey {
 		
-		public SampleKey() {
+		private final Key innerKey;
+		
+		private final String index;
+		
+		private final Comparable<?> value;
+		
+		public ExtendedKey(Key innerKey, String index, Comparable<?> value) {
 			super();
+			this.innerKey = innerKey;
+			this.index = index;
+			this.value = value;
 		}
-
-		@Override
+		
 		public Set<String> indices() {
-			return keySet();
+			Set<String> indices = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+			indices.addAll(innerKey.indices());
+			indices.add(index);
+			return indices;
 		}
-
-		@Override
+		
 		public Comparable<?> get(String index) {
-			return getString(index);
+			if (this.index.equalsIgnoreCase(index)) {
+				return value;
+			}
+			
+			return innerKey.get(index);
 		}
 		
 	}

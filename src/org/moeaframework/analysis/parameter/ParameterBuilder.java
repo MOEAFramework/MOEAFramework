@@ -111,19 +111,19 @@ public class ParameterBuilder {
 			return of(IntStream.of(values));
 		}
 		
-		public Enumeration<Integer> range(int startInclusive, int endExclusive) {
+		public Enumeration<Integer> rangeExclusive(int startInclusive, int endExclusive) {
 			return of(IntStream.range(startInclusive, endExclusive));
 		}
 		
-		public Enumeration<Integer> range(int startInclusive, int endExclusive, int stepSize) {
+		public Enumeration<Integer> rangeExclusive(int startInclusive, int endExclusive, int stepSize) {
 			return of(IntStream.iterate(startInclusive, i -> i < endExclusive, i -> i + stepSize));
 		}
 		
-		public Enumeration<Integer> rangeClosed(int startInclusive, int endInclusive) {
+		public Enumeration<Integer> range(int startInclusive, int endInclusive) {
 			return of(IntStream.rangeClosed(startInclusive, endInclusive));
 		}
 		
-		public Enumeration<Integer> rangeClosed(int startInclusive, int endInclusive, int stepSize) {
+		public Enumeration<Integer> range(int startInclusive, int endInclusive, int stepSize) {
 			return of(IntStream.iterate(startInclusive, i -> i <= endInclusive, i -> i + stepSize));
 		}
 		
@@ -163,19 +163,19 @@ public class ParameterBuilder {
 			return of(LongStream.of(values));
 		}
 		
-		public Enumeration<Long> range(long startInclusive, long endExclusive) {
+		public Enumeration<Long> rangeExclusive(long startInclusive, long endExclusive) {
 			return of(LongStream.range(startInclusive, endExclusive));
 		}
 		
-		public Enumeration<Long> range(long startInclusive, long endExclusive, long stepSize) {
+		public Enumeration<Long> raneExclusive(long startInclusive, long endExclusive, long stepSize) {
 			return of(LongStream.iterate(startInclusive, i -> i < endExclusive, i -> i + stepSize));
 		}
 		
-		public Enumeration<Long> rangeClosed(long startInclusive, long endInclusive) {
+		public Enumeration<Long> range(long startInclusive, long endInclusive) {
 			return of(LongStream.rangeClosed(startInclusive, endInclusive));
 		}
 		
-		public Enumeration<Long> rangeClosed(long startInclusive, long endInclusive, long stepSize) {
+		public Enumeration<Long> range(long startInclusive, long endInclusive, long stepSize) {
 			return of(LongStream.iterate(startInclusive, i -> i <= endInclusive, i -> i + stepSize));
 		}
 		
@@ -215,11 +215,11 @@ public class ParameterBuilder {
 			return of(DoubleStream.of(values));
 		}
 		
-		public Enumeration<Double> range(double startInclusive, double endExclusive, double stepSize) {
+		public Enumeration<Double> rangeExclusive(double startInclusive, double endExclusive, double stepSize) {
 			return of(DoubleStream.iterate(startInclusive, i -> i < endExclusive, i -> i + stepSize));
 		}
 		
-		public Enumeration<Double> rangeClosed(double startInclusive, double endInclusive, double stepSize) {
+		public Enumeration<Double> range(double startInclusive, double endInclusive, double stepSize) {
 			return of(DoubleStream.iterate(startInclusive, i -> i <= endInclusive, i -> i + stepSize));
 		}
 		
