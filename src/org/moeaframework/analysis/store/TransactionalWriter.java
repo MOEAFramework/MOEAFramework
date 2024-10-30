@@ -25,7 +25,7 @@ import java.io.Writer;
  * Writer with a transaction mechanism requiring one to call {@link #commit()} before the content is stored.  The
  * typical use is:
  * <pre>{@code
- *   try (TransactionalWriter writer = dataStore.writer(key).asText()) {
+ *   try (TransactionalWriter writer = blob.openWriter()) {
  *       writer.write(...);
  *       writer.commit();
  *   }

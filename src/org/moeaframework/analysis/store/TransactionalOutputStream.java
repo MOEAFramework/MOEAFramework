@@ -25,7 +25,7 @@ import java.io.OutputStream;
  * Output stream with a transaction mechanism requiring one to call {@link #commit()} before the content is stored.
  * The typical use is:
  * <pre>{@code
- *   try (TransactionalOutputStream out = dataStore.writer(key).asBinary()) {
+ *   try (TransactionalOutputStream out = blob.openOutputStream()) {
  *       out.write(...);
  *       out.commit();
  *   }
