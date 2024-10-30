@@ -44,5 +44,7 @@ public class StreamSnippet {
 			.histogram("frequency", counts.keys(), counts.values())
 			.show();
 		// end-example:stream
+		
+		Plot.disposeAll();
 	}
 }

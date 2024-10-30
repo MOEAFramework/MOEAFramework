@@ -56,5 +56,14 @@ public class GroupingsTest {
 		Assert.assertEquals(15.0, bucket.apply(15.0));
 		Assert.assertEquals(15.0, bucket.apply(19.9));
 	}
+	
+	@Test
+	public void testRound() {
+		Function<Double, Integer> round = Groupings.round();
+		Assert.assertEquals(0, round.apply(0.0));
+		Assert.assertEquals(1, round.apply(0.5));
+		Assert.assertEquals(1, round.apply(1.0));
+		Assert.assertEquals(2, round.apply(1.5));
+	}
 
 }

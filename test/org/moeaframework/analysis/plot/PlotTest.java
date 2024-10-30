@@ -22,8 +22,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.stream.IntStream;
 
-import javax.swing.JFrame;
-
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Analyzer;
 import org.moeaframework.Assert;
@@ -40,14 +40,26 @@ import org.moeaframework.core.population.NondominatedPopulation;
  */
 public class PlotTest {
 	
+	@Before
+	public void setUp() {
+		Assume.assumeHasDisplay();
+	}
+	
+	@After
+	public void tearDown() {
+		if (isJUnitTest()) {
+			Plot.disposeAll();
+		}
+	}
+	
 	@Test
 	public void testEmpty() {
-		runTest(new Plot());
+		new Plot().show();
 	}
 	
 	@Test
 	public void testBasicShapes() {
-		runTest(new Plot()
+		new Plot()
 				.scatter("Points", new double[] { 0, 1, 2 }, new double[] { 0, 1, 2 })
 				.line("Line", new double[] { 0, 1, 2 }, new double[] { 0, 1, 2 })
 				.stacked("Stacked 1", new double[] { 0.5, 1.5 }, new double[] { 0.5, 0.6 })
@@ -55,15 +67,17 @@ public class PlotTest {
 				.area("Area", new double[] { 0, 1, 2 }, new double[] { 0, 0.5, 0 })
 				.setTitle("Basic Shapes")
 				.setXLabel("X")
-				.setYLabel("Y"));
+				.setYLabel("Y")
+				.show();
 	}
 	
 	@Test
 	public void testOutOfOrder() {
-		runTest(new Plot()
+		new Plot()
 				.scatter("Points", new double[] { 0, 2, 1 }, new double[] { 0, 1, 2 })
 				.line("Line", new double[] { 0, 2, 1 }, new double[] { 0, 1, 2 })
-				.area("Area", new double[] { 0, 2, 1 }, new double[] { 0, 0.5, 0 }));
+				.area("Area", new double[] { 0, 2, 1 }, new double[] { 0, 0.5, 0 })
+				.show();
 	}
 	
 	@Test
@@ -75,7 +89,10 @@ public class PlotTest {
 				.withProperty("populationSize", 20)
 				.run();
 		
-		runTest(new Plot().add("NSGAII", result).withSize(5.0f).withPaint(Color.BLACK));
+		new Plot().add("NSGAII", result)
+				.withSize(5.0f)
+				.withPaint(Color.BLACK)
+				.show();
 	}
 	
 	@Test
@@ -90,7 +107,11 @@ public class PlotTest {
 			}
 		}
 		
-		runTest(new Plot().heatMap("Test", x, y, z).setXLabel("X").setYLabel("Y"));
+		new Plot()
+				.heatMap("Test", x, y, z)
+				.setXLabel("X")
+				.setYLabel("Y")
+				.show();
 	}
 	
 	@Test
@@ -98,7 +119,11 @@ public class PlotTest {
 		double[] x = IntStream.range(0, 10).mapToDouble(i -> (double)i).toArray();
 		double[] y = IntStream.range(0, 10).mapToDouble(i -> PRNG.nextDouble()).toArray();
 		
-		runTest(new Plot().histogram("Test", x, y).setXLabel("X").setYLabel("Y"));
+		new Plot()
+				.histogram("Test", x, y)
+				.setXLabel("X")
+				.setYLabel("Y")
+				.show();
 	}
 	
 	@Test
@@ -120,7 +145,7 @@ public class PlotTest {
 			analyzer.addAll(algorithm, executor.withAlgorithm(algorithm).runSeeds(10));
 		}
 
-		runTest(new Plot().add(analyzer));
+		new Plot().add(analyzer).show();
 	}
 	
 	@Test
@@ -140,7 +165,7 @@ public class PlotTest {
 
 		Observations observations = instrumenter.getObservations();
 		
-		runTest(new Plot().add(observations));
+		new Plot().add(observations).show();
 	}
 	
 	@Test
@@ -165,17 +190,6 @@ public class PlotTest {
 			.save(tempFile);
 			
 		Assert.assertFileWithContent(tempFile);
-	}
-	
-	public void runTest(Plot plot) {
-		if (isJUnitTest()) {
-			Assume.assumeHasDisplay();
-			
-			JFrame frame = plot.show();
-			frame.dispose();
-		} else {
-			plot.showDialog();
-		}
 	}
 
 	public static boolean isJUnitTest() {

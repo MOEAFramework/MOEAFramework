@@ -19,11 +19,14 @@ package org.moeaframework.analysis.plot;
 
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
+import java.awt.Dialog;
 import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.RenderingHints;
+import java.awt.Window;
 import java.awt.geom.Rectangle2D;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -124,6 +127,8 @@ import org.moeaframework.util.validate.Validate;
  * generated.  JFreeSVG can be obtained from http://www.jfree.org/jfreesvg/.
  */
 public class Plot {
+	
+	private static final String WINDOW_TITLE = "MOEA Framework Plot";
 	
 	/**
 	 * List of supported file types when saving a plot.
@@ -1411,7 +1416,7 @@ public class Plot {
 		
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.setTitle("MOEA Framework Plot");
+		frame.setTitle(WINDOW_TITLE);
 		frame.setIconImages(Settings.getIcon().getResolutionVariants());
 		frame.setVisible(true);
 		
@@ -1435,22 +1440,36 @@ public class Plot {
 	 * @return the window that was created
 	 */
 	public JDialog showDialog(int width, int height) {
-		JDialog frame = new JDialog();
+		JDialog dialog = new JDialog();
 		
-		frame.getContentPane().setLayout(new BorderLayout());
-		frame.getContentPane().add(getChartPanel(), BorderLayout.CENTER);
+		dialog.getContentPane().setLayout(new BorderLayout());
+		dialog.getContentPane().add(getChartPanel(), BorderLayout.CENTER);
 		
-		frame.setPreferredSize(new Dimension(width, height));
-		frame.pack();
+		dialog.setPreferredSize(new Dimension(width, height));
+		dialog.pack();
 		
-		frame.setLocationRelativeTo(null);
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.setTitle("MOEA Framework Plot");
-		frame.setModalityType(ModalityType.APPLICATION_MODAL);
-		frame.setIconImages(Settings.getIcon().getResolutionVariants());
-		frame.setVisible(true);
+		dialog.setLocationRelativeTo(null);
+		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		dialog.setTitle(WINDOW_TITLE);
+		dialog.setModalityType(ModalityType.APPLICATION_MODAL);
+		dialog.setIconImages(Settings.getIcon().getResolutionVariants());
+		dialog.setVisible(true);
 		
-		return frame;
+		return dialog;
+	}
+	
+	/**
+	 * Disposes all displayed plot windows.
+	 */
+	public static void disposeAll() {
+		for (Window window : Window.getWindows()) {
+			if (((window instanceof Frame frame) && frame.getTitle().equals(WINDOW_TITLE)) ||
+					((window instanceof Dialog dialog) && dialog.getTitle().equals(WINDOW_TITLE))) {
+				if (window.isShowing()) {
+					window.dispose();
+				}
+			}	
+		}
 	}
 
 }
