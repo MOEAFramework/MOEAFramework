@@ -31,6 +31,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.time.Instant;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.moeaframework.analysis.store.Container;
@@ -47,7 +48,7 @@ public class FileSystemDataStore implements DataStore {
 		
 	private final FileMap fileMap;
 	
-	private final ReentrantLock mkdirLock;
+	private final Lock mkdirLock;
 		
 	public FileSystemDataStore(File root) throws IOException {
 		this(root, new HierarchicalFileMap());
@@ -232,8 +233,7 @@ public class FileSystemDataStore implements DataStore {
 
 		@Override
 		protected void doCommit() throws IOException {
-			Files.move(tempFile.toPath(), destFile.toPath(), StandardCopyOption.ATOMIC_MOVE,
-					StandardCopyOption.REPLACE_EXISTING);
+			Files.move(tempFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		}
 		
 		@Override
@@ -257,8 +257,7 @@ public class FileSystemDataStore implements DataStore {
 
 		@Override
 		protected void doCommit() throws IOException {
-			Files.move(tempFile.toPath(), destFile.toPath(), StandardCopyOption.ATOMIC_MOVE,
-					StandardCopyOption.REPLACE_EXISTING);
+			Files.move(tempFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		}
 		
 		@Override
