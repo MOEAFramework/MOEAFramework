@@ -20,6 +20,7 @@ package org.moeaframework.analysis.stream;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
@@ -27,6 +28,7 @@ import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -85,8 +87,7 @@ public interface DataStream<V> extends Formattable<V> {
 	
 	public default V single() {
 		if (size() != 1) {
-			throw new UnsupportedOperationException("expected data stream to contain exactly one item, but found " +
-					size());
+			throw new NoSuchElementException("expected data stream to contain exactly one item, but found " + size());
 		}
 		
 		return any();
@@ -142,12 +143,20 @@ public interface DataStream<V> extends Formattable<V> {
 		return table;
 	}
 	
-	public static <V> DataStream<V> of(List<V> list) {
-		return of(list.stream());
+	public static <V> DataStream<V> of() {
+		return new ImmutableDataStream<V>();
 	}
 	
 	public static <V> DataStream<V> of(Stream<V> stream) {
 		return new ImmutableDataStream<V>(stream);
+	}
+	
+	public static DataStream<Integer> of(IntStream stream) {
+		return of(stream.boxed());
+	}
+	
+	public static DataStream<Double> of(DoubleStream stream) {
+		return of(stream.boxed());
 	}
 	
 	public static <V> DataStream<V> of(Iterable<V> iterable) {

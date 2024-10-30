@@ -21,12 +21,15 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.stream.Streams;
@@ -53,7 +56,7 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 	}
 	
 	public default K[] keys(IntFunction<K[]> generator) {
-		return stream().toArray(generator);
+		return stream().map(Pair::getKey).toArray(generator);
 	}
 	
 	public default List<V> values() {
@@ -61,7 +64,7 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 	}
 	
 	public default V[] values(IntFunction<V[]> generator) {
-		return stream().toArray(generator);
+		return stream().map(Pair::getValue).toArray(generator);
 	}
 	
 	public default <R> Partition<K, R> map(Function<V, R> map) {
@@ -94,8 +97,7 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 	
 	public default Pair<K, V> single() {
 		if (size() != 1) {
-			throw new UnsupportedOperationException("expected partition to contain exactly one item, but found " +
-					size());
+			throw new NoSuchElementException("expected partition to contain exactly one item, but found " + size());
 		}
 		
 		return any();
@@ -150,12 +152,20 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 		return table;
 	}
 	
-	public static <V> Partition<V, V> of(List<V> list) {
-		return of(Groupings.exactValue(), list);
+	public static <K, V> Partition<K, V> of() {
+		return new ImmutablePartition<>();
 	}
 	
 	public static <V> Partition<V, V> of(Stream<V> stream) {
 		return of(Groupings.exactValue(), stream);
+	}
+	
+	public static Partition<Integer, Integer> of(IntStream stream) {
+		return of(stream.boxed());
+	}
+	
+	public static Partition<Double, Double> of(DoubleStream stream) {
+		return of(stream.boxed());
 	}
 	
 	public static <V> Partition<V, V> of(Iterable<V> iterable) {
@@ -170,12 +180,16 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 		return new ImmutablePartition<K, V>(map.entrySet().stream().map(x -> Pair.of(x)));
 	}
 	
-	public static <K, V> Partition<K, V> of(Function<V, K> key, List<V> list) {
-		return of(key, list.stream());
-	}
-	
 	public static <K, V> Partition<K, V> of(Function<V, K> key, Stream<V> stream) {
 		return new ImmutableDataStream<V>(stream).keyedOn(key);
+	}
+	
+	public static <K> Partition<K, Integer> of(Function<Integer, K> key, IntStream stream) {
+		return of(key, stream.boxed());
+	}
+	
+	public static <K> Partition<K, Double> of(Function<Double, K> key, DoubleStream stream) {
+		return of(key, stream.boxed());
 	}
 	
 	public static <K, V> Partition<K, V> of(Function<V, K> key, Iterable<V> iterable) {
@@ -184,10 +198,6 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 	
 	public static <K, V> Partition<K, V> of(Function<V, K> key, V[] array) {
 		return of(key, Streams.of(array));
-	}
-	
-	public static <K, V> Partition<K, V> zip(List<K> keys, List<V> values) {
-		return zip(keys, values);
 	}
 	
 	public static <K, V> Partition<K, V> zip(Iterable<K> keys, Iterable<V> values) {

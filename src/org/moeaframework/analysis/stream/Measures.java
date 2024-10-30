@@ -22,6 +22,7 @@ import java.util.stream.Stream;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.descriptive.StatisticalSummary;
+import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.rank.Median;
 import org.apache.commons.math3.stat.descriptive.rank.Percentile;
 
@@ -42,10 +43,6 @@ public class Measures {
 		return (stream) -> (int)stream.count();
 	}
 	
-	public static <T> Function<Stream<T>, T> any() {
-		return (stream) -> stream.findAny().get();
-	}
-	
 	public static <T extends Number> Function<Stream<T>, Double> sum() {
 		return (stream) -> stream.mapToDouble(x -> x.doubleValue()).sum();
 	}
@@ -59,7 +56,7 @@ public class Measures {
 	}
 	
 	public static <T extends Number> Function<Stream<T>, Double> average() {
-		return (stream) -> stream.mapToDouble(x -> x.doubleValue()).average().getAsDouble();
+		return (stream) -> new Mean().evaluate(stream.mapToDouble(x -> x.doubleValue()).toArray());
 	}
 	
 	public static <T extends Number> Function<Stream<T>, Double> median() {
