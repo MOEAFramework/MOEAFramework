@@ -19,32 +19,90 @@ package org.moeaframework.analysis.store.fs;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.Comparator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import java.util.HashMap;
+import java.util.Map;
+import org.apache.commons.text.translate.AggregateTranslator;
+import org.apache.commons.text.translate.CharSequenceTranslator;
+import org.apache.commons.text.translate.LookupTranslator;
 import org.moeaframework.analysis.store.Key;
 import org.moeaframework.core.Constructable;
 
+/**
+ * Defines how containers and blobs are mapped to paths on a file system.
+ */
 public abstract class FileMap implements Constructable {
 	
 	public static final Comparator<Path> CASE_INSENSITIVE_ORDER = new CaseInsensitivePathComparator();
+		
+	private static final CharSequenceTranslator fileNameTranslator;
 	
-	private static final Pattern FILENAME_INVALID_CHAR = Pattern.compile("[\\\\/:\"*?<>|]");
+	static {
+		final Map<CharSequence, CharSequence> fileNameEscapeMap = new HashMap<>();
+		fileNameEscapeMap.put("%", "%%");
+		fileNameEscapeMap.put("\\", "%5C");
+		fileNameEscapeMap.put("/", "%2F");
+		fileNameEscapeMap.put(":", "%3A");
+		fileNameEscapeMap.put("\"", "%22");
+		fileNameEscapeMap.put("*", "%2A");
+		fileNameEscapeMap.put("?", "%3F");
+		fileNameEscapeMap.put("<", "%3C");
+		fileNameEscapeMap.put(">", "%3E");
+		fileNameEscapeMap.put("|", "%7C");
+		
+		fileNameTranslator = new AggregateTranslator(
+				new LookupTranslator(Collections.unmodifiableMap(fileNameEscapeMap)));
+	}
 	
 	public FileMap() {
 		super();
 	}
 	
-	abstract Path map(Path root, Key key) throws IOException;
+	/**
+	 * Returns the path to the container associated with the given key.  If containers are not supported, this method
+	 * may throws {@link UnsupportedOperationException}.
+	 * 
+	 * @param root the root directory
+	 * @param key the key
+	 * @return the container path
+	 * @throws IOException if an I/O error occurred
+	 * @throws UnsupportedOperationException if containers are not supported
+	 */
+	abstract Path mapContainer(Path root, Key key) throws IOException;
 	
-	abstract Path map(Path root, Key key, String name) throws IOException;
+	/**
+	 * Returns the path to the blob associated with the given key and name.
+	 * 
+	 * @param root the root directory
+	 * @param key the key
+	 * @param name the blob name
+	 * @return the blob path
+	 * @throws IOException if an I/O error occurred
+	 */
+	abstract Path mapBlob(Path root, Key key, String name) throws IOException;
 	
-	protected Path toPath(String filename) {
-		Matcher matcher = FILENAME_INVALID_CHAR.matcher(filename);
-		return Path.of(matcher.replaceAll("_"));
+	/**
+	 * Returns a file system-safe path for the give file name.
+	 * 
+	 * @param filename the file name
+	 * @return the file system-safe path
+	 */
+	public static Path escapePath(String filename) {
+		if (filename.equals(".")) {
+			return Path.of("%46");
+		}
+		
+		if (filename.equals("..")) {
+			return Path.of("%46%46");
+		}
+		
+		return Path.of(fileNameTranslator.translate(filename));
 	}
 	
+	/**
+	 * Comparator for {@link Path} that performs case-insensitive comparisons of each path segment.
+	 */
 	protected static class CaseInsensitivePathComparator implements Comparator<Path> {
 
 		@Override

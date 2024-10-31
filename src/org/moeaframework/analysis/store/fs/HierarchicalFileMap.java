@@ -37,14 +37,14 @@ public class HierarchicalFileMap extends FileMap {
 	}
 	
 	@Override
-	public Path map(Path root, Key key) throws IOException {
+	public Path mapContainer(Path root, Key key) throws IOException {
 		Path path = root;
 		
 		// convert key to valid file names
 		Map<Path, Path> remaining = new TreeMap<>(FileMap.CASE_INSENSITIVE_ORDER);
 		
 		for (String index : key.indices()) {
-			remaining.put(toPath(index), toPath(key.get(index).toString()));
+			remaining.put(escapePath(index), escapePath(key.get(index).toString()));
 		}
 		
 		// walk directory structure, reusing any existing folders
@@ -75,9 +75,9 @@ public class HierarchicalFileMap extends FileMap {
 	}
 	
 	@Override
-	public Path map(Path root, Key key, String name) throws IOException {
-		Path path = map(root, key);
-		return path.resolve(toPath(name));
+	public Path mapBlob(Path root, Key key, String name) throws IOException {
+		Path path = mapContainer(root, key);
+		return path.resolve(escapePath(name));
 	}
 	
 	@Override

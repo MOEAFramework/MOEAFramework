@@ -33,12 +33,12 @@ public class HashFileMap extends FileMap {
 	}
 	
 	@Override
-	public Path map(Path root, Key key) throws IOException {
-		return map(root, Hash.of(key));
+	public Path mapContainer(Path root, Key key) throws IOException {
+		throw new UnsupportedOperationException();
 	}
 	
 	@Override
-	public Path map(Path root, Key key, String name) throws IOException {
+	public Path mapBlob(Path root, Key key, String name) throws IOException {
 		return map(root, Hash.of(key, name));
 	}
 	

@@ -137,12 +137,21 @@ public class FileSystemDataStore implements DataStore {
 		
 		@Override
 		public void create() throws IOException {
-			mkdirs(fileMap.map(getRoot(), key));
+			try {
+				mkdirs(fileMap.mapContainer(getRoot(), key));
+			} catch (UnsupportedOperationException e) {
+				// suppress exception - containers are not supported
+			}
 		}
 
 		@Override
 		public boolean exists() throws IOException {
-			return Files.exists(fileMap.map(getRoot(), key));
+			try {
+				return Files.exists(fileMap.mapContainer(getRoot(), key));
+			} catch (UnsupportedOperationException e) {
+				// suppress exception - containers are not supported
+				return true;
+			}
 		}
 		
 	}
@@ -176,32 +185,32 @@ public class FileSystemDataStore implements DataStore {
 
 		@Override
 		public boolean exists() throws IOException {
-			return Files.exists(fileMap.map(getRoot(), key, name));
+			return Files.exists(fileMap.mapBlob(getRoot(), key, name));
 		}
 
 		@Override
 		public boolean delete() throws IOException {
-			return Files.deleteIfExists(fileMap.map(getRoot(), key, name));
+			return Files.deleteIfExists(fileMap.mapBlob(getRoot(), key, name));
 		}
 
 		@Override
 		public Instant lastModified() throws IOException {
-			return Files.getLastModifiedTime(fileMap.map(getRoot(), key, name)).toInstant();
+			return Files.getLastModifiedTime(fileMap.mapBlob(getRoot(), key, name)).toInstant();
 		}
 
 		@Override
 		public Reader openReader() throws IOException {
-			return new FileReader(fileMap.map(getRoot(), key, name).toFile());
+			return new FileReader(fileMap.mapBlob(getRoot(), key, name).toFile());
 		}
 
 		@Override
 		public InputStream openInputStream() throws IOException {
-			return new FileInputStream(fileMap.map(getRoot(), key, name).toFile());
+			return new FileInputStream(fileMap.mapBlob(getRoot(), key, name).toFile());
 		}
 
 		@Override
 		public TransactionalWriter openWriter() throws IOException {
-			Path dest = fileMap.map(getRoot(), key, name);
+			Path dest = fileMap.mapBlob(getRoot(), key, name);
 			mkdirs(dest.getParent());
 			
 			Path temp = Files.createTempFile("datastore", null);
@@ -210,7 +219,7 @@ public class FileSystemDataStore implements DataStore {
 
 		@Override
 		public TransactionalOutputStream openOutputStream() throws IOException {
-			Path dest = fileMap.map(getRoot(), key, name);
+			Path dest = fileMap.mapBlob(getRoot(), key, name);
 			mkdirs(dest.getParent());
 			
 			Path temp = Files.createTempFile("datastore", null);

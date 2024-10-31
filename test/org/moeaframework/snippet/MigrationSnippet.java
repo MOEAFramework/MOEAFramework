@@ -17,16 +17,20 @@
  */
 package org.moeaframework.snippet;
 
+import java.io.IOException;
+
 import org.junit.Test;
 import org.moeaframework.analysis.plot.Plot;
+import org.moeaframework.analysis.store.Blob;
+import org.moeaframework.analysis.store.TransactionalOutputStream;
 import org.moeaframework.analysis.stream.DataStream;
 import org.moeaframework.analysis.stream.Groupings;
 import org.moeaframework.analysis.stream.Measures;
 import org.moeaframework.analysis.stream.Partition;
 import org.moeaframework.core.PRNG;
 
-public class StreamSnippet {
-
+public class MigrationSnippet {
+	
 	@Test
 	public void example() {
 		// begin-example:stream
@@ -41,10 +45,23 @@ public class StreamSnippet {
 				
 		// Render line plot
 		new Plot()
-			.histogram("frequency", counts.keys(), counts.values())
+			.histogram("frequency", counts)
 			.show();
 		// end-example:stream
 		
 		Plot.disposeAll();
+	}
+	
+	@Test
+	public void samples() throws IOException {
+		byte[] content = new byte[0];
+		Blob blob = null;
+		
+		// begin-example:TransactionalOutputStream
+		try (TransactionalOutputStream out = blob.openOutputStream()) {
+			out.write(content);
+			out.commit();
+		}
+		// end-example:TransactionalOutputStream
 	}
 }
