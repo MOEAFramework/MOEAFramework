@@ -31,6 +31,15 @@ import org.moeaframework.core.Constructable;
 
 /**
  * Defines how containers and blobs are mapped to paths on a file system.
+ * <p>
+ * Since arbitrary keys and filenames can be used, certain characters are escaped:
+ * <ol>
+ *   <li>Invalid or reserved characters are escaped by their hex value (e.g., {@code "/"} becomes {@code "%2F"}).  This
+ *       also includes whitespace characters.
+ *   <li>The character {@code "%"}, if not being used to escape a value, is represented by {@code "%%"}.
+ *   <li>The strings {@code "."}, {@code ".."}, and {@code "~"} are escaped to avoid interpreting them as relative
+ *       paths.
+ * </ol>
  */
 public abstract class FileMap implements Constructable {
 	
@@ -50,6 +59,10 @@ public abstract class FileMap implements Constructable {
 		fileNameEscapeMap.put("<", "%3C");
 		fileNameEscapeMap.put(">", "%3E");
 		fileNameEscapeMap.put("|", "%7C");
+		fileNameEscapeMap.put(" ", "%20");
+		fileNameEscapeMap.put("\t", "%09");
+		fileNameEscapeMap.put("\n", "%0A");
+		fileNameEscapeMap.put("\r", "%0D");
 		
 		fileNameTranslator = new AggregateTranslator(
 				new LookupTranslator(Collections.unmodifiableMap(fileNameEscapeMap)));
@@ -83,7 +96,7 @@ public abstract class FileMap implements Constructable {
 	abstract Path mapBlob(Path root, Key key, String name) throws IOException;
 	
 	/**
-	 * Returns a file system-safe path for the give file name.
+	 * Returns a file system-safe path for the give file name.  
 	 * 
 	 * @param filename the file name
 	 * @return the file system-safe path
@@ -95,6 +108,10 @@ public abstract class FileMap implements Constructable {
 		
 		if (filename.equals("..")) {
 			return Path.of("%46%46");
+		}
+		
+		if (filename.equals("~")) {
+			return Path.of("%7E");
 		}
 		
 		return Path.of(fileNameTranslator.translate(filename));

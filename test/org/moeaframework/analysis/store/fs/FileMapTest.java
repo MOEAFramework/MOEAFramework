@@ -47,5 +47,15 @@ public class FileMapTest {
 			}
 		}
 	}
+	
+	@Test
+	public void testRelativePaths() throws IOException {
+		Assert.assertEquals("%46", FileMap.escapePath(".").toString());
+		Assert.assertEquals("%46%46", FileMap.escapePath("..").toString());
+		Assert.assertEquals("%7E", FileMap.escapePath("~").toString());
+		Assert.assertEquals(".foo", FileMap.escapePath(".foo").toString());
+		Assert.assertEquals("..foo", FileMap.escapePath("..foo").toString());
+		Assert.assertEquals("~foo", FileMap.escapePath("~foo").toString());
+	}
 
 }
