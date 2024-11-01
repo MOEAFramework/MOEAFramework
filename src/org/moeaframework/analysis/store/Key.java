@@ -20,10 +20,24 @@ package org.moeaframework.analysis.store;
 import java.util.Set;
 import java.util.TreeSet;
 
+/**
+ * A key that identifies or addresses as specific {@link Container}.
+ */
 public interface Key {
 
+	/**
+	 * Returns the indices defined by this key.
+	 * 
+	 * @return the indices
+	 */
 	public Set<String> indices();
 	
+	/**
+	 * Returns the value associated with the given index.
+	 * 
+	 * @param index the index
+	 * @return the value associated with the index
+	 */
 	public Comparable<?> get(String index);
 	
 	public default Key extend(String name, Comparable<?> value) {

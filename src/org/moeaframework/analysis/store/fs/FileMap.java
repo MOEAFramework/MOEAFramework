@@ -141,6 +141,12 @@ public abstract class FileMap implements Constructable {
 				}
 			}
 			
+			if (path1.getNameCount() < path2.getNameCount()) {
+				return -1;
+			} else if (path1.getNameCount() > path2.getNameCount()) {
+				return 1;
+			}
+			
 			return 0;
 		}
 		

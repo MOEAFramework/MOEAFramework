@@ -19,16 +19,56 @@ package org.moeaframework.analysis.store;
 
 import java.io.IOException;
 
+/**
+ * A container of blobs.
+ */
 public interface Container {
 	
+	/**
+	 * Gets the key for this container.
+	 * 
+	 * @return the key
+	 */
 	Key getKey();
 	
+	/**
+	 * Gets a reference to a blob with the given name.
+	 * 
+	 * @param name the blob name
+	 * @return the blob reference
+	 */
 	Blob getBlob(String name);
 	
+	/**
+	 * Creates the underlying, physical container.  It is typically not required to create the container explicitly,
+	 * as writing to a blob will automatically create the container, if required.
+	 * <p>
+	 * Note that implementations may not have a physical representation of a container, such that this method has no
+	 * effect.  Avoid depending on this method for any particular purpose.
+	 * 
+	 * @throws IOException if an I/O error occurred
+	 */
 	void create() throws IOException;
 	
+	/**
+	 * Returns {@code true} if the underlying, physical container exists.
+	 * <p>
+	 * Note that implementations may not have a physical representation of a container, in which case this method
+	 * will always return {@code true}.  Avoid depending on this method for checking if data exists; instead use
+	 * {@link #contains(String)} to check if specific blobs exist.
+	 * 
+	 * @return {@code true} if the container exists; {@code false} otherwise
+	 * @throws IOException if an I/O error occurred
+	 */
 	boolean exists() throws IOException;
-		
+	
+	/**
+	 * Returns {@code true} if the blob identified by this name exists within this container.
+	 * 
+	 * @param name the blob name
+	 * @return {@code true} if the blob exists; {@code false} otherwise
+	 * @throws IOException if an I/O error occurred
+	 */
 	public default boolean contains(String name) throws IOException {
 		return getBlob(name).exists();
 	}

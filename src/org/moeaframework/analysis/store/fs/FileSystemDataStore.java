@@ -169,11 +169,6 @@ public class FileSystemDataStore implements DataStore {
 		}
 
 		@Override
-		public Key getKey() {
-			return key;
-		}
-
-		@Override
 		public String getName() {
 			return name;
 		}

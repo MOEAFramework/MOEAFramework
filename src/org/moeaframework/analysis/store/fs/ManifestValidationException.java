@@ -19,24 +19,15 @@ package org.moeaframework.analysis.store.fs;
 
 import org.moeaframework.analysis.store.DataStoreException;
 
+/**
+ * Exception indicating the manifest recorded with a data store does not match the expected manifest.
+ */
 public class ManifestValidationException extends DataStoreException {
 
 	private static final long serialVersionUID = 4297700379647594961L;
 
-	public ManifestValidationException() {
-		super();
-	}
-
-	public ManifestValidationException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
 	public ManifestValidationException(String message) {
 		super(message);
-	}
-
-	public ManifestValidationException(Throwable cause) {
-		super(cause);
 	}
 
 }

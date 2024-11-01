@@ -35,28 +35,94 @@ import java.time.Instant;
 import org.apache.commons.io.output.CloseShieldOutputStream;
 import org.apache.commons.io.output.CloseShieldWriter;
 
+/**
+ * Reference to a blob, which is simply a piece of data identified by its container and name. 
+ */
 public interface Blob {
 	
-	Key getKey();
-	
+	/**
+	 * Gets the name of this blob.
+	 * 
+	 * @return the blo name
+	 */
 	String getName();
 	
+	/**
+	 * Gets the container for this blob.
+	 * 
+	 * @return the container
+	 */
 	Container getContainer();
 	
+	/**
+	 * Returns {@code true} if the blob exists; {@code false} otherwise.
+	 * 
+	 * @return {@code true} if the blob exists; {@code false} otherwise
+	 * @throws IOException if an I/O error occurred
+	 */
 	boolean exists() throws IOException;
 	
+	/**
+	 * Deletes this blob if it exists.
+	 * 
+	 * @return {@code true} if the blob was deleted; {@code false} if the blob does not exist
+	 * @throws IOException if an I/O error occurred
+	 */
 	boolean delete() throws IOException;
 	
+	/**
+	 * Returns the last modified time of the blob.
+	 * 
+	 * @return the last modified time
+	 * @throws IOException if an I/O error occurred
+	 */
 	Instant lastModified() throws IOException;
 	
+	/**
+	 * Creates and returns a {@link Reader} for reading text from this blob.  The caller is responsible for closing the
+	 * reader when finished.
+	 * 
+	 * @return a reader for this blob
+	 * @throws IOException if an I/O error occurred
+	 */
 	Reader openReader() throws IOException;
 	
+	/**
+	 * Creates and returns an {@link InputStream} for reading binary data from this blob.  The caller is responsible for
+	 * closing the stream when finished.
+	 * 
+	 * @return an input stream for this blob
+	 * @throws IOException if an I/O error occurred
+	 */
 	InputStream openInputStream() throws IOException;
-		
+	
+	/**
+	 * Creates and returns a {@link TransactionalWriter} for writing text to this blob.  The caller is responsible for
+	 * committing and closing the writer when finished.  If the writer is closed before being committed, any written
+	 * content is discarded.
+	 * 
+	 * @return the writer for this blob
+	 * @throws IOException if an I/O error occurred
+	 */
 	TransactionalWriter openWriter() throws IOException;
 	
+	/**
+	 * Creates and returns a {@link TransactionalOutputStream} for writing binary data to this blob.  The caller is
+	 * responsible for committing and closing the stream when finished.  If the stream is closed before being committed,
+	 * any written content is discarded.
+	 * 
+	 * @return the output stream for this blob
+	 * @throws IOException if an I/O error occurred
+	 */
 	TransactionalOutputStream openOutputStream() throws IOException;
 	
+	/**
+	 * Executes the callback function if this blob is missing.
+	 * 
+	 * @param callback the callback function
+	 * @return {@code true} if the blob is missing and the callback was invoked; {@code false} otherwise
+	 * @throws IOException if an I/O error occurred
+	 */
 	public default boolean ifMissing(IOCallback<Blob> callback) throws IOException {
 		if (!exists()) {
 			callback.accept(this);
@@ -66,6 +132,13 @@ public interface Blob {
 		return false;
 	}
 	
+	/**
+	 * Executes the callback function if this blob exists.
+	 * 
+	 * @param callback the callback function
+	 * @return {@code true} if the blob exists and the callback was invoked; {@code false} otherwise
+	 * @throws IOException if an I/O error occurred
+	 */
 	public default boolean ifFound(IOCallback<Blob> callback) throws IOException {
 		if (exists()) {
 			callback.accept(this);
@@ -75,48 +148,110 @@ public interface Blob {
 		return false;
 	}
 	
+	/**
+	 * Extracts the content of this blob to a file.
+	 * 
+	 * @param file the destination file
+	 * @throws IOException if an I/O error occurred
+	 */
 	public default void extract(File file) throws IOException {
 		extract(file.toPath());
 	}
 	
+	/**
+	 * Extracts the content of this blob to a path.
+	 * 
+	 * @param path the destination path
+	 * @throws IOException if an I/O error occurred
+	 */
 	public default void extract(Path path) throws IOException {
 		try (InputStream in = openInputStream()) {
 			Files.copy(in, path, StandardCopyOption.REPLACE_EXISTING);
 		}
 	}
 	
+	/**
+	 * Transfers the content of this blob to an output stream.
+	 * 
+	 * @param out the output stream
+	 * @throws IOException if an I/O error occurred
+	 */
 	public default void extract(OutputStream out) throws IOException {
 		try (InputStream in = openInputStream()) {
 			in.transferTo(out);
 		}
 	}
 	
+	/**
+	 * Transfers the content of this blob to a writer.
+	 * 
+	 * @param out the writer
+	 * @throws IOException if an I/O error occurred
+	 */
 	public default void extract(Writer out) throws IOException {
 		try (Reader in = openReader()) {
 			in.transferTo(out);
 		}
 	}
 	
+	/**
+	 * Executes a callback with an {@link InputStream} for reading this blob.  The input stream is automatically closed
+	 * when the callback returns.
+	 * 
+	 * @param callback the callback function
+	 * @throws IOException if an I/O error occurred
+	 */
 	public default void extract(InputStreamCallback callback) throws IOException {
 		try (InputStream in = openInputStream()) {
 			callback.accept(in);
 		}
 	}
 	
+	/**
+	 * Executes a callback with a {@link Reader} for reading this blob.  The reader is automatically closed when the
+	 * callback returns.
+	 * 
+	 * @param callback the callback function
+	 * @throws IOException if an I/O error occurred
+	 */
 	public default void extract(ReaderCallback callback) throws IOException {
 		try (Reader in = openReader()) {
 			callback.accept(in);
 		}
 	}
 	
+	/**
+	 * Executes the callback with an {@link InputStream} for reading this blob, but only if the blob exists.  The
+	 * stream is automatically closed when the callback returns.
+	 * 
+	 * @param callback the callback function
+	 * @return {@code true} if the blob exists and the callback was invoked; {@code false} otherwise
+	 * @throws IOException if an I/O error occurred
+	 */
 	public default boolean extractIfFound(InputStreamCallback callback) throws IOException {
 		return ifFound(b -> b.extract(callback));
 	}
 	
+	/**
+	 * Executes the callback with a {@link Reader} for reading this blob, but only if the blob exists.  The reader is
+	 * automatically closed when the callback returns.
+	 * 
+	 * @param callback the callback function
+	 * @return {@code true} if the blob exists and the callback was invoked; {@code false} otherwise
+	 * @throws IOException if an I/O error occurred
+	 */
 	public default boolean extractIfFound(ReaderCallback callback) throws IOException {
 		return ifFound(b -> b.extract(callback));
 	}
 	
+	/**
+	 * Extracts the blob and deserializes the content.
+	 * 
+	 * @param <T> the type of object that was stored
+	 * @param type the type of the object
+	 * @return the deserialized object
+	 * @throws IOException if an I/O error occurred
+	 */
 	public default <T extends Serializable> T extractObject(Class<T> type) throws IOException {
 		try (InputStream in = openInputStream();
 				ObjectInputStream ois = new ObjectInputStream(in)) {
