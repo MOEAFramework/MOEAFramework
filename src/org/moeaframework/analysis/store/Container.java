@@ -29,7 +29,7 @@ public interface Container {
 	 * 
 	 * @return the key
 	 */
-	Key getKey();
+	Reference getKey();
 	
 	/**
 	 * Gets a reference to a blob with the given name.

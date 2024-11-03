@@ -17,8 +17,8 @@
  */
 package org.moeaframework.analysis.store;
 
-public interface Keyed {
+public interface Referenceable {
 	
-	public Key getKey();
+	public Reference getReference();
 
 }

@@ -23,22 +23,22 @@ import java.io.IOException;
  * Interface for storing data or objects to some persistent backend.
  * <p>
  * The data store organizes related data, called {@link Blob}s, in collections called {@link Container}s.  A container
- * is referenced by a {@link Key}, and each blob is referenced by a name.
+ * is referenced by a {@link Reference}, and each blob is referenced by a name.
  */
 public interface DataStore {
 	
-	public Container getContainer(Key key);
+	public Container getContainer(Reference reference);
 
-	public default boolean contains(Key key) throws IOException {
-		return getContainer(key).exists();
+	public default boolean contains(Reference reference) throws IOException {
+		return getContainer(reference).exists();
 	}
 	
-	public default Container getContainer(Keyed keyed) {
-		return getContainer(keyed.getKey());
+	public default Container getContainer(Referenceable reference) {
+		return getContainer(reference.getReference());
 	}
 	
-	public default boolean contains(Keyed keyed) throws IOException {
-		return contains(keyed.getKey());
+	public default boolean contains(Referenceable reference) throws IOException {
+		return contains(reference.getReference());
 	}
 
 }

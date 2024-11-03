@@ -29,7 +29,7 @@ import org.moeaframework.analysis.sample.Sample;
 import org.moeaframework.analysis.sample.Samples;
 import org.moeaframework.analysis.store.Container;
 import org.moeaframework.analysis.store.DataStore;
-import org.moeaframework.analysis.store.Key;
+import org.moeaframework.analysis.store.Reference;
 import org.moeaframework.analysis.store.fs.FileSystemDataStore;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.population.NondominatedPopulation;
@@ -54,11 +54,11 @@ public class DataStoreExample {
 		DataStore dataStore = new FileSystemDataStore(new File("results"));
 		
 		for (Sample sample : samples) {
-			Key key = sample.getKey().extend("algorithm", "NSGAIII");
-			Container container = dataStore.getContainer(key);
+			Reference reference = sample.getReference().extend("algorithm", "NSGAIII");
+			Container container = dataStore.getContainer(reference);
 			
 			if (!container.contains("indicators")) {
-				System.out.println("Evaluating " + key);
+				System.out.println("Evaluating " + reference);
 				
 				NSGAII algorithm = new NSGAIII(problem);
 				algorithm.applyConfiguration(sample);
@@ -76,7 +76,7 @@ public class DataStoreExample {
 					indicators.apply(algorithm.getResult()).display(out);
 				});
 			} else {
-				System.out.println("Skipping " + key + ", found in data store");
+				System.out.println("Skipping " + reference + ", found in data store");
 			}
 		}
 	}

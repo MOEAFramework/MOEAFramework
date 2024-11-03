@@ -20,7 +20,8 @@ package org.moeaframework.analysis.store.fs;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import org.moeaframework.analysis.store.Key;
+import org.moeaframework.analysis.store.Reference;
+import org.moeaframework.analysis.store.schema.Schema;
 import org.moeaframework.core.Constructable;
 
 public class HashFileMap extends FileMap {
@@ -33,13 +34,13 @@ public class HashFileMap extends FileMap {
 	}
 	
 	@Override
-	public Path mapContainer(Path root, Key key) throws IOException {
+	public Path mapContainer(Schema schema, Path root, Reference reference) throws IOException {
 		throw new UnsupportedOperationException();
 	}
 	
 	@Override
-	public Path mapBlob(Path root, Key key, String name) throws IOException {
-		return map(root, Hash.of(key, name));
+	public Path mapBlob(Schema schema, Path root, Reference reference, String name) throws IOException {
+		return map(root, Hash.of(schema, reference, name));
 	}
 	
 	private Path map(Path root, Hash hash) {

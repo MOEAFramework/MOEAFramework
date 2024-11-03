@@ -20,11 +20,14 @@ package org.moeaframework.analysis.store.fs;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.TreeMap;
 
-import org.moeaframework.analysis.store.Key;
+import org.apache.commons.lang3.tuple.Pair;
+import org.moeaframework.analysis.store.Reference;
+import org.moeaframework.analysis.store.schema.Field;
+import org.moeaframework.analysis.store.schema.Schema;
 import org.moeaframework.core.Constructable;
 
 /**
@@ -37,36 +40,36 @@ public class HierarchicalFileMap extends FileMap {
 	}
 	
 	@Override
-	public Path mapContainer(Path root, Key key) throws IOException {
+	public Path mapContainer(Schema schema, Path root, Reference reference) throws IOException {
 		Path path = root;
-		
-		// convert key to valid file names
-		Map<Path, Path> remaining = new TreeMap<>(FileMap.CASE_INSENSITIVE_ORDER);
-		
-		for (String index : key.indices()) {
-			remaining.put(escapePath(index), escapePath(key.get(index).toString()));
+		Map<Path, Path> remaining = new LinkedHashMap<>();
+
+		for (Pair<Field<?>, String> entry : schema.project(reference)) {
+			remaining.put(escapePath(entry.getKey().getName()), escapePath(entry.getValue()));
 		}
 		
-		// walk directory structure, reusing any existing folders
-		while (!remaining.isEmpty()) {
-			if (!Files.exists(path)) {
-				break;
-			}
-			
-			Optional<Path> match = Files.walk(path)
-					.filter(Files::isDirectory)
-					.filter(x -> remaining.containsKey(x.getFileName()))
-					.findFirst();
+		// When schemaless, match any existing folder structure
+		if (schema.isSchemaless()) {
+			while (!remaining.isEmpty()) {
+				if (!Files.exists(path)) {
+					break;
+				}
 				
-			if (!match.isPresent()) {
-				break;
+				Optional<Path> match = Files.walk(path)
+						.filter(Files::isDirectory)
+						.filter(x -> remaining.containsKey(x.getFileName()))
+						.findFirst();
+					
+				if (!match.isPresent()) {
+					break;
+				}
+				
+				Path matchingPath = match.get().getFileName();
+				path = path.resolve(matchingPath).resolve(remaining.remove(matchingPath));
 			}
-			
-			Path matchingPath = match.get().getFileName();
-			path = path.resolve(matchingPath).resolve(remaining.remove(matchingPath));
 		}
 		
-		// if no exact match, extend directory structure with remaining indices
+		// Remaining folder structure must match order
 		for (Path remainingPath : remaining.keySet()) {
 			path = path.resolve(remainingPath).resolve(remaining.get(remainingPath));
 		}
@@ -75,8 +78,8 @@ public class HierarchicalFileMap extends FileMap {
 	}
 	
 	@Override
-	public Path mapBlob(Path root, Key key, String name) throws IOException {
-		Path path = mapContainer(root, key);
+	public Path mapBlob(Schema schema, Path root, Reference reference, String name) throws IOException {
+		Path path = mapContainer(schema, root, reference);
 		return path.resolve(escapePath(name));
 	}
 	

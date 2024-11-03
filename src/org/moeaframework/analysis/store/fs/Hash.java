@@ -29,7 +29,10 @@ import java.util.HexFormat;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.moeaframework.analysis.store.Key;
+import org.apache.commons.lang3.tuple.Pair;
+import org.moeaframework.analysis.store.Reference;
+import org.moeaframework.analysis.store.schema.Field;
+import org.moeaframework.analysis.store.schema.Schema;
 import org.moeaframework.core.FrameworkException;
 
 class Hash {
@@ -96,12 +99,15 @@ class Hash {
 		return of(data.getBytes(UTF8));
 	}
 	
-	public static Hash of(Key key) {
-		return of(key.toString());
-	}
-	
-	public static Hash of(Key key, String name) {
-		return of(key.toString() + "/" + name);
+	public static Hash of(Schema schema, Reference reference, String name) {
+		MessageDigest digest = newMessageDigest();
+		
+		for (Pair<Field<?>, String> entries : schema.project(reference)) {
+			digest.update(entries.getKey().getName().getBytes(UTF8));
+			digest.update(entries.getValue().getBytes(UTF8));
+		}
+		
+		return new Hash(digest);
 	}
 	
 	public static Hash of(Serializable serializable) throws IOException {

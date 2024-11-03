@@ -26,7 +26,8 @@ import java.util.Map;
 import org.apache.commons.text.translate.AggregateTranslator;
 import org.apache.commons.text.translate.CharSequenceTranslator;
 import org.apache.commons.text.translate.LookupTranslator;
-import org.moeaframework.analysis.store.Key;
+import org.moeaframework.analysis.store.Reference;
+import org.moeaframework.analysis.store.schema.Schema;
 import org.moeaframework.core.Constructable;
 
 /**
@@ -73,27 +74,38 @@ public abstract class FileMap implements Constructable {
 	}
 	
 	/**
-	 * Returns the path to the container associated with the given key.  If containers are not supported, this method
-	 * may throws {@link UnsupportedOperationException}.
+	 * Returns the path to the container associated with the given reference.  If containers are not supported, this
+	 * method may throw {@link UnsupportedOperationException}.
 	 * 
+	 * @param schema the schema defining the structure, or schemaless
 	 * @param root the root directory
-	 * @param key the key
+	 * @param reference the container reference
 	 * @return the container path
 	 * @throws IOException if an I/O error occurred
 	 * @throws UnsupportedOperationException if containers are not supported
 	 */
-	abstract Path mapContainer(Path root, Key key) throws IOException;
+	abstract Path mapContainer(Schema schema, Path root, Reference reference) throws IOException;
 	
 	/**
-	 * Returns the path to the blob associated with the given key and name.
+	 * Returns the path to the blob associated with the given reference and name.
 	 * 
+	 * @param schema the schema defining the structure, or schemaless
 	 * @param root the root directory
-	 * @param key the key
+	 * @param reference the container reference
 	 * @param name the blob name
 	 * @return the blob path
 	 * @throws IOException if an I/O error occurred
 	 */
-	abstract Path mapBlob(Path root, Key key, String name) throws IOException;
+	abstract Path mapBlob(Schema schema, Path root, Reference reference, String name) throws IOException;
+	
+	/**
+	 * Updates the manifest with information about this file map.
+	 * 
+	 * @param manifest the manifest
+	 */
+	public void updateManifest(Manifest manifest) {
+		manifest.setString("fileMap", getDefinition());
+	}
 	
 	/**
 	 * Returns a file system-safe path for the give file name.  

@@ -17,12 +17,9 @@
  */
 package org.moeaframework.analysis.sample;
 
-import java.util.Set;
-
 import org.moeaframework.analysis.parameter.Parameter;
-import org.moeaframework.analysis.store.AbstractKey;
-import org.moeaframework.analysis.store.Key;
-import org.moeaframework.analysis.store.Keyed;
+import org.moeaframework.analysis.store.Reference;
+import org.moeaframework.analysis.store.Referenceable;
 import org.moeaframework.core.TypedProperties;
 
 /**
@@ -31,7 +28,7 @@ import org.moeaframework.core.TypedProperties;
  * @see Parameter
  * @see Samples
  */
-public class Sample extends TypedProperties implements Keyed {
+public class Sample extends TypedProperties implements Referenceable {
 
 	public Sample() {
 		super(TypedProperties.DEFAULT_SEPARATOR, true);
@@ -48,26 +45,8 @@ public class Sample extends TypedProperties implements Keyed {
 	}
 
 	@Override
-	public Key getKey() {
-		return new SampleKey();
-	}
-
-	class SampleKey extends AbstractKey {
-		
-		public SampleKey() {
-			super();
-		}
-
-		@Override
-		public Set<String> indices() {
-			return keySet();
-		}
-
-		@Override
-		public Comparable<?> get(String index) {
-			return getString(index);
-		}
-		
+	public Reference getReference() {
+		return Reference.of(this);
 	}
 
 }
