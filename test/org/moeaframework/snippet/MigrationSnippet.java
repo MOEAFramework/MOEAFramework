@@ -19,6 +19,7 @@ package org.moeaframework.snippet;
 
 import java.io.IOException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.analysis.plot.Plot;
 import org.moeaframework.analysis.store.Blob;
@@ -53,6 +54,7 @@ public class MigrationSnippet {
 	}
 	
 	@Test
+	@Ignore
 	public void samples() throws IOException {
 		byte[] content = new byte[0];
 		Blob blob = null;

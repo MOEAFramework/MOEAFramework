@@ -102,7 +102,7 @@ class Hash {
 	public static Hash of(Schema schema, Reference reference, String name) {
 		MessageDigest digest = newMessageDigest();
 		
-		for (Pair<Field<?>, String> entries : schema.project(reference)) {
+		for (Pair<Field<?>, String> entries : schema.resolve(reference)) {
 			digest.update(entries.getKey().getName().getBytes(UTF8));
 			digest.update(entries.getValue().getBytes(UTF8));
 		}

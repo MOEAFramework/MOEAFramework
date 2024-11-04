@@ -57,7 +57,7 @@ public interface Reference {
 		return new TypedPropertiesReference(properties);
 	}
 	
-	static abstract class AbstractReference implements Reference {
+	abstract static class AbstractReference implements Reference {
 		
 		public AbstractReference() {
 			super();

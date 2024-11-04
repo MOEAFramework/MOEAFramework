@@ -44,7 +44,7 @@ public class HierarchicalFileMap extends FileMap {
 		Path path = root;
 		Map<Path, Path> remaining = new LinkedHashMap<>();
 
-		for (Pair<Field<?>, String> entry : schema.project(reference)) {
+		for (Pair<Field<?>, String> entry : schema.resolve(reference)) {
 			remaining.put(escapePath(entry.getKey().getName()), escapePath(entry.getValue()));
 		}
 		

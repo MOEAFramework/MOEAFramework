@@ -30,7 +30,7 @@ import org.moeaframework.util.Iterators;
  */
 public class ImmutableDataStream<V> implements DataStream<V> {
 	
-	protected final List<V> content;
+	private final List<V> content;
 	
 	public ImmutableDataStream() {
 		this(new ArrayList<>());

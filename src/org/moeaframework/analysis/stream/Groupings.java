@@ -95,7 +95,6 @@ public class Groupings{
 	/**
 	 * Groups numeric values by their rounded value.
 	 * 
-	 * @param <T> the type of the parameter
 	 * @param parameter the parameter
 	 * @return the grouping function
 	 */
@@ -106,7 +105,6 @@ public class Groupings{
 	/**
 	 * Groups numeric values by their rounded value.
 	 * 
-	 * @param <T> the type of each value
 	 * @return the grouping function
 	 */
 	public static Function<Double, Integer> round() {

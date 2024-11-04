@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.apache.commons.text.translate.AggregateTranslator;
 import org.apache.commons.text.translate.CharSequenceTranslator;
 import org.apache.commons.text.translate.LookupTranslator;
@@ -33,13 +34,13 @@ import org.moeaframework.core.Constructable;
 /**
  * Defines how containers and blobs are mapped to paths on a file system.
  * <p>
- * Since arbitrary keys and filenames can be used, certain characters are escaped:
+ * Since arbitrary names can be used, certain characters are escaped:
  * <ol>
  *   <li>Invalid or reserved characters are escaped by their hex value (e.g., {@code "/"} becomes {@code "%2F"}).  This
  *       also includes whitespace characters.
  *   <li>The character {@code "%"}, if not being used to escape a value, is represented by {@code "%%"}.
- *   <li>The strings {@code "."}, {@code ".."}, and {@code "~"} are escaped to avoid interpreting them as relative
- *       paths.
+ *   <li>Special filenames, such as {@code "."}, {@code ".."}, and {@code "~"}, are escaped to avoid interpreting as
+ *       relative paths.
  * </ol>
  */
 public abstract class FileMap implements Constructable {

@@ -20,7 +20,7 @@ package org.moeaframework.core;
 /**
  * Thrown when attempting to read a property and no default value was given.
  */
-public class PropertyNotFoundException extends FrameworkException {
+public class PropertyNotFoundException extends IllegalArgumentException {
 
 	private static final long serialVersionUID = 2355313923356588354L;
 

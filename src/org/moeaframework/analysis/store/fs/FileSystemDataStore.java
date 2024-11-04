@@ -57,6 +57,10 @@ public class FileSystemDataStore implements DataStore {
 		this(root, new HierarchicalFileMap());
 	}
 	
+	public FileSystemDataStore(File root, Schema schema) throws IOException {
+		this(root.toPath(), new HierarchicalFileMap(), schema);
+	}
+	
 	public FileSystemDataStore(File root, FileMap fileMap) throws IOException {
 		this(root.toPath(), fileMap, Schema.schemaless());
 	}

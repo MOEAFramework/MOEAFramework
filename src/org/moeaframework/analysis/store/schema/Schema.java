@@ -20,16 +20,23 @@ package org.moeaframework.analysis.store.schema;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.tuple.Pair;
+import org.moeaframework.analysis.store.DataStore;
 import org.moeaframework.analysis.store.Reference;
 import org.moeaframework.analysis.store.fs.Manifest;
 
 /**
- * Defines the specific fields, including their order, that must be defined by a {@link Key}.
+ * A schema that defines the structure of a {@link DataStore}, specifically detailing the required fields, their types,
+ * and order.  This is useful to validation, ensuring the data being stored contains all required information.
+ * <p>
+ * If no fields are defined, this instead operates in <strong>schemaless</strong> mode, wherein such validations are
+ * skipped and the structure is inferred from the reference only.  Fields are sorted according to their natural order.
  */
 public class Schema {
 	
@@ -62,19 +69,36 @@ public class Schema {
 		return Collections.unmodifiableList(fields);
 	}
 	
-	public List<Pair<Field<?>, String>> project(Reference reference) {
+	/**
+	 * Resolves the given reference according to this schema.  This process validates that all required fields are
+	 * defined and orders them per the schema.
+	 * 
+	 * @param reference the data reference
+	 * @return the resolved fields and values according to this schema
+	 */
+	public List<Pair<Field<?>, String>> resolve(Reference reference) {
 		List<Pair<Field<?>, String>> result = new ArrayList<>();
+		
+		Set<String> unusedFields = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		unusedFields.addAll(reference.fields());
 		
 		if (isSchemaless()) {
 			for (String field : reference.fields()) {
 				result.add(Pair.of(Field.named(field).asString(), reference.get(field)));
+				unusedFields.remove(field);
 			}
 			
 			result.sort(null);
 		} else {
 			for (Field<?> field : fields) {
 				result.add(Pair.of(field, reference.get(field.getName())));
+				unusedFields.remove(field.getName());
 			}
+		}
+		
+		if (!unusedFields.isEmpty()) {
+			throw new IllegalArgumentException("Fields defined in reference were unused: " +
+					unusedFields.stream().collect(Collectors.joining(",")));
 		}
 		
 		return result;

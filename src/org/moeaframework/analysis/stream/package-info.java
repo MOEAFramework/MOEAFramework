@@ -37,6 +37,6 @@
  *   <li>The original data source can be modified after constructing a data stream, again because intermediate results
  *       are materialized.
  *   <li>Parallel streams are not supported, since this code is not designed to be thread-safe.
- * </ol>
+ * </ul>
  */
 package org.moeaframework.analysis.stream;

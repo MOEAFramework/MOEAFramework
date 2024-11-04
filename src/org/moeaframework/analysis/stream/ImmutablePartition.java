@@ -27,11 +27,12 @@ import org.moeaframework.util.Iterators;
 /**
  * A partition storing the intermediate, materialized content of the stream.
  * 
- * @param <V> the type of each value in the partition
+ * @param <K> the type of each key
+ * @param <V> the type of each value
  */
 public class ImmutablePartition<K, V> implements Partition<K, V> {
 	
-	protected final List<Pair<K, V>> content;
+	private final List<Pair<K, V>> content;
 	
 	public ImmutablePartition() {
 		this(new ArrayList<>());

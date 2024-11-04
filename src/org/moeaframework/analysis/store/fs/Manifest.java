@@ -22,6 +22,9 @@ import java.util.Set;
 
 import org.moeaframework.core.TypedProperties;
 
+/**
+ * Manifest for storing and validating the structure of the data store.
+ */
 public class Manifest extends TypedProperties {
 	
 	public static final String FILENAME = ".manifest";
