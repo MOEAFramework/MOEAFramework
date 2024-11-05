@@ -17,6 +17,6 @@
  */
 
 /**
- * Parameter definitions.
+ * Parameter definitions for sampling.
  */
 package org.moeaframework.analysis.parameter;

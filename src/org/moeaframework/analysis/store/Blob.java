@@ -331,8 +331,9 @@ public interface Blob {
 		}
 	}
 	
+	
 	@FunctionalInterface
-	public static interface IOCallback<T> {
+	static interface IOCallback<T> {
 		
 		public void accept(T stream) throws IOException;
 		

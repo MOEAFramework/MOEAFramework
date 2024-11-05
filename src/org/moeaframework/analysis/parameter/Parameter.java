@@ -17,13 +17,11 @@
  */
 package org.moeaframework.analysis.parameter;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.BiFunction;
 
-import org.apache.commons.lang3.reflect.MethodUtils;
 import org.moeaframework.analysis.sample.Sample;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Named;
 import org.moeaframework.util.io.Tokenizer;
 
@@ -101,16 +99,16 @@ public interface Parameter<T> extends Named {
 			throw new InvalidParameterException(tokens[0], "missing type");
 		}
 		
-		Map<String, Class<?>> types = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-		types.put("const", Constant.class);
-		types.put("enum", Enumeration.class);
-		types.put("int", IntegerRange.class);
-		types.put("long", LongRange.class);
-		types.put("decimal", DecimalRange.class);
+		Map<String, BiFunction<Tokenizer, String, Parameter<?>>> types = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		types.put("const", Constant::decode);
+		types.put("enum", Enumeration::decode);
+		types.put("int", IntegerRange::decode);
+		types.put("long", LongRange::decode);
+		types.put("decimal", DecimalRange::decode);
 		
-		Class<?> type = types.get(tokens[1]);
+		BiFunction<Tokenizer, String, Parameter<?>> decoder = types.get(tokens[1]);
 		
-		if (type == null) {
+		if (decoder == null) {
 			if (tokens.length == 3) {
 				// legacy format
 				try {
@@ -126,11 +124,7 @@ public interface Parameter<T> extends Named {
 					String.join(", ", types.keySet().toArray(String[]::new)));
 		}
 		
-		try {
-			return (Parameter<?>)MethodUtils.invokeStaticMethod(type, "decode", tokenizer, line);
-		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-			throw new FrameworkException("failed to create parameter " + type.getSimpleName(), e);
-		}
+		return decoder.apply(tokenizer, line);
 	}
 	
 }

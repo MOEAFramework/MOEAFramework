@@ -17,6 +17,6 @@
  */
 
 /**
- * Sample generation and manipulation.
+ * Sample generation and result storage.
  */
 package org.moeaframework.analysis.sample;

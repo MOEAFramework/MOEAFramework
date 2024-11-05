@@ -126,8 +126,7 @@ public class Resources {
 	}
 	
 	/**
-	 * Opens the resource as a {@link CommentedLineReader}.  The caller is expected to close the reader when no longer
-	 * used.
+	 * Opens the resource as a {@link LineReader}.  The caller is expected to close the reader when no longer used.
 	 * 
 	 * @param owner the class that is requesting the resource
 	 * @param resource the resource path

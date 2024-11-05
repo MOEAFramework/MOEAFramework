@@ -22,6 +22,11 @@ import java.util.List;
 import org.moeaframework.analysis.sample.Sample;
 import org.moeaframework.util.io.Tokenizer;
 
+/**
+ * A parameter assigned a constant value.
+ * 
+ * @param <T> the type of the value
+ */
 public class Constant<T> extends AbstractParameter<T> {
 	
 	private final T value;
