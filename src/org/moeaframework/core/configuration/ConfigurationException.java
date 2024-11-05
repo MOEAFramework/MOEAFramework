@@ -44,5 +44,10 @@ public class ConfigurationException extends FrameworkException {
 	public ConfigurationException(String message) {
 		super(message);
 	}
+	
+	public static ConfigurationException unsupportedType(Class<?> parameterType, String propertyName) {
+		return new ConfigurationException("unsupported type '" + parameterType + "' for property '" + propertyName +
+				"'");
+	}
 
 }

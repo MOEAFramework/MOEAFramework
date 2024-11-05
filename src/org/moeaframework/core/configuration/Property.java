@@ -18,13 +18,14 @@
 package org.moeaframework.core.configuration;
 
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation added to setter methods that identify auto-configurable properties.  The methods must follow
- * JavaBean conventions.  For a property named {@code foo}, then we expected to see the methods:
+ * Annotation added to setter methods that identify auto-configurable properties.  The methods must follow JavaBean
+ * conventions.  For a property named {@code foo}, then we expected to see the methods:
  * <pre>
  *    public void setFoo(T value) { ... }
  *    public T getFoo() { ... }
@@ -41,6 +42,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
+@Inherited
 public @interface Property {
 	
 	/**
@@ -57,5 +59,12 @@ public @interface Property {
 	 * @return the alternate names for this property
 	 */
 	String[] alias() default {};
+	
+	/**
+	 * Indicates this property is read-only.  When {@code true}, this annotation may only exist on the getter method.
+	 * 
+	 * @return {@code true} if this property is read-only; {@code false} otherwise
+	 */
+	boolean readOnly() default false;
 
 }

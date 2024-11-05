@@ -17,11 +17,9 @@
  */
 package org.moeaframework.core.spi;
 
-import org.moeaframework.algorithm.AbstractEvolutionaryAlgorithm;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.core.TypedProperties;
-import org.moeaframework.core.initialization.RandomInitialization;
-import org.moeaframework.core.population.Population;
+import org.moeaframework.mock.MockEvolutionaryAlgorithm;
 import org.moeaframework.problem.Problem;
 
 /**
@@ -32,25 +30,7 @@ public class TestAlgorithmProvider extends AlgorithmProvider {
 	@Override
 	public Algorithm getAlgorithm(String name, TypedProperties properties, Problem problem) {
 		if (name.equalsIgnoreCase("testAlgorithm")) {
-			return new AbstractEvolutionaryAlgorithm(
-					problem,
-					100,
-					new Population(),
-					null,
-					new RandomInitialization(problem),
-					OperatorFactory.getInstance().getVariation(problem)) {
-				
-				@Override
-				public String getName() {
-					return "TestAlgorithm";
-				}
-
-				@Override
-				protected void iterate() {
-					// do nothing
-				}
-
-			};
+			return new MockEvolutionaryAlgorithm(problem);
 		} else {
 			return null;
 		}

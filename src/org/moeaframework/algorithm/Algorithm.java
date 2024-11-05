@@ -23,6 +23,7 @@ import org.moeaframework.algorithm.extension.Extensible;
 import org.moeaframework.core.Named;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Stateful;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.termination.MaxFunctionEvaluations;
 import org.moeaframework.core.termination.TerminationCondition;
@@ -34,12 +35,23 @@ import org.moeaframework.problem.Problem;
  * may completely solve a problem in one step or may require hundreds of thousands of steps.
  */
 public interface Algorithm extends Stateful, Extensible, Named {
+	
+	/**
+	 * Returns the name of this algorithm.  Whenever possible, this name should match the name recognized by 
+	 * {@link org.moeaframework.core.spi.AlgorithmFactory}.
+	 * 
+	 * @return the name of this algorithm
+	 */
+	@Override
+	@Property(value="algorithm", readOnly=true)
+	public String getName();
 
 	/**
 	 * Returns the problem being solved by this algorithm.
 	 * 
 	 * @return the problem being solved by this algorithm
 	 */
+	@Property(value="problem", readOnly=true)
 	public Problem getProblem();
 
 	/**

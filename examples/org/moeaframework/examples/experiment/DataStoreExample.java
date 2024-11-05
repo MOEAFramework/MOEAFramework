@@ -54,18 +54,19 @@ public class DataStoreExample {
 		DataStore dataStore = new FileSystemDataStore(new File("results"));
 		
 		for (Sample sample : samples) {
-			Reference reference = sample.getReference().extend("algorithm", "NSGAIII");
-			Container container = dataStore.getContainer(reference);
+			NSGAII algorithm = new NSGAIII(problem);
+			algorithm.applyConfiguration(sample);
 			
+			// Locate the container for this algorithm
+			Reference reference = Reference.of(algorithm.getConfiguration());
+			Container container = dataStore.getContainer(reference);
+
 			if (!container.contains("indicators")) {
 				System.out.println("Evaluating " + reference);
-				
-				NSGAII algorithm = new NSGAIII(problem);
-				algorithm.applyConfiguration(sample);
 				algorithm.run(10000);
 								
 				container.getBlob("configuration").store((Writer out) -> {
-					algorithm.getConfiguration().display(out);
+					algorithm.getConfiguration().store(out);
 				});
 				
 				container.getBlob("result").store((Writer out) -> {

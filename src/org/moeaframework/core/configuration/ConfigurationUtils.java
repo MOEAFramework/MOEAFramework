@@ -68,26 +68,28 @@ public class ConfigurationUtils {
 		Class<?> type = object.getClass();
 		Prefix prefix = type.getAnnotation(Prefix.class);
 
-		// process properties defined in this class
-		for (Method method : MethodUtils.getMethodsWithAnnotation(type, Property.class, false, false)) {
+		for (Method method : type.getMethods()) {
 			String methodName = method.getName();
-			Property property = method.getAnnotation(Property.class);
+			Property property = MethodUtils.getAnnotation(method, Property.class, true, false);
 			
-			if (isSetter(method)) {
+			if (property != null) {
 				String propertyName = property.value().isEmpty() ?
 						WordUtils.uncapitalize(methodName.substring(3)) :
 						property.value();
 				
-				ConfigurationUtils.applyValue(properties, prefix, propertyName, property.alias(), method,
-						object, problem);
-			} else {
-				System.err.println("found @Property annotation on non-setter method " + methodName + " in class " +
-					type.getSimpleName() + ", ignoring");
+				if (isSetter(method)) {
+					ConfigurationUtils.applyValue(properties, prefix, propertyName, property.alias(), method,
+							object, problem);
+				} else if (isGetter(method, Object.class) || property.readOnly()) {
+					if (properties.contains(propertyName)) {
+						System.err.println("Unable to apply property '" + propertyName + "', property is read-only");
+					}
+				} else {
+					System.err.println("found @Property annotation on unsupported method " + methodName +
+							" in class " + type.getSimpleName() + ", ignoring");
+				}
 			}
-		}
-		
-		// process any configurable objects referenced by this class
-		for (Method method : type.getMethods()) {
+			
 			if (isGetter(method, Configurable.class)) {
 				Configurable nestedObject = safeInvokeGetter(method, object, Configurable.class);
 					
@@ -109,37 +111,37 @@ public class ConfigurationUtils {
 		Class<?> type = object.getClass();
 		Prefix prefix = type.getAnnotation(Prefix.class);
 
-		// process properties defined in this class
-		for (Method method : MethodUtils.getMethodsWithAnnotation(type, Property.class, false, false)) {
+		for (Method method : type.getMethods()) {			
 			String methodName = method.getName();
-			Property property = method.getAnnotation(Property.class);
-
-			if (isSetter(method)) {
+			Property property = MethodUtils.getAnnotation(method, Property.class, true, false);
+						
+			if (property != null) {
 				String propertyName = property.value().isEmpty() ?
 						WordUtils.uncapitalize(methodName.substring(3)) :
 						property.value();
 				
 				propertyName = prefixName(prefix, propertyName);
-
-				Method getter = MethodUtils.getAccessibleMethod(type, "get" + methodName.substring(3));
-				
-				if (getter == null && boolean.class.isAssignableFrom(method.getParameterTypes()[0])) {
-					getter = MethodUtils.getAccessibleMethod(type, "is" + methodName.substring(3));
+	
+				if (isSetter(method)) {
+					Method getter = MethodUtils.getAccessibleMethod(type, "get" + methodName.substring(3));
+					
+					if (getter == null && boolean.class.isAssignableFrom(method.getParameterTypes()[0])) {
+						getter = MethodUtils.getAccessibleMethod(type, "is" + methodName.substring(3));
+					}
+					
+					if (getter != null) {
+						ConfigurationUtils.extractValue(properties, propertyName, getter, object);
+					} else {
+						System.err.println("no getter method found for property " + propertyName);
+					}
+				} else if (isGetter(method, Object.class)) {
+					ConfigurationUtils.extractValue(properties, propertyName, method, object);
+	 			} else {
+					System.err.println("found @Property annotation on unsupported method " + methodName +
+							" in class " + type.getSimpleName() + ", ignoring");
 				}
-				
-				if (getter != null) {
-					ConfigurationUtils.extractValue(properties, propertyName, getter, object);
-				} else {
-					System.err.println("no getter method found for property " + propertyName);
-				}
-			} else {
-				System.err.println("found @Property annotation on non-setter method " + methodName + " in class " +
-					type.getSimpleName() + ", ignoring");
 			}
-		}
-		
-		// process any configurable objects referenced by this class
-		for (Method method : type.getMethods()) {
+			
 			if (isGetter(method, Configurable.class)) {
 				Configurable nestedObject = safeInvokeGetter(method, object, Configurable.class);
 					
@@ -211,7 +213,7 @@ public class ConfigurationUtils {
 			String operator = properties.getString(propertyName);
 			value = OperatorFactory.getInstance().getMutation(operator, properties, problem);
 		} else {
-			throw new ConfigurationException("unsupported type " + parameterType + " for property " + propertyName);
+			throw ConfigurationException.unsupportedType(parameterType, propertyName);
 		}
 		
 		try {
@@ -261,8 +263,10 @@ public class ConfigurationUtils {
 				properties.setString(propertyName, (String)value);
 			} else if (TypeUtils.isAssignable(parameterType, Variation.class)) {
 				properties.setString(propertyName, ((Variation)value).getName());
+			} else if (TypeUtils.isAssignable(parameterType, Problem.class)) {
+				properties.setString(propertyName, ((Problem)value).getName());
 			} else {
-				throw new ConfigurationException("unsupported type " + parameterType + " for property " + propertyName);
+				throw ConfigurationException.unsupportedType(parameterType, propertyName);
 			}
 			
 			if (value instanceof Configurable configurable) {

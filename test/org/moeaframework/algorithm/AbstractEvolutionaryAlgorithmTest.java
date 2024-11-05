@@ -24,36 +24,22 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.algorithm.extension.CheckpointExtension;
-import org.moeaframework.core.initialization.Initialization;
-import org.moeaframework.core.initialization.RandomInitialization;
-import org.moeaframework.core.operator.Variation;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.population.Population;
-import org.moeaframework.core.spi.OperatorFactory;
-import org.moeaframework.core.spi.ProblemFactory;
-import org.moeaframework.problem.Problem;
+import org.moeaframework.mock.MockEvolutionaryAlgorithm;
 
 public class AbstractEvolutionaryAlgorithmTest {
 
 	private AbstractEvolutionaryAlgorithm newInstance() {
-		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
-		Population population = new Population();
-		NondominatedPopulation archive = new NondominatedPopulation();
-		Initialization initialization = new RandomInitialization(problem);
-		Variation variation = OperatorFactory.getInstance().getVariation(problem);
-
-		return new AbstractEvolutionaryAlgorithm(problem, 50, population, archive,
-				initialization, variation) {
-			
-			@Override
-			public String getName() {
-				return "TestAbstractEvolutionaryAlgorithm";
-			}
+		return new MockEvolutionaryAlgorithm() {
 
 			@Override
-			protected void iterate() {
+			public void iterate() {
+				Population population = getPopulation();
+				NondominatedPopulation archive = getArchive();
+				
 				population.clear();
-				population.addAll(initialization.initialize(50));
+				population.addAll(getInitialization().initialize(50));
 				evaluateAll(population);
 				archive.addAll(population);
 			}
@@ -72,7 +58,7 @@ public class AbstractEvolutionaryAlgorithmTest {
 		for (int i = 0; i < 10; i++) {
 			AbstractEvolutionaryAlgorithm algorithm = newInstance();
 			algorithm.addExtension(new CheckpointExtension(file, 0));
-
+			
 			Assert.assertEquals(lastNFE, algorithm.getNumberOfEvaluations());
 			Assert.assertEquals(lastResult, algorithm.getResult());
 			Assert.assertEquals(lastArchive, algorithm.getArchive());

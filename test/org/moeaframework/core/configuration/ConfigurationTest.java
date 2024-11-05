@@ -47,6 +47,8 @@ public class ConfigurationTest {
 		expectedProperties.setInt("populationSize", 200);
 		expectedProperties.setDouble("hux.rate", 0.8);
 		expectedProperties.setDouble("bf.rate", 2.0 / 500.0);
+		expectedProperties.setString("problem", "ZDT5");
+		expectedProperties.setString("algorithm", "NSGA-III");
 
 		algorithm.applyConfiguration(expectedProperties);
 
@@ -57,6 +59,9 @@ public class ConfigurationTest {
 		Assert.assertEquals(expectedProperties.getInt("populationSize"), actualProperties.getInt("populationSize"));
 		Assert.assertEquals(expectedProperties.getDouble("hux.rate"), actualProperties.getDouble("hux.rate"), TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(expectedProperties.getDouble("bf.rate"), actualProperties.getDouble("bf.rate"), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(expectedProperties.getString("problem"), actualProperties.getString("problem"));
+		Assert.assertEquals(expectedProperties.getString("algorithm"), actualProperties.getString("algorithm"));
+
 		
 		// Verify the actual algorithm setup
 		Assert.assertEquals(expectedProperties.getInt("populationSize"), algorithm.getInitialPopulationSize());

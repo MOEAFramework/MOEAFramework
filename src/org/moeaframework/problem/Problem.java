@@ -19,6 +19,7 @@ package org.moeaframework.problem;
 
 import org.moeaframework.core.Named;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.variable.Variable;
 
 /**
@@ -27,11 +28,13 @@ import org.moeaframework.core.variable.Variable;
 public interface Problem extends AutoCloseable, Named {
 
 	/**
-	 * Returns the name of this problem.
+	 * Returns the name of this problem.  Whenever possible, this name should match the name recognized by 
+	 * {@link org.moeaframework.core.spi.ProblemFactory}.
 	 * 
 	 * @return the name of this problem
 	 */
 	@Override
+	@Property(value="problem", readOnly=true)
 	public String getName();
 
 	/**
