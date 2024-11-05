@@ -64,7 +64,7 @@ public class ParameterSampleExample {
 		}
 										
 		// Calculate the average hypervolume for population size
-		Hypervolume hypervolume = new Hypervolume(problem, NondominatedPopulation.loadReferenceSet("./pf/DTLZ2.2D.pf"));
+		Hypervolume hypervolume = new Hypervolume(problem, NondominatedPopulation.load("./pf/DTLZ2.2D.pf"));
 
 		Partition<Integer, Double> avgHypervolume = results
 				.map(hypervolume::evaluate)

@@ -17,7 +17,6 @@
  */
 package org.moeaframework.analysis.tools;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.cli.CommandLine;
@@ -110,7 +109,7 @@ class OptionUtils {
 		NondominatedPopulation referenceSet = null;
 		
 		if (commandLine.hasOption("reference")) {
-			referenceSet = NondominatedPopulation.loadReferenceSet(new File(commandLine.getOptionValue("reference")));
+			referenceSet = NondominatedPopulation.load(commandLine.getOptionValue("reference"));
 		} else {
 			referenceSet = ProblemFactory.getInstance().getReferenceSet(commandLine.getOptionValue("problem"));
 		}

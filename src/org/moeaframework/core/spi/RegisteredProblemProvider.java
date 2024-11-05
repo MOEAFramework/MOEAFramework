@@ -145,7 +145,7 @@ public class RegisteredProblemProvider extends ProblemProvider {
 		
 		if (referenceSet != null) {
 			try {
-				return NondominatedPopulation.loadReferenceSet(referenceSet);
+				return NondominatedPopulation.load(referenceSet);
 			} catch (IOException e) {
 				return null;
 			}

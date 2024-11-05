@@ -17,7 +17,6 @@
  */
 package org.moeaframework.analysis.tools;
 
-import java.io.File;
 import java.io.PrintWriter;
 
 import org.apache.commons.cli.CommandLine;
@@ -72,15 +71,13 @@ public class SetHypervolume extends CommandLineUtility {
 		Hypervolume hypervolume = null;
 		
 		if (commandLine.hasOption("reference")) {
-			NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet(
-					new File(commandLine.getOptionValue("reference")));
-			
+			NondominatedPopulation referenceSet = NondominatedPopulation.load(commandLine.getOptionValue("reference"));
 			hypervolume = new Hypervolume(new ProblemStub(referenceSet.get(0).getNumberOfObjectives()), referenceSet);
 		}
 		
 		try (PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
 			for (String filename : commandLine.getArgs()) {
-				NondominatedPopulation set = NondominatedPopulation.loadReferenceSet(new File(filename));
+				NondominatedPopulation set = NondominatedPopulation.load(filename);
 				
 				if (epsilons != null) {
 					set = new EpsilonBoxDominanceArchive(epsilons, set);

@@ -44,7 +44,7 @@ public class DataStoreExample {
 	
 	public static void main(String[] args) throws Exception {
 		Problem problem = new DTLZ2(2);
-		Indicators indicators = Indicators.standard(problem, NondominatedPopulation.loadReferenceSet("./pf/DTLZ2.2D.pf"));
+		Indicators indicators = Indicators.standard(problem, NondominatedPopulation.load("./pf/DTLZ2.2D.pf"));
 		
 		Enumeration<Integer> populationSize = Parameter.named("populationSize").asInt().range(10, 100, 10);
 		Enumeration<Double> sbxRate = Parameter.named("sbx.rate").asDecimal().range(0.0, 1.0, 0.1);

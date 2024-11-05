@@ -65,7 +65,7 @@ public class R2IndicatorTest extends AbstractIndicatorTest<R2Indicator> {
 	
 	@Test
 	public void testCase() throws IOException {
-		NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet("./pf/DTLZ2.2D.pf");
+		NondominatedPopulation referenceSet = NondominatedPopulation.load("./pf/DTLZ2.2D.pf");
 		
 		Indicator indicator = createInstance(new MockRealProblem(2), referenceSet);
 		

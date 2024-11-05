@@ -41,7 +41,7 @@ public class Example2 {
 		NondominatedPopulation approximationSet = algorithm.getResult();
 		
 		// load the reference set and evaluate the quality indicators
-		NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet("pf/DTLZ2.2D.pf");
+		NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/DTLZ2.2D.pf");
 		
 		Indicators indicators = Indicators.all(problem, referenceSet);
 		indicators.apply(approximationSet).display();

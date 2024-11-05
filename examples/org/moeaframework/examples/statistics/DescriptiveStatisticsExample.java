@@ -38,7 +38,7 @@ public class DescriptiveStatisticsExample {
 		DescriptiveStatistics statistics = new DescriptiveStatistics();
 		
 		// Set up the Hypervolume indicator
-		NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet("pf/DTLZ2.3D.pf");
+		NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/DTLZ2.3D.pf");
 		Indicators indicators = Indicators.of(problem, referenceSet).includeHypervolume();
 		
 		// Solve the problem with NSGA-II, collecting the Hypervolume value from each run

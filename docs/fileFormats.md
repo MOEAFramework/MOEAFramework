@@ -49,7 +49,7 @@ we recommend using the `loadReferenceSet` method, which loads the solutions into
 <!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [referenceSet] -->
 
 ```java
-NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet("pf/DTLZ2.2D.pf");
+NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/DTLZ2.2D.pf");
 ```
 
 ## Result File

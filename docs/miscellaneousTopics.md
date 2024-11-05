@@ -122,7 +122,7 @@ we load a reference set from file to use with the `Indicators`:
 <!-- java:examples/Example2.java [44:47] -->
 
 ```java
-NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet("pf/DTLZ2.2D.pf");
+NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/DTLZ2.2D.pf");
 
 Indicators indicators = Indicators.all(problem, referenceSet);
 indicators.apply(approximationSet).display();
@@ -161,7 +161,7 @@ By default, we would provide a reference set that defines the bounds for normali
 
 
 ```java
-NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet("pf/UF1.dat");
+NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/UF1.dat");
 
 Hypervolume defaultHypervolume = new Hypervolume(problem, referenceSet);
 System.out.println("Normalized by reference set (default): " + defaultHypervolume.evaluate(approximationSet.copy()));

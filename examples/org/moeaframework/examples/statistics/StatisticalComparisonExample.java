@@ -40,7 +40,7 @@ public class StatisticalComparisonExample {
 		MannWhitneyUTest test = new MannWhitneyUTest();
 		
 		// Set up the Hypervolume indicator
-		NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet("pf/DTLZ2.3D.pf");
+		NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/DTLZ2.3D.pf");
 		Indicators indicators = Indicators.of(problem, referenceSet).includeHypervolume();
 		
 		// Collect the results from NSGA-II, storing as group 0.

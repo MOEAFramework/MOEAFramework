@@ -17,7 +17,6 @@
  */
 package org.moeaframework.analysis.tools;
 
-import java.io.File;
 import java.io.PrintWriter;
 
 import org.apache.commons.cli.CommandLine;
@@ -68,8 +67,7 @@ public class SetContribution extends CommandLineUtility {
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
 		NumberFormatter formatter = NumberFormatter.getDefault();
-		NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet(
-				new File(commandLine.getOptionValue("reference")));
+		NondominatedPopulation referenceSet = NondominatedPopulation.load(commandLine.getOptionValue("reference"));
 		Epsilons epsilons = OptionUtils.getEpsilons(commandLine);
 		Contribution contribution = null;
 
@@ -81,7 +79,7 @@ public class SetContribution extends CommandLineUtility {
 
 		try (PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
 			for (String filename : commandLine.getArgs()) {
-				NondominatedPopulation approximationSet = NondominatedPopulation.loadReferenceSet(new File(filename));
+				NondominatedPopulation approximationSet = NondominatedPopulation.load(filename);
 	
 				System.out.print(filename);
 				System.out.print(' ');

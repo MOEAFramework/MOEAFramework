@@ -17,7 +17,6 @@
  */
 package org.moeaframework.problem;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.moeaframework.core.Settings;
@@ -72,7 +71,7 @@ public class PropertiesProblems extends ProblemProvider {
 			
 			if (fileName != null) {
 				try {
-					return NondominatedPopulation.loadReferenceSet(new File(fileName));
+					return NondominatedPopulation.load(fileName);
 				} catch (IOException e) {
 					return null;
 				}

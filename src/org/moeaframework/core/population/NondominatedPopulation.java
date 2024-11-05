@@ -241,22 +241,22 @@ public class NondominatedPopulation extends Population {
 	}
 	
 	/**
-	 * Loads a reference set, which contains the objective values for a set of non-dominated solutions.  Any dominated
-	 * solutions are discarded.
+	 * Loads a non-dominated population from a file or resource.  This method is mostly aimed towards reading Pareto
+	 * front files found in the {@code pf/} folder.  Any dominated solutions are discarded.
 	 * 
 	 * @param resource the path of the file or resource on the classpath
 	 * @return the reference set, or {@code null} if the file or resource was not found
-	 * @throws IOException if an I/O error occurred
+	 * @throws IOException if an I/O error occurred or the file was not found
 	 */
-	public static NondominatedPopulation loadReferenceSet(String resource) throws IOException {
+	public static NondominatedPopulation load(String resource) throws IOException {
 		File file = new File(resource);
 		
 		if (file.exists()) {
-			return loadReferenceSet(file);
+			return load(file);
 		} else {
 			try (Reader reader = Resources.asReader(NondominatedPopulation.class, "/" + resource)) {
 				if (reader != null) {
-					return new NondominatedPopulation(Population.load(reader));
+					return load(reader);
 				}
 			}
 		}
@@ -265,15 +265,26 @@ public class NondominatedPopulation extends Population {
 	}
 	
 	/**
-	 * Loads a reference set file, which contains the objective values for a set of non-dominated solutions.  Any
-	 * dominated solutions are discarded.
+	 * Loads a non-dominated population from a file.  Any dominated solutions are discarded.
 	 * 
 	 * @param file the file containing the reference set
-	 * @return the reference set
+	 * @return the non-dominated population
 	 * @throws IOException if an I/O error occurred or the file was not found
 	 */
-	public static NondominatedPopulation loadReferenceSet(File file) throws IOException {
+	public static NondominatedPopulation load(File file) throws IOException {
 		return new NondominatedPopulation(Population.load(file));
+	}
+	
+	/**
+	 * Loads a non-dominated population from a reader.  Any dominated solutions are discarded.  <b>This method does not
+	 * close the reader!</b>
+	 * 
+	 * @param reader the reader
+	 * @return the non-dominated population
+	 * @throws IOException if an I/O error occurred or the file was not found
+	 */
+	public static NondominatedPopulation load(Reader reader) throws IOException {
+		return new NondominatedPopulation(Population.load(reader));
 	}
 
 }

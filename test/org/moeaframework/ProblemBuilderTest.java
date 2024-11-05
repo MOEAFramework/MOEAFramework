@@ -114,7 +114,7 @@ public class ProblemBuilderTest {
 				.getReferenceSet();
 
 		NondominatedPopulation expected = new EpsilonBoxDominanceArchive(0.01,
-				NondominatedPopulation.loadReferenceSet("pf/DTLZ2.2D.pf"));
+				NondominatedPopulation.load("pf/DTLZ2.2D.pf"));
 		
 		Assert.assertEquals(expected, actual);
 	}
@@ -129,14 +129,14 @@ public class ProblemBuilderTest {
 				.withReferenceSet(file)
 				.getReferenceSet();
 		
-		NondominatedPopulation expected = NondominatedPopulation.loadReferenceSet(file);
+		NondominatedPopulation expected = NondominatedPopulation.load(file);
 		
 		Assert.assertEquals(expected, actual);
 	}
 	
 	@Test
 	public void testReferenceSet() throws IOException {
-		NondominatedPopulation expected = NondominatedPopulation.loadReferenceSet("./pf/DTLZ1.2D.pf");
+		NondominatedPopulation expected = NondominatedPopulation.load("./pf/DTLZ1.2D.pf");
 		
 		NondominatedPopulation actual = new ProblemBuilder()
 				.withProblem("DTLZ2_2")

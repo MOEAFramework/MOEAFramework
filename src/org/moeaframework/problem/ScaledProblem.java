@@ -74,7 +74,7 @@ public class ScaledProblem extends ProblemWrapper {
 	public NondominatedPopulation loadScaledReferenceSet(File file) throws IOException {
 		NondominatedPopulation result = new NondominatedPopulation();
 		
-		for (Solution solution : NondominatedPopulation.loadReferenceSet(file)) {
+		for (Solution solution : NondominatedPopulation.load(file)) {
 			scale(solution);
 			result.add(solution);
 		}

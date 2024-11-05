@@ -510,8 +510,8 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, Co
 	 * Loads a population from the specified result file.  If the file contains multiple population entries, only the
 	 * last is returned.  Files read using this method should only have been created using {@link #save(File)}.
 	 * 
-	 * @param file the file containing the solutions
-	 * @return a population containing all solutions in the specified file
+	 * @param file the file
+	 * @return the population
 	 * @throws IOException if an I/O error occurred
 	 */
 	public static Population load(File file) throws IOException {
@@ -524,8 +524,8 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, Co
 	 * Loads a population from the specified reader.  If the reader contains multiple population entries, only the
 	 * last is returned.  <b>This method does not close the reader!</b>
 	 * 
-	 * @param reader the reader containing the objective vectors
-	 * @return a population containing all objective vectors read
+	 * @param reader the reader
+	 * @return the population
 	 * @throws IOException if an I/O error occurred
 	 * @throws FrameworkException if the reader did not contain a population
 	 */

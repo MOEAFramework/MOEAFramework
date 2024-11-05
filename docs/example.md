@@ -43,7 +43,7 @@ algorithm.run(10000);
 
 NondominatedPopulation approximationSet = algorithm.getResult();
 
-NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet("pf/DTLZ2.2D.pf");
+NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/DTLZ2.2D.pf");
 
 Indicators indicators = Indicators.all(problem, referenceSet);
 indicators.apply(approximationSet).display();

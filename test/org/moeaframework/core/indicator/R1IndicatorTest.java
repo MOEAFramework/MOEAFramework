@@ -50,7 +50,7 @@ public class R1IndicatorTest extends AbstractIndicatorTest<R1Indicator> {
 	
 	@Test
 	public void testCase() throws IOException {
-		NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet("./pf/DTLZ2.2D.pf");
+		NondominatedPopulation referenceSet = NondominatedPopulation.load("./pf/DTLZ2.2D.pf");
 		
 		NondominatedPopulation population = new NondominatedPopulation();
 		population.add(MockSolution.of().withObjectives(0.75, 0.25));

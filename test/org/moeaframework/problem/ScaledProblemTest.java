@@ -35,7 +35,7 @@ public class ScaledProblemTest {
 	public void testReferenceSetStaysNondominated() throws IOException {
 		File file = TestResources.asFile("pf/DTLZ2.2D.pf");
 		
-		NondominatedPopulation original = NondominatedPopulation.loadReferenceSet(file);
+		NondominatedPopulation original = NondominatedPopulation.load(file);
 		
 		ScaledProblem scaledProblem = new ScaledProblem(new DTLZ2(2), 2.0);
 		NondominatedPopulation scaled = scaledProblem.loadScaledReferenceSet(file);

@@ -210,7 +210,7 @@ class ProblemBuilder {
 	 */
 	ProblemBuilder withReferenceSet(File referenceSetFile) {
 		try {
-			return withReferenceSet(NondominatedPopulation.loadReferenceSet(referenceSetFile));
+			return withReferenceSet(NondominatedPopulation.load(referenceSetFile));
 		} catch (IOException e) {
 			throw new FrameworkException("unable to load reference set", e);
 		}

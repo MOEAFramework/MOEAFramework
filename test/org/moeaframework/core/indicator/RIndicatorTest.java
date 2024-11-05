@@ -43,7 +43,7 @@ public class RIndicatorTest {
 	public void testUtility(String resource, RIndicator.UtilityFunction utilityFunction, double expectedUtility)
 			throws IOException {
 		Problem problem = new MockRealProblem(2);
-		NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet(resource);
+		NondominatedPopulation referenceSet = NondominatedPopulation.load(resource);
 		Normalizer normalizer = new Normalizer(referenceSet);
 		
 		RIndicator indicator = new RIndicator(problem, 500, referenceSet, normalizer, utilityFunction) {

@@ -63,7 +63,7 @@ performance of the algorithm (lighter-colored areas indicate better results).
 
 ```java
 Problem problem = new DTLZ2(2);
-Hypervolume hypervolume = new Hypervolume(problem, NondominatedPopulation.loadReferenceSet("./pf/DTLZ2.2D.pf"));
+Hypervolume hypervolume = new Hypervolume(problem, NondominatedPopulation.load("./pf/DTLZ2.2D.pf"));
 
 double[] x = IntStream.range(0, 50).mapToDouble(i -> 100 * (i+1)).toArray();
 double[] y = IntStream.range(0, 50).mapToDouble(i -> 4 * (i+1)).toArray();

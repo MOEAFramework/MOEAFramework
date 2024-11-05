@@ -53,7 +53,7 @@ public class FileFormatSnippet {
 	@Test
 	public void referenceSet() throws IOException {
 		// begin-example:referenceSet
-		NondominatedPopulation referenceSet = NondominatedPopulation.loadReferenceSet("pf/DTLZ2.2D.pf");
+		NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/DTLZ2.2D.pf");
 		// end-example:referenceSet
 	}
 	
@@ -99,7 +99,7 @@ public class FileFormatSnippet {
 	public void metricFile() throws IOException {
 		Problem problem = new Schaffer();
 		NSGAII algorithm = new NSGAII(problem);
-		Indicators indicators = Indicators.standard(problem, NondominatedPopulation.loadReferenceSet("pf/Schaffer.pf"));
+		Indicators indicators = Indicators.standard(problem, NondominatedPopulation.load("pf/Schaffer.pf"));
 		
 		try (MetricFileWriter writer = MetricFileWriter.open(indicators, new File("metrics.dat"))) {
 			for (int i = 0; i < 1000; i++) {
