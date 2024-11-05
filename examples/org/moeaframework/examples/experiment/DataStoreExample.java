@@ -66,7 +66,7 @@ public class DataStoreExample {
 				algorithm.run(10000);
 								
 				container.getBlob("configuration").store((Writer out) -> {
-					algorithm.getConfiguration().store(out);
+					algorithm.getConfiguration().save(out);
 				});
 				
 				container.getBlob("result").store((Writer out) -> {
@@ -74,7 +74,7 @@ public class DataStoreExample {
 				});
 				
 				container.getBlob("indicators").store((Writer out) -> {
-					indicators.apply(algorithm.getResult()).display(out);
+					indicators.apply(algorithm.getResult()).save(out);
 				});
 			} else {
 				System.out.println("Skipping " + reference + ", found in data store");

@@ -46,28 +46,28 @@ public interface Displayable {
 	public default void display() {
 		display(System.out);
 	}
-	
+		
 	/**
-	 * Displays the contents of this object to the given writer.  This method does not close the underlying
+	 * Saves the contents of this object to the given writer.  This method does not close the underlying
 	 * writer; the caller is responsible for disposing it.
 	 * 
 	 * @param out the writer
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default void display(Writer out) throws IOException {
+	public default void save(Writer out) throws IOException {
 		try (WriterOutputStream writer = WriterOutputStream.builder().setWriter(CloseShieldWriter.wrap(out)).get()) {
-			display(writer);
+			save(writer);
 		}
 	}
 
 	/**
-	 * Displays the contents of this object to the given output stream.  This method does not close the underlying
+	 * Saves the contents of this object to the given output stream.  This method does not close the underlying
 	 * stream; the caller is responsible for disposing it.
 	 * 
 	 * @param out the output writer
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default void display(OutputStream out) throws IOException {
+	public default void save(OutputStream out) throws IOException {
 		try (PrintStream writer = new PrintStream(CloseShieldOutputStream.wrap(out))) {
 			display(writer);
 		}

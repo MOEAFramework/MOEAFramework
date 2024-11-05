@@ -116,7 +116,7 @@ public class FileSystemDataStore implements DataStore {
 			mkdirs(path.getParent());
 			
 			try (FileWriter writer = new FileWriter(path.toFile())) {
-				expectedManifest.store(writer);
+				expectedManifest.save(writer);
 			}
 		}
 	}

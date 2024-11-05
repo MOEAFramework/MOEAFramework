@@ -418,7 +418,7 @@ public class TypedPropertiesTest {
 	@Test
 	public void testStoreLoad() throws IOException {
 		try (StringWriter writer = new StringWriter()) {
-			properties.store(writer);
+			properties.save(writer);
 			
 			try (StringReader reader = new StringReader(writer.toString())) {
 				TypedProperties copy = new TypedProperties();
@@ -432,7 +432,7 @@ public class TypedPropertiesTest {
 	@Test
 	public void testStoreNoComments() throws IOException {
 		try (StringWriter writer = new StringWriter()) {
-			properties.store(writer);
+			properties.save(writer);
 			
 			try (LineReader lineReader = LineReader.wrap(new StringReader(writer.toString()))) {
 				for (String line : lineReader) {
@@ -448,7 +448,7 @@ public class TypedPropertiesTest {
 		properties.setString(SPECIAL_CHARACTERS, SPECIAL_CHARACTERS);
 		
 		try (StringWriter writer = new StringWriter()) {
-			properties.store(writer);
+			properties.save(writer);
 			
 			try (StringReader reader = new StringReader(writer.toString())) {
 				TypedProperties copy = new TypedProperties();

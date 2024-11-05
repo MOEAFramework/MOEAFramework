@@ -45,7 +45,7 @@ import org.moeaframework.util.io.LineReader;
  * Text contained on these lines after the {@code "#"} character are ignored.
  * <p>
  * Each entry consists of properties, on lines starting with {@code "//"}, and solutions, on all remaining lines.
- * Properties are stored using the same format as {@link TypedProperties#store(Writer)}.  The decision variables,
+ * Properties are stored using the same format as {@link TypedProperties#save(Writer)}.  The decision variables,
  * objectives, and constraints for each solution are separated by whitespace.  Each decision variable is encoded using
  * {@link Variable#encode()}.  In the event an error occurs while encoding a decision variable, {@code "-"} is written
  * and a warning issued.  
@@ -286,7 +286,7 @@ public class ResultFileWriter implements OutputWriter {
 	 */
 	private void printProperties(TypedProperties properties, String prefix) throws IOException {
 		try (StringWriter buffer = new StringWriter()) {
-			properties.store(buffer, new NumericStringComparator());
+			properties.save(buffer, new NumericStringComparator());
 		
 			try (LineReader lineReader = LineReader.wrap(new StringReader(buffer.toString()))) {
 				for (String line : lineReader) {

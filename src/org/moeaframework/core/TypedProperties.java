@@ -1311,8 +1311,8 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * @param writer the writer
 	 * @throws IOException if an I/O error occurred
 	 */
-	public void store(Writer writer) throws IOException {
-		store(writer, null);
+	public void save(Writer writer) throws IOException {
+		save(writer, null);
 	}
 	
 	/**
@@ -1322,7 +1322,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * @param order controls the ordering of keys, or {@code null} for the default
 	 * @throws IOException if an I/O error occurred
 	 */
-	public void store(Writer writer, Comparator<String> order) throws IOException {
+	public void save(Writer writer, Comparator<String> order) throws IOException {
 		List<String> keys = new ArrayList<>();
 		keys.addAll(properties.keySet());
 		
