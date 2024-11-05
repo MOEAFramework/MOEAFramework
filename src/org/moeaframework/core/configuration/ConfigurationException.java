@@ -45,9 +45,19 @@ public class ConfigurationException extends FrameworkException {
 		super(message);
 	}
 	
-	public static ConfigurationException unsupportedType(Class<?> parameterType, String propertyName) {
-		return new ConfigurationException("unsupported type '" + parameterType + "' for property '" + propertyName +
-				"'");
+	static ConfigurationException unsupportedType(Class<?> parameterType, String propertyName) {
+		return new ConfigurationException("unsupported type '" + parameterType.getClass().getSimpleName() +
+				"' for property '" + propertyName + "'");
+	}
+	
+	static ConfigurationException noGetterFound(Object object, String propertyName) {
+		return new ConfigurationException("no getter method found in class '" + object.getClass().getSimpleName() +
+				"' for property '" + propertyName + "'");
+	}
+	
+	static ConfigurationException invalidAnnotation(Object object, String methodName) {
+		return new ConfigurationException("found @Property annotation on unsupported method '" + methodName +
+				"' in class '" + object.getClass().getSimpleName() + "'");
 	}
 
 }

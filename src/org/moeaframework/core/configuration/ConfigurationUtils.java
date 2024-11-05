@@ -82,11 +82,10 @@ public class ConfigurationUtils {
 							object, problem);
 				} else if (isGetter(method, Object.class) || property.readOnly()) {
 					if (properties.contains(propertyName)) {
-						System.err.println("Unable to apply property '" + propertyName + "', property is read-only");
+						System.err.println("Ignoring '" + propertyName + "', property is read-only");
 					}
 				} else {
-					System.err.println("found @Property annotation on unsupported method " + methodName +
-							" in class " + type.getSimpleName() + ", ignoring");
+					throw ConfigurationException.invalidAnnotation(object, methodName);
 				}
 			}
 			
@@ -129,16 +128,15 @@ public class ConfigurationUtils {
 						getter = MethodUtils.getAccessibleMethod(type, "is" + methodName.substring(3));
 					}
 					
-					if (getter != null) {
-						ConfigurationUtils.extractValue(properties, propertyName, getter, object);
-					} else {
-						System.err.println("no getter method found for property " + propertyName);
+					if (getter == null) {
+						throw ConfigurationException.noGetterFound(object, propertyName);
 					}
+					
+					ConfigurationUtils.extractValue(properties, propertyName, getter, object);
 				} else if (isGetter(method, Object.class)) {
 					ConfigurationUtils.extractValue(properties, propertyName, method, object);
 	 			} else {
-					System.err.println("found @Property annotation on unsupported method " + methodName +
-							" in class " + type.getSimpleName() + ", ignoring");
+					throw ConfigurationException.invalidAnnotation(object, methodName);
 				}
 			}
 			
