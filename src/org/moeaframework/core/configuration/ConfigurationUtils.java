@@ -24,6 +24,7 @@ import org.apache.commons.lang3.reflect.MethodUtils;
 import org.apache.commons.lang3.reflect.TypeUtils;
 import org.apache.commons.text.WordUtils;
 import org.moeaframework.algorithm.Algorithm;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.operator.Variation;
@@ -81,8 +82,8 @@ public class ConfigurationUtils {
 					ConfigurationUtils.applyValue(properties, prefix, propertyName, property.alias(), method,
 							object, problem);
 				} else if (isGetter(method, Object.class) || property.readOnly()) {
-					if (properties.contains(propertyName)) {
-						System.err.println("Ignoring '" + propertyName + "', property is read-only");
+					if (properties.contains(propertyName) && Settings.isVerbose()) {
+						System.err.println("Skipping read-only property '" + propertyName + "'");
 					}
 				} else {
 					throw ConfigurationException.invalidAnnotation(object, methodName);

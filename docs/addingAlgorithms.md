@@ -101,11 +101,13 @@ algorithm.getConfiguration().display();
 
 ```
 Property             Value
--------------------- -----
+-------------------- ------------
+algorithm            RandomWalker
 operator             pm
 pm.distributionIndex 20.0
 pm.rate              0.5
 populationSize       100
+problem              Srinivas
 ```
 
 Here, we find the two properties we added, `populationSize` and `operator`.  Two additional properties for the
