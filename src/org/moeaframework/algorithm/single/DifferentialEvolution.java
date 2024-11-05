@@ -84,6 +84,11 @@ public class DifferentialEvolution extends SingleObjectiveEvolutionaryAlgorithm 
 	}
 	
 	@Override
+	public String getName() {
+		return "DifferentialEvolution";
+	}
+	
+	@Override
 	protected void iterate() {
 		Population population = getPopulation();
 		DifferentialEvolutionVariation variation = getVariation();

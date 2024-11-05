@@ -44,6 +44,11 @@ public class AbstractEvolutionaryAlgorithmTest {
 
 		return new AbstractEvolutionaryAlgorithm(problem, 50, population, archive,
 				initialization, variation) {
+			
+			@Override
+			public String getName() {
+				return "TestAbstractEvolutionaryAlgorithm";
+			}
 
 			@Override
 			protected void iterate() {

@@ -245,6 +245,11 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 		this(problem, initialPopulationSize, neighborhoodSize, weightGenerator, initialization, variation, delta,
 				eta, -1);
 	}
+	
+	@Override
+	public String getName() {
+		return updateUtility >= 0 ? "MOEA/D-DRA" : "MOEA/D";
+	}
 
 	/**
 	 * Returns the initial population size.

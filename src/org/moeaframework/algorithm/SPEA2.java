@@ -121,6 +121,11 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	@Override
+	public String getName() {
+		return "SPEA-2";
+	}
+	
+	@Override
 	@Property("operator")
 	public void setVariation(Variation variation) {
 		super.setVariation(variation);

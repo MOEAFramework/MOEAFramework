@@ -20,6 +20,7 @@ package org.moeaframework.algorithm;
 import java.util.Arrays;
 
 import org.moeaframework.algorithm.extension.Extensible;
+import org.moeaframework.core.Named;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Stateful;
 import org.moeaframework.core.population.NondominatedPopulation;
@@ -32,7 +33,7 @@ import org.moeaframework.problem.Problem;
  * steps, though the amount of work performed by each step depends on the algorithm. For example, an algorithm
  * may completely solve a problem in one step or may require hundreds of thousands of steps.
  */
-public interface Algorithm extends Stateful, Extensible {
+public interface Algorithm extends Stateful, Extensible, Named {
 
 	/**
 	 * Returns the problem being solved by this algorithm.

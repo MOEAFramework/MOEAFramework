@@ -92,6 +92,11 @@ public class UNSGAIII extends NSGAIII {
 	}
 	
 	@Override
+	public String getName() {
+		return "U-NSGA-III";
+	}
+	
+	@Override
 	public void initialize() {
 		super.initialize();
 		getPopulation().updateNiches();

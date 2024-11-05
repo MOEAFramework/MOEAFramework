@@ -120,6 +120,11 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 		Validate.that("variation.getArity()", variation.getArity()).isEqualTo(2);
 		Validate.that("problem.getNumberOfObjectives()", problem.getNumberOfObjectives()).isGreaterThanOrEqualTo(2);
 	}
+	
+	@Override
+	public String getName() {
+		return "RVEA";
+	}
 
 	@Override
 	protected void iterate() {

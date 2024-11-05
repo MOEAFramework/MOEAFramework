@@ -40,6 +40,11 @@ public class RandomWalker extends AbstractEvolutionaryAlgorithm {
 				new RandomInitialization(problem),
 				OperatorFactory.getInstance().getVariation("pm", problem));
 	}
+	
+	@Override
+	public String getName() {
+		return "RandomWalker";
+	}
 
 	@Override
 	protected void iterate() {

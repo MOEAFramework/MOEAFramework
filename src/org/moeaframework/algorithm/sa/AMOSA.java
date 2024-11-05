@@ -103,6 +103,11 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 		
 		comparator = new ParetoDominanceComparator();
 	}
+	
+	@Override
+	public String getName() {
+		return "AMOSA";
+	}
 
 	/**
 	 * Returns the gamma value.

@@ -178,6 +178,11 @@ public class NSGAIII extends NSGAII {
 	}
 	
 	@Override
+	public String getName() {
+		return "NSGA-III";
+	}
+	
+	@Override
 	public ReferencePointNondominatedSortingPopulation getPopulation() {
 		return (ReferencePointNondominatedSortingPopulation)super.getPopulation();
 	}

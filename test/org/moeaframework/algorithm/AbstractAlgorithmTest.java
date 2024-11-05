@@ -40,6 +40,11 @@ public class AbstractAlgorithmTest {
 		}
 		
 		@Override
+		public String getName() {
+			return "TestAbstractAlgorithm";
+		}
+		
+		@Override
 		public void initialize() {
 			super.initialize();
 			numberOfEvaluations += 100;

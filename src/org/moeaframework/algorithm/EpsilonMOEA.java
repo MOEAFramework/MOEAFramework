@@ -119,6 +119,11 @@ public class EpsilonMOEA extends AbstractEvolutionaryAlgorithm implements Epsilo
 		this.selection = selection;
 		this.dominanceComparator = dominanceComparator;
 	}
+	
+	@Override
+	public String getName() {
+		return "Epsilon-MOEA";
+	}
 
 	@Override
 	public void iterate() {

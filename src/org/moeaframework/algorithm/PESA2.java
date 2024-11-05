@@ -102,6 +102,11 @@ public class PESA2 extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	@Override
+	public String getName() {
+		return "PESA-2";
+	}
+	
+	@Override
 	public AdaptiveGridArchive getArchive() {
 		return (AdaptiveGridArchive)super.getArchive();
 	}

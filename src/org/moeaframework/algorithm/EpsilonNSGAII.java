@@ -96,6 +96,11 @@ public class EpsilonNSGAII extends NSGAII implements Configurable {
 	}
 	
 	@Override
+	public String getName() {
+		return "Epsilon-NSGA-II";
+	}
+	
+	@Override
 	public void applyConfiguration(TypedProperties properties) {
 		if (properties.contains("epsilon")) {
 			setArchive(new EpsilonBoxDominanceArchive(properties.getDoubleArray("epsilon")));

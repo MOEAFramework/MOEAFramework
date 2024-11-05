@@ -100,6 +100,11 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 		this.nonUniformMutation = new NonUniformMutation(mutationProbability, mutationPerturbation, maxIterations);
 	}
 	
+	@Override
+	public String getName() {
+		return "OMOPSO";
+	}
+	
 	/**
 	 * Returns the mutation probability used by the uniform and non-uniform mutation operators.
 	 * 

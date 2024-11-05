@@ -45,7 +45,7 @@ import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.problem.Problem;
 
 /**
- * Implementation of the S-metric Selection MOEA (SMS-MOEA).  The S metric is also known as the hypervolume indicator.
+ * Implementation of the S-metric Selection MOEA (SMS-EMOA).  The S metric is also known as the hypervolume indicator.
  * <p>
  * References:
  * <ol>
@@ -91,6 +91,11 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 			Variation variation, FitnessEvaluator fitnessEvaluator) {
 		super(problem, initialPopulationSize, new Population(), null, initialization, variation);
 		setFitnessEvaluator(fitnessEvaluator);
+	}
+	
+	@Override
+	public String getName() {
+		return "SMS-EMOA";
 	}
 	
 	@Override

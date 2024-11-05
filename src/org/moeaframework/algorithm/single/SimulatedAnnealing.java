@@ -91,6 +91,11 @@ public class SimulatedAnnealing extends AbstractSimulatedAnnealingAlgorithm {
 		setNumberOfIterationsPerTemperature(numberOfIterationsPerTemperature);
 		setComparator(new LinearDominanceComparator());
 	}
+	
+	@Override
+	public String getName() {
+		return "SimulatedAnnealing";
+	}
 
 	/**
 	 * Returns the number of iterations performed at each temperature.  Note that all iterations for the same

@@ -76,6 +76,11 @@ public class PAES extends AbstractEvolutionaryAlgorithm {
 		comparator = new ParetoDominanceComparator();
 	}
 	
+	@Override
+	public String getName() {
+		return "PAES";
+	}
+	
 	/**
 	 * Replaces the mutation operator to be used by this algorithm.
 	 * 

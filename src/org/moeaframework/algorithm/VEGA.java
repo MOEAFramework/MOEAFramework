@@ -87,6 +87,11 @@ public class VEGA extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	@Override
+	public String getName() {
+		return "VEGA";
+	}
+	
+	@Override
 	@Property("operator")
 	public void setVariation(Variation variation) {
 		super.setVariation(variation);

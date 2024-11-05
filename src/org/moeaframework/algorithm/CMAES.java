@@ -263,6 +263,11 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 		this.initialSearchPoint = initialSearchPoint;
 		this.population = new Population();
 	}
+	
+	@Override
+	public String getName() {
+		return "CMA-ES";
+	}
 
 	/**
 	 * Returns the number of iterations in which only the covariance diagonal is used.

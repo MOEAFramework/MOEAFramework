@@ -31,8 +31,6 @@ import org.moeaframework.analysis.store.Container;
 import org.moeaframework.analysis.store.DataStore;
 import org.moeaframework.analysis.store.Reference;
 import org.moeaframework.analysis.store.fs.FileSystemDataStore;
-import org.moeaframework.analysis.store.schema.Field;
-import org.moeaframework.analysis.store.schema.Schema;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.DTLZ.DTLZ2;
@@ -47,18 +45,13 @@ public class DataStoreExample {
 		Problem problem = new DTLZ2(2);
 		Indicators indicators = Indicators.standard(problem, NondominatedPopulation.loadReferenceSet("./pf/DTLZ2.2D.pf"));
 		
-		Schema schema = Schema.of(
-				Field.named("algorithm").asString(),
-				Field.named("populationSize").asInt(),
-				Field.named("sbx.rate").asDecimal());
-		
 		Enumeration<Integer> populationSize = Parameter.named("populationSize").asInt().range(10, 100, 10);
 		Enumeration<Double> sbxRate = Parameter.named("sbx.rate").asDecimal().range(0.0, 1.0, 0.1);
 		
 		ParameterSet parameters = new ParameterSet(populationSize, sbxRate);
 		Samples samples = parameters.enumerate();
 		
-		DataStore dataStore = new FileSystemDataStore(new File("results"), schema);
+		DataStore dataStore = new FileSystemDataStore(new File("results"));
 		
 		for (Sample sample : samples) {
 			Reference reference = sample.getReference().extend("algorithm", "NSGAIII");

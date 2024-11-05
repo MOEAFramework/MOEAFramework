@@ -36,6 +36,11 @@ public class MockAlgorithm implements Algorithm {
 	public MockAlgorithm() {
 		super();
 	}
+	
+	@Override
+	public String getName() {
+		return "MockAlgorithm";
+	}
 
 	@Override
 	public Problem getProblem() {

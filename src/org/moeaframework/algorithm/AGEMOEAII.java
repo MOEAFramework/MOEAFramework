@@ -95,6 +95,11 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	@Override
+	public String getName() {
+		return "AGE-MOEA-II";
+	}
+	
+	@Override
 	public void initialize() {
 		super.initialize();
 		

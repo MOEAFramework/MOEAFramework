@@ -71,6 +71,11 @@ public class EvolutionStrategy extends SingleObjectiveEvolutionaryAlgorithm {
 		
 		Validate.that("problem", problem).isType(RealVariable.class);
 	}
+	
+	@Override
+	public String getName() {
+		return "EvolutionStrategy";
+	}
 
 	@Override
 	public void iterate() {

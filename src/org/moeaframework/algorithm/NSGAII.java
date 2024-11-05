@@ -92,6 +92,11 @@ public class NSGAII extends AbstractEvolutionaryAlgorithm implements EpsilonBoxE
 		super(problem, initialPopulationSize, population, archive, initialization, variation);
 		this.selection = selection;
 	}
+	
+	@Override
+	public String getName() {
+		return "NSGA-II";
+	}
 
 	@Override
 	public void iterate() {

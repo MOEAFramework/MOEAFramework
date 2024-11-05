@@ -39,6 +39,11 @@ public class TestAlgorithmProvider extends AlgorithmProvider {
 					null,
 					new RandomInitialization(problem),
 					OperatorFactory.getInstance().getVariation(problem)) {
+				
+				@Override
+				public String getName() {
+					return "TestAlgorithm";
+				}
 
 				@Override
 				protected void iterate() {

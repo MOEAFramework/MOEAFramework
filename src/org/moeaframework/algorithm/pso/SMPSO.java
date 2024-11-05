@@ -129,6 +129,11 @@ public class SMPSO extends AbstractPSOAlgorithm {
 		}
 	}
 	
+	@Override
+	public String getName() {
+		return "SMPSO";
+	}
+	
 	/**
 	 * Returns the velocity constriction coefficient.
 	 * 

@@ -82,6 +82,11 @@ public class GeneticAlgorithm extends SingleObjectiveEvolutionaryAlgorithm {
 			Initialization initialization, Variation variation) {
 		super(problem, initialPopulationSize, new Population(), null, comparator, initialization, variation);
 	}
+	
+	@Override
+	public String getName() {
+		return "GeneticAlgorithm";
+	}
 
 	@Override
 	public void initialize() {

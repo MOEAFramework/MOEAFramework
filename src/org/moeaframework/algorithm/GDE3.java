@@ -107,6 +107,11 @@ public class GDE3 extends AbstractEvolutionaryAlgorithm {
 		this.comparator = comparator;
 		this.selection = selection;
 	}
+	
+	@Override
+	public String getName() {
+		return "GDE3";
+	}
 
 	@Override
 	public void iterate() {

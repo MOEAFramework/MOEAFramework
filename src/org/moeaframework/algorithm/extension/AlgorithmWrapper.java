@@ -57,6 +57,11 @@ public class AlgorithmWrapper<T extends Algorithm> implements Algorithm, Configu
 	public T getAlgorithm() {
 		return algorithm;
 	}
+	
+	@Override
+	public String getName() {
+		return algorithm.getName();
+	}
 
 	@Override
 	public void evaluate(Solution solution) {

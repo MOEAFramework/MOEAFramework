@@ -82,6 +82,11 @@ public class RandomSearch extends AbstractAlgorithm implements Configurable {
 		this.generator = generator;
 		this.archive = archive;
 	}
+	
+	@Override
+	public String getName() {
+		return "Random";
+	}
 
 	/**
 	 * Returns the number of solutions sampled each iteration.

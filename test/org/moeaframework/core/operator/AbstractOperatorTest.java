@@ -24,7 +24,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.Variable;
 import org.moeaframework.mock.MockUnsupportedVariable;
 
-public abstract class AbstractOperatorTest<T extends Variation, S extends Variable> {
+public abstract class AbstractOperatorTest<T extends Variation, V extends Variable> {
 	
 	/**
 	 * Creates a new instance of this operator.  For testing purposes, the instance should have a 100% probability.
@@ -34,8 +34,13 @@ public abstract class AbstractOperatorTest<T extends Variation, S extends Variab
 	/**
 	 * Creates a new instance of the decision variable for testing purposes.
 	 */
-	public abstract S createTestVariable();
+	public abstract V createTestVariable();
 	
+	/**
+	 * Indicates if this operator is type safe, enabling certain test conditions.
+	 * 
+	 * @return {@code true} if the operator is type safe; {@code false} otherwise
+	 */
 	public boolean isTypeSafe() {
 		return true;
 	}

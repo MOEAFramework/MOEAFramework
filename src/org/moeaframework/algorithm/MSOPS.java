@@ -110,6 +110,11 @@ public class MSOPS extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	@Override
+	public String getName() {
+		return "MSOPS";
+	}
+	
+	@Override
 	public DifferentialEvolutionVariation getVariation() {
 		return (DifferentialEvolutionVariation)super.getVariation();
 	}

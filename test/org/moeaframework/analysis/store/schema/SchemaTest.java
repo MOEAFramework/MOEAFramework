@@ -31,6 +31,9 @@ public class SchemaTest {
 	@Test
 	public void testSchemaless() throws IOException {
 		Schema schema = Schema.schemaless();
+		Assert.assertTrue(schema.isSchemaless());
+		Assert.assertSize(0, schema.getFields());
+		
 		TypedProperties properties = new TypedProperties();
 		
 		// Empty
@@ -59,6 +62,8 @@ public class SchemaTest {
 	@Test
 	public void testSchema() throws IOException {
 		Schema schema = Schema.of(Field.named("foo").asString());
+		Assert.assertFalse(schema.isSchemaless());
+		Assert.assertSize(1, schema.getFields());
 
 		List<Pair<Field<?>, String>> resolvedFields = schema.resolve(Reference.of(TypedProperties.of("foo", "bar")));
 		Assert.assertSize(1, resolvedFields);

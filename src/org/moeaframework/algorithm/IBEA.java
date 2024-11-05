@@ -97,6 +97,11 @@ public class IBEA extends AbstractEvolutionaryAlgorithm {
 		Validate.that("problem", problem).isUnconstrained();
 	}
 	
+	@Override
+	public String getName() {
+		return "IBEA";
+	}
+	
 	/**
 	 * Returns the indicator-based fitness evaluator.
 	 * 

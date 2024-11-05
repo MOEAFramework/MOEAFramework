@@ -134,6 +134,11 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 		setDivisions(divisions);
 	}
 	
+	@Override
+	public String getName() {
+		return "DBEA";
+	}
+	
 	/**
 	 * Returns the number of divisions used to generate reference points.
 	 * 

@@ -104,6 +104,11 @@ public class RepeatedSingleObjective extends AbstractAlgorithm {
 			algorithms.add(creator.apply(problem, weight));
 		}
 	}
+	
+	@Override
+	public String getName() {
+		return "RSO";
+	}
 
 	@Override
 	public int getNumberOfEvaluations() {
