@@ -29,6 +29,7 @@ import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.problem.CEC2009.UF1;
+import org.moeaframework.util.format.TableFormat;
 import org.moeaframework.problem.Problem;
 
 import static org.moeaframework.TempFiles.File;
@@ -38,24 +39,29 @@ public class ExperimentSnippet {
 
 	@Test
 	public void executor() {
+		// begin-example:executor
 		NondominatedPopulation result = new Executor()
 		        .withProblem("UF1")
 		        .withAlgorithm("NSGAII")
 		        .withMaxEvaluations(10000)
 		        .run();
+		// end-example:executor
 	}
 	
 	@Test
 	public void executorWithCustomProblem() {
+		// begin-example:executorWithCustomProblem
 		NondominatedPopulation result = new Executor()
 		        .withProblem(new MyProblem())
 		        .withAlgorithm("NSGAII")
 		        .withMaxEvaluations(10000)
 		        .run();
+		// end-example:executorWithCustomProblem
 	}
 	
 	@Test
 	public void executorWithProperties() {
+		// begin-example:executorWithProperties
 		NondominatedPopulation result = new Executor()
 		        .withProblem("UF1")
 		        .withAlgorithm("NSGAII")
@@ -63,10 +69,12 @@ public class ExperimentSnippet {
 		        .withProperty("operator", "pcx+um")
 		        .withMaxEvaluations(10000)
 		        .run();
+		// end-example:executorWithProperties
 	}
 	
 	@Test
 	public void analyzer() {
+		// begin-example:analyzer
 		Executor executor = new Executor()
 		        .withProblem("UF1")
 		        .withAlgorithm("NSGAII")
@@ -79,10 +87,12 @@ public class ExperimentSnippet {
 				
 		analyzer.addAll("NSGAII", executor.runSeeds(50));
 		analyzer.display();
+		// end-example:analyzer
 	}
 	
 	@Test
 	public void saveCSV() throws IOException {
+		// begin-example:saveCSV
 		Problem problem = new UF1();
 		
 		Instrumenter instrumenter = new Instrumenter()
@@ -99,7 +109,8 @@ public class ExperimentSnippet {
 				
 		Observations observations = instrumentedAlgorithm.getObservations();
 		
-		instrumenter.getObservations().saveCSV(new File("NSGAII_UF1_Runtime.csv"));
+		instrumenter.getObservations().save(TableFormat.CSV, new File("NSGAII_UF1_Runtime.csv"));
+		// end-example:saveCSV
 	}
 	
 	private class MyProblem extends MockRealProblem {

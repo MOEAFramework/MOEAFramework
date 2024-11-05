@@ -19,7 +19,9 @@ package org.moeaframework.util.format;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.Writer;
 
 /**
  * Interface used by classes containing tabular data (think like a spreadsheet) that can be formatted and rendered in
@@ -66,20 +68,32 @@ public interface Formattable<T> extends Displayable {
 	 * 
 	 * @param tableFormat the resulting table format
 	 * @param file the resulting file
-	 * @throws IOException if an I/O error occurred while writing the file
+	 * @throws IOException if an I/O error occurred
 	 */
 	public default void save(TableFormat tableFormat, File file) throws IOException {
 		asTabularData().save(tableFormat, file);
 	}
 	
 	/**
-	 * Saves the contents of this object to a CSV file.
+	 * Saves the data to an output stream in the requested format.
 	 * 
-	 * @param file the resulting file
-	 * @throws IOException if an I/O error occurred while writing the file
+	 * @param tableFormat the resulting table format
+	 * @param out the output stream
+	 * @throws IOException if an I/O error occurred
 	 */
-	public default void saveCSV(File file) throws IOException {
-		save(TableFormat.CSV, file);
+	public default void save(TableFormat tableFormat, OutputStream out) throws IOException {
+		asTabularData().save(tableFormat, out);
+	}
+	
+	/**
+	 * Saves the data to a writer in the requested format.
+	 * 
+	 * @param tableFormat the resulting table format
+	 * @param writer the writer
+	 * @throws IOException if an I/O error occurred
+	 */
+	public default void save(TableFormat tableFormat, Writer writer) throws IOException {
+		asTabularData().save(tableFormat, writer);
 	}
 
 }

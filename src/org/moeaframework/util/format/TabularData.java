@@ -18,9 +18,11 @@
 package org.moeaframework.util.format;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -28,6 +30,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.output.CloseShieldOutputStream;
+import org.apache.commons.io.output.CloseShieldWriter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.TypeUtils;
 import org.apache.commons.text.StringEscapeUtils;
@@ -170,7 +174,7 @@ public class TabularData<T> implements Displayable {
 	public void display(TableFormat tableFormat) {
 		display(tableFormat, System.out);
 	}
-
+	
 	/**
 	 * Displays the data in the given format.
 	 * 
@@ -178,13 +182,25 @@ public class TabularData<T> implements Displayable {
 	 * @param out the output stream
 	 */
 	public void display(TableFormat tableFormat, PrintStream out) {
+		try (PrintWriter writer = new PrintWriter(CloseShieldOutputStream.wrap(out))) {
+			display(tableFormat, writer);
+		}
+	}
+
+	/**
+	 * Displays the data in the given format.
+	 * 
+	 * @param tableFormat the table format
+	 * @param writer the output writer
+	 */
+	public void display(TableFormat tableFormat, PrintWriter writer) {
 		switch (tableFormat) {
-		case Plaintext -> toPlaintext(out);
-		case CSV -> toCSV(out);
-		case Markdown -> toMarkdown(out);
-		case Latex -> toLatex(out);
-		case Json -> toJson(out);
-		default -> Validate.that("tableFormat", tableFormat).failUnsupportedOption();
+			case Plaintext -> toPlaintext(writer);
+			case CSV -> toCSV(writer);
+			case Markdown -> toMarkdown(writer);
+			case Latex -> toLatex(writer);
+			case Json -> toJson(writer);
+			default -> Validate.that("tableFormat", tableFormat).failUnsupportedOption();
 		}
 	}
 
@@ -193,11 +209,37 @@ public class TabularData<T> implements Displayable {
 	 * 
 	 * @param tableFormat the resulting table format
 	 * @param file the resulting file
-	 * @throws IOException if an I/O error occurred while writing the file
+	 * @throws IOException if an I/O error occurred
 	 */
 	public void save(TableFormat tableFormat, File file) throws IOException {
-		try (PrintStream out = new PrintStream(new FileOutputStream(file))) {
+		try (PrintWriter out = new PrintWriter(file)) {
 			display(tableFormat, out);
+		}
+	}
+	
+	/**
+	 * Saves the data to an output stream in the requested format.
+	 * 
+	 * @param tableFormat the resulting table format
+	 * @param out the output stream
+	 * @throws IOException if an I/O error occurred
+	 */
+	public void save(TableFormat tableFormat, OutputStream out) throws IOException {
+		try (PrintWriter writer = new PrintWriter(CloseShieldOutputStream.wrap(out))) {
+			display(tableFormat, writer);
+		}
+	}
+	
+	/**
+	 * Saves the data to a writer in the requested format.
+	 * 
+	 * @param tableFormat the resulting table format
+	 * @param writer the writer
+	 * @throws IOException if an I/O error occurred
+	 */
+	public void save(TableFormat tableFormat, Writer writer) throws IOException {
+		try (PrintWriter printWriter = new PrintWriter(CloseShieldWriter.wrap(writer))) {
+			display(tableFormat, printWriter);
 		}
 	}
 
@@ -206,7 +248,7 @@ public class TabularData<T> implements Displayable {
 	 * 
 	 * @param out the output stream
 	 */
-	protected void toPlaintext(PrintStream out) {
+	protected void toPlaintext(PrintWriter out) {
 		List<String[]> formattedData = format(ESCAPE_PLAINTEXT);
 
 		for (int j = 0; j < columns.size(); j++) {
@@ -236,7 +278,7 @@ public class TabularData<T> implements Displayable {
 	 * 
 	 * @param out the output stream
 	 */
-	protected void toCSV(PrintStream out) {
+	protected void toCSV(PrintWriter out) {
 		List<String[]> formattedData = format(StringEscapeUtils.ESCAPE_CSV);
 
 		for (int i = 0; i < formattedData.size(); i++) {
@@ -257,7 +299,7 @@ public class TabularData<T> implements Displayable {
 	 * 
 	 * @param out the output stream
 	 */
-	protected void toMarkdown(PrintStream out) {
+	protected void toMarkdown(PrintWriter out) {
 		List<String[]> formattedData = format(ESCAPE_MARKDOWN);
 
 		for (int j = 0; j < columns.size(); j++) {
@@ -298,7 +340,7 @@ public class TabularData<T> implements Displayable {
 	 * 
 	 * @param out the output stream
 	 */
-	protected void toLatex(PrintStream out) {
+	protected void toLatex(PrintWriter out) {
 		List<String[]> formattedData = format(ESCAPE_LATEX);
 
 		out.print("\\begin{tabular}{|");
@@ -354,7 +396,7 @@ public class TabularData<T> implements Displayable {
 	 * 
 	 * @param out the output stream
 	 */
-	protected void toJson(PrintStream out) {
+	protected void toJson(PrintWriter out) {
 		List<String[]> formattedData = format(StringEscapeUtils.ESCAPE_JSON);
 		boolean[] isNumeric = new boolean[columns.size()];
 		Pattern pattern = Pattern.compile("^-?[0-9]+(\\.[0-9]+(E-?[0-9]+)?)?$");

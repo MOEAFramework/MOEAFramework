@@ -92,6 +92,14 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	
 	private static final Pattern REGEX = Pattern.compile("<!--\\s+([a-zA-Z]+)\\:([^\\s]+)(?:\\s+\\[([^\\]]+)\\])?(?:\\s+\\{([^\\}]+)\\})?\\s+-->");
 	
+	private static final Pattern IDENTIFIER_REGEX = Pattern.compile("[a-zA-Z\\-_]+");
+	
+	private static final Pattern LINES_REGEX = Pattern.compile("(\\-?[0-9]+)?[:\\\\-](\\-?[0-9]+)?");
+	
+	private static final Pattern BEGIN_REGEX = Pattern.compile("^\\s+//\\s*begin-example:\\s*([a-zA-Z\\-_]+)\\s*$");
+
+	private static final Pattern END_REGEX = Pattern.compile("^\\s+//\\s*end-example:\\s*([a-zA-Z\\-_]+)\\s*$");
+	
 	/**
 	 * {@code true} if running in update mode; {@code false} for validate mode.
 	 */
@@ -565,9 +573,6 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @param str the string representation of the line numbers
 		 */
 		public void parseLineNumbers(String str) {
-			final Pattern identifierPattern = Pattern.compile("[a-zA-Z\\-_]+");
-			final Pattern lineNumberPattern = Pattern.compile("(\\-?[0-9]+)?[:\\\\-](\\-?[0-9]+)?");
-			
 			if (str == null) {
 				startingLine = FIRST_LINE;
 				endingLine = LAST_LINE;
@@ -578,14 +583,14 @@ public class UpdateCodeSamples extends CommandLineUtility {
 				str = str.substring(1, str.length()-1);
 			}
 			
-			Matcher matcher = identifierPattern.matcher(str);
+			Matcher matcher = IDENTIFIER_REGEX.matcher(str);
 			
 			if (matcher.matches()) {
 				identifier = str;
 				return;
 			}
 			
-			matcher = lineNumberPattern.matcher(str);
+			matcher = LINES_REGEX.matcher(str);
 			
 			if (matcher.matches()) {
 				startingLine = matcher.group(1) != null ? Integer.parseInt(matcher.group(1)) : FIRST_LINE;
@@ -694,9 +699,15 @@ public class UpdateCodeSamples extends CommandLineUtility {
 				endingLine = -1;
 				
 				for (int i = 0; i < lines.size(); i++) {
-					if (lines.get(i).contains("begin-example:" + identifier)) {
+					Matcher beginMatcher = BEGIN_REGEX.matcher(lines.get(i));
+					
+					if (beginMatcher.matches() && beginMatcher.group(1).equalsIgnoreCase(identifier)) {
 						startingLine = i + 1;
-					} else if (lines.get(i).contains("end-example:" + identifier)) {
+					}
+					
+					Matcher endMatcher = END_REGEX.matcher(lines.get(i));
+					
+					if (endMatcher.matches() && endMatcher.group(1).equalsIgnoreCase(identifier)) {
 						endingLine = i - 1;
 					}
 				}

@@ -17,14 +17,7 @@
  */
 package org.moeaframework.util.format;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintStream;
-import java.io.Writer;
-
-import org.apache.commons.io.output.CloseShieldOutputStream;
-import org.apache.commons.io.output.CloseShieldWriter;
-import org.apache.commons.io.output.WriterOutputStream;
 
 /**
  * Interface used by classes that display content, either to standard output or an output stream.
@@ -45,32 +38,6 @@ public interface Displayable {
 	 */
 	public default void display() {
 		display(System.out);
-	}
-		
-	/**
-	 * Saves the contents of this object to the given writer.  This method does not close the underlying
-	 * writer; the caller is responsible for disposing it.
-	 * 
-	 * @param out the writer
-	 * @throws IOException if an I/O error occurred
-	 */
-	public default void save(Writer out) throws IOException {
-		try (WriterOutputStream writer = WriterOutputStream.builder().setWriter(CloseShieldWriter.wrap(out)).get()) {
-			save(writer);
-		}
-	}
-
-	/**
-	 * Saves the contents of this object to the given output stream.  This method does not close the underlying
-	 * stream; the caller is responsible for disposing it.
-	 * 
-	 * @param out the output writer
-	 * @throws IOException if an I/O error occurred
-	 */
-	public default void save(OutputStream out) throws IOException {
-		try (PrintStream writer = new PrintStream(CloseShieldOutputStream.wrap(out))) {
-			display(writer);
-		}
 	}
 
 }

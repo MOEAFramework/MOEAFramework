@@ -34,6 +34,7 @@ import org.moeaframework.analysis.store.fs.FileSystemDataStore;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.DTLZ.DTLZ2;
+import org.moeaframework.util.format.TableFormat;
 import org.moeaframework.problem.Problem;
 
 /**
@@ -74,7 +75,7 @@ public class DataStoreExample {
 				});
 				
 				container.getBlob("indicators").store((Writer out) -> {
-					indicators.apply(algorithm.getResult()).save(out);
+					indicators.apply(algorithm.getResult()).save(TableFormat.Plaintext, out);
 				});
 			} else {
 				System.out.println("Skipping " + reference + ", found in data store");

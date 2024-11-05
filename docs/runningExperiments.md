@@ -8,7 +8,7 @@ capability is split into three classes: the `Executor`, `Analyzer`, and `Instrum
 The `Executor`'s sole responsibility is to configure and execute an optimization algorithm on a problem.
 For example, here we run NSGA-II on the UF1 test problem for 10,000 function evaluations.
 
-<!-- java:test/org/moeaframework/snippet/ExperimentSnippet.java [41:45] -->
+<!-- java:test/org/moeaframework/snippet/ExperimentSnippet.java [executor] -->
 
 ```java
 NondominatedPopulation result = new Executor()
@@ -20,7 +20,7 @@ NondominatedPopulation result = new Executor()
 
 If you want to test your own problem, simply pass in your problem's class:
 
-<!-- java:test/org/moeaframework/snippet/ExperimentSnippet.java [50:54] -->
+<!-- java:test/org/moeaframework/snippet/ExperimentSnippet.java [executorWithCustomProblem] -->
 
 ```java
 NondominatedPopulation result = new Executor()
@@ -33,7 +33,7 @@ NondominatedPopulation result = new Executor()
 Each algorithm can be customized by setting properties.  The available properties are detailed in the
 [List of Algorithms](listOfAlgorithms.md) and [List of Operators](listOfOperators.md).
 
-<!-- java:test/org/moeaframework/snippet/ExperimentSnippet.java [59:65] -->
+<!-- java:test/org/moeaframework/snippet/ExperimentSnippet.java [executorWithProperties] -->
 
 ```java
 NondominatedPopulation result = new Executor()
@@ -159,8 +159,8 @@ new Plot()
 
 Or export the data into another format, such as comma-separated values (CSV), that can be loaded into Excel or other tools:
 
-<!-- java:test/org/moeaframework/snippet/ExperimentSnippet.java [102:102] -->
+<!-- java:test/org/moeaframework/snippet/ExperimentSnippet.java [112:112] -->
 
 ```java
-instrumenter.getObservations().saveCSV(new File("NSGAII_UF1_Runtime.csv"));
+instrumenter.getObservations().save(TableFormat.CSV, new File("NSGAII_UF1_Runtime.csv"));
 ```
