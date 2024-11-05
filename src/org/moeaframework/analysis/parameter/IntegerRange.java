@@ -23,6 +23,10 @@ import org.moeaframework.analysis.sample.Sample;
 import org.moeaframework.util.io.Tokenizer;
 import org.moeaframework.util.validate.Validate;
 
+/**
+ * Parameter representing an {@link Integer} value, ranging from {@value Integer#MIN_VALUE} to
+ * {@value Integer#MAX_VALUE}.
+ */
 public class IntegerRange extends AbstractParameter<Integer> implements SampledParameter<Integer>,
 NumericParameter<Integer> {
 	
@@ -30,6 +34,13 @@ NumericParameter<Integer> {
 	
 	private final int upperBound;
 
+	/**
+	 * Constructs a new integer parameter with the given sampling bounds.
+	 * 
+	 * @param name the parameter name
+	 * @param lowerBound the lower bound
+	 * @param upperBound the upper bound
+	 */
 	public IntegerRange(String name, int lowerBound, int upperBound) {
 		super(name);
 		this.lowerBound = lowerBound;
@@ -80,6 +91,14 @@ NumericParameter<Integer> {
 				Integer.toString(getUpperBound())));
 	}
 	
+	/**
+	 * Decodes the string representation of this parameter.
+	 * 
+	 * @param tokenizer the tokenizer
+	 * @param line the string representation
+	 * @return the decoded parameter
+	 * @throws InvalidParameterException if the string representation is not a valid parameter
+	 */
 	public static IntegerRange decode(Tokenizer tokenizer, String line) {
 		String[] tokens = tokenizer.decodeToArray(line);
 		

@@ -23,12 +23,22 @@ import org.moeaframework.analysis.sample.Sample;
 import org.moeaframework.util.io.Tokenizer;
 import org.moeaframework.util.validate.Validate;
 
+/**
+ * Parameter representing a {@link Long} value, ranging from {@value Long#MIN_VALUE} to {@value Long#MAX_VALUE}.
+ */
 public class LongRange extends AbstractParameter<Long> implements SampledParameter<Long>, NumericParameter<Long> {
 	
 	private final long lowerBound;
 	
 	private final long upperBound;
 
+	/**
+	 * Constructs a new long parameter with the given sampling bounds.
+	 * 
+	 * @param name the parameter name
+	 * @param lowerBound the lower bound
+	 * @param upperBound the upper bound
+	 */
 	public LongRange(String name, long lowerBound, long upperBound) {
 		super(name);
 		this.lowerBound = lowerBound;
@@ -79,6 +89,14 @@ public class LongRange extends AbstractParameter<Long> implements SampledParamet
 				Long.toString(getUpperBound())));
 	}
 	
+	/**
+	 * Decodes the string representation of this parameter.
+	 * 
+	 * @param tokenizer the tokenizer
+	 * @param line the string representation
+	 * @return the decoded parameter
+	 * @throws InvalidParameterException if the string representation is not a valid parameter
+	 */
 	public static LongRange decode(Tokenizer tokenizer, String line) {
 		String[] tokens = tokenizer.decodeToArray(line);
 		

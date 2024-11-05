@@ -25,6 +25,9 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.util.io.Tokenizer;
 import org.moeaframework.util.validate.Validate;
 
+/**
+ * Parameter representing a {@link Double} value.
+ */
 public class DecimalRange extends AbstractParameter<Double> implements SampledParameter<Double>,
 NumericParameter<Double> {
 	
@@ -39,6 +42,13 @@ NumericParameter<Double> {
 	
 	private final double upperBound;
 
+	/**
+	 * Constructs a new decimal parameter with the given sampling bounds.
+	 * 
+	 * @param name the parameter name
+	 * @param lowerBound the lower bound
+	 * @param upperBound the upper bound
+	 */
 	public DecimalRange(String name, double lowerBound, double upperBound) {
 		super(name);
 		this.lowerBound = lowerBound;
@@ -88,6 +98,14 @@ NumericParameter<Double> {
 				Double.toString(getUpperBound())));
 	}
 	
+	/**
+	 * Decodes the string representation of this parameter.
+	 * 
+	 * @param tokenizer the tokenizer
+	 * @param line the string representation
+	 * @return the decoded parameter
+	 * @throws InvalidParameterException if the string representation is not a valid parameter
+	 */
 	public static DecimalRange decode(Tokenizer tokenizer, String line) {
 		String[] tokens = tokenizer.decodeToArray(line);
 		

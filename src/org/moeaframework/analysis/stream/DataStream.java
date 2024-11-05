@@ -45,38 +45,96 @@ import org.moeaframework.util.format.TabularData;
  */
 public interface DataStream<V> extends Formattable<V> {
 	
+	/**
+	 * Returns the number of items in this data stream.
+	 * 
+	 * @return the number of items
+	 */
 	public int size();
 	
+	/**
+	 * Returns a {@link Stream} of the items in this data stream.
+	 * 
+	 * @return the stream
+	 */
 	public Stream<V> stream();
 
+	/**
+	 * Returns the items in this stream as a list.
+	 * 
+	 * @return the list
+	 */
 	public default List<V> values() {
 		return stream().toList();
 	}
 	
+	/**
+	 * Returns the items in this stream as an array.
+	 * 
+	 * @param generator generator for creating the array
+	 * @return the array
+	 */
 	public default V[] values(IntFunction<V[]> generator) {
 		return stream().toArray(generator);
 	}
 	
+	/**
+	 * Applies a function to each item in the stream, returning a stream of the results.
+	 * 
+	 * @param <R> the result type
+	 * @param map the mapping function
+	 * @return the stream of results
+	 */
 	public default <R> DataStream<R> map(Function<V, R> map) {
 		return new ImmutableDataStream<R>(stream().map(map));
 	}
 	
+	/**
+	 * Sorts the stream using the natural ordering of items.
+	 * 
+	 * @return the sorted stream
+	 * @throws ClassCastException if the item type is not {@link Comparable}
+	 */
 	public default DataStream<V> sorted() {
 		return new ImmutableDataStream<V>(stream().sorted());
 	}
 
+	/**
+	 * Sorts the stream.
+	 * 
+	 * @param comparator the comparator used to sort items
+	 * @return the sorted stream
+	 */
 	public default DataStream<V> sorted(Comparator<V> comparator) {
 		return new ImmutableDataStream<V>(stream().sorted(comparator));
 	}
 	
+	/**
+	 * Returns the first item from this stream.
+	 * 
+	 * @return the selected item
+	 * @throws NoSuchElementException if the stream is empty
+	 */
 	public default V first() {
 		return stream().findFirst().get();
 	}
 	
+	/**
+	 * Returns any item from this stream.
+	 * 
+	 * @return the selected item
+	 * @throws NoSuchElementException if the stream is empty
+	 */
 	public default V any() {
 		return stream().findAny().get();
 	}
 	
+	/**
+	 * Returns the singular value contained in this stream, or if empty, returns the given default value.
+	 * 
+	 * @param defaultValue the default value
+	 * @return the single value or default value
+	 */
 	public default V singleOrDefault(V defaultValue) {
 		if (size() == 0) {
 			return defaultValue;
@@ -85,6 +143,12 @@ public interface DataStream<V> extends Formattable<V> {
 		}
 	}
 	
+	/**
+	 * Asserts this stream contains exactly one item, returning said item.
+	 * 
+	 * @return the item
+	 * @throws NoSuchElementException if the stream was empty or contained more than one item
+	 */
 	public default V single() {
 		if (size() != 1) {
 			throw new NoSuchElementException("expected data stream to contain exactly one item, but found " + size());
@@ -93,38 +157,97 @@ public interface DataStream<V> extends Formattable<V> {
 		return any();
 	}
 	
+	/**
+	 * Filters this stream, keeping only those items evaluating to {@code true}.
+	 * 
+	 * @param predicate the predicate function
+	 * @return the new data stream
+	 */
 	public default DataStream<V> filter(Predicate<V> predicate) {
 		return new ImmutableDataStream<V>(stream().filter(predicate));
 	}
 	
+	/**
+	 * Applies a grouping function to the items in this data stream.  Items with the same grouping key are grouped
+	 * together.
+	 * 
+	 * @param <K> the type of the grouping key
+	 * @param group the grouping function
+	 * @return the groups
+	 */
 	public default <K> Groups<K, K, V> groupBy(Function<V, K> group) {
 		return keyedOn(group).groupBy(x -> x);
 	}
 	
+	/**
+	 * Converts this data stream into a {@link Partition} by assigning a key to each item.
+	 * 
+	 * @param <K> the type of the key
+	 * @param key the function mapping items to their key
+	 * @return the partition
+	 */
 	public default <K> Partition<K, V> keyedOn(Function<V, K> key) {
 		return new ImmutablePartition<K, V>(stream().map(x -> Pair.of(key.apply(x), x)));
 	}
-			
+	
+	/**
+	 * Applies a binary reduction operator to the items in this stream.  See {@link Stream#reduce(BinaryOperator)}
+	 * for more details.
+	 * 
+	 * @param op the binary reduction operator
+	 * @return the final result from the reduction operator
+	 * @throws NoSuchElementException if the stream is empty
+	 */
 	public default V reduce(BinaryOperator<V> op) {
 		return stream().reduce(op).get();
 	}
 	
+	/**
+	 * Applies a binary reduction operator to the items in this stream.  See
+	 * {@link Stream#reduce(Object, BinaryOperator)} for more details.
+	 * 
+	 * @param identity the initial value supplied to the binary operator
+	 * @param op the binary reduction operator
+	 * @return the final result from the reduction operator
+	 */
 	public default V reduce(V identity, BinaryOperator<V> op) {
 		return stream().reduce(identity, op);
 	}
 	
+	/**
+	 * Retains only the unique items in the stream.
+	 * 
+	 * @return the new data stream
+	 */
 	public default DataStream<V> distinct() {
 		return new ImmutableDataStream<V>(stream().distinct());
 	}
 	
+	/**
+	 * Applies a measurement function to this stream.
+	 * 
+	 * @param <R> the return value
+	 * @param measure the measurement function
+	 * @return the measured value
+	 */
 	public default <R> R measure(Function<Stream<V>, R> measure) {
 		return measure.apply(stream());
 	}
 	
+	/**
+	 * Invokes a method for each item in this stream.
+	 * 
+	 * @param consumer the method to invoke
+	 */
 	public default void forEach(Consumer<V> consumer) {
 		stream().forEach(consumer);
 	}
 	
+	/**
+	 * Similar to {@link #forEach(Consumer)} except the index is included.
+	 * 
+	 * @param consumer the method to invoke
+	 */
 	public default void enumerate(BiConsumer<Integer, V> consumer) {
 		int index = 0;
 		Iterator<V> iterator = stream().iterator();
@@ -143,42 +266,111 @@ public interface DataStream<V> extends Formattable<V> {
 		return table;
 	}
 	
+	/**
+	 * Creates an empty data stream.
+	 * 
+	 * @param <V> the type of the stream
+	 * @return the constructed data stream
+	 */
 	public static <V> DataStream<V> of() {
 		return new ImmutableDataStream<V>();
 	}
 	
+	/**
+	 * Creates a data stream with the contents of a {@link Stream}.
+	 * 
+	 * @param <V> the type of the stream
+	 * @param stream the source stream
+	 * @return the constructed data stream
+	 */
 	public static <V> DataStream<V> of(Stream<V> stream) {
 		return new ImmutableDataStream<V>(stream);
 	}
 	
+	/**
+	 * Creates a data stream with the contents of a {@link IntStream}.
+	 * 
+	 * @param stream the source stream
+	 * @return the constructed data stream
+	 */
 	public static DataStream<Integer> of(IntStream stream) {
 		return of(stream.boxed());
 	}
 	
+	/**
+	 * Creates a data stream with the contents of a {@link DoubleStream}.
+	 * 
+	 * @param stream the source stream
+	 * @return the constructed data stream
+	 */
 	public static DataStream<Double> of(DoubleStream stream) {
 		return of(stream.boxed());
 	}
 	
+	/**
+	 * Creates a data stream with the contents of an {@link Iterable}.
+	 * 
+	 * @param <V> the type of the iterable
+	 * @param iterable the iterable
+	 * @return the constructed data stream
+	 */
 	public static <V> DataStream<V> of(Iterable<V> iterable) {
 		return of(Streams.of(iterable));
 	}
 	
+	/**
+	 * Creates a data stream with the contents of an array.
+	 * 
+	 * @param <V> the type of the array
+	 * @param array the array
+	 * @return the constructed data stream
+	 */
 	public static <V> DataStream<V> of(V[] array) {
 		return of(Streams.of(array));
 	}
 	
+	/**
+	 * Constructs a data stream containing the integer values {@code [0, ..., count-1]}.
+	 * 
+	 * @param count the size of the returned stream
+	 * @return the constructed data stream
+	 */
 	public static DataStream<Integer> range(int count) {
 		return new ImmutableDataStream<Integer>(IntStream.range(0, count).boxed());
 	}
 	
+	/**
+	 * Constructs a data stream containing the integer values between the given start (inclusive) and end (exclusive).
+	 * 
+	 * @param startInclusive the starting value
+	 * @param endExclusive the ending value (exclusive)
+	 * @return the constructed data stream
+	 */
 	public static DataStream<Integer> range(int startInclusive, int endExclusive) {
 		return new ImmutableDataStream<Integer>(IntStream.range(startInclusive, endExclusive).boxed());
 	}
 	
+	/**
+	 * Constructs a data stream generated by invoking a {@link Supplier} a fixed number of times.
+	 * 
+	 * @param <V> the type returned by the supplier
+	 * @param count the number of invocations of the supplier
+	 * @param supplier the supplier
+	 * @return the constructed data stream
+	 */
 	public static <V> DataStream<V> repeat(int count, Supplier<V> supplier) {
 		return new ImmutableDataStream<V>(IntStream.range(0, count).mapToObj(i -> supplier.get()));
 	}
 	
+	/**
+	 * Similar to {@link #repeat(int, Supplier)} except the index from {@code [0, ..., count-1]} is passed as an
+	 * argument to the function.
+	 * 
+	 * @param <V> the type returned by the function
+	 * @param count the number of invocations of the function
+	 * @param function the function taking the index as the first argument
+	 * @return the constructed data stream
+	 */
 	public static <V> DataStream<V> enumerate(int count, IntFunction<V> function) {
 		return new ImmutableDataStream<V>(IntStream.range(0, count).mapToObj(i -> function.apply(i)));
 	}

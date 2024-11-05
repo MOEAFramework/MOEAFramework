@@ -104,6 +104,14 @@ public class Enumeration<T> extends AbstractParameter<T> implements EnumeratedPa
 		return tokenizer.encode(Stream.concat(Stream.of(getName(), "enum"), values().stream().map(x -> x.toString())));
 	}
 	
+	/**
+	 * Decodes the string representation of this parameter.
+	 * 
+	 * @param tokenizer the tokenizer
+	 * @param line the string representation
+	 * @return the decoded parameter
+	 * @throws InvalidParameterException if the string representation is not a valid parameter
+	 */
 	public static Enumeration<String> decode(Tokenizer tokenizer, String line) {
 		String[] tokens = tokenizer.decodeToArray(line);
 		

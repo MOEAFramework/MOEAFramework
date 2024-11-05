@@ -17,10 +17,20 @@
  */
 package org.moeaframework.analysis.parameter;
 
+/**
+ * Abstract parameter, primarily for storing the name.
+ * 
+ * @param <T> the type of the parameter
+ */
 public abstract class AbstractParameter<T> implements Parameter<T> {
 	
 	private final String name;
 	
+	/**
+	 * Constructs a new parameter with the given name.
+	 * 
+	 * @param name the parameter name
+	 */
 	public AbstractParameter(String name) {
 		super();
 		this.name = name;

@@ -70,6 +70,14 @@ public class Constant<T> extends AbstractParameter<T> {
 		return tokenizer.encode(List.of(getName(), "const", getValue().toString()));
 	}
 	
+	/**
+	 * Decodes the string representation of this parameter.
+	 * 
+	 * @param tokenizer the tokenizer
+	 * @param line the string representation
+	 * @return the decoded parameter
+	 * @throws InvalidParameterException if the string representation is not a valid parameter
+	 */
 	public static Constant<String> decode(Tokenizer tokenizer, String line) {
 		String[] tokens = tokenizer.decodeToArray(line);
 		
