@@ -18,7 +18,7 @@
 package org.moeaframework.core.constraint;
 
 /**
- * The inequality constraint, or {@code c != <threshold>}.
+ * The inequality constraint, or {@code <value> != <threshold>}.
  */
 public class NotEqual extends ThresholdConstraint {
 

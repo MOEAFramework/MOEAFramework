@@ -23,7 +23,7 @@ import org.moeaframework.core.Constructable;
 import org.moeaframework.core.Settings;
 
 /**
- * Abstract class for bounded constraints of the form {@code <lower> <op> c <op> <upper>}.  To handle numerical
+ * Abstract class for bounded constraints of the form {@code <lower> <op> <value> <op> <upper>}.  To handle numerical
  * precision when comparing floating-point values, a small epsilon difference is permitted, which by default is
  * {@link Settings#EPS}.
  */

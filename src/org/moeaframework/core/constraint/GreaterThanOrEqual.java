@@ -18,7 +18,7 @@
 package org.moeaframework.core.constraint;
 
 /**
- * The greater than or equal to constraint, or {@code c >= <threshold>}.
+ * The greater than or equal to constraint, or {@code <value> >= <threshold>}.
  */
 public class GreaterThanOrEqual extends ThresholdConstraint {
 

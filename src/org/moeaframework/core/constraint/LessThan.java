@@ -18,7 +18,7 @@
 package org.moeaframework.core.constraint;
 
 /**
- * The less than constraint, or {@code c < <threshold>}.
+ * The less than constraint, or {@code <value> < <threshold>}.
  */
 public class LessThan extends ThresholdConstraint {
 

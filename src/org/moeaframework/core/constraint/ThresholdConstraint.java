@@ -23,8 +23,8 @@ import org.moeaframework.core.Constructable;
 import org.moeaframework.core.Settings;
 
 /**
- * Abstract class for constraints of the form {@code c <op> <threshold>}.  To handle numerical precision when comparing
- * floating-point values, a small epsilon difference is permitted, which by default is {@link Settings#EPS}.
+ * Abstract class for constraints of the form {@code <value> <op> <threshold>}.  To handle numerical precision when
+ * comparing floating-point values, a small epsilon difference is permitted, which by default is {@link Settings#EPS}.
  */
 public abstract class ThresholdConstraint extends AbstractConstraint {
 	

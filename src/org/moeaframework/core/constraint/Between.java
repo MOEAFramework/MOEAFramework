@@ -18,7 +18,7 @@
 package org.moeaframework.core.constraint;
 
 /**
- * The between constraint, or {@code <lower> <= c <= <upper>}.
+ * The between constraint, or {@code <lower> <= <value> <= <upper>}.
  */
 public class Between extends BoundedConstraint {
 

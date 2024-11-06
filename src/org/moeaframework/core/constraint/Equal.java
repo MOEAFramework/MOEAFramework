@@ -18,7 +18,7 @@
 package org.moeaframework.core.constraint;
 
 /**
- * The equality constraint, or {@code c == <threshold>}.
+ * The equality constraint, or {@code <value> == <threshold>}.
  */
 public class Equal extends ThresholdConstraint {
 

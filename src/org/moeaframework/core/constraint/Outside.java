@@ -18,7 +18,7 @@
 package org.moeaframework.core.constraint;
 
 /**
- * The outside constraint, or {@code c < <lower> || c < <upper>}.
+ * The outside constraint, or {@code <value> < <lower> || <upper> < <value>}.
  */
 public class Outside extends BoundedConstraint {
 
