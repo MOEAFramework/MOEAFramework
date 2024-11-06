@@ -61,5 +61,4 @@ public class ImmutablePartition<K, V> implements Partition<K, V> {
 		return content.stream();
 	}
 	
-	
 }

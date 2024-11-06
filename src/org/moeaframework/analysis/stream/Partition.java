@@ -17,6 +17,7 @@
  */
 package org.moeaframework.analysis.stream;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -24,6 +25,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
@@ -47,46 +49,116 @@ import org.moeaframework.util.format.TabularData;
  */
 public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 	
+	/**
+	 * Returns the number of key-value pairs in this partition.
+	 * 
+	 * @return the number of items
+	 */
 	public int size();
 	
+	/**
+	 * Returns a {@link Stream} of the key-value pairs in this partition.
+	 * 
+	 * @return the stream
+	 */
 	public Stream<Pair<K, V>> stream();
 	
+	/**
+	 * Returns the keys in this partition as a list.
+	 * 
+	 * @return the list of keys
+	 */
 	public default List<K> keys() {
 		return stream().map(Pair::getKey).toList();
 	}
 	
+	/**
+	 * Returns the keys in this partition as an array.
+	 * 
+	 * @param generator generator for creating the array
+	 * @return the array of keys
+	 */
 	public default K[] keys(IntFunction<K[]> generator) {
 		return stream().map(Pair::getKey).toArray(generator);
 	}
 	
+	/**
+	 * Returns the values in this partition as a list.
+	 * 
+	 * @return the list of values
+	 */
 	public default List<V> values() {
 		return stream().map(Pair::getValue).toList();
 	}
 	
+	/**
+	 * Returns the values in this partition as an array.
+	 * 
+	 * @param generator generator for creating the array
+	 * @return the array of values
+	 */
 	public default V[] values(IntFunction<V[]> generator) {
 		return stream().map(Pair::getValue).toArray(generator);
 	}
 	
+	/**
+	 * Applies a function to each value in the partition, returning a partition of the results.
+	 * 
+	 * @param <R> the result type
+	 * @param map the mapping function
+	 * @return the partition of results
+	 */
 	public default <R> Partition<K, R> map(Function<V, R> map) {
 		return new ImmutablePartition<K, R>(stream().map(x -> Pair.of(x.getKey(), map.apply(x.getValue()))));
 	}
-			
+	
+	/**
+	 * Sorts the partition using the natural ordering of keys.
+	 * 
+	 * @return the sorted stream
+	 * @throws ClassCastException if the key type is not {@link Comparable}
+	 */
 	public default Partition<K, V> sorted() {
 		return new ImmutablePartition<K, V>(stream().sorted());
 	}
 
+	/**
+	 * Sorts the partition based on their keys.
+	 * 
+	 * @param comparator the comparator used to sort keys
+	 * @return the sorted partition
+	 */
 	public default Partition<K, V> sorted(Comparator<K> comparator) {
 		return new ImmutablePartition<K, V>(stream().sorted((x, y) -> comparator.compare(x.getKey(), y.getKey())));
 	}
 	
+	/**
+	 * Returns the first key-value pair from this partition.
+	 * 
+	 * @return the selected key-value pair
+	 * @throws NoSuchElementException if the partition is empty
+	 */
 	public default Pair<K, V> first() {
 		return stream().findFirst().get();
 	}
 	
+	/**
+	 * Returns any key-value pair from this partition.
+	 * 
+	 * @return the selected key-value pair
+	 * @throws NoSuchElementException if the partition is empty
+	 */
 	public default Pair<K, V> any() {
 		return stream().findAny().get();
 	}
 	
+	/**
+	 * Returns the singular key-value pair contained in this partition, or if empty, returns the given default value.
+	 * 
+	 * @param defaultKey the default key
+	 * @param defaultValue the default value
+	 * @return the single key-value pair or default value
+	 */
 	public default Pair<K, V> singleOrDefault(K defaultKey, V defaultValue) {
 		if (size() == 0) {
 			return Pair.of(defaultKey, defaultValue);
@@ -95,45 +167,103 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 		}
 	}
 	
+	/**
+	 * Asserts this partition contains exactly one key-value pair, returning said item.
+	 * 
+	 * @return the key-value pair
+	 * @throws NoSuchElementException if the partition was empty or contained more than one key-value pair
+	 */
 	public default Pair<K, V> single() {
 		if (size() != 1) {
-			throw new NoSuchElementException("expected partition to contain exactly one item, but found " + size());
+			throw new NoSuchElementException("expected partition to contain exactly one key-value pair, but found " + size());
 		}
 		
 		return any();
 	}
 	
+	/**
+	 * Filters this partition, keeping only those keys evaluating to {@code true}.
+	 * 
+	 * @param predicate the predicate function based on the key
+	 * @return the resulting partition
+	 */
 	public default Partition<K, V> filter(Predicate<K> predicate) {
 		return new ImmutablePartition<K, V>(stream().filter(x -> predicate.test(x.getKey())));
 	}
 
-	public default <T> Groups<T, K, V> groupBy(Function<K, T> group) {
-		return new Groups<T, K, V>(stream()
+	/**
+	 * Applies a grouping function to the keys in this partition.  Keys with the same grouping key are grouped
+	 * together.
+	 * 
+	 * @param <G> the type of the grouping key
+	 * @param group the grouping function
+	 * @return the resulting groups
+	 */
+	public default <G> Groups<G, K, V> groupBy(Function<K, G> group) {
+		return new Groups<G, K, V>(stream()
 				.collect(Collectors.groupingBy(x -> group.apply(x.getKey())))
 				.entrySet().stream()
 				.map(x -> Pair.of(x.getKey(), new ImmutablePartition<K, V>(x.getValue()))));
 	}
-			
+	
+	/**
+	 * Applies a binary reduction operator to the values in this partition.  See {@link Stream#reduce(BinaryOperator)}
+	 * for more details.
+	 * 
+	 * @param op the binary reduction operator
+	 * @return the final result from the reduction operator
+	 * @throws NoSuchElementException if the partition is empty
+	 */
 	public default V reduce(BinaryOperator<V> op) {
 		return stream().map(Pair::getValue).reduce(op).get();
 	}
 	
+	/**
+	 * Applies a binary reduction operator to the values in this partition.  See
+	 * {@link Stream#reduce(Object, BinaryOperator)} for more details.
+	 * 
+	 * @param identity the initial value supplied to the binary operator
+	 * @param op the binary reduction operator
+	 * @return the final result from the reduction operator
+	 */
 	public default V reduce(V identity, BinaryOperator<V> op) {
 		return stream().map(Pair::getValue).reduce(identity, op);
 	}
 	
+	/**
+	 * Retains only the unique key-value pairs in this partition.
+	 * 
+	 * @return the resulting partition
+	 */
 	public default Partition<K, V> distinct() {
 		return new ImmutablePartition<K, V>(stream().distinct());
 	}
 	
+	/**
+	 * Applies a measurement function to the values in this partition.
+	 * 
+	 * @param <R> the return value
+	 * @param measure the measurement function
+	 * @return the measured value
+	 */
 	public default <R> R measure(Function<Stream<V>, R> measure) {
 		return measure.apply(stream().map(Pair::getValue));
 	}
 	
+	/**
+	 * Invokes a method for each key-value pair in this partition.
+	 * 
+	 * @param consumer the method to invoke
+	 */
 	public default void forEach(BiConsumer<K, V> consumer) {
 		stream().forEach(x -> consumer.accept(x.getKey(), x.getValue()));
 	}
 	
+	/**
+	 * Similar to {@link #forEach(BiConsumer)} except the index is included.
+	 * 
+	 * @param consumer the method to invoke
+	 */
 	public default void enumerate(BiConsumer<Integer, Pair<K, V>> consumer) {
 		int index = 0;
 		Iterator<Pair<K, V>> iterator = stream().iterator();
@@ -145,6 +275,7 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 		}
 	}
 	
+	@Override
 	public default TabularData<Pair<K, V>> asTabularData() {
 		TabularData<Pair<K, V>> table = new TabularData<Pair<K, V>>(stream().toList());
 		table.addColumn(new Column<Pair<K, V>, K>("Key", Pair::getKey));
@@ -152,60 +283,169 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 		return table;
 	}
 	
+	/**
+	 * Creates an empty partition.
+	 * 
+	 * @param <K> the type of the keys
+	 * @param <V> the type of the values
+	 * @return the constructed partition
+	 */
 	public static <K, V> Partition<K, V> of() {
 		return new ImmutablePartition<>();
 	}
 	
+	/**
+	 * Creates a partition with the contents of a {@link Stream}.  The values are also used as the keys.
+	 * 
+	 * @param <V> the type of the stream
+	 * @param stream the source stream
+	 * @return the constructed partition
+	 */
 	public static <V> Partition<V, V> of(Stream<V> stream) {
 		return of(Groupings.exactValue(), stream);
 	}
 	
+	/**
+	 * Creates a partition with the contents of a {@link IntStream}.  The values are also used as the keys.
+	 * 
+	 * @param stream the source stream
+	 * @return the constructed partition
+	 */
 	public static Partition<Integer, Integer> of(IntStream stream) {
 		return of(stream.boxed());
 	}
 	
+	/**
+	 * Creates a partition with the contents of a {@link DoubleStream}.  The values are also used as the keys.
+	 * 
+	 * @param stream the source stream
+	 * @return the constructed partition
+	 */
 	public static Partition<Double, Double> of(DoubleStream stream) {
 		return of(stream.boxed());
 	}
 	
+	/**
+	 * Creates a partition with the contents of an {@link Iterable}.  The values are also used as the keys.
+	 * 
+	 * @param <V> the type of the iterable
+	 * @param iterable the iterable
+	 * @return the constructed partition
+	 */
 	public static <V> Partition<V, V> of(Iterable<V> iterable) {
 		return of(Groupings.exactValue(), iterable);
 	}
 	
+	/**
+	 * Creates a partition with the contents of an array.  The values are also used as the keys.
+	 * 
+	 * @param <V> the type of the array
+	 * @param array the array
+	 * @return the constructed partition
+	 */
 	public static <V> Partition<V, V> of(V[] array) {
 		return of(Groupings.exactValue(), array);
 	}
 	
+	/**
+	 * Creates a partition with the contents of a {@link Map}.
+	 * 
+	 * @param <K> the type of the keys
+	 * @param <V> the type of the values
+	 * @param map the source map
+	 * @return the constructed partition
+	 */
 	public static <K, V> Partition<K, V> of(Map<K, V> map) {
 		return new ImmutablePartition<K, V>(map.entrySet().stream().map(x -> Pair.of(x)));
 	}
 	
+	/**
+	 * Creates a partition with the contents of a {@link Stream}.
+	 * 
+	 * @param <K> the type of the keys
+	 * @param <V> the type of the values
+	 * @param key the function returning the key for each value
+	 * @param stream the source stream
+	 * @return the constructed partition
+	 */
 	public static <K, V> Partition<K, V> of(Function<V, K> key, Stream<V> stream) {
 		return new ImmutableDataStream<V>(stream).keyedOn(key);
 	}
 	
+	/**
+	 * Creates a partition with the contents of a {@link IntStream}.
+	 * 
+	 * @param <K> the type of the keys
+	 * @param key the function returning the key for each value
+	 * @param stream the source stream
+	 * @return the constructed partition
+	 */
 	public static <K> Partition<K, Integer> of(Function<Integer, K> key, IntStream stream) {
 		return of(key, stream.boxed());
 	}
 	
+	/**
+	 * Creates a partition with the contents of a {@link DoubleStream}.
+	 * 
+	 * @param <K> the type of the keys
+	 * @param key the function returning the key for each value
+	 * @param stream the source stream
+	 * @return the constructed partition
+	 */
 	public static <K> Partition<K, Double> of(Function<Double, K> key, DoubleStream stream) {
 		return of(key, stream.boxed());
 	}
 	
+	/**
+	 * Creates a partition with the contents of an {@link Iterable}.
+	 * 
+	 * @param <K> the type of the keys
+	 * @param <V> the type of the values
+	 * @param key the function returning the key for each value
+	 * @param iterable the source iterable
+	 * @return the constructed partition
+	 */
 	public static <K, V> Partition<K, V> of(Function<V, K> key, Iterable<V> iterable) {
 		return of(key, Streams.of(iterable));
 	}
 	
+	/**
+	 * Creates a partition with the contents of an array.
+	 * 
+	 * @param <K> the type of the keys
+	 * @param <V> the type of the values
+	 * @param key the function returning the key for each value
+	 * @param array the source array
+	 * @return the constructed partition
+	 */
 	public static <K, V> Partition<K, V> of(Function<V, K> key, V[] array) {
 		return of(key, Streams.of(array));
 	}
 	
+	/**
+	 * Creates a partition by "zipping" together two iterables.
+	 * 
+	 * @param <K> the type of the keys
+	 * @param <V> the type of the values
+	 * @param keys the iterable of keys
+	 * @param values the iterable of values
+	 * @return the constructed partition
+	 */
 	public static <K, V> Partition<K, V> zip(Iterable<K> keys, Iterable<V> values) {
 		return new ImmutablePartition<K, V>(Iterators.zip(keys, values));
 	}
 	
+	/**
+	 * Creates a partition by "zipping" together two arrays.
+	 * 
+	 * @param <K> the type of the keys
+	 * @param <V> the type of the values
+	 * @param keys the array of keys
+	 * @param values the array of values
+	 * @return the constructed partition
+	 */
 	public static <K, V> Partition<K, V> zip(K[] keys, V[] values) {
-		return zip(keys, values);
+		return zip(Arrays.asList(keys), Arrays.asList(values));
 	}
 	
 }

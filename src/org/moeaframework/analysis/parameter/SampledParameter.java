@@ -22,7 +22,7 @@ import org.moeaframework.analysis.sample.Sample;
 /**
  * Interface for parameters that can be sampled randomly or by some sequence.
  * 
- * @pram <T> the type of the parameter
+ * @param <T> the type of the parameter
  */
 public interface SampledParameter<T> extends Parameter<T> {
 	

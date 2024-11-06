@@ -31,7 +31,7 @@ import org.apache.commons.io.IOUtils;
 
 /**
  * Java Logging {@link Handler} with some more sensible defaults (in my opinion), including (1) sending logs to
- * {@link System.out} instead of {@link System.err}, and (2) using a shorter, single line format.
+ * {@link System#out} instead of {@link System#err}, and (2) using a shorter, single line format.
  */
 public class OutputHandler extends StreamHandler {
 

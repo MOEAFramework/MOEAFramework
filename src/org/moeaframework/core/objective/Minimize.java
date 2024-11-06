@@ -17,18 +17,35 @@
  */
 package org.moeaframework.core.objective;
 
+/**
+ * A minimized objective.
+ */
 public class Minimize extends AbstractObjective {
 	
 	private static final long serialVersionUID = -7464482549220819352L;
 
+	/**
+	 * Constructs a new, anonymous minimized objective.
+	 */
 	public Minimize() {
 		super();
 	}
 	
+	/**
+	 * Constructs a new minimized objective.
+	 * 
+	 * @param name the objective name
+	 */
 	public Minimize(String name) {
 		super(name);
 	}
 	
+	/**
+	 * Constructs a new minimized objective.
+	 * 
+	 * @param name the objective name
+	 * @param value the objective value
+	 */
 	protected Minimize(String name, double value) {
 		super(name);
 		setValue(value);

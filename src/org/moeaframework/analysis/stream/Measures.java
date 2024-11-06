@@ -17,6 +17,7 @@
  */
 package org.moeaframework.analysis.stream;
 
+import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -31,7 +32,7 @@ import org.apache.commons.math3.stat.descriptive.rank.Percentile;
  * <p>
  * <b>Implementation note:</b> All functions assume the underlying stream contains at least one element, otherwise
  * {@link java.util.NoSuchElementException} is thrown.  This simplifies the interface since we don't need to return
- * {@link java.util.Optional} when it's most likely not necessary.
+ * {@link java.util.Optional} when it's generally not necessary.
  */
 public class Measures {
 	
@@ -39,34 +40,85 @@ public class Measures {
 		super();
 	}
 	
+	/**
+	 * Measures the number of items in the stream.
+	 * 
+	 * @param <T> the type of the stream
+	 * @return the number of items
+	 */
 	public static <T> Function<Stream<T>, Integer> count() {
 		return (stream) -> (int)stream.count();
 	}
 	
+	/**
+	 * Computes the sum of all values in the stream.
+	 * 
+	 * @param <T> the type of the stream
+	 * @return the sum, or {@code 0.0} if the stream is empty
+	 */
 	public static <T extends Number> Function<Stream<T>, Double> sum() {
 		return (stream) -> stream.mapToDouble(x -> x.doubleValue()).sum();
 	}
 	
+	/**
+	 * Measures the minimum value in the stream according to their natural order.
+	 * 
+	 * @param <T> the type of the stream
+	 * @return the minimum value
+	 * @throws NoSuchElementException if the stream is empty
+	 */
 	public static <T extends Comparable<T>> Function<Stream<T>, T> min() {
 		return (stream) -> stream.min((x, y) -> x.compareTo(y)).get();
 	}
 	
+	/**
+	 * Measures the maximum value in the stream according to their natural order.
+	 * 
+	 * @param <T> the type of the stream
+	 * @return the maximum value
+	 * @throws NoSuchElementException if the stream is empty
+	 */
 	public static <T extends Comparable<T>> Function<Stream<T>, T> max() {
 		return (stream) -> stream.max((x, y) -> x.compareTo(y)).get();
 	}
 	
+	/**
+	 * Computes the average of all values in the stream.
+	 * 
+	 * @param <T> the type of the stream
+	 * @return the average value
+	 */
 	public static <T extends Number> Function<Stream<T>, Double> average() {
 		return (stream) -> new Mean().evaluate(stream.mapToDouble(x -> x.doubleValue()).toArray());
 	}
 	
+	/**
+	 * Computes the median of all values in the stream.
+	 * 
+	 * @param <T> the type of the stream
+	 * @return the median value
+	 */
 	public static <T extends Number> Function<Stream<T>, Double> median() {
 		return (stream) -> new Median().evaluate(stream.mapToDouble(x -> x.doubleValue()).toArray());
 	}
 	
+	/**
+	 * Computes the percentile of all values in the stream.
+	 * 
+	 * @param <T> the type of the stream
+	 * @param percentile the percentile (e.g., {@code 50.0} for the 50-th percentile)
+	 * @return the percentile value
+	 */
 	public static <T extends Number> Function<Stream<T>, Double> percentile(double percentile) {
 		return (stream) -> new Percentile(percentile).evaluate(stream.mapToDouble(x -> x.doubleValue()).toArray());
 	}
 	
+	/**
+	 * Computes statistics for the values in the stream.
+	 * 
+	 * @param <T> the type of the stream
+	 * @return the resulting statistics
+	 */
 	public static <T extends Number> Function<Stream<T>, StatisticalSummary> stats() {
 		return (stream) -> new DescriptiveStatistics(stream.mapToDouble(x -> x.doubleValue()).toArray());
 	}

@@ -20,16 +20,33 @@ package org.moeaframework.core.variable;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+/**
+ * Abstract class for implementing variables.
+ * <p>
+ * Variables can be assigned a name, but if unset will derive its name from its current index by calling
+ * {@link Variable#getNameOrDefault(Variable, int)}.  Such variables are also called "anonymous".
+ */
 public abstract class AbstractVariable implements Variable {
 
 	private static final long serialVersionUID = 1032891207461956713L;
 	
+	/**
+	 * The variable name, or {@code null} if anonymous.
+	 */
 	protected final String name;
 	
+	/**
+	 * Constructs a new, anonymous variable.
+	 */
 	public AbstractVariable() {
 		this(null);
 	}
 	
+	/**
+	 * Constructs a new variable with the given name.
+	 * 
+	 * @param name the variable name, or {@code null} to create an anonymous variable
+	 */
 	public AbstractVariable(String name) {
 		super();
 		this.name = name;

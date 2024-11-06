@@ -65,8 +65,6 @@ public class Groups<G, K, V> extends ImmutablePartition<G, Partition<K, V>> {
 	/**
 	 * Equivalent to calling {@link Partition#map(Function)} on each group, keeping the grouping intact.
 	 * 
-	 * @param <G> the grouping key type
-	 * @param <K
 	 * @param <R> the result type
 	 * @param map the map function
 	 * @return the groups after applying the map function

@@ -17,14 +17,30 @@
  */
 package org.moeaframework.core.objective;
 
+/**
+ * A normalized objective.  By convention, normalized objectives are minimized.  This implementation is distinct from
+ * {@link Minimize} since some methods are either redundant or unsupported on a normalized objective.  Such methods
+ * will throw a {@link UnsupportedOperationException} if used.
+ */
 public class NormalizedObjective extends Minimize {
 	
 	private static final long serialVersionUID = 1030777861399215909L;
 	
+	/**
+	 * Constructs a new normalized objective.
+	 * 
+	 * @param name the objective name
+	 */
 	public NormalizedObjective(String name) {
 		super(name);
 	}
 	
+	/**
+	 * Constructs a new normalized objective.
+	 * 
+	 * @param name the objective name
+	 * @param value the objective value
+	 */
 	public NormalizedObjective(String name, double value) {
 		super(name);
 		this.value = value;
@@ -35,18 +51,33 @@ public class NormalizedObjective extends Minimize {
 		return new NormalizedObjective(name, value);
 	}
 	
+	/**
+	 * Not supported for minimized objectives.
+	 * 
+	 * @throws UnsupportedOperationException
+	 */
 	@Override
 	public NormalizedObjective normalize(double minimum, double maximum) {
 		// Prevent normalizing an already normalized objective
 		throw unsupportedOperation("normalize");
 	}
 	
+	/**
+	 * Not supported for minimized objectives.
+	 * 
+	 * @throws UnsupportedOperationException
+	 */
 	@Override
 	public int getEpsilonIndex(double epsilon) {
 		// Not allowed since epsilon is not scaled
 		throw unsupportedOperation("getEpsilonIndex");
 	}
 	
+	/**
+	 * Not supported for minimized objectives.
+	 * 
+	 * @throws UnsupportedOperationException
+	 */
 	@Override
 	public double getEpsilonDistance(double epsilon) {
 		// Not allowed since epsilon is not scaled

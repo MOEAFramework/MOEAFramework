@@ -17,18 +17,35 @@
  */
 package org.moeaframework.core.objective;
 
+/**
+ * A maximized objective.
+ */
 public class Maximize extends AbstractObjective {
 	
 	private static final long serialVersionUID = -7464482549220819352L;
 
+	/**
+	 * Constructs a new, anonymous maximized objective.
+	 */
 	public Maximize() {
 		super();
 	}
 	
+	/**
+	 * Constructs a new maximized objective.
+	 * 
+	 * @param name the objective name
+	 */
 	public Maximize(String name) {
 		super(name);
 	}
 	
+	/**
+	 * Constructs a new maximized objective.
+	 * 
+	 * @param name the objective name
+	 * @param value the objective value
+	 */
 	protected Maximize(String name, double value) {
 		this(name);
 		setValue(value);

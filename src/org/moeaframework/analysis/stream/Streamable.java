@@ -33,12 +33,29 @@ import org.apache.commons.lang3.tuple.Pair;
  */
 public interface Streamable<V>  {
 	
+	/**
+	 * Returns a stream of values represented by this object.
+	 * 
+	 * @return the stream of values
+	 */
 	public Stream<V> stream();
 	
+	/**
+	 * Returns a {@link DataStream} with the values represented by this object.
+	 * 
+	 * @return the data stream
+	 */
 	public default DataStream<V> asDataStream() {
 		return new ImmutableDataStream<V>(stream());
 	}
 	
+	/**
+	 * Returns a {@link Partition} with the values represented by this object.
+	 * 
+	 * @param <K> the type of the key
+	 * @param key a function returning the key for each value
+	 * @return the partition
+	 */
 	public default <K> Partition<K, V> asPartition(Function<V, K> key) {
 		return new ImmutablePartition<K, V>(stream().map(x -> Pair.of(key.apply(x), x)));
 	}

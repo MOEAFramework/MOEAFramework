@@ -30,7 +30,7 @@ import org.moeaframework.core.Stateful;
 public abstract class PeriodicExtension implements Extension, Stateful {
 	
 	/**
-	 * The frequency that the {@link #doAction()} method is invoked.
+	 * The frequency that the {@link #doAction(Algorithm)} method is invoked.
 	 */
 	protected int frequency;
 	
@@ -46,15 +46,15 @@ public abstract class PeriodicExtension implements Extension, Stateful {
 	protected int iteration;
 
 	/**
-	 * The last invocation {@link #doAction()} was invoked, either as iterations or evaluations depending on the
-	 * frequency type.
+	 * The last invocation {@link #doAction(Algorithm)} was invoked, either as iterations or evaluations depending on
+	 * the frequency type.
 	 */
 	protected int lastInvocation;
 	
 	/**
 	 * Extension that performs an action at a fixed frequency.
 	 * 
-	 * @param frequency the frequency the {@link #doAction()} method is invoked
+	 * @param frequency the frequency the {@link #doAction(Algorithm)} method is invoked
 	 * @param frequencyType the type of frequency
 	 */
 	public PeriodicExtension(int frequency, FrequencyType frequencyType) {

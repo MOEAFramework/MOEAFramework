@@ -119,6 +119,11 @@ public interface Objective extends Comparable<Objective>, Copyable<Objective>, S
 		return weight * getCanonicalValue();
 	}
 	
+	/**
+	 * Returns the ideal or best possible value for this objective.
+	 * 
+	 * @return the ideal objective value
+	 */
 	public double getIdealValue();
 	
 	@Override
@@ -131,24 +136,61 @@ public interface Objective extends Comparable<Objective>, Copyable<Objective>, S
 		return compareTo(other.getValue());
 	}
 
+	/**
+	 * Computes the distance between two objectives.
+	 * 
+	 * @param other the other objective
+	 * @return the distance, a non-negative number
+	 */
 	public default double distanceTo(Objective other) {
 		return Math.abs(other.getValue() - getValue());
 	}
 	
+	/**
+	 * Computes the distance between two objectives.
+	 * 
+	 * @param value the other objective value
+	 * @return the distance, a non-negative number
+	 */
 	public default double distanceTo(double value) {
 		return Math.abs(value - getValue());
 	}
 	
+	/**
+	 * Returns the objective considered better or more ideal.  If the objectives are equivalent, either objective will
+	 * be returned.
+	 * 
+	 * @param first the first objective
+	 * @param second the second objective
+	 * @return the more ideal objective
+	 * @see #compareTo(Objective)
+	 */
 	public static Objective ideal(Objective first, Objective second) {
 		int flag = first.compareTo(second);
 		return flag <= 0 ? first : second;
 	}
 	
+	/**
+	 * Returns the objective value considered better or more ideal.
+	 * 
+	 * @param first the first objective value
+	 * @param second the second objective
+	 * @return the ideal objective value
+	 * @see #compareTo(double)
+	 */
 	public static double ideal(double first, Objective second) {
 		int flag = second.compareTo(first);
 		return flag < 0 ? second.getValue() : first;
 	}
 	
+	/**
+	 * Returns the objective value considered better or more ideal.
+	 * 
+	 * @param first the first objective value
+	 * @param second the second objective
+	 * @return the ideal objective value
+	 * @see #compareTo(double)
+	 */
 	public static double ideal(Objective first, double second) {
 		int flag = first.compareTo(second);
 		return flag <= 0 ? first.getValue() : second;

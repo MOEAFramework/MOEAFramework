@@ -28,7 +28,7 @@ import org.moeaframework.core.objective.Objective;
 
 /**
  * Represents a {@link Solution} evaluated asynchronously.  Calls to methods requiring the evaluated results, such as
- * {@link #getObjectives()}, will block until the asynchronous evaluation completes.  This behavior is achieved by
+ * {@link #getObjectiveValues()}, will block until the asynchronous evaluation completes.  This behavior is achieved by
  * assigning a {@link Future} through the {@link #setFuture(Future)} method prior to submitting this solution for
  * evaluation.
  */

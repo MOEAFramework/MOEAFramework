@@ -46,40 +46,40 @@ import org.moeaframework.util.format.TabularData;
 public interface DataStream<V> extends Formattable<V> {
 	
 	/**
-	 * Returns the number of items in this data stream.
+	 * Returns the number of values in this data stream.
 	 * 
-	 * @return the number of items
+	 * @return the number of values
 	 */
 	public int size();
 	
 	/**
-	 * Returns a {@link Stream} of the items in this data stream.
+	 * Returns a {@link Stream} of the values in this data stream.
 	 * 
 	 * @return the stream
 	 */
 	public Stream<V> stream();
 
 	/**
-	 * Returns the items in this stream as a list.
+	 * Returns the values in this stream as a list.
 	 * 
-	 * @return the list
+	 * @return the list of values
 	 */
 	public default List<V> values() {
 		return stream().toList();
 	}
 	
 	/**
-	 * Returns the items in this stream as an array.
+	 * Returns the values in this stream as an array.
 	 * 
 	 * @param generator generator for creating the array
-	 * @return the array
+	 * @return the array of values
 	 */
 	public default V[] values(IntFunction<V[]> generator) {
 		return stream().toArray(generator);
 	}
 	
 	/**
-	 * Applies a function to each item in the stream, returning a stream of the results.
+	 * Applies a function to each value in the stream, returning a stream of the results.
 	 * 
 	 * @param <R> the result type
 	 * @param map the mapping function
@@ -90,10 +90,10 @@ public interface DataStream<V> extends Formattable<V> {
 	}
 	
 	/**
-	 * Sorts the stream using the natural ordering of items.
+	 * Sorts the stream using the natural ordering of values.
 	 * 
 	 * @return the sorted stream
-	 * @throws ClassCastException if the item type is not {@link Comparable}
+	 * @throws ClassCastException if the value type is not {@link Comparable}
 	 */
 	public default DataStream<V> sorted() {
 		return new ImmutableDataStream<V>(stream().sorted());
@@ -102,7 +102,7 @@ public interface DataStream<V> extends Formattable<V> {
 	/**
 	 * Sorts the stream.
 	 * 
-	 * @param comparator the comparator used to sort items
+	 * @param comparator the comparator used to sort values
 	 * @return the sorted stream
 	 */
 	public default DataStream<V> sorted(Comparator<V> comparator) {
@@ -110,9 +110,9 @@ public interface DataStream<V> extends Formattable<V> {
 	}
 	
 	/**
-	 * Returns the first item from this stream.
+	 * Returns the first value from this stream.
 	 * 
-	 * @return the selected item
+	 * @return the selected value
 	 * @throws NoSuchElementException if the stream is empty
 	 */
 	public default V first() {
@@ -120,9 +120,9 @@ public interface DataStream<V> extends Formattable<V> {
 	}
 	
 	/**
-	 * Returns any item from this stream.
+	 * Returns any value from this stream.
 	 * 
-	 * @return the selected item
+	 * @return the selected value
 	 * @throws NoSuchElementException if the stream is empty
 	 */
 	public default V any() {
@@ -144,46 +144,46 @@ public interface DataStream<V> extends Formattable<V> {
 	}
 	
 	/**
-	 * Asserts this stream contains exactly one item, returning said item.
+	 * Asserts this stream contains exactly one value, returning said value.
 	 * 
-	 * @return the item
-	 * @throws NoSuchElementException if the stream was empty or contained more than one item
+	 * @return the value
+	 * @throws NoSuchElementException if the stream was empty or contained more than one value
 	 */
 	public default V single() {
 		if (size() != 1) {
-			throw new NoSuchElementException("expected data stream to contain exactly one item, but found " + size());
+			throw new NoSuchElementException("expected data stream to contain exactly one value, but found " + size());
 		}
 		
 		return any();
 	}
 	
 	/**
-	 * Filters this stream, keeping only those items evaluating to {@code true}.
+	 * Filters this stream, keeping only those values evaluating to {@code true}.
 	 * 
 	 * @param predicate the predicate function
-	 * @return the new data stream
+	 * @return the resulting data stream
 	 */
 	public default DataStream<V> filter(Predicate<V> predicate) {
 		return new ImmutableDataStream<V>(stream().filter(predicate));
 	}
 	
 	/**
-	 * Applies a grouping function to the items in this data stream.  Items with the same grouping key are grouped
+	 * Applies a grouping function to the values in this data stream.  Values with the same grouping key are grouped
 	 * together.
 	 * 
 	 * @param <K> the type of the grouping key
 	 * @param group the grouping function
-	 * @return the groups
+	 * @return the resulting groups
 	 */
 	public default <K> Groups<K, K, V> groupBy(Function<V, K> group) {
 		return keyedOn(group).groupBy(x -> x);
 	}
 	
 	/**
-	 * Converts this data stream into a {@link Partition} by assigning a key to each item.
+	 * Converts this data stream into a {@link Partition} by assigning a key to each value.
 	 * 
 	 * @param <K> the type of the key
-	 * @param key the function mapping items to their key
+	 * @param key the function mapping values to their key
 	 * @return the partition
 	 */
 	public default <K> Partition<K, V> keyedOn(Function<V, K> key) {
@@ -191,7 +191,7 @@ public interface DataStream<V> extends Formattable<V> {
 	}
 	
 	/**
-	 * Applies a binary reduction operator to the items in this stream.  See {@link Stream#reduce(BinaryOperator)}
+	 * Applies a binary reduction operator to the values in this stream.  See {@link Stream#reduce(BinaryOperator)}
 	 * for more details.
 	 * 
 	 * @param op the binary reduction operator
@@ -203,7 +203,7 @@ public interface DataStream<V> extends Formattable<V> {
 	}
 	
 	/**
-	 * Applies a binary reduction operator to the items in this stream.  See
+	 * Applies a binary reduction operator to the values in this stream.  See
 	 * {@link Stream#reduce(Object, BinaryOperator)} for more details.
 	 * 
 	 * @param identity the initial value supplied to the binary operator
@@ -215,9 +215,9 @@ public interface DataStream<V> extends Formattable<V> {
 	}
 	
 	/**
-	 * Retains only the unique items in the stream.
+	 * Retains only the unique values in this stream.
 	 * 
-	 * @return the new data stream
+	 * @return the resulting data stream
 	 */
 	public default DataStream<V> distinct() {
 		return new ImmutableDataStream<V>(stream().distinct());
@@ -235,7 +235,7 @@ public interface DataStream<V> extends Formattable<V> {
 	}
 	
 	/**
-	 * Invokes a method for each item in this stream.
+	 * Invokes a method for each value in this stream.
 	 * 
 	 * @param consumer the method to invoke
 	 */

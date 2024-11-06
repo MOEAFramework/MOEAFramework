@@ -64,7 +64,7 @@
  *       The number of time continuation or &epsilon;-continuation restarts.
  *     </td>
  *     <td>
- *       {@link org.moeaframework.analysis.collector.AdaptiveTimeContinuationCollector}
+ *       {@link org.moeaframework.analysis.collector.AdaptiveTimeContinuationExtensionCollector}
  *     </td>
  *   </tr>
  *   <tr>
