@@ -34,6 +34,12 @@ import java.time.Instant;
 
 import org.apache.commons.io.output.CloseShieldOutputStream;
 import org.apache.commons.io.output.CloseShieldWriter;
+import org.moeaframework.util.io.IOCallback;
+import org.moeaframework.util.io.InputStreamCallback;
+import org.moeaframework.util.io.OutputStreamCallback;
+import org.moeaframework.util.io.PrintStreamCallback;
+import org.moeaframework.util.io.ReaderCallback;
+import org.moeaframework.util.io.WriterCallback;
 
 /**
  * Reference to a blob, which is simply a piece of data identified by its container and name. 
@@ -261,10 +267,22 @@ public interface Blob {
 		}
 	}
 	
+	/**
+	 * Stores the contents of a file to this blob.
+	 * 
+	 * @param file the source file
+	 * @throws IOException if an I/O error occurred
+	 */
 	public default void store(File file) throws IOException {
 		store(file.toPath());
 	}
 	
+	/**
+	 * Stores the contents of a path to this blob.
+	 * 
+	 * @param path the source path
+	 * @throws IOException if an I/O error occurred
+	 */
 	public default void store(Path path) throws IOException {
 		try (TransactionalOutputStream out = openOutputStream()) {
 			Files.copy(path, out);
@@ -272,6 +290,12 @@ public interface Blob {
 		}
 	}
 	
+	/**
+	 * Stores the content read from an input stream to this this blob.
+	 * 
+	 * @param in the input stream
+	 * @throws IOException if an I/O error occurred
+	 */
 	public default void store(InputStream in) throws IOException {
 		try (TransactionalOutputStream out = openOutputStream()) {
 			in.transferTo(out);
@@ -279,6 +303,12 @@ public interface Blob {
 		}
 	}
 	
+	/**
+	 * Stores the content read from a reader to this this blob.
+	 * 
+	 * @param reader the reader
+	 * @throws IOException if an I/O error occurred
+	 */
 	public default void store(Reader reader) throws IOException {
 		try (TransactionalWriter writer = openWriter()) {
 			reader.transferTo(writer);
@@ -286,6 +316,13 @@ public interface Blob {
 		}
 	}
 	
+	/**
+	 * Executes a callback with an {@link OutputStream} for writing to this blob.  The output stream is automatically
+	 * closed when the callback returns.
+	 * 
+	 * @param callback the callback function
+	 * @throws IOException if an I/O error occurred
+	 */
 	public default void store(OutputStreamCallback callback) throws IOException {
 		try (TransactionalOutputStream out = openOutputStream();
 				CloseShieldOutputStream shielded = CloseShieldOutputStream.wrap(out)) {
@@ -294,6 +331,13 @@ public interface Blob {
 		}
 	}
 	
+	/**
+	 * Executes a callback with a {@link PrintStream} for writing to this blob.  The output stream is automatically
+	 * closed when the callback returns.
+	 * 
+	 * @param callback the callback function
+	 * @throws IOException if an I/O error occurred
+	 */
 	public default void store(PrintStreamCallback callback) throws IOException {
 		try (TransactionalOutputStream out = openOutputStream();
 				CloseShieldOutputStream shielded = CloseShieldOutputStream.wrap(out);
@@ -303,6 +347,13 @@ public interface Blob {
 		}
 	}
 	
+	/**
+	 * Executes a callback with a {@link Writer} for writing to this blob.  The output stream is automatically
+	 * closed when the callback returns.
+	 * 
+	 * @param callback the callback function
+	 * @throws IOException if an I/O error occurred
+	 */
 	public default void store(WriterCallback callback) throws IOException {
 		try (TransactionalWriter out = openWriter();
 				CloseShieldWriter shielded = CloseShieldWriter.wrap(out)) {
@@ -311,57 +362,55 @@ public interface Blob {
 		}
 	}
 	
+	/**
+	 * Executes the callback with an {@link OutputStream} for writing to this blob, but only if the blob does not
+	 * already exist.  The stream is automatically closed when the callback returns.
+	 * 
+	 * @param callback the callback function
+	 * @return {@code true} if the blob did not exist and the callback was invoked; {@code false} otherwise
+	 * @throws IOException if an I/O error occurred
+	 */
 	public default boolean storeIfMissing(OutputStreamCallback callback) throws IOException {
 		return ifMissing(b -> b.store(callback));
 	}
 	
+	/**
+	 * Executes the callback with a {@link PrintStream} for writing to this blob, but only if the blob does not
+	 * already exist.  The stream is automatically closed when the callback returns.
+	 * 
+	 * @param callback the callback function
+	 * @return {@code true} if the blob did not exist and the callback was invoked; {@code false} otherwise
+	 * @throws IOException if an I/O error occurred
+	 */
 	public default boolean storeIfMissing(PrintStreamCallback callback) throws IOException {
 		return ifMissing(b -> b.store(callback));
 	}
 	
+	/**
+	 * Executes the callback with a {@link Writer} for writing to this blob, but only if the blob does not
+	 * already exist.  The stream is automatically closed when the callback returns.
+	 * 
+	 * @param callback the callback function
+	 * @return {@code true} if the blob did not exist and the callback was invoked; {@code false} otherwise
+	 * @throws IOException if an I/O error occurred
+	 */
 	public default boolean storeIfMissing(WriterCallback callback) throws IOException {
 		return ifMissing(b -> b.store(callback));
 	}
 	
+	/**
+	 * Serializes the given object and stores it in the blob .
+	 * 
+	 * @param <T> the type of object to store
+	 * @param value the object to store
+	 * @throws IOException if an I/O error occurred
+	 */
 	public default <T extends Serializable> void storeObject(T value) throws IOException {
 		try (TransactionalOutputStream out = openOutputStream();
 				ObjectOutputStream oos = new ObjectOutputStream(out)) {
 			oos.writeObject(value);
 			out.commit();
 		}
-	}
-	
-	
-	@FunctionalInterface
-	static interface IOCallback<T> {
-		
-		public void accept(T stream) throws IOException;
-		
-	}
-	
-	@FunctionalInterface
-	public static interface InputStreamCallback extends IOCallback<InputStream> {
-				
-	}
-	
-	@FunctionalInterface
-	public static interface ReaderCallback extends IOCallback<Reader> {
-		
-	}
-	
-	@FunctionalInterface
-	public static interface OutputStreamCallback extends IOCallback<OutputStream> {
-		
-	}
-	
-	@FunctionalInterface
-	public static interface WriterCallback extends IOCallback<Writer> {
-		
-	}
-	
-	@FunctionalInterface
-	public static interface PrintStreamCallback extends IOCallback<PrintStream> {
-		
 	}
 
 }

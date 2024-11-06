@@ -17,10 +17,7 @@
  */
 package org.moeaframework.analysis.store;
 
-import java.util.Collections;
 import java.util.Set;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 import org.moeaframework.core.TypedProperties;
 
@@ -49,76 +46,25 @@ public interface Reference {
 	 */
 	public String get(String field);
 	
+	/**
+	 * Extends this reference, adding or overwriting one field with a new value.
+	 * 
+	 * @param name the field name
+	 * @param value the new value
+	 * @return a new reference with this modification
+	 */
 	public default Reference extend(String name, String value) {
 		return new ExtendedReference(this, name, value);
 	}
 	
+	/**
+	 * Constructs a reference with all the keys and values contained in a {@link TypedProperties}.
+	 * 
+	 * @param properties the typed properties object
+	 * @return a new reference based on the keys and values in the properties
+	 */
 	public static Reference of(TypedProperties properties) {
 		return new TypedPropertiesReference(properties);
-	}
-	
-	abstract static class AbstractReference implements Reference {
-		
-		public AbstractReference() {
-			super();
-		}
-
-		@Override
-		public String toString() {
-			return "Reference" + fields().stream().map(x -> x + "=" + get(x)).collect(Collectors.joining(",", "(", ")"));
-		}
-		
-	}
-	
-	static class TypedPropertiesReference extends AbstractReference {
-		
-		private final TypedProperties properties;
-		
-		public TypedPropertiesReference(TypedProperties properties) {
-			super();
-			this.properties = properties;
-		}
-		
-		public Set<String> fields() {
-			return Collections.unmodifiableSet(properties.keySet());
-		}
-		
-		public String get(String field) {
-			return properties.getString(field);
-		}
-		
-	}
-		
-	static class ExtendedReference extends AbstractReference {
-		
-		private final Reference reference;
-		
-		private final String name;
-		
-		private final String value;
-		
-		public ExtendedReference(Reference reference, String name, String value) {
-			super();
-			this.reference = reference;
-			this.name = name;
-			this.value = value;
-		}
-		
-		public Set<String> fields() {
-			Set<String> result = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
-			result.addAll(reference.fields());
-			result.add(name);
-			return result;
-		}
-		
-		public String get(String name) {
-			if (this.name.equalsIgnoreCase(name)) {
-				return value;
-			}
-			
-			return reference.get(name);
-		}
-		
 	}
 
 }

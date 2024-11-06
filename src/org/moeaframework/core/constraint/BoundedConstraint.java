@@ -46,18 +46,46 @@ public abstract class BoundedConstraint extends AbstractConstraint {
 	 */
 	protected final double epsilon;
 
+	/**
+	 * Constructs a new bounded constraint.
+	 * 
+	 * @param lower the lower threshold
+	 * @param upper the upper threshold
+	 */
 	public BoundedConstraint(double lower, double upper) {
 		this(null, lower, upper);
 	}
 	
+	/**
+	 * Constructs a new bounded constraint.
+	 * 
+	 * @param lower the lower threshold
+	 * @param upper the upper threshold
+	 * @param epsilon the epsilon value
+	 */
 	public BoundedConstraint(double lower, double upper, double epsilon) {
 		this(null, lower, upper, epsilon);
 	}
 	
+	/**
+	 * Constructs a new bounded constraint.
+	 * 
+	 * @param name the name
+	 * @param lower the lower threshold
+	 * @param upper the upper threshold
+	 */
 	public BoundedConstraint(String name, double lower, double upper) {
 		this(name, lower, upper, Settings.EPS);
 	}
 	
+	/**
+	 * Constructs a new bounded constraint.
+	 * 
+	 * @param name the name
+	 * @param lower the lower threshold
+	 * @param upper the upper threshold
+	 * @param epsilon the epsilon value
+	 */
 	public BoundedConstraint(String name, double lower, double upper, double epsilon) {
 		super(name);
 		this.lower = lower;
@@ -65,6 +93,11 @@ public abstract class BoundedConstraint extends AbstractConstraint {
 		this.epsilon = epsilon;
 	}
 	
+	/**
+	 * Constructs a copy of a bounded constraint.
+	 * 
+	 * @param copy the constraint to copy
+	 */
 	public BoundedConstraint(BoundedConstraint copy) {
 		this(copy.name, copy.lower, copy.upper, copy.epsilon);
 		this.value = copy.value;

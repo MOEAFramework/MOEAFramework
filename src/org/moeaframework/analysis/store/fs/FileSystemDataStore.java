@@ -43,6 +43,9 @@ import org.moeaframework.analysis.store.TransactionalWriter;
 import org.moeaframework.analysis.store.schema.Schema;
 import org.moeaframework.core.Settings;
 
+/**
+ * Data store backed by the local file system.  A {@link FileMap} determines the layout of the files.
+ */
 public class FileSystemDataStore implements DataStore {
 	
 	private final Path root;
@@ -52,19 +55,51 @@ public class FileSystemDataStore implements DataStore {
 	private final Schema schema;
 	
 	private final Lock mkdirLock;
-		
+	
+	/**
+	 * Constructs a hierarchical file system data store at the specified directory.
+	 * 
+	 * @param root the root directory
+	 * @throws IOException if an I/O error occurred
+	 * @throws ManifestValidationException if the existing manifest failed validation
+	 */
 	public FileSystemDataStore(File root) throws IOException {
 		this(root, new HierarchicalFileMap());
 	}
 	
+	/**
+	 * Constructs a hierarchical file system data store at the specified directory.
+	 * 
+	 * @param root the root directory
+	 * @param schema the schema defining the structure of the data store
+	 * @throws IOException if an I/O error occurred
+	 * @throws ManifestValidationException if the existing manifest failed validation
+	 */
 	public FileSystemDataStore(File root, Schema schema) throws IOException {
 		this(root.toPath(), new HierarchicalFileMap(), schema);
 	}
 	
+	/**
+	 * Constructs a file system data store at the specified directory.
+	 * 
+	 * @param root the root directory
+	 * @param fileMap the file map that determines the layout of files
+	 * @throws IOException if an I/O error occurred
+	 * @throws ManifestValidationException if the existing manifest failed validation
+	 */
 	public FileSystemDataStore(File root, FileMap fileMap) throws IOException {
 		this(root.toPath(), fileMap, Schema.schemaless());
 	}
 
+	/**
+	 * Constructs a hierarchical file system data store at the specified directory.
+	 * 
+	 * @param root the root directory
+	 * @param fileMap the file map that determines the layout of files
+	 * @param schema the schema defining the structure of the data store
+	 * @throws IOException if an I/O error occurred
+	 * @throws ManifestValidationException if the existing manifest failed validation
+	 */
 	public FileSystemDataStore(Path root, FileMap fileMap, Schema schema) throws IOException {
 		super();
 		this.root = root;
@@ -75,10 +110,20 @@ public class FileSystemDataStore implements DataStore {
 		createOrValidateManifest();
 	}
 	
+	/**
+	 * Returns the schema used by this file store.
+	 * 
+	 * @return the schema
+	 */
 	public Schema getSchema() {
 		return schema;
 	}
 	
+	/**
+	 * Returns the root directory for this data store.
+	 * 
+	 * @return the root directory
+	 */
 	public Path getRoot() {
 		return root;
 	}
@@ -88,6 +133,12 @@ public class FileSystemDataStore implements DataStore {
 		return new FileSystemContainer(key);
 	}
 
+	/**
+	 * Creates all directories, including any missing parents, for the specified path.
+	 * 
+	 * @param path the directory path
+	 * @throws IOException if an I/O error occurred
+	 */
 	private void mkdirs(Path path) throws IOException {
 		if (Files.exists(path)) {
 			return;
@@ -102,6 +153,12 @@ public class FileSystemDataStore implements DataStore {
 		}
 	}
 	
+	/**
+	 * Writes the manifest file or validates the existing manifest file.
+	 * 
+	 * @throws IOException if an I/O error occurred
+	 * @throws ManifestValidationException if the existing manifest 
+	 */
 	private void createOrValidateManifest() throws IOException, ManifestValidationException {
 		Path path = getRoot().resolve(Manifest.FILENAME);
 		Manifest expectedManifest = getManifest();
@@ -121,6 +178,11 @@ public class FileSystemDataStore implements DataStore {
 		}
 	}
 	
+	/**
+	 * Constructs the manifest for this data store.
+	 * 
+	 * @return the manifest
+	 */
 	private Manifest getManifest() {
 		Manifest manifest = new Manifest();
 		manifest.setInt("version", Settings.getMajorVersion());

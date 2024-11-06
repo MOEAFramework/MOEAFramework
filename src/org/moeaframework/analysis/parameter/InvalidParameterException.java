@@ -26,6 +26,12 @@ public class InvalidParameterException extends FrameworkException {
 
 	private static final long serialVersionUID = -8402217875283482661L;
 
+	/**
+	 * Constructs a new exception for an invalid parameter.
+	 * 
+	 * @param parameterName the name of the parameter
+	 * @param message the reason the parameter is invalid
+	 */
 	public InvalidParameterException(String parameterName, String message) {
 		super(parameterName + " is invalid: " + message);
 	}

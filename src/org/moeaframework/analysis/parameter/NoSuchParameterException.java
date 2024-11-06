@@ -26,6 +26,11 @@ public class NoSuchParameterException extends FrameworkException {
 
 	private static final long serialVersionUID = -8402217875283482661L;
 
+	/**
+	 * Constructs a new exception for a missing parameter.
+	 * 
+	 * @param parameterName the name of the parameter
+	 */
 	public NoSuchParameterException(String parameterName) {
 		super(parameterName + " not found");
 	}

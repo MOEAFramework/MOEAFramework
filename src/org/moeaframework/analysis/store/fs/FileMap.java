@@ -74,6 +74,9 @@ public abstract class FileMap implements Constructable {
 		specialFilenames.put("~", "%7E");
 	}
 	
+	/**
+	 * Constructs a file map.
+	 */
 	public FileMap() {
 		super();
 	}

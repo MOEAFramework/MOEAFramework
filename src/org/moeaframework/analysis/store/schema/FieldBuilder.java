@@ -17,6 +17,9 @@
  */
 package org.moeaframework.analysis.store.schema;
 
+/**
+ * Builder for constructing fields of specific types.
+ */
 public class FieldBuilder {
 	
 	private final String name;
@@ -26,18 +29,38 @@ public class FieldBuilder {
 		this.name = name;
 	}
 	
+	/**
+	 * Builds and returns a field storing an integer value.
+	 * 
+	 * @return the field
+	 */
 	public Field<Integer> asInt() {
 		return new Field<>(name, Integer.class);
 	}
 	
+	/**
+	 * Builds and returns a field storing a long value.
+	 * 
+	 * @return the field
+	 */
 	public Field<Long> asLong() {
 		return new Field<>(name, Long.class);
 	}
 	
+	/**
+	 * Builds and returns a field storing a decial value.
+	 * 
+	 * @return the field
+	 */
 	public Field<Double> asDecimal() {
 		return new Field<>(name, Double.class);
 	}
 	
+	/**
+	 * Builds and returns a field storing a string value.
+	 * 
+	 * @return the field
+	 */
 	public Field<String> asString() {
 		return new Field<>(name, String.class);
 	}

@@ -36,16 +36,33 @@ public class Enumeration<T> extends AbstractParameter<T> implements EnumeratedPa
 	
 	private List<T> values;
 	
+	/**
+	 * Constructs an enumeration with a fixed set of possible values.
+	 * 
+	 * @param name the parameter name
+	 * @param values the values
+	 */
 	@SafeVarargs
 	public Enumeration(String name, T... values) {
 		this(name, List.of(values));
 	}
 
+	/**
+	 * Constructs an enumeration with a fixed set of possible values.
+	 * 
+	 * @param name the parameter name
+	 * @param values the values
+	 */
 	public Enumeration(String name, List<T> values) {
 		super(name);
 		this.values = values;
 	}
 	
+	/**
+	 * Returns the number of values defined by this enumeration.
+	 * 
+	 * @return the number of values
+	 */
 	public int size() {
 		return values.size();
 	}

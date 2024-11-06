@@ -27,12 +27,23 @@ import org.moeaframework.core.TypedProperties;
  */
 public class Manifest extends TypedProperties {
 	
+	/**
+	 * The name of the manifest file, which will be located in the root directory of the data store.
+	 */
 	public static final String FILENAME = ".manifest";
 	
 	/**
-	 * Validates the two manifests are equal.
+	 * Constructs a new, empty manifest.
+	 */
+	public Manifest() {
+		super();
+	}
+	
+	/**
+	 * Validates the two manifests are equal by comparing both contain identical keys and values.
 	 * 
 	 * @param expected the expected manifest
+	 * @throws ManifestValidationException if any differences were detected
 	 */
 	public void validate(Manifest expected) {
 		Set<String> keys = new HashSet<String>();

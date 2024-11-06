@@ -24,22 +24,51 @@ public class GreaterThan extends ThresholdConstraint {
 
 	private static final long serialVersionUID = -7048327561238629686L;
 
+	/**
+	 * Constructs a new greater than constraint.
+	 * 
+	 * @param threshold the threshold value
+	 */
 	public GreaterThan(double threshold) {
 		super(threshold);
 	}
 	
+	/**
+	 * Constructs a new greater than constraint.
+	 * 
+	 * @param threshold the threshold value
+	 * @param epsilon the epsilon value
+	 */
 	public GreaterThan(double threshold, double epsilon) {
 		super(threshold, epsilon);
 	}
 	
+	/**
+	 * Constructs a new greater than constraint.
+	 * 
+	 * @param name the name
+	 * @param threshold the threshold value
+	 */
 	public GreaterThan(String name, double threshold) {
 		super(name, threshold);
 	}
 	
+	/**
+	 * Constructs a new greater than constraint.
+	 * 
+	 * @param name the name
+	 * @param threshold the threshold value
+	 * @param epsilon the epsilon value
+	 */
 	public GreaterThan(String name, double threshold, double epsilon) {
 		super(name, threshold, epsilon);
 	}
 	
+	/**
+	 * Constructs a copy of a greater than constraint.
+	 * 
+	 * @param copy the constraint to copy
+	 */
 	public GreaterThan(GreaterThan copy) {
 		super(copy);
 	}
@@ -59,18 +88,46 @@ public class GreaterThan extends ThresholdConstraint {
 		return new GreaterThan(this);
 	}
 	
+	/**
+	 * Constructs a new greater than constraint.
+	 * 
+	 * @param threshold the threshold value
+	 * @return the constraint
+	 */
 	public static GreaterThan value(double threshold) {
 		return new GreaterThan(threshold);
 	}
 	
+	/**
+	 * Constructs a new greater than constraint.
+	 * 
+	 * @param threshold the threshold value
+	 * @param epsilon the epsilon value
+	 * @return the constraint
+	 */
 	public static GreaterThan value(double threshold, double epsilon) {
 		return new GreaterThan(threshold, epsilon);
 	}
 	
+	/**
+	 * Constructs a new greater than constraint.
+	 * 
+	 * @param name the name
+	 * @param threshold the threshold value
+	 * @return the constraint
+	 */
 	public static GreaterThan value(String name, double threshold) {
 		return new GreaterThan(name, threshold);
 	}
 	
+	/**
+	 * Constructs a new greater than constraint.
+	 * 
+	 * @param name the name
+	 * @param threshold the threshold value
+	 * @param epsilon the epsilon value
+	 * @return the constraint
+	 */
 	public static GreaterThan value(String name, double threshold, double epsilon) {
 		return new GreaterThan(name, threshold, epsilon);
 	}

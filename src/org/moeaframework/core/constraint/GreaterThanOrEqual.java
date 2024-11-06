@@ -24,22 +24,51 @@ public class GreaterThanOrEqual extends ThresholdConstraint {
 
 	private static final long serialVersionUID = 132924592516674872L;
 
+	/**
+	 * Constructs a new greater than or equal to constraint.
+	 * 
+	 * @param threshold the threshold value
+	 */
 	public GreaterThanOrEqual(double threshold) {
 		super(threshold);
 	}
 	
+	/**
+	 * Constructs a new greater than or equal to constraint.
+	 * 
+	 * @param threshold the threshold value
+	 * @param epsilon the epsilon value
+	 */
 	public GreaterThanOrEqual(double threshold, double epsilon) {
 		super(threshold, epsilon);
 	}
 	
+	/**
+	 * Constructs a new greater than or equal to constraint.
+	 * 
+	 * @param name the name
+	 * @param threshold the threshold value
+	 */
 	public GreaterThanOrEqual(String name, double threshold) {
 		super(name, threshold);
 	}
 	
+	/**
+	 * Constructs a new greater than or equal to constraint.
+	 * 
+	 * @param name the name
+	 * @param threshold the threshold value
+	 * @param epsilon the epsilon value
+	 */
 	public GreaterThanOrEqual(String name, double threshold, double epsilon) {
 		super(name, threshold, epsilon);
 	}
 	
+	/**
+	 * Constructs a copy of a greater than or equal to constraint.
+	 * 
+	 * @param copy the constraint to copy
+	 */
 	public GreaterThanOrEqual(GreaterThanOrEqual copy) {
 		super(copy);
 	}
@@ -59,18 +88,46 @@ public class GreaterThanOrEqual extends ThresholdConstraint {
 		return new GreaterThanOrEqual(this);
 	}
 	
+	/**
+	 * Constructs a new greater than or equal to constraint.
+	 * 
+	 * @param threshold the threshold value
+	 * @return the constraint
+	 */
 	public static GreaterThanOrEqual to(double threshold) {
 		return new GreaterThanOrEqual(threshold);
 	}
 	
+	/**
+	 * Constructs a new greater than or equal to constraint.
+	 * 
+	 * @param threshold the threshold value
+	 * @param epsilon the epsilon value
+	 * @return the constraint
+	 */
 	public static GreaterThanOrEqual to(double threshold, double epsilon) {
 		return new GreaterThanOrEqual(threshold, epsilon);
 	}
 	
+	/**
+	 * Constructs a new greater than or equal to constraint.
+	 * 
+	 * @param name the name
+	 * @param threshold the threshold value
+	 * @return the constraint
+	 */
 	public static GreaterThanOrEqual to(String name, double threshold) {
 		return new GreaterThanOrEqual(threshold);
 	}
 	
+	/**
+	 * Constructs a new greater than or equal to constraint.
+	 * 
+	 * @param name the name
+	 * @param threshold the threshold value
+	 * @param epsilon the epsilon value
+	 * @return the constraint
+	 */
 	public static GreaterThanOrEqual to(String name, double threshold, double epsilon) {
 		return new GreaterThanOrEqual(threshold, epsilon);
 	}

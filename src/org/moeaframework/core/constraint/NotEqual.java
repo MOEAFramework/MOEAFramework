@@ -24,22 +24,51 @@ public class NotEqual extends ThresholdConstraint {
 
 	private static final long serialVersionUID = 6500980756384192541L;
 
+	/**
+	 * Constructs a new inequality constraint.
+	 * 
+	 * @param threshold the threshold value
+	 */
 	public NotEqual(double threshold) {
 		super(threshold);
 	}
 	
+	/**
+	 * Constructs a new inequality constraint.
+	 * 
+	 * @param threshold the threshold value
+	 * @param epsilon the epsilon value
+	 */
 	public NotEqual(double threshold, double epsilon) {
 		super(threshold, epsilon);
 	}
 	
+	/**
+	 * Constructs a new inequality constraint.
+	 * 
+	 * @param name the name
+	 * @param threshold the threshold value
+	 */
 	public NotEqual(String name, double threshold) {
 		super(threshold);
 	}
 	
+	/**
+	 * Constructs a new inequality constraint.
+	 * 
+	 * @param name the name
+	 * @param threshold the threshold value
+	 * @param epsilon the epsilon value
+	 */
 	public NotEqual(String name, double threshold, double epsilon) {
 		super(threshold, epsilon);
 	}
 	
+	/**
+	 * Constructs a copy of an inequality constraint.
+	 * 
+	 * @param copy the constraint to copy
+	 */
 	public NotEqual(NotEqual copy) {
 		super(copy);
 	}
@@ -59,18 +88,46 @@ public class NotEqual extends ThresholdConstraint {
 		return new NotEqual(this);
 	}
 	
+	/**
+	 * Constructs a new inequality constraint.
+	 * 
+	 * @param threshold the threshold value
+	 * @return the constraint
+	 */
 	public static NotEqual to(double threshold) {
 		return new NotEqual(threshold);
 	}
 	
+	/**
+	 * Constructs a new inequality constraint.
+	 * 
+	 * @param threshold the threshold value
+	 * @param epsilon the epsilon value
+	 * @return the constraint
+	 */
 	public static NotEqual to(double threshold, double epsilon) {
 		return new NotEqual(threshold, epsilon);
 	}
 	
+	/**
+	 * Constructs a new inequality constraint.
+	 * 
+	 * @param name the name
+	 * @param threshold the threshold value
+	 * @return the constraint
+	 */
 	public static NotEqual to(String name, double threshold) {
 		return new NotEqual(threshold);
 	}
 	
+	/**
+	 * Constructs a new inequality constraint.
+	 * 
+	 * @param name the name
+	 * @param threshold the threshold value
+	 * @param epsilon the epsilon value
+	 * @return the constraint
+	 */
 	public static NotEqual to(String name, double threshold, double epsilon) {
 		return new NotEqual(threshold, epsilon);
 	}

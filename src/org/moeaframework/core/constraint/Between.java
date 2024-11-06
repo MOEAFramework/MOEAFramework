@@ -24,22 +24,55 @@ public class Between extends BoundedConstraint {
 
 	private static final long serialVersionUID = 192194143362935822L;
 
+	/**
+	 * Constructs a new between constraint.
+	 * 
+	 * @param lower the lower threshold
+	 * @param upper the upper threshold
+	 */
 	public Between(double lower, double upper) {
 		super(lower, upper);
 	}
 	
+	/**
+	 * Constructs a new between constraint.
+	 * 
+	 * @param lower the lower threshold
+	 * @param upper the upper threshold
+	 * @param epsilon the epsilon value
+	 */
 	public Between(double lower, double upper, double epsilon) {
 		super(lower, upper, epsilon);
 	}
 	
+	/**
+	 * Constructs a new between constraint.
+	 * 
+	 * @param name the name
+	 * @param lower the lower threshold
+	 * @param upper the upper threshold
+	 */
 	public Between(String name, double lower, double upper) {
 		super(name, lower, upper);
 	}
 	
+	/**
+	 * Constructs a new between constraint.
+	 * 
+	 * @param name the name
+	 * @param lower the lower threshold
+	 * @param upper the upper threshold
+	 * @param epsilon the epsilon value
+	 */
 	public Between(String name, double lower, double upper, double epsilon) {
 		super(name, lower, upper, epsilon);
 	}
 	
+	/**
+	 * Constructs a copy of a between constraint.
+	 * 
+	 * @param copy the constraint to copy
+	 */
 	public Between(Between copy) {
 		super(copy);
 	}
@@ -68,18 +101,50 @@ public class Between extends BoundedConstraint {
 		return new Between(this);
 	}
 	
+	/**
+	 * Constructs a new between constraint.
+	 * 
+	 * @param lower the lower threshold
+	 * @param upper the upper threshold
+	 * @return the constraint
+	 */
 	public static Between values(double lower, double upper) {
 		return new Between(lower, upper);
 	}
 	
+	/**
+	 * Constructs a new between constraint.
+	 * 
+	 * @param lower the lower threshold
+	 * @param upper the upper threshold
+	 * @param epsilon the epsilon value
+	 * @return the constraint
+	 */
 	public static Between values(double lower, double upper, double epsilon) {
 		return new Between(lower, upper, epsilon);
 	}
 	
+	/**
+	 * Constructs a new between constraint.
+	 * 
+	 * @param name the name
+	 * @param lower the lower threshold
+	 * @param upper the upper threshold
+	 * @return the constraint
+	 */
 	public static Between values(String name, double lower, double upper) {
 		return new Between(name, lower, upper);
 	}
 	
+	/**
+	 * Constructs a new between constraint.
+	 * 
+	 * @param name the name
+	 * @param lower the lower threshold
+	 * @param upper the upper threshold
+	 * @param epsilon the epsilon value
+	 * @return the constraint
+	 */
 	public static Between values(String name, double lower, double upper, double epsilon) {
 		return new Between(name, lower, upper, epsilon);
 	}

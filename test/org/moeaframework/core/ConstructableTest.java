@@ -22,6 +22,7 @@ import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.constraint.Constraint;
 import org.moeaframework.core.constraint.LessThan;
+import org.moeaframework.core.constraint.ThresholdConstraint;
 import org.moeaframework.core.objective.Minimize;
 import org.moeaframework.core.objective.Objective;
 
@@ -93,7 +94,7 @@ public class ConstructableTest {
 		Assert.assertEquals("!Minimize", Constructable.createUnsupportedDefinition(Objective.class, Minimize.class));
 	}
 	
-	public static class TestConstraint extends LessThan {
+	public static class TestConstraint extends ThresholdConstraint {
 
 		private static final long serialVersionUID = 4343261347377782831L;
 
@@ -103,6 +104,16 @@ public class ConstructableTest {
 		
 		public TestConstraint(String name, double threshold) {
 			super(name, threshold);
+		}
+
+		@Override
+		public double getMagnitudeOfViolation() {
+			return value;
+		}
+
+		@Override
+		public Constraint copy() {
+			return new TestConstraint(name, threshold);
 		}
 		
 	}

@@ -26,6 +26,11 @@ public class ManifestValidationException extends DataStoreException {
 
 	private static final long serialVersionUID = 4297700379647594961L;
 
+	/**
+	 * Constructs a new manifest validation exception.
+	 * 
+	 * @param message the reason validation failed
+	 */
 	public ManifestValidationException(String message) {
 		super(message);
 	}

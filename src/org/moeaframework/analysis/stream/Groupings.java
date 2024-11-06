@@ -68,26 +68,65 @@ public class Groupings{
 		return x -> x;
 	}
 	
+	/**
+	 * Buckets an integer-valued parameter into groups with similar values.
+	 * 
+	 * @param parameter the integer-valued parameter
+	 * @param width the width of the bucket
+	 * @return the grouping function
+	 */
 	public static Function<Sample, Integer> bucket(Parameter<Integer> parameter, int width) {
 		return bucket(width).compose(x -> parameter.readValue(x));
 	}
 	
+	/**
+	 * Buckets a long-valued parameter into groups with similar values.
+	 * 
+	 * @param parameter the long-valued parameter
+	 * @param width the width of the bucket
+	 * @return the grouping function
+	 */
 	public static Function<Sample, Long> bucket(Parameter<Long> parameter, long width) {
 		return bucket(width).compose(x -> parameter.readValue(x));
 	}
 	
+	/**
+	 * Buckets an decimal-valued parameter into groups with similar values.
+	 * 
+	 * @param parameter the decimal-valued parameter
+	 * @param width the width of the bucket
+	 * @return the grouping function
+	 */
 	public static Function<Sample, Double> bucket(Parameter<Double> parameter, double width) {
 		return bucket(width).compose(x -> parameter.readValue(x));
 	}
 	
+	/**
+	 * Buckets an integer stream into groups with similar values.
+	 * 
+	 * @param width the width of the bucket
+	 * @return the grouping function
+	 */
 	public static Function<Integer, Integer> bucket(int width) {
 		return x -> width * (x / width) + width / 2;
 	}
 	
+	/**
+	 * Buckets a long stream into groups with similar values.
+	 * 
+	 * @param width the width of the bucket
+	 * @return the grouping function
+	 */
 	public static Function<Long, Long> bucket(long width) {
 		return x -> width * (x / width) + width / 2;
 	}
 	
+	/**
+	 * Buckets a decimal stream into groups with similar values.
+	 * 
+	 * @param width the width of the bucket
+	 * @return the grouping function
+	 */
 	public static Function<Double, Double> bucket(double width) {
 		return x -> width * Math.floor(x / width) + width / 2.0;
 	}

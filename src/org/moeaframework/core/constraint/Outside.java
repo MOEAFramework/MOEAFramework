@@ -24,22 +24,55 @@ public class Outside extends BoundedConstraint {
 
 	private static final long serialVersionUID = 7023737068172462391L;
 
+	/**
+	 * Constructs a new outside constraint.
+	 * 
+	 * @param lower the lower threshold
+	 * @param upper the upper threshold
+	 */
 	public Outside(double lower, double upper) {
 		super(lower, upper);
 	}
 	
+	/**
+	 * Constructs a new outside constraint.
+	 * 
+	 * @param lower the lower threshold
+	 * @param upper the upper threshold
+	 * @param epsilon the epsilon value
+	 */
 	public Outside(double lower, double upper, double epsilon) {
 		super(lower, upper, epsilon);
 	}
 	
+	/**
+	 * Constructs a new outside constraint.
+	 * 
+	 * @param name the name
+	 * @param lower the lower threshold
+	 * @param upper the upper threshold
+	 */
 	public Outside(String name, double lower, double upper) {
 		super(name, lower, upper);
 	}
 	
+	/**
+	 * Constructs a new outside constraint.
+	 * 
+	 * @param name the name
+	 * @param lower the lower threshold
+	 * @param upper the upper threshold
+	 * @param epsilon the epsilon value
+	 */
 	public Outside(String name, double lower, double upper, double epsilon) {
 		super(name, lower, upper, epsilon);
 	}
 	
+	/**
+	 * Constructs a copy of an outside constraint.
+	 * 
+	 * @param copy the constraint to copy
+	 */
 	public Outside(Outside copy) {
 		super(copy);
 	}
@@ -73,18 +106,50 @@ public class Outside extends BoundedConstraint {
 		return new Outside(this);
 	}
 	
+	/**
+	 * Constructs a new outside constraint.
+	 * 
+	 * @param lower the lower threshold
+	 * @param upper the upper threshold
+	 * @return the constraint
+	 */
 	public static Outside values(double lower, double upper) {
 		return new Outside(lower, upper);
 	}
 	
+	/**
+	 * Constructs a new outside constraint.
+	 * 
+	 * @param lower the lower threshold
+	 * @param upper the upper threshold
+	 * @param epsilon the epsilon value
+	 * @return the constraint
+	 */
 	public static Outside values(double lower, double upper, double epsilon) {
 		return new Outside(lower, upper, epsilon);
 	}
 	
+	/**
+	 * Constructs a new outside constraint.
+	 * 
+	 * @param name the name
+	 * @param lower the lower threshold
+	 * @param upper the upper threshold
+	 * @return the constraint
+	 */
 	public static Outside values(String name, double lower, double upper) {
 		return new Outside(name, lower, upper);
 	}
 	
+	/**
+	 * Constructs a new outside constraint.
+	 * 
+	 * @param name the name
+	 * @param lower the lower threshold
+	 * @param upper the upper threshold
+	 * @param epsilon the epsilon value
+	 * @return the constraint
+	 */
 	public static Outside values(String name, double lower, double upper, double epsilon) {
 		return new Outside(name, lower, upper, epsilon);
 	}

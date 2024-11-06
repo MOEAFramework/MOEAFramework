@@ -54,7 +54,7 @@ public class NormalizedObjective extends Minimize {
 	/**
 	 * Not supported for minimized objectives.
 	 * 
-	 * @throws UnsupportedOperationException
+	 * @throws UnsupportedOperationException as this operation is not permitted on normalized objectives
 	 */
 	@Override
 	public NormalizedObjective normalize(double minimum, double maximum) {
@@ -65,7 +65,7 @@ public class NormalizedObjective extends Minimize {
 	/**
 	 * Not supported for minimized objectives.
 	 * 
-	 * @throws UnsupportedOperationException
+	 * @throws UnsupportedOperationException as this operation is not permitted on normalized objectives
 	 */
 	@Override
 	public int getEpsilonIndex(double epsilon) {
@@ -76,7 +76,7 @@ public class NormalizedObjective extends Minimize {
 	/**
 	 * Not supported for minimized objectives.
 	 * 
-	 * @throws UnsupportedOperationException
+	 * @throws UnsupportedOperationException as this operation is not permitted on normalized objectives
 	 */
 	@Override
 	public double getEpsilonDistance(double epsilon) {

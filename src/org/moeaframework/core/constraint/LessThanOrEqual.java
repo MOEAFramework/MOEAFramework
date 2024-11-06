@@ -24,22 +24,51 @@ public class LessThanOrEqual extends ThresholdConstraint {
 
 	private static final long serialVersionUID = -2950482083962039249L;
 
+	/**
+	 * Constructs a new less than or equal to constraint.
+	 * 
+	 * @param threshold the threshold value
+	 */
 	public LessThanOrEqual(double threshold) {
 		super(threshold);
 	}
 	
+	/**
+	 * Constructs a new less than or equal to constraint.
+	 * 
+	 * @param threshold the threshold value
+	 * @param epsilon the epsilon value
+	 */
 	public LessThanOrEqual(double threshold, double epsilon) {
 		super(threshold, epsilon);
 	}
 	
+	/**
+	 * Constructs a new less than or equal to constraint.
+	 * 
+	 * @param name the name
+	 * @param threshold the threshold value
+	 */
 	public LessThanOrEqual(String name, double threshold) {
 		super(name, threshold);
 	}
 	
+	/**
+	 * Constructs a new less than or equal to constraint.
+	 * 
+	 * @param name the name
+	 * @param threshold the threshold value
+	 * @param epsilon the epsilon value
+	 */
 	public LessThanOrEqual(String name, double threshold, double epsilon) {
 		super(name, threshold, epsilon);
 	}
 	
+	/**
+	 * Constructs a copy of a less than or equal to constraint.
+	 * 
+	 * @param copy the constraint to copy
+	 */
 	public LessThanOrEqual(LessThanOrEqual copy) {
 		super(copy);
 	}
@@ -59,18 +88,46 @@ public class LessThanOrEqual extends ThresholdConstraint {
 		return new LessThanOrEqual(this);
 	}
 	
+	/**
+	 * Constructs a new less than or equal to constraint.
+	 * 
+	 * @param threshold the threshold value
+	 * @return the constraint
+	 */
 	public static LessThanOrEqual to(double threshold) {
 		return new LessThanOrEqual(threshold);
 	}
 	
+	/**
+	 * Constructs a new less than or equal to constraint.
+	 * 
+	 * @param threshold the threshold value
+	 * @param epsilon the epsilon value
+	 * @return the constraint
+	 */
 	public static LessThanOrEqual to(double threshold, double epsilon) {
 		return new LessThanOrEqual(threshold, epsilon);
 	}
 	
+	/**
+	 * Constructs a new less than or equal to constraint.
+	 * 
+	 * @param name the name
+	 * @param threshold the threshold value
+	 * @return the constraint
+	 */
 	public static LessThanOrEqual to(String name, double threshold) {
 		return new LessThanOrEqual(name, threshold);
 	}
 	
+	/**
+	 * Constructs a new less than or equal to constraint.
+	 * 
+	 * @param name the name
+	 * @param threshold the threshold value
+	 * @param epsilon the epsilon value
+	 * @return the constraint
+	 */
 	public static LessThanOrEqual to(String name, double threshold, double epsilon) {
 		return new LessThanOrEqual(name, threshold, epsilon);
 	}

@@ -65,9 +65,9 @@ public class Equal extends ThresholdConstraint {
 	}
 	
 	/**
-	 * Constructs a copy of an equality constraint.
+	 * Constructs a copy of an equal constraint.
 	 * 
-	 * @param copy the copy
+	 * @param copy the constraint to copy
 	 */
 	public Equal(Equal copy) {
 		super(copy);
@@ -88,18 +88,46 @@ public class Equal extends ThresholdConstraint {
 		return new Equal(this);
 	}
 	
+	/**
+	 * Constructs a new equality constraint.
+	 * 
+	 * @param threshold the threshold value
+	 * @return the constraint
+	 */
 	public static Equal to(double threshold) {
 		return new Equal(threshold);
 	}
 	
+	/**
+	 * Constructs a new equality constraint.
+	 * 
+	 * @param threshold the threshold value
+	 * @param epsilon the epsilon value
+	 * @return the constraint
+	 */
 	public static Equal to(double threshold, double epsilon) {
 		return new Equal(threshold, epsilon);
 	}
 	
+	/**
+	 * Constructs a new equality constraint.
+	 * 
+	 * @param name the name
+	 * @param threshold the threshold value
+	 * @return the constraint
+	 */
 	public static Equal to(String name, double threshold) {
 		return new Equal(name, threshold);
 	}
 	
+	/**
+	 * Constructs a new equality constraint.
+	 * 
+	 * @param name the name
+	 * @param threshold the threshold value
+	 * @param epsilon the epsilon value
+	 * @return the constraint
+	 */
 	public static Equal to(String name, double threshold, double epsilon) {
 		return new Equal(name, threshold, epsilon);
 	}

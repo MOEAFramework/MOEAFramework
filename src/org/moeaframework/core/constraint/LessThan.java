@@ -24,22 +24,51 @@ public class LessThan extends ThresholdConstraint {
 
 	private static final long serialVersionUID = 3513346524087161353L;
 
+	/**
+	 * Constructs a new less than constraint.
+	 * 
+	 * @param threshold the threshold value
+	 */
 	public LessThan(double threshold) {
 		super(threshold);
 	}
 	
+	/**
+	 * Constructs a new less than constraint.
+	 * 
+	 * @param threshold the threshold value
+	 * @param epsilon the epsilon value
+	 */
 	public LessThan(double threshold, double epsilon) {
 		super(threshold, epsilon);
 	}
 	
+	/**
+	 * Constructs a new less than constraint.
+	 * 
+	 * @param name the name
+	 * @param threshold the threshold value
+	 */
 	public LessThan(String name, double threshold) {
 		super(name, threshold);
 	}
 	
+	/**
+	 * Constructs a new less than constraint.
+	 * 
+	 * @param name the name
+	 * @param threshold the threshold value
+	 * @param epsilon the epsilon value
+	 */
 	public LessThan(String name, double threshold, double epsilon) {
 		super(name, threshold, epsilon);
 	}
 	
+	/**
+	 * Constructs a copy of a less than constraint.
+	 * 
+	 * @param copy the constraint to copy
+	 */
 	public LessThan(LessThan copy) {
 		super(copy);
 	}
@@ -59,18 +88,46 @@ public class LessThan extends ThresholdConstraint {
 		return new LessThan(this);
 	}
 	
+	/**
+	 * Constructs a new less than constraint.
+	 * 
+	 * @param threshold the threshold value
+	 * @return the constraint
+	 */
 	public static LessThan value(double threshold) {
 		return new LessThan(threshold);
 	}
 	
+	/**
+	 * Constructs a new less than constraint.
+	 * 
+	 * @param threshold the threshold value
+	 * @param epsilon the epsilon value
+	 * @return the constraint
+	 */
 	public static LessThan value(double threshold, double epsilon) {
 		return new LessThan(threshold, epsilon);
 	}
 	
+	/**
+	 * Constructs a new less than constraint.
+	 * 
+	 * @param name the name
+	 * @param threshold the threshold value
+	 * @return the constraint
+	 */
 	public static LessThan value(String name, double threshold) {
 		return new LessThan(name, threshold);
 	}
 	
+	/**
+	 * Constructs a new less than constraint.
+	 * 
+	 * @param name the name
+	 * @param threshold the threshold value
+	 * @param epsilon the epsilon value
+	 * @return the constraint
+	 */
 	public static LessThan value(String name, double threshold, double epsilon) {
 		return new LessThan(name, threshold, epsilon);
 	}

@@ -81,21 +81,41 @@ public class LineReader extends BufferedReader implements Iterable<String>, Iter
 		}
 	}
 	
+	/**
+	 * Configures this reader to skip any lines starting with the comment prefix.
+	 * 
+	 * @return a reference to this reader
+	 */
 	public LineReader skipComments() {
 		this.skipComments = true;
 		return this;
 	}
 	
+	/**
+	 * Configures this reader to skip any lines that contain only whitespace.
+	 * 
+	 * @return a reference to this reader
+	 */
 	public LineReader skipBlanks() {
 		this.skipBlanks = true;
 		return this;
 	}
 	
+	/**
+	 * Configures this reader to trim any leading and trailing whitespace from each line.
+	 * 
+	 * @return a reference to this reader
+	 */
 	public LineReader trim() {
 		this.trim = true;
 		return this;
 	}
 	
+	/**
+	 * Configures the prefix string used to identify comment lines.
+	 * 
+	 * @return a reference to this reader
+	 */
 	public LineReader commentPrefix(String commentPrefix) {
 		Validate.that("commentPrefix", commentPrefix).isNotEmpty();
 		
@@ -103,6 +123,12 @@ public class LineReader extends BufferedReader implements Iterable<String>, Iter
 		return this;
 	}
 	
+	/**
+	 * Returns {@code true} if this line should be skipped, as it is either blank or a comment.
+	 * 
+	 * @param line the line
+	 * @return {@code true} to skip the line; {@code false} otherwise
+	 */
 	private boolean skipLine(String line) {
 		if (skipBlanks && line.isBlank()) {
 			return true;
@@ -115,6 +141,12 @@ public class LineReader extends BufferedReader implements Iterable<String>, Iter
 		return false;
 	}
 	
+	/**
+	 * Reads the next line from this reader, converting any checked I/O exception into an unchecked exception.
+	 * 
+	 * @return the new line read
+	 * @throws FrameworkException if any checked I/O exception was thrown
+	 */
 	private String readLineUncheckedException() {
 		try {
 			return readLine();

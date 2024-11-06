@@ -17,28 +17,34 @@
  */
 package org.moeaframework.analysis.store;
 
-import java.io.IOException;
-
 /**
  * Interface for storing data or objects to some persistent backend.
  * <p>
  * The data store organizes related data, called {@link Blob}s, in collections called {@link Container}s.  A container
- * is referenced by a {@link Reference}, and each blob is referenced by a name.
+ * is referenced by a {@link Reference}, and each blob is referenced by a name.  A data store is itself an abstract
+ * representation of the underlying storage, as the content could be stored on a local file system, cloud storage, or
+ * a database.
  */
 public interface DataStore {
 	
+	/**
+	 * Returns the container for the given reference.  A container is always returned, though this does not imply the
+	 * underlying storage exists or has been provisioned.
+	 * 
+	 * @param reference the data reference
+	 * @return the container
+	 */
 	public Container getContainer(Reference reference);
 
-	public default boolean contains(Reference reference) throws IOException {
-		return getContainer(reference).exists();
-	}
-	
+	/**f
+	 * Returns the container for the given {@link Referenceable} object.
+	 * 
+	 * @param reference the data reference
+	 * @return the container
+	 * @see #getContainer(Reference)
+	 */
 	public default Container getContainer(Referenceable reference) {
 		return getContainer(reference.getReference());
-	}
-	
-	public default boolean contains(Referenceable reference) throws IOException {
-		return contains(reference.getReference());
 	}
 
 }
