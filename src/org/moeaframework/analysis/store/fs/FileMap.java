@@ -20,7 +20,6 @@ package org.moeaframework.analysis.store.fs;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,30 +43,35 @@ import org.moeaframework.core.Constructable;
  * </ol>
  */
 public abstract class FileMap implements Constructable {
+			
+	private static final CharSequenceTranslator filenameTranslator;
 	
-	public static final Comparator<Path> CASE_INSENSITIVE_ORDER = new CaseInsensitivePathComparator();
-		
-	private static final CharSequenceTranslator fileNameTranslator;
+	private static final Map<String, String> specialFilenames;
 	
 	static {
-		final Map<CharSequence, CharSequence> fileNameEscapeMap = new HashMap<>();
-		fileNameEscapeMap.put("%", "%%");
-		fileNameEscapeMap.put("\\", "%5C");
-		fileNameEscapeMap.put("/", "%2F");
-		fileNameEscapeMap.put(":", "%3A");
-		fileNameEscapeMap.put("\"", "%22");
-		fileNameEscapeMap.put("*", "%2A");
-		fileNameEscapeMap.put("?", "%3F");
-		fileNameEscapeMap.put("<", "%3C");
-		fileNameEscapeMap.put(">", "%3E");
-		fileNameEscapeMap.put("|", "%7C");
-		fileNameEscapeMap.put(" ", "%20");
-		fileNameEscapeMap.put("\t", "%09");
-		fileNameEscapeMap.put("\n", "%0A");
-		fileNameEscapeMap.put("\r", "%0D");
+		final Map<String, String> filenameEscapeMap = new HashMap<>();
+		filenameEscapeMap.put("%", "%%");
+		filenameEscapeMap.put("\\", "%5C");
+		filenameEscapeMap.put("/", "%2F");
+		filenameEscapeMap.put(":", "%3A");
+		filenameEscapeMap.put("\"", "%22");
+		filenameEscapeMap.put("*", "%2A");
+		filenameEscapeMap.put("?", "%3F");
+		filenameEscapeMap.put("<", "%3C");
+		filenameEscapeMap.put(">", "%3E");
+		filenameEscapeMap.put("|", "%7C");
+		filenameEscapeMap.put(" ", "%20");
+		filenameEscapeMap.put("\t", "%09");
+		filenameEscapeMap.put("\n", "%0A");
+		filenameEscapeMap.put("\r", "%0D");
 		
-		fileNameTranslator = new AggregateTranslator(
-				new LookupTranslator(Collections.unmodifiableMap(fileNameEscapeMap)));
+		filenameTranslator = new AggregateTranslator(
+				new LookupTranslator(Collections.unmodifiableMap(filenameEscapeMap)));
+		
+		specialFilenames = new HashMap<>();
+		specialFilenames.put(".", "%46");
+		specialFilenames.put("..", "%46%46");
+		specialFilenames.put("~", "%7E");
 	}
 	
 	public FileMap() {
@@ -78,7 +82,7 @@ public abstract class FileMap implements Constructable {
 	 * Returns the path to the container associated with the given reference.  If containers are not supported, this
 	 * method may throw {@link UnsupportedOperationException}.
 	 * 
-	 * @param schema the schema defining the structure, or schemaless
+	 * @param schema the schema defining the structure
 	 * @param root the root directory
 	 * @param reference the container reference
 	 * @return the container path
@@ -90,7 +94,7 @@ public abstract class FileMap implements Constructable {
 	/**
 	 * Returns the path to the blob associated with the given reference and name.
 	 * 
-	 * @param schema the schema defining the structure, or schemaless
+	 * @param schema the schema defining the structure
 	 * @param root the root directory
 	 * @param reference the container reference
 	 * @param name the blob name
@@ -115,54 +119,11 @@ public abstract class FileMap implements Constructable {
 	 * @return the file system-safe path
 	 */
 	public static Path escapePath(String filename) {
-		if (filename.equals(".")) {
-			return Path.of("%46");
+		if (specialFilenames.containsKey(filename)) {
+			return Path.of(specialFilenames.get(filename));
 		}
 		
-		if (filename.equals("..")) {
-			return Path.of("%46%46");
-		}
-		
-		if (filename.equals("~")) {
-			return Path.of("%7E");
-		}
-		
-		return Path.of(fileNameTranslator.translate(filename));
-	}
-	
-	/**
-	 * Comparator for {@link Path} that performs case-insensitive comparisons of each path segment.
-	 */
-	protected static class CaseInsensitivePathComparator implements Comparator<Path> {
-
-		@Override
-		public int compare(Path path1, Path path2) {
-			for (int i = 0; i < Math.min(path1.getNameCount(), path2.getNameCount()); i++) {
-				if (i > path1.getNameCount()) {
-					return 1;
-				}
-				
-				if (i > path2.getNameCount()) {
-					return -1;
-				}
-				
-				int cmp = String.CASE_INSENSITIVE_ORDER.compare(
-						path1.getName(i).toString(), path2.getName(i).toString());
-				
-				if (cmp != 0) {
-					return cmp;
-				}
-			}
-			
-			if (path1.getNameCount() < path2.getNameCount()) {
-				return -1;
-			} else if (path1.getNameCount() > path2.getNameCount()) {
-				return 1;
-			}
-			
-			return 0;
-		}
-		
+		return Path.of(filenameTranslator.translate(filename));
 	}
 
 }

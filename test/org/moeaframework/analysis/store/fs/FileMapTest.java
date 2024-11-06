@@ -57,32 +57,5 @@ public class FileMapTest {
 		Assert.assertEquals("..foo", FileMap.escapePath("..foo").toString());
 		Assert.assertEquals("~foo", FileMap.escapePath("~foo").toString());
 	}
-	
-	@Test
-	public void testComparator() {
-		Assert.assertEquals(0, FileMap.CASE_INSENSITIVE_ORDER.compare(Path.of(""), Path.of("")));
-		Assert.assertEquals(0, FileMap.CASE_INSENSITIVE_ORDER.compare(Path.of("/"), Path.of("/")));
-		
-		Assert.assertEquals(0, FileMap.CASE_INSENSITIVE_ORDER.compare(Path.of("foo"), Path.of("foo")));
-		Assert.assertEquals(0, FileMap.CASE_INSENSITIVE_ORDER.compare(Path.of("foo"), Path.of("FOO")));
-		Assert.assertEquals(0, FileMap.CASE_INSENSITIVE_ORDER.compare(Path.of("FOO"), Path.of("foo")));
-		Assert.assertTrue(FileMap.CASE_INSENSITIVE_ORDER.compare(Path.of("foo"), Path.of("bar")) > 1);
-		Assert.assertTrue(FileMap.CASE_INSENSITIVE_ORDER.compare(Path.of("bar"), Path.of("foo")) < 1);
-		
-		Assert.assertEquals(0, FileMap.CASE_INSENSITIVE_ORDER.compare(Path.of("/foo/bar"), Path.of("/foo/bar")));
-		Assert.assertEquals(0, FileMap.CASE_INSENSITIVE_ORDER.compare(Path.of("/foo/bar"), Path.of("/FOO/bar")));
-		Assert.assertEquals(0, FileMap.CASE_INSENSITIVE_ORDER.compare(Path.of("/foo/bar"), Path.of("/foo/BAR")));
-		Assert.assertEquals(0, FileMap.CASE_INSENSITIVE_ORDER.compare(Path.of("/foo/bar"), Path.of("/foo/bar/")));
-		Assert.assertEquals(0, FileMap.CASE_INSENSITIVE_ORDER.compare(Path.of("/foo/bar"), Path.of("foo/bar/")));
-		
-		Assert.assertTrue(FileMap.CASE_INSENSITIVE_ORDER.compare(Path.of("/foo/bar"), Path.of("/foo")) > 0);
-		Assert.assertTrue(FileMap.CASE_INSENSITIVE_ORDER.compare(Path.of("/foo/bar"), Path.of("/foo/baz")) < 0);
-		Assert.assertTrue(FileMap.CASE_INSENSITIVE_ORDER.compare(Path.of("/foo/bar"), Path.of("/foo/bar/baz")) < 0);
-		Assert.assertTrue(FileMap.CASE_INSENSITIVE_ORDER.compare(Path.of("/foo/bar"), Path.of("")) > 0);
-		Assert.assertTrue(FileMap.CASE_INSENSITIVE_ORDER.compare(Path.of("/foo"), Path.of("/foo/bar")) < 0);
-		Assert.assertTrue(FileMap.CASE_INSENSITIVE_ORDER.compare(Path.of("/foo/baz"), Path.of("/foo/bar")) > 0);
-		Assert.assertTrue(FileMap.CASE_INSENSITIVE_ORDER.compare(Path.of("/foo/bar/baz"), Path.of("/foo/bar")) > 0);
-		Assert.assertTrue(FileMap.CASE_INSENSITIVE_ORDER.compare(Path.of(""), Path.of("/foo/bar")) < 0);
-	}
 
 }

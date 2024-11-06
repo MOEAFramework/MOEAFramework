@@ -20,9 +20,11 @@ package org.moeaframework.analysis.store.fs;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.LinkedHashMap;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.moeaframework.analysis.store.Reference;
@@ -32,46 +34,75 @@ import org.moeaframework.core.Constructable;
 
 /**
  * Stores files in a hierarchical folder structure, alternating between the index name and the associated index value.
+ * When given a {@link Schema}, the structure defined by the schema is used.  However, if schemaless, this reuses
+ * the existing folder hierarchy.
+ * <p>
+ * Paths are treated in a case-insensitive manner, even on platforms with case-sensitive file systems.
  */
 public class HierarchicalFileMap extends FileMap {
-				
+	
+	private static final Comparator<Path> CASE_INSENSITIVE_ORDER = new CaseInsensitivePathComparator();
+	
+	/**
+	 * Constructs a new hierarchical file map.
+	 */
 	public HierarchicalFileMap() {
 		super();
 	}
 	
+	// Implementation Note: Files.walk(path, 1) includes path as the first visited file, so we call skip(1) to only
+	// include the path contents.
+	
 	@Override
 	public Path mapContainer(Schema schema, Path root, Reference reference) throws IOException {
 		Path path = root;
-		Map<Path, Path> remaining = new LinkedHashMap<>();
+		List<Pair<Field<?>, String>> resolvedPath = schema.resolve(reference);
+		Map<Path, Path> remainingPaths = new TreeMap<>(CASE_INSENSITIVE_ORDER);
 
-		for (Pair<Field<?>, String> entry : schema.resolve(reference)) {
-			remaining.put(escapePath(entry.getKey().getName()), escapePath(entry.getValue()));
+		for (Pair<Field<?>, String> entry : resolvedPath) {
+			Path escapedKey = escapePath(entry.getKey().getName());
+			Path escapedValue = escapePath(entry.getValue());
+			
+			remainingPaths.put(escapedKey, escapedValue);
 		}
 		
 		// When schemaless, match any existing folder structure
 		if (schema.isSchemaless()) {
-			while (!remaining.isEmpty()) {
-				if (!Files.exists(path)) {
-					break;
-				}
-				
-				Optional<Path> match = Files.walk(path)
+			while (Files.exists(path) && !remainingPaths.isEmpty()) {
+				Optional<Path> matchingKey = Files.walk(path, 1)
+						.skip(1)
 						.filter(Files::isDirectory)
-						.filter(x -> remaining.containsKey(x.getFileName()))
+						.map(x -> x.getFileName())
+						.filter(x -> remainingPaths.containsKey(x))
 						.findFirst();
 					
-				if (!match.isPresent()) {
+				if (!matchingKey.isPresent()) {
 					break;
 				}
 				
-				Path matchingPath = match.get().getFileName();
-				path = path.resolve(matchingPath).resolve(remaining.remove(matchingPath));
+				Path key = matchingKey.get();
+				Path value = remainingPaths.remove(key);
+				path = path.resolve(key);
+				
+				Optional<Path> matchingValue = Files.walk(path, 1)
+						.skip(1)
+						.filter(Files::isDirectory)
+						.map(x -> x.getFileName())
+						.filter(x -> CASE_INSENSITIVE_ORDER.compare(x, value) == 0)
+						.findFirst();
+				
+				path = path.resolve(matchingValue.orElse(value));
 			}
 		}
 		
 		// Remaining folder structure must match order
-		for (Path remainingPath : remaining.keySet()) {
-			path = path.resolve(remainingPath).resolve(remaining.get(remainingPath));
+		for (Pair<Field<?>, String> entry : resolvedPath) {
+			Path escapedKey = escapePath(entry.getKey().getName());
+			Path escapedValue = escapePath(entry.getValue());
+			
+			if (remainingPaths.containsKey(escapedKey)) {
+				path = path.resolve(escapedKey).resolve(escapedValue);
+			}
 		}
 			
 		return path;
@@ -79,8 +110,19 @@ public class HierarchicalFileMap extends FileMap {
 	
 	@Override
 	public Path mapBlob(Schema schema, Path root, Reference reference, String name) throws IOException {
-		Path path = mapContainer(schema, root, reference);
-		return path.resolve(escapePath(name));
+		Path escapedName = escapePath(name);
+		Path containerPath = mapContainer(schema, root, reference);
+		Optional<Path> matchingFile = Optional.empty();
+		
+		if (Files.exists(containerPath)) {
+			matchingFile = Files.walk(containerPath, 1)
+					.skip(1)
+					.map(x -> x.getFileName())
+					.filter(x -> CASE_INSENSITIVE_ORDER.compare(x, escapedName) == 0)
+					.findFirst();
+		}
+		
+		return containerPath.resolve(matchingFile.orElse(escapedName));
 	}
 	
 	@Override

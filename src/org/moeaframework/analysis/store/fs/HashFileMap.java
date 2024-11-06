@@ -24,6 +24,9 @@ import org.moeaframework.analysis.store.Reference;
 import org.moeaframework.analysis.store.schema.Schema;
 import org.moeaframework.core.Constructable;
 
+/**
+ * File map that uses a hashed file names.
+ */
 public class HashFileMap extends FileMap {
 
 	private final int prefixLength;

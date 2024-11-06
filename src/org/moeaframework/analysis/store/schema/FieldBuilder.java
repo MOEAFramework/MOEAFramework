@@ -27,19 +27,19 @@ public class FieldBuilder {
 	}
 	
 	public Field<Integer> asInt() {
-		return new Field<>(name, Integer.class, Integer::valueOf);
+		return new Field<>(name, Integer.class);
 	}
 	
 	public Field<Long> asLong() {
-		return new Field<>(name, Long.class, Long::valueOf);
+		return new Field<>(name, Long.class);
 	}
 	
 	public Field<Double> asDecimal() {
-		return new Field<>(name, Double.class, Double::valueOf);
+		return new Field<>(name, Double.class);
 	}
 	
 	public Field<String> asString() {
-		return new Field<>(name, String.class, String::valueOf);
+		return new Field<>(name, String.class);
 	}
 
 }

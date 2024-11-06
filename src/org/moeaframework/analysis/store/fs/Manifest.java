@@ -29,6 +29,11 @@ public class Manifest extends TypedProperties {
 	
 	public static final String FILENAME = ".manifest";
 	
+	/**
+	 * Validates the two manifests are equal.
+	 * 
+	 * @param expected the expected manifest
+	 */
 	public void validate(Manifest expected) {
 		Set<String> keys = new HashSet<String>();
 		keys.addAll(keySet());

@@ -103,8 +103,8 @@ class Hash {
 		MessageDigest digest = newMessageDigest();
 		
 		for (Pair<Field<?>, String> entries : schema.resolve(reference)) {
-			digest.update(entries.getKey().getName().getBytes(UTF8));
-			digest.update(entries.getValue().getBytes(UTF8));
+			digest.update(entries.getKey().getNormalizedName().getBytes(UTF8));
+			digest.update(entries.getKey().getNormalizedValue(entries.getValue()).getBytes(UTF8));
 		}
 		
 		return new Hash(digest);

@@ -17,28 +17,36 @@
  */
 package org.moeaframework.analysis.store.schema;
 
-import java.util.function.Function;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.analysis.store.Reference;
+import org.moeaframework.core.Named;
 
-public class Field<T extends Comparable<? super T>> implements Comparable<Field<T>> {
+/**
+ * A field defined in a schema.  Fields are case-insensitive and provide methods for ordering and matching fields
+ * in a case-insensitive manner.
+ * 
+ * @param <T> the type of this field
+ */
+public class Field<T extends Comparable<? super T>> implements Comparable<Field<T>>, Named {
 	
 	private final String name;
 	
 	private final String normalizedName;
 	
 	private final Class<T> type;
-	
-	private final Function<String, T> valueOf;
-	
-	Field(String name, Class<T> type, Function<String, T> valueOf) {
+		
+	/**
+	 * Constructs a new field with the given name and type.
+	 * 
+	 * @param name the field name
+	 * @param type the field type
+	 */
+	Field(String name, Class<T> type) {
 		super();
 		this.name = name;
 		this.normalizedName = normalize(name);
 		this.type = type;
-		this.valueOf = valueOf;
 	}
 	
 	/**
@@ -59,28 +67,47 @@ public class Field<T extends Comparable<? super T>> implements Comparable<Field<
 		return new String(chars);
 	}
 	
-	public T cast(Object object) {
-		return type.cast(object);
-	}
-
-	public boolean isDefined(Reference key) {
-		return key.fields().contains(name);
-	}
-
-	public T valueOf(Reference key) {
-		return valueOf.apply(key.get(name));
-	}
-	
+	@Override
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * Returns the normalized name of this field, which is safe to use in case-insensitive operations.
+	 * 
+	 * @return the normalized name
+	 */
 	public String getNormalizedName() {
 		return normalizedName;
 	}
 	
+	/**
+	 * Returns the type of this field.
+	 * 
+	 * @return the type
+	 */
 	public Class<T> getType() {
 		return type;
+	}
+	
+	/**
+	 * Returns the normalized value, which is safe to use in case-insensitive operations.
+	 * 
+	 * @param value the original value
+	 * @return the normalized value
+	 */
+	public String getNormalizedValue(String value) {
+		return normalize(value);
+	}
+	
+	/**
+	 * Returns the normalized value, which is safe to use in case-insensitive operations.
+	 * 
+	 * @param reference the reference from which the value is read
+	 * @return the normalized value
+	 */
+	public String getNormalizedValue(Reference reference) {
+		return normalize(reference.get(name));
 	}
 	
 	@Override
@@ -116,17 +143,29 @@ public class Field<T extends Comparable<? super T>> implements Comparable<Field<
 				.isEquals();
 	}
 	
+	@Override
+	public int compareTo(Field<T> rhs) {
+		return String.CASE_INSENSITIVE_ORDER.compare(normalizedName, rhs.normalizedName);
+	}
+	
+	/**
+	 * Returns {@code true} if this field matches the given name; {@code false} otherwise.
+	 * 
+	 * @param name the name
+	 * @return {@code true} if this field matches the given name; {@code false} otherwise
+	 */
 	public boolean matches(String name) {
 		return normalizedName.equals(normalize(name));
 	}
 	
+	/**
+	 * Constructs a field builder with the given name.
+	 * 
+	 * @param name the field name
+	 * @return the field builder for configuring this field
+	 */
 	public static FieldBuilder named(String name) {
 		return new FieldBuilder(name);
-	}
-
-	@Override
-	public int compareTo(Field<T> rhs) {
-		return String.CASE_INSENSITIVE_ORDER.compare(normalizedName, rhs.normalizedName);
 	}
 	
 }
