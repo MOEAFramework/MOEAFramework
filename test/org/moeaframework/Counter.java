@@ -19,6 +19,7 @@ package org.moeaframework;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class Counter<T> {
 	
@@ -27,6 +28,10 @@ public class Counter<T> {
 	public Counter() {
 		super();
 		this.counters = new HashMap<T, Integer>();
+	}
+	
+	public Set<T> values() {
+		return counters.keySet();
 	}
 	
 	public <S extends T> void incrementAll(S[] values) {

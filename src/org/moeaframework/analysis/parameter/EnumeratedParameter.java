@@ -22,7 +22,7 @@ import java.util.List;
 import org.moeaframework.analysis.sample.Sample;
 
 /**
- * Interface for enumerated parameters that sample from a fixed set of possible values.
+ * Interface for enumerated parameters that can either enumerate all possible values or produce a sampling.
  *
  * @param <T> the type of the parameter
  */

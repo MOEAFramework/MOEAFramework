@@ -29,12 +29,14 @@ public interface SampledParameter<T> extends Parameter<T> {
 	/**
 	 * Samples this parameter and assigns the value to the sample.  The scale is a value between {@code 0.0} and
 	 * {@code 1.0}, typically supplied by a {@link org.moeaframework.util.sequence.Sequence}, used to generate the
-	 * sampled value.  As such, a scale of {@code 0.0} typically maps to the smallest parameter value, {@code 1.0} to
-	 * the largest parameter value, and all such values in between.
+	 * sampled value.
+	 * <p>
+	 * When converting the scale to the parameter value, implementations are expected to provide equal weighting to
+	 * each possible value, so that a value does not appear more or less often than any other value.
 	 * 
 	 * @param sample the sample
 	 * @param scale value between {@code 0.0} and {@code 1.0} used to generate the sample
 	 */
-	public void apply(Sample sample, double scale);
+	public void sample(Sample sample, double scale);
 
 }

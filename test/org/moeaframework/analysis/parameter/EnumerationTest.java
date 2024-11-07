@@ -20,9 +20,12 @@ package org.moeaframework.analysis.parameter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.analysis.sample.Sample;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.util.io.Tokenizer;
 
 public class EnumerationTest {
@@ -54,6 +57,45 @@ public class EnumerationTest {
 		Assert.assertSize(2, result);
 		Assert.assertEquals(100, parameter.readValue(result.get(0)));
 		Assert.assertEquals(200, parameter.readValue(result.get(1)));
+	}
+	
+	@Test
+	public void testSample() {
+		Sample sample = new Sample();
+		Enumeration<Integer> parameter = new Enumeration<Integer>("foo", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		
+		parameter.sample(sample, 0.0);
+		Assert.assertEquals(0, parameter.readValue(sample));
+		
+		parameter.sample(sample, 1.0);
+		Assert.assertEquals(10, parameter.readValue(sample));
+		
+		parameter.sample(sample, 0.5);
+		Assert.assertEquals(5, parameter.readValue(sample));
+	}
+	
+	@Test
+	public void testSampleDistribution() {
+		DescriptiveStatistics statistics = new DescriptiveStatistics();
+
+		Sample sample = new Sample();
+		Enumeration<Integer> parameter = new Enumeration<Integer>("foo", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		
+		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+			parameter.sample(sample, PRNG.nextDouble());
+			statistics.addValue(parameter.readValue(sample));
+		}
+
+		Assert.assertUniformDistribution(0, 10, statistics);
+	}
+	
+	@Test
+	public void testSampleOutOfBounds() {
+		Sample sample = new Sample();
+		Enumeration<Integer> parameter = new Enumeration<Integer>("foo", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		
+		Assert.assertThrows(IllegalArgumentException.class, () -> parameter.sample(sample, -0.001));
+		Assert.assertThrows(IllegalArgumentException.class, () -> parameter.sample(sample, 1.001));
 	}
 	
 	@Test

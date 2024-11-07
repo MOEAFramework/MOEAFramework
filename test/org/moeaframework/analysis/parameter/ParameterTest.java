@@ -19,18 +19,26 @@ package org.moeaframework.analysis.parameter;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.util.io.Tokenizer;
 
 public class ParameterTest {
 	
 	@Test
 	public void testDecode() {
-		Tokenizer tokenizer = new Tokenizer();
-		Assert.assertInstanceOf(Constant.class, Parameter.decode(tokenizer, "foo const 1"));
-		Assert.assertInstanceOf(Enumeration.class, Parameter.decode(tokenizer, "foo enum 1 2 3"));
-		Assert.assertInstanceOf(IntegerRange.class, Parameter.decode(tokenizer, "foo int 1 2"));
-		Assert.assertInstanceOf(LongRange.class, Parameter.decode(tokenizer, "foo long 1 2"));
-		Assert.assertInstanceOf(DecimalRange.class, Parameter.decode(tokenizer, "foo decimal 1.0 2.0"));
+		Assert.assertInstanceOf(Constant.class, Parameter.decode("foo const 1"));
+		Assert.assertInstanceOf(Enumeration.class, Parameter.decode("foo enum 1 2 3"));
+		Assert.assertInstanceOf(IntegerRange.class, Parameter.decode("foo int 1 2"));
+		Assert.assertInstanceOf(LongRange.class, Parameter.decode("foo long 1 2"));
+		Assert.assertInstanceOf(DecimalRange.class, Parameter.decode("foo decimal 1.0 2.0"));
+	}
+	
+	@Test(expected = InvalidParameterException.class)
+	public void testDecodeInvalidType() {
+		Parameter.decode("foo bar 1");
+	}
+	
+	@Test(expected = InvalidParameterException.class)
+	public void testMissingType() {
+		Parameter.decode("foo");
 	}
 
 }

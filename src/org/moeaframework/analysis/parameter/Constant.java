@@ -25,17 +25,28 @@ import org.moeaframework.util.io.Tokenizer;
 /**
  * A parameter assigned a constant value.
  * 
- * @param <T> the type of the value
+ * @param <T> the type of this parameter
  */
 public class Constant<T> extends AbstractParameter<T> {
 	
 	private final T value;
 	
+	/**
+	 * Constructs a new constant parameter.
+	 * 
+	 * @param name the name of this parameter
+	 * @param value the constant value
+	 */
 	public Constant(String name, T value) {
 		super(name);
 		this.value = value;
 	}
 	
+	/**
+	 * Returns the constant value.
+	 * 
+	 * @return the constant value
+	 */
 	public T getValue() {
 		return value;
 	}
@@ -50,19 +61,24 @@ public class Constant<T> extends AbstractParameter<T> {
 		return value;
 	}
 	
+	/**
+	 * Applies this constant to the given sample.
+	 * 
+	 * @param sample thes ample
+	 */
 	public void apply(Sample sample) {
 		assignValue(sample, value);
 	}
 	
-	public void apply(List<Sample> samples) {
+	/**
+	 * Applies this constant to the given samples.
+	 * 
+	 * @param samples the samples
+	 */
+	public void apply(Iterable<Sample> samples) {
 		for (Sample sample : samples) {
 			apply(sample);
 		}
-	}
-	
-	@Override
-	public String toString() {
-		return getName() + "(" + getValue() + ")";
 	}
 	
 	@Override

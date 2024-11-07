@@ -17,9 +17,12 @@
  */
 package org.moeaframework.analysis.parameter;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.analysis.sample.Sample;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.util.io.Tokenizer;
 
 public class DecimalRangeTest {
@@ -40,27 +43,42 @@ public class DecimalRangeTest {
 	}
 
 	@Test
-	public void testApply() {
+	public void testSample() {
 		Sample sample = new Sample();
 		DecimalRange parameter = new DecimalRange("foo", 100.0, 1000.0);
 		
-		parameter.apply(sample, 0.0);
+		parameter.sample(sample, 0.0);
 		Assert.assertEquals(100.0, parameter.readValue(sample));
 		
-		parameter.apply(sample, 1.0);
+		parameter.sample(sample, 1.0);
 		Assert.assertEquals(1000.0, parameter.readValue(sample));
 		
-		parameter.apply(sample, 0.5);
+		parameter.sample(sample, 0.5);
 		Assert.assertEquals(550.0, parameter.readValue(sample));
 	}
 	
 	@Test
-	public void testApplyOutOfBounds() {
+	public void testSampleDistribution() {
+		DescriptiveStatistics statistics = new DescriptiveStatistics();
+
+		Sample sample = new Sample();
+		DecimalRange parameter = new DecimalRange("foo", 0.0, 10.0);
+		
+		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+			parameter.sample(sample, PRNG.nextDouble());
+			statistics.addValue(parameter.readValue(sample));
+		}
+
+		Assert.assertUniformDistribution(0.0, 10.0, statistics);
+	}
+	
+	@Test
+	public void testSampleOutOfBounds() {
 		Sample sample = new Sample();
 		DecimalRange parameter = new DecimalRange("foo", 100.0, 1000.0);
 		
-		Assert.assertThrows(IllegalArgumentException.class, () -> parameter.apply(sample, -0.001));
-		Assert.assertThrows(IllegalArgumentException.class, () -> parameter.apply(sample, 1.001));
+		Assert.assertThrows(IllegalArgumentException.class, () -> parameter.sample(sample, -0.001));
+		Assert.assertThrows(IllegalArgumentException.class, () -> parameter.sample(sample, 1.001));
 	}
 	
 	@Test
@@ -94,9 +112,9 @@ public class DecimalRangeTest {
 	
 	@Test
 	public void testApplyPrecision() {
-		Assert.assertEquals(0.0, DecimalRange.applyPrecision(0.000000000000001), 0.0000000000000001);
-		Assert.assertEquals(0.5555555556, DecimalRange.applyPrecision(0.555555555555555), 0.0000000000000001);
-		Assert.assertEquals(1.0, DecimalRange.applyPrecision(0.999999999999999), 0.0000000000000001);
+		Assert.assertEquals("0.0", DecimalRange.applyPrecision(0.000000000000001));
+		Assert.assertEquals("0.5555555556", DecimalRange.applyPrecision(0.555555555555555));
+		Assert.assertEquals("1.0", DecimalRange.applyPrecision(0.999999999999999));
 	}
 
 }

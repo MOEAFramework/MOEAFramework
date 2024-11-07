@@ -25,6 +25,7 @@ import java.util.stream.Stream;
 
 import org.moeaframework.analysis.sample.Sample;
 import org.moeaframework.util.io.Tokenizer;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * An enumeration of a fixed set of possible values.  This parameter can either be used to enumerate all possible
@@ -80,8 +81,8 @@ public class Enumeration<T> extends AbstractParameter<T> implements EnumeratedPa
 			}
 		}
 		
-		throw new InvalidParameterException(getName(), "enumeration expected to have a value in " + values +
-				", but was '" + str + "'");
+		throw new InvalidParameterException(getName(), "invalid value '" + str + "', expected one of: " +
+				values.stream().map(x -> x.toString()).collect(Collectors.joining(", ")));
 	}
 
 	@Override
@@ -101,19 +102,10 @@ public class Enumeration<T> extends AbstractParameter<T> implements EnumeratedPa
 	}
 	
 	@Override
-	public void apply(Sample sample, double scale) {
+	public void sample(Sample sample, double scale) {
+		Validate.that("scale", scale).isBetween(0.0, 1.0);
 		int index = (int)(scale * Math.nextAfter(values.size(), Double.NEGATIVE_INFINITY));
 		assignValue(sample, values.get(index));
-	}
-	
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(getName());
-		sb.append("(");
-		sb.append(values.stream().map(v -> v.toString()).collect(Collectors.joining(",")));
-		sb.append(")");
-		return sb.toString();
 	}
 
 	@Override

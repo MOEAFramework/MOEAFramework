@@ -41,11 +41,18 @@ import org.moeaframework.util.format.TabularData;
 import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.io.Tokenizer;
 
+/**
+ * A collection of samples, typically associated with a parameter set that generated the samples.
+ */
 public class Samples implements Iterable<Sample>, Formattable<Sample> {
 
 	private final ParameterSet parameterSet;
 
 	private final List<Sample> samples;
+	
+	public Samples() {
+		this(null);
+	}
 
 	public Samples(ParameterSet parameterSet) {
 		super();

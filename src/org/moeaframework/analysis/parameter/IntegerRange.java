@@ -74,15 +74,10 @@ NumericParameter<Integer> {
 	}
 	
 	@Override
-	public void apply(Sample sample, double scale) {
+	public void sample(Sample sample, double scale) {
 		Validate.that("scale", scale).isBetween(0.0, 1.0);
 		sample.setInt(getName(), (int)(lowerBound + scale *
 				Math.nextAfter(upperBound - lowerBound + 1, Double.NEGATIVE_INFINITY)));
-	}
-	
-	@Override
-	public String toString() {
-		return getName() + "(" + getLowerBound() + ", " + getUpperBound() + ")";
 	}
 	
 	@Override

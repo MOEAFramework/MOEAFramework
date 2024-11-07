@@ -44,7 +44,7 @@ public class ParameterSampleExample {
 		
 		// Sampling population size with 10 random seeds
 		Enumeration<Integer> populationSize = Parameter.named("populationSize").asInt().range(10, 100, 10);
-		Enumeration<Long> seed = Parameter.named("seed").asLong().random(10);
+		Enumeration<Long> seed = Parameter.named("seed").asLong().random(0, Long.MAX_VALUE, 10);
 		
 		// Enumerate the samples
 		ParameterSet parameters = new ParameterSet(populationSize, seed);

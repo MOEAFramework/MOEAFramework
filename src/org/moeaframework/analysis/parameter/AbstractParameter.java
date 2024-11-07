@@ -17,8 +17,10 @@
  */
 package org.moeaframework.analysis.parameter;
 
+import org.moeaframework.util.io.Tokenizer;
+
 /**
- * Abstract parameter, primarily for storing the name.
+ * Abstract parameter implementation.
  * 
  * @param <T> the type of the parameter
  */
@@ -39,6 +41,11 @@ public abstract class AbstractParameter<T> implements Parameter<T> {
 	@Override
 	public String getName() {
 		return name;
+	}
+	
+	@Override
+	public String toString() {
+		return encode(new Tokenizer());
 	}
 	
 }

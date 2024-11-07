@@ -19,7 +19,6 @@ package org.moeaframework.analysis.parameter;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -43,7 +42,7 @@ import org.moeaframework.util.validate.Validate;
  */
 public class ParameterSet implements Iterable<Parameter<?>> {
 	
-	protected final List<Parameter<?>> parameters;
+	private final List<Parameter<?>> parameters;
 	
 	/**
 	 * Constructs a new, empty parameter set.
@@ -168,7 +167,7 @@ public class ParameterSet implements Iterable<Parameter<?>> {
 	/**
 	 * Generates samples according so some sequence.  The sequence is used to generate numbers between {@code 0.0} and
 	 * {@code 1.0}, which are then converted to the parameter value by calling
-	 * {@link SampledParameter#apply(Sample, double)}.
+	 * {@link SampledParameter#sample(Sample, double)}.
 	 * 
 	 * @param numberOfSamples the number of samples to generate
 	 * @param sequence the sequence generator
@@ -201,7 +200,7 @@ public class ParameterSet implements Iterable<Parameter<?>> {
 				Sample sample = new Sample();
 				
 				for (int i = 0; i < sampledParameters.size(); i++) {
-					sampledParameters.get(i).apply(sample, seq[i]);
+					sampledParameters.get(i).sample(sample, seq[i]);
 				}
 				
 				result.add(sample);
@@ -248,7 +247,7 @@ public class ParameterSet implements Iterable<Parameter<?>> {
 	 * @throws IOException if an I/O error occurred
 	 * @throws InvalidParameterException if any parameter was invalid
 	 */
-	public static ParameterSet load(File file) throws FileNotFoundException, IOException {
+	public static ParameterSet load(File file) throws IOException {
 		try (FileReader reader = new FileReader(file)) {
 			return load(reader);
 		}

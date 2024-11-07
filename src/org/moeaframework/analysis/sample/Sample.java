@@ -30,16 +30,31 @@ import org.moeaframework.core.TypedProperties;
  */
 public class Sample extends TypedProperties implements Referenceable {
 
+	/**
+	 * Constructs a new, empty sample.
+	 */
 	public Sample() {
 		super(TypedProperties.DEFAULT_SEPARATOR, true);
 	}
 
+	/**
+	 * Creates a copy of this parameter.
+	 * 
+	 * @return the copy
+	 */
 	public Sample copy() {
 		Sample copy = new Sample();
 		copy.addAll(this);
 		return copy;
 	}
 	
+	/**
+	 * Reads the value of a parameter from this sample.
+	 * 
+	 * @param <T> the type of the parameter
+	 * @param parameter the parameter
+	 * @return the parameter value
+	 */
 	public <T> T get(Parameter<T> parameter) {
 		return parameter.readValue(this);
 	}

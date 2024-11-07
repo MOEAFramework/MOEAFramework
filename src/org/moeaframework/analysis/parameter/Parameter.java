@@ -20,6 +20,7 @@ package org.moeaframework.analysis.parameter;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 import org.moeaframework.analysis.sample.Sample;
 import org.moeaframework.core.Named;
@@ -87,6 +88,17 @@ public interface Parameter<T> extends Named {
 	/**
 	 * Decodes the string representation of a parameter.
 	 * 
+	 * @param line the string representation
+	 * @return the decoded parameter
+	 * @throws InvalidParameterException if the string representation is not a valid parameter
+	 */
+	public static Parameter<?> decode(String line) {
+		return decode(new Tokenizer(), line);
+	}
+	
+	/**
+	 * Decodes the string representation of a parameter.
+	 * 
 	 * @param tokenizer the tokenizer
 	 * @param line the string representation
 	 * @return the decoded parameter
@@ -121,7 +133,7 @@ public interface Parameter<T> extends Named {
 			}
 			
 			throw new InvalidParameterException(tokens[0], "invalid type '" + tokens[1] + "', valid values: " +
-					String.join(", ", types.keySet().toArray(String[]::new)));
+					types.keySet().stream().collect(Collectors.joining(", ")));
 		}
 		
 		return decoder.apply(tokenizer, line);

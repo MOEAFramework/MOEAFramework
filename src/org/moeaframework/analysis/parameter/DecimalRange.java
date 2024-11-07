@@ -31,11 +31,11 @@ import org.moeaframework.util.validate.Validate;
 public class DecimalRange extends AbstractParameter<Double> implements SampledParameter<Double>,
 NumericParameter<Double> {
 	
-	private static final DecimalFormat FORMAT;
+	private static final DecimalFormat PRECISION_FORMAT;
 	
 	static {
 		int digits = (int)-Math.log10(Settings.EPS);
-		FORMAT = new DecimalFormat("#." + "#".repeat(digits));
+		PRECISION_FORMAT = new DecimalFormat("0.0" + (digits > 1 ? "#".repeat(digits-1) : ""));
 	}
 	
 	private final double lowerBound;
@@ -82,14 +82,9 @@ NumericParameter<Double> {
 	}
 	
 	@Override
-	public void apply(Sample sample, double scale) {
+	public void sample(Sample sample, double scale) {
 		Validate.that("scale", scale).isBetween(0.0, 1.0);
-		sample.setDouble(getName(), applyPrecision(lowerBound + scale * (upperBound - lowerBound)));
-	}
-	
-	@Override
-	public String toString() {
-		return getName() + "(" + getLowerBound() + ", " + getUpperBound() + ")";
+		sample.setString(getName(), applyPrecision(lowerBound + scale * (upperBound - lowerBound)));
 	}
 	
 	@Override
@@ -129,10 +124,10 @@ NumericParameter<Double> {
 	 * floating-point representation / arithmetic from manifesting as different parameter values.
 	 * 
 	 * @param value the original decimal value
-	 * @return the rounded decimal value
+	 * @return the rounded decimal value stored as a string
 	 */
-	public static double applyPrecision(double value) {
-		return Double.parseDouble(FORMAT.format(value));
+	public static String applyPrecision(double value) {
+		return PRECISION_FORMAT.format(value);
 	}
 
 }
