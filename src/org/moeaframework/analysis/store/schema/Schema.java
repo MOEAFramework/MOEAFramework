@@ -33,7 +33,7 @@ import org.moeaframework.analysis.store.fs.Manifest;
 
 /**
  * A schema that defines the structure of a {@link DataStore}, specifically detailing the required fields, their types,
- * and order.  This is useful to validation, ensuring the data being stored contains all required information.
+ * and order.  This is useful for validation, ensuring the data being stored contains all required information.
  * <p>
  * If no fields are defined, this instead operates in <strong>schemaless</strong> mode, wherein such validations are
  * skipped and the structure is inferred from the reference only.  Fields are sorted according to their natural order.
@@ -42,19 +42,43 @@ public class Schema {
 	
 	private final List<Field<?>> fields;
 	
+	/**
+	 * Constructs a schema with the given fields.
+	 * 
+	 * @param fields the fields, which if empty operates in schemaless mode
+	 */
 	protected Schema(Field<?>... fields) {
 		super();
 		this.fields = List.of(fields);
 	}
 	
+	/**
+	 * Returns the number of fields defined by this schema.
+	 * 
+	 * @return the number of fields
+	 */
 	public int size() {
 		return fields.size();
 	}
 	
+	/**
+	 * Returns the field at the given index.
+	 * 
+	 * @param index the index
+	 * @return the field at the given index
+	 * @throws IndexOutOfBoundsException if the index is out of bounds
+	 */
 	public Field<?> get(int index) {
 		return fields.get(index);
 	}
 	
+	/**
+	 * Returns the field with the given name.
+	 * 
+	 * @param name the field name
+	 * @return the field with the given name
+	 * @throws IllegalArgumentException if no such field exists
+	 */
 	public Field<?> get(String name) {
 		for (Field<?> field : fields) {
 			if (field.matches(name)) {
@@ -65,6 +89,11 @@ public class Schema {
 		throw new IllegalArgumentException("No field with name '" + name + "' exists");
 	}
 	
+	/**
+	 * Returns all fields defined by this schema in their designated order.
+	 * 
+	 * @return the fields
+	 */
 	public List<Field<?>> getFields() {
 		return Collections.unmodifiableList(fields);
 	}
@@ -75,6 +104,7 @@ public class Schema {
 	 * 
 	 * @param reference the data reference
 	 * @return the resolved fields and values according to this schema
+	 * @throws IllegalArgumentException if the reference did not satisfy the requirements of this schema
 	 */
 	public List<Pair<Field<?>, String>> resolve(Reference reference) {
 		List<Pair<Field<?>, String>> result = new ArrayList<>();
@@ -104,6 +134,11 @@ public class Schema {
 		return result;
 	}
 
+	/**
+	 * Returns {@code true} if schemaless or has no defined fields; {@code false} otherwise
+	 * 
+	 * @return @code true} if schemaless; {@code false} otherwise
+	 */
 	public boolean isSchemaless() {
 		return fields.isEmpty();
 	}
@@ -153,11 +188,22 @@ public class Schema {
 				.isEquals();
 	}
 	
+	/**
+	 * Constructs a schema with the given fields.
+	 * 
+	 * @param fields the fields
+	 * @return the schema
+	 */
 	@SafeVarargs
 	public static Schema of(Field<?>... fields) {
 		return new Schema(fields);
 	}
 	
+	/**
+	 * Constructs a schema without any defined fields (i.e., schemaless).
+	 * 
+	 * @return the schema
+	 */
 	public static Schema schemaless() {
 		return new Schema();
 	}

@@ -17,13 +17,8 @@
  */
 package org.moeaframework.snippet;
 
-import java.io.IOException;
-
-import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.analysis.plot.Plot;
-import org.moeaframework.analysis.store.Blob;
-import org.moeaframework.analysis.store.TransactionalOutputStream;
 import org.moeaframework.analysis.stream.DataStream;
 import org.moeaframework.analysis.stream.Groupings;
 import org.moeaframework.analysis.stream.Measures;
@@ -53,17 +48,4 @@ public class MigrationSnippet {
 		Plot.disposeAll();
 	}
 	
-	@Test
-	@Ignore
-	public void samples() throws IOException {
-		byte[] content = new byte[0];
-		Blob blob = null;
-		
-		// begin-example:TransactionalOutputStream
-		try (TransactionalOutputStream out = blob.openOutputStream()) {
-			out.write(content);
-			out.commit();
-		}
-		// end-example:TransactionalOutputStream
-	}
 }

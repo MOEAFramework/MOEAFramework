@@ -36,7 +36,7 @@ public class ParameterBuilder {
 	 * 
 	 * @param name the parameter name
 	 */
-	public ParameterBuilder(String name) {
+	ParameterBuilder(String name) {
 		super();
 		this.name = name;
 	}
@@ -164,7 +164,7 @@ public class ParameterBuilder {
 		
 		protected final String name;
 		
-		public TypedParameterBuilder(String name) {
+		TypedParameterBuilder(String name) {
 			super();
 			this.name = name;
 		}
@@ -176,7 +176,7 @@ public class ParameterBuilder {
 	 */
 	public static class IntegerBuilder extends TypedParameterBuilder {
 		
-		public IntegerBuilder(String name) {
+		IntegerBuilder(String name) {
 			super(name);
 		}
 		
@@ -285,7 +285,7 @@ public class ParameterBuilder {
 	 */
 	public static class LongBuilder extends TypedParameterBuilder {
 		
-		public LongBuilder(String name) {
+		LongBuilder(String name) {
 			super(name);
 		}
 		
@@ -394,7 +394,7 @@ public class ParameterBuilder {
 	 */
 	public static class DecimalBuilder extends TypedParameterBuilder {
 		
-		public DecimalBuilder(String name) {
+		DecimalBuilder(String name) {
 			super(name);
 		}
 		
@@ -481,7 +481,7 @@ public class ParameterBuilder {
 	 */
 	public static class StringBuilder extends TypedParameterBuilder {
 		
-		public StringBuilder(String name) {
+		StringBuilder(String name) {
 			super(name);
 		}
 		

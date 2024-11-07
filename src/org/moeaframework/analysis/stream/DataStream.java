@@ -79,14 +79,14 @@ public interface DataStream<V> extends Formattable<V> {
 	}
 	
 	/**
-	 * Applies a function to each value in the stream, returning a stream of the results.
+	 * Applies a function to each value in the stream, returning a partition of the results.
 	 * 
 	 * @param <R> the result type
 	 * @param map the mapping function
-	 * @return the stream of results
+	 * @return the partition of results
 	 */
-	public default <R> DataStream<R> map(Function<V, R> map) {
-		return new ImmutableDataStream<R>(stream().map(map));
+	public default <R> Partition<V, R> map(Function<V, R> map) {
+		return new ImmutablePartition<V, R>(stream().map(x -> Pair.of(x, map.apply(x))));
 	}
 	
 	/**

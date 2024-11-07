@@ -22,7 +22,6 @@ import org.moeaframework.analysis.parameter.Enumeration;
 import org.moeaframework.analysis.parameter.Parameter;
 import org.moeaframework.analysis.parameter.ParameterSet;
 import org.moeaframework.analysis.plot.Plot;
-import org.moeaframework.analysis.sample.Sample;
 import org.moeaframework.analysis.sample.SampledResults;
 import org.moeaframework.analysis.sample.Samples;
 import org.moeaframework.analysis.stream.Groupings;
@@ -42,7 +41,7 @@ public class ParameterSampleExample {
 	public static void main(String[] args) throws Exception {
 		Problem problem = new DTLZ2(2);
 		
-		// Sampling population size with 10 random seeds
+		// Sampling a range of population sizes with 10 random seeds
 		Enumeration<Integer> populationSize = Parameter.named("populationSize").asInt().range(10, 100, 10);
 		Enumeration<Long> seed = Parameter.named("seed").asLong().random(0, Long.MAX_VALUE, 10);
 		
@@ -50,18 +49,16 @@ public class ParameterSampleExample {
 		ParameterSet parameters = new ParameterSet(populationSize, seed);
 		Samples samples = parameters.enumerate();
 		
-		// Use streams to evaluate and analyze the results	
-		SampledResults<NondominatedPopulation> results = new SampledResults<>(parameters);
-				
-		for (Sample sample : samples) {
+		// Evaluate each sample
+		SampledResults<NondominatedPopulation> results = samples.evaluateAll(sample -> {
 			PRNG.setSeed(sample.getLong("seed"));
 			
 			NSGAII algorithm = new NSGAII(problem);
 			algorithm.applyConfiguration(sample);
 			algorithm.run(10000);
 			
-			results.add(sample, algorithm.getResult());
-		}
+			return algorithm.getResult();
+		});
 										
 		// Calculate the average hypervolume for population size
 		Hypervolume hypervolume = new Hypervolume(problem, NondominatedPopulation.load("./pf/DTLZ2.2D.pf"));

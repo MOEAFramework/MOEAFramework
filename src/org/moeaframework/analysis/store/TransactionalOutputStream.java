@@ -37,10 +37,21 @@ public abstract class TransactionalOutputStream extends FilterOutputStream {
 	
 	private boolean isClosed = false;
 	
+	/**
+	 * Constructs a transactional output stream.
+	 * 
+	 * @param out the temporary output stream, where content is written before it is committed
+	 */
 	public TransactionalOutputStream(OutputStream out) {
 		super(out);
 	}
 	
+	/**
+	 * Indicates the content was successfully written.  This method must be called before {@link #close()} to
+	 * take effect.
+	 * 
+	 * @throws IOException if an I/O error occurred
+	 */
 	public void commit() throws IOException {
 		isCommitted = true;
 	}
@@ -63,8 +74,18 @@ public abstract class TransactionalOutputStream extends FilterOutputStream {
 		isClosed = true;
 	}
 
+	/**
+	 * Called during {@link #close()} to commit or complete the transaction.
+	 * 
+	 * @throws IOException if an I/O error occurred
+	 */
 	protected abstract void doCommit() throws IOException;
 	
+	/**
+	 * Called during {@link #close()} to rollback the transaction.
+	 * 
+	 * @throws IOException if an I/O error occurred
+	 */
 	protected abstract void doRollback() throws IOException;
 
 }

@@ -19,7 +19,6 @@ package org.moeaframework.analysis.sample;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -30,6 +29,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -43,65 +43,132 @@ import org.moeaframework.util.io.Tokenizer;
 
 /**
  * A collection of samples, typically associated with a parameter set that generated the samples.
+ * <p>
+ * Samples can be stored in a file using the {@link #save(File)} and {@link #load(File, ParameterSet)} methods.
+ * The file begins with a header line listing the parameter names.  Then, each sample is written on its own line,
+ * with the parameter values separated by whitespace.  The ordering of parameters must match the provided
+ * {@link ParameterSet}.
  */
 public class Samples implements Iterable<Sample>, Formattable<Sample> {
 
 	private final ParameterSet parameterSet;
 
 	private final List<Sample> samples;
-	
-	public Samples() {
-		this(null);
-	}
 
+	/**
+	 * Constructs an empty collection of samples.
+	 * 
+	 * @param parameterSet the parameter set defining the parameters included in each sample
+	 */
 	public Samples(ParameterSet parameterSet) {
 		super();
 		this.parameterSet = parameterSet;
 		this.samples = Collections.synchronizedList(new ArrayList<>());
 	}
 
+	/**
+	 * Constructs an empty collection of samples.
+	 * 
+	 * @param parameterSet the parameter set defining the parameters included in each sample
+	 * @param samples the collection of samples
+	 */
 	public Samples(ParameterSet parameterSet, Collection<Sample> samples) {
 		this(parameterSet);
 		addAll(samples);
 	}
 
+	/**
+	 * Constructs an empty collection of samples.
+	 * 
+	 * @param parameterSet the parameter set defining the parameters included in each sample
+	 * @param samples the collection of samples
+	 */
 	public Samples(ParameterSet parameterSet, Iterable<Sample> samples) {
 		this(parameterSet);
 		addAll(samples);
 	}
 	
+	/**
+	 * That parameter set defining the parameters included in these samples.
+	 * 
+	 * @return the parameter set
+	 */
 	public ParameterSet getParameterSet() {
 		return parameterSet;
 	}
 
+	/**
+	 * Returns the number of samples.
+	 * 
+	 * @return the number of samples
+	 */
 	public int size() {
 		return samples.size();
 	}
 
+	/**
+	 * Returns {@code true} if this collection of samples is empty; {@code false} otherwise.
+	 * 
+	 * @return {@code true} if this collection of samples is empty; {@code false} otherwise
+	 */
 	public boolean isEmpty() {
 		return samples.isEmpty();
 	}
 
+	/**
+	 * Adds the given sample to this collection.
+	 * 
+	 * @param sample the sample to add
+	 */
 	void add(Sample sample) {
 		this.samples.add(sample);
 	}
 
+	/**
+	 * Adds all samples to this collection.
+	 * 
+	 * @param samples the samples to add
+	 */
 	void addAll(Collection<Sample> samples) {
 		this.samples.addAll(samples);
 	}
 
+	/**
+	 * Adds all samples to this collection.
+	 * 
+	 * @param samples the samples to add
+	 */
 	void addAll(Iterable<Sample> samples) {
 		for (Sample sample : samples) {
 			add(sample);
 		}
 	}
 	
+	/**
+	 * Returns the sample at the given index.
+	 * 
+	 * @param index the index of the sample
+	 * @return the sample at the given index
+	 * @throws IndexOutOfBoundsException if the index is out of bounds
+	 */
 	public Sample get(int index) {
 		return samples.get(index);
 	}
 	
-	public <T> List<T> distinctValues(Parameter<T> parameter) {
-		return samples.stream().map(x -> parameter.parse(x.getString(parameter.getName()))).distinct().toList();
+	/**
+	 * Evaluates each sample, collecting the results in a {@link SampledResults}.
+	 * 
+	 * @param function the function used to evaluate each sample
+	 * @return the results
+	 */
+	public <T> SampledResults<T> evaluateAll(Function<Sample, T> function) {
+		SampledResults<T> results = new SampledResults<>(parameterSet);
+		
+		for (Sample sample : samples) {
+			results.add(sample, function.apply(sample));
+		}
+		
+		return results;
 	}
 
 	@Override
@@ -147,12 +214,28 @@ public class Samples implements Iterable<Sample>, Formattable<Sample> {
 		return table;
 	}
 
-	public static Samples load(File file, ParameterSet parameterSet) throws FileNotFoundException, IOException {
+	/**
+	 * Loads the samples from a file.
+	 * 
+	 * @param file the source file
+	 * @param parameterSet the parameter set
+	 * @return the loaded samples
+	 * @throws IOException if an I/O error occurred
+	 */
+	public static Samples load(File file, ParameterSet parameterSet) throws IOException {
 		try (FileReader reader = new FileReader(file)) {
 			return load(reader, parameterSet);
 		}
 	}
 	
+	/**
+	 * Loads the samples from a file.
+	 * 
+	 * @param reader the reader
+	 * @param parameterSet the parameter set
+	 * @return the loaded samples
+	 * @throws IOException if an I/O error occurred
+	 */
 	public static Samples load(Reader reader, ParameterSet parameterSet) throws IOException {
 		Tokenizer tokenizer = new Tokenizer();
 		Samples samples = new Samples(parameterSet);
@@ -180,15 +263,41 @@ public class Samples implements Iterable<Sample>, Formattable<Sample> {
 		return samples;
 	}
 
+	/**
+	 * Saves the samples to a file.
+	 * 
+	 * @param file the destination file
+	 * @throws IOException if an I/O error occurred
+	 */
 	public void save(File file) throws IOException {
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
 			save(writer);
 		}
 	}
 	
+	/**
+	 * Saves the samples to a file.
+	 * 
+	 * @param writer the writer
+	 * @throws IOException if an I/O error occurred
+	 */
 	public void save(Writer writer) throws IOException {
 		Tokenizer tokenizer = new Tokenizer();
 		
+		// write a header line
+		writer.write("# ");
+		
+		for (int i = 0; i < parameterSet.size(); i++) {
+			if (i > 0) {
+				writer.write(tokenizer.getDelimiter());
+			}
+			
+			writer.write(tokenizer.escape(parameterSet.get(i).getName()));
+		}
+		
+		writer.write(System.lineSeparator());
+		
+		// write the content
 		for (Sample sample : samples) {
 			for (int i = 0; i < parameterSet.size(); i++) {
 				if (i > 0) {
