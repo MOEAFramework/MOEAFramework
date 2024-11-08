@@ -114,6 +114,7 @@ public class LineReader extends BufferedReader implements Iterable<String>, Iter
 	/**
 	 * Configures the prefix string used to identify comment lines.
 	 * 
+	 * @param commentPrefix the prefix string used to identify comments
 	 * @return a reference to this reader
 	 */
 	public LineReader commentPrefix(String commentPrefix) {

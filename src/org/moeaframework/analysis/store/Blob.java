@@ -25,7 +25,6 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.Reader;
-import java.io.Serializable;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -253,12 +252,11 @@ public interface Blob {
 	/**
 	 * Extracts the blob and deserializes the content.
 	 * 
-	 * @param <T> the type of object that was stored
 	 * @param type the type of the object
 	 * @return the deserialized object
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default <T extends Serializable> T extractObject(Class<T> type) throws IOException {
+	public default <T> T extractObject(Class<T> type) throws IOException {
 		try (InputStream in = openInputStream();
 				ObjectInputStream ois = new ObjectInputStream(in)) {
 			return type.cast(ois.readObject());
@@ -399,13 +397,12 @@ public interface Blob {
 	}
 	
 	/**
-	 * Serializes the given object and stores it in the blob .
+	 * Stores a serializable object to the blob.
 	 * 
-	 * @param <T> the type of object to store
 	 * @param value the object to store
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default <T extends Serializable> void storeObject(T value) throws IOException {
+	public default void storeObject(Object value) throws IOException {
 		try (TransactionalOutputStream out = openOutputStream();
 				ObjectOutputStream oos = new ObjectOutputStream(out)) {
 			oos.writeObject(value);

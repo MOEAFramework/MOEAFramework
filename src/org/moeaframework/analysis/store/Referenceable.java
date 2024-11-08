@@ -17,8 +17,16 @@
  */
 package org.moeaframework.analysis.store;
 
+/**
+ * Interface allowing classes to define their own {@link Reference} to be used with a data store.
+ */
 public interface Referenceable {
 	
+	/**
+	 * Returns the data store reference for this object.
+	 * 
+	 * @return the reference
+	 */
 	public Reference getReference();
 
 }

@@ -21,7 +21,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.stream.Streams;
 import org.apache.commons.math3.ml.clustering.KMeansPlusPlusClusterer;
-import org.moeaframework.util.clustering.DistanceMeasure.ApacheDistanceMeasure;
 import org.moeaframework.util.validate.Validate;
 
 /**

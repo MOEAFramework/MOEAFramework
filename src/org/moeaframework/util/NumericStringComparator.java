@@ -34,6 +34,13 @@ public class NumericStringComparator implements Comparator<String> {
 	
 	private static final Pattern INTEGER_PATTERN = Pattern.compile("([0-9]+)");
 	
+	/**
+	 * Creates a new numeric string comparator.
+	 */
+	public NumericStringComparator() {
+		super();
+	}
+	
 	@Override
 	public int compare(String str1, String str2) {
 		Matcher matcher1 = INTEGER_PATTERN.matcher(str1);

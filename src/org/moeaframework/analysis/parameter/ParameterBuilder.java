@@ -162,7 +162,7 @@ public class ParameterBuilder {
 	 */
 	abstract static class TypedParameterBuilder {
 		
-		protected final String name;
+		final String name;
 		
 		TypedParameterBuilder(String name) {
 			super();

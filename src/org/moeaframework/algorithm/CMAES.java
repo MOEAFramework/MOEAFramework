@@ -585,6 +585,9 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 		Validate.that("diagD (initial standard deviations)", StatUtils.min(diagD)).isGreaterThan(0.0);
 	}
 
+	/**
+	 * Initializes the internal state of the algorithm.
+	 */
 	protected void initializeState() {
 		int N = problem.getNumberOfVariables();
 		Solution prototypeSolution = problem.newSolution();

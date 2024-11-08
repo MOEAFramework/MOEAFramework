@@ -158,6 +158,7 @@ public class Samples implements Iterable<Sample>, Formattable<Sample> {
 	/**
 	 * Evaluates each sample, collecting the results in a {@link SampledResults}.
 	 * 
+	 * @param <T> the return type of the function
 	 * @param function the function used to evaluate each sample
 	 * @return the results
 	 */

@@ -179,15 +179,28 @@ public class MetricFileWriter implements OutputWriter {
 		numberOfEntries++;
 	}
 	
+	/**
+	 * Writes a line to the metric file containing the given decimal values separated by whitespace.
+	 * 
+	 * @param values the values
+	 */
 	protected void write(double[] values) {
 		write(DoubleStream.of(values).mapToObj(x -> Double.toString(x)).toArray(String[]::new));
 	}
 	
+	/**
+	 * Writes a line to the metric file containing the given strings separated by whitespace.
+	 * 
+	 * @param values the values
+	 */
 	protected void write(String[] values) {
 		writer.println(tokenizer.encode(values));
 		writer.flush();
 	}
 	
+	/**
+	 * Writes the header line to the file.
+	 */
 	protected void printHeader() {
 		writer.print("# ");
 		write(Stream.of(Metric.values()).map(x -> x.name()).toArray(String[]::new));
