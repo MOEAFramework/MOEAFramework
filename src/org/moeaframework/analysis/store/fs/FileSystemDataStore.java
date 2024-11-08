@@ -21,6 +21,7 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -31,22 +32,36 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.time.Instant;
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.moeaframework.analysis.store.Container;
 import org.moeaframework.analysis.store.DataStore;
+import org.moeaframework.analysis.store.DataStoreException;
 import org.moeaframework.analysis.store.Blob;
 import org.moeaframework.analysis.store.Reference;
 import org.moeaframework.analysis.store.TransactionalOutputStream;
 import org.moeaframework.analysis.store.TransactionalWriter;
 import org.moeaframework.analysis.store.schema.Schema;
 import org.moeaframework.core.Settings;
+import org.moeaframework.core.TypedProperties;
 
 /**
- * Data store backed by the local file system.  A {@link FileMap} determines the layout of the files.
+ * Data store backed by the local file system.  A {@link FileMap} determines the layout of the containers and blobs.
+ * Unless otherwise specified, {@link HashFileMap} is used.
  */
 public class FileSystemDataStore implements DataStore {
+	
+	/**
+	 * The name of the manifest file, which will be located in the root directory of the data store.
+	 */
+	private static final String MANIFEST_FILENAME = ".manifest";
+	
+	/**
+	 * The name of the reference file, which will be located in each container.
+	 */
+	private static final String REFERENCE_FILENAME = ".reference";
 	
 	private final Path root;
 		
@@ -57,7 +72,7 @@ public class FileSystemDataStore implements DataStore {
 	private final Lock mkdirLock;
 	
 	/**
-	 * Constructs a hierarchical file system data store at the specified directory.
+	 * Constructs a default file system data store at the specified directory.
 	 * 
 	 * @param root the root directory
 	 * @throws IOException if an I/O error occurred
@@ -68,7 +83,7 @@ public class FileSystemDataStore implements DataStore {
 	}
 	
 	/**
-	 * Constructs a hierarchical file system data store at the specified directory.
+	 * Constructs a default file system data store at the specified directory.
 	 * 
 	 * @param root the root directory
 	 * @param schema the schema defining the structure of the data store
@@ -76,7 +91,7 @@ public class FileSystemDataStore implements DataStore {
 	 * @throws ManifestValidationException if the existing manifest failed validation
 	 */
 	public FileSystemDataStore(File root, Schema schema) throws IOException {
-		this(root.toPath(), new HierarchicalFileMap(), schema);
+		this(root.toPath(), new HashFileMap(2), schema);
 	}
 	
 	/**
@@ -129,8 +144,34 @@ public class FileSystemDataStore implements DataStore {
 	}
 
 	@Override
-	public FileSystemContainer getContainer(Reference key) {
+	public Container getContainer(Reference key) {
 		return new FileSystemContainer(key);
+	}
+	
+	@Override
+	public List<Container> listContainers() throws IOException {
+		return Files.walk(root)
+				.skip(1)
+				.filter(Files::isDirectory)
+				.map(path -> {
+					Path referenceFile = path.resolve(REFERENCE_FILENAME);
+					
+					if (!Files.exists(referenceFile)) {
+						return null;
+					}
+					
+					try (FileReader reader = new FileReader(referenceFile.toFile())) {
+						TypedProperties properties = new TypedProperties();
+						properties.load(reader);
+						return (Container)new FileSystemContainer(Reference.of(properties));
+					} catch (FileNotFoundException e) {
+						return null;
+					} catch (IOException e) {
+						throw new DataStoreException("Failed to list container", e);
+					}
+				})
+				.filter(reference -> reference != null)
+				.toList();
 	}
 
 	/**
@@ -160,7 +201,7 @@ public class FileSystemDataStore implements DataStore {
 	 * @throws ManifestValidationException if the existing manifest 
 	 */
 	private void createOrValidateManifest() throws IOException, ManifestValidationException {
-		Path path = getRoot().resolve(Manifest.FILENAME);
+		Path path = getRoot().resolve(MANIFEST_FILENAME);
 		Manifest expectedManifest = getManifest();
 		
 		if (Files.exists(path)) {	
@@ -193,53 +234,78 @@ public class FileSystemDataStore implements DataStore {
 	
 	class FileSystemContainer implements Container {
 		
-		private final Reference key;
+		private final Reference reference;
 		
-		public FileSystemContainer(Reference key) {
+		public FileSystemContainer(Reference reference) {
 			super();
-			this.key = key;
+			this.reference = reference;
 		}
 
 		@Override
-		public Reference getKey() {
-			return key;
+		public Reference getReference() {
+			return reference;
 		}
 
 		@Override
 		public Blob getBlob(String name) {
-			return new FileSystemBlob(key, name);
+			return new FileSystemBlob(reference, name);
 		}
 		
 		@Override
 		public void create() throws IOException {
-			try {
-				mkdirs(fileMap.mapContainer(getSchema(), getRoot(), key));
-			} catch (UnsupportedOperationException e) {
-				// suppress exception - containers are not supported
+			Path container = fileMap.mapContainer(getSchema(), getRoot(), reference);
+			mkdirs(container);
+			
+			Path dest = container.resolve(REFERENCE_FILENAME);
+			
+			if (!Files.exists(dest)) {
+				Path temp = Files.createTempFile("datastore", null);
+				
+				try (TransactionalFileWriter writer = new TransactionalFileWriter(temp.toFile(), dest.toFile())) {
+					TypedProperties properties = new TypedProperties();
+					
+					for (String field : reference.fields()) {
+						properties.setString(field, reference.get(field));
+					}
+					
+					properties.save(writer);
+					writer.commit();
+				}
 			}
 		}
 
 		@Override
 		public boolean exists() throws IOException {
-			try {
-				return Files.exists(fileMap.mapContainer(getSchema(), getRoot(), key));
-			} catch (UnsupportedOperationException e) {
-				// suppress exception - containers are not supported
-				return true;
+			return Files.exists(fileMap.mapContainer(getSchema(), getRoot(), reference));
+		}
+		
+		@Override
+		public List<Blob> listBlobs() throws IOException {
+			Path container = fileMap.mapContainer(getSchema(), getRoot(), reference);
+			
+			if (!Files.exists(container)) {
+				return List.of();
 			}
+			
+			return Files.walk(container, 1)
+				.skip(1)
+				.map(x -> x.getFileName().toString())
+				.filter(x -> x.charAt(0) != '.')
+				.map(x -> getBlob(x))
+				.toList();
 		}
 		
 	}
 	
 	class FileSystemBlob implements Blob {
 		
-		private final Reference key;
+		private final Reference reference;
 		
 		private final String name;
 		
-		public FileSystemBlob(Reference key, String name) {
+		public FileSystemBlob(Reference reference, String name) {
 			super();
-			this.key = key;
+			this.reference = reference;
 			this.name = name;
 		}
 
@@ -250,48 +316,48 @@ public class FileSystemDataStore implements DataStore {
 		
 		@Override
 		public Container getContainer() {
-			return new FileSystemContainer(key);
+			return new FileSystemContainer(reference);
 		}
 
 		@Override
 		public boolean exists() throws IOException {
-			return Files.exists(fileMap.mapBlob(getSchema(), getRoot(), key, name));
+			return Files.exists(fileMap.mapBlob(getSchema(), getRoot(), reference, name));
 		}
 
 		@Override
 		public boolean delete() throws IOException {
-			return Files.deleteIfExists(fileMap.mapBlob(getSchema(), getRoot(), key, name));
+			return Files.deleteIfExists(fileMap.mapBlob(getSchema(), getRoot(), reference, name));
 		}
 
 		@Override
 		public Instant lastModified() throws IOException {
-			return Files.getLastModifiedTime(fileMap.mapBlob(getSchema(), getRoot(), key, name)).toInstant();
+			return Files.getLastModifiedTime(fileMap.mapBlob(getSchema(), getRoot(), reference, name)).toInstant();
 		}
 
 		@Override
 		public Reader openReader() throws IOException {
-			return new FileReader(fileMap.mapBlob(getSchema(), getRoot(), key, name).toFile());
+			return new FileReader(fileMap.mapBlob(getSchema(), getRoot(), reference, name).toFile());
 		}
 
 		@Override
 		public InputStream openInputStream() throws IOException {
-			return new FileInputStream(fileMap.mapBlob(getSchema(), getRoot(), key, name).toFile());
+			return new FileInputStream(fileMap.mapBlob(getSchema(), getRoot(), reference, name).toFile());
 		}
 
 		@Override
 		public TransactionalWriter openWriter() throws IOException {
-			Path dest = fileMap.mapBlob(getSchema(), getRoot(), key, name);
-			mkdirs(dest.getParent());
+			getContainer().create();
 			
+			Path dest = fileMap.mapBlob(getSchema(), getRoot(), reference, name);
 			Path temp = Files.createTempFile("datastore", null);
 			return new TransactionalFileWriter(temp.toFile(), dest.toFile());
 		}
 
 		@Override
 		public TransactionalOutputStream openOutputStream() throws IOException {
-			Path dest = fileMap.mapBlob(getSchema(), getRoot(), key, name);
-			mkdirs(dest.getParent());
+			getContainer().create();
 			
+			Path dest = fileMap.mapBlob(getSchema(), getRoot(), reference, name);
 			Path temp = Files.createTempFile("datastore", null);
 			return new TransactionalFileOutputStream(temp.toFile(), dest.toFile());
 		}

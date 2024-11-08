@@ -99,7 +99,7 @@ class Hash {
 		return of(data.getBytes(UTF8));
 	}
 	
-	public static Hash of(Schema schema, Reference reference, String name) {
+	public static Hash of(Schema schema, Reference reference) {
 		MessageDigest digest = newMessageDigest();
 		
 		for (Pair<Field<?>, String> entries : schema.resolve(reference)) {

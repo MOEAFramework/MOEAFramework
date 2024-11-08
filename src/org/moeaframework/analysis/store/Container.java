@@ -18,6 +18,7 @@
 package org.moeaframework.analysis.store;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * A container of blobs.
@@ -25,11 +26,11 @@ import java.io.IOException;
 public interface Container {
 	
 	/**
-	 * Gets the key for this container.
+	 * Gets the reference for this container.
 	 * 
-	 * @return the key
+	 * @return the reference
 	 */
-	Reference getKey();
+	Reference getReference();
 	
 	/**
 	 * Gets a reference to a blob with the given name.
@@ -40,11 +41,8 @@ public interface Container {
 	Blob getBlob(String name);
 	
 	/**
-	 * Creates the underlying, physical container.  It is typically not required to create the container explicitly,
-	 * as writing to a blob will automatically create the container, if required.
-	 * <p>
-	 * Note that implementations may not have a physical representation of a container, such that this method has no
-	 * effect.  Avoid depending on this method for any particular purpose.
+	 * Creates the underlying, physical container.  Containers are automatically created when writing a blob, so
+	 * an explicit call to create the container is not required.
 	 * 
 	 * @throws IOException if an I/O error occurred
 	 */
@@ -52,15 +50,19 @@ public interface Container {
 	
 	/**
 	 * Returns {@code true} if the underlying, physical container exists.
-	 * <p>
-	 * Note that implementations may not have a physical representation of a container, in which case this method
-	 * will always return {@code true}.  Avoid depending on this method for checking if data exists; instead use
-	 * {@link #contains(String)} to check if specific blobs exist.
 	 * 
 	 * @return {@code true} if the container exists; {@code false} otherwise
 	 * @throws IOException if an I/O error occurred
 	 */
 	boolean exists() throws IOException;
+	
+	/**
+	 * Returns all blobs stored in this container.
+	 * 
+	 * @return the blobs in this container
+	 * @throws IOException if an I/O error occurred
+	 */
+	List<Blob> listBlobs() throws IOException;
 	
 	/**
 	 * Returns {@code true} if the blob identified by this name exists within this container.

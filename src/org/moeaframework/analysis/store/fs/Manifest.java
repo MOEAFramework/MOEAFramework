@@ -28,11 +28,6 @@ import org.moeaframework.core.TypedProperties;
 public class Manifest extends TypedProperties {
 	
 	/**
-	 * The name of the manifest file, which will be located in the root directory of the data store.
-	 */
-	public static final String FILENAME = ".manifest";
-	
-	/**
 	 * Constructs a new, empty manifest.
 	 */
 	public Manifest() {

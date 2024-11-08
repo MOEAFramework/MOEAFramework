@@ -25,7 +25,9 @@ import org.moeaframework.analysis.store.schema.Schema;
 import org.moeaframework.core.Constructable;
 
 /**
- * File map that uses a hashed file names.
+ * File map that hashes the reference to determine the folder structure.  The main use case is on file systems where
+ * {@link HierarchicalFileMap} results in long paths that exceed file system limits, as the file structure is
+ * {@code <hash_prefix>/<hash>/<file>}.
  */
 public class HashFileMap extends FileMap {
 
@@ -38,12 +40,12 @@ public class HashFileMap extends FileMap {
 	
 	@Override
 	public Path mapContainer(Schema schema, Path root, Reference reference) throws IOException {
-		throw new UnsupportedOperationException();
+		return map(root, Hash.of(schema, reference));
 	}
 	
 	@Override
 	public Path mapBlob(Schema schema, Path root, Reference reference, String name) throws IOException {
-		return map(root, Hash.of(schema, reference, name));
+		return map(root, Hash.of(schema, reference)).resolve(escapePath(name));
 	}
 	
 	private Path map(Path root, Hash hash) {

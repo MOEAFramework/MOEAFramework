@@ -59,7 +59,7 @@ public class ParameterSampleExample {
 			
 			return algorithm.getResult();
 		});
-										
+												
 		// Calculate the average hypervolume for population size
 		Hypervolume hypervolume = new Hypervolume(problem, NondominatedPopulation.load("./pf/DTLZ2.2D.pf"));
 

@@ -62,14 +62,10 @@ public class DataStoreExample {
 			Reference reference = Reference.of(algorithm.getConfiguration());
 			Container container = dataStore.getContainer(reference);
 
-			if (!container.contains("indicators")) {
+			if (!container.exists()) {
 				System.out.println("Evaluating " + reference);
 				algorithm.run(10000);
 								
-				container.getBlob("configuration").store((Writer out) -> {
-					algorithm.getConfiguration().save(out);
-				});
-				
 				container.getBlob("result").store((Writer out) -> {
 					algorithm.getResult().save(out);
 				});

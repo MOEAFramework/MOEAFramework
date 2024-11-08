@@ -18,6 +18,7 @@
 package org.moeaframework.analysis.store.fs;
 
 import java.io.IOException;
+import java.io.Writer;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,16 +39,14 @@ import org.moeaframework.core.Constructable;
  *   <li>Invalid or reserved characters are escaped by their hex value (e.g., {@code "/"} becomes {@code "%2F"}).  This
  *       also includes whitespace characters.
  *   <li>The character {@code "%"}, if not being used to escape a value, is represented by {@code "%%"}.
- *   <li>Special filenames, such as {@code "."}, {@code ".."}, and {@code "~"}, are escaped to avoid interpreting as
- *       relative paths.
+ *   <li>If a filename starts with {@code "."} or {@code "~"}, this prefix is escaped.  This serves two purposes.
+ *       First, it prevents interpreting the file name as a relative path.  Second, it reserves the use of hidden files.
  * </ol>
  */
 public abstract class FileMap implements Constructable {
 			
 	private static final CharSequenceTranslator filenameTranslator;
-	
-	private static final Map<String, String> specialFilenames;
-	
+		
 	static {
 		final Map<String, String> filenameEscapeMap = new HashMap<>();
 		filenameEscapeMap.put("%", "%%");
@@ -65,13 +64,30 @@ public abstract class FileMap implements Constructable {
 		filenameEscapeMap.put("\n", "%0A");
 		filenameEscapeMap.put("\r", "%0D");
 		
-		filenameTranslator = new AggregateTranslator(
-				new LookupTranslator(Collections.unmodifiableMap(filenameEscapeMap)));
+		final CharSequenceTranslator prefixTranslator = new CharSequenceTranslator() {
+
+			@Override
+			public int translate(CharSequence input, int index, Writer writer) throws IOException {
+				if (index != 0) {
+					return 0;
+				}
+				
+				if (input.charAt(0) == '.') {
+					writer.write("%46");
+					return 1;
+				} else if (input.charAt(0) == '~') {
+					writer.write("%7E");
+					return 1;
+				}
+				
+				return 0;
+			}
+			
+		};
 		
-		specialFilenames = new HashMap<>();
-		specialFilenames.put(".", "%46");
-		specialFilenames.put("..", "%46%46");
-		specialFilenames.put("~", "%7E");
+		filenameTranslator = new AggregateTranslator(
+				prefixTranslator,
+				new LookupTranslator(Collections.unmodifiableMap(filenameEscapeMap)));
 	}
 	
 	/**
@@ -82,15 +98,13 @@ public abstract class FileMap implements Constructable {
 	}
 	
 	/**
-	 * Returns the path to the container associated with the given reference.  If containers are not supported, this
-	 * method may throw {@link UnsupportedOperationException}.
+	 * Returns the path to the container associated with the given reference.
 	 * 
 	 * @param schema the schema defining the structure
 	 * @param root the root directory
 	 * @param reference the container reference
 	 * @return the container path
 	 * @throws IOException if an I/O error occurred
-	 * @throws UnsupportedOperationException if containers are not supported
 	 */
 	abstract Path mapContainer(Schema schema, Path root, Reference reference) throws IOException;
 	
@@ -122,10 +136,6 @@ public abstract class FileMap implements Constructable {
 	 * @return the file system-safe path
 	 */
 	public static Path escapePath(String filename) {
-		if (specialFilenames.containsKey(filename)) {
-			return Path.of(specialFilenames.get(filename));
-		}
-		
 		return Path.of(filenameTranslator.translate(filename));
 	}
 

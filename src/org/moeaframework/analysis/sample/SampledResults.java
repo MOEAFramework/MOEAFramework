@@ -17,7 +17,6 @@
  */
 package org.moeaframework.analysis.sample;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -25,7 +24,6 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.tuple.Pair;
 import org.moeaframework.analysis.parameter.Parameter;
 import org.moeaframework.analysis.parameter.ParameterSet;
-import org.moeaframework.analysis.store.DataStore;
 import org.moeaframework.analysis.stream.Partition;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.TabularData;
@@ -69,19 +67,6 @@ public class SampledResults<T> implements Partition<Sample, T> {
 	 */
 	public void add(Sample sample, T result) {
 		results.add(Pair.of(sample, result));
-	}
-	
-	/**
-	 * Saves the result value, assuming it is {@link java.io.Serializable}, to the given data store.
-	 * 
-	 * @param dataStore the data store
-	 * @param name the name for the blob
-	 * @throws IOException if an I/O error occurred
-	 */
-	public void save(DataStore dataStore, String name) throws IOException {
-		for (Pair<Sample, T> result : results) {
-			dataStore.getContainer(result.getKey()).getBlob(name).storeObject(result.getValue());
-		}
 	}
 	
 	@Override

@@ -17,6 +17,9 @@
  */
 package org.moeaframework.analysis.store;
 
+import java.io.IOException;
+import java.util.List;
+
 /**
  * Interface for storing data or objects to some persistent backend.
  * <p>
@@ -35,6 +38,13 @@ public interface DataStore {
 	 * @return the container
 	 */
 	public Container getContainer(Reference reference);
+	
+	/**
+	 * Returns a list of all containers in this data store.
+	 * 
+	 * @return a list of containers
+	 */
+	public List<Container> listContainers() throws IOException;
 
 	/**f
 	 * Returns the container for the given {@link Referenceable} object.

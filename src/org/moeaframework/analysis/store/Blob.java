@@ -252,17 +252,27 @@ public interface Blob {
 	/**
 	 * Extracts the blob and deserializes the content.
 	 * 
-	 * @param type the type of the object
 	 * @return the deserialized object
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default <T> T extractObject(Class<T> type) throws IOException {
+	public default Object extractObject() throws IOException {
 		try (InputStream in = openInputStream();
 				ObjectInputStream ois = new ObjectInputStream(in)) {
-			return type.cast(ois.readObject());
+			return ois.readObject();
 		} catch (ClassNotFoundException e) {
 			throw new IOException("Deserialization failed", e);
 		}
+	}
+	
+	/**
+	 * Extracts the blob and deserializes the content.
+	 * 
+	 * @param type the type of the object
+	 * @return the deserialized object cast to the given type
+	 * @throws IOException if an I/O error occurred
+	 */
+	public default <T> T extractObject(Class<T> type) throws IOException {
+		return type.cast(extractObject());
 	}
 	
 	/**
