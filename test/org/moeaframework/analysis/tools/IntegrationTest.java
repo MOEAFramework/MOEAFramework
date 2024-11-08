@@ -83,7 +83,7 @@ public class IntegrationTest {
 				"-m", "la",
 				"-o", parameterFile.getPath() });
 		
-		Assert.assertLineCount(10, parameterFile);
+		Assert.assertLineCount(11, parameterFile);
 		Assert.assertLinePattern(parameterFile, Assert.getSpaceSeparatedNumericPattern(2));
 		
 		//evaluate two MOEAs
@@ -216,7 +216,7 @@ public class IntegrationTest {
 				"-m", "sa",
 				"-o", parameterFile.getPath() });
 		
-		Assert.assertLineCount(60, parameterFile);
+		Assert.assertLineCount(61, parameterFile);
 		Assert.assertLinePattern(parameterFile, Assert.getSpaceSeparatedNumericPattern(2));
 		
 		//evaluate MOEA
