@@ -59,6 +59,9 @@ public class ProgressExtension implements Extension {
 	 */
 	private double lastPercentComplete;
 
+	/**
+	 * Constructs a new extension for tracking progress.
+	 */
 	public ProgressExtension() {
 		super();
 		listeners = EventListenerSupport.create(ProgressListener.class);
