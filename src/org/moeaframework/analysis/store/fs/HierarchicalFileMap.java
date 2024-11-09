@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.moeaframework.analysis.store.Reference;
@@ -69,12 +70,17 @@ public class HierarchicalFileMap extends FileMap {
 		// When schemaless, match any existing folder structure
 		if (schema.isSchemaless()) {
 			while (Files.exists(path) && !remainingPaths.isEmpty()) {
-				Optional<Path> matchingKey = Files.walk(path, 1)
-						.skip(1)
-						.filter(Files::isDirectory)
-						.map(x -> x.getFileName())
-						.filter(x -> remainingPaths.containsKey(x))
-						.findFirst();
+				Optional<Path> matchingKey = Optional.empty();
+				Optional<Path> matchingValue = Optional.empty();
+				
+				try (Stream<Path> stream = Files.walk(path, 1)) {
+					matchingKey = stream
+							.skip(1)
+							.filter(Files::isDirectory)
+							.map(x -> x.getFileName())
+							.filter(x -> remainingPaths.containsKey(x))
+							.findFirst();
+				}
 					
 				if (!matchingKey.isPresent()) {
 					break;
@@ -84,12 +90,14 @@ public class HierarchicalFileMap extends FileMap {
 				Path value = remainingPaths.remove(key);
 				path = path.resolve(key);
 				
-				Optional<Path> matchingValue = Files.walk(path, 1)
+				try (Stream<Path> stream = Files.walk(path, 1)) {
+					matchingValue = stream
 						.skip(1)
 						.filter(Files::isDirectory)
 						.map(x -> x.getFileName())
 						.filter(x -> CASE_INSENSITIVE_ORDER.compare(x, value) == 0)
 						.findFirst();
+				}
 				
 				path = path.resolve(matchingValue.orElse(value));
 			}
@@ -115,11 +123,13 @@ public class HierarchicalFileMap extends FileMap {
 		Optional<Path> matchingFile = Optional.empty();
 		
 		if (Files.exists(containerPath)) {
-			matchingFile = Files.walk(containerPath, 1)
-					.skip(1)
-					.map(x -> x.getFileName())
-					.filter(x -> CASE_INSENSITIVE_ORDER.compare(x, escapedName) == 0)
-					.findFirst();
+			try (Stream<Path> stream = Files.walk(containerPath, 1)) {
+				matchingFile = stream
+						.skip(1)
+						.map(x -> x.getFileName())
+						.filter(x -> CASE_INSENSITIVE_ORDER.compare(x, escapedName) == 0)
+						.findFirst();
+			}
 		}
 		
 		return containerPath.resolve(matchingFile.orElse(escapedName));

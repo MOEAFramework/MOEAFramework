@@ -27,6 +27,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Stream;
 
 import javax.lang.model.SourceVersion;
 
@@ -278,7 +279,12 @@ public class BuildProblem extends CommandLineUtility {
 	}
 	
 	static void deleteDirectory(Path directory) throws IOException {
-		Files.walk(directory).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+		try (Stream<Path> stream = Files.walk(directory)) {
+			stream
+				.sorted(Comparator.reverseOrder())
+				.map(Path::toFile)
+				.forEach(File::delete);
+		}
 	}
 
 	private String loadResourceAsString(Path root, String resource) throws IOException {

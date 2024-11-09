@@ -23,6 +23,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Static methods for creating temporary files and directories.  All files and directories produced using these methods
@@ -51,10 +52,12 @@ public class TempFiles {
 					if (file.exists()) {
 						try {
 							if (file.isDirectory()) {
-								Files.walk(file.toPath())
-									.sorted(Comparator.reverseOrder())
-									.map(Path::toFile)
-									.forEach(java.io.File::delete);
+								try (Stream<Path> stream = Files.walk(file.toPath())) {
+									stream
+										.sorted(Comparator.reverseOrder())
+										.map(Path::toFile)
+										.forEach(java.io.File::delete);
+								}
 							} else {
 								file.delete();
 							}

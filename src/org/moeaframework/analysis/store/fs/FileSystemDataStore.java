@@ -35,6 +35,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Stream;
 
 import org.moeaframework.analysis.store.Container;
 import org.moeaframework.analysis.store.DataStore;
@@ -150,28 +151,30 @@ public class FileSystemDataStore implements DataStore {
 	
 	@Override
 	public List<Container> listContainers() throws IOException {
-		return Files.walk(root)
-				.skip(1)
-				.filter(Files::isDirectory)
-				.map(path -> {
-					Path referenceFile = path.resolve(REFERENCE_FILENAME);
-					
-					if (!Files.exists(referenceFile)) {
-						return null;
-					}
-					
-					try (FileReader reader = new FileReader(referenceFile.toFile())) {
-						TypedProperties properties = new TypedProperties();
-						properties.load(reader);
-						return (Container)new FileSystemContainer(Reference.of(properties));
-					} catch (FileNotFoundException e) {
-						return null;
-					} catch (IOException e) {
-						throw new DataStoreException("Encountered error while listing containers", e);
-					}
-				})
-				.filter(reference -> reference != null)
-				.toList();
+		try (Stream<Path> stream = Files.walk(root)) {
+			return stream
+					.skip(1)
+					.filter(Files::isDirectory)
+					.map(path -> {
+						Path referenceFile = path.resolve(REFERENCE_FILENAME);
+						
+						if (!Files.exists(referenceFile)) {
+							return null;
+						}
+						
+						try (FileReader reader = new FileReader(referenceFile.toFile())) {
+							TypedProperties properties = new TypedProperties();
+							properties.load(reader);
+							return (Container)new FileSystemContainer(Reference.of(properties));
+						} catch (FileNotFoundException e) {
+							return null;
+						} catch (IOException e) {
+							throw new DataStoreException("Encountered error while listing containers", e);
+						}
+					})
+					.filter(reference -> reference != null)
+					.toList();
+		}				
 	}
 
 	/**
@@ -287,12 +290,14 @@ public class FileSystemDataStore implements DataStore {
 				return List.of();
 			}
 			
-			return Files.walk(container, 1)
-				.skip(1)
-				.map(x -> x.getFileName().toString())
-				.filter(x -> x.charAt(0) != '.')
-				.map(x -> getBlob(x))
-				.toList();
+			try (Stream<Path> stream = Files.walk(container, 1)) {
+				return stream
+						.skip(1)
+						.map(x -> x.getFileName().toString())
+						.filter(x -> x.charAt(0) != '.')
+						.map(x -> getBlob(x))
+						.toList();
+			}
 		}
 		
 	}

@@ -21,6 +21,8 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Stream;
 
 import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
@@ -147,11 +149,14 @@ public class BuildProblemTest {
 		
 		if (run) {
 			// remove any compiled files to verify they are packaged correctly in the JAR
-			List<String> extensionsToRemove = List.of("exe", "dll", "so", "py", "m", "class");
-			Files.walk(testDirectory.toPath())
-				.filter(x -> extensionsToRemove.contains(FilenameUtils.getExtension(x.toString())))
-				.map(Path::toFile)
-				.forEach(File::delete);
+			Set<String> extensionsToRemove = Set.of("exe", "dll", "so", "py", "m", "class");
+			
+			try (Stream<Path> stream = Files.walk(testDirectory.toPath())) {
+				stream
+					.filter(x -> extensionsToRemove.contains(FilenameUtils.getExtension(x.getFileName().toString())))
+					.map(Path::toFile)
+					.forEach(File::delete);
+			}
 			
 			CaptureResult result = Capture.output(() -> Make.runMake(testDirectory, "run"));
 			result.assertSuccessful();
