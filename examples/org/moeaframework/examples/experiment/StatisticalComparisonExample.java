@@ -15,56 +15,49 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.examples.statistics;
+package org.moeaframework.examples.experiment;
 
 import java.io.IOException;
 
 import org.moeaframework.algorithm.MOEAD;
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.core.indicator.Indicators;
-import org.moeaframework.core.indicator.Indicators.IndicatorValues;
+import org.moeaframework.analysis.IndicatorStatistics;
+import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
-import org.moeaframework.util.statistics.MannWhitneyUTest;
 
 /**
- * Demonstrates using the non-parametric Mann-Whitney U test to determine if two algorithms produce results with
- * different medians.  A number of statistical tests are provided in the {@code org.moeaframework.util.statistics}
- * package, with varying assumptions about the underlying data.
+ * Demonstrates using IndicatorStatistics to compute descriptive statistics and determine if results are statistically
+ * similar / different.
  */
 public class StatisticalComparisonExample {
 
 	public static void main(String[] args) throws IOException {
 		Problem problem = new DTLZ2(3);
-		MannWhitneyUTest test = new MannWhitneyUTest();
-		
+
 		// Set up the Hypervolume indicator
 		NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/DTLZ2.3D.pf");
-		Indicators indicators = Indicators.of(problem, referenceSet).includeHypervolume();
+		Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
 		
-		// Collect the results from NSGA-II, storing as group 0.
+		// Collect the results and compute statistics
+		IndicatorStatistics statistics = new IndicatorStatistics(hypervolume);
+		
+		// Collect the results from NSGA-II
 		for (int i = 0; i < 25; i++) {
 			NSGAII algorithm = new NSGAII(problem);
 			algorithm.run(10000);
-			
-			IndicatorValues values = indicators.apply(algorithm.getResult());
-			test.add(values.getHypervolume(), 0);
+			statistics.add("NSGA-II", algorithm.getResult());
 		}
 		
 		// Collect the results from MOEA/D, storing as group 1.
 		for (int i = 0; i < 25; i++) {
 			MOEAD algorithm = new MOEAD(problem);
 			algorithm.run(10000);
-					
-			IndicatorValues values = indicators.apply(algorithm.getResult());
-			test.add(values.getHypervolume(), 1);
+			statistics.add("MOEA/D", algorithm.getResult());
 		}
 		
-		System.out.println("NSGA-II median: " + test.getStatistics(0).getPercentile(50));
-		System.out.println("MOEA/D median:  " + test.getStatistics(1).getPercentile(50));
-		System.out.println("Are medians different (5% significance level)? " + test.test(0.05));
-		System.out.println("Are medians different (1% significance level)? " + test.test(0.01));
+		statistics.display();
 	}
 
 }
