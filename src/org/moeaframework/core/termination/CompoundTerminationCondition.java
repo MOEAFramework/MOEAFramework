@@ -62,6 +62,17 @@ public class CompoundTerminationCondition implements TerminationCondition, Itera
 		
 		return shouldTerminate;
 	}
+	
+	@Override
+	public double getPercentComplete(Algorithm algorithm) {
+		double percentage = 0.0;
+		
+		for (TerminationCondition condition : conditions) {
+			percentage = Math.max(percentage, condition.getPercentComplete(algorithm));
+		}
+		
+		return percentage;
+	}
 
 	@Override
 	public Iterator<TerminationCondition> iterator() {

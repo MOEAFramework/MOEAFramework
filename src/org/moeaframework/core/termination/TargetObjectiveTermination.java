@@ -96,6 +96,11 @@ public class TargetObjectiveTermination implements TerminationCondition {
 		return false;
 	}
 	
+	@Override
+	public double getPercentComplete(Algorithm algorithm) {
+		return Double.NaN;
+	}
+	
 	private static final Solution toSolution(double[] objectives) {
 		Solution solution = new Solution(0, objectives.length);
 		solution.setObjectiveValues(objectives);

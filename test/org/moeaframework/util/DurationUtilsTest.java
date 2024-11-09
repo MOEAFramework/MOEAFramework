@@ -40,4 +40,13 @@ public class DurationUtilsTest {
 		Assert.assertEquals(5L, DurationUtils.toNanoseconds(Duration.ofNanos(5)));
 	}
 	
+	@Test
+	public void testFormat() {
+		Assert.assertEquals("00:00:00", DurationUtils.format(Duration.ofSeconds(0)));
+		Assert.assertEquals("00:01:30", DurationUtils.format(Duration.ofSeconds(90)));
+		Assert.assertEquals("01:00:00", DurationUtils.format(Duration.ofHours(1)));
+		Assert.assertEquals("24:00:00", DurationUtils.format(Duration.ofDays(1)));
+		Assert.assertEquals("48:00:00", DurationUtils.format(Duration.ofDays(2)));
+	}
+	
 }

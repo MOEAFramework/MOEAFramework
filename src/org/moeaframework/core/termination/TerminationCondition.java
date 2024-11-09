@@ -40,6 +40,14 @@ public interface TerminationCondition {
 	 * @param algorithm the algorithm
 	 * @return {@code true} if the algorithm should terminate; {@code false} otherwise
 	 */
-	public boolean shouldTerminate(Algorithm algorithm); 
+	public boolean shouldTerminate(Algorithm algorithm);
+	
+	/**
+	 * Returns the percentage that this condition is complete, as a value between {@code 0.0} and {@code 100.0}.  If
+	 * the percentage can not be determined, returns {@value Double#NaN}.
+	 * 
+	 * @return the percentage completion
+	 */
+	public double getPercentComplete(Algorithm algorithm);
 
 }

@@ -24,6 +24,7 @@ import java.io.ObjectOutputStream;
 import org.moeaframework.algorithm.extension.Extensions;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Stateful;
+import org.moeaframework.core.termination.TerminationCondition;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.validate.Validate;
 
@@ -116,6 +117,24 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	public void assertNotInitialized() {
 		if (initialized) {
 			throw new AlgorithmInitializationException(this, "algorithm already initialized");
+		}
+	}
+	
+	@Override
+	public void run(TerminationCondition terminationCondition) {
+		terminationCondition.initialize(this);
+		extensions.onRun(terminationCondition);
+		
+		if (isTerminated() && !terminationCondition.shouldTerminate(this)) {
+			step();
+		}
+		
+		while (!isTerminated() && !terminationCondition.shouldTerminate(this)) {
+			step();
+		}
+		
+		if (!isTerminated()) {
+			terminate();
 		}
 	}
 

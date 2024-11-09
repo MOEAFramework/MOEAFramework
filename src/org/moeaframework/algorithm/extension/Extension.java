@@ -18,6 +18,7 @@
 package org.moeaframework.algorithm.extension;
 
 import org.moeaframework.algorithm.Algorithm;
+import org.moeaframework.core.termination.TerminationCondition;
 
 /**
  * Extensions are a flexible alternative to wrappers when extending or augmenting the functionality of an algorithm.
@@ -60,6 +61,16 @@ public interface Extension {
 	 * @param algorithm the algorithm associated with this extension
 	 */
 	public default void onRegister(Algorithm algorithm) {
+		
+	}
+	
+	/**
+	 * Called when starting a new run of the algorithm.  This can be used to check the termination conditions.
+	 * 
+	 * @param algorithm the algorithm associated with this extension
+	 * @param terminationConditiion the termination condition used for the run
+	 */
+	public default void onRun(Algorithm algorithm, TerminationCondition terminationConditiion) {
 		
 	}
 	

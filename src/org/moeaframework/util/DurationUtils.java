@@ -17,12 +17,22 @@
  */
 package org.moeaframework.util;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.Duration;
 
 /**
  * Utility for converting a {@link Duration} into primitives.
  */
 public class DurationUtils {
+	
+	private static final NumberFormat FORMAT;
+	
+	static {
+		FORMAT = new DecimalFormat("#00");
+		FORMAT.setRoundingMode(RoundingMode.FLOOR);
+	}
 	
 	private DurationUtils() {
 		super();
@@ -56,6 +66,24 @@ public class DurationUtils {
 	 */
 	public static final long toNanoseconds(Duration duration) {
 		return duration.getSeconds() * 1_000_000_000 + duration.getNano();
+	}
+	
+	/**
+	 * Produces a ISO 8601 duration format in the form {@code hh:mm:ss}.
+	 * 
+	 * @param duration the duration
+	 * @return the formatted string
+	 */
+	public static final String format(Duration duration) {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(FORMAT.format(duration.toHoursPart() + 24 * duration.toDaysPart()));
+		sb.append(":");
+		sb.append(FORMAT.format(duration.toMinutesPart()));
+		sb.append(":");
+		sb.append(FORMAT.format(duration.toSecondsPart()));
+		
+		return sb.toString();
 	}
 
 }

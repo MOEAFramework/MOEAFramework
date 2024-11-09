@@ -25,6 +25,7 @@ import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.extension.Extensions;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.core.termination.TerminationCondition;
 import org.moeaframework.problem.Problem;
 
 public class MockAlgorithm implements Algorithm {
@@ -58,6 +59,17 @@ public class MockAlgorithm implements Algorithm {
 	
 	public int getNumberOfEvaluationsPerStep() {
 		return 10;
+	}
+	
+	@Override
+	public void run(TerminationCondition terminationCondition) {
+		terminationCondition.initialize(this);
+		
+		while (!terminationCondition.shouldTerminate(this)) {
+			step();
+		}
+		
+		terminate();
 	}
 
 	@Override

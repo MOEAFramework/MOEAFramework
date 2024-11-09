@@ -65,5 +65,10 @@ public class MaxElapsedTime implements TerminationCondition {
 	public boolean shouldTerminate(Algorithm algorithm) {
 		return (System.currentTimeMillis() - startTime) >= maxTime;
 	}
+	
+	@Override
+	public double getPercentComplete(Algorithm algorithm) {
+		return 100.0 * (System.currentTimeMillis() - startTime) / (double)maxTime;
+	}
 
 }

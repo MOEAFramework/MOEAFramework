@@ -25,6 +25,7 @@ import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.core.termination.TerminationCondition;
 import org.moeaframework.problem.Problem;
 
 /**
@@ -61,6 +62,11 @@ public class AlgorithmWrapper<T extends Algorithm> implements Algorithm, Configu
 	@Override
 	public String getName() {
 		return algorithm.getName();
+	}
+	
+	@Override
+	public void run(TerminationCondition terminationCondition) {
+		algorithm.run(terminationCondition);
 	}
 
 	@Override

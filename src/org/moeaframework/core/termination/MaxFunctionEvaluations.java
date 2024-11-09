@@ -54,6 +54,11 @@ public class MaxFunctionEvaluations implements TerminationCondition {
 		return (algorithm.getNumberOfEvaluations() - startingEvaluations) >= maxEvaluations;
 	}
 	
+	@Override
+	public double getPercentComplete(Algorithm algorithm) {
+		return 100.0 * (algorithm.getNumberOfEvaluations() - startingEvaluations) / (double)maxEvaluations;
+	}
+	
 	/**
 	 * Attempts to determine the maximum number of function evaluations that would execute given the termination
 	 * condition.

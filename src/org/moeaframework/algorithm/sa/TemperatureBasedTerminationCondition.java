@@ -83,5 +83,10 @@ public class TemperatureBasedTerminationCondition implements TerminationConditio
 	public boolean shouldTerminate(Algorithm algorithm) {	
 		return ((AbstractSimulatedAnnealingAlgorithm)algorithm).getTemperature() <= stoppingTemperature;
 	}
+	
+	@Override
+	public double getPercentComplete(Algorithm algorithm) {
+		return Double.NaN;
+	}
 
 }

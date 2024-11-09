@@ -108,21 +108,7 @@ public interface Algorithm extends Stateful, Extensible, Named {
 	 * 
 	 * @param terminationCondition the termination condition
 	 */
-	public default void run(TerminationCondition terminationCondition) {
-		terminationCondition.initialize(this);
-		
-		if (isTerminated() && !terminationCondition.shouldTerminate(this)) {
-			step();
-		}
-		
-		while (!isTerminated() && !terminationCondition.shouldTerminate(this)) {
-			step();
-		}
-		
-		if (!isTerminated()) {
-			terminate();
-		}
-	}
+	public void run(TerminationCondition terminationCondition);
 	
 	/**
 	 * Evaluates the specified solutions. This method calls {@link #evaluate(Solution)} on each of the solutions.

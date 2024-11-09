@@ -29,6 +29,7 @@ import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.core.Stateful;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.configuration.Configurable;
+import org.moeaframework.core.termination.TerminationCondition;
 
 /**
  * A collection of {@link Extension} associated with an {@link Algorithm}.  Extensions implementing {@link Stateful}
@@ -109,6 +110,17 @@ public class Extensions implements Iterable<Extension>, Stateful, Configurable {
 		}
 		
 		return null;
+	}
+	
+	/**
+	 * Invokes the {@link Extension#onRun(Algorithm, TerminationCondition)} method for all registered extensions.
+	 * 
+	 * @param terminationCondition the termination conditions for the run
+	 */
+	public void onRun(TerminationCondition terminationCondition) {
+		for (Extension extension : extensions) {
+			extension.onRun(algorithm, terminationCondition);
+		}
 	}
 	
 	/**
