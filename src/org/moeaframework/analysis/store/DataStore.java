@@ -43,6 +43,7 @@ public interface DataStore {
 	 * Returns a list of all containers in this data store.
 	 * 
 	 * @return a list of containers
+	 * @throws IOException if an I/O error occurred
 	 */
 	public List<Container> listContainers() throws IOException;
 

@@ -167,7 +167,7 @@ public class FileSystemDataStore implements DataStore {
 					} catch (FileNotFoundException e) {
 						return null;
 					} catch (IOException e) {
-						throw new DataStoreException("Failed to list container", e);
+						throw new DataStoreException("Encountered error while listing containers", e);
 					}
 				})
 				.filter(reference -> reference != null)

@@ -34,19 +34,37 @@ public class ImmutablePartition<K, V> implements Partition<K, V> {
 	
 	private final List<Pair<K, V>> content;
 	
+	/**
+	 * Constructs a new, empty partition.
+	 */
 	public ImmutablePartition() {
 		this(new ArrayList<>());
 	}
 	
-	public ImmutablePartition(List<Pair<K, V>> content) {
+	/**
+	 * Constructs a new partition with the given content.
+	 * 
+	 * @param list the list of key-value pairs
+	 */
+	public ImmutablePartition(List<Pair<K, V>> list) {
 		super();
-		this.content = content;
+		this.content = list;
 	}
 	
+	/**
+	 * Constructs a new partition with the given content.
+	 * 
+	 * @param stream the stream of key-value pairs
+	 */
 	public ImmutablePartition(Stream<Pair<K, V>> stream) {
 		this(stream.toList());
 	}
 	
+	/**
+	 * Constructs a new partition with the given content.
+	 * 
+	 * @param iterable the iterable of key-value pairs
+	 */
 	public ImmutablePartition(Iterable<Pair<K, V>> iterable) {
 		this(Iterators.materialize(iterable));
 	}

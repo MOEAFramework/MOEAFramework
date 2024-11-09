@@ -78,20 +78,23 @@ public class Maximize extends AbstractObjective {
 		return Double.POSITIVE_INFINITY;
 	}
 	
+	/**
+	 * Constructs a new, anonymous maximized objective.
+	 * 
+	 * @return the objective
+	 */
 	public static Maximize value() {
 		return new Maximize();
 	}
 	
-	public static Maximize value(double value) {
-		return new Maximize(null, value);
-	}
-	
+	/**
+	 * Constructs a new maximized objective.
+	 * 
+	 * @param name the objective name
+	 * @return the objective
+	 */
 	public static Maximize value(String name) {
 		return new Maximize(name);
-	}
-	
-	public static Maximize value(String name, double value) {
-		return new Maximize(name, value);
 	}
 	
 }

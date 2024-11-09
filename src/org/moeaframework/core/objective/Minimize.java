@@ -78,20 +78,23 @@ public class Minimize extends AbstractObjective {
 		return Double.NEGATIVE_INFINITY;
 	}
 	
+	/**
+	 * Constructs a new, anonymous minimized objective.
+	 * 
+	 * @return the objective
+	 */
 	public static Minimize value() {
 		return new Minimize();
 	}
 	
-	public static Minimize value(double value) {
-		return new Minimize(null, value);
-	}
-	
+	/**
+	 * Constructs a new minimized objective.
+	 * 
+	 * @param name the objective name
+	 * @return the objective
+	 */
 	public static Minimize value(String name) {
 		return new Minimize(name);
-	}
-	
-	public static Minimize value(String name, double value) {
-		return new Minimize(name, value);
 	}
 	
 }

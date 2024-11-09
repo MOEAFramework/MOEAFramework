@@ -267,6 +267,7 @@ public interface Blob {
 	/**
 	 * Extracts the blob and deserializes the content.
 	 * 
+	 * @param <T> the return type
 	 * @param type the type of the object
 	 * @return the deserialized object cast to the given type
 	 * @throws IOException if an I/O error occurred

@@ -32,19 +32,37 @@ public class ImmutableDataStream<V> implements DataStream<V> {
 	
 	private final List<V> content;
 	
+	/**
+	 * Constructs a new, empty data stream.
+	 */
 	public ImmutableDataStream() {
 		this(new ArrayList<>());
 	}
 	
-	public ImmutableDataStream(List<V> content) {
+	/**
+	 * Constructs a new data stream with the given content.
+	 * 
+	 * @param list the list of values
+	 */
+	public ImmutableDataStream(List<V> list) {
 		super();
-		this.content = content;
+		this.content = list;
 	}
 	
+	/**
+	 * Constructs a new data stream with the given content.
+	 * 
+	 * @param stream the stream of values
+	 */
 	public ImmutableDataStream(Stream<V> stream) {
 		this(stream.toList());
 	}
 	
+	/**
+	 * Constructs a new data stream with the given content.
+	 * 
+	 * @param iterable the iterable of values
+	 */
 	public ImmutableDataStream(Iterable<V> iterable) {
 		this(Iterators.materialize(iterable));
 	}

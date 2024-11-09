@@ -35,18 +35,30 @@ import org.apache.commons.lang3.tuple.Pair;
  */
 public class Groups<G, K, V> extends ImmutablePartition<G, Partition<K, V>> {
 	
+	/**
+	 * Constructs a new grouping with the given content.
+	 * 
+	 * @param content the content of this grouping
+	 */
 	public Groups(List<Pair<G, Partition<K, V>>> content) {
 		super(content);
 	}
 
+	/**
+	 * Constructs a new grouping with the given content.
+	 * 
+	 * @param stream a stream of the content
+	 */
 	public Groups(Stream<Pair<G, Partition<K, V>>> stream) {
 		this(stream.toList());
 	}
 	
-	public Groups(DataStream<Pair<G, Partition<K, V>>> dataStream) {
-		this(dataStream.stream());
-	}
-	
+	/**
+	 * Returns the group with the given grouping key.
+	 * 
+	 * @param key the grouping key
+	 * @return the contents of the group
+	 */
 	public Partition<K, V> get(G key) {
 		return stream().filter(x -> x.getKey().equals(key)).findAny().get().getValue();
 	}
@@ -101,6 +113,7 @@ public class Groups<G, K, V> extends ImmutablePartition<G, Partition<K, V>> {
 	 * Equivalent to calling {@link Partition#reduce(Object, BinaryOperator)} on each group, keeping the grouping
 	 * intact.
 	 * 
+	 * @param identity the initial value supplied to the reduction operator
 	 * @param op the reduction operator
 	 * @return the groups after applying the reduction operator
 	 */
@@ -112,6 +125,7 @@ public class Groups<G, K, V> extends ImmutablePartition<G, Partition<K, V>> {
 	/**
 	 * Equivalent to calling {@link Partition#groupBy(Function)} on each group, keeping the grouping intact.
 	 * 
+	 * @param <R> the return type of the grouping function
 	 * @param grouping the grouping function
 	 * @return the groups after applying the grouping function
 	 */

@@ -45,67 +45,67 @@ public class MinimizeTest {
 	
 	@Test
 	public void testGetCanonicalValue() {
-		Assert.assertEquals(1.0, Minimize.value(1.0).getCanonicalValue());
-		Assert.assertEquals(-1.0, Minimize.value(-1.0).getCanonicalValue());
+		Assert.assertEquals(1.0, Minimize.value().withValue(1.0).getCanonicalValue());
+		Assert.assertEquals(-1.0, Minimize.value().withValue(-1.0).getCanonicalValue());
 	}
 	
 	@Test
 	public void testCompareTo() {
-		Assert.assertEquals(-1, Minimize.value(1.0).compareTo(Minimize.value(2.0)));
-		Assert.assertEquals(0, Minimize.value(1.0).compareTo(Minimize.value(1.0)));
-		Assert.assertEquals(1, Minimize.value(2.0).compareTo(Minimize.value(1.0)));
+		Assert.assertEquals(-1, Minimize.value().withValue(1.0).compareTo(Minimize.value().withValue(2.0)));
+		Assert.assertEquals(0, Minimize.value().withValue(1.0).compareTo(Minimize.value().withValue(1.0)));
+		Assert.assertEquals(1, Minimize.value().withValue(2.0).compareTo(Minimize.value().withValue(1.0)));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testCompareToDifferentType() {
-		Assert.assertEquals(-1, Minimize.value(1.0).compareTo(Maximize.value(2.0)));
+		Assert.assertEquals(-1, Minimize.value().withValue(1.0).compareTo(Maximize.value().withValue(2.0)));
 	}
 	
 	@Test
 	public void testNormalize() {
-		Assert.assertEquals(new NormalizedObjective(null, 0.0), Minimize.value(0.0).normalize(0.0, 1.0));
-		Assert.assertEquals(new NormalizedObjective(null, 1.0), Minimize.value(1.0).normalize(0.0, 1.0));
-		Assert.assertEquals(new NormalizedObjective(null, 0.5), Minimize.value(0.5).normalize(0.0, 1.0));
-		Assert.assertEquals(new NormalizedObjective(null, 0.25), Minimize.value(0.5).normalize(0.0, 2.0));
+		Assert.assertEquals(new NormalizedObjective(null, 0.0), Minimize.value().withValue(0.0).normalize(0.0, 1.0));
+		Assert.assertEquals(new NormalizedObjective(null, 1.0), Minimize.value().withValue(1.0).normalize(0.0, 1.0));
+		Assert.assertEquals(new NormalizedObjective(null, 0.5), Minimize.value().withValue(0.5).normalize(0.0, 1.0));
+		Assert.assertEquals(new NormalizedObjective(null, 0.25), Minimize.value().withValue(0.5).normalize(0.0, 2.0));
 	}
 	
 	@Test
 	public void testApplyWeight() {
-		Assert.assertEquals(-0.5, Minimize.value(-1.0).applyWeight(0.5));
-		Assert.assertEquals(0.0, Minimize.value(0.0).applyWeight(0.5));
-		Assert.assertEquals(0.5, Minimize.value(1.0).applyWeight(0.5));
+		Assert.assertEquals(-0.5, Minimize.value().withValue(-1.0).applyWeight(0.5));
+		Assert.assertEquals(0.0, Minimize.value().withValue(0.0).applyWeight(0.5));
+		Assert.assertEquals(0.5, Minimize.value().withValue(1.0).applyWeight(0.5));
 	}
 	
 	@Test
 	public void testGetEpsilonIndex() {
-		Assert.assertEquals(0, Minimize.value(0.0).getEpsilonIndex(0.5));
-		Assert.assertEquals(0, Minimize.value(0.1).getEpsilonIndex(0.5));
-		Assert.assertEquals(1, Minimize.value(0.5).getEpsilonIndex(0.5));
-		Assert.assertEquals(1, Minimize.value(0.6).getEpsilonIndex(0.5));
-		Assert.assertEquals(2, Minimize.value(1.0).getEpsilonIndex(0.5));
+		Assert.assertEquals(0, Minimize.value().withValue(0.0).getEpsilonIndex(0.5));
+		Assert.assertEquals(0, Minimize.value().withValue(0.1).getEpsilonIndex(0.5));
+		Assert.assertEquals(1, Minimize.value().withValue(0.5).getEpsilonIndex(0.5));
+		Assert.assertEquals(1, Minimize.value().withValue(0.6).getEpsilonIndex(0.5));
+		Assert.assertEquals(2, Minimize.value().withValue(1.0).getEpsilonIndex(0.5));
 	}
 	
 	@Test
 	public void testGetEpsilonDistance() {
-		Assert.assertEquals(0.0, Minimize.value(0.0).getEpsilonDistance(0.5));
-		Assert.assertEquals(0.1, Minimize.value(0.1).getEpsilonDistance(0.5));
-		Assert.assertEquals(0.0, Minimize.value(0.5).getEpsilonDistance(0.5));
-		Assert.assertEquals(0.1, Minimize.value(0.6).getEpsilonDistance(0.5));
-		Assert.assertEquals(0.0, Minimize.value(1.0).getEpsilonDistance(0.5));
+		Assert.assertEquals(0.0, Minimize.value().withValue(0.0).getEpsilonDistance(0.5));
+		Assert.assertEquals(0.1, Minimize.value().withValue(0.1).getEpsilonDistance(0.5));
+		Assert.assertEquals(0.0, Minimize.value().withValue(0.5).getEpsilonDistance(0.5));
+		Assert.assertEquals(0.1, Minimize.value().withValue(0.6).getEpsilonDistance(0.5));
+		Assert.assertEquals(0.0, Minimize.value().withValue(1.0).getEpsilonDistance(0.5));
 	}
 	
 	@Test
 	public void testDistanceTo() {
-		Assert.assertEquals(0.0, Minimize.value(0.0).distanceTo(0.0));
-		Assert.assertEquals(0.5, Minimize.value(0.0).distanceTo(0.5));
-		Assert.assertEquals(0.5, Minimize.value(0.0).distanceTo(-0.5));
+		Assert.assertEquals(0.0, Minimize.value().withValue(0.0).distanceTo(0.0));
+		Assert.assertEquals(0.5, Minimize.value().withValue(0.0).distanceTo(0.5));
+		Assert.assertEquals(0.5, Minimize.value().withValue(0.0).distanceTo(-0.5));
 	}
 	
 	@Test
 	public void testIdeal() {
-		Assert.assertEquals(0.0, Objective.ideal(Minimize.value(0.0), Minimize.value(0.0)).getValue());
-		Assert.assertEquals(0.0, Objective.ideal(Minimize.value(0.0), Minimize.value(0.5)).getValue());
-		Assert.assertEquals(0.0, Objective.ideal(Minimize.value(0.5), Minimize.value(0.0)).getValue());
+		Assert.assertEquals(0.0, Objective.ideal(Minimize.value().withValue(0.0), Minimize.value().withValue(0.0)).getValue());
+		Assert.assertEquals(0.0, Objective.ideal(Minimize.value().withValue(0.0), Minimize.value().withValue(0.5)).getValue());
+		Assert.assertEquals(0.0, Objective.ideal(Minimize.value().withValue(0.5), Minimize.value().withValue(0.0)).getValue());
 	}
 
 }

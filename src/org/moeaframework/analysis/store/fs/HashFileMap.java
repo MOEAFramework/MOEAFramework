@@ -25,14 +25,18 @@ import org.moeaframework.analysis.store.schema.Schema;
 import org.moeaframework.core.Constructable;
 
 /**
- * File map that hashes the reference to determine the folder structure.  The main use case is on file systems where
- * {@link HierarchicalFileMap} results in long paths that exceed file system limits, as the file structure is
- * {@code <hash_prefix>/<hash>/<file>}.
+ * File map that hashes the reference to create a flat folder structure.  An optional prefix is used at the top-level
+ * to help organize the containers.
  */
 public class HashFileMap extends FileMap {
 
 	private final int prefixLength;
-		
+	
+	/**
+	 * Constructs a hash file map with the given prefix length.
+	 * 
+	 * @param prefixLength if {@code > 0}, the length of the prefix; if {@code 0}, no prefix folder is created
+	 */
 	public HashFileMap(int prefixLength) {
 		super();
 		this.prefixLength = prefixLength;

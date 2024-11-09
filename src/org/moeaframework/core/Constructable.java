@@ -255,6 +255,13 @@ public interface Constructable {
 		
 		private static final int LOWEST_ORDER = 999;
 		
+		/**
+		 * Constructs a new comparator for sorting constructors.
+		 */
+		public ConstructorComparator() {
+			super();
+		}
+		
 		static {
 			ORDER = new HashMap<Class<?>, Integer>();
 			ORDER.put(byte.class, 0);

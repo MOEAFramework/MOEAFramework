@@ -52,7 +52,7 @@ public class NormalizedObjective extends Minimize {
 	}
 	
 	/**
-	 * Not supported for minimized objectives.
+	 * This method is not supported for normalized objectives.
 	 * 
 	 * @throws UnsupportedOperationException as this operation is not permitted on normalized objectives
 	 */
@@ -63,7 +63,7 @@ public class NormalizedObjective extends Minimize {
 	}
 	
 	/**
-	 * Not supported for minimized objectives.
+	 * This method is not supported for normalized objectives.
 	 * 
 	 * @throws UnsupportedOperationException as this operation is not permitted on normalized objectives
 	 */
@@ -74,7 +74,7 @@ public class NormalizedObjective extends Minimize {
 	}
 	
 	/**
-	 * Not supported for minimized objectives.
+	 * This method is not supported for normalized objectives.
 	 * 
 	 * @throws UnsupportedOperationException as this operation is not permitted on normalized objectives
 	 */

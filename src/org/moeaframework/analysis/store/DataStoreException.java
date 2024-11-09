@@ -19,24 +19,30 @@ package org.moeaframework.analysis.store;
 
 import org.moeaframework.core.FrameworkException;
 
+/**
+ * An exception indicating a problem with a data store.
+ */
 public class DataStoreException extends FrameworkException {
 
 	private static final long serialVersionUID = -8971178792964248944L;
 
-	public DataStoreException() {
-		super();
-	}
-
+	/**
+	 * Constructs a new data store exception with the given message.
+	 * 
+	 * @param message the reason for the failure
+	 * @param cause the underlying exception causing this failure
+	 */
 	public DataStoreException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
+	/**
+	 * Constructs a new data store exception with the given message.
+	 * 
+	 * @param message the reason for the failure
+	 */
 	public DataStoreException(String message) {
 		super(message);
-	}
-
-	public DataStoreException(Throwable cause) {
-		super(cause);
 	}
 
 }
