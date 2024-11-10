@@ -120,22 +120,16 @@ public abstract class AbstractAlgorithm implements Algorithm {
 		}
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Avoid overriding this method in subclasses.  Instead, prefer overriding {@link #initialize()} and
+	 * {@link #iterate()} with any algorithm-specific details.
+	 */
 	@Override
 	public void run(TerminationCondition terminationCondition) {
-		terminationCondition.initialize(this);
 		extensions.onRun(terminationCondition);
-		
-		if (isTerminated() && !terminationCondition.shouldTerminate(this)) {
-			step();
-		}
-		
-		while (!isTerminated() && !terminationCondition.shouldTerminate(this)) {
-			step();
-		}
-		
-		if (!isTerminated()) {
-			terminate();
-		}
+		Algorithm.super.run(terminationCondition);
 	}
 
 	/**

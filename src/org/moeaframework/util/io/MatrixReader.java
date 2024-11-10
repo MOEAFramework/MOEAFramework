@@ -208,7 +208,7 @@ public class MatrixReader implements Iterable<double[]>, Iterator<double[]>, Clo
 				entry[i] = Double.parseDouble(tokens[i]);
 			}
 		} catch (NumberFormatException e) {
-			errorHandler.error("Failed to parse value: {0}", e.getMessage());
+			errorHandler.error("Entry not parseable as a number: {0}", e.getMessage());
 			return null;
 		}
 
