@@ -18,12 +18,15 @@
 package org.moeaframework.analysis;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+import org.apache.commons.math3.stat.descriptive.UnivariateStatistic;
 import org.moeaframework.core.indicator.Indicator;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.util.format.Column;
@@ -71,6 +74,27 @@ public class IndicatorStatistics implements Formattable<String> {
 		}
 		
 		stats.addValue(indicator.evaluate(result));
+	}
+	
+	/**
+	 * Adds the collection of end-of-run approximation sets.
+	 * 
+	 * @param name the group name
+	 * @param results the collection of end-of-run approximation sets
+	 */
+	public void addAll(String name, Iterable<NondominatedPopulation> results) {
+		for (NondominatedPopulation result : results) {
+			add(name, result);
+		}
+	}
+	
+	/**
+	 * Returns the group names.
+	 * 
+	 * @return the group names
+	 */
+	public Set<String> getGroupNames() {
+		return Collections.unmodifiableSet(data.keySet());
 	}
 	
 	/**
@@ -132,6 +156,27 @@ public class IndicatorStatistics implements Formattable<String> {
 	 */
 	public double getIQR(String name) {
 		return data.get(name).getPercentile(75) - data.get(name).getPercentile(25);
+	}
+	
+	/**
+	 * Returns the value of the given custom statistic.
+	 * 
+	 * @param name the group name
+	 * @param statistic the custom statistic
+	 * @return the statistic value
+	 */
+	public double getStatistic(String name, UnivariateStatistic statistic) {
+		return data.get(name).apply(statistic);
+	}
+	
+	/**
+	 * Returns the indicator values for the given group.
+	 * 
+	 * @param name the group name
+	 * @return the indicator values
+	 */
+	public double[] getValues(String name) {
+		return data.get(name).getValues();
 	}
 	
 	/**
@@ -210,8 +255,11 @@ public class IndicatorStatistics implements Formattable<String> {
 		table.addColumn(new Column<String, Double>("Max", this::getMax));
 		table.addColumn(new Column<String, Double>("IQR (+/-)", this::getIQR));
 		table.addColumn(new Column<String, Integer>("Count", this::getN));
-		table.addColumn(new Column<String, String>("Statistically Similar (a=0.05)",
-				x -> String.join(", ", getStatisticallySimilar(x, 0.05))));
+		
+		if (data.size() > 1) {
+			table.addColumn(new Column<String, String>("Statistically Similar (a=0.05)",
+					x -> String.join(", ", getStatisticallySimilar(x, 0.05))));
+		}
 		
 		return table;
 	}

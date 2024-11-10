@@ -17,9 +17,14 @@
  */
 package org.moeaframework.examples.plots;
 
-import org.moeaframework.Executor;
+import java.io.File;
+
 import org.moeaframework.Instrumenter;
+import org.moeaframework.algorithm.NSGAII;
+import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
 import org.moeaframework.analysis.diagnostics.ApproximationSetViewer;
+import org.moeaframework.problem.CEC2009.UF1;
+import org.moeaframework.problem.Problem;
 
 /**
  * Displays an interactive plot showing the convergence of the NSGA-II algorithm on
@@ -28,22 +33,24 @@ import org.moeaframework.analysis.diagnostics.ApproximationSetViewer;
 public class PlotApproximationSetConvergence {
 
 	public static void main(String[] args) {
-		String algorithm = "NSGA-II";
-		String problem = "UF1";
+		Problem problem = new UF1();
 		
 		Instrumenter instrumenter = new Instrumenter()
 				.withProblem(problem)
+				.withReferenceSet(new File("pf/UF1.dat"))
 				.withFrequency(100)
 				.attachApproximationSetCollector();
 		
-		new Executor()
-				.withProblem(problem)
-				.withAlgorithm(algorithm)
-				.withMaxEvaluations(10000)
-				.withInstrumenter(instrumenter)
-				.run();
+		NSGAII algorithm = new NSGAII(problem);
+		
+		InstrumentedAlgorithm<NSGAII> instrumentedAlgorithm =
+				instrumenter.instrument(algorithm);
+		
+		instrumentedAlgorithm.run(10000);
 
-		ApproximationSetViewer.show(algorithm, instrumenter.getReferenceSet(), instrumenter.getObservations());
+		ApproximationSetViewer.show("NSGA-II",
+				instrumenter.getReferenceSet(),
+				instrumenter.getObservations());
 	}
 
 }

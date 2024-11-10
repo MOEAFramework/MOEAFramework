@@ -18,7 +18,6 @@
 package org.moeaframework.snippet;
 
 import org.junit.Test;
-import org.moeaframework.Executor;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.CEC2009.UF1;
@@ -38,18 +37,6 @@ public class AlgorithmSnippet {
 
 		NondominatedPopulation result = algorithm.getResult();
 		// end-example:direct
-	}
-	
-	@Test
-	public void executor() {
-		// begin-example:executor
-		NondominatedPopulation results = new Executor()
-			    .withProblem("UF1")
-			    .withAlgorithm("NSGA-II")
-			    .withProperty("populationSize", 250)
-			    .withMaxEvaluations(10000)
-			    .run();
-		// end-example:executor
 	}
 	
 }

@@ -54,7 +54,7 @@ public class CancellationSignal implements TerminationCondition {
 	
 	@Override
 	public void initialize(Algorithm algorithm) {
-		cancelled.set(false);
+		
 	}
 
 	@Override

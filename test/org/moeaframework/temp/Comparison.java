@@ -19,34 +19,40 @@ package org.moeaframework.temp;
 
 import java.io.IOException;
 
-import org.moeaframework.Analyzer;
-import org.moeaframework.Executor;
+import org.moeaframework.algorithm.Algorithm;
+import org.moeaframework.analysis.IndicatorStatistics;
+import org.moeaframework.core.indicator.AdditiveEpsilonIndicator;
+import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.core.spi.AlgorithmFactory;
+import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.problem.Problem;
 
 public class Comparison {
 
 	public static void main(String[] args) throws IOException {
 		int seeds = 10;
 		int maxEvaluations = 10000;
-		String problem = "Poloni";		
-		String[] algorithms = { "AGE-MOEA-II", "AMOSA", "CMA-ES", "DBEA", "e-MOEA", "e-NSGA-II", "GDE3", "IBEA",
+		String problemName = "Poloni";		
+		String[] algorithmNames = { "AGE-MOEA-II", "AMOSA", "CMA-ES", "DBEA", "e-MOEA", "e-NSGA-II", "GDE3", "IBEA",
 				"MOEA/D", "NSGA-II", "NSGA-III", "OMOPSO", "PAES", "PESA2", "Random", "RVEA", "SPEA2", "SMPSO",
 				"SMS-EMOA", "U-NSGA-III", "VEGA", "DifferentialEvolution", "EvolutionStrategy", "SimulatedAnnealing",
 				"RSO" };
-
-		Executor executor = new Executor()
-				.withProblem(problem)
-				.withMaxEvaluations(maxEvaluations);
-
-		Analyzer analyzer = new Analyzer()
-				.withProblem(problem)
-				.includeAdditiveEpsilonIndicator()
-				.showStatisticalSignificance();
-
-		for (String algorithm : algorithms) {
-			analyzer.addAll(algorithm, executor.withAlgorithm(algorithm).runSeeds(seeds));
+		
+		Problem problem = ProblemFactory.getInstance().getProblem(problemName);
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet(problemName);
+		
+		AdditiveEpsilonIndicator indicator = new AdditiveEpsilonIndicator(problem, referenceSet);
+		IndicatorStatistics statistics = new IndicatorStatistics(indicator);
+		
+		for (String algorithmName : algorithmNames) {
+			for (int seed = 0; seed < seeds; seed++) {
+				Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, problem);
+				algorithm.run(maxEvaluations);
+				statistics.add(algorithmName, algorithm.getResult());
+			}
 		}
 
-		analyzer.display();
+		statistics.display();
 	}
 	
 //	Algorithm             Indicator                Min      Median   Max      IQR (+/-) Count Statistically Similar (a=0.05)                                                                  

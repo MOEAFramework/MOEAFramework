@@ -20,8 +20,6 @@ package org.moeaframework.snippet;
 import java.io.IOException;
 
 import org.junit.Test;
-import org.moeaframework.Analyzer;
-import org.moeaframework.Executor;
 import org.moeaframework.Instrumenter;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
@@ -36,59 +34,6 @@ import static org.moeaframework.TempFiles.File;
 
 @SuppressWarnings("unused")
 public class ExperimentSnippet {
-
-	@Test
-	public void executor() {
-		// begin-example:executor
-		NondominatedPopulation result = new Executor()
-		        .withProblem("UF1")
-		        .withAlgorithm("NSGAII")
-		        .withMaxEvaluations(10000)
-		        .run();
-		// end-example:executor
-	}
-	
-	@Test
-	public void executorWithCustomProblem() {
-		// begin-example:executorWithCustomProblem
-		NondominatedPopulation result = new Executor()
-		        .withProblem(new MyProblem())
-		        .withAlgorithm("NSGAII")
-		        .withMaxEvaluations(10000)
-		        .run();
-		// end-example:executorWithCustomProblem
-	}
-	
-	@Test
-	public void executorWithProperties() {
-		// begin-example:executorWithProperties
-		NondominatedPopulation result = new Executor()
-		        .withProblem("UF1")
-		        .withAlgorithm("NSGAII")
-		        .withProperty("populationSize", 250)
-		        .withProperty("operator", "pcx+um")
-		        .withMaxEvaluations(10000)
-		        .run();
-		// end-example:executorWithProperties
-	}
-	
-	@Test
-	public void analyzer() {
-		// begin-example:analyzer
-		Executor executor = new Executor()
-		        .withProblem("UF1")
-		        .withAlgorithm("NSGAII")
-		        .withMaxEvaluations(10000);
-
-		Analyzer analyzer = new Analyzer()
-		        .withSameProblemAs(executor)
-		        .includeHypervolume()
-		        .includeGenerationalDistance();
-				
-		analyzer.addAll("NSGAII", executor.runSeeds(50));
-		analyzer.display();
-		// end-example:analyzer
-	}
 	
 	@Test
 	public void saveCSV() throws IOException {
@@ -111,10 +56,6 @@ public class ExperimentSnippet {
 		
 		instrumenter.getObservations().save(TableFormat.CSV, new File("NSGAII_UF1_Runtime.csv"));
 		// end-example:saveCSV
-	}
-	
-	private class MyProblem extends MockRealProblem {
-		
 	}
 	
 }

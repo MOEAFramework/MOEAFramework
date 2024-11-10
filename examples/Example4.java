@@ -16,47 +16,50 @@
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
 import java.io.IOException;
-
-import org.moeaframework.Analyzer;
-import org.moeaframework.Executor;
+import org.moeaframework.algorithm.MOEAD;
+import org.moeaframework.algorithm.NSGAII;
+import org.moeaframework.algorithm.pso.OMOPSO;
+import org.moeaframework.analysis.IndicatorStatistics;
+import org.moeaframework.core.PRNG;
+import org.moeaframework.core.indicator.Hypervolume;
+import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.problem.Problem;
+import org.moeaframework.problem.CEC2009.UF1;
 
 /**
  * In Example 2, we computed the hypervolume and generational distance for a single
  * run.  We can perform more extensive experiments comparing multiple algorithms
- * using multiple repetitions to statistically compare results.
- * 
- * Below, we use the Executor and Analyzer classes to help perform this analysis.
- * The Executor creates and runs each of the algorithms, possibly with multiple
- * repetitions (seeds).  The Analyzer collects the resulting Pareto fronts,
- * computes selected quality indicators, and displays the results.
- * 
- * In this example, we will compare NSGA-II, GDE3, and eMOEA on the UF1 test problem
- * using the Hypervolume indicator.
+ * using multiple random seeds to statistically compare results.
  */
 public class Example4 {
 
 	public static void main(String[] args) throws IOException {
-		String problem = "UF1";
-		String[] algorithms = { "NSGAII", "GDE3", "eMOEA" };
+		Problem problem = new UF1();
+		NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/UF1.dat");
 
-		// setup the Executor to run each test for 10,000 function evaluations
-		Executor executor = new Executor()
-				.withProblem(problem)
-				.withMaxEvaluations(10000);
-
-		// setup the Analyzer to measure the hypervolume
-		Analyzer analyzer = new Analyzer()
-				.withProblem(problem)
-				.includeHypervolume()
-				.showStatisticalSignificance();
-
-		// run each algorithm for 50 seeds
-		for (String algorithm : algorithms) {
-			analyzer.addAll(algorithm, executor.withAlgorithm(algorithm).runSeeds(50));
+		// Collect statistics for the hypervolume indicator
+		Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
+		IndicatorStatistics statistics = new IndicatorStatistics(hypervolume);
+		
+		// Run each algorithm with 10 random seeds
+		for (int seed = 0; seed < 10; seed++) {
+			PRNG.setSeed(seed);
+			
+			NSGAII algorithm1 = new NSGAII(problem);
+			algorithm1.run(10000);
+			statistics.add("NSGA-II", algorithm1.getResult());
+			
+			MOEAD algorithm2 = new MOEAD(problem);
+			algorithm2.run(10000);
+			statistics.add("MOEA/D", algorithm2.getResult());
+			
+			OMOPSO algorithm3 = new OMOPSO(problem);
+			algorithm3.run(10000);
+			statistics.add("OMOPSO", algorithm3.getResult());
 		}
 
-		// display the results
-		analyzer.display();
+		// Display the statistics
+		statistics.display();
 	}
 	
 }

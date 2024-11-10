@@ -40,40 +40,6 @@ import org.moeaframework.util.validate.Validate;
  * provided reference set.  See {@link DefaultNormalizer} for ways to customize normalization.
  */
 public class Indicators implements Function<NondominatedPopulation, Indicators.IndicatorValues> {
-	
-	/**
-	 * Creates an instance of this class that evaluates all performance indicators.
-	 * 
-	 * @param problem the problem
-	 * @param referenceSet the reference set
-	 * @return the constructed instance
-	 */
-	public static Indicators all(Problem problem, NondominatedPopulation referenceSet) {
-		return of(problem, referenceSet).includeAllMetrics();
-	}
-	
-	/**
-	 * Creates an instance of this class that evaluates all standard performance indicators.  This excludes the
-	 * R-indicators.
-	 * 
-	 * @param problem the problem
-	 * @param referenceSet the reference set
-	 * @return the constructed instance
-	 */
-	public static Indicators standard(Problem problem, NondominatedPopulation referenceSet) {
-		return of(problem, referenceSet).includeStandardMetrics();
-	}
-
-	/**
-	 * Creates a new instance of this class with no configured indicators.
-	 * 
-	 * @param problem the problem
-	 * @param referenceSet the reference set
-	 * @return the constructed instance
-	 */
-	public static Indicators of(Problem problem, NondominatedPopulation referenceSet) {
-		return new Indicators(problem, referenceSet);
-	}
 
 	/**
 	 * The problem.
@@ -158,16 +124,45 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 		subdivisions = Optional.empty();
 	}
 	
+	private void initialize() {
+		if (selectedIndicators.contains(StandardIndicator.Hypervolume) && hypervolume == null) {
+			hypervolume = new Hypervolume(problem, referenceSet);
+		}
+		
+		if (selectedIndicators.contains(StandardIndicator.Contribution) && contribution == null) {
+			contribution = epsilons == null ? new Contribution(referenceSet) : new Contribution(referenceSet, epsilons);
+		}
+		
+		if (selectedIndicators.contains(StandardIndicator.R1Indicator) && r1 == null) {
+			r1 = new R1Indicator(
+					problem,
+					subdivisions.isPresent() ? subdivisions.get() : RIndicator.getDefaultSubdivisions(problem),
+					referenceSet);
+		}
+		
+		if (selectedIndicators.contains(StandardIndicator.R2Indicator) && r2 == null) {
+			r2 = new R2Indicator(
+					problem,
+					subdivisions.isPresent() ? subdivisions.get() : RIndicator.getDefaultSubdivisions(problem),
+					referenceSet);
+		}
+		
+		if (selectedIndicators.contains(StandardIndicator.R3Indicator) && r3 == null) {
+			r3 = new R3Indicator(
+					problem,
+					subdivisions.isPresent() ? subdivisions.get() : RIndicator.getDefaultSubdivisions(problem),
+					referenceSet);
+		}
+	}
+	
 	@Override
 	public IndicatorValues apply(NondominatedPopulation approximationSet) {
+		initialize();
+		
 		IndicatorValues result = new IndicatorValues(approximationSet);
 		NondominatedPopulation normalizedApproximationSet = normalizer.normalize(approximationSet);
 
 		if (selectedIndicators.contains(StandardIndicator.Hypervolume)) {
-			if (hypervolume == null) {
-				hypervolume = new Hypervolume(problem, referenceSet);
-			}
-
 			result.hypervolume = hypervolume.evaluate(approximationSet);
 		}
 
@@ -206,41 +201,18 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 		}
 
 		if (selectedIndicators.contains(StandardIndicator.Contribution)) {
-			if (contribution == null) {
-				contribution = epsilons == null ? new Contribution(referenceSet) :
-					new Contribution(referenceSet, epsilons);
-			}
-
 			result.contribution = contribution.evaluate(approximationSet);
 		}
 
 		if (selectedIndicators.contains(StandardIndicator.R1Indicator)) {
-			if (r1 == null) {
-				r1 = new R1Indicator(problem,
-						subdivisions.isPresent() ? subdivisions.get() : RIndicator.getDefaultSubdivisions(problem),
-						referenceSet);
-			}
-
 			result.r1 = r1.evaluate(approximationSet);
 		}
 
 		if (selectedIndicators.contains(StandardIndicator.R2Indicator)) {
-			if (r2 == null) {
-				r2 = new R2Indicator(problem,
-						subdivisions.isPresent() ? subdivisions.get() : RIndicator.getDefaultSubdivisions(problem),
-						referenceSet);
-			}
-
 			result.r2 = r2.evaluate(approximationSet);
 		}
 
 		if (selectedIndicators.contains(StandardIndicator.R3Indicator)) {
-			if (r3 == null) {
-				r3 = new R3Indicator(problem,
-						subdivisions.isPresent() ? subdivisions.get() : RIndicator.getDefaultSubdivisions(problem),
-						referenceSet);
-			}
-
 			result.r3 = r3.evaluate(approximationSet);
 		}
 
@@ -506,6 +478,31 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 		
 		return this;
 	}
+	
+	/**
+	 * Returns the specified indicator.
+	 * 
+	 * @param indicator the indicator
+	 * @return the indicator
+	 */
+	public Indicator getIndicator(StandardIndicator indicator) {
+		initialize();
+		
+		return switch (indicator) {
+			case Hypervolume -> hypervolume;
+			case GenerationalDistance -> new GenerationalDistance(problem, referenceSet);
+			case GenerationalDistancePlus -> new GenerationalDistancePlus(problem, referenceSet);
+			case InvertedGenerationalDistance -> new InvertedGenerationalDistance(problem, referenceSet);
+			case InvertedGenerationalDistancePlus -> new InvertedGenerationalDistancePlus(problem, referenceSet);
+			case Spacing -> new Spacing(problem);
+			case AdditiveEpsilonIndicator -> new AdditiveEpsilonIndicator(problem, referenceSet);
+			case Contribution -> contribution;
+			case MaximumParetoFrontError -> new MaximumParetoFrontError(problem, referenceSet);
+			case R1Indicator -> r1;
+			case R2Indicator -> r2;
+			case R3Indicator -> r3;
+		};
+	}
 
 	/**
 	 * Collection of indicator results, with values defaulting to {@value Double#NaN} if not included.
@@ -735,5 +732,39 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 		}
 
 	}
+	
+	/**
+	 * Creates an instance of this class that evaluates all performance indicators.
+	 * 
+	 * @param problem the problem
+	 * @param referenceSet the reference set
+	 * @return the constructed instance
+	 */
+	public static Indicators all(Problem problem, NondominatedPopulation referenceSet) {
+		return of(problem, referenceSet).includeAllMetrics();
+	}
+	
+	/**
+	 * Creates an instance of this class that evaluates all standard performance indicators.  This excludes the
+	 * R-indicators.
+	 * 
+	 * @param problem the problem
+	 * @param referenceSet the reference set
+	 * @return the constructed instance
+	 */
+	public static Indicators standard(Problem problem, NondominatedPopulation referenceSet) {
+		return of(problem, referenceSet).includeStandardMetrics();
+	}
 
+	/**
+	 * Creates a new instance of this class with no configured indicators.
+	 * 
+	 * @param problem the problem
+	 * @param referenceSet the reference set
+	 * @return the constructed instance
+	 */
+	public static Indicators of(Problem problem, NondominatedPopulation referenceSet) {
+		return new Indicators(problem, referenceSet);
+	}
+	
 }

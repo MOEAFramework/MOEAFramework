@@ -37,6 +37,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.DoubleStream;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -78,8 +79,7 @@ import org.jfree.data.xy.DefaultXYZDataset;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import org.moeaframework.Analyzer;
-import org.moeaframework.Analyzer.AnalyzerResults;
+import org.moeaframework.analysis.IndicatorStatistics;
 import org.moeaframework.analysis.collector.Observation;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.analysis.diagnostics.PaintHelper;
@@ -88,7 +88,6 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
-import org.moeaframework.core.indicator.StandardIndicator;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.util.validate.Validate;
 
@@ -602,38 +601,21 @@ public class Plot {
 
 		return this;
 	}
-	
-	/**
-	 * Displays the statistical results from an {@link Analyzer} as a box-and-whisker plot.
-	 * 
-	 * @param analyzer the {@code Analyzer} instance
-	 * @return a reference to this instance
-	 */
-	public Plot add(Analyzer analyzer) {
-		return add(analyzer.getAnalysis());
-	}
 
 	/**
-	 * Displays the statistical results from an {@link AnalyzerResults} as a box-and-whisker plot.
+	 * Displays the statistical results from an {@link IndicatorStatistics} as a box-and-whisker plot.
 	 * 
 	 * @param result the {@code AnalyzerResults} instance
 	 * @return a reference to this instance
 	 */
-	public Plot add(AnalyzerResults result) {
+	public Plot add(IndicatorStatistics statistics) {
 		createCategoryPlot();
 
 		DefaultBoxAndWhiskerCategoryDataset dataset = new DefaultBoxAndWhiskerCategoryDataset();
 
-		for (String algorithm : result.getAlgorithms()) {
-			for (StandardIndicator indicator : result.getIndicators()) {
-				List<Double> values = new ArrayList<Double>();
-
-				for (double value : result.getStatistics(algorithm, indicator).getValues()) {
-					values.add(value);
-				}
-
-				dataset.add(values, algorithm, indicator);
-			}
+		for (String name : statistics.getGroupNames()) {
+			List<Double> values = DoubleStream.of(statistics.getValues(name)).boxed().toList();
+			dataset.add(values, name, "Indicator Value");
 		}
 
 		CategoryPlot plot = chart.getCategoryPlot();

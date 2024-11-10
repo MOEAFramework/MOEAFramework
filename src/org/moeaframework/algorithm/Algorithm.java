@@ -98,6 +98,7 @@ public interface Algorithm extends Stateful, Extensible, Named {
 	 * evaluations.
 	 * 
 	 * @param evaluations the number of function evaluations
+	 * @see #run(TerminationCondition)
 	 */
 	public default void run(int evaluations) {
 		run(new MaxFunctionEvaluations(evaluations));
@@ -110,6 +111,7 @@ public interface Algorithm extends Stateful, Extensible, Named {
 	 */
 	public default void run(TerminationCondition terminationCondition) {
 		terminationCondition.initialize(this);
+		getExtensions().onRun(terminationCondition);
 		
 		if (isTerminated() && !terminationCondition.shouldTerminate(this)) {
 			step();

@@ -19,6 +19,7 @@ package org.moeaframework.analysis.diagnostics;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileWriter;
@@ -163,7 +164,8 @@ public class StatisticalResultsViewer extends JFrame {
 		
 		//layout the body
 		JTextArea textArea = new JTextArea(results);
-		textArea.setWrapStyleWord(true);
+		textArea.setLineWrap(false);
+		textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 		
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(new JScrollPane(textArea), BorderLayout.CENTER);

@@ -35,7 +35,6 @@ import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.Property;
 import org.moeaframework.core.initialization.Initialization;
 import org.moeaframework.core.initialization.RandomInitialization;
-import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.operator.AbstractCompoundVariation;
 import org.moeaframework.core.operator.Variation;
 import org.moeaframework.core.operator.real.DifferentialEvolutionVariation;
@@ -512,7 +511,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	 */
 	private void updateIdealPoint(Solution solution) {
 		for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
-			idealPoint[i] = Objective.ideal(idealPoint[i], solution.getObjective(i));
+			idealPoint[i] = Math.min(idealPoint[i], solution.getObjective(i).getCanonicalValue());
 		}
 	}
 
@@ -604,7 +603,8 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 		double max = Double.NEGATIVE_INFINITY;
 
 		for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
-			max = Math.max(max, Math.max(weights[i], 0.0001) * Math.abs(solution.getObjectiveValue(i) - idealPoint[i]));
+			max = Math.max(max, Math.max(weights[i], 0.0001) * Math.abs(
+					solution.getObjective(i).getCanonicalValue() - idealPoint[i]));
 		}
 
 		max += penaltyFunction.calculate(solution);

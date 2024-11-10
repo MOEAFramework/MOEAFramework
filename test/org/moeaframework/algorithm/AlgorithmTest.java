@@ -17,14 +17,20 @@
  */
 package org.moeaframework.algorithm;
 
-import org.moeaframework.Analyzer;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
-import org.moeaframework.Executor;
+import org.moeaframework.analysis.IndicatorStatistics;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
+import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.indicator.StandardIndicator;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.AlgorithmFactory;
+import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.problem.Problem;
 
 /**
  * Methods for comparing two algorithm implementations statistically.
@@ -65,97 +71,92 @@ public abstract class AlgorithmTest {
 	 * Tests if two algorithms are statistically indifferent.  The default {@link AlgorithmFactory} is used to create
 	 * instances.
 	 * 
-	 * @param problem the name of the problem to test
-	 * @param algorithm1 the name of the first algorithm to test
-	 * @param algorithm2 the name of the second algorithm to test
+	 * @param problemName the name of the problem to test
+	 * @param algorithm1Name the name of the first algorithm to test
+	 * @param algorithm2Name the name of the second algorithm to test
 	 * @param allowBetterPerformance do not fail if the MOEA Framework algorithm exceeds the performance
 	 */
-	public void test(String problem, String algorithm1, String algorithm2, boolean allowBetterPerformance) {
-		test(problem, algorithm1, new TypedProperties(), algorithm2, new TypedProperties(), allowBetterPerformance,
-				AlgorithmFactory.getInstance());
+	public void test(String problemName, String algorithm1Name, String algorithm2Name,
+			boolean allowBetterPerformance) {
+		test(problemName, algorithm1Name, new TypedProperties(), algorithm2Name, new TypedProperties(),
+				allowBetterPerformance, AlgorithmFactory.getInstance());
 	}
 	
 	/**
 	 * Tests if two algorithms are statistically indifferent.
 	 * 
-	 * @param problem the name of the problem to test
-	 * @param algorithm1 the name of the first algorithm to test
+	 * @param problemName the name of the problem to test
+	 * @param algorithm1Name the name of the first algorithm to test
 	 * @param properties1 the properties used by the first algorithm to test
-	 * @param algorithm2 the name of the second algorithm to test
+	 * @param algorithm2Name the name of the second algorithm to test
 	 * @param properties2 the properties used by the second algorithm to test
 	 * @param allowBetterPerformance do not fail if the MOEA Framework algorithm exceeds the performance
 	 * @param factory the factory used to construct the algorithms
 	 */
-	public void test(String problem, String algorithm1, TypedProperties properties1, String algorithm2,
+	public void test(String problemName, String algorithm1Name, TypedProperties properties1, String algorithm2Name,
 			TypedProperties properties2, boolean allowBetterPerformance, AlgorithmFactory factory) {
-		String algorithm1Name = algorithm1;
-		String algorithm2Name = algorithm2;
-		
 		// if running the same algorithm with different settings, differentiate the names
+		String suffix1 = "";
+		String suffix2 = "";
+		
 		if (algorithm1Name.equalsIgnoreCase(algorithm2Name)) {
-			algorithm1Name += "-" + properties1.hashCode();
-			algorithm2Name += "-" + properties2.hashCode();
+			suffix1 = "-LHS";
+			suffix2 = "-RHS";
 		}
 		
-		Analyzer analyzer = new Analyzer()
-				.withProblem(problem)
-				.includeAllMetrics()
-				.showAggregate()
-				.showStatisticalSignificance();
+		// TODO: Is there a better way to do this?  The Executor would pass this along, but it seems the adapter should
+		// get the value from run(...).
+		// supply maxEvaluations to JMetal
+		properties1.setInt("maxEvaluations", 10000);
+		properties2.setInt("maxEvaluations", 10000);
 		
-		Executor executor = new Executor()
-				.withProblem(problem)
-				.usingAlgorithmFactory(factory)
-				.distributeOnAllCores();
+		Problem problem = ProblemFactory.getInstance().getProblem(problemName);
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet(problemName);
+		Indicators indicators = Indicators.all(problem, referenceSet);
 		
-		analyzer.addAll(algorithm1Name, 
-				executor.withAlgorithm(algorithm1)
-						.withProperties(properties1)
-						.withMaxEvaluations(10000)
-						.runSeeds(SEEDS));
-		analyzer.addAll(algorithm2Name, 
-				executor.withAlgorithm(algorithm2)
-						.withProperties(properties2)
-						.withMaxEvaluations(10000)
-						.runSeeds(SEEDS));
+		List<NondominatedPopulation> results1 = new ArrayList<>();
+		List<NondominatedPopulation> results2 = new ArrayList<>();
 		
-		Analyzer.AnalyzerResults analyzerResults = analyzer.getAnalysis();
-		
-		if (Settings.isVerbose()) {
-			analyzerResults.display();
+		for (int seed = 0; seed < SEEDS; seed++) {
+			Algorithm algorithm1 = factory.getAlgorithm(algorithm1Name, properties1, problem);
+			algorithm1.run(10000);
+			results1.add(algorithm1.getResult());
+			
+			Algorithm algorithm2 = factory.getAlgorithm(algorithm2Name, properties2, problem);
+			algorithm2.run(10000);
+			results2.add(algorithm2.getResult());
 		}
 		
-		int indifferences = 0;
+		int equivalentIndicators = 0;
 		
-		for (StandardIndicator indicator : analyzerResults.getIndicators()) {
-			indifferences += analyzerResults.getSimilarAlgorithms(algorithm1Name, indicator).size();
-		}
-		
-		if (indifferences < THRESHOLD) {
-			if (allowBetterPerformance) {
-				int outperformance = 0;
+		for (StandardIndicator indicator : indicators.getSelectedIndicators()) {
+			IndicatorStatistics statistics = new IndicatorStatistics(indicators.getIndicator(indicator));
+			statistics.addAll(algorithm1Name + suffix1, results1);
+			statistics.addAll(algorithm2Name + suffix2, results2);
 				
-				for (StandardIndicator indicator : analyzerResults.getIndicators()) {
-					double value1 = analyzerResults.getStatistics(algorithm1Name, indicator).getPercentile(50);
-					double value2 = analyzerResults.getStatistics(algorithm2Name, indicator).getPercentile(50);
-					
-					if (indicator.areLargerValuesPreferred()) {
-						if (value1 >= value2) {
-							outperformance++;
-						}
-					} else {
-						if (value1 <= value2) {
-							outperformance++;
-						}
-					}
-				}
-
-				if (outperformance < THRESHOLD) {
-					Assert.fail("algorithms show different performance");
-				}
-			} else {
-				Assert.fail("algorithms show statistical difference");
+			if (Settings.isVerbose() || true) {
+				System.out.println(indicator.name() + ":");
+				statistics.display();
+				System.out.println();
 			}
+		
+			if (statistics.getStatisticallySimilar(algorithm1Name + suffix1, 0.05).isEmpty()) {
+				if (allowBetterPerformance) {
+					double median1 = statistics.getMedian(algorithm1Name + suffix1);
+					double median2 = statistics.getMedian(algorithm2Name + suffix2);
+					
+					equivalentIndicators += indicator.areLargerValuesPreferred() ?
+							(median1 >= median2 ? 1 : 0) : 
+							(median1 <= median2 ? 1 : 0);
+				}
+			} else {	
+				equivalentIndicators += 1;
+			}
+		}
+		
+		if (equivalentIndicators < THRESHOLD) {
+			Assert.fail("Detected statistical difference in results, only " + equivalentIndicators +
+					" indicators showed similar results, requires " + THRESHOLD + " to pass");
 		}
 	}
 

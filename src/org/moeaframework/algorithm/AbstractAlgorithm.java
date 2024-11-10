@@ -24,7 +24,6 @@ import java.io.ObjectOutputStream;
 import org.moeaframework.algorithm.extension.Extensions;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Stateful;
-import org.moeaframework.core.termination.TerminationCondition;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.validate.Validate;
 
@@ -118,18 +117,6 @@ public abstract class AbstractAlgorithm implements Algorithm {
 		if (initialized) {
 			throw new AlgorithmInitializationException(this, "algorithm already initialized");
 		}
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * Avoid overriding this method in subclasses.  Instead, prefer overriding {@link #initialize()} and
-	 * {@link #iterate()} with any algorithm-specific details.
-	 */
-	@Override
-	public void run(TerminationCondition terminationCondition) {
-		extensions.onRun(terminationCondition);
-		Algorithm.super.run(terminationCondition);
 	}
 
 	/**

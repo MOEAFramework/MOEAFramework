@@ -250,18 +250,14 @@ algorithm.getResult().display();
 </div>
 
 <p>
-  Larger experiments are performed using the Executor and Analyzer.  The Executor
-  is resonsible for configuring and running algorithms.  Unlike the previous example
-  where we solved one problem, the Executor is useful when running multiple seeds,
-  multiple algorithms, or different configurations.  The Analyzer performs the
-  statistical analysis.  It can compute various performance indicators, including
-  hypervolume, generational distance, inverted generational distance, additive
-  &epsilon;-indicator, spacing and contribution.  Additionally, Kruskal-Wallis and
-  Mann-Whitney U tests measure the statistical significance of results.
+  Since MOEAs are stochastic, a good strategy for comparing algorithms is repeating
+  each run with different random seeds, using a statistical test like Kruskal-Wallis
+  or Mann-Whitney U test to determine if results are statistically similar or
+  different.
 </p>
 
 <div class="code">
-<!-- java:examples/Example4.java [39:59] -->
+<!-- java:examples/Example4.java [37:62] -->
 <pre class="brush: java; toolbar: false;">
 <![CDATA[
 String problem = "UF1";
@@ -286,10 +282,9 @@ analyzer.display();
 </div>
 
 <p>
-  Running this script produces the output shown below.  We can see that GDE3 and
-  NSGA-II produce the best (largest) hypervolume values.  Furthermore, we have
-  determined statistically that there is no significant difference in
-  performance between GDE3 and NSGA-II.
+  Running this script produces the output shown below.  Not only are we shown
+  basic statistics about the run, but also we identify NSGA-II and MOEA/D
+  produce statistically similar results.
 </p>
 
 <div class="code">

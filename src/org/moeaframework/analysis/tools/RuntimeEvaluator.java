@@ -23,10 +23,11 @@ import java.io.IOException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
-import org.moeaframework.Executor;
 import org.moeaframework.Instrumenter;
+import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.analysis.collector.ApproximationSetCollector;
 import org.moeaframework.analysis.collector.ElapsedTimeCollector;
+import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
 import org.moeaframework.analysis.collector.Observation;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.analysis.io.ResultEntry;
@@ -38,6 +39,7 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.validate.Validate;
@@ -178,16 +180,13 @@ public class RuntimeEvaluator extends CommandLineUtility {
 				.withFrequency(frequency)
 				.attachApproximationSetCollector()
 				.attachElapsedTimeCollector();
-
-		new Executor()
-				.withSameProblemAs(instrumenter)
-				.withAlgorithm(algorithmName)
-				.withMaxEvaluations(maxEvaluations)
-				.withInstrumenter(instrumenter)
-				.withProperties(properties)
-				.run();
-
-		Observations observations = instrumenter.getObservations();
+		
+		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, properties, problem);
+		InstrumentedAlgorithm<?> instrumentedAlgorithm = instrumenter.instrument(algorithm);
+		
+		instrumentedAlgorithm.run(maxEvaluations);
+		
+		Observations observations = instrumentedAlgorithm.getObservations();
 
 		for (Observation observation : observations) {
 			TypedProperties metadata = new TypedProperties();

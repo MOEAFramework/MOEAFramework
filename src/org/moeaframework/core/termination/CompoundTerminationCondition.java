@@ -65,13 +65,17 @@ public class CompoundTerminationCondition implements TerminationCondition, Itera
 	
 	@Override
 	public double getPercentComplete(Algorithm algorithm) {
-		double percentage = 0.0;
+		double overallPercentComplete = 0.0;
 		
 		for (TerminationCondition condition : conditions) {
-			percentage = Math.max(percentage, condition.getPercentComplete(algorithm));
+			double percentComplete = condition.getPercentComplete(algorithm);
+			
+			if (!Double.isNaN(percentComplete)) {
+				overallPercentComplete = Math.max(percentComplete, overallPercentComplete);
+			}
 		}
 		
-		return percentage;
+		return overallPercentComplete;
 	}
 
 	@Override

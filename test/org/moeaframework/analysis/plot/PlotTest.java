@@ -25,15 +25,22 @@ import java.util.stream.IntStream;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.moeaframework.Analyzer;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
-import org.moeaframework.Executor;
 import org.moeaframework.Instrumenter;
 import org.moeaframework.TempFiles;
+import org.moeaframework.algorithm.Algorithm;
+import org.moeaframework.algorithm.NSGAII;
+import org.moeaframework.analysis.IndicatorStatistics;
+import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.core.PRNG;
+import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.core.spi.AlgorithmFactory;
+import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.problem.Problem;
+import org.moeaframework.problem.CEC2009.UF1;
 
 /**
  * These tests do not check for the correctness of the plots, only that the code runs without error.
@@ -82,14 +89,12 @@ public class PlotTest {
 	
 	@Test
 	public void testParetoFront() {
-		NondominatedPopulation result = new Executor()
-				.withProblem("UF1")
-				.withAlgorithm("NSGAII")
-				.withMaxEvaluations(20)
-				.withProperty("populationSize", 20)
-				.run();
+		Problem problem = new UF1();
 		
-		new Plot().add("NSGAII", result)
+		NSGAII algorithm = new NSGAII(problem);
+		algorithm.run(20);
+		
+		new Plot().add("NSGAII", algorithm.getResult())
 				.withSize(5.0f)
 				.withPaint(Color.BLACK)
 				.show();
@@ -127,43 +132,43 @@ public class PlotTest {
 	}
 	
 	@Test
-	public void testAnalyzer() {
-		String problem = "ZDT1";
+	public void testIndicatorStatistics() {
+		Problem problem = ProblemFactory.getInstance().getProblem("ZDT1");
+		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("ZDT1");
+		
 		String[] algorithms = { "NSGAII", "eMOEA", "OMOPSO" };
-
-		Executor executor = new Executor()
-				.withProblem(problem)
-				.withMaxEvaluations(10000);
-
-		Analyzer analyzer = new Analyzer()
-				.withProblem(problem)
-				.includeGenerationalDistance()
-				.includeAdditiveEpsilonIndicator()
-				.includeInvertedGenerationalDistance();
-
-		for (String algorithm : algorithms) {
-			analyzer.addAll(algorithm, executor.withAlgorithm(algorithm).runSeeds(10));
+		
+		Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
+		IndicatorStatistics statistics = new IndicatorStatistics(hypervolume);
+		
+		for (String name : algorithms) {
+			for (int i = 0; i < 10; i++) {
+				Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(name, problem);
+				algorithm.run(10000);
+				statistics.add(name, algorithm.getResult());
+			}
 		}
 
-		new Plot().add(analyzer).show();
+		new Plot().add(statistics).show();
 	}
 	
 	@Test
 	public void testObservations() {
+		Problem problem = new UF1();
+		
 		Instrumenter instrumenter = new Instrumenter()
-				.withProblem("UF1")
+				.withProblem(problem)
+				.withReferenceSet(new File("pf/UF1.dat"))
 				.withFrequency(100)
 				.attachElapsedTimeCollector()
 				.attachGenerationalDistanceCollector();
+		
+		NSGAII algorithm = new NSGAII(problem);
+		
+		InstrumentedAlgorithm<?> instrumentedAlgorithm = instrumenter.instrument(algorithm);
+		instrumentedAlgorithm.run(10000);
 
-		new Executor()
-				.withProblem("UF1")
-				.withAlgorithm("NSGAII")
-				.withMaxEvaluations(10000)
-				.withInstrumenter(instrumenter)
-				.run();
-
-		Observations observations = instrumenter.getObservations();
+		Observations observations = instrumentedAlgorithm.getObservations();
 		
 		new Plot().add(observations).show();
 	}
@@ -211,7 +216,7 @@ public class PlotTest {
 		new PlotTest().testParetoFront();
 		new PlotTest().testHeatMap();
 		new PlotTest().testHistogram();
-		new PlotTest().testAnalyzer();
+		new PlotTest().testIndicatorStatistics();
 		new PlotTest().testObservations();
 	}
 

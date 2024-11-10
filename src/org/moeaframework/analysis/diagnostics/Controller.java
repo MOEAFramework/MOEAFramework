@@ -26,30 +26,41 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.io.StreamCorruptedException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.apache.commons.lang3.event.EventListenerSupport;
-import org.moeaframework.Analyzer;
-import org.moeaframework.Executor;
 import org.moeaframework.Instrumenter;
+import org.moeaframework.algorithm.Algorithm;
+import org.moeaframework.algorithm.extension.ProgressExtension;
+import org.moeaframework.algorithm.extension.ProgressExtension.ProgressEvent;
+import org.moeaframework.algorithm.extension.ProgressExtension.ProgressListener;
+import org.moeaframework.analysis.IndicatorStatistics;
+import org.moeaframework.analysis.collector.ApproximationSetCollector;
+import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.core.DefaultEpsilons;
 import org.moeaframework.core.Epsilons;
-import org.moeaframework.core.Solution;
+import org.moeaframework.core.indicator.Indicators;
+import org.moeaframework.core.indicator.StandardIndicator;
 import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.core.termination.CancellationSignal;
+import org.moeaframework.core.termination.CompoundTerminationCondition;
+import org.moeaframework.core.termination.MaxFunctionEvaluations;
 import org.moeaframework.problem.Problem;
-import org.moeaframework.util.progress.ProgressEvent;
-import org.moeaframework.util.progress.ProgressListener;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -177,21 +188,21 @@ public class Controller {
 	 * The overall progress of the current job being evaluated.
 	 */
 	private volatile int overallProgress;
-	
+		
 	/**
 	 * The thread running the current job; or {@code null} if no job is running.
 	 */
 	private volatile Thread thread;
 	
 	/**
+	 * The cancellation signal for the current run; or {@code null} if no run is active.
+	 */
+	private volatile CancellationSignal cancellation;
+	
+	/**
 	 * The {@code DiagnosticTool} instance using this controller.
 	 */
 	private final DiagnosticTool frame;
-	
-	/**
-	 * The executor for the current run.
-	 */
-	private Executor executor;
 	
 	/**
 	 * Constructs a new controller for the specified {@code DiagnosticTool} instance.
@@ -448,56 +459,55 @@ public class Controller {
 		
 		try (Problem problem = ProblemFactory.getInstance().getProblem(problemName)) {
 			Epsilons epsilons = DefaultEpsilons.getInstance().getEpsilons(problem);
+			NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet(problemName);
 			
-			Analyzer analyzer = new Analyzer()
-					.withProblem(problemName)
-					.withEpsilons(epsilons)
-					.showAggregate()
-					.showStatisticalSignificance();
+			Indicators indicators = Indicators.of(problem, referenceSet).withEpsilons(epsilons);
 						
 			if (includeHypervolume().get()) {
-				analyzer.includeHypervolume();
+				indicators.includeHypervolume();
 			}
 			
 			if (includeGenerationalDistance().get()) {
-				analyzer.includeGenerationalDistance();
+				indicators.includeGenerationalDistance();
 			}
 			
 			if (includeGenerationalDistancePlus().get()) {
-				analyzer.includeGenerationalDistancePlus();
+				indicators.includeGenerationalDistancePlus();
 			}
 			
 			if (includeInvertedGenerationalDistance().get()) {
-				analyzer.includeInvertedGenerationalDistance();
+				indicators.includeInvertedGenerationalDistance();
 			}
 			
 			if (includeInvertedGenerationalDistancePlus().get()) {
-				analyzer.includeInvertedGenerationalDistancePlus();
+				indicators.includeInvertedGenerationalDistancePlus();
 			}
 			
 			if (includeSpacing().get()) {
-				analyzer.includeSpacing();
+				indicators.includeSpacing();
 			}
 			
 			if (includeAdditiveEpsilonIndicator().get()) {
-				analyzer.includeAdditiveEpsilonIndicator();
+				indicators.includeAdditiveEpsilonIndicator();
 			}
 			
 			if (includeContribution().get()) {
-				analyzer.includeContribution();
+				indicators.includeContribution();
 			}
 			
 			if (includeR1().get()) {
-				analyzer.includeR1();
+				indicators.includeR1();
 			}
 			
 			if (includeR2().get()) {
-				analyzer.includeR2();
+				indicators.includeR2();
 			}
 			
 			if (includeR3().get()) {
-				analyzer.includeR3();
+				indicators.includeR3();
 			}
+			
+			Map<String, List<NondominatedPopulation>> results = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 			
 			for (ResultKey key : selectedResults) {
 				for (Observations observations : get(key)) {
@@ -505,20 +515,31 @@ public class Controller {
 						continue;
 					}
 					
-					NondominatedPopulation population = new EpsilonBoxDominanceArchive(epsilons);
-					List<?> list = (List<?>)observations.last().get("Approximation Set");
+					NondominatedPopulation approximationSet = new EpsilonBoxDominanceArchive(epsilons);
+					approximationSet.addAll(ApproximationSetCollector.getApproximationSet(observations.last()));
 					
-					for (Object object : list) {
-						population.add((Solution)object);
-					}
-					
-					analyzer.add(key.getAlgorithm(), population);
+					results.computeIfAbsent(key.getAlgorithm(), x -> new ArrayList<>()).add(approximationSet);
 				}
 			}
 			
 			try (ByteArrayOutputStream output = new ByteArrayOutputStream();
 					PrintStream ps = new PrintStream(output)) {
-				analyzer.printAnalysis(ps);
+				for (StandardIndicator indicator : indicators.getSelectedIndicators()) {
+					IndicatorStatistics statistics = new IndicatorStatistics(indicators.getIndicator(indicator));
+					
+					for (Entry<String, List<NondominatedPopulation>> entry : results.entrySet()) {
+						statistics.addAll(entry.getKey(), entry.getValue());
+					}
+					
+					final int displayWidth = 80;
+					int dashes = displayWidth - indicator.name().length() - 2;
+										
+					ps.println("=".repeat(dashes / 2) + " " + indicator.name() + " " + "=".repeat(dashes - dashes / 2));
+					statistics.display(ps);
+					ps.println();
+				}
+				
+				ps.close();
 				
 				StatisticalResultsViewer viewer = new StatisticalResultsViewer(this, output.toString());
 				viewer.setLocationRelativeTo(frame);
@@ -545,16 +566,23 @@ public class Controller {
 		final int numberOfEvaluations = frame.getNumberOfEvaluations();
 		final int numberOfSeeds = frame.getNumberOfSeeds();
 		
+		cancellation = new CancellationSignal();
+		
 		thread = new Thread() {
 			
 			public void run() {
-				try {
+				try (Problem problem = ProblemFactory.getInstance().getProblem(problemName)) {
 					updateProgress(0, 0, numberOfEvaluations, numberOfSeeds);
+					
+					Epsilons epsilons = DefaultEpsilons.getInstance().getEpsilons(problem);
+					NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet(problemName);
 
 					// setup the instrumenter to collect the necessary info
 					Instrumenter instrumenter = new Instrumenter()
 							.withFrequency(100)
-							.withProblem(problemName);
+							.withProblem(problem)
+							.withReferenceSet(referenceSet)
+							.withEpsilons(epsilons);
 					
 					if (includeHypervolume().get()) {
 						instrumenter.attachHypervolumeCollector();
@@ -624,46 +652,43 @@ public class Controller {
 						instrumenter.attachPopulationSizeCollector();
 					}
 					
-					// lookup predefined epsilons for this problem
-					try (Problem problem = ProblemFactory.getInstance().getProblem(problemName)) {
-						instrumenter.withEpsilons(DefaultEpsilons.getInstance().getEpsilons(problem));
-					}
-					
-					// setup the progress listener to receive updates
-					ProgressListener listener = new ProgressListener() {
+					for (int i = 0; i < numberOfSeeds; i++) {
+						// setup the progress listener to receive updates
+						final int seed = i + 1;
 						
-						@Override
-						public void progressUpdate(ProgressEvent event) {
-							updateProgress(
-									event.getCurrentNFE(),
-									event.getCurrentSeed(),
-									event.getMaxNFE(),
-									event.getTotalSeeds());
-							
-							if (event.isSeedFinished()) {
-								Executor executor = event.getExecutor();
-								Instrumenter instrumenter = executor.getInstrumenter();
-								
-								add(algorithmName, problemName, instrumenter.getObservations());
+						ProgressListener listener = new ProgressListener() {
+						
+							@Override
+							public void progressUpdate(ProgressEvent event) {
+								updateProgress(
+										event.getAlgorithm().getNumberOfEvaluations(),
+										seed,
+										numberOfEvaluations,
+										numberOfSeeds);
 							}
+						
+						};
+													
+						Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, problem);
+						algorithm.addExtension(new ProgressExtension().withListener(listener));
+						
+						InstrumentedAlgorithm<?> instrumentedAlgorithm = instrumenter.instrument(algorithm);
+						
+						instrumentedAlgorithm.run(new CompoundTerminationCondition(
+								new MaxFunctionEvaluations(numberOfEvaluations),
+								cancellation));
+						
+						if (cancellation.isCancelled()) {
+							return;
 						}
 						
-					};
-					
-					// setup the executor to run for the desired time
-					executor = new Executor()
-							.withSameProblemAs(instrumenter)
-							.withInstrumenter(instrumenter)
-							.withAlgorithm(algorithmName)
-							.withMaxEvaluations(numberOfEvaluations)
-							.withProgressListener(listener);
-					
-					// run the executor using the listener to collect results
-					executor.runSeeds(numberOfSeeds);
+						add(algorithmName, problemName, instrumentedAlgorithm.getObservations());
+					}
 				} catch (Exception e) {
 					handleException(e);
 				} finally {
 					thread = null;
+					cancellation = null;
 					fireStateChangedEvent();
 				}
 			}
@@ -678,8 +703,8 @@ public class Controller {
 	 * Notifies the controller that it should cancel the current evaluation job.
 	 */
 	public void cancel() {
-		if (executor != null) {
-			executor.cancel();
+		if (cancellation != null) {
+			cancellation.cancel();
 		}
 	}
 	

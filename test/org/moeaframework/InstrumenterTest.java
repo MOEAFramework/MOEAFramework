@@ -17,6 +17,7 @@
  */
 package org.moeaframework;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
@@ -25,8 +26,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.algorithm.Algorithm;
+import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.analysis.collector.AttachPoint;
 import org.moeaframework.analysis.collector.Collector;
+import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
 import org.moeaframework.analysis.collector.Observation;
 import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
@@ -39,6 +42,7 @@ import org.moeaframework.mock.MockAlgorithm;
 import org.moeaframework.mock.MockAlgorithmWithExtensions;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.problem.Problem;
+import org.moeaframework.problem.DTLZ.DTLZ2;
 
 public class InstrumenterTest {
 	
@@ -171,19 +175,19 @@ public class InstrumenterTest {
 	
 	@Test
 	public void testWithExecutor() {
+		Problem problem = new DTLZ2(2);
+		
 		Instrumenter instrumenter = new Instrumenter()
-				.withProblem("DTLZ2_2")
+				.withProblem(problem)
+				.withReferenceSet(new File("pf/DTLZ2.2D.pf"))
 				.attachAll();
 		
-		Executor executor = new Executor()
-				.withSameProblemAs(instrumenter)
-				.withAlgorithm("NSGAII")
-				.withMaxEvaluations(1000)
-				.withInstrumenter(instrumenter);
+		NSGAII algorithm = new NSGAII(problem);
+		InstrumentedAlgorithm<?> instrumentedAlgorithm = instrumenter.instrument(algorithm);
 		
-		executor.run();
+		instrumentedAlgorithm.run(1000);
 		
-		Observations observations = instrumenter.getObservations();
+		Observations observations = instrumentedAlgorithm.getObservations();
 				
 		Assert.assertSize(16, observations.keys());
 

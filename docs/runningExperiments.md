@@ -81,7 +81,7 @@ NSGAII    GenerationalDistance 0.000488 0.005468 0.049152 0.006125  50
 
 The results from multiple algorithms can be provided and compared:
 
-<!-- java:examples/Example4.java [39:59] -->
+<!-- java:examples/Example4.java [37:62] -->
 
 ```java
 String problem = "UF1";
