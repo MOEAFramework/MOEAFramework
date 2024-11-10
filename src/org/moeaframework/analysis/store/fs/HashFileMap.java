@@ -47,11 +47,6 @@ public class HashFileMap extends FileMap {
 		return map(root, Hash.of(schema, reference));
 	}
 	
-	@Override
-	public Path mapBlob(Schema schema, Path root, Reference reference, String name) throws IOException {
-		return map(root, Hash.of(schema, reference)).resolve(escapePath(name));
-	}
-	
 	private Path map(Path root, Hash hash) {
 		String hexString = hash.toString();
 		Path path = root;

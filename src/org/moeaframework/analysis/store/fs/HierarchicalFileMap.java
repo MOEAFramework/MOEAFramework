@@ -20,7 +20,6 @@ package org.moeaframework.analysis.store.fs;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -41,8 +40,6 @@ import org.moeaframework.core.Constructable;
  * Paths are treated in a case-insensitive manner, even on platforms with case-sensitive file systems.
  */
 public class HierarchicalFileMap extends FileMap {
-	
-	private static final Comparator<Path> CASE_INSENSITIVE_ORDER = new CaseInsensitivePathComparator();
 	
 	/**
 	 * Constructs a new hierarchical file map.
@@ -114,25 +111,6 @@ public class HierarchicalFileMap extends FileMap {
 		}
 			
 		return path;
-	}
-	
-	@Override
-	public Path mapBlob(Schema schema, Path root, Reference reference, String name) throws IOException {
-		Path escapedName = escapePath(name);
-		Path containerPath = mapContainer(schema, root, reference);
-		Optional<Path> matchingFile = Optional.empty();
-		
-		if (Files.exists(containerPath)) {
-			try (Stream<Path> stream = Files.walk(containerPath, 1)) {
-				matchingFile = stream
-						.skip(1)
-						.map(x -> x.getFileName())
-						.filter(x -> CASE_INSENSITIVE_ORDER.compare(x, escapedName) == 0)
-						.findFirst();
-			}
-		}
-		
-		return containerPath.resolve(matchingFile.orElse(escapedName));
 	}
 	
 	@Override

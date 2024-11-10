@@ -19,10 +19,14 @@ package org.moeaframework.analysis.store.fs;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.apache.commons.text.translate.AggregateTranslator;
 import org.apache.commons.text.translate.CharSequenceTranslator;
@@ -44,6 +48,8 @@ import org.moeaframework.core.Constructable;
  * </ol>
  */
 public abstract class FileMap implements Constructable {
+	
+	static final Comparator<Path> CASE_INSENSITIVE_ORDER = new CaseInsensitivePathComparator();
 			
 	private static final CharSequenceTranslator filenameTranslator;
 		
@@ -109,7 +115,8 @@ public abstract class FileMap implements Constructable {
 	abstract Path mapContainer(Schema schema, Path root, Reference reference) throws IOException;
 	
 	/**
-	 * Returns the path to the blob associated with the given reference and name.
+	 * Returns the path to the blob associated with the given reference and name.  The default implementation places
+	 * the blobs directly inside the container mapped by {@link #mapContainer(Schema, Path, Reference)}.
 	 * 
 	 * @param schema the schema defining the structure
 	 * @param root the root directory
@@ -118,7 +125,23 @@ public abstract class FileMap implements Constructable {
 	 * @return the blob path
 	 * @throws IOException if an I/O error occurred
 	 */
-	abstract Path mapBlob(Schema schema, Path root, Reference reference, String name) throws IOException;
+	public Path mapBlob(Schema schema, Path root, Reference reference, String name) throws IOException {
+		Path escapedName = escapePath(name);
+		Path containerPath = mapContainer(schema, root, reference);
+		Optional<Path> matchingFile = Optional.empty();
+		
+		if (Files.exists(containerPath)) {
+			try (Stream<Path> stream = Files.walk(containerPath, 1)) {
+				matchingFile = stream
+						.skip(1)
+						.map(x -> x.getFileName())
+						.filter(x -> CASE_INSENSITIVE_ORDER.compare(x, escapedName) == 0)
+						.findFirst();
+			}
+		}
+		
+		return containerPath.resolve(matchingFile.orElse(escapedName));
+	}
 	
 	/**
 	 * Updates the manifest with information about this file map.
