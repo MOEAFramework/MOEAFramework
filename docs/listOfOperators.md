@@ -15,9 +15,9 @@ any parameters into the constructor.
 algorithm.setVariation(new PCX(10, 2));
 ```
 
-Alternatively, we can apply a configuration using the property names.
+Alternatively, we can apply a configuration using the properties:
 
-<!-- java:examples/org/moeaframework/examples/configuration/ApplyConfigurationExample.java [37:43] -->
+<!-- java:examples/org/moeaframework/examples/configuration/ApplyConfigurationExample.java [36:42] -->
 
 ```java
 TypedProperties properties = new TypedProperties();

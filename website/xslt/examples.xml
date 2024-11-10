@@ -260,23 +260,29 @@ algorithm.getResult().display();
 <!-- java:examples/Example4.java [37:62] -->
 <pre class="brush: java; toolbar: false;">
 <![CDATA[
-String problem = "UF1";
-String[] algorithms = { "NSGAII", "GDE3", "eMOEA" };
+Problem problem = new UF1();
+NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/UF1.pf");
 
-Executor executor = new Executor()
-        .withProblem(problem)
-        .withMaxEvaluations(10000);
+Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
+IndicatorStatistics statistics = new IndicatorStatistics(hypervolume);
 
-Analyzer analyzer = new Analyzer()
-        .withProblem(problem)
-        .includeHypervolume()
-        .showStatisticalSignificance();
+for (int seed = 0; seed < 10; seed++) {
+    PRNG.setSeed(seed);
 
-for (String algorithm : algorithms) {
-    analyzer.addAll(algorithm, executor.withAlgorithm(algorithm).runSeeds(50));
+    NSGAII algorithm1 = new NSGAII(problem);
+    algorithm1.run(10000);
+    statistics.add("NSGA-II", algorithm1.getResult());
+
+    MOEAD algorithm2 = new MOEAD(problem);
+    algorithm2.run(10000);
+    statistics.add("MOEA/D", algorithm2.getResult());
+
+    OMOPSO algorithm3 = new OMOPSO(problem);
+    algorithm3.run(10000);
+    statistics.add("OMOPSO", algorithm3.getResult());
 }
 
-analyzer.display();
+statistics.display();
 ]]>
 </pre>
 </div>
@@ -291,11 +297,11 @@ analyzer.display();
 <!-- output:examples/Example4.java -->
 <pre class="brush: plain; toolbar: false;">
 <![CDATA[
-Algorithm Indicator   Min      Median   Max      IQR (+/-) Count Statistically Similar (a=0.05)
---------- ----------- -------- -------- -------- --------- ----- ------------------------------
-eMOEA     Hypervolume 0.318756 0.464230 0.533881 0.081216  50
-GDE3      Hypervolume 0.437182 0.502810 0.531823 0.031219  50
-NSGAII    Hypervolume 0.319489 0.514978 0.544461 0.031242  50
+Name    Min      Median   Max      IQR (+/-) Count Statistically Similar (a=0.05)
+------- -------- -------- -------- --------- ----- ------------------------------
+MOEA/D  0.369024 0.464019 0.548999 0.063138  10    NSGA-II
+NSGA-II 0.401330 0.515988 0.531498 0.086326  10    MOEA/D
+OMOPSO  0.242201 0.332316 0.408065 0.114875  10
 ]]>
 </pre>
 </div>
@@ -319,22 +325,23 @@ NSGAII    Hypervolume 0.319489 0.514978 0.544461 0.031242  50
 </p>
 
 <div class="code">
-<!-- java:examples/Example5.java [40:55] -->
+<!-- java:examples/Example5.java [44:60] -->
 <pre class="brush: java; toolbar: false;">
 <![CDATA[
+Problem problem = new UF1();
+NSGAII algorithm = new NSGAII(problem);
+
 Instrumenter instrumenter = new Instrumenter()
-        .withProblem("UF1")
+        .withReferenceSet(new File("pf/UF1.pf"))
         .withFrequency(100)
         .attachGenerationalDistanceCollector();
 
-new Executor()
-        .withProblem("UF1")
-        .withAlgorithm("NSGAII")
-        .withMaxEvaluations(10000)
-        .withInstrumenter(instrumenter)
-        .run();
+InstrumentedAlgorithm<NSGAII> instrumentedAlgorithm =
+        instrumenter.instrument(algorithm);
 
-instrumenter.getObservations().display();
+instrumentedAlgorithm.run(10000);
+
+instrumentedAlgorithm.getObservations().display();
 ]]>
 </pre>
 </div>

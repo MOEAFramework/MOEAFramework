@@ -36,15 +36,16 @@ NondominatedPopulation result = algorithm.getResult();
 
 Alternatively, we can use `applyConfiguration` to configure algorithms using properties:
 
-<!-- java:examples/org/moeaframework/examples/configuration/ApplyConfigurationExample.java [33:45] -->
+<!-- java:examples/org/moeaframework/examples/configuration/ApplyConfigurationExample.java [36:42] -->
 
 ```java
-NondominatedPopulation results = new Executor()
-        .withProblem("UF1")
-        .withAlgorithm("NSGA-II")
-        .withProperty("populationSize", 250)
-        .withMaxEvaluations(10000)
-        .run();
+TypedProperties properties = new TypedProperties();
+properties.setInt("populationSize", 250);
+properties.setString("operator", "pcx");
+properties.setInt("pcx.parents", 10);
+properties.setInt("pcx.offspring", 2);
+
+algorithm.applyConfiguration(properties);
 ```
 
 Many of these algorithms support any decision variable type, and thus the selected mutation and/or crossover operators

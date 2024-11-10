@@ -28,13 +28,12 @@ new Plot()
 Here we plot the runtime dynamics showing the hypervolume and generational distance metrics as NSGA-II solves the
 2-objective DTLZ2 problem:
 
-<!-- java:examples/org/moeaframework/examples/plots/PlotRuntimeDynamics.java [36:54] -->
+<!-- java:examples/org/moeaframework/examples/plots/PlotRuntimeDynamics.java [36:53] -->
 
 ```java
 Problem problem = new DTLZ2(2);
 
 Instrumenter instrumenter = new Instrumenter()
-    .withProblem(problem)
     .withReferenceSet(new File("./pf/DTLZ2.2D.pf"))
     .withFrequency(100)
     .attachHypervolumeCollector()

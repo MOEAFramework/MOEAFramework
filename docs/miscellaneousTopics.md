@@ -161,7 +161,7 @@ By default, we would provide a reference set that defines the bounds for normali
 
 
 ```java
-NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/UF1.dat");
+NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/UF1.pf");
 
 Hypervolume defaultHypervolume = new Hypervolume(problem, referenceSet);
 System.out.println("Normalized by reference set (default): " + defaultHypervolume.evaluate(approximationSet.copy()));
