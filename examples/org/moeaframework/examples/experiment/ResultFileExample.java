@@ -67,7 +67,7 @@ public class ResultFileExample {
 		
 		// Then, we can process the file to compute the Hypervolume metric.
 		try (ResultFileReader reader = ResultFileReader.open(problem, resultFile)) {
-			Hypervolume hypervolume = new Hypervolume(problem, NondominatedPopulation.load("./pf/UF1.dat"));
+			Hypervolume hypervolume = new Hypervolume(problem, NondominatedPopulation.load("./pf/UF1.pf"));
 			
 			while (reader.hasNext()) {
 				ResultEntry entry = reader.next();

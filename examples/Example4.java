@@ -35,7 +35,7 @@ public class Example4 {
 
 	public static void main(String[] args) throws IOException {
 		Problem problem = new UF1();
-		NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/UF1.dat");
+		NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/UF1.pf");
 
 		// Collect statistics for the hypervolume indicator
 		Hypervolume hypervolume = new Hypervolume(problem, referenceSet);

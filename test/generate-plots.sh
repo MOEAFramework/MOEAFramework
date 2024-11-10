@@ -5,7 +5,7 @@ set -e
 images="imgs/"
 mkdir -p "${images}"
 
-for file in pf/*.pf pf/*.dat; do
+for file in pf/*.pf; do
   filename=$(basename -- "$file")
   extension="${filename##*.}"
   filename="${filename%.*}"

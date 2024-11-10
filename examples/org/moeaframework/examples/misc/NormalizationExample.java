@@ -41,7 +41,7 @@ public class NormalizationExample {
 		NondominatedPopulation approximationSet = algorithm.getResult();
 
 		// Default - Derives bounds from reference set
-		NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/UF1.dat");
+		NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/UF1.pf");
 		
 		Hypervolume defaultHypervolume = new Hypervolume(problem, referenceSet);
 		System.out.println("Normalized by reference set (default): " + defaultHypervolume.evaluate(approximationSet.copy()));
