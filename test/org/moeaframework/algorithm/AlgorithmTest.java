@@ -38,6 +38,11 @@ import org.moeaframework.problem.Problem;
 public abstract class AlgorithmTest {
 	
 	/**
+	 * The number of function evaluations per seed.
+	 */
+	public static final int MAX_EVALUATIONS = 10000;
+	
+	/**
 	 * The number of seeds to run each algorithm.
 	 */
 	public static final int SEEDS = 10;
@@ -104,11 +109,14 @@ public abstract class AlgorithmTest {
 			suffix2 = " (2)";
 		}
 		
-		// TODO: Is there a better way to do this?  The Executor would pass this along, but it seems the adapter should
-		// get the value from run(...).
-		// supply maxEvaluations to JMetal
-		properties1.setInt("maxEvaluations", 10000);
-		properties2.setInt("maxEvaluations", 10000);
+		// JMetal-Plugin needs to know the max evaluations ahead of time, so always pass it along
+		if (algorithm1Name.endsWith("-JMetal")) {
+			properties1.setInt("maxEvaluations", MAX_EVALUATIONS);
+		}
+		
+		if (algorithm2Name.endsWith("-JMetal")) {
+			properties2.setInt("maxEvaluations", MAX_EVALUATIONS);
+		}
 		
 		Problem problem = ProblemFactory.getInstance().getProblem(problemName);
 		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet(problemName);
@@ -119,11 +127,11 @@ public abstract class AlgorithmTest {
 		
 		for (int seed = 0; seed < SEEDS; seed++) {
 			Algorithm algorithm1 = factory.getAlgorithm(algorithm1Name, properties1, problem);
-			algorithm1.run(10000);
+			algorithm1.run(MAX_EVALUATIONS);
 			results1.add(algorithm1.getResult());
 			
 			Algorithm algorithm2 = factory.getAlgorithm(algorithm2Name, properties2, problem);
-			algorithm2.run(10000);
+			algorithm2.run(MAX_EVALUATIONS);
 			results2.add(algorithm2.getResult());
 		}
 		
