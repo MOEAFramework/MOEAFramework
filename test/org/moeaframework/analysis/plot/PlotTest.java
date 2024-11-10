@@ -153,11 +153,11 @@ public class PlotTest {
 	}
 	
 	@Test
-	public void testObservations() {
+	public void testObservations() throws IOException {
 		Problem problem = new UF1();
 		
 		Instrumenter instrumenter = new Instrumenter()
-				.withReferenceSet(new File("pf/UF1.pf"))
+				.withReferenceSet("pf/UF1.pf")
 				.withFrequency(100)
 				.attachElapsedTimeCollector()
 				.attachGenerationalDistanceCollector();
@@ -208,7 +208,7 @@ public class PlotTest {
 	    return false;
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		new PlotTest().testEmpty();
 		new PlotTest().testBasicShapes();
 		new PlotTest().testOutOfOrder();

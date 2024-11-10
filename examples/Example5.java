@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-import java.io.File;
 import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
@@ -47,7 +46,7 @@ public class Example5 {
 		
 		// Instrument the algorithm to collect the generational distance
 		Instrumenter instrumenter = new Instrumenter()
-				.withReferenceSet(new File("pf/UF1.pf"))
+				.withReferenceSet("pf/UF1.pf")
 				.withFrequency(100)
 				.attachGenerationalDistanceCollector();
 		

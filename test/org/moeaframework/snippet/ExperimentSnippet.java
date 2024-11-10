@@ -41,7 +41,7 @@ public class ExperimentSnippet {
 		Problem problem = new UF1();
 		
 		Instrumenter instrumenter = new Instrumenter()
-		    .withReferenceSet(new File("./pf/UF1.pf"))
+		    .withReferenceSet("./pf/UF1.pf")
 		    .withFrequency(100)
 		    .attachHypervolumeCollector()
 		    .attachGenerationalDistanceCollector();

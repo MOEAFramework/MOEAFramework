@@ -325,14 +325,14 @@ OMOPSO  0.242201 0.332316 0.408065 0.114875  10
 </p>
 
 <div class="code">
-<!-- java:examples/Example5.java [44:60] -->
+<!-- java:examples/Example5.java [43:59] -->
 <pre class="brush: java; toolbar: false;">
 <![CDATA[
 Problem problem = new UF1();
 NSGAII algorithm = new NSGAII(problem);
 
 Instrumenter instrumenter = new Instrumenter()
-        .withReferenceSet(new File("pf/UF1.pf"))
+        .withReferenceSet("pf/UF1.pf")
         .withFrequency(100)
         .attachGenerationalDistanceCollector();
 

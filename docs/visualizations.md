@@ -34,7 +34,7 @@ Here we plot the runtime dynamics showing the hypervolume and generational dista
 Problem problem = new DTLZ2(2);
 
 Instrumenter instrumenter = new Instrumenter()
-    .withReferenceSet(new File("./pf/DTLZ2.2D.pf"))
+    .withReferenceSet("./pf/DTLZ2.2D.pf")
     .withFrequency(100)
     .attachHypervolumeCollector()
     .attachGenerationalDistanceCollector();

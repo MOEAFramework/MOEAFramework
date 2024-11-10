@@ -17,7 +17,7 @@
  */
 package org.moeaframework.analysis.runtime;
 
-import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
@@ -170,11 +170,11 @@ public class InstrumenterTest {
 	}
 	
 	@Test
-	public void test() {
+	public void test() throws IOException {
 		Problem problem = new DTLZ2(2);
 		
 		Instrumenter instrumenter = new Instrumenter()
-				.withReferenceSet(new File("pf/DTLZ2.2D.pf"))
+				.withReferenceSet("pf/DTLZ2.2D.pf")
 				.attachAll();
 		
 		NSGAII algorithm = new NSGAII(problem);
@@ -189,6 +189,17 @@ public class InstrumenterTest {
 		for (StandardIndicator indicator : StandardIndicator.values()) {
 			Assert.assertTrue("Missing observation for " + indicator.name(), observations.keys().contains(indicator.name()));
 		}
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testWithoutReferenceSet() {
+		Problem problem = new DTLZ2(2);
+		
+		Instrumenter instrumenter = new Instrumenter()
+				.attachAll();
+		
+		NSGAII algorithm = new NSGAII(problem);
+		instrumenter.instrument(algorithm);
 	}
 	
 }

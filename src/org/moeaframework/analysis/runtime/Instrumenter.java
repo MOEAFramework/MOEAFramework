@@ -33,7 +33,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.extension.FrequencyType;
 import org.moeaframework.core.Epsilons;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.indicator.AdditiveEpsilonIndicator;
 import org.moeaframework.core.indicator.Contribution;
@@ -468,13 +467,22 @@ public class Instrumenter {
 	 * 
 	 * @param referenceSetFile the reference set file
 	 * @return a reference to this instrumenter
+	 * @throws IOException if an I/O error occurred
 	 */
-	public Instrumenter withReferenceSet(File referenceSetFile) {
-		try {
-			return withReferenceSet(NondominatedPopulation.load(referenceSetFile));
-		} catch (IOException e) {
-			throw new FrameworkException("unable to load reference set", e);
-		}
+	public Instrumenter withReferenceSet(File referenceSetFile) throws IOException {
+		return withReferenceSet(NondominatedPopulation.load(referenceSetFile));
+	}
+	
+	/**
+	 * Loads a reference set from a resource available in the file system or bundled in a JAR.  Only required when
+	 * computing performance indicators.
+	 * 
+	 * @param resource the reference set resource name
+	 * @return a reference to this instrumenter
+	 * @throws IOException if an I/O error occurred
+	 */
+	public Instrumenter withReferenceSet(String resource) throws IOException {
+		return withReferenceSet(NondominatedPopulation.load(resource));
 	}
 	
 	/**

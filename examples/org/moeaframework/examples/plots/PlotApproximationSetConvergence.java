@@ -17,7 +17,7 @@
  */
 package org.moeaframework.examples.plots;
 
-import java.io.File;
+import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.analysis.diagnostics.ApproximationSetViewer;
@@ -32,11 +32,11 @@ import org.moeaframework.problem.Problem;
  */
 public class PlotApproximationSetConvergence {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		Problem problem = new UF1();
 		
 		Instrumenter instrumenter = new Instrumenter()
-				.withReferenceSet(new File("pf/UF1.pf"))
+				.withReferenceSet("pf/UF1.pf")
 				.withFrequency(100)
 				.attachApproximationSetCollector();
 		
