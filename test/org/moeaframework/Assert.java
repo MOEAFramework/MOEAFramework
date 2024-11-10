@@ -384,11 +384,11 @@ public class Assert extends org.junit.Assert {
 		assertTrue("Line is not blank: '" + line + "'", line.isBlank());
 	}
 	
-	public static void assertStringContains(String line, CharSequence substring) {
+	public static void assertStringContains(String line, String substring) {
 		assertTrue("Line does not contain expected substring: '" + line + "'", line.contains(substring));
 	}
 	
-	public static void assertStringNotContains(String line, CharSequence substring) {
+	public static void assertStringNotContains(String line, String substring) {
 		assertFalse("Line contains substring when it should not: '" + line + "'", line.contains(substring));
 	}
 	
@@ -398,6 +398,10 @@ public class Assert extends org.junit.Assert {
 	
 	public static void assertStringMatches(String line, Pattern regex) {
 		assertTrue("Line does not match regex: '" + line + "'", regex.matcher(line).matches());
+	}
+	
+	public static void assertStringStartsWith(String line, String substring) {
+		assertTrue("Line does not contain expected substring: '" + line + "'", line.startsWith(substring));
 	}
 	
 	public static <T> void assertContains(Collection<? extends T> collection, T expected) {

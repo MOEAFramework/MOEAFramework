@@ -62,7 +62,7 @@ public class InstrumenterTest {
 				@Override
 				public boolean matches(Stack<Object> parents, Object object) {
 					Class<?> type = object.getClass();
-					return (type.getPackage() != null) && type.getPackage().getName().startsWith("org.moeaframework.");
+					return (type.getPackage() != null) && type.getPackage().getName().startsWith("org.moeaframework");
 				}
 				
 			};
@@ -162,7 +162,7 @@ public class InstrumenterTest {
 	@Test
 	public void testExcludedPackages() {
 		SimpleAlgorithm algorithm = new SimpleAlgorithm();
-		new Instrumenter().addExcludedPackage("org.moeaframework.").attach(collector).instrument(algorithm);
+		new Instrumenter().addExcludedPackage("org.moeaframework").attach(collector).instrument(algorithm);
 		
 		Set<Object> instrumentedObjects = collector.getInstrumentedObjects();
 		

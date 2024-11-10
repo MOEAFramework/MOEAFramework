@@ -331,7 +331,7 @@ public class DefaultAlgorithmsTest {
 	private void testRun(String name, Problem problem) {
 		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(name, properties, problem);
 		
-		Assert.assertStringContains(algorithm.getClass().getPackageName(), "org.moeaframework.");
+		Assert.assertStringStartsWith(algorithm.getClass().getPackageName(), "org.moeaframework");
 		Assert.assertEquals(0, algorithm.getNumberOfEvaluations());
 		Assert.assertEquals(0, algorithm.getResult().size());
 		Assert.assertFalse(algorithm.isTerminated());
