@@ -47,17 +47,17 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<sequential>
 			<get src="@{src}" dest="@{dest}" />
 			
-			<condition property="sha1" value="@{sha1}">
+			<condition property="@{src}.sha1" value="@{sha1}">
 				<matches string="@{sha1}" pattern="^[a-zA-Z0-9]+$" />
 			</condition>
 			
-			<sequential if:set="sha1">
+			<sequential if:set="@{src}.sha1">
 				<checksum file="@{dest}" property="@{sha1}" algorithm="SHA-1" verifyProperty="@{src}.checksum.valid"/>
 				<delete unless:true="${@{src}.checksum.valid}" file="@{dest}" />
 				<fail unless:true="${@{src}.checksum.valid}" message="Invalid checksum for @{dest}" />
 			</sequential>
 			
-			<sequential unless:set="sha1">
+			<sequential unless:set="@{src}.sha1">
 				<echo>Skipping checksum validation for @{dest}, no SHA1 set</echo>
 			</sequential>
 		</sequential>
