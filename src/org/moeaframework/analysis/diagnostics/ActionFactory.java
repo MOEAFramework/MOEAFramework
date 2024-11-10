@@ -35,9 +35,8 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.commons.io.FilenameUtils;
-import org.moeaframework.Instrumenter;
 import org.moeaframework.analysis.diagnostics.Controller.Setting;
-import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.Localization;
 
 /**
@@ -719,20 +718,10 @@ public class ActionFactory {
 	 */
 	public Action getShowApproximationSetAction(final ResultKey key) {
 		return new RunnableAction("showApproximationSet", () -> {
-			NondominatedPopulation referenceSet = null;
-
-			try {
-				Instrumenter instrumenter = new Instrumenter().withProblem(key.getProblem());
-
-				referenceSet = instrumenter.getReferenceSet();
-			} catch (Exception ex) {
-				//silently handle if no reference set is available
-			}
-
 			ApproximationSetViewer viewer = new ApproximationSetViewer(
 					key.toString(),
 					controller.get(key), 
-					referenceSet);
+					ProblemFactory.getInstance().getReferenceSet(key.getProblem()));
 			viewer.setLocationRelativeTo(frame);
 			viewer.setIconImages(frame.getIconImages());
 			viewer.setVisible(true);

@@ -380,16 +380,6 @@ new problems written in Java or other languages can be easily incorporated.</p>
         R3 Indicator</td>
   </tr>
   <tr>
-  	<td style="font-weight: bold">Executor, Analyzer, and Instrumenter</td>
-  	<td>Three simple Java classes for accessing 90% of the functionality of the MOEA Framework:
-  	    <ul>
-  	      <li>Executor - Construct and execute MOEAs to solve optimization problems</li>
-  	      <li>Analyzer - Statistically compare results</li>
-  	      <li>Instrumenter - Record runtime dynamics</li>
-  	    </ul>
-  	  </td>
-  </tr>
-  <tr>
   	<td style="font-weight: bold">Diagnostic Tool</td>
   	<td>GUI for quickly comparing the performance of algorithms on standard test problems</td>
   </tr>

@@ -80,9 +80,9 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.moeaframework.analysis.IndicatorStatistics;
-import org.moeaframework.analysis.collector.Observation;
-import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.analysis.diagnostics.PaintHelper;
+import org.moeaframework.analysis.runtime.Observation;
+import org.moeaframework.analysis.runtime.Observations;
 import org.moeaframework.analysis.stream.Partition;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
@@ -96,7 +96,7 @@ import org.moeaframework.util.validate.Validate;
  * <ol>
  *   <li>scatter plots of bi-objective populations,</li>
  *   <li>line plots of runtime dynamics (via an {@link Observations},</li>
- *   <li>box-and-whisker plots of performance statistics (via an {@link Analyzer}), and</li>
+ *   <li>box-and-whisker plots of performance statistics (via an {@link IndicatorStatistics}), and</li>
  *   <li>other plots of basic data types (e.g., line, scatter, area, stacked, heat map).</li>
  * </ol>
  * It is possible to combine datasets by calling more than one {@code add} method, but you can not mix different plot
@@ -605,7 +605,7 @@ public class Plot {
 	/**
 	 * Displays the statistical results from an {@link IndicatorStatistics} as a box-and-whisker plot.
 	 * 
-	 * @param result the {@code AnalyzerResults} instance
+	 * @param statistics the indicator statistics
 	 * @return a reference to this instance
 	 */
 	public Plot add(IndicatorStatistics statistics) {

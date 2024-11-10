@@ -26,11 +26,11 @@
  *     <th style="width: 75%; text-align: left">Description</th>
  *   </tr>
  *   <tr>
- *     <td>{@link org.moeaframework.analysis.collector}</td>
+ *     <td>{@link org.moeaframework.analysis.runtime}</td>
  *     <td>
  *       The collector API provides the tools for collecting runtime information from algorithms and their internal
  *       components.  A suite of collectors are provided in this package.  See the
- *       {@link org.moeaframework.Instrumenter} for details on using the collector API.
+ *       {@link org.moeaframework.analysis.runtime.Instrumenter} for details on using the collector API.
  *     </td>
  *   </tr>
  *   <tr>

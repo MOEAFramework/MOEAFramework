@@ -51,8 +51,8 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.YIntervalSeries;
 import org.jfree.data.xy.YIntervalSeriesCollection;
-import org.moeaframework.analysis.collector.Observation;
-import org.moeaframework.analysis.collector.Observations;
+import org.moeaframework.analysis.runtime.Observation;
+import org.moeaframework.analysis.runtime.Observations;
 import org.moeaframework.util.Localization;
 
 /**

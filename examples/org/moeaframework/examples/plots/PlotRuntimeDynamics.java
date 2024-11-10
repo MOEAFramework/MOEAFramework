@@ -19,11 +19,11 @@ package org.moeaframework.examples.plots;
 
 import java.io.File;
 
-import org.moeaframework.Instrumenter;
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
-import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.analysis.plot.Plot;
+import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
+import org.moeaframework.analysis.runtime.Instrumenter;
+import org.moeaframework.analysis.runtime.Observations;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
 
@@ -36,7 +36,6 @@ public class PlotRuntimeDynamics {
 		Problem problem = new DTLZ2(2);
 		
 		Instrumenter instrumenter = new Instrumenter()
-		    .withProblem(problem)
 		    .withReferenceSet(new File("./pf/DTLZ2.2D.pf"))
 		    .withFrequency(100)
 		    .attachHypervolumeCollector()

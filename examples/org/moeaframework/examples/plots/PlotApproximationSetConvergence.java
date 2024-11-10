@@ -19,10 +19,10 @@ package org.moeaframework.examples.plots;
 
 import java.io.File;
 
-import org.moeaframework.Instrumenter;
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
 import org.moeaframework.analysis.diagnostics.ApproximationSetViewer;
+import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
+import org.moeaframework.analysis.runtime.Instrumenter;
 import org.moeaframework.problem.CEC2009.UF1;
 import org.moeaframework.problem.Problem;
 
@@ -36,7 +36,6 @@ public class PlotApproximationSetConvergence {
 		Problem problem = new UF1();
 		
 		Instrumenter instrumenter = new Instrumenter()
-				.withProblem(problem)
 				.withReferenceSet(new File("pf/UF1.pf"))
 				.withFrequency(100)
 				.attachApproximationSetCollector();

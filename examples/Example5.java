@@ -18,9 +18,9 @@
 import java.io.File;
 import java.io.IOException;
 
-import org.moeaframework.Instrumenter;
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
+import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
+import org.moeaframework.analysis.runtime.Instrumenter;
 import org.moeaframework.problem.CEC2009.UF1;
 import org.moeaframework.problem.Problem;
 
@@ -47,7 +47,6 @@ public class Example5 {
 		
 		// Instrument the algorithm to collect the generational distance
 		Instrumenter instrumenter = new Instrumenter()
-				.withProblem(problem)
 				.withReferenceSet(new File("pf/UF1.pf"))
 				.withFrequency(100)
 				.attachGenerationalDistanceCollector();

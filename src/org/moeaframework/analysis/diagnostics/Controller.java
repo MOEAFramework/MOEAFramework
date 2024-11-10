@@ -40,15 +40,15 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.apache.commons.lang3.event.EventListenerSupport;
-import org.moeaframework.Instrumenter;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.extension.ProgressExtension;
 import org.moeaframework.algorithm.extension.ProgressExtension.ProgressEvent;
 import org.moeaframework.algorithm.extension.ProgressExtension.ProgressListener;
 import org.moeaframework.analysis.IndicatorStatistics;
-import org.moeaframework.analysis.collector.ApproximationSetCollector;
-import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
-import org.moeaframework.analysis.collector.Observations;
+import org.moeaframework.analysis.runtime.ApproximationSetCollector;
+import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
+import org.moeaframework.analysis.runtime.Instrumenter;
+import org.moeaframework.analysis.runtime.Observations;
 import org.moeaframework.core.DefaultEpsilons;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.indicator.Indicators;
@@ -580,7 +580,6 @@ public class Controller {
 					// setup the instrumenter to collect the necessary info
 					Instrumenter instrumenter = new Instrumenter()
 							.withFrequency(100)
-							.withProblem(problem)
 							.withReferenceSet(referenceSet)
 							.withEpsilons(epsilons);
 					

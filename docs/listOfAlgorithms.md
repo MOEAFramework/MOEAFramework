@@ -34,10 +34,9 @@ algorithm.run(10000);
 NondominatedPopulation result = algorithm.getResult();
 ```
 
-Alternatively, we can use the `Executor` class and configure algorithms by setting the properties.  See
-[Running Experiments](runningExperiments.md) for more details on using the `Executor`.
+Alternatively, we can use `applyConfiguration` to configure algorithms using properties:
 
-<!-- java:test/org/moeaframework/snippet/AlgorithmSnippet.java [executor] -->
+<!-- java:examples/org/moeaframework/examples/configuration/ApplyConfigurationExample.java [33:45] -->
 
 ```java
 NondominatedPopulation results = new Executor()

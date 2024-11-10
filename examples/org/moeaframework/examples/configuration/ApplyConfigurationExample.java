@@ -25,8 +25,7 @@ import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
 
 /**
- * Demonstrates applying a configuration stored in {@link TypedProperties}.  You might notice similaries between
- * this approach and using an {@link Executor}.
+ * Demonstrates configuring an algorithm using properties.
  */
 public class ApplyConfigurationExample {
 	

@@ -64,7 +64,7 @@ import javax.swing.table.AbstractTableModel;
 import org.jfree.base.Library;
 import org.jfree.ui.about.AboutDialog;
 import org.jfree.ui.about.ProjectInfo;
-import org.moeaframework.analysis.collector.Observations;
+import org.moeaframework.analysis.runtime.Observations;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.util.Localization;

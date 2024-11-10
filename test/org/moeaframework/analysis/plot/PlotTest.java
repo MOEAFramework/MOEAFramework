@@ -27,13 +27,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
-import org.moeaframework.Instrumenter;
 import org.moeaframework.TempFiles;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.analysis.IndicatorStatistics;
-import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
-import org.moeaframework.analysis.collector.Observations;
+import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
+import org.moeaframework.analysis.runtime.Instrumenter;
+import org.moeaframework.analysis.runtime.Observations;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.population.NondominatedPopulation;
@@ -157,7 +157,6 @@ public class PlotTest {
 		Problem problem = new UF1();
 		
 		Instrumenter instrumenter = new Instrumenter()
-				.withProblem(problem)
 				.withReferenceSet(new File("pf/UF1.pf"))
 				.withFrequency(100)
 				.attachElapsedTimeCollector()

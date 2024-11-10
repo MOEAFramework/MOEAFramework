@@ -46,6 +46,7 @@ public interface TerminationCondition {
 	 * Returns the percentage that this condition is complete, as a value between {@code 0.0} and {@code 100.0}.  If
 	 * the percentage can not be determined, returns {@value Double#NaN}.
 	 * 
+	 * @param algorithm the algorithm
 	 * @return the percentage completion
 	 */
 	public double getPercentComplete(Algorithm algorithm);

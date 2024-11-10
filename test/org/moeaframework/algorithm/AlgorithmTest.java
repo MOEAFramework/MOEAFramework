@@ -100,8 +100,8 @@ public abstract class AlgorithmTest {
 		String suffix2 = "";
 		
 		if (algorithm1Name.equalsIgnoreCase(algorithm2Name)) {
-			suffix1 = "-LHS";
-			suffix2 = "-RHS";
+			suffix1 = " (1)";
+			suffix2 = " (2)";
 		}
 		
 		// TODO: Is there a better way to do this?  The Executor would pass this along, but it seems the adapter should
@@ -134,7 +134,7 @@ public abstract class AlgorithmTest {
 			statistics.addAll(algorithm1Name + suffix1, results1);
 			statistics.addAll(algorithm2Name + suffix2, results2);
 				
-			if (Settings.isVerbose() || true) {
+			if (Settings.isVerbose()) {
 				System.out.println(indicator.name() + ":");
 				statistics.display();
 				System.out.println();

@@ -23,16 +23,16 @@ import java.io.IOException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
-import org.moeaframework.Instrumenter;
 import org.moeaframework.algorithm.Algorithm;
-import org.moeaframework.analysis.collector.ApproximationSetCollector;
-import org.moeaframework.analysis.collector.ElapsedTimeCollector;
-import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
-import org.moeaframework.analysis.collector.Observation;
-import org.moeaframework.analysis.collector.Observations;
 import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.analysis.parameter.ParameterSet;
+import org.moeaframework.analysis.runtime.ApproximationSetCollector;
+import org.moeaframework.analysis.runtime.ElapsedTimeCollector;
+import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
+import org.moeaframework.analysis.runtime.Instrumenter;
+import org.moeaframework.analysis.runtime.Observation;
+import org.moeaframework.analysis.runtime.Observations;
 import org.moeaframework.analysis.sample.Samples;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.FrameworkException;
@@ -176,7 +176,6 @@ public class RuntimeEvaluator extends CommandLineUtility {
 		Validate.that("maxEvaluations", maxEvaluations).isGreaterThanOrEqualTo(0);
 		
 		Instrumenter instrumenter = new Instrumenter()
-				.withProblem(problem)
 				.withFrequency(frequency)
 				.attachApproximationSetCollector()
 				.attachElapsedTimeCollector();

@@ -20,10 +20,10 @@ package org.moeaframework.snippet;
 import java.io.IOException;
 
 import org.junit.Test;
-import org.moeaframework.Instrumenter;
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.analysis.collector.InstrumentedAlgorithm;
-import org.moeaframework.analysis.collector.Observations;
+import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
+import org.moeaframework.analysis.runtime.Instrumenter;
+import org.moeaframework.analysis.runtime.Observations;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.problem.CEC2009.UF1;
@@ -41,7 +41,6 @@ public class ExperimentSnippet {
 		Problem problem = new UF1();
 		
 		Instrumenter instrumenter = new Instrumenter()
-		    .withProblem(problem)
 		    .withReferenceSet(new File("./pf/UF1.pf"))
 		    .withFrequency(100)
 		    .attachHypervolumeCollector()

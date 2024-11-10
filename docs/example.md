@@ -117,7 +117,7 @@ Alternatively, similar to how we read the current configuration with `getConfigu
 different settings with `applyConfiguration`.  For example, the following results in the same setup
 as the previous example:
 
-<!-- java:examples/org/moeaframework/examples/configuration/ApplyConfigurationExample.java [34:46] -->
+<!-- java:examples/org/moeaframework/examples/configuration/ApplyConfigurationExample.java [33:45] -->
 
 ```java
 Problem problem = new DTLZ2(2);
