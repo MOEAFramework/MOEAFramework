@@ -63,8 +63,11 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.moeaframework.analysis.runtime.Observations;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.constraint.Constraint;
+import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.core.variable.Variable;
 import org.moeaframework.util.Localization;
 
 /**
@@ -273,15 +276,15 @@ ListSelectionListener {
 		Vector<String> objectives = new Vector<String>();
 		
 		for (int i=0; i<solution.getNumberOfObjectives(); i++) {
-			objectives.add(localization.getString("text.objective", i+1));
+			objectives.add(Objective.getNameOrDefault(solution.getObjective(i), i));
 		}
 		
 		for (int i=0; i<solution.getNumberOfConstraints(); i++) {
-			objectives.add(localization.getString("text.constraint", i+1));
+			objectives.add(Constraint.getNameOrDefault(solution.getConstraint(i), i));
 		}
 		
 		for (int i=0; i<solution.getNumberOfVariables(); i++) {
-			objectives.add(localization.getString("text.variable", i+1));
+			objectives.add(Variable.getNameOrDefault(solution.getVariable(i), i));
 		}
 		
 		xAxisSelection = new JComboBox<String>(objectives);
