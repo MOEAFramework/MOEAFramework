@@ -260,24 +260,6 @@ Generates parameter samples for running the Evaluator.  The following options ar
  -s,--seed <value>              Random number generator seed
 ```
 
-## SimpleStatistics
-
-<!-- help:src/org/moeaframework/analysis/tools/SimpleStatistics.java [:-2] -->
-
-```
-usage: java -classpath "lib/*" org.moeaframework.analysis.tools.SimpleStatistics [-h] [-i] [-m <arg>] [-o <file>] [-x
-       <value>]
-
-Calculates statistics on a metric file produced by Evaluator or ResultFileEvaluator.  The following options are
-available:
-
- -h,--help              Display help information
- -i,--ignore            Ignore infinity and NaN values
- -m,--mode <arg>        Either minimum, maximum, average, stdev, count
- -o,--output <file>     Output file
- -x,--maximum <value>   Replaces infinity values with the given value
-```
-
 ## SobolAnalysis
 
 <!-- help:src/org/moeaframework/analysis/tools/SobolAnalysis.java [:-2] -->

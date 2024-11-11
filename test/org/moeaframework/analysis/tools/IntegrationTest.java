@@ -149,37 +149,17 @@ public class IntegrationTest {
 		Assert.assertFileWithContent(seedMerger);
 		
 		//evaluate the results using the combined reference set
-		File metricFile1 = TempFiles.createFile();
-		File metricFile2 = TempFiles.createFile();
+		File metricFile = TempFiles.createFile();
 		
 		MetricsEvaluator.main(new String[] {
 				"-b", "DTLZ2_2",
-				"-i", resultFile1.getPath(),
-				"-o", metricFile1.getPath(),
+				"-i", seedMerger.getPath(),
+				"-o", metricFile.getPath(),
 				"-r", combinedFile.getPath() });
 		
-		MetricsEvaluator.main(new String[] {
-				"-i", resultFile2.getPath(),
-				"-o", metricFile2.getPath(),
-				"-r", combinedFile.getPath() });
-		
-		Assert.assertLineCount(11, metricFile1);
-		Assert.assertLineCount(11, metricFile2);
-		Assert.assertLinePattern(metricFile1, Assert.getSpaceSeparatedNumericPattern(Metric.getNumberOfMetrics()));
-		Assert.assertLinePattern(metricFile2, Assert.getSpaceSeparatedNumericPattern(Metric.getNumberOfMetrics()));
-		
-		//compute the average metric value
-		File averageMetrics = TempFiles.createFile();
-		
-		SimpleStatistics.main(new String[] {
-				"-m", "av",
-				"-o", averageMetrics.getPath(),
-				metricFile1.getPath(),
-				metricFile2.getPath() });
-		
-		Assert.assertLineCount(10, averageMetrics);
-		Assert.assertLinePattern(averageMetrics, Assert.getSpaceSeparatedNumericPattern(Metric.getNumberOfMetrics()));
-		
+		Assert.assertLineCount(11, metricFile);
+		Assert.assertLinePattern(metricFile, Assert.getSpaceSeparatedNumericPattern(Metric.getNumberOfMetrics()));
+
 		//perform the analysis
 		File analysisFile = TempFiles.createFile();
 		
@@ -188,7 +168,7 @@ public class IntegrationTest {
 				"-i", parameterFile.getPath(),
 				"-m", "1",
 				"-o", analysisFile.getPath(),
-				averageMetrics.getPath() });
+				metricFile.getPath() });
 		
 		Assert.assertLineCount(3, analysisFile);
 		
@@ -198,7 +178,7 @@ public class IntegrationTest {
 				"-c", "-e",
 				"-m", "1",
 				"-o", analysisFile.getPath(),
-				averageMetrics.getPath() });
+				metricFile.getPath() });
 		
 		Assert.assertLineCount(5, analysisFile);
 	}
