@@ -138,14 +138,13 @@ error performance indicators.  The following options are available:
 <!-- help:src/org/moeaframework/analysis/tools/MetricsValidator.java [:-2] -->
 
 ```
-usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileValidator [-b <name>] -c <N> [-h] [-o <file>]
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.MetricsValidator -c <N> [-h] [-o <file>]
 
-Validates the number of approximation sets stored in a result file.  The following options are available:
+Validates the number of rows stored in a metrics file.  The following options are available:
 
- -b,--problem <name>   Problem name
- -c,--count <N>        The expected number of entries
- -h,--help             Display help information
- -o,--output <file>    Output file
+ -c,--count <N>       The expected number of rows
+ -h,--help            Display help information
+ -o,--output <file>   Output file
 ```
 
 ## ReferenceSetGenerator
