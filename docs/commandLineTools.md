@@ -33,11 +33,11 @@ Constructs the scaffolding for a natively-compiled problem in a target language.
 
 ```
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.CalculateIndicator [-b <name>] [-e <e1,e2,...>] [-h] -i
-       <name> [-o <file>] -r <file>
+       <name> [-o <file>] [-r <file>]
 
 Calculates the indicator value for an approximation set.  The following options are available:
 
- -b,--problem <name>
+ -b,--problem <name>        Problem name
  -e,--epsilon <e1,e2,...>   Epsilon values for epsilon-dominance
  -h,--help                  Display help information
  -i,--indicator <name>      The name of the indicator (e.g., hypervolume)
