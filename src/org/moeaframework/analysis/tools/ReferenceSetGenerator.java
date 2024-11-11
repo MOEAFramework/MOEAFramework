@@ -34,9 +34,9 @@ import org.moeaframework.util.CommandLineUtility;
  * sampling points and building a non-dominated set.  Only problems that implement the {@link AnalyticalProblem}
  * interface can be used.
  */
-public class SetGenerator extends CommandLineUtility {
+public class ReferenceSetGenerator extends CommandLineUtility {
 
-	private SetGenerator() {
+	private ReferenceSetGenerator() {
 		super();
 	}
 	
@@ -102,7 +102,7 @@ public class SetGenerator extends CommandLineUtility {
 	 * @throws Exception if an error occurred
 	 */
 	public static void main(String[] args) throws Exception {
-		new SetGenerator().start(args);
+		new ReferenceSetGenerator().start(args);
 	}
 	
 }

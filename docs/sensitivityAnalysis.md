@@ -65,7 +65,7 @@ the Pareto approximation sets produced by each parameterization.
 <!-- bash:examples/org/moeaframework/examples/experiment/sensitivity.sh [22:28] -->
 
 ```bash
-java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.Evaluator \
+java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.EndOfRunEvaluator \
     --parameterFile examples/org/moeaframework/examples/experiment/NSGAII_Params.txt \
     --input NSGAII_Samples.txt \
     --output NSGAII_DTLZ2_Results.txt \
@@ -82,7 +82,7 @@ Here, we take the result file produced in the previous step and compute the metr
 <!-- bash:examples/org/moeaframework/examples/experiment/sensitivity.sh [30:34] -->
 
 ```bash
-java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.ResultFileEvaluator \
+java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.MetricsEvaluator \
     --input NSGAII_DTLZ2_Results.txt \
     --output NSGAII_DTLZ2_Metrics.txt \
     --problem DTLZ2 \
@@ -97,7 +97,7 @@ controllability.  These values are computed using the `Analysis` tool.
 <!-- bash:examples/org/moeaframework/examples/experiment/sensitivity.sh [36:43] -->
 
 ```bash
-java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.Analysis \
+java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.MetricsAnalysis \
     --controllability \
     --efficiency \
     --band 100 \

@@ -26,7 +26,6 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Capture;
 import org.moeaframework.TempFiles;
-import org.moeaframework.TestResources;
 import org.moeaframework.analysis.io.MetricFileWriter.Metric;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.AlgorithmFactoryTestWrapper;
@@ -130,7 +129,10 @@ public class IntegrationTest {
 		Assert.assertFileWithContent(combinedFile);
 		
 		//evaluate the combined set hypervolume
-		File setHypervolumeOutput = Capture.output(SetHypervolume.class, combinedFile.getPath()).toFile();
+		File setHypervolumeOutput = Capture.output(CalculateIndicator.class,
+				"-i", "hypervolume",
+				"-b", "DTLZ2_2",
+				combinedFile.getPath()).toFile();
 		
 		Assert.assertLineCount(1, setHypervolumeOutput);
 		Assert.assertLinePattern(setHypervolumeOutput, "^.+ [0-9]*(?:.[0-9]+)?$");
@@ -261,30 +263,6 @@ public class IntegrationTest {
 		Assert.assertLineCount(4, analysisFile2);
 	}
 	
-	@Test
-	public void testMerger() throws Exception {
-		File file1 = TestResources.asFile("pf/DTLZ2.2D.pf");
-		File file2 = TestResources.asFile("pf/DTLZ3.2D.pf");
-		File file3 = TestResources.asFile("pf/DTLZ4.2D.pf");
-		
-		//test reference set merger
-		File mergedFile = TempFiles.createFile();
-		File mergerOutput = Capture.output(ReferenceSetMerger.class,
-				"-o", mergedFile.getPath(),
-				file1.getAbsolutePath(), file2.getAbsolutePath(), file3.getAbsolutePath()).toFile();
-		
-		Assert.assertLineCount(3, mergerOutput);
-		Assert.assertLinePattern(mergerOutput, "^.+ [0-9]+ / [0-9]+$");
-		
-		//test set contribution
-		File setContributionOutput = Capture.output(SetContribution.class, 
-				"-r", mergedFile.getPath(),
-				file1.getAbsolutePath(), file2.getAbsolutePath(), file3.getAbsolutePath()).toFile();
-		
-		Assert.assertLineCount(3, setContributionOutput);
-		Assert.assertLinePattern(mergerOutput, "^.+ [0-9]*(?:.[0-9]+)?$");
-	}
-	
 	/**
 	 * Test to ensure the {@code close} method is called on problems, and the {@code terminate} method is called on
 	 * algorithms.
@@ -348,7 +326,7 @@ public class IntegrationTest {
 		//generate a reference set
 		File referenceFile = TempFiles.createFile();
 		
-		SetGenerator.main(new String[] {
+		ReferenceSetGenerator.main(new String[] {
 				"-b", "DTLZ2_2",
 				"-n", "0",
 				"-o", referenceFile.getPath() });

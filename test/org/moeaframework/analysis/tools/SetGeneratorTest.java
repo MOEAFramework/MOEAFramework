@@ -31,7 +31,7 @@ public class SetGeneratorTest {
 	public void test() throws Exception {
 		File referenceSet = TempFiles.createFile();
 		
-		SetGenerator.main(new String[] {
+		ReferenceSetGenerator.main(new String[] {
 				"-b", "DTLZ2_2",
 				"-n", "100", 
 				"-o", referenceSet.getPath()});
@@ -44,7 +44,7 @@ public class SetGeneratorTest {
 	public void testEpsilon() throws Exception {
 		File referenceSet = TempFiles.createFile();
 		
-		SetGenerator.main(new String[] {
+		ReferenceSetGenerator.main(new String[] {
 				"-b", "DTLZ2_2",
 				"-n", "1000", 
 				"-e", "0.01",
@@ -58,7 +58,7 @@ public class SetGeneratorTest {
 	public void testNonAnalytical() throws Exception {
 		File referenceSet = TempFiles.createFile();
 		
-		SetGenerator.main(new String[] {
+		ReferenceSetGenerator.main(new String[] {
 				"-b", "UF1",
 				"-n", "10", 
 				"-o", referenceSet.getPath()});

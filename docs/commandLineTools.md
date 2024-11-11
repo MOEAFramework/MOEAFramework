@@ -27,6 +27,24 @@ Constructs the scaffolding for a natively-compiled problem in a target language.
  -u,--upperBound <arg>            Sets the upper bound for each real-valued decision variable (default: 1.0)
 ```
 
+## CalculateIndicator
+
+<!-- help:src/org/moeaframework/analysis/tools/CalculateIndicator.java [:-2] -->
+
+```
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.CalculateIndicator [-b <name>] [-e <e1,e2,...>] [-h] -i
+       <name> [-o <file>] -r <file>
+
+Calculates the indicator value for an approximation set.  The following options are available:
+
+ -b,--problem <name>
+ -e,--epsilon <e1,e2,...>   Epsilon values for epsilon-dominance
+ -h,--help                  Display help information
+ -i,--indicator <name>      The name of the indicator (e.g., hypervolume)
+ -o,--output <file>         Output file
+ -r,--reference <file>      Reference set file
+```
+
 ## EndOfRunEvaluator
 
 <!-- help:src/org/moeaframework/analysis/tools/EndOfRunEvaluator.java [:-2] -->
@@ -115,21 +133,22 @@ error performance indicators.  The following options are available:
  -r,--reference <file>      Reference set file
 ```
 
-## ReferenceSetMerger
+## ReferenceSetGenerator
 
-<!-- help:src/org/moeaframework/analysis/tools/ReferenceSetMerger.java [:-2] -->
+<!-- help:src/org/moeaframework/analysis/tools/ReferenceSetGenerator.java [:-2] -->
 
 ```
-usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ReferenceSetMerger [-d] [-e <e1,e2,...>] [-h] [-o
-       <file>]
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ReferenceSetGenerator [-b <name>] [-e <e1,e2,...>] [-h]
+       -n <value> [-o <file>] [-s <value>]
 
-Merges two or more reference sets into a single combined reference set, optionally identifying the solutions each
-reference contributed.  The following options are available:
+Generates a reference set for any problem whose analytical solution is known.  The following options are available:
 
- -d,--diff                  Write diff files showing which solutions survived in the combined set
- -e,--epsilon <e1,e2,...>   Epsilon values for epsilon-dominance
- -h,--help                  Display help information
- -o,--output <file>         Output file for combined set
+ -b,--problem <name>           Problem name
+ -e,--epsilon <e1,e2,...>      Epsilon values for epsilon-dominance
+ -h,--help                     Display help information
+ -n,--numberOfPoints <value>   Number of points to generate
+ -o,--output <file>            Output file
+ -s,--seed <value>             Random number seed
 ```
 
 ## ResultFileConverter
@@ -239,57 +258,6 @@ Generates parameter samples for running the Evaluator.  The following options ar
  -o,--output <file>             Output file
  -p,--parameterFile <file>      Parameter file
  -s,--seed <value>              Random number generator seed
-```
-
-## SetContribution
-
-<!-- help:src/org/moeaframework/analysis/tools/SetContribution.java [:-2] -->
-
-```
-usage: java -classpath "lib/*" org.moeaframework.analysis.tools.SetContribution [-e <e1,e2,...>] [-h] [-o <file>] -r
-       <file>
-
-Determines the percentage of the reference set that is contributed/covered by an approximation set.  The following
-options are available:
-
- -e,--epsilon <e1,e2,...>   Epsilon values for epsilon-dominance
- -h,--help                  Display help information
- -o,--output <file>         Output file
- -r,--reference <file>      Reference set file
-```
-
-## SetGenerator
-
-<!-- help:src/org/moeaframework/analysis/tools/SetGenerator.java [:-2] -->
-
-```
-usage: java -classpath "lib/*" org.moeaframework.analysis.tools.SetGenerator [-b <name>] [-e <e1,e2,...>] [-h] -n
-       <value> [-o <file>] [-s <value>]
-
-Generates a reference set for any problem whose analytical solution is known.  The following options are available:
-
- -b,--problem <name>           Problem name
- -e,--epsilon <e1,e2,...>      Epsilon values for epsilon-dominance
- -h,--help                     Display help information
- -n,--numberOfPoints <value>   Number of points to generate
- -o,--output <file>            Output file
- -s,--seed <value>             Random number seed
-```
-
-## SetHypervolume
-
-<!-- help:src/org/moeaframework/analysis/tools/SetHypervolume.java [:-2] -->
-
-```
-usage: java -classpath "lib/*" org.moeaframework.analysis.tools.SetHypervolume [-e <e1,e2,...>] [-h] [-o <file>] [-r
-       <file>]
-
-Calculates the hypervolume of a reference or approximation set.  The following options are available:
-
- -e,--epsilon <e1,e2,...>   Epsilon values for epsilon-dominance
- -h,--help                  Display help information
- -o,--output <file>         Output file
- -r,--reference <file>      Reference set file
 ```
 
 ## SimpleStatistics
