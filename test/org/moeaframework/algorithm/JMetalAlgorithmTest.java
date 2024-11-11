@@ -19,6 +19,7 @@ package org.moeaframework.algorithm;
 
 import java.io.IOException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -26,6 +27,7 @@ import org.junit.Test;
  * using end-of-run performance indicators.  We typically want to see the algorithms produce statistically similar
  * results, but in specific cases we allow better performance.
  */
+@Ignore("Abstract test class")
 public abstract class JMetalAlgorithmTest extends AlgorithmTest {
 	
 	protected final String algorithmName;

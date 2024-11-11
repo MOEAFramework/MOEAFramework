@@ -18,6 +18,7 @@
 package org.moeaframework.util.sequence;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.Assert;
@@ -28,6 +29,7 @@ import org.moeaframework.TestThresholds;
 /**
  * Abstract class for testing implementation of {@link Sequence}.
  */
+@Ignore("Abstract test class")
 @RunWith(CIRunner.class)
 @Retryable
 public abstract class AbstractSequenceTest<T extends Sequence> {

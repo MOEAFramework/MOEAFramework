@@ -17,6 +17,7 @@
  */
 package org.moeaframework.problem.WFG;
 
+import org.junit.Ignore;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
 import org.moeaframework.TestThresholds;
@@ -25,6 +26,7 @@ import org.moeaframework.core.population.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.ProblemTest;
 
+@Ignore("Abstract test class")
 public abstract class WFGTest extends ProblemTest {
 	
 	protected void testGenerate(String problemName) {

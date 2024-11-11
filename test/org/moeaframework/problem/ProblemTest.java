@@ -19,6 +19,7 @@ package org.moeaframework.problem;
 
 import java.util.function.Consumer;
 
+import org.junit.Ignore;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
 import org.moeaframework.TestThresholds;
@@ -44,6 +45,7 @@ import org.moeaframework.mock.MockSolution;
  *   <li>Any other relevant tests to validate the problem
  * </ol>
  */
+@Ignore("Abstract test class")
 public abstract class ProblemTest {
 	
 	/**

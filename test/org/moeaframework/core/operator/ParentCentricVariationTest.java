@@ -19,6 +19,7 @@ package org.moeaframework.core.operator;
 
 import java.util.List;
 
+import org.junit.Ignore;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
@@ -29,6 +30,7 @@ import org.moeaframework.util.clustering.Clustering;
 /**
  * Provides test methods for checking if the offspring form clusters around each parent.
  */
+@Ignore("Abstract test class")
 public abstract class ParentCentricVariationTest<T extends Variation> extends DistributionVariationTest<T> {
 
 	@Override

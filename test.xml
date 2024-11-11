@@ -158,32 +158,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 				<formatter type="xml" />
 				<zipfileset src="${dist}/${shortname}-${version}-Test.jar">
 					<include name="**/*Test.class" />
-					
-					<!-- exclude abstract classes without tests -->
-					<exclude name="org/moeaframework/algorithm/AlgorithmTest.class" />
-					<exclude name="org/moeaframework/algorithm/JMetalAlgorithmTest.class" />
-					<exclude name="org/moeaframework/algorithm/single/AbstractSingleObjectiveAlgorithmTest.class" />
-					<exclude name="org/moeaframework/analysis/runtime/AbstractCollectorTest.class" />
-					<exclude name="org/moeaframework/problem/ProblemTest.class" />
-					<exclude name="org/moeaframework/problem/WFG/WFGTest.class" />
-					<exclude name="org/moeaframework/core/indicator/AbstractHypervolumeTest.class" />
-					<exclude name="org/moeaframework/core/indicator/AbstractIndicatorTest.class" />
-					<exclude name="org/moeaframework/core/operator/AbstractBinaryOperatorTest.class" />
-					<exclude name="org/moeaframework/core/operator/AbstractGrammarOperatorTest.class" />
-					<exclude name="org/moeaframework/core/operator/AbstractOperatorTest.class" />
-					<exclude name="org/moeaframework/core/operator/AbstractPermutationOperatorTest.class" />
-					<exclude name="org/moeaframework/core/operator/AbstractPointCrossoverTest.class" />
-					<exclude name="org/moeaframework/core/operator/AbstractProgramOperatorTest.class" />
-					<exclude name="org/moeaframework/core/operator/AbstractSubsetOperatorTest.class" />
-					<exclude name="org/moeaframework/core/operator/DistributionVariationTest.class" />
-					<exclude name="org/moeaframework/core/operator/MeanCentricVariationTest.class" />
-					<exclude name="org/moeaframework/core/operator/ParentCentricVariationTest.class" />
-					<exclude name="org/moeaframework/core/spi/AbstractFactoryTest.class" />
-					<exclude name="org/moeaframework/parallel/island/AbstractIslandModelTest.class" />
-					<exclude name="org/moeaframework/parallel/island/topology/AbstractTopologyTest.class" />
-					<exclude name="org/moeaframework/util/LocalizationTest.class" />
-					<exclude name="org/moeaframework/util/sequence/AbstractSequenceTest.class" />
-					<exclude name="org/moeaframework/util/weights/AbstractWeightGeneratorTest.class" />
 				</zipfileset>
 			</batchtest>
 			<formatter type="plain" usefile="false" />

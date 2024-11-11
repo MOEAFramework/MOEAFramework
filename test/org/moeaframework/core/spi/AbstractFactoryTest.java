@@ -19,6 +19,7 @@ package org.moeaframework.core.spi;
 
 import java.io.IOException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.core.Settings;
@@ -29,6 +30,7 @@ import org.moeaframework.util.io.Resources.ResourceOption;
 /**
  * General tests for SPI factories.
  */
+@Ignore("Abstract test class")
 public abstract class AbstractFactoryTest<T, S extends AbstractFactory<T>> {
 	
 	/**

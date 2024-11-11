@@ -17,9 +17,11 @@
  */
 package org.moeaframework.core.operator;
 
+import org.junit.Ignore;
 import org.moeaframework.core.variable.Program;
 import org.moeaframework.util.tree.Rules;
 
+@Ignore("Abstract test class")
 public abstract class AbstractProgramOperatorTest<T extends Variation> extends AbstractOperatorTest<T, Program> {
 	
 	@Override

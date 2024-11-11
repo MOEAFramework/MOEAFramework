@@ -20,6 +20,7 @@ package org.moeaframework.algorithm;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
 import org.moeaframework.analysis.IndicatorStatistics;
@@ -35,6 +36,7 @@ import org.moeaframework.problem.Problem;
 /**
  * Methods for comparing two algorithm implementations statistically.
  */
+@Ignore("Abstract test class")
 public abstract class AlgorithmTest {
 	
 	/**

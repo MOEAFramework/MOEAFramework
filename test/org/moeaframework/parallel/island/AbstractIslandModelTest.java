@@ -20,9 +20,11 @@ package org.moeaframework.parallel.island;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.mock.MockRealProblem;
 
+@Ignore("Abstract test class")
 public abstract class AbstractIslandModelTest {
 
 	protected List<Island> createIslands(int count) {

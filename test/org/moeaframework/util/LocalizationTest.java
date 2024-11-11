@@ -17,6 +17,8 @@
  */
 package org.moeaframework.util;
 
+import org.junit.Ignore;
+
 /**
  * See {@link org.moeaframework.LocalizationTest} for the actual unit tests.
  * <p>
@@ -24,6 +26,7 @@ package org.moeaframework.util;
  * directory would interfere with the one in the {@code src/} directory.  Therefore, the actual unit tests are
  * located elsewhere.
  */
+@Ignore("Tests located at elsewhere")
 public class LocalizationTest {
 
 }

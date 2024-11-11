@@ -17,6 +17,7 @@
  */
 package org.moeaframework.analysis.runtime;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.algorithm.Algorithm;
@@ -31,6 +32,7 @@ import org.moeaframework.problem.Problem;
  * Helper functions for testing collectors.  This primarily ensures that the collectors attach to the correct
  * algorithms, and that a single collector does not attach to multiple objects.
  */
+@Ignore("Abstract test class")
 public abstract class AbstractCollectorTest<T extends Collector> {
 	
 	/**

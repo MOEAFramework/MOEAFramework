@@ -20,12 +20,14 @@ package org.moeaframework.util.weights;
 import java.util.List;
 
 import org.apache.commons.math3.stat.StatUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.Assert;
 
 /**
  * Abstract class for testing implementations of {@link WeightGenerator}.
  */
+@Ignore("Abstract test class")
 public abstract class AbstractWeightGeneratorTest<T extends WeightGenerator> {
 	
 	protected final int SAMPLES = 100;

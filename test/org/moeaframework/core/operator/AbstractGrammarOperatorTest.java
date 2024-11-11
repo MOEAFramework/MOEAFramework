@@ -17,9 +17,11 @@
  */
 package org.moeaframework.core.operator;
 
+import org.junit.Ignore;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.variable.Grammar;
 
+@Ignore("Abstract test class")
 public abstract class AbstractGrammarOperatorTest<T extends Variation> extends AbstractOperatorTest<T, Grammar> {
 	
 	@Override

@@ -17,8 +17,10 @@
  */
 package org.moeaframework.core.operator;
 
+import org.junit.Ignore;
 import org.moeaframework.core.variable.Subset;
 
+@Ignore("Abstract test class")
 public abstract class AbstractSubsetOperatorTest<T extends Variation> extends AbstractOperatorTest<T, Subset> {
 	
 	@Override

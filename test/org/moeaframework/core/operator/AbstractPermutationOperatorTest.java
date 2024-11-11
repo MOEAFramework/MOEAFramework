@@ -17,8 +17,10 @@
  */
 package org.moeaframework.core.operator;
 
+import org.junit.Ignore;
 import org.moeaframework.core.variable.Permutation;
 
+@Ignore("Abstract test class")
 public abstract class AbstractPermutationOperatorTest<T extends Variation> extends AbstractOperatorTest<T, Permutation> {
 	
 	@Override

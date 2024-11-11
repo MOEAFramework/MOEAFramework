@@ -17,11 +17,13 @@
  */
 package org.moeaframework.core.operator;
 
+import org.junit.Ignore;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.Vector;
 
+@Ignore("Abstract test class")
 public abstract class DistributionVariationTest<T extends Variation> extends AbstractOperatorTest<T, RealVariable> {
 
 	protected abstract void checkDistribution(Solution[] parents, Solution[] offspring);

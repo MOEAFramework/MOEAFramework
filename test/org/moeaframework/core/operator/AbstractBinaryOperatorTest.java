@@ -17,8 +17,10 @@
  */
 package org.moeaframework.core.operator;
 
+import org.junit.Ignore;
 import org.moeaframework.core.variable.BinaryVariable;
 
+@Ignore("Abstract test class")
 public abstract class AbstractBinaryOperatorTest<T extends Variation> extends AbstractOperatorTest<T, BinaryVariable> {
 	
 	@Override

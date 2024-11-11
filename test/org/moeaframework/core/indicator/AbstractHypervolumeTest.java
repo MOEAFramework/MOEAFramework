@@ -17,6 +17,7 @@
  */
 package org.moeaframework.core.indicator;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
@@ -28,6 +29,7 @@ import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.Problem;
 
+@Ignore("Abstract test class")
 public abstract class AbstractHypervolumeTest<T extends Indicator> extends AbstractIndicatorTest<T> {
 	
 	public abstract T createInstance(Problem problem, Normalizer normalizer);
