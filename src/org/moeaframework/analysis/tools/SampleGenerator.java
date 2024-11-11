@@ -37,15 +37,12 @@ import org.moeaframework.util.sequence.Uniform;
 import org.moeaframework.util.validate.Validate;
 
 /**
- * Command line utility for producing randomly-generated parameters for use by the {@link Evaluator} or
+ * Command line utility for producing randomly-generated parameters for use by the {@link EndOfRunEvaluator} or
  * {@link RuntimeEvaluator}.  The output is called a parameter sample file.
  */
 public class SampleGenerator extends CommandLineUtility {
 
-	/**
-	 * Constructs the command line utility for producing randomly-generated parameters for use by the {@link Evaluator}.
-	 */
-	public SampleGenerator() {
+	private SampleGenerator() {
 		super();
 	}
 
@@ -130,7 +127,7 @@ public class SampleGenerator extends CommandLineUtility {
 	}
 
 	/**
-	 * Command line utility for producing randomly-generated parameters for use by the {@link Evaluator}.
+	 * Command line utility for producing randomly-generated parameters for use by the {@link EndOfRunEvaluator}.
 	 * 
 	 * @param args the command line arguments
 	 * @throws Exception if an error occurred

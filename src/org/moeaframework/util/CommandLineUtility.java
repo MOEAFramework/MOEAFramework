@@ -29,6 +29,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 
 /**
@@ -62,7 +63,12 @@ public abstract class CommandLineUtility {
 
 		@Override
 		public void uncaughtException(Thread t, Throwable e) {
-			e.printStackTrace();
+			System.err.println("ERROR: " + e.getLocalizedMessage());
+			
+			if (Settings.isVerbose()) {
+				System.err.println("Full stack trace:");
+				e.printStackTrace(System.err);
+			}
 		}
 
 	}
@@ -217,6 +223,26 @@ public abstract class CommandLineUtility {
 	 */
 	protected void setCommandString(String commandString) {
 		this.commandString = commandString;
+	}
+	
+	/**
+	 * Exits this command line utility with an error.
+	 * 
+	 * @param message the error message
+	 */
+	public void fail(String... message) {
+		throw new FrameworkException(String.join(System.lineSeparator(), message));
+	}
+	
+	/**
+	 * Creates and returns a writer for printing output from this command line utility.  The caller is responsible for
+	 * closing this writer.
+	 * 
+	 * @return the writer
+	 */
+	protected PrintWriter createOutputWriter() {
+		return new PrintWriter(System.out);
+		
 	}
 	
 	/**

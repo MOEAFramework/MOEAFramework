@@ -36,10 +36,7 @@ import org.moeaframework.util.format.NumberFormatter;
  */
 public class SetHypervolume extends CommandLineUtility {
 	
-	/**
-	 * Constructs the command line utility for calculating the hypervolume of approximation sets.
-	 */
-	public SetHypervolume() {
+	private SetHypervolume() {
 		super();
 	}
 

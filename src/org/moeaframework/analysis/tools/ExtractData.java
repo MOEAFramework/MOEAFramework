@@ -42,10 +42,7 @@ import org.moeaframework.util.validate.Validate;
  */
 public class ExtractData extends CommandLineUtility {
 
-	/**
-	 * Constructs the command line utility for extracting data from a result file.
-	 */
-	public ExtractData() {
+	private ExtractData() {
 		super();
 	}
 
@@ -89,7 +86,7 @@ public class ExtractData extends CommandLineUtility {
 
 		// indicators are prepared, run the data extraction routine
 		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true);
-				ResultFileReader input = new ResultFileReader(problem, new File(commandLine.getOptionValue("input")));
+				ResultFileReader input = ResultFileReader.open(problem, new File(commandLine.getOptionValue("input")));
 				PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
 			NondominatedPopulation referenceSet = OptionUtils.getReferenceSet(commandLine);
 			Indicators indicators = getIndicators(input.getProblem(), referenceSet, fields);

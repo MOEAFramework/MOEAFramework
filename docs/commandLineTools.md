@@ -3,42 +3,6 @@
 This document details the available command line tools.  See the usage for how to construct the command
 and arguments.  Adding the `-h` / `--help` flag to any command will display this usage information.
 
-## Analysis
-
-<!-- help:src/org/moeaframework/analysis/tools/Analysis.java [:-2] -->
-
-```
-usage: java -classpath "lib/*" org.moeaframework.analysis.tools.Analysis [-b <width>] [-c] [-e] [-h] -i <file> -m
-       <value> [-o <file>] -p <file> [-t <percent>]
-
-Calculates the best, attainment, efficiency and controllability metrics.  The following options are available:
-
- -b,--band <width>           NFE band width for calculating efficiency
- -c,--controllability        Include controllability calculation
- -e,--efficiency             Include efficiency calculation
- -h,--help                   Display help information
- -i,--parameters <file>      Parameter samples
- -m,--metric <value>         Column in metric file to evaluate
- -o,--output <file>          Output file
- -p,--parameterFile <file>   Parameter file
- -t,--threshold <percent>    Attainment threshold
-```
-
-## ARFFConverter
-
-<!-- help:src/org/moeaframework/analysis/tools/ARFFConverter.java [:-2] -->
-
-```
-usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ARFFConverter [-b <name>] [-h] -i <file> -o <file>
-
-Converts a result file into an ARFF file.  The following options are available:
-
- -b,--problem <name>   Problem name
- -h,--help             Display help information
- -i,--input <file>     Input file
- -o,--output <file>    Output file
-```
-
 ## BuildProblem
 
 <!-- help:src/org/moeaframework/builder/BuildProblem.java [:-2] -->
@@ -63,28 +27,28 @@ Constructs the scaffolding for a natively-compiled problem in a target language.
  -u,--upperBound <arg>            Sets the upper bound for each real-valued decision variable (default: 1.0)
 ```
 
-## Evaluator
+## EndOfRunEvaluator
 
-<!-- help:src/org/moeaframework/analysis/tools/Evaluator.java [:-2] -->
+<!-- help:src/org/moeaframework/analysis/tools/EndOfRunEvaluator.java [:-2] -->
 
 ```
-usage: java -classpath "lib/*" org.moeaframework.analysis.tools.Evaluator -a <name> [-b <name>] [-e <e1,e2,...>] [-f]
-       [-h] -i <file> [-m] -o <file> -p <file> [-r <file>] [-s <value>] [-x <p1=v1;p2=v2;...>]
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.EndOfRunEvaluator -a <name> [-b <name>] [-e <e1,e2,...>]
+       [--force] [-h] -i <file> -o <file> [--overwrite] -p <file> [-s <value>] [-X <p1=v1;p2=v2;...>]
 
-Evaluates an optimization algorithm on the specified problem.  The following options are available:
+Evaluates an optimization algorithm on the specified problem, storing end-of-run approximation sets.  The following
+options are available:
 
  -a,--algorithm <name>               Algorithm name
  -b,--problem <name>                 Problem name
  -e,--epsilon <e1,e2,...>            Epsilon values for epsilon-dominance
- -f,--force                          Continue processing if the file timestamp check fails
+    --force                          Continue processing if the file timestamp check fails
  -h,--help                           Display help information
  -i,--input <file>                   Parameter samples
- -m,--metrics                        Evaluate and output metrics
  -o,--output <file>                  Output file
+    --overwrite                      Overwrite the output file if it exists
  -p,--parameterFile <file>           Parameter description file
- -r,--reference <file>               Reference set file
  -s,--seed <value>                   Random number seed
- -x,--properties <p1=v1;p2=v2;...>   Fixed algorithm properties
+ -X,--properties <p1=v1;p2=v2;...>   Fixed algorithm properties
 ```
 
 ## ExtractData
@@ -108,6 +72,49 @@ following options are available:
  -s,--separator <value>     Separator between entries
 ```
 
+## MetricsAnalysis
+
+<!-- help:src/org/moeaframework/analysis/tools/MetricsAnalysis.java [:-2] -->
+
+```
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.MetricsAnalysis [-b <width>] [-c] [-e] [-h] -i <file> -m
+       <value> [-o <file>] -p <file> [-t <percent>]
+
+Calculates the best, attainment, efficiency and controllability metrics.  The following options are available:
+
+ -b,--band <width>           NFE band width for calculating efficiency
+ -c,--controllability        Include controllability calculation
+ -e,--efficiency             Include efficiency calculation
+ -h,--help                   Display help information
+ -i,--parameters <file>      Parameter samples
+ -m,--metric <value>         Column in metric file to evaluate
+ -o,--output <file>          Output file
+ -p,--parameterFile <file>   Parameter file
+ -t,--threshold <percent>    Attainment threshold
+```
+
+## MetricsEvaluator
+
+<!-- help:src/org/moeaframework/analysis/tools/MetricsEvaluator.java [:-2] -->
+
+```
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.MetricsEvaluator [-b <name>] [-e <e1,e2,...>] [--force]
+       [-h] -i <file> -o <file> [--overwrite] [-r <file>]
+
+Evaluates the approximation sets stored in a result file, outputting a metric file containing the hypervolume,
+generational distance, inverted generational distance, spacing, additive epsilon-indicator, and maximum Pareto front
+error performance indicators.  The following options are available:
+
+ -b,--problem <name>        Problem name
+ -e,--epsilon <e1,e2,...>   Epsilon values for epsilon-dominance
+    --force                 Continue processing if the file timestamp check fails
+ -h,--help                  Display help information
+ -i,--input <file>          Input result file
+ -o,--output <file>         Output metric file
+    --overwrite             Overwrite the output file if it exists
+ -r,--reference <file>      Reference set file
+```
+
 ## ReferenceSetMerger
 
 <!-- help:src/org/moeaframework/analysis/tools/ReferenceSetMerger.java [:-2] -->
@@ -125,38 +132,20 @@ reference contributed.  The following options are available:
  -o,--output <file>         Output file for combined set
 ```
 
-## ResultFileEvaluator
+## ResultFileConverter
 
-<!-- help:src/org/moeaframework/analysis/tools/ResultFileEvaluator.java [:-2] -->
-
-```
-usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileEvaluator [-b <name>] [-e <e1,e2,...>] [-f]
-       [-h] -i <file> -o <file> [-r <file>]
-
-Evaluates the approximation sets stored in a result file, outputting a metric file containing the hypervolume,
-generational distance, inverted generational distance, spacing, additive epsilon-indicator, and maximum Pareto front
-error performance indicators.  The following options are available:
-
- -b,--problem <name>        Problem name
- -e,--epsilon <e1,e2,...>   Epsilon values for epsilon-dominance
- -f,--force                 Continue processing if the file timestamp check fails
- -h,--help                  Display help information
- -i,--input <file>          Input result file
- -o,--output <file>         Output metric file
- -r,--reference <file>      Reference set file
-```
-
-## ResultFileInfo
-
-<!-- help:src/org/moeaframework/analysis/tools/ResultFileInfo.java [:-2] -->
+<!-- help:src/org/moeaframework/analysis/tools/ResultFileConverter.java [:-2] -->
 
 ```
-usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileInfo [-b <name>] [-h] [-o <file>]
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileConverter [-b <name>] -f <type> [-h] -i <file>
+       [-o <file>]
 
-Outputs the number of approximation sets stored in a result file.  The following options are available:
+Converts a result file into a different file format.  The following options are available:
 
  -b,--problem <name>   Problem name
+ -f,--format <type>    The output file format (Plaintext, Markdown, Latex, CSV, ARFF)
  -h,--help             Display help information
+ -i,--input <file>     Input file
  -o,--output <file>    Output file
 ```
 
@@ -196,13 +185,28 @@ approximation sets.  The following options are available:
  -o,--output <file>         Output file
 ```
 
+## ResultFileValidator
+
+<!-- help:src/org/moeaframework/analysis/tools/ResultFileValidator.java [:-2] -->
+
+```
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileValidator [-b <name>] -c <N> [-h] [-o <file>]
+
+Validates the number of approximation sets stored in a result file.  The following options are available:
+
+ -b,--problem <name>   Problem name
+ -c,--count <N>        The expected number of entries
+ -h,--help             Display help information
+ -o,--output <file>    Output file
+```
+
 ## RuntimeEvaluator
 
 <!-- help:src/org/moeaframework/analysis/tools/RuntimeEvaluator.java [:-2] -->
 
 ```
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.RuntimeEvaluator -a <name> [-b <name>] [-e <e1,e2,...>]
-       [-f <nfe>] [-h] -i <file> -o <file> -p <file> [-s <value>] [-x <p1=v1;p2=v2;...>]
+       [-f <nfe>] [-h] -i <file> -o <file> -p <file> [-s <value>] [-X <p1=v1;p2=v2;...>]
 
 Records the approximation set at a fixed sampling frequency from each parameterization.  The following options are
 available:
@@ -216,7 +220,7 @@ available:
  -o,--output <file>                  Output file name format with %d replaced by the run index (e.g., result_%d.dat)
  -p,--parameterFile <file>           Parameter description file
  -s,--seed <value>                   Random number seed
- -x,--properties <p1=v1;p2=v2;...>   Fixed algorithm properties
+ -X,--properties <p1=v1;p2=v2;...>   Fixed algorithm properties
 ```
 
 ## SampleGenerator
@@ -260,7 +264,7 @@ options are available:
 
 ```
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.SetGenerator [-b <name>] [-e <e1,e2,...>] [-h] -n
-       <value> -o <file> [-s <value>]
+       <value> [-o <file>] [-s <value>]
 
 Generates a reference set for any problem whose analytical solution is known.  The following options are available:
 

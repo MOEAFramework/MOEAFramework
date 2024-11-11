@@ -262,7 +262,7 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 			if (problemName != null && problem.getName() != null && 
 					!problemName.isEmpty() && !problem.getName().isEmpty() &&
 					!problemName.equalsIgnoreCase(problem.getName())) {
-				errorHandler.warn("Problem defined in result file does not match problem (given: '{0}', expected: '{1}')",
+				errorHandler.warn("Problem defined in result file does not match problem (given: {0}, expected: {1})",
 						problemName, problem.getName());
 			}
 			

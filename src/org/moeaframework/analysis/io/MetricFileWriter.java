@@ -39,7 +39,7 @@ import org.moeaframework.util.validate.Validate;
  * 
  * @see MetricFileReader
  */
-public class MetricFileWriter implements OutputWriter {
+public class MetricFileWriter extends ResultWriter {
 	
 	/**
 	 * Enumeration of metrics that are written to the metric file.  This also specifies the order of the columns.
@@ -294,7 +294,7 @@ public class MetricFileWriter implements OutputWriter {
 		}
 
 		// replace the original only if any changes were made
-		OutputWriter.replace(tempFile, file);
+		replace(tempFile, file);
 
 		return numberOfEntries;
 	}

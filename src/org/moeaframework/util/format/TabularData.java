@@ -200,6 +200,7 @@ public class TabularData<T> implements Displayable {
 			case Markdown -> toMarkdown(writer);
 			case Latex -> toLatex(writer);
 			case Json -> toJson(writer);
+			case ARFF -> toARFF(writer);
 			default -> Validate.that("tableFormat", tableFormat).failUnsupportedOption();
 		}
 	}
@@ -445,6 +446,54 @@ public class TabularData<T> implements Displayable {
 
 		out.print("]");
 		out.println();
+	}
+	
+	/**
+	 * Writes the data formatted as an ARFF file.  This file format is a standard used by data mining applications.
+	 * 
+	 * @param out the output stream
+	 * @see https://waikato.github.io/weka-wiki/formats_and_processing/arff_stable/
+	 */
+	protected void toARFF(PrintWriter out) {
+		List<String[]> formattedData = format(ESCAPE_PLAINTEXT);
+		boolean[] isNumeric = new boolean[columns.size()];
+		Pattern pattern = Pattern.compile("^-?[0-9]+(\\.[0-9]+(E-?[0-9]+)?)?$");
+
+		// Scan data to determine if field is numeric or string
+		for (int j = 0; j < columns.size(); j++) {
+			isNumeric[j] = true;
+
+			for (int i = 1; i < formattedData.size(); i++) {
+				if (!pattern.matcher(formattedData.get(i)[j]).matches()) {
+					isNumeric[j] = false;
+					break;
+				}
+			}
+		}
+
+		out.println("@RELATION \"MOEA Framework Dataset\"");
+		
+		for (int j = 0; j < columns.size(); j++) {
+			out.print("@ATTRIBUTE ");
+			out.print(formattedData.get(0)[j]);
+			out.print(" ");
+			out.print(isNumeric[j] ? "NUMERIC" : "STRING");
+			out.println();
+		}
+
+		out.println("@DATA");
+
+		for (int i = 1; i < formattedData.size(); i++) {
+			for (int j = 0; j < columns.size(); j++) {
+				if (j > 0) {
+					out.print(", ");
+				}
+
+				out.print(formattedData.get(i)[j]);
+			}
+
+			out.println();
+		}
 	}
 
 	/**

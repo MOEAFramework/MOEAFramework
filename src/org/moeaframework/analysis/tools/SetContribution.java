@@ -35,11 +35,7 @@ import org.moeaframework.util.format.NumberFormatter;
  */
 public class SetContribution extends CommandLineUtility {
 	
-	/**
-	 * Constructs the command line utility for reporting the number of solutions in a set that are contained within a
-	 * reference set.
-	 */
-	public SetContribution() {
+	private SetContribution() {
 		super();
 	}
 

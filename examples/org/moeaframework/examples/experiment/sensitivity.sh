@@ -19,7 +19,7 @@ if [ ! -f NSGAII_Samples.txt ]; then
         --output NSGAII_Samples.txt
 fi
 
-java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.Evaluator \
+java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.EndOfRunEvaluator \
     --parameterFile examples/org/moeaframework/examples/experiment/NSGAII_Params.txt \
     --input NSGAII_Samples.txt \
     --output NSGAII_DTLZ2_Results.txt \
@@ -27,13 +27,13 @@ java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.Evaluator \
     --algorithm NSGAII \
     --epsilon 0.01
 
-java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.ResultFileEvaluator \
+java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.MetricsEvaluator \
     --input NSGAII_DTLZ2_Results.txt \
     --output NSGAII_DTLZ2_Metrics.txt \
     --problem DTLZ2 \
     --epsilon 0.01
     
-java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.Analysis \
+java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.MetricsAnalysis \
     --controllability \
     --efficiency \
     --band 100 \

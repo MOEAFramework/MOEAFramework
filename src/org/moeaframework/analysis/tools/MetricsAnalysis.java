@@ -46,7 +46,7 @@ import org.moeaframework.util.CommandLineUtility;
  *       Evolutionary Optimization."  Evolutionary Computation, 20(3):423-452, 2012.
  * </ol>
  */
-public class Analysis extends CommandLineUtility {
+public class MetricsAnalysis extends CommandLineUtility {
 	
 	/**
 	 * The parameter set.
@@ -78,11 +78,7 @@ public class Analysis extends CommandLineUtility {
 	 */
 	private int bandWidth = 10000;
 	
-	/**
-	 * Constructs the command line utility for calculating the best, probability of attainment, efficiency and
-	 * controllability metrics.
-	 */
-	public Analysis() {
+	private MetricsAnalysis() {
 		super();
 	}
 	
@@ -419,7 +415,7 @@ public class Analysis extends CommandLineUtility {
 	 * @throws Exception if an error occurred
 	 */
 	public static void main(String[] args) throws Exception {
-		new Analysis().start(args);
+		new MetricsAnalysis().start(args);
 	}
 
 }

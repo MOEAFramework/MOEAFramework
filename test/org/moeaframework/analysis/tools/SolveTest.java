@@ -187,7 +187,7 @@ public class SolveTest {
 		int count = 0;
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		
-		try (ResultFileReader reader = new ResultFileReader(problem, outputFile)) {
+		try (ResultFileReader reader = ResultFileReader.open(problem, outputFile)) {
 			while (reader.hasNext()) {
 				Assert.assertNotEmpty(reader.next().getPopulation());
 				count++;

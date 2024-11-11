@@ -25,7 +25,7 @@ import java.util.ServiceLoader;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.moeaframework.TempFiles;
-import org.moeaframework.analysis.io.OutputWriter;
+import org.moeaframework.analysis.io.ResultWriter;
 import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.analysis.io.ResultFileWriter;
@@ -66,7 +66,7 @@ public class ParetoFrontConverter<T> {
 						writer.write(new ResultEntry(stripConstraints(entry.getPopulation())));
 					}
 					
-					OutputWriter.replace(tempFile, referenceSetFile);
+					ResultWriter.replace(tempFile, referenceSetFile);
 				}
 			}
 		}

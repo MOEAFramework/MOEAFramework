@@ -15,41 +15,33 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.util.format;
+package org.moeaframework.analysis.tools;
 
-/**
- * Enumeration of supported table output formats.
- */
-public enum TableFormat {
+import java.io.File;
+
+import org.junit.Test;
+import org.moeaframework.Assert;
+import org.moeaframework.TempFiles;
+
+public class ResultFileConverterTest {
 	
-	/**
-	 * Plain text, the default.
-	 */
-	Plaintext,
-	
-	/**
-	 * Comma-separated values.
-	 */
-	CSV,
-	
-	/**
-	 * Markdown table.
-	 */
-	Markdown,
-	
-	/**
-	 * Latex table.
-	 */
-	Latex,
-	
-	/**
-	 * Json format.
-	 */
-	Json,
-	
-	/**
-	 * ARFF format,
-	 */
-	ARFF
+	@Test
+	public void test() throws Exception {
+		File resultFile = TempFiles.createFile();
+		File arffFile = TempFiles.createFile();
+		
+		Solve.main(new String[] {
+				"-a", "NSGAII",
+				"-b", "DTLZ2_2",
+				"-n", "1000",
+				"-f", resultFile.getPath() });
+		
+		ResultFileConverter.main(new String[] {
+				"-f", "ARFF",
+				"-i", resultFile.getPath(),
+				"-o", arffFile.getPath() });
+		
+		Assert.assertLinePattern(arffFile, "^([@%].*)|(" + Assert.getCommaSeparatedNumericPattern(13) + ")$");
+	}
 
 }

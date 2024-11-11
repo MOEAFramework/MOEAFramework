@@ -24,9 +24,8 @@ import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.TestResources;
 import org.moeaframework.analysis.io.MetricFileReader;
-import org.moeaframework.core.FrameworkException;
 
-public class ResultFileEvaluatorTest {
+public class MetricsEvaluatorTest {
 	
 	public static final String COMPLETE = """
 			# Problem = DTLZ2_2
@@ -53,7 +52,7 @@ public class ResultFileEvaluatorTest {
 		
 		File referenceSetFile = TestResources.asFile("pf/DTLZ2.2D.pf");
 		
-		ResultFileEvaluator.main(new String[] {
+		MetricsEvaluator.main(new String[] {
 			"--problem", "DTLZ2_2",
 			"--reference", referenceSetFile.getAbsolutePath(),
 			"--input", input.getAbsolutePath(),
@@ -75,7 +74,7 @@ public class ResultFileEvaluatorTest {
 		
 		File referenceSetFile = TestResources.asFile("pf/DTLZ2.2D.pf");
 		
-		ResultFileEvaluator.main(new String[] {
+		MetricsEvaluator.main(new String[] {
 			"--problem", "DTLZ2_2",
 			"--reference", referenceSetFile.getAbsolutePath(),
 			"--input", input.getAbsolutePath(),
@@ -86,14 +85,14 @@ public class ResultFileEvaluatorTest {
 		}
 	}
 	
-	@Test(expected = FrameworkException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testIncorrectNumberOfObjectives() throws Exception {
 		File input = TempFiles.createFile().withContent(COMPLETE);
 		File output = TempFiles.createFile();
 		
 		File referenceSetFile = TestResources.asFile("pf/DTLZ2.3D.pf");
 		
-		ResultFileEvaluator.main(new String[] {
+		MetricsEvaluator.main(new String[] {
 			"--problem", "DTLZ2_2",
 			"--reference", referenceSetFile.getAbsolutePath(),
 			"--input", input.getAbsolutePath(),

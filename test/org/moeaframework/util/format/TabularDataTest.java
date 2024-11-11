@@ -48,6 +48,8 @@ public class TabularDataTest {
 	private String expectedLatex;
 	
 	private String expectedJson;
+	
+	private String expectedARFF;
 		
 	@Before
 	public void setUp() {
@@ -100,6 +102,15 @@ public class TabularDataTest {
 				"\"Variable\":5",
 				"}",
 				"]"});
+		
+		expectedARFF = String.join(System.lineSeparator(), new String[] {
+				"@RELATION \"MOEA Framework Dataset\"",
+				"@ATTRIBUTE String STRING",
+				"@ATTRIBUTE Integer NUMERIC",
+				"@ATTRIBUTE Variable NUMERIC",
+				"@DATA",
+				"foo, 1, 0.500000",
+				"bar, 2147483647, 5" });
 		
 		List<String> rawEscapedData = new ArrayList<String>();
 		rawEscapedData.add("foo\"\\\t\r\n|&bar");
@@ -155,6 +166,11 @@ public class TabularDataTest {
 	}
 	
 	@Test
+	public void testARFF() throws IOException {
+		Capture.stream((ps) -> data.display(TableFormat.ARFF, ps)).assertEqualsNormalized(expectedARFF);
+	}
+	
+	@Test
 	public void testSavePlaintext() throws IOException {
 		Capture.file((f) -> data.save(TableFormat.Plaintext, f)).assertEqualsNormalized(expectedOutput);
 	}
@@ -177,6 +193,11 @@ public class TabularDataTest {
 	@Test
 	public void testSaveJson() throws IOException {
 		Capture.file((f) -> data.save(TableFormat.Json, f)).assertEqualsNormalized(expectedJson);
+	}
+	
+	@Test
+	public void testSaveARFF() throws IOException {
+		Capture.file((f) -> data.save(TableFormat.ARFF, f)).assertEqualsNormalized(expectedARFF);
 	}
 	
 	@Test

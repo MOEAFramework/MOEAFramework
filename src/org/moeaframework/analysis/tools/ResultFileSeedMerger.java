@@ -36,17 +36,13 @@ import org.moeaframework.util.CommandLineUtility;
 
 /**
  * Command line utility for merging the approximation sets in one or more result files across the seeds.  For example,
- * if {@link Evaluator} was run with 25 different seeds and 100 different parameterizations, then each of the 25
+ * if {@link EndOfRunEvaluator} was run with 25 different seeds and 100 different parameterizations, then each of the 25
  * output files (from each seed) will contain 100 records.  This command produces a single file with 100 records, where
  * each record is produced by combining the approximation sets for that record across all seeds.
  */
 public class ResultFileSeedMerger extends CommandLineUtility {
 
-	/**
-	 * Constructs the command line utility for merging the approximation sets in one or more result files across the
-	 * seeds.
-	 */
-	public ResultFileSeedMerger() {
+	private ResultFileSeedMerger() {
 		super();
 	}
 
@@ -76,7 +72,7 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 	 * @throws IOException if an I/O error occurred
 	 */
 	private List<NondominatedPopulation> load(File file, Problem problem) throws IOException {
-		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
+		try (ResultFileReader reader = ResultFileReader.open(problem, file)) {
 			List<NondominatedPopulation> data = new ArrayList<NondominatedPopulation>();
 
 			while (reader.hasNext()) {

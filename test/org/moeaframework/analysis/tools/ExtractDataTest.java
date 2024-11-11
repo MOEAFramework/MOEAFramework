@@ -120,7 +120,7 @@ public class ExtractDataTest {
 		Indicators indicators = Indicators.standard(problem, referenceSet);
 		
 		try (LineReader reader = LineReader.wrap(new FileReader(output));
-				ResultFileReader resultReader = new ResultFileReader(problem, input)) {
+				ResultFileReader resultReader = ResultFileReader.open(problem, input)) {
 			Assert.assertEquals("#GenerationalDistance Hypervolume Spacing", reader.readLine());
 				
 			NondominatedPopulation population = new NondominatedPopulation(resultReader.next().getPopulation());
@@ -161,7 +161,7 @@ public class ExtractDataTest {
 		Contribution contribution = new Contribution(referenceSet, epsilon);
 		
 		try (LineReader reader = LineReader.wrap(new FileReader(output));
-				ResultFileReader resultReader = new ResultFileReader(problem, input)) {
+				ResultFileReader resultReader = ResultFileReader.open(problem, input)) {
 			Assert.assertEquals("#Contribution", reader.readLine());
 				
 			NondominatedPopulation population = new NondominatedPopulation(resultReader.next().getPopulation());

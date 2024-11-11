@@ -19,22 +19,19 @@ package org.moeaframework.analysis.tools;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.algorithm.Algorithm;
-import org.moeaframework.analysis.io.MetricFileWriter;
-import org.moeaframework.analysis.io.OutputWriter;
 import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.analysis.parameter.ParameterSet;
 import org.moeaframework.analysis.sample.Samples;
 import org.moeaframework.core.Epsilons;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.TypedProperties;
-import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.AlgorithmFactory;
@@ -46,17 +43,9 @@ import org.moeaframework.util.validate.Validate;
 /**
  * Command line utility for evaluating an algorithm using many parameterizations.
  */
-public class Evaluator extends CommandLineUtility {
+public class EndOfRunEvaluator extends CommandLineUtility {
 
-	/**
-	 * The output writer where end-of-run results are stored.
-	 */
-	protected OutputWriter output;
-
-	/**
-	 * Constructs the command line utility for evaluating an algorithm using many parameterizations.
-	 */
-	public Evaluator() {
+	private EndOfRunEvaluator() {
 		super();
 	}
 
@@ -65,8 +54,8 @@ public class Evaluator extends CommandLineUtility {
 		Options options = super.getOptions();
 		
 		OptionUtils.addProblemOption(options);
-		OptionUtils.addReferenceSetOption(options);
 		OptionUtils.addEpsilonOption(options);
+		OptionUtils.addPropertiesOption(options);
 
 		options.addOption(Option.builder("p")
 				.longOpt("parameterFile")
@@ -92,21 +81,15 @@ public class Evaluator extends CommandLineUtility {
 				.argName("name")
 				.required()
 				.build());
-		options.addOption(Option.builder("x")
-				.longOpt("properties")
-				.hasArgs()
-				.argName("p1=v1;p2=v2;...")
-				.valueSeparator(';')
-				.build());
 		options.addOption(Option.builder("s")
 				.longOpt("seed")
 				.hasArg()
 				.argName("value")
 				.build());
-		options.addOption(Option.builder("m")
-				.longOpt("metrics")
+		options.addOption(Option.builder()
+				.longOpt("overwrite")
 				.build());
-		options.addOption(Option.builder("f")
+		options.addOption(Option.builder()
 				.longOpt("force")
 				.build());
 
@@ -120,75 +103,46 @@ public class Evaluator extends CommandLineUtility {
 		File inputFile = new File(commandLine.getOptionValue("input"));
 		Epsilons epsilons = OptionUtils.getEpsilons(commandLine);
 		
-		// sanity check to ensure input hasn't been modified after the output
-		if (!commandLine.hasOption("force") && (outputFile.lastModified() > 0L) && 
-				(inputFile.lastModified() > outputFile.lastModified())) {
-			throw new FrameworkException("input appears to be newer than output");
+		if (commandLine.hasOption("overwrite")) {
+			Files.deleteIfExists(outputFile.toPath());
 		}
+		
+		if (!commandLine.hasOption("force")) {
+			ResultFileWriter.failIfOutdated(this, inputFile, outputFile);
+		}
+		
+		if (commandLine.hasOption("seed")) {
+			PRNG.setSeed(Long.parseLong(commandLine.getOptionValue("seed")));
+		}
+		
+		ParameterSet parameterSet = ParameterSet.load(parameterFile);
+		Samples samples = Samples.load(inputFile, parameterSet);
 
-		// open the resources and begin processing
-		try (Problem problem = OptionUtils.getProblemInstance(commandLine, false)) {
-			ParameterSet parameterSet = ParameterSet.load(parameterFile);
-			Samples samples = Samples.load(inputFile, parameterSet);
-			
-			try {
-				if (commandLine.hasOption("metrics")) {
-					NondominatedPopulation referenceSet = OptionUtils.getReferenceSet(commandLine);
-					Indicators indicators = Indicators.standard(problem, referenceSet);
+		try (Problem problem = OptionUtils.getProblemInstance(commandLine, false);
+				ResultFileWriter output = ResultFileWriter.append(problem, outputFile)) {
+			TypedProperties defaultProperties = OptionUtils.getProperties(commandLine);
 
-					output = MetricFileWriter.append(indicators, outputFile);
-				} else {
-					output = ResultFileWriter.append(problem, outputFile);
-				}
+			if (epsilons != null) {
+				defaultProperties.setDoubleArray("epsilon", epsilons.toArray());
+			}
 
-				// setup any default parameters
-				TypedProperties defaultProperties = new TypedProperties();
+			for (int i = output.getNumberOfEntries(); i < samples.size(); i++) {
+				System.out.print("Processing sample " + (i+1) + " of " + samples.size() + "...");
+				
+				TypedProperties properties = samples.get(i);
+				properties.addAll(defaultProperties);
 
-				if (commandLine.hasOption("properties")) {
-					for (String property : commandLine.getOptionValues("properties")) {
-						String[] tokens = property.split("=");
-							
-						if (tokens.length == 2) {
-							defaultProperties.setString(tokens[0], tokens[1]);
-						} else {
-							throw new FrameworkException("malformed property argument");
-						}
-					}
-				}
-
-				if (epsilons != null) {
-					defaultProperties.setDoubleArray("epsilon", epsilons.toArray());
-				}
-
-				// seed the pseudo-random number generator
-				if (commandLine.hasOption("seed")) {
-					PRNG.setSeed(Long.parseLong(commandLine.getOptionValue("seed")));
-				}
-
-				// process the remaining runs
-				for (int i = output.getNumberOfEntries(); i < samples.size(); i++) {
-					TypedProperties properties = samples.get(i);
-					properties.addAll(defaultProperties);
-
-					process(commandLine.getOptionValue("algorithm"), properties, problem);
-				}
-			} finally {
-				if (output != null) {
-					output.close();
-				}
+				process(commandLine.getOptionValue("algorithm"), properties, problem, output);
+				
+				System.out.println("done.");
 			}
 		}
+		
+		System.out.println("Finished!");
 	}
 
-	/**
-	 * Performs a single run of the specified algorithm using the parameters.
-	 * 
-	 * @param algorithmName the algorithm name
-	 * @param properties the parameters stored in a properties object
-	 * @param problem the problem being evaluated
-	 * @throws IOException if an I/O error occurred
-	 */
-	protected void process(String algorithmName, TypedProperties properties, Problem problem) throws IOException {
+	private void process(String algorithmName, TypedProperties properties, Problem problem, ResultFileWriter output)
+			throws IOException {
 		// instrument the problem to record timing information
 		TimingProblem timingProblem = new TimingProblem(problem);
 		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, properties, timingProblem);
@@ -227,7 +181,7 @@ public class Evaluator extends CommandLineUtility {
 	 * @throws Exception if an error occurred
 	 */
 	public static void main(String[] args) throws Exception {
-		new Evaluator().start(args);
+		new EndOfRunEvaluator().start(args);
 	}
 
 }

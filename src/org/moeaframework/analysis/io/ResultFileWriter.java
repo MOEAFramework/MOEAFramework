@@ -54,7 +54,7 @@ import org.moeaframework.util.io.LineReader;
  * 
  * @see ResultFileReader
  */
-public class ResultFileWriter implements OutputWriter {
+public class ResultFileWriter extends ResultWriter {
 	
 	/**
 	 * The message displayed when an unsupported decision variable type is encountered.
@@ -398,7 +398,7 @@ public class ResultFileWriter implements OutputWriter {
 		}
 
 		// replace the original only if any changes were made, leaving the timestamp unchanged
-		OutputWriter.replace(tempFile, file);
+		replace(tempFile, file);
 		
 		return numberOfEntries;
 	}

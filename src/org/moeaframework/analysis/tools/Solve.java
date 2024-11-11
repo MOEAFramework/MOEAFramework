@@ -53,9 +53,7 @@ import org.moeaframework.util.CommandLineUtility;
  */
 public class Solve extends CommandLineUtility {
 
-	/**
-	 * Constructs the command line utility for solving an optimization problem.
-	 */
+	// TODO: Make private
 	public Solve() {
 		super();
 	}

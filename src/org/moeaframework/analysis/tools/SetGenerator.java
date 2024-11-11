@@ -17,13 +17,12 @@
  */
 package org.moeaframework.analysis.tools;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.AnalyticalProblem;
@@ -37,10 +36,7 @@ import org.moeaframework.util.CommandLineUtility;
  */
 public class SetGenerator extends CommandLineUtility {
 
-	/**
-	 * Constructs the command line utility for generating reference sets for a given problem.
-	 */
-	public SetGenerator() {
+	private SetGenerator() {
 		super();
 	}
 	
@@ -66,7 +62,6 @@ public class SetGenerator extends CommandLineUtility {
 				.longOpt("output")
 				.hasArg()
 				.argName("file")
-				.required()
 				.build());
 		
 		return options;
@@ -86,16 +81,18 @@ public class SetGenerator extends CommandLineUtility {
 		//generate the points
 		try (Problem problem = OptionUtils.getProblemInstance(commandLine, false)) {
 			if (problem instanceof AnalyticalProblem analyticalProblem) {
-				for (int i=0; i<numberOfPoints; i++) {
+				for (int i = 0; i < numberOfPoints; i++) {
 					set.add(analyticalProblem.generate());
 				}
 			} else {
-				throw new FrameworkException("problem does not have an analytical solution");
+				fail("ERROR: problem must implement " + AnalyticalProblem.class.getSimpleName());
 			}
 		}
 		
 		//output set
-		set.save(new File(commandLine.getOptionValue("output")));
+		try (PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
+			set.save(output);
+		}
 	}
 	
 	/**

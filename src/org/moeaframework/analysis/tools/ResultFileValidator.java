@@ -28,15 +28,11 @@ import org.moeaframework.problem.Problem;
 import org.moeaframework.util.CommandLineUtility;
 
 /**
- * Command line utility for counting the number of entries in a result file.  This is primarily used to ensure a call
- * to {@link Evaluator} completed successfully and generated the correct number of entries in the result file.
+ * Command line utility for validating the contents of a result file.
  */
-public class ResultFileInfo extends CommandLineUtility {
+public class ResultFileValidator extends CommandLineUtility {
 	
-	/**
-	 * Constructs the command line utility for counting the number of entries in a result file.
-	 */
-	public ResultFileInfo() {
+	private ResultFileValidator() {
 		super();
 	}
 	
@@ -45,7 +41,13 @@ public class ResultFileInfo extends CommandLineUtility {
 		Options options = super.getOptions();
 		
 		OptionUtils.addProblemOption(options);
-		
+
+		options.addOption(Option.builder("c")
+				.longOpt("count")
+				.hasArg()
+				.argName("N")
+				.required()
+				.build());
 		options.addOption(Option.builder("o")
 				.longOpt("output")
 				.hasArg()
@@ -57,11 +59,12 @@ public class ResultFileInfo extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
+		int expectedCount = Integer.parseInt(commandLine.getOptionValue("count"));
+
 		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true);
 				PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
-			// display info for all result files
 			for (String filename : commandLine.getArgs()) {
-				try (ResultFileReader reader = new ResultFileReader(problem, new File(filename))) {
+				try (ResultFileReader reader = ResultFileReader.openLegacy(problem, new File(filename))) {
 					int count = 0;
 						
 					while (reader.hasNext()) {
@@ -69,7 +72,8 @@ public class ResultFileInfo extends CommandLineUtility {
 						count++;
 					}
 
-					output.println(filename + " " + count);
+					output.println(filename + " " + (count == expectedCount ? "PASS" :
+						"FAIL (incorrect number of entries: " + count + ")"));
 				}
 			}
 		}
@@ -82,7 +86,7 @@ public class ResultFileInfo extends CommandLineUtility {
 	 * @throws Exception if an error occurred
 	 */
 	public static void main(String[] args) throws Exception {
-		new ResultFileInfo().start(args);
+		new ResultFileValidator().start(args);
 	}
 
 }

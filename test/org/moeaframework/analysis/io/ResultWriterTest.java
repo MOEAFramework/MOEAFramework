@@ -24,14 +24,14 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 
-public class OutputWriterTest {
+public class ResultWriterTest {
 
 	@Test
 	public void testReplaceDestinationNotExists() throws IOException {
 		File source = TempFiles.createFile().withContent("foo");
 		File destination = TempFiles.createFile();
 		
-		Assert.assertTrue(OutputWriter.replace(source, destination));
+		Assert.assertTrue(ResultWriter.replace(source, destination));
 		
 		Assert.assertFileNotExists(source);
 		Assert.assertFileExists(destination);
@@ -44,7 +44,7 @@ public class OutputWriterTest {
 		File destination = TempFiles.createFile().withContent("foo");
 		long lastModified = destination.lastModified();
 		
-		Assert.assertFalse(OutputWriter.replace(source, destination));
+		Assert.assertFalse(ResultWriter.replace(source, destination));
 		
 		Assert.assertFileNotExists(source);
 		Assert.assertFileExists(destination);
@@ -57,7 +57,7 @@ public class OutputWriterTest {
 		File source = TempFiles.createFile().withContent("foo");
 		File destination = TempFiles.createFile().withContent("bar");
 		
-		Assert.assertTrue(OutputWriter.replace(source, destination));
+		Assert.assertTrue(ResultWriter.replace(source, destination));
 		
 		Assert.assertFileNotExists(source);
 		Assert.assertFileExists(destination);
@@ -69,7 +69,7 @@ public class OutputWriterTest {
 		File source = TempFiles.createFile();
 		File destination = TempFiles.createFile().withContent("bar");
 		
-		OutputWriter.replace(source, destination);
+		ResultWriter.replace(source, destination);
 	}
 
 }

@@ -79,6 +79,20 @@ class OptionUtils {
 	}
 	
 	/**
+	 * Adds an option for setting key-value properties.
+	 * 
+	 * @param options the current set of options
+	 */
+	public static void addPropertiesOption(Options options) {
+		options.addOption(Option.builder("X")
+				.longOpt("properties")
+				.hasArgs()
+				.argName("p1=v1;p2=v2;...")
+				.valueSeparator(';')
+				.build());
+	}
+	
+	/**
 	 * Creates the problem instance specified on the command line.
 	 * 
 	 * @param commandLine the command line inputs
@@ -150,6 +164,31 @@ class OptionUtils {
 		} else {
 			return new NondominatedPopulation();
 		}
+	}
+	
+	/**
+	 * Returns the extra properties specified on the command line.
+	 * 
+	 * @param commandLine the command line inputs
+	 * @return the properties
+	 */
+	public static TypedProperties getProperties(CommandLine commandLine) {
+		TypedProperties properties = new TypedProperties();
+
+		if (commandLine.hasOption("properties")) {
+			for (String property : commandLine.getOptionValues("properties")) {
+				String[] tokens = property.split("=");
+					
+				if (tokens.length == 2) {
+					properties.setString(tokens[0], tokens[1]);
+				} else {
+					throw new FrameworkException("malformed property argument '" + property +
+							"', expected 'key=value' format");
+				}
+			}
+		}
+		
+		return properties;
 	}
 
 }

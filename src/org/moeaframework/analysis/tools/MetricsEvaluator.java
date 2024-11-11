@@ -18,6 +18,7 @@
 package org.moeaframework.analysis.tools;
 
 import java.io.File;
+import java.nio.file.Files;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -26,8 +27,6 @@ import org.moeaframework.analysis.io.MetricFileWriter;
 import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.core.Epsilons;
-import org.moeaframework.core.FrameworkException;
-import org.moeaframework.core.Solution;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.population.NondominatedPopulation;
@@ -37,13 +36,9 @@ import org.moeaframework.util.CommandLineUtility;
 /**
  * Command line utility for evaluating the approximation sets stored in a result file and computing its metric file.
  */
-public class ResultFileEvaluator extends CommandLineUtility {
+public class MetricsEvaluator extends CommandLineUtility {
 	
-	/**
-	 * Constructs the command line utility for evaluating the approximation sets stored in a result file and computing
-	 * its metric file.
-	 */
-	public ResultFileEvaluator() {
+	private MetricsEvaluator() {
 		super();
 	}
 
@@ -67,7 +62,10 @@ public class ResultFileEvaluator extends CommandLineUtility {
 				.argName("file")
 				.required()
 				.build());
-		options.addOption(Option.builder("f")
+		options.addOption(Option.builder()
+				.longOpt("overwrite")
+				.build());
+		options.addOption(Option.builder()
 				.longOpt("force")
 				.build());
 		
@@ -80,37 +78,30 @@ public class ResultFileEvaluator extends CommandLineUtility {
 		File outputFile = new File(commandLine.getOptionValue("output"));
 		Epsilons epsilons = OptionUtils.getEpsilons(commandLine);
 
-		// sanity check to ensure input hasn't been modified after the output
-		if (!commandLine.hasOption("force") && (outputFile.lastModified() > 0L) && 
-				(inputFile.lastModified() > outputFile.lastModified())) {
-			throw new FrameworkException("input appears to be newer than output");
+		if (commandLine.hasOption("overwrite")) {
+			Files.deleteIfExists(outputFile.toPath());
+		}
+		
+		if (!commandLine.hasOption("force")) {
+			MetricFileWriter.failIfOutdated(this, inputFile, outputFile);
 		}
 
 		NondominatedPopulation referenceSet = OptionUtils.getReferenceSet(commandLine);
 
-		// open the resources and begin processing
 		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true);
-				ResultFileReader reader = new ResultFileReader(problem, inputFile)) {
-			// validate the reference set
-			for (Solution solution : referenceSet) {
-				if (solution.getNumberOfObjectives() != reader.getProblem().getNumberOfObjectives()) {
-					throw new FrameworkException("reference set contains invalid number of objectives");
-				}
-			}
-
+				ResultFileReader reader = ResultFileReader.open(problem, inputFile)) {
 			Indicators indicator = Indicators.standard(reader.getProblem(), referenceSet);
 
 			try (MetricFileWriter writer = MetricFileWriter.append(indicator, outputFile)) {
-				// resume at the last good output
 				for (int i = 0; i < writer.getNumberOfEntries(); i++) {
 					if (reader.hasNext()) {
 						reader.next();
 					} else {
-						throw new FrameworkException("output has more entries than input");
+						fail("Output file '" + outputFile + "' contains more entries than input file '" +
+								inputFile + "'");
 					}
 				}
 
-				// evaluate the remaining entries
 				while (reader.hasNext()) {
 					ResultEntry entry = reader.next();
 
@@ -133,7 +124,7 @@ public class ResultFileEvaluator extends CommandLineUtility {
 	 * @throws Exception if an error occurred
 	 */
 	public static void main(String[] args) throws Exception {
-		new ResultFileEvaluator().start(args);
+		new MetricsEvaluator().start(args);
 	}
 
 }

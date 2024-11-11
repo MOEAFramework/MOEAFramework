@@ -35,10 +35,7 @@ import org.moeaframework.util.CommandLineUtility;
  */
 public class ResultFileMerger extends CommandLineUtility {
 
-	/**
-	 * Constructs the command line utility for merging the approximation sets stored in one or more result files.
-	 */
-	public ResultFileMerger() {
+	private ResultFileMerger() {
 		super();
 	}
 	
@@ -61,6 +58,7 @@ public class ResultFileMerger extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
+		File output = new File(commandLine.getOptionValue("output"));
 		NondominatedPopulation mergedSet = OptionUtils.getArchive(commandLine);
 
 		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true)) {
@@ -68,7 +66,7 @@ public class ResultFileMerger extends CommandLineUtility {
 			
 			// read in result files
 			for (String filename : commandLine.getArgs()) {
-				try (ResultFileReader reader = new ResultFileReader(problem, new File(filename))) {
+				try (ResultFileReader reader = ResultFileReader.open(problem, new File(filename))) {
 					if (problemRef == null) {
 						problemRef = reader.getProblem();
 					}
@@ -79,8 +77,6 @@ public class ResultFileMerger extends CommandLineUtility {
 				}
 			}
 			
-			File output = new File(commandLine.getOptionValue("output"));
-
 			// output merged set
 			try (ResultFileWriter writer = ResultFileWriter.open(problemRef, output)) {
 				writer.write(new ResultEntry(mergedSet));

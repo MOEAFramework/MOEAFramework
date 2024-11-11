@@ -38,10 +38,7 @@ import org.moeaframework.util.validate.Validate;
  */
 public class SimpleStatistics extends CommandLineUtility {
 	
-	/**
-	 * Constructs the command line utility for computing statistics across multiple data files.
-	 */
-	public SimpleStatistics() {
+	private SimpleStatistics() {
 		super();
 	}
 

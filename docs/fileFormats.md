@@ -33,8 +33,7 @@ Framework.  Prefer using one of the other options documented here for storage pu
 
 ## Populations
 
-The `Population` and `NondominatedPopulation` classes define the `save` and `load` methods for reading and writing the
-contents of a population:
+Populations define `save` and `load` methods for reading and writing the contents of a population:
 
 <!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [saveLoad] -->
 
@@ -44,7 +43,7 @@ Population.load(new File("population.dat"));
 ```
 
 Reference sets, including those defined in the `pf/` folder, are also stored in this manner.  However, for convenience,
-we recommend using the `loadReferenceSet` method, which loads the solutions into a `NondominatedPopulation`:
+we recommend using the `NondominatedPopulation.load` method:
 
 <!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [referenceSet] -->
 
@@ -155,22 +154,6 @@ For example:
 #
 ```
 
-### Command Line Tools
-
-Additionally, several command-line tools exist for working with result files, including:
-
-1. [`ResultFileEvaluator`](commandLineTools.md#resultfileevaluator) - To evaluate performance indicators on a result
-   file and output a metric file.
-2. [`ResultFileInfo`](commandLineTools.md#resultfileinfo) - To count the display the number of valid entries in a
-   result file.
-3. [`ResultFileMerger`](commandLineTools.md#resultfilemerger) - To merge each population in a result file to create a
-   combined approximation set.
-4. [`ResultFileSeedMerger`](commandLineTools.md#resultfileseedmerger) - To merge results produced by different seeds,
-   combining each entry across multiple result files.
-5. [`ExtractData`](commandLineTools.md#extractdata) - To read specific metadata from a result file.
-6. [`ARFFConverter`](commandLineTools.md#arffconverter) - To convert a result file into the ARFF file format used by
-   data mining software.
-
 ## Metric File
 
 The last file to discuss is the metric file.  Metric files contain the metrics or performance indicators.  When
@@ -182,6 +165,6 @@ generated from a result file, each row in the metric file corresponds to an entr
 0.769919280895597 0.006152896795104611 0.015283663427573918 0.10885841307576978 0.04402598508933901 0.1886973093535054
 ```
 
-We generally recommend using `ResultFileEvaluator` to convert a result file into a metric file, however, one can
+We generally recommend using `MetricsEvaluator` to convert a result file into a metric file, however, one can
 also read and write to metric files programmatically.  The procedure is almost identical to result files, except we use
 `MetricFileReader` and `MetricFileWriter`.

@@ -24,10 +24,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
+import org.moeaframework.util.CommandLineUtility;
+
 /**
- * Writes output files.
+ * Abstract class for result writers.
  */
-public interface OutputWriter extends Closeable {
+public abstract class ResultWriter implements Closeable {
 	
 	/**
 	 * Returns the number of entries in the file. If the file already existed, this returns the number of complete
@@ -35,7 +37,7 @@ public interface OutputWriter extends Closeable {
 	 * 
 	 * @return the number of entries in the file
 	 */
-	public int getNumberOfEntries();
+	public abstract int getNumberOfEntries();
 	
 	/**
 	 * Writes the specified non-dominated population and optional attributes to the file.
@@ -43,7 +45,7 @@ public interface OutputWriter extends Closeable {
 	 * @param entry the non-dominated population and optional attributes
 	 * @throws IOException if an I/O error occurred
 	 */
-	public void write(ResultEntry entry) throws IOException;
+	public abstract void write(ResultEntry entry) throws IOException;
 	
 	/**
 	 * Replaces the destination file with the source file, but only if content is different.  This avoids changing the
@@ -64,6 +66,22 @@ public interface OutputWriter extends Closeable {
 		} else {
 			Files.deleteIfExists(sourcePath);
 			return false;
+		}
+	}
+	
+	/**
+	 * Checks the last modified timestamp of the input and output files, throwing if the input is newer than the
+	 * output.  This check should be performed before appending to existing files.
+	 * 
+	 * @param cli the command line utility
+	 * @param input the input file
+	 * @param output the output file
+	 */
+	public static void failIfOutdated(CommandLineUtility cli, File input, File output) {
+		if ((output.lastModified() > 0L) && (input.lastModified() > output.lastModified())) {
+			cli.fail("WARNING: Input file '" + input + "' is newer than output file '" + output + "'",
+					"  1. Add the --overwrite option to remove the output file",
+					"  2. Add the --force option to ignore this warning");
 		}
 	}
 

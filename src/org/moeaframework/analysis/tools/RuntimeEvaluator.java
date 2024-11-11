@@ -35,7 +35,6 @@ import org.moeaframework.analysis.runtime.Observation;
 import org.moeaframework.analysis.runtime.Observations;
 import org.moeaframework.analysis.sample.Samples;
 import org.moeaframework.core.Epsilons;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.population.NondominatedPopulation;
@@ -45,15 +44,12 @@ import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.validate.Validate;
 
 /**
- * Command line utility for evaluating an algorithm using many parameterizations.  Unlike {@link Evaluator}, this class
+ * Command line utility for evaluating an algorithm using many parameterizations.  Unlike {@link EndOfRunEvaluator}, this class
  * outputs runtime data.  Each run is stored in a separate file.
  */
 public class RuntimeEvaluator extends CommandLineUtility {
 
-	/**
-	 * Constructs the command line utility for evaluating an algorithm using many parameterizations.
-	 */
-	public RuntimeEvaluator() {
+	private RuntimeEvaluator() {
 		super();
 	}
 
@@ -63,6 +59,7 @@ public class RuntimeEvaluator extends CommandLineUtility {
 		
 		OptionUtils.addProblemOption(options);
 		OptionUtils.addEpsilonOption(options);
+		OptionUtils.addPropertiesOption(options);
 
 		options.addOption(Option.builder("p")
 				.longOpt("parameterFile")
@@ -88,21 +85,15 @@ public class RuntimeEvaluator extends CommandLineUtility {
 				.argName("name")
 				.required()
 				.build());
-		options.addOption(Option.builder("f")
-				.longOpt("frequency")
-				.hasArg()
-				.argName("nfe")
-				.build());
-		options.addOption(Option.builder("x")
-				.longOpt("properties")
-				.hasArgs()
-				.argName("p1=v1;p2=v2;...")
-				.valueSeparator(';')
-				.build());
 		options.addOption(Option.builder("s")
 				.longOpt("seed")
 				.hasArg()
 				.argName("value")
+				.build());
+		options.addOption(Option.builder("f")
+				.longOpt("frequency")
+				.hasArg()
+				.argName("nfe")
 				.build());
 		
 		return options;
@@ -110,59 +101,44 @@ public class RuntimeEvaluator extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws IOException {
-		String outputFilePattern = commandLine.getOptionValue("output");
 		File parameterFile = new File(commandLine.getOptionValue("parameterFile"));
 		File inputFile = new File(commandLine.getOptionValue("input"));
 		Epsilons epsilons = OptionUtils.getEpsilons(commandLine);
-		
+		String outputFilePattern = commandLine.getOptionValue("output");
 		int frequency = 1000;
 		
 		if (commandLine.hasOption("frequency")) {
 			frequency = Integer.parseInt(commandLine.getOptionValue("frequency"));
 		}
 		
-		// open the resources and begin processing
+		if (commandLine.hasOption("seed")) {
+			PRNG.setSeed(Long.parseLong(commandLine.getOptionValue("seed")));
+		}
+		
+		ParameterSet parameterSet = ParameterSet.load(parameterFile);
+		Samples samples = Samples.load(inputFile, parameterSet);
+		
 		try (Problem problem = OptionUtils.getProblemInstance(commandLine, false)) {
-			ParameterSet parameterSet = ParameterSet.load(parameterFile);
-			Samples samples = Samples.load(inputFile, parameterSet);
-
 			for (int i = 0; i < samples.size(); i++) {
 				String outputFileName = String.format(outputFilePattern, i+1);
-				System.out.print("Processing " + outputFileName + "...");
 				File outputFile = new File(outputFileName);	
+				
+				System.out.print("Processing sample " + (i+1) + " of " + samples.size() + " (" + outputFileName + ")...");
 						
 				try (ResultFileWriter output = ResultFileWriter.open(problem, outputFile)) {
-					// setup any default parameters
-					TypedProperties defaultProperties = new TypedProperties();
-	
-					if (commandLine.hasOption("properties")) {
-						for (String property : commandLine.getOptionValues("properties")) {
-							String[] tokens = property.split("=");
-								
-							if (tokens.length == 2) {
-								defaultProperties.setString(tokens[0], tokens[1]);
-							} else {
-								throw new FrameworkException("malformed property argument");
-							}
-						}
-					}
+					TypedProperties defaultProperties = OptionUtils.getProperties(commandLine);
 	
 					if (epsilons != null) {
 						defaultProperties.setDoubleArray("epsilon", epsilons.toArray());
-					}
-	
-					// seed the pseudo-random number generator
-					if (commandLine.hasOption("seed")) {
-						PRNG.setSeed(Long.parseLong(commandLine.getOptionValue("seed")));
 					}
 	
 					TypedProperties properties = samples.get(i);
 					properties.addAll(defaultProperties);
 	
 					process(commandLine.getOptionValue("algorithm"), properties, problem, frequency, output);
-						
-					System.out.println("done.");
 				}
+				
+				System.out.println("done.");
 			}
 		}
 		
@@ -172,7 +148,6 @@ public class RuntimeEvaluator extends CommandLineUtility {
 	private void process(String algorithmName, TypedProperties properties, Problem problem, int frequency,
 			ResultFileWriter output) throws IOException {
 		int maxEvaluations = properties.getTruncatedInt("maxEvaluations");
-		
 		Validate.that("maxEvaluations", maxEvaluations).isGreaterThanOrEqualTo(0);
 		
 		Instrumenter instrumenter = new Instrumenter()

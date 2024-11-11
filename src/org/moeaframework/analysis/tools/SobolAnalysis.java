@@ -93,11 +93,7 @@ public class SobolAnalysis extends CommandLineUtility {
 	 */
 	private double[][] C_B;
 
-	/**
-	 * Constructs the command line utility for global sensitivity analysis using Sobol's global variance decomposition
-	 * based on Saltelli's work.
-	 */
-	public SobolAnalysis() {
+	private SobolAnalysis() {
 		super();
 	}
 
