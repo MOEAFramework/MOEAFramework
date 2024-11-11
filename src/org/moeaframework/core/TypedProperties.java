@@ -50,12 +50,12 @@ import org.moeaframework.util.validate.Validate;
 /**
  * Stores a collection of key-value pairs similar to {@link Properties} but has support for reading and writing
  * primitive types.  Internally, this handles converting specific types to a string representation that can be saved
- * and read from files.
+ * and read from files.  As such, there is some leniency in how type conversion is handled.  For instance, the value
+ * {@code "0.1"} can be read as a string, float, double, or an single-valued array of these types.  
  * <p>
- * In addition to primitive types, arrays of those primitives are also supported using either the default "," separator
- * or a user-configurable string.  Leading and trailing whitespace is automatically trimmed from each entry.
- * <strong>Be mindful that values saved in arrays should not include the separator character(s) - no escaping is
- * performed!</strong>
+ * In addition to primitive types, arrays of those primitives are also supported using either the default
+ * "{@value #DEFAULT_SEPARATOR}" separator or a user-configurable character.  Escaping is automatically performed
+ * when using one of the array setters.  Leading and trailing whitespace is also trimmed from each entry.
  * <p>
  * Keys are case-insensitive.
  */
@@ -119,6 +119,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 		super();
 		
 		tokenizer = new Tokenizer();
+		tokenizer.reset();
 		tokenizer.setDelimiter(separator);
 		
 		Map<String, String> tempProperties = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
@@ -131,88 +132,6 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 		
 		this.properties = tempProperties;
 		this.accessedKeys = tempAccessedKeys;
-	}
-	
-	/**
-	 * Creates and returns an empty properties object that is thread-safe.  This is useful when needing thread-safe
-	 * access to a shared properties object.
-	 * 
-	 * @return the typed properties instance
-	 */
-	public static TypedProperties newThreadSafeInstance() {
-		return new TypedProperties(DEFAULT_SEPARATOR, true);
-	}
-	
-	/**
-	 * Creates and returns an empty properties object.
-	 * 
-	 * @return the typed properties instance
-	 */
-	public static TypedProperties newInstance() {
-		return new TypedProperties();
-	}
-	
-	/**
-	 * Convenience method to quickly construct an empty typed properties instance.  The returned instance is mutable
-	 * and can be modified by the caller.
-	 *   
-	 * @return the typed properties instance
-	 */
-	public static TypedProperties of() {
-		return new TypedProperties();
-	}
-	
-	/**
-	 * Convenience method to quickly construct a typed properties instance with a single key-value pair.  This is
-	 * particularly useful for parsing, for instance, command line arguments:
-	 * <pre>
-	 *   TypedProperties.of("epsilon", commandLine.getOptionValue("epsilon")).getDoubleArray("epsilon");
-	 * </pre>
-	 * <p>
-	 * The returned instance is mutable and can be modified by the caller.
-	 * 
-	 * @param key the key
-	 * @param value the value assigned to the key
-	 * @return a typed properties instance with the specified key-value pair
-	 */
-	public static TypedProperties of(String key, String value) {
-		TypedProperties properties = new TypedProperties();
-		properties.setString(key, value);
-		return properties;
-	}
-	
-	/**
-	 * Loads the contents of {@code META-INF/build.properties} and evaluates any string substitutions in the form
-	 * {@code ${token}}.
-	 * 
-	 * @return the build properties
-	 * @throws IOException if an error occurred loading the file
-	 */
-	public static TypedProperties loadBuildProperties() throws IOException {
-		Properties rawProperties = new Properties();
-		
-		try (InputStream stream = Resources.asStream(Settings.class, "/META-INF/build.properties")) {
-			if (stream != null) {
-				rawProperties.load(stream);
-			}
-		}
-		
-		Map<String, Object> mappings = new HashMap<>();
-		
-		for (Entry<Object, Object> entry : rawProperties.entrySet()) {
-			mappings.put(entry.getKey().toString(), entry.getValue());
-		}
-		
-		StringSubstitutor substitutor = new StringSubstitutor(mappings);
-		substitutor.setEnableSubstitutionInVariables(true);
-		
-		TypedProperties result = new TypedProperties();
-		
-		for (Entry<Object, Object> entry : rawProperties.entrySet()) {
-			result.setString(entry.getKey().toString(), substitutor.replace(entry.getValue()));
-		}
-		
-		return result;
 	}
 	
 	/**
@@ -1419,6 +1338,203 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 */
 	public PropertyScope createScope() {
 		return new PropertyScope(this);
+	}
+	
+	/**
+	 * Creates and returns an empty properties object that is thread-safe.  This is useful when needing thread-safe
+	 * access to a shared properties object.
+	 * 
+	 * @return the typed properties instance
+	 */
+	public static TypedProperties newThreadSafeInstance() {
+		return new TypedProperties(DEFAULT_SEPARATOR, true);
+	}
+	
+	/**
+	 * Convenience method to construct an empty typed properties instance.  The returned instance is mutable
+	 * and can be modified by the caller.
+	 *   
+	 * @return the typed properties instance
+	 */
+	public static TypedProperties of() {
+		return new TypedProperties();
+	}
+	
+	/**
+	 * Convenience method to construct a typed properties instance with a single key-value pair.  The value can either
+	 * be a single value or an array.
+	 * <p>
+	 * The returned instance is mutable and can be modified by the caller.
+	 * 
+	 * @param key the key
+	 * @param values the value(s) assigned to the key
+	 * @return a typed properties instance with the specified key-value pair
+	 */
+	public static TypedProperties of(String key, byte... values) {
+		TypedProperties properties = new TypedProperties();
+		properties.setByteArray(key, values);
+		return properties;
+	}
+	
+	/**
+	 * Convenience method to construct a typed properties instance with a single key-value pair.  The value can either
+	 * be a single value or an array.
+	 * <p>
+	 * The returned instance is mutable and can be modified by the caller.
+	 * 
+	 * @param key the key
+	 * @param values the value(s) assigned to the key
+	 * @return a typed properties instance with the specified key-value pair
+	 */
+	public static TypedProperties of(String key, short... values) {
+		TypedProperties properties = new TypedProperties();
+		properties.setShortArray(key, values);
+		return properties;
+	}
+	
+	/**
+	 * Convenience method to construct a typed properties instance with a single key-value pair.  The value can either
+	 * be a single value or an array.
+	 * <p>
+	 * The returned instance is mutable and can be modified by the caller.
+	 * 
+	 * @param key the key
+	 * @param values the value(s) assigned to the key
+	 * @return a typed properties instance with the specified key-value pair
+	 */
+	public static TypedProperties of(String key, int... values) {
+		TypedProperties properties = new TypedProperties();
+		properties.setIntArray(key, values);
+		return properties;
+	}
+	
+	/**
+	 * Convenience method to construct a typed properties instance with a single key-value pair.  The value can either
+	 * be a single value or an array.
+	 * <p>
+	 * The returned instance is mutable and can be modified by the caller.
+	 * 
+	 * @param key the key
+	 * @param values the value(s) assigned to the key
+	 * @return a typed properties instance with the specified key-value pair
+	 */
+	public static TypedProperties of(String key, long... values) {
+		TypedProperties properties = new TypedProperties();
+		properties.setLongArray(key, values);
+		return properties;
+	}
+	
+	/**
+	 * Convenience method to construct a typed properties instance with a single key-value pair.  The value can either
+	 * be a single value or an array.
+	 * <p>
+	 * The returned instance is mutable and can be modified by the caller.
+	 * 
+	 * @param key the key
+	 * @param values the value(s) assigned to the key
+	 * @return a typed properties instance with the specified key-value pair
+	 */
+	public static TypedProperties of(String key, float... values) {
+		TypedProperties properties = new TypedProperties();
+		properties.setFloatArray(key, values);
+		return properties;
+	}
+	
+	/**
+	 * Convenience method to construct a typed properties instance with a single key-value pair.  The value can either
+	 * be a single value or an array.
+	 * <p>
+	 * The returned instance is mutable and can be modified by the caller.
+	 * 
+	 * @param key the key
+	 * @param values the value(s) assigned to the key
+	 * @return a typed properties instance with the specified key-value pair
+	 */
+	public static TypedProperties of(String key, double... values) {
+		TypedProperties properties = new TypedProperties();
+		properties.setDoubleArray(key, values);
+		return properties;
+	}
+	
+	/**
+	 * Convenience method to construct a typed properties instance with a single key-value pair.  While the value is
+	 * a single string, its interpretation depends on the method 
+	 * <p>
+	 * The returned instance is mutable and can be modified by the caller.
+	 * 
+	 * @param key the key
+	 * @param value the value assigned to the key
+	 * @return a typed properties instance with the specified key-value pair
+	 */
+	public static TypedProperties of(String key, String value) {
+		TypedProperties properties = new TypedProperties();
+		properties.setString(key, value);
+		return properties;
+	}
+	
+	/**
+	 * Convenience method to construct a typed properties instance with a single key-value pair.
+	 * <p>
+	 * The returned instance is mutable and can be modified by the caller.
+	 * 
+	 * @param key the key
+	 * @param value the value assigned to the key
+	 * @return a typed properties instance with the specified key-value pair
+	 */
+	public static TypedProperties of(String key, boolean value) {
+		TypedProperties properties = new TypedProperties();
+		properties.setBoolean(key, value);
+		return properties;
+	}
+	
+	/**
+	 * Convenience method to construct a typed properties instance with a single key-value pair.
+	 * <p>
+	 * The returned instance is mutable and can be modified by the caller.
+	 * 
+	 * @param <T> the enum type
+	 * @param key the key
+	 * @param value the value assigned to the key
+	 * @return a typed properties instance with the specified key-value pair
+	 */
+	public static <T extends Enum<?>> TypedProperties of(String key, T value) {
+		TypedProperties properties = new TypedProperties();
+		properties.setEnum(key, value);
+		return properties;
+	}
+		
+	/**
+	 * Loads the contents of {@code META-INF/build.properties} and evaluates any string substitutions in the form
+	 * {@code ${token}}.
+	 * 
+	 * @return the build properties
+	 * @throws IOException if an error occurred loading the file
+	 */
+	public static TypedProperties loadBuildProperties() throws IOException {
+		Properties rawProperties = new Properties();
+		
+		try (InputStream stream = Resources.asStream(Settings.class, "/META-INF/build.properties")) {
+			if (stream != null) {
+				rawProperties.load(stream);
+			}
+		}
+		
+		Map<String, Object> mappings = new HashMap<>();
+		
+		for (Entry<Object, Object> entry : rawProperties.entrySet()) {
+			mappings.put(entry.getKey().toString(), entry.getValue());
+		}
+		
+		StringSubstitutor substitutor = new StringSubstitutor(mappings);
+		substitutor.setEnableSubstitutionInVariables(true);
+		
+		TypedProperties result = new TypedProperties();
+		
+		for (Entry<Object, Object> entry : rawProperties.entrySet()) {
+			result.setString(entry.getKey().toString(), substitutor.replace(entry.getValue()));
+		}
+		
+		return result;
 	}
 
 }

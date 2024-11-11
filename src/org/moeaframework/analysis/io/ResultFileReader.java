@@ -213,7 +213,7 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 			line = reader.readLine();
 		}
 
-		TypedProperties header = TypedProperties.newInstance();
+		TypedProperties header = new TypedProperties();
 		header.load(new StringReader(stringBuffer.toString()));
 		
 		// Validate the header content

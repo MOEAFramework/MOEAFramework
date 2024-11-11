@@ -69,7 +69,7 @@ public class RVEATest {
 		algorithm.applyConfiguration(divisions.toProperties());
 		Assert.assertEquals(divisions, algorithm.getPopulation().getDivisions());
 		
-		algorithm.applyConfiguration(TypedProperties.of("maxIterations", "20"));
+		algorithm.applyConfiguration(TypedProperties.of("maxIterations", 20));
 		Assert.assertEquals(20, algorithm.getMaxIterations());
 	}
 	

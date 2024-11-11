@@ -132,7 +132,7 @@ public class ResultFileWriter implements OutputWriter {
 	 */
 	protected void printHeader(Problem problem) throws IOException {
 		// print header information
-		TypedProperties header = TypedProperties.newInstance();
+		TypedProperties header = new TypedProperties();
 		header.setInt("Version", Settings.getMajorVersion());
 		
 		if (problem != null) {

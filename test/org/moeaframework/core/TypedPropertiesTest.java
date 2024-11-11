@@ -53,9 +53,21 @@ public class TypedPropertiesTest {
 	
 	@Test
 	public void testStaticConstructor() {
-		double[] values = TypedProperties.of("epsilon", "0.01,0.01").getDoubleArray("epsilon", null);
+		Assert.assertArrayEquals(new double[] { 0.01, 0.01 },
+				TypedProperties.of("key", "0.01,0.01").getDoubleArray("key", null), TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { 0.01, 0.01 }, values, TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 0.01, 0.01 },
+				TypedProperties.of("key", 0.01, 0.01).getDoubleArray("key"), TestThresholds.HIGH_PRECISION);
+		
+		Assert.assertEquals("value", TypedProperties.of("key", "value").getString("key"));
+		Assert.assertEquals(2.71, TypedProperties.of("key", 2.71).getDouble("key"), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(2.71f, TypedProperties.of("key", 2.71).getFloat("key"), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(42, TypedProperties.of("key", 42).getInt("key"));
+		Assert.assertEquals(42, TypedProperties.of("key", 42L).getLong("key"));
+		Assert.assertEquals(42, TypedProperties.of("key", (short)42).getShort("key"));
+		Assert.assertEquals(42, TypedProperties.of("key", (byte)42).getByte("key"));
+		Assert.assertEquals(true, TypedProperties.of("key", true).getBoolean("key"));
+		Assert.assertEquals(TestEnum.FOO, TypedProperties.of("key", TestEnum.FOO).getEnum("key", TestEnum.class));
 	}
 
 	@Test
@@ -74,8 +86,8 @@ public class TypedPropertiesTest {
 	@Test
 	public void testStringArrays() {
 		// strings support empty entries
-		Assert.assertArrayEquals(new String[] { "2.71", "" }, properties.getStringArray("float_invalid_array", null));
-		Assert.assertArrayEquals(new String[] { "42", "" }, properties.getStringArray("integer_invalid_array", null));
+		Assert.assertArrayEquals(new String[] { "2.71", "" }, properties.getStringArray("float_invalid_array"));
+		Assert.assertArrayEquals(new String[] { "42", "" }, properties.getStringArray("integer_invalid_array"));
 	}
 
 	@Test
@@ -91,32 +103,32 @@ public class TypedPropertiesTest {
 
 	@Test(expected = NumberFormatException.class)
 	public void testMissingEntryDouble() {
-		properties.getDoubleArray("float_invalid_array", null);
+		properties.getDoubleArray("float_invalid_array");
 	}
 
 	@Test(expected = NumberFormatException.class)
 	public void testMissingEntryFloat() {
-		properties.getFloatArray("float_invalid_array", null);
+		properties.getFloatArray("float_invalid_array");
 	}
 
 	@Test(expected = NumberFormatException.class)
 	public void testMissingEntryInt() {
-		properties.getIntArray("integer_invalid_array", null);
+		properties.getIntArray("integer_invalid_array");
 	}
 
 	@Test(expected = NumberFormatException.class)
 	public void testMissingEntryLong() {
-		properties.getLongArray("integer_invalid_array", null);
+		properties.getLongArray("integer_invalid_array");
 	}
 
 	@Test(expected = NumberFormatException.class)
 	public void testMissingEntryShort() {
-		properties.getShortArray("integer_invalid_array", null);
+		properties.getShortArray("integer_invalid_array");
 	}
 
 	@Test(expected = NumberFormatException.class)
 	public void testMissingEntryByte() {
-		properties.getByteArray("integer_invalid_array", null);
+		properties.getByteArray("integer_invalid_array");
 	}
 	
 	@Test(expected = NullPointerException.class)
@@ -197,7 +209,7 @@ public class TypedPropertiesTest {
 		properties.setBoolean("boolean_true", true);
 		properties.setBoolean("boolean_false", false);
 		
-		Assert.assertEquals("foo,bar", properties.getString("string", null));
+		Assert.assertEquals("foo,bar", properties.getString("string"));
 		Assert.assertEquals(2.71, properties.getDouble("double", 0.0), TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(2.71f, properties.getFloat("float", 0.0f), (float)TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(42, properties.getInt("int", 0));
@@ -218,13 +230,13 @@ public class TypedPropertiesTest {
 		properties.setShortArray("short_array", new short[] { 42, 12 });
 		properties.setByteArray("byte_array", new byte[] { 42, 12 });
 		
-		Assert.assertArrayEquals(new String[] { "foo", "bar" }, properties.getStringArray("string_array", null));
-		Assert.assertArrayEquals(new double[] { 2.71, 1.44 }, properties.getDoubleArray("double_array", null), TestThresholds.HIGH_PRECISION);
-		Assert.assertArrayEquals(new float[] { 2.71f, 1.44f }, properties.getFloatArray("float_array", null), (float)TestThresholds.HIGH_PRECISION);
-		Assert.assertArrayEquals(new int[] { 42, 12 }, properties.getIntArray("int_array", null));
-		Assert.assertArrayEquals(new long[] { 42, 12 }, properties.getLongArray("long_array", null));
-		Assert.assertArrayEquals(new short[] { 42, 12 }, properties.getShortArray("short_array", null));
-		Assert.assertArrayEquals(new byte[] { 42, 12 }, properties.getByteArray("byte_array", null));
+		Assert.assertArrayEquals(new String[] { "foo", "bar" }, properties.getStringArray("string_array"));
+		Assert.assertArrayEquals(new double[] { 2.71, 1.44 }, properties.getDoubleArray("double_array"), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new float[] { 2.71f, 1.44f }, properties.getFloatArray("float_array"), (float)TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new int[] { 42, 12 }, properties.getIntArray("int_array"));
+		Assert.assertArrayEquals(new long[] { 42, 12 }, properties.getLongArray("long_array"));
+		Assert.assertArrayEquals(new short[] { 42, 12 }, properties.getShortArray("short_array"));
+		Assert.assertArrayEquals(new byte[] { 42, 12 }, properties.getByteArray("byte_array"));
 	}
 	
 	@Test
@@ -237,13 +249,13 @@ public class TypedPropertiesTest {
 		properties.setShortArray("short_array_empty", new short[0]);
 		properties.setByteArray("byte_array_empty", new byte[0]);
 
-		Assert.assertArrayEquals(new String[0], properties.getStringArray("string_array_empty", null));
-		Assert.assertArrayEquals(new double[0], properties.getDoubleArray("double_array_empty", null), TestThresholds.HIGH_PRECISION);
-		Assert.assertArrayEquals(new float[0], properties.getFloatArray("float_array_empty", null), (float)TestThresholds.HIGH_PRECISION);
-		Assert.assertArrayEquals(new int[0], properties.getIntArray("int_array_empty", null));
-		Assert.assertArrayEquals(new long[0], properties.getLongArray("long_array_empty", null));
-		Assert.assertArrayEquals(new short[0], properties.getShortArray("short_array_empty", null));
-		Assert.assertArrayEquals(new byte[0], properties.getByteArray("byte_array_empty", null));
+		Assert.assertArrayEquals(new String[0], properties.getStringArray("string_array_empty"));
+		Assert.assertArrayEquals(new double[0], properties.getDoubleArray("double_array_empty"), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new float[0], properties.getFloatArray("float_array_empty"), (float)TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new int[0], properties.getIntArray("int_array_empty"));
+		Assert.assertArrayEquals(new long[0], properties.getLongArray("long_array_empty"));
+		Assert.assertArrayEquals(new short[0], properties.getShortArray("short_array_empty"));
+		Assert.assertArrayEquals(new byte[0], properties.getByteArray("byte_array_empty"));
 	}
 	
 	@Test
@@ -288,8 +300,8 @@ public class TypedPropertiesTest {
 		Assert.assertTrue(properties.contains("Foo"));
 		Assert.assertTrue(properties.contains("FOO"));
 		
-		Assert.assertEquals("bar", properties.getString("Foo", null));
-		Assert.assertEquals("bar", properties.getString("FOO", null));
+		Assert.assertEquals("bar", properties.getString("Foo"));
+		Assert.assertEquals("bar", properties.getString("FOO"));
 		
 		Assert.assertTrue(properties.getAccessedProperties().contains("Foo"));
 		Assert.assertTrue(properties.getAccessedProperties().contains("FOO"));

@@ -69,7 +69,7 @@ public class CMAESTest extends AlgorithmTest {
 	public void testCheckConsistency() {
 		test("DTLZ2_2",
 				"CMA-ES", new TypedProperties(),
-				"CMA-ES", TypedProperties.of("checkConsistency", "true"),
+				"CMA-ES", TypedProperties.of("checkConsistency", true),
 				false, AlgorithmFactory.getInstance());
 	}
 	
