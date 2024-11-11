@@ -153,4 +153,28 @@ public class IteratorsTest {
 		Assert.assertEquals(List.of("foo", "bar"), Iterators.materialize(it));
 	}
 	
+	@Test
+	public void testEmptyLast() {
+		Iterator<String> it = Iterators.of();
+		Assert.assertNull(Iterators.last(it));
+	}
+	
+	@Test
+	public void testLast() {
+		Iterator<String> it = Iterators.of("foo", "bar");
+		Assert.assertEquals("bar", Iterators.last(it));
+	}
+	
+	@Test
+	public void testEmptyCount() {
+		Iterator<String> it = Iterators.of();
+		Assert.assertEquals(0, Iterators.count(it));
+	}
+	
+	@Test
+	public void testCount() {
+		Iterator<String> it = Iterators.of("foo", "bar");
+		Assert.assertEquals(2, Iterators.count(it));
+	}
+	
 }

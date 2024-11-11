@@ -25,6 +25,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.analysis.io.MetricFileReader;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.Iterators;
 
 /**
  * Command line utility for validating the contents of a metrics file.
@@ -62,13 +63,7 @@ public class MetricsValidator extends CommandLineUtility {
 		try (PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
 			for (String filename : commandLine.getArgs()) {
 				try (MetricFileReader reader = MetricFileReader.open(new File(filename))) {
-					int count = 0;
-						
-					while (reader.hasNext()) {
-						reader.next();
-						count++;
-					}
-					
+					int count = Iterators.count(reader.iterator());
 					failed |= count != expectedCount;
 
 					output.println(filename + " " + (count == expectedCount ? "PASS" :

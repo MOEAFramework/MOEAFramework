@@ -26,6 +26,7 @@ import org.apache.commons.cli.Options;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.Iterators;
 
 /**
  * Command line utility for validating the contents of a result file.
@@ -66,13 +67,7 @@ public class ResultFileValidator extends CommandLineUtility {
 				PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
 			for (String filename : commandLine.getArgs()) {
 				try (ResultFileReader reader = ResultFileReader.openLegacy(problem, new File(filename))) {
-					int count = 0;
-						
-					while (reader.hasNext()) {
-						reader.next();
-						count++;
-					}
-					
+					int count = Iterators.count(reader.iterator());
 					failed |= count != expectedCount;
 
 					output.println(filename + " " + (count == expectedCount ? "PASS" :

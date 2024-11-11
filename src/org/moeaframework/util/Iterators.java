@@ -198,6 +198,33 @@ public class Iterators {
 	}
 	
 	/**
+	 * Counts the number of elements in the iterator.
+	 * 
+	 * @param iterator the iterator
+	 * @return the number of elements
+	 */
+	public static int count(Iterator<?> iterator) {
+		int count = 0;
+		
+		while (iterator.hasNext()) {
+			iterator.next();
+			count++;
+		}
+		
+		return count;
+	}
+	
+	/**
+	 * Counts the number of elements in the iterable.
+	 * 
+	 * @param iterable the iterable
+	 * @return the number of elements
+	 */
+	public static int count(Iterable<?> iterable) {
+		return count(iterable.iterator());
+	}
+	
+	/**
 	 * Associates an index to a value.
 	 * 
 	 * @param <T> the type of the value
