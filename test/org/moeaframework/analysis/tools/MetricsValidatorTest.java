@@ -24,15 +24,15 @@ import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.core.FrameworkException;
 
-public class ResultFileValidatorTest {
+public class MetricsValidatorTest {
 	
 	@Test
-	public void testLegacy() throws Exception {
-		File inputFile = TempFiles.createFile().withContent("#\n0 0\n1 1\n#");
+	public void testPass() throws Exception {
+		File inputFile = TempFiles.createFile().withContent("0 0 0 0 0 0\n1 1 1 1 1 1\n");
 		File outputFile = TempFiles.createFile();
 		
-		ResultFileValidator.main(new String[] {
-				"-c", "1",
+		MetricsValidator.main(new String[] {
+				"-c", "2",
 				"-o", outputFile.getPath(),
 				inputFile.getPath() });
 		
@@ -40,41 +40,15 @@ public class ResultFileValidatorTest {
 		Assert.assertLinePattern(outputFile, "^(.*)\\s+PASS$");
 	}
 	
-	@Test
-	public void testPass() throws Exception {
-		File resultFile = TempFiles.createFile();
-		File outputFile = TempFiles.createFile();
-		
-		Solve.main(new String[] {
-				"-a", "NSGAII",
-				"-b", "DTLZ2_2",
-				"-n", "1000",
-				"-f", resultFile.getPath() });
-		
-		ResultFileValidator.main(new String[] {
-				"-c", "10",
-				"-o", outputFile.getPath(),
-				resultFile.getPath() });
-				
-		Assert.assertLineCount(1, outputFile);
-		Assert.assertLinePattern(outputFile, "^(.*)\\s+PASS$");
-	}
-	
 	@Test(expected = FrameworkException.class)
 	public void testFail() throws Exception {
-		File resultFile = TempFiles.createFile();
+		File inputFile = TempFiles.createFile().withContent("0 0 0 0\n1 1 1 1\n");
 		File outputFile = TempFiles.createFile();
 		
-		Solve.main(new String[] {
-				"-a", "NSGAII",
-				"-b", "DTLZ2_2",
-				"-n", "1000",
-				"-f", resultFile.getPath() });
-		
-		ResultFileValidator.main(new String[] {
-				"-c", "5",
+		MetricsValidator.main(new String[] {
+				"-c", "2",
 				"-o", outputFile.getPath(),
-				resultFile.getPath() });
+				inputFile.getPath() });
 				
 		Assert.assertLineCount(1, outputFile);
 		Assert.assertLinePattern(outputFile, "^(.*)\\s+FAIL.*$");

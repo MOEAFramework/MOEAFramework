@@ -23,16 +23,15 @@ import java.io.PrintWriter;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
-import org.moeaframework.analysis.io.ResultFileReader;
-import org.moeaframework.problem.Problem;
+import org.moeaframework.analysis.io.MetricFileReader;
 import org.moeaframework.util.CommandLineUtility;
 
 /**
- * Command line utility for validating the contents of a result file.
+ * Command line utility for validating the contents of a metrics file.
  */
-public class ResultFileValidator extends CommandLineUtility {
+public class MetricsValidator extends CommandLineUtility {
 	
-	private ResultFileValidator() {
+	private MetricsValidator() {
 		super();
 	}
 	
@@ -40,8 +39,6 @@ public class ResultFileValidator extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		OptionUtils.addProblemOption(options);
-
 		options.addOption(Option.builder("c")
 				.longOpt("count")
 				.hasArg()
@@ -62,10 +59,9 @@ public class ResultFileValidator extends CommandLineUtility {
 		boolean failed = false;
 		int expectedCount = Integer.parseInt(commandLine.getOptionValue("count"));
 
-		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true);
-				PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
+		try (PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
 			for (String filename : commandLine.getArgs()) {
-				try (ResultFileReader reader = ResultFileReader.openLegacy(problem, new File(filename))) {
+				try (MetricFileReader reader = MetricFileReader.open(new File(filename))) {
 					int count = 0;
 						
 					while (reader.hasNext()) {
@@ -82,18 +78,18 @@ public class ResultFileValidator extends CommandLineUtility {
 		}
 		
 		if (failed) {
-			fail("Detected invalid result file, see logs for details");
+			fail("Detected invalid metrics file, see logs for details");
 		}
 	}
 	
 	/**
-	 * Starts the command line utility for counting the number of entries in a result file.
+	 * Starts the command line utility for counting the number of entries in a metrics file.
 	 * 
 	 * @param args the command line arguments
 	 * @throws Exception if an error occurred
 	 */
 	public static void main(String[] args) throws Exception {
-		new ResultFileValidator().start(args);
+		new MetricsValidator().start(args);
 	}
 
 }
