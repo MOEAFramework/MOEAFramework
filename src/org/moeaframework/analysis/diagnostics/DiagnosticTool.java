@@ -69,6 +69,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.jfree.base.Library;
 import org.jfree.ui.about.AboutDialog;
 import org.jfree.ui.about.ProjectInfo;
+import org.moeaframework.analysis.plot.RuntimeViewer;
 import org.moeaframework.analysis.runtime.Observations;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
@@ -79,6 +80,7 @@ import org.moeaframework.util.io.Resources;
 import org.moeaframework.util.io.Resources.ResourceOption;
 import org.moeaframework.util.mvc.ControllerEvent;
 import org.moeaframework.util.mvc.ControllerListener;
+import org.moeaframework.util.mvc.InvertedToggleAction;
 import org.moeaframework.util.mvc.RunnableAction;
 import org.moeaframework.util.mvc.ToggleAction;
 
@@ -301,12 +303,17 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 					
 					JPopupMenu popupMenu = new JPopupMenu();
 					popupMenu.add(new RunnableAction("showApproximationSet", localization, () -> {
-							ApproximationSetViewer viewer = new ApproximationSetViewer(
-									key.toString(),
-									controller.get(key), 
+							RuntimeViewer viewer = new RuntimeViewer(key.toString());
+							List<Observations> data = controller.get(key);
+							
+							for (int i = 0; i < data.size(); i++) {
+								viewer.getController().addSeries(localization.getString("text.seed", i), data.get(i));
+							}
+							
+							viewer.getController().setReferenceSet(
 									ProblemFactory.getInstance().getReferenceSet(key.getProblem()));
+							
 							viewer.setLocationRelativeTo(DiagnosticTool.this);
-							viewer.setIconImages(getIconImages());
 							viewer.setVisible(true);
 						}).toMenuItem());
 					
@@ -398,7 +405,7 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		
 		JMenu viewMenu = new JMenu(localization.getString("menu.view"));
 		viewMenu.add(new JRadioButtonMenuItem(new ToggleAction("showIndividualTraces", localization, controller.showIndividualTraces())));
-		viewMenu.add(new JRadioButtonMenuItem(new ToggleAction("showQuantiles", localization, controller.showIndividualTraces().invert())));
+		viewMenu.add(new JRadioButtonMenuItem(new InvertedToggleAction("showQuantiles", localization, controller.showIndividualTraces())));
 		viewMenu.addSeparator();
 		viewMenu.add(new ToggleAction("showLastTrace", localization, controller.showLastTrace()).toMenuItem());
 		

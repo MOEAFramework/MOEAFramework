@@ -20,7 +20,7 @@ package org.moeaframework.examples.plots;
 import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.analysis.diagnostics.ApproximationSetViewer;
+import org.moeaframework.analysis.plot.RuntimeViewer;
 import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
 import org.moeaframework.analysis.runtime.Instrumenter;
 import org.moeaframework.problem.CEC2009.UF1;
@@ -47,7 +47,7 @@ public class PlotApproximationSetConvergence {
 		
 		instrumentedAlgorithm.run(10000);
 
-		ApproximationSetViewer.show("NSGA-II",
+		RuntimeViewer.show("NSGA-II",
 				instrumenter.getReferenceSet(),
 				instrumenter.getObservations());
 	}

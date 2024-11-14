@@ -26,8 +26,7 @@ import java.util.EventListener;
 public interface ControllerListener extends EventListener {
 	
 	/**
-	 * Invoked by the controller to indicate its state changed.  The {@code ControllerEvent} indicates the type of
-	 * event which has occurred.
+	 * Invoked by the controller to indicate its state changed.
 	 * 
 	 * @param event details of the controller event
 	 */

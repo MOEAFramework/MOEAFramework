@@ -59,13 +59,15 @@ import org.moeaframework.core.termination.MaxFunctionEvaluations;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.mvc.Controller;
 import org.moeaframework.util.mvc.ControllerEvent;
+import org.moeaframework.util.mvc.SettingChangedEvent;
+import org.moeaframework.util.mvc.SettingChangedListener;
 import org.moeaframework.util.mvc.Toggle;
 
 /**
  * The controller manages the underlying data model, performs the evaluation of jobs, and notifies any listeners when
  * its state changes.
  */
-public class DiagnosticToolController extends Controller {
+public class DiagnosticToolController extends Controller implements SettingChangedListener {
 
 	/**
 	 * The collection of all results.
@@ -227,6 +229,9 @@ public class DiagnosticToolController extends Controller {
 		includeElapsedTime = new Toggle(true);
 		includeApproximationSet = new Toggle(true);
 		includePopulationSize = new Toggle(true);
+		
+		showLastTrace.addSettingChangedListener(this);
+		showIndividualTraces.addSettingChangedListener(this);
 		
 		addShutdownHook(() -> cancel());
 	}
@@ -849,6 +854,11 @@ public class DiagnosticToolController extends Controller {
 	 */
 	public int getOverallProgress() {
 		return overallProgress;
+	}
+
+	@Override
+	public void settingChanged(SettingChangedEvent event) {
+		fireEvent("viewChanged");
 	}
 	
 }

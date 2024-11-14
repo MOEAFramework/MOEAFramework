@@ -6,7 +6,7 @@ import org.apache.commons.lang3.event.EventListenerSupport;
 import org.moeaframework.util.validate.Validate;
 
 /**
- * Setting that can optionally fire events when the value changes.
+ * Setting that can fire events when the value changes.
  *  
  * @param <T> the underlying type of the setting
  */

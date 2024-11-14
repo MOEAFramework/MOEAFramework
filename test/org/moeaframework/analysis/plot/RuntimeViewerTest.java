@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis.diagnostics;
+package org.moeaframework.analysis.plot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ import org.moeaframework.mock.MockSolution;
 /**
  * GUI tests have limited scope and, in general, do not validate the content being displayed.
  */
-public class ApproximationSetViewerTest {
+public class RuntimeViewerTest {
 	
 	private Observations observations;
 	private NondominatedPopulation referenceSet;
@@ -66,22 +66,21 @@ public class ApproximationSetViewerTest {
 	
 	@Test
 	public void testWithReferenceSet() {
-		ApproximationSetViewer viewer = new ApproximationSetViewer("Viewer", List.of(observations), referenceSet);
+		RuntimeViewer viewer = new RuntimeViewer("Viewer", referenceSet, observations);
 		viewer.setVisible(true);
 		viewer.dispose();
 	}
 	
 	@Test
 	public void testNoReferenceSet() {
-		ApproximationSetViewer viewer = new ApproximationSetViewer("Viewer", List.of(observations), null);
+		RuntimeViewer viewer = new RuntimeViewer("Viewer", null, observations);
 		viewer.setVisible(true);
 		viewer.dispose();
 	}
 	
 	@Test
 	public void testLocalization() {
-		Assert.assertLocalized(new ApproximationSetViewer("Viewer", List.of(observations), referenceSet),
-				Assert::isLocalized);
+		Assert.assertLocalized(new RuntimeViewer("Viewer", referenceSet, observations), Assert::isLocalized);
 	}
 
 }

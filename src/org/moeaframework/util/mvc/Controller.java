@@ -44,8 +44,14 @@ public abstract class Controller {
 	 */
 	private final EventListenerSupport<ControllerListener> listeners;
 	
+	/**
+	 * Preferences used to persist settings.
+	 */
 	private final Preferences preferences;
 	
+	/**
+	 * Shutdown hooks that are called when closing the window.
+	 */
 	private final List<Runnable> shutdownHooks;
 	
 	/**
@@ -70,13 +76,23 @@ public abstract class Controller {
 			
 		});
 		
-		loadPreferences(preferences);
+		startup();
 	}
 		
+	/**
+	 * Called during startup to load persisted settings.
+	 * 
+	 * @param preferences the persisted preferences
+	 */
 	public void loadPreferences(Preferences preferences) {
 		
 	}
 	
+	/**
+	 * Called during shutdown to save persisted settings.
+	 * 
+	 * @param preferences the persisted preferences
+	 */
 	public void savePreferences(Preferences preferences) {
 		
 	}
@@ -103,6 +119,10 @@ public abstract class Controller {
 		shutdownHooks.add(hook);
 	}
 	
+	protected void startup() {
+		loadPreferences(preferences);
+	}
+	
 	protected void shutdown() {
 		for (Runnable hook : shutdownHooks) {
 			hook.run();
@@ -123,7 +143,7 @@ public abstract class Controller {
 	}
 
 	/**
-	 * Handles an exception, possibly displaying a dialog box containing details of the exception.
+	 * Handles an exception, displaying a dialog box containing details of the exception.
 	 * 
 	 * @param e the exception
 	 */

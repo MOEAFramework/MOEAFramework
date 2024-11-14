@@ -14,7 +14,11 @@ public class RunnableAction extends LocalizedAction {
 	private final Runnable runnable;
 	
 	public RunnableAction(String id, Localization localization, Runnable runnable) {
-		super(id, localization);
+		this(id, localization, new Object[0], runnable);
+	}
+	
+	public RunnableAction(String id, Localization localization, Object[] args, Runnable runnable) {
+		super(id, localization, args);
 		this.runnable = runnable;
 	}
 	

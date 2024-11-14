@@ -9,11 +9,11 @@ public abstract class LocalizedAction extends AbstractAction {
 
 	private static final long serialVersionUID = 4030882078395416151L;
 
-	public LocalizedAction(String id, Localization localization) {
-		super(id);
+	public LocalizedAction(String id, Localization localization, Object... args) {
+		super();
 		
-		putValue(Action.NAME, localization.getString("action." + id + ".name"));
-		putValue(Action.SHORT_DESCRIPTION, localization.getString("action." + id + ".description"));
+		putValue(Action.NAME, localization.getString("action." + id + ".name", args));
+		putValue(Action.SHORT_DESCRIPTION, localization.getString("action." + id + ".description", args));
 	}
 
 }
