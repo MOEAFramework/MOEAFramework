@@ -36,10 +36,6 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-
-import org.apache.commons.lang3.event.EventListenerSupport;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.extension.ProgressExtension;
 import org.moeaframework.algorithm.extension.ProgressExtension.ProgressEvent;
@@ -61,19 +57,16 @@ import org.moeaframework.core.termination.CancellationSignal;
 import org.moeaframework.core.termination.CompoundTerminationCondition;
 import org.moeaframework.core.termination.MaxFunctionEvaluations;
 import org.moeaframework.problem.Problem;
-import org.moeaframework.util.validate.Validate;
+import org.moeaframework.util.mvc.Controller;
+import org.moeaframework.util.mvc.ControllerEvent;
+import org.moeaframework.util.mvc.Toggle;
 
 /**
  * The controller manages the underlying data model, performs the evaluation of jobs, and notifies any listeners when
  * its state changes.
  */
-public class Controller {
+public class DiagnosticToolController extends Controller {
 
-	/**
-	 * The collection of listeners which are notified when the controller state changes.
-	 */
-	private final EventListenerSupport<ControllerListener> listeners;
-	
 	/**
 	 * The collection of all results.
 	 */
@@ -209,94 +202,33 @@ public class Controller {
 	 * 
 	 * @param frame the {@code DiagnosticTool} instance using this controller
 	 */
-	public Controller(DiagnosticTool frame) {
-		super();
+	public DiagnosticToolController(DiagnosticTool frame) {
+		super(frame);
 		this.frame = frame;
 		
-		listeners = EventListenerSupport.create(ControllerListener.class);
 		results = new HashMap<ResultKey, List<Observations>>();
 		
-		showLastTrace = new Toggle(false, ControllerEvent.Type.SETTINGS_CHANGED, ControllerEvent.Type.VIEW_CHANGED);
-		showIndividualTraces = new Toggle(false, ControllerEvent.Type.SETTINGS_CHANGED, ControllerEvent.Type.VIEW_CHANGED);
-		includeHypervolume = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeGenerationalDistance = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeGenerationalDistancePlus = new Toggle(false, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeInvertedGenerationalDistance = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeInvertedGenerationalDistancePlus = new Toggle(false, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeSpacing = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeAdditiveEpsilonIndicator = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeContribution = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeR1 = new Toggle(false, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeR2 = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeR3 = new Toggle(false, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeEpsilonProgress = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeAdaptiveMultimethodVariation = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeAdaptiveTimeContinuation = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeElapsedTime = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includeApproximationSet = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
-		includePopulationSize = new Toggle(true, ControllerEvent.Type.SETTINGS_CHANGED);
-	}
-	
-	/**
-	 * Adds the specified listener to receive all subsequent controller events.
-	 * 
-	 * @param listener the listener to receive controller events
-	 */
-	public void addControllerListener(ControllerListener listener) {
-		listeners.addListener(listener);
-	}
-	
-	/**
-	 * Removes the specified listener so it no longer receives controller events.
-	 * 
-	 * @param listener the listener to no longer receive controller events
-	 */
-	public void removeControllerListener(ControllerListener listener) {
-		listeners.removeListener(listener);
-	}
-	
-	/**
-	 * Fires a {@link ControllerEvent.Type#SETTINGS_CHANGED} controller event.
-	 */
-	protected void fireSettingsChangedEvent() {
-		fireEvent(new ControllerEvent(this, ControllerEvent.Type.SETTINGS_CHANGED));
-	}
-	
-	/**
-	 * Fires a {@link ControllerEvent.Type#MODEL_CHANGED} controller event.
-	 */
-	protected void fireModelChangedEvent() {
-		fireEvent(new ControllerEvent(this, ControllerEvent.Type.MODEL_CHANGED));
-	}
-	
-	/**
-	 * Fires a {@link ControllerEvent.Type#STATE_CHANGED} controller event.
-	 */
-	protected void fireStateChangedEvent() {
-		fireEvent(new ControllerEvent(this, ControllerEvent.Type.STATE_CHANGED));
-	}
-	
-	/**
-	 * Fires a {@link ControllerEvent.Type#PROGRESS_CHANGED} controller event.
-	 */
-	protected void fireProgressChangedEvent() {
-		fireEvent(new ControllerEvent(this, ControllerEvent.Type.PROGRESS_CHANGED));
-	}
-	
-	/**
-	 * Fires a {@link ControllerEvent.Type#VIEW_CHANGED} controller event.
-	 */
-	protected void fireViewChangedEvent() {
-		fireEvent(new ControllerEvent(this, ControllerEvent.Type.VIEW_CHANGED));
-	}
-	
-	/**
-	 * Fires the specified controller event.  All listeners will receive this event on the event dispatch thread.
-	 * 
-	 * @param event the controller event to fire
-	 */
-	protected synchronized void fireEvent(final ControllerEvent event) {
-		SwingUtilities.invokeLater(() -> listeners.fire().controllerStateChanged(event));
+		showLastTrace = new Toggle(false);
+		showIndividualTraces = new Toggle(false);
+		includeHypervolume = new Toggle(true);
+		includeGenerationalDistance = new Toggle(true);
+		includeGenerationalDistancePlus = new Toggle(false);
+		includeInvertedGenerationalDistance = new Toggle(true);
+		includeInvertedGenerationalDistancePlus = new Toggle(false);
+		includeSpacing = new Toggle(true);
+		includeAdditiveEpsilonIndicator = new Toggle(true);
+		includeContribution = new Toggle(true);
+		includeR1 = new Toggle(false);
+		includeR2 = new Toggle(true);
+		includeR3 = new Toggle(false);
+		includeEpsilonProgress = new Toggle(true);
+		includeAdaptiveMultimethodVariation = new Toggle(true);
+		includeAdaptiveTimeContinuation = new Toggle(true);
+		includeElapsedTime = new Toggle(true);
+		includeApproximationSet = new Toggle(true);
+		includePopulationSize = new Toggle(true);
+		
+		addShutdownHook(() -> cancel());
 	}
 	
 	/**
@@ -316,7 +248,7 @@ public class Controller {
 			lastObservation = observation;
 		}
 		
-		fireModelChangedEvent();
+		fireEvent("modelChanged");
 	}
 	
 	/**
@@ -328,6 +260,7 @@ public class Controller {
 	 */
 	public void add(String algorithm, String problem, Observations observation) {
 		add(new ResultKey(algorithm, problem), observation);
+		fireEvent("modelChanged");
 	}
 	
 	/**
@@ -344,7 +277,7 @@ public class Controller {
 			lastObservation = null;
 		}
 		
-		fireModelChangedEvent();
+		fireEvent("modelChanged");
 	}
 	
 	/**
@@ -445,7 +378,7 @@ public class Controller {
 		runProgress = (int)(100*evalPercent);
 		overallProgress = (int)(100*(seedPercent + evalPercent/(double)totalSeeds));
 				
-		fireProgressChangedEvent();
+		fireEvent("progressChanged");
 	}
 	
 	/**
@@ -453,7 +386,7 @@ public class Controller {
 	 * 
 	 * @return the dialog, or {@code null} if unable to display
 	 */
-	public StatisticalResultsViewer showStatistics() {
+	public TextViewer showStatistics() {
 		List<ResultKey> selectedResults = frame.getSelectedResults();
 		String problemName = selectedResults.get(0).getProblem();
 		
@@ -541,7 +474,7 @@ public class Controller {
 				
 				ps.close();
 				
-				StatisticalResultsViewer viewer = new StatisticalResultsViewer(this, output.toString());
+				TextViewer viewer = new TextViewer(this, output.toString());
 				viewer.setLocationRelativeTo(frame);
 				viewer.setVisible(true);
 				return viewer;
@@ -688,14 +621,14 @@ public class Controller {
 				} finally {
 					thread = null;
 					cancellation = null;
-					fireStateChangedEvent();
+					fireEvent("stateChanged");
 				}
 			}
 		};
 		
 		thread.setDaemon(true);
 		thread.start();
-		fireStateChangedEvent();
+		fireEvent("stateChanged");
 	}
 	
 	/**
@@ -917,139 +850,5 @@ public class Controller {
 	public int getOverallProgress() {
 		return overallProgress;
 	}
-
-	/**
-	 * Handles an exception, possibly displaying a dialog box containing details of the exception.
-	 * 
-	 * @param e the exception
-	 */
-	protected void handleException(Exception e) {
-		e.printStackTrace();
-		
-		String message = e.getMessage() == null ? e.toString() : e.getMessage();
-		
-		if (e.getCause() != null && e.getCause().getMessage() != null) {
-			message += " - " + e.getCause().getMessage();
-		}
-		
-		JOptionPane.showMessageDialog(
-				frame, 
-				message, 
-				"Error", 
-				JOptionPane.ERROR_MESSAGE);
-	}
 	
-	/**
-	 * Represents a setting that can be configured programmatically or through user interaction in the UI.
-	 * 
-	 * @param <T> the underlying type of the setting
-	 */
-	public interface Setting<T> {
-		
-		/**
-		 * Sets the value of the setting.
-		 * 
-		 * @param newValue the new value
-		 */
-		void set(T newValue);
-		
-		/**
-		 * Gets the value of the setting.
-		 * 
-		 * @return the current value
-		 */
-		T get();
-		
-	}
-	
-	/**
-	 * Abstract setting that can optionally fire events when the value changes.
-	 *  
-	 * @param <T> the underlying type of the setting
-	 */
-	abstract class AbstractSetting<T> implements Setting<T> {
-		
-		private T value;
-		
-		private List<ControllerEvent.Type> eventTypes;
-		
-		public AbstractSetting(T value, ControllerEvent.Type... eventTypes) {
-			this(value, List.of(eventTypes));
-		}
-		
-		public AbstractSetting(T value, List<ControllerEvent.Type> eventTypes) {
-			super();
-			this.value = value;
-			this.eventTypes = eventTypes;
-			
-			Validate.that("value", value).isNotNull();
-		}
-		
-		@Override
-		public void set(T newValue) {
-			if (!value.equals(newValue)) {
-				value = newValue;
-				
-				for (ControllerEvent.Type eventType : eventTypes) {
-					fireEvent(new ControllerEvent(Controller.this, eventType));
-				}
-			}
-		}
-		
-		@Override
-		public T get() {
-			return value;
-		}
-		
-	}
-	
-	/**
-	 * A togglable setting representing a binary state (on/off, true/false, enabled/disabled).
-	 */
-	class Toggle extends AbstractSetting<Boolean> {
-		
-		public Toggle(boolean value, ControllerEvent.Type... eventTypes) {
-			super(value, eventTypes);
-		}
-		
-		public void flip() {
-			set(!get());
-		}
-		
-		public Toggle invert() {
-			return new InvertedToggle(this);
-		}
-		
-	}
-	
-	/**
-	 * An inverted version of a toggle.  For example, if the underlying value of a {@link Toggle} is {@code false}, then
-	 * the inverse is {@code true}.  This class delegates to the original toggle for storing values and firing events.
-	 */
-	class InvertedToggle extends Toggle {
-		
-		private final Toggle original;
-
-		public InvertedToggle(Toggle original) {
-			super(false);
-			this.original = original;
-		}
-		
-		@Override
-		public void set(Boolean newValue) {
-			original.set(!newValue);
-		}
-		
-		@Override
-		public Boolean get() {
-			return !original.get();
-		}
-		
-		@Override
-		public Toggle invert() {
-			return original;
-		}
-		
-	}
-
 }

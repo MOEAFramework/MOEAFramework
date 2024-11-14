@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis.diagnostics;
+package org.moeaframework.util.mvc;
 
 import java.util.EventObject;
 
@@ -26,46 +26,7 @@ public class ControllerEvent extends EventObject {
 
 	private static final long serialVersionUID = 3854145085028582532L;
 	
-	/**
-	 * Enumeration of controller event types.
-	 */
-	public static enum Type {
-		
-		/**
-		 * Indicates one or more settings were changed, typically requiring GUI elements to update.
-		 */
-		SETTINGS_CHANGED,
-		
-		/**
-		 * Indicates the state of the controller changed.  The state changes when an evaluation job starts and stops.
-		 * The state can be determined by invoking {@link Controller#isRunning()}.
-		 */
-		STATE_CHANGED,
-		
-		/**
-		 * Indicates the underlying data model has changed.  The model changes when new results are added or the
-		 * results are cleared.
-		 */
-		MODEL_CHANGED,
-		
-		/**
-		 * Indicates the progress of the evaluation has changed.  The progress can be queried through
-		 * {@link Controller#getRunProgress()} and {@link Controller#getOverallProgress()}.
-		 */
-		PROGRESS_CHANGED,
-		
-		/**
-		 * Indicates the viewing options changed.  These events are primarily caused by changing how the data is
-		 * plotted in {@link DiagnosticTool}.
-		 */
-		VIEW_CHANGED
-		
-	}
-	
-	/**
-	 * The type of this event.
-	 */
-	private final Type type;
+	private final String eventType;
 	
 	/**
 	 * Constructs a new controller event of the specified type.
@@ -73,9 +34,9 @@ public class ControllerEvent extends EventObject {
 	 * @param controller the controller from which this event originates
 	 * @param type the type of this event
 	 */
-	public ControllerEvent(Controller controller, Type type) {
+	public ControllerEvent(Controller controller, String eventType) {
 		super(controller);
-		this.type = type;
+		this.eventType = eventType;
 	}
 
 	/**
@@ -83,8 +44,8 @@ public class ControllerEvent extends EventObject {
 	 * 
 	 * @return the type of this event.
 	 */
-	public Type getType() {
-		return type;
+	public String getEventType() {
+		return eventType;
 	}
 
 	@Override

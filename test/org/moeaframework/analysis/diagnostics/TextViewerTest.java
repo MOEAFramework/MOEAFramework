@@ -25,7 +25,7 @@ import org.moeaframework.Assume;
 /**
  * GUI tests have limited scope and, in general, do not validate the content being displayed.
  */
-public class StatisticalResultsViewerTest {
+public class TextViewerTest {
 	
 	@Before
 	public void setUp() {
@@ -35,9 +35,9 @@ public class StatisticalResultsViewerTest {
 	@Test
 	public void testWithReferenceSet() {
 		DiagnosticTool tool = new DiagnosticTool();
-		Controller controller = tool.getController();
+		DiagnosticToolController controller = tool.getController();
 		
-		StatisticalResultsViewer viewer = new StatisticalResultsViewer(controller, "foo");
+		TextViewer viewer = new TextViewer(controller, "foo");
 		viewer.setVisible(true);
 		viewer.dispose();
 	}
@@ -45,9 +45,9 @@ public class StatisticalResultsViewerTest {
 	@Test
 	public void testLocalization() {
 		DiagnosticTool tool = new DiagnosticTool();
-		Controller controller = tool.getController();
+		DiagnosticToolController controller = tool.getController();
 
-		Assert.assertLocalized(new StatisticalResultsViewer(controller, "foo"), Assert::isLocalized);
+		Assert.assertLocalized(new TextViewer(controller, "foo"), Assert::isLocalized);
 	}
 
 }

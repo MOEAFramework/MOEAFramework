@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Function;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -139,6 +140,45 @@ public class Iterators {
 	 */
 	public static <K, T> Iterable<Pair<K, T>> zip(K[] array1, T[] array2) {
 		return zip(List.of(array1), List.of(array2));
+	}
+	
+	/**
+	 * Returns an iterator mapping the function to the items in the iterator.
+	 * 
+	 * @param <T> the source type
+	 * @param <R> the result type
+	 * @param iterator the iterator
+	 * @param function the mapping function
+	 * @return the result iterator
+	 */
+	public static <T, R> Iterator<R> map(Iterator<T> iterator, Function<T, R> function) {
+		return new MapIterator<T, R>(iterator, function);
+	}
+	
+	/**
+	 * Returns an iterable mapping the function to the items in the iterable.
+	 * 
+	 * @param <T> the source type
+	 * @param <R> the result type
+	 * @param iterable the iterable
+	 * @param function the mapping function
+	 * @return the result iterable
+	 */
+	public static <T, R> Iterable<R> map(Iterable<T> iterable, Function<T, R> function) {
+		return new MapIterable<T, R>(iterable, function);
+	}
+	
+	/**
+	 * Returns an iterable mapping the function to the items in the array.
+	 * 
+	 * @param <T> the source type
+	 * @param <R> the result type
+	 * @param array the array
+	 * @param function the mapping function
+	 * @return the result iterable
+	 */
+	public static <T, R> Iterable<R> map(T[] array, Function<T, R> function) {
+		return new MapIterable<T, R>(List.of(array), function);
 	}
 	
 	/**
@@ -428,6 +468,54 @@ public class Iterators {
 		public void remove() {
 			iterator1.remove();
 			iterator2.remove();
+		}
+		
+	}
+	
+	private static class MapIterator<T, R> implements Iterator<R> {
+		
+		private final Iterator<T> iterator;
+		
+		private final Function<T, R> function;
+						
+		public MapIterator(Iterator<T> iterator, Function<T, R> function) {
+			super();
+			this.iterator = iterator;
+			this.function = function;
+		}
+
+		@Override
+		public boolean hasNext() {
+			return iterator.hasNext();
+		}
+
+		@Override
+		public R next() {
+			return function.apply(iterator.next());
+		}
+
+		@Override
+		public void remove() {
+			iterator.remove();
+		}
+		
+	}
+	
+	private static class MapIterable<T, R> implements Iterable<R> {
+		
+		private final Iterable<T> iterable;
+		
+		private final Function<T, R> function;
+				
+		public MapIterable(Iterable<T> iterable, Function<T, R> function) {
+			super();
+			this.iterable = iterable;
+			this.function = function;
+		}
+
+		@Override
+		public Iterator<R> iterator() {
+			return new MapIterator<T, R>(iterable.iterator(), function);
 		}
 		
 	}

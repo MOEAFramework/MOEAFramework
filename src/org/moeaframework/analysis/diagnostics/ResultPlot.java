@@ -22,6 +22,9 @@ import java.awt.event.HierarchyListener;
 
 import javax.swing.JPanel;
 
+import org.moeaframework.util.mvc.ControllerEvent;
+import org.moeaframework.util.mvc.ControllerListener;
+
 /**
  * Abstract Swing component for displaying results.  The specific implementation determines the type of plot.  The
  * results displayed in the plot are specified by {@link DiagnosticTool#getSelectedResults()}.
@@ -38,7 +41,7 @@ public abstract class ResultPlot extends JPanel implements ControllerListener, H
 	/**
 	 * The {@link Controller} this plot uses to access result data.
 	 */
-	protected final Controller controller;
+	protected final DiagnosticToolController controller;
 	
 	/**
 	 * The metric to display.
@@ -80,7 +83,7 @@ public abstract class ResultPlot extends JPanel implements ControllerListener, H
 
 	@Override
 	public void controllerStateChanged(ControllerEvent e) {
-		if (e.getType().equals(ControllerEvent.Type.MODEL_CHANGED)) {
+		if (e.getEventType().equals("modelChanged")) {
 			update();
 		}
 	}
