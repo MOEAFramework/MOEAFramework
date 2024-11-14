@@ -53,8 +53,7 @@ import org.moeaframework.util.CommandLineUtility;
  */
 public class Solve extends CommandLineUtility {
 
-	// TODO: Make private
-	public Solve() {
+	Solve() {
 		super();
 	}
 

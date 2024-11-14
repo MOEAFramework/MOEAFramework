@@ -17,6 +17,6 @@
  */
 
 /**
- * Diagnostic tool for analyzing the runtime behavior of algorithms.
+ * Tools for viewing data.
  */
-package org.moeaframework.analysis.diagnostics;
+package org.moeaframework.analysis.viewer;

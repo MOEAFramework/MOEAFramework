@@ -160,48 +160,9 @@ public class DiagnosticToolTest {
 		return tool;
 	}
 	
-	// TODO: Set up these tests for the Setting / Action in MVC
-	
-//	@Test
-//	public void testToggleActions() throws InvocationTargetException, InterruptedException {
-//		DiagnosticTool tool = new DiagnosticTool();
-//		DiagnosticToolController controller = tool.getController();
-//		
-//		testToggleAction(actionFactory.getIncludeHypervolumeAction(), controller.includeHypervolume());
-//		testToggleAction(actionFactory.getIncludeGenerationalDistanceAction(), controller.includeGenerationalDistance());
-//		testToggleAction(actionFactory.getIncludeGenerationalDistancePlusAction(), controller.includeGenerationalDistancePlus());
-//		testToggleAction(actionFactory.getIncludeInvertedGenerationalDistanceAction(), controller.includeInvertedGenerationalDistance());
-//		testToggleAction(actionFactory.getIncludeInvertedGenerationalDistancePlusAction(), controller.includeInvertedGenerationalDistancePlus());
-//		testToggleAction(actionFactory.getIncludeContributionAction(), controller.includeContribution());
-//		testToggleAction(actionFactory.getIncludeSpacingAction(), controller.includeSpacing());
-//		testToggleAction(actionFactory.getIncludeAdditiveEpsilonIndicatorAction(), controller.includeAdditiveEpsilonIndicator());
-//		testToggleAction(actionFactory.getIncludeR1Action(), controller.includeR1());
-//		testToggleAction(actionFactory.getIncludeR2Action(), controller.includeR2());
-//		testToggleAction(actionFactory.getIncludeR3Action(), controller.includeR3());
-//		testToggleAction(actionFactory.getIncludeEpsilonProgressAction(), controller.includeEpsilonProgress());
-//		testToggleAction(actionFactory.getIncludeAdaptiveMultimethodVariationAction(), controller.includeAdaptiveMultimethodVariation());
-//		testToggleAction(actionFactory.getIncludeAdaptiveTimeContinuationAction(), controller.includeAdaptiveTimeContinuation());
-//		testToggleAction(actionFactory.getIncludeElapsedTimeAction(), controller.includeElapsedTime());
-//		testToggleAction(actionFactory.getIncludeApproximationSetAction(), controller.includeApproximationSet());
-//		testToggleAction(actionFactory.getIncludePopulationSizeAction(), controller.includePopulationSize());
-//		testToggleAction(actionFactory.getShowIndividualTracesAction(), controller.showIndividualTraces());
-//		testToggleAction(actionFactory.getShowLastTraceAction(), controller.showLastTrace());
-//	}
-	
 	@Test
 	public void testLocalization() {
 		Assert.assertLocalized(new DiagnosticTool(), Assert::isLocalized);
 	}
-
-//	private void testToggleAction(Action action, Setting<Boolean> setting) throws InvocationTargetException, InterruptedException {
-//		SwingUtilities.invokeAndWait(() -> {
-//			Boolean originalValue = setting.get();
-//			Assert.assertEquals(originalValue, action.getValue(Action.SELECTED_KEY));
-//			
-//			action.putValue(Action.SELECTED_KEY, !originalValue.booleanValue());
-//			action.actionPerformed(new ActionEvent(action, ActionEvent.ACTION_PERFORMED, "click"));
-//			Assert.assertEquals(!originalValue, setting.get());
-//		});
-//	}
 
 }
