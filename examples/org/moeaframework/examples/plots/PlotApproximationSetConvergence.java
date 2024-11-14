@@ -20,9 +20,9 @@ package org.moeaframework.examples.plots;
 import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.analysis.plot.RuntimeViewer;
 import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
 import org.moeaframework.analysis.runtime.Instrumenter;
+import org.moeaframework.analysis.viewer.RuntimeViewer;
 import org.moeaframework.problem.CEC2009.UF1;
 import org.moeaframework.problem.Problem;
 

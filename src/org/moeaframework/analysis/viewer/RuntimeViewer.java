@@ -15,19 +15,19 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis.plot;
+package org.moeaframework.analysis.viewer;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Ellipse2D;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -38,17 +38,16 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSplitPane;
+import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
@@ -68,9 +67,8 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.Range;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.moeaframework.analysis.diagnostics.PaintHelper;
-import org.moeaframework.analysis.io.ResultFileReader;
-import org.moeaframework.analysis.plot.RuntimeController.FitMode;
 import org.moeaframework.analysis.runtime.Observations;
+import org.moeaframework.analysis.viewer.RuntimeController.FitMode;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.constraint.Constraint;
@@ -81,19 +79,19 @@ import org.moeaframework.core.variable.Variable;
 import org.moeaframework.util.Localization;
 import org.moeaframework.util.mvc.ControllerEvent;
 import org.moeaframework.util.mvc.ControllerListener;
+import org.moeaframework.util.mvc.PopupAction;
 import org.moeaframework.util.mvc.RunnableAction;
 import org.moeaframework.util.mvc.SelectValueAction;
-import org.moeaframework.util.mvc.ToggleAction;
 
 /**
  * Window for displaying approximation set dynamics.
  */
-public class RuntimeViewer extends JFrame implements ListSelectionListener, ControllerListener {
+public class RuntimeViewer extends JDialog implements ListSelectionListener, ControllerListener {
 
 	private static final long serialVersionUID = -7556845366893802202L;
 
 	/**
-	 * The localization instance for produce locale-specific strings.
+	 * The localization instance for producing locale-specific strings.
 	 */
 	private static Localization localization = Localization.getLocalization(RuntimeViewer.class);
 	
@@ -128,9 +126,9 @@ public class RuntimeViewer extends JFrame implements ListSelectionListener, Cont
 	
 	private JButton selectNone;
 	
-	private JMenuItem play;
+	private RunnableAction play;
 	
-	private JMenuItem stop;
+	private RunnableAction stop;
 	
 	/**
 	 * The control for selecting which objective, constraint or decision variable will be displayed on the x-axis.
@@ -166,17 +164,16 @@ public class RuntimeViewer extends JFrame implements ListSelectionListener, Cont
 				//silently handle
 			}
 				
-			RuntimeViewer viewer = new RuntimeViewer(title, referenceSet, observations);
+			RuntimeViewer viewer = new RuntimeViewer(null, title, referenceSet, observations);
 			viewer.setLocationRelativeTo(null);
 			viewer.setVisible(true);	
 		});
 	}
 	
-	public RuntimeViewer(String title) {
-		super();
+	public RuntimeViewer(Frame owner, String title) {
+		super(owner);
 		
 		initialize();
-		layoutMenu();
 		layoutComponents();
 		
 		setTitle(title != null ? title : localization.getString("title.runtimeViewer"));
@@ -195,8 +192,8 @@ public class RuntimeViewer extends JFrame implements ListSelectionListener, Cont
 	 * @param name the name or title for the data
 	 * @param referenceSet the reference set for the problem
 	 */
-	public RuntimeViewer(String title, NondominatedPopulation referenceSet, Observations... observations) {
-		this(title);
+	public RuntimeViewer(Frame owner, String title, NondominatedPopulation referenceSet, Observations... observations) {
+		this(owner, title);
 		
 		getController().setReferenceSet(referenceSet);
 		
@@ -267,81 +264,6 @@ public class RuntimeViewer extends JFrame implements ListSelectionListener, Cont
 		chartContainer = new JPanel(new BorderLayout());
 	}
 	
-	private void layoutMenu() {
-		JMenu fileMenu = new JMenu(localization.getString("menu.file"));
-		
-		fileMenu.add(new RunnableAction("loadResultFile", localization, () -> {
-				JFileChooser fileChooser = new JFileChooser();
-
-				int result = fileChooser.showOpenDialog(RuntimeViewer.this);
-
-				if (result == JFileChooser.APPROVE_OPTION) {
-					try (ResultFileReader reader = ResultFileReader.openLegacy(null, fileChooser.getSelectedFile())) {
-						seriesListModel.addElement(RuntimeSeries.of(fileChooser.getSelectedFile().getName(), reader));
-					} catch (IOException ex) {
-						ex.printStackTrace();
-					}
-				}
-			}).toMenuItem());
-		
-		fileMenu.add(new RunnableAction("loadReferenceSet", localization, () -> {
-				JFileChooser fileChooser = new JFileChooser();
-
-				int result = fileChooser.showOpenDialog(RuntimeViewer.this);
-
-				if (result == JFileChooser.APPROVE_OPTION) {
-					try {
-						controller.setReferenceSet(NondominatedPopulation.load(fileChooser.getSelectedFile()));
-					} catch (IOException ex) {
-						ex.printStackTrace();
-					}
-				}
-			}).toMenuItem());
-		
-		fileMenu.addSeparator();
-		fileMenu.add(new RunnableAction("exit", localization, this::dispose).toMenuItem());
-		
-		JMenu sizeMenu = new JMenu(localization.getString("menu.pointSize"));
-		
-		for (int size : new int[] { 8, 10, 12, 14, 16 }) {
-			sizeMenu.add(new SelectValueAction<>("pointSize", localization, controller.getPointSize(), size).toMenuItem());
-		}
-		
-		JMenu transparencyMenu = new JMenu(localization.getString("menu.pointTransparency"));
-		
-		for (int transparency : new int[] { 0, 25, 50, 75, 100 }) {
-			transparencyMenu.add(new SelectValueAction<>("pointTransparency", localization, controller.getPointTransparency(), transparency).toMenuItem());
-		}
-
-		JMenu fitMenu = new JMenu(localization.getString("menu.fit"));
-		
-		for (FitMode fitMode : FitMode.values()) {
-			fitMenu.add(new SelectValueAction<>("fit", localization, controller.getFitMode(), fitMode).toMenuItem());
-		}
-		
-		JMenu viewMenu = new JMenu(localization.getString("menu.view"));
-		viewMenu.add(new ToggleAction("showReferenceSet", localization, controller.getShowReferenceSet()).toMenuItem());
-		viewMenu.addSeparator();
-		viewMenu.add(fitMenu);
-		viewMenu.addSeparator();
-		viewMenu.add(sizeMenu);
-		viewMenu.add(transparencyMenu);
-		
-		play = new RunnableAction("play", localization, controller::play).toMenuItem();
-		stop = new RunnableAction("stop", localization, controller::stop).toMenuItem();
-
-		JMenu playbackMenu = new JMenu("Playback");
-		playbackMenu.add(play);
-		playbackMenu.add(stop);
-		
-		JMenuBar menuBar = new JMenuBar();
-		menuBar.add(fileMenu);
-		menuBar.add(viewMenu);
-		menuBar.add(playbackMenu);
-		
-		setJMenuBar(menuBar);
-	}
-	
 	/**
 	 * Lays out the components on this window.  This method is invoked by the constructor, and should not be invoked
 	 * again.
@@ -349,15 +271,18 @@ public class RuntimeViewer extends JFrame implements ListSelectionListener, Cont
 	protected void layoutComponents() {
 		setLayout(new BorderLayout());
 		
-		JPanel objectivePane = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		JPanel objectivePane = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		objectivePane.add(new JLabel(localization.getString("text.xAxis")));
 		objectivePane.add(xAxisSelection);
 		objectivePane.add(new JLabel(localization.getString("text.yAxis")));
 		objectivePane.add(yAxisSelection);
 		
-		JPanel controlPane = new JPanel(new GridLayout(2, 1));
-		controlPane.add(slider);
-		controlPane.add(objectivePane);
+		JPanel controlLabel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		controlLabel.add(new JLabel("NFE"));
+		
+		JPanel controlPane = new JPanel(new BorderLayout());
+		controlPane.add(slider, BorderLayout.CENTER);
+		controlPane.add(controlLabel, BorderLayout.SOUTH);
 		
 		JPanel rightPane = new JPanel(new BorderLayout());
 		rightPane.add(chartContainer, BorderLayout.CENTER);
@@ -376,7 +301,59 @@ public class RuntimeViewer extends JFrame implements ListSelectionListener, Cont
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, seriesPane, rightPane);
 		splitPane.setContinuousLayout(true);
         splitPane.setOneTouchExpandable(true);
+        
+		play = new RunnableAction("play", localization, controller::play);
+		stop = new RunnableAction("stop", localization, controller::stop);
+		
+		RunnableAction start = new RunnableAction("start", localization, () -> controller.setCurrentNFE(0));
+		RunnableAction end = new RunnableAction("end", localization, () -> controller.setCurrentNFE(controller.getMaximumNFE()));
+		
+		PopupAction pointSize = new PopupAction("pointSizeMenu", localization, () -> {
+			JPopupMenu menu = new JPopupMenu();
+			
+			for (int value : new int[] { 8, 10, 12, 14, 16 }) {
+				menu.add(new SelectValueAction<>("pointSize", localization, controller.getPointSize(), value).toMenuItem());
+			}
 
+			return menu;
+		});
+		
+		PopupAction transparency = new PopupAction("pointTransparencyMenu", localization, () -> {
+			JPopupMenu menu = new JPopupMenu();
+			
+			for (int value : new int[] { 0, 25, 50, 75, 100 }) {
+				menu.add(new SelectValueAction<>("pointTransparency", localization, controller.getPointTransparency(), value).toMenuItem());
+			}
+			
+			return menu;
+		});
+		
+		PopupAction fitMode = new PopupAction("fitMenu", localization, () -> {
+			JPopupMenu menu = new JPopupMenu();
+			
+			for (FitMode value : FitMode.values()) {
+				menu.add(new SelectValueAction<>("fit", localization, controller.getFitMode(), value).toMenuItem());
+			}
+			
+			return menu;
+		});
+		
+        JToolBar toolbar = new JToolBar();
+        toolbar.setFloatable(false);
+        
+        toolbar.add(start);
+		toolbar.add(play);
+		toolbar.add(stop);
+		toolbar.add(end);
+		toolbar.addSeparator();
+		toolbar.add(fitMode);
+		toolbar.addSeparator();
+		toolbar.add(pointSize);
+		toolbar.add(transparency);
+		toolbar.addSeparator();
+		toolbar.add(objectivePane);
+
+		add(toolbar, BorderLayout.NORTH);
 		add(splitPane, BorderLayout.CENTER);
 	}
 	
@@ -449,8 +426,18 @@ public class RuntimeViewer extends JFrame implements ListSelectionListener, Cont
 		xAxisSelection.setSelectedIndex(xAxisIndex);
 		yAxisSelection.setSelectedIndex(yAxisIndex);
 		
+		// update list, keeping existing selecting and adding any new items
+		int seriesCount = seriesListModel.size();
+		int[] selectedIndices = seriesList.getSelectionModel().getSelectedIndices();
+		
 		seriesListModel.clear();
 		seriesListModel.addAll(controller.getSeries());
+
+		seriesList.setSelectedIndices(selectedIndices);
+		
+		if (seriesListModel.size() > seriesCount) {
+			seriesList.addSelectionInterval(seriesCount, seriesListModel.size() - 1);
+		}
 		
 		slider.setMinimum(0);
 		slider.setMaximum(controller.getMaximumNFE());
@@ -523,9 +510,11 @@ public class RuntimeViewer extends JFrame implements ListSelectionListener, Cont
 			
 			@Override
 			public void chartChanged(ChartChangeEvent e) {
-				zoomRangeBounds = e.getChart().getXYPlot().getRangeAxis().getRange();
-				zoomDomainBounds = e.getChart().getXYPlot().getDomainAxis().getRange();
-				controller.getFitMode().set(FitMode.Zoom);
+				if (e.getChart() != null) {
+					zoomRangeBounds = e.getChart().getXYPlot().getRangeAxis().getRange();
+					zoomDomainBounds = e.getChart().getXYPlot().getDomainAxis().getRange();
+					controller.getFitMode().set(FitMode.Zoom);
+				}
 			}
 			
 		});

@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis.diagnostics;
+package org.moeaframework.analysis.viewer;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -33,21 +33,15 @@ public class TextViewerTest {
 	}
 	
 	@Test
-	public void testWithReferenceSet() {
-		DiagnosticTool tool = new DiagnosticTool();
-		DiagnosticToolController controller = tool.getController();
-		
-		TextViewer viewer = new TextViewer(controller, "foo");
+	public void test() {
+		TextViewer viewer = new TextViewer(null, "foo");
 		viewer.setVisible(true);
 		viewer.dispose();
 	}
 	
 	@Test
 	public void testLocalization() {
-		DiagnosticTool tool = new DiagnosticTool();
-		DiagnosticToolController controller = tool.getController();
-
-		Assert.assertLocalized(new TextViewer(controller, "foo"), Assert::isLocalized);
+		Assert.assertLocalized(new TextViewer(null, "foo"), Assert::isLocalized);
 	}
 
 }

@@ -1,4 +1,4 @@
-package org.moeaframework.analysis.plot;
+package org.moeaframework.analysis.viewer;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

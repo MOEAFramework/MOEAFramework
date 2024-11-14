@@ -17,10 +17,14 @@
  */
 package org.moeaframework.util;
 
+import java.awt.Toolkit;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 /**
  * Facilitates internalization (i18n) and localization (l10n) of strings.  Locale-specific strings are stored in a
@@ -46,21 +50,28 @@ import java.util.ResourceBundle;
  * by using the {@code getClass()} method.
  */
 public class Localization {
-
+	
 	/**
 	 * The underlying resource bundle storing the key-value resource mapping.
 	 */
 	private final ResourceBundle bundle;
+	
+	/**
+	 * The owner class, which is used to locate the resources relative to this class.
+	 */
+	private final Class<?> owner;
 
 	/**
 	 * Constructs a new localization instance based on the specified resource bundle.  If this resource bundle is
 	 * {@code null}, then the {@code getString} methods return the {@code key}.
 	 * 
 	 * @param bundle the resource bundle storing the key-value resource mappings used by this localization object
+	 * @param owner the class that owns this localalization instance, which is ued to locate relative resources
 	 */
-	private Localization(ResourceBundle bundle) {
+	private Localization(ResourceBundle bundle, Class<?> owner) {
 		super();
 		this.bundle = bundle;
+		this.owner = owner;
 	}
 
 	/**
@@ -101,6 +112,20 @@ public class Localization {
 	}
 	
 	/**
+	 * Returns the icon defined by the given key.  If the key is not found, then {@code null} is returned.
+	 * 
+	 * @param key the key for the desired icon
+	 * @return the icon
+	 */
+	public Icon getIcon(String key) {
+		if (!containsKey(key)) {
+			return null;
+		}
+		
+		return new ImageIcon(Toolkit.getDefaultToolkit().getImage(owner.getResource(getString(key))));
+	}
+	
+	/**
 	 * Returns {@code true} if a localized string exists for the given key; {@code false} otherwise.
 	 * 
 	 * @param key the key for the desired string
@@ -127,36 +152,7 @@ public class Localization {
 
 		return format.format(arguments, new StringBuffer(), null).toString();
 	}
-
-	/**
-	 * Returns the localization object for the given package.
-	 * 
-	 * @param packageName the name of the package
-	 * @return the localization object for the given package
-	 */
-	public static Localization getLocalization(String packageName) {
-		return getLocalization(packageName, Locale.getDefault());
-	}
-
-	/**
-	 * Returns the localization object for the given package and locale.
-	 * 
-	 * @param packageName the name of the package
-	 * @param locale the target locale
-	 * @return the localization object for the given package
-	 */
-	public static Localization getLocalization(String packageName, Locale locale) {
-		ResourceBundle bundle = null;
-
-		try {
-			bundle = ResourceBundle.getBundle(packageName + ".LocalStrings", locale);
-		} catch (MissingResourceException e) {
-			//bundle remains null, so the localization returns the key to provide a visual clue for debugging
-		}
-
-		return new Localization(bundle);
-	}
-
+	
 	/**
 	 * Returns the localization object for the given class.
 	 * 
@@ -164,7 +160,7 @@ public class Localization {
 	 * @return the localization object for the given class
 	 */
 	public static Localization getLocalization(Class<?> type) {
-		return getLocalization(type.getPackage().getName());
+		return getLocalization(type, Locale.getDefault());
 	}
 
 	/**
@@ -175,7 +171,15 @@ public class Localization {
 	 * @return the localization object for the given class
 	 */
 	public static Localization getLocalization(Class<?> type, Locale locale) {
-		return getLocalization(type.getPackage().getName(), locale);
+		ResourceBundle bundle = null;
+
+		try {
+			bundle = ResourceBundle.getBundle(type.getPackageName() + ".LocalStrings", locale);
+		} catch (MissingResourceException e) {
+			//bundle remains null, so the localization returns the key to provide a visual clue for debugging
+		}
+
+		return new Localization(bundle, type);
 	}
 	
 	/**

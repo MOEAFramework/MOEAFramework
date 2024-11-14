@@ -15,22 +15,23 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis.diagnostics;
+package org.moeaframework.analysis.viewer;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JToolBar;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.commons.io.FilenameUtils;
@@ -41,20 +42,15 @@ import org.moeaframework.util.mvc.RunnableAction;
 /**
  * Window for displaying text.
  */
-public class TextViewer extends JFrame {
+public class TextViewer extends JDialog {
 
 	private static final long serialVersionUID = 25333840765750031L;
 
 	/**
-	 * The localization instance for produce locale-specific strings.
+	 * The localization instance for producing locale-specific strings.
 	 */
 	private static Localization localization = Localization.getLocalization(TextViewer.class);
-	
-	/**
-	 * The controller instance.
-	 */
-	private final DiagnosticToolController controller;
-	
+
 	/**
 	 * The text to display.
 	 */
@@ -66,23 +62,16 @@ public class TextViewer extends JFrame {
 	 * @param controller the controller instance
 	 * @param text the text to display
 	 */
-	public TextViewer(DiagnosticToolController controller, String text) {
-		super(localization.getString("title.textViewer"));
-		this.controller = controller;
+	public TextViewer(Frame owner, String text) {
+		super(owner, localization.getString("title.textViewer"));
 		this.text = text;
 		
-		initialize();
-		layoutMenu();
 		layoutComponents();
 
 		setSize(800, 600);
 		setMinimumSize(new Dimension(800, 600));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setIconImages(Settings.getIcon().getResolutionVariants());
-	}
-	
-	private void initialize() {
-		
 	}
 	
 	private void save() {
@@ -101,30 +90,41 @@ public class TextViewer extends JFrame {
 			try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
 				writer.print(text);
 			} catch (IOException e) {
-				controller.handleException(e);
+				e.printStackTrace();
 			}
 		}
 	}
 	
-	private void layoutMenu() {
-		JMenu file = new JMenu(localization.getString("menu.file"));
-		file.add(new RunnableAction("save", localization, this::save).toMenuItem());
-		file.addSeparator();
-		file.add(new RunnableAction("exit", localization, this::dispose).toMenuItem());
-		
-		JMenuBar menu = new JMenuBar();
-		menu.add(file);
-		
-		setJMenuBar(menu);
-	}
-	
-	private void layoutComponents() {
+	private void layoutComponents() {		
 		JTextArea textArea = new JTextArea(text);
 		textArea.setLineWrap(false);
 		textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+		textArea.setEditable(false);
+		
+		RunnableAction saveAction = new RunnableAction("save", localization, this::save);
+		
+		RunnableAction decreaseFontSize = new RunnableAction("decreaseFontSize", localization, () -> {
+			float newSize = Math.max(2.0f, textArea.getFont().getSize2D() - 2.0f);
+			textArea.setFont(textArea.getFont().deriveFont(newSize));
+		});
+		
+		RunnableAction increaseFontSize = new RunnableAction("increaseFontSize", localization, () -> {
+			float newSize = Math.min(64.0f, textArea.getFont().getSize2D() + 2.0f);
+			textArea.setFont(textArea.getFont().deriveFont(newSize));
+		});
+
+		JToolBar toolbar = new JToolBar();
+		toolbar.setFloatable(false);
+		toolbar.add(saveAction);
+		toolbar.addSeparator();
+		toolbar.add(decreaseFontSize);
+		toolbar.add(increaseFontSize);
 		
 		getContentPane().setLayout(new BorderLayout());
+		getContentPane().add(toolbar, BorderLayout.NORTH);
 		getContentPane().add(new JScrollPane(textArea), BorderLayout.CENTER);
+		
+		pack();
 	}
 
 }

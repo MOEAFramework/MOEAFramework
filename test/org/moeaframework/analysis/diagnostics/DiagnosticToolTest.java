@@ -31,6 +31,7 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
 import org.moeaframework.TempFiles;
+import org.moeaframework.analysis.viewer.TextViewer;
 import org.moeaframework.util.mvc.ControllerEvent;
 import org.moeaframework.util.mvc.ControllerListener;
 

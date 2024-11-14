@@ -45,6 +45,7 @@ import org.moeaframework.analysis.runtime.ApproximationSetCollector;
 import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
 import org.moeaframework.analysis.runtime.Instrumenter;
 import org.moeaframework.analysis.runtime.Observations;
+import org.moeaframework.analysis.viewer.TextViewer;
 import org.moeaframework.core.DefaultEpsilons;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.indicator.Indicators;
@@ -473,13 +474,15 @@ public class DiagnosticToolController extends Controller implements SettingChang
 					int dashes = displayWidth - indicator.name().length() - 2;
 										
 					ps.println("=".repeat(dashes / 2) + " " + indicator.name() + " " + "=".repeat(dashes - dashes / 2));
+					ps.println();
 					statistics.display(ps);
+					ps.println();
 					ps.println();
 				}
 				
 				ps.close();
 				
-				TextViewer viewer = new TextViewer(this, output.toString());
+				TextViewer viewer = new TextViewer(frame, output.toString());
 				viewer.setLocationRelativeTo(frame);
 				viewer.setVisible(true);
 				return viewer;

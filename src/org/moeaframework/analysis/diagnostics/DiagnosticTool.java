@@ -69,8 +69,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.jfree.base.Library;
 import org.jfree.ui.about.AboutDialog;
 import org.jfree.ui.about.ProjectInfo;
-import org.moeaframework.analysis.plot.RuntimeViewer;
 import org.moeaframework.analysis.runtime.Observations;
+import org.moeaframework.analysis.viewer.RuntimeViewer;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.spi.ProblemFactory;
@@ -303,7 +303,7 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 					
 					JPopupMenu popupMenu = new JPopupMenu();
 					popupMenu.add(new RunnableAction("showApproximationSet", localization, () -> {
-							RuntimeViewer viewer = new RuntimeViewer(key.toString());
+							RuntimeViewer viewer = new RuntimeViewer(DiagnosticTool.this, key.toString());
 							List<Observations> data = controller.get(key);
 							
 							for (int i = 0; i < data.size(); i++) {
@@ -870,6 +870,12 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 						null));
 			}
 			
+			info.addLibrary(new Library(
+					"Flaticon",
+					"-",
+					"www.flaticon.com/terms-of-use",
+					null));
+			
 			AboutDialog dialog = new AboutDialog(this, localization.getString("title.about"), info);
 			dialog.setLocationRelativeTo(this);
 			dialog.setVisible(true);
@@ -946,7 +952,7 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 				algorithms.add(key.getAlgorithm());
 			}
 								
-			showStatistics.setEnabled((problems.size() == 1) && (algorithms.size() > 1));
+			showStatistics.setEnabled((problems.size() == 1) && (algorithms.size() >= 1));
 		}
 	}
 

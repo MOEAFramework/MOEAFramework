@@ -14,6 +14,7 @@ public abstract class LocalizedAction extends AbstractAction {
 		
 		putValue(Action.NAME, localization.getString("action." + id + ".name", args));
 		putValue(Action.SHORT_DESCRIPTION, localization.getString("action." + id + ".description", args));
+		putValue(Action.SMALL_ICON, localization.getIcon("action." + id + ".icon"));
 	}
 
 }

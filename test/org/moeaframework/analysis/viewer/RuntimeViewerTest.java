@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis.plot;
+package org.moeaframework.analysis.viewer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,21 +66,21 @@ public class RuntimeViewerTest {
 	
 	@Test
 	public void testWithReferenceSet() {
-		RuntimeViewer viewer = new RuntimeViewer("Viewer", referenceSet, observations);
+		RuntimeViewer viewer = new RuntimeViewer(null, "Viewer", referenceSet, observations);
 		viewer.setVisible(true);
 		viewer.dispose();
 	}
 	
 	@Test
 	public void testNoReferenceSet() {
-		RuntimeViewer viewer = new RuntimeViewer("Viewer", null, observations);
+		RuntimeViewer viewer = new RuntimeViewer(null, "Viewer", null, observations);
 		viewer.setVisible(true);
 		viewer.dispose();
 	}
 	
 	@Test
 	public void testLocalization() {
-		Assert.assertLocalized(new RuntimeViewer("Viewer", referenceSet, observations), Assert::isLocalized);
+		Assert.assertLocalized(new RuntimeViewer(null, "Viewer", referenceSet, observations), Assert::isLocalized);
 	}
 
 }

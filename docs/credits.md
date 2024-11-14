@@ -20,6 +20,7 @@ All individual contributors can be found on the
 * **Checkstyle** - Copyright (C) 2001-2011 Oliver Burn. Licensed under the GNU Lesser General Public License, version
   2.1 or later
 * **RSyntaxTextArea** - Copyright 2019 Robert Futrell. Licensed under the Modified BSD License
+* **Flaticon** - www.flaticon.com/terms-of-use
 
 ## Embedded Code
 

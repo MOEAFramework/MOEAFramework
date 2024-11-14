@@ -50,11 +50,6 @@ public class LocalizationTest {
 		Assert.assertEquals("missing.key", english.getString("missing.key"));
 		Assert.assertEquals("missing.key", english.getString("missing.key", "Foo"));
 		Assert.assertFalse(english.containsKey("missing.key"));
-		
-		//test with missing bundle
-		Localization missing = Localization.getLocalization("org.moeaframework.util.missing");
-		Assert.assertEquals("missing.key", missing.getString("missing.key"));
-		Assert.assertFalse(missing.containsKey("missing.key"));
 	}
 
 	@Test
