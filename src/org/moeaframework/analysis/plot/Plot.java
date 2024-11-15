@@ -23,18 +23,10 @@ import java.awt.Dialog;
 import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.Graphics2D;
 import java.awt.Paint;
-import java.awt.RenderingHints;
 import java.awt.Window;
-import java.awt.geom.Rectangle2D;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.DoubleStream;
@@ -46,7 +38,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.math3.stat.StatUtils;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
-import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.AxisLocation;
 import org.jfree.chart.axis.CategoryAxis;
@@ -87,9 +78,7 @@ import org.moeaframework.analysis.stream.Partition;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.population.Population;
-import org.moeaframework.util.validate.Validate;
 
 /**
  * Provides simple 2D plotting capabilities.  This is intended to allow the rapid creation of 2D plots, supporting:
@@ -121,53 +110,11 @@ import org.moeaframework.util.validate.Validate;
  * <p>
  * This class is not intended to be a fully featured plotting library.  To generate more sophisticated plots or
  * customize their appearance, one must instead use JFreeChart, JZY3D, or another plotting library.
- * <p>
- * Generated plots can be saved to PNG or JPEG files.  If JFreeSVG is available on the classpath, SVG files can be
- * generated.  JFreeSVG can be obtained from http://www.jfree.org/jfreesvg/.
  */
 public class Plot {
 	
 	private static final String WINDOW_TITLE = "MOEA Framework Plot";
 	
-	/**
-	 * List of supported file types when saving a plot.
-	 */
-	public enum FileType {
-		
-		/**
-		 * Portable Network Graphic (PNG) format, a raster graphics file with lossless compression.
-		 */
-		PNG,
-		
-		/**
-		 * Same as {@link #JPEG}.
-		 */
-		JPG,
-		
-		/**
-		 * Joint Photographic Experts Group (JPEG) format, which often produces smaller file sizes but is lossy.
-		 */
-		JPEG,
-		
-		/**
-		 * Scalable Vector Graphics (SVG) format, which stores images in a vector-based format instead of raster
-		 * (pixel-based) format, allowing the image to scale to any dimension without artifacts.  Use of this format
-		 * requires the <a href="https://www.jfree.org/jfreesvg/">JFreeSVG</a> library on the classpath.
-		 */
-		SVG;
-		
-		/**
-		 * Determine the file type from its string representation using case-insensitive matching.
-		 * 
-		 * @param value the string representation of the file type
-		 * @return the file type
-		 * @throws IllegalArgumentException if the file type is not supported
-		 */
-		public static FileType fromString(String value) {
-			return TypedProperties.getEnumFromString(FileType.class, value);
-		}
-	}
-
 	/**
 	 * The internal JFreeChart instance.
 	 */
@@ -1228,7 +1175,8 @@ public class Plot {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public Plot save(String filename) throws IOException {
-		return save(new File(filename));
+		ImageUtils.save(getChart(), filename);
+		return this;
 	}
 
 	/**
@@ -1240,24 +1188,8 @@ public class Plot {
 	 * @throws IOException if an I/O error occurred
 	 */
 	public Plot save(File file) throws IOException {
-		String filename = file.getName();
-		String extension = filename.substring(filename.lastIndexOf('.')+1, filename.length());
-		
-		return save(file, extension, 800, 600);
-	}
-	
-	/**
-	 * Saves the plot to an image file.  The format must match one of the supported file types in {@link FileType}.
-	 * 
-	 * @param file the file
-	 * @param format the image format
-	 * @param width the image width
-	 * @param height the image height
-	 * @return a reference to this instance
-	 * @throws IOException if an I/O error occurred
-	 */
-	public Plot save(File file, String format, int width, int height) throws IOException {
-		return save(file, FileType.fromString(format), width, height);
+		ImageUtils.save(getChart(), file);
+		return this;
 	}
 
 	/**
@@ -1270,87 +1202,9 @@ public class Plot {
 	 * @return a reference to this instance
 	 * @throws IOException if an I/O error occurred
 	 */
-	public Plot save(File file, FileType fileType, int width, int height) throws IOException {
-		switch (fileType) {
-			case PNG -> ChartUtils.saveChartAsPNG(file, chart, width, height);
-			case JPG, JPEG -> ChartUtils.saveChartAsJPEG(file, chart, width, height);
-			case SVG -> {
-				String svg = generateSVG(width, height);
-	
-				try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-					writer.write("<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n");
-					writer.write(svg);
-					writer.write("\n");
-				}
-			}
-			default -> Validate.that("fileType", fileType).failUnsupportedOption();
-		}
-		
+	public Plot save(File file, ImageFileType fileType, int width, int height) throws IOException {
+		ImageUtils.save(getChart(), file, fileType, width, height);
 		return this;
-	}
-
-	/**
-	 * Generates a string containing a rendering of the chart in SVG format.  This feature is only supported if the
-	 * JFreeSVG library is included on the classpath.
-	 * 
-	 * This is copied from JFreeChart's ChartPanel class (version 1.0.19).
-	 * 
-	 * @return A string containing an SVG element for the current chart, or <code>null</code> if there is a problem
-	 *         with the method invocation by reflection.
-	 */
-	private String generateSVG(int width, int height) {
-		Graphics2D g2 = createSVGGraphics2D(width, height);
-		
-		if (g2 == null) {
-			throw new FrameworkException("JFreeSVG library is not present. Download and add to the Java classpath");
-		}
-		
-		// Suppress shadow generation, because SVG is a vector format and the shadow effect is applied via bitmap
-		// effects.
-		g2.setRenderingHint(new RenderingHints.Key(0) {
-	        @Override
-	        public boolean isCompatibleValue(Object val) {
-	            return val instanceof Boolean;
-	        }
-	    }, true);
-		
-		String svg = null;
-		Rectangle2D drawArea = new Rectangle2D.Double(0, 0, width, height);
-		chart.draw(g2, drawArea);
-		
-		try {
-			Method m = g2.getClass().getMethod("getSVGElement");
-			svg = (String)m.invoke(g2);
-		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException |
-				InvocationTargetException e) {
-			// Suppress any errors and return null
-		}
-		
-		return svg;
-	}
-
-	/**
-	 * This is copied from JFreeChart's ChartPanel class (version 1.0.19).
-	 */
-	private static Graphics2D createSVGGraphics2D(int w, int h) {
-		try {
-			Class<?> svgGraphics2d = Class.forName("org.jfree.graphics2d.svg.SVGGraphics2D");
-			Constructor<?> ctor = svgGraphics2d.getConstructor(int.class, int.class);
-			return (Graphics2D)ctor.newInstance(w, h);
-		} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException |
-				IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-			return null;
-		}
-	}
-	
-	/**
-	 * Returns {@code true} if saving to the SVG format is supported.  This requires the JFreeSVG library to be
-	 * setup on the classpath.
-	 * 
-	 * @return {@code true} if saving to the SVG format is supported; {@code false} otherwise
-	 */
-	public static boolean supportsSVG() {
-		return createSVGGraphics2D(100, 100) != null;
 	}
 
 	/**

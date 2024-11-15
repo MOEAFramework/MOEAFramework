@@ -57,7 +57,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jfree.chart.ChartFactory;
@@ -71,6 +70,8 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.Range;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.moeaframework.analysis.diagnostics.PaintHelper;
+import org.moeaframework.analysis.plot.ImageFileType;
+import org.moeaframework.analysis.plot.ImageUtils;
 import org.moeaframework.analysis.runtime.Observations;
 import org.moeaframework.analysis.viewer.RuntimeController.FitMode;
 import org.moeaframework.analysis.viewer.RuntimeSeries.IndexType;
@@ -99,6 +100,8 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 	 * The localization instance for producing locale-specific strings.
 	 */
 	private static Localization localization = Localization.getLocalization(RuntimeViewer.class);
+	
+	private JFreeChart chart;
 	
 	/**
 	 * The container of the plot.
@@ -309,6 +312,26 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		splitPane.setContinuousLayout(true);
         splitPane.setOneTouchExpandable(true);
         
+        RunnableAction savePlot = new RunnableAction("savePlot", localization, () -> {
+        	JFileChooser fileChooser = new JFileChooser();
+        	
+        	for (ImageFileType fileType : ImageFileType.values()) {
+        		fileChooser.addChoosableFileFilter(fileType.getFilter());
+        	}
+        	
+        	fileChooser.setFileFilter(fileChooser.getChoosableFileFilters()[0]);
+
+    		int result = fileChooser.showSaveDialog(this);
+
+    		if (result == JFileChooser.APPROVE_OPTION) {
+    			try {
+					ImageUtils.save(chart, fileChooser.getSelectedFile());
+				} catch (Exception e) {
+					controller.handleException(e);
+				}
+    		}
+        });
+        
         RunnableAction addSeries = new RunnableAction("addSeries", localization, () -> {
         	JFileChooser fileChooser = new JFileChooser();
 
@@ -368,6 +391,7 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
         JToolBar toolbar = new JToolBar();
         toolbar.setFloatable(false);
         
+        toolbar.add(savePlot);
         toolbar.add(addSeries);
         toolbar.addSeparator();
         toolbar.add(start);
@@ -508,7 +532,7 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 			dataset.addSeries(referenceSet.toXYSeries(0, xAxis, yAxis));
 		}
 		
-		JFreeChart chart = ChartFactory.createScatterPlot(
+		chart = ChartFactory.createScatterPlot(
 				(controller.getIndexType() == IndexType.NFE ? localization.getString("text.NFE") :
 					localization.getString("text.Index")) + " " + slider.getValue(), 
 				xAxisSelection.getSelectedItem().toString(),

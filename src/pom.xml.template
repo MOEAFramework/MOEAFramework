@@ -77,7 +77,6 @@
 			<groupId>org.jfree</groupId>
 			<artifactId>jfreesvg</artifactId>
 			<version>%jfreesvg.version%</version>
-			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>net.java.dev.jna</groupId>
