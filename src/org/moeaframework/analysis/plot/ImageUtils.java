@@ -29,12 +29,16 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.graphics2d.svg.SVGGraphics2D;
 import org.moeaframework.util.validate.Validate;
 
+/**
+ * Utility for creating images from charts.
+ */
 public class ImageUtils {
 
 	/**
-	 * Saves the plot to an image file.  The type of image is determined from the filename extension, which must
+	 * Saves the chart to an image file.  The type of image is determined from the filename extension, which must
 	 * match one of the supported file types in {@link ImageFileType}.
 	 * 
+	 * @param chart the chart to save
 	 * @param filename the filename
 	 * @throws IOException if an I/O error occurred
 	 */
@@ -43,9 +47,10 @@ public class ImageUtils {
 	}
 
 	/**
-	 * Saves the plot to an image file.  The type of image is determined from the filename extension, which must
+	 * Saves the chart to an image file.  The type of image is determined from the filename extension, which must
 	 * match one of the supported file types in {@link ImageFileType}.
 	 * 
+	 * @param chart the chart to save
 	 * @param file the file
 	 * @throws IOException if an I/O error occurred
 	 */
@@ -54,8 +59,10 @@ public class ImageUtils {
 	}
 	
 	/**
-	 * Saves the plot to an image file.  The format must match one of the supported file types in {@link ImageFileType}.
+	 * Saves the chart to an image file.  The format must match one of the supported file types in
+	 * {@link ImageFileType}.
 	 * 
+	 * @param chart the chart to save
 	 * @param file the file
 	 * @param width the image width
 	 * @param height the image height
@@ -66,8 +73,9 @@ public class ImageUtils {
 	}
 
 	/**
-	 * Saves the plot to an image file.
+	 * Saves the chart to an image file.
 	 * 
+	 * @param chart the chart to save
 	 * @param file the file
 	 * @param fileType the image file format
 	 * @param width the image width
@@ -91,7 +99,10 @@ public class ImageUtils {
 	 * Generates a string containing a rendering of the chart in SVG format.  This is modified from JFreeChart's
 	 * ChartPanel class (version 1.0.19).
 	 * 
-	 * @return a string containing an SVG element for the current chart
+	 * @param chart the chart to save
+	 * @param width the image width
+	 * @param height the image height
+	 * @return a string containing an SVG document for the current chart
 	 */
 	private static String generateSVG(JFreeChart chart, int width, int height) {
 		SVGGraphics2D g2 = new SVGGraphics2D(width, height);

@@ -7,7 +7,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.commons.io.FilenameUtils;
 
 /**
- * List of supported file types when saving a plot.
+ * List of supported image file types.
  */
 public enum ImageFileType {
 	
