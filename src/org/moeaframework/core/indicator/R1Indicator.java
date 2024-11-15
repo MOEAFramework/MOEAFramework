@@ -55,7 +55,19 @@ public class R1Indicator extends RIndicator {
 	 * @param referenceSet the reference set
 	 */
 	public R1Indicator(Problem problem, int subdivisions, NondominatedPopulation referenceSet) {
-		this(problem, subdivisions, referenceSet, null, new ChebyshevUtility(), DEFAULT_EPSILON);
+		this(problem, subdivisions, referenceSet, null);
+	}
+	
+	/**
+	 * Constructs a new R1 indicator using the Chebyshev utility function.
+	 * 
+	 * @param problem the problem
+	 * @param subdivisions the number of subdivisions along each objective
+	 * @param referenceSet the reference set
+	 * @param normalizer the user-provided normalizer, or {@code null} if the default is used
+	 */
+	public R1Indicator(Problem problem, int subdivisions, NondominatedPopulation referenceSet, Normalizer normalizer) {
+		this(problem, subdivisions, referenceSet, normalizer, new ChebyshevUtility(), DEFAULT_EPSILON);
 	}
 	
 	/**

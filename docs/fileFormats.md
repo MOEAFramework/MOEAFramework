@@ -66,7 +66,7 @@ try (ResultFileWriter writer = ResultFileWriter.open(problem, new File("result.d
         algorithm.step();
 
         TypedProperties properties = new TypedProperties();
-        properties.setInt("NFE", algorithm.getNumberOfEvaluations());
+        properties.setInt(ResultEntry.NFE, algorithm.getNumberOfEvaluations());
 
         writer.write(new ResultEntry(algorithm.getResult(), properties));
     }

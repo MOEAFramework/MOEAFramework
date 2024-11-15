@@ -42,7 +42,19 @@ public class R3Indicator extends RIndicator {
 	 * @param referenceSet the reference set
 	 */
 	public R3Indicator(Problem problem, int subdivisions, NondominatedPopulation referenceSet) {
-		this(problem, subdivisions, referenceSet, null, new ChebyshevUtility());
+		this(problem, subdivisions, referenceSet, null);
+	}
+	
+	/**
+	 * Constructs a new R3 indicator using the Chebyshev utility function.
+	 * 
+	 * @param problem the problem
+	 * @param subdivisions the number of subdivisions along each objective
+	 * @param referenceSet the reference set
+	 * @param normalizer the user-provided normalizer, or {@code null} if the default is used
+	 */
+	public R3Indicator(Problem problem, int subdivisions, NondominatedPopulation referenceSet, Normalizer normalizer) {
+		this(problem, subdivisions, referenceSet, normalizer, new ChebyshevUtility());
 	}
 	
 	/**

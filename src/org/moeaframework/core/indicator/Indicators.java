@@ -52,12 +52,8 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	private final NondominatedPopulation referenceSet;
 
 	/**
-	 * The normalized reference set.
-	 */
-	private final NondominatedPopulation normalizedReferenceSet;
-
-	/**
-	 * The normalizer to normalize populations so that all objectives reside in the range {@code [0, 1]}.
+	 * The normalizer to normalize populations so that all objectives reside in the range {@code [0, 1]}.  Can be
+	 * {@code null}, in which case each indicator is responsible for configuring its normalization.
 	 */
 	private final Normalizer normalizer;
 	
@@ -81,6 +77,41 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	 * The cached hypervolume indicator.
 	 */
 	private Hypervolume hypervolume;
+	
+	/**
+	 * The cached generational distance (GD) indicator.
+	 */
+	private GenerationalDistance generationalDistance;
+	
+	/**
+	 * The cached generational distance plus (GD+) indicator.
+	 */
+	private GenerationalDistancePlus generationalDistancePlus;
+	
+	/**
+	 * The cached inverted generational distance (IGD) indicator.
+	 */
+	private InvertedGenerationalDistance invertedGenerationalDistance;
+	
+	/**
+	 * The cached inverted generational distance plus (IGD+) indicator.
+	 */
+	private InvertedGenerationalDistancePlus invertedGenerationalDistancePlus;
+	
+	/**
+	 * The cached additive epsilon indicator.
+	 */
+	private AdditiveEpsilonIndicator additiveEpsilonIndicator;
+	
+	/**
+	 * The cached maximum Pareto front error indicator.
+	 */
+	private MaximumParetoFrontError maximumParetoFrontError;
+	
+	/**
+	 * The cached spacing indicator.
+	 */
+	private Spacing spacing;
 
 	/**
 	 * The cached contribution indicator.
@@ -109,24 +140,60 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	 * @param referenceSet the reference set
 	 */
 	public Indicators(Problem problem, NondominatedPopulation referenceSet) {
+		this(problem, referenceSet, null);
+	}
+	
+	/**
+	 * Constructs a new Indicators object for the given problem.
+	 * 
+	 * @param problem the problem
+	 * @param referenceSet the reference set
+	 * @param normalizer the user-provided normalizer, or {@code null} if the default is used
+	 */
+	public Indicators(Problem problem, NondominatedPopulation referenceSet, Normalizer normalizer) {
 		super();
 		this.problem = problem;
 		this.referenceSet = referenceSet;
+		this.normalizer = normalizer;
 		
 		Validate.that("problem", problem).isNotNull();
 		Validate.that("referenceSet", referenceSet).isNotNull();
-
+		
 		selectedIndicators = EnumSet.noneOf(StandardIndicator.class);
-		
-		normalizer = DefaultNormalizer.getInstance().getNormalizer(problem, referenceSet);
-		normalizedReferenceSet = normalizer.normalize(referenceSet);
-		
 		subdivisions = Optional.empty();
 	}
 	
 	private void initialize() {
 		if (selectedIndicators.contains(StandardIndicator.Hypervolume) && hypervolume == null) {
-			hypervolume = new Hypervolume(problem, referenceSet);
+			hypervolume = normalizer == null ? new Hypervolume(problem, referenceSet) : new Hypervolume(problem, normalizer);
+		}
+		
+		if (selectedIndicators.contains(StandardIndicator.GenerationalDistance) && generationalDistance == null) {
+			generationalDistance = new GenerationalDistance(problem, referenceSet, normalizer, Settings.getGDPower());
+		}
+		
+		if (selectedIndicators.contains(StandardIndicator.GenerationalDistancePlus) && generationalDistancePlus == null) {
+			generationalDistancePlus = new GenerationalDistancePlus(problem, referenceSet, normalizer);
+		}
+		
+		if (selectedIndicators.contains(StandardIndicator.InvertedGenerationalDistance) && invertedGenerationalDistance == null) {
+			invertedGenerationalDistance = new InvertedGenerationalDistance(problem, referenceSet, normalizer, Settings.getIGDPower());
+		}
+		
+		if (selectedIndicators.contains(StandardIndicator.InvertedGenerationalDistancePlus) && invertedGenerationalDistancePlus == null) {
+			invertedGenerationalDistancePlus = new InvertedGenerationalDistancePlus(problem, referenceSet, normalizer);
+		}
+		
+		if (selectedIndicators.contains(StandardIndicator.AdditiveEpsilonIndicator) && additiveEpsilonIndicator == null) {
+			additiveEpsilonIndicator = new AdditiveEpsilonIndicator(problem, referenceSet, normalizer);
+		}
+		
+		if (selectedIndicators.contains(StandardIndicator.MaximumParetoFrontError) && maximumParetoFrontError == null) {
+			maximumParetoFrontError = new MaximumParetoFrontError(problem, referenceSet, normalizer);
+		}
+		
+		if (selectedIndicators.contains(StandardIndicator.Spacing) && spacing == null) {
+			spacing = new Spacing(problem);
 		}
 		
 		if (selectedIndicators.contains(StandardIndicator.Contribution) && contribution == null) {
@@ -137,21 +204,24 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 			r1 = new R1Indicator(
 					problem,
 					subdivisions.isPresent() ? subdivisions.get() : RIndicator.getDefaultSubdivisions(problem),
-					referenceSet);
+					referenceSet,
+					normalizer);
 		}
 		
 		if (selectedIndicators.contains(StandardIndicator.R2Indicator) && r2 == null) {
 			r2 = new R2Indicator(
 					problem,
 					subdivisions.isPresent() ? subdivisions.get() : RIndicator.getDefaultSubdivisions(problem),
-					referenceSet);
+					referenceSet,
+					normalizer);
 		}
 		
 		if (selectedIndicators.contains(StandardIndicator.R3Indicator) && r3 == null) {
 			r3 = new R3Indicator(
 					problem,
 					subdivisions.isPresent() ? subdivisions.get() : RIndicator.getDefaultSubdivisions(problem),
-					referenceSet);
+					referenceSet,
+					normalizer);
 		}
 	}
 	
@@ -160,40 +230,33 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 		initialize();
 		
 		IndicatorValues result = new IndicatorValues(approximationSet);
-		NondominatedPopulation normalizedApproximationSet = normalizer.normalize(approximationSet);
 
 		if (selectedIndicators.contains(StandardIndicator.Hypervolume)) {
 			result.hypervolume = hypervolume.evaluate(approximationSet);
 		}
 
 		if (selectedIndicators.contains(StandardIndicator.GenerationalDistance)) {
-			result.generationalDistance = GenerationalDistance.evaluate(problem, normalizedApproximationSet,
-					normalizedReferenceSet, Settings.getGDPower());
+			result.generationalDistance = generationalDistance.evaluate(approximationSet);
 		}
 		
 		if (selectedIndicators.contains(StandardIndicator.GenerationalDistancePlus)) {
-			result.generationalDistancePlus = GenerationalDistancePlus.evaluate(problem, normalizedApproximationSet,
-					normalizedReferenceSet);
+			result.generationalDistancePlus = generationalDistancePlus.evaluate(approximationSet);
 		}
 
 		if (selectedIndicators.contains(StandardIndicator.InvertedGenerationalDistance)) {
-			result.invertedGenerationalDistance = InvertedGenerationalDistance.evaluate(problem,
-					normalizedApproximationSet, normalizedReferenceSet, Settings.getIGDPower());
+			result.invertedGenerationalDistance = invertedGenerationalDistance.evaluate(approximationSet);
 		}
 		
 		if (selectedIndicators.contains(StandardIndicator.InvertedGenerationalDistancePlus)) {
-			result.invertedGenerationalDistancePlus = InvertedGenerationalDistancePlus.evaluate(problem,
-					normalizedApproximationSet, normalizedReferenceSet);
+			result.invertedGenerationalDistancePlus = invertedGenerationalDistancePlus.evaluate(approximationSet);
 		}
 
 		if (selectedIndicators.contains(StandardIndicator.AdditiveEpsilonIndicator)) {
-			result.additiveEpsilonIndicator = AdditiveEpsilonIndicator.evaluate(problem, normalizedApproximationSet,
-					normalizedReferenceSet);
+			result.additiveEpsilonIndicator = additiveEpsilonIndicator.evaluate(approximationSet);
 		}
 
 		if (selectedIndicators.contains(StandardIndicator.MaximumParetoFrontError)) {
-			result.maximumParetoFrontError = MaximumParetoFrontError.evaluate(problem, normalizedApproximationSet,
-					normalizedReferenceSet);
+			result.maximumParetoFrontError = maximumParetoFrontError.evaluate(approximationSet);
 		}
 
 		if (selectedIndicators.contains(StandardIndicator.Spacing)) {
@@ -490,14 +553,14 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 		
 		return switch (indicator) {
 			case Hypervolume -> hypervolume;
-			case GenerationalDistance -> new GenerationalDistance(problem, referenceSet);
-			case GenerationalDistancePlus -> new GenerationalDistancePlus(problem, referenceSet);
-			case InvertedGenerationalDistance -> new InvertedGenerationalDistance(problem, referenceSet);
-			case InvertedGenerationalDistancePlus -> new InvertedGenerationalDistancePlus(problem, referenceSet);
-			case Spacing -> new Spacing(problem);
-			case AdditiveEpsilonIndicator -> new AdditiveEpsilonIndicator(problem, referenceSet);
+			case GenerationalDistance -> generationalDistance;
+			case GenerationalDistancePlus -> generationalDistancePlus;
+			case InvertedGenerationalDistance -> invertedGenerationalDistance;
+			case InvertedGenerationalDistancePlus -> invertedGenerationalDistancePlus;
+			case AdditiveEpsilonIndicator -> additiveEpsilonIndicator;
+			case MaximumParetoFrontError -> maximumParetoFrontError;
 			case Contribution -> contribution;
-			case MaximumParetoFrontError -> new MaximumParetoFrontError(problem, referenceSet);
+			case Spacing -> spacing;
 			case R1Indicator -> r1;
 			case R2Indicator -> r2;
 			case R3Indicator -> r3;
