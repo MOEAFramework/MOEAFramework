@@ -22,10 +22,18 @@ package org.moeaframework.util.mvc;
  */
 public class Toggle extends Setting<Boolean> {
 
+	/**
+	 * Constructs a toggle setting with the default value.
+	 * 
+	 * @param defaultValue the default value
+	 */
 	public Toggle(boolean defaultValue) {
 		super(defaultValue);
 	}
 	
+	/**
+	 * Flips the value of this toggle.
+	 */
 	public void flip() {
 		set(!get());
 	}

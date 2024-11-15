@@ -33,7 +33,7 @@ import javax.swing.ImageIcon;
  * 
  * <h2>Package-specific</h2>
  * This is useful when classes in a package share common resources.  All classes have access to all stored resources.
- * Use the {@link #getLocalization(String)} method to create instances of the {@code Localization} class for a specific
+ * Use the {@link #getLocalization(Class)} method to create instances of the {@code Localization} class for a specific
  * package.  Here, you use the {@link #getString(String)} and {@link #getString(String, Object...)} methods on the
  * {@code Localization} instance you previously created.
  * 

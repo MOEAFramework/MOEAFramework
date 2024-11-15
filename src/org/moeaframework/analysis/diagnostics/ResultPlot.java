@@ -34,12 +34,12 @@ public abstract class ResultPlot extends JPanel implements ControllerListener, H
 	private static final long serialVersionUID = -4484341164088815299L;
 
 	/**
-	 * The {@link DiagnosticTool} instance containing this plot.
+	 * The frame containing this plot.
 	 */
 	protected final DiagnosticTool frame;
 	
 	/**
-	 * The {@link Controller} this plot uses to access result data.
+	 * The controller this plot uses to access result data.
 	 */
 	protected final DiagnosticToolController controller;
 	
@@ -51,7 +51,7 @@ public abstract class ResultPlot extends JPanel implements ControllerListener, H
 	/**
 	 * Constructs a new Swing component for displaying results.
 	 * 
-	 * @param frame the {@code DiagnosticTool} instance containing this plot
+	 * @param frame the frame containing this plot
 	 * @param metric the metric to display
 	 */
 	public ResultPlot(DiagnosticTool frame, String metric) {

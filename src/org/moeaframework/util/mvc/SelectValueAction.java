@@ -25,6 +25,11 @@ import javax.swing.JRadioButtonMenuItem;
 
 import org.moeaframework.util.Localization;
 
+/**
+ * Actions that assigns a value to a setting.
+ * 
+ * @param <T> the type of the setting
+ */
 public class SelectValueAction<T> extends LocalizedAction implements SettingChangedListener {
 	
 	private static final long serialVersionUID = 3472097803101404661L;

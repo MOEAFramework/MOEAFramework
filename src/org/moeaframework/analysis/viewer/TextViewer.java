@@ -53,12 +53,17 @@ public class TextViewer extends JDialog {
 	
 	private JTextArea textArea;
 	
+	/**
+	 * Constructs a new window to display text.
+	 */
 	public TextViewer() {
 		this(null);
 	}
 
 	/**
 	 * Constructs a new window to display text.
+	 * 
+	 * @param owner the parent frame
 	 */
 	public TextViewer(Frame owner) {
 		super(owner, localization.getString("title.textViewer"));
@@ -72,6 +77,11 @@ public class TextViewer extends JDialog {
 		setIconImages(Settings.getIcon().getResolutionVariants());
 	}
 	
+	/**
+	 * Sets the text to display in this window.
+	 * 
+	 * @param text the text
+	 */
 	public void setText(String text) {
 		textArea.setText(text);
 	}

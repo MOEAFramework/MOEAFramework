@@ -68,8 +68,8 @@ public class RuntimeCollectorExtension extends PeriodicExtension {
 		NondominatedPopulation result = algorithm.getResult();
 
 		TypedProperties properties = new TypedProperties();
-		properties.setInt("NFE", algorithm.getNumberOfEvaluations());
-		properties.setDouble("ElapsedTime", elapsedTime);
+		properties.setInt(ResultEntry.NFE, algorithm.getNumberOfEvaluations());
+		properties.setDouble(ResultEntry.ElapsedTime, elapsedTime);
 
 		try {
 			writer.write(new ResultEntry(result, properties));

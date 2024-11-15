@@ -164,8 +164,8 @@ public class RuntimeEvaluator extends CommandLineUtility {
 
 		for (Observation observation : observations) {
 			TypedProperties metadata = new TypedProperties();
-			metadata.setInt("NFE", observation.getNFE());
-			metadata.setDouble("ElapsedTime", ElapsedTimeCollector.getElapsedTime(observation));
+			metadata.setInt(ResultEntry.NFE, observation.getNFE());
+			metadata.setDouble(ResultEntry.ElapsedTime, ElapsedTimeCollector.getElapsedTime(observation));
 			
 			NondominatedPopulation result = ApproximationSetCollector.getApproximationSet(observation);
 			

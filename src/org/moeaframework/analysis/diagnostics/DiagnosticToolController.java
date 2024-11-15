@@ -59,7 +59,6 @@ import org.moeaframework.core.termination.CompoundTerminationCondition;
 import org.moeaframework.core.termination.MaxFunctionEvaluations;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.mvc.Controller;
-import org.moeaframework.util.mvc.ControllerEvent;
 import org.moeaframework.util.mvc.SettingChangedEvent;
 import org.moeaframework.util.mvc.SettingChangedListener;
 import org.moeaframework.util.mvc.Toggle;
@@ -239,7 +238,7 @@ public class DiagnosticToolController extends Controller implements SettingChang
 	
 	/**
 	 * Adds a new result to this controller.  If the specified key already exists, the observation is appended to the
-	 * existing results.  A {@link ControllerEvent.Type#MODEL_CHANGED} event is fired.
+	 * existing results.
 	 * 
 	 * @param key the result key identifying the algorithm and problem associated with these results
 	 * @param observation the observation storing the results
@@ -270,7 +269,7 @@ public class DiagnosticToolController extends Controller implements SettingChang
 	}
 	
 	/**
-	 * Clears all results from this collector.  A {@link ControllerEvent.Type#MODEL_CHANGED} event is fired.
+	 * Clears all results from this collector.
 	 */
 	public void clear() {
 		if (results.isEmpty()) {
@@ -345,7 +344,7 @@ public class DiagnosticToolController extends Controller implements SettingChang
 	}
 	
 	/**
-	 * Loads all results stored in the specified file.  A {@link ControllerEvent.Type#MODEL_CHANGED} event is fired.
+	 * Loads all results stored in the specified file.
 	 * 
 	 * @param file the file containing the results to load
 	 * @throws IOException if an I/O error occurred
@@ -370,7 +369,7 @@ public class DiagnosticToolController extends Controller implements SettingChang
 	}
 	
 	/**
-	 * Updates the progress of this controller.  A {@link ControllerEvent.Type#PROGRESS_CHANGED} event is fired.
+	 * Updates the progress of this controller.
 	 * 
 	 * @param currentEvaluation the current evaluation number
 	 * @param currentSeed the current seed number

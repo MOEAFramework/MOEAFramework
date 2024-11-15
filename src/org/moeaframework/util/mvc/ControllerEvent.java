@@ -20,7 +20,8 @@ package org.moeaframework.util.mvc;
 import java.util.EventObject;
 
 /**
- * Identifies the type of event fired by the controller.
+ * An event fired by a controller.  Use the event type to identify different types of changes that are occurring,
+ * limiting the scope of changes to the UI.
  */
 public class ControllerEvent extends EventObject {
 
@@ -32,7 +33,7 @@ public class ControllerEvent extends EventObject {
 	 * Constructs a new controller event of the specified type.
 	 * 
 	 * @param controller the controller from which this event originates
-	 * @param type the type of this event
+	 * @param eventType the type of this event
 	 */
 	public ControllerEvent(Controller controller, String eventType) {
 		super(controller);

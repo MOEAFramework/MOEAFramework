@@ -25,6 +25,10 @@ import javax.swing.JMenuItem;
 
 import org.moeaframework.util.Localization;
 
+/**
+ * The inverse of a {@link ToggleAction}.  If the original toggle would be checked, the inverted toggle is unchecked
+ * (and vice versa).
+ */
 public class InvertedToggleAction extends LocalizedAction implements SettingChangedListener {
 	
 	private static final long serialVersionUID = -3694809042542129384L;
@@ -51,6 +55,11 @@ public class InvertedToggleAction extends LocalizedAction implements SettingChan
 		}
 	}
 	
+	/**
+	 * Convenience method to create a {@link JMenuItem} based on this action.
+	 * 
+	 * @return the menu item
+	 */
 	public JMenuItem toMenuItem() {
 		return new JCheckBoxMenuItem(this);
 	}

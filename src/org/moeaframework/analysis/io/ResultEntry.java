@@ -30,6 +30,16 @@ import org.moeaframework.core.population.Population;
 public class ResultEntry {
 	
 	/**
+	 * Property used to store the number of function evaluations (NFE).
+	 */
+	public static final String NFE = "NFE";
+	
+	/**
+	 * Property used to store the elapsed wall-clock time.
+	 */
+	public static final String ElapsedTime = "ElapsedTime";
+	
+	/**
 	 * The population stored in this entry.
 	 */
 	private final Population population;

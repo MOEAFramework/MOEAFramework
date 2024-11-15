@@ -22,6 +22,9 @@ import javax.swing.Action;
 
 import org.moeaframework.util.Localization;
 
+/**
+ * An action whose display settings are derived from localization.
+ */
 public abstract class LocalizedAction extends AbstractAction {
 
 	private static final long serialVersionUID = 4030882078395416151L;

@@ -31,7 +31,7 @@ import org.apache.commons.lang3.event.EventListenerSupport;
 import org.moeaframework.core.Settings;
 
 /**
- * The controller manages the underlying data model, settings, and handles notifications.
+ * An abstract controller that manages the underlying data model, settings, and events for a GUI.
  */
 public abstract class Controller {
 	
@@ -116,14 +116,26 @@ public abstract class Controller {
 		listeners.removeListener(listener);
 	}
 	
+	/**
+	 * Adds a shutdown hook that is called during {@link #shutdown()}.
+	 * 
+	 * @param hook the shutdown hook
+	 */
 	public void addShutdownHook(Runnable hook) {
 		shutdownHooks.add(hook);
 	}
 	
+	/**
+	 * Starts up this controller.  This is called once before the GUI is displayed.
+	 */
 	protected void startup() {
 		loadPreferences(preferences);
 	}
 	
+	/**
+	 * Shuts down this controller by calling all shutdown hooks and {@link #savePreferences(Preferences)}.  This is
+	 * called once before the GUI is disposed.
+	 */
 	protected void shutdown() {
 		for (Runnable hook : shutdownHooks) {
 			hook.run();
@@ -136,10 +148,10 @@ public abstract class Controller {
 	/**
 	 * Fires the specified controller event.  All listeners will receive this event on the event dispatch thread.
 	 * 
-	 * @param event the controller event to fire
+	 * @param eventType identifies the type of event
 	 */
-	public synchronized void fireEvent(String eventId) {
-		ControllerEvent event = new ControllerEvent(this, eventId);
+	public synchronized void fireEvent(String eventType) {
+		ControllerEvent event = new ControllerEvent(this, eventType);
 		SwingUtilities.invokeLater(() -> listeners.fire().controllerStateChanged(event));
 	}
 	
@@ -157,7 +169,7 @@ public abstract class Controller {
 	}
 
 	/**
-	 * Handles an exception, displaying a dialog box containing details of the exception.
+	 * Displays a dialog box with the given exception.
 	 * 
 	 * @param exception the exception
 	 */
@@ -172,11 +184,7 @@ public abstract class Controller {
 			message += " - Caused by: " + exception.getCause().getMessage();
 		}
 		
-		JOptionPane.showMessageDialog(
-				window, 
-				message, 
-				"Error", 
-				JOptionPane.ERROR_MESSAGE);
+		displayError(message);
 	}
 
 }

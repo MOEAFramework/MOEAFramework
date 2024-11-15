@@ -1,3 +1,20 @@
+/* Copyright 2009-2024 David Hadka
+ *
+ * This file is part of the MOEA Framework.
+ *
+ * The MOEA Framework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * The MOEA Framework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+ * License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.moeaframework.analysis.plot;
 
 import java.io.File;
@@ -33,14 +50,19 @@ public enum ImageFileType {
 		this.filter = filter;
 	}
 	
+	/**
+	 * Returns the file filter for this image file type.
+	 * 
+	 * @return the file filter
+	 */
 	public FileNameExtensionFilter getFilter() {
 		return filter;
 	}
 	
 	/**
-	 * Determine the file type from its string representation using case-insensitive matching.
+	 * Determine the image file type from a file using its extension.
 	 * 
-	 * @param value the string representation of the file type
+	 * @param file the file
 	 * @return the file type
 	 * @throws IllegalArgumentException if the file type is not supported
 	 */

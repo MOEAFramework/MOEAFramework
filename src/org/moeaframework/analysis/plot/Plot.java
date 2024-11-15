@@ -1168,7 +1168,7 @@ public class Plot {
 	
 	/**
 	 * Saves the plot to an image file.  The type of image is determined from the filename extension, which must
-	 * match one of the supported file types in {@link FileType}.
+	 * match one of the supported file types in {@link ImageFileType}.
 	 * 
 	 * @param filename the filename
 	 * @return a reference to this instance
@@ -1181,7 +1181,7 @@ public class Plot {
 
 	/**
 	 * Saves the plot to an image file.  The type of image is determined from the filename extension, which must
-	 * match one of the supported file types in {@link FileType}.
+	 * match one of the supported file types in {@link ImageFileType}.
 	 * 
 	 * @param file the file
 	 * @return a reference to this instance

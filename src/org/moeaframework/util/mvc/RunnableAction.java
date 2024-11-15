@@ -24,6 +24,10 @@ import javax.swing.JMenuItem;
 
 import org.moeaframework.util.Localization;
 
+/**
+ * Action that invokes a {@link Runnable}.  GUI components based on this action are typically represented by a button
+ * of menu item.
+ */
 public class RunnableAction extends LocalizedAction {
 	
 	private static final long serialVersionUID = 3633238192124429111L;
@@ -44,10 +48,20 @@ public class RunnableAction extends LocalizedAction {
 		runnable.run();
 	}
 	
+	/**
+	 * Convenience method to create a {@link JButton} based on this action.
+	 * 
+	 * @return the button
+	 */
 	public JButton toButton() {
 		return new JButton(this);
 	}
 	
+	/**
+	 * Convenience method to create a {@link JMenuItem} based on this action.
+	 * 
+	 * @return the menu item
+	 */
 	public JMenuItem toMenuItem() {
 		return new JMenuItem(this);
 	}

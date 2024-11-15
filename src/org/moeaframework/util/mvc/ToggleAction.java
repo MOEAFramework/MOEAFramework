@@ -25,6 +25,10 @@ import javax.swing.JMenuItem;
 
 import org.moeaframework.util.Localization;
 
+/**
+ * Action backed by a {@link Toggle} setting.  GUI components based on this action are typically represented by a 
+ * check box.
+ */
 public class ToggleAction extends LocalizedAction implements SettingChangedListener {
 	
 	private static final long serialVersionUID = -992336279525967638L;
@@ -51,6 +55,11 @@ public class ToggleAction extends LocalizedAction implements SettingChangedListe
 		}
 	}
 	
+	/**
+	 * Convenience method to create a {@link JMenuItem} based on this action.
+	 * 
+	 * @return the menu item
+	 */
 	public JMenuItem toMenuItem() {
 		return new JCheckBoxMenuItem(this);
 	}

@@ -15,29 +15,26 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.util.mvc;
+package org.moeaframework.analysis.plot;
 
-import java.util.EventObject;
+import java.io.File;
 
-/**
- * Event indicating a setting value changed.
- */
-public class SettingChangedEvent extends EventObject {
+import org.junit.Test;
+import org.moeaframework.Assert;
+
+public class ImageFileTypeTest {
 	
-	private static final long serialVersionUID = 6279971295012971495L;
-	
-	/**
-	 * Constructs a new event indicating the setting value changed.
-	 * 
-	 * @param setting the setting that changed
-	 */
-	public SettingChangedEvent(Setting<?> setting) {
-		super(setting);
+	@Test
+	public void test() {
+		Assert.assertEquals(ImageFileType.PNG, ImageFileType.fromFile(new File("image.png")));
+		Assert.assertEquals(ImageFileType.JPEG, ImageFileType.fromFile(new File("image.jpg")));
+		Assert.assertEquals(ImageFileType.JPEG, ImageFileType.fromFile(new File("image.jpeg")));
+		Assert.assertEquals(ImageFileType.SVG, ImageFileType.fromFile(new File("image.svg")));
 	}
-
-	@Override
-	public Setting<?> getSource() {
-		return (Setting<?>)super.getSource();
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void tesUnsupportedExtension() {
+		ImageFileType.fromFile(new File("image.foo"));
 	}
 
 }

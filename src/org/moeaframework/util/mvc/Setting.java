@@ -35,6 +35,11 @@ public class Setting<T> {
 	
 	private final EventListenerSupport<SettingChangedListener> listeners;
 
+	/**
+	 * Constructs a setting with the default value.
+	 * 
+	 * @param defaultValue the default value
+	 */
 	public Setting(T defaultValue) {
 		super();
 		this.defaultValue = defaultValue;
@@ -43,10 +48,20 @@ public class Setting<T> {
 		Validate.that("defaultValue", defaultValue).isNotNull();
 	}
 	
+	/**
+	 * Returns the default value for this setting.
+	 * 
+	 * @return the default value
+	 */
 	public T getDefaultValue() {
 		return defaultValue;
 	}
 	
+	/**
+	 * Sets the value.  Any registered listeners are notified if the value changes.
+	 * 
+	 * @param newValue the new value
+	 */
 	public void set(T newValue) {
 		if (Objects.equals(value, newValue)) {
 			return;
@@ -56,14 +71,29 @@ public class Setting<T> {
 		listeners.fire().settingChanged(new SettingChangedEvent(this));
 	}
 	
+	/**
+	 * Gets the value.  If no value has been set, returns the default value.
+	 * 
+	 * @return the value
+	 */
 	public T get() {
 		return value != null ? value : defaultValue;
 	}
 	
+	/**
+	 * Registers a listener to be notified when this setting value changes.
+	 * 
+	 * @param listener the listener to add
+	 */
 	public void addSettingChangedListener(SettingChangedListener listener) {
 		listeners.addListener(listener);
 	}
 	
+	/**
+	 * Removes a listener so it is no longer notified of changes.
+	 * 
+	 * @param listener the listener to remove
+	 */
 	public void removeSettingChangedListener(SettingChangedListener listener) {
 		listeners.removeListener(listener);
 	}

@@ -17,11 +17,11 @@
  */
 package org.moeaframework.util.mvc;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.function.Supplier;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 
 import org.moeaframework.util.Localization;
@@ -45,7 +45,7 @@ public class PopupAction extends LocalizedAction {
 	public void actionPerformed(ActionEvent e) {
 		JPopupMenu menu = menuSupplier.get();
 		
-		if (e.getSource() instanceof JComponent component) {
+		if (e.getSource() instanceof Component component) {
 			menu.show(component, 0, component.getHeight());
 		}
 	}

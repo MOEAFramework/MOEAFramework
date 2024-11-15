@@ -68,7 +68,7 @@ public class FileFormatSnippet {
 				algorithm.step();
 				
 				TypedProperties properties = new TypedProperties();
-				properties.setInt("NFE", algorithm.getNumberOfEvaluations());
+				properties.setInt(ResultEntry.NFE, algorithm.getNumberOfEvaluations());
 				
 				writer.write(new ResultEntry(algorithm.getResult(), properties));
 			}
