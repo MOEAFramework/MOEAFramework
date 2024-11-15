@@ -27,6 +27,8 @@ import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -54,6 +57,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jfree.chart.ChartFactory;
@@ -69,6 +73,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.moeaframework.analysis.diagnostics.PaintHelper;
 import org.moeaframework.analysis.runtime.Observations;
 import org.moeaframework.analysis.viewer.RuntimeController.FitMode;
+import org.moeaframework.analysis.viewer.RuntimeSeries.IndexType;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.constraint.Constraint;
@@ -104,6 +109,8 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 	 * The slider controlling the current NFE.
 	 */
 	private JSlider slider;
+	
+	private JLabel sliderLabel;
 	
 	/**
 	 * The x-axis bounds for zooming; or {@code null} if the user has not yet set zoom bounds.
@@ -164,10 +171,21 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 				//silently handle
 			}
 				
-			RuntimeViewer viewer = new RuntimeViewer(null, title, referenceSet, observations);
+			RuntimeViewer viewer = new RuntimeViewer(null, title);
+			
+			viewer.getController().setReferenceSet(referenceSet);
+			
+			for (int i = 0; i < observations.length; i++) {
+				viewer.getController().addSeries("Seed " + (i + 1), observations[i]);
+			}
+			
 			viewer.setLocationRelativeTo(null);
 			viewer.setVisible(true);	
 		});
+	}
+	
+	public RuntimeViewer(String title) {
+		this(null, title);
 	}
 	
 	public RuntimeViewer(Frame owner, String title) {
@@ -185,27 +203,7 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		controller.fireEvent("stateChanged");
 	}
 	
-	/**
-	 * Constructs a new window for displaying approximation set dynamics.  This constructor must only be invoked on the
-	 * event dispatch thread.
-	 * 
-	 * @param name the name or title for the data
-	 * @param referenceSet the reference set for the problem
-	 */
-	public RuntimeViewer(Frame owner, String title, NondominatedPopulation referenceSet, Observations... observations) {
-		this(owner, title);
-		
-		getController().setReferenceSet(referenceSet);
-		
-		for (int i = 0; i < observations.length; i++) {
-			getController().addSeries("Seed " + (i + 1), observations[i]);
-		}
-	}
-	
-	/**
-	 * Initializes this window.  This method is invoked in the constructor, and should not be invoked again.
-	 */
-	protected void initialize() {
+	private void initialize() {
 		controller = new RuntimeController(this);
 		controller.addControllerListener(this);
 		
@@ -214,17 +212,17 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		slider = new JSlider();
 		slider.setSnapToTicks(true);
 		slider.setPaintTicks(true);
-		slider.setMinorTickSpacing(100);
-		slider.setMajorTickSpacing(1000);
 		slider.setPaintLabels(true);
 		slider.addChangeListener(new ChangeListener() {
 
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				controller.setCurrentNFE(slider.getValue());
+				controller.setCurrentIndex(slider.getValue());
 			}
 			
 		});
+		
+		sliderLabel = new JLabel("", JLabel.CENTER);
 		
 		xAxisSelection = new JComboBox<>();
 		xAxisSelection.addActionListener(new ActionListener() {
@@ -246,9 +244,31 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 			
 		});
 		
-		//initialize the seed list		
 		seriesList = new JList<>(seriesListModel);
 		seriesList.addListSelectionListener(this);
+		seriesList.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (SwingUtilities.isRightMouseButton(e)) {
+					int index = seriesList.locationToIndex(e.getPoint());
+					boolean isHovering = index >= 0 && seriesList.getCellBounds(index, index).contains(e.getPoint());
+					
+					RunnableAction removeSeries = new RunnableAction("removeSeries", localization, () -> {
+						controller.removeSeries(index);
+					});
+					
+					if (!isHovering) {
+						removeSeries.setEnabled(false);
+					}
+					
+					JPopupMenu seriesMenu = new JPopupMenu();
+					seriesMenu.add(removeSeries);
+					seriesMenu.show(seriesList, e.getX(), e.getY());
+				}
+			}
+			
+		});
 		
 		selectAll = new RunnableAction("selectAll", localization, () -> {
 				seriesList.getSelectionModel().setSelectionInterval(0, seriesList.getModel().getSize()-1);
@@ -264,49 +284,50 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		chartContainer = new JPanel(new BorderLayout());
 	}
 	
-	/**
-	 * Lays out the components on this window.  This method is invoked by the constructor, and should not be invoked
-	 * again.
-	 */
-	protected void layoutComponents() {
+	private void layoutComponents() {
 		setLayout(new BorderLayout());
-		
-		JPanel objectivePane = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		objectivePane.add(new JLabel(localization.getString("text.xAxis")));
-		objectivePane.add(xAxisSelection);
-		objectivePane.add(new JLabel(localization.getString("text.yAxis")));
-		objectivePane.add(yAxisSelection);
-		
-		JPanel controlLabel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		controlLabel.add(new JLabel("NFE"));
 		
 		JPanel controlPane = new JPanel(new BorderLayout());
 		controlPane.add(slider, BorderLayout.CENTER);
-		controlPane.add(controlLabel, BorderLayout.SOUTH);
+		controlPane.add(sliderLabel, BorderLayout.SOUTH);
 		
 		JPanel rightPane = new JPanel(new BorderLayout());
 		rightPane.add(chartContainer, BorderLayout.CENTER);
 		rightPane.add(controlPane, BorderLayout.SOUTH);
 		
-		JPanel seriesSelectionPane = new JPanel(new GridLayout(1, 2));
-		seriesSelectionPane.add(selectAll);
-		seriesSelectionPane.add(selectNone);
+		JPanel selectionPane = new JPanel(new GridLayout(1, 2));
+		selectionPane.add(selectAll);
+		selectionPane.add(selectNone);
 		
-		JPanel seriesPane = new JPanel(new BorderLayout());
-		seriesPane.setBorder(BorderFactory.createTitledBorder(localization.getString("text.series")));
-		seriesPane.add(new JScrollPane(seriesList), BorderLayout.CENTER);
-		seriesPane.add(seriesSelectionPane, BorderLayout.SOUTH);
-		seriesPane.setMinimumSize(new Dimension(150, 150));
+		JPanel leftPane = new JPanel(new BorderLayout());
+		leftPane.setBorder(BorderFactory.createTitledBorder(localization.getString("text.series")));
+		leftPane.add(new JScrollPane(seriesList), BorderLayout.CENTER);
+		leftPane.add(selectionPane, BorderLayout.SOUTH);
+		leftPane.setMinimumSize(new Dimension(150, 150));
 		
-		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, seriesPane, rightPane);
+		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPane, rightPane);
 		splitPane.setContinuousLayout(true);
         splitPane.setOneTouchExpandable(true);
+        
+        RunnableAction addSeries = new RunnableAction("addSeries", localization, () -> {
+        	JFileChooser fileChooser = new JFileChooser();
+
+    		int result = fileChooser.showOpenDialog(this);
+
+    		if (result == JFileChooser.APPROVE_OPTION) {
+    			try {
+    				controller.addSeries(RuntimeSeries.of(fileChooser.getSelectedFile()));
+    			} catch (Exception e) {
+    				controller.handleException(e);
+    			}
+    		}
+        });
         
 		play = new RunnableAction("play", localization, controller::play);
 		stop = new RunnableAction("stop", localization, controller::stop);
 		
-		RunnableAction start = new RunnableAction("start", localization, () -> controller.setCurrentNFE(0));
-		RunnableAction end = new RunnableAction("end", localization, () -> controller.setCurrentNFE(controller.getMaximumNFE()));
+		RunnableAction start = new RunnableAction("start", localization, () -> controller.setCurrentIndex(controller.getStartingIndex()));
+		RunnableAction end = new RunnableAction("end", localization, () -> controller.setCurrentIndex(controller.getEndingIndex()));
 		
 		PopupAction pointSize = new PopupAction("pointSizeMenu", localization, () -> {
 			JPopupMenu menu = new JPopupMenu();
@@ -338,9 +359,17 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 			return menu;
 		});
 		
+		JPanel objectiveSelectionPane = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		objectiveSelectionPane.add(new JLabel(localization.getString("text.xAxis")));
+		objectiveSelectionPane.add(xAxisSelection);
+		objectiveSelectionPane.add(new JLabel(localization.getString("text.yAxis")));
+		objectiveSelectionPane.add(yAxisSelection);
+		
         JToolBar toolbar = new JToolBar();
         toolbar.setFloatable(false);
         
+        toolbar.add(addSeries);
+        toolbar.addSeparator();
         toolbar.add(start);
 		toolbar.add(play);
 		toolbar.add(stop);
@@ -351,7 +380,7 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		toolbar.add(pointSize);
 		toolbar.add(transparency);
 		toolbar.addSeparator();
-		toolbar.add(objectivePane);
+		toolbar.add(objectiveSelectionPane);
 
 		add(toolbar, BorderLayout.NORTH);
 		add(splitPane, BorderLayout.CENTER);
@@ -426,7 +455,7 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		xAxisSelection.setSelectedIndex(xAxisIndex);
 		yAxisSelection.setSelectedIndex(yAxisIndex);
 		
-		// update list, keeping existing selecting and adding any new items
+		// update list, keeping existing selection and adding any new items
 		int seriesCount = seriesListModel.size();
 		int[] selectedIndices = seriesList.getSelectionModel().getSelectedIndices();
 		
@@ -439,9 +468,16 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 			seriesList.addSelectionInterval(seriesCount, seriesListModel.size() - 1);
 		}
 		
-		slider.setMinimum(0);
-		slider.setMaximum(controller.getMaximumNFE());
-		slider.setValue(controller.getCurrentNFE());
+		slider.setMinimum(controller.getStartingIndex());
+		slider.setMaximum(controller.getEndingIndex());
+		slider.setValue(controller.getCurrentIndex());
+		slider.setMinorTickSpacing(controller.getIndexType() == IndexType.NFE ?
+				Math.max(controller.getStepSize(), 10) : controller.getStepSize());
+		slider.setMajorTickSpacing(controller.getIndexType() == IndexType.NFE ?
+				controller.getEndingIndex() / 10 : -1);
+		
+		sliderLabel.setText(controller.getIndexType() == IndexType.NFE ? localization.getString("text.NFE") :
+			localization.getString("text.Index"));
 	}
 	
 	/**
@@ -455,14 +491,14 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		AxisSelector<Solution, Number> xAxis = xAxisSelection.getItemAt(xAxisSelection.getSelectedIndex());
 		AxisSelector<Solution, Number> yAxis = yAxisSelection.getItemAt(yAxisSelection.getSelectedIndex());
 
-		int currentNFE = controller.getCurrentNFE();
-		slider.setValue(currentNFE);
+		int currentIndex = controller.getCurrentIndex();
+		slider.setValue(currentIndex);
 		
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		
 		//generate approximation set
-		for (RuntimeSeries series : getSelectedSeriesAt(currentNFE)) {
-			dataset.addSeries(series.toXYSeries(currentNFE, xAxis, yAxis));
+		for (RuntimeSeries series : getSelectedSeries()) {
+			dataset.addSeries(series.toXYSeries(currentIndex, xAxis, yAxis));
 		}
 		
 		//generate reference set
@@ -473,7 +509,8 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		}
 		
 		JFreeChart chart = ChartFactory.createScatterPlot(
-				getTitle() + " @ " + slider.getValue() + " NFE", 
+				(controller.getIndexType() == IndexType.NFE ? localization.getString("text.NFE") :
+					localization.getString("text.Index")) + " " + slider.getValue(), 
 				xAxisSelection.getSelectedItem().toString(),
 				yAxisSelection.getSelectedItem().toString(), 
 				dataset, 
@@ -519,13 +556,16 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 			
 		});
 		
+		ChartPanel chartPanel = new ChartPanel(chart);
+		chartPanel.setPopupMenu(null); // disable default pop-up
+		
 		chartContainer.removeAll();
-		chartContainer.add(new ChartPanel(chart), BorderLayout.CENTER);
+		chartContainer.add(chartPanel, BorderLayout.CENTER);
 		chartContainer.revalidate();
 		chartContainer.repaint();
 	}
 	
-	private List<RuntimeSeries> getSelectedSeriesAt(int NFE) {
+	private List<RuntimeSeries> getSelectedSeries() {
 		List<RuntimeSeries> result = new ArrayList<>();
 		
 		for (int selectedIndex : seriesList.getSelectedIndices()) {
@@ -538,14 +578,14 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 	private void updateBounds(XYPlot plot) {
 		switch (controller.getFitMode().get()) {
 			case InitialBounds -> {
-				Pair<Range, Range> bounds = getBoundsAt(0);
+				Pair<Range, Range> bounds = getBoundsAt(controller.getStartingIndex());
 				
 				plot.getDomainAxis().setRange(bounds.getLeft());
 				plot.getRangeAxis().setRange(bounds.getRight());
 			}
 			case Zoom -> {
 				if ((zoomRangeBounds == null) || (zoomDomainBounds == null)) {
-					Pair<Range, Range> bounds = getBoundsAt(0);
+					Pair<Range, Range> bounds = getBoundsAt(controller.getStartingIndex());
 					
 					zoomDomainBounds = bounds.getLeft();
 					zoomRangeBounds = bounds.getRight();
@@ -566,27 +606,33 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		}
 	}
 	
-	private Pair<Range, Range> getBoundsAt(RuntimeSeries series, int NFE) {
+	private Pair<Range, Range> getBoundsAt(RuntimeSeries series, int index) {
 		AxisSelector<Solution, Number> xAxis = xAxisSelection.getItemAt(xAxisSelection.getSelectedIndex());
 		AxisSelector<Solution, Number> yAxis = yAxisSelection.getItemAt(yAxisSelection.getSelectedIndex());
-		return series.bounds(NFE, xAxis, yAxis);
+		return series.bounds(index, xAxis, yAxis);
 	}
 	
-	private Pair<Range, Range> getBoundsAt(int NFE) {
+	private Pair<Range, Range> getBoundsAt(int index) {
 		Range domain = null;
 		Range range = null;
 		RuntimeSeries referenceSet = controller.getReferenceSet();
 		
 		if (referenceSet != null) {
-			Pair<Range, Range> seriesBounds = getBoundsAt(referenceSet, NFE);
-			domain = Range.combine(domain, seriesBounds.getLeft());
-			range = Range.combine(range, seriesBounds.getRight());
+			Pair<Range, Range> seriesBounds = getBoundsAt(referenceSet, index);
+			
+			if (seriesBounds != null) {
+				domain = Range.combine(domain, seriesBounds.getLeft());
+				range = Range.combine(range, seriesBounds.getRight());
+			}
 		}
 		
-		for (RuntimeSeries series : getSelectedSeriesAt(NFE)) {
-			Pair<Range, Range> seriesBounds = getBoundsAt(series, NFE);
-			domain = Range.combine(domain, seriesBounds.getLeft());
-			range = Range.combine(range, seriesBounds.getRight());
+		for (RuntimeSeries series : getSelectedSeries()) {
+			Pair<Range, Range> seriesBounds = getBoundsAt(series, index);
+			
+			if (seriesBounds != null) {
+				domain = Range.combine(domain, seriesBounds.getLeft());
+				range = Range.combine(range, seriesBounds.getRight());
+			}
 		}
 		
 		return Pair.of(domain, range);

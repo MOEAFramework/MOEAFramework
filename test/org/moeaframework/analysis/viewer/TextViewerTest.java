@@ -34,14 +34,15 @@ public class TextViewerTest {
 	
 	@Test
 	public void test() {
-		TextViewer viewer = new TextViewer(null, "foo");
+		TextViewer viewer = new TextViewer();
+		viewer.setText("foo");
 		viewer.setVisible(true);
 		viewer.dispose();
 	}
 	
 	@Test
 	public void testLocalization() {
-		Assert.assertLocalized(new TextViewer(null, "foo"), Assert::isLocalized);
+		Assert.assertLocalized(new TextViewer(), Assert::isLocalized);
 	}
 
 }

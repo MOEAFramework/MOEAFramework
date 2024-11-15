@@ -1,5 +1,7 @@
 package org.moeaframework.analysis.viewer;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.SortedMap;
@@ -18,15 +20,28 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.util.Iterators;
 
-class RuntimeSeries implements Iterable<Pair<Integer, Population>> {
+public class RuntimeSeries implements Iterable<Pair<Integer, Population>> {
+	
+	public static enum IndexType {
+		
+		NFE,
+		
+		Index,
+		
+		Singleton
+		
+	}
 	
 	private final String name;
-	
+		
 	private final SortedMap<Integer, Population> data;
 	
-	RuntimeSeries(String name) {
+	private final IndexType indexType;
+	
+	RuntimeSeries(String name, IndexType indexType) {
 		super();
 		this.name = name;
+		this.indexType = indexType;
 		this.data = new TreeMap<Integer, Population>();
 	}
 	
@@ -34,8 +49,12 @@ class RuntimeSeries implements Iterable<Pair<Integer, Population>> {
 		return name;
 	}
 	
-	public void add(int nfe, Population set) {
-		data.put(nfe, set);
+	public IndexType getIndexType() {
+		return indexType;
+	}
+	
+	public void add(int index, Population set) {
+		data.put(index, set);
 	}
 	
 	public int size() {
@@ -54,22 +73,50 @@ class RuntimeSeries implements Iterable<Pair<Integer, Population>> {
 		return Pair.of(data.lastEntry());
 	}
 	
-	public Pair<Integer, Population> at(int NFE) {
+	public Pair<Integer, Population> at(int index) {
 		try {
-			return Pair.of(data.tailMap(NFE).firstEntry());
+			return switch (indexType) {
+				case NFE -> Pair.of(data.tailMap(index).firstEntry());
+				case Index -> index < data.size() ? Pair.of(index, data.get(index)) : null;
+				case Singleton -> Pair.of(data.firstEntry());
+			};
 		} catch (NoSuchElementException e) {
 			return null;
 		}
 	}
 	
-	public Pair<Range, Range> bounds(int NFE, Function<Solution, ? extends Number> getX,
+	public int getStartingIndex() {
+		return switch(indexType) {
+			case NFE -> 0;
+			case Index, Singleton -> first().getKey();
+		};
+	}
+	
+	public int getEndingIndex() {
+		return last().getKey();
+	}
+	
+	public int getStepSize() {
+		return switch(indexType) {
+			case NFE -> (getEndingIndex() - getStartingIndex()) / size();
+			case Index, Singleton -> 1;
+		};
+	}
+	
+	public Pair<Range, Range> bounds(int index, Function<Solution, ? extends Number> getX,
 			Function<Solution, ? extends Number> getY) {
+		Pair<Integer, Population> entry = at(index);
+		
+		if (entry == null || entry.getValue() == null) {
+			return null;
+		}
+		
 		double domainMin = Double.POSITIVE_INFINITY;
 		double domainMax = Double.NEGATIVE_INFINITY;
 		double rangeMin = Double.POSITIVE_INFINITY;
 		double rangeMax = Double.NEGATIVE_INFINITY;
 		
-		for (Solution solution : at(NFE).getValue()) {
+		for (Solution solution : entry.getValue()) {
 			double xValue = getX.apply(solution).doubleValue();
 			double yValue = getY.apply(solution).doubleValue();
 				
@@ -87,9 +134,15 @@ class RuntimeSeries implements Iterable<Pair<Integer, Population>> {
 				new Range(rangeMin - rangeDelta, rangeMax + rangeDelta));
 	}
 	
-	public XYSeries toXYSeries(int NFE, Function<Solution, ? extends Number> getX,
+	public XYSeries toXYSeries(int index, Function<Solution, ? extends Number> getX,
 			Function<Solution, ? extends Number> getY) {
-		return toXYSeries(name, at(NFE).getValue(), getX, getY);
+		Pair<Integer, Population> entry = at(index);
+		
+		if (entry == null || entry.getValue() == null) {
+			return new XYSeries(name, false, true);
+		}
+		
+		return toXYSeries(name, entry.getValue(), getX, getY);
 	}
 
 	@Override
@@ -113,8 +166,14 @@ class RuntimeSeries implements Iterable<Pair<Integer, Population>> {
 		return series;
 	}
 	
+	public static RuntimeSeries of(String name, Population population) {
+		RuntimeSeries series = new RuntimeSeries(name, IndexType.Singleton);
+		series.add(0, population);
+		return series;
+	}
+	
 	public static RuntimeSeries of(String name, Observations observations) {
-		RuntimeSeries series = new RuntimeSeries(name);
+		RuntimeSeries series = new RuntimeSeries(name, IndexType.NFE);
 		
 		for (Observation observation : observations) {
 			series.add(observation.getNFE(), ApproximationSetCollector.getApproximationSet(observation));
@@ -124,13 +183,30 @@ class RuntimeSeries implements Iterable<Pair<Integer, Population>> {
 	}
 	
 	public static RuntimeSeries of(String name, ResultFileReader reader) {
-		RuntimeSeries series = new RuntimeSeries(name);
+		RuntimeSeries series = null;
 		
 		for (ResultEntry entry : reader) {
-			series.add(entry.getProperties().getInt("NFE"), entry.getPopulation());
+			if (series == null) {
+				series = new RuntimeSeries(name, entry.getProperties().contains("NFE") ?
+						IndexType.NFE : IndexType.Index);
+			}
+
+			int index = switch (series.getIndexType()) {
+				case NFE -> entry.getProperties().getInt("NFE");
+				case Index -> series.size();
+				case Singleton -> 0;
+			};
+			
+			series.add(index, entry.getPopulation());
 		}
 		
 		return series;
+	}
+	
+	public static RuntimeSeries of(File file) throws IOException {
+		try (ResultFileReader reader = ResultFileReader.openLegacy(null, file)) {
+			return of(file.getName(), reader);
+		}
 	}
 	
 }

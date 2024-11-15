@@ -482,7 +482,8 @@ public class DiagnosticToolController extends Controller implements SettingChang
 				
 				ps.close();
 				
-				TextViewer viewer = new TextViewer(frame, output.toString());
+				TextViewer viewer = new TextViewer(frame);
+				viewer.setText(output.toString());
 				viewer.setLocationRelativeTo(frame);
 				viewer.setVisible(true);
 				return viewer;

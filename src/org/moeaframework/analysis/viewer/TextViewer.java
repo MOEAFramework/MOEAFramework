@@ -50,22 +50,20 @@ public class TextViewer extends JDialog {
 	 * The localization instance for producing locale-specific strings.
 	 */
 	private static Localization localization = Localization.getLocalization(TextViewer.class);
-
-	/**
-	 * The text to display.
-	 */
-	private final String text;
+	
+	private JTextArea textArea;
+	
+	public TextViewer() {
+		this(null);
+	}
 
 	/**
 	 * Constructs a new window to display text.
-	 * 
-	 * @param controller the controller instance
-	 * @param text the text to display
 	 */
-	public TextViewer(Frame owner, String text) {
+	public TextViewer(Frame owner) {
 		super(owner, localization.getString("title.textViewer"));
-		this.text = text;
 		
+		initialize();
 		layoutComponents();
 
 		setSize(800, 600);
@@ -74,33 +72,43 @@ public class TextViewer extends JDialog {
 		setIconImages(Settings.getIcon().getResolutionVariants());
 	}
 	
+	public void setText(String text) {
+		textArea.setText(text);
+	}
+	
 	private void save() {
+		FileNameExtensionFilter filter = new FileNameExtensionFilter(
+				localization.getString("text.extension.description"),
+				localization.getString("text.extension"));
+		
 		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setFileFilter(new FileNameExtensionFilter("Text File (*.txt)", "txt"));
+		fileChooser.setFileFilter(filter);
 		
 		int result = fileChooser.showSaveDialog(TextViewer.this);
 		
 		if (result == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
 				
-			if (!FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("txt")) {
-				file = new File(file.getParent(), file.getName() + ".txt");
+			if (!FilenameUtils.getExtension(file.getName()).equalsIgnoreCase(filter.getExtensions()[0])) {
+				file = new File(file.getParent(), file.getName() + "." + filter.getExtensions()[0]);
 			}
 			
 			try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
-				writer.print(text);
+				writer.print(textArea.getText());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 	
-	private void layoutComponents() {		
-		JTextArea textArea = new JTextArea(text);
+	private void initialize() {
+		textArea = new JTextArea();
 		textArea.setLineWrap(false);
 		textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 		textArea.setEditable(false);
-		
+	}
+	
+	private void layoutComponents() {		
 		RunnableAction saveAction = new RunnableAction("save", localization, this::save);
 		
 		RunnableAction decreaseFontSize = new RunnableAction("decreaseFontSize", localization, () -> {

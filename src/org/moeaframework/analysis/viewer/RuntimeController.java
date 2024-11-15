@@ -22,6 +22,7 @@ import java.util.List;
 import javax.swing.Timer;
 
 import org.moeaframework.analysis.runtime.Observations;
+import org.moeaframework.analysis.viewer.RuntimeSeries.IndexType;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.util.Localization;
 import org.moeaframework.util.mvc.Controller;
@@ -55,9 +56,15 @@ public class RuntimeController extends Controller implements SettingChangedListe
 	
 	private RuntimeSeries referenceSet;
 	
-	private int currentNFE;
+	private int currentIndex;
 	
-	private int maximumNFE;
+	private int startingIndex;
+	
+	private int endingIndex;
+	
+	private int stepSize;
+	
+	private IndexType indexType;
 	
 	private Timer playbackTimer;
 	
@@ -96,8 +103,7 @@ public class RuntimeController extends Controller implements SettingChangedListe
 	}
 	
 	public void setReferenceSet(NondominatedPopulation population) {
-		referenceSet = new RuntimeSeries(localization.getString("text.referenceSet"));
-		referenceSet.add(0, population);
+		referenceSet = RuntimeSeries.of(localization.getString("text.referenceSet"), population);
 		updateModel();
 	}
 	
@@ -109,8 +115,18 @@ public class RuntimeController extends Controller implements SettingChangedListe
 		addSeries(RuntimeSeries.of(name, observations));
 	}
 	
-	public void addSeries(RuntimeSeries approximationSet) {
-		approximationSets.add(approximationSet);
+	public void addSeries(RuntimeSeries series) {
+		approximationSets.add(series);
+		updateModel();
+	}
+	
+	public void removeSeries(int index) {
+		approximationSets.remove(index);
+		updateModel();
+	}
+	
+	public void removeSeries(RuntimeSeries series) {
+		approximationSets.remove(series);
 		updateModel();
 	}
 	
@@ -118,24 +134,58 @@ public class RuntimeController extends Controller implements SettingChangedListe
 		return approximationSets;
 	}
 	
-	public int getMaximumNFE() {
-		return maximumNFE;
+	public int getStartingIndex() {
+		return startingIndex;
 	}
 	
-	public int getCurrentNFE() {
-		return currentNFE;
+	public int getEndingIndex() {
+		return endingIndex;
 	}
 	
-	public void setCurrentNFE(int currentNFE) {
-		this.currentNFE = currentNFE;
-		fireEvent("viewChanged");
+	public int getCurrentIndex() {
+		return currentIndex;
+	}
+	
+	public void setCurrentIndex(int index) {
+		if (this.currentIndex != index) {
+			this.currentIndex = index;
+			fireEvent("viewChanged");
+		}
+	}
+	
+	public int getStepSize() {
+		return stepSize;
+	}
+	
+	public IndexType getIndexType() {
+		return indexType;
 	}
 	
 	public void updateModel() {
-		maximumNFE = 0;
+		if (approximationSets.size() == 0) {
+			startingIndex = 0;
+			endingIndex = 0;
+			stepSize = 0;
+			indexType = IndexType.NFE;
+		} else {
+			startingIndex = approximationSets.get(0).getStartingIndex();
+			endingIndex = approximationSets.get(0).getEndingIndex();
+			indexType = approximationSets.get(0).getIndexType();
+			stepSize = approximationSets.get(0).getStepSize();
+			
+			for (int i = 1; i < approximationSets.size(); i++) {
+				startingIndex = Math.min(startingIndex, approximationSets.get(i).getStartingIndex());
+				endingIndex = Math.max(endingIndex, approximationSets.get(i).getEndingIndex());
+				stepSize = Math.min(stepSize, approximationSets.get(i).getStepSize());
+			}
+		}
 		
-		for (RuntimeSeries approximationSet : approximationSets) {
-			maximumNFE = Math.max(maximumNFE, approximationSet.last().getKey());
+		if (currentIndex < startingIndex) {
+			currentIndex = startingIndex;
+		}
+		
+		if (currentIndex > endingIndex) {
+			currentIndex = endingIndex;
 		}
 		
 		fireEvent("modelChanged");
@@ -147,13 +197,13 @@ public class RuntimeController extends Controller implements SettingChangedListe
 		}
 		
 		playbackTimer = new Timer(100, e -> {
-			int nextNFE = getCurrentNFE() + 100;
+			int nextIndex = getCurrentIndex() + getStepSize();
 			
-			if (nextNFE > maximumNFE) {
-				nextNFE = 0;
+			if (nextIndex > endingIndex) {
+				nextIndex = startingIndex;
 			}
 			
-			setCurrentNFE(nextNFE);
+			setCurrentIndex(nextIndex);
 		});
 		
 		playbackTimer.start();

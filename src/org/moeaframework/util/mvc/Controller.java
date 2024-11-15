@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.apache.commons.lang3.event.EventListenerSupport;
+import org.moeaframework.core.Settings;
 
 /**
  * The controller manages the underlying data model, settings, and handles notifications.
@@ -141,19 +142,34 @@ public abstract class Controller {
 		ControllerEvent event = new ControllerEvent(this, eventId);
 		SwingUtilities.invokeLater(() -> listeners.fire().controllerStateChanged(event));
 	}
+	
+	/**
+	 * Displays a dialog box with the given error message.
+	 * 
+	 * @param message the error message
+	 */
+	public void displayError(String message) {
+		JOptionPane.showMessageDialog(
+				window, 
+				message, 
+				"Error", 
+				JOptionPane.ERROR_MESSAGE);
+	}
 
 	/**
 	 * Handles an exception, displaying a dialog box containing details of the exception.
 	 * 
-	 * @param e the exception
+	 * @param exception the exception
 	 */
-	public void handleException(Exception e) {
-		e.printStackTrace();
+	public void handleException(Exception exception) {
+		if (Settings.isVerbose()) {
+			exception.printStackTrace();
+		}
 		
-		String message = e.getMessage() == null ? e.toString() : e.getMessage();
+		String message = exception.getMessage() == null ? exception.toString() : exception.getMessage();
 		
-		if (e.getCause() != null && e.getCause().getMessage() != null) {
-			message += " - " + e.getCause().getMessage();
+		if (exception.getCause() != null && exception.getCause().getMessage() != null) {
+			message += " - Caused by: " + exception.getCause().getMessage();
 		}
 		
 		JOptionPane.showMessageDialog(

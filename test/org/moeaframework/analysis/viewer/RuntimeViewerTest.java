@@ -66,21 +66,24 @@ public class RuntimeViewerTest {
 	
 	@Test
 	public void testWithReferenceSet() {
-		RuntimeViewer viewer = new RuntimeViewer(null, "Viewer", referenceSet, observations);
+		RuntimeViewer viewer = new RuntimeViewer("Viewer");
+		viewer.getController().setReferenceSet(referenceSet);
+		viewer.getController().addSeries("Sample", observations);
 		viewer.setVisible(true);
 		viewer.dispose();
 	}
 	
 	@Test
 	public void testNoReferenceSet() {
-		RuntimeViewer viewer = new RuntimeViewer(null, "Viewer", null, observations);
+		RuntimeViewer viewer = new RuntimeViewer("Viewer");
+		viewer.getController().addSeries("Sample", observations);
 		viewer.setVisible(true);
 		viewer.dispose();
 	}
 	
 	@Test
 	public void testLocalization() {
-		Assert.assertLocalized(new RuntimeViewer(null, "Viewer", referenceSet, observations), Assert::isLocalized);
+		Assert.assertLocalized(new RuntimeViewer("Viewer"), Assert::isLocalized);
 	}
 
 }
