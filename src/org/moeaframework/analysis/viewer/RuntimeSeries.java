@@ -66,19 +66,29 @@ public class RuntimeSeries implements Iterable<Pair<Integer, Population>> {
 	}
 
 	public Pair<Integer, Population> first() {
-		return Pair.of(data.firstEntry());
+		Integer key = data.firstKey();
+		return Pair.of(key, data.get(key));
 	}
 	
 	public Pair<Integer, Population> last() {
-		return Pair.of(data.lastEntry());
+		Integer key = data.lastKey();
+		return Pair.of(key, data.get(key));
 	}
 	
 	public Pair<Integer, Population> at(int index) {
 		try {
 			return switch (indexType) {
-				case NFE -> Pair.of(data.tailMap(index).firstEntry());
-				case Index -> index < data.size() ? Pair.of(index, data.get(index)) : null;
-				case Singleton -> Pair.of(data.firstEntry());
+				case NFE -> {
+					Integer key = data.tailMap(index).firstKey();
+					yield Pair.of(key, data.get(key));
+				}
+				case Index -> {
+					yield index < data.size() ? Pair.of(index, data.get(index)) : null;
+				}
+				case Singleton -> {
+					Integer key = data.firstKey();
+					yield Pair.of(key, data.get(key));
+				}
 			};
 		} catch (NoSuchElementException e) {
 			return null;
