@@ -33,6 +33,10 @@ import org.moeaframework.util.validate.Validate;
  * Utility for creating images from charts.
  */
 public class ImageUtils {
+	
+	private ImageUtils() {
+		super();
+	}
 
 	/**
 	 * Saves the chart to an image file.  The type of image is determined from the filename extension, which must

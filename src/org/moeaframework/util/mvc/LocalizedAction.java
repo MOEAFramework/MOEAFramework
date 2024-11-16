@@ -24,11 +24,23 @@ import org.moeaframework.util.Localization;
 
 /**
  * An action whose display settings are derived from localization.
+ * <ul>
+ *   <li>{@code action.<id>.name} - The display name (required)
+ *   <li>{@code action.<id>.description} - The description, typically shown in a tooltip (required)
+ *   <li>{@code action.<id>.icon} - The icon resource name (optional)
+ * </ul>
  */
 public abstract class LocalizedAction extends AbstractAction {
 
 	private static final long serialVersionUID = 4030882078395416151L;
 
+	/**
+	 * Constructs a new localized action.
+	 * 
+	 * @param id the id for localization
+	 * @param localization the source of localization strings
+	 * @param args any arguments used for localization
+	 */
 	public LocalizedAction(String id, Localization localization, Object... args) {
 		super();
 		

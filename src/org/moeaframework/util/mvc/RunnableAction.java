@@ -26,7 +26,7 @@ import org.moeaframework.util.Localization;
 
 /**
  * Action that invokes a {@link Runnable}.  GUI components based on this action are typically represented by a button
- * of menu item.
+ * or menu item.
  */
 public class RunnableAction extends LocalizedAction {
 	
@@ -35,11 +35,7 @@ public class RunnableAction extends LocalizedAction {
 	private final Runnable runnable;
 	
 	public RunnableAction(String id, Localization localization, Runnable runnable) {
-		this(id, localization, new Object[0], runnable);
-	}
-	
-	public RunnableAction(String id, Localization localization, Object[] args, Runnable runnable) {
-		super(id, localization, args);
+		super(id, localization);
 		this.runnable = runnable;
 	}
 	

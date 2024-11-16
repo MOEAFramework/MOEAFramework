@@ -35,6 +35,13 @@ public class InvertedToggleAction extends LocalizedAction implements SettingChan
 	
 	private final Toggle toggle;
 	
+	/**
+	 * Constructs a new inverted toggle action.
+	 * 
+	 * @param id the id for localization
+	 * @param localization the source for localization strings
+	 * @param toggle the underlying toggle setting
+	 */
 	public InvertedToggleAction(String id, Localization localization, Toggle toggle) {
 		super(id, localization);
 		this.toggle = toggle;

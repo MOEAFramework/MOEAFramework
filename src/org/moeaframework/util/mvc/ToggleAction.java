@@ -35,6 +35,13 @@ public class ToggleAction extends LocalizedAction implements SettingChangedListe
 
 	private final Toggle toggle;
 	
+	/**
+	 * Constructs a new toggle action.
+	 * 
+	 * @param id the id for localization
+	 * @param localization the source for localization strings
+	 * @param toggle the underlying toggle setting
+	 */
 	public ToggleAction(String id, Localization localization, Toggle toggle) {
 		super(id, localization);
 		this.toggle = toggle;

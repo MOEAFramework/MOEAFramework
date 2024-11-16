@@ -26,18 +26,25 @@ import javax.swing.JPopupMenu;
 
 import org.moeaframework.util.Localization;
 
+/**
+ * Action that displays a popup menu when triggered.  GUI components based on this action are typically buttons, with
+ * the menu displayed adjacent to the button.
+ */
 public class PopupAction extends LocalizedAction {
 		
 	private static final long serialVersionUID = 4516883983249801132L;
 	
 	private final Supplier<JPopupMenu> menuSupplier;
 	
+	/**
+	 * Constructs a new popup action.
+	 * 
+	 * @param id the id for localization
+	 * @param localization the source for localization strings
+	 * @param menuSupplier callback that generates the menu
+	 */
 	public PopupAction(String id, Localization localization, Supplier<JPopupMenu> menuSupplier) {
-		this(id, localization, new Object[0], menuSupplier);
-	}
-	
-	public PopupAction(String id, Localization localization, Object[] args, Supplier<JPopupMenu> menuSupplier) {
-		super(id, localization, args);
+		super(id, localization);
 		this.menuSupplier = menuSupplier;
 	}
 	
@@ -50,6 +57,11 @@ public class PopupAction extends LocalizedAction {
 		}
 	}
 	
+	/**
+	 * Convenience method to create a {@link JButton} based on this action.
+	 * 
+	 * @return the menu item
+	 */
 	public JButton toButton() {
 		return new JButton(this);
 	}

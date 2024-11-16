@@ -452,7 +452,7 @@ public class TabularData<T> implements Displayable {
 	 * Writes the data formatted as an ARFF file.  This file format is a standard used by data mining applications.
 	 * 
 	 * @param out the output stream
-	 * @see https://waikato.github.io/weka-wiki/formats_and_processing/arff_stable/
+	 * @see <a href="https://waikato.github.io/weka-wiki/formats_and_processing/arff_stable/">ARFF File Format</a>
 	 */
 	protected void toARFF(PrintWriter out) {
 		List<String[]> formattedData = format(ESCAPE_PLAINTEXT);

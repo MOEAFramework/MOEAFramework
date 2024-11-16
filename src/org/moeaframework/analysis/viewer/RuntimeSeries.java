@@ -56,6 +56,12 @@ public class RuntimeSeries implements Iterable<Pair<Integer, Population>> {
 	
 	private final IndexType indexType;
 	
+	/**
+	 * Constructs a new, empty series.
+	 * 
+	 * @param name the series name
+	 * @param indexType the index / key type
+	 */
 	RuntimeSeries(String name, IndexType indexType) {
 		super();
 		this.name = name;
@@ -101,9 +107,9 @@ public class RuntimeSeries implements Iterable<Pair<Integer, Population>> {
 	}
 
 	/**
-	 * Returns {@code true} if this series is empty; {@code false] otherwise.
+	 * Returns {@code true} if this series is empty; {@code false} otherwise.
 	 * 
-	 * @return {@code true} if this series is empty; {@code false] otherwise
+	 * @return {@code true} if this series is empty; {@code false} otherwise
 	 */
 	public boolean isEmpty() {
 		return data.isEmpty();
@@ -307,7 +313,7 @@ public class RuntimeSeries implements Iterable<Pair<Integer, Population>> {
 	
 	/**
 	 * Creates a series containing the populations contained in a result file.  The result file should contain the
-	 * property {@value #NFE_KEY} on each entry in order to use NFE as the ordering.
+	 * property {@value ResultEntry#NFE} on each entry in order to use NFE as the ordering.
 	 * 
 	 * @param name the name for the series
 	 * @param reader the result file reader
@@ -337,10 +343,10 @@ public class RuntimeSeries implements Iterable<Pair<Integer, Population>> {
 	/**
 	 * Creates a series containing the populations contained in a result file.
 	 * 
-	 * @param name the name for the series
-	 * @param reader the result file reader
+	 * @param file the result file
 	 * @return the series
 	 * @see #of(String, ResultFileReader)
+	 * @throws IOException if an I/O error occurred
 	 */
 	public static RuntimeSeries of(File file) throws IOException {
 		try (ResultFileReader reader = ResultFileReader.openLegacy(null, file)) {

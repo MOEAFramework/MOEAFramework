@@ -26,7 +26,8 @@ import javax.swing.JRadioButtonMenuItem;
 import org.moeaframework.util.Localization;
 
 /**
- * Actions that assigns a value to a setting.
+ * Action that assigns a fixed value to a setting.  GUI components based on this action are typically radio buttons.
+ * This action handles selection, so the components do not need to be placed within a button group.
  * 
  * @param <T> the type of the setting
  */
@@ -38,6 +39,14 @@ public class SelectValueAction<T> extends LocalizedAction implements SettingChan
 	
 	private final T value;
 	
+	/**
+	 * Constructs a new action to assign a fixed value.
+	 * 
+	 * @param id the id for localization
+	 * @param localization the source of localization strings
+	 * @param setting the underlying setting
+	 * @param value the fixed value
+	 */
 	public SelectValueAction(String id, Localization localization, Setting<T> setting, T value) {
 		super(id, localization, value);
 		this.setting = setting;
@@ -59,6 +68,11 @@ public class SelectValueAction<T> extends LocalizedAction implements SettingChan
 		}
 	}
 	
+	/**
+	 * Convenience method to create a {@link JMenuItem} based on this action.
+	 * 
+	 * @return the menu item
+	 */
 	public JMenuItem toMenuItem() {
 		return new JRadioButtonMenuItem(this);
 	}
