@@ -145,7 +145,7 @@ jobs:
         cd build
         sudo gem install bundler jekyll
         sudo bundle install
-        jekyll build
+        bundle exec jekyll build
     - name: Upload website
       uses: actions/upload-artifact@v4
       with:
