@@ -30,8 +30,8 @@ import org.moeaframework.analysis.stream.Partition;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.population.NondominatedPopulation;
-import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
+import org.moeaframework.problem.Problem;
 
 /**
  * Demonstrates using parameters to run an algorithm with different inputs, collect the results, and generate a plot.

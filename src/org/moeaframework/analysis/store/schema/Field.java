@@ -55,7 +55,7 @@ public class Field<T extends Comparable<? super T>> implements Comparable<Field<
 	 * 
 	 * @param name the original field name
 	 * @return the normalized field name
-	 * @see https://issues.apache.org/jira/browse/COLLECTIONS-294
+	 * @see <a href="https://issues.apache.org/jira/browse/COLLECTIONS-294">COLLECTIONS-294</a>
 	 */
 	private final String normalize(String name) {
 		final char[] chars = name.toCharArray();
