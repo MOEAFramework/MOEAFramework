@@ -143,7 +143,7 @@ jobs:
     - name: Build website with Jeykll
       run: |
         cd build
-		bundle install
+        bundle install
         bundle exec jeykll build
     - name: Upload website
       uses: actions/upload-artifact@v4
