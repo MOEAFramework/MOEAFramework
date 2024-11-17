@@ -140,16 +140,16 @@ jobs:
       uses: MOEAFramework/.github/actions/run-ant@main
       with:
         target: package-website
-    - name: Build website with Jeykll
+    - name: Build website with Jekyll
       run: |
         cd build
-        bundle install
-        bundle exec jeykll build
+        sudo gem install bundler jekyll
+        jekyll build
     - name: Upload website
       uses: actions/upload-artifact@v4
       with:
-        name: ant-test-results-${{ matrix.os }}-${{ matrix.java }}
-        path: test-results     
+        name: Website
+        path: build/_site
 
   example-tests:
     runs-on: ${{ matrix.os }}
