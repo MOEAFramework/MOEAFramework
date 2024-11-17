@@ -22,16 +22,18 @@ Each algorithm has a collection of parameters (called properties) used to config
 population size, mutation and crossover rates, etc.  We can create and configure these algorithms by calling their
 setter methods:
 
-<!-- java:test/org/moeaframework/snippet/AlgorithmSnippet.java [direct] -->
+<!-- java:examples/org/moeaframework/examples/configuration/SetConfigurationExample.java [33:41] -->
 
 ```java
-Problem problem = new UF1();
+    Problem problem = new DTLZ2(2);
 
-NSGAII algorithm = new NSGAII(problem);
-algorithm.setInitialPopulationSize(250);
-algorithm.run(10000);
+    NSGAII algorithm = new NSGAII(problem);
+    algorithm.setInitialPopulationSize(250);
+    algorithm.setVariation(new PCX(10, 2));
 
-NondominatedPopulation result = algorithm.getResult();
+    algorithm.run(10000);
+    algorithm.getResult().display();
+}
 ```
 
 Alternatively, we can use `applyConfiguration` to configure algorithms using properties:

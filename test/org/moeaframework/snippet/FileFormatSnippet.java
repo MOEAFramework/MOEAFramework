@@ -19,6 +19,7 @@ package org.moeaframework.snippet;
 
 import java.io.IOException;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.analysis.io.MetricFileReader;
@@ -39,14 +40,21 @@ import static org.moeaframework.TempFiles.File;
 @SuppressWarnings("unused")
 public class FileFormatSnippet {
 	
-	@Test
-	public void saveLoad() throws IOException {
+	@Before
+	public void setUp() throws IOException {
 		Population population = new Population();
 		population.add(MockSolution.of().withObjectives(1.0, 1.0).build());
-		
-		// begin-example:saveLoad
 		population.save(new File("population.dat"));
-		Population.load(new File("population.dat"));
+	}
+	
+	@Test
+	public void saveLoad() throws IOException {
+		// begin-example:saveLoad
+		// load population from file
+		Population population = Population.load(new File("population.dat"));
+		
+		// save population to file
+		population.save(new File("population.dat"));
 		// end-example:saveLoad
 	}
 	

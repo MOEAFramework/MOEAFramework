@@ -35,15 +35,18 @@ Framework.  Prefer using one of the other options documented here for storage pu
 
 Populations define `save` and `load` methods for reading and writing the contents of a population:
 
-<!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [saveLoad] -->
+<!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [saveLoad] {KeepComments -->
 
 ```java
+# save population to file
 population.save(new File("population.dat"));
-Population.load(new File("population.dat"));
+
+# load population from file
+Population population = Population.load(new File("population.dat"));
 ```
 
-Reference sets, including those defined in the `pf/` folder, are also stored in this manner.  However, for convenience,
-we recommend using the `NondominatedPopulation.load` method:
+Reference sets, including those defined in the `pf/` folder, are also stored in this manner.  Since reference sets
+contain non-dominated solutions, use the `NondominatedPopulation` class to load the set:
 
 <!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [referenceSet] -->
 
