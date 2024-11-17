@@ -49,7 +49,7 @@ jobs:
         if: ${{ inputs.publish-github && ! endsWith(inputs.version, '-SNAPSHOT') }}
         uses: MOEAFramework/.github/actions/run-ant@main
         with:
-          target: package-binary package-demo package-source
+          target: package-binary package-source
       - name: Stage GitHub release
         if: ${{ inputs.publish-github && ! endsWith(inputs.version, '-SNAPSHOT') }}
         uses: MOEAFramework/.github/actions/publish-github@main

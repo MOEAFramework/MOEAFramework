@@ -44,11 +44,6 @@
 <h3>Gallery</h3>
 
 <p>
-  <a data-fancybox="gallery" href="images/screenshot-7.png"
-      title="Explore the capabilities of the MOEA Framework with the demo application" itemprop="screenshot">
-    <img src="images/screenshot-7-small.png" class="float-left" width="98" height="70" alt="Explore the capabilities of the MOEA Framework with the demo application" />
-  </a>
-
   <a data-fancybox="gallery" href="images/screenshot-5.png"
       title="Solve interesting and complex problems, such as the famous traveling salesman problem" itemprop="screenshot">
     <img src="images/screenshot-5-small.png" class="float-left" width="70" height="70" alt="Solve interesting and complex problems, such as the famous traveling salesman problem" />

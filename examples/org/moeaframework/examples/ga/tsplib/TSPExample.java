@@ -163,7 +163,7 @@ public class TSPExample {
 		splitPane.setResizeWeight(1.0);
 		
 		// display the panel on a window
-		JFrame frame = new JFrame(instance.getName());
+		JFrame frame = new JFrame("Traveling Salesman Problem - " + instance.getName());
 		frame.getContentPane().setLayout(new BorderLayout());
 		frame.getContentPane().add(splitPane, BorderLayout.CENTER);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

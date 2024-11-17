@@ -84,11 +84,6 @@
 			<version>%jna.version%</version>
 		</dependency>
 		<dependency>
-			<groupId>com.fifesoft</groupId>
-			<artifactId>rsyntaxtextarea</artifactId>
-			<version>%rsyntaxtextarea.version%</version>
-		</dependency>
-		<dependency>
 			<groupId>org.openjdk.nashorn</groupId>
 			<artifactId>nashorn-core</artifactId>
 			<version>%nashorn-core.version%</version>

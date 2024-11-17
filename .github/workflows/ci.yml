@@ -197,10 +197,6 @@ jobs:
       uses: MOEAFramework/.github/actions/run-ant@main
       with:
         target: package-source
-    - name: Package demo
-      uses: MOEAFramework/.github/actions/run-ant@main
-      with:
-        target: package-demo
     - name: Package website
       uses: MOEAFramework/.github/actions/run-ant@main
       with:

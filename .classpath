@@ -13,7 +13,6 @@
 	<classpathentry kind="lib" path="lib/jfreechart-1.5.5.jar"/>
 	<classpathentry kind="lib" path="lib/jfreesvg-3.4.3.jar"/>
 	<classpathentry kind="lib" path="lib/jna-5.14.0.jar"/>
-	<classpathentry kind="lib" path="lib/rsyntaxtextarea-3.5.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>

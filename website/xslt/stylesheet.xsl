@@ -119,11 +119,6 @@
 								</p>
 								<ul>
 									<li>
-										<a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%-Demo.jar" itemprop="downloadUrl">
-											Demo Application
-										</a>
-									</li>
-									<li>
 										<a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%.tar.gz" itemprop="downloadUrl">
 											Compiled Binaries
 										</a>

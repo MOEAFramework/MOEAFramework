@@ -101,6 +101,8 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 	 */
 	private static Localization localization = Localization.getLocalization(RuntimeViewer.class);
 	
+	private final String title;
+	
 	private JFreeChart chart;
 	
 	/**
@@ -193,13 +195,14 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 	
 	public RuntimeViewer(Frame owner, String title) {
 		super(owner);
+		this.title = title;
 		
 		initialize();
 		layoutComponents();
 		
-		setTitle(title != null ? title : localization.getString("title.runtimeViewer"));
+		setTitle(localization.getString("title.runtimeViewer"));
 		setSize(800, 600);
-		setMinimumSize(new Dimension(800, 600));
+		setMinimumSize(new Dimension(400, 300));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setIconImages(Settings.getIcon().getResolutionVariants());
 		
@@ -533,8 +536,9 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		}
 		
 		chart = ChartFactory.createScatterPlot(
-				(controller.getIndexType() == IndexType.NFE ? localization.getString("text.NFE") :
-					localization.getString("text.Index")) + " " + slider.getValue(), 
+				(title == null ? "" : title + " @ ") + (controller.getIndexType() == IndexType.NFE ?
+						localization.getString("text.NFE") : localization.getString("text.Index")) +
+						" " + slider.getValue(), 
 				xAxisSelection.getSelectedItem().toString(),
 				yAxisSelection.getSelectedItem().toString(), 
 				dataset, 

@@ -29,20 +29,6 @@
 <div class="listing">
   <ul>
     <li>
-      <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%-Demo.jar">
-        <img src="images/java_jar.png" class="float-left" width="22" height="22" alt="Download the demo application" />
-        <strong>Demo Application</strong>
-      </a>
-      <br />
-      <span>
-        Walk through several demos and examples to see the capabilities of the
-        MOEA Framework.  Double-clicking the JAR file or running
-        '<code>java -jar MOEAFramework-%VERSION%-Demo.jar</code>'
-        will start the application.
-      </span>
-      <div class="fix"></div>
-    </li>
-    <li>
       <a href="https://github.com/MOEAFramework/MOEAFramework/releases/download/v%VERSION%/MOEAFramework-%VERSION%.tar.gz">
         <img src="images/tgz.png" class="float-left" width="22" height="22" alt="Download compiled binaries" />
         <strong>Compiled Binaries</strong>

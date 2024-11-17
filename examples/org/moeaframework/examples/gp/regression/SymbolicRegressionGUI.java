@@ -45,6 +45,7 @@ import org.jfree.data.xy.XYSeries;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
+import org.moeaframework.core.variable.Program;
 
 /**
  * A GUI for displaying the actual and approximated functions used in a
@@ -202,8 +203,10 @@ public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 		plot.setRenderer(new XYLineAndShapeRenderer());
 		
 		// update the details
+		Program program = (Program)solution.getVariable(0);
+		
 		details.setText("Generation " + generation + " / " + maxGenerations + "\nObjective value: " +
-				solution.getObjective(0) + "\n\n" + solution.getVariable(0));
+				solution.getObjective(0) + "\n\n" + program.getBody().toString());
 		
 		container.removeAll();
 		container.add(new ChartPanel(chart), BorderLayout.CENTER);

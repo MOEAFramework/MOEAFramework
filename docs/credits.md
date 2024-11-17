@@ -9,9 +9,9 @@ All individual contributors can be found on the
 * **Apache Commons**
    * **CLI** - Copyright 2001-2017 The Apache Software Foundation. Licensed under the Apache License, version 2.0
    * **IO** - Copyright 2002-2017 The Apache Software Foundation. Licensed under the Apache License, version 2.0
-   * **Text** - Copyright 2014-2019 The Apache Software Foundation. Licensed under the Apache License, version 2.0
    * **Lang3** - Copyright 2001-2018 The Apache Software Foundation. Licensed under the Apache License, version 2.0
    * **Math3** - See the JAR file for copyright notices. Licensed under the Apache License, version 2.0
+   * **Text** - Copyright 2014-2019 The Apache Software Foundation. Licensed under the Apache License, version 2.0
 * **JCommon** - Copyright 2000-2014 Object Refinery Limited and Contributors. Licensed under the GNU Lesser General
   Public License, version 2.1 or later
 * **JFreeChart** - Copyright 2000-2019 Object Refinery Limited and Contributors. Licensed under the GNU Lesser General
@@ -19,7 +19,8 @@ All individual contributors can be found on the
 * **JUnit** - Copyright 2000-2006 www.hamcrest.org. Licensed under the Eclise Public License. Only required for tests.
 * **Checkstyle** - Copyright (C) 2001-2011 Oliver Burn. Licensed under the GNU Lesser General Public License, version
   2.1 or later
-* **RSyntaxTextArea** - Copyright 2019 Robert Futrell. Licensed under the Modified BSD License
+  
+## Graphics
 * **Flaticon** - www.flaticon.com/terms-of-use
 
 ## Embedded Code

@@ -47,7 +47,7 @@ public class PlotApproximationSetConvergence {
 		
 		instrumentedAlgorithm.run(10000);
 
-		RuntimeViewer.show("NSGA-II",
+		RuntimeViewer.show("NSGA-II on UF1",
 				instrumenter.getReferenceSet(),
 				instrumenter.getObservations());
 	}
