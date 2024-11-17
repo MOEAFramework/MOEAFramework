@@ -1,0 +1,19 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+#project_title::before {
+    width: 60px;
+    height: 60px;
+    background: url(../images/logo.png) no-repeat 0 0;
+    background-size: 60px;
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+#project_tagline {
+    font-size: 20px
+}

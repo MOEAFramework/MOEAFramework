@@ -1,0 +1,7 @@
+theme: jekyll-theme-slate
+title: %NAME%
+description: %DESCRIPTION%
+copyright: %COPYRIGHT%
+version: %VERSION%
+github:
+  repository_url: https://github.com/MOEAFramework/MOEAFramework

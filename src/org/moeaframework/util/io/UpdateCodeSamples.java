@@ -53,7 +53,7 @@ import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.validate.Validate;
 
 /**
- * Utility to update code samples and output found in various documents, including Markdown and HTML / XSLT files.
+ * Utility to update code samples and output found in various documents, including Markdown and HTML files.
  * The aim is to inject real Java examples into the documentation so that all code snippets can be tested and
  * validated.  This works by embedding a special comment before the code block in one of the supported
  * {@link FileType}.  When processing the document, the code block immediately following the comment is validated
@@ -88,7 +88,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 
 	private static final String[] DEFAULT_CLASSPATH = new String[] { "lib/*", "build", "examples" };
 	
-	private static final File[] DEFAULT_PATHS = new File[] { new File("docs/"), new File("website/xslt") };
+	private static final File[] DEFAULT_PATHS = new File[] { new File("docs/"), new File("website/") };
 	
 	private static final Pattern REGEX = Pattern.compile("<!--\\s+([a-zA-Z]+)\\:([^\\s]+)(?:\\s+\\[([^\\]]+)\\])?(?:\\s+\\{([^\\}]+)\\})?\\s+-->");
 	

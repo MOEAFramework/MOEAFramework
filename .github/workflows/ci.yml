@@ -136,6 +136,20 @@ jobs:
         directory: test/checkstyle
         target: check-style
         warning: Checkstyle identified one ore more violations, see logs for details!
+    - name: Setup website
+      uses: MOEAFramework/.github/actions/run-ant@main
+      with:
+        target: package-website
+    - name: Build website with Jeykll
+      run: |
+        cd build
+		bundle install
+        bundle exec jeykll build
+    - name: Upload website
+      uses: actions/upload-artifact@v4
+      with:
+        name: ant-test-results-${{ matrix.os }}-${{ matrix.java }}
+        path: test-results     
 
   example-tests:
     runs-on: ${{ matrix.os }}
@@ -180,24 +194,3 @@ jobs:
     - name: Test sensitivity.sh
       if: runner.os == 'Linux'
       run: examples/org/moeaframework/examples/experiment/sensitivity.sh
-
-  package-tests:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Setup build
-      uses: MOEAFramework/.github/actions/setup-build@main
-      with:
-        java-version: ${{ inputs.java-version }}
-        java-distribution: ${{ inputs.java-distribution }}
-    - name: Package binary
-      uses: MOEAFramework/.github/actions/run-ant@main
-      with:
-        target: package-binary
-    - name: Package source
-      uses: MOEAFramework/.github/actions/run-ant@main
-      with:
-        target: package-source
-    - name: Package website
-      uses: MOEAFramework/.github/actions/run-ant@main
-      with:
-        target: package-website

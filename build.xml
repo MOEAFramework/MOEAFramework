@@ -275,40 +275,20 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<delete dir="${build}" />
 		<mkdir dir="${build}" />
 
-		<tstamp>
-			<format pattern="MMM dd, yyyy" property="today" />
-			<format pattern="yyyy-MM-dd" property="lastmod" />
-		</tstamp>
-
 		<copy todir="${build}">
-			<fileset dir="website" excludes="*.partial,xslt/**" />
+			<fileset dir="website" />
 		</copy>
 
 		<copy todir="${build}/javadoc">
 			<fileset dir="${javadoc}" />
 		</copy>
 
-		<xslt basedir="website/xslt" destdir="${build}" style="website/xslt/stylesheet.xsl" 
-				includes="*.xml" filenameparameter="filename">
-			<param name="version" expression="${version}" />
-			<param name="today" expression="${today}" />
-		</xslt>
-
-		<replace dir="${build}" includes="**/*.html">
+		<replace dir="${build}" includes="_config.yml">
+			<replacefilter token="%NAME%" value="${name}" />
+			<replacefilter token="%DESCRIPTION%" value="${description}" />
 			<replacefilter token="%VERSION%" value="${version}" />
+			<replacefilter token="%COPYRIGHT%" value="${copyright}" />
 		</replace>
-
-		<replace file="${build}/sitemap.xml">
-			<replacefilter token="%LASTMOD%" value="${lastmod}" />
-		</replace>
-
-		<copy todir="${build}">
-			<fileset dir="examples" includes="*.java" excludes="Examples.java" />
-		</copy>
-		
-		<copy todir="${build}">
-			<fileset file="examples/dtlz2.c" />
-		</copy>
 	</target>
 	
 	<target name="build-maven" description="Creates a Maven version of this project for testing / publishing">
