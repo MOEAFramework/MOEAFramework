@@ -754,9 +754,15 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
 			sb.append("[");
-			sb.append(startingLine == FIRST_LINE ? "" : startingLine);
-			sb.append(":");
-			sb.append(endingLine == LAST_LINE ? "" : endingLine);
+			
+			if (identifier != null) {
+				sb.append(identifier);
+			} else {
+				sb.append(startingLine == FIRST_LINE ? "" : startingLine);
+				sb.append(":");
+				sb.append(endingLine == LAST_LINE ? "" : endingLine);
+			}
+			
 			sb.append("]");
 			
 			if (!formatFlags.isEmpty()) {
