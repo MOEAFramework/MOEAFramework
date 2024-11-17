@@ -16,6 +16,7 @@
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
 import java.io.IOException;
+
 import org.moeaframework.algorithm.MOEAD;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.algorithm.pso.OMOPSO;
@@ -23,8 +24,8 @@ import org.moeaframework.analysis.IndicatorStatistics;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.population.NondominatedPopulation;
-import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.CEC2009.UF1;
+import org.moeaframework.problem.Problem;
 
 /**
  * In Example 2, we computed the hypervolume and generational distance for a single

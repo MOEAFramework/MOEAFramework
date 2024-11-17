@@ -37,8 +37,8 @@ import org.moeaframework.core.selection.TournamentSelection;
 import org.moeaframework.mock.MockAlgorithm;
 import org.moeaframework.mock.MockAlgorithmWithExtensions;
 import org.moeaframework.mock.MockRealProblem;
-import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
+import org.moeaframework.problem.Problem;
 
 public class InstrumenterTest {
 	

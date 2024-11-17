@@ -34,8 +34,8 @@ import org.moeaframework.analysis.store.fs.FileSystemDataStore;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.DTLZ.DTLZ2;
-import org.moeaframework.util.format.TableFormat;
 import org.moeaframework.problem.Problem;
+import org.moeaframework.util.format.TableFormat;
 
 /**
  * Demonstrates using a data store to save results.

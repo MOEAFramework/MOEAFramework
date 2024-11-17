@@ -37,10 +37,10 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Stream;
 
+import org.moeaframework.analysis.store.Blob;
 import org.moeaframework.analysis.store.Container;
 import org.moeaframework.analysis.store.DataStore;
 import org.moeaframework.analysis.store.DataStoreException;
-import org.moeaframework.analysis.store.Blob;
 import org.moeaframework.analysis.store.Reference;
 import org.moeaframework.analysis.store.TransactionalOutputStream;
 import org.moeaframework.analysis.store.TransactionalWriter;

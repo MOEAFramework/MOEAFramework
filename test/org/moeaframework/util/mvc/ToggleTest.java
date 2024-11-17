@@ -18,6 +18,7 @@
 package org.moeaframework.util.mvc;
 
 import java.awt.event.ActionEvent;
+
 import javax.swing.Action;
 
 import org.junit.Test;

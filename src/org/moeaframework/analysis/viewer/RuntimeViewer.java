@@ -90,7 +90,7 @@ import org.moeaframework.util.mvc.RunnableAction;
 import org.moeaframework.util.mvc.SelectValueAction;
 
 /**
- * Window for displaying approximation set dynamics.
+ * Viewer showing approximation set runtime plots.
  */
 public class RuntimeViewer extends JDialog implements ListSelectionListener, ControllerListener {
 

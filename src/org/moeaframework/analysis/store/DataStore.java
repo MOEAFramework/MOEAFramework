@@ -47,7 +47,7 @@ public interface DataStore {
 	 */
 	public List<Container> listContainers() throws IOException;
 
-	/**f
+	/**
 	 * Returns the container for the given {@link Referenceable} object.
 	 * 
 	 * @param reference the data reference
