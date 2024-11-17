@@ -19,11 +19,8 @@ evolutionary algorithms (MOEAs) and other metaheuristics.
 
 ### Getting Started
 
-Visit us on [GitHub]({{ site.github.repository_url }}) to download the latest release,
-run [examples]({{ site.github.repository_url }}/tree/master/examples), and view our
-[online documentation]({{ site.github.repository_url }}/blob/master/docs/README.md).
-
-Maven users can add our dependency to their `pom.xml` file:
+Visit us on [GitHub]({{ site.github.repository_url }}) to download the latest release.  Maven users can add our
+dependency to their `pom.xml` file:
 
 ```xml
 <dependency>
@@ -32,6 +29,10 @@ Maven users can add our dependency to their `pom.xml` file:
     <version>{{ site.version }}</version>
 </dependency>
 ```
+
+Check out our [examples]({{ site.github.repository_url }}/tree/master/examples),
+[online documentation]({{ site.github.repository_url }}/blob/master/docs/README.md), and
+[API Specification (Javadoc)](javadoc/index.html) to get started.
 
 ### Example
 
