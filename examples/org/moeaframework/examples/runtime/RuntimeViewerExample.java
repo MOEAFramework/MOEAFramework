@@ -23,7 +23,7 @@ import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
 import org.moeaframework.analysis.runtime.Instrumenter;
 import org.moeaframework.analysis.viewer.RuntimeViewer;
-import org.moeaframework.problem.DTLZ.DTLZ2;
+import org.moeaframework.problem.CEC2009.UF1;
 import org.moeaframework.problem.Problem;
 
 /**
@@ -33,12 +33,12 @@ public class RuntimeViewerExample {
 
 	public static void main(String[] args) throws IOException {
 		// Setup the problem and algorithm
-		Problem problem = new DTLZ2(2);
+		Problem problem = new UF1();
 		NSGAII algorithm = new NSGAII(problem);
 		
 		// Instrument the algorithm to collect the hypervolume and generational distance
 		Instrumenter instrumenter = new Instrumenter()
-				.withReferenceSet("pf/DTLZ2.2D.pf")
+				.withReferenceSet("pf/UF1.pf")
 				.withFrequency(100)
 				.attachApproximationSetCollector();
 		

@@ -58,7 +58,7 @@ new Plot()
     .show();
 ```
 
-![image](https://github.com/MOEAFramework/MOEAFramework/assets/2496211/e7a5f079-b44d-434b-a359-5c8744e5cc6b)
+![Performance Indicator Plot](imgs/runtime-lingegraph.png)
 
 ## Visualizing Approximation Set Convergence
 
@@ -84,3 +84,4 @@ RuntimeViewer.show("NSGAII on UF1",
         instrumenter.getObservations());
 ```
 
+![Runtime Viewer](imgs/runtime-viewer.png)
