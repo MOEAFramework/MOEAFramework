@@ -6,8 +6,7 @@ your computer:
 <!-- java:examples/org/moeaframework/examples/parallel/ParallelizationExample.java [45:46] -->
 
 ```java
-NSGAII serialAlgorithm = new NSGAII(problem);
-serialAlgorithm.run(100000);
+serialTimer.stop();
 ```
 
 This is typically fine for test problems, but custom problems can quickly become computationally expensive.  Let's
@@ -22,10 +21,9 @@ We can distribute function evaluations using the `DistributedProblem` class:
 <!-- java:examples/org/moeaframework/examples/parallel/ParallelizationExample.java [56:59] -->
 
 ```java
-try (Problem distributedProblem = DistributedProblem.from(problem)) {
-    NSGAII distributedAlgorithm = new NSGAII(distributedProblem);
-    distributedAlgorithm.run(100000);
 }
+
+parallelTimer.stop();
 ```
 
 There are a few key points to call out:
@@ -85,23 +83,22 @@ strategy, or even using different optimization algorithms on each island.
 <!-- java:examples/org/moeaframework/examples/parallel/IslandModelExample.java [44:62] -->
 
 ```java
-Problem problem = new UF1();
+    Problem problem = new UF1();
 
-Selection migrationSelection = new TournamentSelection(2,
-        new ChainedComparator(
-                new ParetoDominanceComparator(),
-                new CrowdingComparator()));
+    Selection migrationSelection = new TournamentSelection(2, new ChainedComparator(
+                new ParetoDominanceComparator(), new CrowdingComparator()));
 
-Migration migration = new SingleNeighborMigration(1, migrationSelection);
-Topology topology = new FullyConnectedTopology();
-IslandModel model = new IslandModel(1000, migration, topology);
+    Migration migration = new SingleNeighborMigration(1, migrationSelection);
+    Topology topology = new FullyConnectedTopology();
+    IslandModel model = new IslandModel(1000, migration, topology);
 
-for (int i = 0; i < 8; i++) {
-    NSGAII algorithm = new NSGAII(problem);
-    model.addIsland(new Island(algorithm, algorithm.getPopulation()));
-}
+    for (int i = 0; i < 8; i++) {
+        NSGAII algorithm = new NSGAII(problem);
+        model.addIsland(new Island(algorithm, algorithm.getPopulation()));
+    }
 
-try (ThreadedIslandExecutor executor = new ThreadedIslandExecutor(model)) {
-    executor.run(100000).display();
+    try (ThreadedIslandExecutor executor = new ThreadedIslandExecutor(model)) {
+        executor.run(100000).display();
+    }
 }
 ```

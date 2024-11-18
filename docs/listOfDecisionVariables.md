@@ -130,15 +130,13 @@ graph TD;
     style START fill-opacity:0, stroke-opacity:0;
 ```
 
-Check out the code samples in [/examples/org/moeaframework/examples/gp](../examples/org/moeaframework/examples/gp).
-
 ## Grammar
 
 The grammar type facilitates grammatical evolution.  This is similar in functionality to programs, except it used a
 context-free grammar given in [Backus-Naur form](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form).  For example,
 the following grammar specification:
 
-<!-- text:examples/org/moeaframework/examples/ge/regression/grammar.bnf -->
+<!-- text:examples/org/moeaframework/examples/regression/grammar/grammar.bnf -->
 
 ```text
 <expr> ::= <func> | (<expr> <op> <expr>) | <value>
@@ -153,5 +151,4 @@ grammar can generate arbitrary statements, not necessarily just executable progr
 
 Regardless of what statements the grammar produces, one then needs a way to "evaluate" the program in terms of fitness.
 For executable programs, the statement can be fed into a scripting language, including any of Java's supported
-scripting languages.  Find code samples in
-[/examples/org/moeaframework/examples/ge](../examples/org/moeaframework/examples/ge).
+scripting languages.

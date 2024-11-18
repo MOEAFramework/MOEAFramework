@@ -124,7 +124,7 @@ public class SolveTest {
 	public void testExternalProblemWithLowerAndUpperBounds() throws Exception {
 		Assume.assumePythonExists();
 		
-		File script = Resources.asFile(getClass(), "dtlz2.py", ResourceOption.FILE, ResourceOption.TEMPORARY);
+		File script = Resources.asFile(getClass(), "dtlz2.py", ResourceOption.TEMPORARY);
 		File outputFile = TempFiles.createFile();
 		
 		Solve.main(new String[] {
@@ -134,7 +134,7 @@ public class SolveTest {
 				"-o", "2",
 				"-n", "1000",
 				"-f", outputFile.getPath(),
-				"python " + script.getPath() });
+				"python", script.getPath() });
 		
 		checkOutput(outputFile);
 	}
@@ -143,7 +143,7 @@ public class SolveTest {
 	public void testExternalProblemWithVariables() throws Exception {
 		Assume.assumePythonExists();
 		
-		File script = Resources.asFile(getClass(), "dtlz2.py", ResourceOption.FILE, ResourceOption.TEMPORARY);
+		File script = Resources.asFile(getClass(), "dtlz2.py", ResourceOption.TEMPORARY);
 		File outputFile = TempFiles.createFile();
 		
 		Solve.main(new String[] {
@@ -152,7 +152,7 @@ public class SolveTest {
 				"-o", "2",
 				"-n", "1000",
 				"-f", outputFile.getPath(),
-				"python " + script.getPath() });
+				"python", script.getPath() });
 		
 		checkOutput(outputFile);
 	}

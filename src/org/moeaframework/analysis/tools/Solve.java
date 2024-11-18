@@ -27,7 +27,6 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.lang3.StringUtils;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.extension.FrequencyType;
 import org.moeaframework.algorithm.extension.RuntimeCollectorExtension;
@@ -287,7 +286,7 @@ public class Solve extends CommandLineUtility {
 		
 		if (commandLine.getArgs().length > 0) {
 			System.out.print("Running ");
-			System.out.println(StringUtils.join(commandLine.getArgs()));
+			System.out.println(String.join(" ", commandLine.getArgs()));
 			builder.withCommand(commandLine.getArgs());
 		}
 			
@@ -296,7 +295,7 @@ public class Solve extends CommandLineUtility {
 
 			@Override
 			public String getName() {
-				return StringUtils.join(commandLine.getArgs());
+				return String.join(" ", commandLine.getArgs());
 			}
 
 			@Override

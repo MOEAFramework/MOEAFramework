@@ -146,8 +146,6 @@ combining results from multiple algorithms and seeds:
 
 
 ```java
-NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/UF1.pf");
-
 Hypervolume defaultHypervolume = new Hypervolume(problem, referenceSet);
 System.out.println("Normalized by reference set (default): " + defaultHypervolume.evaluate(approximationSet.copy()));
 ```
@@ -157,7 +155,6 @@ We can alternatively specify the lower and upper bounds explicitly:
 <!-- java:examples/org/moeaframework/examples/indicators/NormalizationExample.java [50:51] -->
 
 ```java
-Hypervolume explicitHypervolume = new Hypervolume(problem, new double[] { 0.0, 0.0 }, new double[] { 2.0, 2.0 });
 System.out.println("Normalized with explicit bounds: " + explicitHypervolume.evaluate(approximationSet));
 ```
 
@@ -166,8 +163,8 @@ Or disable normalization entirely:
 <!-- java:examples/org/moeaframework/examples/indicators/NormalizationExample.java [54:55] -->
 
 ```java
-Hypervolume disabledHypervolume = new Hypervolume(problem, Normalizer.none());
-System.out.println("Disabled normalization: " + disabledHypervolume.evaluate(approximationSet));
+    System.out.println("Disabled normalization: " + disabledHypervolume.evaluate(approximationSet));
+}
 ```
 
 Regardless of the approach taken, the key is being consistent and documenting the process, as that ensures your results
