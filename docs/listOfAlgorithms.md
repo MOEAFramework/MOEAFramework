@@ -22,25 +22,28 @@ Each algorithm has a collection of parameters (called properties) used to config
 population size, mutation and crossover rates, etc.  We can create and configure these algorithms by calling their
 setter methods:
 
-<!-- java:examples/org/moeaframework/examples/configuration/SetConfigurationExample.java [33:41] -->
+<!-- java:examples/Example4.java [32:40] -->
 
 ```java
-    Problem problem = new DTLZ2(2);
+Problem problem = new DTLZ2(2);
 
-    NSGAII algorithm = new NSGAII(problem);
-    algorithm.setInitialPopulationSize(250);
-    algorithm.setVariation(new PCX(10, 2));
+NSGAII algorithm = new NSGAII(problem);
+algorithm.setInitialPopulationSize(250);
+algorithm.setVariation(new PCX(5, 2));
 
-    algorithm.run(10000);
-    algorithm.getResult().display();
-}
+algorithm.run(10000);
+
+algorithm.getResult().display();
 ```
 
 Alternatively, we can use `applyConfiguration` to configure algorithms using properties:
 
-<!-- java:examples/org/moeaframework/examples/configuration/ApplyConfigurationExample.java [36:42] -->
+<!-- java:examples/Example5.java [33:45] -->
 
 ```java
+Problem problem = new DTLZ2(2);
+NSGAII algorithm = new NSGAII(problem);
+
 TypedProperties properties = new TypedProperties();
 properties.setInt("populationSize", 250);
 properties.setString("operator", "pcx");
@@ -48,6 +51,9 @@ properties.setInt("pcx.parents", 10);
 properties.setInt("pcx.offspring", 2);
 
 algorithm.applyConfiguration(properties);
+
+algorithm.run(10000);
+algorithm.getResult().display();
 ```
 
 Many of these algorithms support any decision variable type, and thus the selected mutation and/or crossover operators

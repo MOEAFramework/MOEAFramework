@@ -15,29 +15,42 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.examples.configuration;
+package org.moeaframework.examples.runtime;
 
 import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.core.operator.real.PCX;
+import org.moeaframework.analysis.plot.Plot;
+import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
+import org.moeaframework.analysis.runtime.Instrumenter;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
 
 /**
- * Demonstrates changing the configuration of an algorithm by calling the setter methods.
+ * Collects runtime data using the Instrumenter and displays a line graph showing the hypervolume and generational
+ * distance.
  */
-public class SetConfigurationExample {
-	
-	public static void main(String[] args) throws IOException {
-		Problem problem = new DTLZ2(2);
+public class PlotRuntimeDynamics {
 
+	public static void main(String[] args) throws IOException {
+		// Setup the problem and algorithm
+		Problem problem = new DTLZ2(2);
 		NSGAII algorithm = new NSGAII(problem);
-		algorithm.setInitialPopulationSize(250);
-		algorithm.setVariation(new PCX(10, 2));
-				
-		algorithm.run(10000);
-		algorithm.getResult().display();
+		
+		// Instrument the algorithm to collect the hypervolume and generational distance
+		Instrumenter instrumenter = new Instrumenter()
+				.withReferenceSet("pf/DTLZ2.2D.pf")
+				.withFrequency(100)
+				.attachHypervolumeCollector()
+				.attachGenerationalDistanceCollector();
+		
+		InstrumentedAlgorithm<NSGAII> instrumentedAlgorithm = instrumenter.instrument(algorithm);
+		instrumentedAlgorithm.run(10000);
+		
+		// Render a plot of the runtime dynamics
+		new Plot()
+		    .add(instrumentedAlgorithm.getObservations())
+		    .show();
 	}
 
 }

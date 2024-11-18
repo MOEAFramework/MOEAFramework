@@ -15,34 +15,33 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.examples.configuration;
+package org.moeaframework.examples.indicators;
 
+import java.io.File;
 import java.io.IOException;
 
-import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.core.TypedProperties;
+import org.moeaframework.core.Epsilons;
+import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
+import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
-import org.moeaframework.problem.Problem;
 
 /**
- * Demonstrates configuring an algorithm using properties.
+ * Generates a reference set for the 3-objective DTLZ2 problem using &epsilon; values of {@code 0.01}.  Any problem
+ * that implements the {@link AnalyticalProblem} interface has a known Pareto front.
  */
-public class ApplyConfigurationExample {
+public class GenerateReferenceSetExample {
 	
+	@SuppressWarnings("resource")
 	public static void main(String[] args) throws IOException {
-		Problem problem = new DTLZ2(2);
-		NSGAII algorithm = new NSGAII(problem);
-		
-		TypedProperties properties = new TypedProperties();
-		properties.setInt("populationSize", 250);
-		properties.setString("operator", "pcx");
-		properties.setInt("pcx.parents", 10);
-		properties.setInt("pcx.offspring", 2);
-				
-		algorithm.applyConfiguration(properties);
-				
-		algorithm.run(10000);
-		algorithm.getResult().display();
+		AnalyticalProblem problem = new DTLZ2(3);
+		NondominatedPopulation referenceSet = new EpsilonBoxDominanceArchive(Epsilons.of(0.01));
+			
+		for (int i = 0; i < 1000; i++) {
+			referenceSet.add(problem.generate());
+		}
+			
+		referenceSet.save(new File("Custom_DTLZ2.3D.pf"));
 	}
 
 }

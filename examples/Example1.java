@@ -20,8 +20,8 @@ import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
 
 /**
- * Simplest way to solve a multi-objective optimization problem.  Here, we solve
- * the bi-objective DTLZ2 test problem using NSGA-II and display the Pareto front.
+ * Simplest way to solve a multi-objective optimization problem.  Here, we solve the bi-objective DTLZ2 test problem
+ * using NSGA-II and display the Pareto front.
  */
 public class Example1 {
 

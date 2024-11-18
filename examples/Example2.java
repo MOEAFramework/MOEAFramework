@@ -24,10 +24,9 @@ import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
 
 /**
- * Quality indicators are used to compare results between different algorithms.  Here,
- * we calculate the indicators in relation to a known reference set. These reference sets
- * contain optimal solutions to the problem.  Reference sets for most test problems can
- * be found in the ./pf/ directory.
+ * Performance indicators are used to compare results between different algorithms.  Here, we calculate the indicators
+ * in relation to a known reference set. These reference sets contain optimal solutions to the problem.  Reference sets
+ * for most test problems can be found in the ./pf/ directory.
  */
 public class Example2 {
 
@@ -42,9 +41,9 @@ public class Example2 {
 		
 		// load the reference set and evaluate the quality indicators
 		NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/DTLZ2.2D.pf");
-		
 		Indicators indicators = Indicators.all(problem, referenceSet);
 		indicators.apply(approximationSet).display();
+		
 	}
 
 }

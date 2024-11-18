@@ -15,41 +15,34 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.examples.plots;
+package org.moeaframework.examples.indicators;
 
 import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
-import org.moeaframework.analysis.runtime.Instrumenter;
-import org.moeaframework.analysis.viewer.RuntimeViewer;
-import org.moeaframework.problem.CEC2009.UF1;
+import org.moeaframework.core.indicator.Hypervolume;
+import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
 
 /**
- * Displays an interactive plot showing the convergence of the NSGA-II algorithm on
- * UF1 at each iteration.
+ * Demonstrates loading a reference set and evaluating a performance indicator on a problem.
  */
-public class PlotApproximationSetConvergence {
+public class HypervolumeExample {
 
 	public static void main(String[] args) throws IOException {
-		Problem problem = new UF1();
-		
-		Instrumenter instrumenter = new Instrumenter()
-				.withReferenceSet("pf/UF1.pf")
-				.withFrequency(100)
-				.attachApproximationSetCollector();
+		// solve the 2-D DTLZ2 problem
+		Problem problem = new DTLZ2(2);
 		
 		NSGAII algorithm = new NSGAII(problem);
+		algorithm.run(10000);
 		
-		InstrumentedAlgorithm<NSGAII> instrumentedAlgorithm =
-				instrumenter.instrument(algorithm);
+		NondominatedPopulation approximationSet = algorithm.getResult();
 		
-		instrumentedAlgorithm.run(10000);
-
-		RuntimeViewer.show("NSGA-II on UF1",
-				instrumenter.getReferenceSet(),
-				instrumenter.getObservations());
+		// load the reference set and evaluate the hypervolume
+		NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/DTLZ2.2D.pf");
+		Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
+		System.out.println("Hypervolume: " + hypervolume.evaluate(approximationSet));
 	}
 
 }

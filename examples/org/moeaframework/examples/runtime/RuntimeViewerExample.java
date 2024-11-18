@@ -15,42 +15,40 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.examples.plots;
+package org.moeaframework.examples.runtime;
 
 import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.analysis.plot.Plot;
 import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
 import org.moeaframework.analysis.runtime.Instrumenter;
-import org.moeaframework.analysis.runtime.Observations;
+import org.moeaframework.analysis.viewer.RuntimeViewer;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
 
 /**
- * Displays a plot showing the hypervolume and generational distance runtime dynamics.
+ * Displays a plot showing the convergence of NSGA-II on the UF1 test problem at each iteration.
  */
-public class PlotRuntimeDynamics {
+public class RuntimeViewerExample {
 
 	public static void main(String[] args) throws IOException {
+		// Setup the problem and algorithm
 		Problem problem = new DTLZ2(2);
-		
-		Instrumenter instrumenter = new Instrumenter()
-		    .withReferenceSet("./pf/DTLZ2.2D.pf")
-		    .withFrequency(100)
-		    .attachHypervolumeCollector()
-		    .attachGenerationalDistanceCollector();
-				
 		NSGAII algorithm = new NSGAII(problem);
-				
+		
+		// Instrument the algorithm to collect the hypervolume and generational distance
+		Instrumenter instrumenter = new Instrumenter()
+				.withReferenceSet("pf/DTLZ2.2D.pf")
+				.withFrequency(100)
+				.attachApproximationSetCollector();
+		
 		InstrumentedAlgorithm<NSGAII> instrumentedAlgorithm = instrumenter.instrument(algorithm);
 		instrumentedAlgorithm.run(10000);
-				
-		Observations observations = instrumentedAlgorithm.getObservations();
-				
-		new Plot()
-		    .add(observations)
-		    .show();
+		
+		// Use the RuntimeViewer to show the approximation sets
+		RuntimeViewer.show("NSGAII on UF1",
+				instrumenter.getReferenceSet(),
+				instrumenter.getObservations());
 	}
 
 }

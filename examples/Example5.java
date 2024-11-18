@@ -18,45 +18,31 @@
 import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
-import org.moeaframework.analysis.runtime.Instrumenter;
-import org.moeaframework.problem.CEC2009.UF1;
+import org.moeaframework.core.TypedProperties;
+import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
 
 /**
- * The prior examples demonstrated how to collect the end-of-run result from an
- * algorithm.  We can also use the Instrumenter class to collect runtime dynamics
- * as the algorithm is running.  This includes, but is not limited to:
- * 
- * 1. The number of function evaluations,
- * 2. The elapsed time,
- * 3. Quality indicators (hypervolume, generational distance, etc.), and
- * 4. The Pareto front.
- * 
- * In this example, we will record the generational distance every 100 function
- * evaluations (the frequency) while solving the UF1 problem with NSGA-II.
- * The results are then displayed to the console in a table.
+ * Similar to the previous example, we can also configure an algorithm using properties.  While the end result is the
+ * same, properties are more flexible since we can use sampling strategies to generate these properties (as later
+ * examples demonstrate).
  */
 public class Example5 {
 
-	public static void main(String[] args) throws IOException {		
-		// Setup the problem and algorithm
-		Problem problem = new UF1();
+	public static void main(String[] args) throws IOException {
+		Problem problem = new DTLZ2(2);
 		NSGAII algorithm = new NSGAII(problem);
 		
-		// Instrument the algorithm to collect the generational distance
-		Instrumenter instrumenter = new Instrumenter()
-				.withReferenceSet("pf/UF1.pf")
-				.withFrequency(100)
-				.attachGenerationalDistanceCollector();
-		
-		InstrumentedAlgorithm<NSGAII> instrumentedAlgorithm =
-				instrumenter.instrument(algorithm);
-		
-		instrumentedAlgorithm.run(10000);
-		
-		// Display the runtime dynamics
-		instrumentedAlgorithm.getObservations().display();
+		TypedProperties properties = new TypedProperties();
+		properties.setInt("populationSize", 250);
+		properties.setString("operator", "pcx");
+		properties.setInt("pcx.parents", 10);
+		properties.setInt("pcx.offspring", 2);
+				
+		algorithm.applyConfiguration(properties);
+			
+		algorithm.run(10000);
+		algorithm.getResult().display();
 	}
 
 }

@@ -30,10 +30,10 @@ Var1     Var2     Var3     Var4     Var5     Var6     Var7     Var8     Var9    
 ## Performance indicators
 
 We can also measure the quality of the resulting Pareto non-dominated solutions using one or more performance
-indicators, such as Hypervolume.  The `Indicators` class is a convenient way to calculate and display the
-performance indicator values.  We can select specific indicators or enable all.
+indicators, such as Hypervolume.  The `Indicators` class is a convenient way to calculate and display the performance
+indicator values.  We can select specific indicators or enable all.
 
-<!-- java:examples/Example2.java [36:47] -->
+<!-- java:examples/Example2.java [34:45] -->
 
 ```java
 Problem problem = new DTLZ2(2);
@@ -44,7 +44,6 @@ algorithm.run(10000);
 NondominatedPopulation approximationSet = algorithm.getResult();
 
 NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/DTLZ2.2D.pf");
-
 Indicators indicators = Indicators.all(problem, referenceSet);
 indicators.apply(approximationSet).display();
 ```
@@ -70,12 +69,12 @@ R3Indicator                      0.000419
 
 ## Configuring Algorithms
 
-While this looks simple, there is a lot going on behind the scenes.  When we create a new instance of the NSGA-II algorithm, it 
-inspects the problem to determine its type and supplies the recommended variation operators and parameters.  In this example,
-since the problem is real-valued, it will use Simulated Binary Crossover (SBX) and Polynomial Mutation (PM).  We can confirm
-this by viewing the configuration:
+While this looks simple, there is a lot going on behind the scenes.  When we create a new instance of the NSGA-II
+algorithm, it inspects the problem to determine its type and supplies the recommended variation operators and
+parameters.  In this example, since the problem is real-valued, it will use Simulated Binary Crossover (SBX) and
+Polynomial Mutation (PM).  We can confirm this by viewing the configuration:
 
-<!-- java:examples/org/moeaframework/examples/configuration/GetConfigurationExample.java [32:35] -->
+<!-- java:examples/Example3.java [31:34] -->
 
 ```java
 Problem problem = new DTLZ2(2);
@@ -87,29 +86,32 @@ algorithm.getConfiguration().display();
 ```
 Property              Value               
 --------------------- ------------------- 
+algorithm             NSGA-II             
 operator              sbx+pm              
 pm.distributionIndex  20.0                
 pm.rate               0.09090909090909091 
 populationSize        100                 
+problem               DTLZ2_2             
 sbx.distributionIndex 15.0                
 sbx.rate              1.0                 
 sbx.swap              true                
-sbx.symmetric         false               
+sbx.symmetric         false                   
 ```
 
 What if we want to run this algorithm with a different configuration?  We can simply call the setter methods.
 Here we change the initial population size and set the variation operator to Parent Centric Crossover (PCX):
 
-<!-- java:examples/org/moeaframework/examples/configuration/SetConfigurationExample.java [33:40] -->
+<!-- java:examples/Example4.java [32:40] -->
 
 ```java
 Problem problem = new DTLZ2(2);
 
 NSGAII algorithm = new NSGAII(problem);
 algorithm.setInitialPopulationSize(250);
-algorithm.setVariation(new PCX(10, 2));
+algorithm.setVariation(new PCX(5, 2));
 
 algorithm.run(10000);
+
 algorithm.getResult().display();
 ```
 
@@ -117,7 +119,7 @@ Alternatively, similar to how we read the current configuration with `getConfigu
 different settings with `applyConfiguration`.  For example, the following results in the same setup
 as the previous example:
 
-<!-- java:examples/org/moeaframework/examples/configuration/ApplyConfigurationExample.java [33:45] -->
+<!-- java:examples/Example5.java [33:45] -->
 
 ```java
 Problem problem = new DTLZ2(2);

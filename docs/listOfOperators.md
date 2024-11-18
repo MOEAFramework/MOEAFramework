@@ -9,15 +9,15 @@ by combining multiple operators.
 The selected operator and its configuration can be changed.  First, we can call the setter with the operator, passing
 any parameters into the constructor.
 
-<!-- java:examples/org/moeaframework/examples/configuration/SetConfigurationExample.java [37:37] -->
+<!-- java:examples/Example4.java [36:36] -->
 
 ```java
-algorithm.setVariation(new PCX(10, 2));
+algorithm.setVariation(new PCX(5, 2));
 ```
 
 Alternatively, we can apply a configuration using the properties:
 
-<!-- java:examples/org/moeaframework/examples/configuration/ApplyConfigurationExample.java [36:42] -->
+<!-- java:examples/Example5.java [36:42] -->
 
 ```java
 TypedProperties properties = new TypedProperties();

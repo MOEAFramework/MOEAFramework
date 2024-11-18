@@ -23,68 +23,39 @@ new Plot()
 
 ![image](https://github.com/MOEAFramework/MOEAFramework/assets/2496211/8c622569-07d6-4e0d-8b04-6663caf2c21a)
 
-### Runtime Dynamics
-
-Here we plot the runtime dynamics showing the hypervolume and generational distance metrics as NSGA-II solves the
-2-objective DTLZ2 problem:
-
-<!-- java:examples/org/moeaframework/examples/plots/PlotRuntimeDynamics.java [36:53] -->
-
-```java
-Problem problem = new DTLZ2(2);
-
-Instrumenter instrumenter = new Instrumenter()
-    .withReferenceSet("./pf/DTLZ2.2D.pf")
-    .withFrequency(100)
-    .attachHypervolumeCollector()
-    .attachGenerationalDistanceCollector();
-
-NSGAII algorithm = new NSGAII(problem);
-
-InstrumentedAlgorithm<NSGAII> instrumentedAlgorithm = instrumenter.instrument(algorithm);
-instrumentedAlgorithm.run(10000);
-
-Observations observations = instrumentedAlgorithm.getObservations();
-
-new Plot()
-    .add(observations)
-    .show();
-```
-
-![image](https://github.com/MOEAFramework/MOEAFramework/assets/2496211/e7a5f079-b44d-434b-a359-5c8744e5cc6b)
-
 ### Control Maps
 
 Finally, here is a control map plot showing how two parameters, `maxEvaluations` and `populationSize`, affect the
 performance of the algorithm (lighter-colored areas indicate better results).
 
-<!-- java:examples/org/moeaframework/examples/plots/PlotControlMap.java [36:59] -->
+<!-- java:examples/org/moeaframework/examples/plots/PlotControlMap.java [35:59] -->
 
 ```java
-Problem problem = new DTLZ2(2);
-Hypervolume hypervolume = new Hypervolume(problem, NondominatedPopulation.load("./pf/DTLZ2.2D.pf"));
+public static void main(String[] args) throws Exception {
+    Problem problem = new DTLZ2(2);
+    Hypervolume hypervolume = new Hypervolume(problem, NondominatedPopulation.load("./pf/DTLZ2.2D.pf"));
 
-double[] x = IntStream.range(0, 50).mapToDouble(i -> 100 * (i+1)).toArray();
-double[] y = IntStream.range(0, 50).mapToDouble(i -> 4 * (i+1)).toArray();
-double[][] z = new double[x.length][y.length];
+    double[] x = IntStream.range(0, 50).mapToDouble(i -> 100 * (i+1)).toArray();
+    double[] y = IntStream.range(0, 50).mapToDouble(i -> 4 * (i+1)).toArray();
+    double[][] z = new double[x.length][y.length];
 
-for (int i = 0; i < x.length; i++) {
-    for (int j = 0; j < y.length; j++) {
-        System.out.println("Evaluating run " + (i * y.length + j + 1) + " of " + (x.length * y.length));
+    for (int i = 0; i < x.length; i++) {
+        for (int j = 0; j < y.length; j++) {
+            System.out.println("Evaluating run " + (i * y.length + j + 1) + " of " + (x.length * y.length));
 
-        NSGAII algorithm = new NSGAII(problem);
-        algorithm.setInitialPopulationSize((int)y[j]);
-        algorithm.run((int)x[i]);
+            NSGAII algorithm = new NSGAII(problem);
+            algorithm.setInitialPopulationSize((int)y[j]);
+            algorithm.run((int)x[i]);
 
-        z[i][j] = hypervolume.evaluate(algorithm.getResult());
+            z[i][j] = hypervolume.evaluate(algorithm.getResult());
+        }
     }
-}
 
-new Plot()
-    .heatMap("Hypervolume", x, y, z)
-    .setXLabel("Max Evaluations")
-    .setYLabel("Population Size")
-    .show();
+    new Plot()
+        .heatMap("Hypervolume", x, y, z)
+        .setXLabel("Max Evaluations")
+        .setYLabel("Population Size")
+        .show();
 ```
 
 ![image](https://github.com/MOEAFramework/MOEAFramework/assets/2496211/a60c9866-6d94-4b3e-ac20-d2318d0f6c75)

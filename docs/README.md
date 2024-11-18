@@ -5,7 +5,8 @@
 * [Release Notes](releaseNotes.md)
 * [Setup](setup.md)
 * [An Example](example.md)
-* [Running Experiments](runningExperiments.md)
+* [Performance Indicators](indicators.md)
+* [Collecting Runtime Data](runtime.md)
 * [Plotting and Visualizations](visualizations.md)
 * [Parallelization and Island Model](parallelizationStrategies.md)
 * [Single-Objective Optimization](singleObjectiveOptimization.md)
@@ -20,10 +21,10 @@
   * [Injecting Initial Solutions](miscellaneousTopics.md#injecting-initial-solutions)
   * [Mixed Types](miscellaneousTopics.md#mixed-types)
   * [Termination Conditions](miscellaneousTopics.md#termination-conditions)
-  * [Reference Sets](miscellaneousTopics.md#reference-sets)
-  * [Normalization](miscellaneousTopics.md#normalization)
 * [Sensitivity Analysis](sensitivityAnalysis.md)
 * [Troubleshooting](troubleshooting.md)
+
+* [Running Experiments](runningExperiments.md)
 
 ## References
 * [List of Decision Variables](listOfDecisionVariables.md)

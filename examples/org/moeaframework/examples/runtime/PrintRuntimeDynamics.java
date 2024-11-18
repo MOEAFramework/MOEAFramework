@@ -15,24 +15,38 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.examples.configuration;
+package org.moeaframework.examples.runtime;
 
 import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
+import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
+import org.moeaframework.analysis.runtime.Instrumenter;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
 
 /**
- * Demonstrates getting and displaying the current configuration of an algorithm.
+ * Collects runtime data using the Instrumenter and print it to the console.
  */
-public class GetConfigurationExample {
-	
+public class PrintRuntimeDynamics {
+
 	public static void main(String[] args) throws IOException {
+		// Setup the problem and algorithm
 		Problem problem = new DTLZ2(2);
 		NSGAII algorithm = new NSGAII(problem);
 		
-		algorithm.getConfiguration().display();
+		// Instrument the algorithm to collect the hypervolume and generational distance
+		Instrumenter instrumenter = new Instrumenter()
+				.withReferenceSet("pf/DTLZ2.2D.pf")
+				.withFrequency(100)
+				.attachHypervolumeCollector()
+				.attachGenerationalDistanceCollector();
+		
+		InstrumentedAlgorithm<NSGAII> instrumentedAlgorithm = instrumenter.instrument(algorithm);
+		instrumentedAlgorithm.run(10000);
+		
+		// Print the runtime dynamics
+		instrumentedAlgorithm.getObservations().display();
 	}
 
 }

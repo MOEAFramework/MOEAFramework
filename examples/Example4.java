@@ -17,50 +17,27 @@
  */
 import java.io.IOException;
 
-import org.moeaframework.algorithm.MOEAD;
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.algorithm.pso.OMOPSO;
-import org.moeaframework.analysis.IndicatorStatistics;
-import org.moeaframework.core.PRNG;
-import org.moeaframework.core.indicator.Hypervolume;
-import org.moeaframework.core.population.NondominatedPopulation;
-import org.moeaframework.problem.CEC2009.UF1;
+import org.moeaframework.core.operator.real.PCX;
+import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
 
 /**
- * In Example 2, we computed the hypervolume and generational distance for a single
- * run.  We can perform more extensive experiments comparing multiple algorithms
- * using multiple random seeds to statistically compare results.
+ * Algorithms can be configured using their setter methods.  In this example, we set up NSGA-II with an initial
+ * population of 250 and change the variation operator to Parent Centric Crossover (PCX).
  */
 public class Example4 {
 
 	public static void main(String[] args) throws IOException {
-		Problem problem = new UF1();
-		NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/UF1.pf");
-
-		// Collect statistics for the hypervolume indicator
-		Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
-		IndicatorStatistics statistics = new IndicatorStatistics(hypervolume);
+		Problem problem = new DTLZ2(2);
 		
-		// Run each algorithm with 10 random seeds
-		for (int seed = 0; seed < 10; seed++) {
-			PRNG.setSeed(seed);
-			
-			NSGAII algorithm1 = new NSGAII(problem);
-			algorithm1.run(10000);
-			statistics.add("NSGA-II", algorithm1.getResult());
-			
-			MOEAD algorithm2 = new MOEAD(problem);
-			algorithm2.run(10000);
-			statistics.add("MOEA/D", algorithm2.getResult());
-			
-			OMOPSO algorithm3 = new OMOPSO(problem);
-			algorithm3.run(10000);
-			statistics.add("OMOPSO", algorithm3.getResult());
-		}
+		NSGAII algorithm = new NSGAII(problem);
+		algorithm.setInitialPopulationSize(250);
+		algorithm.setVariation(new PCX(5, 2));
+		
+		algorithm.run(10000);
 
-		// Display the statistics
-		statistics.display();
+		algorithm.getResult().display();
 	}
-	
+
 }
