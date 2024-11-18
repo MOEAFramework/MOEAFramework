@@ -3,10 +3,11 @@
 By default, the MOEA Framework is single-threaded.  Solving a problem in the manner below will use a single core on
 your computer:
 
-<!-- java:examples/org/moeaframework/examples/parallel/ParallelizationExample.java [45:46] -->
+<!-- java:examples/org/moeaframework/examples/parallel/ParallelizationExample.java [43:44] -->
 
 ```java
-serialTimer.stop();
+NSGAII serialAlgorithm = new NSGAII(problem);
+serialAlgorithm.run(100000);
 ```
 
 This is typically fine for test problems, but custom problems can quickly become computationally expensive.  Let's
@@ -18,12 +19,13 @@ Perhaps the most straightforward approach to speeding up evaluations is to distr
 evaluations across multiple cores.  Most consumer CPUs today have multiple cores (and even multiple threads per core!).
 We can distribute function evaluations using the `DistributedProblem` class:
 
-<!-- java:examples/org/moeaframework/examples/parallel/ParallelizationExample.java [56:59] -->
+<!-- java:examples/org/moeaframework/examples/parallel/ParallelizationExample.java [53:56] -->
 
 ```java
+try (Problem distributedProblem = DistributedProblem.from(problem)) {
+    NSGAII distributedAlgorithm = new NSGAII(distributedProblem);
+    distributedAlgorithm.run(100000);
 }
-
-parallelTimer.stop();
 ```
 
 There are a few key points to call out:
@@ -80,25 +82,24 @@ island-model parallelization runs multiple algorithm instances in parallel.  The
 island-model using NSGA-II.  More advanced configurations can be used, altering the island topology and migration
 strategy, or even using different optimization algorithms on each island.
 
-<!-- java:examples/org/moeaframework/examples/parallel/IslandModelExample.java [44:62] -->
+<!-- java:examples/org/moeaframework/examples/parallel/IslandModelExample.java [44:60] -->
 
 ```java
-    Problem problem = new UF1();
+Problem problem = new UF1();
 
-    Selection migrationSelection = new TournamentSelection(2, new ChainedComparator(
-                new ParetoDominanceComparator(), new CrowdingComparator()));
+Selection migrationSelection = new TournamentSelection(2, new ChainedComparator(
+            new ParetoDominanceComparator(), new CrowdingComparator()));
 
-    Migration migration = new SingleNeighborMigration(1, migrationSelection);
-    Topology topology = new FullyConnectedTopology();
-    IslandModel model = new IslandModel(1000, migration, topology);
+Migration migration = new SingleNeighborMigration(1, migrationSelection);
+Topology topology = new FullyConnectedTopology();
+IslandModel model = new IslandModel(1000, migration, topology);
 
-    for (int i = 0; i < 8; i++) {
-        NSGAII algorithm = new NSGAII(problem);
-        model.addIsland(new Island(algorithm, algorithm.getPopulation()));
-    }
+for (int i = 0; i < 8; i++) {
+    NSGAII algorithm = new NSGAII(problem);
+    model.addIsland(new Island(algorithm, algorithm.getPopulation()));
+}
 
-    try (ThreadedIslandExecutor executor = new ThreadedIslandExecutor(model)) {
-        executor.run(100000).display();
-    }
+try (ThreadedIslandExecutor executor = new ThreadedIslandExecutor(model)) {
+    executor.run(100000).display();
 }
 ```
