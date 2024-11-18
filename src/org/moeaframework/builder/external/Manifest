@@ -4,5 +4,5 @@ Problem.template -> src/${packagePath}/${problemName}.java
 ../shared/ProblemProvider.template -> src/${packagePath}/${problemName}Provider.java
 ../shared/Service.template -> META-INF/services/org.moeaframework.problem.ProblemProvider
 ../shared/Example.template -> src/${packagePath}/Example.java
-!examples/moeaframework.c -> moeaframework.c
-!examples/moeaframework.h -> moeaframework.h
+moeaframework.c -> moeaframework.c
+moeaframework.h -> moeaframework.h

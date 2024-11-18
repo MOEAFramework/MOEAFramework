@@ -11,12 +11,13 @@ CC := gcc
 CPP := g++
 CFLAGS := -O3 -Wall -Werror -DMOEA_BUFFER_SIZE=16
 LIBS = 
+EXTERNAL = src/org/moeaframework/builder/external
 
-ifeq ("$(wildcard $(ROOT)/examples)","")
+ifeq ("$(wildcard $(ROOT)/src)","")
     override ROOT := $(ROOT)/../..
 endif
 
-ifeq ("$(wildcard $(ROOT)/examples)","")
+ifeq ("$(wildcard $(ROOT)/src)","")
     $(error Unable to locate the MOEA Framework root directory.  Specify the path by running 'make ROOT=<path>')
 else
     $(info Found the MOEA Framework root directory at "$(ROOT)")
@@ -31,11 +32,11 @@ main: test_stdio.exe test_socket.exe test_cpp.exe
 clean:
 	rm -f test_stdio.exe test_socket.exe test_cpp.exe
 
-test_stdio.exe: test.c $(ROOT)/examples/moeaframework.c
-	$(CC) $(CFLAGS) -o test_stdio.exe -I $(ROOT)/examples test.c $(ROOT)/examples/moeaframework.c $(LIBS)
+test_stdio.exe: test.c $(ROOT)/$(EXTERNAL)/moeaframework.c
+	$(CC) $(CFLAGS) -o test_stdio.exe -I $(ROOT)/$(EXTERNAL) test.c $(ROOT)/$(EXTERNAL)/moeaframework.c $(LIBS)
 	
-test_socket.exe: test.c $(ROOT)/examples/moeaframework.c
-	$(CC) $(CFLAGS) -DUSE_SOCKET -o test_socket.exe -I $(ROOT)/examples test.c $(ROOT)/examples/moeaframework.c $(LIBS)
+test_socket.exe: test.c $(ROOT)/$(EXTERNAL)/moeaframework.c
+	$(CC) $(CFLAGS) -DUSE_SOCKET -o test_socket.exe -I $(ROOT)/$(EXTERNAL) test.c $(ROOT)/$(EXTERNAL)/moeaframework.c $(LIBS)
 
-test_cpp.exe: test.c $(ROOT)/examples/moeaframework.c
-	$(CPP) $(CFLAGS) -o test_cpp.exe -I $(ROOT)/examples test.c $(ROOT)/examples/moeaframework.c $(LIBS)
+test_cpp.exe: test.c $(ROOT)/$(EXTERNAL)/moeaframework.c
+	$(CPP) $(CFLAGS) -o test_cpp.exe -I $(ROOT)/$(EXTERNAL) test.c $(ROOT)/$(EXTERNAL)/moeaframework.c $(LIBS)

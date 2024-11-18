@@ -1,8 +1,5 @@
 # Creating and Using Extensions
 
-> [!IMPORTANT]  
-> Extensions were introduced in version 4.5.  Please upgrade if using an earlier version.
-
 ## What are Extensions?
 
 Extensions provide a way to extend or augment the functionality of an algorithm by plugging into specific

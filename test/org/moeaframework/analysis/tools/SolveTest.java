@@ -30,7 +30,6 @@ import org.apache.commons.cli.ParseException;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
-import org.moeaframework.Make;
 import org.moeaframework.TempFiles;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.analysis.io.ResultFileReader;
@@ -41,6 +40,8 @@ import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.core.variable.Variable;
 import org.moeaframework.problem.Problem;
+import org.moeaframework.util.io.Resources;
+import org.moeaframework.util.io.Resources.ResourceOption;
 
 public class SolveTest {
 
@@ -121,14 +122,9 @@ public class SolveTest {
 	
 	@Test
 	public void testExternalProblemWithLowerAndUpperBounds() throws Exception {
-		Assume.assumeMakeExists();
+		Assume.assumePythonExists();
 		
-		File executable = new File("./examples/dtlz2_stdio.exe");
-		
-		if (!executable.exists()) {
-			Make.runMake(executable.getParentFile());
-		}
-		
+		File script = Resources.asFile(getClass(), "dtlz2.py", ResourceOption.FILE, ResourceOption.TEMPORARY);
 		File outputFile = TempFiles.createFile();
 		
 		Solve.main(new String[] {
@@ -138,21 +134,16 @@ public class SolveTest {
 				"-o", "2",
 				"-n", "1000",
 				"-f", outputFile.getPath(),
-				executable.getPath() });
+				"python " + script.getPath() });
 		
 		checkOutput(outputFile);
 	}
 	
 	@Test
 	public void testExternalProblemWithVariables() throws Exception {
-		Assume.assumeMakeExists();
+		Assume.assumePythonExists();
 		
-		File executable = new File("./examples/dtlz2_stdio.exe");
-		
-		if (!executable.exists()) {
-			Make.runMake(executable.getParentFile());
-		}
-		
+		File script = Resources.asFile(getClass(), "dtlz2.py", ResourceOption.FILE, ResourceOption.TEMPORARY);
 		File outputFile = TempFiles.createFile();
 		
 		Solve.main(new String[] {
@@ -161,7 +152,7 @@ public class SolveTest {
 				"-o", "2",
 				"-n", "1000",
 				"-f", outputFile.getPath(),
-				executable.getPath() });
+				"python " + script.getPath() });
 		
 		checkOutput(outputFile);
 	}
