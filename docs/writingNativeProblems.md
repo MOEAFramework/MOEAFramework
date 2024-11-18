@@ -30,7 +30,7 @@ Language | Default Compiler | Notes
 C        | `gcc`            | C function
 CPP      | `g++`            | C++ function.  Output includes `.c` and `.h` file
 Fortran  | `gfortran`       | Fortran90 function
-Java     | `javac`          | Java problem definition (see [Writing Problems in Java](writingJavaProblem.md))
+Java     | `javac`          | Java problem definition (see [Writing Problems in Java](writingJavaProblems.md))
 Python   |                  | Python program using Standard I/O
 External |                  | External C/C++ problem using Standard I/O
 Matlab   |                  | Uses `MatlabEngine` to call Matlab function (**experimental**)

@@ -119,7 +119,7 @@ This page documents notable changes introduced in each chronological release of 
   * Other notable changes include:
   
     * Adds ProblemBuilder tool that generates templates for writing problems in C, C++, Fortran, Java,
-      and Python.  See the [Writing Native Problems](writingNativeProblem.md) documentation for more
+      and Python.  See the [Writing Native Problems](writingNativeProblems.md) documentation for more
       details.
   
     * Adds the `Indicators` class to simplify calculating performance indicators.
