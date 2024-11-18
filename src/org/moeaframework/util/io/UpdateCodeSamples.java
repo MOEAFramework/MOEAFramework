@@ -641,6 +641,10 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			formatFlags.addAll(FormatFlag.fromFormatString(str));
 		}
 		
+		public boolean truncated() {
+			return formatFlags.contains(FormatFlag.Truncated);
+		}
+		
 		/**
 		 * Returns {@code true} if comments are stripped from code blocks.
 		 * 
@@ -743,6 +747,10 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			
 			if (replaceTabsWithSpaces()) {
 				lines = language.replaceTabsWithSpaces(lines);
+			}
+			
+			if (truncated()) {
+				lines.add("...");
 			}
 			
 			fileType.wrapInCodeBlock(lines, this);
@@ -928,7 +936,12 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		/**
 		 * Keeps tabs.  By default, the formatter replaces tabs with spaces.
 		 */
-		KeepTabs;
+		KeepTabs,
+		
+		/**
+		 * Displays an ellipsis (...) to indicate the result is truncated.
+		 */
+		Truncated;
 		
 		/**
 		 * Determine the format flag from its string representation using case-insensitive matching.

@@ -25,7 +25,7 @@ System.out.println("Hypervolume: " + hypervolume.evaluate(approximationSet));
 
 Or use the `Indicators` class as a way to compute multiple performance indicators at the same time.  
 
-<!-- java:examples/Example2.java [34:45] -->
+<!-- java:examples/Example3.java [34:45] -->
 
 ```java
 Problem problem = new DTLZ2(2);
@@ -40,7 +40,7 @@ Indicators indicators = Indicators.all(problem, referenceSet);
 indicators.apply(approximationSet).display();
 ```
 
-<!-- output:examples/Example2.java -->
+<!-- output:examples/Example3.java -->
 
 ```
 Indicator                        Value

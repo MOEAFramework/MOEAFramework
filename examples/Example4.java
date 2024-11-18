@@ -18,26 +18,20 @@
 import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.core.operator.real.PCX;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
 
 /**
- * Algorithms can be configured using their setter methods.  In this example, we set up NSGA-II with an initial
- * population of 250 and change the variation operator to Parent Centric Crossover (PCX).
+ * When constructing an algorithm, it is configured with default parameters such as the initial population size and
+ * variation operators.  Here we query and display the initial configuration.
  */
 public class Example4 {
-
+	
 	public static void main(String[] args) throws IOException {
 		Problem problem = new DTLZ2(2);
-		
 		NSGAII algorithm = new NSGAII(problem);
-		algorithm.setInitialPopulationSize(250);
-		algorithm.setVariation(new PCX(5, 2));
 		
-		algorithm.run(10000);
-
-		algorithm.getResult().display();
+		algorithm.getConfiguration().display();
 	}
 
 }

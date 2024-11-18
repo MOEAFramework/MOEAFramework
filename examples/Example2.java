@@ -18,32 +18,24 @@
 import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.core.indicator.Indicators;
-import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.analysis.plot.Plot;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
 
 /**
- * Performance indicators are used to compare results between different algorithms.  Here, we calculate the indicators
- * in relation to a known reference set. These reference sets contain optimal solutions to the problem.  Reference sets
- * for most test problems can be found in the ./pf/ directory.
+ * Demonstrates displaying the end-of-run approximation set in a plot.
  */
 public class Example2 {
 
 	public static void main(String[] args) throws IOException {
-		// solve the 2-D DTLZ2 problem
 		Problem problem = new DTLZ2(2);
 		
 		NSGAII algorithm = new NSGAII(problem);
 		algorithm.run(10000);
 		
-		NondominatedPopulation approximationSet = algorithm.getResult();
-		
-		// load the reference set and evaluate the quality indicators
-		NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/DTLZ2.2D.pf");
-		Indicators indicators = Indicators.all(problem, referenceSet);
-		indicators.apply(approximationSet).display();
-		
+		new Plot()
+			.add("NSGA-II", algorithm.getResult())
+			.show();
 	}
 
 }

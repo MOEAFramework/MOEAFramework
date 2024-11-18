@@ -38,7 +38,7 @@ algorithm.run(10000);
 
 Running this code produces the following output:
 
-<!-- output:examples/org/moeaframework/examples/extensions/CustomExtensionExample.java [:10] -->
+<!-- output:examples/org/moeaframework/examples/extensions/CustomExtensionExample.java [:10] {Truncated} -->
 
 ```
 NFE: 100, Nondominated Solutions: 11
@@ -51,6 +51,7 @@ NFE: 700, Nondominated Solutions: 100
 NFE: 800, Nondominated Solutions: 100
 NFE: 900, Nondominated Solutions: 100
 NFE: 1000, Nondominated Solutions: 100
+...
 ```
 
 ## Extension Points

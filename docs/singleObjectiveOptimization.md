@@ -130,7 +130,7 @@ algorithm.getResult().display();
 Since this essentially is solving the problem using `50` genetic algorithms with different weights, we expect to
 get `50` Pareto optimal solutions:
 
-<!-- output:examples/org/moeaframework/examples/single/RepeatedSingleObjectiveExample.java [:7] -->
+<!-- output:examples/org/moeaframework/examples/single/RepeatedSingleObjectiveExample.java [:7] {Truncated} -->
 
 ```
 Var1     Var2     Var3     Var4     Var5     Var6     Var7     Var8     Var9     Var10    Var11    Obj1     Obj2
@@ -140,4 +140,5 @@ Var1     Var2     Var3     Var4     Var5     Var6     Var7     Var8     Var9    
 0.010852 0.456152 0.539906 0.487323 0.509044 0.486386 0.502341 0.485789 0.455131 0.505509 0.492831 1.006099 0.017152
 0.100449 0.512263 0.477734 0.456705 0.511608 0.551392 0.516108 0.519335 0.512558 0.467112 0.522962 0.995179 0.158340
 0.097464 0.529165 0.488107 0.469683 0.518976 0.496194 0.541695 0.571284 0.513365 0.519407 0.510400 0.997959 0.153988
+...
 ```

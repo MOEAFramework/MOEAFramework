@@ -12,11 +12,11 @@ and specify what to collect.  Here, we collect the hypervolume and generational 
 <!-- java:examples/org/moeaframework/examples/runtime/PrintRuntimeDynamics.java [34:49] -->
 
 ```java
-Problem problem = new DTLZ2(2);
+Problem problem = new UF1();
 NSGAII algorithm = new NSGAII(problem);
 
 Instrumenter instrumenter = new Instrumenter()
-        .withReferenceSet("pf/DTLZ2.2D.pf")
+        .withReferenceSet("pf/UF1.pf")
         .withFrequency(100)
         .attachHypervolumeCollector()
         .attachGenerationalDistanceCollector();
@@ -31,21 +31,22 @@ Observe how we use the `Instrumenter` to instrument the algorithm, receiving bac
 handles collecting the data as the algorithm runs, returning the data as `Observations`.  Calling `display()` prints
 a table with the data:
 
-<!-- output:examples/org/moeaframework/examples/runtime/PrintRuntimeDynamics.java [:12] -->
+<!-- output:examples/org/moeaframework/examples/runtime/PrintRuntimeDynamics.java [:12] {Truncated} -->
 
 ```
 NFE   GenerationalDistance Hypervolume
 ----- -------------------- -----------
-100   0.151459             0.000000
-200   0.137644             0.000000
-300   0.122702             0.000000
-400   0.102731             0.003740
-500   0.083064             0.003740
-600   0.070741             0.010701
-700   0.055458             0.022142
-800   0.033471             0.062235
-900   0.028945             0.072104
-1000  0.023840             0.080322
+100   0.799030             0.000000
+200   0.707753             0.000000
+300   0.438113             0.000000
+400   0.383873             0.000000
+500   0.431799             0.000000
+600   0.372148             0.000000
+700   0.344861             0.000000
+800   0.294252             0.000000
+900   0.294386             0.000000
+1000  0.293309             0.000000
+...
 ```
 
 Alternatively, we can pass the observations to the `Plot` class to produce a line graph of the runtime data:
@@ -68,11 +69,11 @@ plot showing the convergence of the approximation set.
 <!-- java:examples/org/moeaframework/examples/runtime/RuntimeViewerExample.java [35:51] -->
 
 ```java
-Problem problem = new DTLZ2(2);
+Problem problem = new UF1();
 NSGAII algorithm = new NSGAII(problem);
 
 Instrumenter instrumenter = new Instrumenter()
-        .withReferenceSet("pf/DTLZ2.2D.pf")
+        .withReferenceSet("pf/UF1.pf")
         .withFrequency(100)
         .attachApproximationSetCollector();
 

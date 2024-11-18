@@ -22,7 +22,7 @@ Each algorithm has a collection of parameters (called properties) used to config
 population size, mutation and crossover rates, etc.  We can create and configure these algorithms by calling their
 setter methods:
 
-<!-- java:examples/Example4.java [32:40] -->
+<!-- java:examples/Example5.java [32:40] -->
 
 ```java
 Problem problem = new DTLZ2(2);
@@ -38,7 +38,7 @@ algorithm.getResult().display();
 
 Alternatively, we can use `applyConfiguration` to configure algorithms using properties:
 
-<!-- java:examples/Example5.java [33:45] -->
+<!-- java:examples/Example6.java [33:45] -->
 
 ```java
 Problem problem = new DTLZ2(2);

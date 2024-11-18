@@ -15,7 +15,7 @@ algorithm.getResult().display();
 
 The last line gets the Pareto non-dominated solutions to the problem and displays them in the terminal.
 
-<!-- output:examples/Example1.java [:7] -->
+<!-- output:examples/Example1.java [:7] {Truncated} -->
 
 ```
 Var1     Var2     Var3     Var4     Var5     Var6     Var7     Var8     Var9     Var10    Var11    Obj1     Obj2
@@ -25,7 +25,20 @@ Var1     Var2     Var3     Var4     Var5     Var6     Var7     Var8     Var9    
 0.242941 0.486582 0.498399 0.510138 0.518632 0.499523 0.501980 0.504977 0.503947 0.499732 0.501241 0.928696 0.372669
 0.178412 0.513125 0.503748 0.492867 0.499933 0.500295 0.502367 0.494850 0.468585 0.501130 0.508556 0.962265 0.276964
 0.256213 0.496450 0.504902 0.490998 0.498558 0.511593 0.502198 0.496751 0.505202 0.500039 0.508656 0.920442 0.391828
+...
 ```
+
+Alternatively, we can create a 2D plot showing the results:
+
+<!-- java:examples/Example2.java [36:38] -->
+
+```java
+new Plot()
+    .add("NSGA-II", algorithm.getResult())
+    .show();
+```
+
+![Approximation Set Plot](imgs/plot-approximationSet.png)
 
 ## Performance indicators
 
@@ -33,7 +46,7 @@ We can also measure the quality of the resulting Pareto non-dominated solutions 
 indicators, such as Hypervolume.  The `Indicators` class is a convenient way to calculate and display the performance
 indicator values.  We can select specific indicators or enable all.
 
-<!-- java:examples/Example2.java [34:45] -->
+<!-- java:examples/Example3.java [34:45] -->
 
 ```java
 Problem problem = new DTLZ2(2);
@@ -48,7 +61,7 @@ Indicators indicators = Indicators.all(problem, referenceSet);
 indicators.apply(approximationSet).display();
 ```
 
-<!-- output:examples/Example2.java -->
+<!-- output:examples/Example3.java -->
 
 ```
 Indicator                        Value
@@ -74,7 +87,7 @@ algorithm, it inspects the problem to determine its type and supplies the recomm
 parameters.  In this example, since the problem is real-valued, it will use Simulated Binary Crossover (SBX) and
 Polynomial Mutation (PM).  We can confirm this by viewing the configuration:
 
-<!-- java:examples/Example3.java [31:34] -->
+<!-- java:examples/Example4.java [31:34] -->
 
 ```java
 Problem problem = new DTLZ2(2);
@@ -101,7 +114,7 @@ sbx.symmetric         false
 What if we want to run this algorithm with a different configuration?  We can simply call the setter methods.
 Here we change the initial population size and set the variation operator to Parent Centric Crossover (PCX):
 
-<!-- java:examples/Example4.java [32:40] -->
+<!-- java:examples/Example5.java [32:40] -->
 
 ```java
 Problem problem = new DTLZ2(2);
@@ -119,7 +132,7 @@ Alternatively, similar to how we read the current configuration with `getConfigu
 different settings with `applyConfiguration`.  For example, the following results in the same setup
 as the previous example:
 
-<!-- java:examples/Example5.java [33:45] -->
+<!-- java:examples/Example6.java [33:45] -->
 
 ```java
 Problem problem = new DTLZ2(2);

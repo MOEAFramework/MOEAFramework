@@ -18,30 +18,25 @@
 import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.core.TypedProperties;
+import org.moeaframework.core.operator.real.PCX;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
 
 /**
- * Similar to the previous example, we can also configure an algorithm using properties.  While the end result is the
- * same, properties are more flexible since we can use sampling strategies to generate these properties (as later
- * examples demonstrate).
+ * Algorithms can be configured using their setter methods.  In this example, we set up NSGA-II with an initial
+ * population of 250 and change the variation operator to Parent Centric Crossover (PCX).
  */
 public class Example5 {
 
 	public static void main(String[] args) throws IOException {
 		Problem problem = new DTLZ2(2);
-		NSGAII algorithm = new NSGAII(problem);
 		
-		TypedProperties properties = new TypedProperties();
-		properties.setInt("populationSize", 250);
-		properties.setString("operator", "pcx");
-		properties.setInt("pcx.parents", 10);
-		properties.setInt("pcx.offspring", 2);
-				
-		algorithm.applyConfiguration(properties);
-			
+		NSGAII algorithm = new NSGAII(problem);
+		algorithm.setInitialPopulationSize(250);
+		algorithm.setVariation(new PCX(5, 2));
+		
 		algorithm.run(10000);
+
 		algorithm.getResult().display();
 	}
 
