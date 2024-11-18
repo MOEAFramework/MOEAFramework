@@ -26,13 +26,13 @@ as the build error `<className> cannot be resolved to a type`, typically also sh
 
 To confirm this is the case, look for the file `src/module-info.java`:
 
-![image](https://github.com/MOEAFramework/MOEAFramework/assets/2496211/78d76409-b70a-4fa3-8a57-cc4df16df4c2)
+![image](imgs/troubleshooting-modules1.png)
 
 To fix, we recommend starting from scratch by deleting the broken project including the source directory.  Download
 and extract the MOEA Framework again, but when importing make sure you uncheck or disable modules.  For example, in
 Eclipse, you should uncheck the following:
 
-![image](https://github.com/MOEAFramework/MOEAFramework/assets/2496211/cab2283a-0dd4-4574-8720-d15f4c2657ab)
+![image](imgs/troubleshooting-modules2.png)
 
 ## Errors
 

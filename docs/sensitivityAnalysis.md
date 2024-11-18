@@ -13,11 +13,11 @@ graph LR
     classDef file fill:#fff
     A[(Parameter<br>File)]:::file --> B[GenerateSamples]
     B --> C[(Sample<br>File)]:::file
-    C --> D[Evaluator]
+    C --> D[EndOfRunEvaluator]
     D --> E[(Result<br>File)]:::file
-    E --> F[ResultFileEvaluator]
+    E --> F[MetricsEvaluator]
     F --> G[(Metric<br>File)]:::file
-    G --> H[Analysis]
+    G --> H[MetricsAnalysis]
     G --> I["SobolAnalysis<br>(requires saltelli method)"]
 ```
 
@@ -92,7 +92,7 @@ java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.MetricsEvaluator
 ## Controllability Analysis
 
 In our original sensitivity analysis study, we compared algorithms based on their attainment, efficiency, and
-controllability.  These values are computed using the `Analysis` tool.
+controllability.  These values are computed using the `MetricsAnalysis` tool.
 
 <!-- bash:examples/org/moeaframework/examples/experiment/sensitivity.sh [36:43] -->
 

@@ -58,7 +58,7 @@ new Plot()
     .show();
 ```
 
-![Performance Indicator Plot](imgs/runtime-lingegraph.png)
+![Performance Indicator Plot](imgs/runtime-linegraph.png)
 
 ## Visualizing Approximation Set Convergence
 
@@ -84,4 +84,21 @@ RuntimeViewer.show("NSGAII on UF1",
         instrumenter.getObservations());
 ```
 
-![Runtime Viewer](imgs/runtime-viewer.png)
+![Runtime Viewer](imgs/runtimeViewer.png)
+
+## Diagnostic Tool
+
+The Diagnostic Tool is a GUI that provides a convenient way to run and visualize the algorithms.  To start the
+Diagnostic Tool, run `launch-diagnostic-tool.bat` on Windows.  On other systems, run the following command from the
+terminal:
+
+<!-- bash:src/launch-diagnostic-tool.bat [2:2] -->
+
+```bash
+java -classpath "lib/*" org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool
+```
+
+Below is an example comparing NSGA-II and $\epsilon$-MOEA on the UF1 test problem.  Note how the controls on the
+left-hand side allow us to select and view different problems, algorithms, and quality indicators.
+
+![Runtime Viewer](imgs/diagnosticTool.png)
