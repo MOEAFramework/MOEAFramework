@@ -22,14 +22,12 @@ import org.moeaframework.core.comparator.LexicographicalComparator;
 import org.moeaframework.core.population.NondominatedPopulation;
 
 /**
- * Example of binary optimization on a single-objective additively
- * decomposable problem.
+ * Example of binary optimization on a single-objective additively decomposable problem.
  */
 public class AdditivelyDecomposableExample {
 	
 	public static void main(String[] args) {
-		AdditivelyDecomposableProblem problem =
-				new AdditivelyDecomposableProblem(22, 4, 2);
+		AdditivelyDecomposableProblem problem = new AdditivelyDecomposableProblem(22, 4, 2);
 		
 		GeneticAlgorithm algorithm = new GeneticAlgorithm(problem);
 		algorithm.run(100000);

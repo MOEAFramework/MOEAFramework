@@ -27,9 +27,7 @@ import org.moeaframework.util.io.Resources;
 import org.moeaframework.util.io.Resources.ResourceOption;
 
 /**
- * Example running the ant trail problem with the Santa Fe trail.  NSGA-II
- * isn't really designed for single-objective functions, but this serves as a
- * demonstration of genetic programming.
+ * Example running the ant trail problem with the Santa Fe trail.
  */
 public class SantaFeExample {
 	

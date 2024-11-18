@@ -48,8 +48,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.Program;
 
 /**
- * A GUI for displaying the actual and approximated functions used in a
- * symbolic regression problem instance.
+ * A GUI for displaying the actual and approximated functions used in a symbolic regression problem instance.
  */
 public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 
@@ -66,9 +65,8 @@ public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 	private JPanel container;
 	
 	/**
-	 * The text area containing details of the result, displaying a generation
-	 * counter, the objective value, and the approximated function expression
-	 * tree.
+	 * The text area containing details of the result, displaying a generation counter, the objective value, and the
+	 * approximated function expression tree.
 	 */
 	private JTextArea details;
 	
@@ -98,8 +96,8 @@ public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 	private boolean isCanceled;
 	
 	/**
-	 * Constructs a new GUI for displaying the actual and approximated
-	 * functions used in a symbolic regression problem instance.
+	 * Constructs a new GUI for displaying the actual and approximated functions used in a symbolic regression problem
+	 * instance.
 	 * 
 	 * @param problem the symbolic regression problem instance
 	 */
@@ -118,11 +116,9 @@ public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 	}
 	
 	/**
-	 * Returns {@code true} if the GUI has been closed; {@code false}
-	 * otherwise.
+	 * Returns {@code true} if the GUI has been closed; {@code false} otherwise.
 	 * 
-	 * @return {@code true} if the GUI has been closed; {@code false}
-	 *         otherwise
+	 * @return {@code true} if the GUI has been closed; {@code false} otherwise
 	 */
 	public boolean isCanceled() {
 		return isCanceled;
@@ -174,8 +170,8 @@ public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 	}
 	
 	/**
-	 * Updates the GUI.  This method updates a Swing GUI, and therefore must
-	 * only be invoked on the event dispatch thread.
+	 * Updates the GUI.  This method updates a Swing GUI, and therefore must only be invoked on the event dispatch
+	 * thread.
 	 */
 	protected void updateOnEventQueue() {
 		// create local reference incase update is called again
@@ -273,8 +269,7 @@ public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 	}
 	
 	/**
-	 * Runs the given symbolic regression problem instance, displaying
-	 * intermediate results in a GUI.
+	 * Runs the given symbolic regression problem instance, displaying intermediate results in a GUI.
 	 * 
 	 * @param problem the symbolic regression problem instance
 	 */

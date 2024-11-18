@@ -27,10 +27,8 @@ import org.moeaframework.problem.misc.Schaffer;
 import org.moeaframework.util.Timer;
 
 /**
- * Example of parallelizing function evaluations across multiple cores.
- * Ideally, we expect on a computer with N cores to see the parallel
- * version speed up by N times, but it can be slightly lower due to
- * overhead.
+ * Example of parallelizing function evaluations across multiple cores.  Ideally, we expect on a computer with N cores
+ * to see the parallel version speed up by N times, but it can be slightly lower due to overhead.
  */
 public class ParallelizationExample {
 	
@@ -48,8 +46,7 @@ public class ParallelizationExample {
 		serialTimer.stop();
 		
 		//now distribute evaluations on all available cores.
-		System.out.println("Second run - parallel (" +
-				Runtime.getRuntime().availableProcessors() + " cores)");
+		System.out.println("Second run - parallel (" + Runtime.getRuntime().availableProcessors() + " cores)");
 		
 		Timer parallelTimer = Timer.startNew();
 		
@@ -77,8 +74,8 @@ public class ParallelizationExample {
 
 		@Override
 		public void evaluate(Solution solution) {
-			//simulate a computationally expensive problem; we store the result as an
-			//attribute to prevent Java from treating the loop as "dead code"
+			//simulate a computationally expensive problem; we store the result as an attribute to prevent Java from
+			//treating the loop as "dead code"
 			solution.setAttribute("sum", IntStream.range(0, 100000).asDoubleStream().sum());
 			
 			//evaluate the actual Schaffer problem

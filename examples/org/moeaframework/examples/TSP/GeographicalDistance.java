@@ -18,17 +18,15 @@
 package org.moeaframework.examples.TSP;
 
 /**
- * The geographical distance function.  Node coordinates must be specified in
- * latitude and longitude positions of the form {@code DDD.MM} where {@code DDD}
- * are the degrees and {@code MM} are the minutes.  Positive values indicate
- * north/east and negative values indicate south/west.  The resulting distances
- * are in kilometers.
+ * The geographical distance function.  Node coordinates must be specified in latitude and longitude positions of the
+ * form {@code DDD.MM} where {@code DDD} are the degrees and {@code MM} are the minutes.  Positive values indicate
+ * north/east and negative values indicate south/west.  The resulting distances are in kilometers.
  */
 public class GeographicalDistance extends DistanceFunction {
 	
 	/**
-	 * The constant PI used in the geographical distance calculations.  This
-	 * is used instead of {@code Math.PI} to remain consistent with TSPLIB.
+	 * The constant PI used in the geographical distance calculations.  This is used instead of {@code Math.PI} to
+	 * remain consistent with TSPLIB.
 	 */
 	private static final double PI = 3.141592;
 	
@@ -40,8 +38,7 @@ public class GeographicalDistance extends DistanceFunction {
 	}
 	
 	/**
-	 * Converts a latitude or longitude value in the form {@code DDD.MM} to its
-	 * geographical angle in radians.
+	 * Converts a latitude or longitude value in the form {@code DDD.MM} to its geographical angle in radians.
 	 * 
 	 * @param x the latitude or longitude value in the form {@code DDD.MM}
 	 * @return the geographical angle in radians
@@ -72,8 +69,7 @@ public class GeographicalDistance extends DistanceFunction {
 		double q2 = Math.cos(latitude1 - latitude2);
 		double q3 = Math.cos(latitude1 + latitude2);
 		
-		return Math.floor(radius *
-				Math.acos(0.5 * ((1.0 + q1)*q2 - (1.0 - q1)*q3)) + 1.0);
+		return Math.floor(radius * Math.acos(0.5 * ((1.0 + q1)*q2 - (1.0 - q1)*q3)) + 1.0);
 	}
 
 }

@@ -25,15 +25,12 @@ import org.moeaframework.util.io.Resources;
 import org.moeaframework.util.io.Resources.ResourceOption;
 
 /**
- * Example of binary optimization using the {@link Knapsack} problem on the
- * {@code knapsack.100.2} instance.
+ * Example of binary optimization using the {@link Knapsack} problem on the {@code knapsack.100.2} instance.
  */
 public class KnapsackExample {
 
 	public static void main(String[] args) throws IOException {
-		// open the file containing the knapsack problem instance
-		try (InputStream input = Resources.asStream(Knapsack.class,
-				"knapsack.100.2", ResourceOption.REQUIRED)) {
+		try (InputStream input = Resources.asStream(Knapsack.class, "knapsack.100.2", ResourceOption.REQUIRED)) {
 			Knapsack problem = new Knapsack(input);
 			
 			NSGAII algorithm = new NSGAII(problem);

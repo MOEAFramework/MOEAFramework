@@ -21,8 +21,7 @@ import org.moeaframework.util.tree.Environment;
 import org.moeaframework.util.tree.Node;
 
 /**
- * The node for turning the ant right.  Performing this operation consumes one
- * move.
+ * The node for turning the ant right.  Performing this operation consumes one move.
  */
 public class TurnRight extends Node {
 	

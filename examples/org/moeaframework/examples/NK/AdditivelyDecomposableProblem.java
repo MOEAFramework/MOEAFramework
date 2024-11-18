@@ -34,31 +34,22 @@ import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.io.Tokenizer;
 import org.moeaframework.util.validate.Validate;
 
-/* The following code is derived from derived from the ANSI C code developed
- * by Martin Pelikan available from <http://medal-lab.org/software.php>.  The
- * original license terms are copied below:
+/* The following code is derived from derived from the ANSI C code developed by Martin Pelikan available from
+ * <http://medal-lab.org/software.php>.  The original license terms are copied below:
  * 
- * Feel free to use, modify and distribute the code with an appropriate
- * acknowledgment of the source, but in all resulting publications please
- * include a citation to the above publication (MEDAL Report No. 2006001).
- * There is no warranty of any kind for this software.
+ * Feel free to use, modify and distribute the code with an appropriate acknowledgment of the source, but in all
+ * resulting publications please include a citation to the above publication (MEDAL Report No. 2006001).  There is no
+ * warranty of any kind for this software.
  */
 
 /**
- * Additively decomposable problems are a class of problems where the fitness
- * function is the sum of several subproblems applied to subsets of the
- * decision variables.  The parameter {@code overlap} controls the amount of
- * overlap in the subsets between subproblems (epistasis).  Overlap can be
- * expected to increase problem difficulty.
- * <p>
- * This code is derived from the <a href="http://medal-lab.org">ANSI C code
- * developed by Martin Pelikan</a>.  It is able to save and load instance files
- * in the same format.
+ * Additively decomposable problems are a class of problems where the fitness function is the sum of several
+ * subproblems applied to subsets of the decision variables.  The parameter {@code overlap} controls the amount of
+ * overlap in the subsets between subproblems (epistasis).  Overlap can be expected to increase problem difficulty.
  * <p>
  * References:
  * <ol>
- *   <li>Pelikan, M., et al. (2006).  "Hierarchical BOA on Random Decomposable
- *       Problems."  MEDAL Report No. 2006001.
+ *   <li>Pelikan, M., et al. (2006).  "Hierarchical BOA on Random Decomposable Problems."  MEDAL Report No. 2006001.
  * </ol>
  */
 public class AdditivelyDecomposableProblem implements Problem {
@@ -107,13 +98,11 @@ public class AdditivelyDecomposableProblem implements Problem {
 	}
 	
 	/**
-	 * Constructs an additively decomposable problem from the given instance
-	 * file.
+	 * Constructs an additively decomposable problem from the given instance file.
 	 * 
 	 * @param file the instance file
 	 * @throws IOException if an I/O error occurred while loading the file
-	 * @throws IllegalArgumentException if any of the instance parameters are
-	 *         invalid
+	 * @throws IllegalArgumentException if any of the instance parameters are invalid
 	 */
 	public AdditivelyDecomposableProblem(File file) throws IOException {
 		super();
@@ -205,8 +194,7 @@ public class AdditivelyDecomposableProblem implements Problem {
 	 * 
 	 * @param file the instance file
 	 * @throws IOException if an I/O error occurred while loading the file
-	 * @throws IllegalArgumentException if any of the instance parameters are
-	 *         invalid
+	 * @throws IllegalArgumentException if any of the instance parameters are invalid
 	 */
 	private void load(File file) throws IOException {
 		try (LineReader reader = LineReader.wrap(new FileReader(file))) {
@@ -231,9 +219,8 @@ public class AdditivelyDecomposableProblem implements Problem {
 			tokens = tokenizer.decodeToArray(reader.readLine());
 			
 			if (tokens.length != numberOfFunctions * (1 << k)) {
-				throw new IOException(
-						"incorrect number of values on second line, expected "
-								+ (numberOfFunctions * (1 << k)));
+				throw new IOException("incorrect number of values on second line, expected " +
+						(numberOfFunctions * (1 << k)));
 			}
 			
 			for (int i = 0; i < numberOfFunctions; i++) {
@@ -250,9 +237,7 @@ public class AdditivelyDecomposableProblem implements Problem {
 			tokens = tokenizer.decodeToArray(reader.readLine());
 			
 			if (tokens.length != n) {
-				throw new IOException(
-						"incorrect number of values on fourth line, expected "
-								+ n);
+				throw new IOException("incorrect number of values on fourth line, expected " + n);
 			}
 			
 			for (int i = 0; i < n; i++) {

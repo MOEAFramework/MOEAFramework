@@ -26,8 +26,8 @@ import org.moeaframework.algorithm.extension.LoggingExtension;
 import org.moeaframework.problem.misc.Srinivas;
 
 /**
- * Demonstrates using checkpoints to allow saving and resuming the state of an algorithm.
- * This is useful for long-running experiments that need to tolerate interruptions.
+ * Demonstrates using checkpoints to allow saving and resuming the state of an algorithm.  This is useful for
+ * long-running experiments that need to tolerate interruptions.
  */
 public class CheckpointExample {
 	

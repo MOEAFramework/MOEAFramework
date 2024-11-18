@@ -33,8 +33,7 @@ public class LOTZ extends AbstractProblem {
 	protected final int numberOfBits;
 
 	/**
-	 * Constructs an instance of the LOTZ problem with the specified number of
-	 * bits.
+	 * Constructs an instance of the LOTZ problem with the specified number of bits.
 	 * 
 	 * @param numberOfBits the number of bits
 	 */

@@ -21,16 +21,15 @@ import org.moeaframework.util.tree.Environment;
 import org.moeaframework.util.tree.Node;
 
 /**
- * The node for moving the ant forward one position in the direction it is
- * facing.  Performing this operation consumes one move.
+ * The node for moving the ant forward one position in the direction it is facing.  Performing this operation consumes
+ * one move.
  */
 public class MoveForward extends Node {
 
 	private static final long serialVersionUID = -6091983634993802945L;
 
 	/**
-	 * Constructs a new node for moving the ant forward one position in the
-	 * direction it is facing.
+	 * Constructs a new node for moving the ant forward one position in the direction it is facing.
 	 */
 	public MoveForward() {
 		super();

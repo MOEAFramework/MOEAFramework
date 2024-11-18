@@ -34,14 +34,13 @@ import org.moeaframework.util.tree.Rules;
 import org.moeaframework.util.tree.Sequence;
 
 /**
- * The ant trail problem.  A program for controlling an ant must be discovered
- * to traverse a world and maximize the amount of food eaten.  The ant should
- * also minimize the number of steps required to do so.
+ * The ant trail problem.  A program for controlling an ant must be discovered to traverse a world and maximize the
+ * amount of food eaten.  The ant should also minimize the number of steps required to do so.
  * <p>
  * References:
  * <ol>
- *   <li>Koza, J.R.  "Genetic Programming: On the Programming of Computers by
- *       Means of Natural Selection."  MIT Press, Cambridge, MA, USA, 1992.
+ *   <li>Koza, J.R.  "Genetic Programming: On the Programming of Computers by Means of Natural Selection."  MIT Press,
+ *       Cambridge, MA, USA, 1992.
  * </ol>
  */
 public class AntProblem extends AbstractProblem {
@@ -57,41 +56,33 @@ public class AntProblem extends AbstractProblem {
 	private final World world;
 
 	/**
-	 * Constructs a new ant trail problem using the ant trail defined in the
-	 * specified file.
+	 * Constructs a new ant trail problem using the ant trail defined in the specified file.
 	 * 
 	 * @param file the file containing the ant trail
-	 * @param maxMoves the maximum number of moves the ant can expend to find
-	 *        food
+	 * @param maxMoves the maximum number of moves the ant can expend to find food
 	 * @throws FileNotFoundException if the file was not found
 	 * @throws IOException if an I/O error occurred
 	 */
-	public AntProblem(File file, int maxMoves) throws FileNotFoundException,
-	IOException {
+	public AntProblem(File file, int maxMoves) throws FileNotFoundException, IOException {
 		this(new FileReader(file), maxMoves);
 	}
 	
 	/**
-	 * Constructs a new ant trail problem using the ant trail defined in the
-	 * specified input stream.
+	 * Constructs a new ant trail problem using the ant trail defined in the specified input stream.
 	 * 
 	 * @param inputStream the input stream containing the ant trail
-	 * @param maxMoves the maximum number of moves the ant can expend to find
-	 *        food
+	 * @param maxMoves the maximum number of moves the ant can expend to find food
 	 * @throws IOException if an I/O error occurred
 	 */
-	public AntProblem(InputStream inputStream, int maxMoves) throws
-	IOException {
+	public AntProblem(InputStream inputStream, int maxMoves) throws IOException {
 		this(new InputStreamReader(inputStream), maxMoves);
 	}
 	
 	/**
-	 * Constructs a new ant trail problem using the ant trail defined in the
-	 * specified reader.
+	 * Constructs a new ant trail problem using the ant trail defined in the specified reader.
 	 * 
 	 * @param reader the reader containing the ant trail
-	 * @param maxMoves the maximum number of moves the ant can expend to find
-	 *        food
+	 * @param maxMoves the maximum number of moves the ant can expend to find food
 	 * @throws IOException if an I/O error occurred
 	 */
 	public AntProblem(Reader reader, int maxMoves) throws IOException {
@@ -115,8 +106,7 @@ public class AntProblem extends AbstractProblem {
 		
 		world.reset();
 		
-		while ((world.getRemainingMoves() > 0) &&
-				(world.getRemainingFood() > 0)) {
+		while ((world.getRemainingMoves() > 0) && (world.getRemainingFood() > 0)) {
 			Environment environment = new Environment();
 			environment.set("world", world);
 			program.evaluate(environment);
@@ -127,14 +117,11 @@ public class AntProblem extends AbstractProblem {
 	}
 	
 	/**
-	 * Prints a visual representation of the last evaluated solution to this
-	 * problem.
+	 * Prints a visual representation of the last evaluated solution to this problem.
 	 */
 	public void displayLastEvaluation() {
-		System.out.println("Moves: " + world.getNumberOfMoves() + " / " +
-				world.getMaxMoves());
-		System.out.println("Food: " + world.getFoodEaten() + " / " + 
-				world.getTotalFood());
+		System.out.println("Moves: " + world.getNumberOfMoves() + " / " + world.getMaxMoves());
+		System.out.println("Food: " + world.getFoodEaten() + " / " +  world.getTotalFood());
 		world.display();
 	}
 

@@ -34,8 +34,7 @@ public class LosAltosExample {
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		int maxMoves = 500;
 		
-		InputStream input = Resources.asStream(LosAltosExample.class,
-				"losaltos.trail", ResourceOption.REQUIRED);
+		InputStream input = Resources.asStream(LosAltosExample.class, "losaltos.trail", ResourceOption.REQUIRED);
 		
 		try (AntProblem problem = new AntProblem(input, maxMoves)) {
 			// solve the ant trail instance

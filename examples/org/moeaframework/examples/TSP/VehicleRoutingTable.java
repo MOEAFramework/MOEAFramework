@@ -27,8 +27,7 @@ import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.io.Tokenizer;
 
 /**
- * Stores the demand at each node and identifies the depot nodes for vehicle
- * routing problems.
+ * Stores the demand at each node and identifies the depot nodes for vehicle routing problems.
  */
 public class VehicleRoutingTable {
 	
@@ -83,8 +82,7 @@ public class VehicleRoutingTable {
 	 * Loads the depot list from the given reader.
 	 * 
 	 * @param reader the reader that defines the depot nodes
-	 * @throws IOException if an I/O error occurred while reading the depot
-	 *         list
+	 * @throws IOException if an I/O error occurred while reading the depot list
 	 */
 	public void loadDepots(LineReader reader) throws IOException {
 		Tokenizer tokenizer = new Tokenizer();
@@ -109,8 +107,7 @@ public class VehicleRoutingTable {
 	 * 
 	 * @param id the identifier of the node
 	 * @return the demand at the specified node
-	 * @throws IllegalArgumentException if a node with the specified identifier
-	 *         does not exist
+	 * @throws IllegalArgumentException if a node with the specified identifier does not exist
 	 */
 	public int getDemand(int id) {
 		if ((id < 1) || (id > size)) {
@@ -129,8 +126,7 @@ public class VehicleRoutingTable {
 	 * 
 	 * @param id the identifier of the node
 	 * @return {@code true} if this is a depot node; {@code false} otherwise
-	 * @throws IllegalArgumentException if a node with the specified identifier
-	 *         does not exist
+	 * @throws IllegalArgumentException if a node with the specified identifier does not exist
 	 */
 	public boolean isDepot(int id) {
 		if ((id < 1) || (id > size)) {

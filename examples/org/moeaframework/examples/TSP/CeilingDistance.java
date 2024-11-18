@@ -18,14 +18,12 @@
 package org.moeaframework.examples.TSP;
 
 /**
- * The Euclidean distance function with distances rounded up to the nearest
- * integer.
+ * The Euclidean distance function with distances rounded up to the nearest integer.
  */
 public class CeilingDistance extends DistanceFunction {
 	
 	/**
-	 * Constructs a new Euclidean distance function with distances rounded up
-	 * to the nearest integer.
+	 * Constructs a new Euclidean distance function with distances rounded up to the nearest integer.
 	 */
 	public CeilingDistance() {
 		super();

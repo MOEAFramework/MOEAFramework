@@ -29,9 +29,8 @@ import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.io.Tokenizer;
 
 /**
- * The world that the ant occupies.  The world is cyclic, so an ant walking
- * off the boundary on one side will appear on the boundary at the opposite
- * side.
+ * The world that the ant occupies.  The world is cyclic, so an ant walking off the boundary on one side will appear on
+ * the boundary at the opposite side.
  */
 public class World {
 	
@@ -66,9 +65,8 @@ public class World {
 	private Direction direction;
 	
 	/**
-	 * The number of moves required by the ant to find and eat all the food.
-	 * This does not count moves expended after the last piece of food was
-	 * eaten.
+	 * The number of moves required by the ant to find and eat all the food.  This does not count moves expended after
+	 * the last piece of food was eaten.
 	 */
 	private int numberOfMoves;
 	
@@ -93,27 +91,22 @@ public class World {
 	private int totalFood;
 	
 	/**
-	 * Constructs a new world using the ant trail defined in the specified
-	 * file.
+	 * Constructs a new world using the ant trail defined in the specified file.
 	 * 
 	 * @param file the file containing the ant trail
-	 * @param maxMoves the maximum number of moves the ant can expend to find
-	 *        food
+	 * @param maxMoves the maximum number of moves the ant can expend to find food
 	 * @throws FileNotFoundException if the file was not found
 	 * @throws IOException if an I/O error occurred
 	 */
-	public World(File file, int maxMoves) throws FileNotFoundException,
-	IOException {
+	public World(File file, int maxMoves) throws FileNotFoundException, IOException {
 		this(new FileReader(file), maxMoves);
 	}
 	
 	/**
-	 * Constructs a new world using the ant trail defined in the specified
-	 * input stream.
+	 * Constructs a new world using the ant trail defined in the specified input stream.
 	 * 
 	 * @param stream the stream containing the ant trail
-	 * @param maxMoves the maximum number of moves the ant can expend to find
-	 *        food
+	 * @param maxMoves the maximum number of moves the ant can expend to find food
 	 * @throws IOException if an I/O error occurred
 	 */
 	public World(InputStream stream, int maxMoves) throws IOException {
@@ -121,12 +114,10 @@ public class World {
 	}
 	
 	/**
-	 * Constructs a new world using the ant trail defined in the specified
-	 * reader.
+	 * Constructs a new world using the ant trail defined in the specified reader.
 	 * 
 	 * @param reader the reader containing the ant trail
-	 * @param maxMoves the maximum number of moves the ant can expend to find
-	 *        food
+	 * @param maxMoves the maximum number of moves the ant can expend to find food
 	 * @throws IOException if an I/O error occurred
 	 */
 	public World(Reader reader, int maxMoves) throws IOException {
@@ -204,8 +195,8 @@ public class World {
 	}
 	
 	/**
-	 * Resets this world, returning the ant to its starting position and
-	 * resetting the state of all cells to their original states.
+	 * Resets this world, returning the ant to its starting position and resetting the state of all cells to their
+	 * original states.
 	 */
 	public void reset() {
 		x = 0;
@@ -242,12 +233,10 @@ public class World {
 	}
 
 	/**
-	 * Returns the number of moves required by the ant to find and eat all the
-	 * food.  This does not count moves expended after the last piece of food
-	 * was eaten.
+	 * Returns the number of moves required by the ant to find and eat all the food.  This does not count moves
+	 * expended after the last piece of food was eaten.
 	 * 
-	 * @return the number of moves required by the ant to find and eat all the
-	 *         food
+	 * @return the number of moves required by the ant to find and eat all the food
 	 */
 	public int getNumberOfMoves() {
 		return numberOfMoves;
@@ -272,11 +261,9 @@ public class World {
 	}
 	
 	/**
-	 * Returns the amount of food remaining in this world not yet eaten by the
-	 * ant.
+	 * Returns the amount of food remaining in this world not yet eaten by the ant.
 	 * 
-	 * @return the amount of food remaining in this world not yet eaten by the
-	 * ant
+	 * @return the amount of food remaining in this world not yet eaten by the ant
 	 */
 	public int getRemainingFood() {
 		return totalFood - foodEaten;
@@ -313,9 +300,8 @@ public class World {
 	}
 	
 	/**
-	 * Moves the ant forward one position in the direction it is facing.  If
-	 * the ant has already expended all available moves, the ant remains
-	 * stationary.
+	 * Moves the ant forward one position in the direction it is facing.  If the ant has already expended all available
+	 * moves, the ant remains stationary.
 	 */
 	public void moveForward() {
 		if (getRemainingMoves() <= 0) {
@@ -340,11 +326,9 @@ public class World {
 	}
 	
 	/**
-	 * Returns {@code true} if food is located in the position directly ahead
-	 * of the ant; {@code false} otherwise.
+	 * Returns {@code true} if food is located in the position directly ahead of the ant; {@code false} otherwise.
 	 * 
-	 * @return {@code true} if food is located in the position directly ahead
-	 *         of the ant; {@code false} otherwise
+	 * @return {@code true} if food is located in the position directly ahead of the ant; {@code false} otherwise
 	 */
 	public boolean isFoodAhead() {
 		return switch (direction) {

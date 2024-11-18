@@ -62,17 +62,14 @@ public class EdgeData extends DistanceTable {
 	}
 	
 	/**
-	 * Reads the next line of adjacent edges, adding the parsed values to the
-	 * queue.
+	 * Reads the next line of adjacent edges, adding the parsed values to the queue.
 	 * 
 	 * @param reader the reader containing the adjacent edge data
 	 * @param tokenizer tokenizer for parsing lines
 	 * @param entries the queue of identifies read by this method
-	 * @throws IOException if an I/O error occurred while reading the adjacent
-	 *         edge data
+	 * @throws IOException if an I/O error occurred while reading the adjacent edge data
 	 */
-	private void readNextLine(LineReader reader, Tokenizer tokenizer,
-			Queue<Integer> entries) throws IOException {
+	private void readNextLine(LineReader reader, Tokenizer tokenizer, Queue<Integer> entries) throws IOException {
 		String line = reader.readLine();
 		
 		if (line == null) {
@@ -197,8 +194,8 @@ public class EdgeData extends DistanceTable {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * The distance between two nodes is {@code 1} when an edge exists, or 
-	 * {@code Double.POSITIVE_INFINITY} when no such edge exists.
+	 * The distance between two nodes is {@code 1} when an edge exists, or {@code Double.POSITIVE_INFINITY} when no
+	 * such edge exists.
 	 */
 	@Override
 	public double getDistanceBetween(int id1, int id2) {

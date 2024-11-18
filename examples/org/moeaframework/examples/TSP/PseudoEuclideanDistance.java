@@ -18,8 +18,7 @@
 package org.moeaframework.examples.TSP;
 
 /**
- * The psuedo-Euclidean distance function used by the {@code ATT} TSPLIB problem
- * instances.
+ * The psuedo-Euclidean distance function used by the {@code ATT} TSPLIB problem instances.
  */
 public class PseudoEuclideanDistance extends DistanceFunction {
 	

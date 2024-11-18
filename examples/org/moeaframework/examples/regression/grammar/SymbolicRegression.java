@@ -37,9 +37,8 @@ import org.moeaframework.util.io.Resources;
 import org.moeaframework.util.io.Resources.ResourceOption;
 
 /**
- * The symbolic regression problem for grammatical evolution.  Given a function,
- * the symbolic regression problem attempts to find an expression for closely
- * approximating the output of the function.
+ * The symbolic regression problem for grammatical evolution.  Given a function, the symbolic regression problem
+ * attempts to find an expression for closely approximating the output of the function.
  */
 public class SymbolicRegression extends AbstractProblem {
 	
@@ -59,8 +58,7 @@ public class SymbolicRegression extends AbstractProblem {
 	private final double upperBound;
 	
 	/**
-	 * The number of comparisons made between the actual and approximate
-	 * functions.
+	 * The number of comparisons made between the actual and approximate functions.
 	 */
 	private final int steps;
 	
@@ -90,19 +88,15 @@ public class SymbolicRegression extends AbstractProblem {
 	private double[] y;
 
 	/**
-	 * Constructs a new symbolic regression problem for approximating the
-	 * given function.
+	 * Constructs a new symbolic regression problem for approximating the given function.
 	 * 
 	 * @param function the actual function implementation
-	 * @param lowerBound the lower bound for comparing the actual and
-	 *        approximate functions
-	 * @param upperBound the upper bound for comparing the actual and
-	 *        approximate functions
-	 * @param steps the number of comparisons made between the actual and
-	 *        approximate functions
+	 * @param lowerBound the lower bound for comparing the actual and approximate functions
+	 * @param upperBound the upper bound for comparing the actual and approximate functions
+	 * @param steps the number of comparisons made between the actual and approximate functions
 	 */
-	public SymbolicRegression(UnivariateFunction function,
-			double lowerBound, double upperBound, int steps) throws IOException {
+	public SymbolicRegression(UnivariateFunction function, double lowerBound, double upperBound, int steps) throws
+	IOException {
 		super(1, 1);
 		this.function = function;
 		this.lowerBound = lowerBound;
@@ -113,8 +107,7 @@ public class SymbolicRegression extends AbstractProblem {
 		symbol = "x";
 		codonLength = 10;
 		
-		try (Reader reader = Resources.asReader(SymbolicRegression.class,
-				"grammar.bnf", ResourceOption.REQUIRED)) {
+		try (Reader reader = Resources.asReader(SymbolicRegression.class, "grammar.bnf", ResourceOption.REQUIRED)) {
 			grammar = Parser.load(reader);
 		}
 		
@@ -138,33 +131,27 @@ public class SymbolicRegression extends AbstractProblem {
 	}
 
 	/**
-	 * Returns the lower bound for comparing the actual and approximate
-	 * functions.
+	 * Returns the lower bound for comparing the actual and approximate functions.
 	 * 
-	 * @return the lower bound for comparing the actual and approximate
-	 *         functions
+	 * @return the lower bound for comparing the actual and approximatefunctions
 	 */
 	public double getLowerBound() {
 		return lowerBound;
 	}
 
 	/**
-	 * Returns the upper bound for comparing the actual and approximate
-	 * functions.
+	 * Returns the upper bound for comparing the actual and approximate functions.
 	 * 
-	 * @return the upper bound for comparing the actual and approximate
-	 *         functions
+	 * @return the upper bound for comparing the actual and approximate functions
 	 */
 	public double getUpperBound() {
 		return upperBound;
 	}
 
 	/**
-	 * Returns the number of comparisons made between the actual and
-	 * approximate functions.
+	 * Returns the number of comparisons made between the actual and approximate functions.
 	 * 
-	 * @return the number of comparisons made between the actual and
-	 *         approximate functions
+	 * @return the number of comparisons made between the actual and approximate functions
 	 */
 	public int getSteps() {
 		return steps;
@@ -180,48 +167,41 @@ public class SymbolicRegression extends AbstractProblem {
 	}
 
 	/**
-	 * Sets the name of the input variable to the approximated function.  The
-	 * default is {@code "x"}.  When changing the symbol, be sure to add the
-	 * rule {@code new Get(Number.class, symbol)} so the input variable value
-	 * can be accessed in the approximated function.
+	 * Sets the name of the input variable to the approximated function.  The default is {@code "x"}.  When changing
+	 * the symbol, be sure to add the rule {@code new Get(Number.class, symbol)} so the input variable value can be
+	 * accessed in the approximated function.
 	 * 
-	 * @param symbol the name of the input variable to the approximated
-	 *        function
+	 * @param symbol the name of the input variable to the approximated function
 	 */
 	public void setSymbol(String symbol) {
 		this.symbol = symbol;
 	}
 
 	/**
-	 * Returns the array of x-values, the function inputs, used when comparing
-	 * the actual and approximated functions.
+	 * Returns the array of x-values, the function inputs, used when comparing the actual and approximated functions.
 	 * 
-	 * @return the array of x-values, the function inputs, used when comparing
-	 *         the actual and approximated functions
+	 * @return the array of x-values, the function inputs, used when comparing the actual and approximated functions
 	 */
 	public double[] getX() {
 		return x;
 	}
 	
 	/**
-	 * Returns the array of y-values, the function outputs, resulting from
-	 * evaluating the actual function using the x-values from {@link #getX()}.
+	 * Returns the array of y-values, the function outputs, resulting from evaluating the actual function using the
+	 * x-values from {@link #getX()}.
 	 * 
-	 * @return the array of y-values, the function outputs, resulting from
-	 *         evaluating the actual function
+	 * @return the array of y-values, the function outputs, resulting from evaluating the actual function
 	 */
 	public double[] getActualY() {
 		return y;
 	}
 	
 	/**
-	 * Returns the array of y-values, the function outputs, resulting from
-	 * evaluating the approximated function using the x-values from
-	 * {@link #getX()}.
+	 * Returns the array of y-values, the function outputs, resulting from evaluating the approximated function using
+	 * the x-values from {@link #getX()}.
 	 * 
 	 * @param program the generated program
-	 * @return the array of y-values, the function outputs, resulting from
-	 *         evaluating the approximated function
+	 * @return the array of y-values, the function outputs, resulting from evaluating the approximated function
 	 */
 	public double[] getApproximatedY(String program) {
 		try {
@@ -234,8 +214,7 @@ public class SymbolicRegression extends AbstractProblem {
 				Bindings bindings = new SimpleBindings();
 				bindings.put(symbol, x[i]);
 	
-				approximatedY[i] = ((Number)engine.eval(program, bindings))
-						.doubleValue();
+				approximatedY[i] = ((Number)engine.eval(program, bindings)).doubleValue();
 			}
 			
 			return approximatedY;

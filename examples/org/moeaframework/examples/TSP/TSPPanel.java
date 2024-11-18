@@ -56,14 +56,14 @@ public class TSPPanel extends JPanel {
 	private double nodeWidth;
 	
 	/**
-	 * The border around the graphical display.  This border should be at least
-	 * half the node width to ensure nodes are fully contained inside the panel.
+	 * The border around the graphical display.  This border should be at least half the node width to ensure nodes are
+	 * fully contained inside the panel.
 	 */
 	private Insets insets;
 	
 	/**
-	 * {@code true} if this graphical display should automatically repaint when
-	 * the displayed tours are changed; {@code false} otherwise.
+	 * {@code true} if this graphical display should automatically repaint when the displayed tours are changed;
+	 * {@code false} otherwise.
 	 */
 	private boolean autoRepaint;
 	
@@ -90,24 +90,20 @@ public class TSPPanel extends JPanel {
 	}
 	
 	/**
-	 * Set to {@code true} if this graphical display should automatically
-	 * repaint when the displayed tours are changed; {@code false} otherwise.
-	 * When {@code false}, the display will only change when {@link #repaint()}
-	 * is invoked or the component automatically repaints the panel.  This is
-	 * used to avoid unnecessary repaints when making many changes to this
-	 * display.
+	 * Set to {@code true} if this graphical display should automatically repaint when the displayed tours are changed;
+	 * {@code false} otherwise.  When {@code false}, the display will only change when {@link #repaint()} is invoked or
+	 * the component automatically repaints the panel.  This is used to avoid unnecessary repaints when making many
+	 * changes to this display.
 	 * 
-	 * @param autoRepaint {@code true} if this graphical display should
-	 *        automatically repaint when the displayed tours are changed;
-	 *        {@code false} otherwise
+	 * @param autoRepaint {@code true} if this graphical display should automatically repaint when the displayed tours
+	 *        are changed; {@code false} otherwise
 	 */
 	public void setAutoRepaint(boolean autoRepaint) {
 		this.autoRepaint = autoRepaint;
 	}
 
 	/**
-	 * Adds a tour to this graphical display.  The tour will be displayed using
-	 * the default color.
+	 * Adds a tour to this graphical display.  The tour will be displayed using the default color.
 	 * 
 	 * @param tour the tour to display
 	 */
@@ -138,8 +134,7 @@ public class TSPPanel extends JPanel {
 	}
 	
 	/**
-	 * Adds a tour to this graphical display with the specified paint and
-	 * stroke settings.
+	 * Adds a tour to this graphical display with the specified paint and stroke settings.
 	 * 
 	 * @param tour the tour to display
 	 * @param paint the paint settings
@@ -197,9 +192,8 @@ public class TSPPanel extends JPanel {
 	}
 	
 	/**
-	 * Sets the border around the graphical display.  This border should be at
-	 * least half the node width to ensure nodes are fully contained inside the
-	 * panel.
+	 * Sets the border around the graphical display.  This border should be at least half the node width to ensure
+	 * nodes are fully contained inside the panel.
 	 * 
 	 * @param insets the border around the graphical display
 	 */
@@ -212,13 +206,11 @@ public class TSPPanel extends JPanel {
 	}
 	
 	/**
-	 * Converts the node coordinates into display coordinates on the screen.
-	 * If this problem uses geographical weights, then the latitude/longitude
-	 * coordinates are projected on the screen using the Mercator projection.
+	 * Converts the node coordinates into display coordinates on the screen.  If this problem uses geographical
+	 * weights, then the latitude/longitude coordinates are projected on the screen using the Mercator projection.
 	 * 
 	 * @param node the node whose display coordinates are calculated
-	 * @param isGeographical {@code true} if the coordinates are geographical;
-	 *        {@code false} otherwise
+	 * @param isGeographical {@code true} if the coordinates are geographical; {@code false} otherwise
 	 * @return the node coordinates into display coordinates on the screen
 	 */
 	private double[] toDisplayCoordinates(Node node, boolean isGeographical) {
@@ -327,8 +319,8 @@ public class TSPPanel extends JPanel {
 	}
 	
 	/**
-	 * The inner class storing tour display settings.  These settings control
-	 * the paint and line stroke when rendering the tour.
+	 * The inner class storing tour display settings.  These settings control the paint and line stroke when rendering
+	 * the tour.
 	 */
 	private class TourDisplaySetting {
 		
@@ -359,8 +351,7 @@ public class TSPPanel extends JPanel {
 		}
 		
 		/**
-		 * Constructs a new tour display setting with the specified paint and
-		 * line stroke.
+		 * Constructs a new tour display setting with the specified paint and line stroke.
 		 * 
 		 * @param paint the paint/color used when rendering the tour
 		 * @param stroke the line stroke used when rendering the tour

@@ -33,9 +33,8 @@ import org.moeaframework.problem.Problem;
 import org.moeaframework.util.io.LineReader;
 
 /**
- * Multiobjective 0/1 knapsack problem. Problem instances are loaded from files
- * in the format defined by Eckart Zitzler and Marco Laumanns at <a href=
- * "http://www.tik.ee.ethz.ch/sop/download/supplementary/testProblemSuite/">
+ * Multiobjective 0/1 knapsack problem. Problem instances are loaded from files in the format defined by Eckart Zitzler
+ * and Marco Laumanns at <a href="http://www.tik.ee.ethz.ch/sop/download/supplementary/testProblemSuite/">
  * http://www.tik.ee.ethz.ch/sop/download/supplementary/testProblemSuite/</a>.
  */
 public class Knapsack implements Problem {
@@ -51,14 +50,12 @@ public class Knapsack implements Problem {
 	protected int nitems;
 
 	/**
-	 * Entry {@code profit[i][j]} is the profit from including item {@code j}
-	 * in sack {@code i}.
+	 * Entry {@code profit[i][j]} is the profit from including item {@code j} in sack {@code i}.
 	 */
 	protected int[][] profit;
 
 	/**
-	 * Entry {@code weight[i][j]} is the weight incurred from including item
-	 * {@code j} in sack {@code i}.
+	 * Entry {@code weight[i][j]} is the weight incurred from including item {@code j} in sack {@code i}.
 	 */
 	protected int[][] weight;
 
@@ -68,8 +65,7 @@ public class Knapsack implements Problem {
 	protected int[] capacity;
 
 	/**
-	 * Constructs a multiobjective 0/1 knapsack problem instance loaded from
-	 * the specified file.
+	 * Constructs a multiobjective 0/1 knapsack problem instance loaded from the specified file.
 	 * 
 	 * @param file the file containing the knapsack problem instance
 	 * @throws IOException if an I/O error occurred
@@ -79,11 +75,9 @@ public class Knapsack implements Problem {
 	}
 	
 	/**
-	 * Constructs a multiobjective 0/1 knapsack problem instance loaded from
-	 * the specified input stream.
+	 * Constructs a multiobjective 0/1 knapsack problem instance loaded from the specified input stream.
 	 * 
-	 * @param inputStream the input stream containing the knapsack problem
-	 *        instance
+	 * @param inputStream the input stream containing the knapsack problem instance
 	 * @throws IOException if an I/O error occurred
 	 */
 	public Knapsack(InputStream inputStream) throws IOException {
@@ -91,8 +85,7 @@ public class Knapsack implements Problem {
 	}
 	
 	/**
-	 * Constructs a multiobjective 0/1 knapsack problem instance loaded from
-	 * the specified reader.
+	 * Constructs a multiobjective 0/1 knapsack problem instance loaded from the specified reader.
 	 * 
 	 * @param reader the reader containing the knapsack problem instance
 	 * @throws IOException if an I/O error occurred

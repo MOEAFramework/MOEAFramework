@@ -43,10 +43,8 @@ public class IslandModelExample {
 	public static void main(String[] args) throws IOException {
 		Problem problem = new UF1();
 		
-		Selection migrationSelection = new TournamentSelection(2, 
-				new ChainedComparator(
-						new ParetoDominanceComparator(),
-						new CrowdingComparator()));
+		Selection migrationSelection = new TournamentSelection(2, new ChainedComparator(
+					new ParetoDominanceComparator(), new CrowdingComparator()));
 		
 		Migration migration = new SingleNeighborMigration(1, migrationSelection);
 		Topology topology = new FullyConnectedTopology();

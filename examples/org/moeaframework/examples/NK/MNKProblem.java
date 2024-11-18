@@ -33,34 +33,27 @@ import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.io.Tokenizer;
 import org.moeaframework.util.validate.Validate;
 
-/* The following code is derived from derived from the ANSI C code developed
- * by Martin Pelikan available from <http://medal-lab.org/software.php>.  The
- * original license terms are copied below:
+/* The following code is derived from derived from the ANSI C code developed by Martin Pelikan available from
+ * <http://medal-lab.org/software.php>.  The original license terms are copied below:
  * 
- * Feel free to use, modify and distribute the code with an appropriate
- * acknowledgment of the source, but in all resulting publications please
- * include a citation to the above publication (MEDAL Report No. 2008001).
- * There is no warranty of any kind for this software.
+ * Feel free to use, modify and distribute the code with an appropriate acknowledgment of the source, but in all
+ * resulting publications please include a citation to the above publication (MEDAL Report No. 2008001).  There is no
+ * warranty of any kind for this software.
  */
 
 /**
- * MNK-fitness landscape problem.  The NK-model defines a problem with N bits
- * and a fixed amount of interaction between the bits, K.  The fitness function
- * is a summation of N individual components, where the i-th component is
- * dependent on the value if the i-th bit plus K other bits.  By increasing
- * the value of K, from 0 to N-1, the amount of epistasis is increased.  For
- * the multiobjective (MNK) case when M > 1, each objective is a separate
- * NK-model.
+ * MNK-fitness landscape problem.  The NK-model defines a problem with N bits and a fixed amount of interaction between
+ * the bits, K.  The fitness function is a summation of N individual components, where the i-th component is dependent
+ * on the value if the i-th bit plus K other bits.  By increasing the value of K, from 0 to N-1, the amount of
+ * epistasis is increased.  For the multiobjective (MNK) case when M > 1, each objective is a separate NK-model.
  * <p>
- * This code is derived from the <a href="http://medal-lab.org">ANSI C code
- * developed by Martin Pelikan</a>.  It is able to save and load instance
- * files in the same format.  Note that this implementation does not divide
- * the final fitness value by N, as some formulations of the NK-model specify.
+ * Note that this implementation does not divide the final fitness value by N, as some formulations of the NK-model
+ * specify.
  * <p>
  * References:
  * <ol>
- *   <li>Pelikan, M. (2008).  "Analysis of Estimation of Distribution Algorithms
- *       and Genetic Algorithms on NK Landscapes."  MEDAL Report No. 2008001.
+ *   <li>Pelikan, M. (2008).  "Analysis of Estimation of Distribution Algorithms and Genetic Algorithms on NK
+ *       Landscapes."  MEDAL Report No. 2008001.
  * </ol>
  */
 public class MNKProblem implements Problem {
@@ -102,8 +95,8 @@ public class MNKProblem implements Problem {
 	}
 	
 	/**
-	 * Constructs a new, random single-objective NK-landscape problem (when
-	 * {@code M=1}) or multi-objective MNK-landscape problem (when {@code M>1}).
+	 * Constructs a new, random single-objective NK-landscape problem (when {@code M=1}) or multi-objective
+	 * MNK-landscape problem (when {@code M>1}).
 	 * 
 	 * @param M the number of objectives
 	 * @param N the number of bits
@@ -125,8 +118,7 @@ public class MNKProblem implements Problem {
 	 * 
 	 * @param file the instance file
 	 * @throws IOException if an I/O error occurred while loading the file
-	 * @throws IllegalArgumentException if any of the instance parameters are
-	 *         invalid
+	 * @throws IllegalArgumentException if any of the instance parameters are invalid
 	 */
 	public MNKProblem(File file) throws IOException {
 		super();
@@ -210,8 +202,7 @@ public class MNKProblem implements Problem {
 	 * 
 	 * @param file the instance file
 	 * @throws IOException if an I/O error occurred while loading the file
-	 * @throws IllegalArgumentException if any of the instance parameters are
-	 *         invalid
+	 * @throws IllegalArgumentException if any of the instance parameters are invalid
 	 */
 	private void load(File file) throws IOException {
 		try (LineReader reader = LineReader.wrap(new FileReader(file))) {

@@ -18,8 +18,7 @@
 package org.moeaframework.examples.TSP;
 
 /**
- * Enumeration of the various formats in which edge weights (distances) can be
- * specified.
+ * Enumeration of the various formats in which edge weights (distances) can be specified.
  */
 public enum EdgeWeightFormat {
 	

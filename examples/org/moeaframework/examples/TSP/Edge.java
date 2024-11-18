@@ -63,12 +63,10 @@ public class Edge {
 	}
 	
 	/**
-	 * Returns {@code true} if either endpoint of this edge is the specified
-	 * node; {@code false} otherwise.
+	 * Returns {@code true} if either endpoint of this edge is the specified node; {@code false} otherwise.
 	 * 
 	 * @param id the identifier of the node
-	 * @return {@code true} if either endpoint of this edge is the specified
-	 *         node; {@code false} otherwis
+	 * @return {@code true} if either endpoint of this edge is the specified node; {@code false} otherwis
 	 */
 	public boolean hasEndpoint(int id) {
 		return (id == id1) || (id == id2);
@@ -79,8 +77,7 @@ public class Edge {
 	 * 
 	 * @param id the identifier of the one endpoint
 	 * @return the opposite endpoint of this edge
-	 * @throws IllegalArgumentException if this edge does not have the any
-	 *         endpoint with the specified identifier
+	 * @throws IllegalArgumentException if this edge does not have the any endpoint with the specified identifier
 	 */
 	public int getOppositeEndpoint(int id) {
 		if (id == id1) {
@@ -88,8 +85,7 @@ public class Edge {
 		} else if (id == id2) {
 			return id1;
 		} else {
-			throw new IllegalArgumentException("edge does not have endpoint " +
-					id);
+			throw new IllegalArgumentException("edge does not have endpoint " + id);
 		}
 	}
 
@@ -98,9 +94,8 @@ public class Edge {
 		final int prime = 31;
 		int result = 1;
 		
-		// since the edge is undirected, hashCode must not depend on the order
-		// of the identifier; this if condition ensures that hashCode is
-		// consistent with the equals method
+		// since the edge is undirected, hashCode must not depend on the order of the identifier; this if condition
+		// ensures that hashCode is consistent with the equals method
 		if (id1 < id2) {
 			result = prime * result + id1;
 			result = prime * result + id2;

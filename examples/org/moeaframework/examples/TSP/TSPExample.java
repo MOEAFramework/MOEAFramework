@@ -40,12 +40,10 @@ import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.Problem;
 
 /**
- * Demonstration of optimizing a TSP problem using the MOEA Framework
- * optimization library (http://www.moeaframework.org/).  A window will appear
- * showing the progress of the optimization algorithm.  The window will contain
- * a visual representation of the TSP problem instance, with a thick red line
- * indicating the best tour found by the optimization algorithm.  Light gray
- * lines are the other (sub-optimal) tours in the population.
+ * Demonstration of optimizing a TSP problem using the MOEA Framework.  A window will appear showing the progress of
+ * the optimization algorithm.  The window will contain a visual representation of the TSP problem instance, with a
+ * thick red line indicating the best tour found by the optimization algorithm.  Light gray lines are the other
+ * (sub-optimal) tours in the population.
  */
 public class TSPExample {
 	
@@ -61,8 +59,7 @@ public class TSPExample {
 	 * @return the tour defined by the solution
 	 */
 	public static Tour toTour(Solution solution) {
-		int[] permutation = EncodingUtils.getPermutation(
-				solution.getVariable(0));
+		int[] permutation = EncodingUtils.getPermutation(solution.getVariable(0));
 		
 		// increment values since TSP nodes start at 1
 		for (int i = 0; i < permutation.length; i++) {
@@ -90,9 +87,8 @@ public class TSPExample {
 	}
 	
 	/**
-	 * The optimization problem definition.  This is a 1 variable, 1 objective
-	 * optimization problem.  The single variable is a permutation that defines
-	 * the nodes visited by the salesman.
+	 * The optimization problem definition.  This is a 1 variable, 1 objective optimization problem.  The single
+	 * variable is a permutation that defines the nodes visited by the salesman.
 	 */
 	public static class TSPProblem extends AbstractProblem {
 
@@ -107,8 +103,7 @@ public class TSPExample {
 		private final TSP2OptHeuristic heuristic;
 		
 		/**
-		 * Constructs a new optimization problem for the given TSP problem
-		 * instance.
+		 * Constructs a new optimization problem for the given TSP problem instance.
 		 * 
 		 * @param instance the TSP problem instance
 		 */
@@ -143,8 +138,7 @@ public class TSPExample {
 	}
 	
 	/**
-	 * Solves this TSPLIB instance while displaying a GUI showing the
-	 * optimization progress.
+	 * Solves this TSPLIB instance while displaying a GUI showing the optimization progress.
 	 * 
 	 * @param instance the TSPLIB instance to solve
 	 */

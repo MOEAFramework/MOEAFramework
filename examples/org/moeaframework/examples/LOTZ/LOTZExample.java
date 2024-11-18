@@ -22,9 +22,8 @@ import org.moeaframework.core.comparator.LexicographicalComparator;
 import org.moeaframework.core.population.NondominatedPopulation;
 
 /**
- * Example of binary optimization on the {@link LOTZ} problem.  The goal of this
- * problem is an enumeration of bit strings that begin with some number of
- * {@code 1} bits (leading ones), and the remaining bits are {@code 0}
+ * Example of binary optimization on the {@link LOTZ} problem.  The goal of this problem is an enumeration of bit
+ * strings that begin with some number of {@code 1} bits (leading ones), and the remaining bits are {@code 0}
  * (trailing zeros).  For example, with four bits, the ideal results is:
  * <pre>
  *   1111

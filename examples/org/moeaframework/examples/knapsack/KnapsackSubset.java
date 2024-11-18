@@ -32,8 +32,7 @@ import org.moeaframework.core.variable.EncodingUtils;
 public class KnapsackSubset extends Knapsack {
 
 	/**
-	 * Constructs a multiobjective 0/1 knapsack problem instance loaded from
-	 * the specified file.
+	 * Constructs a multiobjective 0/1 knapsack problem instance loaded from the specified file.
 	 * 
 	 * @param file the file containing the knapsack problem instance
 	 * @throws IOException if an I/O error occurred
@@ -43,11 +42,9 @@ public class KnapsackSubset extends Knapsack {
 	}
 	
 	/**
-	 * Constructs a multiobjective 0/1 knapsack problem instance loaded from
-	 * the specified input stream.
+	 * Constructs a multiobjective 0/1 knapsack problem instance loaded from the specified input stream.
 	 * 
-	 * @param inputStream the input stream containing the knapsack problem
-	 *        instance
+	 * @param inputStream the input stream containing the knapsack problem instance
 	 * @throws IOException if an I/O error occurred
 	 */
 	public KnapsackSubset(InputStream inputStream) throws IOException {
@@ -55,8 +52,7 @@ public class KnapsackSubset extends Knapsack {
 	}
 	
 	/**
-	 * Constructs a multiobjective 0/1 knapsack problem instance loaded from
-	 * the specified reader.
+	 * Constructs a multiobjective 0/1 knapsack problem instance loaded from the specified reader.
 	 * 
 	 * @param reader the reader containing the knapsack problem instance
 	 * @throws IOException if an I/O error occurred

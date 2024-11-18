@@ -22,10 +22,9 @@ import org.moeaframework.core.termination.TargetObjectiveTermination;
 import org.moeaframework.problem.Problem;
 
 /**
- * Example of binary optimization on the {@link OneMax} problem.  The goal of
- * the one-max problem is to maximize the number of {@code 1} bits in the
- * binary variable.  This example runs until all bits are {@code 1} to
- * determine the required number of function evaluations (NFE).
+ * Example of binary optimization on the {@link OneMax} problem.  The goal of the one-max problem is to maximize the
+ * number of {@code 1} bits in the binary variable.  This example runs until all bits are {@code 1} to determine the
+ * required number of function evaluations (NFE).
  */
 public class OneMaxExample {
 

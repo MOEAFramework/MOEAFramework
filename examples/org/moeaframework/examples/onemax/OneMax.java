@@ -23,9 +23,8 @@ import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.problem.AbstractProblem;
 
 /**
- * The one-max problem for maximizing the number of {@code 1} bits in a binary
- * string.  The one-max problem is trivial for most GAs, and is often used to
- * measure the convergence speed of different crossover and mutation operators.
+ * The one-max problem for maximizing the number of {@code 1} bits in a binary string.  The one-max problem is trivial
+ * for most GAs, and is often used to measure the convergence speed of different crossover and mutation operators.
  */
 public class OneMax extends AbstractProblem {
 

@@ -20,20 +20,18 @@ package org.moeaframework.examples.regression.program;
 import org.apache.commons.math3.analysis.UnivariateFunction;
 
 /**
- * The Quartic function as introduced by Koza [1].  The function is
- * {@code f(x) = x^4 + x^3 + x^2 + x}.
- * 
+ * The Quartic function as introduced by Koza [1].  The function is {@code f(x) = x^4 + x^3 + x^2 + x}.
+ * <p>
  * References:
  * <ol>
- *   <li>Koza, J.R.  "Genetic Programming: On the Programming of Computers by
- *       Means of Natural Selection."  MIT Press, Cambridge, MA, USA, 1992.
+ *   <li>Koza, J.R.  "Genetic Programming: On the Programming of Computers by Means of Natural Selection."  MIT Press,
+ *       Cambridge, MA, USA, 1992.
  * </ol>
  */
 public class QuarticExample implements UnivariateFunction {
 	
 	public static void main(String[] args) {
-		SymbolicRegressionGUI.runDemo(new SymbolicRegression(
-				new QuarticExample(), -1.0, 1.0, 100));
+		SymbolicRegressionGUI.runDemo(new SymbolicRegression(new QuarticExample(), -1.0, 1.0, 100));
 	}
 
 	@Override

@@ -27,8 +27,7 @@ import org.moeaframework.problem.CEC2009.UF1;
 import org.moeaframework.problem.Problem;
 
 /**
- * Demonstrates how to customize or disable normalization when computing any of the
- * quality / performance indicators.
+ * Demonstrates how to customize or disable normalization when computing any of the quality / performance indicators.
  */
 public class NormalizationExample {
 	

@@ -18,10 +18,9 @@
 package org.moeaframework.examples.TSP;
 
 /**
- * Implementation of the 2-opt heuristic for the traveling salesman problem.
- * The 2-opt heuristic searches for any two edges in a tour that can be
- * rearranged to produce a shorter tour.  For example, a tour with any edges
- * that intersect can be shortened by removing the intersection.
+ * Implementation of the 2-opt heuristic for the traveling salesman problem.  The 2-opt heuristic searches for any two
+ * edges in a tour that can be rearranged to produce a shorter tour.  For example, a tour with any edges that intersect
+ * can be shortened by removing the intersection.
  */
 public class TSP2OptHeuristic {
 	
@@ -31,8 +30,7 @@ public class TSP2OptHeuristic {
 	private final TSPInstance instance;
 
 	/**
-	 * Constructs a new 2-opt heuristic for the specified traveling salesman
-	 * problem instance.
+	 * Constructs a new 2-opt heuristic for the specified traveling salesman problem instance.
 	 * 
 	 * @param instance the traveling salesman problem instance
 	 */

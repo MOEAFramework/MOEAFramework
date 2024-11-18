@@ -26,9 +26,9 @@ import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
 
 /**
- * Another way to solve multi-objective problems using single-objective optimizers is using a process
- * called Repeated Single Objective (RSO).  It produces solutions across the Pareto front by
- * running multiple single-objective optimizers using different weights.
+ * Another way to solve multi-objective problems using single-objective optimizers is using a process called Repeated
+ * Single Objective (RSO).  It produces solutions across the Pareto front by running multiple single-objective
+ * optimizers using different weights.
  */
 public class RepeatedSingleObjectiveExample {
 	

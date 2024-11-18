@@ -21,8 +21,7 @@ import org.moeaframework.util.tree.Environment;
 import org.moeaframework.util.tree.Node;
 
 /**
- * The node for determining if food is located in the position directly ahead
- * of the ant.
+ * The node for determining if food is located in the position directly ahead of the ant.
  * 
  * <table>
  *   <tr>
@@ -33,8 +32,7 @@ import org.moeaframework.util.tree.Node;
  *   <tr>
  *     <td>Return Value</td>
  *     <td>Boolean</td>
- *     <td>{@code true} if food is located in the position directly ahead of
- *         the ant; {@code false} otherwise</td>
+ *     <td>{@code true} if food is located in the position directly ahead of the ant; {@code false} otherwise</td>
  *   </tr>
  * </table>
  */
@@ -43,8 +41,7 @@ public class IsFoodAhead extends Node {
 	private static final long serialVersionUID = 4442494775650582593L;
 
 	/**
-	 * Constructs a new node for determining if food is located in the position
-	 * directly ahead of the ant.
+	 * Constructs a new node for determining if food is located in the position directly ahead of the ant.
 	 */
 	public IsFoodAhead() {
 		super(Boolean.class);

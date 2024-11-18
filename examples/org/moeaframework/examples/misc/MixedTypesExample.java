@@ -30,11 +30,11 @@ import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.Problem;
 
 /**
- * Demonstrates solving a problem with mixed types.  In this example, we recreate the
- * Srinivas problem using a binary integer and real-valued decision variables.
+ * Demonstrates solving a problem with mixed types.  In this example, we recreate the Srinivas problem using a binary
+ * integer and real-valued decision variables.
  * 
- * Default operators will be provided for mixed types, by combining the operators for
- * each type, but we can also supply our own operators as demonstrated in this example.
+ * Default operators will be provided for mixed types, by combining the operators for each type, but we can also supply
+ * our own operators as demonstrated in this example.
  */
 public class MixedTypesExample {
 	

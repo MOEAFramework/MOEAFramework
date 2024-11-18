@@ -20,20 +20,18 @@ package org.moeaframework.examples.regression.program;
 import org.apache.commons.math3.analysis.UnivariateFunction;
 
 /**
- * The Sextic function as introduced by Koza [1].  The function is
- * {@code f(x) = x^6 - 2x^4 + x^2}.
- * 
+ * The Sextic function as introduced by Koza [1].  The function is {@code f(x) = x^6 - 2x^4 + x^2}.
+ * <p>
  * References:
  * <ol>
- *   <li>Koza, J.R.  "Genetic Programming II: Automatic Discovery of Reusable
- *       Programs."  MIT Press, Cambridge, MA, 1994.
+ *   <li>Koza, J.R.  "Genetic Programming II: Automatic Discovery of Reusable Programs."  MIT Press, Cambridge, MA,
+ *       1994.
  * </ol>
  */
 public class SexticExample implements UnivariateFunction {
 	
 	public static void main(String[] args) {
-		SymbolicRegressionGUI.runDemo(new SymbolicRegression(
-				new SexticExample(), -1.0, 1.0, 100));
+		SymbolicRegressionGUI.runDemo(new SymbolicRegression(new SexticExample(), -1.0, 1.0, 100));
 	}
 
 	@Override

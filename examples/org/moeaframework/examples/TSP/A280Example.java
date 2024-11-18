@@ -24,14 +24,13 @@ import org.moeaframework.util.io.Resources;
 import org.moeaframework.util.io.Resources.ResourceOption;
 
 /**
- * Example of optimization using a permutation encoding to solve the traveling
- * salesman problem (TSP) on the {@code a280.tsp} instance.
+ * Example of optimization using a permutation encoding to solve the traveling salesman problem (TSP) on the
+ * {@code a280.tsp} instance.
  */
 public class A280Example {
 
 	public static void main(String[] args) throws IOException {
-		try (InputStream input = Resources.asStream(PR76Example.class,
-				"a280.tsp", ResourceOption.REQUIRED)) {
+		try (InputStream input = Resources.asStream(PR76Example.class, "a280.tsp", ResourceOption.REQUIRED)) {
 			TSPExample.solve(input);
 		}
 	}

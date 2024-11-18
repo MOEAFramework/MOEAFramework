@@ -22,8 +22,7 @@ import org.moeaframework.core.comparator.LexicographicalComparator;
 import org.moeaframework.core.population.NondominatedPopulation;
 
 /**
- * Example of binary optimization on the single or multi-objective NK-landscape
- * problem.
+ * Example of binary optimization on the single or multi-objective NK-landscape problem.
  */
 public class MNKExample {
 	

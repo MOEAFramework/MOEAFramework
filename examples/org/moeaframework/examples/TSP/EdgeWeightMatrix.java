@@ -36,15 +36,14 @@ public class EdgeWeightMatrix extends DistanceTable {
 	private final int size;
 	
 	/**
-	 * The format of this edge weight matrix.  This defines the format stored
-	 * in the TSPLIB problem instance.  This implementation converts from this
-	 * format to a full matrix.
+	 * The format of this edge weight matrix.  This defines the format stored in the TSPLIB problem instance.  This
+	 * implementation converts from this format to a full matrix.
 	 */
 	private final EdgeWeightFormat format;
 	
 	/**
-	 * The edge weight matrix.  This edge weights are always stored in a full
-	 * matrix, regardless of the input edge weight format.
+	 * The edge weight matrix.  This edge weights are always stored in a full matrix, regardless of the input edge
+	 * weight format.
 	 */
 	private final double[][] matrix;
 	
@@ -63,17 +62,14 @@ public class EdgeWeightMatrix extends DistanceTable {
 	}
 	
 	/**
-	 * Reads the next line from the reader, parses out one or more weights, and
-	 * appends the weights to the given queue.
+	 * Reads the next line from the reader, parses out one or more weights, and appends the weights to the given queue.
 	 * 
 	 * @param reader the reader containing the edge weights
 	 * @param tokenizer tokenizer for parsing lines
 	 * @param entries the queue of read but unprocessed edge weights
-	 * @throws IOException if an I/O error occurred while reading the edge
-	 *         weights
+	 * @throws IOException if an I/O error occurred while reading the edge weights
 	 */
-	private void readNextLine(LineReader reader, Tokenizer tokenizer, Queue<Double> entries)
-			throws IOException {
+	private void readNextLine(LineReader reader, Tokenizer tokenizer, Queue<Double> entries) throws IOException {
 		String line = null;
 		
 		do {
@@ -264,13 +260,11 @@ public class EdgeWeightMatrix extends DistanceTable {
 	@Override
 	public double getDistanceBetween(int id1, int id2) {
 		if ((id1 < 1) || (id1 > size)) {
-			throw new IllegalArgumentException("no node with identifier " +
-					id1);
+			throw new IllegalArgumentException("no node with identifier " + id1);
 		}
 		
 		if ((id2 < 1) || (id2 > size)) {
-			throw new IllegalArgumentException("no node with identifier " +
-					id2);
+			throw new IllegalArgumentException("no node with identifier " + id2);
 		}
 		
 		return matrix[id1-1][id2-1];

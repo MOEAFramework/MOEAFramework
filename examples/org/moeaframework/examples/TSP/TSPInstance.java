@@ -62,14 +62,13 @@ public class TSPInstance {
 	private EdgeWeightType edgeWeightType;
 	
 	/**
-	 * The format of the edge weight matrix when explicit weights are used; or
-	 * {@code null} if edge weights are not explicit.
+	 * The format of the edge weight matrix when explicit weights are used; or {@code null} if edge weights are not
+	 * explicit.
 	 */
 	private EdgeWeightFormat edgeWeightFormat;
 	
 	/**
-	 * The format of edge data; or {@code null} if edge data is not explicitly
-	 * defined.
+	 * The format of edge data; or {@code null} if edge data is not explicitly defined.
 	 */
 	private EdgeDataFormat edgeDataFormat;
 	
@@ -84,14 +83,12 @@ public class TSPInstance {
 	private DisplayDataType displayDataType;
 	
 	/**
-	 * The distance table that defines the nodes, edges, and weights for this
-	 * problem instance.
+	 * The distance table that defines the nodes, edges, and weights for this problem instance.
 	 */
 	private DistanceTable distanceTable;
 	
 	/**
-	 * The data used to graphically display the nodes; or {@code null} if the
-	 * display data is not explicitly defined.
+	 * The data used to graphically display the nodes; or {@code null} if the display data is not explicitly defined.
 	 */
 	private NodeCoordinates displayData;
 	
@@ -106,8 +103,8 @@ public class TSPInstance {
 	private List<Tour> tours;
 	
 	/**
-	 * The demands and depot nodes for vehicle routing problems; or {@code null}
-	 * if this is not a vehicle routing problem instance.
+	 * The demands and depot nodes for vehicle routing problems; or {@code null} if this is not a vehicle routing
+	 * problem instance.
 	 */
 	private VehicleRoutingTable vehicleRoutingTable;
 	
@@ -124,8 +121,7 @@ public class TSPInstance {
 	 * Constructs a TSPLIB problem instance from the specified TSPLIB file.
 	 * 
 	 * @param file the TSPLIB file defining the problem
-	 * @throws IOException if an I/O error occurred while loading the TSPLIB
-	 *         file
+	 * @throws IOException if an I/O error occurred while loading the TSPLIB file
 	 */
 	public TSPInstance(File file) throws IOException {
 		this();
@@ -133,12 +129,11 @@ public class TSPInstance {
 	}
 	
 	/**
-	 * Constructs a TSPLIB problem instance from the specified reader
-	 * containing TSPLIB data.  The reader is NOT closed by this method.
+	 * Constructs a TSPLIB problem instance from the specified reader containing TSPLIB data.  The reader is NOT closed
+	 * by this method.
 	 * 
 	 * @param reader the reader containing the TSPLIB data
-	 * @throws IOException if an I/O error occurred while loading the TSPLIB
-	 *         data
+	 * @throws IOException if an I/O error occurred while loading the TSPLIB data
 	 */
 	public TSPInstance(Reader reader) throws IOException {
 		this();
@@ -149,8 +144,7 @@ public class TSPInstance {
 	 * Loads a problem instance from the specified TSPLIB file.
 	 * 
 	 * @param file the TSPLIB file defining the problem
-	 * @throws IOException if an I/O error occurred while loading the TSPLIB
-	 *         file
+	 * @throws IOException if an I/O error occurred while loading the TSPLIB file
 	 */
 	protected void load(File file) throws IOException {
 		try (FileReader reader = new FileReader(file)) {
@@ -162,8 +156,7 @@ public class TSPInstance {
 	 * Loads a problem instance from the specified reader.
 	 * 
 	 * @param reader the reader containing the TSPLIB data
-	 * @throws IOException if an I/O error occurred while loading the TSPLIB
-	 *         data
+	 * @throws IOException if an I/O error occurred while loading the TSPLIB data
 	 */
 	protected void load(Reader reader) throws IOException {
 		LineReader lineReader = LineReader.wrap(reader).trim();
@@ -264,9 +257,8 @@ public class TSPInstance {
 	}
 	
 	/**
-	 * Adds a solution to this TSPLIB problem instance.  This method does not
-	 * verify that the solution has all required edges; the caller must ensure
-	 * this condition holds.
+	 * Adds a solution to this TSPLIB problem instance.  This method does not verify that the solution has all required
+	 * edges; the caller must ensure this condition holds.
 	 * 
 	 * @param tour the solution to add
 	 */
@@ -275,13 +267,10 @@ public class TSPInstance {
 	}
 	
 	/**
-	 * Adds a solution to this TSPLIB problem instance that is defined in a
-	 * separate file.  This method does not verify that the solution is a
-	 * valid tour for this problem instance; the caller must ensure this
-	 * condition holds.
+	 * Adds a solution to this TSPLIB problem instance that is defined in a separate file.  This method does not verify
+	 * that the solution is a valid tour for this problem instance; the caller must ensure this condition holds.
 	 * 
-	 * @param file the file containing a solution to this TSPLIB problem
-	 *        instance
+	 * @param file the file containing a solution to this TSPLIB problem instance
 	 * @throws IOException if an I/O error occurred while loading the tour
 	 */
 	public void addTour(File file) throws IOException {
@@ -331,8 +320,8 @@ public class TSPInstance {
 	}
 
 	/**
-	 * Returns the truck capacity in CVRP problem instances.  The return value
-	 * is undefined if the data type is not {@code CVRP}.
+	 * Returns the truck capacity in CVRP problem instances.  The return value is undefined if the data type is not
+	 * {@code CVRP}.
 	 * 
 	 * @return the truck capacity in CVRP problem instances
 	 */
@@ -350,22 +339,20 @@ public class TSPInstance {
 	}
 
 	/**
-	 * Returns the format of the edge weight matrix when explicit weights are
-	 * used; or {@code null} if edge weights are not explicit.
+	 * Returns the format of the edge weight matrix when explicit weights are used; or {@code null} if edge weights are
+	 * not explicit.
 	 * 
-	 * @return the format of the edge weight matrix when explicit weights are
-	 *         used; or {@code null} if edge weights are not explicit
+	 * @return the format of the edge weight matrix when explicit weights are used; or {@code null} if edge weights are
+	 *         not explicit
 	 */
 	public EdgeWeightFormat getEdgeWeightFormat() {
 		return edgeWeightFormat;
 	}
 
 	/**
-	 * Returns the format of edge data; or {@code null} if edge data is not
-	 * explicitly defined.
+	 * Returns the format of edge data; or {@code null} if edge data is not explicitly defined.
 	 * 
-	 * @return the format of edge data; or {@code null} if edge data is not
-	 *         explicitly defined
+	 * @return the format of edge data; or {@code null} if edge data is not explicitly defined
 	 */
 	public EdgeDataFormat getEdgeDataFormat() {
 		return edgeDataFormat;
@@ -390,33 +377,29 @@ public class TSPInstance {
 	}
 
 	/**
-	 * Returns the distance table that defines the nodes, edges, and weights
-	 * for this problem instance.
+	 * Returns the distance table that defines the nodes, edges, and weights for this problem instance.
 	 * 
-	 * @return the distance table that defines the nodes, edges, and weights
-	 *         for this problem instance
+	 * @return the distance table that defines the nodes, edges, and weights for this problem instance
 	 */
 	public DistanceTable getDistanceTable() {
 		return distanceTable;
 	}
 
 	/**
-	 * Returns the data used to graphically display the nodes; or {@code null}
-	 * if the display data is not explicitly defined.
+	 * Returns the data used to graphically display the nodes; or {@code null} if the display data is not explicitly
+	 * defined.
 	 * 
-	 * @return the data used to graphically display the nodes; or {@code null}
-	 *         if the display data is not explicitly defined
+	 * @return the data used to graphically display the nodes; or {@code null} if the display data is not explicitly
+	 *         defined
 	 */
 	public NodeCoordinates getDisplayData() {
 		return displayData;
 	}
 
 	/**
-	 * Returns the edges that are required in each solution to this problem
-	 * instance.
+	 * Returns the edges that are required in each solution to this problem instance.
 	 * 
-	 * @return the edges that are required in each solution to this problem
-	 * instance
+	 * @return the edges that are required in each solution to this problem instance
 	 */
 	public EdgeData getFixedEdges() {
 		return fixedEdges;
@@ -432,11 +415,11 @@ public class TSPInstance {
 	}
 
 	/**
-	 * Returns the demands and depot nodes for vehicle routing problems; or
-	 * {@code null} if this is not a vehicle routing problem instance.
+	 * Returns the demands and depot nodes for vehicle routing problems; or {@code null} if this is not a vehicle
+	 * routing problem instance.
 	 * 
-	 * @return the demands and depot nodes for vehicle routing problems; or
-	 *         {@code null} if this is not a vehicle routing problem instance
+	 * @return the demands and depot nodes for vehicle routing problems; or {@code null} if this is not a vehicle
+	 *         routing problem instance
 	 */
 	public VehicleRoutingTable getVehicleRoutingTable() {
 		return vehicleRoutingTable;

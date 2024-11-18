@@ -33,9 +33,8 @@ public enum State {
 	EMPTY,
 	
 	/**
-	 * The cell is empty but located on the "ideal" ant trail.  This must NOT
-	 * be used to influence the ant's behavior, and should be treated like an
-	 * EMPTY cell.
+	 * The cell is empty but located on the "ideal" ant trail.  This must NOT be used to influence the ant's behavior,
+	 * and should be treated like an EMPTY cell.
 	 */
 	TRAIL,
 	

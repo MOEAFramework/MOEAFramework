@@ -28,8 +28,8 @@ import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.io.Tokenizer;
 
 /**
- * Stores the nodes (by their identifier) that are visited in a tour.  Tours
- * are cyclic, so an implicit edge exists between the last index and the first.
+ * Stores the nodes (by their identifier) that are visited in a tour.  Tours are cyclic, so an implicit edge exists
+ * between the last index and the first.
  */
 public class Tour {
 	
@@ -81,9 +81,8 @@ public class Tour {
 	}
 	
 	/**
-	 * Returns the identifier of the node visited at the specified index.
-	 * Tours are cyclic, so specifying an index {@code < 0} or {@code >= size()}
-	 * is cycled through the tour, never causing an out-of-bounds exception.
+	 * Returns the identifier of the node visited at the specified index.  Tours are cyclic, so specifying an index
+	 * {@code < 0} or {@code >= size()} is cycled through the tour, never causing an out-of-bounds exception.
 	 * 
 	 * @param index the index
 	 * @return the identifier of the node visited at the specified index
@@ -97,9 +96,8 @@ public class Tour {
 	}
 	
 	/**
-	 * Sets the identifier of the node visited at the specified index.  Tours
-	 * are cyclic, so setting an index {@code < 0} or {@code >= size()} is
-	 * cycled through the tour, never causing an out-of-bounds exception.
+	 * Sets the identifier of the node visited at the specified index.  Tours are cyclic, so setting an index
+	 * {@code < 0} or {@code >= size()} is cycled through the tour, never causing an out-of-bounds exception.
 	 * 
 	 * @param index the index
 	 * @param node the identifier of the node visited at the specified index
@@ -156,9 +154,8 @@ public class Tour {
 	}
 	
 	/**
-	 * Calculates and returns the total distance of this tour.  The total
-	 * distance includes the distance from the last node back to the first node
-	 * in the tour.
+	 * Calculates and returns the total distance of this tour.  The total distance includes the distance from the last
+	 * node back to the first node in the tour.
 	 * 
 	 * @param problem the TSPLIB problem instance this tour is a solution for
 	 * @return the total distance of this tour
@@ -175,12 +172,12 @@ public class Tour {
 	}
 	
 	/**
-	 * Returns {@code true} if this tour contains all the fixed edges required
-	 * by the TSPLIB problem instances; {@code false} otherwise.
+	 * Returns {@code true} if this tour contains all the fixed edges required by the TSPLIB problem instances;
+	 * {@code false} otherwise.
 	 * 
 	 * @param problem the TSPLIB problem instance this tour is a solution for
-	 * @return {@code true} if this tour contains all the fixed edges required
-	 *         by the TSPLIB problem instances; {@code false} otherwise
+	 * @return {@code true} if this tour contains all the fixed edges required by the TSPLIB problem instances;
+	 *         {@code false} otherwise
 	 */
 	public boolean containsFixedEdges(TSPInstance problem) {
 		EdgeData fixedEdges = problem.getFixedEdges();
@@ -193,13 +190,11 @@ public class Tour {
 	}
 	
 	/**
-	 * Returns {@code true} if this tour is a Hamiltonian cycle; {@code false}
-	 * otherwise.  A Hamiltonian cycle is a path through a graph that visits
-	 * every node exactly once.
+	 * Returns {@code true} if this tour is a Hamiltonian cycle; {@code false} otherwise.  A Hamiltonian cycle is a
+	 * path through a graph that visits every node exactly once.
 	 * 
 	 * @param problem the TSPLIB problem instance this tour is a solution for
-	 * @return {@code true} if this tour is a Hamiltonian cycle; {@code false}
-	 *         otherwise
+	 * @return {@code true} if this tour is a Hamiltonian cycle; {@code false} otherwise
 	 */
 	public boolean isHamiltonianCycle(TSPInstance problem) {
 		DistanceTable distanceTable = problem.getDistanceTable();
@@ -230,12 +225,10 @@ public class Tour {
 	}
 	
 	/**
-	 * Reverses the order in which the nodes are visited between the two
-	 * specified indices.  The first index defines the start of the
-	 * reverse operation; the second index defines the stopping position.
-	 * Tours are cyclic, so the reverse operation, when the second index is less
-	 * than the first, gets wrapped around the end of the array.  The indices
-	 * are inclusive.
+	 * Reverses the order in which the nodes are visited between the two specified indices.  The first index defines
+	 * the start of the reverse operation; the second index defines the stopping position.  Tours are cyclic, so the
+	 * reverse operation, when the second index is less than the first, gets wrapped around the end of the array.  The
+	 * indices are inclusive.
 	 * 
 	 * @param i the first index, or starting index
 	 * @param j the second index, or stopping index
@@ -253,14 +246,12 @@ public class Tour {
 	}
 	
 	/**
-	 * Returns {@code true} if this tour is equivalent to the specified tour;
-	 * {@code false} otherwise.  Two tours are considered equivalent if they
-	 * visit the same nodes in the same order.  This comparison ignores the
-	 * direction of the node traversal.
+	 * Returns {@code true} if this tour is equivalent to the specified tour; {@code false} otherwise.  Two tours are
+	 * considered equivalent if they visit the same nodes in the same order.  This comparison ignores the direction of
+	 * the node traversal.
 	 * 
 	 * @param other the tour that is being compared
-	 * @return {@code true} if this tour is equivalent to the specified tour;
-	 *         {@code false} otherwise
+	 * @return {@code true} if this tour is equivalent to the specified tour; {@code false} otherwise
 	 */
 	public boolean isEquivalent(Tour other) {
 		int size = size();
@@ -316,8 +307,8 @@ public class Tour {
 	}
 	
 	/**
-	 * Returns the canonical tour with the given length.  The canonical
-	 * tour visits the nodes in order, i.e., {@code [1, 2, 3, ..., length]}.
+	 * Returns the canonical tour with the given length.  The canonical tour visits the nodes in order, i.e.,
+	 * {@code [1, 2, 3, ..., length]}.
 	 * 
 	 * @param length the number of nodes in the resulting tour
 	 * @return the canonical tour with the given length
@@ -333,8 +324,7 @@ public class Tour {
 	}
 	
 	/**
-	 * Returns a random tour with the given length.  A random tour will visit
-	 * every node exactly once.
+	 * Returns a random tour with the given length.  A random tour will visit every node exactly once.
 	 * 
 	 * @param length the number of nodes in the resulting tour
 	 * @return the random tour with the given length
@@ -346,8 +336,7 @@ public class Tour {
 	}
 	
 	/**
-	 * Constructs a tour from the specified array.  The values in the array
-	 * should start at {@code 1}.
+	 * Constructs a tour from the specified array.  The values in the array should start at {@code 1}.
 	 * 
 	 * @param entries the nodes visited in the tour
 	 * @return the tour constructed from the specified array

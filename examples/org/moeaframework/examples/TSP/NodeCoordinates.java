@@ -25,8 +25,7 @@ import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.io.Tokenizer;
 
 /**
- * Stores the nodes in a TSPLIB problem instance and provides methods for 
- * calculating the distances between nodes.
+ * Stores the nodes in a TSPLIB problem instance and provides methods for calculating the distances between nodes.
  */
 public class NodeCoordinates extends DistanceTable {
 	
@@ -36,8 +35,7 @@ public class NodeCoordinates extends DistanceTable {
 	private final int size;
 	
 	/**
-	 * The type of coordinates, used to ensure the TSPLIB problem instance is
-	 * parsed correctly.
+	 * The type of coordinates, used to ensure the TSPLIB problem instance is parsed correctly.
 	 */
 	private final NodeCoordType type;
 	
@@ -69,8 +67,7 @@ public class NodeCoordinates extends DistanceTable {
 	 * @param type the type of coordinates (i.e., 2D or 3D)
 	 * @param distanceFunction the distance function
 	 */
-	public NodeCoordinates(int size, NodeCoordType type,
-			DistanceFunction distanceFunction) {
+	public NodeCoordinates(int size, NodeCoordType type, DistanceFunction distanceFunction) {
 		super();
 		this.size = size;
 		this.type = type;
@@ -88,8 +85,7 @@ public class NodeCoordinates extends DistanceTable {
 			String[] tokens = tokenizer.decodeToArray(line);
 
 			if (tokens.length != type.getLength() + 1) {
-				throw new IOException(
-						"invalid number of tokens for node entry");
+				throw new IOException("invalid number of tokens for node entry");
 			}
 
 			double[] position = new double[type.getLength()];
@@ -104,8 +100,8 @@ public class NodeCoordinates extends DistanceTable {
 	}
 	
 	/**
-	 * Adds the specified node to this problem instance.  If a node with the
-	 * same identifier already exists, the previous node will be replaced.
+	 * Adds the specified node to this problem instance.  If a node with the same identifier already exists, the
+	 * previous node will be replaced.
 	 * 
 	 * @param node the node to add
 	 */
@@ -124,8 +120,7 @@ public class NodeCoordinates extends DistanceTable {
 	}
 	
 	/**
-	 * Removes the node with the specified identifier from this problem
-	 * instance.
+	 * Removes the node with the specified identifier from this problem instance.
 	 * 
 	 * @param id the identifier of the node to remove
 	 */
@@ -185,13 +180,11 @@ public class NodeCoordinates extends DistanceTable {
 		Node node2 = get(id2);
 		
 		if (node1 == null) {
-			throw new IllegalArgumentException("no node with identifier " +
-					id1);
+			throw new IllegalArgumentException("no node with identifier " + id1);
 		}
 		
 		if (node2 == null) {
-			throw new IllegalArgumentException("no node with identifier " +
-					id2);
+			throw new IllegalArgumentException("no node with identifier " + id2);
 		}
 		
 		return distanceFunction.distance(get(id1), get(id2));

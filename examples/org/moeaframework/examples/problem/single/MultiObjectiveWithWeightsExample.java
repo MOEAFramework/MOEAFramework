@@ -26,9 +26,9 @@ import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
 
 /**
- * Demonstrates solving a multi-objective problem using a single-objective optimizer by supplying weights.
- * Linear weights tend to result in solutions near the boundary, whereas min-max weights tends to find
- * intermediate solutions on the Pareto front.
+ * Demonstrates solving a multi-objective problem using a single-objective optimizer by supplying weights.  Linear
+ * weights tend to result in solutions near the boundary, whereas min-max weights tends to find intermediate solutions
+ * on the Pareto front.
  */
 public class MultiObjectiveWithWeightsExample {
 	

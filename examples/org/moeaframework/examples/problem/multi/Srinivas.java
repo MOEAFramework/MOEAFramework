@@ -57,8 +57,8 @@ public class Srinivas extends AbstractProblem {
 	}
 
 	/**
-	 * Here we define a solution, which contains two real-valued decision variables, two minimized objectives,
-	 * and two constraints.
+	 * Here we define a solution, which contains two real-valued decision variables, two minimized objectives, and two
+	 * constraints.
 	 */
 	@Override
 	public Solution newSolution() {
