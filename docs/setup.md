@@ -15,19 +15,19 @@ Download the source or compiled binaries from the [Releases page](https://github
 We generally recommend the compiled binaries, `MOEAFramework-5.0.tar.gz`, unless you are planning to make changes to
 the MOEA Framework itself.
 
-![Release Assets](imgs/release-assets.png)
+<img src="imgs/release-assets.png" width="80%" />
 
 After extracting the download, select `File > Open Projects from File System` within Eclipse and open the extracted
 directory.  Once imported, you should see the following in the package explorer:
 
-![Eclipse Project Layout](imgs/eclipse-project.png)
+<img src="imgs/eclipse-project.png" width="40%" />
 
 ### Running Examples
 
 The examples are contained in the `examples/` directory.  Navigate to the `examples > (default package)`
 to view the introductory examples:
 
-![Eclipse Examples Package](imgs/eclipse-examples.png)
+<img src="imgs/eclipse-examples.png" width="25%" />
 
 Right-click on an example and select `Run As > Java Application`.  You should soon see output appearing in the
 console.
