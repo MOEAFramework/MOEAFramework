@@ -43,10 +43,10 @@ new Plot()
 ## Performance indicators
 
 We can also measure the quality of the resulting Pareto non-dominated solutions using one or more performance
-indicators, such as Hypervolume.  The `Indicators` class is a convenient way to calculate and display the performance
-indicator values.  We can select specific indicators or enable all.
+indicators, such as Hypervolume.  Below we construct an `Indicators` class with the known reference set for the
+DTLZ2 problem, then calculate and display the performance indicator values:
 
-<!-- java:examples/Example3.java [34:45] -->
+<!-- java:examples/Example3.java [42:46] -->
 
 ```java
 Problem problem = new DTLZ2(2);
@@ -87,7 +87,7 @@ algorithm, it inspects the problem to determine its type and supplies the recomm
 parameters.  In this example, since the problem is real-valued, it will use Simulated Binary Crossover (SBX) and
 Polynomial Mutation (PM).  We can confirm this by viewing the configuration:
 
-<!-- java:examples/Example4.java [31:34] -->
+<!-- java:examples/Example4.java [34:34] -->
 
 ```java
 Problem problem = new DTLZ2(2);
@@ -114,7 +114,7 @@ sbx.symmetric         false
 What if we want to run this algorithm with a different configuration?  We can simply call the setter methods.
 Here we change the initial population size and set the variation operator to Parent Centric Crossover (PCX):
 
-<!-- java:examples/Example5.java [32:40] -->
+<!-- java:examples/Example5.java [34:36] -->
 
 ```java
 Problem problem = new DTLZ2(2);
@@ -132,7 +132,7 @@ Alternatively, similar to how we read the current configuration with `getConfigu
 different settings with `applyConfiguration`.  For example, the following results in the same setup
 as the previous example:
 
-<!-- java:examples/Example6.java [33:45] -->
+<!-- java:examples/Example6.java [36:42] -->
 
 ```java
 Problem problem = new DTLZ2(2);

@@ -17,7 +17,7 @@ For instance, calling `display()` will print the data to standard output:
 algorithm.getResult().display();
 ```
 
-Or we can save to a file as CSV, Json, or Markdown and Latex tables:
+Or we can save to a file as CSV, Json, Markdown, or Latex:
 
 <!-- java:examples/org/moeaframework/examples/misc/SaveAndFormatResultsExample.java [41:44] -->
 
@@ -29,7 +29,7 @@ algorithm.getResult().save(TableFormat.Json, new File("solution.json"));
 ```
 
 Note that these file formats are only intended to produce output.  They can not be read or loaded back into the MOEA
-Framework.  Prefer using one of the other options documented here for storage purposes.
+Framework.  Prefer using one of the other options documented below for storage purposes.
 
 ## Populations
 

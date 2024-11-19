@@ -1,6 +1,6 @@
 # Sensitivity Analysis
 
-The MOEA Framework was original built to perform sensitivity analysis on MOEAs, as detailed in this study:
+The MOEA Framework was originally built to perform sensitivity analysis on MOEAs, as detailed in this study:
 
 > Hadka, D. and Reed, P.  "Diagnostic Assessment of Search Controls and Failure Modes in Many-Objective
 > Evolutionary Optimization."  Evolutionary Computation, 20(3):423-452, 2012.
