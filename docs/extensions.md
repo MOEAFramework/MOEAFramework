@@ -75,6 +75,26 @@ algorithm.addExtension(new LoggingExtension());
 algorithm.run(100000);
 ```
 
+### Progress
+
+The progress extension allows for tracking the progress of a run, including the elapsed time and estimated time
+remaining.
+
+<!-- java:examples/org/moeaframework/examples/extensions/ProgressExtensionExample.java [33:35] -->
+
+```java
+NSGAII algorithm = new NSGAII(new Srinivas());
+algorithm.addExtension(new ProgressExtension().withListener(new DefaultProgressListener()));
+algorithm.run(10000);
+```
+
+When using the default listener, as the example above demonstrates, the elapsed time, remaining time, and progress
+is displayed to the console:
+
+```
+E: 00:01:25, R: 00:00:18 [===============================>        ] 81%
+```
+
 ### Callback Function
 
 The callback extension allows running arbitrary commands after each step.  Observe in this example how we can write
