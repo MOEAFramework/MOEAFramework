@@ -15,69 +15,54 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.examples.regression.program;
+package org.moeaframework.examples.regression;
 
 import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.Program;
 import org.moeaframework.problem.AbstractProblem;
-import org.moeaframework.util.tree.Add;
-import org.moeaframework.util.tree.Cos;
-import org.moeaframework.util.tree.Divide;
-import org.moeaframework.util.tree.Environment;
-import org.moeaframework.util.tree.Exp;
-import org.moeaframework.util.tree.Get;
-import org.moeaframework.util.tree.Log;
-import org.moeaframework.util.tree.Multiply;
-import org.moeaframework.util.tree.Rules;
-import org.moeaframework.util.tree.Sin;
-import org.moeaframework.util.tree.Subtract;
 
 /**
- * The symbolic regression problem for genetic programming.  Given a function, the symbolic regression problem attempts
- * to find an expression for closely approximating the output of the function.
+ * The symbolic regression problem.  Given a function, the symbolic regression problem attempts to find an expression
+ * for closely approximating the output of the function.
+ * <p>
+ * This abstract class is designed to allow either grammar-based or program-based solvers.
  */
-public class SymbolicRegression extends AbstractProblem {
+public abstract class AbstractSymbolicRegression extends AbstractProblem {
 	
 	/**
 	 * The actual function implementation.
 	 */
-	private final UnivariateFunction function;
+	protected final UnivariateFunction function;
 	
 	/**
 	 * The lower bound for comparing the actual and approximate functions.
 	 */
-	private final double lowerBound;
+	protected final double lowerBound;
 	
 	/**
 	 * The upper bound for comparing the actual and approximate functions.
 	 */
-	private final double upperBound;
+	protected final double upperBound;
 	
 	/**
 	 * The number of comparisons made between the actual and approximate functions.
 	 */
-	private final int steps;
+	protected final int steps;
 	
 	/**
-	 * The name of the input variable for the expression tree.
+	 * The name of the input variable.
 	 */
-	private String symbol;
-	
-	/**
-	 * The rules for building expression trees for symbolic regression.
-	 */
-	private Rules rules;
+	protected final String symbol;
 	
 	/**
 	 * The cached x values.
 	 */
-	private double[] x;
+	protected double[] x;
 	
 	/**
-	 * The cached actual y values.
+	 * The cached y values.
 	 */
-	private double[] y;
+	protected double[] y;
 
 	/**
 	 * Constructs a new symbolic regression problem for approximating the given function.
@@ -87,27 +72,13 @@ public class SymbolicRegression extends AbstractProblem {
 	 * @param upperBound the upper bound for comparing the actual and approximate functions
 	 * @param steps the number of comparisons made between the actual and approximate functions
 	 */
-	public SymbolicRegression(UnivariateFunction function, double lowerBound, double upperBound, int steps) {
+	public AbstractSymbolicRegression(UnivariateFunction function, double lowerBound, double upperBound, int steps) {
 		super(1, 1);
 		this.function = function;
 		this.lowerBound = lowerBound;
 		this.upperBound = upperBound;
 		this.steps = steps;
-		
-		// setup the default rules
-		symbol = "x";
-		rules = new Rules();
-		rules.add(new Add());
-		rules.add(new Multiply());
-		rules.add(new Subtract());
-		rules.add(new Divide());
-		rules.add(new Sin());
-		rules.add(new Cos());
-		rules.add(new Exp());
-		rules.add(new Log());
-		rules.add(new Get(Number.class, symbol));
-		rules.setReturnType(Number.class);
-		rules.setMaxVariationDepth(10);
+		this.symbol = "x";
 
 		// cache the function's x and y values
 		x = new double[steps];
@@ -165,35 +136,6 @@ public class SymbolicRegression extends AbstractProblem {
 	}
 
 	/**
-	 * Sets the name of the input variable to the approximated function.  The default is {@code "x"}.  When changing
-	 * the symbol, be sure to add the rule {@code new Get(Number.class, symbol)} so the input variable value can be
-	 * accessed in the approximated function.
-	 * 
-	 * @param symbol the name of the input variable to the approximated function
-	 */
-	public void setSymbol(String symbol) {
-		this.symbol = symbol;
-	}
-
-	/**
-	 * Returns the rules used to construct the approximated function.
-	 * 
-	 * @return the rules used to construct the approximated function
-	 */
-	public Rules getRules() {
-		return rules;
-	}
-
-	/**
-	 * Sets the rules used to construct the approximated function.
-	 * 
-	 * @param rules the rules used to construct the approximated function
-	 */
-	public void setRules(Rules rules) {
-		this.rules = rules;
-	}
-	
-	/**
 	 * Returns the array of x-values, the function inputs, used when comparing the actual and approximated functions.
 	 * 
 	 * @return the array of x-values, the function inputs, used when comparing the actual and approximated functions
@@ -208,41 +150,21 @@ public class SymbolicRegression extends AbstractProblem {
 	 * 
 	 * @return the array of y-values, the function outputs, resulting from evaluating the actual function
 	 */
-	public double[] getActualY() {
+	public double[] getY() {
 		return y;
 	}
 	
-	/**
-	 * Returns the array of y-values, the function outputs, resulting from evaluating the approximated function using
-	 * the x-values from {@link #getX()}.
-	 * 
-	 * @param solution the solution whose approximated function is being evaluated
-	 * @return the array of y-values, the function outputs, resulting from evaluating the approximated function
-	 */
-	public double[] getApproximatedY(Solution solution) {
-		Program program = (Program)solution.getVariable(0);
-		double[] approximatedY = new double[steps];
-		
-		for (int i = 0; i < steps; i++) {
-			Environment environment = new Environment();
-			environment.set(symbol, x[i]);
-			approximatedY[i] = ((Number)program.evaluate(environment)).doubleValue();
-		}
-		
-		return approximatedY;
-	}
-
 	@Override
 	public void evaluate(Solution solution) {
 		double difference = 0.0;
-		double[] approximatedY = getApproximatedY(solution);
-		
+		double[] approximatedY = eval(solution);
+
 		for (int i = 0; i < steps; i++) {
 			difference += Math.pow(Math.abs(y[i] - approximatedY[i]), 2.0);
 		}
-		
+
 		difference = Math.sqrt(difference);
-		
+
 		// protect against NaN
 		if (Double.isNaN(difference)) {
 			difference = Double.POSITIVE_INFINITY;
@@ -250,12 +172,21 @@ public class SymbolicRegression extends AbstractProblem {
 
 		solution.setObjectiveValue(0, difference);
 	}
-
-	@Override
-	public Solution newSolution() {
-		Solution solution = new Solution(1, 1);
-		solution.setVariable(0, new Program(rules));
-		return solution;
-	}
+	
+	/**
+	 * Converts the grammar or program into a string for display.
+	 * 
+	 * @param solution the solution
+	 * @return the expression
+	 */
+	public abstract String getExpression(Solution solution);
+	
+	/**
+	 * Evaluates the grammar or program and returns the approximated y-values.
+	 * 
+	 * @param program the generated program
+	 * @return the array of y-values, the function outputs, resulting from evaluating the grammar or program
+	 */
+	public abstract double[] eval(Solution solution);
 
 }

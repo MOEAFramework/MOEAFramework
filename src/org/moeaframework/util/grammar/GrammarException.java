@@ -46,5 +46,15 @@ public class GrammarException extends FrameworkException {
 	public GrammarException(String message, int line) {
 		super(MessageFormat.format("{0} (line {1})", message, line));
 	}
+	
+	/**
+	 * Constructs an exception indicating an error while parsing or processing grammars.
+	 * 
+	 * @param message the error message
+	 * @param cause the underlying cause
+	 */
+	public GrammarException(String message, Throwable cause) {
+		super(message, cause);
+	}
 
 }

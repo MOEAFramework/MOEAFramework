@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.examples.regression.program;
+package org.moeaframework.examples.regression;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -45,7 +45,6 @@ import org.jfree.data.xy.XYSeries;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.Program;
 
 /**
  * A GUI for displaying the actual and approximated functions used in a symbolic regression problem instance.
@@ -57,64 +56,64 @@ public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 	/**
 	 * The symbolic regression problem instance.
 	 */
-	private final SymbolicRegression problem;
+	private final AbstractSymbolicRegression problem;
 
 	/**
 	 * The container for the actual and approximated function plot.
 	 */
 	private JPanel container;
-	
+
 	/**
 	 * The text area containing details of the result, displaying a generation counter, the objective value, and the
 	 * approximated function expression tree.
 	 */
 	private JTextArea details;
-	
+
 	/**
 	 * The button used to close the GUI.
 	 */
 	private JButton close;
-	
+
 	/**
 	 * The current solution.
 	 */
 	private Solution solution;
-	
+
 	/**
 	 * The current generation count.
 	 */
 	private int generation;
-	
+
 	/**
 	 * The maximum generations being executed.
 	 */
 	private int maxGenerations;
-	
+
 	/**
 	 * {@code true} if the GUI has been closed; {@code false} otherwise.
 	 */
 	private boolean isCanceled;
-	
+
 	/**
 	 * Constructs a new GUI for displaying the actual and approximated functions used in a symbolic regression problem
 	 * instance.
 	 * 
 	 * @param problem the symbolic regression problem instance
 	 */
-	public SymbolicRegressionGUI(SymbolicRegression problem) {
+	public SymbolicRegressionGUI(AbstractSymbolicRegression problem) {
 		super("Symbolic Regression Demo");
 		this.problem = problem;
-		
+
 		initialize();
 		layoutComponents();
-		
+
 		setSize(600, 600);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		addWindowListener(this);
 		setIconImages(Settings.getIcon().getResolutionVariants());
 	}
-	
+
 	/**
 	 * Returns {@code true} if the GUI has been closed; {@code false} otherwise.
 	 * 
@@ -129,12 +128,12 @@ public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 	 */
 	protected void initialize() {
 		container = new JPanel(new BorderLayout());
-		
+
 		details = new JTextArea();
 		details.setWrapStyleWord(true);
 		details.setEditable(false);
 		details.setLineWrap(true);
-		
+
 		close = new JButton(new AbstractAction("Close") {
 
 			private static final long serialVersionUID = 2365513341407994400L;
@@ -144,47 +143,48 @@ public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 				isCanceled = true;
 				dispose();
 			}
-			
+
 		});
 	}
-	
+
 	/**
 	 * Layout the components on the GUI.
 	 */
 	protected void layoutComponents() {
 		container.setMinimumSize(new Dimension(300, 300));
-		
+
 		JScrollPane detailsPane = new JScrollPane(details);
 		detailsPane.setMinimumSize(new Dimension(150, 150));
-		
+
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, container, detailsPane);
 		splitPane.setResizeWeight(0.5);
 		splitPane.setDividerLocation(0.4);
-		
+
 		JPanel buttonPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		buttonPane.add(close);
-		
+
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(splitPane, BorderLayout.CENTER);
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
 	}
-	
+
 	/**
 	 * Updates the GUI.  This method updates a Swing GUI, and therefore must only be invoked on the event dispatch
 	 * thread.
 	 */
 	protected void updateOnEventQueue() {
-		// create local reference incase update is called again
+		// create local reference in case update is called again
 		double[] x = problem.getX();
-		double[] actualY = problem.getActualY();
-		double[] approximatedY = problem.getApproximatedY(solution);
+		double[] y = problem.getY();
+
+		double[] approximatedY = problem.eval(solution);
 
 		// generate the line series
 		XYSeries actualSeries = new XYSeries("Target Function", false, false);
 		XYSeries approximatedSeries = new XYSeries("Estimated Function", false, false);
 
 		for (int i = 0; i < x.length; i++) {
-			actualSeries.add(x[i], actualY[i]);
+			actualSeries.add(x[i], y[i]);
 			approximatedSeries.add(x[i], approximatedY[i]);
 		}
 
@@ -193,27 +193,26 @@ public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 		dataset.addSeries(approximatedSeries);
 
 		// generate the plot
-		JFreeChart chart = ChartFactory.createXYLineChart("Symbolic Regression Demo", "x", "f(x)", dataset,
-				PlotOrientation.VERTICAL, true, true, false);
+		JFreeChart chart = ChartFactory.createXYLineChart("Symbolic Regression Demo (Grammatical Evolution)",
+				"x", "f(x)", dataset, PlotOrientation.VERTICAL, true, true, false);
 		XYPlot plot = chart.getXYPlot();
 		plot.setRenderer(new XYLineAndShapeRenderer());
-		
+
 		// update the details
-		Program program = (Program)solution.getVariable(0);
-		
-		details.setText("Generation " + generation + " / " + maxGenerations + "\nObjective value: " +
-				solution.getObjective(0) + "\n\n" + program.getBody().toString());
-		
+		details.setText("Generation " + generation + " / " + maxGenerations + "\n" +
+				"Objective value: " + solution.getObjective(0) + "\n\n" +
+				problem.getExpression(solution));
+
 		container.removeAll();
 		container.add(new ChartPanel(chart), BorderLayout.CENTER);
 		container.revalidate();
 		container.repaint();
-		
+
 		if (!isCanceled) {
 			setVisible(true);
 		}
 	}
-	
+
 	/**
 	 * Updates the GUI with a new intermediate solution.
 	 * 
@@ -225,14 +224,14 @@ public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 		this.solution = solution;
 		this.generation = generation;
 		this.maxGenerations = maxGenerations;
-		
+
 		if (EventQueue.isDispatchThread()) {
 			updateOnEventQueue();
 		} else {
 			EventQueue.invokeLater(() -> updateOnEventQueue());
 		}
 	}
-	
+
 	@Override
 	public void windowActivated(WindowEvent e) {
 		// do nothing
@@ -267,29 +266,29 @@ public class SymbolicRegressionGUI extends JFrame implements WindowListener {
 	public void windowOpened(WindowEvent e) {
 		// do nothing
 	}
-	
+
 	/**
 	 * Runs the given symbolic regression problem instance, displaying intermediate results in a GUI.
 	 * 
 	 * @param problem the symbolic regression problem instance
 	 */
-	public static void runDemo(SymbolicRegression problem) {
+	public static void runDemo(AbstractSymbolicRegression problem) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
 			// couldn't set system look and feel, continue with default
 		}
-		
+
 		// setup the GUI
 		SymbolicRegressionGUI gui = new SymbolicRegressionGUI(problem);
 
 		// setup and construct the GP solver
 		int generation = 0;
 		int maxGenerations = 1000;
-		
+
 		GeneticAlgorithm algorithm = new GeneticAlgorithm(problem);
 		algorithm.setInitialPopulationSize(500);
-		
+
 		// run the GP solver
 		while ((generation < maxGenerations) && !gui.isCanceled()) {
 			algorithm.step();

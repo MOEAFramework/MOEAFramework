@@ -249,13 +249,14 @@ public class ContextFreeGrammar {
 	 * 
 	 * @param str the string containing the context-free grammar
 	 * @return the grammar
-	 * @throws IOException if an I/O error occurred
 	 * @throws GrammarException if an error occurred parsing the BNF context-free grammar
 	 * @see #load(Reader)
 	 */
-	public static ContextFreeGrammar load(String str) throws IOException {
+	public static ContextFreeGrammar load(String str) {
 		try (StringReader reader = new StringReader(str)) {
 			return load(reader);
+		} catch (IOException e) {
+			throw new GrammarException("failed to parse grammar", e);
 		}
 	}
 	

@@ -15,28 +15,34 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.examples.regression.program;
+package org.moeaframework.examples.regression;
 
 import org.apache.commons.math3.analysis.UnivariateFunction;
 
 /**
- * The Quartic function as introduced by Koza [1].  The function is {@code f(x) = x^4 + x^3 + x^2 + x}.
+ * The Sextic function as introduced by Koza [1].  The function is {@code f(x) = x^6 - 2x^4 + x^2}.
  * <p>
  * References:
  * <ol>
- *   <li>Koza, J.R.  "Genetic Programming: On the Programming of Computers by Means of Natural Selection."  MIT Press,
- *       Cambridge, MA, USA, 1992.
+ *   <li>Koza, J.R.  "Genetic Programming II: Automatic Discovery of Reusable Programs."  MIT Press, Cambridge, MA,
+ *       1994.
  * </ol>
  */
-public class QuarticExample implements UnivariateFunction {
+public class SexticExample implements UnivariateFunction {
 	
 	public static void main(String[] args) {
-		SymbolicRegressionGUI.runDemo(new SymbolicRegression(new QuarticExample(), -1.0, 1.0, 100));
-	}
+		if (args.length == 0 || args[0].equalsIgnoreCase("program")) {
+			SymbolicRegressionGUI.runDemo(new ProgramSymbolicRegression(new SexticExample(), -1.0, 1.0, 100));
+		} else if (args[0].equalsIgnoreCase("grammar")) {
+			SymbolicRegressionGUI.runDemo(new GrammarSymbolicRegression(new SexticExample(), -1.0, 1.0, 100));
+		} else {
+			System.err.println("Invalid argument '" + args[0] + "'");
+			System.exit(-1);
+		}	}
 
 	@Override
 	public double value(double x) {
-		return x*x*x*x + x*x*x + x*x + x;
+		return x*x*x*x*x*x - 2*x*x*x*x + x*x;
 	}
 	
 }

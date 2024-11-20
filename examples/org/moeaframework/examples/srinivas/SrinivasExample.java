@@ -15,28 +15,23 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.examples.regression.program;
+package org.moeaframework.examples.srinivas;
 
-import org.apache.commons.math3.analysis.UnivariateFunction;
+import org.moeaframework.algorithm.NSGAII;
+import org.moeaframework.problem.Problem;
 
 /**
- * The Sextic function as introduced by Koza [1].  The function is {@code f(x) = x^6 - 2x^4 + x^2}.
- * <p>
- * References:
- * <ol>
- *   <li>Koza, J.R.  "Genetic Programming II: Automatic Discovery of Reusable Programs."  MIT Press, Cambridge, MA,
- *       1994.
- * </ol>
+ * Demonstrates solving our custom Srinivas multi-objective problem.
  */
-public class SexticExample implements UnivariateFunction {
-	
-	public static void main(String[] args) {
-		SymbolicRegressionGUI.runDemo(new SymbolicRegression(new SexticExample(), -1.0, 1.0, 100));
-	}
+public class SrinivasExample {
 
-	@Override
-	public double value(double x) {
-		return x*x*x*x*x*x - 2*x*x*x*x + x*x;
+	public static void main(String[] args) {
+		Problem problem = new Srinivas();
+		
+		NSGAII algorithm = new NSGAII(problem);
+		algorithm.run(10000);
+		
+		algorithm.getResult().display();
 	}
 	
 }
