@@ -176,17 +176,16 @@ jobs:
       shell: bash
       run: |
         cd build/MOEAFramework-*
-
-        # Compile all Java examples
         CLASSPATH="lib/*${{ runner.os == 'Windows' && ';' || ':' }}examples"
-        find examples -type f -name '*.java' | \
-          xargs -rt -I "{}" javac -classpath "${CLASSPATH}" "{}"
 
-        # Run all examples, excluding files requiring a GUI
+        # Locate all examples with a main method, ignoring those requiring a display
         find examples -type f -name '*.java' | \
           xargs -r grep -l 'public static void main(' | \
-          xargs -r grep -iL 'plot\|gui\|tsp' | \
-          sed 's~/~.~g; s/.java$//; s/examples.//' | \
+          sort | \
+          grep -v -e 'Example2.java' -e 'A280Example.java' -e 'PR76Example.java' \
+            -e 'QuarticExample.java' -e 'QuinticExample.java' -e 'SexticExample.java' \
+            -e 'PlotRuntimeDynamics.java' -e 'RuntimeViewerExample.java' -e 'PlotControlMap.java' \
+            -e 'CompareIslandModelAndSerialExample.java' | \
           xargs -rt -I "{}" java -classpath "${CLASSPATH}" "{}"
     - name: Test solve.sh
       if: runner.os == 'Linux'

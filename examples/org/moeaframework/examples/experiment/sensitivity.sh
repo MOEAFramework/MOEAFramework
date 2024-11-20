@@ -22,7 +22,7 @@ fi
 java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.EndOfRunEvaluator \
     --parameterFile examples/org/moeaframework/examples/experiment/NSGAII_Params.txt \
     --input NSGAII_Samples.txt \
-    --output NSGAII_DTLZ2_Resultsres \
+    --output NSGAII_DTLZ2_Results.txt \
     --problem DTLZ2 \
     --algorithm NSGAII \
     --epsilon 0.01
