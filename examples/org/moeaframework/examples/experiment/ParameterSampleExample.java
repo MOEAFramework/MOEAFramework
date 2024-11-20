@@ -21,7 +21,6 @@ import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.analysis.parameter.Enumeration;
 import org.moeaframework.analysis.parameter.Parameter;
 import org.moeaframework.analysis.parameter.ParameterSet;
-import org.moeaframework.analysis.plot.Plot;
 import org.moeaframework.analysis.sample.SampledResults;
 import org.moeaframework.analysis.sample.Samples;
 import org.moeaframework.analysis.stream.Groupings;
@@ -34,7 +33,8 @@ import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
 
 /**
- * Demonstrates using parameters to run an algorithm with different inputs, collect the results, and generate a plot.
+ * Demonstrates using parameters to run an algorithm with different inputs, collecting the results, and computing the
+ * average hypervolume.
  */
 public class ParameterSampleExample {
 	
@@ -68,12 +68,7 @@ public class ParameterSampleExample {
 				.measureEach(Measures.average())
 				.sorted();
 		
-		// Display plot
-		new Plot()
-			.line("Average", avgHypervolume)
-			.setXLabel("Population Size")
-			.setYLabel("Hypervolume")
-			.show();
+		avgHypervolume.display();
 	}
 
 }
