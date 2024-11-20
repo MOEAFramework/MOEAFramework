@@ -177,10 +177,10 @@ jobs:
       run: |
         cd build/MOEAFramework-*
         CLASSPATH="lib/*${{ runner.os == 'Windows' && ';' || ':' }}examples"
-		
-		# Compile examples
-		find examples -type f -name '*.java' | \
-		  xargs -rt -I "{}" javac -classpath "${CLASSPATH}" "{}"
+        
+        # Compile examples
+        find examples -type f -name '*.java' | \
+          xargs -rt -I "{}" javac -classpath "${CLASSPATH}" "{}"
 
         # Locate all examples with a main method, ignoring those requiring a display
         find examples -type f -name '*.java' | \
@@ -190,7 +190,7 @@ jobs:
             -e 'QuarticExample.java' -e 'QuinticExample.java' -e 'SexticExample.java' \
             -e 'PlotRuntimeDynamics.java' -e 'RuntimeViewerExample.java' -e 'PlotControlMap.java' \
             -e 'CompareIslandModelAndSerialExample.java' | \
-		  sed 's~/~.~g; s/.java$//; s/examples.//' | \
+          sed 's~/~.~g; s/.java$//; s/examples.//' | \
           xargs -rt -I "{}" java -classpath "${CLASSPATH}" "{}"
     - name: Test solve.sh
       if: runner.os == 'Linux'
