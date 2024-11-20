@@ -11,21 +11,22 @@ columns.  These classes all implement the `Formattable` interface, which defines
 
 For instance, calling `display()` will print the data to standard output:
 
-<!-- java:examples/org/moeaframework/examples/misc/SaveAndFormatResultsExample.java [48:48] -->
+<!-- java:examples/Example1.java [34:34] -->
 
 ```java
 algorithm.getResult().display();
 ```
 
-Or we can save to a file as CSV, Json, Markdown, or Latex:
+Or we can save to a file as CSV, Markdown, Latex, Json, or ARFF:
 
-<!-- java:examples/org/moeaframework/examples/misc/SaveAndFormatResultsExample.java [41:44] -->
+<!-- java:examples/org/moeaframework/examples/io/SaveLoadPopulationExample.java [41:45] -->
 
 ```java
-algorithm.getResult().save(TableFormat.CSV, new File("solutions.csv"));
-algorithm.getResult().save(TableFormat.Markdown, new File("solutions.md"));
-algorithm.getResult().save(TableFormat.Latex, new File("solutions.tex"));
-algorithm.getResult().save(TableFormat.Json, new File("solution.json"));
+algorithm.getResult().save(TableFormat.CSV, new File("NSGAII_DTLZ2.csv"));
+algorithm.getResult().save(TableFormat.Markdown, new File("NSGAII_DTLZ2.md"));
+algorithm.getResult().save(TableFormat.Latex, new File("NSGAII_DTLZ2.tex"));
+algorithm.getResult().save(TableFormat.Json, new File("NSGAII_DTLZ2.json"));
+algorithm.getResult().save(TableFormat.ARFF, new File("NSGAII_DTLZ2.arff"));
 ```
 
 Note that these file formats are only intended to produce output.  They can not be read or loaded back into the MOEA
@@ -35,20 +36,20 @@ Framework.  Prefer using one of the other options documented below for storage p
 
 Populations define `save` and `load` methods for reading and writing the contents of a population:
 
-<!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [saveLoad] {KeepComments -->
+<!-- java:examples/org/moeaframework/examples/io/SaveLoadPopulationExample.java [47:51] {KeepComments} -->
 
 ```java
-# save population to file
-population.save(new File("population.dat"));
+// Save the population to a result file
+algorithm.getResult().save(new File("NSGAII_DTLZ2.res"));
 
-# load population from file
-Population population = Population.load(new File("population.dat"));
+// Load the population from the result file
+Population result = Population.load(new File("NSGAII_DTLZ2.res"));
 ```
 
 Reference sets, including those defined in the `pf/` folder, are also stored in this manner.  Since reference sets
 contain non-dominated solutions, use the `NondominatedPopulation` class to load the set:
 
-<!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [referenceSet] -->
+<!-- java:examples/org/moeaframework/examples/io/LoadAndEvaluateReferenceSet.java [34:34] {KeepComments} -->
 
 ```java
 NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/DTLZ2.2D.pf");
@@ -58,20 +59,20 @@ NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/DTLZ2.2D.p
 
 This section details the format of the "result file".  This is the format used by the `save` and `load` methods above
 to store individual populations, but the file format also allows storing a collection of populations.  This is
-especially useful when storing runtime dynamics, where a snapshot of the population is taken periodically to track
-progress over time:
+especially useful when storing the result from multiple samples or runtime data:
 
-<!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [resultFile-write] -->
+<!-- java:examples/org/moeaframework/examples/io/ResultFileExample.java [54:64] -->
 
 ```java
-try (ResultFileWriter writer = ResultFileWriter.open(problem, new File("result.dat"))) {
-    for (int i = 0; i < 1000; i++) {
-        algorithm.step();
+try (ResultFileWriter writer = ResultFileWriter.open(problem, resultFile)) {
+    for (Sample sample : samples) {
+        System.out.println("Solving UF1 using NSGA-II with populationSize=" + populationSize.readValue(sample));
 
-        TypedProperties properties = new TypedProperties();
-        properties.setInt(ResultEntry.NFE, algorithm.getNumberOfEvaluations());
+        NSGAII algorithm = new NSGAII(problem);
+        algorithm.applyConfiguration(sample);
+        algorithm.run(10000);
 
-        writer.write(new ResultEntry(algorithm.getResult(), properties));
+        writer.write(new ResultEntry(algorithm.getResult(), algorithm.getConfiguration()));
     }
 }
 ```
@@ -80,27 +81,42 @@ One of the design considerations with result files is having the ability to resu
 When opening a result file in append mode, as demonstrated below, we automatically validate and repair any invalid
 or incomplete entries.  Observe how we can query the number of entries to determine where to resume a previous run:
 
-<!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [resultFile-append] {KeepComments} -->
+<!-- java:examples/org/moeaframework/examples/io/AppendingResultFileExample.java [52:68] -->
 
 ```java
-try (ResultFileWriter writer = ResultFileWriter.append(problem, new File("result.dat"))) {
+try (ResultFileWriter writer = ResultFileWriter.append(problem, resultFile)) {
     int existingEntries = writer.getNumberOfEntries();
 
-    // if existingEntries > 0, we are appending to an existing file
+    if (existingEntries > 0) {
+        System.out.println("Appending to " + resultFile + ", resuming after " + existingEntries + " entries!");
+    }
+
+    for (Sample sample : samples.skip(existingEntries)) {
+        System.out.println("Solving UF1 using NSGA-II with populationSize=" + populationSize.readValue(sample));
+
+        NSGAII algorithm = new NSGAII(problem);
+        algorithm.applyConfiguration(sample);
+        algorithm.run(10000);
+
+        writer.write(new ResultEntry(algorithm.getResult(), algorithm.getConfiguration()));
+    }
 }
 ```
 
 Use the reader to validate and load the contents of a results file:
 
-<!-- java:test/org/moeaframework/snippet/FileFormatSnippet.java [resultFile-read] -->
+<!-- java:examples/org/moeaframework/examples/io/ResultFileExample.java [67:77] -->
 
 ```java
-try (ResultFileReader reader = ResultFileReader.open(problem, new File("result.dat"))) {
+try (ResultFileReader reader = ResultFileReader.open(problem, resultFile)) {
+    Hypervolume hypervolume = new Hypervolume(problem, NondominatedPopulation.load("pf/UF1.pf"));
+
     while (reader.hasNext()) {
         ResultEntry entry = reader.next();
 
-        TypedProperties metadata = entry.getProperties();
-        Population set = entry.getPopulation();
+        double value = hypervolume.evaluate(new NondominatedPopulation(entry.getPopulation()));
+        System.out.println("Hypervolume for populationSize=" + populationSize.readValue(entry.getProperties()) +
+                " => " + value);
     }
 }
 ```

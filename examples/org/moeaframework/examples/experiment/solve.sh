@@ -18,8 +18,8 @@ java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.Solve \
     --numberOfEvaluations 10000 \
     --output NSGAII_DTLZ2_Runtime.txt
     
-java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.ExtractData \
+java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.CalculateIndicator \
     --problem DTLZ2 \
     --epsilon 0.01 \
-    --input NSGAII_DTLZ2_Runtime.txt \
-    NFE ElapsedTime Hypervolume GenerationalDistance
+    --indicator Hypervolume \
+    NSGAII_DTLZ2_Runtime.txt

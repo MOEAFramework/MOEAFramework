@@ -17,22 +17,34 @@
  */
 package org.moeaframework.snippet;
 
+import java.io.IOException;
 import java.util.BitSet;
 
 import org.junit.Test;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.Grammar;
+import org.moeaframework.core.variable.Program;
+import org.moeaframework.util.grammar.ContextFreeGrammar;
+import org.moeaframework.util.tree.Add;
+import org.moeaframework.util.tree.Constant;
+import org.moeaframework.util.tree.Divide;
+import org.moeaframework.util.tree.Environment;
+import org.moeaframework.util.tree.Get;
+import org.moeaframework.util.tree.Multiply;
+import org.moeaframework.util.tree.Rules;
+import org.moeaframework.util.tree.Subtract;
 
-@SuppressWarnings("unused")
 public class VariableSnippet {
 
 	@Test
-	public void real() {
+	public void realSnippet() {
 		Solution solution = new Solution(1, 1);
 		int i = 0;
 		double lowerBound = 0.0;
 		double upperBound = 1.0;
 		
+		// begin-example: real-variable
 		// Creating a real-valued variable:
 		solution.setVariable(i, EncodingUtils.newReal(lowerBound, upperBound));
 
@@ -43,14 +55,16 @@ public class VariableSnippet {
 		// Reading and writing all variables (when all variables in the solution are real-valued):
 		double[] values = EncodingUtils.getReal(solution);
 		EncodingUtils.setReal(solution, values);
+		// end-example: real-variable
 	}
 	
 	@Test
-	public void binary() {
+	public void binarySnippet() {
 		Solution solution = new Solution(1, 1);
 		int i = 0;
 		int length = 10;
 		
+		// begin-example: binary-variable
 		// Creating a binary variable:
 		solution.setVariable(i, EncodingUtils.newBinary(length));
 
@@ -60,15 +74,18 @@ public class VariableSnippet {
 
 		// Updating the bits:
 		EncodingUtils.setBinary(solution.getVariable(i), bits);
+		EncodingUtils.setBitSet(solution.getVariable(i), bitSet);
+		// end-example: binary-variable
 	}
 	
 	@Test
-	public void integer() {
+	public void integerSnippet() {
 		Solution solution = new Solution(1, 1);
 		int i = 0;
 		int lowerBound = 0;
 		int upperBound = 10;
 		
+		// begin-example: integer-variable
 		// Creating an integer variable:
 		solution.setVariable(i, EncodingUtils.newInt(lowerBound, upperBound));
 		solution.setVariable(i, EncodingUtils.newBinaryInt(lowerBound, upperBound));
@@ -80,24 +97,27 @@ public class VariableSnippet {
 		// Reading and writing all variables (when all variables in the solution are integers):
 		int[] values = EncodingUtils.getInt(solution);
 		EncodingUtils.setInt(solution, values);
+		// end-example: integer-variable
 	}
 	
 	@Test
-	public void permutation() {
+	public void permutationSnippet() {
 		Solution solution = new Solution(1, 1);
 		int i = 0;
 		int length = 10;
 		
+		// begin-example: permutation-variable
 		// Creating a permutation:
 		solution.setVariable(i, EncodingUtils.newPermutation(length));
 
 		// Reading and writing a permutation:
 		int[] permutation = EncodingUtils.getPermutation(solution.getVariable(i));
 		EncodingUtils.setPermutation(solution.getVariable(i), permutation);
+		// end-example: permutation-variable
 	}
 	
 	@Test
-	public void subset() {
+	public void subsetSnippet() {
 		Solution solution = new Solution(1, 1);
 		int i = 0;
 		int fixedSize = 10;
@@ -105,6 +125,7 @@ public class VariableSnippet {
 		int maxSize = 10;
 		int numberOfElements = 20;
 		
+		// begin-example: subset-variable
 		// Creating a fixed and variable-length subset:
 		solution.setVariable(i, EncodingUtils.newSubset(fixedSize, numberOfElements));
 		solution.setVariable(i, EncodingUtils.newSubset(minSize, maxSize, numberOfElements));
@@ -112,6 +133,76 @@ public class VariableSnippet {
 		// Reading and writing the sets
 		int[] subset = EncodingUtils.getSubset(solution.getVariable(i));
 		EncodingUtils.setSubset(solution.getVariable(i), subset);
+		// end-example: subset-variable
+	}
+	
+	@Test
+	public void grammarSnippet() throws IOException {
+		Solution solution = new Solution(1, 1);
+		int i = 0;
+		
+		// begin-example: grammar-definition
+		ContextFreeGrammar cfg = ContextFreeGrammar.load("""
+				<expr> ::= '(' <expr> <op> <expr> ')' | <val>
+				<val> ::= x | y
+				<op> ::= + | - | * | /
+				""");
+		// end-example: grammar-definition
+		
+		// begin-example: grammar-variable
+		// Creating a grammar with a codon length of 10
+		solution.setVariable(i, new Grammar(10));
+		
+		// Build an expression from the context-free grammar
+		Grammar grammar = (Grammar)solution.getVariable(i);
+		String expression = grammar.build(cfg);
+		
+		solution.setObjectiveValue(0, evaluate(expression));
+		// end-example: grammar-variable
+	}
+	
+	private double evaluate(String str) {
+		return 0.0;
+	}
+	
+	@Test
+	public void programSnippet() {
+		Solution solution = new Solution(1, 1);
+		int i = 0;
+		
+		// begin-example: program-definition
+		// Creating a program
+		Rules rules = new Rules();
+		rules.add(new Add());
+		rules.add(new Multiply());
+		rules.add(new Subtract());
+		rules.add(new Divide());
+		rules.add(new Get(Number.class, "x"));
+		rules.add(new Get(Number.class, "y"));
+		rules.add(new Constant(1.0));
+		rules.setReturnType(Number.class);
+		rules.setMaxVariationDepth(10);
+		// end-example: program-definition
+		
+		// begin-example: program-variable
+		// Define the variable
+		solution.setVariable(i, new Program(rules));
+		// end-example: program-variable
+		
+		// Randomize the program
+		solution.getVariable(i).randomize();
+		
+		// begin-example: program-evaluate
+		// Reading and evaluating the program
+		Environment environment = new Environment();
+		environment.set("x", 5.0);
+		environment.set("y", 10.0);
+		
+		Program program = (Program)solution.getVariable(i);
+		Number result = (Number)program.evaluate(environment);
+		
+		solution.setObjectiveValue(0, result.doubleValue());
+		// end-example: program-evaluate
 	}
 	
 }

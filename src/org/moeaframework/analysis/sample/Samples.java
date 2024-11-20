@@ -29,12 +29,15 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.analysis.parameter.Parameter;
 import org.moeaframework.analysis.parameter.ParameterSet;
+import org.moeaframework.analysis.stream.DataStream;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;
@@ -49,7 +52,7 @@ import org.moeaframework.util.io.Tokenizer;
  * with the parameter values separated by whitespace.  The ordering of parameters must match the provided
  * {@link ParameterSet}.
  */
-public class Samples implements Iterable<Sample>, Formattable<Sample> {
+public class Samples implements Iterable<Sample>, Formattable<Sample>, DataStream<Sample> {
 
 	private final ParameterSet parameterSet;
 
@@ -213,6 +216,17 @@ public class Samples implements Iterable<Sample>, Formattable<Sample> {
 		}
 				
 		return table;
+	}
+	
+
+	@Override
+	public Stream<Sample> stream() {
+		return samples.stream();
+	}
+	
+	@Override
+	public void forEach(Consumer<? super Sample> consumer) {
+		DataStream.super.forEach(consumer);
 	}
 
 	/**

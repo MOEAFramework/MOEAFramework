@@ -5,9 +5,11 @@
 /native/
 /results/
 /test-results/
+/*.arff
 /*.csv
 /*.json
 /*.md
+/*.res
 /*.tex
 /*.txt
 *~

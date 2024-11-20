@@ -92,13 +92,13 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	
 	private static final Pattern REGEX = Pattern.compile("<!--\\s+([a-zA-Z]+)\\:([^\\s]+)(?:\\s+\\[([^\\]]+)\\])?(?:\\s+\\{([^\\}]+)\\})?\\s+-->");
 	
-	private static final Pattern IDENTIFIER_REGEX = Pattern.compile("[a-zA-Z\\-_]+");
+	private static final Pattern IDENTIFIER_REGEX = Pattern.compile("[a-zA-Z][a-zA-Z0-9\\-_]*");
 	
 	private static final Pattern LINES_REGEX = Pattern.compile("(\\-?[0-9]+)?[:\\\\-](\\-?[0-9]+)?");
 	
-	private static final Pattern BEGIN_REGEX = Pattern.compile("^\\s+//\\s*begin-example:\\s*([a-zA-Z\\-_]+)\\s*$");
+	private static final Pattern BEGIN_REGEX = Pattern.compile("^\\s+//\\s*begin-example:\\s*([a-zA-Z][a-zA-Z0-9\\-_]*)\\s*$");
 
-	private static final Pattern END_REGEX = Pattern.compile("^\\s+//\\s*end-example:\\s*([a-zA-Z\\-_]+)\\s*$");
+	private static final Pattern END_REGEX = Pattern.compile("^\\s+//\\s*end-example:\\s*([a-zA-Z][a-zA-Z0-9\\-_]*)\\s*$");
 	
 	/**
 	 * {@code true} if running in update mode; {@code false} for validate mode.

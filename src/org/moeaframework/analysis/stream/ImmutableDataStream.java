@@ -18,6 +18,7 @@
 package org.moeaframework.analysis.stream;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -75,6 +76,11 @@ public class ImmutableDataStream<V> implements DataStream<V> {
 	@Override
 	public Stream<V> stream() {
 		return content.stream();
+	}
+	
+	@Override
+	public Iterator<V> iterator() {
+		return content.iterator();
 	}
 
 }

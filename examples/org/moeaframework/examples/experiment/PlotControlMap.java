@@ -17,45 +17,63 @@
  */
 package org.moeaframework.examples.experiment;
 
-import java.util.stream.IntStream;
-
+import org.apache.commons.lang3.tuple.Pair;
 import org.moeaframework.algorithm.NSGAII;
+import org.moeaframework.analysis.parameter.Enumeration;
+import org.moeaframework.analysis.parameter.Parameter;
+import org.moeaframework.analysis.parameter.ParameterSet;
 import org.moeaframework.analysis.plot.Plot;
+import org.moeaframework.analysis.sample.SampledResults;
+import org.moeaframework.analysis.sample.Samples;
+import org.moeaframework.analysis.stream.Groupings;
+import org.moeaframework.analysis.stream.Measures;
+import org.moeaframework.analysis.stream.Partition;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
 
 /**
- * Generates a control map plot showing the effects of Max Evaluations and Population Size parameters on the
- * performance of NSGA-II when solving the 2-objective DTLZ2 problem.
+ * Generates a control map plot showing the effects of the rate parameter 
  */
 public class PlotControlMap {
 	
 	public static void main(String[] args) throws Exception {
 		Problem problem = new DTLZ2(2);
+		
+		// Enumerating the population size and max evaluations, running 10 seeds of each
+		Enumeration<Integer> populationSize = Parameter.named("populationSize").asInt().range(10, 100, 10);
+		Enumeration<Integer> maxEvaluations = Parameter.named("maxEvaluations").asInt().range(1000, 10000, 1000);
+		Enumeration<Long> seeds = Parameter.named("seed").asLong().random(0, Long.MAX_VALUE, 10);
+		
+		// Enumerate the samples
+		ParameterSet parameters = new ParameterSet(populationSize, maxEvaluations, seeds);
+		Samples samples = parameters.enumerate();
+		
+		// Evaluate each sample
+		SampledResults<NondominatedPopulation> results = samples.evaluateAll(sample -> {
+			System.out.println("Running " + sample.getReference());
+			PRNG.setSeed(seeds.readValue(sample));
+			
+			NSGAII algorithm = new NSGAII(problem);
+			algorithm.applyConfiguration(sample);
+			algorithm.run(maxEvaluations.readValue(sample));
+			return algorithm.getResult();
+		});
+		
+		// Calculate the hypervolume and create a 2D grouping of the average value
 		Hypervolume hypervolume = new Hypervolume(problem, NondominatedPopulation.load("./pf/DTLZ2.2D.pf"));
 		
-		double[] x = IntStream.range(0, 50).mapToDouble(i -> 100 * (i+1)).toArray(); // maxEvaluations from 100 to 5000
-		double[] y = IntStream.range(0, 50).mapToDouble(i -> 4 * (i+1)).toArray();   // populationSize from 2 to 100
-		double[][] z = new double[x.length][y.length];
-
-		for (int i = 0; i < x.length; i++) {
-			for (int j = 0; j < y.length; j++) {
-				System.out.println("Evaluating run " + (i * y.length + j + 1) + " of " + (x.length * y.length));
-				
-				NSGAII algorithm = new NSGAII(problem);
-				algorithm.setInitialPopulationSize((int)y[j]);
-				algorithm.run((int)x[i]);
-				
-				z[i][j] = hypervolume.evaluate(algorithm.getResult());
-			}
-		}
+		Partition<Pair<Integer, Integer>, Double> controlMap = results
+			.map(hypervolume::evaluate)
+			.groupBy(Groupings.pair(Groupings.bucket(populationSize, 10), Groupings.bucket(maxEvaluations, 1000)))
+			.measureEach(Measures.average());
 		
 		new Plot()
-			.heatMap("Hypervolume", x, y, z)
-			.setXLabel("Max Evaluations")
-			.setYLabel("Population Size")
+			.heatMap("Hypervolume", controlMap)
+			.setXLabel(populationSize.getName())
+			.setYLabel(maxEvaluations.getName())
 			.show();
 	}
 

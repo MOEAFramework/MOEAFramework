@@ -43,7 +43,7 @@ import org.moeaframework.util.format.TabularData;
  * 
  * @param <V> the type of each value
  */
-public interface DataStream<V> extends Formattable<V> {
+public interface DataStream<V> extends Formattable<V>, Iterable<V> {
 	
 	/**
 	 * Returns the number of values in this data stream.
@@ -158,6 +158,16 @@ public interface DataStream<V> extends Formattable<V> {
 	}
 	
 	/**
+	 * Skips the first {@code n} values in the stream.
+	 * 
+	 * @param n the number of values to skip
+	 * @return the resulting data stream
+	 */
+	public default DataStream<V> skip(int n) {
+		return new ImmutableDataStream<V>(stream().skip(n));
+	}
+	
+	/**
 	 * Filters this stream, keeping only those values evaluating to {@code true}.
 	 * 
 	 * @param predicate the predicate function
@@ -232,15 +242,6 @@ public interface DataStream<V> extends Formattable<V> {
 	 */
 	public default <R> R measure(Function<Stream<V>, R> measure) {
 		return measure.apply(stream());
-	}
-	
-	/**
-	 * Invokes a method for each value in this stream.
-	 * 
-	 * @param consumer the method to invoke
-	 */
-	public default void forEach(Consumer<V> consumer) {
-		stream().forEach(consumer);
 	}
 	
 	/**

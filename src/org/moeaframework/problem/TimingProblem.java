@@ -72,7 +72,7 @@ public class TimingProblem extends ProblemWrapper {
 	 * 
 	 * @return the time, in nanoseconds, expended on objective function evaluation
 	 */
-	public long getNanoseconds() {
+	public long getTotalNanoseconds() {
 		return time.get();
 	}
 	
@@ -81,7 +81,7 @@ public class TimingProblem extends ProblemWrapper {
 	 * 
 	 * @return the time, in seconds, expended on objective function evaluation
 	 */
-	public double getSeconds() {
+	public double getTotalSeconds() {
 		return time.get() / 1e9;
 	}
 	
@@ -90,7 +90,7 @@ public class TimingProblem extends ProblemWrapper {
 	 * 
 	 * @return the number of times the objective function was evaluated
 	 */
-	public int getNFE() {
+	public int getTotalNFE() {
 		return counter.get();
 	}
 

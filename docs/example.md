@@ -38,7 +38,7 @@ new Plot()
     .show();
 ```
 
-![Approximation Set Plot](imgs/plot-approximationSet.png)
+<img src="imgs/plot-approximationSet.png" width="80%" />
 
 ## Performance indicators
 
@@ -49,16 +49,11 @@ DTLZ2 problem, then calculate and display the performance indicator values:
 <!-- java:examples/Example3.java [42:46] -->
 
 ```java
-Problem problem = new DTLZ2(2);
-
-NSGAII algorithm = new NSGAII(problem);
-algorithm.run(10000);
-
-NondominatedPopulation approximationSet = algorithm.getResult();
-
 NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/DTLZ2.2D.pf");
 Indicators indicators = Indicators.all(problem, referenceSet);
-indicators.apply(approximationSet).display();
+
+IndicatorValues indicatorValues = indicators.apply(algorithm.getResult());
+indicatorValues.display();
 ```
 
 <!-- output:examples/Example3.java -->
@@ -90,25 +85,24 @@ Polynomial Mutation (PM).  We can confirm this by viewing the configuration:
 <!-- java:examples/Example4.java [34:34] -->
 
 ```java
-Problem problem = new DTLZ2(2);
-NSGAII algorithm = new NSGAII(problem);
-
 algorithm.getConfiguration().display();
 ```
 
+<!-- output:examples/Example4.java -->
+
 ```
-Property              Value               
---------------------- ------------------- 
-algorithm             NSGA-II             
-operator              sbx+pm              
-pm.distributionIndex  20.0                
-pm.rate               0.09090909090909091 
-populationSize        100                 
-problem               DTLZ2_2             
-sbx.distributionIndex 15.0                
-sbx.rate              1.0                 
-sbx.swap              true                
-sbx.symmetric         false                   
+Property              Value
+--------------------- -------------------
+algorithm             NSGA-II
+operator              sbx+pm
+pm.distributionIndex  20.0
+pm.rate               0.09090909090909091
+populationSize        100
+problem               DTLZ2_2
+sbx.distributionIndex 15.0
+sbx.rate              1.0
+sbx.swap              true
+sbx.symmetric         false
 ```
 
 What if we want to run this algorithm with a different configuration?  We can simply call the setter methods.
@@ -117,15 +111,9 @@ Here we change the initial population size and set the variation operator to Par
 <!-- java:examples/Example5.java [34:36] -->
 
 ```java
-Problem problem = new DTLZ2(2);
-
 NSGAII algorithm = new NSGAII(problem);
 algorithm.setInitialPopulationSize(250);
 algorithm.setVariation(new PCX(5, 2));
-
-algorithm.run(10000);
-
-algorithm.getResult().display();
 ```
 
 Alternatively, similar to how we read the current configuration with `getConfiguration`, we can apply
@@ -135,9 +123,6 @@ as the previous example:
 <!-- java:examples/Example6.java [36:42] -->
 
 ```java
-Problem problem = new DTLZ2(2);
-NSGAII algorithm = new NSGAII(problem);
-
 TypedProperties properties = new TypedProperties();
 properties.setInt("populationSize", 250);
 properties.setString("operator", "pcx");
@@ -145,7 +130,4 @@ properties.setInt("pcx.parents", 10);
 properties.setInt("pcx.offspring", 2);
 
 algorithm.applyConfiguration(properties);
-
-algorithm.run(10000);
-algorithm.getResult().display();
 ```

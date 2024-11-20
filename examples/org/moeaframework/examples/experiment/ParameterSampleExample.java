@@ -56,7 +56,6 @@ public class ParameterSampleExample {
 			NSGAII algorithm = new NSGAII(problem);
 			algorithm.applyConfiguration(sample);
 			algorithm.run(10000);
-			
 			return algorithm.getResult();
 		});
 												

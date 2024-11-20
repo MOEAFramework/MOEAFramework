@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 
 import org.moeaframework.analysis.sample.Sample;
 import org.moeaframework.core.Named;
+import org.moeaframework.core.TypedProperties;
 import org.moeaframework.util.io.Tokenizer;
 
 /**
@@ -60,7 +61,7 @@ public interface Parameter<T> extends Named {
 	 * @param sample the sample
 	 * @return the parameter value
 	 */
-	public default T readValue(Sample sample) {
+	public default T readValue(TypedProperties sample) {
 		return parse(sample.getString(getName()));
 	}
 	
@@ -70,7 +71,7 @@ public interface Parameter<T> extends Named {
 	 * @param sample the sample
 	 * @param value the value to assign
 	 */
-	public default void assignValue(Sample sample, T value) {
+	public default void assignValue(TypedProperties sample, T value) {
 		sample.setString(getName(), value.toString());
 	}
 	

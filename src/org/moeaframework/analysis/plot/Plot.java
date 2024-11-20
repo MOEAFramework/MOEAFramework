@@ -1015,7 +1015,7 @@ public class Plot {
 	 * @param partition the data stream partition
 	 * @return a reference to this instance
 	 */
-	public Plot heatMap(String label, Partition<Pair<? extends Number, ? extends Number>, ? extends Number> partition) {
+	public Plot heatMap(String label, Partition<? extends Pair<? extends Number, ? extends Number>, ? extends Number> partition) {
 		List<? extends Number> xs = partition.keys().stream().map(v -> v.getLeft()).distinct().sorted().toList();
 		List<? extends Number> ys = partition.keys().stream().map(v -> v.getRight()).distinct().sorted().toList();
 		List<List<Number>> zs = new ArrayList<>();

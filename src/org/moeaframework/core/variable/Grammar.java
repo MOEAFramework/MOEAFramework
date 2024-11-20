@@ -146,6 +146,18 @@ public class Grammar extends AbstractVariable {
 	public int get(int index) {
 		return codon[index];
 	}
+	
+	/**
+	 * Returns the string representation of this grammar produced by evaluating the context-free grammar with the
+	 * codon array.  
+	 * 
+	 * @param cfg the context-free grammar
+	 * @return the string representation of the grammar, or {@code null} if no valid grammar was produced
+	 * @see ContextFreeGrammar#build(int[])
+	 */
+	public String build(ContextFreeGrammar cfg) {
+		return cfg.build(codon);
+	}
 
 	@Override
 	public Grammar copy() {

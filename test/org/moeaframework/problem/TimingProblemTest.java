@@ -32,9 +32,9 @@ public class TimingProblemTest {
 	public void testEmpty() throws IOException {
 		TimingProblem problem = new TimingProblem(new MockRealProblem(2));
 		
-		Assert.assertEquals(0.0, problem.getSeconds(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.0, problem.getNanoseconds(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0, problem.getNFE());
+		Assert.assertEquals(0.0, problem.getTotalSeconds(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, problem.getTotalNanoseconds(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0, problem.getTotalNFE());
 	}
 	
 	@Test
@@ -42,9 +42,9 @@ public class TimingProblemTest {
 		TimingProblem problem = new TimingProblem(new MockRealProblem(2));
 		problem.evaluate(MockSolution.of(problem).randomize());
 		
-		Assert.assertGreaterThan(problem.getSeconds(), 0.0);
-		Assert.assertGreaterThan(problem.getNanoseconds(), 0L);
-		Assert.assertEquals(1, problem.getNFE());
+		Assert.assertGreaterThan(problem.getTotalSeconds(), 0.0);
+		Assert.assertGreaterThan(problem.getTotalNanoseconds(), 0L);
+		Assert.assertEquals(1, problem.getTotalNFE());
 	}
 
 }

@@ -20,70 +20,115 @@ package org.moeaframework.util.grammar;
 import java.io.IOException;
 import java.io.StringReader;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 
-public class ParserTest {
+public class ContextFreeGrammarTest {
+	
+	public static final String GRAMMAR = """
+		<expr> ::= <expr> <op> <expr> | 'func(' <expr> ')' | <val>
+		<val> ::= x | y | z
+		<op> ::= + | - | * | /
+		""";
+
+	private ContextFreeGrammar grammar;
+
+	@Before
+	public void setUp() throws IOException {
+		grammar = ContextFreeGrammar.load(new StringReader(GRAMMAR));
+	}
+
+	@After
+	public void tearDown() {
+		grammar = null;
+	}
 
 	@Test
+	public void testDerivations() {
+		Assert.assertEquals("func(x)-x", grammar.build(new int[] { 0, 1, 2 }));
+		Assert.assertEquals("func(func(y))", grammar.build(new int[] { 1, 1, 2 }));
+		Assert.assertEquals("x", grammar.build(new int[] { 2, 0, 2 }));
+		Assert.assertEquals("func(x*func(y))", grammar.build(new int[] { 1, 0, 2, 0, 2, 1, 2 }));
+	}
+
+	@Test
+	public void testNonterminatingProducesNull() {
+		Assert.assertEquals(null, grammar.build(new int[] { 0 }));
+	}
+
+	@Test(expected = GrammarException.class)
+	public void testEmptyCodon() {
+		grammar.build(new int[] {});
+	}
+
+	@Test
+	public void testIsValid() throws IOException {
+		Assert.assertTrue(grammar.isValid());
+		Assert.assertFalse(ContextFreeGrammar.load(new StringReader("")).isValid());
+		Assert.assertFalse(ContextFreeGrammar.load(new StringReader("<foo> ::= <bar>")).isValid());
+	}
+	
+	@Test
 	public void testEmptyRule() throws IOException {
-		ContextFreeGrammar g1 = Parser.load(new StringReader(""));
+		ContextFreeGrammar g1 = ContextFreeGrammar.load(new StringReader(""));
 		Assert.assertEquals(0, g1.size());
 
-		ContextFreeGrammar g2 = Parser.load(new StringReader("  \r\n     \r\n\r\n"));
+		ContextFreeGrammar g2 = ContextFreeGrammar.load(new StringReader("  \r\n     \r\n\r\n"));
 		Assert.assertEquals(0, g2.size());
 
-		ContextFreeGrammar g3 = Parser.load(new StringReader("  \n     \n\n"));
+		ContextFreeGrammar g3 = ContextFreeGrammar.load(new StringReader("  \n     \n\n"));
 		Assert.assertEquals(0, g3.size());
 	}
 
 	@Test
 	public void testComments() throws IOException {
-		ContextFreeGrammar g1 = Parser.load(new StringReader("//<test> ::= <foo> <bar>"));
+		ContextFreeGrammar g1 = ContextFreeGrammar.load(new StringReader("//<test> ::= <foo> <bar>"));
 		Assert.assertEquals(0, g1.size());
 
-		ContextFreeGrammar g2 = Parser.load(new StringReader("/*<test> ::= <foo> <bar>*/"));
+		ContextFreeGrammar g2 = ContextFreeGrammar.load(new StringReader("/*<test> ::= <foo> <bar>*/"));
 		Assert.assertEquals(0, g2.size());
 
-		ContextFreeGrammar g3 = Parser.load(new StringReader("//<test> ::= <foo> <bar>\n/*<test> ::= <foo> <bar>*/"));
+		ContextFreeGrammar g3 = ContextFreeGrammar.load(new StringReader("//<test> ::= <foo> <bar>\n/*<test> ::= <foo> <bar>*/"));
 		Assert.assertEquals(0, g3.size());
 
-		ContextFreeGrammar g4 = Parser.load(new StringReader(
+		ContextFreeGrammar g4 = ContextFreeGrammar.load(new StringReader(
 				"//<test> ::= <foo> <bar>\n<real> ::= <production>\n/*<test> ::= <foo> <bar>*/"));
 		Assert.assertEquals(1, g4.size());
 		Assert.assertEquals(1, g4.get(0).size());
 
-		ContextFreeGrammar g5 = Parser.load(new StringReader("<inline> ::= <production> //<test> ::= <foo> <bar>"));
+		ContextFreeGrammar g5 = ContextFreeGrammar.load(new StringReader("<inline> ::= <production> //<test> ::= <foo> <bar>"));
 		Assert.assertEquals(1, g5.size());
 		Assert.assertEquals(1, g5.get(0).size());
 
-		ContextFreeGrammar g6 = Parser.load(new StringReader("<inline> ::= /* <commented> */ <production>"));
+		ContextFreeGrammar g6 = ContextFreeGrammar.load(new StringReader("<inline> ::= /* <commented> */ <production>"));
 		Assert.assertEquals(1, g6.size());
 		Assert.assertEquals(1, g6.get(0).size());
 	}
 
 	@Test
 	public void testRuleSeparator() throws IOException {
-		ContextFreeGrammar g1 = Parser.load(new StringReader("<foo> ::= <bar>"));
+		ContextFreeGrammar g1 = ContextFreeGrammar.load(new StringReader("<foo> ::= <bar>"));
 		Assert.assertEquals(1, g1.size());
 		Assert.assertEquals(1, g1.get(0).size());
 
-		ContextFreeGrammar g2 = Parser.load(new StringReader("<foo> : <bar>"));
+		ContextFreeGrammar g2 = ContextFreeGrammar.load(new StringReader("<foo> : <bar>"));
 		Assert.assertEquals(1, g2.size());
 		Assert.assertEquals(1, g2.get(0).size());
 
-		ContextFreeGrammar g3 = Parser.load(new StringReader("<foo> = <bar>"));
+		ContextFreeGrammar g3 = ContextFreeGrammar.load(new StringReader("<foo> = <bar>"));
 		Assert.assertEquals(1, g3.size());
 		Assert.assertEquals(1, g3.get(0).size());
 
-		ContextFreeGrammar g4 = Parser.load(new StringReader("<foo> ::=:==: <bar>"));
+		ContextFreeGrammar g4 = ContextFreeGrammar.load(new StringReader("<foo> ::=:==: <bar>"));
 		Assert.assertEquals(1, g4.size());
 		Assert.assertEquals(1, g4.get(0).size());
 	}
 
 	@Test
 	public void testSimpleExample() throws IOException {
-		ContextFreeGrammar g = Parser.load(new StringReader("<foo> ::= <bar>\n<bar> ::= a | (b) | ( c )"));
+		ContextFreeGrammar g = ContextFreeGrammar.load(new StringReader("<foo> ::= <bar>\n<bar> ::= a | (b) | ( c )"));
 
 		Assert.assertEquals(2, g.size());
 		Assert.assertEquals(1, g.get(0).size());
@@ -118,47 +163,47 @@ public class ParserTest {
 
 	@Test(expected = GrammarException.class)
 	public void testMissingRuleSymbolException() throws IOException {
-		Parser.load(new StringReader(" ::= <bar>"));
+		ContextFreeGrammar.load(new StringReader(" ::= <bar>"));
 	}
 
 	@Test(expected = GrammarException.class)
 	public void testInvalidRuleSymbolException1() throws IOException {
-		Parser.load(new StringReader("foo ::= <bar>"));
+		ContextFreeGrammar.load(new StringReader("foo ::= <bar>"));
 	}
 
 	@Test(expected = GrammarException.class)
 	public void testInvalidRuleSymbolException2() throws IOException {
-		Parser.load(new StringReader("<foo ::= <bar>"));
+		ContextFreeGrammar.load(new StringReader("<foo ::= <bar>"));
 	}
 
 	@Test(expected = GrammarException.class)
 	public void testEmptyProductionException1() throws IOException {
-		Parser.load(new StringReader("<foo> ::= "));
+		ContextFreeGrammar.load(new StringReader("<foo> ::= "));
 	}
 
 	@Test(expected = GrammarException.class)
 	public void testEmptyProductionException2() throws IOException {
-		Parser.load(new StringReader("<foo> ::= <bar> | "));
+		ContextFreeGrammar.load(new StringReader("<foo> ::= <bar> | "));
 	}
 
 	@Test(expected = GrammarException.class)
 	public void testEmptyProductionException3() throws IOException {
-		Parser.load(new StringReader("<foo> ::= | <bar>"));
+		ContextFreeGrammar.load(new StringReader("<foo> ::= | <bar>"));
 	}
 
 	@Test(expected = GrammarException.class)
 	public void testEmptySymbolException1() throws IOException {
-		Parser.load(new StringReader("<> ::= <bar>"));
+		ContextFreeGrammar.load(new StringReader("<> ::= <bar>"));
 	}
 
 	@Test(expected = GrammarException.class)
 	public void testEmptySymbolException2() throws IOException {
-		Parser.load(new StringReader("<foo> ::= <>"));
+		ContextFreeGrammar.load(new StringReader("<foo> ::= <>"));
 	}
 
 	@Test
 	public void testEscapedCharacters() throws IOException {
-		ContextFreeGrammar g = Parser.load(new StringReader("<foo> ::= \":\" | '|' | \"<\" | '>'"));
+		ContextFreeGrammar g = ContextFreeGrammar.load(new StringReader("<foo> ::= \":\" | '|' | \"<\" | '>'"));
 		Assert.assertEquals(1, g.size());
 		Assert.assertEquals(4, g.get(0).size());
 		Assert.assertEquals(1, g.get(0).get(0).size());
@@ -177,14 +222,14 @@ public class ParserTest {
 
 	@Test
 	public void testQuotes() throws IOException {
-		ContextFreeGrammar g1 = Parser.load(new StringReader("<foo> ::= \"bar()\""));
+		ContextFreeGrammar g1 = ContextFreeGrammar.load(new StringReader("<foo> ::= \"bar()\""));
 		Assert.assertEquals(1, g1.size());
 		Assert.assertEquals(1, g1.get(0).size());
 		Assert.assertEquals(1, g1.get(0).get(0).size());
 		Assert.assertTrue(g1.get(0).get(0).get(0).isTerminal());
 		Assert.assertEquals("bar()", g1.get(0).get(0).get(0).getValue());
 
-		ContextFreeGrammar g2 = Parser.load(new StringReader("<foo> ::= 'bar()'"));
+		ContextFreeGrammar g2 = ContextFreeGrammar.load(new StringReader("<foo> ::= 'bar()'"));
 		Assert.assertEquals(1, g2.size());
 		Assert.assertEquals(1, g2.get(0).size());
 		Assert.assertEquals(1, g2.get(0).get(0).size());
@@ -194,7 +239,7 @@ public class ParserTest {
 
 	@Test
 	public void testIntegers() throws IOException {
-		ContextFreeGrammar g = Parser.load(new StringReader("<numbers> ::= 8 | -64 256"));
+		ContextFreeGrammar g = ContextFreeGrammar.load(new StringReader("<numbers> ::= 8 | -64 256"));
 		Assert.assertEquals(1, g.size());
 		Assert.assertEquals(2, g.get(0).size());
 		Assert.assertEquals(1, g.get(0).get(0).size());
@@ -209,7 +254,7 @@ public class ParserTest {
 
 	@Test
 	public void testDecimals() throws IOException {
-		ContextFreeGrammar g = Parser.load(new StringReader("<numbers> ::= 0.0 | -1.2 42.24"));
+		ContextFreeGrammar g = ContextFreeGrammar.load(new StringReader("<numbers> ::= 0.0 | -1.2 42.24"));
 		Assert.assertEquals(1, g.size());
 		Assert.assertEquals(2, g.get(0).size());
 		Assert.assertEquals(1, g.get(0).get(0).size());

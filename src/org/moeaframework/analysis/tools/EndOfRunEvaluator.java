@@ -167,7 +167,7 @@ public class EndOfRunEvaluator extends CommandLineUtility {
 
 		// record instrumented data
 		TypedProperties timingData = new TypedProperties();
-		timingData.setDouble("EvaluationTime", timingProblem.getSeconds());
+		timingData.setDouble("EvaluationTime", timingProblem.getTotalSeconds());
 		timingData.setDouble("TotalTime", (endTime - startTime) / 1e9);
 
 		// write result to output

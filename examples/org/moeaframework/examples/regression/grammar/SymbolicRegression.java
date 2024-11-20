@@ -32,7 +32,6 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.Grammar;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.util.grammar.ContextFreeGrammar;
-import org.moeaframework.util.grammar.Parser;
 import org.moeaframework.util.io.Resources;
 import org.moeaframework.util.io.Resources.ResourceOption;
 
@@ -108,7 +107,7 @@ public class SymbolicRegression extends AbstractProblem {
 		codonLength = 10;
 		
 		try (Reader reader = Resources.asReader(SymbolicRegression.class, "grammar.bnf", ResourceOption.REQUIRED)) {
-			grammar = Parser.load(reader);
+			grammar = ContextFreeGrammar.load(reader);
 		}
 		
 		// cache the function's x and y values

@@ -23,21 +23,22 @@ Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
 System.out.println("Hypervolume: " + hypervolume.evaluate(approximationSet));
 ```
 
+<!-- output:examples/org/moeaframework/examples/indicators/HypervolumeExample.java -->
+
+```
+Hypervolume: 0.20925613786919467
+```
+
 Or use the `Indicators` class as a way to compute multiple performance indicators at the same time.  
 
-<!-- java:examples/Example3.java [34:45] -->
+<!-- java:examples/Example3.java [41:46] -->
 
 ```java
-Problem problem = new DTLZ2(2);
-
-NSGAII algorithm = new NSGAII(problem);
-algorithm.run(10000);
-
-NondominatedPopulation approximationSet = algorithm.getResult();
-
 NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/DTLZ2.2D.pf");
 Indicators indicators = Indicators.all(problem, referenceSet);
-indicators.apply(approximationSet).display();
+
+IndicatorValues indicatorValues = indicators.apply(algorithm.getResult());
+indicatorValues.display();
 ```
 
 <!-- output:examples/Example3.java -->
