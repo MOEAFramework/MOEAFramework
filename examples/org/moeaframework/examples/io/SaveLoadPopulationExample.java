@@ -22,9 +22,9 @@ import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.population.Population;
-import org.moeaframework.util.format.TableFormat;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
+import org.moeaframework.util.format.TableFormat;
 
 /**
  * Demonstrates the various ways to save, load, and output populations.

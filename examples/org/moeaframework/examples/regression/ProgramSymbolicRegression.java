@@ -49,7 +49,6 @@ public class ProgramSymbolicRegression extends AbstractSymbolicRegression {
 	 * @param lowerBound the lower bound for comparing the actual and approximate functions
 	 * @param upperBound the upper bound for comparing the actual and approximate functions
 	 * @param steps the number of comparisons made between the actual and approximate functions
-	 * @throws IOException 
 	 */
 	public ProgramSymbolicRegression(UnivariateFunction function, double lowerBound, double upperBound, int steps) {
 		super(function, lowerBound, upperBound, steps);

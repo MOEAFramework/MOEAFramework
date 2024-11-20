@@ -38,7 +38,8 @@ public class SexticExample implements UnivariateFunction {
 		} else {
 			System.err.println("Invalid argument '" + args[0] + "'");
 			System.exit(-1);
-		}	}
+		}
+	}
 
 	@Override
 	public double value(double x) {
