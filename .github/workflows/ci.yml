@@ -195,7 +195,7 @@ jobs:
       shell: cmd
       run: |
         cd build/MOEAFramework-*
-		move cli.sh cli
+        move cli.sh cli
         cli --help
         cli --version
         cli Solve --help
