@@ -15,7 +15,7 @@ elif [ -d "${ROOT}/build" ]; then
 	CLASSPATH="${CLASSPATH}:${ROOT}/build"
 fi
 
-if ! java -classpath "${CLASSPATH}" org.moeaframework.analysis.tools.Main --version > /dev/null 2&>1; then
+if ! java -classpath "${CLASSPATH}" org.moeaframework.analysis.tools.Main --version >/dev/null 2>&1; then
 	echo "Unable to run MOEA Framework command line tools!"
 	echo "If building from source code, please run 'ant build-binary' first."
 	exit -1
