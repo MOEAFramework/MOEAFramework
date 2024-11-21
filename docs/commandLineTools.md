@@ -1,9 +1,27 @@
 # Command Line Tools
 
-This document details the available command line tools.  See the usage for how to construct the command
-and arguments.  Adding the `-h` / `--help` flag to any command will display this usage information.
+## Usage
 
-## BuildProblem
+To assist in running these command line tools, we provide an "all in one" script.  The syntax is:
+
+```
+./cli [command]
+```
+
+where `[command]` is one of the tool names.  For example:
+
+```
+./cli --help                         # Display all available tools
+./cli Solve --help                   # Display help information for the Solve tool
+./cli Solve --problem DTLZ2 ...      # Run the Solve tool
+```
+
+If you plan to use these tools often, consider adding the MOEA Framework installation folder to your system's `PATH`
+environment variable.
+
+## Available Tools
+
+### BuildProblem
 
 <!-- help:src/org/moeaframework/builder/BuildProblem.java [:-2] -->
 
@@ -29,7 +47,7 @@ The following options are available:
  -u,--upperBound <arg>            Sets the upper bound for each real-valued decision variable (default: 1.0)
 ```
 
-## CalculateIndicator
+### CalculateIndicator
 
 <!-- help:src/org/moeaframework/analysis/tools/CalculateIndicator.java [:-2] -->
 
@@ -49,7 +67,7 @@ The following options are available:
  -r,--reference <file>      Reference set file
 ```
 
-## EndOfRunEvaluator
+### EndOfRunEvaluator
 
 <!-- help:src/org/moeaframework/analysis/tools/EndOfRunEvaluator.java [:-2] -->
 
@@ -74,7 +92,7 @@ The following options are available:
  -X,--properties <p1=v1;p2=v2;...>   Fixed algorithm properties
 ```
 
-## ExtractData
+### ExtractData
 
 <!-- help:src/org/moeaframework/analysis/tools/ExtractData.java [:-2] -->
 
@@ -96,7 +114,7 @@ The following options are available:
  -s,--separator <value>     Separator between entries
 ```
 
-## MetricsAnalysis
+### MetricsAnalysis
 
 <!-- help:src/org/moeaframework/analysis/tools/MetricsAnalysis.java [:-2] -->
 
@@ -119,7 +137,7 @@ The following options are available:
  -t,--threshold <percent>    Attainment threshold
 ```
 
-## MetricsEvaluator
+### MetricsEvaluator
 
 <!-- help:src/org/moeaframework/analysis/tools/MetricsEvaluator.java [:-2] -->
 
@@ -143,7 +161,7 @@ The following options are available:
  -r,--reference <file>      Reference set file
 ```
 
-## MetricsValidator
+### MetricsValidator
 
 <!-- help:src/org/moeaframework/analysis/tools/MetricsValidator.java [:-2] -->
 
@@ -159,7 +177,7 @@ The following options are available:
  -o,--output <file>   Output file
 ```
 
-## ReferenceSetGenerator
+### ReferenceSetGenerator
 
 <!-- help:src/org/moeaframework/analysis/tools/ReferenceSetGenerator.java [:-2] -->
 
@@ -179,7 +197,7 @@ The following options are available:
  -s,--seed <value>             Random number seed
 ```
 
-## ResultFileConverter
+### ResultFileConverter
 
 <!-- help:src/org/moeaframework/analysis/tools/ResultFileConverter.java [:-2] -->
 
@@ -198,7 +216,7 @@ The following options are available:
  -o,--output <file>    Output file
 ```
 
-## ResultFileMerger
+### ResultFileMerger
 
 <!-- help:src/org/moeaframework/analysis/tools/ResultFileMerger.java [:-2] -->
 
@@ -216,7 +234,7 @@ The following options are available:
  -o,--output <file>         Output file containing the merged set
 ```
 
-## ResultFileSeedMerger
+### ResultFileSeedMerger
 
 <!-- help:src/org/moeaframework/analysis/tools/ResultFileSeedMerger.java [:-2] -->
 
@@ -237,7 +255,7 @@ The following options are available:
  -o,--output <file>         Output file
 ```
 
-## ResultFileValidator
+### ResultFileValidator
 
 <!-- help:src/org/moeaframework/analysis/tools/ResultFileValidator.java [:-2] -->
 
@@ -254,7 +272,24 @@ The following options are available:
  -o,--output <file>    Output file
 ```
 
-## RuntimeEvaluator
+### ResultFileViewer
+
+<!-- help:src/org/moeaframework/analysis/tools/ResultFileViewer.java [:-2] -->
+
+```
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileValidator [-b <name>] -c <N> [-h] [-o <file>]
+
+Validates the number of approximation sets stored in a result file.
+
+The following options are available:
+
+ -b,--problem <name>   Problem name
+ -c,--count <N>        The expected number of entries
+ -h,--help             Display help information
+ -o,--output <file>    Output file
+```
+
+### RuntimeEvaluator
 
 <!-- help:src/org/moeaframework/analysis/tools/RuntimeEvaluator.java [:-2] -->
 
@@ -278,7 +313,7 @@ The following options are available:
  -X,--properties <p1=v1;p2=v2;...>   Fixed algorithm properties
 ```
 
-## SampleGenerator
+### SampleGenerator
 
 <!-- help:src/org/moeaframework/analysis/tools/SampleGenerator.java [:-2] -->
 
@@ -298,7 +333,7 @@ The following options are available:
  -s,--seed <value>              Random number generator seed
 ```
 
-## SobolAnalysis
+### SobolAnalysis
 
 <!-- help:src/org/moeaframework/analysis/tools/SobolAnalysis.java [:-2] -->
 
@@ -319,7 +354,7 @@ The following options are available:
  -s,--simple                 Simple output format
 ```
 
-## Solve
+### Solve
 
 <!-- help:src/org/moeaframework/analysis/tools/Solve.java [:-2] -->
 

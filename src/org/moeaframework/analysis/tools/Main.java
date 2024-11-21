@@ -145,7 +145,7 @@ public class Main extends CommandLineUtility {
 			helpFormatter.setOptPrefix("");
 			helpFormatter.printOptions(writer, width, commands, helpFormatter.getLeftPadding(), helpFormatter.getDescPadding());
 			writer.println();
-			helpFormatter.printWrapped(writer, width, Localization.getString(CommandLineUtility.class, "description"));
+			helpFormatter.printWrapped(writer, width, Localization.getString(CommandLineUtility.class, "header"));
 			writer.println();
 			helpFormatter.setOptPrefix("-");
 			helpFormatter.printOptions(writer, width, getLocalizedOptions(), helpFormatter.getLeftPadding(), helpFormatter.getDescPadding());

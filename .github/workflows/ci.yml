@@ -175,7 +175,7 @@ jobs:
     - name: Test examples
       shell: bash
       run: |
-        cd build/MOEAFramework-*
+        cd build/MOEAFramework-${BUILD_VERSION}
         CLASSPATH="lib/*${{ runner.os == 'Windows' && ';' || ':' }}examples"
         
         # Compile examples
@@ -194,16 +194,18 @@ jobs:
           xargs -rt -I "{}" java -classpath "${CLASSPATH}" "{}"
     - name: Test CLI (Windows)
       if: runner.os == 'Windows'
-      run:
-        cd build/MOEAFramework-*
+      run: |
+        cd build/MOEAFramework-${BUILD_VERSION}
         cli --help
         cli --version
+		cli Solve --help
     - name: Test CLI (Linux / Mac)
       if: runner.os != 'Windows'
-      run:
-        cd build/MOEAFramework-*
+      run: |
+        cd build/MOEAFramework-${BUILD_VERSION}
         ./cli.sh --help
         ./cli.sh --version
+		./cli.sh Solve --help
     - name: Test solve.sh
       if: runner.os == 'Linux'
       run: examples/org/moeaframework/examples/experiment/solve.sh
