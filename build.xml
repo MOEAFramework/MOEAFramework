@@ -210,6 +210,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		</copy>
 		
 		<chmod file="${base}/cli.sh" perm="+x"/>
+		<rename src="${base}/cli.sh" dest="${base}/cli" />
 
 		<copy todir="${base}/licenses">
 			<fileset dir="META-INF" includes="*-LICENSE" excludes="ZHANG-LICENSE" />

@@ -51,6 +51,16 @@ ant -f test.xml install-junit
 ant -f test.xml test
 ```
 
+### Tabs vs Spaces
+
+Java generally uses tabs and many other file types are agnostic, but GitHub Actions workflow files are sensitive to
+the indentation.  If using Eclipse, you can force (most) editors to use spaces in the settings by navigating to
+`General > Editors > Text Editors` and checking `Insert spaces for tabs`.  Alternatively, a Git pre-commit hook also works:
+
+```bash
+find .github/workflows/ -type f -name "*.yml" -exec sh -c "expand -t 4 {} > {}.tmp; mv {}.tmp {}" \;
+```
+
 ## Versions
 
 We use [semantic versioning](https://semver.org/) following the pattern `{major}.{minor}`.  Two versions with the

@@ -1,3 +1,3 @@
 @echo off
 
-java -classpath "lib/*" org.moeaframework.analysis.tools.Main %*
+java -classpath "%~dp0/lib/*" org.moeaframework.analysis.tools.Main %*
