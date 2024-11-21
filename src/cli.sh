@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 
 ROOT="$(dirname -- "${BASH_SOURCE[0]}")"
-
-if [ ! -d "${ROOT}/lib/" ]; then
-	echo "Unable to locate MOEA Framework root directory at ${ROOT}"
-	exit -1
-fi
-
 CLASSPATH="${ROOT}/lib/*"
 
-if [ -d "${ROOT}/bin/" ]; then
+if [ -d "${ROOT}/dist" ]; then
+	JAR_FILE="$(find "${ROOT}/dist" -type f -name "MOEAFramework-*.jar" | grep -v "MOEAFramework-.*-Test.jar" | sort --version-sort --reverse | head -n 1)"
+fi
+
+if [ -n "${JAR_FILE}" ]; then
+	CLASSPATH="${CLASSPATH}:${JAR_FILE}"
+elif [ -d "${ROOT}/bin" ]; then
 	CLASSPATH="${CLASSPATH}:${ROOT}/bin"
-elif [ -d "${ROOT}/build/" ]; then
+elif [ -d "${ROOT}/build" ]; then
 	CLASSPATH="${CLASSPATH}:${ROOT}/build"
 fi
 
