@@ -1,4 +1,8 @@
-#!/usr/bin/env bash
+:<<BATCH
+    @echo off
+    java -classpath "lib/*" org.moeaframework.analysis.tools.Main %*
+    exit /b
+BATCH
 
 ROOT="$(dirname -- "${BASH_SOURCE[0]}")"
 CLASSPATH="${ROOT}/lib/*"
