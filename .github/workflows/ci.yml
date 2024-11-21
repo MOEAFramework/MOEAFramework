@@ -170,12 +170,10 @@ jobs:
       uses: MOEAFramework/.github/actions/run-ant@main
       with:
         target: package-binary
-    - name: Compiler info
-      run: gcc --version
     - name: Test examples
       shell: bash
       run: |
-        cd build/MOEAFramework-${BUILD_VERSION}
+        cd build/MOEAFramework-*
         CLASSPATH="lib/*${{ runner.os == 'Windows' && ';' || ':' }}examples"
         
         # Compile examples
@@ -195,14 +193,14 @@ jobs:
     - name: Test CLI (Windows)
       if: runner.os == 'Windows'
       run: |
-        cd build/MOEAFramework-${BUILD_VERSION}
+        cd build/MOEAFramework-*
         cli --help
         cli --version
         cli Solve --help
     - name: Test CLI (Linux / Mac)
       if: runner.os != 'Windows'
       run: |
-        cd build/MOEAFramework-${BUILD_VERSION}
+        cd build/MOEAFramework-*
         ./cli.sh --help
         ./cli.sh --version
         ./cli.sh Solve --help
