@@ -114,12 +114,16 @@ public abstract class CommandLineUtility {
 				try {
 					ProcessBuilder processBuilder = new ProcessBuilder("stty", "size");
 					processBuilder.redirectInput(Redirect.INHERIT);
-					
+					processBuilder.redirectError(Redirect.DISCARD);
+
 					String output = RedirectStream.capture(processBuilder);
 					Tokenizer tokenizer = new Tokenizer();
 					width = Integer.parseInt(tokenizer.decodeToArray(output.trim())[1]);
 				} catch (Exception e) {
-					System.err.println("Unable to detect console width: " + e.getMessage());
+					if (Settings.isVerbose()) {
+						System.err.println("Unable to detect console width!");
+						e.printStackTrace();
+					}
 				}
 			}
 		}
