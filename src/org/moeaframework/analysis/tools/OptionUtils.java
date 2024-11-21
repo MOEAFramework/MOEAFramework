@@ -116,10 +116,12 @@ class OptionUtils {
 	 * predefined reference set.
 	 * 
 	 * @param commandLine the command line inputs
+	 * @param allowMissing if {@code true}, returns {@code null} if the option is missing
 	 * @return the loaded reference set
 	 * @throws IOException if an I/O error occurred
 	 */
-	public static NondominatedPopulation getReferenceSet(CommandLine commandLine) throws IOException {
+	public static NondominatedPopulation getReferenceSet(CommandLine commandLine, boolean allowMissing)
+			throws IOException {
 		NondominatedPopulation referenceSet = null;
 		
 		if (commandLine.hasOption("reference")) {
@@ -127,8 +129,8 @@ class OptionUtils {
 		} else {
 			referenceSet = ProblemFactory.getInstance().getReferenceSet(commandLine.getOptionValue("problem"));
 		}
-
-		if (referenceSet == null) {
+		
+		if (!allowMissing && referenceSet == null) {
 			throw new FrameworkException("no reference set available");
 		}
 		

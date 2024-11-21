@@ -73,7 +73,7 @@ public class CalculateIndicator extends CommandLineUtility {
 	public void run(CommandLine commandLine) throws Exception {
 		NumberFormatter formatter = NumberFormatter.getDefault();
 		Epsilons epsilons = OptionUtils.getEpsilons(commandLine);
-		NondominatedPopulation referenceSet = OptionUtils.getReferenceSet(commandLine);
+		NondominatedPopulation referenceSet = OptionUtils.getReferenceSet(commandLine, false);
 		
 		OptionCompleter completer = new OptionCompleter(StandardIndicator.class);
 		String indicatorName = completer.lookup(commandLine.getOptionValue("indicator"));

@@ -192,6 +192,16 @@ jobs:
             -e 'CompareIslandModelAndSerialExample.java' | \
           sed 's~/~.~g; s/.java$//; s/examples.//' | \
           xargs -rt -I "{}" java -classpath "${CLASSPATH}" "{}"
+    - name: Test CLI (Windows)
+      if: runner.os == 'Windows'
+      run:
+        cli --help
+        cli --version
+    - name: Test CLI (Linux / Mac)
+      if: runner.os != 'Windows'
+      run:
+        ./cli.sh --help
+        ./cli.sh --version
     - name: Test solve.sh
       if: runner.os == 'Linux'
       run: examples/org/moeaframework/examples/experiment/solve.sh

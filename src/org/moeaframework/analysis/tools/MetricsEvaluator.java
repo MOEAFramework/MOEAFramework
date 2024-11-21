@@ -86,7 +86,7 @@ public class MetricsEvaluator extends CommandLineUtility {
 			MetricFileWriter.failIfOutdated(this, inputFile, outputFile);
 		}
 
-		NondominatedPopulation referenceSet = OptionUtils.getReferenceSet(commandLine);
+		NondominatedPopulation referenceSet = OptionUtils.getReferenceSet(commandLine, false);
 
 		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true);
 				ResultFileReader reader = ResultFileReader.open(problem, inputFile)) {

@@ -88,7 +88,7 @@ public class ExtractData extends CommandLineUtility {
 		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true);
 				ResultFileReader input = ResultFileReader.open(problem, new File(commandLine.getOptionValue("input")));
 				PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
-			NondominatedPopulation referenceSet = OptionUtils.getReferenceSet(commandLine);
+			NondominatedPopulation referenceSet = OptionUtils.getReferenceSet(commandLine, false);
 			Indicators indicators = getIndicators(input.getProblem(), referenceSet, fields);
 
 			if (epsilons != null) {

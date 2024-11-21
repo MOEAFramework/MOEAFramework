@@ -90,13 +90,14 @@ RuntimeViewer.show("NSGAII on UF1",
 ## Diagnostic Tool
 
 The Diagnostic Tool is a GUI that provides a convenient way to run and visualize the algorithms.  To start the
-Diagnostic Tool, run `launch-diagnostic-tool.bat` on Windows.  On other systems, run the following command from the
-terminal:
-
-<!-- bash:src/launch-diagnostic-tool.bat [2:2] -->
+Diagnostic Tool, run:
 
 ```bash
-java -classpath "lib/*" org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool
+# Windows
+cli LaunchDiagnosticTool
+
+# Linux / Mac
+cli.sh LaunchDiagnosticTool
 ```
 
 Below is an example comparing NSGA-II and $\epsilon$-MOEA on the UF1 test problem.  Note how the controls on the

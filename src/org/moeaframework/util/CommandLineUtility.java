@@ -20,6 +20,7 @@ package org.moeaframework.util;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.lang.ProcessBuilder.Redirect;
 import java.lang.Thread.UncaughtExceptionHandler;
 
 import org.apache.commons.cli.CommandLine;
@@ -29,8 +30,11 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.apache.commons.lang3.SystemUtils;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
+import org.moeaframework.util.io.RedirectStream;
+import org.moeaframework.util.io.Tokenizer;
 
 /**
  * Abstract class for providing command line utilities. This class is provided to ensure a standard interface for
@@ -77,7 +81,12 @@ public abstract class CommandLineUtility {
 	 * The command string used to invoke this command line utility.  If {@code null}, this displays as
 	 * {@code java full.class.Name}.
 	 */
-	private String commandString = null;
+	private String commandString;
+	
+	/**
+	 * When {@code true}, the usage line is not displayed.
+	 */
+	private boolean hideUsage;
 
 	/**
 	 * Constructs a command line utility.  The constructor for subclasses should provide a private constructor unless
@@ -85,6 +94,41 @@ public abstract class CommandLineUtility {
 	 */
 	public CommandLineUtility() {
 		super();
+	}
+	
+	/**
+	 * Returns the console width by:
+	 * <ol>
+	 *   <li>Using the value stored in {@value Settings#KEY_HELP_WIDTH}
+	 *   <li>Using {@code stty size}
+	 *   <li>Defaulting to {@value HelpFormatter#DEFAULT_WIDTH}
+	 * </ol>
+	 * 
+	 * @return the console width
+	 */
+	protected int getConsoleWidth() {
+		int width = Settings.PROPERTIES.getInt(Settings.KEY_HELP_WIDTH, -1);
+		
+		if (width <= 0) {
+			if (SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC) {
+				try {
+					ProcessBuilder processBuilder = new ProcessBuilder("stty", "size");
+					processBuilder.redirectInput(Redirect.INHERIT);
+					
+					String output = RedirectStream.capture(processBuilder);
+					Tokenizer tokenizer = new Tokenizer();
+					width = Integer.parseInt(tokenizer.decodeToArray(output.trim())[1]);
+				} catch (Exception e) {
+					System.err.println("Unable to detect console width: " + e.getMessage());
+				}
+			}
+		}
+		
+		if (width <= 0) {
+			width = HelpFormatter.DEFAULT_WIDTH;
+		}
+		
+		return width;
 	}
 
 	/**
@@ -136,7 +180,7 @@ public abstract class CommandLineUtility {
 		CommandLineParser commandLineParser = new DefaultParser();
 		
 		try {
-			CommandLine commandLine = commandLineParser.parse(options, args);
+			CommandLine commandLine = commandLineParser.parse(options, args, true);
 			
 			if (commandLine.hasOption("help")) {
 				showHelp();
@@ -183,23 +227,22 @@ public abstract class CommandLineUtility {
 	 */
 	protected void showHelp() {
 		Options options = getLocalizedOptions();
-		
-		StringBuilder description = new StringBuilder();
-		description.append(System.lineSeparator());
-		description.append(Localization.getString(getClass(), "description"));
-		description.append("  ");
-		description.append(Localization.getString(CommandLineUtility.class, "description"));
-		description.append(System.lineSeparator());
-		description.append(System.lineSeparator());
-		
 		HelpFormatter helpFormatter = new HelpFormatter();
-		helpFormatter.setWidth(Settings.PROPERTIES.getInt(Settings.KEY_HELP_WIDTH, HelpFormatter.DEFAULT_WIDTH));
-		helpFormatter.printHelp(
-				getCommandString(),
-				description.toString(),
-				options, 
-				Localization.getString(CommandLineUtility.class, "footer"),
-				true);
+		int width = getConsoleWidth();
+
+		try (PrintWriter writer = createOutputWriter()) {
+			if (!hideUsage) {
+				helpFormatter.printUsage(writer, width, getCommandString(), options);
+				writer.println();
+			}
+			
+			helpFormatter.printWrapped(writer, width, Localization.getString(getClass(), "description"));
+			writer.println();
+			helpFormatter.printWrapped(writer, width, Localization.getString(CommandLineUtility.class, "header"));
+			writer.println();
+			helpFormatter.printOptions(writer, width, getLocalizedOptions(), helpFormatter.getLeftPadding(), helpFormatter.getDescPadding());
+			helpFormatter.printWrapped(writer, width, Localization.getString(CommandLineUtility.class, "footer"));
+		}
 	}
 
 	/**
@@ -223,6 +266,15 @@ public abstract class CommandLineUtility {
 	 */
 	protected void setCommandString(String commandString) {
 		this.commandString = commandString;
+	}
+	
+	/**
+	 * Sets the flag to hide the usage line from the help message.
+	 * 
+	 * @param hideUsage if {@code true}, hides the usage line
+	 */
+	public void setHideUsage(boolean hideUsage) {
+		this.hideUsage = hideUsage;
 	}
 	
 	/**

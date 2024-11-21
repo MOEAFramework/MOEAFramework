@@ -11,7 +11,9 @@ and arguments.  Adding the `-h` / `--help` flag to any command will display this
 usage: java -classpath "lib/*" org.moeaframework.builder.BuildProblem [-c <arg>] [--classpath <arg>] [-d <arg>] [-f
        <arg>] [-h] [-l <arg>] -n <arg> -o <arg> [--overwrite] -p <arg> [--package <arg>] [-u <arg>]
 
-Constructs the scaffolding for a natively-compiled problem in a target language.  The following options are available:
+Constructs the scaffolding for a natively-compiled problem in a target language.
+
+The following options are available:
 
  -c,--numberOfConstraints <arg>   The number of constraints (default: 0)
     --classpath <arg>             If set, sets the classpath used for compiling and running Java programs
@@ -35,7 +37,9 @@ Constructs the scaffolding for a natively-compiled problem in a target language.
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.CalculateIndicator [-b <name>] [-e <e1,e2,...>] [-h] -i
        <name> [-o <file>] [-r <file>]
 
-Calculates the indicator value for an approximation set.  The following options are available:
+Calculates the indicator value for an approximation set.
+
+The following options are available:
 
  -b,--problem <name>        Problem name
  -e,--epsilon <e1,e2,...>   Epsilon values for epsilon-dominance
@@ -53,8 +57,9 @@ Calculates the indicator value for an approximation set.  The following options 
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.EndOfRunEvaluator -a <name> [-b <name>] [-e <e1,e2,...>]
        [--force] [-h] -i <file> -o <file> [--overwrite] -p <file> [-s <value>] [-X <p1=v1;p2=v2;...>]
 
-Evaluates an optimization algorithm on the specified problem, storing end-of-run approximation sets.  The following
-options are available:
+Evaluates an optimization algorithm on the specified problem, storing end-of-run approximation sets.
+
+The following options are available:
 
  -a,--algorithm <name>               Algorithm name
  -b,--problem <name>                 Problem name
@@ -77,8 +82,9 @@ options are available:
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ExtractData [-b <name>] [-e <e1,e2,...>] [-h] -i <file>
        [-n] [-o <file>] [-r <file>] [-s <value>]
 
-Extracts metadata and/or performance metrics from a result file, storing the data in a spreadsheet-like format.  The
-following options are available:
+Extracts metadata and/or performance metrics from a result file, storing the data in a spreadsheet-like format.
+
+The following options are available:
 
  -b,--problem <name>        Problem name
  -e,--epsilon <e1,e2,...>   Epsilon values for epsilon-dominance
@@ -98,7 +104,9 @@ following options are available:
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.MetricsAnalysis [-b <width>] [-c] [-e] [-h] -i <file> -m
        <value> [-o <file>] -p <file> [-t <percent>]
 
-Calculates the best, attainment, efficiency and controllability metrics.  The following options are available:
+Calculates the best, attainment, efficiency and controllability metrics.
+
+The following options are available:
 
  -b,--band <width>           NFE band width for calculating efficiency
  -c,--controllability        Include controllability calculation
@@ -121,7 +129,9 @@ usage: java -classpath "lib/*" org.moeaframework.analysis.tools.MetricsEvaluator
 
 Evaluates the approximation sets stored in a result file, outputting a metric file containing the hypervolume,
 generational distance, inverted generational distance, spacing, additive epsilon-indicator, and maximum Pareto front
-error performance indicators.  The following options are available:
+error performance indicators.
+
+The following options are available:
 
  -b,--problem <name>        Problem name
  -e,--epsilon <e1,e2,...>   Epsilon values for epsilon-dominance
@@ -140,7 +150,9 @@ error performance indicators.  The following options are available:
 ```
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.MetricsValidator -c <N> [-h] [-o <file>]
 
-Validates the number of rows stored in a metrics file.  The following options are available:
+Validates the number of rows stored in a metrics file.
+
+The following options are available:
 
  -c,--count <N>       The expected number of rows
  -h,--help            Display help information
@@ -155,7 +167,9 @@ Validates the number of rows stored in a metrics file.  The following options ar
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ReferenceSetGenerator [-b <name>] [-e <e1,e2,...>] [-h]
        -n <value> [-o <file>] [-s <value>]
 
-Generates a reference set for any problem whose analytical solution is known.  The following options are available:
+Generates a reference set for any problem whose analytical solution is known.
+
+The following options are available:
 
  -b,--problem <name>           Problem name
  -e,--epsilon <e1,e2,...>      Epsilon values for epsilon-dominance
@@ -173,7 +187,9 @@ Generates a reference set for any problem whose analytical solution is known.  T
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileConverter [-b <name>] -f <type> [-h] -i <file>
        [-o <file>]
 
-Converts a result file into a different file format.  The following options are available:
+Converts a result file into a different file format.
+
+The following options are available:
 
  -b,--problem <name>   Problem name
  -f,--format <type>    The output file format (Plaintext, Markdown, Latex, CSV, ARFF)
@@ -190,8 +206,9 @@ Converts a result file into a different file format.  The following options are 
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileMerger [-b <name>] [-e <e1,e2,...>] [-h] -o
        <file>
 
-Merges the approximation sets contained in one or more result files to produce the combined reference set.  The
-following options are available:
+Merges the approximation sets contained in one or more result files to produce the combined reference set.
+
+The following options are available:
 
  -b,--problem <name>        Problem name
  -e,--epsilon <e1,e2,...>   Epsilon values for epsilon-dominance
@@ -210,7 +227,9 @@ usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileSeedMe
 Merges the approximation sets contained in one or more result files across each seed, where each result file is
 generated by a different seed.  Unlike ResultFileMerger that merges all approximation sets into one reference set, this
 utility merges each entry across its seeds.  The output will contain N approximation sets if the inputs all contain N
-approximation sets.  The following options are available:
+approximation sets.
+
+The following options are available:
 
  -b,--problem <name>        Problem name
  -e,--epsilon <e1,e2,...>   Epsilon values for epsilon-dominance
@@ -225,7 +244,9 @@ approximation sets.  The following options are available:
 ```
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileValidator [-b <name>] -c <N> [-h] [-o <file>]
 
-Validates the number of approximation sets stored in a result file.  The following options are available:
+Validates the number of approximation sets stored in a result file.
+
+The following options are available:
 
  -b,--problem <name>   Problem name
  -c,--count <N>        The expected number of entries
@@ -241,8 +262,9 @@ Validates the number of approximation sets stored in a result file.  The followi
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.RuntimeEvaluator -a <name> [-b <name>] [-e <e1,e2,...>]
        [-f <nfe>] [-h] -i <file> -o <file> -p <file> [-s <value>] [-X <p1=v1;p2=v2;...>]
 
-Records the approximation set at a fixed sampling frequency from each parameterization.  The following options are
-available:
+Records the approximation set at a fixed sampling frequency from each parameterization.
+
+The following options are available:
 
  -a,--algorithm <name>               Algorithm name
  -b,--problem <name>                 Problem name
@@ -264,7 +286,9 @@ available:
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.SampleGenerator [-h] -m <name> -n <value> [-o <file>] -p
        <file> [-s <value>]
 
-Generates parameter samples for running the Evaluator.  The following options are available:
+Generates parameter samples for running the Evaluator.
+
+The following options are available:
 
  -h,--help                      Display help information
  -m,--method <name>             Sample generation method (uniform, latin, sobol, saltelli)
@@ -282,7 +306,9 @@ Generates parameter samples for running the Evaluator.  The following options ar
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.SobolAnalysis [-h] -i <file> -m <value> [-o <file>] -p
        <file> [-r <number>] [-s]
 
-Performs Sobol' global variance analysis.  The following options are available:
+Performs Sobol' global variance analysis.
+
+The following options are available:
 
  -h,--help                   Display help information
  -i,--input <file>           Model output file
@@ -302,8 +328,9 @@ usage: java -classpath "lib/*" org.moeaframework.analysis.tools.Solve -a <name> 
        <e1,e2,...>] -f <file> [-F <value>] [-h] [-H <value>] [-l <v1,v2,...>] -n <value> [-o <value>] [-P <value>] [-r
        <value>] [-s <value>] [-S] [-t <trials>] [-u <v1,v2,...>] [-v <v1,v2,...>] [-x <p1=v1;p2=v2;...>]
 
-Solves an optimization problem using any optimization algorithm supported by the MOEA Framework.  The following options
-are available:
+Solves an optimization problem using any optimization algorithm supported by the MOEA Framework.
+
+The following options are available:
 
  -a,--algorithm <name>               Algorithm name
  -b,--problem <name>                 Problem name
