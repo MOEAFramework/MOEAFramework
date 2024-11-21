@@ -195,13 +195,13 @@ jobs:
     - name: Test CLI (Windows)
       if: runner.os == 'Windows'
       run:
-		cd build/MOEAFramework-*
+        cd build/MOEAFramework-*
         cli --help
         cli --version
     - name: Test CLI (Linux / Mac)
       if: runner.os != 'Windows'
       run:
-		cd build/MOEAFramework-*
+        cd build/MOEAFramework-*
         ./cli.sh --help
         ./cli.sh --version
     - name: Test solve.sh
