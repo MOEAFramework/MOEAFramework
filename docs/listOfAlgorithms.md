@@ -13,9 +13,6 @@ Below lists the optimization algorithms provided by the MOEA Framework organized
   * Other - [AGE-MOEA-II](#age-moea-ii), [AMOSA](#amosa), [CMA-ES](#cma-es), [MSOPS](#msops), [RSO](#rso), [Random](#random)
 * Single-objective - [GA](#ga), [ES](#es), [DE](#de), [SA](#sa), [CMA-ES](#cma-es)
 
-In addition, the MOEA Framework provides [JMetal and PISA plugins](listOfPlugins.md) to enable additional
-algorithms.
-
 ## Instantiating an Algorithm
 
 Each algorithm has a collection of parameters (called properties) used to configure specific details, such as their
@@ -576,7 +573,6 @@ Parameter                          | Default Value     | Description
 `initialTemperature`               | `1.0`             | The initial temperature
 `alpha`                            | `0.8`             | The cooling rate
 `numberOfIterationsPerTemperature` | `500`             | The number of offspring produced per temperature
-
 
 ## References
 

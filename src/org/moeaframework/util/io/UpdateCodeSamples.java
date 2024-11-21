@@ -88,7 +88,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 
 	private static final String[] DEFAULT_CLASSPATH = new String[] { "lib/*", "build", "examples" };
 	
-	private static final File[] DEFAULT_PATHS = new File[] { new File("docs/"), new File("website/") };
+	private static final File[] DEFAULT_PATHS = new File[] { new File("docs/"), new File("website/"), new File("src/README.md.template") };
 	
 	private static final Pattern REGEX = Pattern.compile("<!--\\s+([a-zA-Z]+)\\:([^\\s]+)(?:\\s+\\[([^\\]]+)\\])?(?:\\s+\\{([^\\}]+)\\})?\\s+-->");
 	
@@ -237,7 +237,14 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	 */
 	public boolean process(File file) throws IOException, InterruptedException {
 		boolean fileChanged = false;
-		FileType fileType = FileType.fromExtension(FilenameUtils.getExtension(file.getName()));
+		String extension = FilenameUtils.getExtension(file.getName());
+		
+		if (extension.equalsIgnoreCase("template")) {
+			extension = FilenameUtils.getExtension(file.getName().substring(0,
+					file.getName().length() - extension.length() - 1));
+		}
+		
+		FileType fileType = FileType.fromExtension(extension);
 		
 		if (fileType == null) {
 			System.out.println("Skipping " + file + ", not a recognized extension");
@@ -1029,12 +1036,12 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		public static FileType fromExtension(String extension) {
 			for (FileType fileType : values()) {
 				for (String fileExtension : fileType.extensions) {
-					if (fileExtension.equalsIgnoreCase(extension)) {
+					if (extension.equalsIgnoreCase(fileExtension)) {
 						return fileType;
 					}
 				}
 			}
-			
+						
 			return null;
 		}
 		

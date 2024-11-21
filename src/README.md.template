@@ -27,8 +27,9 @@ dependency to their `pom.xml` file:
 </dependency>
 ```
 
-Check out our [examples](%repository%/tree/master/examples), [online documentation](%repository%/blob/master/docs/README.md),
-and [API Specification (Javadoc)](%website%/javadoc/index.html) to get started.
+Check out our [examples](%repository%/tree/master/examples),
+[online documentation](%repository%/blob/master/docs/README.md), and
+[API Specification (Javadoc)](%website%/javadoc/index.html) to get started.
 
 
 ### Example
