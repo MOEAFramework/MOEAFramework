@@ -136,7 +136,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		</manifest>
 
 		<copy todir="${build}">
-			<fileset excludes="**/*.java,overview.html,cli,macros.xml,pom.xml.template" dir="src" />
+			<fileset excludes="**/*.java,overview.html,cli.cmd,cli.sh,macros.xml,pom.xml.template" dir="src" />
 		</copy>
 
 		<jar basedir="${build}" manifest="${build}/META-INF/MANIFEST.MF"
@@ -205,10 +205,11 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<copy todir="${base}">
 			<path refid="requiredfiles" />
 			<fileset file="moeaframework.properties" />
-			<fileset file="src/cli" />
+			<fileset file="src/cli.cmd" />
+			<fileset file="src/cli.sh" />
 		</copy>
 		
-		<chmod file="${base}/cli" perm="+x"/>
+		<chmod file="${base}/cli.sh" perm="+x"/>
 
 		<copy todir="${base}/licenses">
 			<fileset dir="META-INF" includes="*-LICENSE" excludes="ZHANG-LICENSE" />
@@ -330,7 +331,7 @@ In addition, the MOEA Framework includes a suite of diagnostic and visualization
 		</copy>
 		
 		<copy todir="${build}/src/main/resources" includeEmptyDirs="false">
-			<fileset dir="src" excludes="**/*.java,cli,macros.xml,pom.xml.template" />
+			<fileset dir="src" excludes="**/*.java,cli.cmd,cli.sh,macros.xml,pom.xml.template" />
 		</copy>
 		
 		<copy todir="${build}/src/main/java">

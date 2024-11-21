@@ -203,9 +203,9 @@ jobs:
       shell: bash
       run: |
         cd build/MOEAFramework-*
-        ./cli --help
-        ./cli --version
-        ./cli Solve --help
+        ./cli.sh --help
+        ./cli.sh --version
+        ./cli.sh Solve --help
     - name: Test solve.sh
       if: runner.os == 'Linux'
       run: examples/org/moeaframework/examples/experiment/solve.sh
