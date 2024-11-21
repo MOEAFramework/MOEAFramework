@@ -277,16 +277,15 @@ The following options are available:
 <!-- help:src/org/moeaframework/analysis/tools/ResultFileViewer.java [:-2] -->
 
 ```
-usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileValidator [-b <name>] -c <N> [-h] [-o <file>]
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileViewer [-b <name>] [-h] [-r <file>]
 
-Validates the number of approximation sets stored in a result file.
+Visualizes the contents of a result file.
 
 The following options are available:
 
- -b,--problem <name>   Problem name
- -c,--count <N>        The expected number of entries
- -h,--help             Display help information
- -o,--output <file>    Output file
+ -b,--problem <name>     Problem name
+ -h,--help               Display help information
+ -r,--reference <file>   Reference set file
 ```
 
 ### RuntimeEvaluator

@@ -192,6 +192,7 @@ jobs:
           xargs -rt -I "{}" java -classpath "${CLASSPATH}" "{}"
     - name: Test CLI (Windows)
       if: runner.os == 'Windows'
+	  shell: cmd
       run: |
         cd build/MOEAFramework-*
         cli --help
@@ -199,6 +200,7 @@ jobs:
         cli Solve --help
     - name: Test CLI (Linux / Mac)
       if: runner.os != 'Windows'
+	  shell: bash
       run: |
         cd build/MOEAFramework-*
         ./cli.sh --help
