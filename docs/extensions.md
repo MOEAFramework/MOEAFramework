@@ -85,7 +85,7 @@ remaining.
 ```java
 NSGAII algorithm = new NSGAII(new Srinivas());
 algorithm.addExtension(new ProgressExtension().withListener(new DefaultProgressListener()));
-algorithm.run(10000);
+algorithm.run(100000);
 ```
 
 When using the default listener, as the example above demonstrates, the elapsed time, remaining time, and progress

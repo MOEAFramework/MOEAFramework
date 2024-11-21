@@ -24,7 +24,6 @@
 * [List of Test Problems](listOfProblems.md)
 * [File Formats](fileFormats.md)
 * [Command Line Tools](commandLineTools.md)
-* [Plugins](listOfPlugins.md)
 
 ## Developers
 

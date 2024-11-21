@@ -77,3 +77,98 @@ algorithm.run(10000);
 
 algorithm.getResult().display();
 ```
+
+## Types
+
+Observe above that we define the types of the decision variables, objectives, and constraints in the `newSolution`
+method.
+
+### Decision Variables
+
+Refer to the [List of Decision Variables](listOfDecisionVariables.md) for details on each decision variable type and
+their usage.
+
+### Objectives
+
+Objectives derive from the `Objective` interface.  We can define the objective direction, potentially mixing the two
+types, as demonstrated below:
+
+<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [objective-definition] {KeepComments} -->
+
+```java
+solution.setObjective(0, new Minimize());
+solution.setObjective(1, new Maximize());
+```
+
+Then, in the `evaluate` method, we would assign a value to each objective:
+
+<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [objective-values] {KeepComments} -->
+
+```java
+// Get or set the objective value directly
+solution.getObjective(0).setValue(100.0);
+solution.getObjective(0).getValue();
+
+// Alternative way to get or set the objective value
+solution.setObjectiveValue(0, 100.0);
+solution.getObjectiveValue(0);
+```
+
+The `Objective` type provides several built-in methods for comparing and modifying the objective values, accounting for
+the different directions.
+
+### Constraints
+
+Constraints derive from the `Constraint` interface.  Below we demonstrate constructing each of the constraint types,
+which defines the range of values that are considered feasible or in violation.
+
+<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [constraint-definition] {KeepComments} -->
+
+```java
+// Require the constraint to be less than (or equal) to a given value
+solution.setConstraint(0, LessThan.value(10.0));
+solution.setConstraint(1, LessThanOrEqual.to(10.0));
+
+// Require the constraint to be greater than (or equal) to a given value
+solution.setConstraint(0, GreaterThan.value(10.0));
+solution.setConstraint(1, GreaterThanOrEqual.to(10.0));
+
+// Require the constraint to be equal or not equal to a given value
+solution.setConstraint(0, Equal.to(10.0));
+solution.setConstraint(1, NotEqual.to(10.0));
+
+// Require the constraint to be between or outside some lower and upper bounds
+solution.setConstraint(0, Between.values(-10.0, 10.0));
+solution.setConstraint(1, Outside.values(-10.0, 10.0));
+```
+
+We then typically would set the value of a constraint in the `evaluate` method of our problem:
+
+<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [constraint-values] {KeepComments} -->
+
+```java
+// Get or set the constraint value directly
+solution.getConstraint(0).setValue(100.0);
+solution.getConstraint(0).getValue();
+
+// Alternative way to get or set the constraint value
+solution.setConstraintValue(0, 100.0);
+solution.getConstraintValue(0);
+```
+
+Lastly, we can check if a constraint is feasible or in violation, or measure the magnitude of said violation, as
+follows:
+
+<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [constraint-violation] {KeepComments} -->
+
+```java
+// Checking if a single constraint is feasible or violated
+solution.getConstraint(0).isViolation();
+solution.getConstraint(0).getMagnitudeOfViolation();
+
+// Checking all constraints of a solution
+solution.isFeasible();
+solution.getSumOfConstraintViolations();
+```
+
+
