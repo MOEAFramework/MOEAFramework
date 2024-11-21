@@ -1,8 +1,11 @@
 theme: jekyll-theme-slate
-title: %NAME%
-description: %DESCRIPTION%
-copyright: %COPYRIGHT%
-version: %VERSION%
+title: %name%
+description: %description%
 github:
   repository_url: https://github.com/MOEAFramework/MOEAFramework
 google_analytics: G-G5Q9J52Z1T
+carousel:
+  - image: assets/images/diagnosticTool.png
+  - image: assets/images/runtimeViewer.png
+  - image: assets/images/tsp.png
+  - image: assets/images/symbolicRegression.png
