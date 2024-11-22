@@ -4,16 +4,26 @@
 
 To assist in running these command line tools, we provide an "all in one" script.  The syntax is:
 
-```
+```bash
 ./cli [command]
 ```
 
-where `[command]` is one of the tool names.  For example:
+where `[command]` is one of the tool names.  To view the available commands, run:
 
+<!-- bash:examples/cli-example.sh [2-2] -->
+
+```bash
+./cli --help
 ```
-./cli --help                         # Display all available tools
-./cli Solve --help                   # Display help information for the Solve tool
-./cli Solve --problem DTLZ2 ...      # Run the Solve tool
+
+For example, here we use the `solve` on the 2-objective DTLZ2 problem using NSGA-II, followed by `calc` (abbreviation of
+`CalculateIndicators`) to compute the hypervolume metric:
+
+<!-- bash:examples/cli-example.sh [8-9] -->
+
+```bash
+./cli solve --problem DTLZ2 --algorithm NSGAII --numberOfEvaluations 10000 --output NSGAII_DTLZ2_Runtime.txt
+./cli calc --problem DTLZ2 --indicator hypervolume NSGAII_DTLZ2_Runtime.txt
 ```
 
 If you plan to use these tools often, consider adding the MOEA Framework installation folder to your system's `PATH`
