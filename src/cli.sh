@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ROOT="$(dirname -- "${BASH_SOURCE[0]}")"
-CLASSPATH="${ROOT}/lib/*"
+CLASSPATH="${ROOT}/lib/*:${ROOT}/examples"
 
 if [ -d "${ROOT}/dist" ]; then
 	JAR_FILE="$(find "${ROOT}/dist" -type f -name "MOEAFramework-*.jar" | grep -v "MOEAFramework-.*-Test.jar" | sort --version-sort --reverse | head -n 1)"
