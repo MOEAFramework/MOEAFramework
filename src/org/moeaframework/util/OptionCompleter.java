@@ -66,10 +66,8 @@ public class OptionCompleter {
 	 */
 	public OptionCompleter(Collection<String> options) {
 		this();
-
-		for (String option : options) {
-			add(option);
-		}
+		
+		addAll(options);
 	}
 	
 	/**
@@ -96,6 +94,15 @@ public class OptionCompleter {
 	 */
 	public void add(String option) {
 		options.add(option);
+	}
+	
+	/**
+	 * Adds the given options to this {@code OptionCompleter}. Duplicate options are ignored.
+	 * 
+	 * @param options the options
+	 */
+	public void addAll(Collection<String> options) {
+		this.options.addAll(options);
 	}
 	
 	/**

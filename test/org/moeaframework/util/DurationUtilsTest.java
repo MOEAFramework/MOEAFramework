@@ -49,4 +49,12 @@ public class DurationUtilsTest {
 		Assert.assertEquals("48:00:00", DurationUtils.format(Duration.ofDays(2)));
 	}
 	
+	@Test
+	public void testFormatHighResolution() {
+		Assert.assertEquals("0.0 s", DurationUtils.formatHighResolution(Duration.ofSeconds(0)));
+		Assert.assertEquals("0.25 s", DurationUtils.formatHighResolution(Duration.ofMillis(250)));
+		Assert.assertEquals("1.0 s", DurationUtils.formatHighResolution(Duration.ofSeconds(1)));
+		Assert.assertEquals("75.0 s", DurationUtils.formatHighResolution(Duration.ofSeconds(75)));
+	}
+	
 }

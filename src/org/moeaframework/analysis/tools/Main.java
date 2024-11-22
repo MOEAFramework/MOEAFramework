@@ -43,11 +43,14 @@ import org.moeaframework.util.OptionCompleter;
 public class Main extends CommandLineUtility {
 
 	private static final Map<String, Class<? extends CommandLineUtility>> tools;
+	
+	private static final Map<String, Class<? extends CommandLineUtility>> internalTools;
 
 	private final TypedProperties buildProperties;
 
 	static {
 		tools = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		internalTools = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
 		registerTool(CalculateIndicator.class);
 		registerTool(EndOfRunEvaluator.class);
@@ -68,14 +71,20 @@ public class Main extends CommandLineUtility {
 
 		registerTool(BuildProblem.class);
 		registerTool(LaunchDiagnosticTool.class);
+		
+		registerTool(TestExamples.class.getSimpleName(), TestExamples.class, true);
 	}
 
 	public static void registerTool(Class<? extends CommandLineUtility> tool) {
-		registerTool(tool.getSimpleName(), tool);
+		registerTool(tool.getSimpleName(), tool, false);
 	}
 
-	public static void registerTool(String name, Class<? extends CommandLineUtility> tool) {
-		tools.put(name, tool);
+	public static void registerTool(String name, Class<? extends CommandLineUtility> tool, boolean internal) {
+		if (internal) {
+			internalTools.put(name, tool);
+		} else {
+			tools.put(name, tool);
+		}
 	}
 
 	private Main() throws IOException {
@@ -98,13 +107,16 @@ public class Main extends CommandLineUtility {
 			showHelp();
 		} else {
 			OptionCompleter completer = new OptionCompleter(tools.keySet());
+			completer.addAll(internalTools.keySet());
+			
 			String command = completer.lookup(args[0]);
 
 			if (command == null) {
 				throw new FrameworkException("'" + args[0] + "' is not a valid command, use --help to see available options");
 			}
 
-			Class<? extends CommandLineUtility> toolClass = tools.get(command);
+			Class<? extends CommandLineUtility> toolClass = internalTools.containsKey(command) ?
+					internalTools.get(command) : tools.get(command);
 			String[] toolArgs = Arrays.copyOfRange(args, 1, args.length);
 			
 			Constructor<? extends CommandLineUtility> constructor = toolClass.getDeclaredConstructor();
@@ -168,7 +180,7 @@ public class Main extends CommandLineUtility {
 	 * @throws Exception if an error occurred
 	 */
 	public static void main(String[] args) throws Exception {
-		new Main().start(args);
+		new Main().start(args);	
 	}
 
 }

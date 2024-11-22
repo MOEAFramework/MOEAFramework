@@ -170,30 +170,15 @@ jobs:
       uses: MOEAFramework/.github/actions/run-ant@main
       with:
         target: package-binary
-    - name: Test examples
-      shell: bash
-      run: |
-        cd build/MOEAFramework-*
-        CLASSPATH="lib/*${{ runner.os == 'Windows' && ';' || ':' }}examples"
-        
-        # Compile examples
-        find examples -type f -name '*.java' | \
-          xargs -rt -I "{}" javac -classpath "${CLASSPATH}" "{}"
-
-        # Locate all examples with a main method, ignoring those requiring a display
-        find examples -type f -name '*.java' | \
-          xargs -r grep -l 'public static void main(' | \
-          sort | \
-          grep -v -e 'Example2.java' -e 'A280Example.java' -e 'PR76Example.java' \
-            -e 'QuarticExample.java' -e 'QuinticExample.java' -e 'SexticExample.java' \
-            -e 'PlotRuntimeDynamics.java' -e 'RuntimeViewerExample.java' -e 'PlotControlMap.java' \
-            -e 'CompareIslandModelAndSerialExample.java' | \
-          sed 's~/~.~g; s/.java$//; s/examples.//' | \
-          xargs -rt -I "{}" java -classpath "${CLASSPATH}" "{}"
     - name: Test CLI example
       run: |
         cd build/MOEAFramework-*
         . examples/cli-example.sh
+    - name: Test examples
+      shell: bash
+      run: |
+        cd build/MOEAFramework-*
+        ./cli TestExamples
     - name: Test sensitivity.sh
       if: runner.os == 'Linux'
       run: |

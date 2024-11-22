@@ -29,9 +29,13 @@ public class DurationUtils {
 	
 	private static final NumberFormat FORMAT;
 	
+	private static final NumberFormat FORMAT_HIGH_RESOLUTION;
+	
 	static {
 		FORMAT = new DecimalFormat("#00");
 		FORMAT.setRoundingMode(RoundingMode.FLOOR);
+		
+		FORMAT_HIGH_RESOLUTION = new DecimalFormat("0.0###");
 	}
 	
 	private DurationUtils() {
@@ -84,6 +88,16 @@ public class DurationUtils {
 		sb.append(FORMAT.format(duration.toSecondsPart()));
 		
 		return sb.toString();
+	}
+	
+	/**
+	 * Produces a higher-resolution format string in the form {@code ss.mmmm "s"}.
+	 * 
+	 * @param duration the duration
+	 * @return the formatted string
+	 */
+	public static final String formatHighResolution(Duration duration) {
+		return FORMAT_HIGH_RESOLUTION.format(toSeconds(duration)) + " s";
 	}
 
 }
