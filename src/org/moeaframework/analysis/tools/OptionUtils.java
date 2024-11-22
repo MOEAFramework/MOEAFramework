@@ -126,7 +126,7 @@ class OptionUtils {
 		
 		if (commandLine.hasOption("reference")) {
 			referenceSet = NondominatedPopulation.load(commandLine.getOptionValue("reference"));
-		} else {
+		} else if (commandLine.hasOption("problem")) {
 			referenceSet = ProblemFactory.getInstance().getReferenceSet(commandLine.getOptionValue("problem"));
 		}
 		

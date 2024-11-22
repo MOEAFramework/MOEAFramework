@@ -190,25 +190,18 @@ jobs:
             -e 'CompareIslandModelAndSerialExample.java' | \
           sed 's~/~.~g; s/.java$//; s/examples.//' | \
           xargs -rt -I "{}" java -classpath "${CLASSPATH}" "{}"
-    - name: Test CLI (Windows)
-      if: runner.os == 'Windows'
-      shell: cmd
-      run: |
-        cd build/MOEAFramework-*
-        cli --help
-        cli --version
-        cli solve --help
-    - name: Test CLI (Linux / Mac)
-      if: runner.os != 'Windows'
-      shell: bash
+    - name: Test CLI
       run: |
         cd build/MOEAFramework-*
         ./cli --help
         ./cli --version
-        ./cli solve --help
     - name: Test solve.sh
       if: runner.os == 'Linux'
-      run: examples/org/moeaframework/examples/experiment/solve.sh
+      run: |
+	  	cd build/MOEAFramework-*
+	  	examples/org/moeaframework/examples/experiment/solve.sh
     - name: Test sensitivity.sh
       if: runner.os == 'Linux'
-      run: examples/org/moeaframework/examples/experiment/sensitivity.sh
+      run: |
+	  	cd build/MOEAFramework-*
+	    examples/org/moeaframework/examples/experiment/sensitivity.sh

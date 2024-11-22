@@ -31,6 +31,7 @@ import org.apache.commons.cli.Options;
 import org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool;
 import org.moeaframework.builder.BuildProblem;
 import org.moeaframework.core.FrameworkException;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.Localization;
@@ -86,6 +87,10 @@ public class Main extends CommandLineUtility {
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
 		String[] args = commandLine.getArgs();
+		
+		if (commandLine.hasOption("verbose")) {
+			Settings.PROPERTIES.setBoolean(Settings.KEY_VERBOSE, true);
+		}
 
 		if (commandLine.hasOption("version")) {
 			showVersion();
@@ -117,6 +122,9 @@ public class Main extends CommandLineUtility {
 
 		options.addOption(Option.builder("v")
 				.longOpt("version")
+				.build());
+		options.addOption(Option.builder()
+				.longOpt("verbose")
 				.build());
 
 		return options;
