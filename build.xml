@@ -209,8 +209,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			<fileset file="src/cli.sh" />
 		</copy>
 		
-		<chmod file="${base}/cli.sh" perm="+x"/>
-		<rename src="${base}/cli.sh" dest="${base}/cli" />
+		<move file="${base}/cli.sh" tofile="${base}/cli" />
 
 		<copy todir="${base}/licenses">
 			<fileset dir="META-INF" includes="*-LICENSE" excludes="ZHANG-LICENSE" />
@@ -236,6 +235,11 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<copy todir="${base}/examples">
 			<fileset dir="examples" excludes="*.exe,*.o,*.a,*.class" />
 		</copy>
+		
+		<chmod perm="+x" type="file" verbose="true">
+			<fileset dir="${base}/examples" includes="**/*.sh" />
+			<fileset file="${base}/cli" />
+		</chmod>
 
 		<tar destfile="${dist}/${shortname}-${version}.tar.gz" basedir="${build}" compression="gzip" longfile="gnu" />
 	</target>
@@ -277,6 +281,12 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<replace file="${base}/.project">
 			<replacefilter token="MOEAFramework" value="MOEAFramework-${version}" />
 		</replace>
+		
+		<chmod perm="+x" type="file" verbose="true">
+			<fileset dir="${base}/examples" includes="**/*.sh" />
+			<fileset dir="${base}/src" includes="**/*.sh" />
+			<fileset dir="${base}/test" includes="**/*.sh" />
+		</chmod>
 		
 		<tar destfile="${dist}/${shortname}-${version}-Source.tar.gz" basedir="${build}" compression="gzip"
 				longfile="gnu" />
