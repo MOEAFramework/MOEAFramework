@@ -198,10 +198,10 @@ jobs:
     - name: Test solve.sh
       if: runner.os == 'Linux'
       run: |
-	  	cd build/MOEAFramework-*
-	  	examples/org/moeaframework/examples/experiment/solve.sh
+        cd build/MOEAFramework-*
+        examples/org/moeaframework/examples/experiment/solve.sh
     - name: Test sensitivity.sh
       if: runner.os == 'Linux'
       run: |
-	  	cd build/MOEAFramework-*
-	    examples/org/moeaframework/examples/experiment/sensitivity.sh
+        cd build/MOEAFramework-*
+        examples/org/moeaframework/examples/experiment/sensitivity.sh
