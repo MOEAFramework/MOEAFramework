@@ -175,7 +175,6 @@ jobs:
         cd build/MOEAFramework-*
         . examples/cli-example.sh
     - name: Test examples
-      shell: bash
       run: |
         cd build/MOEAFramework-*
         ./cli TestExamples

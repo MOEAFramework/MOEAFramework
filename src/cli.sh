@@ -3,21 +3,27 @@
 ROOT="$(dirname -- "${BASH_SOURCE[0]}")"
 CLASSPATH="${ROOT}/lib/*:${ROOT}/examples"
 
-if [ -d "${ROOT}/dist" ]; then
-	JAR_FILE="$(find "${ROOT}/dist" -type f -name "MOEAFramework-*.jar" | grep -v "MOEAFramework-.*-Test.jar" | sort --version-sort --reverse | head -n 1)"
+if [ -d "${ROOT}/lib" ]; then
+	MOEAFRAMEWORK_LIB="$(find "${ROOT}/lib" -type f -name "MOEAFramework-*.jar" | head -n 1)"
 fi
 
-if [ -n "${JAR_FILE}" ]; then
-	CLASSPATH="${CLASSPATH}:${JAR_FILE}"
-elif [ -d "${ROOT}/bin" ]; then
-	CLASSPATH="${CLASSPATH}:${ROOT}/bin"
-elif [ -d "${ROOT}/build" ]; then
-	CLASSPATH="${CLASSPATH}:${ROOT}/build"
+if [ -z "${MOEAFRAMEWORK_LIB}" ]; then
+	if [ -d "${ROOT}/dist" ]; then
+		MOEAFRAMEWORK_LIB="$(find "${ROOT}/dist" -type f -name "MOEAFramework-*.jar" | grep -v "MOEAFramework-.*-Test.jar" | sort --version-sort --reverse | head -n 1)"
+	fi
+	
+	if [ -n "${MOEAFRAMEWORK_LIB}" ]; then
+		CLASSPATH="${CLASSPATH}:${MOEAFRAMEWORK_LIB}"
+	elif [ -d "${ROOT}/bin" ]; then
+		CLASSPATH="${CLASSPATH}:${ROOT}/bin"
+	elif [ -d "${ROOT}/build" ]; then
+		CLASSPATH="${CLASSPATH}:${ROOT}/build"
+	fi
 fi
 
 if ! java -classpath "${CLASSPATH}" org.moeaframework.analysis.tools.Main --version >/dev/null 2>&1; then
-	echo "Unable to run MOEA Framework command line tools!"
-	echo "If building from source code, please run 'ant build-binary' first."
+	echo "Unable to run MOEA Framework command line tools!" >&2
+	echo "If building from source code, please run 'ant package-binary' first." >&2
 	exit -1
 fi
 
