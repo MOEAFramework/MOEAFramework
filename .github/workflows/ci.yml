@@ -177,7 +177,7 @@ jobs:
     - name: Test examples
       run: |
         cd build/MOEAFramework-*
-        ./cli TestExamples
+        ./cli TestExamples --headless
     - name: Test sensitivity.sh
       if: runner.os == 'Linux'
       run: |

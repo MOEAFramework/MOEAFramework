@@ -60,6 +60,9 @@ public class TestExamples extends CommandLineUtility {
 				.hasArg()
 				.argName("value")
 				.build());
+		options.addOption(Option.builder()
+				.longOpt("headless")
+				.build());
 
 		return options;
 	}
@@ -78,6 +81,11 @@ public class TestExamples extends CommandLineUtility {
 		
 		if (commandLine.hasOption("seed")) {
 			PRNG.setSeed(Long.parseLong(commandLine.getOptionValue("seed")));
+		}
+		
+		if (commandLine.hasOption("headless")) {
+			// Must be set before instantiating Toolkit or any UI components
+			System.setProperty("java.awt.headless", "true");
 		}
 		
 		try (Stream<Path> stream = Files.walk(examplesPath)) {
@@ -134,13 +142,12 @@ public class TestExamples extends CommandLineUtility {
 					System.out.println("================================= End Output =================================");
 					System.out.println();
 					System.out.print("...done!");
-
 				} catch (NoSuchMethodException e) {
-					System.out.print("skipped!");
+					System.out.print("skipped (no main method)");
 				} catch (InvocationTargetException e) {
 					if (e.getCause() instanceof HeadlessException) {
 						System.out.println("================================= End Output =================================");
-						System.out.print("...ignoring (requires graphical display)!");
+						System.out.print("...skipped (requires graphical display)");
 					} else {
 						throw new FrameworkException("Failed on example " + p, e);
 					}
