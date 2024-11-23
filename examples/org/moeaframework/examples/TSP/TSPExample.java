@@ -26,18 +26,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
-import org.moeaframework.core.variable.EncodingUtils;
-import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.Problem;
+import org.moeaframework.util.mvc.ExampleUI;
 
 /**
  * Demonstration of optimizing a TSP problem using the MOEA Framework.  A window will appear showing the progress of
@@ -45,96 +42,65 @@ import org.moeaframework.problem.Problem;
  * thick red line indicating the best tour found by the optimization algorithm.  Light gray lines are the other
  * (sub-optimal) tours in the population.
  */
-public class TSPExample {
-	
-	/**
-	 * The color for population members.
-	 */
+public class TSPExample extends ExampleUI<GeneticAlgorithm> {
+
+	private static final long serialVersionUID = -3279247471680695959L;
+
 	private static final Color lightGray = new Color(128, 128, 128, 64);
 	
-	/**
-	 * Converts a MOEA Framework solution to a {@link Tour}.
-	 * 
-	 * @param solution the MOEA Framework solution
-	 * @return the tour defined by the solution
-	 */
-	public static Tour toTour(Solution solution) {
-		int[] permutation = EncodingUtils.getPermutation(solution.getVariable(0));
+	private final TSPInstance instance;
+	
+	private TSPPanel panel;
+	
+	private JTextArea details;
 		
-		// increment values since TSP nodes start at 1
-		for (int i = 0; i < permutation.length; i++) {
-			permutation[i]++;
-		}
+	public TSPExample(TSPInstance instance, GeneticAlgorithm algorithm) {
+		super("Traveling Salesman Problem - " + instance.getName(), algorithm);
+		this.instance = instance;
 		
-		return Tour.createTour(permutation);
+		initialize();
+		layoutComponents();
+		
+		setSize(500, 400);
+		setLocationRelativeTo(null);
 	}
 	
-	/**
-	 * Saves a {@link Tour} into a MOEA Framework solution.
-	 * 
-	 * @param solution the MOEA Framework solution
-	 * @param tour the tour
-	 */
-	public static void fromTour(Solution solution, Tour tour) {
-		int[] permutation = tour.toArray();
+	private void initialize() {
+		panel = new TSPPanel(instance);
+		panel.setAutoRepaint(false);
 		
-		// decrement values to get permutation
-		for (int i = 0; i < permutation.length; i++) {
-			permutation[i]--;
-		}
-		
-		EncodingUtils.setPermutation(solution.getVariable(0), permutation);
+		details = new JTextArea();
+		details.setEditable(false);
 	}
 	
-	/**
-	 * The optimization problem definition.  This is a 1 variable, 1 objective optimization problem.  The single
-	 * variable is a permutation that defines the nodes visited by the salesman.
-	 */
-	public static class TSPProblem extends AbstractProblem {
-
-		/**
-		 * The TSP problem instance.
-		 */
-		private final TSPInstance instance;
+	private void layoutComponents() {
+		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		splitPane.setTopComponent(panel);
+		splitPane.setBottomComponent(new JScrollPane(details));
+		splitPane.setDividerLocation(300);
+		splitPane.setResizeWeight(1.0);
 		
-		/**
-		 * The TSP heuristic for aiding the optimization process.
-		 */
-		private final TSP2OptHeuristic heuristic;
-		
-		/**
-		 * Constructs a new optimization problem for the given TSP problem instance.
-		 * 
-		 * @param instance the TSP problem instance
-		 */
-		public TSPProblem(TSPInstance instance) {
-			super(1, 1);
-			this.instance = instance;
-			
-			heuristic = new TSP2OptHeuristic(instance);
-		}
+		getContentPane().setLayout(new BorderLayout());
+		getContentPane().add(splitPane, BorderLayout.CENTER);
+	}
+	
+	@Override
+	public void update(GeneticAlgorithm algorithm, int iteration) {
+		panel.clearTours();
 
-		@Override
-		public void evaluate(Solution solution) {
-			Tour tour = toTour(solution);
-			
-			// apply the heuristic and save the modified tour
-			heuristic.apply(tour);
-			fromTour(solution, tour);
-
-			solution.setObjectiveValue(0, tour.distance(instance));
-		}
-
-		@Override
-		public Solution newSolution() {
-			Solution solution = new Solution(1, 1);
-			
-			solution.setVariable(0, EncodingUtils.newPermutation(
-					instance.getDimension()));
-			
-			return solution;
+		// display population with light gray lines
+		for (Solution solution : algorithm.getPopulation()) {
+			panel.displayTour(TSPProblem.toTour(solution), lightGray);
 		}
 		
+		// display current optimal solutions with red line
+		Tour best = TSPProblem.toTour(algorithm.getResult().get(0));
+		panel.displayTour(best, Color.RED, new BasicStroke(2.0f));
+		panel.repaint();
+		
+		// update the details
+		details.setText("Iteration: " + iteration + System.lineSeparator() +
+				"Best tour length: " + best.distance(instance));
 	}
 	
 	/**
@@ -143,29 +109,6 @@ public class TSPExample {
 	 * @param instance the TSPLIB instance to solve
 	 */
 	public static void solve(TSPInstance instance) {
-		TSPPanel panel = new TSPPanel(instance);
-		panel.setAutoRepaint(false);
-		
-		// create other components on the display
-		StringBuilder progress = new StringBuilder();
-		JTextArea progressText = new JTextArea();
-		
-		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-		splitPane.setTopComponent(panel);
-		splitPane.setBottomComponent(new JScrollPane(progressText));
-		splitPane.setDividerLocation(300);
-		splitPane.setResizeWeight(1.0);
-		
-		// display the panel on a window
-		JFrame frame = new JFrame("Traveling Salesman Problem - " + instance.getName());
-		frame.getContentPane().setLayout(new BorderLayout());
-		frame.getContentPane().add(splitPane, BorderLayout.CENTER);
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.setSize(500, 400);
-		frame.setLocationRelativeTo(null);
-		frame.setIconImages(Settings.getIcon().getResolutionVariants());
-		frame.setVisible(true);
-		
 		// create the optimization problem and evolutionary algorithm
 		Problem problem = new TSPProblem(instance);
 		
@@ -177,30 +120,8 @@ public class TSPExample {
 		GeneticAlgorithm algorithm = new GeneticAlgorithm(problem);
 		algorithm.applyConfiguration(properties);
 		
-		int iteration = 0;
-		
-		// now run the evolutionary algorithm
-		while (frame.isVisible()) {
-			algorithm.step();
-			iteration++;
-			
-			// clear existing tours in display
-			panel.clearTours();
-
-			// display population with light gray lines
-			for (Solution solution : algorithm.getPopulation()) {
-				panel.displayTour(toTour(solution), lightGray);
-			}
-			
-			// display current optimal solutions with red line
-			Tour best = toTour(algorithm.getResult().get(0));
-			panel.displayTour(best, Color.RED, new BasicStroke(2.0f));
-			progress.insert(0, "Iteration " + iteration + ": " + best.distance(instance) + "\n");
-			progressText.setText(progress.toString());
-			
-			// repaint the TSP display
-			panel.repaint();
-		}
+		TSPExample example = new TSPExample(instance, algorithm);
+		example.start();
 	}
 	
 	/**
