@@ -99,8 +99,8 @@ public abstract class CommandLineUtility {
 	/**
 	 * Returns the console width by:
 	 * <ol>
-	 *   <li>Using the value stored in {@value Settings#KEY_HELP_WIDTH}
-	 *   <li>Using {@code stty size}
+	 *   <li>The value stored in {@link Settings#KEY_HELP_WIDTH}
+	 *   <li>Invoking {@code stty size} on supported platforms
 	 *   <li>Defaulting to {@value HelpFormatter#DEFAULT_WIDTH}
 	 * </ol>
 	 * 
