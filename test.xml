@@ -72,12 +72,16 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	</target>
 	
 	<!-- Downloads test libraries.  These should not be included in any release. -->
-	<target name="download-all" depends="download-junit,download-nashorn,download-jmetal-plugin"
+	<target name="download-all" depends="download-junit,download-jfreesvg,download-nashorn,download-jmetal-plugin"
 		description="Download all test dependencies to the lib folder" />
 	
 	<target name="download-junit">
 		<secure-get src="${junit.url}" dest="lib/junit-${junit.version}.jar" sha1="${junit.sha1}" />
 		<secure-get src="${hamcrest.url}" dest="lib/hamcrest-${hamcrest.version}.jar" sha1="${hamcrest.sha1}" />
+	</target>
+	
+	<target name="download-jfreesvg">
+		<secure-get src="${jfreesvg.url}" dest="lib/jfreesvg-${jfreesvg.version}.jar" sha1="${jfreesvg.sha1}" />
 	</target>
 	
 	<target name="download-nashorn">

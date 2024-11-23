@@ -38,7 +38,7 @@ import org.moeaframework.util.Localization;
 import org.moeaframework.util.OptionCompleter;
 
 /**
- * Entry point to access all command line tools
+ * Entry point to access all command line tools.
  */
 public class Main extends CommandLineUtility {
 
@@ -75,10 +75,22 @@ public class Main extends CommandLineUtility {
 		registerTool(TestExamples.class.getSimpleName(), TestExamples.class, true);
 	}
 
+	/**
+	 * Registers a tool to be included in the CLI commands.
+	 * 
+	 * @param tool the class implementing the tool
+	 */
 	public static void registerTool(Class<? extends CommandLineUtility> tool) {
 		registerTool(tool.getSimpleName(), tool, false);
 	}
 
+	/**
+	 * Registers a tool to be included in the CLI commands.
+	 * 
+	 * @param name the command name
+	 * @param tool the class implementing the tool
+	 * @param internal if {@code true}, the tool is hidden from the list of available commands
+	 */
 	public static void registerTool(String name, Class<? extends CommandLineUtility> tool, boolean internal) {
 		if (internal) {
 			internalTools.put(name, tool);

@@ -318,7 +318,7 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
         RunnableAction savePlot = new RunnableAction("savePlot", localization, () -> {
         	JFileChooser fileChooser = new JFileChooser();
         	
-        	for (ImageFileType fileType : ImageFileType.values()) {
+        	for (ImageFileType fileType : ImageUtils.getSupportedImageFormats()) {
         		fileChooser.addChoosableFileFilter(fileType.getFilter());
         	}
         	

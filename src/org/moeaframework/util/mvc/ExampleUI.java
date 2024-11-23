@@ -27,8 +27,8 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.termination.CancellationSignal;
 
 /**
- * Abstract class for building GUIs visualizing examples.  This handles running the algorithm, invoking
- * {@link #update(Algorithm, int)} after each iteration, and stopping when the window is closed.
+ * Abstract class for building example GUIs.  This abstract class handles running the algorithm in a background thread,
+ * invoking {@link #update(Algorithm, int)} after each iteration, and stopping when the window is closed.
  * 
  * @param <T> the type of algorithm
  */
@@ -80,7 +80,7 @@ public abstract class ExampleUI<T extends Algorithm> extends JFrame implements C
 	
 	@Override
 	public void controllerStateChanged(ControllerEvent event) {
-		update(controller.algorithm, controller.iteration);
+		update(controller.getAlgorithm(), controller.getIteration());
 	}
 	
 	private static class ExampleController<T extends Algorithm> extends Controller {
@@ -89,23 +89,27 @@ public abstract class ExampleUI<T extends Algorithm> extends JFrame implements C
 		
 		private final T algorithm;
 		
+		private final Thread thread;
+		
 		private int iteration;
-
+		
 		public ExampleController(Window window, T algorithm) {
 			super(window);
 			this.algorithm = algorithm;
 			
 			cancellationSignal = new CancellationSignal();
 			addShutdownHook(this::stop);
-		}
-		
-		public void start() {
-			cancellationSignal.initialize(algorithm);
 			
-			Thread thread = new Thread() {
+			thread = new Thread() {
+				
+				{
+					setDaemon(true);
+				}
 				
 				@Override
 				public void run() {
+					cancellationSignal.initialize(algorithm);
+					
 					while (!cancellationSignal.isCancelled()) {
 						algorithm.step();
 						iteration += 1;
@@ -117,7 +121,17 @@ public abstract class ExampleUI<T extends Algorithm> extends JFrame implements C
 				}
 				
 			};
-			
+		}
+		
+		public T getAlgorithm() {
+			return algorithm;
+		}
+		
+		public int getIteration() {
+			return iteration;
+		}
+		
+		public void start() {
 			thread.start();
 		}
 		

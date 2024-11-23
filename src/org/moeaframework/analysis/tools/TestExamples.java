@@ -42,6 +42,10 @@ import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.DurationUtils;
 import org.moeaframework.util.Timer;
 
+/**
+ * Command line utility that scans the {@code examples/} folder for Java files, compiles them, and runs class
+ * containing a {@code main} method.
+ */
 public class TestExamples extends CommandLineUtility {
 
 	private TestExamples() {

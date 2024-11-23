@@ -74,15 +74,20 @@
 			<version>%jfreechart.version%</version>
 		</dependency>
 		<dependency>
-			<groupId>org.jfree</groupId>
-			<artifactId>jfreesvg</artifactId>
-			<version>%jfreesvg.version%</version>
-		</dependency>
-		<dependency>
 			<groupId>net.java.dev.jna</groupId>
 			<artifactId>jna</artifactId>
 			<version>%jna.version%</version>
 		</dependency>
+		
+		<!-- optional dependencies -->
+		<dependency>
+			<groupId>org.jfree</groupId>
+			<artifactId>jfreesvg</artifactId>
+			<version>%jfreesvg.version%</version>
+			<optional>true</optional>
+		</dependency>
+		
+		<!-- test dependencies -->
 		<dependency>
 			<groupId>org.openjdk.nashorn</groupId>
 			<artifactId>nashorn-core</artifactId>
