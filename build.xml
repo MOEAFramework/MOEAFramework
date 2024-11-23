@@ -57,6 +57,10 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	<path id="libraries">
 		<fileset dir="lib" excludes="junit-*.jar,hamcrest-*.jar,jfreesvg-*.jar,checkstyle-*.jar,nashorn-*.jar,asm-*.jar,jmetal-plugin-*.jar,pisa-plugin-*.jar,gd-*.jar" />
 	</path>
+	
+	<path id="resources">
+		<fileset dir="src" excludes="**/*.java,overview.html,cli.cmd,cli.sh,macros.xml,pom.xml.template,README.md.template" />
+	</path>
 
 	<!-- Generates the Javadoc webpages -->
 	<target name="build-javadoc">
@@ -135,8 +139,8 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			</section>
 		</manifest>
 
-		<copy todir="${build}">
-			<fileset excludes="**/*.java,overview.html,cli.cmd,cli.sh,macros.xml,pom.xml.template" dir="src" />
+		<copy todir="${build}" includeEmptyDirs="false">
+			<path refid="resources" />
 		</copy>
 
 		<jar basedir="${build}" manifest="${build}/META-INF/MANIFEST.MF"
@@ -341,11 +345,11 @@ In addition, the MOEA Framework includes a suite of diagnostic and visualization
 		</copy>
 		
 		<copy todir="${build}/src/main/resources" includeEmptyDirs="false">
-			<fileset dir="src" excludes="**/*.java,cli.cmd,cli.sh,macros.xml,pom.xml.template" />
+			<path refid="resources" />
 		</copy>
 		
 		<copy todir="${build}/src/main/java">
-			<fileset excludes="overview.html" dir="src" />
+			<fileset dir="src" includes="**/*.java" />
 		</copy>
 		
 		<copy todir="${build}/src/test/java">
