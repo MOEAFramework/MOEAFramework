@@ -7,8 +7,10 @@
 /test-results/
 /*.arff
 /*.csv
+/*.dat
 /*.json
 /*.md
+/*.pf
 /*.res
 /*.tex
 /*.txt
