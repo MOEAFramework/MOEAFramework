@@ -2,7 +2,7 @@ theme: jekyll-theme-slate
 title: %name%
 description: %description%
 github:
-  repository_url: https://github.com/MOEAFramework/MOEAFramework
+  repository_url: %repository%
 google_analytics: G-G5Q9J52Z1T
 carousel:
   - image: assets/images/diagnosticTool.png

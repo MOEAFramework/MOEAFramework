@@ -46,7 +46,13 @@ algorithm.run(10000);
 
 algorithm.getResult().display();
 ```
-%carousel%
+
+<!-- begin-carousel -->
+In addition, the MOEA Framework includes a suite of diagnostic and visualization tools:
+		  	
+{% include carousel.html height="500" unit="px" duration="7" %}
+<!-- end-carousel -->
+
 
 ### Citation
 
