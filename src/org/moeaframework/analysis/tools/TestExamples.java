@@ -18,8 +18,11 @@
 package org.moeaframework.analysis.tools;
 
 import java.awt.HeadlessException;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
@@ -76,7 +79,6 @@ public class TestExamples extends CommandLineUtility {
 		Settings.PROPERTIES.setBoolean(Settings.KEY_VERBOSE, true);
 
 		Path examplesPath = Path.of("examples");
-		URL examplesURL = examplesPath.toUri().toURL();
 
 		if (!Files.exists(examplesPath)) {
 			System.out.println("No examples directory!");
@@ -128,43 +130,81 @@ public class TestExamples extends CommandLineUtility {
 			.sorted()
 			.map(p -> p.getName(0).equals(examplesPath) ? p.subpath(1, p.getNameCount()) : p)
 			.map(p -> FilenameUtils.removeExtension(p.toString()).replaceAll("[\\\\/]", "."))
-			.forEach(p -> {
-				Timer timer = Timer.startNew();
-				System.out.print("Testing ");
-				System.out.print(p);
-				System.out.print("...");
-
-				try {
-					URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] { examplesURL });
-					Class<?> cls = Class.forName(p, true, classLoader);
-					Method mainMethod = cls.getDeclaredMethod("main", String[].class);
-
-					System.out.println();
-					System.out.println();
-					System.out.println("================================ Begin Output ================================");
-					mainMethod.invoke(null, (Object)new String[0]);	
-					System.out.println("================================= End Output =================================");
-					System.out.println();
-					System.out.print("...done!");
-				} catch (NoSuchMethodException e) {
-					System.out.print("skipped (no main method)");
-				} catch (InvocationTargetException e) {
-					if (e.getCause() instanceof HeadlessException) {
-						System.out.println("================================= End Output =================================");
-						System.out.print("...skipped (requires graphical display)");
-					} else {
-						throw new FrameworkException("Failed on example " + p, e);
-					}
-				} catch (Exception e) {
-					throw new FrameworkException("Failed on example " + p, e);
+			.forEach(p -> runExample(p, examplesPath));
+		}
+	}
+	
+	private static ClassLoader createClassLoader(Path... classpath) throws MalformedURLException {
+		URL[] urls = new URL[classpath.length];
+		
+		for (int i = 0; i < classpath.length; i++) {
+			urls[i] = classpath[i].toUri().toURL();
+		}
+		
+		return URLClassLoader.newInstance(urls);
+	}
+	
+	private static void runExample(String example, Path... classpath) {
+		Timer timer = Timer.startNew();
+		
+		PrintStream systemOut = System.out;
+		PrintStream systemErr = System.err;
+		
+		try (ByteArrayOutputStream outStorage = new ByteArrayOutputStream();
+				ByteArrayOutputStream errStorage = new ByteArrayOutputStream();
+				PrintStream captureOut = new PrintStream(outStorage);
+				PrintStream captureErr = new PrintStream(errStorage)) {
+			System.setOut(captureOut);
+			System.setErr(captureErr);
+			
+			systemOut.print("Testing ");
+			systemOut.print(example);
+			systemOut.print("...");
+			
+			try {
+				Class<?> cls = Class.forName(example, true, createClassLoader(classpath));
+				Method mainMethod = cls.getDeclaredMethod("main", String[].class);
+				mainMethod.invoke(null, (Object)new String[0]);
+				
+				systemOut.print("done!");
+			} catch (NoSuchMethodException e) {
+				systemOut.print("skipped (no main method)");
+			} catch (InvocationTargetException e) {
+				if (e.getCause() instanceof HeadlessException) {
+					systemOut.print("skipped (requires graphical display)");
+				} else {
+					throw e;
 				}
-
-				Duration elapsedTime = Duration.ofMillis(Math.round(1000 * timer.stop()));
-				System.out.print(" (");
-				System.out.print(DurationUtils.formatHighResolution(elapsedTime));
-				System.out.println(")");
-				System.out.println();
-			});
+			}
+			
+			captureOut.close();
+			captureErr.close();
+			
+			Duration elapsedTime = Duration.ofMillis(Math.round(1000 * timer.stop()));
+			systemOut.print(" (");
+			systemOut.print(DurationUtils.formatHighResolution(elapsedTime));
+			systemOut.println(")");
+			
+			if (outStorage.size() > 0) {
+				systemOut.println();
+				systemOut.println("================================ Begin Output ================================");
+				systemOut.print(outStorage.toString());
+				systemOut.println("================================= End Output =================================");
+				systemOut.println();
+			}
+			
+			if (errStorage.size() > 0) {
+				systemOut.println();
+				systemOut.println("================================ Begin Error =================================");
+				systemOut.print(errStorage.toString());
+				systemOut.println("================================= End Error ==================================");
+				systemOut.println();
+			}
+		} catch (Exception e) {
+			throw new FrameworkException("Failure caught while running " + example, e);
+		} finally {
+			System.setOut(systemOut);
+			System.setErr(systemErr);
 		}
 	}
 
