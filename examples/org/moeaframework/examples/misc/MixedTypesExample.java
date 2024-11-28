@@ -76,11 +76,11 @@ public class MixedTypesExample {
 	
 	public static void main(String[] args) {
 		Problem problem = new MixedTypesSrinivasProblem();
+		
 		NSGAII algorithm = new NSGAII(problem);
-
 		algorithm.setVariation(new CompoundVariation(new SBX(), new HUX(), new PM(), new BitFlip()));
-				
 		algorithm.run(10000);
+		
 		algorithm.getResult().display();
 	}
 
