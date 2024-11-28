@@ -348,7 +348,7 @@ The following options are available:
 
 ```
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.SobolAnalysis [-h] -i <file> -m <value> [-o <file>] -p
-       <file> [-r <number>] [-s]
+       <file> [-r <number>]
 
 Performs Sobol' global variance analysis.
 
@@ -360,7 +360,6 @@ The following options are available:
  -o,--output <file>          Output file
  -p,--parameterFile <file>   Parameter description file
  -r,--resamples <number>     Number of resamples when computing bootstrap confidence intervals
- -s,--simple                 Simple output format
 ```
 
 ### Solve

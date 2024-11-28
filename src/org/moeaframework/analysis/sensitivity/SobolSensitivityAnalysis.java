@@ -32,7 +32,8 @@ import org.moeaframework.util.sequence.Saltelli;
 
 /**
  * Global sensitivity analysis of blackbox model output using Saltelli's improved Sobol' global variance decomposition
- * procedure.
+ * procedure.  Please note that when requesting {@code N} samples, the {@link Saltelli} sampling strategy generates
+ * {@code N * (2 * P + 2)} actual samples, where {@code P} is the number of parameters being analyzed.  
  * <p>
  * The following code was derived and translated from the C code used in the Tang et al. (2007) study cited below.
  * Refer to this article for a description of the procedure.
@@ -47,25 +48,29 @@ import org.moeaframework.util.sequence.Saltelli;
  */
 public class SobolSensitivityAnalysis implements SensitivityAnalysis<SensitivityResult> {
 
-	/**
-	 * Number of resamples used to bootstrap the 50% confidence intervals.
-	 */
 	private final int resamples;
 
-	/**
-	 * Parameters being analyzed.
-	 */
 	private final ParameterSet parameterSet;
 
-	/**
-	 * Number of samples.
-	 */
 	private final int N;
 
+	/**
+	 * Constructs a new Sobol' global variance decomposition instance.
+	 * 
+	 * @param parameterSet the parameters being analyzed
+	 * @param N the number of samples
+	 */
 	public SobolSensitivityAnalysis(ParameterSet parameterSet, int N) {
 		this(parameterSet, N, 1000);
 	}
 	
+	/**
+	 * Constructs a new Sobol' global variance decomposition instance.
+	 * 
+	 * @param parameterSet the parameters being analyzed
+	 * @param N the number of samples
+	 * @param resamples the number of resamples used to bootstrap the 50% confidence intervals
+	 */
 	public SobolSensitivityAnalysis(ParameterSet parameterSet, int N, int resamples) {
 		super();
 		this.parameterSet = parameterSet;
@@ -102,28 +107,28 @@ public class SobolSensitivityAnalysis implements SensitivityAnalysis<Sensitivity
 	TotalOrderSensitivity {
 		
 		/**
-		 * Model responses from the original parameters, or {@code null} if not yet assigned.
+		 * Model responses from the original parameters.
 		 */
 		private final double[] A;
 
 		/**
-		 * Model responses from the resampled parameters, or {@code null} if not yet assigned.
+		 * Model responses from the resampled parameters.
 		 */
 		private final double[] B;
 
 		/**
 		 * Model responses from the original samples where the j-th parameter is replaced by the corresponding
-		 * resampled parameter, or {@code null} if not yet assigned.
+		 * resampled parameter.
 		 */
 		private final double[][] C_A;
 
 		/**
 		 * Model responses from the resampled samples where the j-th parameter is replaced by the corresponding
-		 * original parameter, or {@code null} if not yet assigned.
+		 * original parameter.
 		 */
 		private final double[][] C_B;
 		
-		public SobolSensitivityResult(double[] responses) {
+		private SobolSensitivityResult(double[] responses) {
 			super();
 			A = new double[N];
 			B = new double[N];

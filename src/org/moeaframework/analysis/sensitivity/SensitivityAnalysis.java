@@ -42,7 +42,8 @@ public interface SensitivityAnalysis<T extends SensitivityResult> {
 	public Samples generateSamples();
 	
 	/**
-	 * Evaluates the model responses associated with each sample, returning the sensitivity results.
+	 * Evaluates the model responses associated with each sample, returning the sensitivity results.  The order of
+	 * responses must match the order of the generated samples!
 	 * 
 	 * @param responses the model responses
 	 * @return the sensitivity results
@@ -50,7 +51,7 @@ public interface SensitivityAnalysis<T extends SensitivityResult> {
 	public T evaluate(double[] responses);
 	
 	/**
-	 * Evaluates the sampled results, returning the sensitivity results.
+	 * Extracts the {@link SampledResults} values and calls {@link #evaluate(double[])}.
 	 * 
 	 * @param results the sampled results
 	 * @return the sensitivity results
