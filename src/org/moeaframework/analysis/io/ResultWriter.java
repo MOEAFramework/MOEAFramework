@@ -79,9 +79,9 @@ public abstract class ResultWriter implements Closeable {
 	 */
 	public static void failIfOutdated(CommandLineUtility cli, File input, File output) {
 		if ((output.lastModified() > 0L) && (input.lastModified() > output.lastModified())) {
-			cli.fail("WARNING: Input file '" + input + "' is newer than output file '" + output + "'",
-					"  1. Add the --overwrite option to remove the output file",
-					"  2. Add the --force option to ignore this warning");
+			cli.fail("WARNING: Input file '" + input + "' is newer than output file '" + output + "'.",
+					"  1. Add the --overwrite option to remove the output file.",
+					"  2. Add the --force option to ignore this warning.");
 		}
 	}
 

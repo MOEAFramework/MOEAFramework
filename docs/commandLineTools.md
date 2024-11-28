@@ -327,8 +327,8 @@ The following options are available:
 <!-- help:src/org/moeaframework/analysis/tools/SampleGenerator.java [:-2] -->
 
 ```
-usage: java -classpath "lib/*" org.moeaframework.analysis.tools.SampleGenerator [-h] -m <name> -n <value> [-o <file>] -p
-       <file> [-s <value>]
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.SampleGenerator [-h] -m <name> -n <value> [-o <file>]
+       [--overwrite] -p <file> [-s <value>]
 
 Generates parameter samples for running the Evaluator.
 
@@ -338,6 +338,7 @@ The following options are available:
  -m,--method <name>             Sample generation method (uniform, latin, sobol, saltelli)
  -n,--numberOfSamples <value>   Number of samples
  -o,--output <file>             Output file
+    --overwrite                 Overwrite the output file if it exists
  -p,--parameterFile <file>      Parameter file
  -s,--seed <value>              Random number generator seed
 ```

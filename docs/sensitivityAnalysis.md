@@ -21,7 +21,7 @@ graph LR
     G --> I["SobolAnalysis<br>(requires saltelli method)"]
 ```
 
-The full script used in this example can be found at [sensitivity.sh](../examples/org/moeaframework/examples/experiment/sensitivity.sh).
+The full script used in this example can be found at [sensitivity.sh](../examples/org/moeaframework/examples/sensitivity/sensitivity.sh).
 For more information about any of the commands being run, see the [Command Line Tools reference](commandLineTools.md).
 
 ## Parameter File
@@ -29,7 +29,7 @@ For more information about any of the commands being run, see the [Command Line 
 We start with a parameter file that defines the parameters being investigated along with the minimum and maximum bounds
 for sampling.  Note the parameter names must match the configurable properties for the algorithm being studied.
 
-<!-- text:examples/org/moeaframework/examples/experiment/NSGAII_Params.txt -->
+<!-- text:examples/org/moeaframework/examples/sensitivity/NSGAII_Params.txt -->
 
 ```text
 maxEvaluations        int     1000 10000
@@ -47,11 +47,11 @@ file contains the parameters for a single execution.  Also note that the choice 
 the type of analyses that can be performed.  For example, to compute the first, second, and total-order effects of the
 parameters using Sobol sensitivity analysis, use the `saltelli` method. 
 
-<!-- bash:examples/org/moeaframework/examples/experiment/sensitivity.sh [15:19] -->
+<!-- bash:examples/org/moeaframework/examples/sensitivity/sensitivity.sh [5:9] -->
 
 ```bash
-java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.SampleGenerator \
-    --parameterFile examples/org/moeaframework/examples/experiment/NSGAII_Params.txt \
+./cli SampleGenerator \
+    --parameterFile examples/org/moeaframework/examples/sensitivity/NSGAII_Params.txt \
     --method saltelli \
     --numberOfSamples 500 \
     --output NSGAII_Samples.txt
@@ -62,11 +62,11 @@ java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.SampleGenerator 
 Next, we evaluate the algorithm against each of the parameter samples.  This produces a Result File that contains
 the Pareto approximation sets produced by each parameterization.
 
-<!-- bash:examples/org/moeaframework/examples/experiment/sensitivity.sh [22:28] -->
+<!-- bash:examples/org/moeaframework/examples/sensitivity/sensitivity.sh [11:17] -->
 
 ```bash
-java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.EndOfRunEvaluator \
-    --parameterFile examples/org/moeaframework/examples/experiment/NSGAII_Params.txt \
+./cli EndOfRunEvaluator \
+    --parameterFile examples/org/moeaframework/examples/sensitivity/NSGAII_Params.txt \
     --input NSGAII_Samples.txt \
     --output NSGAII_DTLZ2_Results.txt \
     --problem DTLZ2 \
@@ -79,10 +79,10 @@ java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.EndOfRunEvaluato
 We typically evaluate the performance of an algorithm using one of the performance indicators (e.g., hypervolume).
 Here, we take the result file produced in the previous step and compute the metrics.
 
-<!-- bash:examples/org/moeaframework/examples/experiment/sensitivity.sh [30:34] -->
+<!-- bash:examples/org/moeaframework/examples/sensitivity/sensitivity.sh [19:23] -->
 
 ```bash
-java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.MetricsEvaluator \
+./cli MetricsEvaluator \
     --input NSGAII_DTLZ2_Results.txt \
     --output NSGAII_DTLZ2_Metrics.txt \
     --problem DTLZ2 \
@@ -94,14 +94,14 @@ java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.MetricsEvaluator
 In our original sensitivity analysis study, we compared algorithms based on their attainment, efficiency, and
 controllability.  These values are computed using the `MetricsAnalysis` tool.
 
-<!-- bash:examples/org/moeaframework/examples/experiment/sensitivity.sh [36:43] -->
+<!-- bash:examples/org/moeaframework/examples/sensitivity/sensitivity.sh [25:32] -->
 
 ```bash
-java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.MetricsAnalysis \
+./cli MetricsAnalysis \
     --controllability \
     --efficiency \
     --band 100 \
-    --parameterFile examples/org/moeaframework/examples/experiment/NSGAII_Params.txt \
+    --parameterFile examples/org/moeaframework/examples/sensitivity/NSGAII_Params.txt \
     --parameters NSGAII_Samples.txt \
     --metric InvertedGenerationalDistance \
     NSGAII_DTLZ2_Metrics.txt
@@ -113,11 +113,11 @@ If using the `saltelli` sampling method, we can also compute the first-, second-
 parameters.  This measures how much influence each parameter, or pair, contributes to the performance of the
 algorithm.
 
-<!-- bash:examples/org/moeaframework/examples/experiment/sensitivity.sh [45:48] -->
+<!-- bash:examples/org/moeaframework/examples/sensitivity/sensitivity.sh [34:37] -->
 
 ```bash
-java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.SobolAnalysis \
-    --parameterFile examples/org/moeaframework/examples/experiment/NSGAII_Params.txt \
+./cli SobolAnalysis \
+    --parameterFile examples/org/moeaframework/examples/sensitivity/NSGAII_Params.txt \
     --input NSGAII_DTLZ2_Metrics.txt \
     --metric Hypervolume
 ```

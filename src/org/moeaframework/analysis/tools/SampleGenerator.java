@@ -20,6 +20,8 @@ package org.moeaframework.analysis.tools;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -78,6 +80,9 @@ public class SampleGenerator extends CommandLineUtility {
 				.hasArg()
 				.argName("file")
 				.build());
+		options.addOption(Option.builder()
+				.longOpt("overwrite")
+				.build());
 
 		return options;
 	}
@@ -118,6 +123,13 @@ public class SampleGenerator extends CommandLineUtility {
 
 		if (commandLine.hasOption("seed")) {
 			PRNG.setSeed(Long.parseLong(commandLine.getOptionValue("seed")));
+		}
+		
+		if (commandLine.hasOption("output") && Files.exists(Path.of(commandLine.getOptionValue("output"))) &&
+				!commandLine.hasOption("overwrite")) {
+			System.err.println("Output file exists, skipping sample generation.  Add --overwrite to regenerate");
+			System.err.println("the samples.");
+			return;
 		}
 
 		try (PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {

@@ -182,4 +182,4 @@ jobs:
       if: runner.os == 'Linux'
       run: |
         cd build/MOEAFramework-*
-        examples/org/moeaframework/examples/experiment/sensitivity.sh
+        examples/org/moeaframework/examples/sensitivity/sensitivity.sh
