@@ -19,17 +19,21 @@ package org.moeaframework.analysis.plot;
 
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dialog;
 import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Paint;
 import java.awt.Window;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Path2D;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -39,6 +43,8 @@ import org.apache.commons.math3.stat.StatUtils;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.annotations.XYShapeAnnotation;
+import org.jfree.chart.annotations.XYTextAnnotation;
 import org.jfree.chart.axis.AxisLocation;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.NumberAxis;
@@ -63,6 +69,7 @@ import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.chart.title.PaintScaleLegend;
 import org.jfree.chart.ui.RectangleEdge;
+import org.jfree.chart.ui.TextAnchor;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.statistics.DefaultBoxAndWhiskerCategoryDataset;
 import org.jfree.data.xy.DefaultTableXYDataset;
@@ -72,8 +79,14 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.moeaframework.analysis.IndicatorStatistics;
 import org.moeaframework.analysis.diagnostics.PaintHelper;
+import org.moeaframework.analysis.parameter.ParameterSet;
 import org.moeaframework.analysis.runtime.Observation;
 import org.moeaframework.analysis.runtime.Observations;
+import org.moeaframework.analysis.sensitivity.FirstOrderSensitivity;
+import org.moeaframework.analysis.sensitivity.SecondOrderSensitivity;
+import org.moeaframework.analysis.sensitivity.Sensitivity;
+import org.moeaframework.analysis.sensitivity.SensitivityResult;
+import org.moeaframework.analysis.sensitivity.TotalOrderSensitivity;
 import org.moeaframework.analysis.stream.Partition;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
@@ -112,9 +125,9 @@ import org.moeaframework.core.population.Population;
  * customize their appearance, one must instead use JFreeChart, JZY3D, or another plotting library.
  */
 public class Plot {
-	
+
 	private static final String WINDOW_TITLE = "MOEA Framework Plot";
-	
+
 	/**
 	 * The internal JFreeChart instance.
 	 */
@@ -198,7 +211,7 @@ public class Plot {
 			throw new FrameworkException("Can not combine XY plot and categorial plot");
 		}
 	}
-	
+
 	/**
 	 * If the chart has not yet been initialized, creates a histogram chart.  If the chart is already initialized,
 	 * checks if the chart is for XY data.
@@ -230,7 +243,7 @@ public class Plot {
 			throw new FrameworkException("Can not combine XY plot and categorial plot");
 		}
 	}
-	
+
 	/**
 	 * If the chart has not yet been initialized, creates a chart for HeatMap data.  If the chart is already
 	 * initialized, checks if the chart is for HeatMap data.
@@ -245,7 +258,7 @@ public class Plot {
 			yAxis.setAutoRangeIncludesZero(false);
 			NumberAxis zAxis = new NumberAxis("");
 			zAxis.setAutoRangeIncludesZero(false);
-			
+
 			xAxis.setLowerMargin(0.0);
 			xAxis.setUpperMargin(0.0);
 			yAxis.setLowerMargin(0.0);
@@ -259,7 +272,7 @@ public class Plot {
 			plot.setRangeAxis(yAxis);
 			plot.setRangeAxis(1, zAxis);
 			plot.setOrientation(PlotOrientation.VERTICAL);
-			
+
 			chart = new JFreeChart("", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 			ChartFactory.getChartTheme().apply(chart);
 		} else if (!(chart.getPlot() instanceof XYPlot)) {
@@ -341,7 +354,7 @@ public class Plot {
 
 		return this;
 	}
-	
+
 	/**
 	 * Sets the background paint.
 	 * 
@@ -354,10 +367,10 @@ public class Plot {
 		} else if (chart.getPlot() instanceof CategoryPlot) {
 			chart.getCategoryPlot().setBackgroundPaint(paint);
 		}
-		
+
 		return this;
 	}
-	
+
 	/**
 	 * Sets the grid line paint.
 	 * 
@@ -372,7 +385,7 @@ public class Plot {
 			chart.getCategoryPlot().setRangeGridlinePaint(paint);
 			chart.getCategoryPlot().setDomainGridlinePaint(paint);
 		}
-		
+
 		return this;
 	}
 
@@ -407,7 +420,7 @@ public class Plot {
 
 		return this;
 	}
-		
+
 	/**
 	 * Converts a double array to a list.
 	 * 
@@ -416,14 +429,14 @@ public class Plot {
 	 */
 	private List<Double> toList(double[] x) {
 		List<Double> result = new ArrayList<Double>();
-		
+
 		for (int i = 0; i < x.length; i++) {
 			result.add(x[i]);
 		}
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * Converts a 2D double array to a list of lists.
 	 * 
@@ -432,17 +445,17 @@ public class Plot {
 	 */
 	private List<List<Double>> toList(double[][] x) {
 		List<List<Double>> result = new ArrayList<List<Double>>();
-		
+
 		for (int i = 0; i < x.length; i++) {
 			List<Double> row = new ArrayList<Double>();
-			
+
 			for (int j = 0; j < x[i].length; j++) {
 				row.add(x[i][j]);
 			}
-			
+
 			result.add(row);
 		}
-		
+
 		return result;
 	}
 
@@ -475,20 +488,20 @@ public class Plot {
 	public Plot add(String label, Population population, int x, int y) {
 		List<Number> xs = new ArrayList<Number>();
 		List<Number> ys = new ArrayList<Number>();
-		
+
 		for (Solution solution : population) {
 			if (solution.isFeasible()) {
 				xs.add(solution.getObjectiveValue(x));
 				ys.add(solution.getObjectiveValue(y));
 			}
 		}
-		
+
 		scatter(label, xs, ys);
 		setLabelsIfBlank("Objective " + (x+1), "Objective " + (y+1));
-		
+
 		return this;
 	}
-	
+
 	/**
 	 * Displays the runtime data stored in an {@link Observations} as one or more line plots.
 	 * 
@@ -506,7 +519,7 @@ public class Plot {
 
 		return this;
 	}
-	
+
 	/**
 	 * Displays the runtime data for the given metric as a line plot.
 	 * 
@@ -518,7 +531,7 @@ public class Plot {
 	public Plot add(String label, Observations observations, String metric) {
 		return add(label, observations, metric, null);
 	}
-	
+
 	/**
 	 * Displays the runtime data for the given metric as a line plot.  The series is added to the given dataset, or if
 	 * {@code null} a new dataset is created.
@@ -532,7 +545,7 @@ public class Plot {
 	private Plot add(String label, Observations observations, String metric, XYSeriesCollection dataset) {
 		List<Number> xs = new ArrayList<Number>();
 		List<Number> ys = new ArrayList<Number>();
-		
+
 		try {
 			for (Observation observation : observations) {
 				xs.add(observation.getNFE());
@@ -542,7 +555,7 @@ public class Plot {
 			System.err.println("Unable to plot " + metric + ", not a numeric type");
 			return this;
 		}
-		
+
 		line(label, xs, ys, dataset);
 		setLabelsIfBlank("NFE", "Value");
 
@@ -570,6 +583,130 @@ public class Plot {
 
 		return this;
 	}
+	
+	/**
+	 * Displays sensitivity analysis results in a "spider web" plot.
+	 * 
+	 * @param result the sensitivity analysis results
+	 * @return a reference to this instance
+	 */
+	public Plot add(SensitivityResult result) {
+		return add(result, Color.BLACK, Color.GRAY, 0.5, 1.0, 1.3);
+	}
+
+	/**
+	 * Displays sensitivity analysis results in a "spider web" plot, where:
+	 * <ol>
+	 *   <li>First-order effects are rendered as a solid circle / ellipse,
+	 *   <li>Total-order effects are rendered as a ring around the first-order effects, and
+	 *   <li>Second-order effects are rendered as lines joining the circles.
+	 * </ol>
+	 * The scale of the circles / lines reflect the relative magnitude of the sensitivities.
+	 * 
+	 * @param result the sensitivity analysis results
+	 * @param shapeColor the shape color
+	 * @param lineColor the line color
+	 * @param sensitivityScaling scaling factor applied to the sensitivity values
+	 * @param sizeScaling scaling factor applied to the shape size / thickness
+	 * @param labelOffset offsets labels from their shapes
+	 * @return a reference to this instance
+	 */
+	public Plot add(SensitivityResult result, Color shapeColor, Color lineColor, double sensitivityScaling,
+			double sizeScaling, double labelOffset) {
+		createXYPlot();
+		XYPlot plot = (XYPlot)chart.getPlot();
+		ParameterSet parameterSet = result.getParameterSet();
+		int n = parameterSet.size();
+		double[] angles = IntStream.range(0, n).mapToDouble(x -> 2.0 * Math.PI * x / n).toArray();
+		double[] xs = DoubleStream.of(angles).map(x -> Math.cos(x)).toArray();
+		double[] ys = DoubleStream.of(angles).map(x -> Math.sin(x)).toArray();
+
+		if (result instanceof SecondOrderSensitivity secondOrder) {
+			for (int i = 0; i < n; i++) {
+				for (int j = i + 1; j < n; j++) {
+					Sensitivity<?> value = secondOrder.getSecondOrder(parameterSet.get(i), parameterSet.get(j));
+					double size = sizeScaling * Math.pow(value.getSensitivity(), sensitivityScaling) / 2.0;
+
+					double angle = Math.atan((ys[j] - ys[i]) / (xs[j] - xs[i]));
+
+					if (ys[j] - ys[i] < 0) {
+						angle += Math.PI;
+					}
+					
+					Path2D path = new Path2D.Double();
+					path.moveTo(xs[i] - size * Math.sin(angle), ys[i] + size * Math.cos(angle));
+					path.lineTo(xs[i] + size * Math.sin(angle), ys[i] - size * Math.cos(angle));
+					path.lineTo(xs[j] + size * Math.sin(angle), ys[j] - size * Math.cos(angle));
+					path.lineTo(xs[j] - size * Math.sin(angle), ys[j] + size * Math.cos(angle));
+					path.closePath();
+					
+					XYShapeAnnotation annotation = new XYShapeAnnotation(path,
+							plot.getRenderer().getDefaultStroke(),
+							lineColor,
+							lineColor);
+					
+					plot.addAnnotation(annotation);
+				}
+			}
+		}
+
+		if (result instanceof FirstOrderSensitivity firstOrder) {
+			for (int i = 0; i < n; i++) {
+				Sensitivity<?> value = firstOrder.getFirstOrder(parameterSet.get(i));
+				double size = sizeScaling * Math.pow(value.getSensitivity(), sensitivityScaling) / 2.0;
+				
+				XYShapeAnnotation annotation = new XYShapeAnnotation(
+						new Ellipse2D.Double(xs[i] - size / 2.0, ys[i] - size / 2.0, size, size),
+						plot.getRenderer().getDefaultStroke(),
+						shapeColor,
+						shapeColor);
+
+				plot.addAnnotation(annotation);
+			}
+		}
+
+		if (result instanceof TotalOrderSensitivity totalOrder) {
+			for (int i = 0; i < n; i++) {
+				Sensitivity<?> value = totalOrder.getTotalOrder(parameterSet.get(i));
+				double size = sizeScaling * Math.pow(value.getSensitivity(), sensitivityScaling) / 2.0;
+				
+				XYShapeAnnotation annotation = new XYShapeAnnotation(
+						new Ellipse2D.Double(xs[i] - size / 2.0, ys[i] - size / 2.0, size, size),
+						plot.getRenderer().getDefaultStroke(),
+						shapeColor);
+
+				plot.addAnnotation(annotation);
+			}
+		}
+		
+		for (int i = 0; i < n; i++) {
+			XYTextAnnotation annotation = new XYTextAnnotation(parameterSet.get(i).getName(),
+					labelOffset * xs[i], labelOffset * ys[i]);
+			annotation.setTextAnchor(TextAnchor.CENTER);
+			annotation.setFont(plot.getRenderer().getDefaultItemLabelFont());
+			plot.addAnnotation(annotation);
+		}
+		
+		plot.setBackgroundPaint(Color.WHITE);
+		
+		plot.setDomainGridlinesVisible(false);
+		plot.setDomainMinorGridlinesVisible(false);
+		
+		plot.setRangeGridlinesVisible(false);
+		plot.setRangeMinorGridlinesVisible(false);
+
+		plot.getDomainAxis().setTickLabelsVisible(false);
+		plot.getDomainAxis().setAutoRange(false);
+		plot.getDomainAxis().setLowerBound(DoubleStream.of(xs).min().getAsDouble() - 0.5);
+		plot.getDomainAxis().setUpperBound(DoubleStream.of(xs).max().getAsDouble() + 0.5);
+
+		plot.getRangeAxis().setTickLabelsVisible(false);
+		plot.getRangeAxis().setAutoRange(false);
+		plot.getRangeAxis().setLowerBound(DoubleStream.of(ys).min().getAsDouble() - 0.5);
+		plot.getRangeAxis().setUpperBound(DoubleStream.of(ys).max().getAsDouble() + 0.5);
+		
+		return this;
+	}
 
 	/**
 	 * Creates a new scatter plot series.
@@ -582,7 +719,7 @@ public class Plot {
 	public Plot scatter(String label, double[] x, double[] y) {
 		return scatter(label, toList(x), toList(y));
 	}
-	
+
 	/**
 	 * Creates a new scatter plot series.
 	 * 
@@ -594,7 +731,7 @@ public class Plot {
 	public Plot scatter(String label, List<? extends Number> x, List<? extends Number> y) {
 		return scatter(label, x, y, null);
 	}
-	
+
 	/**
 	 * Creates a new scatter plot series using the keys and values from a {@link Partition}.
 	 * 
@@ -605,7 +742,7 @@ public class Plot {
 	public Plot scatter(String label, Partition<? extends Number, ? extends Number> partition) {
 		return scatter(label, partition.keys(), partition.values(), null);
 	}
-	
+
 	/**
 	 * Creates a new scatter plot series.  The series is added to the given dataset, or if {@code null} a new dataset
 	 * is created.
@@ -622,10 +759,10 @@ public class Plot {
 			currentDataset++;
 			dataset = new XYSeriesCollection();
 		}
-		
+
 		// generate the dataset
 		XYSeries series = new XYSeries(label, false, true);
-		
+
 		for (int i = 0; i < x.size(); i++) {
 			series.add(x.get(i), y.get(i));
 		}
@@ -649,7 +786,7 @@ public class Plot {
 
 		return this;
 	}
-	
+
 	/**
 	 * Creates a new line plot series.
 	 * 
@@ -661,7 +798,7 @@ public class Plot {
 	public Plot line(String label, double[] x, double[] y) {
 		return line(label, toList(x), toList(y));
 	}
-	
+
 	/**
 	 * Creates a new line plot series.
 	 * 
@@ -673,7 +810,7 @@ public class Plot {
 	public Plot line(String label, List<? extends Number> x, List<? extends Number> y) {
 		return line(label, x, y, null);
 	}
-	
+
 	/**
 	 * Creates a new line plot series using the keys and values from a {@link Partition}.
 	 * 
@@ -684,7 +821,7 @@ public class Plot {
 	public Plot line(String label, Partition<? extends Number, ? extends Number>  partition) {
 		return line(label, partition.keys(), partition.values(), null);
 	}
-	
+
 	/**
 	 * Creates a new line plot series.  The series is added to the given dataset, or if {@code null} a new dataset is
 	 * created.
@@ -704,7 +841,7 @@ public class Plot {
 
 		// generate the dataset
 		XYSeries series = new XYSeries(label, false, true);
-		
+
 		for (int i = 0; i < x.size(); i++) {
 			series.add(x.get(i), y.get(i));
 		}
@@ -728,7 +865,7 @@ public class Plot {
 
 		return this;
 	}
-	
+
 	/**
 	 * Creates a new histogram plot series.
 	 * 
@@ -740,7 +877,7 @@ public class Plot {
 	public Plot histogram(String label, double[] x, double[] y) {
 		return histogram(label, toList(x), toList(y));
 	}
-	
+
 	/**
 	 * Creates a new histogram plot.
 	 * 
@@ -752,7 +889,7 @@ public class Plot {
 	public Plot histogram(String label, List<? extends Number> x, List<? extends Number> y) {
 		return histogram(label, x, y, null);
 	}
-	
+
 	/**
 	 * Creates a new histogram plot series using the keys and values from a {@link Partition}.
 	 * 
@@ -763,7 +900,7 @@ public class Plot {
 	public Plot histogram(String label, Partition<? extends Number, ? extends Number>  partition) {
 		return histogram(label, partition.keys(), partition.values(), null);
 	}
-	
+
 	/**
 	 * Creates a new histogram plot.  The series is added to the given dataset, or if {@code null} a new dataset
 	 * is created.
@@ -786,7 +923,7 @@ public class Plot {
 		XYSeries series = new XYSeries(label, false, false);
 		double minX = Double.MAX_VALUE;
 		double maxX = Double.MIN_VALUE;
-		
+
 		for (int i = 0; i < x.size(); i++) {
 			series.add(x.get(i), y.get(i));
 			minX = Math.min(minX, x.get(i).doubleValue());
@@ -813,8 +950,8 @@ public class Plot {
 
 		return this;
 	}
-	
-	
+
+
 	/**
 	 * Creates a new area plot series.
 	 * 
@@ -826,7 +963,7 @@ public class Plot {
 	public Plot area(String label, double[] x, double[] y) {
 		return area(label, toList(x), toList(y));
 	}
-	
+
 	/**
 	 * Creates a new area plot series.
 	 * 
@@ -838,7 +975,7 @@ public class Plot {
 	public Plot area(String label, List<? extends Number> x, List<? extends Number> y) {
 		return area(label, x, y, null);
 	}
-	
+
 	/**
 	 * Creates a new area plot series using the keys and values from a {@link Partition}.
 	 * 
@@ -849,7 +986,7 @@ public class Plot {
 	public Plot area(String label, Partition<? extends Number, ? extends Number>  partition) {
 		return area(label, partition.keys(), partition.values(), null);
 	}
-	
+
 	/**
 	 * Creates a new area plot series.  The series is added to the given dataset, or if {@code null} a new dataset is
 	 * created.
@@ -869,7 +1006,7 @@ public class Plot {
 
 		// generate the dataset
 		XYSeries series = new XYSeries(label, false, true);
-		
+
 		for (int i = 0; i < x.size(); i++) {
 			series.add(x.get(i), y.get(i));
 		}
@@ -893,7 +1030,7 @@ public class Plot {
 
 		return this;
 	}
-	
+
 	/**
 	 * Creates a new stacked area plot series.  The data will be stacked with any preceding calls to {@code stacked}.
 	 * 
@@ -905,7 +1042,7 @@ public class Plot {
 	public Plot stacked(String label, double[] x, double[] y) {
 		return stacked(label, toList(x), toList(y));
 	}
-	
+
 	/**
 	 * Creates a new stacked area plot series.  The data will be stacked with any preceding calls to {@code stacked}.
 	 * 
@@ -917,7 +1054,7 @@ public class Plot {
 	public Plot stacked(String label, List<? extends Number> x, List<? extends Number> y) {
 		return stacked(label, x, y, null);
 	}
-	
+
 	/**
 	 * Creates a new stacked area plot series using the keys and values from a {@link Partition}.
 	 * 
@@ -928,7 +1065,7 @@ public class Plot {
 	public Plot stacked(String label, Partition<? extends Number, ? extends Number>  partition) {
 		return stacked(label, partition.keys(), partition.values(), null);
 	}
-	
+
 	/**
 	 * Creates a new area plot series.  The data will be stacked with any preceding calls to {@code stacked}.  The
 	 * series is added to the given dataset, or if {@code null} a new dataset is created.
@@ -942,9 +1079,9 @@ public class Plot {
 	private Plot stacked(String label, List<? extends Number> x, List<? extends Number> y, DefaultTableXYDataset dataset) {
 		if (dataset == null) {
 			createXYPlot();
-			
+
 			XYPlot plot = chart.getXYPlot();
-			
+
 			if (plot.getDataset(currentDataset) instanceof DefaultTableXYDataset xyDataset) {
 				dataset = xyDataset;
 			} else {
@@ -955,7 +1092,7 @@ public class Plot {
 
 		// generate the dataset
 		XYSeries series = new XYSeries(label, true, false);
-		
+
 		for (int i = 0; i < x.size(); i++) {
 			series.add(x.get(i), y.get(i));
 		}
@@ -979,7 +1116,7 @@ public class Plot {
 
 		return this;
 	}
-	
+
 	/**
 	 * Creates a new heat map series.  The series is added to the given dataset, or if {@code null} a new dataset is
 	 * created.
@@ -993,7 +1130,7 @@ public class Plot {
 	public Plot heatMap(String label, double[] x, double[] y, double[][] z) {
 		return heatMap(label, toList(x), toList(y), toList(z));
 	}
-	
+
 	/**
 	 * Creates a new heat map series.  The series is added to the given dataset, or if {@code null} a new dataset is
 	 * created.
@@ -1007,7 +1144,7 @@ public class Plot {
 	public Plot heatMap(String label, List<? extends Number> x, List<? extends Number> y, List<? extends List<? extends Number>> z) {
 		return heatMap(label, x, y, z, null);
 	}
-	
+
 	/**
 	 * Creates a new heat map series using the keys and values from a {@link Partition}.
 	 * 
@@ -1019,20 +1156,20 @@ public class Plot {
 		List<? extends Number> xs = partition.keys().stream().map(v -> v.getLeft()).distinct().sorted().toList();
 		List<? extends Number> ys = partition.keys().stream().map(v -> v.getRight()).distinct().sorted().toList();
 		List<List<Number>> zs = new ArrayList<>();
-		
+
 		for (Number x : xs) {
 			List<Number> row = new ArrayList<>();
-			
+
 			for (Number y : ys) {
 				row.add(partition.filter(v -> v.getLeft().equals(x) && v.getRight().equals(y)).single().getValue());
 			}
-			
+
 			zs.add(row);
 		}
-		
+
 		return heatMap(label, xs, ys, zs, null);
 	}
-	
+
 	/**
 	 * Creates a new heat map series.  The series is added to the given dataset, or if {@code null} a new dataset is
 	 * created.
@@ -1050,12 +1187,12 @@ public class Plot {
 			currentDataset++;
 			dataset = new DefaultXYZDataset();
 		}
-		
+
 		// generate the dataset
 		double[] xValues = new double[x.size() * y.size()];
 		double[] yValues = new double[x.size() * y.size()];
 		double[] zValues = new double[x.size() * y.size()];
-		
+
 		for (int i = 0; i < x.size(); i++) {
 			for (int j = 0; j < y.size(); j++) {
 				xValues[i * y.size() + j] = x.get(i).doubleValue();
@@ -1068,33 +1205,32 @@ public class Plot {
 
 		// add the dataset to the plot		
 		XYZToolTipGenerator toolTipGenerator = new StandardXYZToolTipGenerator();
-		
+
 		XYBlockRenderer renderer = new XYBlockRenderer();
 		renderer.setBlockWidth((StatUtils.max(xValues) - StatUtils.min(xValues)) / (x.size() - 1));
 		renderer.setBlockHeight((StatUtils.max(yValues) - StatUtils.min(yValues)) / (y.size() - 1));
 		renderer.setDefaultToolTipGenerator(toolTipGenerator);
-		
+
 		PaintScale paintScale = new GrayPaintScale(StatUtils.min(zValues), StatUtils.max(zValues));
 
-        PaintScaleLegend psl = new PaintScaleLegend(paintScale, new NumberAxis(label));
-        psl.setPosition(RectangleEdge.RIGHT);
-        psl.setAxisLocation(AxisLocation.TOP_OR_RIGHT);
-        psl.setMargin(10.0, 10.0, 10.0, 10.0);
-        
-        renderer.setPaintScale(paintScale);
-        
+		PaintScaleLegend psl = new PaintScaleLegend(paintScale, new NumberAxis(label));
+		psl.setPosition(RectangleEdge.RIGHT);
+		psl.setAxisLocation(AxisLocation.TOP_OR_RIGHT);
+		psl.setMargin(10.0, 10.0, 10.0, 10.0);
+
+		renderer.setPaintScale(paintScale);
+
 		XYPlot plot = chart.getXYPlot();
 		plot.setDataset(currentDataset, dataset);
 		plot.setOrientation(PlotOrientation.VERTICAL);
 		plot.setRenderer(currentDataset, renderer);
-		
+
 		chart.addSubtitle(psl);
 		chart.removeLegend();
 
 		return this;
 	}
-	
-	
+
 	/**
 	 * Modifies the line thickness or point size in the last dataset.  The size is applied to all series in the dataset.
 	 * 
@@ -1165,7 +1301,7 @@ public class Plot {
 
 		return this;
 	}
-	
+
 	/**
 	 * Saves the plot to an image file.  The type of image is determined from the filename extension, which must
 	 * match one of the supported file types in {@link ImageFileType}.
@@ -1233,7 +1369,7 @@ public class Plot {
 	public JFrame show() {
 		return show(800, 600);
 	}
-	
+
 	/**
 	 * Displays the chart in a standalone window.
 	 * 
@@ -1243,22 +1379,22 @@ public class Plot {
 	 */
 	public JFrame show(int width, int height) {
 		JFrame frame = new JFrame();
-		
+
 		frame.getContentPane().setLayout(new BorderLayout());
 		frame.getContentPane().add(getChartPanel(), BorderLayout.CENTER);
-		
+
 		frame.setPreferredSize(new Dimension(width, height));
 		frame.pack();
-		
+
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setTitle(WINDOW_TITLE);
 		frame.setIconImages(Settings.getIcon().getResolutionVariants());
 		frame.setVisible(true);
-		
+
 		return frame;
 	}
-	
+
 	/**
 	 * Displays the chart in a blocking JDialog.
 	 * 
@@ -1267,7 +1403,7 @@ public class Plot {
 	public JDialog showDialog() {
 		return showDialog(800, 600);
 	}
-	
+
 	/**
 	 * Displays the chart in a blocking JDialog.
 	 * 
@@ -1277,23 +1413,23 @@ public class Plot {
 	 */
 	public JDialog showDialog(int width, int height) {
 		JDialog dialog = new JDialog();
-		
+
 		dialog.getContentPane().setLayout(new BorderLayout());
 		dialog.getContentPane().add(getChartPanel(), BorderLayout.CENTER);
-		
+
 		dialog.setPreferredSize(new Dimension(width, height));
 		dialog.pack();
-		
+
 		dialog.setLocationRelativeTo(null);
 		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		dialog.setTitle(WINDOW_TITLE);
 		dialog.setModalityType(ModalityType.APPLICATION_MODAL);
 		dialog.setIconImages(Settings.getIcon().getResolutionVariants());
 		dialog.setVisible(true);
-		
+
 		return dialog;
 	}
-	
+
 	/**
 	 * Disposes all displayed plot windows.
 	 */

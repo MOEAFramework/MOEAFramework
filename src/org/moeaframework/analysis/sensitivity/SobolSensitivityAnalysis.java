@@ -32,11 +32,15 @@ import org.moeaframework.util.sequence.Saltelli;
 
 /**
  * Global sensitivity analysis of blackbox model output using Saltelli's improved Sobol' global variance decomposition
- * procedure.  Please note that when requesting {@code N} samples, the {@link Saltelli} sampling strategy generates
- * {@code N * (2 * P + 2)} actual samples, where {@code P} is the number of parameters being analyzed.  
+ * procedure.
+ * <ol>
+ *   <li>When requesting {@code N} samples, the {@link Saltelli} sampling strategy generates {@code N * (2 * P + 2)}
+ *       actual samples, where {@code P} is the number of parameters being analyzed.
+ *   <li>Negative sensitivity values can occur and typically coincide with large confidence intervals.  Increasing the
+ *       sample size can help, but this generally means the sensitivities are near zero.
+ * </ol>
  * <p>
- * The following code was derived and translated from the C code used in the Tang et al. (2007) study cited below.
- * Refer to this article for a description of the procedure.
+ * This code was derived and translated from the C code used in the Tang et al. (2007) study cited below.
  * <p>
  * References:
  * <ol>
@@ -46,7 +50,7 @@ import org.moeaframework.util.sequence.Saltelli;
  *   <li>Saltelli, A., et al. "Global Sensitivity Analysis: The Primer." John Wiley &amp; Sons Ltd, 2008.
  * </ol>
  */
-public class SobolSensitivityAnalysis implements SensitivityAnalysis<SensitivityResult> {
+public class SobolSensitivityAnalysis implements SensitivityAnalysis<org.moeaframework.analysis.sensitivity.SobolSensitivityAnalysis.SobolSensitivityResult> {
 
 	private final int resamples;
 
