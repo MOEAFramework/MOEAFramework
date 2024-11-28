@@ -122,6 +122,36 @@ public class ParameterSet implements Iterable<Parameter<?>> {
 	}
 	
 	/**
+	 * Returns the index of the given parameter.
+	 * 
+	 * @param parameter the parameter
+	 * @return the index of the parameter
+	 */
+	public int indexOf(Parameter<?> parameter) {
+		return parameters.indexOf(parameter);
+	}
+	
+	/**
+	 * Returns the index of the parameter with the given name.
+	 * 
+	 * @param name the parameter name
+	 * @return the index of the parameter
+	 */
+	public int indexOf(String name) {
+		int index = 0;
+		
+		for (Parameter<?> parameter : parameters) {
+			if (parameter.getName().equalsIgnoreCase(name)) {
+				return index;
+			}
+			
+			index += 1;
+		}
+		
+		throw new NoSuchParameterException(name);
+	}
+	
+	/**
 	 * Returns {@code true} if this parameter set supports enumeration; {@code false} otherwise.  All parameters must
 	 * be {@link EnumeratedParameter} or {@link Constant}.
 	 * 

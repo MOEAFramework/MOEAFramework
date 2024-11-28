@@ -170,7 +170,7 @@ jobs:
       uses: MOEAFramework/.github/actions/run-ant@main
       with:
         target: package-binary
-    - name: Test CLI example
+    - name: Test CLI
       run: |
         cd build/MOEAFramework-*
         . examples/cli-example.sh

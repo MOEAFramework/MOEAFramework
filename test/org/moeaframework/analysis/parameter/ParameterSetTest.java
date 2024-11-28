@@ -92,6 +92,22 @@ public class ParameterSetTest {
 		Assert.assertThrows(NoSuchParameterException.class, () -> parameterSet.get("missing"));
 	}
 	
+	@Test
+	public void testIndexOf() {
+		ParameterSet parameterSet = new ParameterSet();
+		parameterSet.add(new Enumeration<Integer>("int", 0, 1));
+		parameterSet.add(new Enumeration<String>("string", "foo", "bar"));
+		parameterSet.add(new Constant<Double>("double", 0.5));
+		
+		Assert.assertEquals(0, parameterSet.indexOf(parameterSet.get(0)));
+		Assert.assertEquals(1, parameterSet.indexOf(parameterSet.get(1)));
+		Assert.assertEquals(2, parameterSet.indexOf(parameterSet.get(2)));
+		
+		Assert.assertEquals(0, parameterSet.indexOf("int"));
+		Assert.assertEquals(1, parameterSet.indexOf("string"));
+		Assert.assertEquals(2, parameterSet.indexOf("double"));
+	}
+	
 	private static class TestSequenceGenerator implements Sequence {
 
 		@Override

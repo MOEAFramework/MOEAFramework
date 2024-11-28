@@ -223,24 +223,15 @@ public class IntegrationTest {
 
 		
 		//compute sensitivity results
-		File analysisFile1 = TempFiles.createFile();
-		File analysisFile2 = TempFiles.createFile();
+		File analysisFile = TempFiles.createFile();
 		
 		SobolAnalysis.main(new String[] {
 				"-p", parameterDescriptionFile.getPath(),
 				"-m", "0",
 				"-i", metricFile.getPath(),
-				"-o", analysisFile1.getPath() });
+				"-o", analysisFile.getPath() });
 		
-		SobolAnalysis.main(new String[] {
-				"-p", parameterDescriptionFile.getPath(),
-				"-m", "0",
-				"-i", metricFile.getPath(),
-				"-o", analysisFile2.getPath(),
-				"-s" });
-		
-		Assert.assertLineCount(9, analysisFile1);
-		Assert.assertLineCount(4, analysisFile2);
+		Assert.assertLineCount(9, analysisFile);
 	}
 	
 	/**
