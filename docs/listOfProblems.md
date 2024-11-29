@@ -290,22 +290,6 @@ builder.rotateAll().withThetas(Math.toRadians(45));
 Problem problem = new RotatedProblem(new DTLZ2(2), builder.create());
 ```
 
-### Timings
-
-The `TimingProblem` wrapper is used to measure the total time spent performing function evaluations.  This can
-capture up to a nanoseconds resolution, as long as the system supports that level of accuracy.
-
-<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [timing-problem] -->
-
-```java
-TimingProblem problem = new TimingProblem(new DTLZ2(2));
-
-NSGAII algorithm = new NSGAII(problem);
-algorithm.run(10000);
-
-System.out.println(problem.getTotalNFE() + " evaluations took " + problem.getTotalSeconds() + " sec.");
-```
-
 [^cheng17]: Cheng et al. "Test problems for large-scale multiobjective and many-objective optimization." IEEE Transactions on Cybernetics, 7(12): 4108-4121, 2017.
 [^cheng17b]: Cheng et al. "A benchmark test suite for evolutionary many-objective optimization." Complex Intell. Syst., 3:67-81, 2017.
 [^deb01]: Deb et al.  "Scalable Test Problems for Evolutionary Multi-Objective Optimization."  TIK-Technical Report No 112, 2001.

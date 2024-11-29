@@ -36,8 +36,8 @@ import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.problem.Problem;
-import org.moeaframework.problem.TimingProblem;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.Timer;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -143,18 +143,16 @@ public class EndOfRunEvaluator extends CommandLineUtility {
 
 	private void process(String algorithmName, TypedProperties properties, Problem problem, ResultFileWriter output)
 			throws IOException {
-		// instrument the problem to record timing information
-		TimingProblem timingProblem = new TimingProblem(problem);
-		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, properties, timingProblem);
+		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, properties, problem);
 
 		// find the maximum NFE to run
 		int maxEvaluations = properties.getTruncatedInt("maxEvaluations");
 		Validate.that("maxEvaluations", maxEvaluations).isGreaterThanOrEqualTo(0);
 
 		// run the algorithm
-		long startTime = System.nanoTime();
+		Timer timer = Timer.startNew();
 		algorithm.run(maxEvaluations);
-		long endTime = System.nanoTime();
+		timer.stop();
 
 		// extract the result
 		NondominatedPopulation result = algorithm.getResult();
@@ -165,13 +163,13 @@ public class EndOfRunEvaluator extends CommandLineUtility {
 			result = EpsilonBoxDominanceArchive.of(result, epsilons);
 		}
 
-		// record instrumented data
-		TypedProperties timingData = new TypedProperties();
-		timingData.setDouble("EvaluationTime", timingProblem.getTotalSeconds());
-		timingData.setDouble("TotalTime", (endTime - startTime) / 1e9);
+		// record metadata
+		TypedProperties metadata = new TypedProperties();
+		metadata.setInt(ResultEntry.NFE, algorithm.getNumberOfEvaluations());
+		metadata.setDouble(ResultEntry.ElapsedTime, timer.getElapsedTime());
 
 		// write result to output
-		output.write(new ResultEntry(result, timingData));
+		output.write(new ResultEntry(result, metadata));
 	}
 
 	/**

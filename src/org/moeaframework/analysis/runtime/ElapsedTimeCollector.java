@@ -18,6 +18,7 @@
 package org.moeaframework.analysis.runtime;
 
 import org.moeaframework.algorithm.Algorithm;
+import org.moeaframework.util.Timer;
 
 /**
  * Collects the elapsed execution time of an algorithm.
@@ -25,23 +26,22 @@ import org.moeaframework.algorithm.Algorithm;
 public class ElapsedTimeCollector implements Collector {
 
 	/**
-	 * The time, in nanoseconds, this collector was created.  This roughly corresponds to the time the algorithm
-	 * starts, assuming that the algorithm is run immediately following its setup.
+	 * The timer for measuring the elapsed time.  This roughly corresponds to the time the algorithm starts, assuming
+	 * that the algorithm is run immediately following its setup.
 	 */
-	private long startTime;
+	private Timer timer;
 
 	/**
 	 * Constructs a collector for recording the elapsed execution time of an algorithm.
 	 */
 	public ElapsedTimeCollector() {
 		super();
-		startTime = System.nanoTime();
+		timer = Timer.startNew();
 	}
 
 	@Override
 	public void collect(Observation observation) {
-		double elapsedTime = (System.nanoTime() - startTime) * 1e-9;
-		observation.set("Elapsed Time", elapsedTime);
+		observation.set("Elapsed Time", timer.getElapsedTime());
 	}
 
 	@Override

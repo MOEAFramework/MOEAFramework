@@ -19,7 +19,6 @@ package org.moeaframework.snippet;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.constraint.Between;
 import org.moeaframework.core.constraint.Equal;
@@ -37,7 +36,6 @@ import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.RotatedProblem;
 import org.moeaframework.problem.ScaledProblem;
-import org.moeaframework.problem.TimingProblem;
 import org.moeaframework.util.RotationMatrixBuilder;
 
 public class ProblemSnippet {
@@ -86,20 +84,6 @@ public class ProblemSnippet {
 		
 		Problem problem = new RotatedProblem(new DTLZ2(2), builder.create());
 		// end-example: rotated-problem
-		
-		Assert.assertNotNull(problem);
-	}
-	
-	@Test
-	public void timingProblem() {
-		// begin-example: timing-problem
-		TimingProblem problem = new TimingProblem(new DTLZ2(2));
-		
-		NSGAII algorithm = new NSGAII(problem);
-		algorithm.run(10000);
-		
-		System.out.println(problem.getTotalNFE() + " evaluations took " + problem.getTotalSeconds() + " sec.");
-		// end-example: timing-problem
 		
 		Assert.assertNotNull(problem);
 	}

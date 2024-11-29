@@ -40,13 +40,13 @@ public class ExtractDataTest {
 		# Problem = DTLZ2_2
 		# Variables = 11
 		# Objectives = 2
-		//EvaluationTime=0.0125
-		//TotalTime=0.214
+		//NFE=100
+		//ElapsedTime=0.214
 		0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.25 0.75
 		0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.75 0.25
 		#
-		//EvaluationTime=0.01549
-		//TotalTime=0.209186
+		//NFE=200
+		//ElapsedTime=0.209186
 		0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.25 0.75
 		0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.75 0.25
 		#
@@ -56,12 +56,12 @@ public class ExtractDataTest {
 		# Problem = DTLZ2_2
 		# Variables = 11
 		# Objectives = 2
-		//EvaluationTime=0.0125
-		//TotalTime=0.214
+		//NFE=100
+		//ElapsedTime=0.214
 		0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.25 0.75
 		0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.75 0.25
 		#
-		//EvaluationTime=0.01549
+		//NFE=200
 		0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.25 0.75
 		0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.75 0.25
 		#
@@ -76,12 +76,12 @@ public class ExtractDataTest {
 			"--problem", "DTLZ2_2",
 			"--input", input.getPath(),
 			"--output", output.getPath(),
-			"EvaluationTime", "TotalTime"});
+			"NFE", "ElapsedTime"});
 		
 		try (LineReader reader = LineReader.wrap(new FileReader(output))) {
-			Assert.assertEquals("#EvaluationTime TotalTime", reader.readLine());
-			Assert.assertEquals("0.0125 0.214", reader.readLine());
-			Assert.assertEquals("0.01549 0.209186", reader.readLine());
+			Assert.assertEquals("#NFE ElapsedTime", reader.readLine());
+			Assert.assertEquals("100 0.214", reader.readLine());
+			Assert.assertEquals("200 0.209186", reader.readLine());
 			Assert.assertNull(reader.readLine());
 		}
 	}
@@ -98,7 +98,7 @@ public class ExtractDataTest {
 			"--problem", "DTLZ2_2",
 			"--input", input.getPath(),
 			"--output", output.getPath(),
-			"EvaluationTime", "TotalTime"});
+			"NFE", "ElapsedTime"});
 		
 		Assert.assertEquals(1, problemFactory.getCloseCount());
 		ProblemFactory.setInstance(new ProblemFactory());
