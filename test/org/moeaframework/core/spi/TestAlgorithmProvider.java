@@ -22,9 +22,6 @@ import org.moeaframework.core.TypedProperties;
 import org.moeaframework.mock.MockEvolutionaryAlgorithm;
 import org.moeaframework.problem.Problem;
 
-/**
- * Do not move or rename this class.  It is referenced by {@link IndirectAlgorithmProviderTest}.
- */
 public class TestAlgorithmProvider extends AlgorithmProvider {
 
 	@Override
