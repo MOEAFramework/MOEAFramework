@@ -10,6 +10,5 @@ org.moeaframework.problem.ZCAT.ZCATProblemProvider
 org.moeaframework.problem.MaF.MaFProblemProvider
 org.moeaframework.problem.misc.MiscProblemProvider
 org.moeaframework.problem.single.SingleObjectiveProblemProvider
-org.moeaframework.problem.PropertiesProblems
 org.moeaframework.problem.ClassLoaderProblems
 org.moeaframework.problem.RotatedProblems

@@ -520,26 +520,6 @@ public class Settings {
 	}
 	
 	/**
-	 * Returns the class for the specified problem.
-	 * 
-	 * @param name the problem name
-	 * @return the class for the specified problem
-	 */
-	public static String getProblemClass(String name) {
-		return PROPERTIES.getString(createKey(KEY_PROBLEM_PREFIX, name, "class"), null);
-	}
-	
-	/**
-	 * Returns the reference set filename for the specified problem.
-	 * 
-	 * @param name the problem name
-	 * @return the reference set filename for the specified problem
-	 */
-	public static String getProblemReferenceSet(String name) {
-		return PROPERTIES.getString(createKey(KEY_PROBLEM_PREFIX, name, "referenceSet"), null);
-	}
-	
-	/**
 	 * Returns the list of algorithms displayed in the diagnostic tool GUI.
 	 * 
 	 * @return the list of algorithms displayed in the diagnostic tool GUI
