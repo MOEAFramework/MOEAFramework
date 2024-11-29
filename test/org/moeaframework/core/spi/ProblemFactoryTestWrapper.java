@@ -17,6 +17,7 @@
  */
 package org.moeaframework.core.spi;
 
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.problem.Problem;
@@ -27,38 +28,13 @@ import org.moeaframework.problem.ProblemWrapper;
  */
 public class ProblemFactoryTestWrapper extends ProblemFactory {
 	
-	/**
-	 * The number of times the {@code close} method has been invoked.
-	 */
 	private int closeCount;
 
 	@Override
 	public synchronized Problem getProblem(String name) {
-		final Problem problem = super.getProblem(name);
-		
-		if (problem instanceof AnalyticalProblem analyticalProblem) {
-			return new AnalyticalProblemWrapper(analyticalProblem) {
-	
-				@Override
-				public void close() {
-					super.close();
-					closeCount++;
-				}
-				
-			};
-		} else {
-			return new ProblemWrapper(problem) {
-
-				@Override
-				public void close() {
-					super.close();
-					closeCount++;
-				}
-				
-			};
-		}
+		return new CloseWrapper(super.getProblem(name));
 	}
-
+	
 	/**
 	 * Returns the number of times the {@code close} method has been invoked.
 	 * 
@@ -68,15 +44,25 @@ public class ProblemFactoryTestWrapper extends ProblemFactory {
 		return closeCount;
 	}
 	
-	private class AnalyticalProblemWrapper extends ProblemWrapper implements AnalyticalProblem {
+	private class CloseWrapper extends ProblemWrapper implements AnalyticalProblem {
 
-		protected AnalyticalProblemWrapper(AnalyticalProblem problem) {
+		protected CloseWrapper(Problem problem) {
 			super(problem);
 		}
 
 		@Override
 		public Solution generate() {
-			return ((AnalyticalProblem)problem).generate();
+			if (problem instanceof AnalyticalProblem analyticalProblem) {
+				return analyticalProblem.generate();
+			} else {
+				throw new FrameworkException(problem.getClass() + " does not implement " + AnalyticalProblem.class);
+			}
+		}
+		
+		@Override
+		public void close() {
+			super.close();
+			closeCount++;
 		}
 		
 	}
