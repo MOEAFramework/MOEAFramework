@@ -102,28 +102,6 @@ The following options are available:
  -X,--properties <p1=v1;p2=v2;...>   Fixed algorithm properties
 ```
 
-### ExtractData
-
-<!-- help:src/org/moeaframework/analysis/tools/ExtractData.java [:-2] -->
-
-```
-usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ExtractData [-b <name>] [-e <e1,e2,...>] [-h] -i <file>
-       [-n] [-o <file>] [-r <file>] [-s <value>]
-
-Extracts metadata and/or performance metrics from a result file, storing the data in a spreadsheet-like format.
-
-The following options are available:
-
- -b,--problem <name>        Problem name
- -e,--epsilon <e1,e2,...>   Epsilon values for epsilon-dominance
- -h,--help                  Display help information
- -i,--input <file>          Input file
- -n,--noheader              Do not print header line
- -o,--output <file>         Output file
- -r,--reference <file>      Reference set file
- -s,--separator <value>     Separator between entries
-```
-
 ### MetricsAnalysis
 
 <!-- help:src/org/moeaframework/analysis/tools/MetricsAnalysis.java [:-2] -->
@@ -212,15 +190,15 @@ The following options are available:
 <!-- help:src/org/moeaframework/analysis/tools/ResultFileConverter.java [:-2] -->
 
 ```
-usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileConverter [-b <name>] -f <type> [-h] -i <file>
-       [-o <file>]
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileConverter [-b <name>] [-f <fmt>] [-h] -i
+       <file> [-o <file>]
 
 Converts a result file into a different file format.
 
 The following options are available:
 
  -b,--problem <name>   Problem name
- -f,--format <type>    The output file format (Plaintext, Markdown, Latex, CSV, ARFF)
+ -f,--format <fmt>     The output file format (Plaintext, Markdown, Latex, CSV, ARFF)
  -h,--help             Display help information
  -i,--input <file>     Input file
  -o,--output <file>    Output file
@@ -242,6 +220,27 @@ The following options are available:
  -e,--epsilon <e1,e2,...>   Epsilon values for epsilon-dominance
  -h,--help                  Display help information
  -o,--output <file>         Output file containing the merged set
+```
+
+### ResultFileMetadata
+
+<!-- help:src/org/moeaframework/analysis/tools/ResultFileMetadata.java [:-2] -->
+
+```
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileMetadata [-b <name>] [-e <e1,e2,...>] [-f
+       <fmt>] [-h] -i <file> [-o <file>] [-r <file>]
+
+Extracts metadata and/or performance metrics from a result file.
+
+The following options are available:
+
+ -b,--problem <name>        Problem name
+ -e,--epsilon <e1,e2,...>   Epsilon values for epsilon-dominance
+ -f,--format <fmt>          The output file format (Plaintext, Markdown, Latex, CSV, ARFF)
+ -h,--help                  Display help information
+ -i,--input <file>          Input file
+ -o,--output <file>         Output file
+ -r,--reference <file>      Reference set file
 ```
 
 ### ResultFileSeedMerger

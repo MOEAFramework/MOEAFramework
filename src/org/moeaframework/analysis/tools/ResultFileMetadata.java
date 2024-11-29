@@ -19,6 +19,8 @@ package org.moeaframework.analysis.tools;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -33,16 +35,19 @@ import org.moeaframework.core.indicator.StandardIndicator;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.format.Column;
+import org.moeaframework.util.format.TableFormat;
+import org.moeaframework.util.format.TabularData;
 import org.moeaframework.util.validate.Validate;
 
 /**
- * Command line utility for extracting data from a result file.  The data that can be extracted includes any properties
- * by providing its full name, or any of the following metrics if given the name of the indicator, such as
+ * Command line utility for extracting metadata from a result file.  The metadata that can be extracted includes any
+ * properties by providing its full name, or any of the following metrics if given the name of the indicator, such as
  * {@code Hypervolume} or {@code GenerationalDistance}.
  */
-public class ExtractData extends CommandLineUtility {
+public class ResultFileMetadata extends CommandLineUtility {
 
-	private ExtractData() {
+	private ResultFileMetadata() {
 		super();
 	}
 
@@ -53,6 +58,7 @@ public class ExtractData extends CommandLineUtility {
 		OptionUtils.addProblemOption(options);
 		OptionUtils.addReferenceSetOption(options);
 		OptionUtils.addEpsilonOption(options);
+		OptionUtils.addFormatOption(options);
 		
 		options.addOption(Option.builder("i")
 				.longOpt("input")
@@ -65,29 +71,19 @@ public class ExtractData extends CommandLineUtility {
 				.hasArg()
 				.argName("file")
 				.build());
-		options.addOption(Option.builder("s")
-				.longOpt("separator")
-				.hasArg()
-				.argName("value")
-				.build());
-		options.addOption(Option.builder("n")
-				.longOpt("noheader")
-				.build());
 		
 		return options;
 	}
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
-		String separator = commandLine.hasOption("separator") ? commandLine.getOptionValue("separator") : " ";
-
 		Epsilons epsilons = OptionUtils.getEpsilons(commandLine);
+		TableFormat format = OptionUtils.getFormat(commandLine);
 		String[] fields = commandLine.getArgs();
 
 		// indicators are prepared, run the data extraction routine
 		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true);
-				ResultFileReader input = ResultFileReader.open(problem, new File(commandLine.getOptionValue("input")));
-				PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
+				ResultFileReader input = ResultFileReader.open(problem, new File(commandLine.getOptionValue("input")))) {
 			NondominatedPopulation referenceSet = OptionUtils.getReferenceSet(commandLine, false);
 			Indicators indicators = getIndicators(input.getProblem(), referenceSet, fields);
 
@@ -95,48 +91,45 @@ public class ExtractData extends CommandLineUtility {
 				indicators.withEpsilons(epsilons);
 			}
 			
-			// optionally print header line
-			if (!commandLine.hasOption("noheader")) {
-				output.print('#');
-						
-				for (int i = 0; i < fields.length; i++) {
-					if (i > 0) {
-						output.print(separator);
-					}
-
-					output.print(fields[i]);
-				}
-
-				output.println();
-			}
-
-			// process entries
+			// collect the metadata
+			List<Object[]> metadata = new ArrayList<>();
+			
 			while (input.hasNext()) {
 				ResultEntry entry = input.next();
 				TypedProperties properties = entry.getProperties();
 				IndicatorValues values = indicators.apply(new NondominatedPopulation(entry.getPopulation()));
+				
+				Object[] row = new Object[fields.length];
 
 				for (int i = 0; i < fields.length; i++) {
-					if (i > 0) {
-						output.print(separator);
-					}
-
 					if (properties.contains(fields[i])) {
-						output.print(properties.getString(fields[i]));
+						row[i] = properties.getString(fields[i]);
 						continue;
 					}
 					
 					double value = getIndicatorValue(values, fields[i]);
 					
 					if (!Double.isNaN(value)) {
-						output.print(value);
+						row[i] = value;
 						continue;
 					}
 					
 					Validate.that("field", fields[i]).fails("Field name not found in data");
 				}
 
-				output.println();
+				metadata.add(row);
+			}
+			
+			// format the output
+			TabularData<Object[]> table = new TabularData<>(metadata);
+			
+			for (int i = 0; i < fields.length; i++) {
+				final int fieldIndex = i;
+				table.addColumn(new Column<Object[], Object>(fields[i], x -> x[fieldIndex]));
+			}
+			
+			try (PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
+				table.save(format, output);
 			}
 		}
 	}
@@ -166,13 +159,13 @@ public class ExtractData extends CommandLineUtility {
 	}
 	
 	/**
-	 * Starts the command line utility for extracting data from a result file.
+	 * Starts the command line utility for extracting metadata from a result file.
 	 * 
 	 * @param args the command line arguments
 	 * @throws Exception if an error occurred
 	 */
 	public static void main(String[] args) throws Exception {
-		new ExtractData().start(args);
+		new ResultFileMetadata().start(args);
 	}
 
 }

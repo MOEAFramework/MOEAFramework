@@ -28,9 +28,7 @@ import org.moeaframework.core.population.Population;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.Iterators;
-import org.moeaframework.util.OptionCompleter;
 import org.moeaframework.util.format.TableFormat;
-import org.moeaframework.util.validate.Validate;
 
 /**
  * Converts a result file into a different file format, such as CSV, Markdown, Latex, ARFF, etc.  If the result file
@@ -47,6 +45,7 @@ public class ResultFileConverter extends CommandLineUtility {
 		Options options = super.getOptions();
 		
 		OptionUtils.addProblemOption(options);
+		OptionUtils.addFormatOption(options);
 		
 		options.addOption(Option.builder("i")
 				.longOpt("input")
@@ -59,24 +58,13 @@ public class ResultFileConverter extends CommandLineUtility {
 				.hasArg()
 				.argName("file")
 				.build());
-		options.addOption(Option.builder("f")
-				.longOpt("format")
-				.hasArg()
-				.argName("type")
-				.required()
-				.build());
 		
 		return options;
 	}
 	
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
-		OptionCompleter completer = new OptionCompleter(TableFormat.class);
-		String format = completer.lookup(commandLine.getOptionValue("format"));
-		
-		if (format == null) {
-			Validate.that("format", commandLine.getOptionValue("format")).failUnsupportedOption(completer.getOptions());
-		}
+		TableFormat format = OptionUtils.getFormat(commandLine);
 		
 		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true);
 				ResultFileReader input = ResultFileReader.openLegacy(problem, new File(commandLine.getOptionValue("input")));
@@ -87,7 +75,7 @@ public class ResultFileConverter extends CommandLineUtility {
 				fail("ERROR: Result file is empty");
 			}
 			
-			population.save(TableFormat.valueOf(format), output);
+			population.save(format, output);
 		}
 	}
 	

@@ -29,6 +29,9 @@ import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.Problem;
+import org.moeaframework.util.OptionCompleter;
+import org.moeaframework.util.format.TableFormat;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Create and parse command line options shared by multiple tools.
@@ -89,6 +92,19 @@ class OptionUtils {
 				.hasArgs()
 				.argName("p1=v1;p2=v2;...")
 				.valueSeparator(';')
+				.build());
+	}
+	
+	/**
+	 * Adds an option for setting the output table format.
+	 * 
+	 * @param options the current set of options
+	 */
+	public static void addFormatOption(Options options) {
+		options.addOption(Option.builder("f")
+				.longOpt("format")
+				.hasArg()
+				.argName("fmt")
 				.build());
 	}
 	
@@ -191,6 +207,24 @@ class OptionUtils {
 		}
 		
 		return properties;
+	}
+	
+	/**
+	 * Returns the table format option specified on the command line.
+	 * 
+	 * @param commandLine the command line inputs
+	 * @return the table format
+	 */
+	public static TableFormat getFormat(CommandLine commandLine) {
+		OptionCompleter completer = new OptionCompleter(TableFormat.class);
+		String format = completer.lookup(commandLine.hasOption("format") ? commandLine.getOptionValue("format") :
+			TableFormat.Plaintext.name());
+		
+		if (format == null) {
+			Validate.that("format", commandLine.getOptionValue("format")).failUnsupportedOption(completer.getOptions());
+		}
+		
+		return TableFormat.valueOf(format);
 	}
 
 }

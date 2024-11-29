@@ -54,13 +54,13 @@ public class Main extends CommandLineUtility {
 
 		registerTool(CalculateIndicator.class);
 		registerTool(EndOfRunEvaluator.class);
-		registerTool(ExtractData.class);
 		registerTool(MetricsAnalysis.class);
 		registerTool(MetricsEvaluator.class);
 		registerTool(MetricsValidator.class);
 		registerTool(ReferenceSetGenerator.class);
 		registerTool(ResultFileConverter.class);
 		registerTool(ResultFileMerger.class);
+		registerTool(ResultFileMetadata.class);
 		registerTool(ResultFileSeedMerger.class);
 		registerTool(ResultFileValidator.class);
 		registerTool(ResultFileViewer.class);
