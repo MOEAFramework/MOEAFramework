@@ -27,15 +27,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.Duration;
 import java.util.Properties;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.population.NondominatedPopulation.DuplicateMode;
-import org.moeaframework.core.spi.AlgorithmFactory;
-import org.moeaframework.core.spi.ProblemFactory;
 
 /**
  * Global settings used by this framework.
@@ -174,21 +171,6 @@ public class Settings {
 	 * The prefix for all problem property keys.
 	 */
 	public static final String KEY_PROBLEM_PREFIX = createKey(KEY_PREFIX, "problem");
-	
-	/**
-	 * The property key for the list of available problems.
-	 */
-	public static final String KEY_PROBLEM_LIST = createKey(KEY_PROBLEM_PREFIX, "problems");
-	
-	/**
-	 * The property key for the algorithms available in the diagnostic tool.
-	 */
-	public static final String KEY_DIAGNOSTIC_TOOL_ALGORITHMS = createKey(KEY_PREFIX, "analysis", "diagnostics", "algorithms");
-	
-	/**
-	 * The property key for the problems available in the diagnostic tool.
-	 */
-	public static final String KEY_DIAGNOSTIC_TOOL_PROBLEMS = createKey(KEY_PREFIX, "analysis", "diagnostics", "problems");
 	
 	/**
 	 * The property key for enabling consistency checks in the CMA-ES algorithm.
@@ -507,46 +489,6 @@ public class Settings {
 	public static boolean isNormalizationDisabled(String problem) {
 		return PROPERTIES.getBoolean(createKey(Settings.KEY_PROBLEM_PREFIX, problem, "normalization", "disabled"),
 				false);
-	}
-	
-	/**
-	 * Returns the list of available problems.  This allows enumerating additional problems without the need for
-	 * defining and registering a service provider on the classpath.
-	 * 
-	 * @return the list of available problems
-	 */
-	public static Set<String> getProblems() {
-		return Set.of(PROPERTIES.getStringArray(KEY_PROBLEM_LIST, new String[0]));
-	}
-	
-	/**
-	 * Returns the list of algorithms displayed in the diagnostic tool GUI.
-	 * 
-	 * @return the list of algorithms displayed in the diagnostic tool GUI
-	 */
-	public static Set<String> getDiagnosticToolAlgorithms() {
-		String[] result = PROPERTIES.getStringArray(KEY_DIAGNOSTIC_TOOL_ALGORITHMS, null);
-		
-		if (result == null) {
-			return AlgorithmFactory.getInstance().getAllDiagnosticToolAlgorithms();
-		}
-		
-		return Set.of(result);
-	}
-	
-	/**
-	 * Returns the list of problems displayed in the diagnostic tool GUI.
-	 * 
-	 * @return the list of problems displayed in the diagnostic tool GUI
-	 */
-	public static Set<String> getDiagnosticToolProblems() {
-		String[] result = PROPERTIES.getStringArray(KEY_DIAGNOSTIC_TOOL_PROBLEMS, null);
-		
-		if (result == null) {
-			return ProblemFactory.getInstance().getAllDiagnosticToolProblems();
-		}
-		
-		return Set.of(result);
 	}
 	
 	/**

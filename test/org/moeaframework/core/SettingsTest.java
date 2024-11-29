@@ -19,7 +19,6 @@ package org.moeaframework.core;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Set;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
@@ -32,6 +31,11 @@ import org.moeaframework.core.population.NondominatedPopulation.DuplicateMode;
  */
 public class SettingsTest {
 
+	@Test
+	public void testVersion() {
+		Assert.assertNotNull(Settings.getVersion());
+	}
+	
 	@Test
 	public void testContinuityCorrection() {
 		Assert.assertFalse(Settings.isContinuityCorrection());
@@ -55,34 +59,6 @@ public class SettingsTest {
 	@Test
 	public void testHypervolumeEnabled() {
 		Assert.assertTrue(Settings.isHypervolumeEnabled());
-	}
-	
-	@Test
-	public void testDiagnosticToolAlgorithmsDefault() {
-		Assert.assertGreaterThan(Settings.getDiagnosticToolAlgorithms().size(), 0);
-	}
-	
-	@Test
-	public void testDiagnosticToolProblemsDefault() {
-		Assert.assertGreaterThan(Settings.getDiagnosticToolProblems().size(), 0);
-	}
-	
-	@Test
-	public void testDiagnosticToolAlgorithmsOverride() {
-		try (PropertyScope scope = Settings.createScope().with(Settings.KEY_DIAGNOSTIC_TOOL_ALGORITHMS, "foo")) {
-			Set<String> result = Settings.getDiagnosticToolAlgorithms();
-			Assert.assertSize(1, result);
-			Assert.assertContains(result, "foo");
-		}
-	}
-	
-	@Test
-	public void testDiagnosticToolProblemsOverride() {
-		try (PropertyScope scope = Settings.createScope().with(Settings.KEY_DIAGNOSTIC_TOOL_PROBLEMS, "bar")) {
-			Set<String> result = Settings.getDiagnosticToolProblems();
-			Assert.assertSize(1, result);
-			Assert.assertContains(result, "bar");
-		}
 	}
 	
 	@Test

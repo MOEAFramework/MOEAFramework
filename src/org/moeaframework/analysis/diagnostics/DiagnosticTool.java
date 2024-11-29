@@ -73,6 +73,7 @@ import org.moeaframework.analysis.runtime.Observations;
 import org.moeaframework.analysis.viewer.RuntimeViewer;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
+import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.util.Localization;
 import org.moeaframework.util.io.LineReader;
@@ -327,19 +328,15 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		showStatistics = new RunnableAction("showStatistics", localization, controller::showStatistics).toButton();
 		
 		//initialize the sorted list of algorithms
-		Set<String> algorithmNames = Settings.getDiagnosticToolAlgorithms();
-		
-		Vector<String> sortedAlgorithmNames = new Vector<String>(algorithmNames);
+		Vector<String> sortedAlgorithmNames = new Vector<String>(
+				AlgorithmFactory.getInstance().getAllDiagnosticToolAlgorithms());
 		Collections.sort(sortedAlgorithmNames, String.CASE_INSENSITIVE_ORDER);
 		
 		algorithm = new JComboBox<String>(sortedAlgorithmNames);
 		
 		//initialize the sorted list of problems
-		Set<String> problemNames = new HashSet<String>();
-		problemNames.addAll(Settings.getDiagnosticToolProblems());
-		problemNames.addAll(Settings.getProblems());
-
-		Vector<String> sortedProblemNames = new Vector<String>(problemNames);
+		Vector<String> sortedProblemNames = new Vector<String>(
+				ProblemFactory.getInstance().getAllDiagnosticToolProblems());
 		Collections.sort(sortedProblemNames, String.CASE_INSENSITIVE_ORDER);
 		
 		problem = new JComboBox<String>(sortedProblemNames);
