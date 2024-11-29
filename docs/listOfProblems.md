@@ -261,6 +261,7 @@ For more details on the specific problem instances, see http://numbbo.github.io/
 ## Problem Wrappers
 
 Problem wrappers modify or extend existing problems, typically in an effort to make the problem more challenging.
+You can define your own wrapper by extending `ProblemWrapper`, or use one of the built-in wrappers listed below.
 
 ### Scaling Objectives
 
@@ -268,7 +269,7 @@ The `ScaledProblem` wrapper applies a scaling factor to each objective by multip
 value by $b^i$, where $b=2$ in the example below.  This helps avoid any bias caused by assuming all objectives
 have similar ranges.
 
-<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [scaled-problem] -->
+<!-- java:examples/org/moeaframework/examples/misc/ScaledProblemExample.java [31:31] -->
 
 ```java
 Problem problem = new ScaledProblem(new DTLZ2(2), 2.0);
@@ -281,7 +282,7 @@ would be independent decision variables (which is typically easier to optimize) 
 between the variables.  We can customize the rotation matrix, selecting all or a subset of decision variables, by
 constructing the `RotationMatrixBuilder`.  The example below demonstrates applying a 45 degree rotation to each axis.
 
-<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [rotated-problem] -->
+<!-- java:examples/org/moeaframework/examples/misc/RotatedProblemExample.java [32:35] -->
 
 ```java
 RotationMatrixBuilder builder = new RotationMatrixBuilder(11);
@@ -289,6 +290,7 @@ builder.rotateAll().withThetas(Math.toRadians(45));
 
 Problem problem = new RotatedProblem(new DTLZ2(2), builder.create());
 ```
+
 
 [^cheng17]: Cheng et al. "Test problems for large-scale multiobjective and many-objective optimization." IEEE Transactions on Cybernetics, 7(12): 4108-4121, 2017.
 [^cheng17b]: Cheng et al. "A benchmark test suite for evolutionary many-objective optimization." Complex Intell. Syst., 3:67-81, 2017.

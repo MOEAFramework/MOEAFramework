@@ -34,9 +34,6 @@ import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.CEC2009.UF1;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
-import org.moeaframework.problem.RotatedProblem;
-import org.moeaframework.problem.ScaledProblem;
-import org.moeaframework.util.RotationMatrixBuilder;
 
 public class ProblemSnippet {
 
@@ -63,27 +60,6 @@ public class ProblemSnippet {
 		// begin-example: bbob-2016-problem
 		Problem problem = ProblemFactory.getInstance().getProblem("bbob-biobj(bbob_f1_i2_d5,bbob_f21_i2_d5)");
 		// end-example: bbob-2016-problem
-		
-		Assert.assertNotNull(problem);
-	}
-	
-	@Test
-	public void scaledProblem() {
-		// begin-example: scaled-problem
-		Problem problem = new ScaledProblem(new DTLZ2(2), 2.0);
-		// end-example: scaled-problem
-		
-		Assert.assertNotNull(problem);
-	}
-	
-	@Test
-	public void rotatedProblem() {
-		// begin-example: rotated-problem
-		RotationMatrixBuilder builder = new RotationMatrixBuilder(11);
-		builder.rotateAll().withThetas(Math.toRadians(45));
-		
-		Problem problem = new RotatedProblem(new DTLZ2(2), builder.create());
-		// end-example: rotated-problem
 		
 		Assert.assertNotNull(problem);
 	}
