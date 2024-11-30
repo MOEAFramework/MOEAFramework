@@ -74,8 +74,8 @@ public class TemperatureBasedTerminationCondition implements TerminationConditio
 	@Override
 	public void initialize(Algorithm algorithm) {
 		if (!(algorithm instanceof AbstractSimulatedAnnealingAlgorithm)) {
-			throw new AlgorithmInitializationException(algorithm, getClass().getSimpleName() +
-					" can only be used with " + AbstractSimulatedAnnealingAlgorithm.class.getSimpleName());
+			throw new AlgorithmInitializationException(algorithm, getName() + " can only be used with " +
+					AbstractSimulatedAnnealingAlgorithm.class.getSimpleName());
 		}
 	}
 

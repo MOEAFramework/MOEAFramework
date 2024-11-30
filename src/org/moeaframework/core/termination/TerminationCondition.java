@@ -18,13 +18,14 @@
 package org.moeaframework.core.termination;
 
 import org.moeaframework.algorithm.Algorithm;
+import org.moeaframework.core.Named;
 
 /**
  * Interface used to implement conditions for when an algorithm should terminate.  The {@code initialize} method is
  * invoked when the algorithm is first created to collect any initial conditions, such as the starting time,
  * and {@code shouldTerminate} is invoked every step to check if the algorithm should terminate.
  */
-public interface TerminationCondition {
+public interface TerminationCondition extends Named {
 	
 	/**
 	 * Invoked when the algorithm is created to collect any initial conditions.  Note that the algorithm may not
@@ -50,5 +51,10 @@ public interface TerminationCondition {
 	 * @return the percentage completion
 	 */
 	public double getPercentComplete(Algorithm algorithm);
+	
+	@Override
+	public default String getName() {
+		return getClass().getSimpleName();
+	}
 
 }

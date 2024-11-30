@@ -27,6 +27,29 @@ import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.mock.MockRealProblem;
 
 public class CheckpointExtensionTest {
+	
+	@Test
+	public void test() throws IOException {
+		File file = TempFiles.createFile();
+		file.delete();
+		
+		NSGAII original = new NSGAII(new MockRealProblem(2));
+		original.addExtension(new CheckpointExtension(file, 100));
+		
+		Assert.assertFalse(file.exists());
+		Assert.assertEquals(0, original.getNumberOfEvaluations());
+		
+		original.step();
+		
+		Assert.assertTrue(file.exists());
+		Assert.assertEquals(100, original.getNumberOfEvaluations());
+		
+		NSGAII restored = new NSGAII(new MockRealProblem(2));
+		restored.addExtension(new CheckpointExtension(file, 100));
+		
+		Assert.assertTrue(file.exists());
+		Assert.assertEquals(100, restored.getNumberOfEvaluations());
+	}
 
 	@Test
 	public void testInvalidStateFileSuppressesError() throws IOException {

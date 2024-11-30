@@ -454,8 +454,7 @@ public class Rules implements Serializable {
 				try {
 					node.setArgument(i, buildTreeFull(node.getArgumentType(i), depth-1));
 				} catch (NoValidNodeException e) {
-					throw new UnsatisfiedArgumentException("Unable to find valid argument for "
-							+ node.getClass().getSimpleName(), e);
+					throw new UnsatisfiedArgumentException("Unable to find valid argument for " + node.getName(), e);
 				}
 			}
 			
@@ -493,8 +492,7 @@ public class Rules implements Serializable {
 				try {
 					node.setArgument(i, buildTreeGrow(node.getArgumentType(i), depth-1));
 				} catch (NoValidNodeException e) {
-					throw new UnsatisfiedArgumentException("Unable to find valid argument for "
-							+ node.getClass().getSimpleName(), e);
+					throw new UnsatisfiedArgumentException("Unable to find valid argument for " + node.getName(), e);
 				}
 			}
 			

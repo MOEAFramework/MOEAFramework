@@ -81,12 +81,12 @@ public class IndicatorCollector implements Collector {
 	@Override
 	public void collect(Observation observation) {
 		if (archive == null) {
-			observation.set(indicator.getClass().getSimpleName(), indicator.evaluate(algorithm.getResult()));
+			observation.set(indicator.getName(), indicator.evaluate(algorithm.getResult()));
 		} else {
 			archive.clear();
 			archive.addAll(algorithm.getResult());
 			
-			observation.set(indicator.getClass().getSimpleName(), indicator.evaluate(archive));
+			observation.set(indicator.getName(), indicator.evaluate(archive));
 		}
 	}
 

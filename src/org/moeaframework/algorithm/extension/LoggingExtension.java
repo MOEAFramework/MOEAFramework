@@ -96,7 +96,7 @@ public class LoggingExtension implements Extension {
 		
 		if (elapsedTime - lastUpdate >= logFrequency) {
 			logger.log(Level.INFO, "{0} running; NFE: {1}; Elapsed Time: {2}", new Object[] {
-	                algorithm.getClass().getSimpleName(),
+	                algorithm.getName(),
 	                algorithm.getNumberOfEvaluations(),
 	                DurationFormatUtils.formatDuration(elapsedTime, "H:mm:ss", true) });
 			lastUpdate = elapsedTime;
@@ -107,14 +107,14 @@ public class LoggingExtension implements Extension {
 	public void onRegister(Algorithm algorithm) {
 		timer.start();
 		lastUpdate = timer.getTime();
-		logger.log(Level.INFO, "{0} starting", algorithm.getClass().getSimpleName());
+		logger.log(Level.INFO, "{0} starting", algorithm.getName());
 	}
 	
 	@Override
 	public void onTerminate(Algorithm algorithm) {
 		timer.stop();
 		logger.log(Level.INFO, "{0} finished; NFE: {1}; Elapsed Time: {2}", new Object[] {
-                algorithm.getClass().getSimpleName(),
+                algorithm.getName(),
                 algorithm.getNumberOfEvaluations(),
                 DurationFormatUtils.formatDuration(timer.getTime(), "H:mm:ss", true) });
 	}

@@ -64,11 +64,6 @@ public abstract class AbstractProblem implements Problem {
 	}
 	
 	@Override
-	public String getName() {
-		return getClass().getSimpleName();
-	}
-
-	@Override
 	public int getNumberOfVariables() {
 		return numberOfVariables;
 	}

@@ -17,12 +17,13 @@
  */
 package org.moeaframework.core.indicator;
 
+import org.moeaframework.core.Named;
 import org.moeaframework.core.population.NondominatedPopulation;
 
 /**
  * Interface for a unary quality indicator.
  */
-public interface Indicator {
+public interface Indicator extends Named {
 
 	/**
 	 * Returns the value of this unary quality indicator given the specified non-dominated population.
@@ -31,5 +32,10 @@ public interface Indicator {
 	 * @return the value of this quality indicator given the specified non-dominated population
 	 */
 	public double evaluate(NondominatedPopulation approximationSet);
+	
+	@Override
+	public default String getName() {
+		return getClass().getSimpleName();
+	}
 
 }

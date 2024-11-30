@@ -150,7 +150,7 @@ public class Call extends Node {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append('(');
-		sb.append(getClass().getSimpleName());
+		sb.append(getName());
 		sb.append(' ');
 		sb.append(getFunctionName());
 		

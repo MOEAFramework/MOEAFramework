@@ -35,7 +35,9 @@ public interface Problem extends AutoCloseable, Named {
 	 */
 	@Override
 	@Property(value="problem", readOnly=true)
-	public String getName();
+	public default String getName() {
+		return getClass().getSimpleName();
+	}
 
 	/**
 	 * Returns the number of decision variables defined by this problem.

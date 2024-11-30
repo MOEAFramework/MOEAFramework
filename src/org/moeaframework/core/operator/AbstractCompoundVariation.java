@@ -135,9 +135,8 @@ public class AbstractCompoundVariation<T extends Variation> implements Variation
 					result.addAll(List.of(operator.evolve(Arrays.copyOfRange(solutions, i, i + operator.getArity()))));
 				}
 			} else {
-				throw new FrameworkException("Invalid operator combination, " + operator.getClass().getSimpleName() +
-						" expected " + operator.getArity() + " parents (or a multiple thereof) but given " +
-						solutions.length);
+				throw new FrameworkException("Invalid operator combination, " + operator.getName() + " expected " +
+						operator.getArity() + " parents (or a multiple thereof) but given " + solutions.length);
 			}
 			
 			solutions = result.toArray(Solution[]::new);
