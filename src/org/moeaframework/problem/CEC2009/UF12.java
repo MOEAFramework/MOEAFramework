@@ -18,7 +18,6 @@
 package org.moeaframework.problem.CEC2009;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.DTLZ.DTLZ3;
@@ -203,7 +202,7 @@ public class UF12 extends AbstractProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double[] x = EncodingUtils.getReal(solution);
+		double[] x = RealVariable.getReal(solution);
 		double[] psum = new double[numberOfObjectives];
 		double[] zz = new double[numberOfVariables];
 		
@@ -215,7 +214,7 @@ public class UF12 extends AbstractProblem {
 		
 		//evaluate the transformed solution with DTLZ3
 		Solution transformedSolution = problem.newSolution();
-		EncodingUtils.setReal(transformedSolution, zz);
+		RealVariable.setReal(transformedSolution, zz);
 		problem.evaluate(transformedSolution);
 		
 		//convert the DTLZ3 results back to UF12

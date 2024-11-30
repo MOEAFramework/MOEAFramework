@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.objective.Maximize;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.io.LineReader;
 
@@ -164,7 +164,7 @@ public class Knapsack implements Problem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		boolean[] d = EncodingUtils.getBinary(solution.getVariable(0));
+		boolean[] d = BinaryVariable.getBinary(solution.getVariable(0));
 		double[] f = new double[nsacks];
 		double[] g = new double[nsacks];
 
@@ -214,7 +214,7 @@ public class Knapsack implements Problem {
 	@Override
 	public Solution newSolution() {
 		Solution solution = new Solution(1, nsacks, nsacks);
-		solution.setVariable(0, EncodingUtils.newBinary(nitems));
+		solution.setVariable(0, new BinaryVariable(nitems));
 		
 		for (int i = 0; i < nsacks; i++) {
 			solution.setObjective(i, new Maximize());

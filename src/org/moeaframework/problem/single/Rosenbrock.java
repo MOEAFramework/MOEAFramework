@@ -19,7 +19,7 @@ package org.moeaframework.problem.single;
 
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.NondominatedPopulation;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.Vector;
 
 /**
@@ -52,7 +52,7 @@ public class Rosenbrock extends AbstractSingleObjectiveProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double[] x = EncodingUtils.getReal(solution);
+		double[] x = RealVariable.getReal(solution);
 		double sum = 0.0;
 		
 		for (int i = 0; i < numberOfVariables - 1; i++) {
@@ -67,7 +67,7 @@ public class Rosenbrock extends AbstractSingleObjectiveProblem {
 		Solution solution = new Solution(numberOfVariables, 1);
 		
 		for (int i = 0; i < numberOfVariables; i++) {
-			solution.setVariable(i, EncodingUtils.newReal(-10, 10));
+			solution.setVariable(i, new RealVariable(-10, 10));
 		}
 
 		return solution;
@@ -78,7 +78,7 @@ public class Rosenbrock extends AbstractSingleObjectiveProblem {
 		NondominatedPopulation result = new NondominatedPopulation();
 		
 		Solution idealPoint = newSolution();
-		EncodingUtils.setReal(idealPoint, Vector.of(numberOfVariables, 1.0));
+		RealVariable.setReal(idealPoint, Vector.of(numberOfVariables, 1.0));
 		
 		evaluate(idealPoint);
 		

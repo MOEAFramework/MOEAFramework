@@ -24,7 +24,7 @@ import java.io.Reader;
 
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.objective.Maximize;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.Subset;
 
 /**
  * Variant of the Knapsack problem using the subset encoding.
@@ -63,7 +63,7 @@ public class KnapsackSubset extends Knapsack {
 
 	@Override
 	public void evaluate(Solution solution) {
-		int[] items = EncodingUtils.getSubset(solution.getVariable(0));
+		int[] items = Subset.getSubset(solution.getVariable(0));
 		double[] f = new double[nsacks];
 		double[] g = new double[nsacks];
 
@@ -96,7 +96,7 @@ public class KnapsackSubset extends Knapsack {
 	@Override
 	public Solution newSolution() {
 		Solution solution = new Solution(1, nsacks, nsacks);
-		solution.setVariable(0, EncodingUtils.newSubset(0, nitems, nitems));
+		solution.setVariable(0, new Subset(0, nitems, nitems));
 		
 		for (int i = 0; i < nsacks; i++) {
 			solution.setObjective(i, new Maximize());

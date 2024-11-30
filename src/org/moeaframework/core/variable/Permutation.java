@@ -265,5 +265,30 @@ public class Permutation extends AbstractVariable {
 		
 		fromArray(array);
 	}
+	
+	/**
+	 * Returns the value stored in a permutation decision variable.
+	 * 
+	 * @param variable the decision variable
+	 * @return the value stored in a permutation decision variable
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link Permutation}
+	 */
+	public static int[] getPermutation(Variable variable) {
+		Permutation permutation = Validate.that("variable", variable).isA(Permutation.class);
+		return permutation.toArray();
+	}
+	
+	/**
+	 * Sets the value of a permutation decision variable.
+	 * 
+	 * @param variable the decision variable
+	 * @param values the permutation to assign the permutation decision variable
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link Permutation}
+	 * @throws IllegalArgumentException if {@code values} is not a valid permutation
+	 */
+	public static void setPermutation(Variable variable, int[] values) {
+		Permutation permutation = Validate.that("variable", variable).isA(Permutation.class);
+		permutation.fromArray(values);
+	}
 
 }

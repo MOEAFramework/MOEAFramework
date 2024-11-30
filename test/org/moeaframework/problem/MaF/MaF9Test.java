@@ -29,7 +29,7 @@ import org.moeaframework.Assert;
 import org.moeaframework.algorithm.MOEAD;
 import org.moeaframework.analysis.plot.Plot;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.ProblemTest;
 import org.moeaframework.util.Vector;
@@ -117,8 +117,8 @@ public class MaF9Test extends ProblemTest {
 
 		Plot plot = new Plot();
 		plot.scatter("Solutions",
-				solutions.stream().mapToDouble(x -> EncodingUtils.getReal(x.getVariable(0))).toArray(),
-				solutions.stream().mapToDouble(x -> EncodingUtils.getReal(x.getVariable(1))).toArray());
+				solutions.stream().mapToDouble(x -> RealVariable.getReal(x.getVariable(0))).toArray(),
+				solutions.stream().mapToDouble(x -> RealVariable.getReal(x.getVariable(1))).toArray());
 		plot.scatter("Vertices",
 				problem.polygon.getVertices().stream().mapToDouble(x -> x.getX()).toArray(),
 				problem.polygon.getVertices().stream().mapToDouble(x -> x.getY()).toArray());

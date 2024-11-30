@@ -29,7 +29,7 @@ import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
 import org.moeaframework.core.fitness.HypervolumeFitnessEvaluator;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.single.Rosenbrock;
@@ -50,7 +50,7 @@ public class CMAESTest extends AlgorithmTest {
 		
 		Solution solution = algorithm.getResult().get(0);
 		
-		Assert.assertArrayEquals(new double[] { 1.0, 1.0 }, EncodingUtils.getReal(solution), 0.001);
+		Assert.assertArrayEquals(new double[] { 1.0, 1.0 }, RealVariable.getReal(solution), 0.001);
 		Assert.assertArrayEquals(new double[] { 0.0 }, solution.getObjectiveValues(), 0.001);
 	}
 

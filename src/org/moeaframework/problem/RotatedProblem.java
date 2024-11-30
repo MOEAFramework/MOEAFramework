@@ -19,7 +19,6 @@ package org.moeaframework.problem;
 
 import org.apache.commons.math3.linear.RealMatrix;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.RotationMatrixBuilder;
 import org.moeaframework.util.Vector;
@@ -97,7 +96,7 @@ public class RotatedProblem extends ProblemWrapper {
 		Solution temp = super.newSolution();
 		
 		//apply the rotation
-		double[] x = EncodingUtils.getReal(solution);
+		double[] x = RealVariable.getReal(solution);
 		x = rotation.operate(x);
 		x = Vector.add(x, center);
 		

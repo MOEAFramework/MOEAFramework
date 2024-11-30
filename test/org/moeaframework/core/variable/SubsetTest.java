@@ -18,6 +18,7 @@
 package org.moeaframework.core.variable;
 
 import java.util.Arrays;
+import java.util.BitSet;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.Test;
@@ -269,6 +270,98 @@ public class SubsetTest {
 		for (int j = 0; j < subset.getL(); j++) {
 			Assert.assertEquals(0.2, valueStats[j].getMean(), TestThresholds.LOW_PRECISION);
 		}
+	}
+	
+	@Test
+	public void testEncodingAsBinary() {
+		Variable variable = new Subset(5, 10);
+		boolean[] values = new boolean[] { false, false, true, true, false, true, false, true, true, false};
+		
+		Subset.setSubset(variable, values);
+		Assert.assertArrayEquals(new int[] { 2, 3, 5, 7, 8 }, Subset.getSubset(variable));
+		
+		Assert.assertArrayEquals(values, Subset.getSubsetAsBinary(variable));
+	}
+	
+	@Test
+	public void testEncodingAsBitSet() {
+		Variable variable = new Subset(5, 10);
+		
+		BitSet bitSet = new BitSet(10);
+		bitSet.set(2);
+		bitSet.set(3);
+		bitSet.set(5);
+		bitSet.set(7);
+		bitSet.set(8);
+		
+		Subset.setSubset(variable, bitSet);
+		Assert.assertArrayEquals(new int[] { 2, 3, 5, 7, 8 }, Subset.getSubset(variable));
+		Assert.assertEquals(bitSet, Subset.getSubsetAsBitSet(variable));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetInvalidType() {
+		Subset.setSubset(new BinaryVariable(3), new int[] { 1, 3, 5, 6, 7 });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetInvalidType() {
+		Subset.getSubset(new BinaryVariable(3));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testTooFewValues() {
+		Subset subset = new Subset(5, 10);
+		Subset.setSubset(subset, new int[] { 2, 4 });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testTooFewValuesBinaryArray() {
+		Subset subset = new Subset(5, 10);
+		Subset.setSubset(subset, new boolean[] { false, false, true, true, false });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testTooFewValuesBitSet() {
+		Subset subset = new Subset(5, 10);
+		
+		BitSet bitSet = new BitSet(5);
+		bitSet.set(2);
+		bitSet.set(3);
+		
+		Subset.setSubset(subset, bitSet);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testInvalidIntegerArrayValues1() {
+		Subset subset = new Subset(5, 10);
+		Subset.setSubset(subset, new int[] { 0, 1, 2, 3, 10 });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testInvalidIntegerArrayValues2() {
+		Subset subset = new Subset(5, 10);
+		Subset.setSubset(subset, new int[] { -1, 0, 1, 2, 3 });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testTooManyValuesBinaryArray() {
+		Subset subset = new Subset(5, 10);
+		Subset.setSubset(subset, new boolean[] { false, false, true, true, true, true, false, false, false, false, true });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testInvalidValueBitSet() {
+		Subset subset = new Subset(5, 10);
+		
+		BitSet bitSet = new BitSet(5);
+		bitSet.set(2);
+		bitSet.set(3);
+		bitSet.set(4);
+		bitSet.set(5);
+		bitSet.set(10);
+		
+		Subset.setSubset(subset, bitSet);
 	}
 	
 }

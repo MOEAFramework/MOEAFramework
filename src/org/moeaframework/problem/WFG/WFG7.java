@@ -18,7 +18,7 @@
 package org.moeaframework.problem.WFG;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 
 /**
  * The WFG7 test problem.
@@ -48,7 +48,7 @@ public class WFG7 extends WFG {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double[] v = EncodingUtils.getReal(solution);
+		double[] v = RealVariable.getReal(solution);
 		double[] f = Problems.WFG7(v, k, M);
 		solution.setObjectiveValues(f);
 	}
@@ -56,7 +56,7 @@ public class WFG7 extends WFG {
 	@Override
 	public Solution generate() {
 		Solution solution = newSolution();
-		EncodingUtils.setReal(solution, Solutions.WFG_2_thru_7_random_soln(k, l));
+		RealVariable.setReal(solution, Solutions.WFG_2_thru_7_random_soln(k, l));
 		evaluate(solution);
 		return solution;
 	}

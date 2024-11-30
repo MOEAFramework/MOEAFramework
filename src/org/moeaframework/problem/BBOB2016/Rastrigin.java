@@ -18,7 +18,7 @@
 package org.moeaframework.problem.BBOB2016;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 
 /* 
  * The following source code is derived from the Coco Framework available at <https://github.com/numbbo/coco> under the
@@ -50,7 +50,7 @@ public class Rastrigin extends BBOBFunction {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double[] x = EncodingUtils.getReal(solution);
+		double[] x = RealVariable.getReal(solution);
 		double tmp1 = 0.0;
 		double tmp2 = 0.0;
 		

@@ -20,7 +20,7 @@ $$ \begin{align} \text{Minimize } &f_1 = (x - 2)^2 + (y - 1)^2 + 2 \\\ &f_2 = 9x
 which has two decision variables, `x` and `y`, two objectives, `f1` and `f2`, and two constraints, `c1` and `c2`.
 Programming this using the MOEA Framework would look something like:
 
-<!-- java:examples/org/moeaframework/examples/srinivas/Srinivas.java [30:79] -->
+<!-- java:examples/org/moeaframework/examples/srinivas/Srinivas.java [29:78] -->
 
 ```java
 public class Srinivas extends AbstractProblem {
@@ -31,8 +31,8 @@ public class Srinivas extends AbstractProblem {
 
     @Override
     public void evaluate(Solution solution) {
-        double x = EncodingUtils.getReal(solution.getVariable(0));
-        double y = EncodingUtils.getReal(solution.getVariable(1));
+        double x = RealVariable.getReal(solution.getVariable(0));
+        double y = RealVariable.getReal(solution.getVariable(1));
 
         double f1 = Math.pow(x - 2.0, 2.0) + Math.pow(y - 1.0, 2.0) + 2.0;
         double f2 = 9.0*x - Math.pow(y - 1.0, 2.0);

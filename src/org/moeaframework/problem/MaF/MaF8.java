@@ -21,7 +21,6 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.apache.commons.math3.geometry.partitioning.Region.Location;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.AnalyticalProblem;
@@ -49,7 +48,7 @@ public class MaF8 extends AbstractProblem implements AnalyticalProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		Vector2D point = new Vector2D(EncodingUtils.getReal(solution));
+		Vector2D point = new Vector2D(RealVariable.getReal(solution));
 		double[] f = new double[numberOfObjectives];
 		
 		for (int i = 0; i < numberOfObjectives; i++) {
@@ -79,7 +78,7 @@ public class MaF8 extends AbstractProblem implements AnalyticalProblem {
 		}
 		
 		Solution solution = newSolution();
-		EncodingUtils.setReal(solution, point.toArray());
+		RealVariable.setReal(solution, point.toArray());
 		evaluate(solution);
 		
 		return solution;

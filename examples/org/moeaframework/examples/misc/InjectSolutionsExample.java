@@ -20,7 +20,7 @@ package org.moeaframework.examples.misc;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.InjectedInitialization;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
 
@@ -34,10 +34,10 @@ public class InjectSolutionsExample {
 		Problem problem = new DTLZ2(2);
 		
 		Solution solutionA = problem.newSolution();
-		EncodingUtils.setReal(solutionA, new double[] { 0.0, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5 });
+		RealVariable.setReal(solutionA, new double[] { 0.0, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5 });
 		
 		Solution solutionB = problem.newSolution();
-		EncodingUtils.setReal(solutionB, new double[] { 1.0, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5 });
+		RealVariable.setReal(solutionB, new double[] { 1.0, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5 });
 		
 		NSGAII algorithm = new NSGAII(problem);	
 		algorithm.setInitialization(new InjectedInitialization(problem, solutionA, solutionB));

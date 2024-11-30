@@ -20,7 +20,6 @@ package org.moeaframework.examples.srinivas;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.constraint.LessThanOrEqual;
 import org.moeaframework.core.objective.Minimize;
-import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 
@@ -41,8 +40,8 @@ public class Srinivas extends AbstractProblem {
 	 */
 	@Override
 	public void evaluate(Solution solution) {
-		double x = EncodingUtils.getReal(solution.getVariable(0));
-		double y = EncodingUtils.getReal(solution.getVariable(1));
+		double x = RealVariable.getReal(solution.getVariable(0));
+		double y = RealVariable.getReal(solution.getVariable(1));
 		
 		double f1 = Math.pow(x - 2.0, 2.0) + Math.pow(y - 1.0, 2.0) + 2.0;
 		double f2 = 9.0*x - Math.pow(y - 1.0, 2.0);

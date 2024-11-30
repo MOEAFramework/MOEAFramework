@@ -24,7 +24,7 @@ import org.moeaframework.Assert;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.NondominatedPopulation.DuplicateMode;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.mock.MockBinaryProblem;
 import org.moeaframework.mock.MockSolution;
 
@@ -86,14 +86,14 @@ public class NondominatedPopulationTest {
 		
 		try (MockBinaryProblem problem = new MockBinaryProblem()) {
 			Solution solution1 = MockSolution.of(problem).withObjectives(0.5);
-			EncodingUtils.setBitSet(solution1.getVariable(0), new BitSet(10));
+			BinaryVariable.setBitSet(solution1.getVariable(0), new BitSet(10));
 			
 			Solution solution2 = solution1.copy();
 			
 			Solution solution3 = solution1.copy();
 			BitSet bits = new BitSet(10);
 			bits.set(3);
-			EncodingUtils.setBitSet(solution3.getVariable(0), bits);
+			BinaryVariable.setBitSet(solution3.getVariable(0), bits);
 			
 			Assert.assertTrue(population.add(solution1));
 			Assert.assertFalse(population.add(solution2));
@@ -107,14 +107,14 @@ public class NondominatedPopulationTest {
 		
 		try (MockBinaryProblem problem = new MockBinaryProblem()) {
 			Solution solution1 = MockSolution.of(problem).withObjectives(0.5);
-			EncodingUtils.setBitSet(solution1.getVariable(0), new BitSet(10));
+			BinaryVariable.setBitSet(solution1.getVariable(0), new BitSet(10));
 			
 			Solution solution2 = solution1.copy();
 			
 			Solution solution3 = solution1.copy();
 			BitSet bits = new BitSet(10);
 			bits.set(3);
-			EncodingUtils.setBitSet(solution3.getVariable(0), bits);
+			BinaryVariable.setBitSet(solution3.getVariable(0), bits);
 			
 			Assert.assertTrue(population.add(solution1));
 			Assert.assertTrue(population.add(solution2));
@@ -128,14 +128,14 @@ public class NondominatedPopulationTest {
 		
 		try (MockBinaryProblem problem = new MockBinaryProblem()) {
 			Solution solution1 = MockSolution.of(problem).withObjectives(0.5);
-			EncodingUtils.setBitSet(solution1.getVariable(0), new BitSet(10));
+			BinaryVariable.setBitSet(solution1.getVariable(0), new BitSet(10));
 			
 			Solution solution2 = solution1.copy();
 			
 			Solution solution3 = solution1.copy();
 			BitSet bits = new BitSet(10);
 			bits.set(3);
-			EncodingUtils.setBitSet(solution3.getVariable(0), bits);
+			BinaryVariable.setBitSet(solution3.getVariable(0), bits);
 			
 			Assert.assertTrue(population.add(solution1));
 			Assert.assertFalse(population.add(solution2));

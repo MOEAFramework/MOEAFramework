@@ -23,6 +23,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.Constructable;
 import org.moeaframework.core.PRNG;
+import org.moeaframework.core.Solution;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -125,10 +126,10 @@ public class BinaryIntegerVariable extends BinaryVariable {
 		BitSet bits = getBitSet();
 		
 		if (gray) {
-			bits = EncodingUtils.grayToBinary(bits);
+			bits = grayToBinary(bits);
 		}
 		
-		int value = (int)EncodingUtils.decode(bits);
+		int value = (int)decode(bits);
 		
 		// if difference is not a power of 2, then the decoded value may be larger than the difference
 		if (value > upperBound - lowerBound) {
@@ -147,10 +148,10 @@ public class BinaryIntegerVariable extends BinaryVariable {
 	 */
 	public void setValue(int value) {
 		Validate.that("value", value).isBetween(lowerBound, upperBound);		
-		BitSet bits = EncodingUtils.encode(value - lowerBound);
+		BitSet bits = encode(value - lowerBound);
 
 		if (gray) {
-			bits = EncodingUtils.binaryToGray(bits);
+			bits = binaryToGray(bits);
 		}
 		
 		for (int i = 0; i < getNumberOfBits(); i++) {
@@ -239,6 +240,184 @@ public class BinaryIntegerVariable extends BinaryVariable {
 	@Override
 	public void randomize() {
 		setValue(PRNG.nextInt(lowerBound, upperBound));
+	}
+	
+	/**
+	 * Returns the value stored in an integer-valued decision variable.
+	 * 
+	 * @param variable the decision variable
+	 * @return the value stored in an integer-valued decision variable
+	 * @throws IllegalArgumentException if the decision variable is not convertible to an integer
+	 */
+	public static int getInt(Variable variable) {
+		BinaryIntegerVariable integer = Validate.that("variable", variable).isA(BinaryIntegerVariable.class);
+		return integer.getValue();
+	}
+	
+	/**
+	 * Returns the array of integer-valued decision variables stored in a solution.  The solution must contain only
+	 * integer-valued decision variables.
+	 * 
+	 * @param solution the solution
+	 * @return the array of integer-valued decision variables stored in a solution
+	 * @throws IllegalArgumentException if any decision variable contained in the solution is not of type
+	 *         {@link RealVariable}
+	 */
+	public static int[] getInt(Solution solution) {
+		return getInt(solution, 0, solution.getNumberOfVariables());
+	}
+	
+	/**
+	 * Returns the array of integer-valued decision variables stored in a solution between the specified indices.
+	 * The decision variables located between the start and end index must all be integer-valued decision variables.
+	 * 
+	 * @param solution the solution
+	 * @param startIndex the start index (inclusive)
+	 * @param endIndex the end index (exclusive)
+	 * @return the array of integer-valued decision variables stored in a solution between the specified indices
+	 * @throws IllegalArgumentException if any decision variable contained in the solution between the start and end
+	 *         index is not of type {@link RealVariable}
+	 */
+	public static int[] getInt(Solution solution, int startIndex, int endIndex) {
+		int[] result = new int[endIndex - startIndex];
+		
+		for (int i=startIndex; i<endIndex; i++) {
+			result[i-startIndex] = getInt(solution.getVariable(i));
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Sets the value of an integer-valued decision variable.
+	 * 
+	 * @param variable the decision variable
+	 * @param value the value to assign the integer-valued decision variable
+	 * @throws IllegalArgumentException if the decision variable is not convertible to an integer
+	 * @throws IllegalArgumentException if the value is out of bounds
+	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
+	 */
+	public static void setInt(Variable variable, int value) {
+		BinaryIntegerVariable integer = Validate.that("variable", variable).isA(BinaryIntegerVariable.class);
+		integer.setValue(value);
+	}
+	
+	/**
+	 * Sets the values of all integer-valued decision variables stored in the solution.  The solution must contain
+	 * only integer-valued decision variables.
+	 * 
+	 * @param solution the solution
+	 * @param values the array of integer values to assign the solution
+	 * @throws IllegalArgumentException if the decision variable is not convertible to an integer
+	 * @throws IllegalArgumentException if any of the values are out of bounds
+	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
+	 */
+	public static void setInt(Solution solution, int[] values) {
+		setInt(solution, 0, solution.getNumberOfVariables(), values);
+	}
+	
+	/**
+	 * Sets the values of the integer-valued decision variables stored in a solution between the specified indices.
+	 * The decision variables located between the start and end index must all be integer-valued decision variables.
+	 * 
+	 * @param solution the solution
+	 * @param startIndex the start index (inclusive)
+	 * @param endIndex the end index (exclusive)
+	 * @param values the array of floating-point values to assign the decision variables
+	 * @throws IllegalArgumentException if the decision variables are not convertible to an integer
+	 * @throws IllegalArgumentException if an invalid number of values are provided
+	 * @throws IllegalArgumentException if any of the values are out of bounds
+	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
+	 */
+	public static void setInt(Solution solution, int startIndex, int endIndex, int[] values) {
+		if (values.length != (endIndex - startIndex)) {
+			Validate.that("values", values).fails("The start / end index and array length are not compatible.");
+		}
+		
+		for (int i=startIndex; i<endIndex; i++) {
+			setInt(solution.getVariable(i), values[i-startIndex]);
+		}
+	}
+	
+	/**
+	 * Converts a binary string from binary code to gray code.  The gray code ensures two adjacent values have binary
+	 * representations differing in only one big (i.e., a Hamming distance of {@code 1}).
+	 * 
+	 * @param binary the binary code string
+	 * @return the gray code string
+	 */
+	static BitSet binaryToGray(BitSet binary) {
+		int n = binary.length();
+		BitSet gray = new BitSet();
+
+		if (n > 0) {
+			gray.set(n - 1, binary.get(n - 1));
+			for (int i = n - 2; i >= 0; i--) {
+				gray.set(i, binary.get(i + 1) ^ binary.get(i));
+			}
+		}
+		
+		return gray;
+	}
+
+	/**
+	 * Converts a binary string from gray code to binary code.
+	 * 
+	 * @param gray the gray code string
+	 * @return the binary code string
+	 */
+	static BitSet grayToBinary(BitSet gray) {
+		int n = gray.length();
+		BitSet binary = new BitSet();
+
+		if (n > 0) {
+			binary.set(n - 1, gray.get(n - 1));
+			for (int i = n - 2; i >= 0; i--) {
+				binary.set(i, binary.get(i + 1) ^ gray.get(i));
+			}
+		}
+		
+		return binary;
+	}
+	
+	/**
+	 * Converts the given long value into its binary string representation.
+	 * 
+	 * @param value the long value
+	 * @return the binary string representation
+	 */
+	static BitSet encode(long value) {
+		BitSet binary = new BitSet();
+
+		for (int i = 0; i < 64; i++) {
+			binary.set(i, (value & (1L << i)) != 0);
+		}
+		
+		return binary;
+	}
+	
+	/**
+	 * Converts the given binary string into its long value.
+	 * 
+	 * @param binary the binary string
+	 * @return the long value
+	 */
+	static long decode(BitSet binary) {
+		int numberOfBits = binary.length();
+
+		if (numberOfBits > 64) {
+			Validate.that("binary", binary).fails("Number of bits exceeds 64, the maximum size of a long.");
+		}
+
+		long value = 0;
+
+		for (int i = 0; i < numberOfBits; i++) {
+			if (binary.get(i)) {
+				value |= (1L << i);
+			}
+		}
+
+		return value;
 	}
 
 }

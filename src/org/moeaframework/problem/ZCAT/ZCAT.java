@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.AnalyticalProblem;
@@ -113,7 +112,7 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 
 	@Override
 	public void evaluate(Solution solution) {	
-		double[] x = EncodingUtils.getReal(solution);
+		double[] x = RealVariable.getReal(solution);
 		
 		double[] y = getY(x);                // Normalization
 		double[] alpha = getAlpha(y, F);     // Position
@@ -128,7 +127,7 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 		Solution solution = new Solution(numberOfVariables, numberOfObjectives);
 		
 		for (int i = 0; i < numberOfVariables; i++) {
-			solution.setVariable(i, EncodingUtils.newReal(-0.5 * (i + 1), 0.5 * (i + 1)));
+			solution.setVariable(i, new RealVariable(-0.5 * (i + 1), 0.5 * (i + 1)));
 		}
 		
 		return solution;

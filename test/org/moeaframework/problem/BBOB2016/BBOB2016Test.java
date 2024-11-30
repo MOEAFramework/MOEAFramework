@@ -25,7 +25,7 @@ import org.moeaframework.Assume;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.spi.ProblemFactory;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.Problem;
 
 public class BBOB2016Test {
@@ -125,8 +125,8 @@ public class BBOB2016Test {
 					Assert.assertEquals(solution, cocoSolution);
 				} catch (AssertionError e) {
 					System.out.println("Detected difference (MOEA Framework / Coco):");
-					System.out.println("  > Variables: " + Arrays.toString(EncodingUtils.getReal(solution)) + " / " +
-							Arrays.toString(EncodingUtils.getReal(cocoSolution)));
+					System.out.println("  > Variables: " + Arrays.toString(RealVariable.getReal(solution)) + " / " +
+							Arrays.toString(RealVariable.getReal(cocoSolution)));
 					System.out.println("  > Objectives: " + Arrays.toString(solution.getObjectiveValues()) + " / " +
 							Arrays.toString(cocoSolution.getObjectiveValues()));
 					System.out.println("  > Constraints: " + Arrays.toString(solution.getConstraintValues()) + " / " +

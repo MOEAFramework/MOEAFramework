@@ -21,7 +21,7 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.constraint.LessThanOrEqual;
 import org.moeaframework.core.objective.Maximize;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.AnalyticalProblem;
 
@@ -56,8 +56,8 @@ public class Obayashi extends AbstractProblem implements AnalyticalProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double x = EncodingUtils.getReal(solution.getVariable(0));
-		double y = EncodingUtils.getReal(solution.getVariable(1));
+		double x = RealVariable.getReal(solution.getVariable(0));
+		double y = RealVariable.getReal(solution.getVariable(1));
 		double c = Math.pow(x, 2.0) + Math.pow(y, 2.0);
 		
 		solution.setObjectiveValue(0, x);
@@ -69,8 +69,8 @@ public class Obayashi extends AbstractProblem implements AnalyticalProblem {
 	public Solution newSolution() {
 		Solution solution = new Solution(2, 2, 1);
 		
-		solution.setVariable(0, EncodingUtils.newReal(0.0, 1.0));
-		solution.setVariable(1, EncodingUtils.newReal(0.0, 1.0));
+		solution.setVariable(0, new RealVariable(0.0, 1.0));
+		solution.setVariable(1, new RealVariable(0.0, 1.0));
 		
 		solution.setObjective(0, new Maximize());
 		solution.setObjective(1, new Maximize());
@@ -86,8 +86,8 @@ public class Obayashi extends AbstractProblem implements AnalyticalProblem {
 		double x = PRNG.nextDouble(0, 1);
 		double y = Math.sqrt(1.0 - Math.pow(x, 2.0));
 		
-		EncodingUtils.setReal(solution.getVariable(0), x);
-		EncodingUtils.setReal(solution.getVariable(1), y);
+		RealVariable.setReal(solution.getVariable(0), x);
+		RealVariable.setReal(solution.getVariable(1), y);
 		
 		evaluate(solution);
 		return solution;

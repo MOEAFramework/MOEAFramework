@@ -18,7 +18,7 @@
 package org.moeaframework.problem.BBOB2016;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 
 /**
@@ -44,11 +44,11 @@ public class StackedProblem extends AbstractProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double[] x = EncodingUtils.getReal(solution);
+		double[] x = RealVariable.getReal(solution);
 		
 		for (int i = 0; i < functions.length; i++) {
 			Solution instanceSolution = functions[i].newSolution();
-			EncodingUtils.setReal(instanceSolution, x);
+			RealVariable.setReal(instanceSolution, x);
 			
 			functions[i].evaluate(instanceSolution);
 			
@@ -61,7 +61,7 @@ public class StackedProblem extends AbstractProblem {
 		Solution solution = new Solution(numberOfVariables, numberOfObjectives);
 		
 		for (int i = 0; i < numberOfVariables; i++) {
-			solution.setVariable(i, EncodingUtils.newReal(-5.0, 5.0));
+			solution.setVariable(i, new RealVariable(-5.0, 5.0));
 		}
 		
 		return solution;

@@ -24,7 +24,7 @@ import org.moeaframework.Assert;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.attribute.Fitness;
 import org.moeaframework.core.population.Population;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.Problem;
@@ -43,7 +43,7 @@ public class FitnessBasedArchiveTest {
 			@Override
 			public void evaluate(Population population) {
 				for (Solution solution : population) {
-					Fitness.setAttribute(solution, EncodingUtils.getReal(solution.getVariable(0)));
+					Fitness.setAttribute(solution, RealVariable.getReal(solution.getVariable(0)));
 				}
 			}
 

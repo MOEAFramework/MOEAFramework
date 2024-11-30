@@ -33,7 +33,6 @@ import org.moeaframework.core.fitness.FitnessBasedArchive;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.population.NondominatedPopulation;
-import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.validate.Validate;
@@ -225,9 +224,9 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm implements 
 		double W = PRNG.nextDouble(0.1, 0.5);
 		
 		for (int j = 0; j < problem.getNumberOfVariables(); j++) {
-			double particleValue = EncodingUtils.getReal(particle.getVariable(j));
-			double localBestValue = EncodingUtils.getReal(localBestParticle.getVariable(j));
-			double leaderValue = EncodingUtils.getReal(leader.getVariable(j));
+			double particleValue = RealVariable.getReal(particle.getVariable(j));
+			double localBestValue = RealVariable.getReal(localBestParticle.getVariable(j));
+			double leaderValue = RealVariable.getReal(leader.getVariable(j));
 			
 			velocities[i][j] = W * velocities[i][j] + 
 					C1*r1*(localBestValue - particleValue) +

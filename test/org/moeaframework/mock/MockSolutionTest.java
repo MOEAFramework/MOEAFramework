@@ -23,7 +23,6 @@ import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.BinaryVariable;
-import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.core.variable.Subset;
@@ -57,11 +56,11 @@ public class MockSolutionTest {
 				.withObjectives(0.0, 0.0)
 				.withConstraints(0.0);
 		
-		EncodingUtils.setReal(mockSolution, new double[] { 0.5 });
+		RealVariable.setReal(mockSolution, new double[] { 0.5 });
 		mockSolution.setObjectiveValue(0, 1.0);
 		mockSolution.setConstraintValue(0, 1.0);
 		
-		Assert.assertEquals(0.5, EncodingUtils.getReal(mockSolution.getVariable(0)), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.5, RealVariable.getReal(mockSolution.getVariable(0)), TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(1.0, mockSolution.getObjectiveValue(0), TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(1.0, mockSolution.getConstraintValue(0), TestThresholds.HIGH_PRECISION);
 	}
@@ -103,39 +102,39 @@ public class MockSolutionTest {
 	@Test
 	public void testAtLowerBound() {
 		Assert.assertEquals(-1.0,
-				EncodingUtils.getReal(MockSolution.of().withVariables(new RealVariable(-1.0, 1.0)).atLowerBounds().getVariables()[0]),
+				RealVariable.getReal(MockSolution.of().withVariables(new RealVariable(-1.0, 1.0)).atLowerBounds().getVariables()[0]),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertEquals(5,
-				EncodingUtils.getInt(MockSolution.of().withVariables(new BinaryIntegerVariable(5, 10)).atLowerBounds().getVariables()[0]));
+				BinaryIntegerVariable.getInt(MockSolution.of().withVariables(new BinaryIntegerVariable(5, 10)).atLowerBounds().getVariables()[0]));
 		
 		Assert.assertEquals(0,
-				EncodingUtils.getBitSet(MockSolution.of().withVariables(new BinaryVariable(5)).atLowerBounds().getVariables()[0]).cardinality());
+				BinaryVariable.getBitSet(MockSolution.of().withVariables(new BinaryVariable(5)).atLowerBounds().getVariables()[0]).cardinality());
 		
 		Assert.assertArrayEquals(new int[] { 0, 1, 2, 3, 4 },
-				EncodingUtils.getPermutation(MockSolution.of().withVariables(new Permutation(5)).atLowerBounds().getVariables()[0]));
+				Permutation.getPermutation(MockSolution.of().withVariables(new Permutation(5)).atLowerBounds().getVariables()[0]));
 		
 		Assert.assertArrayEquals(new int[] { 0, 1, 2, 3, 4 },
-				EncodingUtils.getSubset(MockSolution.of().withVariables(new Subset(5, 10)).atLowerBounds().getVariables()[0]));
+				Subset.getSubset(MockSolution.of().withVariables(new Subset(5, 10)).atLowerBounds().getVariables()[0]));
 	}
 	
 	@Test
 	public void testAtUpperBound() {
 		Assert.assertEquals(1.0,
-				EncodingUtils.getReal(MockSolution.of().withVariables(new RealVariable(-1.0, 1.0)).atUpperBounds().getVariables()[0]),
+				RealVariable.getReal(MockSolution.of().withVariables(new RealVariable(-1.0, 1.0)).atUpperBounds().getVariables()[0]),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertEquals(10,
-				EncodingUtils.getInt(MockSolution.of().withVariables(new BinaryIntegerVariable(5, 10)).atUpperBounds().getVariables()[0]));
+				BinaryIntegerVariable.getInt(MockSolution.of().withVariables(new BinaryIntegerVariable(5, 10)).atUpperBounds().getVariables()[0]));
 		
 		Assert.assertEquals(5,
-				EncodingUtils.getBitSet(MockSolution.of().withVariables(new BinaryVariable(5)).atUpperBounds().getVariables()[0]).cardinality());
+				BinaryVariable.getBitSet(MockSolution.of().withVariables(new BinaryVariable(5)).atUpperBounds().getVariables()[0]).cardinality());
 		
 		Assert.assertArrayEquals(new int[] { 4, 3, 2, 1, 0 },
-				EncodingUtils.getPermutation(MockSolution.of().withVariables(new Permutation(5)).atUpperBounds().getVariables()[0]));
+				Permutation.getPermutation(MockSolution.of().withVariables(new Permutation(5)).atUpperBounds().getVariables()[0]));
 		
 		Assert.assertArrayEquals(new int[] { 5, 6, 7, 8, 9 },
-				EncodingUtils.getSubset(MockSolution.of().withVariables(new Subset(5, 10)).atUpperBounds().getVariables()[0]));
+				Subset.getSubset(MockSolution.of().withVariables(new Subset(5, 10)).atUpperBounds().getVariables()[0]));
 	}
 
 }

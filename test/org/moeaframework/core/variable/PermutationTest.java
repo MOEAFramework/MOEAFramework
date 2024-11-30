@@ -227,5 +227,15 @@ public class PermutationTest {
 			Assert.assertUniformDistribution(0, permutation.size()-1, positionStats[j]);
 		}
 	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetInvalidType() {
+		Permutation.setPermutation(new BinaryVariable(3), new int[] { 0, 2, 1 });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetInvalidType() {
+		Permutation.getPermutation(new BinaryVariable(3));
+	}
 
 }

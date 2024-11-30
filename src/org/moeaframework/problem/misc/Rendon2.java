@@ -19,7 +19,7 @@ package org.moeaframework.problem.misc;
 
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.AnalyticalProblem;
 
@@ -51,8 +51,8 @@ public class Rendon2 extends AbstractProblem implements AnalyticalProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double x = EncodingUtils.getReal(solution.getVariable(0));
-		double y = EncodingUtils.getReal(solution.getVariable(1));
+		double x = RealVariable.getReal(solution.getVariable(0));
+		double y = RealVariable.getReal(solution.getVariable(1));
 		double f1 = x + y + 1.0;
 		double f2 = Math.pow(x,  2.0) + 2.0*y - 1.0;
 		
@@ -64,8 +64,8 @@ public class Rendon2 extends AbstractProblem implements AnalyticalProblem {
 	public Solution newSolution() {
 		Solution solution = new Solution(2, 2);
 		
-		solution.setVariable(0, EncodingUtils.newReal(-3.0, 3.0));
-		solution.setVariable(1, EncodingUtils.newReal(-3.0, 3.0));
+		solution.setVariable(0, new RealVariable(-3.0, 3.0));
+		solution.setVariable(1, new RealVariable(-3.0, 3.0));
 		
 		return solution;
 	}
@@ -74,8 +74,8 @@ public class Rendon2 extends AbstractProblem implements AnalyticalProblem {
 	public Solution generate() {
 		Solution solution = newSolution();
 		
-		EncodingUtils.setReal(solution.getVariable(0), PRNG.nextDouble(-3.0, 0.0));
-		EncodingUtils.setReal(solution.getVariable(1), -3.0);
+		RealVariable.setReal(solution.getVariable(0), PRNG.nextDouble(-3.0, 0.0));
+		RealVariable.setReal(solution.getVariable(1), -3.0);
 		
 		evaluate(solution);
 		return solution;

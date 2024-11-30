@@ -22,7 +22,7 @@ import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.RandomInitialization;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.ProblemTest;
 
 public class UF13Test extends ProblemTest {
@@ -33,7 +33,7 @@ public class UF13Test extends ProblemTest {
 		RandomInitialization initialization = new RandomInitialization(problem);
 		
 		for (Solution solution : initialization.initialize(TestThresholds.SAMPLES)) {
-			double[] x = EncodingUtils.getReal(solution);
+			double[] x = RealVariable.getReal(solution);
 			double[] f = new double[problem.getNumberOfObjectives()];
 			
 			WFG1_M5(x, f, problem.getNumberOfVariables(), problem.getNumberOfObjectives());

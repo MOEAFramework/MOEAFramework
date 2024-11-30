@@ -18,7 +18,7 @@
 package org.moeaframework.examples.TSP;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.problem.AbstractProblem;
 
 /**
@@ -64,7 +64,7 @@ public class TSPProblem extends AbstractProblem {
 	public Solution newSolution() {
 		Solution solution = new Solution(1, 1);
 		
-		solution.setVariable(0, EncodingUtils.newPermutation(instance.getDimension()));
+		solution.setVariable(0, new Permutation(instance.getDimension()));
 		
 		return solution;
 	}
@@ -76,7 +76,7 @@ public class TSPProblem extends AbstractProblem {
 	 * @return the tour defined by the solution
 	 */
 	public static Tour toTour(Solution solution) {
-		int[] permutation = EncodingUtils.getPermutation(solution.getVariable(0));
+		int[] permutation = Permutation.getPermutation(solution.getVariable(0));
 		
 		// increment values since TSP nodes start at 1
 		for (int i = 0; i < permutation.length; i++) {
@@ -100,7 +100,7 @@ public class TSPProblem extends AbstractProblem {
 			permutation[i]--;
 		}
 		
-		EncodingUtils.setPermutation(solution.getVariable(0), permutation);
+		Permutation.setPermutation(solution.getVariable(0), permutation);
 	}
 	
 }

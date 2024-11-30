@@ -17,6 +17,8 @@
  */
 package org.moeaframework.core.variable;
 
+import java.util.Arrays;
+import java.util.BitSet;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -393,6 +395,118 @@ public class Subset extends AbstractVariable {
 		}
 		
 		fromArray(array);
+	}
+	
+	/**
+	 * Returns the value stored in a subset decision variable.
+	 * 
+	 * @param variable the decision variable
+	 * @return the value stored in a subset decision variable
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link Subset}
+	 */
+	public static int[] getSubset(Variable variable) {
+		Subset subset = Validate.that("variable", variable).isA(Subset.class);
+		return subset.toArray();
+	}
+	
+	/**
+	 * Returns the value stored in a subset decision variable with the items sorted.
+	 * 
+	 * @param variable the decision variable
+	 * @return the value stored in a subset decision variable with the items sorted
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link Subset}
+	 */
+	public static int[] getOrderedSubset(Variable variable) {
+		int[] subset = getSubset(variable);
+		Arrays.sort(subset);
+		return subset;
+	}
+	
+	/**
+	 * Returns the subset as a binary string, where 1 indicates the index is included in the set.
+	 * 
+	 * @param variable the decision variable
+	 * @return a binary string representation of the subset
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link Subset}
+	 */
+	public static boolean[] getSubsetAsBinary(Variable variable) {
+		Subset subset = Validate.that("variable", variable).isA(Subset.class);
+		boolean[] result = new boolean[subset.getN()];
+			
+		for (int i = 0; i < subset.getN(); i++) {
+			result[i] = subset.contains(i);
+		}
+			
+		return result;
+	}
+	
+	/**
+	 * Returns the subset as a BitSet, where a set bit indicates the index is included in the set.
+	 * 
+	 * @param variable the decision variable
+	 * @return a BitSet representation of the subset
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link Subset}
+	 */
+	public static BitSet getSubsetAsBitSet(Variable variable) {
+		Subset subset = Validate.that("variable", variable).isA(Subset.class);
+		BitSet bitSet = new BitSet(subset.getN());
+			
+		for (int i = 0; i < subset.getN(); i++) {
+			bitSet.set(i, subset.contains(i));
+		}
+			
+		return bitSet;
+	}
+	
+	/**
+	 * Sets the value of a subset decision variable.
+	 * 
+	 * @param variable the decision variable
+	 * @param values the subset to assign the subset decision variable
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link Subset}
+	 * @throws IllegalArgumentException if {@code values} is not a valid subset
+	 */
+	public static void setSubset(Variable variable, int[] values) {
+		Subset subset = Validate.that("variable", variable).isA(Subset.class);
+		subset.fromArray(values);
+	}
+	
+	/**
+	 * Sets the value of a subset decision variable using a binary string representation.  Indices set to {@code true}
+	 * are included in the subset.
+	 * 
+	 * @param variable the decision variable
+	 * @param values the binary string representation of a subset
+	 * @throws IllegalArgumentException if the binary string representation is not a valid subset
+	 */
+	public static void setSubset(Variable variable, boolean[] values) {
+		BitSet bitSet = new BitSet(values.length);
+			
+		for (int i = 0; i < values.length; i++) {
+			bitSet.set(i, values[i]);
+		}
+			
+		setSubset(variable, bitSet);
+	}
+	
+	/**
+	 * Sets the value of a subset decision variable using a BitSet representation.  Indices set to {@code true}
+	 * are included in the subset.
+	 * 
+	 * @param variable the decision variable
+	 * @param bitSet the BitSet representation of a subset
+	 * @throws IllegalArgumentException if the BitSet representation is not a valid subset
+	 */
+	public static void setSubset(Variable variable, BitSet bitSet) {
+		Subset subset = Validate.that("variable", variable).isA(Subset.class);
+		int[] values = new int[bitSet.cardinality()];
+		int count = 0;
+			
+		for (int i = bitSet.nextSetBit(0); i >= 0; i = bitSet.nextSetBit(i+1)) {
+			values[count++] = i;
+		}
+			
+		setSubset(subset, values);
 	}
 
 }

@@ -19,7 +19,7 @@ package org.moeaframework.problem.misc;
 
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.AnalyticalProblem;
 
@@ -61,7 +61,7 @@ public class Fonseca2 extends AbstractProblem implements AnalyticalProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double[] x = EncodingUtils.getReal(solution);
+		double[] x = RealVariable.getReal(solution);
 		double f1 = 0.0;
 		double f2 = 0.0;
 		
@@ -82,7 +82,7 @@ public class Fonseca2 extends AbstractProblem implements AnalyticalProblem {
 		Solution solution = new Solution(numberOfVariables, 2);
 
 		for (int i=0; i<numberOfVariables; i++) {
-			solution.setVariable(i, EncodingUtils.newReal(-4.0, 4.0));
+			solution.setVariable(i, new RealVariable(-4.0, 4.0));
 		}
 
 		return solution;
@@ -94,7 +94,7 @@ public class Fonseca2 extends AbstractProblem implements AnalyticalProblem {
 		double x = PRNG.nextDouble(-1.0 / Math.sqrt(numberOfVariables), 1.0 / Math.sqrt(numberOfVariables));
 		
 		for (int i = 0; i < numberOfVariables; i++) {
-			EncodingUtils.setReal(solution.getVariable(i), x);
+			RealVariable.setReal(solution.getVariable(i), x);
 		}
 		
 		evaluate(solution);

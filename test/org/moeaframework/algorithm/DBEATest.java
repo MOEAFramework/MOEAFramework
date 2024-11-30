@@ -31,7 +31,7 @@ import org.moeaframework.Assert;
 import org.moeaframework.Wait;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.Population;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.DTLZ.DTLZ2;
@@ -215,7 +215,7 @@ public class DBEATest {
 				String[] tokens = line.split("\\s+");
 				
 				for (int i = 0; i < problem.getNumberOfVariables(); i++) {
-					EncodingUtils.setReal(solution.getVariable(i), Double.parseDouble(tokens[i]));
+					RealVariable.setReal(solution.getVariable(i), Double.parseDouble(tokens[i]));
 				}
 				
 				dbea.getPopulation().add(solution);
@@ -317,7 +317,7 @@ public class DBEATest {
 				child = problem.newSolution();
 				
 				for (int i = 0; i < problem.getNumberOfVariables(); i++) {
-					EncodingUtils.setReal(child.getVariable(i), Double.parseDouble(tokens[i]));
+					RealVariable.setReal(child.getVariable(i), Double.parseDouble(tokens[i]));
 				}
 			}
 			

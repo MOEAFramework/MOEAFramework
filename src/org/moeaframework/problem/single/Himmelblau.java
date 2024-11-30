@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.NondominatedPopulation;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 
 /**
  * The single-objective Himmelblau's function with four local minima, all with {@code f(x) = 0}.
@@ -42,8 +42,8 @@ public class Himmelblau extends AbstractSingleObjectiveProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double x = EncodingUtils.getReal(solution.getVariable(0));
-		double y = EncodingUtils.getReal(solution.getVariable(1));
+		double x = RealVariable.getReal(solution.getVariable(0));
+		double y = RealVariable.getReal(solution.getVariable(1));
 		
 		solution.setObjectiveValue(0, Math.pow(x*x + y - 11.0, 2.0) + Math.pow(x + y*y - 7.0, 2.0));
 	}
@@ -51,8 +51,8 @@ public class Himmelblau extends AbstractSingleObjectiveProblem {
 	@Override
 	public Solution newSolution() {
 		Solution solution = new Solution(2, 1);
-		solution.setVariable(0, EncodingUtils.newReal(-6, 6));
-		solution.setVariable(1, EncodingUtils.newReal(-6, 6));
+		solution.setVariable(0, new RealVariable(-6, 6));
+		solution.setVariable(1, new RealVariable(-6, 6));
 		return solution;
 	}
 	
@@ -61,19 +61,19 @@ public class Himmelblau extends AbstractSingleObjectiveProblem {
 		NondominatedPopulation result = new NondominatedPopulation();
 		
 		Solution solution1 = newSolution();
-		EncodingUtils.setReal(solution1, new double[] { 3.0, 2.0 });
+		RealVariable.setReal(solution1, new double[] { 3.0, 2.0 });
 		evaluate(solution1);
 		
 		Solution solution2 = newSolution();
-		EncodingUtils.setReal(solution2, new double[] { -2.805118, 3.131312 });
+		RealVariable.setReal(solution2, new double[] { -2.805118, 3.131312 });
 		evaluate(solution2);
 		
 		Solution solution3 = newSolution();
-		EncodingUtils.setReal(solution3, new double[] { -3.779310, -3.283186 });
+		RealVariable.setReal(solution3, new double[] { -3.779310, -3.283186 });
 		evaluate(solution3);
 		
 		Solution solution4 = newSolution();
-		EncodingUtils.setReal(solution4, new double[] { 3.584428, -1.848126 });
+		RealVariable.setReal(solution4, new double[] { 3.584428, -1.848126 });
 		evaluate(solution4);		
 		
 		result.addAll(List.of(solution1, solution2, solution3, solution4));

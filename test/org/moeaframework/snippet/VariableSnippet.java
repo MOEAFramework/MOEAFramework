@@ -22,9 +22,13 @@ import java.util.BitSet;
 
 import org.junit.Test;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.BinaryIntegerVariable;
+import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Grammar;
+import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.Program;
+import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.core.variable.Subset;
 import org.moeaframework.util.grammar.ContextFreeGrammar;
 import org.moeaframework.util.tree.Add;
 import org.moeaframework.util.tree.Constant;
@@ -46,15 +50,15 @@ public class VariableSnippet {
 		
 		// begin-example: real-variable
 		// Creating a real-valued variable:
-		solution.setVariable(i, EncodingUtils.newReal(lowerBound, upperBound));
+		solution.setVariable(i, new RealVariable(lowerBound, upperBound));
 
 		// Reading and writing a single variable:
-		double value = EncodingUtils.getReal(solution.getVariable(i));
-		EncodingUtils.setReal(solution.getVariable(i), value);
+		double value = RealVariable.getReal(solution.getVariable(i));
+		RealVariable.setReal(solution.getVariable(i), value);
 
 		// Reading and writing all variables (when all variables in the solution are real-valued):
-		double[] values = EncodingUtils.getReal(solution);
-		EncodingUtils.setReal(solution, values);
+		double[] values = RealVariable.getReal(solution);
+		RealVariable.setReal(solution, values);
 		// end-example: real-variable
 	}
 	
@@ -66,15 +70,15 @@ public class VariableSnippet {
 		
 		// begin-example: binary-variable
 		// Creating a binary variable:
-		solution.setVariable(i, EncodingUtils.newBinary(length));
+		solution.setVariable(i, new BinaryVariable(length));
 
 		// Reading the values as an array or BitSet:
-		boolean[] bits = EncodingUtils.getBinary(solution.getVariable(i));
-		BitSet bitSet = EncodingUtils.getBitSet(solution.getVariable(i));
+		boolean[] bits = BinaryVariable.getBinary(solution.getVariable(i));
+		BitSet bitSet = BinaryVariable.getBitSet(solution.getVariable(i));
 
 		// Updating the bits:
-		EncodingUtils.setBinary(solution.getVariable(i), bits);
-		EncodingUtils.setBitSet(solution.getVariable(i), bitSet);
+		BinaryVariable.setBinary(solution.getVariable(i), bits);
+		BinaryVariable.setBitSet(solution.getVariable(i), bitSet);
 		// end-example: binary-variable
 	}
 	
@@ -87,16 +91,15 @@ public class VariableSnippet {
 		
 		// begin-example: integer-variable
 		// Creating an integer variable:
-		solution.setVariable(i, EncodingUtils.newInt(lowerBound, upperBound));
-		solution.setVariable(i, EncodingUtils.newBinaryInt(lowerBound, upperBound));
+		solution.setVariable(i, new BinaryIntegerVariable(lowerBound, upperBound));
 
 		// Reading and writing a single variable:
-		int value = EncodingUtils.getInt(solution.getVariable(i));
-		EncodingUtils.setInt(solution.getVariable(i), value);
+		int value = BinaryIntegerVariable.getInt(solution.getVariable(i));
+		BinaryIntegerVariable.setInt(solution.getVariable(i), value);
 
 		// Reading and writing all variables (when all variables in the solution are integers):
-		int[] values = EncodingUtils.getInt(solution);
-		EncodingUtils.setInt(solution, values);
+		int[] values = BinaryIntegerVariable.getInt(solution);
+		BinaryIntegerVariable.setInt(solution, values);
 		// end-example: integer-variable
 	}
 	
@@ -108,11 +111,11 @@ public class VariableSnippet {
 		
 		// begin-example: permutation-variable
 		// Creating a permutation:
-		solution.setVariable(i, EncodingUtils.newPermutation(length));
+		solution.setVariable(i, new Permutation(length));
 
 		// Reading and writing a permutation:
-		int[] permutation = EncodingUtils.getPermutation(solution.getVariable(i));
-		EncodingUtils.setPermutation(solution.getVariable(i), permutation);
+		int[] permutation = Permutation.getPermutation(solution.getVariable(i));
+		Permutation.setPermutation(solution.getVariable(i), permutation);
 		// end-example: permutation-variable
 	}
 	
@@ -127,12 +130,12 @@ public class VariableSnippet {
 		
 		// begin-example: subset-variable
 		// Creating a fixed and variable-length subset:
-		solution.setVariable(i, EncodingUtils.newSubset(fixedSize, numberOfElements));
-		solution.setVariable(i, EncodingUtils.newSubset(minSize, maxSize, numberOfElements));
+		solution.setVariable(i, new Subset(fixedSize, numberOfElements));
+		solution.setVariable(i, new Subset(minSize, maxSize, numberOfElements));
 
 		// Reading and writing the sets
-		int[] subset = EncodingUtils.getSubset(solution.getVariable(i));
-		EncodingUtils.setSubset(solution.getVariable(i), subset);
+		int[] subset = Subset.getSubset(solution.getVariable(i));
+		Subset.setSubset(solution.getVariable(i), subset);
 		// end-example: subset-variable
 	}
 	

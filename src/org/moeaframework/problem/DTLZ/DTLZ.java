@@ -19,7 +19,6 @@ package org.moeaframework.problem.DTLZ;
 
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.util.validate.Validate;
@@ -109,11 +108,11 @@ public abstract class DTLZ extends AbstractProblem {
 		Solution solution = newSolution();
 
 		for (int i = 0; i < numberOfObjectives - 1; i++) {
-			EncodingUtils.setReal(solution.getVariable(i), PRNG.nextDouble());
+			RealVariable.setReal(solution.getVariable(i), PRNG.nextDouble());
 		}
 
 		for (int i = numberOfObjectives - 1; i < numberOfVariables; i++) {
-			EncodingUtils.setReal(solution.getVariable(i), optimalValue);
+			RealVariable.setReal(solution.getVariable(i), optimalValue);
 		}
 
 		evaluate(solution);

@@ -30,7 +30,7 @@ import org.moeaframework.core.comparator.MinMaxDominanceComparator;
 import org.moeaframework.core.comparator.VectorAngleDistanceScalingComparator;
 import org.moeaframework.core.configuration.Configurable;
 import org.moeaframework.core.configuration.ConfigurationException;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.single.Rosenbrock;
@@ -78,7 +78,7 @@ public abstract class AbstractSingleObjectiveAlgorithmTest<T extends Algorithm &
 		
 		Solution solution = algorithm.getResult().get(0);
 		
-		Assert.assertArrayEquals(new double[] { 1.0, 1.0 }, EncodingUtils.getReal(solution), 0.1);
+		Assert.assertArrayEquals(new double[] { 1.0, 1.0 }, RealVariable.getReal(solution), 0.1);
 		Assert.assertArrayEquals(new double[] { 0.0 }, solution.getObjectiveValues(), 0.1);
 	}
 

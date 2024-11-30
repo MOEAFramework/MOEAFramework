@@ -27,7 +27,7 @@ import java.util.Arrays;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.objective.Maximize;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.io.Tokenizer;
@@ -128,7 +128,7 @@ public class MNKProblem implements Problem {
 	
 	@Override
 	public void evaluate(Solution solution) {
-		boolean[] bits = EncodingUtils.getBinary(solution.getVariable(0));
+		boolean[] bits = BinaryVariable.getBinary(solution.getVariable(0));
 		double result = 0.0;
 		
 		for (int i = 0; i < M; i++) {
@@ -149,7 +149,7 @@ public class MNKProblem implements Problem {
 	@Override
 	public Solution newSolution() {
 		Solution solution = new Solution(1, M, 0);
-		solution.setVariable(0, EncodingUtils.newBinary(N));
+		solution.setVariable(0, new BinaryVariable(N));
 		
 		for (int i = 0; i < M; i++) {
 			solution.setObjective(i, new Maximize());

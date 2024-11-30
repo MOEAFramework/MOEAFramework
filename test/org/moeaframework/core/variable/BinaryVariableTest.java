@@ -225,4 +225,59 @@ public class BinaryVariableTest {
 		}
 	}
 	
+	@Test
+	public void testStatic() {
+		Variable variable = new BinaryVariable(3);
+		
+		BinaryVariable.setBinary(variable, new boolean[] { false, false, true });
+		BitSet bitSet = BinaryVariable.getBitSet(variable);
+		
+		Assert.assertFalse(bitSet.get(0));
+		Assert.assertFalse(bitSet.get(1));
+		Assert.assertTrue(bitSet.get(2));
+		Assert.assertEquals(3, bitSet.length());
+		
+		bitSet.flip(0);
+		bitSet.flip(2);
+		BinaryVariable.setBitSet(variable, bitSet);
+		boolean[] binary = BinaryVariable.getBinary(variable);
+		
+		Assert.assertEquals(3, binary.length);
+		Assert.assertTrue(binary[0]);
+		Assert.assertFalse(binary[1]);
+		Assert.assertFalse(binary[2]);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetInvalidType() {
+		BinaryVariable.setBinary(new RealVariable(0.0, 1.0), new boolean[] { false, false, true });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetInvalidType() {
+		BinaryVariable.getBinary(new RealVariable(0.0, 1.0));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testTooManyBits() {
+		Variable variable = new BinaryVariable(2);
+		BinaryVariable.setBinary(variable, new boolean[] { false, false, true });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testTooFewBits() {
+		Variable variable = new BinaryVariable(2);
+		BinaryVariable.setBinary(variable, new boolean[] { false });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetBitSetInvalidType() {
+		BinaryVariable.setBitSet(new RealVariable(0.0, 1.0), new BitSet(3));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetBitSetInvalidType() {
+		BinaryVariable.getBitSet(new RealVariable(0.0, 1.0));
+	}
+	
 }

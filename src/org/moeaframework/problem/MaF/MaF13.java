@@ -19,7 +19,6 @@ package org.moeaframework.problem.MaF;
 
 import org.apache.commons.math3.stat.StatUtils;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.AnalyticalProblem;
@@ -62,7 +61,7 @@ public class MaF13 extends AbstractProblem implements AnalyticalProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double[] x = EncodingUtils.getReal(solution);
+		double[] x = RealVariable.getReal(solution);
 		double[] f = new double[numberOfObjectives];
 		double[] y = new double[numberOfVariables];
 		

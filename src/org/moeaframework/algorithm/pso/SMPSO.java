@@ -25,7 +25,6 @@ import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.fitness.CrowdingDistanceFitnessEvaluator;
 import org.moeaframework.core.fitness.FitnessBasedArchive;
 import org.moeaframework.core.operator.real.PM;
-import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.Problem;
 
@@ -110,9 +109,9 @@ public class SMPSO extends AbstractPSOAlgorithm {
 		double W = PRNG.nextDouble(0.1, 0.1);
 		
 		for (int j = 0; j < problem.getNumberOfVariables(); j++) {
-			double particleValue = EncodingUtils.getReal(particle.getVariable(j));
-			double localBestValue = EncodingUtils.getReal(localBestParticle.getVariable(j));
-			double leaderValue = EncodingUtils.getReal(leader.getVariable(j));
+			double particleValue = RealVariable.getReal(particle.getVariable(j));
+			double localBestValue = RealVariable.getReal(localBestParticle.getVariable(j));
+			double leaderValue = RealVariable.getReal(leader.getVariable(j));
 			
 			double velocity = constrictionCoefficient(C1, C2) * 
 					(W * velocities[i][j] + 

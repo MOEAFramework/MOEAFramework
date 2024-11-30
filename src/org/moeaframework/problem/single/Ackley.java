@@ -19,7 +19,7 @@ package org.moeaframework.problem.single;
 
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.NondominatedPopulation;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 
 /**
  * The single-objective Ackley problem with an optimum at {@code x = (0, 0)} with {@code f(x) = 0}.
@@ -40,8 +40,8 @@ public class Ackley extends AbstractSingleObjectiveProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double x = EncodingUtils.getReal(solution.getVariable(0));
-		double y = EncodingUtils.getReal(solution.getVariable(1));
+		double x = RealVariable.getReal(solution.getVariable(0));
+		double y = RealVariable.getReal(solution.getVariable(1));
 		
 		solution.setObjectiveValue(0, -20.0 * Math.exp(-0.2 * Math.sqrt(0.5 * (x*x + y*y))) -
 				Math.exp(0.5 * (Math.cos(2.0 * Math.PI * x) + Math.cos(2.0 * Math.PI * y))) +
@@ -51,8 +51,8 @@ public class Ackley extends AbstractSingleObjectiveProblem {
 	@Override
 	public Solution newSolution() {
 		Solution solution = new Solution(2, 1);
-		solution.setVariable(0, EncodingUtils.newReal(-32, 32));
-		solution.setVariable(1, EncodingUtils.newReal(-32, 32));
+		solution.setVariable(0, new RealVariable(-32, 32));
+		solution.setVariable(1, new RealVariable(-32, 32));
 		return solution;
 	}
 	
@@ -61,7 +61,7 @@ public class Ackley extends AbstractSingleObjectiveProblem {
 		NondominatedPopulation result = new NondominatedPopulation();
 		
 		Solution idealPoint = newSolution();
-		EncodingUtils.setReal(idealPoint, new double[] { 0.0, 0.0 });
+		RealVariable.setReal(idealPoint, new double[] { 0.0, 0.0 });
 		
 		evaluate(idealPoint);
 		

@@ -19,7 +19,6 @@ package org.moeaframework.mock;
 
 import org.apache.commons.math3.random.MersenneTwister;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.parallel.FutureSolution;
 
@@ -44,7 +43,7 @@ public class MockRealStochasticProblem extends MockProblem {
 		
 		MersenneTwister rng = new MersenneTwister(randSeed);
 		
-		double x = EncodingUtils.getReal(solution.getVariable(0));
+		double x = RealVariable.getReal(solution.getVariable(0));
 		solution.setObjectiveValue(0, x + rng.nextDouble());
 	}
 

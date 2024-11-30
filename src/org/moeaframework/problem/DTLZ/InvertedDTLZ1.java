@@ -18,7 +18,7 @@
 package org.moeaframework.problem.DTLZ;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 
 /**
  * The Inverted DTLZ1 test problem.  This problem was introduced to test reference-point based algorithms since not all
@@ -47,7 +47,7 @@ public class InvertedDTLZ1 extends DTLZ1 {
 		super.evaluate(solution);
 		
 		// apply the transformation to create the inverted version
-		double[] x = EncodingUtils.getReal(solution);
+		double[] x = RealVariable.getReal(solution);
 		double[] f = solution.getObjectiveValues();
 		double g = g1(x);
 		

@@ -18,7 +18,7 @@
 package org.moeaframework.problem.DTLZ;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AnalyticalProblem;
 
 /**
@@ -50,7 +50,7 @@ public class DTLZ4 extends DTLZ implements AnalyticalProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double[] x = EncodingUtils.getReal(solution);
+		double[] x = RealVariable.getReal(solution);
 		double[] f = new double[numberOfObjectives];
 		double g = g2(x);
 

@@ -1,7 +1,6 @@
 package ${packageName};
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 
@@ -20,7 +19,7 @@ public class ${problemName} extends AbstractProblem {
 	}
 
 	public void evaluate(Solution solution) {
-		double[] vars = EncodingUtils.getReal(solution);
+		double[] vars = RealVariable.getReal(solution);
 		double[] objs = new double[numberOfObjectives];
 		double[] constrs = new double[numberOfConstraints];
 

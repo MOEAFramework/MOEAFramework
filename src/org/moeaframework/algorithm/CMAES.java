@@ -43,7 +43,6 @@ import org.moeaframework.core.fitness.IndicatorFitnessEvaluator;
 import org.moeaframework.core.population.FastNondominatedSorting;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.population.Population;
-import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.validate.Validate;
@@ -903,7 +902,7 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 			xmean[i] = 0;
 
 			for (int j = 0; j < mu; j++) {
-				xmean[i] += weights[j] * EncodingUtils.getReal(population.get(j).getVariable(i));
+				xmean[i] += weights[j] * RealVariable.getReal(population.get(j).getVariable(i));
 			}
 
 			BDz[i] = Math.sqrt(mueff) * (xmean[i] - xold[i]) / sigma;
@@ -961,7 +960,7 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 				C[i][j] = (1.0 - (diagonalIterations >= iteration ? ccovsep : ccov)) * C[i][j] + ccov * (1.0 / mueff) * (pc[i] * pc[j] + (1 - hsig) * cc * (2.0 - cc) * C[i][j]);
 
 				for (int k = 0; k < mu; k++) {
-					C[i][j] += ccov * (1 - 1.0 / mueff) * weights[k] * (EncodingUtils.getReal(population.get(k).getVariable(i)) - xold[i]) * (EncodingUtils.getReal(population.get(k).getVariable(j)) - xold[j]) / sigma / sigma;
+					C[i][j] += ccov * (1 - 1.0 / mueff) * weights[k] * (RealVariable.getReal(population.get(k).getVariable(i)) - xold[i]) * (RealVariable.getReal(population.get(k).getVariable(j)) - xold[j]) / sigma / sigma;
 				}
 			}
 		}

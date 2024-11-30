@@ -21,7 +21,7 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.constraint.LessThanOrEqual;
 import org.moeaframework.core.objective.Maximize;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.AnalyticalProblem;
 
@@ -55,8 +55,8 @@ public class Jimenez extends AbstractProblem implements AnalyticalProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double x = EncodingUtils.getReal(solution.getVariable(0));
-		double y = EncodingUtils.getReal(solution.getVariable(1));
+		double x = RealVariable.getReal(solution.getVariable(0));
+		double y = RealVariable.getReal(solution.getVariable(1));
 		double f1 = 5.0*x + 3.0*y;
 		double f2 = 2.0*x + 8.0*y;
 		double c1 = x + 4.0*y - 100.0;
@@ -76,8 +76,8 @@ public class Jimenez extends AbstractProblem implements AnalyticalProblem {
 	public Solution newSolution() {
 		Solution solution = new Solution(2, 2, 4);
 		
-		solution.setVariable(0, EncodingUtils.newReal(0.0, 50.0));
-		solution.setVariable(1, EncodingUtils.newReal(0.0, 50.0));
+		solution.setVariable(0, new RealVariable(0.0, 50.0));
+		solution.setVariable(1, new RealVariable(0.0, 50.0));
 		
 		solution.setObjective(0, new Maximize());
 		solution.setObjective(1, new Maximize());
@@ -95,8 +95,8 @@ public class Jimenez extends AbstractProblem implements AnalyticalProblem {
 		Solution solution = newSolution();
 		double p = PRNG.nextDouble(0.0, 1.0);
 		
-		EncodingUtils.setReal(solution.getVariable(0), 40.0 + 10.0*p);
-		EncodingUtils.setReal(solution.getVariable(1), 15.0 - 15.0*p);
+		RealVariable.setReal(solution.getVariable(0), 40.0 + 10.0*p);
+		RealVariable.setReal(solution.getVariable(1), 15.0 - 15.0*p);
 		
 		evaluate(solution);
 		return solution;

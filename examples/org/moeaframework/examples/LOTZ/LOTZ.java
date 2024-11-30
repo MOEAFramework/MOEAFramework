@@ -19,7 +19,7 @@ package org.moeaframework.examples.LOTZ;
 
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.objective.Maximize;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.problem.AbstractProblem;
 
 /**
@@ -46,7 +46,7 @@ public class LOTZ extends AbstractProblem {
 	public void evaluate(Solution solution) {
 		int ones = 0;
 		int zeros = 0;
-		boolean[] bits = EncodingUtils.getBinary(solution.getVariable(0));
+		boolean[] bits = BinaryVariable.getBinary(solution.getVariable(0));
 		
 		// count the number of leading ones
 		for (int i = 0; i < bits.length; i++) {
@@ -73,7 +73,7 @@ public class LOTZ extends AbstractProblem {
 	@Override
 	public Solution newSolution() {
 		Solution solution = new Solution(1, 2);
-		solution.setVariable(0, EncodingUtils.newBinary(numberOfBits));
+		solution.setVariable(0, new BinaryVariable(numberOfBits));
 		solution.setObjective(0, new Maximize());
 		solution.setObjective(1, new Maximize());
 		return solution;

@@ -18,7 +18,7 @@
 package org.moeaframework.problem.BBOB2016;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 
 /* 
  * The following source code is derived from the Coco Framework available at <https://github.com/numbbo/coco> under the
@@ -47,7 +47,7 @@ public class TransformVariablesOscillate extends BBOBTransformation {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double[] x = EncodingUtils.getReal(solution);
+		double[] x = RealVariable.getReal(solution);
 		double[] tx = x.clone();
 		
 		for (int i = 0; i < x.length; i++) {
@@ -64,9 +64,9 @@ public class TransformVariablesOscillate extends BBOBTransformation {
 			}
 		}
 		
-		EncodingUtils.setReal(solution, tx);
+		RealVariable.setReal(solution, tx);
 		function.evaluate(solution);
-		EncodingUtils.setReal(solution, x);
+		RealVariable.setReal(solution, x);
 	}
 
 }

@@ -31,7 +31,7 @@ import org.moeaframework.Retryable;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.ParentCentricVariationTest;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.clustering.Cluster;
 import org.moeaframework.util.clustering.Clustering;
 
@@ -134,7 +134,7 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest<AdaptiveM
 		RealMatrix rm = MatrixUtils.createRealMatrix(parents.length, 2);
 		
 		for (int i=0; i<parents.length; i++) {
-			rm.setRow(i, EncodingUtils.getReal(parents[i]));
+			rm.setRow(i, RealVariable.getReal(parents[i]));
 		}
 		
 		rm = rm.scalarMultiply(Math.pow(jumpRateCoefficient / Math.sqrt(2), 2.0));

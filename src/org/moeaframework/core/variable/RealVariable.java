@@ -21,6 +21,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.Constructable;
 import org.moeaframework.core.PRNG;
+import org.moeaframework.core.Solution;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -171,6 +172,105 @@ public class RealVariable extends AbstractVariable {
 	@Override
 	public void decode(String value) {
 		this.value = Double.parseDouble(value);
+	}
+	
+	/**
+	 * Returns the value stored in a floating-point decision variable.
+	 * 
+	 * @param variable the decision variable
+	 * @return the value stored in a floating-point decision variable
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link RealVariable}
+	 */
+	public static double getReal(Variable variable) {
+		RealVariable realVariable = Validate.that("variable", variable).isA(RealVariable.class);
+		return realVariable.getValue();
+	}
+	
+	/**
+	 * Returns the array of floating-point decision variables stored in a solution.  The solution must contain only
+	 * floating-point decision variables.
+	 * 
+	 * @param solution the solution
+	 * @return the array of floating-point decision variables stored in a solution
+	 * @throws IllegalArgumentException if any decision variable contained in the solution is not of type
+	 *         {@link RealVariable}
+	 */
+	public static double[] getReal(Solution solution) {
+		return getReal(solution, 0, solution.getNumberOfVariables());
+	}
+	
+	/**
+	 * Returns the array of floating-point decision variables stored in a solution between the specified indices.
+	 * The decision variables located between the start and end index must all be floating-point decision variables.
+	 * 
+	 * @param solution the solution
+	 * @param startIndex the start index (inclusive)
+	 * @param endIndex the end index (exclusive)
+	 * @return the array of floating-point decision variables stored in a solution between the specified indices
+	 * @throws IllegalArgumentException if any decision variable contained in the solution between the start and end
+	 *         index is not of type {@link RealVariable}
+	 */
+	public static double[] getReal(Solution solution, int startIndex, int endIndex) {
+		double[] result = new double[endIndex - startIndex];
+		
+		for (int i=startIndex; i<endIndex; i++) {
+			result[i-startIndex] = getReal(solution.getVariable(i));
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Sets the value of a floating-point decision variable.
+	 * 
+	 * @param variable the decision variable
+	 * @param value the value to assign the floating-point decision variable
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link RealVariable}
+	 * @throws IllegalArgumentException if the value is out of bounds
+	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
+	 */
+	public static void setReal(Variable variable, double value) {
+		RealVariable realVariable = Validate.that("variable", variable).isA(RealVariable.class);
+		realVariable.setValue(value);
+	}
+	
+	/**
+	 * Sets the values of all floating-point decision variables stored in the solution.  The solution must contain
+	 * only floating-point decision variables.
+	 * 
+	 * @param solution the solution
+	 * @param values the array of floating-point values to assign the solution
+	 * @throws IllegalArgumentException if any decision variable contained in the solution is not of type
+	 *         {@link RealVariable}
+	 * @throws IllegalArgumentException if any of the values are out of bounds
+	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
+	 */
+	public static void setReal(Solution solution, double[] values) {
+		setReal(solution, 0, solution.getNumberOfVariables(), values);
+	}
+	
+	/**
+	 * Sets the values of the floating-point decision variables stored in a solution between the specified indices.
+	 * The decision variables located between the start and end index must all be floating-point decision variables.
+	 * 
+	 * @param solution the solution
+	 * @param startIndex the start index (inclusive)
+	 * @param endIndex the end index (exclusive)
+	 * @param values the array of floating-point values to assign the decision variables
+	 * @throws IllegalArgumentException if any decision variable contained in the solution between the start and end
+	 *         index is not of type {@link RealVariable}
+	 * @throws IllegalArgumentException if an invalid number of values are provided
+	 * @throws IllegalArgumentException if any of the values are out of bounds
+	 *         ({@code value < getLowerBound()) || (value > getUpperBound()})
+	 */
+	public static void setReal(Solution solution, int startIndex, int endIndex, double[] values) {
+		if (values.length != (endIndex - startIndex)) {
+			Validate.that("values", values).fails("The start / end index and array length are not compatible.");
+		}
+		
+		for (int i=startIndex; i<endIndex; i++) {
+			setReal(solution.getVariable(i), values[i-startIndex]);
+		}
 	}
 
 }

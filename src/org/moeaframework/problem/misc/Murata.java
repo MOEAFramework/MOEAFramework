@@ -19,7 +19,7 @@ package org.moeaframework.problem.misc;
 
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.AnalyticalProblem;
 
@@ -51,8 +51,8 @@ public class Murata extends AbstractProblem implements AnalyticalProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double x = EncodingUtils.getReal(solution.getVariable(0));
-		double y = EncodingUtils.getReal(solution.getVariable(1));
+		double x = RealVariable.getReal(solution.getVariable(0));
+		double y = RealVariable.getReal(solution.getVariable(1));
 		double f1 = 2.0 * Math.sqrt(x);
 		double f2 = x * (1.0 - y) + 5.0;
 		
@@ -64,8 +64,8 @@ public class Murata extends AbstractProblem implements AnalyticalProblem {
 	public Solution newSolution() {
 		Solution solution = new Solution(2, 2);
 		
-		solution.setVariable(0, EncodingUtils.newReal(1, 4));
-		solution.setVariable(1, EncodingUtils.newReal(1, 2));
+		solution.setVariable(0, new RealVariable(1, 4));
+		solution.setVariable(1, new RealVariable(1, 2));
 		
 		return solution;
 	}
@@ -74,8 +74,8 @@ public class Murata extends AbstractProblem implements AnalyticalProblem {
 	public Solution generate() {
 		Solution solution = newSolution();
 		
-		EncodingUtils.setReal(solution.getVariable(0), PRNG.nextDouble(1.0, 4.0));
-		EncodingUtils.setReal(solution.getVariable(1), 2.0);
+		RealVariable.setReal(solution.getVariable(0), PRNG.nextDouble(1.0, 4.0));
+		RealVariable.setReal(solution.getVariable(1), 2.0);
 		
 		evaluate(solution);
 		return solution;

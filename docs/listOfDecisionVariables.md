@@ -4,8 +4,8 @@ A `Solution` consists of one or more decision variables.  All decision variables
 interface.  There are a number of built-in decision variable types along with
 [mutation and crossover operators](listOfOperators.md) for evolving those types.
 
-For convenience, we also provide an `EncodingUtils` class that handles creating, reading, and writing values to
-decision variables.  It makes converting between native Java types and decision variables easy.
+To read the value stored in a variable, you must first cast it to the specific type.  For convenience, each variable
+defines static methods for reading and writing the values, as demonstrated in the examples below.
 
 ## Real
 
@@ -16,15 +16,15 @@ double precision (64-bit) floating point values.
 
 ```java
 // Creating a real-valued variable:
-solution.setVariable(i, EncodingUtils.newReal(lowerBound, upperBound));
+solution.setVariable(i, new RealVariable(lowerBound, upperBound));
 
 // Reading and writing a single variable:
-double value = EncodingUtils.getReal(solution.getVariable(i));
-EncodingUtils.setReal(solution.getVariable(i), value);
+double value = RealVariable.getReal(solution.getVariable(i));
+RealVariable.setReal(solution.getVariable(i), value);
 
 // Reading and writing all variables (when all variables in the solution are real-valued):
-double[] values = EncodingUtils.getReal(solution);
-EncodingUtils.setReal(solution, values);
+double[] values = RealVariable.getReal(solution);
+RealVariable.setReal(solution, values);
 ```
 
 ## Binary
@@ -36,15 +36,15 @@ and `true`).  In Java, you can read the value either as a `boolean[]` or using a
 
 ```java
 // Creating a binary variable:
-solution.setVariable(i, EncodingUtils.newBinary(length));
+solution.setVariable(i, new BinaryVariable(length));
 
 // Reading the values as an array or BitSet:
-boolean[] bits = EncodingUtils.getBinary(solution.getVariable(i));
-BitSet bitSet = EncodingUtils.getBitSet(solution.getVariable(i));
+boolean[] bits = BinaryVariable.getBinary(solution.getVariable(i));
+BitSet bitSet = BinaryVariable.getBitSet(solution.getVariable(i));
 
 // Updating the bits:
-EncodingUtils.setBinary(solution.getVariable(i), bits);
-EncodingUtils.setBitSet(solution.getVariable(i), bitSet);
+BinaryVariable.setBinary(solution.getVariable(i), bits);
+BinaryVariable.setBitSet(solution.getVariable(i), bitSet);
 ```
 
 ## Integer
@@ -58,16 +58,15 @@ operators are available.  We generally recommend using binary.  By default, the 
 
 ```java
 // Creating an integer variable:
-solution.setVariable(i, EncodingUtils.newInt(lowerBound, upperBound));
-solution.setVariable(i, EncodingUtils.newBinaryInt(lowerBound, upperBound));
+solution.setVariable(i, new BinaryIntegerVariable(lowerBound, upperBound));
 
 // Reading and writing a single variable:
-int value = EncodingUtils.getInt(solution.getVariable(i));
-EncodingUtils.setInt(solution.getVariable(i), value);
+int value = BinaryIntegerVariable.getInt(solution.getVariable(i));
+BinaryIntegerVariable.setInt(solution.getVariable(i), value);
 
 // Reading and writing all variables (when all variables in the solution are integers):
-int[] values = EncodingUtils.getInt(solution);
-EncodingUtils.setInt(solution, values);
+int[] values = BinaryIntegerVariable.getInt(solution);
+BinaryIntegerVariable.setInt(solution, values);
 ```
 
 ## Permutation
@@ -80,11 +79,11 @@ used by the Traveling Salesman Problem to specify the order that cities are visi
 
 ```java
 // Creating a permutation:
-solution.setVariable(i, EncodingUtils.newPermutation(length));
+solution.setVariable(i, new Permutation(length));
 
 // Reading and writing a permutation:
-int[] permutation = EncodingUtils.getPermutation(solution.getVariable(i));
-EncodingUtils.setPermutation(solution.getVariable(i), permutation);
+int[] permutation = Permutation.getPermutation(solution.getVariable(i));
+Permutation.setPermutation(solution.getVariable(i), permutation);
 ```
 
 ## Subset
@@ -102,12 +101,12 @@ of elements in a valid subset.
 
 ```java
 // Creating a fixed and variable-length subset:
-solution.setVariable(i, EncodingUtils.newSubset(fixedSize, numberOfElements));
-solution.setVariable(i, EncodingUtils.newSubset(minSize, maxSize, numberOfElements));
+solution.setVariable(i, new Subset(fixedSize, numberOfElements));
+solution.setVariable(i, new Subset(minSize, maxSize, numberOfElements));
 
 // Reading and writing the sets
-int[] subset = EncodingUtils.getSubset(solution.getVariable(i));
-EncodingUtils.setSubset(solution.getVariable(i), subset);
+int[] subset = Subset.getSubset(solution.getVariable(i));
+Subset.setSubset(solution.getVariable(i), subset);
 ```
 
 ## Program

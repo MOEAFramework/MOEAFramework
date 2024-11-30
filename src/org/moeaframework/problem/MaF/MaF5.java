@@ -18,7 +18,7 @@
 package org.moeaframework.problem.MaF;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.problem.DTLZ.DTLZ;
 
@@ -44,7 +44,7 @@ public class MaF5 extends DTLZ implements AnalyticalProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double[] x = EncodingUtils.getReal(solution);
+		double[] x = RealVariable.getReal(solution);
 		double[] f = new double[numberOfObjectives];
 		final double alpha = 100.0;
 		final double a = 2.0;

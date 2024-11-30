@@ -26,6 +26,7 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Settings;
+import org.moeaframework.core.Solution;
 
 public class RealVariableTest {
 
@@ -134,6 +135,81 @@ public class RealVariableTest {
 		}
 		
 		Assert.assertUniformDistribution(variable.getLowerBound(), variable.getUpperBound(), stats);
+	}
+	
+	@Test
+	public void testSolutionEncoding() {
+		Solution solution = new Solution(3, 1);
+		solution.setVariable(0, new RealVariable(0.0, 1.0));
+		solution.setVariable(1, new RealVariable(2.0, 4.0));
+		solution.setVariable(2, new RealVariable(-1.0, 1.0));
+		
+		RealVariable.setReal(solution, new double[] { 0.5, 3.0, 0.0 });
+		Assert.assertArrayEquals(new double[] { 0.5, 3.0, 0.0 }, RealVariable.getReal(solution), TestThresholds.HIGH_PRECISION);
+		
+		Assert.assertArrayEquals(new double[] { 3.0, 0.0 }, RealVariable.getReal(solution, 1, 3), TestThresholds.HIGH_PRECISION);
+		
+		Assert.assertArrayEquals(new double[] { 3.0 }, RealVariable.getReal(solution, 1, 2), TestThresholds.HIGH_PRECISION);
+		
+		Assert.assertArrayEquals(new double[0], RealVariable.getReal(solution, 1, 1), TestThresholds.HIGH_PRECISION);
+		
+		RealVariable.setReal(solution, 1, 3, new double[] { 2.0, -1.0 });
+		
+		Assert.assertArrayEquals(new double[] { 0.5, 2.0, -1.0 }, RealVariable.getReal(solution), TestThresholds.HIGH_PRECISION);
+		
+		RealVariable.setReal(solution, 2, 3, new double[] { 1.0 });
+		
+		Assert.assertArrayEquals(new double[] { 0.5, 2.0, 1.0 }, RealVariable.getReal(solution), TestThresholds.HIGH_PRECISION);
+		
+		RealVariable.setReal(solution, 2, 2, new double[0]);
+		
+		Assert.assertArrayEquals(new double[] { 0.5, 2.0, 1.0 }, RealVariable.getReal(solution), TestThresholds.HIGH_PRECISION);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetInvalidType() {
+		RealVariable.setReal(new BinaryVariable(3), 1.0);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetInvalidType() {
+		RealVariable.getReal(new BinaryVariable(3));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetSolutionInvalidType() {
+		Solution solution = new Solution(3, 1);
+		solution.setVariable(0, new RealVariable(0.0, 1.0));
+		solution.setVariable(1, new BinaryVariable(2));
+		solution.setVariable(2, new RealVariable(-1.0, 1.0));
+		
+		RealVariable.setReal(solution, new double[] { 0.0, 0.0, 0.0 });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetSolutionInvalidType() {
+		Solution solution = new Solution(3, 1);
+		solution.setVariable(0, new RealVariable(0.0, 1.0));
+		solution.setVariable(1, new BinaryVariable(2));
+		solution.setVariable(2, new RealVariable(-1.0, 1.0));
+		
+		RealVariable.getReal(solution);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testTooFewValues() {
+		Solution solution = new Solution(2, 0);
+		solution.setVariable(0, new RealVariable(0.0, 1.0));
+		solution.setVariable(1, new RealVariable(0.0, 1.0));
+		RealVariable.setReal(solution, new double[] { 0.25 });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testTooManyValues() {
+		Solution solution = new Solution(2, 0);
+		solution.setVariable(0, new RealVariable(0.0, 1.0));
+		solution.setVariable(1, new RealVariable(0.0, 1.0));
+		RealVariable.setReal(solution, new double[] { 0.25, 0.75, 0.5 });
 	}
 
 }

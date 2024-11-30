@@ -228,5 +228,70 @@ public class BinaryVariable extends AbstractVariable {
 			set(i, PRNG.nextBoolean());
 		}
 	}
+	
+	/**
+	 * Returns the value stored in a binary decision variable as a {@link BitSet}.
+	 * 
+	 * @param variable the decision variable
+	 * @return the value stored in a binary decision variable as a {@code BitSet}
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link BinaryVariable}
+	 */
+	public static BitSet getBitSet(Variable variable) {
+		BinaryVariable binaryVariable = Validate.that("variable", variable).isA(BinaryVariable.class);
+		return binaryVariable.getBitSet();
+	}
+	
+	/**
+	 * Returns the value stored in a binary decision variable as a boolean array.
+	 * 
+	 * @param variable the decision variable
+	 * @return the value stored in a binary decision variable as a boolean array
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link BinaryVariable}
+	 */
+	public static boolean[] getBinary(Variable variable) {
+		BinaryVariable binaryVariable = Validate.that("variable", variable).isA(BinaryVariable.class);
+		boolean[] result = new boolean[binaryVariable.getNumberOfBits()];
+			
+		for (int i=0; i<binaryVariable.getNumberOfBits(); i++) {
+			result[i] = binaryVariable.get(i);
+		}
+			
+		return result;
+	}
+	
+	/**
+	 * Sets the bits in a binary decision variable using the given {@link BitSet}.
+	 * 
+	 * @param variable the decision variable
+	 * @param bitSet the bits to set in the binary decision variable
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link BinaryVariable}
+	 */
+	public static void setBitSet(Variable variable, BitSet bitSet) {
+		BinaryVariable binaryVariable = Validate.that("variable", variable).isA(BinaryVariable.class);
+		
+		for (int i=0; i<binaryVariable.getNumberOfBits(); i++) {
+			binaryVariable.set(i, bitSet.get(i));
+		}
+	}
+	
+	/**
+	 * Sets the bits in a binary decision variable using the given boolean array.
+	 * 
+	 * @param variable the decision variable
+	 * @param values the bits to set in the binary decision variable
+	 * @throws IllegalArgumentException if the decision variable is not of type {@link BinaryVariable}
+	 * @throws IllegalArgumentException if an invalid number of values are provided
+	 */
+	public static void setBinary(Variable variable, boolean[] values) {
+		BinaryVariable binaryVariable = Validate.that("variable", variable).isA(BinaryVariable.class);
+		
+		if (values.length != binaryVariable.getNumberOfBits()) {
+			Validate.that("values", values).fails("Array length must equal the number of bits.");
+		}
+			
+		for (int i=0; i<binaryVariable.getNumberOfBits(); i++) {
+			binaryVariable.set(i, values[i]);
+		}
+	}
 
 }

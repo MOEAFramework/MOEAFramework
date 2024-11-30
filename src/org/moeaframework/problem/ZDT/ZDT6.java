@@ -18,7 +18,7 @@
 package org.moeaframework.problem.ZDT;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 
 /**
  * The ZDT6 test problem.
@@ -43,7 +43,7 @@ public class ZDT6 extends ZDT {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double[] x = EncodingUtils.getReal(solution);
+		double[] x = RealVariable.getReal(solution);
 
 		double f = 1.0 - Math.exp(-4.0 * x[0]) * Math.pow(Math.sin(6.0 * Math.PI * x[0]), 6.0);
 

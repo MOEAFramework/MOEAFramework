@@ -32,7 +32,6 @@ import org.moeaframework.core.constraint.Constraint;
 import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.BinaryVariable;
-import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.core.variable.Subset;
@@ -107,7 +106,7 @@ public class MockSolution extends Solution {
 		throwIfReadOnly();
 		throwIfNoSolutionOrVariables();
 
-		EncodingUtils.setReal(this, variables);
+		RealVariable.setReal(this, variables);
 		return this;
 	}
 
@@ -116,7 +115,7 @@ public class MockSolution extends Solution {
 		throwIfNoSolutionOrVariables();
 
 		for (int i = 0; i < solution.get().getNumberOfVariables(); i++) {
-			EncodingUtils.setReal(variables.get()[i], value);
+			RealVariable.setReal(variables.get()[i], value);
 		}
 
 		return this;
@@ -128,7 +127,7 @@ public class MockSolution extends Solution {
 		
 		for (int i = 0; i < solution.get().getNumberOfVariables(); i++) {
 			Variable variable = variables.get()[i];
-			EncodingUtils.setReal(variable, EncodingUtils.getReal(variable) + PRNG.nextGaussian(0.0, stdev));
+			RealVariable.setReal(variable, RealVariable.getReal(variable) + PRNG.nextGaussian(0.0, stdev));
 		}
 
 		return this;

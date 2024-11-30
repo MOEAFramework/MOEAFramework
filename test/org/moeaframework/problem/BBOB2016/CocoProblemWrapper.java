@@ -18,7 +18,7 @@
 package org.moeaframework.problem.BBOB2016;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 
 public class CocoProblemWrapper extends AbstractProblem {
@@ -37,7 +37,7 @@ public class CocoProblemWrapper extends AbstractProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double[] x = EncodingUtils.getReal(solution);
+		double[] x = RealVariable.getReal(solution);
 		solution.setObjectiveValues(problem.evaluateFunction(x));
 		
 		if (numberOfConstraints > 0) {
@@ -50,7 +50,7 @@ public class CocoProblemWrapper extends AbstractProblem {
 		Solution solution = new Solution(numberOfVariables, numberOfObjectives, numberOfConstraints);
 		
 		for (int i = 0; i < numberOfVariables; i++) {
-			solution.setVariable(i, EncodingUtils.newReal(
+			solution.setVariable(i, new RealVariable(
 					problem.getSmallestValueOfInterest(i), problem.getLargestValueOfInterest(i)));
 		}
 		

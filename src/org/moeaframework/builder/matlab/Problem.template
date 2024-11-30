@@ -6,7 +6,6 @@ import com.mathworks.engine.MatlabEngine;
 
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.util.io.Resources;
@@ -35,7 +34,7 @@ public class ${problemName} extends AbstractProblem {
 				engine = MatlabEngine.startMatlab();
 			}
 			
-			double[] vars = EncodingUtils.getReal(solution);
+			double[] vars = RealVariable.getReal(solution);
 			
 			Object[] results = engine.feval(2, "${functionName}", vars);
 	

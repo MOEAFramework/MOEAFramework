@@ -25,7 +25,8 @@ import org.moeaframework.core.operator.binary.BitFlip;
 import org.moeaframework.core.operator.binary.HUX;
 import org.moeaframework.core.operator.real.PM;
 import org.moeaframework.core.operator.real.SBX;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.BinaryIntegerVariable;
+import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.Problem;
 
@@ -46,8 +47,8 @@ public class MixedTypesExample {
 
 		@Override
 		public void evaluate(Solution solution) {
-			int x = EncodingUtils.getInt(solution.getVariable(0));
-			double y = EncodingUtils.getReal(solution.getVariable(1));
+			int x = BinaryIntegerVariable.getInt(solution.getVariable(0));
+			double y = RealVariable.getReal(solution.getVariable(1));
 			double f1 = Math.pow(x - 2.0, 2.0) + Math.pow(y - 1.0, 2.0) + 2.0;
 			double f2 = 9.0*x - Math.pow(y - 1.0, 2.0);
 			double c1 = Math.pow(x, 2.0) + Math.pow(y, 2.0) - 225.0;
@@ -63,8 +64,8 @@ public class MixedTypesExample {
 		public Solution newSolution() {
 			Solution solution = new Solution(2, 2, 2);
 			
-			solution.setVariable(0, EncodingUtils.newBinaryInt(-20, 20));
-			solution.setVariable(1, EncodingUtils.newReal(-20.0, 20.0));
+			solution.setVariable(0, new BinaryIntegerVariable(-20, 20));
+			solution.setVariable(1, new RealVariable(-20.0, 20.0));
 			
 			solution.setConstraint(0, LessThanOrEqual.to(0.0));
 			solution.setConstraint(1, LessThanOrEqual.to(0.0));

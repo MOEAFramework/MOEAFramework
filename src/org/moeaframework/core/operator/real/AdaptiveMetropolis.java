@@ -28,7 +28,6 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.configuration.Property;
-import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.validate.Validate;
 
@@ -118,7 +117,7 @@ public class AdaptiveMetropolis extends MultiParentVariation {
 		RealMatrix x = new Array2DRowRealMatrix(k, n);
 		
 		for (int i=0; i<k; i++) {
-			x.setRow(i, EncodingUtils.getReal(parents[i]));
+			x.setRow(i, RealVariable.getReal(parents[i]));
 		}
 		
 		try {
@@ -135,7 +134,7 @@ public class AdaptiveMetropolis extends MultiParentVariation {
 				Solution child = parents[PRNG.nextInt(parents.length)].copy();
 				
 				//apply adaptive metropolis step to solution
-				RealVector muC = new ArrayRealVector(EncodingUtils.getReal(child));
+				RealVector muC = new ArrayRealVector(RealVariable.getReal(child));
 				RealVector ru = new ArrayRealVector(n);
 				
 				for (int j=0; j<n; j++) {

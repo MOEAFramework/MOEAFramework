@@ -22,7 +22,7 @@ import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.problem.single.Rosenbrock;
 
 /**
@@ -41,8 +41,8 @@ public class IntegerProblemTest {
 
 		@Override
 		public void evaluate(Solution solution) {
-			int x = EncodingUtils.getInt(solution.getVariable(0));
-			int y = EncodingUtils.getInt(solution.getVariable(1));
+			int x = BinaryIntegerVariable.getInt(solution.getVariable(0));
+			int y = BinaryIntegerVariable.getInt(solution.getVariable(1));
 			
 			solution.setObjectiveValue(0, 100*(y - x*x)*(y - x*x) + (1 - x)*(1 - x));
 		}
@@ -50,8 +50,8 @@ public class IntegerProblemTest {
 		@Override
 		public Solution newSolution() {
 			Solution solution = new Solution(2, 1);
-			solution.setVariable(0, EncodingUtils.newInt(-10, 10));
-			solution.setVariable(1, EncodingUtils.newInt(-10, 10));
+			solution.setVariable(0, new BinaryIntegerVariable(-10, 10));
+			solution.setVariable(1, new BinaryIntegerVariable(-10, 10));
 			return solution;
 		}
 		
@@ -63,7 +63,7 @@ public class IntegerProblemTest {
 		algorithm.run(100000);
 		
 		Solution solution = algorithm.getResult().get(0);
-		Assert.assertArrayEquals(new int[] { 1, 1 }, EncodingUtils.getInt(solution));
+		Assert.assertArrayEquals(new int[] { 1, 1 }, BinaryIntegerVariable.getInt(solution));
 		Assert.assertEquals(0, solution.getObjectiveValue(0), TestThresholds.HIGH_PRECISION);
 	}
 

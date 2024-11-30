@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.util.validate.Validate;
@@ -100,7 +99,7 @@ public abstract class LZ extends AbstractProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		solution.setObjectiveValues(evaluate(EncodingUtils.getReal(solution)));
+		solution.setObjectiveValues(evaluate(RealVariable.getReal(solution)));
 	}
 
 	@Override

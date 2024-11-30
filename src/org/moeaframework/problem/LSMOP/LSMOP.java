@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.Problem;
 
 /**
@@ -179,9 +179,9 @@ public abstract class LSMOP implements Problem {
 		
 		for (int i = 0; i < D; i++) {
 			if (i < M - 1) {
-				solution.setVariable(i, EncodingUtils.newReal(0.0, 1.0));
+				solution.setVariable(i, new RealVariable(0.0, 1.0));
 			} else {
-				solution.setVariable(i, EncodingUtils.newReal(0.0, 10.0));
+				solution.setVariable(i, new RealVariable(0.0, 10.0));
 			}
 		}
 		
@@ -195,7 +195,7 @@ public abstract class LSMOP implements Problem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double[] x = EncodingUtils.getReal(solution);
+		double[] x = RealVariable.getReal(solution);
 		
 		// Apply the linkage function
 		x = linkage.apply(M, D, x);

@@ -19,7 +19,7 @@ package org.moeaframework.problem.single;
 
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.NondominatedPopulation;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 
 /**
  * The single-objective Beale problem with an optimum at {@code x = (3.0, 0.5)} with {@code f(x) = 0}.
@@ -35,8 +35,8 @@ public class Beale extends AbstractSingleObjectiveProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double x = EncodingUtils.getReal(solution.getVariable(0));
-		double y = EncodingUtils.getReal(solution.getVariable(1));
+		double x = RealVariable.getReal(solution.getVariable(0));
+		double y = RealVariable.getReal(solution.getVariable(1));
 		
 		solution.setObjectiveValue(0, Math.pow(1.5 - x + x*y, 2.0) + Math.pow(2.25 - x + x*y*y, 2.0)
 				+ Math.pow(2.625 - x + x*y*y*y, 2.0));
@@ -45,8 +45,8 @@ public class Beale extends AbstractSingleObjectiveProblem {
 	@Override
 	public Solution newSolution() {
 		Solution solution = new Solution(2, 1);
-		solution.setVariable(0, EncodingUtils.newReal(-4.5, 4.5));
-		solution.setVariable(1, EncodingUtils.newReal(-4.5, 4.5));
+		solution.setVariable(0, new RealVariable(-4.5, 4.5));
+		solution.setVariable(1, new RealVariable(-4.5, 4.5));
 		return solution;
 	}
 	
@@ -55,7 +55,7 @@ public class Beale extends AbstractSingleObjectiveProblem {
 		NondominatedPopulation result = new NondominatedPopulation();
 		
 		Solution idealPoint = newSolution();
-		EncodingUtils.setReal(idealPoint, new double[] { 3.0, 0.5 });
+		RealVariable.setReal(idealPoint, new double[] { 3.0, 0.5 });
 		
 		evaluate(idealPoint);
 		

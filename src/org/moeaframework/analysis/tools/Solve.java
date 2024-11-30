@@ -38,7 +38,10 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.spi.AlgorithmFactory;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.BinaryIntegerVariable;
+import org.moeaframework.core.variable.BinaryVariable;
+import org.moeaframework.core.variable.Permutation;
+import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.core.variable.Variable;
 import org.moeaframework.problem.ExternalProblem;
 import org.moeaframework.problem.ExternalProblem.Builder;
@@ -171,7 +174,7 @@ public class Solve extends CommandLineUtility {
 			if (index >= 0) {
 				double lowerBound = Double.parseDouble(content.substring(0, index));
 				double upperBound = Double.parseDouble(content.substring(index+1, content.length()));
-				return EncodingUtils.newReal(lowerBound, upperBound);
+				return new RealVariable(lowerBound, upperBound);
 			} else {
 				throw new ParseException("invalid real specification '" + token + "', expected R(<lb>:<ub>)");
 			}
@@ -181,7 +184,7 @@ public class Solve extends CommandLineUtility {
 			
 			try {
 				int length = Integer.parseInt(content.trim());
-				return EncodingUtils.newBinary(length);
+				return new BinaryVariable(length);
 			} catch (NumberFormatException e) {
 				throw new ParseException("invalid binary specification '" + token + "', expected B(<length>)");
 			}
@@ -193,7 +196,7 @@ public class Solve extends CommandLineUtility {
 			if (index >= 0) {
 				int lowerBound = Integer.parseInt(content.substring(0, index));
 				int upperBound = Integer.parseInt(content.substring(index+1, content.length()));
-				return EncodingUtils.newBinaryInt(lowerBound, upperBound);
+				return new BinaryIntegerVariable(lowerBound, upperBound);
 			} else {
 				throw new ParseException("invalid integer specification '" + token + "', expected I(<lb>:<ub>)");
 			}
@@ -203,7 +206,7 @@ public class Solve extends CommandLineUtility {
 			
 			try {
 				int length = Integer.parseInt(content.trim());
-				return EncodingUtils.newPermutation(length);
+				return new Permutation(length);
 			} catch (NumberFormatException e) {
 				throw new ParseException("invalid permutation specification '" + token + "', expected P(<length>)");
 			}
@@ -234,7 +237,7 @@ public class Solve extends CommandLineUtility {
 			for (int i = 0; i < lowerBoundTokens.length; i++) {
 				double lowerBound = Double.parseDouble(lowerBoundTokens[i]);
 				double upperBound = Double.parseDouble(upperBoundTokens[i]);
-				variables.add(EncodingUtils.newReal(lowerBound, upperBound));
+				variables.add(new RealVariable(lowerBound, upperBound));
 			}
 		} else if (commandLine.hasOption("variables")) {
 			String[] tokens = commandLine.getOptionValue("variables").split(",");

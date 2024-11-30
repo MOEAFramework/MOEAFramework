@@ -19,7 +19,7 @@ package org.moeaframework.problem.misc;
 
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.constraint.LessThanOrEqual;
-import org.moeaframework.core.variable.EncodingUtils;
+import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 import org.moeaframework.problem.AnalyticalProblem;
 
@@ -53,8 +53,8 @@ public class Binh4 extends AbstractProblem implements AnalyticalProblem {
 
 	@Override
 	public void evaluate(Solution solution) {
-		double x = EncodingUtils.getReal(solution.getVariable(0));
-		double y = EncodingUtils.getReal(solution.getVariable(1));
+		double x = RealVariable.getReal(solution.getVariable(0));
+		double y = RealVariable.getReal(solution.getVariable(1));
 		double f1 = 1.5 - x*(1.0 - y);
 		double f2 = 2.25 - x*(1.0 - Math.pow(y, 2.0));
 		double f3 = 2.625 - x*(1.0 - Math.pow(y, 3.0));
@@ -72,8 +72,8 @@ public class Binh4 extends AbstractProblem implements AnalyticalProblem {
 	public Solution newSolution() {
 		Solution solution = new Solution(2, 3, 2);
 		
-		solution.setVariable(0, EncodingUtils.newReal(-10.0, 10.0));
-		solution.setVariable(1, EncodingUtils.newReal(-10.0, 10.0));
+		solution.setVariable(0, new RealVariable(-10.0, 10.0));
+		solution.setVariable(1, new RealVariable(-10.0, 10.0));
 		
 		solution.setConstraint(0, LessThanOrEqual.to(0.0));
 		solution.setConstraint(1, LessThanOrEqual.to(0.0));
@@ -85,8 +85,8 @@ public class Binh4 extends AbstractProblem implements AnalyticalProblem {
 	public Solution generate() {
 		Solution solution = newSolution();
 		
-		EncodingUtils.setReal(solution.getVariable(0), 3.0);
-		EncodingUtils.setReal(solution.getVariable(1), 0.5);
+		RealVariable.setReal(solution.getVariable(0), 3.0);
+		RealVariable.setReal(solution.getVariable(1), 0.5);
 		
 		evaluate(solution);
 		return solution;
