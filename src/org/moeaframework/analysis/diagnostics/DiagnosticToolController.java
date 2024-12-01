@@ -48,6 +48,7 @@ import org.moeaframework.analysis.runtime.Observations;
 import org.moeaframework.analysis.viewer.TextViewer;
 import org.moeaframework.core.DefaultEpsilons;
 import org.moeaframework.core.Epsilons;
+import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.indicator.StandardIndicator;
 import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
@@ -382,7 +383,7 @@ public class DiagnosticToolController extends Controller implements SettingChang
 		
 		runProgress = (int)(100*evalPercent);
 		overallProgress = (int)(100*(seedPercent + evalPercent/(double)totalSeeds));
-				
+
 		fireEvent("progressChanged");
 	}
 	
@@ -608,8 +609,11 @@ public class DiagnosticToolController extends Controller implements SettingChang
 							}
 						
 						};
-													
-						Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, problem);
+						
+						TypedProperties properties = new TypedProperties();
+						properties.setInt("maxEvaluations", numberOfEvaluations);
+												
+						Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, properties, problem);
 						algorithm.addExtension(new ProgressExtension().withListener(listener));
 						
 						InstrumentedAlgorithm<?> instrumentedAlgorithm = instrumenter.instrument(algorithm);

@@ -93,11 +93,7 @@ The Diagnostic Tool is a GUI that provides a convenient way to run and visualize
 Diagnostic Tool, run:
 
 ```bash
-# Windows
-cli LaunchDiagnosticTool
-
-# Linux / Mac
-cli.sh LaunchDiagnosticTool
+./cli LaunchDiagnosticTool
 ```
 
 Below is an example comparing NSGA-II and $\epsilon$-MOEA on the UF1 test problem.  Note how the controls on the
