@@ -19,14 +19,14 @@ package org.moeaframework.analysis.stream;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.mock.function.MockBiConsumer;
-import org.moeaframework.mock.function.MockConsumer;
+import org.moeaframework.CallCounter;
 
 public class DataStreamTest {
 	
@@ -54,13 +54,13 @@ public class DataStreamTest {
 		Assert.assertThrows(NoSuchElementException.class, () -> stream.single());
 		Assert.assertEquals("default", stream.singleOrDefault("default"));
 		
-		MockConsumer<String> forEachConsumer = MockConsumer.of();
-		stream.forEach(forEachConsumer);
-		forEachConsumer.assertCallCount(0);
+		CallCounter<Consumer<String>> forEachCounter = CallCounter.mockConsumer();
+		stream.forEach(forEachCounter.getProxy());
+		Assert.assertEquals(0, forEachCounter.getTotalCallCount("accept"));
 		
-		MockBiConsumer<Integer, String> enumerateConsumer = MockBiConsumer.of();
-		stream.enumerate(enumerateConsumer);
-		enumerateConsumer.assertCallCount(0);
+		CallCounter<BiConsumer<Integer, String>> enumerateCounter = CallCounter.mockBiConsumer();
+		stream.enumerate(enumerateCounter.getProxy());
+		Assert.assertEquals(0, enumerateCounter.getTotalCallCount("accept"));
 	}
 	
 	@Test
@@ -87,13 +87,17 @@ public class DataStreamTest {
 		Assert.assertThrows(NoSuchElementException.class, () -> stream.single());
 		Assert.assertThrows(NoSuchElementException.class, () -> stream.singleOrDefault("default"));
 		
-		MockConsumer<String> forEachConsumer = MockConsumer.of();
-		stream.forEach(forEachConsumer);
-		forEachConsumer.assertCalls("foo", "bar");
+		CallCounter<Consumer<String>> forEachCounter = CallCounter.mockConsumer();
+		stream.forEach(forEachCounter.getProxy());
+		Assert.assertEquals(2, forEachCounter.getTotalCallCount("accept"));
+		Assert.assertEquals(1, forEachCounter.getExactCallCount("accept", "foo"));
+		Assert.assertEquals(1, forEachCounter.getExactCallCount("accept", "bar"));
 		
-		MockBiConsumer<Integer, String> enumerateConsumer = MockBiConsumer.of();
-		stream.enumerate(enumerateConsumer);
-		enumerateConsumer.assertCalls(Pair.of(0, "foo"), Pair.of(1, "bar"));
+		CallCounter<BiConsumer<Integer, String>> enumerateCounter = CallCounter.mockBiConsumer();
+		stream.enumerate(enumerateCounter.getProxy());
+		Assert.assertEquals(2, enumerateCounter.getTotalCallCount("accept"));
+		Assert.assertEquals(1, enumerateCounter.getExactCallCount("accept", 0, "foo"));
+		Assert.assertEquals(1, enumerateCounter.getExactCallCount("accept", 1, "bar"));
 	}
 	
 	@Test

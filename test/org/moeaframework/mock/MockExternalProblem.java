@@ -22,7 +22,6 @@ import java.io.InputStreamReader;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.PrintStream;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
@@ -41,8 +40,6 @@ public class MockExternalProblem extends ExternalProblem {
 	
 	private final Pattern pattern = Pattern.compile(
 			"^[0-9]+\\.[0-9]+\\s+[0-9]+\\s+[0-1]{5}\\s+\\[[0-9,]+\\]\\s+\\{[0-9,]+\\}$");
-	
-	private final AtomicInteger count;
 		
 	private volatile Exception exception;
 	
@@ -63,7 +60,6 @@ public class MockExternalProblem extends ExternalProblem {
 	MockExternalProblem(final PipedInputStream input, final PipedOutputStream output,
 			final Function<String, String> callback) throws IOException {
 		super(new Builder().withIOStreams(input, output));		
-		count = new AtomicInteger();
 		
 		pipedWriter = new PipedOutputStream(input);		
 		pipedReader = new PipedInputStream(output);
@@ -89,12 +85,6 @@ public class MockExternalProblem extends ExternalProblem {
 		};
 		
 		thread.start();
-	}
-	
-	@Override
-	public void evaluate(Solution solution) {
-		super.evaluate(solution);
-		count.incrementAndGet();
 	}
 	
 	@Override
@@ -140,10 +130,6 @@ public class MockExternalProblem extends ExternalProblem {
 		if (exception != null) {
 			throw new AssertionError("Caught exception in " + getName(), exception);
 		}
-	}
-
-	public int getCallCount() {
-		return count.get();
 	}
 
 }

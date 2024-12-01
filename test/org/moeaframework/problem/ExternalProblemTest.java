@@ -21,6 +21,7 @@ import java.util.function.Function;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.CallCounter;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
@@ -77,7 +78,9 @@ public class ExternalProblemTest {
 	}
 	
 	private void test(final Function<String, String> callback) throws Exception {
-		try (MockExternalProblem problem = new MockExternalProblem(callback)) {
+		CallCounter<Function<String, String>> counter = CallCounter.of(callback);
+		
+		try (MockExternalProblem problem = new MockExternalProblem(counter.getProxy())) {			
 			for (int i=0; i<100; i++) {
 				Solution solution = problem.newSolution();
 				problem.evaluate(solution);
@@ -87,7 +90,7 @@ public class ExternalProblemTest {
 				Assert.assertEquals(0.5, solution.getConstraintValue(0), TestThresholds.HIGH_PRECISION);
 			}
 			
-			Assert.assertEquals(100, problem.getCallCount());
+			Assert.assertEquals(100, counter.getTotalCallCount());
 		}
 	}
 	

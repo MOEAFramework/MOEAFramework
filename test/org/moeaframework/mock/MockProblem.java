@@ -17,15 +17,11 @@
  */
 package org.moeaframework.mock;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.AbstractProblem;
 
 public class MockProblem extends AbstractProblem {
-	
-	private final AtomicInteger count;
-	
+		
 	public MockProblem(int numberOfObjectives) {
 		this(0, numberOfObjectives);
 	}
@@ -36,8 +32,6 @@ public class MockProblem extends AbstractProblem {
 
 	public MockProblem(int numberOfVariables, int numberOfObjectives, int numberOfConstraints) {
 		super(numberOfVariables, numberOfObjectives, numberOfConstraints);
-		
-		count = new AtomicInteger();
 	}
 	
 	@Override
@@ -48,17 +42,11 @@ public class MockProblem extends AbstractProblem {
 		for (int i = 0; i < getNumberOfObjectives(); i++) {
 			solution.setObjectiveValue(i, i % 2 == 0 ? value : Integer.MAX_VALUE - value);
 		}
-		
-		count.incrementAndGet();
 	}
 
 	@Override
 	public Solution newSolution() {
 		return new Solution(getNumberOfVariables(), getNumberOfObjectives(), getNumberOfConstraints());
-	}
-	
-	public int getCallCount() {
-		return count.get();
 	}
 
 }

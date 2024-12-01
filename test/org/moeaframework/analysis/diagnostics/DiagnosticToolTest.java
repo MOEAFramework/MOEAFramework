@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.swing.SwingUtilities;
 
@@ -30,6 +29,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
+import org.moeaframework.Counter;
 import org.moeaframework.TempFiles;
 import org.moeaframework.analysis.viewer.TextViewer;
 import org.moeaframework.util.mvc.ControllerEvent;
@@ -42,15 +42,7 @@ public class DiagnosticToolTest {
 	
 	private AtomicBoolean isRunning = new AtomicBoolean(false);
 	
-	private AtomicInteger settingsChangedCount = new AtomicInteger();
-	
-	private AtomicInteger stateChangedCount = new AtomicInteger();
-	
-	private AtomicInteger viewChangedCount = new AtomicInteger();
-	
-	private AtomicInteger modelChangedCount = new AtomicInteger();
-	
-	private AtomicInteger progressChangedCount = new AtomicInteger();
+	private Counter<String> controllerStateCounter = new Counter<String>();
 	
 	@Before
 	public void setUp() {
@@ -101,18 +93,12 @@ public class DiagnosticToolTest {
 
 			@Override
 			public void controllerStateChanged(ControllerEvent event) {
-				switch (event.getEventType()) {
-					case "stateChanged" -> {
-						stateChangedCount.incrementAndGet();
-
-						// State changes should only occur when a run starts or finishes
-						Assert.assertNotEquals(isRunning.get(), controller.isRunning());
-						isRunning.set(controller.isRunning());
-					}
-					case "modelChanged" -> modelChangedCount.incrementAndGet();
-					case "viewChanged" -> viewChangedCount.incrementAndGet();
-					case "progressChanged" -> progressChangedCount.incrementAndGet();
-					default -> Assert.fail("Unexpected controller event type " + event.getEventType());
+				controllerStateCounter.incrementAndGet(event.getEventType());
+				
+				if (event.getEventType().equals("stateChanged")) {
+					// State changes should only occur when a run starts or finishes
+					Assert.assertNotEquals(isRunning.get(), controller.isRunning());
+					isRunning.set(controller.isRunning());
 				}
 			}
 			
@@ -135,11 +121,11 @@ public class DiagnosticToolTest {
 			Thread.yield();
 		}
 		
-		Assert.assertEquals(0, settingsChangedCount.get());
-		Assert.assertEquals(2, stateChangedCount.get());
-		Assert.assertGreaterThanOrEqual(modelChangedCount.get(), 5);
-		Assert.assertGreaterThanOrEqual(viewChangedCount.get(), 5);
-		Assert.assertEquals(56, progressChangedCount.get()); // 11 per seed * 5 seeds + 1 final update
+		Assert.assertEquals(0, controllerStateCounter.get("settingsChanged"));
+		Assert.assertEquals(2, controllerStateCounter.get("stateChanged"));
+		Assert.assertGreaterThanOrEqual(controllerStateCounter.get("modelChanged"), 5);
+		Assert.assertGreaterThanOrEqual(controllerStateCounter.get("viewChanged"), 5);
+		Assert.assertEquals(56, controllerStateCounter.get("progressChanged")); // 11 per seed * 5 seeds + 1 final update
 
 		Assert.assertEquals(100, controller.getOverallProgress());
 		Assert.assertEquals(100, controller.getRunProgress());

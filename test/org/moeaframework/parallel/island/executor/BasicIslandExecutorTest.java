@@ -18,12 +18,11 @@
 package org.moeaframework.parallel.island.executor;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.CallCounter;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.CrowdingComparator;
@@ -49,9 +48,9 @@ public class BasicIslandExecutorTest extends AbstractIslandModelTest {
 						new ParetoDominanceComparator(),
 						new CrowdingComparator()));
 		
-		CountingMigration migration = new CountingMigration(new SingleNeighborMigration(1, migrationSelection));
+		CallCounter<Migration> counter = CallCounter.of(new SingleNeighborMigration(1, migrationSelection));
 		Topology topology = new FullyConnectedTopology();
-		IslandModel model = new IslandModel(1000, migration, topology);
+		IslandModel model = new IslandModel(1000, counter.getProxy(), topology);
 				
 		for (int i = 0; i < 2; i++) {
 			NSGAII algorithm = new NSGAII(new MockRealProblem(2));
@@ -70,7 +69,7 @@ public class BasicIslandExecutorTest extends AbstractIslandModelTest {
 				Assert.assertEquals(50000, island.getAlgorithm().getNumberOfEvaluations());
 			}
 			
-			Assert.assertEquals(100, migration.getCallCount());
+			Assert.assertEquals(100, counter.getTotalCallCount());
 			
 			// check that the overall result is the combined set of individual results
 			NondominatedPopulation expectedResult = new NondominatedPopulation();
@@ -81,31 +80,6 @@ public class BasicIslandExecutorTest extends AbstractIslandModelTest {
 			
 			Assert.assertEquals(expectedResult, result);
 		}
-	}
-	
-	private class CountingMigration implements Migration {
-		
-		private final Migration inner;
-		
-		private final AtomicInteger count;
-		
-		public CountingMigration(Migration inner) {
-			super();
-			this.inner = inner;
-			
-			count = new AtomicInteger();
-		}
-
-		@Override
-		public void migrate(Island current, List<Island> neighbors) {
-			count.incrementAndGet();
-			inner.migrate(current, neighbors);
-		}
-		
-		public int getCallCount() {
-			return count.get();
-		}
-		
 	}
 
 }

@@ -19,11 +19,12 @@ package org.moeaframework.analysis.stream;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.BiConsumer;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.mock.function.MockBiConsumer;
+import org.moeaframework.CallCounter;
 
 public class PartitionTest {
 	
@@ -52,13 +53,14 @@ public class PartitionTest {
 		Assert.assertThrows(NoSuchElementException.class, () -> partition.single());
 		Assert.assertEquals(Pair.of("foo", 0), partition.singleOrDefault("foo", 0));
 		
-		MockBiConsumer<String, Integer> forEachConsumer = MockBiConsumer.of();
-		partition.forEach(forEachConsumer);
-		forEachConsumer.assertCallCount(0);
+		CallCounter<BiConsumer<String, Integer>> forEachCounter = CallCounter.mockBiConsumer();
+		partition.forEach(forEachCounter.getProxy());
+		Assert.assertEquals(0, forEachCounter.getTotalCallCount("accept"));
 		
-		MockBiConsumer<Integer, Pair<String, Integer>> enumerateConsumer = MockBiConsumer.of();
-		partition.enumerate(enumerateConsumer);
-		enumerateConsumer.assertCallCount(0);
+		CallCounter<BiConsumer<Integer, Pair<String, Integer>>> enumerateCounter = CallCounter.mockBiConsumer();
+		partition.enumerate(enumerateCounter.getProxy());
+		Assert.assertEquals(0, enumerateCounter.getTotalCallCount("accept"));
+
 	}
 	
 	@Test
@@ -86,13 +88,17 @@ public class PartitionTest {
 		Assert.assertThrows(NoSuchElementException.class, () -> partition.single());
 		Assert.assertThrows(NoSuchElementException.class, () -> partition.singleOrDefault("default", 10));
 		
-		MockBiConsumer<String, Integer> forEachConsumer = MockBiConsumer.of();
-		partition.forEach(forEachConsumer);
-		forEachConsumer.assertCalls(Pair.of("foo", 1), Pair.of("bar", 2));
+		CallCounter<BiConsumer<String, Integer>> forEachCounter = CallCounter.mockBiConsumer();
+		partition.forEach(forEachCounter.getProxy());
+		Assert.assertEquals(2, forEachCounter.getTotalCallCount("accept"));
+		Assert.assertEquals(1, forEachCounter.getExactCallCount("accept", "foo", 1));
+		Assert.assertEquals(1, forEachCounter.getExactCallCount("accept", "bar", 2));
 		
-		MockBiConsumer<Integer, Pair<String, Integer>> enumerateConsumer = MockBiConsumer.of();
-		partition.enumerate(enumerateConsumer);
-		enumerateConsumer.assertCalls(Pair.of(0, Pair.of("foo", 1)), Pair.of(1, Pair.of("bar", 2)));
+		CallCounter<BiConsumer<Integer, Pair<String, Integer>>> enumerateCounter = CallCounter.mockBiConsumer();
+		partition.enumerate(enumerateCounter.getProxy());
+		Assert.assertEquals(2, enumerateCounter.getTotalCallCount("accept"));
+		Assert.assertEquals(1, enumerateCounter.getExactCallCount("accept", 0, Pair.of("foo", 1)));
+		Assert.assertEquals(1, enumerateCounter.getExactCallCount("accept", 1, Pair.of("bar", 2)));
 	}
 	
 	@Test

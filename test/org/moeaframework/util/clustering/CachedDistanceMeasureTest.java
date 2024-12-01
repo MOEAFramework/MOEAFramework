@@ -17,9 +17,9 @@
  */
 package org.moeaframework.util.clustering;
 
-import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.CallCounter;
 import org.moeaframework.mock.MockSolution;
 
 public class CachedDistanceMeasureTest {
@@ -29,13 +29,13 @@ public class CachedDistanceMeasureTest {
 		ClusterableSolution first = ClusterableSolution.withObjectives(MockSolution.of().withObjectives(0.0, 1.0));
 		ClusterableSolution second = ClusterableSolution.withObjectives(MockSolution.of().withObjectives(1.0, 0.0));
 		
-		CountingDistanceMeasure<ClusterableSolution> counter = new CountingDistanceMeasure<>();
-		DistanceMeasure<ClusterableSolution> measure = new CachedDistanceMeasure<>(counter, true);
-		
+		CallCounter<DistanceMeasure<ClusterableSolution>> counter = CallCounter.of(DistanceMeasure.euclideanDistance());
+		DistanceMeasure<ClusterableSolution> measure = new CachedDistanceMeasure<>(counter.getProxy(), true);
+
 		Assert.assertEquals(0.0, measure.compute(first, first));
-		Assert.assertEquals(Math.sqrt(2.0) + 1.0, measure.compute(first, second));
-		Assert.assertEquals(Math.sqrt(2.0) + 1.0, measure.compute(second, first));
-		Assert.assertEquals(2, counter.getCallCount());
+		Assert.assertEquals(Math.sqrt(2.0), measure.compute(first, second));
+		Assert.assertEquals(Math.sqrt(2.0), measure.compute(second, first));
+		Assert.assertEquals(2, counter.getTotalCallCount());
 	}
 	
 	@Test
@@ -43,35 +43,13 @@ public class CachedDistanceMeasureTest {
 		ClusterableSolution first = ClusterableSolution.withObjectives(MockSolution.of().withObjectives(0.0, 1.0));
 		ClusterableSolution second = ClusterableSolution.withObjectives(MockSolution.of().withObjectives(1.0, 0.0));
 		
-		CountingDistanceMeasure<ClusterableSolution> counter = new CountingDistanceMeasure<>();
-		DistanceMeasure<ClusterableSolution> measure = new CachedDistanceMeasure<>(counter, false);
+		CallCounter<DistanceMeasure<ClusterableSolution>> counter = CallCounter.of(DistanceMeasure.euclideanDistance());
+		DistanceMeasure<ClusterableSolution> measure = new CachedDistanceMeasure<>(counter.getProxy(), false);
 		
 		Assert.assertEquals(0.0, measure.compute(first, first));
-		Assert.assertEquals(Math.sqrt(2.0) + 1.0, measure.compute(first, second));
-		Assert.assertEquals(Math.sqrt(2.0) + 2.0, measure.compute(second, first));
-		Assert.assertEquals(3, counter.getCallCount());
-	}
-	
-	private static class CountingDistanceMeasure<T extends Clusterable> implements DistanceMeasure<T> {
-		
-		private final DistanceMeasure<T> measure;
-		
-		private int calls;
-		
-		public CountingDistanceMeasure() {
-			super();
-			this.measure = DistanceMeasure.euclideanDistance();
-		}
-
-		@Override
-		public double compute(T first, T second) {
-			return measure.compute(first, second) + (calls++);
-		}
-		
-		public int getCallCount() {
-			return calls;
-		}
-		
+		Assert.assertEquals(Math.sqrt(2.0), measure.compute(first, second));
+		Assert.assertEquals(Math.sqrt(2.0), measure.compute(second, first));
+		Assert.assertEquals(3, counter.getTotalCallCount());
 	}
 	
 }

@@ -24,6 +24,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.CallCounter;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.attribute.OperatorIndex;
@@ -36,6 +37,7 @@ public class AdaptiveMultimethodVariationTest {
 	
 	private Population population;
 	private AdaptiveMultimethodVariation variation;
+	private List<CallCounter<Variation>> counters;
 	
 	@Before
 	public void setUp() {	
@@ -48,7 +50,16 @@ public class AdaptiveMultimethodVariationTest {
 		OperatorIndex.setAttribute(s3, 0);
 		
 		population = new Population(List.of(s1, s2, s3));
+		
+		counters = List.of(
+				CallCounter.of(new MockVariation(1)),
+				CallCounter.of(new MockVariation(3)));
+		
 		variation = new AdaptiveMultimethodVariation(population);
+		
+		for (CallCounter<Variation> counter : counters) {
+			variation.addOperator(counter.getProxy());
+		}
 	}
 	
 	@After
@@ -59,21 +70,23 @@ public class AdaptiveMultimethodVariationTest {
 	
 	@Test(expected = IllegalStateException.class)
 	public void testGetArityNoOperators() {
+		variation = new AdaptiveMultimethodVariation(population);
 		variation.getArity();
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testEvolveNoOperators() {
+		variation = new AdaptiveMultimethodVariation(population);
 		variation.evolve(null);
 	}
 	
 	@Test
-	public void testProbabilities() {
-		variation.addOperator(new MockVariation(1));
-		variation.addOperator(new MockVariation(3));
-		
+	public void testArity() {
 		Assert.assertEquals(3, variation.getArity());
-		
+	}
+	
+	@Test
+	public void testProbabilities() {
 		Assert.assertEquals(3.0/5.0, variation.getOperatorProbability(0), TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(2.0/5.0, variation.getOperatorProbability(1), TestThresholds.HIGH_PRECISION);
 		
@@ -82,11 +95,6 @@ public class AdaptiveMultimethodVariationTest {
 	
 	@Test
 	public void testProbabilitiesInitialPopulation() {
-		variation.addOperator(new MockVariation(2));
-		variation.addOperator(new MockVariation(2));
-		
-		Assert.assertEquals(2, variation.getArity());
-		
 		for (Solution solution : population) {
 			OperatorIndex.removeAttribute(solution);
 		}
@@ -113,7 +121,7 @@ public class AdaptiveMultimethodVariationTest {
 		Assert.assertEquals(variation.getNumberOfOperators(), probabilities.length);
 		
 		for (int i=0; i<variation.getNumberOfOperators(); i++) {
-			int count = ((MockVariation)variation.getOperator(i)).getCallCount();
+			int count = counters.get(i).getTotalCallCount("evolve");
 			
 			Assert.assertEquals(probabilities[i], count / (double)TestThresholds.SAMPLES,
 					TestThresholds.LOW_PRECISION);

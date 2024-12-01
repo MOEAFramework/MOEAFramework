@@ -17,8 +17,6 @@
  */
 package org.moeaframework.mock;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.moeaframework.Assert;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.Variation;
@@ -26,14 +24,10 @@ import org.moeaframework.core.operator.Variation;
 public class MockVariation implements Variation {
 
 	private final int arity;
-	
-	private final AtomicInteger count;
-	
+		
 	public MockVariation(int arity) {
 		super();
 		this.arity = arity;
-		
-		count = new AtomicInteger();
 	}
 	
 	@Override
@@ -48,13 +42,8 @@ public class MockVariation implements Variation {
 
 	@Override
 	public Solution[] evolve(Solution[] parents) {
-		count.incrementAndGet();
 		Assert.assertEquals(arity, parents.length);
 		return new Solution[] { parents[0].copy() };
-	}
-	
-	public int getCallCount() {
-		return count.get();
 	}
 	
 }
