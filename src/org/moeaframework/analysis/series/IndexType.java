@@ -18,7 +18,7 @@
 package org.moeaframework.analysis.series;
 
 /**
- * The type of index.
+ * The type of index used by {@link IndexedResult} or {@link ResultSeries}.
  */
 public enum IndexType {
 	
@@ -29,14 +29,14 @@ public enum IndexType {
 	NFE,
 	
 	/**
-	 * The index represents the a sequential value .  This typically means the entries are not
-	 * associated with a single run of an algorithm.
+	 * The index represents the a sequential value .  This typically means the entries are not associated with a single
+	 * run of an algorithm.
 	 */
 	Index,
 	
 	/**
-	 * The series contains a single entry, which is returned regardless of what index is provided.  This is
-	 * typically used by reference sets.
+	 * The series contains a single entry, which is returned regardless of what index is provided.  This is typically
+	 * used by reference sets.
 	 */
 	Singleton
 	

@@ -67,7 +67,8 @@ public class InstrumentedAlgorithm<T extends Algorithm> extends AlgorithmWrapper
 	}
 	
 	/**
-	 * Returns the collected data as a result series.
+	 * Returns the collected runtime data as a result series.  Each result entry contains the approximation set from
+	 * {@link Algorithm#getResult()} along with any properties stored by the collectors.
 	 * 
 	 * @return the result series
 	 */

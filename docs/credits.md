@@ -21,7 +21,7 @@ All individual contributors can be found on the
   2.1 or later
   
 ## Graphics
-* **Flaticon** - www.flaticon.com/terms-of-use
+* **Flaticon** - https://www.flaticon.com/legal
 
 ## Embedded Code
 
