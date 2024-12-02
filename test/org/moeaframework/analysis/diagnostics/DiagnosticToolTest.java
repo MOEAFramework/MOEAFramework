@@ -51,6 +51,8 @@ public class DiagnosticToolTest {
 	
 	@Before
 	public void setUp() {
+		Assume.assumeHasDisplay();
+		
 		isRunning = new AtomicBoolean(false);
 		controllerStateCounter = new Counter<String>();
 	}
@@ -63,8 +65,6 @@ public class DiagnosticToolTest {
 	
 	@Test
 	public void testDisplay() throws InterruptedException, InvocationTargetException {
-		Assume.assumeHasDisplay();
-		
 		// Render the UI and display plots to check for any errors
 		runTest("NSGAII", "DTLZ2_2", 1000, 5);
 		tool.setVisible(true);
