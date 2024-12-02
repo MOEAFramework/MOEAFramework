@@ -23,6 +23,8 @@ import org.moeaframework.analysis.sample.Samples;
 
 /**
  * Interface for sensitivity analysis methods.
+ * 
+ * @param <T> the type defining what results are produced by this analysis
  */
 public interface SensitivityAnalysis<T extends SensitivityResult> {
 	

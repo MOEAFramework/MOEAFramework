@@ -19,9 +19,9 @@ package org.moeaframework.examples.misc;
 
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.problem.DTLZ.DTLZ2;
-import org.moeaframework.util.RotationMatrixBuilder;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.RotatedProblem;
+import org.moeaframework.util.RotationMatrixBuilder;
 
 /**
  * Demonstrates creating a rotated version of the DTLZ2 problem.
