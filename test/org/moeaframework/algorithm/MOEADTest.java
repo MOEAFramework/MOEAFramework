@@ -23,6 +23,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.Assert;
+import org.moeaframework.Assume;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
 import org.moeaframework.core.TypedProperties;
@@ -65,28 +66,28 @@ public class MOEADTest extends JMetalAlgorithmTest {
 	
 	@Test
 	public void testDTLZ1_MOEADDRA() throws IOException {
-		assumeJMetalExists();
+		Assume.assumeJMetalExists();
 		testDRA = true;
 		test("DTLZ1_2", algorithmName, algorithmName + "-JMetal", allowBetterPerformance);
 	}
 	
 	@Test
 	public void testDTLZ2_MOEADDRA() throws IOException {
-		assumeJMetalExists();
+		Assume.assumeJMetalExists();
 		testDRA = true;
 		test("DTLZ2_2", algorithmName, algorithmName + "-JMetal", allowBetterPerformance);
 	}
 	
 	@Test
 	public void testDTLZ7_MOEADDRA() throws IOException {
-		assumeJMetalExists();
+		Assume.assumeJMetalExists();
 		testDRA = true;
 		test("DTLZ7_2", algorithmName, algorithmName + "-JMetal", allowBetterPerformance);
 	}
 	
 	@Test
 	public void testUF1_MOEADDRA() throws IOException {
-		assumeJMetalExists();
+		Assume.assumeJMetalExists();
 		testDRA = true;
 		test("UF1", algorithmName, algorithmName + "-JMetal", allowBetterPerformance);
 	}

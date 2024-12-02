@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.junit.Ignore;
 import org.moeaframework.Assert;
-import org.moeaframework.Assume;
 import org.moeaframework.analysis.IndicatorStatistics;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
@@ -53,14 +52,6 @@ public abstract class AlgorithmTest {
 	 * The number of quality indicators that must have similar or better performance in order to pass the test.
 	 */
 	public static final int THRESHOLD = 5;
-	
-	/**
-	 * Call from any test to skip if JMetal does not exist.
-	 */
-	public void assumeJMetalExists() {
-		Assume.assumeTrue("JMetal-Plugin required to run test", 
-				AlgorithmFactory.getInstance().hasProvider("org.moeaframework.algorithm.jmetal.JMetalAlgorithms"));
-	}
 	
 	/**
 	 * Tests if two algorithms are statistically indifferent.  The default {@link AlgorithmFactory} is used to create

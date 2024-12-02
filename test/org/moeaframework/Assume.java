@@ -21,6 +21,7 @@ import java.awt.GraphicsEnvironment;
 import java.io.File;
 
 import org.apache.commons.lang3.SystemUtils;
+import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.util.io.RedirectStream;
 
 public class Assume extends org.junit.Assume {
@@ -74,6 +75,11 @@ public class Assume extends org.junit.Assume {
 	public static void assumeHasDisplay() {
 		assumeTrue("Skipping test as the system has no display", !GraphicsEnvironment.isHeadless() &&
 				GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length > 0);
+	}
+	
+	public static void assumeJMetalExists() {
+		Assume.assumeTrue("JMetal-Plugin required to run test", 
+				AlgorithmFactory.getInstance().hasProvider("org.moeaframework.algorithm.jmetal.JMetalAlgorithms"));
 	}
 	
 	public static boolean isGitHubActions() {

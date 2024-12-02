@@ -21,6 +21,7 @@ import java.io.IOException;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.moeaframework.Assume;
 
 /**
  * Methods for comparing against the JMetal implementation.  This performs a statistical comparison of the algorithms
@@ -46,25 +47,25 @@ public abstract class JMetalAlgorithmTest extends AlgorithmTest {
 	
 	@Test
 	public void testDTLZ1() throws IOException {
-		assumeJMetalExists();
+		Assume.assumeJMetalExists();
 		test("DTLZ1_2", algorithmName, algorithmName + "-JMetal", allowBetterPerformance);
 	}
 	
 	@Test
 	public void testDTLZ2() throws IOException {
-		assumeJMetalExists();
+		Assume.assumeJMetalExists();
 		test("DTLZ2_2", algorithmName, algorithmName + "-JMetal", allowBetterPerformance);
 	}
 	
 	@Test
 	public void testDTLZ7() throws IOException {
-		assumeJMetalExists();
+		Assume.assumeJMetalExists();
 		test("DTLZ7_2", algorithmName, algorithmName + "-JMetal", allowBetterPerformance);
 	}
 	
 	@Test
 	public void testUF1() throws IOException {
-		assumeJMetalExists();
+		Assume.assumeJMetalExists();
 		test("UF1", algorithmName, algorithmName + "-JMetal", allowBetterPerformance);
 	}
 

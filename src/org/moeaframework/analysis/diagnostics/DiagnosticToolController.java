@@ -612,7 +612,7 @@ public class DiagnosticToolController extends Controller implements SettingChang
 						
 						TypedProperties properties = new TypedProperties();
 						properties.setInt("maxEvaluations", numberOfEvaluations);
-												
+						
 						Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, properties, problem);
 						algorithm.addExtension(new ProgressExtension().withListener(listener));
 						
