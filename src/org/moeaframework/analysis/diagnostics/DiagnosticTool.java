@@ -69,7 +69,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.jfree.base.Library;
 import org.jfree.ui.about.AboutDialog;
 import org.jfree.ui.about.ProjectInfo;
-import org.moeaframework.analysis.runtime.Observations;
+import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.analysis.viewer.RuntimeViewer;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
@@ -282,7 +282,6 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 			public void mouseClicked(final MouseEvent e) {
 				if (SwingUtilities.isRightMouseButton(e)) {
 					int index = resultTable.rowAtPoint(e.getPoint());
-					boolean containsSet = false;
 					
 					if (index == -1) {
 						return;
@@ -290,33 +289,22 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 					
 					ResultKey key = resultListModel.getElementAt(index);
 					
-					//verify that at least one observation contains data
-					for (Observations observations : controller.get(key)) {
-						if (observations.keys().contains("Approximation Set")) {
-							containsSet = true;
-							break;
-						}
-					}
-					
-					if (!containsSet) {
-						return;
-					}
-					
 					JPopupMenu popupMenu = new JPopupMenu();
 					popupMenu.add(new RunnableAction("showApproximationSet", localization, () -> {
-							RuntimeViewer viewer = new RuntimeViewer(DiagnosticTool.this, key.toString());
-							List<Observations> data = controller.get(key);
+						RuntimeViewer viewer = new RuntimeViewer(DiagnosticTool.this, key.toString());
+						List<ResultSeries> data = controller.get(key);
 							
-							for (int i = 0; i < data.size(); i++) {
-								viewer.getController().addSeries(localization.getString("text.seed", i), data.get(i));
-							}
+						for (int i = 0; i < data.size(); i++) {
+							String name = localization.getString("text.seed", i + 1);
+							viewer.getController().addSeries(name, data.get(i));
+						}
 							
-							viewer.getController().setReferenceSet(
-									ProblemFactory.getInstance().getReferenceSet(key.getProblem()));
+						viewer.getController().setReferenceSet(
+								ProblemFactory.getInstance().getReferenceSet(key.getProblem()));
 							
-							viewer.setLocationRelativeTo(DiagnosticTool.this);
-							viewer.setVisible(true);
-						}).toMenuItem());
+						viewer.setLocationRelativeTo(DiagnosticTool.this);
+						viewer.setVisible(true);
+					}).toMenuItem());
 					
 					popupMenu.show(resultTable, e.getX(), e.getY());
 				}
@@ -450,8 +438,7 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		metricsMenu.add(new ToggleAction("includeAdaptiveMultimethodVariation", localization, controller.includeAdaptiveMultimethodVariation()).toMenuItem());
 		metricsMenu.add(new ToggleAction("includeAdaptiveTimeContinuation", localization, controller.includeAdaptiveTimeContinuation()).toMenuItem());
 		metricsMenu.add(new ToggleAction("includeElapsedTime", localization, controller.includeElapsedTime()).toMenuItem());
-		metricsMenu.add(new ToggleAction("includeApproximationSet", localization, controller.includePopulationSize()).toMenuItem());
-		metricsMenu.add(new ToggleAction("includePopulationSize", localization, controller.includeApproximationSet()).toMenuItem());
+		metricsMenu.add(new ToggleAction("includePopulationSize", localization, controller.includePopulationSize()).toMenuItem());
 		
 		JMenu helpMenu = new JMenu(localization.getString("menu.help"));
 		helpMenu.add(new RunnableAction("about", localization, this::showAbout).toMenuItem());
@@ -592,8 +579,9 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		resultListModel.addAll(controller.getKeys());
 		
 		for (ResultKey key : controller.getKeys()) {
-			for (Observations observations : controller.get(key)) {
-				metricListModel.addAll(observations.keys());
+			for (ResultSeries series : controller.get(key)) {
+				metricListModel.add("Approximation Set");
+				metricListModel.addAll(series.getDefinedProperties());
 			}
 		}
 		
@@ -835,7 +823,7 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 	 */
 	protected ResultPlot createChart(String metric) {
 		if (metric.equals("Approximation Set")) {
-			return new ApproximationSetPlot(this, metric);
+			return new ApproximationSetPlot(this);
 		} else {
 			return new LinePlot(this, metric);
 		}

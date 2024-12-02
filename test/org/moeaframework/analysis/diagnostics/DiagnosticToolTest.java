@@ -135,7 +135,7 @@ public class DiagnosticToolTest {
 		
 		Assert.assertEquals(0, controller.getOverallProgress());
 		Assert.assertEquals(0, controller.getRunProgress());
-		Assert.assertNull(controller.getLastObservation());
+		Assert.assertNull(controller.getLastSeries());
 		
 		controller.run();
 		controller.join();
@@ -146,7 +146,7 @@ public class DiagnosticToolTest {
 		
 		Assert.assertEquals(100, controller.getOverallProgress());
 		Assert.assertEquals(100, controller.getRunProgress());
-		Assert.assertNotNull(controller.getLastObservation());
+		Assert.assertNotNull(controller.getLastSeries());
 	}
 	
 	private void assertEvents(int expectedSeeds) {
@@ -163,8 +163,9 @@ public class DiagnosticToolTest {
 		Assert.assertSize(expectedSeeds, controller.get(key));
 
 		for (int i = 0; i < expectedSeeds; i++) {
-			Assert.assertTrue(controller.get(key).get(i).keys().contains("Hypervolume"));
-			Assert.assertTrue(controller.get(key).get(i).keys().contains("Approximation Set"));
+			Assert.assertNotEmpty(controller.get(key).get(i));
+			Assert.assertNotEmpty(controller.get(key).get(i).first().getPopulation());
+			Assert.assertNotEmpty(controller.get(key).get(i).getDefinedProperties());
 		}
 
 		Assert.assertContains(tool.getSelectedResults(), key);

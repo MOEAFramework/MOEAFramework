@@ -22,6 +22,8 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.DefaultAlgorithms;
+import org.moeaframework.analysis.series.ResultEntry;
+import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
@@ -43,12 +45,13 @@ public abstract class AbstractCollectorTest<T extends Collector> {
 	public abstract T createInstance();
 	
 	/**
-	 * Validates the observations produced in this test.  This should, at a minimum, attempt to read / parse
-	 * the observation being collected.
+	 * Validates the results produced in this test.  This should, at a minimum, attempt to read / parse the results
+	 * being collected.
 	 * 
-	 * @param observation the observation to validate
+	 * @param algorithm the algorithm instance
+	 * @param result the result to validate
 	 */
-	public abstract void validate(Observation observation);
+	public abstract void validate(Algorithm algorithm, ResultEntry result);
 	
 	/**
 	 * Returns {@code true} if the collector should be attached to the given algorithm.
@@ -101,8 +104,8 @@ public abstract class AbstractCollectorTest<T extends Collector> {
 		}
 
 		@Override
-		public void collect(Observation observation) {
-			collector.collect(observation);
+		public void collect(ResultEntry result) {
+			collector.collect(result);
 		}
 
 		public int getNumberOfAttachments() {
@@ -112,8 +115,6 @@ public abstract class AbstractCollectorTest<T extends Collector> {
 	}
 	
 	protected void test(String algorithmName, Collector collector) {
-		Observations observations = null;
-		boolean shouldAttach = false;
 		int numberOfEvaluations = 1000;
 		String problemName = "DTLZ2_2";
 		TestCollector testCollector = new TestCollector(collector);
@@ -127,7 +128,7 @@ public abstract class AbstractCollectorTest<T extends Collector> {
 			properties.setInt("maxEvaluations", numberOfEvaluations);
 
 			Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, properties, problem);
-			shouldAttach = shouldAttach(algorithm);
+			boolean shouldAttach = shouldAttach(algorithm);
 			
 			InstrumentedAlgorithm<?> instrumentedAlgorithm = instrumenter.instrument(algorithm);
 
@@ -135,23 +136,23 @@ public abstract class AbstractCollectorTest<T extends Collector> {
 				instrumentedAlgorithm.step();
 			}
 			
-			observations = instrumentedAlgorithm.getObservations();
+			ResultSeries series = instrumentedAlgorithm.getSeries();
 			instrumentedAlgorithm.terminate();
-		}
-		
-		Assert.assertEquals(algorithmName + ": incorrect number of attachments",
-				shouldAttach ? 1 : 0, testCollector.getNumberOfAttachments());
-		
-		Assert.assertNotNull(algorithmName + ": operations is null", observations);
-		
-		if (shouldAttach) {
-			Assert.assertTrue(observations.size() > 0);
 			
-			for (Observation observation : observations) {
-				try {
-					validate(observation);
-				} catch (Exception e) {
-					Assert.fail(algorithmName + ": validation failed - " + e.getMessage());
+			Assert.assertEquals(algorithmName + ": incorrect number of attachments",
+					shouldAttach ? 1 : 0, testCollector.getNumberOfAttachments());
+			
+			Assert.assertNotNull(algorithmName + ": series is null", series);
+			
+			if (shouldAttach) {
+				Assert.assertTrue(series.size() > 0);
+				
+				for (ResultEntry result : series) {
+					try {
+						validate(algorithm, result);
+					} catch (Exception e) {
+						Assert.fail(algorithmName + ": validation failed - " + e.getMessage());
+					}
 				}
 			}
 		}

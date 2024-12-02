@@ -28,6 +28,8 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.NSGAII;
+import org.moeaframework.analysis.series.ResultEntry;
+import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.indicator.StandardIndicator;
 import org.moeaframework.core.operator.Variation;
@@ -75,7 +77,7 @@ public class InstrumenterTest {
 		}
 
 		@Override
-		public void collect(Observation observation) {
+		public void collect(ResultEntry result) {
 			//do nothing
 		}
 		
@@ -182,12 +184,13 @@ public class InstrumenterTest {
 		
 		instrumentedAlgorithm.run(1000);
 		
-		Observations observations = instrumentedAlgorithm.getObservations();
-				
-		Assert.assertSize(16, observations.keys());
+		ResultSeries series = instrumentedAlgorithm.getSeries();
+		Set<String> properties = series.getDefinedProperties();
+		
+		Assert.assertSize(15, properties);
 
 		for (StandardIndicator indicator : StandardIndicator.values()) {
-			Assert.assertTrue("Missing observation for " + indicator.name(), observations.keys().contains(indicator.name()));
+			Assert.assertTrue("Missing property for " + indicator.name(), properties.contains(indicator.name()));
 		}
 	}
 	

@@ -24,20 +24,16 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.algorithm.Algorithm;
-import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.analysis.parameter.ParameterSet;
-import org.moeaframework.analysis.runtime.ApproximationSetCollector;
-import org.moeaframework.analysis.runtime.ElapsedTimeCollector;
 import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
 import org.moeaframework.analysis.runtime.Instrumenter;
-import org.moeaframework.analysis.runtime.Observation;
-import org.moeaframework.analysis.runtime.Observations;
 import org.moeaframework.analysis.sample.Samples;
+import org.moeaframework.analysis.series.IndexedResult;
+import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.TypedProperties;
-import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.CommandLineUtility;
@@ -152,7 +148,6 @@ public class RuntimeEvaluator extends CommandLineUtility {
 		
 		Instrumenter instrumenter = new Instrumenter()
 				.withFrequency(frequency)
-				.attachApproximationSetCollector()
 				.attachElapsedTimeCollector();
 		
 		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, properties, problem);
@@ -160,16 +155,10 @@ public class RuntimeEvaluator extends CommandLineUtility {
 		
 		instrumentedAlgorithm.run(maxEvaluations);
 		
-		Observations observations = instrumentedAlgorithm.getObservations();
+		ResultSeries series = instrumentedAlgorithm.getSeries();
 
-		for (Observation observation : observations) {
-			TypedProperties metadata = new TypedProperties();
-			metadata.setInt(ResultEntry.NFE, observation.getNFE());
-			metadata.setDouble(ResultEntry.ElapsedTime, ElapsedTimeCollector.getElapsedTime(observation));
-			
-			NondominatedPopulation result = ApproximationSetCollector.getApproximationSet(observation);
-			
-			output.write(new ResultEntry(result, metadata));
+		for (IndexedResult result : series) {
+			output.write(result);
 		}
 	}
 

@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -35,23 +34,6 @@ public class SerializationUtils {
 
 	private SerializationUtils() {
 		super();
-	}
-
-	/**
-	 * Converts the given list into a serializable version, if required.  While most (if not all) collections that are
-	 * provided by the JDK are serializable, since the {@link List} interface does not specify it is serializable, it's
-	 * possible some implementations are not.
-	 * 
-	 * @param <T> the type of the list
-	 * @param list the list to serialize
-	 * @return a serializable version of the list
-	 */
-	public static final <T extends Serializable> Serializable serializable(List<T> list) {
-		if (list instanceof Serializable serializableList) {
-			return serializableList;
-		}
-		
-		return new ArrayList<T>(list);
 	}
 	
 	/**

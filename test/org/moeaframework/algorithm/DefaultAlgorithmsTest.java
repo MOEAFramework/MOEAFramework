@@ -32,8 +32,8 @@ import org.moeaframework.algorithm.extension.FrequencyType;
 import org.moeaframework.algorithm.sa.AMOSA;
 import org.moeaframework.analysis.runtime.IndicatorCollector;
 import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
-import org.moeaframework.analysis.runtime.Observation;
-import org.moeaframework.analysis.runtime.Observations;
+import org.moeaframework.analysis.series.IndexedResult;
+import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.core.DefaultEpsilons;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.TypedProperties;
@@ -419,7 +419,7 @@ public class DefaultAlgorithmsTest {
 			instrumentedAlgorithm.step();
 		}
 
-		Observations normalResult = instrumentedAlgorithm.getObservations();
+		ResultSeries normalSeries = instrumentedAlgorithm.getSeries();
 		
 		// second, run the algorithm using checkpoints
 		File file = TempFiles.createFile();
@@ -436,17 +436,15 @@ public class DefaultAlgorithmsTest {
 			algorithm.step();
 		}
 		
-		Observations checkpointResult = instrumentedAlgorithm.getObservations();
+		ResultSeries checkpointSeries = instrumentedAlgorithm.getSeries();
 
-		// finally, compare the two observations
-		Assert.assertEquals(normalResult.keys(), checkpointResult.keys());
-		Assert.assertEquals(normalResult.size(), checkpointResult.size());
+		// finally, compare the two series
+		Assert.assertEquals(normalSeries.getDefinedProperties(), checkpointSeries.getDefinedProperties());
+		Assert.assertEquals(normalSeries.size(), checkpointSeries.size());
 		
-		for (String key : normalResult.keys()) {
-			for (Observation normalObservation : normalResult) {
-				Observation checkpointObservation = checkpointResult.at(normalObservation.getNFE());
-				Assert.assertEquals(normalObservation.get(key), checkpointObservation.get(key));
-			}
+		for (IndexedResult normalResult : normalSeries) {
+			IndexedResult checkpointResult = checkpointSeries.at(normalResult.getIndex());
+			Assert.assertEquals(normalResult.getProperties(), checkpointResult.getProperties());
 		}
 	}
 	

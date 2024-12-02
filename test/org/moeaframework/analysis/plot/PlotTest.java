@@ -33,7 +33,7 @@ import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.analysis.IndicatorStatistics;
 import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
 import org.moeaframework.analysis.runtime.Instrumenter;
-import org.moeaframework.analysis.runtime.Observations;
+import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.population.NondominatedPopulation;
@@ -153,7 +153,7 @@ public class PlotTest {
 	}
 	
 	@Test
-	public void testObservations() throws IOException {
+	public void testResultSeries() throws IOException {
 		Problem problem = new UF1();
 		
 		Instrumenter instrumenter = new Instrumenter()
@@ -167,9 +167,9 @@ public class PlotTest {
 		InstrumentedAlgorithm<?> instrumentedAlgorithm = instrumenter.instrument(algorithm);
 		instrumentedAlgorithm.run(10000);
 
-		Observations observations = instrumentedAlgorithm.getObservations();
+		ResultSeries series = instrumentedAlgorithm.getSeries();
 		
-		new Plot().add(observations).show();
+		new Plot().add(series).show();
 	}
 	
 	@Test
@@ -216,7 +216,7 @@ public class PlotTest {
 		new PlotTest().testHeatMap();
 		new PlotTest().testHistogram();
 		new PlotTest().testIndicatorStatistics();
-		new PlotTest().testObservations();
+		new PlotTest().testResultSeries();
 	}
 
 }

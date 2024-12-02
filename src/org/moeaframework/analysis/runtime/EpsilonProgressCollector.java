@@ -18,6 +18,7 @@
 package org.moeaframework.analysis.runtime;
 
 import org.moeaframework.algorithm.EpsilonBoxEvolutionaryAlgorithm;
+import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
 
 /**
@@ -50,12 +51,12 @@ public class EpsilonProgressCollector implements Collector {
 	}
 
 	@Override
-	public void collect(Observation observation) {
+	public void collect(ResultEntry result) {
 		EpsilonBoxDominanceArchive archive = algorithm.getArchive();
 
 		if (archive != null) {
-			observation.set("Number of Improvements", archive.getNumberOfImprovements());
-			observation.set("Number of Dominating Improvements", archive.getNumberOfDominatingImprovements());
+			result.getProperties().setInt("Number of Improvements", archive.getNumberOfImprovements());
+			result.getProperties().setInt("Number of Dominating Improvements", archive.getNumberOfDominatingImprovements());
 		}
 	}
 
@@ -70,23 +71,23 @@ public class EpsilonProgressCollector implements Collector {
 	}
 	
 	/**
-	 * Reads the number of improvements from the observation.
+	 * Reads the number of improvements from the result.
 	 * 
-	 * @param observation the observation
+	 * @param result the result
 	 * @return the number of improvements
 	 */
-	public static int getNumberOfImprovements(Observation observation) {
-		return (Integer)observation.get("Number of Improvements");
+	public static int getNumberOfImprovements(ResultEntry result) {
+		return result.getProperties().getInt("Number of Improvements");
 	}
 	
 	/**
-	 * Reads the number of dominating improvements from the observation.
+	 * Reads the number of dominating improvements from the result.
 	 * 
-	 * @param observation the observation
+	 * @param result the result
 	 * @return the number of dominating improvements
 	 */
-	public static int getNumberOfDominatingImprovements(Observation observation) {
-		return (Integer)observation.get("Number of Dominating Improvements");
+	public static int getNumberOfDominatingImprovements(ResultEntry result) {
+		return result.getProperties().getInt("Number of Dominating Improvements");
 	}
 
 }

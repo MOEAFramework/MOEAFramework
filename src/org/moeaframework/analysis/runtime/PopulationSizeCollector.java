@@ -18,6 +18,7 @@
 package org.moeaframework.analysis.runtime;
 
 import org.moeaframework.algorithm.EvolutionaryAlgorithm;
+import org.moeaframework.analysis.series.ResultEntry;
 
 /**
  * Collects the population size and archive size, if available, from an {@link EvolutionaryAlgorithm}.
@@ -60,32 +61,32 @@ public class PopulationSizeCollector implements Collector {
 	}
 
 	@Override
-	public void collect(Observation observation) {
-		observation.set("Population Size", algorithm.getPopulation().size());
+	public void collect(ResultEntry result) {
+		result.getProperties().setInt("Population Size", algorithm.getPopulation().size());
 		
 		if (algorithm.getArchive() != null) {
-			observation.set("Archive Size", algorithm.getArchive().size());
+			result.getProperties().setInt("Archive Size", algorithm.getArchive().size());
 		}
 	}
 	
 	/**
-	 * Reads the population size from the observation.
+	 * Reads the population size from the result.
 	 * 
-	 * @param observation the observation
+	 * @param result the result
 	 * @return the population size
 	 */
-	public static int getPopulationSize(Observation observation) {
-		return (Integer)observation.get("Population Size");
+	public static int getPopulationSize(ResultEntry result) {
+		return result.getProperties().getInt("Population Size");
 	}
 	
 	/**
-	 * Reads the archive size from the observation.
+	 * Reads the archive size from the result.
 	 * 
-	 * @param observation the observation
+	 * @param result the result
 	 * @return the archive size
 	 */
-	public static int getArchiveSize(Observation observation) {
-		return (Integer)observation.get("Archive Size");
+	public static int getArchiveSize(ResultEntry result) {
+		return result.getProperties().getInt("Archive Size");
 	}
 
 }

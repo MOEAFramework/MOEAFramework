@@ -20,6 +20,7 @@ package org.moeaframework.analysis.runtime;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.extension.AlgorithmWrapper;
 import org.moeaframework.algorithm.extension.FrequencyType;
+import org.moeaframework.analysis.series.ResultSeries;
 
 /**
  * Wraps an algorithm to indicate it is instrumented to collect runtime data.
@@ -66,12 +67,12 @@ public class InstrumentedAlgorithm<T extends Algorithm> extends AlgorithmWrapper
 	}
 	
 	/**
-	 * Returns the observations collected from this algorithm.
+	 * Returns the collected data as a result series.
 	 * 
-	 * @return the observations
+	 * @return the result series
 	 */
-	public Observations getObservations() {
-		return getExtensions().get(InstrumentedExtension.class).getObservations();
+	public ResultSeries getSeries() {
+		return getExtensions().get(InstrumentedExtension.class).getSeries();
 	}
 	
 }

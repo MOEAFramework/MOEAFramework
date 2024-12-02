@@ -46,7 +46,7 @@ public class PrintRuntimeDynamics {
 		instrumentedAlgorithm.run(10000);
 		
 		// Print the runtime dynamics
-		instrumentedAlgorithm.getObservations().display();
+		instrumentedAlgorithm.getSeries().display();
 	}
 
 }

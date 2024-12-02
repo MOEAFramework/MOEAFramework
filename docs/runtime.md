@@ -24,7 +24,7 @@ Instrumenter instrumenter = new Instrumenter()
 InstrumentedAlgorithm<NSGAII> instrumentedAlgorithm = instrumenter.instrument(algorithm);
 instrumentedAlgorithm.run(10000);
 
-instrumentedAlgorithm.getObservations().display();
+instrumentedAlgorithm.getSeries().display();
 ```
 
 Observe how we use the `Instrumenter` to instrument the algorithm, receiving back an `InstrumentedAlgorithm`.  This class
@@ -35,17 +35,17 @@ a table with the data:
 
 ```
 NFE   GenerationalDistance Hypervolume
------ -------------------- -----------
-100   0.799030             0.000000
-200   0.707753             0.000000
-300   0.438113             0.000000
-400   0.383873             0.000000
-500   0.431799             0.000000
-600   0.372148             0.000000
-700   0.344861             0.000000
-800   0.294252             0.000000
-900   0.294386             0.000000
-1000  0.293309             0.000000
+----- -------------------- --------------------
+100   0.7990302827396484   0.0
+200   0.7077528123350488   0.0
+300   0.43811344531671487  0.0
+400   0.38387314467599964  0.0
+500   0.43179862562213783  0.0
+600   0.3721480391572563   0.0
+700   0.3448605207000155   0.0
+800   0.2942521614055578   0.0
+900   0.29438617862560557  0.0
+1000  0.2933094213947678   0.0
 ...
 ```
 
@@ -55,7 +55,7 @@ Alternatively, we can pass the observations to the `Plot` class to produce a lin
 
 ```java
 new Plot()
-    .add(instrumentedAlgorithm.getObservations())
+    .add(instrumentedAlgorithm.getSeries())
     .show();
 ```
 
@@ -66,7 +66,7 @@ new Plot()
 We can also collect the approximation set throughout a run, using the built-in `RuntimeViewer` to display an interactive
 plot showing the convergence of the approximation set.
 
-<!-- java:examples/org/moeaframework/examples/runtime/RuntimeViewerExample.java [35:51] -->
+<!-- java:examples/org/moeaframework/examples/runtime/RuntimeViewerExample.java [35:50] -->
 
 ```java
 Problem problem = new UF1();
@@ -74,15 +74,14 @@ NSGAII algorithm = new NSGAII(problem);
 
 Instrumenter instrumenter = new Instrumenter()
         .withReferenceSet("pf/UF1.pf")
-        .withFrequency(100)
-        .attachApproximationSetCollector();
+        .withFrequency(100);
 
 InstrumentedAlgorithm<NSGAII> instrumentedAlgorithm = instrumenter.instrument(algorithm);
 instrumentedAlgorithm.run(10000);
 
 RuntimeViewer.show("NSGAII on UF1",
         instrumenter.getReferenceSet(),
-        instrumenter.getObservations());
+        instrumentedAlgorithm.getSeries());
 ```
 
 ![Runtime Viewer](imgs/runtimeViewer.png)

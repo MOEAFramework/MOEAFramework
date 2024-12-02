@@ -15,30 +15,23 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis.runtime;
+package org.moeaframework.analysis.series;
 
+import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.algorithm.Algorithm;
-import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.core.population.Population;
 
-public class ApproximationSetCollectorTest extends AbstractCollectorTest<ApproximationSetCollector> {
+public class IndexedResultTest {
 	
-	@Override
-	public void validate(Observation observation) {
-		NondominatedPopulation approximationSet = ApproximationSetCollector.getApproximationSet(observation);
+	@Test
+	public void testCompareTo() {
+		IndexedResult result1 = new IndexedResult(IndexType.NFE, 100, new Population());
+		IndexedResult result2 = new IndexedResult(IndexType.NFE, 200, new Population());
+		IndexedResult result3 = new IndexedResult(IndexType.NFE, 100, new Population());
 		
-		Assert.assertNotNull(approximationSet);
-		Assert.assertNotEmpty(approximationSet);
-	}
-	
-	@Override
-	public ApproximationSetCollector createInstance() {
-		return new ApproximationSetCollector();
-	}
-	
-	@Override
-	public boolean shouldAttach(Algorithm algorithm) {
-		return true;
+		Assert.assertEquals(-1, result1.compareTo(result2));
+		Assert.assertEquals(1, result2.compareTo(result3));
+		Assert.assertEquals(0, result1.compareTo(result3));
 	}
 
 }

@@ -37,9 +37,9 @@ import java.util.function.Predicate;
 
 import org.apache.commons.io.input.CloseShieldReader;
 import org.apache.commons.io.output.CloseShieldWriter;
-import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.analysis.io.ResultFileWriter;
+import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.core.Copyable;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;

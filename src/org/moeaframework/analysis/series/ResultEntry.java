@@ -15,20 +15,25 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis.io;
+package org.moeaframework.analysis.series;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.io.StringReader;
+import java.io.StringWriter;
 
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.population.Population;
 
 /**
- * An entry in a result file. This captures the population along with properties associated with the entry.  The
- * properties could include, for example, the number of function evaluations or performance metrics.
- * 
- * @see ResultFileWriter
- * @see ResultFileReader
+ * Stores a population, typically the non-dominated result from an algorithm, along with any associated properties.
  */
-public class ResultEntry {
+public class ResultEntry implements Serializable {
 	
+	private static final long serialVersionUID = 8348128285443097003L;
+
 	/**
 	 * Property used to store the number of function evaluations (NFE).
 	 */
@@ -40,29 +45,29 @@ public class ResultEntry {
 	public static final String ElapsedTime = "ElapsedTime";
 	
 	/**
-	 * The population stored in this entry.
+	 * The population associated with this result.
 	 */
-	private final Population population;
+	private Population population;
 	
 	/**
-	 * The auxiliary properties stored in this entry.
+	 * The properties associated with this result.
 	 */
-	private final TypedProperties properties;
+	private TypedProperties properties;
 	
 	/**
-	 * Constructs a result file entry with the specified population.
+	 * Constructs a result with the specified population.
 	 * 
-	 * @param population the population stored in this entry
+	 * @param population the population
 	 */
 	public ResultEntry(Population population) {
 		this(population, new TypedProperties());
 	}
 
 	/**
-	 * Constructs a result file entry with the specified population and properties.
+	 * Constructs a result with the specified population and properties.
 	 * 
-	 * @param population the population stored in this entry
-	 * @param properties the properties stored in this entry
+	 * @param population the population
+	 * @param properties the properties
 	 */
 	public ResultEntry(Population population, TypedProperties properties) {
 		super();
@@ -71,21 +76,41 @@ public class ResultEntry {
 	}
 
 	/**
-	 * Returns the population stored in this entry.
+	 * Returns the population associated with this result.
 	 * 
-	 * @return the population stored in this entry
+	 * @return the population
 	 */
 	public Population getPopulation() {
 		return population;
 	}
 
 	/**
-	 * Returns the properties stored in this entry.
+	 * Returns the properties associated with this result.
 	 * 
-	 * @return the properties stored in this entry
+	 * @return the properties
 	 */
 	public TypedProperties getProperties() {
 		return properties;
+	}
+	
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		population.saveState(out);
+		
+		try (StringWriter writer = new StringWriter()) {
+			properties.save(writer);
+			out.writeUTF(writer.toString());
+		}
+	}
+	
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		population = new Population();
+		properties = new TypedProperties();
+		
+		population.loadState(in);
+		
+		try (StringReader reader = new StringReader(in.readUTF())) {
+			properties.load(reader);
+		}
 	}
 
 }

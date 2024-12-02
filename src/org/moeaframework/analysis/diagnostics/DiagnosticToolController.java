@@ -41,10 +41,9 @@ import org.moeaframework.algorithm.extension.ProgressExtension;
 import org.moeaframework.algorithm.extension.ProgressExtension.ProgressEvent;
 import org.moeaframework.algorithm.extension.ProgressExtension.ProgressListener;
 import org.moeaframework.analysis.IndicatorStatistics;
-import org.moeaframework.analysis.runtime.ApproximationSetCollector;
 import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
 import org.moeaframework.analysis.runtime.Instrumenter;
-import org.moeaframework.analysis.runtime.Observations;
+import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.analysis.viewer.TextViewer;
 import org.moeaframework.core.DefaultEpsilons;
 import org.moeaframework.core.Epsilons;
@@ -73,12 +72,12 @@ public class DiagnosticToolController extends Controller implements SettingChang
 	/**
 	 * The collection of all results.
 	 */
-	private final Map<ResultKey, List<Observations>> results;
+	private final Map<ResultKey, List<ResultSeries>> results;
 	
 	/**
-	 * The last observation to be generated; or {@code null} if there is none or has been cleared.
+	 * The last result series to be generated; or {@code null} if there is none or has been cleared.
 	 */
-	private Observations lastObservation;
+	private ResultSeries lastSeries;
 	
 	/**
 	 * The setting for displaying the last run's trace.
@@ -161,11 +160,6 @@ public class DiagnosticToolController extends Controller implements SettingChang
 	private final Toggle includeElapsedTime;
 	
 	/**
-	 * The setting for collecting the approximation set.
-	 */
-	private final Toggle includeApproximationSet;
-	
-	/**
 	 * The setting for collecting the population / archive sizes.
 	 */
 	private final Toggle includePopulationSize;
@@ -209,7 +203,7 @@ public class DiagnosticToolController extends Controller implements SettingChang
 		super(frame);
 		this.frame = frame;
 		
-		results = new HashMap<ResultKey, List<Observations>>();
+		results = new HashMap<>();
 		
 		showLastTrace = new Toggle(false);
 		showIndividualTraces = new Toggle(false);
@@ -228,7 +222,6 @@ public class DiagnosticToolController extends Controller implements SettingChang
 		includeAdaptiveMultimethodVariation = new Toggle(true);
 		includeAdaptiveTimeContinuation = new Toggle(true);
 		includeElapsedTime = new Toggle(true);
-		includeApproximationSet = new Toggle(true);
 		includePopulationSize = new Toggle(true);
 		
 		showLastTrace.addSettingChangedListener(this);
@@ -238,34 +231,34 @@ public class DiagnosticToolController extends Controller implements SettingChang
 	}
 	
 	/**
-	 * Adds a new result to this controller.  If the specified key already exists, the observation is appended to the
+	 * Adds a new result to this controller.  If the specified key already exists, the result series is appended to the
 	 * existing results.
 	 * 
 	 * @param key the result key identifying the algorithm and problem associated with these results
-	 * @param observation the observation storing the results
+	 * @param series the result series storing the collected data
 	 */
-	public void add(ResultKey key, Observations observation) {
+	public void add(ResultKey key, ResultSeries series) {
 		synchronized (results) {
 			if (!results.containsKey(key)) {
-				results.put(key, new CopyOnWriteArrayList<Observations>());
+				results.put(key, new CopyOnWriteArrayList<>());
 			}
 			
-			results.get(key).add(observation);
-			lastObservation = observation;
+			results.get(key).add(series);
+			lastSeries = series;
 		}
 		
 		fireEvent("modelChanged");
 	}
 	
 	/**
-	 * Adds a new result to this controller.  This method invokes {@link #add(ResultKey, Observations)}.
+	 * Adds a new result to this controller.  This method invokes {@link #add(ResultKey, ResultSeries)}.
 	 * 
 	 * @param algorithm the algorithm associated with these results
 	 * @param problem the problem associated with these results
-	 * @param observation the observation storing the results
+	 * @param series the result series storing the collected data
 	 */
-	public void add(String algorithm, String problem, Observations observation) {
-		add(new ResultKey(algorithm, problem), observation);
+	public void add(String algorithm, String problem, ResultSeries series) {
+		add(new ResultKey(algorithm, problem), series);
 		fireEvent("modelChanged");
 	}
 	
@@ -280,7 +273,7 @@ public class DiagnosticToolController extends Controller implements SettingChang
 		synchronized (results) {
 			results.clear();
 			frame.getPaintHelper().clear();
-			lastObservation = null;
+			lastSeries = null;
 		}
 		
 		fireEvent("modelChanged");
@@ -292,7 +285,7 @@ public class DiagnosticToolController extends Controller implements SettingChang
 	 * @param key the result key
 	 * @return an unmodifiable collection containing the results associated with the specified key
 	 */
-	public List<Observations> get(ResultKey key) {
+	public List<ResultSeries> get(ResultKey key) {
 		synchronized (results) {
 			return Collections.unmodifiableList(results.get(key));
 		}
@@ -310,23 +303,23 @@ public class DiagnosticToolController extends Controller implements SettingChang
 	}
 	
 	/**
-	 * Returns the last observation to be generated; or {@code null} if there is none or has been cleared
+	 * Returns the last result series to be generated; or {@code null} if there is none or has been cleared.
 	 * 
-	 * @return the last observation to be generated; or {@code null}
+	 * @return the last result series to be generated; or {@code null}
 	 */
-	public Observations getLastObservation() {
+	public ResultSeries getLastSeries() {
 		synchronized (results) {
-			return lastObservation;
+			return lastSeries;
 		}
 	}
 	
 	/**
-	 * Clears the last observation.  Subsequent invocations of {@link #getLastObservation()} will return {@code null}
-	 * until a new observation is generated.
+	 * Clears the last result series.  Subsequent invocations of {@link #getLastSeries()} will return {@code null}
+	 * until a new result series is generated.
 	 */
-	public void clearLastObservation() {
+	public void clearLastSeries() {
 		synchronized (results) {
-			lastObservation = null;
+			lastSeries = null;
 		}
 	}
 	
@@ -359,7 +352,7 @@ public class DiagnosticToolController extends Controller implements SettingChang
 				List<?> list = (List<?>)entry.getValue();
 				
 				for (Object element : list) {
-					add(key, (Observations)element);
+					add(key, (ResultSeries)element);
 				}
 			}
 		} catch (StreamCorruptedException e) {
@@ -449,14 +442,9 @@ public class DiagnosticToolController extends Controller implements SettingChang
 			Map<String, List<NondominatedPopulation>> results = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 			
 			for (ResultKey key : selectedResults) {
-				for (Observations observations : get(key)) {
-					if (!observations.keys().contains("Approximation Set")) {
-						continue;
-					}
-					
+				for (ResultSeries series : get(key)) {
 					NondominatedPopulation approximationSet = new EpsilonBoxDominanceArchive(epsilons);
-					approximationSet.addAll(ApproximationSetCollector.getApproximationSet(observations.last()));
-					
+					approximationSet.addAll(series.last().getPopulation());
 					results.computeIfAbsent(key.getAlgorithm(), x -> new ArrayList<>()).add(approximationSet);
 				}
 			}
@@ -585,10 +573,6 @@ public class DiagnosticToolController extends Controller implements SettingChang
 						instrumenter.attachElapsedTimeCollector();
 					}
 					
-					if (includeApproximationSet().get()) {
-						instrumenter.attachApproximationSetCollector();
-					}
-					
 					if (includePopulationSize().get()) {
 						instrumenter.attachPopulationSizeCollector();
 					}
@@ -626,7 +610,7 @@ public class DiagnosticToolController extends Controller implements SettingChang
 							return;
 						}
 						
-						add(algorithmName, problemName, instrumentedAlgorithm.getObservations());
+						add(algorithmName, problemName, instrumentedAlgorithm.getSeries());
 					}
 				} catch (Exception e) {
 					handleException(e);
@@ -814,15 +798,6 @@ public class DiagnosticToolController extends Controller implements SettingChang
 	 */
 	public Toggle includeElapsedTime() {
 		return includeElapsedTime;
-	}
-
-	/**
-	 * Returns the setting for collecting the approximation set.
-	 * 
-	 * @return the setting object
-	 */
-	public Toggle includeApproximationSet() {
-		return includeApproximationSet;
 	}
 
 	/**

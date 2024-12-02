@@ -18,6 +18,7 @@
 package org.moeaframework.analysis.runtime;
 
 import org.moeaframework.algorithm.Algorithm;
+import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.util.Timer;
 
 /**
@@ -40,8 +41,8 @@ public class ElapsedTimeCollector implements Collector {
 	}
 
 	@Override
-	public void collect(Observation observation) {
-		observation.set("Elapsed Time", timer.getElapsedTime());
+	public void collect(ResultEntry result) {
+		result.getProperties().setDouble("Elapsed Time", timer.getElapsedTime());
 	}
 
 	@Override
@@ -56,13 +57,13 @@ public class ElapsedTimeCollector implements Collector {
 	}
 	
 	/**
-	 * Reads the elapsed time value from the observation.
+	 * Reads the elapsed time value from the result.
 	 * 
-	 * @param observation the observation
+	 * @param result the result
 	 * @return the elapsed time value.
 	 */
-	public static double getElapsedTime(Observation observation) {
-		return (Double)observation.get("Elapsed Time");
+	public static double getElapsedTime(ResultEntry result) {
+		return result.getProperties().getDouble("Elapsed Time");
 	}
 
 }

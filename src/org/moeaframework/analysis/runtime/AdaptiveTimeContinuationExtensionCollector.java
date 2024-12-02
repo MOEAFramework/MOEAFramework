@@ -20,6 +20,7 @@ package org.moeaframework.analysis.runtime;
 import org.moeaframework.algorithm.continuation.AdaptiveTimeContinuationExtension;
 import org.moeaframework.algorithm.continuation.RestartEvent;
 import org.moeaframework.algorithm.continuation.RestartListener;
+import org.moeaframework.analysis.series.ResultEntry;
 
 /**
  * Collects the number of restart events resulting from {@link AdaptiveTimeContinuationExtension}.
@@ -52,8 +53,8 @@ public class AdaptiveTimeContinuationExtensionCollector implements Collector, Re
 	}
 
 	@Override
-	public void collect(Observation observation) {
-		observation.set("Number of Restarts", numberOfRestarts);
+	public void collect(ResultEntry result) {
+		result.getProperties().setInt("Number of Restarts", numberOfRestarts);
 	}
 
 	@Override
@@ -72,13 +73,13 @@ public class AdaptiveTimeContinuationExtensionCollector implements Collector, Re
 	}
 	
 	/**
-	 * Reads the number of restarts value from the observation.
+	 * Reads the number of restarts value from the result.
 	 * 
-	 * @param observation the observation
+	 * @param result the result
 	 * @return the number of restarts
 	 */
-	public static int getNumberOfRestarts(Observation observation) {
-		return (Integer)observation.get("Number of Restarts");
+	public static int getNumberOfRestarts(ResultEntry result) {
+		return result.getProperties().getInt("Number of Restarts");
 	}
 
 }

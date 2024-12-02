@@ -20,13 +20,13 @@ package org.moeaframework.examples.io;
 import java.io.File;
 
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.analysis.io.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.analysis.parameter.Parameter;
 import org.moeaframework.analysis.parameter.ParameterSet;
 import org.moeaframework.analysis.sample.Sample;
 import org.moeaframework.analysis.sample.Samples;
+import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.CEC2009.UF1;

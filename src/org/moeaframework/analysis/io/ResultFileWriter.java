@@ -26,6 +26,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 
+import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.core.Constructable;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;

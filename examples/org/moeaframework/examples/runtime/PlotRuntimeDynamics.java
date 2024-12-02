@@ -47,9 +47,9 @@ public class PlotRuntimeDynamics {
 		InstrumentedAlgorithm<NSGAII> instrumentedAlgorithm = instrumenter.instrument(algorithm);
 		instrumentedAlgorithm.run(10000);
 		
-		// Render a plot of the runtime dynamics
+		// Render a plot of the runtime dynamics series
 		new Plot()
-		    .add(instrumentedAlgorithm.getObservations())
+		    .add(instrumentedAlgorithm.getSeries())
 		    .show();
 	}
 

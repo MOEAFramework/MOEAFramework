@@ -15,29 +15,29 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis.runtime;
+package org.moeaframework.analysis.series;
 
-import org.moeaframework.Assert;
-import org.moeaframework.algorithm.Algorithm;
-import org.moeaframework.algorithm.pso.AbstractPSOAlgorithm;
-
-public class PSOCollectorTest extends AbstractCollectorTest<PSOCollector> {
+/**
+ * The type of index.
+ */
+public enum IndexType {
 	
-	@Override
-	public void validate(Observation observation) {
-		Assert.assertNotNull(PSOCollector.getLeaders(observation));
-		Assert.assertNotNull(PSOCollector.getLocalBestParticles(observation));
-		Assert.assertNotNull(PSOCollector.getParticles(observation));
-	}
+	/**
+	 * The index represents the number of function evaluations (NFE).  When finding the entry with a given NFE,
+	 * we typically find the nearest match.
+	 */
+	NFE,
 	
-	@Override
-	public PSOCollector createInstance() {
-		return new PSOCollector();
-	}
+	/**
+	 * The index represents the a sequential value .  This typically means the entries are not
+	 * associated with a single run of an algorithm.
+	 */
+	Index,
 	
-	@Override
-	public boolean shouldAttach(Algorithm algorithm) {
-		return algorithm instanceof AbstractPSOAlgorithm;
-	}
-
+	/**
+	 * The series contains a single entry, which is returned regardless of what index is provided.  This is
+	 * typically used by reference sets.
+	 */
+	Singleton
+	
 }

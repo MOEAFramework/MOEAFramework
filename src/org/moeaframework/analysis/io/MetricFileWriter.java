@@ -26,6 +26,7 @@ import java.io.Writer;
 import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
+import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.indicator.Indicators.IndicatorValues;

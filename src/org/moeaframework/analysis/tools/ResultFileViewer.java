@@ -22,7 +22,7 @@ import java.io.File;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
 import org.moeaframework.analysis.io.ResultFileReader;
-import org.moeaframework.analysis.viewer.RuntimeSeries;
+import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.analysis.viewer.RuntimeViewer;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.Problem;
@@ -60,7 +60,7 @@ public class ResultFileViewer extends CommandLineUtility {
 			
 			for (String filename : commandLine.getArgs()) {
 				try (ResultFileReader reader = ResultFileReader.openLegacy(problem, new File(filename))) {
-					viewer.getController().addSeries(RuntimeSeries.of(filename, reader));
+					viewer.getController().addSeries(filename, ResultSeries.of(reader));
 				}
 			}
 		}

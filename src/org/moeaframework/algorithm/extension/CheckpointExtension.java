@@ -99,6 +99,7 @@ public class CheckpointExtension extends PeriodicExtension {
 			saveToStateFile(algorithm);
 		} catch (IOException e) {
 			System.err.println("an error occurred while writing the state file");
+			e.printStackTrace();
 		}
 	}
 	

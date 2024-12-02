@@ -21,14 +21,10 @@ import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Paint;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -51,8 +47,8 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.YIntervalSeries;
 import org.jfree.data.xy.YIntervalSeriesCollection;
-import org.moeaframework.analysis.runtime.Observation;
-import org.moeaframework.analysis.runtime.Observations;
+import org.moeaframework.analysis.series.IndexedResult;
+import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.util.Localization;
 
 /**
@@ -71,48 +67,6 @@ public class LinePlot extends ResultPlot {
 	 * The resolution of the line plot, controlling the number of collected samples are included in each plotted point.
 	 */
 	private final int RESOLUTION = 500;
-
-	/**
-	 * A data point, storing the NFE and corresponding metric value.
-	 */
-	private static class DataPoint implements Comparable<DataPoint> {
-		
-		/**
-		 * The number of evaluations of this data point.
-		 */
-		private final int NFE;
-		
-		/**
-		 * The metric value of this data point.
-		 */
-		private final Number value;
-	
-		/**
-		 * Constructs a data point with the specified number of evaluations and metric value.
-		 * 
-		 * @param NFE the number of evaluations of this data point
-		 * @param value the metric value of this data point
-		 */
-		public DataPoint(int NFE, Number value) {
-			super();
-			this.NFE = NFE;
-			this.value = value;
-		}
-	
-		@Override
-		public int compareTo(DataPoint rhs) {
-			return new CompareToBuilder().append(NFE, rhs.NFE).toComparison();
-		}
-
-		public int getNFE() {
-			return NFE;
-		}
-
-		public Number getValue() {
-			return value;
-		}
-		
-	}
 	
 	/**
 	 * Constructs a line plot for the specified metric.
@@ -133,18 +87,18 @@ public class LinePlot extends ResultPlot {
 	 * @param dataset the dataset to store the generated series
 	 */
 	protected void generateIndividualSeries(ResultKey key, DefaultTableXYDataset dataset) {
-		for (Observations observations : controller.get(key)) {
-			if (!observations.keys().contains(metric)) {
+		for (ResultSeries series : controller.get(key)) {
+			if (!series.getDefinedProperties().contains(metric)) {
 				continue;
 			}
 		
-			XYSeries series = new XYSeries(key, false, false);
+			XYSeries xySeries = new XYSeries(key, false, false);
 
-			for (Observation observation : observations) {
-				series.add(observation.getNFE(), (Number)observation.get(metric));
+			for (IndexedResult result : series) {
+				xySeries.add(result.getIndex(), result.getProperties().getDouble(metric));
 			}
-			
-			dataset.addSeries(series);
+
+			dataset.addSeries(xySeries);
 		}
 	}
 
@@ -155,60 +109,37 @@ public class LinePlot extends ResultPlot {
 	 * @param dataset the dataset to store the generated series
 	 */
 	protected void generateQuantileSeries(ResultKey key, YIntervalSeriesCollection dataset) {
-		List<DataPoint> dataPoints = new ArrayList<DataPoint>();
+		YIntervalSeries ySeries = new YIntervalSeries(key);
+		int currentNFE = 0;
+		int maxNFE = 0;
 		
-		for (Observations observations : controller.get(key)) {
-			if (!observations.keys().contains(metric)) {
-				continue;
-			}
-			
-			for (Observation observation : observations) {
-				dataPoints.add(new DataPoint(observation.getNFE(), (Number)observation.get(metric)));
-			}
+		for (ResultSeries series : controller.get(key)) {
+			maxNFE = Math.max(maxNFE, series.getEndingIndex());
 		}
-			
-		Collections.sort(dataPoints);
 
-		YIntervalSeries series = new YIntervalSeries(key);
-		DescriptiveStatistics statistics = new DescriptiveStatistics();
-		int index = 0;
-		int currentNFE = RESOLUTION;
+		while (currentNFE <= maxNFE) {
+			DescriptiveStatistics statistics = new DescriptiveStatistics();
 
-		while (index < dataPoints.size()) {
-			DataPoint point = dataPoints.get(index);
-
-			if (point.getNFE() <= currentNFE) {
-				statistics.addValue(point.getValue().doubleValue());
-				index++;
-			} else {
-				if (statistics.getN() > 0) {
-					series.add(currentNFE, 
-							statistics.getPercentile(50), 
-							statistics.getPercentile(25), 
-							statistics.getPercentile(75));
+			for (ResultSeries series : controller.get(key)) {
+				for (IndexedResult result : series) {
+					if (result.getProperties().contains(metric) && result.getIndex() >= currentNFE &&
+							result.getIndex() < currentNFE + RESOLUTION) {
+						statistics.addValue(result.getProperties().getDouble(metric));
+					}
 				}
-
-				statistics.clear();
-				currentNFE += RESOLUTION;
 			}
-		}
 
-		if (statistics.getN() > 0) {
-			//if only entry, add extra point to display non-zero width
-			if (series.isEmpty()) {
-				series.add(currentNFE-RESOLUTION, 
+			if (statistics.getN() > 0) {
+				ySeries.add(currentNFE, 
 						statistics.getPercentile(50), 
 						statistics.getPercentile(25), 
 						statistics.getPercentile(75));
 			}
 
-			series.add(currentNFE, 
-					statistics.getPercentile(50), 
-					statistics.getPercentile(25), 
-					statistics.getPercentile(75));
+			currentNFE += RESOLUTION;
 		}
 		
-		dataset.addSeries(series);
+		dataset.addSeries(ySeries);
 	}
 	
 	@Override
@@ -307,16 +238,16 @@ public class LinePlot extends ResultPlot {
 		//add overlay
 		if (controller.showLastTrace().get() && 
 				!controller.showIndividualTraces().get() &&
-				(controller.getLastObservation() != null) && 
-				controller.getLastObservation().keys().contains(metric)) {
+				(controller.getLastSeries() != null) && 
+				controller.getLastSeries().getDefinedProperties().contains(metric)) {
 			DefaultTableXYDataset dataset2 = new DefaultTableXYDataset();
-			XYSeries series = new XYSeries(localization.getString("text.last"), false, false);
+			XYSeries xySeries = new XYSeries(localization.getString("text.last"), false, false);
 			
-			for (Observation observation : controller.getLastObservation()) {
-				series.add(observation.getNFE(), (Number)observation.get(metric));
+			for (IndexedResult result : controller.getLastSeries()) {
+				xySeries.add(result.getIndex(), result.getProperties().getDouble(metric));
 			}
 			
-			dataset2.addSeries(series);
+			dataset2.addSeries(xySeries);
 			
 			XYLineAndShapeRenderer renderer2 = new XYLineAndShapeRenderer(true, false);
 			renderer2.setSeriesStroke(0, new BasicStroke(1f, 1, 1));

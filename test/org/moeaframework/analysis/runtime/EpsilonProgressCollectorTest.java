@@ -17,17 +17,21 @@
  */
 package org.moeaframework.analysis.runtime;
 
+import org.moeaframework.Assert;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.EpsilonBoxEvolutionaryAlgorithm;
 import org.moeaframework.algorithm.EpsilonNSGAII;
+import org.moeaframework.algorithm.EvolutionaryAlgorithm;
+import org.moeaframework.analysis.series.ResultEntry;
 
 public class EpsilonProgressCollectorTest extends AbstractCollectorTest<EpsilonProgressCollector> {
 	
 	@Override
-	public void validate(Observation observation) {
-		//these observations are only collected if the archive is non-null
-		//Assert.assertTrue(EpsilonProgressCollector.getNumberOfImprovements(observation) >= 0);
-		//Assert.assertTrue(EpsilonProgressCollector.getNumberOfDominatingImprovements(observation) >= 0);
+	public void validate(Algorithm algorithm, ResultEntry result) {
+		if (algorithm instanceof EvolutionaryAlgorithm ea && ea.getArchive() != null) {
+			Assert.assertTrue(EpsilonProgressCollector.getNumberOfImprovements(result) >= 0);
+			Assert.assertTrue(EpsilonProgressCollector.getNumberOfDominatingImprovements(result) >= 0);
+		}
 	}
 	
 	@Override

@@ -26,6 +26,7 @@ import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.Wait;
 import org.moeaframework.analysis.io.MetricFileWriter.Metric;
+import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.ProblemFactory;

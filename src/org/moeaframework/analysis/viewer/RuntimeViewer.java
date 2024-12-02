@@ -68,13 +68,16 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.Range;
+import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.moeaframework.analysis.diagnostics.PaintHelper;
 import org.moeaframework.analysis.plot.ImageFileType;
 import org.moeaframework.analysis.plot.ImageUtils;
-import org.moeaframework.analysis.runtime.Observations;
+import org.moeaframework.analysis.series.IndexType;
+import org.moeaframework.analysis.series.IndexedResult;
+import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.analysis.viewer.RuntimeController.FitMode;
-import org.moeaframework.analysis.viewer.RuntimeSeries.IndexType;
+import org.moeaframework.core.Named;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.constraint.Constraint;
@@ -130,9 +133,9 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 	/**
 	 * The control for selecting which seeds to display in the plot.
 	 */
-	private JList<RuntimeSeries> seriesList;
+	private JList<PlotSeries> seriesList;
 	
-	private DefaultListModel<RuntimeSeries> seriesListModel;
+	private DefaultListModel<PlotSeries> seriesListModel;
 	
 	private JButton selectAll;
 	
@@ -160,15 +163,15 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 	private RuntimeController controller;
 		
 	/**
-	 * Displays the approximation sets contained in the observations.  In addition to displaying the viewer, this
+	 * Displays the approximation sets contained in the result series.  In addition to displaying the viewer, this
 	 * method also configures the system look and feel.  Therefore, prefer this static method when creating a 
 	 * standalone version of this window.
 	 * 
 	 * @param title the name or title for the data
 	 * @param referenceSet the reference set for the problem
-	 * @param observations the observations containing approximation set data
+	 * @param series the series containing approximation set data to display
 	 */
-	public static void show(String title, NondominatedPopulation referenceSet, Observations... observations) {
+	public static void show(String title, NondominatedPopulation referenceSet, ResultSeries... series) {
 		SwingUtilities.invokeLater(() -> {
 			try {
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -180,8 +183,8 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 			
 			viewer.getController().setReferenceSet(referenceSet);
 			
-			for (int i = 0; i < observations.length; i++) {
-				viewer.getController().addSeries("Seed " + (i + 1), observations[i]);
+			for (int i = 0; i < series.length; i++) {
+				viewer.getController().addSeries(localization.getString("text.series") + " " + (i + 1), series[i]);
 			}
 			
 			viewer.setLocationRelativeTo(null);
@@ -342,7 +345,8 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 
     		if (result == JFileChooser.APPROVE_OPTION) {
     			try {
-    				controller.addSeries(RuntimeSeries.of(fileChooser.getSelectedFile()));
+    				controller.addSeries(fileChooser.getSelectedFile().getName(),
+    						ResultSeries.of(fileChooser.getSelectedFile()));
     			} catch (Exception e) {
     				controller.handleException(e);
     			}
@@ -352,8 +356,10 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		play = new RunnableAction("play", localization, controller::play);
 		stop = new RunnableAction("stop", localization, controller::stop);
 		
-		RunnableAction start = new RunnableAction("start", localization, () -> controller.setCurrentIndex(controller.getStartingIndex()));
-		RunnableAction end = new RunnableAction("end", localization, () -> controller.setCurrentIndex(controller.getEndingIndex()));
+		RunnableAction start = new RunnableAction("start", localization,
+				() -> controller.setCurrentIndex(controller.getStartingIndex()));
+		RunnableAction end = new RunnableAction("end", localization,
+				() -> controller.setCurrentIndex(controller.getEndingIndex()));
 		
 		PopupAction pointSize = new PopupAction("pointSizeMenu", localization, () -> {
 			JPopupMenu menu = new JPopupMenu();
@@ -441,14 +447,14 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		int numberOfConstraints = Integer.MAX_VALUE;
 		
 		if (controller.getReferenceSet() != null) {
-			prototypeSolution = controller.getReferenceSet().first().getValue().get(0);
+			prototypeSolution = controller.getReferenceSet().getPrototypeSolution();
 			numberOfVariables = Math.min(numberOfVariables, prototypeSolution.getNumberOfVariables());
 			numberOfObjectives = Math.min(numberOfObjectives, prototypeSolution.getNumberOfObjectives());
 			numberOfConstraints = Math.min(numberOfConstraints, prototypeSolution.getNumberOfConstraints());
 		}
 		
-		for (RuntimeSeries series : controller.getSeries()) {
-			prototypeSolution = series.first().getValue().get(0);
+		for (PlotSeries series : controller.getSeries()) {
+			prototypeSolution = series.getPrototypeSolution();
 			numberOfVariables = Math.min(numberOfVariables, prototypeSolution.getNumberOfVariables());
 			numberOfObjectives = Math.min(numberOfObjectives, prototypeSolution.getNumberOfObjectives());
 			numberOfConstraints = Math.min(numberOfConstraints, prototypeSolution.getNumberOfConstraints());
@@ -524,15 +530,15 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		
 		//generate approximation set
-		for (RuntimeSeries series : getSelectedSeries()) {
+		for (PlotSeries series : getSelectedSeries()) {
 			dataset.addSeries(series.toXYSeries(currentIndex, xAxis, yAxis));
 		}
 		
 		//generate reference set
-		RuntimeSeries referenceSet = controller.getReferenceSet();
+		PlotSeries referenceSet = controller.getReferenceSet();
 		
 		if (referenceSet != null && controller.getShowReferenceSet().get()) {
-			dataset.addSeries(referenceSet.toXYSeries(0, xAxis, yAxis));
+			dataset.addSeries(referenceSet.toXYSeries(currentIndex, xAxis, yAxis));
 		}
 		
 		chart = ChartFactory.createScatterPlot(
@@ -593,8 +599,8 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		chartContainer.repaint();
 	}
 	
-	private List<RuntimeSeries> getSelectedSeries() {
-		List<RuntimeSeries> result = new ArrayList<>();
+	private List<PlotSeries> getSelectedSeries() {
+		List<PlotSeries> result = new ArrayList<>();
 		
 		for (int selectedIndex : seriesList.getSelectedIndices()) {
 			result.add(seriesListModel.get(selectedIndex));
@@ -623,7 +629,10 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 				plot.getRangeAxis().setRange(zoomRangeBounds);
 			}
 			case ReferenceSetBounds -> {
-				Pair<Range, Range> bounds = getBoundsAt(controller.getReferenceSet(), 0);
+				AxisSelector<Solution, Number> xAxis = xAxisSelection.getItemAt(xAxisSelection.getSelectedIndex());
+				AxisSelector<Solution, Number> yAxis = yAxisSelection.getItemAt(yAxisSelection.getSelectedIndex());
+				
+				Pair<Range, Range> bounds = controller.getReferenceSet().getBoundsAt(0, xAxis, yAxis);
 				
 				plot.getDomainAxis().setRange(bounds.getLeft());
 				plot.getRangeAxis().setRange(bounds.getRight());
@@ -634,19 +643,15 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		}
 	}
 	
-	private Pair<Range, Range> getBoundsAt(RuntimeSeries series, int index) {
-		AxisSelector<Solution, Number> xAxis = xAxisSelection.getItemAt(xAxisSelection.getSelectedIndex());
-		AxisSelector<Solution, Number> yAxis = yAxisSelection.getItemAt(yAxisSelection.getSelectedIndex());
-		return series.bounds(index, xAxis, yAxis);
-	}
-	
 	private Pair<Range, Range> getBoundsAt(int index) {
 		Range domain = null;
 		Range range = null;
-		RuntimeSeries referenceSet = controller.getReferenceSet();
+		PlotSeries referenceSet = controller.getReferenceSet();
+		AxisSelector<Solution, Number> xAxis = xAxisSelection.getItemAt(xAxisSelection.getSelectedIndex());
+		AxisSelector<Solution, Number> yAxis = yAxisSelection.getItemAt(yAxisSelection.getSelectedIndex());
 		
 		if (referenceSet != null) {
-			Pair<Range, Range> seriesBounds = getBoundsAt(referenceSet, index);
+			Pair<Range, Range> seriesBounds = referenceSet.getBoundsAt(index, xAxis, yAxis);
 			
 			if (seriesBounds != null) {
 				domain = Range.combine(domain, seriesBounds.getLeft());
@@ -654,8 +659,8 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 			}
 		}
 		
-		for (RuntimeSeries series : getSelectedSeries()) {
-			Pair<Range, Range> seriesBounds = getBoundsAt(series, index);
+		for (PlotSeries series : getSelectedSeries()) {
+			Pair<Range, Range> seriesBounds = series.getBoundsAt(index, xAxis, yAxis);
 			
 			if (seriesBounds != null) {
 				domain = Range.combine(domain, seriesBounds.getLeft());
@@ -675,7 +680,84 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		updateView();
 	}
 	
-	private class AxisSelector<T, R> implements Function<T, R> {
+	static class PlotSeries implements Named {
+		
+		private final String name;
+		
+		private final ResultSeries series;
+		
+		public PlotSeries(String name, ResultSeries series) {
+			super();
+			this.name = name;
+			this.series = series;
+		}
+		
+		@Override
+		public String getName() {
+			return name;
+		}
+		
+		public ResultSeries getSeries() {
+			return series;
+		}
+
+		@Override
+		public String toString() {
+			return name;
+		}
+		
+		public Pair<Range, Range> getBoundsAt(int index, AxisSelector<Solution, Number> xAxis,
+				AxisSelector<Solution, Number> yAxis) {
+			IndexedResult entry = series.at(index);
+			
+			if (entry == null) {
+				return null;
+			}
+			
+			double domainMin = Double.POSITIVE_INFINITY;
+			double domainMax = Double.NEGATIVE_INFINITY;
+			double rangeMin = Double.POSITIVE_INFINITY;
+			double rangeMax = Double.NEGATIVE_INFINITY;
+			
+			for (Solution solution : entry.getPopulation()) {
+				double xValue = xAxis.apply(solution).doubleValue();
+				double yValue = yAxis.apply(solution).doubleValue();
+					
+				domainMin = Math.min(domainMin, xValue);
+				domainMax = Math.max(domainMax, xValue);
+				rangeMin = Math.min(rangeMin, yValue);
+				rangeMax = Math.max(rangeMax, yValue);
+			}
+			
+			double domainDelta = 0.1 * (domainMax - domainMin);
+			double rangeDelta = 0.1 * (rangeMax - rangeMin);
+
+			return Pair.of(
+					new Range(domainMin - domainDelta, domainMax + domainDelta),
+					new Range(rangeMin - rangeDelta, rangeMax + rangeDelta));
+		}
+		
+		public XYSeries toXYSeries(int index, AxisSelector<Solution, Number> xAxis,
+				AxisSelector<Solution, Number> yAxis) {
+			IndexedResult result = series.at(index);
+			XYSeries xySeries = new XYSeries(name, false, true);
+			
+			if (result != null) {
+				for (Solution solution : result.getPopulation()) {
+					xySeries.add(xAxis.apply(solution), yAxis.apply(solution));
+				}
+			}
+			
+			return xySeries;
+		}
+		
+		public Solution getPrototypeSolution() {
+			return series.first().getPopulation().get(0);
+		}
+		
+	}
+	
+	static class AxisSelector<T, R> implements Function<T, R> {
 		
 		private final String name;
 		

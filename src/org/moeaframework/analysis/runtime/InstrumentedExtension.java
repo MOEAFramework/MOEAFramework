@@ -26,18 +26,23 @@ import java.util.List;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.extension.FrequencyType;
 import org.moeaframework.algorithm.extension.PeriodicExtension;
+import org.moeaframework.analysis.series.IndexType;
+import org.moeaframework.analysis.series.IndexedResult;
+import org.moeaframework.analysis.series.ResultEntry;
+import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.core.Stateful;
+import org.moeaframework.core.TypedProperties;
 
 /**
- * Decorates an algorithm to periodically collect information about its runtime behavior.  The {@code NFE} field is
- * automatically recorded by this class.
+ * Decorates an algorithm to periodically collect information about its runtime behavior.  The NFE and result are
+ * automatically recorded by this extension.
  */
 public class InstrumentedExtension extends PeriodicExtension implements Stateful {
 	
 	/**
-	 * The observations recorded from this algorithm.
+	 * The result series recorded from this algorithm.
 	 */
-	private Observations observations;
+	private ResultSeries series;
 	
 	/**
 	 * The collectors responsible for recording the necessary information.
@@ -62,8 +67,7 @@ public class InstrumentedExtension extends PeriodicExtension implements Stateful
 	 */
 	public InstrumentedExtension(int frequency, FrequencyType frequencyType) {
 		super(frequency, frequencyType);
-		
-		observations = new Observations();
+		series = new ResultSeries(IndexType.NFE);
 		collectors = new ArrayList<Collector>();
 	}
 	
@@ -78,35 +82,39 @@ public class InstrumentedExtension extends PeriodicExtension implements Stateful
 	}
 	
 	/**
-	 * Returns the observations collected from this algorithm.
+	 * Returns the data collected from this algorithm, which is a series of results collected at the defined frequency.
 	 * 
-	 * @return the observations
+	 * @return the result series
 	 */
-	public Observations getObservations() {
-		return observations;
+	public ResultSeries getSeries() {
+		return series;
 	}
 
 	@Override
 	public void doAction(Algorithm algorithm) {
-		Observation observation = new Observation(algorithm.getNumberOfEvaluations());
+		TypedProperties properties = new TypedProperties();
+		properties.setInt(ResultEntry.NFE, algorithm.getNumberOfEvaluations());
+		
+		IndexedResult result = new IndexedResult(IndexType.NFE, algorithm.getNumberOfEvaluations(),
+				algorithm.getResult(), properties);
 		
 		for (Collector collector : collectors) {
-			collector.collect(observation);
+			collector.collect(result);
 		}
-		
-		observations.add(observation);
+
+		series.add(result);
 	}
 	
 	@Override
 	public void saveState(ObjectOutputStream stream) throws IOException {
 		super.saveState(stream);
-		stream.writeObject(observations);
+		stream.writeObject(series);
 	}
 
 	@Override
 	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		super.loadState(stream);
-		observations = (Observations)stream.readObject();
+		series = (ResultSeries)stream.readObject();
 	}
 	
 }

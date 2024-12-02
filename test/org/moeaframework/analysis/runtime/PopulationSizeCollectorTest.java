@@ -20,15 +20,16 @@ package org.moeaframework.analysis.runtime;
 import org.moeaframework.Assert;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.EvolutionaryAlgorithm;
+import org.moeaframework.analysis.series.ResultEntry;
 
 public class PopulationSizeCollectorTest extends AbstractCollectorTest<PopulationSizeCollector> {
 	
 	@Override
-	public void validate(Observation observation) {
-		Assert.assertGreaterThan(PopulationSizeCollector.getPopulationSize(observation), 0);
+	public void validate(Algorithm algorithm, ResultEntry result) {
+		Assert.assertGreaterThan(PopulationSizeCollector.getPopulationSize(result), 0);
 		
-		if (observation.keys().contains("Archive Size")) {
-			Assert.assertGreaterThan(PopulationSizeCollector.getArchiveSize(observation), 0);
+		if (algorithm instanceof EvolutionaryAlgorithm ea && ea.getArchive() != null) {
+			Assert.assertGreaterThan(PopulationSizeCollector.getArchiveSize(result), 0);
 		}
 	}
 	

@@ -15,31 +15,8 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis.runtime;
 
-import org.moeaframework.Assert;
-import org.moeaframework.algorithm.Algorithm;
-import org.moeaframework.algorithm.EvolutionaryAlgorithm;
-import org.moeaframework.core.population.Population;
-
-public class PopulationCollectorTest extends AbstractCollectorTest<PopulationCollector> {
-	
-	@Override
-	public void validate(Observation observation) {
-		Population population = PopulationCollector.getPopulation(observation);
-		
-		Assert.assertNotNull(population);
-		Assert.assertNotEmpty(population);
-	}
-	
-	@Override
-	public PopulationCollector createInstance() {
-		return new PopulationCollector();
-	}
-	
-	@Override
-	public boolean shouldAttach(Algorithm algorithm) {
-		return algorithm instanceof EvolutionaryAlgorithm;
-	}
-
-}
+/**
+ * Stores a series of results.
+ */
+package org.moeaframework.analysis.series;

@@ -19,12 +19,13 @@ package org.moeaframework.analysis.runtime;
 
 import org.moeaframework.Assert;
 import org.moeaframework.algorithm.Algorithm;
+import org.moeaframework.analysis.series.ResultEntry;
 
 public class ElapsedTimeCollectorTest extends AbstractCollectorTest<ElapsedTimeCollector> {
 	
 	@Override
-	public void validate(Observation observation) {
-		Assert.assertGreaterThanOrEqual(ElapsedTimeCollector.getElapsedTime(observation), 0.0);
+	public void validate(Algorithm algorithm, ResultEntry result) {
+		Assert.assertGreaterThanOrEqual(ElapsedTimeCollector.getElapsedTime(result), 0.0);
 	}
 	
 	@Override

@@ -17,6 +17,7 @@
  */
 package org.moeaframework.analysis.runtime;
 
+import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.core.operator.AdaptiveMultimethodVariation;
 import org.moeaframework.core.operator.Variation;
 
@@ -51,10 +52,10 @@ public class AdaptiveMultimethodVariationCollector implements Collector {
 	}
 
 	@Override
-	public void collect(Observation observation) {
+	public void collect(ResultEntry result) {
 		for (int i = 0; i < variation.getNumberOfOperators(); i++) {
 			Variation operator = variation.getOperator(i);
-			observation.set(operator.getName(), variation.getOperatorProbability(i));
+			result.getProperties().setDouble(operator.getName(), variation.getOperatorProbability(i));
 		}
 	}
 
@@ -69,25 +70,25 @@ public class AdaptiveMultimethodVariationCollector implements Collector {
 	}
 	
 	/**
-	 * Reads the operator probability from the observation.
+	 * Reads the operator probability from the result.
 	 * 
-	 * @param observation the observation
+	 * @param result the result
 	 * @param name the name of the operator
 	 * @return the operator probability
 	 */
-	public static double getOperatorProbability(Observation observation, String name) {
-		return (Double)observation.get(name);
+	public static double getOperatorProbability(ResultEntry result, String name) {
+		return result.getProperties().getDouble(name);
 	}
 	
 	/**
-	 * Reads the operator probability from the observation.
+	 * Reads the operator probability from the result.
 	 * 
-	 * @param observation the observation
+	 * @param result the result
 	 * @param operator the operator
 	 * @return the operator probability
 	 */
-	public static double getOperatorProbability(Observation observation, Variation operator) {
-		return (Double)observation.get(operator.getName());
+	public static double getOperatorProbability(ResultEntry result, Variation operator) {
+		return getOperatorProbability(result, operator.getName());
 	}
 
 }

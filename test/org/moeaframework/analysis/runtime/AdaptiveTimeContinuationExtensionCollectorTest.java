@@ -20,12 +20,13 @@ package org.moeaframework.analysis.runtime;
 import org.moeaframework.Assert;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.continuation.AdaptiveTimeContinuationExtension;
+import org.moeaframework.analysis.series.ResultEntry;
 
 public class AdaptiveTimeContinuationExtensionCollectorTest extends AbstractCollectorTest<AdaptiveTimeContinuationExtensionCollector> {
 	
 	@Override
-	public void validate(Observation observation) {
-		Assert.assertGreaterThanOrEqual(AdaptiveTimeContinuationExtensionCollector.getNumberOfRestarts(observation), 0);
+	public void validate(Algorithm algorithm, ResultEntry result) {
+		Assert.assertGreaterThanOrEqual(AdaptiveTimeContinuationExtensionCollector.getNumberOfRestarts(result), 0);
 	}
 	
 	@Override

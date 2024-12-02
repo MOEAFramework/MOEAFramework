@@ -80,13 +80,13 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.moeaframework.analysis.IndicatorStatistics;
 import org.moeaframework.analysis.diagnostics.PaintHelper;
 import org.moeaframework.analysis.parameter.ParameterSet;
-import org.moeaframework.analysis.runtime.Observation;
-import org.moeaframework.analysis.runtime.Observations;
 import org.moeaframework.analysis.sensitivity.FirstOrderSensitivity;
 import org.moeaframework.analysis.sensitivity.SecondOrderSensitivity;
 import org.moeaframework.analysis.sensitivity.Sensitivity;
 import org.moeaframework.analysis.sensitivity.SensitivityResult;
 import org.moeaframework.analysis.sensitivity.TotalOrderSensitivity;
+import org.moeaframework.analysis.series.IndexedResult;
+import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.analysis.stream.Partition;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
@@ -97,7 +97,7 @@ import org.moeaframework.core.population.Population;
  * Provides simple 2D plotting capabilities.  This is intended to allow the rapid creation of 2D plots, supporting:
  * <ol>
  *   <li>scatter plots of bi-objective populations,</li>
- *   <li>line plots of runtime dynamics (via an {@link Observations},</li>
+ *   <li>line plots of runtime dynamics (via a {@link ResultSeries},</li>
  *   <li>box-and-whisker plots of performance statistics (via an {@link IndicatorStatistics}), and</li>
  *   <li>other plots of basic data types (e.g., line, scatter, area, stacked, heat map).</li>
  * </ol>
@@ -503,56 +503,56 @@ public class Plot {
 	}
 
 	/**
-	 * Displays the runtime data stored in an {@link Observations} as one or more line plots.
+	 * Displays the runtime data stored in an {@link ResultSeries} as one or more line plots.
 	 * 
-	 * @param observations the {@code Observations} instance
+	 * @param series the result series
 	 * @return a reference to this instance
 	 */
-	public Plot add(Observations observations) {
+	public Plot add(ResultSeries series) {
 		createXYPlot();
 		currentDataset++;
 		XYSeriesCollection dataset = new XYSeriesCollection();
 
-		for (String key : observations.keys()) {
-			add(key, observations, key, dataset);
+		for (String key : series.getDefinedProperties()) {
+			add(key, series, key, dataset);
 		}
 
 		return this;
 	}
 
 	/**
-	 * Displays the runtime data for the given metric as a line plot.
+	 * Displays the runtime data for the given property as a line plot.
 	 * 
 	 * @param label the label for the series
-	 * @param observations the {@code Observations} instance
-	 * @param metric the name of the performance metric to plot
+	 * @param series the result series
+	 * @param property the name of the property to plot
 	 * @return a reference to this instance
 	 */
-	public Plot add(String label, Observations observations, String metric) {
-		return add(label, observations, metric, null);
+	public Plot add(String label, ResultSeries series, String property) {
+		return add(label, series, property, null);
 	}
 
 	/**
-	 * Displays the runtime data for the given metric as a line plot.  The series is added to the given dataset, or if
-	 * {@code null} a new dataset is created.
+	 * Displays the runtime data for the given property as a line plot.  The series is added to the given dataset, or
+	 * if {@code null} a new dataset is created.
 	 * 
 	 * @param label the label for the series
-	 * @param observations the {@code Observations} containing the data
-	 * @param metric the name of the performance metric to plot
+	 * @param series the result series
+	 * @param property the name of the property to plot
 	 * @param dataset the dataset, or {@code null} if a new dataset should be created
 	 * @return a reference to this instance
 	 */
-	private Plot add(String label, Observations observations, String metric, XYSeriesCollection dataset) {
+	private Plot add(String label, ResultSeries series, String property, XYSeriesCollection dataset) {
 		List<Number> xs = new ArrayList<Number>();
 		List<Number> ys = new ArrayList<Number>();
 
 		try {
-			for (Observation observation : observations) {
-				xs.add(observation.getNFE());
-				ys.add((Number)observation.get(metric));
+			for (IndexedResult result : series) {
+				xs.add(result.getIndex());
+				ys.add(result.getProperties().getDouble(property));
 			}
-		} catch (ClassCastException e) {
-			System.err.println("Unable to plot " + metric + ", not a numeric type");
+		} catch (NumberFormatException e) {
+			System.err.println("Unable to plot " + property + ", not a numeric type");
 			return this;
 		}
 

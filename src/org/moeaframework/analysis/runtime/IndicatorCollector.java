@@ -18,6 +18,7 @@
 package org.moeaframework.analysis.runtime;
 
 import org.moeaframework.algorithm.Algorithm;
+import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.core.indicator.Indicator;
 import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
 
@@ -79,14 +80,14 @@ public class IndicatorCollector implements Collector {
 	}
 
 	@Override
-	public void collect(Observation observation) {
+	public void collect(ResultEntry result) {
 		if (archive == null) {
-			observation.set(indicator.getName(), indicator.evaluate(algorithm.getResult()));
+			result.getProperties().setDouble(indicator.getName(), indicator.evaluate(algorithm.getResult()));
 		} else {
 			archive.clear();
 			archive.addAll(algorithm.getResult());
 			
-			observation.set(indicator.getName(), indicator.evaluate(archive));
+			result.getProperties().setDouble(indicator.getName(), indicator.evaluate(archive));
 		}
 	}
 
@@ -102,26 +103,26 @@ public class IndicatorCollector implements Collector {
 	}
 	
 	/**
-	 * Reads the indicator value from the observation.
+	 * Reads the indicator value from the result.
 	 * 
-	 * @param observation the observation
+	 * @param result the result
 	 * @param metric the name of the indicator or metric
 	 * @return the indicator value
 	 */
-	public static double getIndicatorValue(Observation observation, String metric) {
-		return (Double)observation.get(metric);
+	public static double getIndicatorValue(ResultEntry result, String metric) {
+		return result.getProperties().getDouble(metric);
 	}
 	
 	/**
-	 * Reads the indicator value from the observation.
+	 * Reads the indicator value from the result.
 	 * 
-	 * @param observation the observation
+	 * @param result the result
 	 * @param type the class type of the indicator
 	 * @param <T> the type of indicator
 	 * @return the indicator value
 	 */
-	public static <T extends Indicator> double getIndicatorValue(Observation observation, Class<T> type) {
-		return getIndicatorValue(observation, type.getSimpleName());
+	public static <T extends Indicator> double getIndicatorValue(ResultEntry result, Class<T> type) {
+		return getIndicatorValue(result, type.getSimpleName());
 	}
 
 }

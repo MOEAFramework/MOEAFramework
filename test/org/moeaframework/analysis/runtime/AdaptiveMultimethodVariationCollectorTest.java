@@ -18,11 +18,12 @@
 package org.moeaframework.analysis.runtime;
 
 import org.moeaframework.algorithm.Algorithm;
+import org.moeaframework.analysis.series.ResultEntry;
 
 public class AdaptiveMultimethodVariationCollectorTest extends AbstractCollectorTest<AdaptiveMultimethodVariationCollector> {
 	
 	@Override
-	public void validate(Observation observation) {
+	public void validate(Algorithm algorithm, ResultEntry result) {
 		// skip validations
 	}
 	

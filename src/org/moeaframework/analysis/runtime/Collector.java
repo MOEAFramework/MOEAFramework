@@ -17,11 +17,13 @@
  */
 package org.moeaframework.analysis.runtime;
 
+import org.moeaframework.analysis.series.ResultEntry;
+
 /**
  * Collects information from an object.  In general, the object will be an algorithm or an object stored within an
  * algorithm.  Collectors have two states: attached and unattached.  Collectors are initially unattached, and are
- * attached to an appropriate object, called the attach point, by invoking {@link #attach(Object)}.  Once attached, the 
- * {@link #collect(Observation)} may be invoked.
+ * attached to an appropriate object, called the attach point, by invoking {@link #attach(Object)}.  Once attached,
+ * {@link #collect(ResultEntry)} may be invoked.
  */
 public interface Collector {
 	
@@ -42,11 +44,11 @@ public interface Collector {
 	public Collector attach(Object object);
 
 	/**
-	 * Collects the requested information from the object, storing the data to the specified observation.  This method
-	 * must only be invoked after this collector has been attached to an appropriate object.
+	 * Collects the requested information from the object, storing the data to the given result.  This method must
+	 * only be invoked after this collector has been attached to an appropriate object.
 	 * 
-	 * @param observation the observation to which the collected data is stored
+	 * @param result the result for storing the collected data
 	 */
-	public void collect(Observation observation);
+	public void collect(ResultEntry result);
 
 }

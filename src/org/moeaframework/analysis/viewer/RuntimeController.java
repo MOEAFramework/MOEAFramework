@@ -19,10 +19,12 @@ package org.moeaframework.analysis.viewer;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.Timer;
 
-import org.moeaframework.analysis.runtime.Observations;
-import org.moeaframework.analysis.viewer.RuntimeSeries.IndexType;
+import org.moeaframework.analysis.series.IndexType;
+import org.moeaframework.analysis.series.ResultSeries;
+import org.moeaframework.analysis.viewer.RuntimeViewer.PlotSeries;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.util.Localization;
 import org.moeaframework.util.mvc.Controller;
@@ -52,9 +54,9 @@ public class RuntimeController extends Controller implements SettingChangedListe
 	
 	private final Toggle showReferenceSet;
 			
-	private final List<RuntimeSeries> approximationSets;
+	private final List<PlotSeries> data;
 	
-	private RuntimeSeries referenceSet;
+	private PlotSeries referenceSet;
 	
 	private int currentIndex;
 	
@@ -71,7 +73,7 @@ public class RuntimeController extends Controller implements SettingChangedListe
 	public RuntimeController(RuntimeViewer viewer) {
 		super(viewer);
 		
-		approximationSets = new ArrayList<>();
+		data = new ArrayList<>();
 		
 		pointSize = new Setting<>(8);
 		pointTransparency = new Setting<>(0);
@@ -103,35 +105,26 @@ public class RuntimeController extends Controller implements SettingChangedListe
 	}
 	
 	public void setReferenceSet(NondominatedPopulation population) {
-		referenceSet = RuntimeSeries.of(localization.getString("text.referenceSet"), population);
+		referenceSet = new PlotSeries(localization.getString("text.referenceSet"), ResultSeries.of(population));
 		updateModel();
 	}
 	
-	public RuntimeSeries getReferenceSet() {
+	public PlotSeries getReferenceSet() {
 		return referenceSet;
 	}
 	
-	public void addSeries(String name, Observations observations) {
-		addSeries(RuntimeSeries.of(name, observations));
-	}
-	
-	public void addSeries(RuntimeSeries series) {
-		approximationSets.add(series);
+	public void addSeries(String name, ResultSeries series) {
+		data.add(new PlotSeries(name, series));
 		updateModel();
 	}
 	
 	public void removeSeries(int index) {
-		approximationSets.remove(index);
+		data.remove(index);
 		updateModel();
 	}
 	
-	public void removeSeries(RuntimeSeries series) {
-		approximationSets.remove(series);
-		updateModel();
-	}
-	
-	public List<RuntimeSeries> getSeries() {
-		return approximationSets;
+	public List<PlotSeries> getSeries() {
+		return data;
 	}
 	
 	public int getStartingIndex() {
@@ -162,21 +155,21 @@ public class RuntimeController extends Controller implements SettingChangedListe
 	}
 	
 	public void updateModel() {
-		if (approximationSets.size() == 0) {
+		if (data.size() == 0) {
 			startingIndex = 0;
 			endingIndex = 0;
 			stepSize = 0;
 			indexType = IndexType.NFE;
 		} else {
-			startingIndex = approximationSets.get(0).getStartingIndex();
-			endingIndex = approximationSets.get(0).getEndingIndex();
-			indexType = approximationSets.get(0).getIndexType();
-			stepSize = approximationSets.get(0).getStepSize();
+			startingIndex = data.get(0).getSeries().getStartingIndex();
+			endingIndex = data.get(0).getSeries().getEndingIndex();
+			indexType = data.get(0).getSeries().getIndexType();
+			stepSize = getStepSize(data.get(0).getSeries());
 			
-			for (int i = 1; i < approximationSets.size(); i++) {
-				startingIndex = Math.min(startingIndex, approximationSets.get(i).getStartingIndex());
-				endingIndex = Math.max(endingIndex, approximationSets.get(i).getEndingIndex());
-				stepSize = Math.min(stepSize, approximationSets.get(i).getStepSize());
+			for (int i = 1; i < data.size(); i++) {
+				startingIndex = Math.min(startingIndex, data.get(i).getSeries().getStartingIndex());
+				endingIndex = Math.max(endingIndex, data.get(i).getSeries().getEndingIndex());
+				stepSize = Math.min(stepSize, getStepSize(data.get(i).getSeries()));
 			}
 		}
 		
@@ -189,6 +182,13 @@ public class RuntimeController extends Controller implements SettingChangedListe
 		}
 		
 		fireEvent("modelChanged");
+	}
+	
+	private int getStepSize(ResultSeries series) {
+		return switch (series.getIndexType()) {
+			case NFE -> (series.getEndingIndex() - series.getStartingIndex()) / series.size();
+			case Index, Singleton -> 1;
+		};
 	}
 	
 	public void play() {

@@ -17,7 +17,6 @@
  */
 package org.moeaframework.analysis.viewer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
@@ -25,10 +24,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
-import org.moeaframework.analysis.runtime.Observation;
-import org.moeaframework.analysis.runtime.Observations;
-import org.moeaframework.core.Solution;
+import org.moeaframework.analysis.series.IndexType;
+import org.moeaframework.analysis.series.IndexedResult;
+import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.core.population.Population;
 import org.moeaframework.mock.MockSolution;
 
 /**
@@ -36,21 +36,18 @@ import org.moeaframework.mock.MockSolution;
  */
 public class RuntimeViewerTest {
 	
-	private Observations observations;
+	private ResultSeries series;
 	private NondominatedPopulation referenceSet;
 	
 	@Before
 	public void setUp() {
 		Assume.assumeHasDisplay();
 		
-		observations = new Observations();
+		series = new ResultSeries(IndexType.NFE);
 		
 		for (int i = 0; i < 10; i++) {
-			ArrayList<Solution> solutions = new ArrayList<>(List.of(MockSolution.of().withObjectives(0.5, 0.5)));
-			
-			Observation observation = new Observation(i);
-			observation.set("Approximation Set", solutions);
-			observations.add(observation);
+			Population population = new Population(List.of(MockSolution.of().withObjectives(0.5, 0.5)));
+			series.add(new IndexedResult(IndexType.NFE, i, population));
 		}
 		
 		referenceSet = new NondominatedPopulation();
@@ -60,7 +57,7 @@ public class RuntimeViewerTest {
 	
 	@After
 	public void tearDown() {
-		observations = null;
+		series = null;
 		referenceSet = null;
 	}
 	
@@ -68,7 +65,7 @@ public class RuntimeViewerTest {
 	public void testWithReferenceSet() {
 		RuntimeViewer viewer = new RuntimeViewer("Viewer");
 		viewer.getController().setReferenceSet(referenceSet);
-		viewer.getController().addSeries("Sample", observations);
+		viewer.getController().addSeries("Test", series);
 		viewer.setVisible(true);
 		viewer.dispose();
 	}
@@ -76,7 +73,7 @@ public class RuntimeViewerTest {
 	@Test
 	public void testNoReferenceSet() {
 		RuntimeViewer viewer = new RuntimeViewer("Viewer");
-		viewer.getController().addSeries("Sample", observations);
+		viewer.getController().addSeries("Test", series);
 		viewer.setVisible(true);
 		viewer.dispose();
 	}

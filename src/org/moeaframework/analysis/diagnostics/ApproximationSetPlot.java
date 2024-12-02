@@ -21,7 +21,6 @@ import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Paint;
-import java.util.List;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -32,7 +31,7 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import org.moeaframework.analysis.runtime.Observations;
+import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.population.NondominatedPopulation;
@@ -59,10 +58,9 @@ public class ApproximationSetPlot extends ResultPlot {
 	 * Constructs a new plot do display the Pareto approximation set.
 	 * 
 	 * @param frame the {@code DiagnosticTool} instance containing this plot
-	 * @param metric the metric to display
 	 */
-	public ApproximationSetPlot(DiagnosticTool frame, String metric) {
-		super(frame, metric);
+	public ApproximationSetPlot(DiagnosticTool frame) {
+		super(frame, "Approximation Set");
 		
 		setLayout(new BorderLayout());
 	}
@@ -74,15 +72,9 @@ public class ApproximationSetPlot extends ResultPlot {
 		for (ResultKey key : frame.getSelectedResults()) {
 			NondominatedPopulation population = new EpsilonBoxDominanceArchive(EPSILON);
 			
-			for (Observations observations : controller.get(key)) {
-				if (!observations.keys().contains(metric)) {
-					continue;
-				}
-				
-				List<?> list = (List<?>)observations.last().get(metric);
-				
-				for (Object object : list) {
-					population.add((Solution)object);
+			for (ResultSeries series : controller.get(key)) {
+				for (Solution solution : series.last().getPopulation()) {
+					population.add(solution);
 				}
 			}
 			
@@ -124,16 +116,12 @@ public class ApproximationSetPlot extends ResultPlot {
 		plot.setRenderer(renderer);
 		
 		//add overlay
-		if (controller.showLastTrace().get() && (controller.getLastObservation() != null) && 
-				controller.getLastObservation().keys().contains(metric)) {
-			Observations observations = controller.getLastObservation();
+		if (controller.showLastTrace().get() && (controller.getLastSeries() != null)) {
 			XYSeriesCollection dataset2 = new XYSeriesCollection();
 			NondominatedPopulation population = new EpsilonBoxDominanceArchive(EPSILON);
 			
-			List<?> list = (List<?>)observations.last().get(metric);
-				
-			for (Object object : list) {
-				population.add((Solution)object);
+			for (Solution solution : controller.getLastSeries().last().getPopulation()) {
+				population.add(solution);
 			}
 			
 			if (!population.isEmpty()) {

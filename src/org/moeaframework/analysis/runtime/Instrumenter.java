@@ -62,7 +62,6 @@ import org.moeaframework.util.validate.Validate;
  * Note: this will not scan the contents of {@link Solution} or {@link Problem}.
  * 
  * @see Collector
- * @see Observations
  */
 public class Instrumenter {
 	
@@ -90,16 +89,6 @@ public class Instrumenter {
 	 * {@code true} if the elapsed time collector is included; {@code false} otherwise.
 	 */
 	private boolean includeElapsedTime;
-	
-	/**
-	 * {@code true} if the approximation set collector is included; {@code false} otherwise.
-	 */
-	private boolean includeApproximationSet;
-	
-	/**
-	 * {@code true} if the population collector is included; {@code false} otherwise.
-	 */
-	private boolean includePopulation;
 	
 	/**
 	 * {@code true} if the population size collector is included; {@code false} otherwise.
@@ -138,11 +127,6 @@ public class Instrumenter {
 	private final List<String> excludedPackages;
 	
 	/**
-	 * The observations from the last instrumented algorithm.
-	 */
-	private Observations observations;
-	
-	/**
 	 * Constructs a new instrumenter instance, initially with no collectors.
 	 */
 	public Instrumenter() {
@@ -156,16 +140,6 @@ public class Instrumenter {
 		
 		excludedPackages = new ArrayList<String>();
 		excludedPackages.add("java");
-	}
-	
-	/**
-	 * Returns the observations from the last instrumented algorithm.  The observations will be filled with the runtime
-	 * information as the algorithm is executed.
-	 * 
-	 * @return the observations from the last instrumented algorithm
-	 */
-	public Observations getObservations() {
-		return observations;
 	}
 	
 	/**
@@ -415,26 +389,6 @@ public class Instrumenter {
 	}
 	
 	/**
-	 * Includes the approximation set collector when instrumenting algorithms.
-	 * 
-	 * @return a reference to this instrumenter
-	 */
-	public Instrumenter attachApproximationSetCollector() {
-		includeApproximationSet = true;
-		return this;
-	}
-	
-	/**
-	 * Includes the population collector when instrumenting algorithms.
-	 * 
-	 * @return a reference to this instrumenter
-	 */
-	public Instrumenter attachPopulationCollector() {
-		includePopulation = true;
-		return this;
-	}
-	
-	/**
 	 * Includes the population size collector when instrumenting algorithms.
 	 * 
 	 * @return a reference to this instrumenter
@@ -455,8 +409,6 @@ public class Instrumenter {
 		attachAdaptiveMultimethodVariationCollector();
 		attachAdaptiveTimeContinuationCollector();
 		attachElapsedTimeCollector();
-		attachApproximationSetCollector();
-		attachPopulationCollector();
 		attachPopulationSizeCollector();
 		
 		return this;
@@ -738,18 +690,6 @@ public class Instrumenter {
 			collectors.add(new ElapsedTimeCollector());
 		}
 		
-		if (includeApproximationSet) {
-			if (epsilons == null) {
-				collectors.add(new ApproximationSetCollector());
-			} else {
-				collectors.add(new ApproximationSetCollector(epsilons));
-			}
-		}
-		
-		if (includePopulation) {
-			collectors.add(new PopulationCollector());
-		}
-		
 		if (includePopulationSize) {
 			collectors.add(new PopulationSizeCollector());
 		}
@@ -761,8 +701,6 @@ public class Instrumenter {
 		
 		InstrumentedAlgorithm<T> instrumentedAlgorithm = new InstrumentedAlgorithm<T>(algorithm);
 		instrumentedAlgorithm.addExtension(extension);
-		
-		observations = instrumentedAlgorithm.getObservations();
 		
 		return instrumentedAlgorithm;
 	}

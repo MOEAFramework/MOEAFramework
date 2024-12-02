@@ -39,8 +39,7 @@ public class RuntimeViewerExample {
 		// Instrument the algorithm to collect the hypervolume and generational distance
 		Instrumenter instrumenter = new Instrumenter()
 				.withReferenceSet("pf/UF1.pf")
-				.withFrequency(100)
-				.attachApproximationSetCollector();
+				.withFrequency(100);
 		
 		InstrumentedAlgorithm<NSGAII> instrumentedAlgorithm = instrumenter.instrument(algorithm);
 		instrumentedAlgorithm.run(10000);
@@ -48,7 +47,7 @@ public class RuntimeViewerExample {
 		// Use the RuntimeViewer to show the approximation sets
 		RuntimeViewer.show("NSGAII on UF1",
 				instrumenter.getReferenceSet(),
-				instrumenter.getObservations());
+				instrumentedAlgorithm.getSeries());
 	}
 
 }

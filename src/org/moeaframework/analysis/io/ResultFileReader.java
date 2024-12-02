@@ -27,6 +27,7 @@ import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.core.Constructable;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;

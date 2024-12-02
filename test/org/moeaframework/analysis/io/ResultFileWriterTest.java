@@ -28,6 +28,7 @@ import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.Wait;
+import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.TypedPropertiesTest;
