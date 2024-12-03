@@ -163,13 +163,17 @@ public class RuntimeController extends Controller implements SettingChangedListe
 		} else {
 			startingIndex = data.get(0).getSeries().getStartingIndex();
 			endingIndex = data.get(0).getSeries().getEndingIndex();
+			stepSize = data.get(0).getStepSize();
 			indexType = data.get(0).getSeries().getIndexType();
-			stepSize = getStepSize(data.get(0).getSeries());
 			
 			for (int i = 1; i < data.size(); i++) {
 				startingIndex = Math.min(startingIndex, data.get(i).getSeries().getStartingIndex());
 				endingIndex = Math.max(endingIndex, data.get(i).getSeries().getEndingIndex());
-				stepSize = Math.min(stepSize, getStepSize(data.get(i).getSeries()));
+				stepSize = Math.min(stepSize, data.get(i).getStepSize());
+				
+				if (!data.get(i).getSeries().getIndexType().equals(indexType)) {
+					indexType = IndexType.Index;
+				}
 			}
 		}
 		
@@ -182,13 +186,6 @@ public class RuntimeController extends Controller implements SettingChangedListe
 		}
 		
 		fireEvent("modelChanged");
-	}
-	
-	private int getStepSize(ResultSeries series) {
-		return switch (series.getIndexType()) {
-			case NFE -> (series.getEndingIndex() - series.getStartingIndex()) / series.size();
-			case Index, Singleton -> 1;
-		};
 	}
 	
 	public void play() {

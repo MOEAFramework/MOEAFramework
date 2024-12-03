@@ -158,7 +158,7 @@ public class RuntimeEvaluator extends CommandLineUtility {
 		ResultSeries series = instrumentedAlgorithm.getSeries();
 
 		for (IndexedResult result : series) {
-			output.write(result);
+			output.write(result.getEntry());
 		}
 	}
 

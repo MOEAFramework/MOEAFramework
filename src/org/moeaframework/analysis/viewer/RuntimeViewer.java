@@ -504,13 +504,16 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		slider.setMinimum(controller.getStartingIndex());
 		slider.setMaximum(controller.getEndingIndex());
 		slider.setValue(controller.getCurrentIndex());
-		slider.setMinorTickSpacing(controller.getIndexType() == IndexType.NFE ?
-				Math.max(controller.getStepSize(), 10) : controller.getStepSize());
-		slider.setMajorTickSpacing(controller.getIndexType() == IndexType.NFE ?
-				controller.getEndingIndex() / 10 : -1);
 		
-		sliderLabel.setText(controller.getIndexType() == IndexType.NFE ? localization.getString("text.NFE") :
-			localization.getString("text.Index"));
+		if (controller.getIndexType() == IndexType.NFE) {
+			slider.setMinorTickSpacing(Math.max(controller.getStepSize(), 10));
+			slider.setMajorTickSpacing(controller.getEndingIndex() / 10);
+			sliderLabel.setText(localization.getString("text.NFE"));
+		} else {
+			slider.setMinorTickSpacing(1);
+			slider.setMajorTickSpacing(-1);
+			sliderLabel.setText(localization.getString("text.Index"));
+		}
 	}
 	
 	/**
@@ -749,6 +752,13 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 			}
 			
 			return xySeries;
+		}
+		
+		public int getStepSize() {
+			return switch (series.getIndexType()) {
+				case NFE -> (series.getEndingIndex() - series.getStartingIndex()) / series.size();
+				case Index, Singleton -> 1;
+			};
 		}
 		
 		public Solution getPrototypeSolution() {

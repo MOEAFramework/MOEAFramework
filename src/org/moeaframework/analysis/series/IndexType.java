@@ -29,8 +29,8 @@ public enum IndexType {
 	NFE,
 	
 	/**
-	 * The index represents the a sequential value .  This typically means the entries are not associated with a single
-	 * run of an algorithm.
+	 * The index represents the sequential position of the result.  This typically means the entries are not associated
+	 * with a single run of an algorithm.
 	 */
 	Index,
 	

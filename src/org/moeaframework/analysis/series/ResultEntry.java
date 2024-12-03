@@ -47,12 +47,12 @@ public class ResultEntry implements Serializable {
 	/**
 	 * The population associated with this result.
 	 */
-	private Population population;
+	private transient Population population;
 	
 	/**
 	 * The properties associated with this result.
 	 */
-	private TypedProperties properties;
+	private transient TypedProperties properties;
 	
 	/**
 	 * Constructs a result with the specified population.
@@ -94,21 +94,24 @@ public class ResultEntry implements Serializable {
 	}
 	
 	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.defaultWriteObject();
+		
 		population.saveState(out);
 		
 		try (StringWriter writer = new StringWriter()) {
 			properties.save(writer);
-			out.writeUTF(writer.toString());
+			out.writeObject(writer.toString());
 		}
 	}
 	
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-		population = new Population();
-		properties = new TypedProperties();
+		in.defaultReadObject();
 		
+		population = new Population();
 		population.loadState(in);
 		
-		try (StringReader reader = new StringReader(in.readUTF())) {
+		try (StringReader reader = new StringReader((String)in.readObject())) {
+			properties = new TypedProperties();
 			properties.load(reader);
 		}
 	}

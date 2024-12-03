@@ -17,72 +17,120 @@
  */
 package org.moeaframework.analysis.series;
 
+import java.util.NoSuchElementException;
+
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.population.Population;
 
 /**
- * A {@link ResultEntry} with a defined index.
+ * References a {@link ResultEntry} stored in a series, in particular providing access to the index along with methods
+ * to iterate through the series.
  */
-public class IndexedResult extends ResultEntry implements Comparable<IndexedResult> {
+public class IndexedResult {
 	
-	private static final long serialVersionUID = 7752235488283928332L;
-
-	private final IndexType indexType;
+	private final ResultSeries series;
 	
 	private final int index;
 	
-	/**
-	 * Constructs an indexed result with the specified population.
-	 * 
-	 * @param indexType the index type
-	 * @param index the index value
-	 * @param population the population
-	 */
-	public IndexedResult(IndexType indexType, int index, Population population) {
-		super(population, new TypedProperties());
-		this.indexType = indexType;
-		this.index = index;
-	}
-
-	/**
-	 * Constructs an indexed result with the specified population and properties.
-	 * 
-	 * @param indexType the index type
-	 * @param index the index value
-	 * @param population the population
-	 * @param properties the properties
-	 */
-	public IndexedResult(IndexType indexType, int index, Population population, TypedProperties properties) {
-		super(population, properties);
-		this.indexType = indexType;
-		this.index = index;
-	}
+	private final ResultEntry entry;
 	
 	/**
-	 * Returns the index type for this result.
+	 * Constructs a new indexed result.
 	 * 
-	 * @return the index type
+	 * @param series the series containing this result
+	 * @param index the index of this result in the series
+	 * @param entry the underlying result
 	 */
-	public IndexType getIndexType() {
-		return indexType;
+	public IndexedResult(ResultSeries series, int index, ResultEntry entry) {
+		super();
+		this.index = index;
+		this.series = series;
+		this.entry = entry;
 	}
 
 	/**
-	 * Returns the index value for this result.  The interpretation of this value depends on the index type.
+	 * Returns the series containing this result.
 	 * 
-	 * @return the index value
+	 * @return the series containing this result
+	 */
+	public ResultSeries getSeries() {
+		return series;
+	}
+
+	/**
+	 * Returns the index of this result in the series.
+	 * 
+	 * @return the index of this result
 	 */
 	public int getIndex() {
 		return index;
 	}
+	
+	/**
+	 * Returns the underlying result entry.
+	 * 
+	 * @return the result entry
+	 */
+	public ResultEntry getEntry() {
+		return entry;
+	}
 
-	@Override
-	public int compareTo(IndexedResult other) {
-		if (!getIndexType().equals(other.getIndexType())) {
-			throw new IllegalArgumentException("Unable to compare results with different index types");
-		}
-		
-		return Integer.compare(getIndex(), other.getIndex());
+	/**
+	 * Returns the population contained in this result.  This is shorthand for calling {@link #getEntry()}.
+	 * 
+	 * @return the population
+	 */
+	public Population getPopulation() {
+		return entry.getPopulation();
+	}
+	
+	/**
+	 * Returns the properties contained in this result.  This is shorthand for calling {@link #getEntry()}.
+	 * 
+	 * @return the properties
+	 */
+	public TypedProperties getProperties() {
+		return entry.getProperties();
+	}
+	
+	/**
+	 * Returns {@code true} if there exists a result following this entry in the series such that calling
+	 * {@link #next()} would succeed.
+	 * 
+	 * @return {@code true} if there exists a result following this entry in the series; {@code false} otherwise
+	 */
+	public boolean hasNext() {
+		return series.hasNext(this);
+	}
+	
+	/**
+	 * Returns the result immediately following this entry in the series.
+	 * 
+	 * @return the next result
+	 * @throws NoSuchElementException if at the end of the series
+	 */
+	public IndexedResult next() {
+		return series.next(this);
+	}
+	
+	/**
+	 * Returns {@code true} if there exists a result before this entry in the series such that calling
+	 * {@link #previous()} would succeed.
+	 * 
+	 * @return {@code true} if there exists a result before this entry in the series; {@code false} otherwise
+	 */
+	public boolean hasPrevious() {
+		return series.hasPrevious(this);
+	}
+	
+	/**
+	 * Returns the result immediately before this entry in the series.
+	 * 
+	 * @return the previous result
+	 * @throws NoSuchElementException if at the start of the series
+	 */
+	public IndexedResult previous() {
+		return series.previous(this);
 	}
 
 }

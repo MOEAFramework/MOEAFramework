@@ -25,7 +25,7 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
 import org.moeaframework.analysis.series.IndexType;
-import org.moeaframework.analysis.series.IndexedResult;
+import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.population.Population;
@@ -43,11 +43,11 @@ public class RuntimeViewerTest {
 	public void setUp() {
 		Assume.assumeHasDisplay();
 		
-		series = new ResultSeries(IndexType.NFE);
+		series = new ResultSeries(IndexType.Index);
 		
 		for (int i = 0; i < 10; i++) {
 			Population population = new Population(List.of(MockSolution.of().withObjectives(0.5, 0.5)));
-			series.add(new IndexedResult(IndexType.NFE, i, population));
+			series.add(new ResultEntry(population));
 		}
 		
 		referenceSet = new NondominatedPopulation();

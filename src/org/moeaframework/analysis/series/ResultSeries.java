@@ -26,24 +26,29 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.moeaframework.analysis.io.ResultFileReader;
+import org.moeaframework.analysis.stream.Streamable;
 import org.moeaframework.core.population.Population;
+import org.moeaframework.util.Iterators;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;
 
 /**
- * A series of {@link IndexedResult}.  All results must use the same index type as this series, which also determines
- * how the indices are interpreted.
+ * Stores a collection {@link ResultEntry} in a series ordered by the index.  The specification of the index along with
+ * the behavior depends on the selected {@link IndexType}.
  */
-public class ResultSeries implements Serializable, Iterable<IndexedResult>, Formattable<IndexedResult> {
+public class ResultSeries implements Serializable, Iterable<IndexedResult>, Formattable<IndexedResult>,
+Streamable<IndexedResult> {
 	
 	private static final long serialVersionUID = -2606447194387896979L;
 	
 	private final IndexType indexType;
 	
-	private final SortedMap<Integer, IndexedResult> data;
+	private final SortedMap<Integer, ResultEntry> data;
 	
 	/**
 	 * Constructs a new, empty series.
@@ -66,17 +71,38 @@ public class ResultSeries implements Serializable, Iterable<IndexedResult>, Form
 	}
 	
 	/**
-	 * Adds a new indexed result.
+	 * Adds a new result entry to this series.
 	 * 
-	 * @param result the indexed result
+	 * @param result the result to add
 	 */
-	public void add(IndexedResult result) {
-		if (!result.getIndexType().equals(indexType)) {
-			throw new IllegalArgumentException("unable to add result with index type " + result.getIndexType() +
-					" to series with index type " + indexType);
+	public void add(ResultEntry result) {
+		switch (indexType) {
+			case NFE -> {
+				int index = result.getProperties().getInt(ResultEntry.NFE, -1);
+				
+				if (index < 0) {
+					throw new IllegalArgumentException("Entry must define property '" + ResultEntry.NFE +
+							" to be added to series with index " + IndexType.NFE.name());
+				}
+				
+				if (data.containsKey(index)) {
+					throw new IllegalArgumentException("Entry with index " + index + " already exists in series");
+				}
+				
+				data.put(index, result);
+			}
+			case Index -> {
+				data.put(data.size(), result);
+			}
+			case Singleton -> {
+				if (data.size() > 0) {
+					throw new IllegalArgumentException("Only one entry can be added to a " +
+							IndexType.Singleton.name() + " series");
+				}
+				
+				data.put(0, result);
+			}
 		}
-		
-		data.put(result.getIndex(), result);
 	}
 	
 	/**
@@ -105,12 +131,7 @@ public class ResultSeries implements Serializable, Iterable<IndexedResult>, Form
 	 */
 	public IndexedResult first() {
 		Integer key = data.firstKey();
-		
-		if (key == null) {
-			throw new NoSuchElementException();
-		} else {
-			return data.get(key);
-		}
+		return new IndexedResult(this, key, data.get(key));
 	}
 	
 	/**
@@ -121,16 +142,11 @@ public class ResultSeries implements Serializable, Iterable<IndexedResult>, Form
 	 */
 	public IndexedResult last() {
 		Integer key = data.lastKey();
-		
-		if (key == null) {
-			throw new NoSuchElementException();
-		} else {
-			return data.get(key);
-		}
+		return new IndexedResult(this, key, data.get(key));
 	}
 	
 	/**
-	 * Returns the result at the specified index.
+	 * Returns the result at the specified index.  The behavior of this method depends on the {@link IndexType}.
 	 * 
 	 * @param index the index
 	 * @return the result at the specified index
@@ -140,41 +156,81 @@ public class ResultSeries implements Serializable, Iterable<IndexedResult>, Form
 		return switch (indexType) {
 			case NFE -> {
 				Integer key = data.tailMap(index).firstKey();
-				
-				if (key == null) {
-					throw new NoSuchElementException();
-				} else {
-					yield data.get(key);
-				}
+				yield new IndexedResult(this, key, data.get(key));
 			}
 			case Index -> {
-				IndexedResult result = data.get(index);
+				ResultEntry result = data.get(index);
 				
 				if (result == null) {
 					throw new NoSuchElementException();
 				} else {
-					yield result;
+					yield new IndexedResult(this, index, result);
 				}
 			}
 			case Singleton -> {
-				yield first();
+				Integer key = data.firstKey();
+				yield new IndexedResult(this, index, data.get(key));
 			}
 		};
 	}
 	
 	/**
-	 * Returns the result immediately following the specified index.
+	 * Returns {@code true} if there exists a result immediately following the current entry.
 	 * 
-	 * @param index the index
-	 * @return the next result after the index
-	 * @throws NoSuchElementException if there are no more results following the given index
+	 * @param current the current entry
+	 * @return {@code true} if there exists a result immediately following the current entry
 	 */
-	public IndexedResult next(int index) {
-		return at(index + 1);
+	public boolean hasNext(IndexedResult current) {
+		try {
+			next(current);
+			return true;
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+	}
+	
+	/**
+	 * Returns the result immediately following the current entry.
+	 * 
+	 * @param current the current entry
+	 * @return the next entry
+	 * @throws NoSuchElementException if there are no more results following the current entry
+	 */
+	public IndexedResult next(IndexedResult current) {
+		Integer key = data.tailMap(current.getIndex() + 1).firstKey();
+		return new IndexedResult(this, key, data.get(key));
+	}
+	
+	/**
+	 * Returns {@code true} if there exists a result immediately before the current entry.
+	 * 
+	 * @param current the current entry
+	 * @return {@code true} if there exists a result immediately before the current entry; {@code false} otherwise
+	 */
+	public boolean hasPrevious(IndexedResult current) {
+		try {
+			previous(current);
+			return true;
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+	}
+	
+	/**
+	 * Returns the result immediately before the current entry.
+	 * 
+	 * @param current the current entry
+	 * @return the previous entry
+	 * @throws NoSuchElementException if there are no more results before the current entry
+	 */
+	public IndexedResult previous(IndexedResult current) {
+		Integer key = data.headMap(current.getIndex()).lastKey();
+		return new IndexedResult(this, key, data.get(key));
 	}
 		
 	/**
-	 * Returns the starting or minimum index.
+	 * Returns the starting or minimum index of this series.  Calls to {@link #at(int)} will succeed if the provided
+	 * index is within the starting and ending index.
 	 * 
 	 * @return the starting index
 	 * @throws NoSuchElementException if the series is empty
@@ -187,7 +243,8 @@ public class ResultSeries implements Serializable, Iterable<IndexedResult>, Form
 	}
 	
 	/**
-	 * Returns the ending or maximum index.
+	 * Returns the ending or maximum index of this series.  Calls to {@link #at(int)} will succeed if the provided
+	 * index is within the starting and ending index.
 	 * 
 	 * @return the ending index
 	 * @throws NoSuchElementException if the series is empty
@@ -218,7 +275,7 @@ public class ResultSeries implements Serializable, Iterable<IndexedResult>, Form
 
 	@Override
 	public Iterator<IndexedResult> iterator() {
-		return data.values().iterator();
+		return Iterators.map(data.entrySet().iterator(), x -> new IndexedResult(this, x.getKey(), x.getValue()));
 	}
 	
 	@Override
@@ -226,11 +283,12 @@ public class ResultSeries implements Serializable, Iterable<IndexedResult>, Form
 		TabularData<IndexedResult> data = new TabularData<IndexedResult>(this);
 		
 		if (!isEmpty()) {
-			data.addColumn(new Column<IndexedResult, Integer>(getIndexType().name(), o -> o.getIndex()));
+			if (!indexType.equals(IndexType.Singleton)) {
+				data.addColumn(new Column<IndexedResult, Integer>(getIndexType().name(), o -> o.getIndex()));
+			}
 			
 			for (String key : getDefinedProperties()) {
 				if (getIndexType().equals(IndexType.NFE) && key.equals(ResultEntry.NFE)) {
-					// skip NFE property if index already represents the NFE
 					continue;
 				}
 				
@@ -241,6 +299,11 @@ public class ResultSeries implements Serializable, Iterable<IndexedResult>, Form
 		return data;
 	}
 	
+	@Override
+	public Stream<IndexedResult> stream() {
+		return StreamSupport.stream(spliterator(), false);
+	}
+	
 	/**
 	 * Creates a series containing the given population, typically used to create a reference set.
 	 * 
@@ -249,7 +312,7 @@ public class ResultSeries implements Serializable, Iterable<IndexedResult>, Form
 	 */
 	public static ResultSeries of(Population population) {
 		ResultSeries series = new ResultSeries(IndexType.Singleton);
-		series.add(new IndexedResult(IndexType.Singleton, 0, population));
+		series.add(new ResultEntry(population));
 		return series;
 	}
 	
@@ -263,20 +326,13 @@ public class ResultSeries implements Serializable, Iterable<IndexedResult>, Form
 	public static ResultSeries of(ResultFileReader reader) {
 		ResultSeries series = null;
 		
-		for (ResultEntry result : reader) {			
-			IndexType indexType = result.getProperties().contains(ResultEntry.NFE) ? IndexType.NFE : IndexType.Index;
-			
+		for (ResultEntry result : reader) {						
 			if (series == null) {
-				series = new ResultSeries(indexType);
+				series = new ResultSeries(result.getProperties().contains(ResultEntry.NFE) ?
+						IndexType.NFE : IndexType.Index);
 			}
 
-			int index = switch (indexType) {
-				case NFE -> result.getProperties().getInt(ResultEntry.NFE);
-				case Index -> series.size();
-				case Singleton -> 0;
-			};
-			
-			series.add(new IndexedResult(series.getIndexType(), index, result.getPopulation(), result.getProperties()));
+			series.add(result);
 		}
 		
 		return series;

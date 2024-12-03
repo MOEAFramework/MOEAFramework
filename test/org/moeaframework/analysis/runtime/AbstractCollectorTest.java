@@ -22,6 +22,7 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.DefaultAlgorithms;
+import org.moeaframework.analysis.series.IndexedResult;
 import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.core.TypedProperties;
@@ -147,9 +148,9 @@ public abstract class AbstractCollectorTest<T extends Collector> {
 			if (shouldAttach) {
 				Assert.assertTrue(series.size() > 0);
 				
-				for (ResultEntry result : series) {
+				for (IndexedResult result : series) {
 					try {
-						validate(algorithm, result);
+						validate(algorithm, result.getEntry());
 					} catch (Exception e) {
 						Assert.fail(algorithmName + ": validation failed - " + e.getMessage());
 					}

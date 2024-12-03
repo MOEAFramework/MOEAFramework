@@ -27,11 +27,9 @@ import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.extension.FrequencyType;
 import org.moeaframework.algorithm.extension.PeriodicExtension;
 import org.moeaframework.analysis.series.IndexType;
-import org.moeaframework.analysis.series.IndexedResult;
 import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.core.Stateful;
-import org.moeaframework.core.TypedProperties;
 
 /**
  * Decorates an algorithm to periodically collect information about its runtime behavior.  The NFE and result are
@@ -92,17 +90,14 @@ public class InstrumentedExtension extends PeriodicExtension implements Stateful
 
 	@Override
 	public void doAction(Algorithm algorithm) {
-		TypedProperties properties = new TypedProperties();
-		properties.setInt(ResultEntry.NFE, algorithm.getNumberOfEvaluations());
-		
-		IndexedResult result = new IndexedResult(IndexType.NFE, algorithm.getNumberOfEvaluations(),
-				algorithm.getResult(), properties);
+		ResultEntry entry = new ResultEntry(algorithm.getResult());
+		entry.getProperties().setInt(ResultEntry.NFE, algorithm.getNumberOfEvaluations());
 		
 		for (Collector collector : collectors) {
-			collector.collect(result);
+			collector.collect(entry);
 		}
 
-		series.add(result);
+		series.add(entry);
 	}
 	
 	@Override

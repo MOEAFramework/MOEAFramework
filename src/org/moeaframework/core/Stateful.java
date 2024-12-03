@@ -25,19 +25,13 @@ import java.io.ObjectOutputStream;
 /**
  * Interface for objects that can save and load their state.
  * <p>
- * {@code Stateful} is our replacement for Java's {@link java.io.Serializable} interface.  This has, in our opinion,
- * several advantages:
- * <ol>
- *   <li>State vs configuration - {@code Stateful} only exists to capture the state of an object.  Using
- *       {@link org.moeaframework.algorithm.Algorithm} as an example, the state is the current NFE and population
- *       content, whereas its configuration includes the problem, operators, and their parameters.  Serialization, on
- *       the other hand, stores the entire object graph (state and configuration) unless fields are excluded using the
- *       {@code transient} keyword.
- *   <li>Eliminates need for no-arg constructor - Serialization requires a no-arg constructor, which is not always
- *       possible if a class has required parameters.
- *   <li>Stronger type checking - Serialization will fail at runtime if any type in the object graph does not implement
- *       the {@code Serializable} interface, whereas {@code Stateful} objects must explicitly encode fields.
- * </ol>
+ * This is distinct from {@link java.io.Serializable} as state aims to only capture the mutable state of an object,
+ * such as the current NFE and population for an {@link org.moeaframework.algorithm.Algorithm}, whereas serialization
+ * stores the entire object graph unless fields are excluded using the {@code transient} keyword.  This also allows
+ * loading the state into an existing object, rather than constructing a new, deserialized instance of the object.
+ * Serialization also requires access to a no-arg constructor on the first non-serializable superclass, which is not
+ * always possible when a class has required parameters.
+ * <p>
  * That all being said, serialization is still useful for parallel or distributed computing, where objects need to be
  * serialized to send to a different process or machine.
  */
