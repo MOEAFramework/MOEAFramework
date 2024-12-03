@@ -34,6 +34,13 @@ public class RunnableAction extends LocalizedAction {
 	
 	private final Runnable runnable;
 	
+	/**
+	 * Constructs a new runnable action.
+	 * 
+	 * @param id the id for localization
+	 * @param localization the source for localization strings
+	 * @param runnable the callback function invoked when this action is triggered
+	 */
 	public RunnableAction(String id, Localization localization, Runnable runnable) {
 		super(id, localization);
 		this.runnable = runnable;

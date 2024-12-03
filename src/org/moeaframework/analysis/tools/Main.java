@@ -154,6 +154,9 @@ public class Main extends CommandLineUtility {
 		return options;
 	}
 
+	/**
+	 * Displays the version of this library.
+	 */
 	protected void showVersion() {
 		System.out.println(buildProperties.getString("version"));
 	}

@@ -104,8 +104,14 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 	 */
 	private static Localization localization = Localization.getLocalization(RuntimeViewer.class);
 	
+	/**
+	 * The title of the plot.
+	 */
 	private final String title;
 	
+	/**
+	 * The plot itself.
+	 */
 	private JFreeChart chart;
 	
 	/**
@@ -114,10 +120,13 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 	private JPanel chartContainer;
 	
 	/**
-	 * The slider controlling the current NFE.
+	 * The slider controlling the current NFE or index.
 	 */
 	private JSlider slider;
 	
+	/**
+	 * The label shown alongside the slider.
+	 */
 	private JLabel sliderLabel;
 	
 	/**
@@ -131,18 +140,33 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 	private Range zoomDomainBounds;
 		
 	/**
-	 * The control for selecting which seeds to display in the plot.
+	 * The control for selecting which series to display in the plot.
 	 */
 	private JList<PlotSeries> seriesList;
 	
+	/**
+	 * The model containing the contents of the series list.
+	 */
 	private DefaultListModel<PlotSeries> seriesListModel;
 	
+	/**
+	 * The button for selecting all series.
+	 */
 	private JButton selectAll;
 	
+	/**
+	 * The button for deselecting all series.
+	 */
 	private JButton selectNone;
 	
+	/**
+	 * The action to start playback.
+	 */
 	private RunnableAction play;
 	
+	/**
+	 * The action to stop playback.
+	 */
 	private RunnableAction stop;
 	
 	/**
@@ -160,6 +184,9 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 	 */
 	private PaintHelper paintHelper;
 	
+	/**
+	 * The controller the manages the internal state of this viewer.
+	 */
 	private RuntimeController controller;
 		
 	/**
@@ -192,10 +219,21 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		});
 	}
 	
+	/**
+	 * Constructs an empty runtime viewer.
+	 * 
+	 * @param title the title of the plot
+	 */
 	public RuntimeViewer(String title) {
 		this(null, title);
 	}
 	
+	/**
+	 * Constructs an empty runtime viewer with the given owner.
+	 * 
+	 * @param owner the owner frame
+	 * @param title the title of the plot
+	 */
 	public RuntimeViewer(Frame owner, String title) {
 		super(owner);
 		this.title = title;
@@ -419,16 +457,21 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		add(splitPane, BorderLayout.CENTER);
 	}
 	
+	/**
+	 * Returns the controller for this runtime viewer.
+	 * 
+	 * @return the controller
+	 */
 	public RuntimeController getController() {
 		return controller;
 	}
 	
-	protected Shape getPointShape() {
+	private Shape getPointShape() {
 		double shapeSize = controller.getPointSize().get();
 		return new Ellipse2D.Double(-shapeSize/2.0, -shapeSize/2.0, shapeSize, shapeSize);
 	}
 	
-	protected void updateModel() {
+	private void updateModel() {
 		int xAxisIndex = xAxisSelection.getSelectedIndex();
 		int yAxisIndex = yAxisSelection.getSelectedIndex();
 		
@@ -519,7 +562,7 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 	/**
 	 * Updates the display.  This method must only be invoked on the event dispatch thread.
 	 */
-	protected void updateView() {
+	private void updateView() {
 		if (chartContainer == null) {
 			return;
 		}

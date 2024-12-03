@@ -33,6 +33,13 @@ import org.moeaframework.util.CommandLineUtility;
 public abstract class ResultWriter implements Closeable {
 	
 	/**
+	 * Constructs a new result writer.
+	 */
+	public ResultWriter() {
+		super();
+	}
+	
+	/**
 	 * Returns the number of entries in the file. If the file already existed, this returns the number of complete
 	 * entries in the output file. This value is incremented on every invocation to the {@link #write} method.
 	 * 
