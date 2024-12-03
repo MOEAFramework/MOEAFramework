@@ -159,7 +159,7 @@ public class TSPInstance {
 	 * @throws IOException if an I/O error occurred while loading the TSPLIB data
 	 */
 	protected void load(Reader reader) throws IOException {
-		LineReader lineReader = LineReader.wrap(reader).trim();
+		LineReader lineReader = LineReader.wrap(reader).trim().skipBlanks();
 		
 		for (String line : lineReader) {
 			if (line.equals("NODE_COORD_SECTION")) {
@@ -205,8 +205,6 @@ public class TSPInstance {
 				vehicleRoutingTable.loadDepots(lineReader);
 			} else if (line.equals("EOF")) {
 				break;
-			} else if (line.isEmpty()) {
-				//do nothing
 			} else {
 				String[] tokens = line.split(":");
 				String key = tokens[0].trim();

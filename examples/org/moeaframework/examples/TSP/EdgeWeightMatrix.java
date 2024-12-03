@@ -70,15 +70,11 @@ public class EdgeWeightMatrix extends DistanceTable {
 	 * @throws IOException if an I/O error occurred while reading the edge weights
 	 */
 	private void readNextLine(LineReader reader, Tokenizer tokenizer, Queue<Double> entries) throws IOException {
-		String line = null;
-		
-		do {
-			line = reader.readLine();
+		String line = reader.readLine();
 			
-			if (line == null) {
-				throw new EOFException("unexpectedly reached EOF");
-			}
-		} while ((line = line.trim()).isEmpty());
+		if (line == null) {
+			throw new EOFException("unexpectedly reached EOF");
+		}
 		
 		String[] tokens = tokenizer.decodeToArray(line);
 		

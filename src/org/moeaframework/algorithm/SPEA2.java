@@ -261,7 +261,9 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 			distances[i][i] = 0.0;
 			
 			for (int j = i+1; j < population.size(); j++) {
-				distances[i][j] = distances[j][i] = population.get(i).euclideanDistance(population.get(j));
+				double distance = population.get(i).euclideanDistance(population.get(j));
+				distances[i][j] = distance;
+				distances[j][i] = distance;
 			}
 		}
 		

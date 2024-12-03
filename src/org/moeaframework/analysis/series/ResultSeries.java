@@ -36,6 +36,7 @@ import org.moeaframework.util.Iterators;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Stores a collection {@link ResultEntry} in a series ordered by the index.  The specification of the index along with
@@ -102,6 +103,7 @@ Streamable<IndexedResult> {
 				
 				data.put(0, result);
 			}
+			default -> Validate.that("indexType", indexType).failUnsupportedOption();
 		}
 	}
 	

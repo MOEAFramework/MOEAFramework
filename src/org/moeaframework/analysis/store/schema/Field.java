@@ -64,7 +64,7 @@ public class Field<T extends Comparable<? super T>> implements Comparable<Field<
 			chars[i] = Character.toLowerCase(Character.toUpperCase(chars[i]));
 		}
 		
-		return new String(chars);
+		return String.valueOf(chars);
 	}
 	
 	@Override

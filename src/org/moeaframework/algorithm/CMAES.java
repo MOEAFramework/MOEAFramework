@@ -716,7 +716,8 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 			// set B <- C
 			for (int i = 0; i < N; i++) {
 				for (int j = 0; j <= i; j++) {
-					B[i][j] = B[j][i] = C[i][j];
+					B[i][j] = C[i][j];
+					B[j][i] = C[i][j];
 				}
 			}
 
