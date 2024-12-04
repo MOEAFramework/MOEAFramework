@@ -18,7 +18,6 @@
 package org.moeaframework.algorithm;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -307,14 +306,7 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 					}
 				}
 				
-				Collections.sort(distances, new Comparator<Pair<Integer, Double>>() {
-
-					@Override
-					public int compare(Pair<Integer, Double> o1, Pair<Integer, Double> o2) {
-						return Double.compare(o1.getSecond(), o2.getSecond());
-					}
-					
-				});
+				Collections.sort(distances, (o1, o2) -> Double.compare(o1.getSecond(), o2.getSecond()));
 				
 				distanceMatrix.add(distances);
 			}

@@ -54,14 +54,7 @@ public class AdaptiveTimeContinuationExtensionTest {
 				new UniformSelection(),
 				new UM(1.0));
 		
-		adaptiveTimeContinuation.addRestartListener(new RestartListener() {
-
-			@Override
-			public void restarted(RestartEvent event) {
-				numberOfRestarts++;
-			}
-			
-		});
+		adaptiveTimeContinuation.addRestartListener(event -> numberOfRestarts++);
 		
 		algorithm.addExtension(adaptiveTimeContinuation);
 		numberOfRestarts = 0;

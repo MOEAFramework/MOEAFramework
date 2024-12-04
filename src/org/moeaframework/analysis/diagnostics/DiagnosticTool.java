@@ -24,8 +24,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -447,20 +445,15 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		JMenu usageMenu = new JMenu();
 		usageMenu.setEnabled(false);
 		
-		Timer timer = new Timer(1000, new ActionListener() {
+		Timer timer = new Timer(1000, e -> {
+			final double divisor = 1024*1024;
+			long free = Runtime.getRuntime().freeMemory();
+			long total = Runtime.getRuntime().totalMemory();
+			long max = Runtime.getRuntime().maxMemory();
+			double used = (total - free) / divisor;
+			double available = max / divisor;
 			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				final double divisor = 1024*1024;
-				long free = Runtime.getRuntime().freeMemory();
-				long total = Runtime.getRuntime().totalMemory();
-				long max = Runtime.getRuntime().maxMemory();
-				double used = (total - free) / divisor;
-				double available = max / divisor;
-				
-				usageMenu.setText(localization.getString("text.memory", used, available));
-			}
-
+			usageMenu.setText(localization.getString("text.memory", used, available));
 		});
 		timer.setRepeats(true);
 		timer.setCoalesce(true);

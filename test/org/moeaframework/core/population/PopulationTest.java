@@ -20,7 +20,6 @@ package org.moeaframework.core.population;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Comparator;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 
@@ -183,14 +182,7 @@ public class PopulationTest {
 
 	@Test
 	public void testSortAndTruncate() {
-		population.truncate(1, new Comparator<Solution>() {
-
-			@Override
-			public int compare(Solution o1, Solution o2) {
-				return Double.compare(o1.getObjectiveValue(0), o2.getObjectiveValue(0));
-			}
-
-		});
+		population.truncate(1, (o1, o2) -> Double.compare(o1.getObjectiveValue(0), o2.getObjectiveValue(0)));
 
 		Assert.assertSize(1, population);
 		Assert.assertEquals(1.0, population.get(0).getObjectiveValue(0), TestThresholds.HIGH_PRECISION);

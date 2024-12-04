@@ -214,14 +214,7 @@ public class LinePlot extends ResultPlot {
 			}
 		}
 		
-		LegendItemSource source = new LegendItemSource() {
-
-			@Override
-			public LegendItemCollection getLegendItems() {
-				return items;
-			}
-			
-		};
+		LegendItemSource source = () -> items;
 		
 		LegendTitle legend = new LegendTitle(source);
 		legend.setMargin(new RectangleInsets(1.0, 1.0, 1.0, 1.0));

@@ -42,21 +42,16 @@ public class InvertedGenerationalDistancePlus extends NormalizedIndicator {
 	 * The modified distance calculation used by the plus indicators as described in equation (18) in the cited paper.
 	 * This is similar to the {@link GenerationalDistancePlus} version except the arguments are reversed.
 	 */
-	private static final DistanceMeasure<Solution> InvertedPlusDistanceMeasure = new DistanceMeasure<Solution>() {
+	private static final DistanceMeasure<Solution> InvertedPlusDistanceMeasure = (referencePoint, approximationPoint) -> {
+		double sum = 0.0;
 
-		@Override
-		public double compute(Solution referencePoint, Solution approximationPoint) {
-			double sum = 0.0;
-
-			for (int i = 0; i < approximationPoint.getNumberOfObjectives(); i++) {
-				sum += Math.pow(
-						Math.max(approximationPoint.getObjectiveValue(i) - referencePoint.getObjectiveValue(i), 0.0),
-						2.0);
-			}
-
-			return Math.sqrt(sum);
+		for (int i = 0; i < approximationPoint.getNumberOfObjectives(); i++) {
+			sum += Math.pow(
+					Math.max(approximationPoint.getObjectiveValue(i) - referencePoint.getObjectiveValue(i), 0.0),
+					2.0);
 		}
 
+		return Math.sqrt(sum);
 	};
 	
 	/**

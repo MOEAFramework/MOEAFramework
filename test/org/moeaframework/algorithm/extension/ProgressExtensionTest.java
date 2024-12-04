@@ -26,7 +26,6 @@ import org.moeaframework.Assert;
 import org.moeaframework.Wait;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.extension.ProgressExtension.ProgressEvent;
-import org.moeaframework.algorithm.extension.ProgressExtension.ProgressListener;
 import org.moeaframework.core.termination.MaxFunctionEvaluations;
 import org.moeaframework.mock.MockAlgorithm;
 
@@ -37,14 +36,7 @@ public class ProgressExtensionTest {
 		final List<ProgressEvent> events = new ArrayList<ProgressEvent>();
 		
 		ProgressExtension extension = new ProgressExtension();
-		extension.addListener(new ProgressListener() {
-
-			@Override
-			public void progressUpdate(ProgressEvent event) {
-				events.add(event);
-			}
-			
-		});
+		extension.addListener(event -> events.add(event));
 		
 		Algorithm algorithm = new MockAlgorithm();
 		

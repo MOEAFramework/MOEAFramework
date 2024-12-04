@@ -20,7 +20,6 @@ package org.moeaframework.parallel.island.executor;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -64,16 +63,11 @@ public class BasicIslandExecutor implements IslandExecutor {
 		List<Future<NondominatedPopulation>> futures = new ArrayList<Future<NondominatedPopulation>>();
 			
 		for (final Island island : islands) {
-			futures.add(executorService.submit(new Callable<NondominatedPopulation>() {
-
-				@Override
-				public NondominatedPopulation call() {
-					Algorithm algorithm = island.getAlgorithm();
-					algorithm.addExtension(new IslandMigrationExtension(island, model));
-					algorithm.run(evaluationsPerIsland);
-					return algorithm.getResult();
-				}
-				
+			futures.add(executorService.submit(() -> {
+				Algorithm algorithm = island.getAlgorithm();
+				algorithm.addExtension(new IslandMigrationExtension(island, model));
+				algorithm.run(evaluationsPerIsland);
+				return algorithm.getResult();
 			}));
 		}
 

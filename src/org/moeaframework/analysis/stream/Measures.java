@@ -57,7 +57,7 @@ public class Measures {
 	 * @return the sum, or {@code 0.0} if the stream is empty
 	 */
 	public static <T extends Number> Function<Stream<T>, Double> sum() {
-		return stream -> stream.mapToDouble(x -> x.doubleValue()).sum();
+		return stream -> stream.mapToDouble(Number::doubleValue).sum();
 	}
 	
 	/**
@@ -68,7 +68,7 @@ public class Measures {
 	 * @throws NoSuchElementException if the stream is empty
 	 */
 	public static <T extends Comparable<T>> Function<Stream<T>, T> min() {
-		return stream -> stream.min((x, y) -> x.compareTo(y)).get();
+		return stream -> stream.min(Comparable::compareTo).get();
 	}
 	
 	/**
@@ -79,7 +79,7 @@ public class Measures {
 	 * @throws NoSuchElementException if the stream is empty
 	 */
 	public static <T extends Comparable<T>> Function<Stream<T>, T> max() {
-		return stream -> stream.max((x, y) -> x.compareTo(y)).get();
+		return stream -> stream.max(Comparable::compareTo).get();
 	}
 	
 	/**
@@ -89,7 +89,7 @@ public class Measures {
 	 * @return the average value
 	 */
 	public static <T extends Number> Function<Stream<T>, Double> average() {
-		return stream -> new Mean().evaluate(stream.mapToDouble(x -> x.doubleValue()).toArray());
+		return stream -> new Mean().evaluate(stream.mapToDouble(Number::doubleValue).toArray());
 	}
 	
 	/**
@@ -99,7 +99,7 @@ public class Measures {
 	 * @return the median value
 	 */
 	public static <T extends Number> Function<Stream<T>, Double> median() {
-		return stream -> new Median().evaluate(stream.mapToDouble(x -> x.doubleValue()).toArray());
+		return stream -> new Median().evaluate(stream.mapToDouble(Number::doubleValue).toArray());
 	}
 	
 	/**
@@ -110,7 +110,7 @@ public class Measures {
 	 * @return the percentile value
 	 */
 	public static <T extends Number> Function<Stream<T>, Double> percentile(double percentile) {
-		return stream -> new Percentile(percentile).evaluate(stream.mapToDouble(x -> x.doubleValue()).toArray());
+		return stream -> new Percentile(percentile).evaluate(stream.mapToDouble(Number::doubleValue).toArray());
 	}
 	
 	/**
@@ -120,7 +120,7 @@ public class Measures {
 	 * @return the resulting statistics
 	 */
 	public static <T extends Number> Function<Stream<T>, StatisticalSummary> stats() {
-		return stream -> new DescriptiveStatistics(stream.mapToDouble(x -> x.doubleValue()).toArray());
+		return stream -> new DescriptiveStatistics(stream.mapToDouble(Number::doubleValue).toArray());
 	}
 
 }

@@ -25,8 +25,6 @@ import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Paint;
 import java.awt.Shape;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
@@ -53,8 +51,6 @@ import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -62,8 +58,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.event.ChartChangeEvent;
-import org.jfree.chart.event.ChartChangeListener;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
@@ -260,36 +254,15 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		slider.setSnapToTicks(true);
 		slider.setPaintTicks(true);
 		slider.setPaintLabels(true);
-		slider.addChangeListener(new ChangeListener() {
-
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				controller.setCurrentIndex(slider.getValue());
-			}
-			
-		});
+		slider.addChangeListener(e -> controller.setCurrentIndex(slider.getValue()));
 		
 		sliderLabel = new JLabel("", JLabel.CENTER);
 		
 		xAxisSelection = new JComboBox<>();
-		xAxisSelection.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				updateView();
-			}
-			
-		});
+		xAxisSelection.addActionListener(e -> updateView());
 		
 		yAxisSelection = new JComboBox<>();
-		yAxisSelection.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				updateView();
-			}
-			
-		});
+		yAxisSelection.addActionListener(e -> updateView());
 		
 		seriesList = new JList<>(seriesListModel);
 		seriesList.addListSelectionListener(this);
@@ -623,17 +596,12 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		updateBounds(plot);
 		
 		//register with the chart to receive zoom events
-		chart.addChangeListener(new ChartChangeListener() {
-			
-			@Override
-			public void chartChanged(ChartChangeEvent e) {
-				if (e.getChart() != null) {
-					zoomRangeBounds = e.getChart().getXYPlot().getRangeAxis().getRange();
-					zoomDomainBounds = e.getChart().getXYPlot().getDomainAxis().getRange();
-					controller.getFitMode().set(FitMode.Zoom);
-				}
+		chart.addChangeListener(e -> {
+			if (e.getChart() != null) {
+				zoomRangeBounds = e.getChart().getXYPlot().getRangeAxis().getRange();
+				zoomDomainBounds = e.getChart().getXYPlot().getDomainAxis().getRange();
+				controller.getFitMode().set(FitMode.Zoom);
 			}
-			
 		});
 		
 		ChartPanel chartPanel = new ChartPanel(chart);

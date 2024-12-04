@@ -41,21 +41,16 @@ public class GenerationalDistancePlus extends NormalizedIndicator {
 	/**
 	 * The modified distance calculation used by the plus indicators as described in equation (18) in the cited paper.
 	 */
-	private static final DistanceMeasure<Solution> PlusDistanceMeasure = new DistanceMeasure<Solution>() {
+	private static final DistanceMeasure<Solution> PlusDistanceMeasure = (approximationPoint, referencePoint) -> {
+		double sum = 0.0;
 
-		@Override
-		public double compute(Solution approximationPoint, Solution referencePoint) {
-			double sum = 0.0;
-
-			for (int i = 0; i < approximationPoint.getNumberOfObjectives(); i++) {
-				sum += Math.pow(
-						Math.max(approximationPoint.getObjectiveValue(i) - referencePoint.getObjectiveValue(i), 0.0),
-						2.0);
-			}
-
-			return Math.sqrt(sum);
+		for (int i = 0; i < approximationPoint.getNumberOfObjectives(); i++) {
+			sum += Math.pow(
+					Math.max(approximationPoint.getObjectiveValue(i) - referencePoint.getObjectiveValue(i), 0.0),
+					2.0);
 		}
 
+		return Math.sqrt(sum);
 	};
 
 	/**

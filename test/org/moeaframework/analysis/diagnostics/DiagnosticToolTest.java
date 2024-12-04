@@ -33,8 +33,6 @@ import org.moeaframework.Assume;
 import org.moeaframework.Counter;
 import org.moeaframework.TempFiles;
 import org.moeaframework.analysis.viewer.TextViewer;
-import org.moeaframework.util.mvc.ControllerEvent;
-import org.moeaframework.util.mvc.ControllerListener;
 
 /**
  * GUI tests have limited scope and, in general, do not validate the content being displayed.
@@ -113,19 +111,14 @@ public class DiagnosticToolTest {
 		// Wait for event queue to clear before tracking events
 		SwingUtilities.invokeAndWait(() -> {});
 		
-		controller.addControllerListener(new ControllerListener() {
-
-			@Override
-			public void controllerStateChanged(ControllerEvent event) {
-				controllerStateCounter.incrementAndGet(event.getEventType());
-				
-				if (event.getEventType().equals("stateChanged")) {
-					// State changes should only occur when a run starts or finishes
-					Assert.assertNotEquals(isRunning.get(), controller.isRunning());
-					isRunning.set(controller.isRunning());
-				}
-			}
+		controller.addControllerListener(event -> {
+			controllerStateCounter.incrementAndGet(event.getEventType());
 			
+			if (event.getEventType().equals("stateChanged")) {
+				// State changes should only occur when a run starts or finishes
+				Assert.assertNotEquals(isRunning.get(), controller.isRunning());
+				isRunning.set(controller.isRunning());
+			}
 		});
 		
 		tool.setAlgorithm(algorithmName);

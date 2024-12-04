@@ -246,16 +246,11 @@ public class MSOPSRankedPopulation extends Population {
 			indices[i] = i;
 		}
 		
-		Arrays.sort(indices, new Comparator<Integer>() {
-
-			@Override
-			public int compare(Integer i1, Integer i2) {
-				int rank1 = sortedRanks[i1][selectedWeight];
-				int rank2 = sortedRanks[i2][selectedWeight];
-				
-				return rank1 < rank2 ? -1 : rank1 > rank2 ? 1 : 0;
-			}
+		Arrays.sort(indices, (i1, i2) -> {
+			int rank1 = sortedRanks[i1][selectedWeight];
+			int rank2 = sortedRanks[i2][selectedWeight];
 			
+			return rank1 < rank2 ? -1 : rank1 > rank2 ? 1 : 0;
 		});
 		
 		// create and return the population of nearest neighbors
@@ -322,14 +317,7 @@ public class MSOPSRankedPopulation extends Population {
 				indices[j] = j;
 			}
 			
-			Arrays.sort(indices, new Comparator<Integer>() {
-
-				@Override
-				public int compare(Integer i1, Integer i2) {
-					return Double.compare(weightScores[i1], weightScores[i2]);
-				}
-				
-			});
+			Arrays.sort(indices, (i1, i2) -> Double.compare(weightScores[i1], weightScores[i2]));
 			
 			for (int j = 0; j < P; j++) {
 				ranks[indices[j]][i] = j;
@@ -350,24 +338,19 @@ public class MSOPSRankedPopulation extends Population {
 			indices[i] = i;
 		}
 		
-		Arrays.sort(indices, new Comparator<Integer>() {
-
-			@Override
-			public int compare(Integer i1, Integer i2) {
-				int[] ranks1 = sortedRanks[i1];
-				int[] ranks2 = sortedRanks[i2];
-				
-				for (int i = 0; i < 2*T; i++) {
-					if (ranks1[i] < ranks2[i]) {
-						return -1;
-					} else if (ranks1[i] > ranks2[i]) {
-						return 1;
-					}
-				}
-
-				return 0;
-			}
+		Arrays.sort(indices, (i1, i2) -> {
+			int[] ranks1 = sortedRanks[i1];
+			int[] ranks2 = sortedRanks[i2];
 			
+			for (int i = 0; i < 2*T; i++) {
+				if (ranks1[i] < ranks2[i]) {
+					return -1;
+				} else if (ranks1[i] > ranks2[i]) {
+					return 1;
+				}
+			}
+
+			return 0;
 		});
 		
 		for (int i = 0; i < P; i++) {

@@ -22,14 +22,12 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.comparator.AggregateConstraintComparator;
 import org.moeaframework.core.comparator.ChainedComparator;
-import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.initialization.Initialization;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.AbstractCompoundVariation;
 import org.moeaframework.core.operator.Variation;
 import org.moeaframework.core.operator.real.PM;
 import org.moeaframework.core.operator.real.SBX;
-import org.moeaframework.core.population.Population;
 import org.moeaframework.core.population.ReferencePointNondominatedSortingPopulation;
 import org.moeaframework.core.selection.Selection;
 import org.moeaframework.core.selection.TournamentSelection;
@@ -149,31 +147,19 @@ public class NSGAIII extends NSGAII {
 	 */
 	protected static final Selection getDefaultSelection(Problem problem) {
 		if (problem.getNumberOfConstraints() == 0) {
-			return new Selection() {
-	
-				@Override
-				public Solution[] select(int arity, Population population) {
-					Solution[] result = new Solution[arity];
-					
-					for (int i = 0; i < arity; i++) {
-						result[i] = population.get(PRNG.nextInt(population.size()));
-					}
-					
-					return result;
+			return (arity, population) -> {
+				Solution[] result = new Solution[arity];
+				
+				for (int i = 0; i < arity; i++) {
+					result[i] = population.get(PRNG.nextInt(population.size()));
 				}
 				
+				return result;
 			};
 		} else {
 			return new TournamentSelection(2, new ChainedComparator(
 					new AggregateConstraintComparator(),
-					new DominanceComparator() {
-
-						@Override
-						public int compare(Solution solution1, Solution solution2) {
-							return PRNG.nextBoolean() ? -1 : 1;
-						}
-						
-					}));
+					(solution1, solution2) -> PRNG.nextBoolean() ? -1 : 1));
 		}
 	}
 	

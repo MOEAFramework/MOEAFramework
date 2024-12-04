@@ -55,14 +55,7 @@ public class EpsilonProgressContinuationExtensionTest {
 				new UniformSelection(),
 				new UM(1.0));
 		
-		epsilonProgressContinuation.addRestartListener(new RestartListener() {
-
-			@Override
-			public void restarted(RestartEvent event) {
-				numberOfRestarts++;
-			}
-			
-		});
+		epsilonProgressContinuation.addRestartListener(event -> numberOfRestarts++);
 		
 		algorithm.addExtension(epsilonProgressContinuation);
 		numberOfRestarts = 0;

@@ -19,7 +19,6 @@ package org.moeaframework.algorithm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
@@ -338,23 +337,18 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 		Population result = new Population();
 		result.addAll(population);
 		
-		result.sort(new Comparator<Solution>() {
-
-			@Override
-			public int compare(Solution s1, Solution s2) {
-				double sum1 = 0.0;
-				double sum2 = 0.0;
-				
-				for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-					if (i != objective) {
-						sum1 += Math.pow(s1.getObjective(i).getCanonicalValue(), 2.0);
-						sum2 += Math.pow(s2.getObjective(i).getCanonicalValue(), 2.0);
-					}
+		result.sort((s1, s2) -> {
+			double sum1 = 0.0;
+			double sum2 = 0.0;
+			
+			for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
+				if (i != objective) {
+					sum1 += Math.pow(s1.getObjective(i).getCanonicalValue(), 2.0);
+					sum2 += Math.pow(s2.getObjective(i).getCanonicalValue(), 2.0);
 				}
-				
-				return Double.compare(sum1, sum2);
 			}
 			
+			return Double.compare(sum1, sum2);
 		});
 		
 		return result;

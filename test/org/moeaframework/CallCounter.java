@@ -133,13 +133,8 @@ public class CallCounter<T> {
 	
 	@SuppressWarnings("unchecked")
 	public static <T> CallCounter<Consumer<T>> mockConsumer() {
-		Consumer<T> mock = new Consumer<T>() {
-
-			@Override
-			public void accept(T t) {
-				// do nothing
-			}
-			
+		Consumer<T> mock = t -> {
+			// do nothing
 		};
 		
 		ProxyInvocationHandler<Consumer<T>> handler = new ProxyInvocationHandler<>(mock);
@@ -149,13 +144,8 @@ public class CallCounter<T> {
 	
 	@SuppressWarnings("unchecked")
 	public static <T, U> CallCounter<BiConsumer<T, U>> mockBiConsumer() {
-		BiConsumer<T, U> mock = new BiConsumer<T, U>() {
-
-			@Override
-			public void accept(T t, U u) {
-				// do nothing
-			}
-			
+		BiConsumer<T, U> mock = (t, u) -> {
+			// do nothing
 		};
 		
 		ProxyInvocationHandler<BiConsumer<T, U>> handler = new ProxyInvocationHandler<>(mock);

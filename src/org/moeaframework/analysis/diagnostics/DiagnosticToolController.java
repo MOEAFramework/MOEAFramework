@@ -38,7 +38,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.extension.ProgressExtension;
-import org.moeaframework.algorithm.extension.ProgressExtension.ProgressEvent;
 import org.moeaframework.algorithm.extension.ProgressExtension.ProgressListener;
 import org.moeaframework.analysis.IndicatorStatistics;
 import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
@@ -582,18 +581,11 @@ public class DiagnosticToolController extends Controller implements SettingChang
 						// setup the progress listener to receive updates
 						final int seed = i + 1;
 						
-						ProgressListener listener = new ProgressListener() {
-						
-							@Override
-							public void progressUpdate(ProgressEvent event) {
-								updateProgress(
-										event.getAlgorithm().getNumberOfEvaluations(),
-										seed,
-										numberOfEvaluations,
-										numberOfSeeds);
-							}
-						
-						};
+						ProgressListener listener = event -> updateProgress(
+								event.getAlgorithm().getNumberOfEvaluations(),
+								seed,
+								numberOfEvaluations,
+								numberOfSeeds);
 						
 						TypedProperties properties = new TypedProperties();
 						properties.setInt("maxEvaluations", numberOfEvaluations);
