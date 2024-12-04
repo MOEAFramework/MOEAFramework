@@ -33,7 +33,7 @@ import org.moeaframework.util.validate.Validate;
 /**
  * Single-objective {@code (mu + lambda)} evolution strategy (ES) algorithm.  In this implementation, {@code mu} and
  * {@code lambda} are both equal to the initial population size.  For example, with an initial population of size 1,
- * this mimics the classic (1 + 1)-ES algorithm.  Can only be used with mutation operators with a single parent. 
+ * this mimics the classic (1 + 1)-ES algorithm.  Can only be used with mutation operators with a single parent.
  * <p>
  * References:
  * <ol>

@@ -33,11 +33,11 @@ public class KursaweTest extends ProblemTest {
 	public void test() {
 		Problem problem = new Kursawe();
 		
-		Assert.assertArrayEquals(new double[] { -4.862334, 20.112302 }, 
+		Assert.assertArrayEquals(new double[] { -4.862334, 20.112302 },
 				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.000001);
 		
-		Assert.assertArrayEquals(new double[] { -4.862334, 1.631088 }, 
+		Assert.assertArrayEquals(new double[] { -4.862334, 1.631088 },
 				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.000001);
 	}

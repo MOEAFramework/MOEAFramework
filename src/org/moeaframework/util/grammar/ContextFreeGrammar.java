@@ -263,12 +263,12 @@ public class ContextFreeGrammar {
 	/**
 	 * Parses the context-free grammar in Backus-Naur form (BNF).  Each rule is defined on a single line, formatted
 	 * with the symbol or identifier on the left-hand side, the separator {@code "::="}, and one or more productions
-	 * on the right-hand side.  
+	 * on the right-hand side.
 	 * <pre>{@code
 	 *   <symbol> ::= <production> (| <production>)
 	 * }</pre>
 	 * A production can be a constant, a quoted string, a reference to a symbol, or any combination thereof.  For
-	 * example, the following represents a simple mathematical grammar: 
+	 * example, the following represents a simple mathematical grammar:
  	 * <pre>{@code
  	 *   <expr> ::= <expr> <op> <expr> | "func(" <expr> ")" | <val>
  	 *   <op> ::= + | - | * | '/'

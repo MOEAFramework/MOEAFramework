@@ -80,7 +80,7 @@ public class ExternalProblemTest {
 	private void test(final Function<String, String> callback) throws Exception {
 		CallCounter<Function<String, String>> counter = CallCounter.of(callback);
 		
-		try (MockExternalProblem problem = new MockExternalProblem(counter.getProxy())) {			
+		try (MockExternalProblem problem = new MockExternalProblem(counter.getProxy())) {
 			for (int i=0; i<100; i++) {
 				Solution solution = problem.newSolution();
 				problem.evaluate(solution);

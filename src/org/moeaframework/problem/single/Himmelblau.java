@@ -74,7 +74,7 @@ public class Himmelblau extends AbstractSingleObjectiveProblem {
 		
 		Solution solution4 = newSolution();
 		RealVariable.setReal(solution4, new double[] { 3.584428, -1.848126 });
-		evaluate(solution4);		
+		evaluate(solution4);
 		
 		result.addAll(List.of(solution1, solution2, solution3, solution4));
 		return result;

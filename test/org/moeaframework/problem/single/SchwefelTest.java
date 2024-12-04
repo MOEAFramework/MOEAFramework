@@ -26,7 +26,7 @@ import org.moeaframework.problem.ProblemTest;
 public class SchwefelTest extends ProblemTest {
 	
 	@Test
-	public void test() {		
+	public void test() {
 		try (AbstractSingleObjectiveProblem problem = new Schwefel()) {
 			for (Solution solution : problem.getReferenceSet()) {
 				Assert.assertEquals(0.0, solution.getObjectiveValue(0), 0.0001);

@@ -39,7 +39,7 @@ public class InjectSolutionsExample {
 		Solution solutionB = problem.newSolution();
 		RealVariable.setReal(solutionB, new double[] { 1.0, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5 });
 		
-		NSGAII algorithm = new NSGAII(problem);	
+		NSGAII algorithm = new NSGAII(problem);
 		algorithm.setInitialization(new InjectedInitialization(problem, solutionA, solutionB));
 		algorithm.run(10000);
 		

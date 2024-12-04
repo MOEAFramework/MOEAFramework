@@ -36,7 +36,7 @@ public class PAESTest extends JMetalAlgorithmTest {
 	
 	@Test
 	public void testConfiguration() {
-		Problem problem = new MockRealProblem(2);	
+		Problem problem = new MockRealProblem(2);
 		PAES algorithm = new PAES(problem);
 		
 		Assert.assertEquals(algorithm.getArchive().getCapacity(), algorithm.getConfiguration().getInt("archiveSize"));

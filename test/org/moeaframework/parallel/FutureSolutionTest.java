@@ -122,7 +122,7 @@ public class FutureSolutionTest {
 			Assert.assertThrows(FrameworkException.class, () -> solution.update());
 		} finally {
 			executor.shutdown();
-		}		
+		}
 	}
 	
 	@Test

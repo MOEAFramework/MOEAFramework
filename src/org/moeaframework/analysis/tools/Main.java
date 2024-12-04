@@ -195,7 +195,7 @@ public class Main extends CommandLineUtility {
 	 * @throws Exception if an error occurred
 	 */
 	public static void main(String[] args) throws Exception {
-		new Main().start(args);	
+		new Main().start(args);
 	}
 
 }

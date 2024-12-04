@@ -74,8 +74,8 @@ public class IntegrationTest {
 		File parameterDescriptionFile = TempFiles.createFile().withContent(PARAMETER_FILE);
 		File parameterFile = TempFiles.createFile();
 		
-		SampleGenerator.main(new String[] { 
-				"-n", "10", 
+		SampleGenerator.main(new String[] {
+				"-n", "10",
 				"-p", parameterDescriptionFile.getPath(),
 				"-m", "la",
 				"-o", parameterFile.getPath() });
@@ -87,14 +87,14 @@ public class IntegrationTest {
 		File resultFile1 = TempFiles.createFile();
 		File resultFile2 = TempFiles.createFile();
 		
-		EndOfRunEvaluator.main(new String[] { 
+		EndOfRunEvaluator.main(new String[] {
 				"-p", parameterDescriptionFile.getPath(),
 				"-i", parameterFile.getPath(),
 				"-o", resultFile1.getPath(),
 				"-a", "NSGAII",
 				"-b", "DTLZ2_2" });
 		
-		EndOfRunEvaluator.main(new String[] { 
+		EndOfRunEvaluator.main(new String[] {
 				"-p", parameterDescriptionFile.getPath(),
 				"-i", parameterFile.getPath(),
 				"-o", resultFile2.getPath(),
@@ -191,8 +191,8 @@ public class IntegrationTest {
 		File parameterDescriptionFile = TempFiles.createFile().withContent(PARAMETER_FILE);
 		File parameterFile = TempFiles.createFile();
 		
-		SampleGenerator.main(new String[] { 
-				"-n", "10", 
+		SampleGenerator.main(new String[] {
+				"-n", "10",
 				"-p", parameterDescriptionFile.getPath(),
 				"-m", "sa",
 				"-o", parameterFile.getPath() });
@@ -203,7 +203,7 @@ public class IntegrationTest {
 		//evaluate MOEA
 		File resultFile = TempFiles.createFile();
 
-		EndOfRunEvaluator.main(new String[] { 
+		EndOfRunEvaluator.main(new String[] {
 				"-p", parameterDescriptionFile.getPath(),
 				"-i", parameterFile.getPath(),
 				"-o", resultFile.getPath(),
@@ -212,7 +212,7 @@ public class IntegrationTest {
 		
 		File metricFile = TempFiles.createFile();
 		
-		MetricsEvaluator.main(new String[] { 
+		MetricsEvaluator.main(new String[] {
 				"-i", resultFile.getPath(),
 				"-o", metricFile.getPath(),
 				"-b", "DTLZ2_2" });
@@ -243,8 +243,8 @@ public class IntegrationTest {
 		File parameterDescriptionFile = TempFiles.createFile().withContent(PARAMETER_FILE);
 		File parameterFile = TempFiles.createFile();
 		
-		SampleGenerator.main(new String[] { 
-				"-n", "10", 
+		SampleGenerator.main(new String[] {
+				"-n", "10",
 				"-p", parameterDescriptionFile.getPath(),
 				"-m", "la",
 				"-o", parameterFile.getPath() });
@@ -252,7 +252,7 @@ public class IntegrationTest {
 		//evaluate MOEA
 		File resultFile = TempFiles.createFile();
 		
-		EndOfRunEvaluator.main(new String[] { 
+		EndOfRunEvaluator.main(new String[] {
 				"-p", parameterDescriptionFile.getPath(),
 				"-i", parameterFile.getPath(),
 				"-o", resultFile.getPath(),
@@ -310,15 +310,15 @@ public class IntegrationTest {
 		File parameterDescriptionFile = TempFiles.createFile().withContent("sbx.rate 0.0 1.0");
 		File parameterFile = TempFiles.createFile();
 		
-		SampleGenerator.main(new String[] { 
-				"-n", "10", 
+		SampleGenerator.main(new String[] {
+				"-n", "10",
 				"-p", parameterDescriptionFile.getPath(),
 				"-m", "la",
 				"-o", parameterFile.getPath() });
 		
 		File resultFolder = TempFiles.createDirectory();
 		
-		RuntimeEvaluator.main(new String[] { 
+		RuntimeEvaluator.main(new String[] {
 				"-p", parameterDescriptionFile.getPath(),
 				"-i", parameterFile.getPath(),
 				"-o", Paths.get(resultFolder.getPath(), "resultFile_%d.dat").toString(),

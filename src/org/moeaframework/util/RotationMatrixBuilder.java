@@ -273,7 +273,7 @@ public class RotationMatrixBuilder {
 	 * @return an identity matrix
 	 */
 	private RealMatrix newIdentityMatrix() {
-		RealMatrix identity = MatrixUtils.createRealMatrix(dimension, dimension); 
+		RealMatrix identity = MatrixUtils.createRealMatrix(dimension, dimension);
 		
 		for (int i = 0; i < dimension; i++) {
 			identity.setEntry(i, i, 1.0);

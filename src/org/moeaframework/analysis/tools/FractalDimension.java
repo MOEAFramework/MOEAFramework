@@ -23,7 +23,7 @@ import java.util.List;
 import org.apache.commons.math3.util.MathArrays;
 
 /**
- * Computes the fractal dimension for a set of points.  
+ * Computes the fractal dimension for a set of points.
  */
 class FractalDimension {
 

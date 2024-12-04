@@ -227,7 +227,7 @@ public class Settings {
 		
 		//properties file
 		try {
-			String resource = PROPERTIES.getString(KEY_CONFIGURATION_FILE, DEFAULT_CONFIGURATION_FILE);			
+			String resource = PROPERTIES.getString(KEY_CONFIGURATION_FILE, DEFAULT_CONFIGURATION_FILE);
 			File file = new File(resource);
 			
 			if (file.exists()) {
@@ -306,7 +306,7 @@ public class Settings {
 	
 	/**
 	 * Returns {@code true} if continuity correction is enabled; {@code false} otherwise.  Rank-based statistical
-	 * inference methods, such as the Mann-Whitney U test and the Wilcoxon Signed-Ranks test, approximate the 
+	 * inference methods, such as the Mann-Whitney U test and the Wilcoxon Signed-Ranks test, approximate the
 	 * test's discrete distribution with a continuous distribution for computing the p-value.  It has been recommended
 	 * but not often employed in practice to apply a continuity correction.
 	 * 
@@ -380,7 +380,7 @@ public class Settings {
 	 * The default hypervolume implementation may become computationally prohibitive on large approximation sets or
 	 * at high dimensions.  See {@link org.moeaframework.core.indicator.NativeHypervolume} for more details on
 	 * formatting the command.
-	 *   
+	 * 
 	 * @return the native hypervolume command; or {@code null} if the default hypervolume implementation is used
 	 */
 	public static String getHypervolume() {

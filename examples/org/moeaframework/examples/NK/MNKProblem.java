@@ -254,7 +254,7 @@ public class MNKProblem implements Problem {
 	 * @throws IOException if an I/O error occurred while saving the file
 	 */
 	public void save(File file) throws IOException {
-		try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {		
+		try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
 			if (M > 1) {
 				writer.print(M);
 				writer.print(" ");

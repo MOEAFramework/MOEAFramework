@@ -257,7 +257,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		String lineSeparator = determineLineSeparator(file);
 		
 		try (LineReader reader = LineReader.wrap(new FileReader(file));
-			 PrintWriter writer = new PrintWriter(new FileWriter(tempFile))) {			
+			 PrintWriter writer = new PrintWriter(new FileWriter(tempFile))) {
 			for (String line : reader) {
 				writer.write(line);
 				writer.write(lineSeparator);
@@ -389,7 +389,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		List<String> content = new ArrayList<String>();
 		boolean inCodeBlock = false;
 		
-		for (String line : reader) {		
+		for (String line : reader) {
 			if (!inCodeBlock && fileType.isStartOfCodeBlock(line)) {
 				content.add(line);
 				inCodeBlock = true;

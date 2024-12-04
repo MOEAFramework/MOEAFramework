@@ -101,7 +101,7 @@ public class VectorTest {
 	@Test
 	public void testMean() {
 		Assert.assertArrayEquals(new double[] { 2.0 / 3.0, 0.0, -2.0 / 3.0 },
-				Vector.mean(new double[][] { { 0.0, 1.0, -1.0 }, { 1.0, -1.0, 0.0 }, { 1.0, 0.0, -1.0 } }), 
+				Vector.mean(new double[][] { { 0.0, 1.0, -1.0 }, { 1.0, -1.0, 0.0 }, { 1.0, 0.0, -1.0 } }),
 				TestThresholds.HIGH_PRECISION);
 	}
 

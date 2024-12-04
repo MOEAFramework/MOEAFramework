@@ -29,7 +29,7 @@ class CEC2009 {
 		super();
 	}
 
-	/* 
+	/*
 	 * The following source code is modified from the CEC 2009 test problem suite available at
 	 * {@link http://dces.essex.ac.uk/staff/qzhang/}.  Permission to distribute these modified source codes under the
 	 * GNU Lesser General Public License was obtained via e-mail correspondence with the original authors.
@@ -740,7 +740,7 @@ class CEC2009 {
 		f[1] = Math.cos(0.5 * PI * x[0]) * Math.sin(0.5 * PI * x[1]) + 2.0 * sum2 / (double)count2;
 		f[2] = Math.sin(0.5 * PI * x[0]) + 2.0 * sum3 / (double)count3;
 		c[0] = (f[0] * f[0] + f[1] * f[1]) / (1 - f[2] * f[2])
-				- a * Math.sin(N * PI * ((f[0] * f[0] - f[1] * f[1]) / 
+				- a * Math.sin(N * PI * ((f[0] * f[0] - f[1] * f[1]) /
 						(1 - f[2] * f[2]) + 1.0)) - 1.0;
 	}
 
@@ -784,7 +784,7 @@ class CEC2009 {
 		f[1] = Math.cos(0.5 * PI * x[0]) * Math.sin(0.5 * PI * x[1]) + 2.0 * sum2 / (double)count2;
 		f[2] = Math.sin(0.5 * PI * x[0]) + 2.0 * sum3 / (double)count3;
 		c[0] = (f[0] * f[0] + f[1] * f[1]) / (1 - f[2] * f[2])
-				- a * Math.sin(N * PI * ((f[0] * f[0] - f[1] * f[1]) / 
+				- a * Math.sin(N * PI * ((f[0] * f[0] - f[1] * f[1]) /
 						(1 - f[2] * f[2]) + 1.0)) - 1.0;
 	}
 	

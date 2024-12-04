@@ -130,9 +130,9 @@ public class LinePlot extends ResultPlot {
 			}
 
 			if (statistics.getN() > 0) {
-				ySeries.add(currentNFE, 
-						statistics.getPercentile(50), 
-						statistics.getPercentile(25), 
+				ySeries.add(currentNFE,
+						statistics.getPercentile(50),
+						statistics.getPercentile(25),
 						statistics.getPercentile(75));
 			}
 
@@ -236,9 +236,9 @@ public class LinePlot extends ResultPlot {
 		plot.setDomainAxis(domainAxis);
 		
 		//add overlay
-		if (controller.showLastTrace().get() && 
+		if (controller.showLastTrace().get() &&
 				!controller.showIndividualTraces().get() &&
-				(controller.getLastSeries() != null) && 
+				(controller.getLastSeries() != null) &&
 				controller.getLastSeries().getDefinedProperties().contains(metric)) {
 			DefaultTableXYDataset dataset2 = new DefaultTableXYDataset();
 			XYSeries xySeries = new XYSeries(localization.getString("text.last"), false, false);

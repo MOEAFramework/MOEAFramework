@@ -161,7 +161,7 @@ public class Cluster implements Iterable<ClusterableSolution> {
 	/**
 	 * Returns the distance between two clusters, which is defined as the minimum value found when computing all
 	 * pairwise distances between individual points.
-	 * 	
+	 * 
 	 * @param cluster the other cluster
 	 * @return the minimum distance
 	 */
@@ -204,7 +204,7 @@ public class Cluster implements Iterable<ClusterableSolution> {
 			
 			if (distance < minDistance) {
 				minDistance = distance;
-				minSolution = members.get(i); 
+				minSolution = members.get(i);
 			}
 		}
 		

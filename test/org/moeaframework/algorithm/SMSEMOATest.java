@@ -61,7 +61,7 @@ public class SMSEMOATest extends AlgorithmTest {
 	
 	@Test
 	public void testConfiguration() {
-		Problem problem = new MockRealProblem();	
+		Problem problem = new MockRealProblem();
 		SMSEMOA algorithm = new SMSEMOA(problem);
 		
 		Assert.assertEquals("hypervolumeContribution", algorithm.getConfiguration().getString("indicator"));
@@ -84,7 +84,7 @@ public class SMSEMOATest extends AlgorithmTest {
 	
 	@Test(expected = ConfigurationException.class)
 	public void testConfigurationInvalidIndicator() {
-		Problem problem = new MockRealProblem();	
+		Problem problem = new MockRealProblem();
 		SMSEMOA algorithm = new SMSEMOA(problem);
 		
 		algorithm.applyConfiguration(TypedProperties.of("indicator", "foo"));

@@ -25,7 +25,7 @@ import org.moeaframework.util.validate.Validate;
 /**
  * Single-linkage clustering, which is a hierarchical clustering method that at each step joins the clusters with the
  * closest pair of elements.
- * <p> 
+ * <p>
  * References:
  * <ol>
  *   <li>https://en.wikipedia.org/wiki/Single-linkage_clustering

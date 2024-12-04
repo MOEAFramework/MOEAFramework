@@ -130,7 +130,7 @@ public class BuildProblemTest {
 		return test(language, true);
 	}
 
-	private File test(String language, boolean run) throws Exception {		
+	private File test(String language, boolean run) throws Exception {
 		File directory = TempFiles.createDirectory();
 		File testDirectory = new File(directory, "Test");
 

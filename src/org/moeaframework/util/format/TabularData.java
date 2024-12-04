@@ -388,10 +388,10 @@ public class TabularData<T> implements Displayable {
 	 * the output produced by {@code orient='record'}.
 	 * <pre>
 	 *   import pandas as pd
-	 *   
+	 * 
 	 *   df = pd.DataFrame(...)
 	 *   df.to_json("data.json", orient='record')
-	 *   
+	 * 
 	 *   df = pd.read_json("data.json")
 	 * </pre>
 	 * 

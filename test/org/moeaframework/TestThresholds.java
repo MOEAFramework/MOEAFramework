@@ -37,7 +37,7 @@ public class TestThresholds {
 	public static final int SAMPLES = 10000;
 
 	/**
-	 * The floating-point threshold for low precision / low fidelity comparisons.  
+	 * The floating-point threshold for low precision / low fidelity comparisons.
 	 */
 	public static final double LOW_PRECISION = 0.05;
 	

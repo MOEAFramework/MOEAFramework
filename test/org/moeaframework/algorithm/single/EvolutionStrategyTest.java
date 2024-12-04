@@ -21,6 +21,7 @@ import org.moeaframework.problem.Problem;
 
 public class EvolutionStrategyTest extends AbstractSingleObjectiveAlgorithmTest<EvolutionStrategy> {
 	
+	@Override
 	public EvolutionStrategy createInstance(Problem problem) {
 		return new EvolutionStrategy(problem);
 	}

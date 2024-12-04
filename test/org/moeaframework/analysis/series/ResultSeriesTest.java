@@ -43,7 +43,7 @@ public class ResultSeriesTest {
 		ResultSeries series = createSeries(IndexType.NFE, 2);
 		
 		Assert.assertEquals(IndexType.NFE, series.getIndexType());
-		Assert.assertEquals(2, series.size());	
+		Assert.assertEquals(2, series.size());
 		Assert.assertFalse(series.isEmpty());
 		Assert.assertEquals(100, series.first().getIndex());
 		Assert.assertEquals(200, series.last().getIndex());
@@ -58,7 +58,7 @@ public class ResultSeriesTest {
 		ResultSeries series = createSeries(IndexType.Index, 2);
 		
 		Assert.assertEquals(IndexType.Index, series.getIndexType());
-		Assert.assertEquals(2, series.size());	
+		Assert.assertEquals(2, series.size());
 		Assert.assertFalse(series.isEmpty());
 		Assert.assertEquals(0, series.first().getIndex());
 		Assert.assertEquals(1, series.last().getIndex());
@@ -73,7 +73,7 @@ public class ResultSeriesTest {
 		ResultSeries series = createSeries(IndexType.Singleton, 1);
 		
 		Assert.assertEquals(IndexType.Singleton, series.getIndexType());
-		Assert.assertEquals(1, series.size());	
+		Assert.assertEquals(1, series.size());
 		Assert.assertFalse(series.isEmpty());
 		Assert.assertEquals(0, series.first().getIndex());
 		Assert.assertEquals(0, series.last().getIndex());
@@ -91,14 +91,14 @@ public class ResultSeriesTest {
 		entry1.getProperties().setInt(ResultEntry.NFE, 300);
 		series.add(entry1);
 		
-		Assert.assertEquals(3, series.size());	
+		Assert.assertEquals(3, series.size());
 		Assert.assertSame(entry1, series.last().getEntry());
 		
 		ResultEntry entry2 = new ResultEntry(new Population());
 		entry2.getProperties().setInt(ResultEntry.NFE, 150);
 		series.add(entry2);
 		
-		Assert.assertEquals(4, series.size());	
+		Assert.assertEquals(4, series.size());
 		Assert.assertSame(entry2, series.first().next().getEntry());
 		
 		ResultEntry entry3 = new ResultEntry(new Population());
@@ -115,7 +115,7 @@ public class ResultSeriesTest {
 		ResultEntry entry = new ResultEntry(new Population());
 		series.add(entry);
 		
-		Assert.assertEquals(3, series.size());	
+		Assert.assertEquals(3, series.size());
 		Assert.assertSame(entry, series.last().getEntry());
 	}
 	
@@ -126,7 +126,7 @@ public class ResultSeriesTest {
 		ResultEntry entry = new ResultEntry(new Population());
 		Assert.assertThrows(IllegalArgumentException.class, () -> series.add(entry));
 		
-		Assert.assertEquals(1, series.size());	
+		Assert.assertEquals(1, series.size());
 	}
 	
 	@Test

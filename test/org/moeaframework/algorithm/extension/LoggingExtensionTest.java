@@ -77,11 +77,14 @@ public class LoggingExtensionTest {
 		
 		private LogRecord lastRecord;
 
+		@Override
 		public void publish(LogRecord record) {
 			lastRecord = record;
 		}
 
+		@Override
 		public void close() {}
+		@Override
 		public void flush() {}
 	}
 

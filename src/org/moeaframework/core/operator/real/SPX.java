@@ -26,9 +26,9 @@ import org.moeaframework.util.validate.Validate;
 
 /**
  * Simplex crossover (SPX) operator.  SPX is a multiparent operator, allowing a user-defined number of parents and
- * offspring.  The parents form a convex  hull, called a simplex.  Offspring are generated uniformly at random from 
+ * offspring.  The parents form a convex  hull, called a simplex.  Offspring are generated uniformly at random from
  * within the simplex.  The expansion rate parameter can be used to expand the size of the simplex beyond the bounds
- * of the parents.  For example, the figure below shows three parent points and the offspring distribution, 
+ * of the parents.  For example, the figure below shows three parent points and the offspring distribution,
  * clearly filling an expanded triangular simplex.
  * <p>
  * <img src="doc-files/SPX-1.png" alt="Example SPX operator distribution" />

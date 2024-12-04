@@ -27,7 +27,7 @@ import org.moeaframework.problem.ProblemTest;
 public class ZakharovTest extends ProblemTest {
 	
 	@Test
-	public void test() {		
+	public void test() {
 		try (AbstractSingleObjectiveProblem problem = new Zakharov()) {
 			for (Solution solution : problem.getReferenceSet()) {
 				Assert.assertEquals(0.0, solution.getObjectiveValue(0), TestThresholds.HIGH_PRECISION);

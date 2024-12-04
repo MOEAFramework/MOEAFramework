@@ -35,7 +35,7 @@ public class MatrixReaderTest {
 			""";
 
 	public static final String FIXED_WHITESPACE = """
-			  0.0 0.1    -0.1  
+			  0.0 0.1    -0.1
 			# commented line
 			\t\t0 \t 10 100\t\t
 			""";

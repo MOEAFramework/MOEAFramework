@@ -7,7 +7,7 @@
 package org.moeaframework.problem.BBOB2016;
 
 /**
- * The benchmark contains a suite and an observer and is able to return the next problem. 
+ * The benchmark contains a suite and an observer and is able to return the next problem.
  */
 public class Benchmark {
 	
@@ -22,10 +22,10 @@ public class Benchmark {
 	/**
 	 * Function that returns the next problem in the suite. When it comes to the end of the suite, it returns null.
 	 * 
-	 * @return the next problem in the suite or null when there is no next problem  
+	 * @return the next problem in the suite or null when there is no next problem
 	 */
 	public Problem getNextProblem() throws Exception {
-		try {		
+		try {
 			long problemPointer = CocoJNI.cocoSuiteGetNextProblem(suite.getPointer(), observer.getPointer());
 			
 			if (problemPointer == 0)
@@ -41,7 +41,7 @@ public class Benchmark {
 	 * Finalizes the observer and suite. This method needs to be explicitly called in order to log the last results.
 	 */
 	public void finalizeBenchmark() throws Exception {
-		try {		
+		try {
 			observer.finalizeObserver();
 			suite.finalizeSuite();
 		} catch (Exception e) {

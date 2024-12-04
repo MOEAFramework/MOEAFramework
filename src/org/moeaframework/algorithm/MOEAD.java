@@ -56,7 +56,7 @@ import org.moeaframework.util.weights.WeightGenerator;
  *   <li>With the default settings, this implementation is equivalent to MOEA/D-DE as specified in [1].  The "-DE"
  *       refers to the use of the differential evolutionary search operator.
  *   <li>When given a non-negative {@link #updateUtility}, this enables the utility-based search extension described
- *       in [2].  
+ *       in [2].
  * </ol>
  * <p>
  * References:
@@ -484,7 +484,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	/**
 	 * Constructs the neighborhoods for all individuals in the population based on the distances between weights.
 	 */
-	private void initializeNeighborhoods() {		
+	private void initializeNeighborhoods() {
 		List<Individual> sortedPopulation = new ArrayList<Individual>(population);
 
 		for (Individual individual : population) {
@@ -662,7 +662,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 		for (Individual individual : population) {
 			double oldFitness = individual.getFitness();
 			double newFitness = fitness(individual.getSolution(), idealPoint);
-			double relativeDecrease = (oldFitness - newFitness) / oldFitness; 
+			double relativeDecrease = (oldFitness - newFitness) / oldFitness;
 
 			if (relativeDecrease > 0.001) {
 				individual.setUtility(1.0);

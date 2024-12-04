@@ -118,7 +118,7 @@ public class SettingsTest {
 		System.setProperty(Settings.KEY_CONFIGURATION_FILE, file.getAbsolutePath());
 		Settings.reload();
 		
-		Assert.assertTrue(Settings.PROPERTIES.contains("org.moeaframework.test.test_property_in_file"));		
+		Assert.assertTrue(Settings.PROPERTIES.contains("org.moeaframework.test.test_property_in_file"));
 	}
 	
 	@Test

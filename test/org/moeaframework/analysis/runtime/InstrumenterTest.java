@@ -151,7 +151,7 @@ public class InstrumenterTest {
 	public void testSynthetic() {
 		Algorithm algorithm = new MockAlgorithmWithExtensions() {
 			//anonymous class, which will contain a synthetic field "this" pointing to InstrumenterTest
-		}; 
+		};
 		
 		new Instrumenter().attach(collector).instrument(algorithm);
 		

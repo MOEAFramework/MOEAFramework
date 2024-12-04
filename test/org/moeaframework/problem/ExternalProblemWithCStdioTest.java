@@ -83,7 +83,7 @@ public class ExternalProblemWithCStdioTest {
 		
 				Solution[] solutions = initialization.initialize(100);
 				
-				for (int i=0; i<solutions.length; i++) {					
+				for (int i=0; i<solutions.length; i++) {
 					Solution solution = solutions[i];
 					problem.evaluate(solution);
 					
@@ -101,7 +101,7 @@ public class ExternalProblemWithCStdioTest {
 					int tokenIndex = 0;
 					
 					for (int j=0; j<2; j++) {
-						Assert.assertEquals(((RealVariable)solution.getVariable(j)).getValue(), 
+						Assert.assertEquals(((RealVariable)solution.getVariable(j)).getValue(),
 								Double.parseDouble(debugTokens[tokenIndex++]), TestThresholds.HIGH_PRECISION);
 					}
 					

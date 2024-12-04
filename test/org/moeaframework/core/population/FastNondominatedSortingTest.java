@@ -21,6 +21,7 @@ import org.junit.Before;
 
 public class FastNondominatedSortingTest extends NondominatedSortingTest {
 	
+	@Override
 	@Before
 	public void setUp() {
 		population = new Population();

@@ -169,7 +169,7 @@ public class IteratorsTest {
 	
 	@Test
 	public void testRemoveEnumerate() {
-		List<String> list = new ArrayList<>(List.of("foo", "bar"));		
+		List<String> list = new ArrayList<>(List.of("foo", "bar"));
 		Iterator<IndexedValue<String>> it = Iterators.enumerate(list).iterator();
 		
 		it.next();
@@ -279,7 +279,7 @@ public class IteratorsTest {
 	
 	@Test
 	public void testRemoveMap() {
-		List<Integer> list = new ArrayList<>(List.of(1, 2));		
+		List<Integer> list = new ArrayList<>(List.of(1, 2));
 		Iterator<String> it = Iterators.map(list, x -> x.toString()).iterator();
 		
 		it.next();

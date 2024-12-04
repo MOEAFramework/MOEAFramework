@@ -90,7 +90,7 @@ public class DefaultOperators extends RegisteredOperatorProvider {
 
 		// these are two special cases where we have historically set the default rate to 1/N
 		register("pm", (properties, problem) -> new PM(
-				properties.getDouble("pm.rate", 1.0 / problem.getNumberOfVariables()), 
+				properties.getDouble("pm.rate", 1.0 / problem.getNumberOfVariables()),
 				properties.getDouble("pm.distributionIndex", 20.0)));
 		
 		register("um", (properties, problem) -> new UM(

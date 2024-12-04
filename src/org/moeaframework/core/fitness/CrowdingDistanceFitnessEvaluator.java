@@ -46,7 +46,7 @@ public class CrowdingDistanceFitnessEvaluator implements FitnessEvaluator {
 	
 	/**
 	 * Returns a copy of the population.  The fast non-dominated sorting routine reorders solutions in the population,
-	 * so creating a copy allows the original population to remain unchanged.  
+	 * so creating a copy allows the original population to remain unchanged.
 	 * 
 	 * @param population the original population
 	 * @return a copy of the population

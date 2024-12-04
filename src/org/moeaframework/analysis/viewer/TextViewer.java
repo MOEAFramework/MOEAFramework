@@ -118,7 +118,7 @@ public class TextViewer extends JDialog {
 		textArea.setEditable(false);
 	}
 	
-	private void layoutComponents() {		
+	private void layoutComponents() {
 		RunnableAction saveAction = new RunnableAction("save", localization, this::save);
 		
 		RunnableAction decreaseFontSize = new RunnableAction("decreaseFontSize", localization, () -> {

@@ -72,7 +72,7 @@ public class Subset extends AbstractVariable {
 	 * 
 	 * @param k the fixed size of the subset
 	 * @param n the size of the original set (i.e., the number of candidate members)
-	 */	
+	 */
 	public Subset(int k, int n) {
 		this(k, k, n);
 	}
@@ -230,7 +230,7 @@ public class Subset extends AbstractVariable {
 		members.clear();
 
 		for (int i = 0; i < array.length; i++) {
-			Validate.that("array[i]", array[i]).isBetween(0, n-1);			
+			Validate.that("array[i]", array[i]).isBetween(0, n-1);
 			members.add(array[i]);
 		}
 	}

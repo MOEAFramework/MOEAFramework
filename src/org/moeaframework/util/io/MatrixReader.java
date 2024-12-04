@@ -113,7 +113,7 @@ public class MatrixReader implements Iterable<double[]>, Iterator<double[]>, Clo
 	 */
 	public MatrixReader(Reader reader, int numberOfColumns) {
 		super();
-		this.reader = LineReader.wrap(reader).skipComments().trim();		
+		this.reader = LineReader.wrap(reader).skipComments().trim();
 		this.numberOfColumns = numberOfColumns;
 		
 		tokenizer = new Tokenizer();

@@ -64,7 +64,7 @@ public class BBOB2016Test {
 	 *   git clone https://github.com/numbbo/coco
 	 *   cd coco
 	 *   python do.py run-java
-	 *    
+	 * 
 	 *   cd code-experiments/build/java
 	 *   sed 's/Java_CocoJNI_/Java_org_moeaframework_problem_BBOB2016_CocoJNI_/g' CocoJNI.c > org_moeaframework_problem_BBOB2016_CocoJNI.c
 	 *   sed 's/Java_CocoJNI_/Java_org_moeaframework_problem_BBOB2016_CocoJNI_/g' CocoJNI.h > org_moeaframework_problem_BBOB2016_CocoJNI.h
@@ -90,8 +90,8 @@ public class BBOB2016Test {
 
 		CocoJNI.cocoSetLogLevel("error");
 
-		final String observer_options = 
-				"result_folder: Testing_on_bbob-biobj " 
+		final String observer_options =
+				"result_folder: Testing_on_bbob-biobj "
 				+ "algorithm_name: Testing "
 				+ "algorithm_info: \"MOEA Framework Testing\"";
 
@@ -100,7 +100,7 @@ public class BBOB2016Test {
 		Benchmark benchmark = new Benchmark(suite, observer);
 		org.moeaframework.problem.BBOB2016.Problem rawProblem = null;
 
-		while ((rawProblem = benchmark.getNextProblem()) != null) {	
+		while ((rawProblem = benchmark.getNextProblem()) != null) {
 			CocoProblemWrapper cocoProblem = new CocoProblemWrapper(rawProblem);
 			Problem moeaProblem = ProblemFactory.getInstance().getProblem(cocoProblem.getName());
 

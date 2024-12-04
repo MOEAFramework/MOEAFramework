@@ -166,7 +166,7 @@ public class DefaultNormalizer {
 			if (override.getKey().test(problem)) {
 				Normalizer normalizer = override.getValue().apply(problem);
 				
-				if (normalizer != null) {					
+				if (normalizer != null) {
 					return normalizer;
 				}
 			}

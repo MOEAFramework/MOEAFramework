@@ -84,7 +84,7 @@ public class MannWhitneyUTestTest {
 		test1.test(0.05);
 		double u1 = test1.lastU;
 		
-		org.apache.commons.math3.stat.inference.MannWhitneyUTest test2 = 
+		org.apache.commons.math3.stat.inference.MannWhitneyUTest test2 =
 				new org.apache.commons.math3.stat.inference.MannWhitneyUTest();
 		double u2 = test2.mannWhitneyU(d1, d2);
 		

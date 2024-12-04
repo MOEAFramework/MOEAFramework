@@ -69,7 +69,7 @@ public class Normalizer {
 		this.delta = 0.0;
 		this.referencePoint = null;
 
-		calculateRanges(population);		
+		calculateRanges(population);
 		checkRanges();
 	}
 	
@@ -89,7 +89,7 @@ public class Normalizer {
 		this.delta = delta;
 		this.referencePoint = null;
 		
-		calculateRanges(population);		
+		calculateRanges(population);
 		checkRanges();
 	}
 	
@@ -109,7 +109,7 @@ public class Normalizer {
 		this.delta = 0.0;
 		this.referencePoint = referencePoint == null ? null : referencePoint.clone();
 
-		calculateRanges(population);		
+		calculateRanges(population);
 		checkRanges();
 	}
 	
@@ -274,6 +274,7 @@ public class Normalizer {
 			super(Vector.of(1, 0.0), Vector.of(1, 1.0));
 		}
 		
+		@Override
 		protected void normalizeInPlace(Population population) {
 			Iterator<Solution> iterator = population.iterator();
 			

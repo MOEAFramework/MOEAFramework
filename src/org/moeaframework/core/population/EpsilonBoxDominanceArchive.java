@@ -28,7 +28,7 @@ import org.moeaframework.core.comparator.EpsilonBoxDominanceComparator;
 
 /**
  * A non-dominated population using an &epsilon;-box dominance comparator.   &epsilon;-Dominance archives provide
- * several important theoretical properties, such as guaranteed convergence and diversity if certain other 
+ * several important theoretical properties, such as guaranteed convergence and diversity if certain other
  * conditions hold [1].  In addition, this archive also tracks &epsilon;-progress [2] by counting the number of
  * &epsilon;-box improvements.
  * <p>

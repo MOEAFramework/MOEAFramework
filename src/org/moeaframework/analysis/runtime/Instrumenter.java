@@ -174,7 +174,7 @@ public class Instrumenter {
 	}
 
 	/**
-	 * Sets the frequency that data is collected.  
+	 * Sets the frequency that data is collected.
 	 * 
 	 * @param frequency the frequency
 	 * @return a reference to this instrumenter
@@ -528,7 +528,7 @@ public class Instrumenter {
 		}
 		
 		//avoid scanning contents of any excluded packages
-		if (type.getPackage() != null) {			
+		if (type.getPackage() != null) {
 			for (String excludedPackage : excludedPackages) {
 				String[] excludedPackageSegments = StringUtils.split(excludedPackage, '.');
 				String[] typePackageSegments = StringUtils.split(type.getPackage().getName(), '.');

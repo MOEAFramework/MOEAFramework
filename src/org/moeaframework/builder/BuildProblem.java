@@ -211,7 +211,7 @@ public class BuildProblem extends CommandLineUtility {
 				normalizeSeparator(tryRelativize(directory, Path.of(".")).resolve("bin").normalize()),
 				problemName + ".jar",
 				"."
-		};	
+		};
 		
 		String packagePath = packageName.replaceAll("\\.", "/");
 

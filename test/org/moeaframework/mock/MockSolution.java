@@ -195,7 +195,7 @@ public class MockSolution extends Solution {
 
 			for (int i = 0; i < solution.get().getNumberOfVariables(); i++) {
 				if (!TypeUtils.isAssignable(variables[i].getClass(), solution.get().getVariable(i).getClass())) {
-					Assert.fail("Invalid mock usage: attempted to set " + variables[i].getClass().getSimpleName() + 
+					Assert.fail("Invalid mock usage: attempted to set " + variables[i].getClass().getSimpleName() +
 							" when expecting " + solution.get().getVariable(i).getClass());
 				}
 			}

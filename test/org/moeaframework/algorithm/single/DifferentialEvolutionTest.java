@@ -21,6 +21,7 @@ import org.moeaframework.problem.Problem;
 
 public class DifferentialEvolutionTest extends AbstractSingleObjectiveAlgorithmTest<DifferentialEvolution> {
 	
+	@Override
 	public DifferentialEvolution createInstance(Problem problem) {
 		return new DifferentialEvolution(problem);
 	}

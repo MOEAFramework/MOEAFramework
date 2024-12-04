@@ -24,7 +24,7 @@ import org.moeaframework.util.validate.Validate;
 
 /**
  * Setting that can fire events when the value changes.
- *  
+ * 
  * @param <T> the underlying type of the setting
  */
 public class Setting<T> {

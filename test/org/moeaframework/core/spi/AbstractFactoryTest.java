@@ -50,7 +50,7 @@ public abstract class AbstractFactoryTest<T, S extends AbstractFactory<T>> {
 	public void testDefaultProviders() throws IOException {
 		String resource = "/META-INF/services/" + getProviderType().getName();
 		
-		try (LineReader lineReader = Resources.asLineReader(Settings.class, resource, ResourceOption.REQUIRED).skipComments()) {	
+		try (LineReader lineReader = Resources.asLineReader(Settings.class, resource, ResourceOption.REQUIRED).skipComments()) {
 			for (String line : lineReader) {
 				System.out.println("Testing existence of provider " + line);
 				Assert.assertTrue(createFactory().hasProvider(line));

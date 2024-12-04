@@ -26,7 +26,7 @@ import javax.swing.JMenuItem;
 import org.moeaframework.util.Localization;
 
 /**
- * Action backed by a {@link Toggle} setting.  GUI components based on this action are typically represented by a 
+ * Action backed by a {@link Toggle} setting.  GUI components based on this action are typically represented by a
  * check box.
  */
 public class ToggleAction extends LocalizedAction implements SettingChangedListener {

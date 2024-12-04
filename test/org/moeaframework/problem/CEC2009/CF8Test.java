@@ -28,7 +28,7 @@ public class CF8Test extends ProblemTest {
 	public void test() {
 		Problem problem = new CF8();
 		
-		Assert.assertArrayEquals(new double[] { 33.0, 32.0, 32.0 }, 
+		Assert.assertArrayEquals(new double[] { 33.0, 32.0, 32.0 },
 				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.001);
 		
@@ -38,7 +38,7 @@ public class CF8Test extends ProblemTest {
 		
 		Assert.assertFalse(evaluateAtLowerBounds(problem).isFeasible());
 		
-		Assert.assertArrayEquals(new double[] { 17.383, 11.977, 15.342 }, 
+		Assert.assertArrayEquals(new double[] { 17.383, 11.977, 15.342 },
 				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.001);
 		

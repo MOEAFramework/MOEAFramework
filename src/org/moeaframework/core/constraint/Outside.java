@@ -86,7 +86,7 @@ public class Outside extends BoundedConstraint {
 		double diffLower = Math.abs(lower - value);
 		double diffUpper = Math.abs(upper - value);
 		
-		if (value < lower) {	
+		if (value < lower) {
 			return diffLower > epsilon ? 0.0 : Math.nextUp(diffLower);
 		}
 		

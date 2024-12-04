@@ -29,21 +29,21 @@ public class OsyczkaTest extends ProblemTest {
 	public void test() {
 		Problem problem = new Osyczka();
 		
-		Assert.assertArrayEquals(new double[] { 27.0, 9.0 }, 
+		Assert.assertArrayEquals(new double[] { 27.0, 9.0 },
 				evaluateAt(problem, 2.0, 5.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { 5.0, -1.0 }, 
+		Assert.assertArrayEquals(new double[] { 5.0, -1.0 },
 				evaluateAt(problem, 2.0, 5.0).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertFalse(evaluateAt(problem, 2.0, 5.0).isFeasible());
 		
-		Assert.assertArrayEquals(new double[] { 107.0, 59.0 }, 
+		Assert.assertArrayEquals(new double[] { 107.0, 59.0 },
 				evaluateAt(problem, 7.0, 10.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { -5.0, 99.0 }, 
+		Assert.assertArrayEquals(new double[] { -5.0, 99.0 },
 				evaluateAt(problem, 7.0, 10.0).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
 		

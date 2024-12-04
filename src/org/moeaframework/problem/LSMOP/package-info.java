@@ -27,7 +27,7 @@
  *   LSMOP('fitness', 'LSMOP1', 2, 0.5 * ones(1,D))   % Evaluate solution (0.5, 0.5, ..., 0.5)
  * </pre>
  * and the Pareto Fronts:
- * <pre> 
+ * <pre>
  *   PF = LSMOP('PF', 'LSMOP1', 2, 100)
  *   writematrix(PF,'LSMOP1.2D.pf','Delimiter',' ','FileType','text')
  * </pre>

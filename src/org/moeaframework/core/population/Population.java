@@ -420,6 +420,7 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, Co
 	 * 
 	 * @return the copy of this population
 	 */
+	@Override
 	public Population copy() {
 		Population result = new Population();
 		
@@ -450,7 +451,7 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, Co
 	public TabularData<Solution> asTabularData() {
 		TabularData<Solution> data = new TabularData<Solution>(this);
 		
-		if (!isEmpty()) {	
+		if (!isEmpty()) {
 			Solution solution = get(0);
 			
 			for (int i = 0; i < solution.getNumberOfVariables(); i++) {

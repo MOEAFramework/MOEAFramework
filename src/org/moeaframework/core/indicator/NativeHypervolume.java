@@ -238,7 +238,7 @@ public class NativeHypervolume extends NormalizedIndicator {
 	/**
 	 * Splits an executable command into its individual arguments.  This method allows quoted text ({@code "..."})
 	 * in properties to be treated as an individual argument as required by {@link ProcessBuilder}.
-	 *  
+	 * 
 	 * @param command the command represented in a single string
 	 * @return the individual arguments comprising the command
 	 */

@@ -219,7 +219,7 @@ public abstract class ProblemTest {
 	 * @param problemB the second problem
 	 * @param exactConstraints if {@code true}, require identical constraint values
 	 */
-	protected void testAgainstJMetal(Problem problemA, Problem problemB, boolean exactConstraints) {		
+	protected void testAgainstJMetal(Problem problemA, Problem problemB, boolean exactConstraints) {
 		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
 			Solution solutionA = problemA.newSolution();
 			Solution solutionB = problemB.newSolution();

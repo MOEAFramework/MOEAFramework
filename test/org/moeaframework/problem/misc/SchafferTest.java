@@ -34,11 +34,11 @@ public class SchafferTest extends ProblemTest {
 	public void test() {
 		Problem problem = new Schaffer();
 		
-		Assert.assertArrayEquals(new double[] {0.0, 4.0 }, 
+		Assert.assertArrayEquals(new double[] {0.0, 4.0 },
 				evaluateAt(problem, 0.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { 4.0, 0.0 }, 
+		Assert.assertArrayEquals(new double[] { 4.0, 0.0 },
 				evaluateAt(problem, 2.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 	}

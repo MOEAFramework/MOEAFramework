@@ -1203,7 +1203,7 @@ public class Plot {
 
 		dataset.addSeries(label, new double[][] { xValues, yValues, zValues });
 
-		// add the dataset to the plot		
+		// add the dataset to the plot
 		XYZToolTipGenerator toolTipGenerator = new StandardXYZToolTipGenerator();
 
 		XYBlockRenderer renderer = new XYBlockRenderer();
@@ -1254,7 +1254,7 @@ public class Plot {
 						oldStroke.getDashArray(),
 						oldStroke.getDashPhase());
 
-				renderer.setDefaultStroke(newStroke);	
+				renderer.setDefaultStroke(newStroke);
 			} else {
 				renderer.setDefaultStroke(new BasicStroke(size, 1, 1));
 			}
@@ -1440,7 +1440,7 @@ public class Plot {
 				if (window.isShowing()) {
 					window.dispose();
 				}
-			}	
+			}
 		}
 	}
 

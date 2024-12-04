@@ -46,13 +46,13 @@ import org.moeaframework.util.io.Tokenizer;
  * As such, subclasses should include a main method similar to the following:
  * <pre>
  *     public class MyCustomUtility extends CommandLineUtility {
- *     
+ * 
  *         // implement the run and getOptions methods
- *         
+ * 
  *         public static void main(String[] args) throws Exception {
  *             new MyCustomUtility().start(args);
  *         }
- *         
+ * 
  *     }
  * </pre>
  * Note that the main method always throws an {@link Exception}.  This ensures the error is propagated to the uncaught

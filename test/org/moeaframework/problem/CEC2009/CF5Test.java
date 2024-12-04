@@ -28,7 +28,7 @@ public class CF5Test extends ProblemTest {
 	public void test() {
 		Problem problem = new CF5();
 		
-		Assert.assertArrayEquals(new double[] { 32.0, 35.0 }, 
+		Assert.assertArrayEquals(new double[] { 32.0, 35.0 },
 				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.001);
 		
@@ -38,7 +38,7 @@ public class CF5Test extends ProblemTest {
 		
 		Assert.assertFalse(evaluateAtLowerBounds(problem).isFeasible());
 		
-		Assert.assertArrayEquals(new double[] { 43.258, 23.279 }, 
+		Assert.assertArrayEquals(new double[] { 43.258, 23.279 },
 				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.001);
 		

@@ -80,7 +80,7 @@ public class TemperatureBasedTerminationCondition implements TerminationConditio
 	}
 
 	@Override
-	public boolean shouldTerminate(Algorithm algorithm) {	
+	public boolean shouldTerminate(Algorithm algorithm) {
 		return ((AbstractSimulatedAnnealingAlgorithm)algorithm).getTemperature() <= stoppingTemperature;
 	}
 	

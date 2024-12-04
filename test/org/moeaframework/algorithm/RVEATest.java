@@ -75,7 +75,7 @@ public class RVEATest {
 	
 	@Test
 	public void testAlpha() {
-		Problem problem = new MockRealProblem(2);		
+		Problem problem = new MockRealProblem(2);
 		RVEA algorithm = new RVEA(problem);
 		
 		TypedProperties properties = algorithm.getConfiguration();

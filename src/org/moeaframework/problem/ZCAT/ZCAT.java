@@ -35,7 +35,7 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 	
 	/**
 	 * The precision when considering if two floating-point numbers are equal.  This differs from {@code Settings.EPS}
-	 * to match the original ZCAT source code. 
+	 * to match the original ZCAT source code.
 	 */
 	public static final double EPSILON = Math.ulp(1.0);
 	
@@ -111,7 +111,7 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 	}
 
 	@Override
-	public void evaluate(Solution solution) {	
+	public void evaluate(Solution solution) {
 		double[] x = RealVariable.getReal(solution);
 		
 		double[] y = getY(x);                // Normalization

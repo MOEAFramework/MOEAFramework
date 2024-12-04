@@ -174,7 +174,7 @@ public class FileSystemDataStore implements DataStore {
 					})
 					.filter(reference -> reference != null)
 					.toList();
-		}				
+		}
 	}
 
 	/**
@@ -201,13 +201,13 @@ public class FileSystemDataStore implements DataStore {
 	 * Writes the manifest file or validates the existing manifest file.
 	 * 
 	 * @throws IOException if an I/O error occurred
-	 * @throws ManifestValidationException if the existing manifest 
+	 * @throws ManifestValidationException if the existing manifest
 	 */
 	private void createOrValidateManifest() throws IOException, ManifestValidationException {
 		Path path = getRoot().resolve(MANIFEST_FILENAME);
 		Manifest expectedManifest = getManifest();
 		
-		if (Files.exists(path)) {	
+		if (Files.exists(path)) {
 			try (FileReader reader = new FileReader(path.toFile())) {
 				Manifest actualManifest = new Manifest();
 				actualManifest.load(reader);

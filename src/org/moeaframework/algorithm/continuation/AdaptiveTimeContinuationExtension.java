@@ -282,7 +282,7 @@ public class AdaptiveTimeContinuationExtension extends PeriodicExtension impleme
 
 		if (iteration - iterationAtLastRestart >= maxWindowSize) {
 			return RestartType.HARD;
-		} else if ((targetSize >= minimumPopulationSize) && (targetSize <= maximumPopulationSize) && 
+		} else if ((targetSize >= minimumPopulationSize) && (targetSize <= maximumPopulationSize) &&
 				(Math.abs(populationSize - targetSize) > (0.25 * targetSize))) {
 			return RestartType.HARD;
 		} else {

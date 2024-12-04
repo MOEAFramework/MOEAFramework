@@ -33,6 +33,7 @@ public class IntervalRatioStatisticalTestTest {
 	public void setUp() {
 		test = new IntervalRatioStatisticalTest(2) {
 
+			@Override
 			public boolean test(double alpha) {
 				throw new UnsupportedOperationException();
 			}
@@ -86,7 +87,7 @@ public class IntervalRatioStatisticalTestTest {
 	 * @param a2 the second array
 	 */
 	public void testArraysMatch(double[] a1, double[] a2) {
-		Assert.assertTrue("The two arrays contain different elements", 
+		Assert.assertTrue("The two arrays contain different elements",
 				DoubleStream.of(a1).sorted().boxed().toList().equals(DoubleStream.of(a2).sorted().boxed().toList()));
 	}
 

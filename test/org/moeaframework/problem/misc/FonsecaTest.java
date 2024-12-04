@@ -29,15 +29,15 @@ public class FonsecaTest extends ProblemTest {
 	public void test() {
 		Problem problem = new Fonseca();
 		
-		Assert.assertArrayEquals(new double[] { 1-Math.exp(-2), 1-Math.exp(-2) }, 
+		Assert.assertArrayEquals(new double[] { 1-Math.exp(-2), 1-Math.exp(-2) },
 				evaluateAt(problem, 0.0, 0.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { 1.0, 1.0 }, 
+		Assert.assertArrayEquals(new double[] { 1.0, 1.0 },
 				evaluateAt(problem, -4.0, -4.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 	
-		Assert.assertArrayEquals(new double[] { 1.0, 1.0  }, 
+		Assert.assertArrayEquals(new double[] { 1.0, 1.0  },
 				evaluateAt(problem, 4.0, 4.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 	}

@@ -29,15 +29,15 @@ public class LaumannsTest extends ProblemTest {
 	public void test() {
 		Problem problem = new Laumanns();
 		
-		Assert.assertArrayEquals(new double[] { 0.0, 4.0 }, 
+		Assert.assertArrayEquals(new double[] { 0.0, 4.0 },
 				evaluateAt(problem, 0.0, 0.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { 5000.0, 4804.0 }, 
+		Assert.assertArrayEquals(new double[] { 5000.0, 4804.0 },
 				evaluateAt(problem, -50.0, -50.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { 5000.0, 5204.0 }, 
+		Assert.assertArrayEquals(new double[] { 5000.0, 5204.0 },
 				evaluateAt(problem, 50.0, 50.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 	}

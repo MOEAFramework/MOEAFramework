@@ -29,15 +29,15 @@ public class ZDT2Test extends ProblemTest {
 	public void test() {
 		Problem problem = new ZDT2();
 		
-		Assert.assertArrayEquals(new double[] { 0.0, 1.0 }, 
+		Assert.assertArrayEquals(new double[] { 0.0, 1.0 },
 				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.000001);
 		
-		Assert.assertArrayEquals(new double[] { 1.0, 9.9 }, 
+		Assert.assertArrayEquals(new double[] { 1.0, 9.9 },
 				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.000001);
 		
-		Assert.assertArrayEquals(new double[] { 0.5, 5.45454545 }, 
+		Assert.assertArrayEquals(new double[] { 0.5, 5.45454545 },
 				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectiveValues(),
 				0.000001);
 	}

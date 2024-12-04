@@ -147,10 +147,10 @@ public abstract class AlgorithmTest {
 					double median2 = statistics.getMedian(algorithm2Name + suffix2);
 					
 					equivalentIndicators += indicator.areLargerValuesPreferred() ?
-							(median1 >= median2 ? 1 : 0) : 
+							(median1 >= median2 ? 1 : 0) :
 							(median1 <= median2 ? 1 : 0);
 				}
-			} else {	
+			} else {
 				equivalentIndicators += 1;
 			}
 		}

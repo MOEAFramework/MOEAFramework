@@ -82,7 +82,7 @@ public class VEGA extends AbstractEvolutionaryAlgorithm {
 	 */
 	public VEGA(Problem problem, int initialPopulationSize, Population population, NondominatedPopulation archive,
 			Initialization initialization, Variation variation) {
-		super(problem, initialPopulationSize, population, archive, initialization, variation);		
+		super(problem, initialPopulationSize, population, archive, initialization, variation);
 		selection = new VEGASelection();
 	}
 	
@@ -159,7 +159,7 @@ public class VEGA extends AbstractEvolutionaryAlgorithm {
 	}
 
 	/**
-	 * VEGA selection operator that selects parents based on only one of the objectives.  
+	 * VEGA selection operator that selects parents based on only one of the objectives.
 	 */
 	private class VEGASelection implements Selection {
 		

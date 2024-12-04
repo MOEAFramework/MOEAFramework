@@ -59,12 +59,13 @@ public class MockExternalProblem extends ExternalProblem {
 	
 	MockExternalProblem(final PipedInputStream input, final PipedOutputStream output,
 			final Function<String, String> callback) throws IOException {
-		super(new Builder().withIOStreams(input, output));		
+		super(new Builder().withIOStreams(input, output));
 		
-		pipedWriter = new PipedOutputStream(input);		
+		pipedWriter = new PipedOutputStream(input);
 		pipedReader = new PipedInputStream(output);
 
 		thread = new Thread() {
+			@Override
 			public void run() {
 				try (LineReader reader = LineReader.wrap(new InputStreamReader(pipedReader));
 						PrintStream writer = new PrintStream(pipedWriter)) {

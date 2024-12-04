@@ -88,7 +88,7 @@ public class OperatorFactoryTest extends AbstractFactoryTest<OperatorProvider, O
 	
 	@Test
 	public void testDefaultReal() {
-		Problem problem = new MockRealProblem();		
+		Problem problem = new MockRealProblem();
 		Assert.assertEquals("sbx+pm", createFactory().lookupVariationHint(problem));
 		
 		Variation variation = createFactory().getVariation(null, new TypedProperties(), problem);

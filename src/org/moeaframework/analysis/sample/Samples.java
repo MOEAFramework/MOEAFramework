@@ -105,6 +105,7 @@ public class Samples implements Iterable<Sample>, Formattable<Sample>, DataStrea
 	 * 
 	 * @return the number of samples
 	 */
+	@Override
 	public int size() {
 		return samples.size();
 	}

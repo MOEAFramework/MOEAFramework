@@ -537,7 +537,7 @@ public abstract class ExternalProblem implements Problem {
 			}
 			
 			if (process != null) {
-				try {					
+				try {
 					if (process.isAlive()) {
 						debug.println("Waiting for process to exit...");
 					}

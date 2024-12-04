@@ -75,7 +75,7 @@ public class HypervolumeContributionFitnessEvaluator implements FitnessEvaluator
 			List<Solution> solutions = normalize(population);
 			List<Solution> solutionsCopy = new ArrayList<Solution>(solutions);
 			
-			double totalVolume = PISAHypervolume.calculateHypervolume(solutionsCopy, solutionsCopy.size(), 
+			double totalVolume = PISAHypervolume.calculateHypervolume(solutionsCopy, solutionsCopy.size(),
 					numberOfObjectives);
 			
 			for (int i = 0; i < population.size(); i++) {

@@ -11,7 +11,7 @@ public class Observer {
 	private long pointer; // Pointer to the coco_observer_t object
 	private String name;
 
-	/** 
+	/**
 	 * Constructs the observer from observerName and observerOptions.
 	 * See http://numbbo.github.io/coco-doc/C/#observer-parameters for more information on valid observer parameters.
 	 */

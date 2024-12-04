@@ -126,6 +126,7 @@ public class Solution implements Copyable<Solution>, Formattable<Solution>, Seri
 	 * 
 	 * @return an independent copy of this solution
 	 */
+	@Override
 	public Solution copy() {
 		return new Solution(this);
 	}
@@ -524,7 +525,7 @@ public class Solution implements Copyable<Solution>, Formattable<Solution>, Seri
 	}
 	
 	/**
-	 * Computes the Euclidean distance (or L<sub>2</sub>)-norm) between two solutions in objective space.  
+	 * Computes the Euclidean distance (or L<sub>2</sub>)-norm) between two solutions in objective space.
 	 * 
 	 * @param otherSolution the other solution
 	 * @return the Euclidean distance in objective space

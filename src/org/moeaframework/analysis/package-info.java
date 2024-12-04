@@ -36,7 +36,7 @@
  *   <tr>
  *     <td>{@link org.moeaframework.analysis.diagnostics}</td>
  *     <td>
- *       Diagnostic tool for analyzing the runtime behavior of algorithms.  This tool requires the 
+ *       Diagnostic tool for analyzing the runtime behavior of algorithms.  This tool requires the
  *       <a href="http://www.jfree.org/jfreechart/">JFreeChart</a> library and its dependencies to be installed
  *       (which are provided by default in the MOEA Framework distribution).
  *     </td>

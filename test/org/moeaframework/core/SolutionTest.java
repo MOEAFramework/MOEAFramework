@@ -411,11 +411,11 @@ public class SolutionTest {
 				MockSolution.of().withObjectives(1.0, 0.0).distanceToNearestSolution(population),
 				TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertEquals(Math.sqrt(0.5), 
+		Assert.assertEquals(Math.sqrt(0.5),
 				MockSolution.of().withObjectives(0.5, 0.5).distanceToNearestSolution(population),
 				TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertEquals(Math.sqrt(0.125), 
+		Assert.assertEquals(Math.sqrt(0.125),
 				MockSolution.of().withObjectives(0.25, 0.75).distanceToNearestSolution(population),
 				TestThresholds.HIGH_PRECISION);
 	}

@@ -32,7 +32,7 @@ public class Problem {
 	 */
 	public Problem(long pointer) throws Exception {
 		super();
-		try {		
+		try {
 			this.dimension = CocoJNI.cocoProblemGetDimension(pointer);
 			this.number_of_objectives = CocoJNI.cocoProblemGetNumberOfObjectives(pointer);
 			this.number_of_constraints = CocoJNI.cocoProblemGetNumberOfConstraints(pointer);
@@ -53,14 +53,14 @@ public class Problem {
 	}
 	
 	/**
-	 * Evaluates the function in point x and returns the result as an array of doubles. 
+	 * Evaluates the function in point x and returns the result as an array of doubles.
 	 */
 	public double[] evaluateFunction(double[] x) {
 		return CocoJNI.cocoEvaluateFunction(this.pointer, x);
 	}
 
 	/**
-	 * Evaluates the constraint in point x and returns the result as an array of doubles. 
+	 * Evaluates the constraint in point x and returns the result as an array of doubles.
 	 */
 	public double[] evaluateConstraint(double[] x) {
 		return CocoJNI.cocoEvaluateConstraint(this.pointer, x);
@@ -131,7 +131,7 @@ public class Problem {
 	}
 	
 	@Override
-	public String toString() {		
+	public String toString() {
 		return this.getId();
 	}
 }

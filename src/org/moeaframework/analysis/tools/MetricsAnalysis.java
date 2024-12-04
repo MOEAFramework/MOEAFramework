@@ -156,7 +156,7 @@ public class MetricsAnalysis extends CommandLineUtility {
 			for (int j = 0; j < parameters[i].length; j++) {
 				NumericParameter<?> parameter = (NumericParameter<?>)parameterSet.get(j);
 				
-				parameters[i][j] = (parameters[i][j] - parameter.getLowerBound().doubleValue()) / 
+				parameters[i][j] = (parameters[i][j] - parameter.getLowerBound().doubleValue()) /
 						(parameter.getUpperBound().doubleValue() - parameter.getLowerBound().doubleValue());
 			}
 		}

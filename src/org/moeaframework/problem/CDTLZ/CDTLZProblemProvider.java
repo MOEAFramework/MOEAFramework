@@ -37,7 +37,7 @@ public class CDTLZProblemProvider extends ProblemProvider {
 	}
 	
 	@Override
-	public Problem getProblem(String name) {		
+	public Problem getProblem(String name) {
 		try {
 			Pattern pattern = Pattern.compile("^((?:CONVEX_)?C[0-9]_DTLZ[0-9])_([0-9]+)$", Pattern.CASE_INSENSITIVE);
 			Matcher matcher = pattern.matcher(name);

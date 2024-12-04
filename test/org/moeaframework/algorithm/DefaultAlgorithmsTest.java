@@ -374,7 +374,7 @@ public class DefaultAlgorithmsTest {
 		Assert.assertEquals(firstResult, secondResult);
 	}
 	
-	private void testResumable(String name, Problem problem) throws IOException {		
+	private void testResumable(String name, Problem problem) throws IOException {
 		long seed = PRNG.getRandom().nextLong();
 		
 		// first, run the algorithm normally

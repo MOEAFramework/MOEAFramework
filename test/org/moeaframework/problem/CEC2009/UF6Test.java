@@ -28,11 +28,11 @@ public class UF6Test extends ProblemTest {
 	public void test() {
 		Problem problem = new UF6();
 		
-		Assert.assertArrayEquals(new double[] { 23.379488, 23.415323 }, 
+		Assert.assertArrayEquals(new double[] { 23.379488, 23.415323 },
 				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.000001);
 		
-		Assert.assertArrayEquals(new double[] { 2.751192, 2.116881 }, 
+		Assert.assertArrayEquals(new double[] { 2.751192, 2.116881 },
 				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.000001);
 	}

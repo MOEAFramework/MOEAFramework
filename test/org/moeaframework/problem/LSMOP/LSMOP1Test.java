@@ -29,15 +29,15 @@ public class LSMOP1Test extends ProblemTest {
 	public void test2D() {
 		Problem problem = new LSMOP1(2);
 		
-		Assert.assertArrayEquals(new double[] { 0.0, 1.0 }, 
+		Assert.assertArrayEquals(new double[] { 0.0, 1.0 },
 				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.0001);
 		
-		Assert.assertArrayEquals(new double[] { 4.0449, 0.0 }, 
+		Assert.assertArrayEquals(new double[] { 4.0449, 0.0 },
 				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.0001);
 		
-		Assert.assertArrayEquals(new double[] { 10.2848, 9.2195 }, 
+		Assert.assertArrayEquals(new double[] { 10.2848, 9.2195 },
 				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectiveValues(),
 				0.0001);
 	}
@@ -46,15 +46,15 @@ public class LSMOP1Test extends ProblemTest {
 	public void test3D() {
 		Problem problem = new LSMOP1(3);
 		
-		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 1.0 }, 
+		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 1.0 },
 				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.0001);
 		
-		Assert.assertArrayEquals(new double[] { 2.6732, 0.0, 0.0 }, 
+		Assert.assertArrayEquals(new double[] { 2.6732, 0.0, 0.0 },
 				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.0001);
 		
-		Assert.assertArrayEquals(new double[] { 5.1853, 4.7964, 8.7768 }, 
+		Assert.assertArrayEquals(new double[] { 5.1853, 4.7964, 8.7768 },
 				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectiveValues(),
 				0.0001);
 	}
@@ -63,15 +63,15 @@ public class LSMOP1Test extends ProblemTest {
 	public void test4D() {
 		Problem problem = new LSMOP1(4);
 		
-		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 0.0, 1.0 }, 
+		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 0.0, 1.0 },
 				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.0001);
 		
-		Assert.assertArrayEquals(new double[] { 1.7111, 0.0, 0.0, 0.0 }, 
+		Assert.assertArrayEquals(new double[] { 1.7111, 0.0, 0.0, 0.0 },
 				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.0001);
 		
-		Assert.assertArrayEquals(new double[] { 2.6143, 2.4878, 4.7030, 8.8538 }, 
+		Assert.assertArrayEquals(new double[] { 2.6143, 2.4878, 4.7030, 8.8538 },
 				evaluateAt(problem, Vector.of(problem.getNumberOfVariables(), 0.5)).getObjectiveValues(),
 				0.0001);
 	}

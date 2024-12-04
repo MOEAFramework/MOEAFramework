@@ -49,7 +49,7 @@ public class UF13Test extends ProblemTest {
 		assertProblemDefined("UF13", 5);
 	}
 	
-	/* 
+	/*
      * The following source code is modified from the CEC 2009 test problem suite available at
      * {@link http://dces.essex.ac.uk/staff/qzhang/}.  Permission to distribute these modified source codes under the
      * GNU Lesser General Public License was obtained via e-mail correspondence with the original authors.

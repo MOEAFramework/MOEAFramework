@@ -33,10 +33,10 @@ import org.moeaframework.mock.MockAlgorithm;
 public class ProgressExtensionTest {
 	
 	@Test
-	public void test() {		
+	public void test() {
 		final List<ProgressEvent> events = new ArrayList<ProgressEvent>();
 		
-		ProgressExtension extension = new ProgressExtension();	
+		ProgressExtension extension = new ProgressExtension();
 		extension.addListener(new ProgressListener() {
 
 			@Override

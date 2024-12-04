@@ -114,7 +114,7 @@ public class TempFiles {
 	 * <pre>
 	 *     # Remove the Java import:
 	 *     import java.io.File;
-	 *     
+	 * 
 	 *     # And import this class instead:
 	 *     import static org.moeaframework.TempFiles.File;
      * </pre>

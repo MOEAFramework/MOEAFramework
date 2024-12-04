@@ -33,7 +33,7 @@ public class ReferenceSetGeneratorTest {
 		
 		ReferenceSetGenerator.main(new String[] {
 				"-b", "DTLZ2_2",
-				"-n", "100", 
+				"-n", "100",
 				"-o", referenceSet.getPath()});
 		
 		Assert.assertSize(100, Population.load(referenceSet));
@@ -46,7 +46,7 @@ public class ReferenceSetGeneratorTest {
 		
 		ReferenceSetGenerator.main(new String[] {
 				"-b", "DTLZ2_2",
-				"-n", "1000", 
+				"-n", "1000",
 				"-e", "0.01",
 				"-o", referenceSet.getPath()});
 		
@@ -60,7 +60,7 @@ public class ReferenceSetGeneratorTest {
 		
 		ReferenceSetGenerator.main(new String[] {
 				"-b", "UF1",
-				"-n", "10", 
+				"-n", "10",
 				"-o", referenceSet.getPath()});
 	}
 

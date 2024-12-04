@@ -28,11 +28,11 @@ public class LZ5Test extends ProblemTest {
 	public void test() {
 		Problem problem = new LZ5();
 		
-		Assert.assertArrayEquals(new double[] { 2.0, 3.0 }, 
+		Assert.assertArrayEquals(new double[] { 2.0, 3.0 },
 				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.000001);
 		
-		Assert.assertArrayEquals(new double[] { 1.936527, 2.574344 }, 
+		Assert.assertArrayEquals(new double[] { 1.936527, 2.574344 },
 				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.000001);
 	}

@@ -202,7 +202,7 @@ public class PlotTest {
 	    for (StackTraceElement element : stackTrace) {
 	        if (element.getClassName().startsWith("org.junit.")) {
 	            return true;
-	        }           
+	        }
 	    }
 	    
 	    return false;

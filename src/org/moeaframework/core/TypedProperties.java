@@ -51,7 +51,7 @@ import org.moeaframework.util.validate.Validate;
  * Stores a collection of key-value pairs similar to {@link Properties} but has support for reading and writing
  * primitive types.  Internally, this handles converting specific types to a string representation that can be saved
  * and read from files.  As such, there is some leniency in how type conversion is handled.  For instance, the value
- * {@code "0.1"} can be read as a string, float, double, or an single-valued array of these types.  
+ * {@code "0.1"} can be read as a string, float, double, or an single-valued array of these types.
  * <p>
  * In addition to primitive types, arrays of those primitives are also supported using either the default
  * "{@value #DEFAULT_SEPARATOR}" separator or a user-configurable character.  Escaping is automatically performed
@@ -1301,7 +1301,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * <pre>
 	 *     TypedProperties properties = new TypedProperties();
 	 *     ... write properties ...
-	 *     
+	 * 
 	 *     properties.clearAccessedProperties();
 	 *     ... read properties ...
 	 *     properties.warnIfUnaccessedProperties();
@@ -1353,7 +1353,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	/**
 	 * Convenience method to construct an empty typed properties instance.  The returned instance is mutable
 	 * and can be modified by the caller.
-	 *   
+	 * 
 	 * @return the typed properties instance
 	 */
 	public static TypedProperties of() {
@@ -1458,7 +1458,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	
 	/**
 	 * Convenience method to construct a typed properties instance with a single key-value pair.  While the value is
-	 * a single string, its interpretation depends on the method 
+	 * a single string, its interpretation depends on the method
 	 * <p>
 	 * The returned instance is mutable and can be modified by the caller.
 	 * 

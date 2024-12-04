@@ -27,7 +27,7 @@ import org.moeaframework.problem.ProblemTest;
 public class AckleyTest extends ProblemTest {
 	
 	@Test
-	public void test() {		
+	public void test() {
 		try (AbstractSingleObjectiveProblem problem = new Ackley()) {
 			for (Solution solution : problem.getReferenceSet()) {
 				Assert.assertEquals(0.0, solution.getObjectiveValue(0), TestThresholds.HIGH_PRECISION);

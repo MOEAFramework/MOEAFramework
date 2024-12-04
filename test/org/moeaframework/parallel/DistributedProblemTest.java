@@ -159,7 +159,7 @@ public class DistributedProblemTest {
 	}
 	
 	@Test
-	public void testReplicabilityOfStochasticDistributedProblem() {		
+	public void testReplicabilityOfStochasticDistributedProblem() {
 		double bestSingle = getResultFromStochasticRun(1);
 		double bestQuad = getResultFromStochasticRun(4);
 		double bestSixteen = getResultFromStochasticRun(16);
@@ -170,7 +170,7 @@ public class DistributedProblemTest {
 	private double getResultFromStochasticRun(int numThreads) {
 		PRNG.setSeed(1234); // arbitrary seed
 		
-		Problem problem = DistributedProblem.from(new MockRealStochasticProblem(), numThreads);	
+		Problem problem = DistributedProblem.from(new MockRealStochasticProblem(), numThreads);
 		
 		GeneticAlgorithm algorithm = new GeneticAlgorithm(problem);
 		algorithm.run(1000);

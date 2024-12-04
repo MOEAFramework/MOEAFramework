@@ -116,7 +116,7 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 				for (int i = 0; i < numberOfEntries; i++) {
 					NondominatedPopulation mergedSet = null;
 
-					// configure epsilon-dominance					
+					// configure epsilon-dominance
 					if (epsilons != null) {
 						mergedSet = new EpsilonBoxDominanceArchive(epsilons);
 					} else {

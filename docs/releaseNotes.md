@@ -13,7 +13,8 @@ This page documents notable changes introduced in each chronological release of 
   * Adds a `name` parameter to `Variable`, `Objective`, and `Constraint`, allowing problems to define custom names for
     each.  If no name is given, the name defaults to `Var<N>`, `Obj<N>`, and `Constr<N>`.
     
-  * Updated "result file" format.
+  * Updated "result file" format.  Namely, information about the new objective and constraint types is stored in the
+    header, allowing it to interpret the data correctly.
     
   * Removes `Executor` and `Analyzer`.  If previously using the `Analyzer`, switch to `IndicatorStatistics`.
   

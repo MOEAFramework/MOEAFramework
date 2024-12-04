@@ -66,7 +66,7 @@ public class Timing {
 
 	/**
 	 * Returns the accumulated timing statistics for the timer with the specified name.  If no timing data has been
-	 * collected, returns an empty statistics object. 
+	 * collected, returns an empty statistics object.
 	 * 
 	 * @param name the name of the timer
 	 * @return the accumulated timing statistics

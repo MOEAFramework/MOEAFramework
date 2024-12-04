@@ -73,10 +73,10 @@ public class FutureSolution extends Solution {
 	 * @param distributedEvaluationID a unique identifier for this solution
 	 */
 	synchronized void setDistributedEvaluationID(long distributedEvaluationID) {
-		this.distributedEvaluationID = distributedEvaluationID;		
+		this.distributedEvaluationID = distributedEvaluationID;
 	}
 	
-	/** 
+	/**
 	 * Returns the unique identifier for this solution. This can be used to:
 	 * <ol>
 	 *   <li>Configure the random number generator (RNG) seed on stochastic problems, allowing reproducible results.
@@ -86,7 +86,7 @@ public class FutureSolution extends Solution {
 	 * @return the unique identifier that was associated with this solution
 	 */
 	public long getDistributedEvaluationID() {
-		return this.distributedEvaluationID;		
+		return this.distributedEvaluationID;
 	}
 	
 	/**

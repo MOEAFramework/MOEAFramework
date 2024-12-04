@@ -34,8 +34,8 @@ import org.moeaframework.util.validate.Validate;
  * <img src="doc-files/DifferentialEvolution-1.png" alt="Example DifferentialEvolution operator distribution" />
  * <p>
  * The scaling factor parameter adjusts the magnitude of the difference vector, allowing the user to decrease or
- * increase the magnitude in relation to the actual difference between the individuals.  The crossover rate parameter 
- * controls the fraction of decision variables which are modified by the DE operator.  
+ * increase the magnitude in relation to the actual difference between the individuals.  The crossover rate parameter
+ * controls the fraction of decision variables which are modified by the DE operator.
  * <p>
  * References:
  * <ol>

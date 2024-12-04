@@ -117,7 +117,7 @@ public class RuntimeEvaluator extends CommandLineUtility {
 		try (Problem problem = OptionUtils.getProblemInstance(commandLine, false)) {
 			for (int i = 0; i < samples.size(); i++) {
 				String outputFileName = String.format(outputFilePattern, i+1);
-				File outputFile = new File(outputFileName);	
+				File outputFile = new File(outputFileName);
 				
 				System.out.print("Processing sample " + (i+1) + " of " + samples.size() + " (" + outputFileName + ")...");
 						

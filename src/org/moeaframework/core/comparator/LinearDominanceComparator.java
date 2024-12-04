@@ -29,7 +29,7 @@ public class LinearDominanceComparator extends ChainedComparator implements Aggr
 
 	/**
 	 * Constructs a new dominance comparator using a weighted linear aggregate function and constraints.  One weight
-	 * should be given for each objective; if fewer weights are provided, the last weight is repeated for the 
+	 * should be given for each objective; if fewer weights are provided, the last weight is repeated for the
 	 * remaining objectives.  Defaults to weights of {@code 1.0} if none are provided.
 	 * 
 	 * @param weights the weight vector

@@ -29,15 +29,15 @@ public class Rendon2Test extends ProblemTest {
 	public void test() {
 		Problem problem = new Rendon2();
 		
-		Assert.assertArrayEquals(new double[] { 1.0, -1.0 }, 
+		Assert.assertArrayEquals(new double[] { 1.0, -1.0 },
 				evaluateAt(problem, 0.0, 0.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { -5.0, 2.0 }, 
+		Assert.assertArrayEquals(new double[] { -5.0, 2.0 },
 				evaluateAt(problem, -3.0, -3.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { 7.0, 14.0 }, 
+		Assert.assertArrayEquals(new double[] { 7.0, 14.0 },
 				evaluateAt(problem, 3.0, 3.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 	}

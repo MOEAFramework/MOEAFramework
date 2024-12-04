@@ -35,7 +35,7 @@ import org.moeaframework.problem.Problem;
  * <pre>
  *    RegisteredProblemProvider myProvider = new RegisteredProblemProvider();
  *    myProvider.register("MyProblem", () -> new MyProblem(), "pf/myProbem.pf");
- *    
+ * 
  *    ProblemFactory.getInstance().addProvider(myProvider);
  * </pre>
  */

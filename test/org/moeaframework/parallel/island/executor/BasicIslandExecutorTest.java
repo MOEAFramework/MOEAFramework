@@ -43,7 +43,7 @@ public class BasicIslandExecutorTest extends AbstractIslandModelTest {
 	
 	@Test
 	public void test() throws IOException {
-		Selection migrationSelection = new TournamentSelection(2, 
+		Selection migrationSelection = new TournamentSelection(2,
 				new ChainedComparator(
 						new ParetoDominanceComparator(),
 						new CrowdingComparator()));
@@ -62,7 +62,7 @@ public class BasicIslandExecutorTest extends AbstractIslandModelTest {
 		}
 		
 		try (BasicIslandExecutor executor = new BasicIslandExecutor(model, Executors.newSingleThreadExecutor())) {
-			NondominatedPopulation result = executor.run(100000);			
+			NondominatedPopulation result = executor.run(100000);
 			Assert.assertNotNull(result);
 			
 			for (Island island : model.getIslands()) {

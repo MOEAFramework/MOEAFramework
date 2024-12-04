@@ -95,7 +95,7 @@ public class PESA2Test extends JMetalAlgorithmTest {
 	
 	@Test
 	public void testConfiguration() {
-		Problem problem = new MockRealProblem(2);	
+		Problem problem = new MockRealProblem(2);
 		PESA2 algorithm = new PESA2(problem);
 		
 		Assert.assertEquals(algorithm.getArchive().getCapacity(), algorithm.getConfiguration().getInt("archiveSize"));

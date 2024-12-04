@@ -40,7 +40,7 @@ public class AdaptiveMultimethodVariationTest {
 	private List<CallCounter<Variation>> counters;
 	
 	@Before
-	public void setUp() {	
+	public void setUp() {
 		Solution s1 = MockSolution.of();
 		Solution s2 = MockSolution.of();
 		Solution s3 = MockSolution.of();

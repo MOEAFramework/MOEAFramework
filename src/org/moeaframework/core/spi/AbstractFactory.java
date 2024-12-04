@@ -67,6 +67,7 @@ public class AbstractFactory<T> implements Iterable<T> {
 	 * 
 	 * @return the iterator of all registered providers
 	 */
+	@Override
 	public Iterator<T> iterator() {
 		return Iterators.join(customProviders.iterator(), providers.iterator());
 	}

@@ -149,7 +149,7 @@ public class Grammar extends AbstractVariable {
 	
 	/**
 	 * Returns the string representation of this grammar produced by evaluating the context-free grammar with the
-	 * codon array.  
+	 * codon array.
 	 * 
 	 * @param cfg the context-free grammar
 	 * @return the string representation of the grammar, or {@code null} if no valid grammar was produced

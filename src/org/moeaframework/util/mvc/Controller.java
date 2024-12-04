@@ -162,9 +162,9 @@ public abstract class Controller {
 	 */
 	public void displayError(String message) {
 		JOptionPane.showMessageDialog(
-				window, 
-				message, 
-				"Error", 
+				window,
+				message,
+				"Error",
 				JOptionPane.ERROR_MESSAGE);
 	}
 

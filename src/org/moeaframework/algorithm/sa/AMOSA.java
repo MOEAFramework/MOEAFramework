@@ -255,7 +255,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 			int comparisonResult = comparator.compare(currentPoint, newPoint);
 
 			if (comparisonResult < 0) {
-				// Case 1: currentPoint dominates newPoint 
+				// Case 1: currentPoint dominates newPoint
 				double averageDeltaDominance = calculateAverageDeltaDominance(newPoint, r);
 				double probability = 1.0 / (1.0 + Math.exp(averageDeltaDominance * temperature));
 

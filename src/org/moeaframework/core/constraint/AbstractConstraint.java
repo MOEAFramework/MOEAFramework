@@ -81,6 +81,7 @@ public abstract class AbstractConstraint implements Constraint {
 	 * @param value the constraint value
 	 * @return a reference to this constraint
 	 */
+	@Override
 	public Constraint withValue(double value) {
 		setValue(value);
 		return this;

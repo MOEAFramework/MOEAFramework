@@ -291,7 +291,7 @@ public class TSPPanel extends JPanel {
 				double[] position2 = toDisplayCoordinates(node2, isGeographical);
 
 				Line2D line = new Line2D.Double(
-						displayWidth - (offsetX + scale * (position1[0] - left) + insets.left), 
+						displayWidth - (offsetX + scale * (position1[0] - left) + insets.left),
 						displayHeight - (offsetY + scale * (position1[1] - bottom) + insets.bottom),
 						displayWidth - (offsetX + scale * (position2[0] - left) + insets.left),
 						displayHeight - (offsetY + scale * (position2[1] - bottom) + insets.bottom));

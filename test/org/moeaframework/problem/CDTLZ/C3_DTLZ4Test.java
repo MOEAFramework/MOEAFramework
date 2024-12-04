@@ -34,23 +34,23 @@ public class C3_DTLZ4Test extends ProblemTest {
 	public void test() {
 		Problem problem = new C3_DTLZ4(7, 3);
 		
-		Assert.assertArrayEquals(new double[] { 2.25, 0.0, 0.0 }, 
+		Assert.assertArrayEquals(new double[] { 2.25, 0.0, 0.0 },
 				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.000001);
 		
-		Assert.assertArrayEquals(new double[] { 0.265625, 4.0625, 4.0625 }, 
+		Assert.assertArrayEquals(new double[] { 0.265625, 4.0625, 4.0625 },
 				evaluateAtLowerBounds(problem).getConstraintValues(),
 				0.000001);
 				
 		Assert.assertTrue(evaluateAtLowerBounds(problem).isFeasible());
 		
-		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 2.25 }, 
+		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 2.25 },
 				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.000001);
 		
-		Assert.assertArrayEquals(new double[] { 4.0625, 4.0625, 0.265625 }, 
+		Assert.assertArrayEquals(new double[] { 4.0625, 4.0625, 0.265625 },
 				evaluateAtUpperBounds(problem).getConstraintValues(),
-				0.000001);	
+				0.000001);
 		
 		Assert.assertTrue(evaluateAtUpperBounds(problem).isFeasible());
 	}

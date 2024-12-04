@@ -78,7 +78,7 @@ public class Assume extends org.junit.Assume {
 	}
 	
 	public static void assumeJMetalExists() {
-		Assume.assumeTrue("JMetal-Plugin required to run test", 
+		Assume.assumeTrue("JMetal-Plugin required to run test",
 				AlgorithmFactory.getInstance().hasProvider("org.moeaframework.algorithm.jmetal.JMetalAlgorithms"));
 	}
 	

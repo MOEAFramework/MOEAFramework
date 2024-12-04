@@ -113,7 +113,7 @@ public class BinaryIntegerVariableTest {
 	
 	@Test
 	public void testEncodeDecode() {
-		BinaryIntegerVariable newVariable = new BinaryIntegerVariable(5, 10);		
+		BinaryIntegerVariable newVariable = new BinaryIntegerVariable(5, 10);
 		newVariable.decode(variable.encode());
 		Assert.assertEquals(variable.getValue(), newVariable.getValue());
 	}

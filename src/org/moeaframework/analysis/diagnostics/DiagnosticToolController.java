@@ -500,6 +500,7 @@ public class DiagnosticToolController extends Controller implements SettingChang
 		
 		thread = new Thread() {
 			
+			@Override
 			public void run() {
 				try (Problem problem = ProblemFactory.getInstance().getProblem(problemName)) {
 					updateProgress(0, 0, numberOfEvaluations, numberOfSeeds);

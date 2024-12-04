@@ -75,7 +75,7 @@ public class CMAESTest extends AlgorithmTest {
 	
 	@Test
 	public void testConfiguration() {
-		Problem problem = new MockRealProblem();	
+		Problem problem = new MockRealProblem();
 		CMAES algorithm = new CMAES(problem);
 		
 		Assert.assertEquals("crowding", algorithm.getConfiguration().getString("indicator"));
@@ -94,7 +94,7 @@ public class CMAESTest extends AlgorithmTest {
 	
 	@Test(expected = ConfigurationException.class)
 	public void testConfigurationInvalidIndicator() {
-		Problem problem = new MockRealProblem();	
+		Problem problem = new MockRealProblem();
 		CMAES algorithm = new CMAES(problem);
 		
 		algorithm.applyConfiguration(TypedProperties.of("indicator", "foo"));

@@ -54,7 +54,7 @@ public class ResultFileWriterTest {
 	private Solution solution3; // violates constraints
 
 	@Before
-	public void setUp() {		
+	public void setUp() {
 		problem = new AbstractProblem(3, 2, 1) {
 			
 			@Override

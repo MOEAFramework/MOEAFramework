@@ -250,7 +250,7 @@ public class TSPInstance {
 				displayDataType = DisplayDataType.TWOD_DISPLAY;
 			} else {
 				displayDataType = DisplayDataType.COORD_DISPLAY;
-			} 
+			}
 		}
 	}
 	

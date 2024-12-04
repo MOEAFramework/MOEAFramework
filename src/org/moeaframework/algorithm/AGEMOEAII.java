@@ -328,7 +328,7 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 		 * Calculate the intercepts.  This follows the same procedure as {@link NSGAIII}, where we compute the
 		 * intercepts of a hyperplane fit to the extreme points.  If the extreme points are degenerate, typically due
 		 * to duplicate or nearly-identical points, this method falls back to selecting the boundary defined by the
-		 * extreme points. 
+		 * extreme points.
 		 * 
 		 * @param extremePoints the extreme points for each objective
 		 * @return the intercepts for each objective

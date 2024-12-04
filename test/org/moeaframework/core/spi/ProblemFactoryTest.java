@@ -90,7 +90,7 @@ public class ProblemFactoryTest extends AbstractFactoryTest<ProblemProvider, Pro
 		Assert.assertNotNull(factory.getProblem("testProblem"));
 		Assert.assertNull(factory.getReferenceSet("testProblem"));
 		Assert.assertContains(factory.getAllRegisteredProblems(), "testProblem");
-		Assert.assertContains(factory.getAllDiagnosticToolProblems(), "testProblem");	
+		Assert.assertContains(factory.getAllDiagnosticToolProblems(), "testProblem");
 	}
 	
 	@Test

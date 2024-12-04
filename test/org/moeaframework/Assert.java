@@ -101,7 +101,7 @@ public class Assert extends org.junit.Assert {
 						Assert.assertEquals(Array.get(expectedValue, i), Array.get(actualValue, i));
 					}
 				} else {
-					Assert.assertEquals(expectedValue, actualValue);	
+					Assert.assertEquals(expectedValue, actualValue);
 				}
 			}
 		} catch (IllegalArgumentException | IllegalAccessException e) {
@@ -243,7 +243,7 @@ public class Assert extends org.junit.Assert {
 			}
 		}
 		
-		if ((expected.size() != expectedMatches.cardinality()) || (actual.size() != actualMatches.cardinality())) {			
+		if ((expected.size() != expectedMatches.cardinality()) || (actual.size() != actualMatches.cardinality())) {
 			System.out.println("Expected:");
 			expected.display();
 			

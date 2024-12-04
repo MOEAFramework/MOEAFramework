@@ -166,7 +166,7 @@ public class UF11 extends AbstractProblem {
 	/**
 	 * The scaling factors for the instance with 30 decision variables.
 	 */
-	private static final double[] lamda_l_30D = { 
+	private static final double[] lamda_l_30D = {
 			0.113, 0.105, 0.117, 0.119, 0.108, 0.110, 0.101, 0.107, 0.111,
 			0.109, 0.120, 0.108, 0.101, 0.105, 0.116, 1.000, 1.000, 1.000,
 			1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000,
@@ -207,8 +207,8 @@ public class UF11 extends AbstractProblem {
 		double[] zz = new double[numberOfVariables];
 		
 		//apply transform to convert from UF11 to DTLZ2
-		CEC2009.transform(x, zz, psum, 
-				numberOfVariables == 10 ? M_10D : M_30D, 
+		CEC2009.transform(x, zz, psum,
+				numberOfVariables == 10 ? M_10D : M_30D,
 				numberOfVariables == 10 ? lamda_l_10D : lamda_l_30D,
 				numberOfVariables, numberOfObjectives);
 		

@@ -31,11 +31,11 @@ public class DTLZ3Test extends ProblemTest {
 	public void test() {
 		Problem problem = new DTLZ3(10, 3);
 		
-		Assert.assertArrayEquals(new double[] { 201.0, 0.0, 0.0 }, 
+		Assert.assertArrayEquals(new double[] { 201.0, 0.0, 0.0 },
 				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.000001);
 		
-		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 201.0 }, 
+		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 201.0 },
 				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.000001);
 	}

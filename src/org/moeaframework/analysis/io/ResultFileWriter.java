@@ -49,7 +49,7 @@ import org.moeaframework.util.io.LineReader;
  * Properties are stored using the same format as {@link TypedProperties#save(Writer)}.  The decision variables,
  * objectives, and constraints for each solution are separated by whitespace.  Each decision variable is encoded using
  * {@link Variable#encode()}.  In the event an error occurs while encoding a decision variable, {@code "-"} is written
- * and a warning issued.  
+ * and a warning issued.
  * <p>
  * Complete entries are always terminated by a line starting with the {@code #} character.
  * 
@@ -60,7 +60,7 @@ public class ResultFileWriter extends ResultWriter {
 	/**
 	 * The message displayed when an unsupported decision variable type is encountered.
 	 */
-	static final String ENCODING_WARNING = 
+	static final String ENCODING_WARNING =
 			"unsupported decision variable type, could cause unexpected behavior or data loss";
 	
 	/**
@@ -79,7 +79,7 @@ public class ResultFileWriter extends ResultWriter {
 	private final ErrorHandler errorHandler;
 	
 	/**
-	 * If set, decision variables are not written.  
+	 * If set, decision variables are not written.
 	 */
 	private boolean excludeVariables;
 	
@@ -210,7 +210,7 @@ public class ResultFileWriter extends ResultWriter {
 	 * @throws IOException if an I/O error occurred
 	 */
 	@Override
-	public void write(ResultEntry entry) throws IOException {		
+	public void write(ResultEntry entry) throws IOException {
 		numberOfEntries++;
 
 		//ensure a non-empty entry is written
@@ -297,7 +297,7 @@ public class ResultFileWriter extends ResultWriter {
 			}
 			
 			writer.flush();
-		} 
+		}
 	}
 
 	@Override
@@ -353,6 +353,7 @@ public class ResultFileWriter extends ResultWriter {
 		
 		ResultFileWriter writer = new ResultFileWriter(problem, new BufferedWriter(new FileWriter(file, true))) {
 
+			@Override
 			protected void printHeader(Problem problem) throws IOException {
 				// skip header when appending
 			}

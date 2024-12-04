@@ -254,7 +254,7 @@ public class PESA2 extends AbstractEvolutionaryAlgorithm {
 			// pick the grid index with smaller density
 			if (entry1 != entry2) {
 				if ((archive.getDensity(entry2.getKey()) < archive.getDensity(entry1.getKey())) ||
-						(archive.getDensity(entry2.getKey()) == archive.getDensity(entry1.getKey()) && PRNG.nextBoolean())) {	
+						(archive.getDensity(entry2.getKey()) == archive.getDensity(entry1.getKey()) && PRNG.nextBoolean())) {
 					selection = entry2;
 				}
 			}

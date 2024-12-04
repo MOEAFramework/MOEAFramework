@@ -45,7 +45,7 @@ import javax.swing.ImageIcon;
  *   WindowA.title = First Title
  *   WindowB.title = Second Title
  * </pre>
- * You can read each entry with {@code Localization.getString(WindowA.class, "title")} and 
+ * You can read each entry with {@code Localization.getString(WindowA.class, "title")} and
  * {@code Localization.getString(WindowB.class, "title")}.  This is convenient for providing localization in subclasses
  * by using the {@code getClass()} method.
  */

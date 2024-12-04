@@ -751,7 +751,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	@Override
-	public void applyConfiguration(TypedProperties properties) {		
+	public void applyConfiguration(TypedProperties properties) {
 		NormalBoundaryDivisions divisions = NormalBoundaryDivisions.tryFromProperties(properties);
 		
 		if (divisions != null) {

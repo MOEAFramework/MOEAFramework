@@ -43,7 +43,7 @@ public class InvertedDTLZ1 extends DTLZ1 {
 	}
 	
 	@Override
-	public void evaluate(Solution solution) {		
+	public void evaluate(Solution solution) {
 		super.evaluate(solution);
 		
 		// apply the transformation to create the inverted version

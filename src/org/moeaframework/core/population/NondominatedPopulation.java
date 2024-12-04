@@ -70,7 +70,7 @@ public class NondominatedPopulation extends Population {
 	protected final DominanceComparator comparator;
 	
 	/**
-	 * Specifies how duplicate solutions are handled. 
+	 * Specifies how duplicate solutions are handled.
 	 */
 	protected final DuplicateMode duplicateMode;
 

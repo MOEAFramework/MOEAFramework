@@ -239,7 +239,7 @@ public class PopulationTest {
 	}
 
 	@Test
-	public void testSaveLoadAllTypes() throws IOException {		
+	public void testSaveLoadAllTypes() throws IOException {
 		Solution solution = MockSolution.of()
 				.withVariables(new BinaryVariable(10), new Grammar(5), new Permutation(5), new RealVariable(0.0, 1.0))
 				.withObjectives(1.0, 0.0)

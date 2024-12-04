@@ -220,7 +220,7 @@ public class DBEATest {
 				
 				dbea.getPopulation().add(solution);
 			}
-		} 
+		}
 		
 		// check that the objectives are identical
 		dbea.evaluateAll(dbea.getPopulation());

@@ -29,15 +29,15 @@ public class MaF4Test extends ProblemTest {
 	public void test2D() {
 		Problem problem = new MaF4(2);
 		
-		Assert.assertArrayEquals(new double[] { 0.0, 1004.0 }, 
+		Assert.assertArrayEquals(new double[] { 0.0, 1004.0 },
 				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.00001);
 		
-		Assert.assertArrayEquals(new double[] { 502.0, 0.0 }, 
+		Assert.assertArrayEquals(new double[] { 502.0, 0.0 },
 				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.00001);
 		
-		Assert.assertArrayEquals(new double[] { 0.58579, 1.17157 }, 
+		Assert.assertArrayEquals(new double[] { 0.58579, 1.17157 },
 				evaluateAt(problem, Vector.of(11, 0.5)).getObjectiveValues(),
 				0.00001);
 	}
@@ -46,15 +46,15 @@ public class MaF4Test extends ProblemTest {
 	public void test3D() {
 		Problem problem = new MaF4(3);
 		
-		Assert.assertArrayEquals(new double[] { 0.0, 1004.0, 2008.0 }, 
+		Assert.assertArrayEquals(new double[] { 0.0, 1004.0, 2008.0 },
 				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.00001);
 		
-		Assert.assertArrayEquals(new double[] { 502.0, 1004.0, 0.0 }, 
+		Assert.assertArrayEquals(new double[] { 502.0, 1004.0, 0.0 },
 				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.00001);
 		
-		Assert.assertArrayEquals(new double[] { 1.0,2.0, 2.34315 }, 
+		Assert.assertArrayEquals(new double[] { 1.0,2.0, 2.34315 },
 				evaluateAt(problem, Vector.of(12, 0.5)).getObjectiveValues(),
 				0.00001);
 	}

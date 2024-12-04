@@ -198,9 +198,9 @@ public class NumberFormatter implements Formatter<Number> {
 	 */
 	protected String createDecimalFormatString() {
 		return "%" + (localeSpecificGroupings ? "," : "") +
-				(leadingSpaceForSign ? " " : "") + 
+				(leadingSpaceForSign ? " " : "") +
 				(width < 0 ? "" : ""+width) +
-				(precision < 0 ? "" : "." + precision) + 
+				(precision < 0 ? "" : "." + precision) +
 				(scientificNotation ? "e" : "f");
 	}
 	
@@ -211,7 +211,7 @@ public class NumberFormatter implements Formatter<Number> {
 	 */
 	protected String createIntegerFormatString() {
 		return "%" + (localeSpecificGroupings ? "," : "") +
-				(leadingSpaceForSign ? " " : "") + 
+				(leadingSpaceForSign ? " " : "") +
 				(width < 0 ? "" : ""+width) + "d";
 	}
 

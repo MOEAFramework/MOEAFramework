@@ -241,7 +241,7 @@ public class TabularDataTest {
 	
 	@Test
 	public void testCsvEscaping() throws IOException {
-		Capture.stream((ps) -> escapedData.display(TableFormat.CSV, ps)).assertEqualsNormalized("key\n\"foo\"\"\\\t\r\n|&bar\"");	
+		Capture.stream((ps) -> escapedData.display(TableFormat.CSV, ps)).assertEqualsNormalized("key\n\"foo\"\"\\\t\r\n|&bar\"");
 	}
 	
 	@Test

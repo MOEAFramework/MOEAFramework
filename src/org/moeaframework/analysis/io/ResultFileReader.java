@@ -199,7 +199,7 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 		return this;
 	}
 	
-	private void readHeader(boolean allowLegacyFormat) throws IOException {		
+	private void readHeader(boolean allowLegacyFormat) throws IOException {
 		if (line == null) {
 			line = reader.readLine();
 		}
@@ -260,7 +260,7 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 			
 			problem = stub;
 		} else {
-			if (problemName != null && problem.getName() != null && 
+			if (problemName != null && problem.getName() != null &&
 					!problemName.isEmpty() && !problem.getName().isEmpty() &&
 					!problemName.equalsIgnoreCase(problem.getName())) {
 				errorHandler.warn("Problem defined in result file does not match problem (given: {0}, expected: {1})",
@@ -387,7 +387,7 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 				}
 				
 				solution.setConstraint(i, constraint);
-			}			
+			}
 		} catch (Exception e) {
 			errorHandler.error(e);
 			return null;

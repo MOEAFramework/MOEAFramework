@@ -136,7 +136,7 @@ public class ReferenceVectorGuidedPopulationTest {
 		
 		Assert.assertSize(2, population);
 		Assert.assertContains(population, s1);
-		Assert.any(() -> Assert.assertContains(population, s2), () -> Assert.assertContains(population, s3));		
+		Assert.any(() -> Assert.assertContains(population, s2), () -> Assert.assertContains(population, s3));
 	}
 	
 	/**
@@ -161,7 +161,7 @@ public class ReferenceVectorGuidedPopulationTest {
 		
 		Assert.assertSize(2, population);
 		Assert.assertContains(population, s2);
-		Assert.assertContains(population, s3);		
+		Assert.assertContains(population, s3);
 	}
 	
 	/**

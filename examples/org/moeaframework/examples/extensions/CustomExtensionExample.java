@@ -31,6 +31,7 @@ public class CustomExtensionExample {
 	
 	public static class CustomExtension implements Extension {
 		
+		@Override
 		public void onStep(Algorithm algorithm) {
 			System.out.println("NFE: " + algorithm.getNumberOfEvaluations() +
 					", Nondominated Solutions: " + algorithm.getResult().size());

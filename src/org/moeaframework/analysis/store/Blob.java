@@ -41,7 +41,7 @@ import org.moeaframework.util.io.ReaderCallback;
 import org.moeaframework.util.io.WriterCallback;
 
 /**
- * Reference to a blob, which is simply a piece of data identified by its container and name. 
+ * Reference to a blob, which is simply a piece of data identified by its container and name.
  */
 public interface Blob {
 	

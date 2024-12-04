@@ -25,7 +25,7 @@ import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
 
 /**
- * Demonstrates loading a reference set and computing the hypervolume.  
+ * Demonstrates loading a reference set and computing the hypervolume.
  */
 public class LoadAndEvaluateReferenceSet {
 

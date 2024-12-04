@@ -29,21 +29,21 @@ public class TamakiTest extends ProblemTest {
 	public void test() {
 		Problem problem = new Tamaki();
 		
-		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 0.0 }, 
+		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 0.0 },
 				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { 0.0 }, 
+		Assert.assertArrayEquals(new double[] { 0.0 },
 				evaluateAtLowerBounds(problem).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertTrue(evaluateAtLowerBounds(problem).isFeasible());
 		
-		Assert.assertArrayEquals(new double[] { 1.0, 1.0, 1.0 }, 
+		Assert.assertArrayEquals(new double[] { 1.0, 1.0, 1.0 },
 				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { 3.0 }, 
+		Assert.assertArrayEquals(new double[] { 3.0 },
 				evaluateAtUpperBounds(problem).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
 		

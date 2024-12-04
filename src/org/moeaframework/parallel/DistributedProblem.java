@@ -40,7 +40,7 @@ import org.moeaframework.problem.ProblemWrapper;
  * all solutions at once for evaluation.
  * <p>
  * Any {@code ExecutorService} can be used.  For example, {@link Executors} provides various options for distributing
- * locally.  For remote evaluations, Java frameworks such as <a href="https://github.com/jppf-grid/JPPF">JPPF</a>, 
+ * locally.  For remote evaluations, Java frameworks such as <a href="https://github.com/jppf-grid/JPPF">JPPF</a>,
  * <a href="http://www.gridgain.com">GridGain</a>, and <a href="https://ignite.apache.org/">Apache Ignite</a> should
  * work out-of-the-box.
  */
@@ -60,7 +60,7 @@ public class DistributedProblem extends ProblemWrapper {
 	/**
 	 * By assigning a unique id to each {@code FutureSolution} that this {@code DistributedProblem} creates, problems
 	 * with stochastic evaluation functions (e.g., certain types of simulations) can use this as a random seed
-	 * in order to get replicability of results even when run in parallel.      
+	 * in order to get replicability of results even when run in parallel.
 	 */
 	private final AtomicLong nextDistributedEvaluationID;
 	

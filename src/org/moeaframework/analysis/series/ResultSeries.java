@@ -328,7 +328,7 @@ Streamable<IndexedResult> {
 	public static ResultSeries of(ResultFileReader reader) {
 		ResultSeries series = null;
 		
-		for (ResultEntry result : reader) {						
+		for (ResultEntry result : reader) {
 			if (series == null) {
 				series = new ResultSeries(result.getProperties().contains(ResultEntry.NFE) ?
 						IndexType.NFE : IndexType.Index);

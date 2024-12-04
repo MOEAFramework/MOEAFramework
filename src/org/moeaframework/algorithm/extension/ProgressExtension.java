@@ -178,7 +178,7 @@ public class ProgressExtension implements Extension {
 	public static class ProgressEvent {
 
 		/**
-		 * The algorithm being run. 
+		 * The algorithm being run.
 		 */
 		private final Algorithm algorithm;
 		

@@ -147,7 +147,7 @@ public class BinaryIntegerVariable extends BinaryVariable {
 	 *         {@code (value < getLowerBound()) || (value > getUpperBound())}
 	 */
 	public void setValue(int value) {
-		Validate.that("value", value).isBetween(lowerBound, upperBound);		
+		Validate.that("value", value).isBetween(lowerBound, upperBound);
 		BitSet bits = encode(value - lowerBound);
 
 		if (gray) {

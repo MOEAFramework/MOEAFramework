@@ -153,7 +153,7 @@ public abstract class FileMap implements Constructable {
 	}
 	
 	/**
-	 * Returns a file system-safe path for the give file name.  
+	 * Returns a file system-safe path for the give file name.
 	 * 
 	 * @param filename the file name
 	 * @return the file system-safe path

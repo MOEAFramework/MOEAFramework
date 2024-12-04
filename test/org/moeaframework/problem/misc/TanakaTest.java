@@ -34,21 +34,21 @@ public class TanakaTest extends ProblemTest {
 	public void test() {
 		Problem problem = new Tanaka();
 		
-		Assert.assertArrayEquals(new double[] { 0.1, 0.1 }, 
+		Assert.assertArrayEquals(new double[] { 0.1, 0.1 },
 				evaluateAt(problem, 0.1, 0.1).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { 1.08, -0.18 }, 
+		Assert.assertArrayEquals(new double[] { 1.08, -0.18 },
 				evaluateAt(problem, 0.1, 0.1).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertFalse(evaluateAt(problem, 0.1, 0.1).isFeasible());
 		
-		Assert.assertArrayEquals(new double[] { Math.PI, Math.PI }, 
+		Assert.assertArrayEquals(new double[] { Math.PI, Math.PI },
 				evaluateAt(problem, Math.PI, Math.PI).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { -18.639, 13.456 }, 
+		Assert.assertArrayEquals(new double[] { -18.639, 13.456 },
 				evaluateAt(problem, Math.PI, Math.PI).getConstraintValues(),
 				0.001);
 		

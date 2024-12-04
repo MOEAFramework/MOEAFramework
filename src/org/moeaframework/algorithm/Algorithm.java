@@ -37,7 +37,7 @@ import org.moeaframework.problem.Problem;
 public interface Algorithm extends Stateful, Extensible, Named {
 	
 	/**
-	 * Returns the name of this algorithm.  Whenever possible, this name should match the name recognized by 
+	 * Returns the name of this algorithm.  Whenever possible, this name should match the name recognized by
 	 * {@link org.moeaframework.core.spi.AlgorithmFactory}.
 	 * 
 	 * @return the name of this algorithm

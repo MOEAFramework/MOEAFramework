@@ -40,7 +40,7 @@ import org.moeaframework.util.validate.Validate;
 /**
  * Implementation of the Indicator-Based Evolutionary Algorithm (IBEA).  Instead of using Pareto dominance to evaluate
  * the quality of solutions, IBEA uses an indicator function (typically hypervolume but other indicator functions
- * can be specified). 
+ * can be specified).
  * <p>
  * References:
  * <ol>

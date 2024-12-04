@@ -17,6 +17,6 @@
  */
 
 /**
- * Package of various selection operators.  
+ * Package of various selection operators.
  */
 package org.moeaframework.core.selection;

@@ -27,6 +27,7 @@ import org.moeaframework.problem.Problem;
 
 public class GeneticAlgorithmTest extends AbstractSingleObjectiveAlgorithmTest<GeneticAlgorithm> {
 	
+	@Override
 	public GeneticAlgorithm createInstance(Problem problem) {
 		return new GeneticAlgorithm(problem);
 	}

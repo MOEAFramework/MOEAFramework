@@ -35,7 +35,7 @@ public abstract class AbstractTopologyTest<T extends Topology> extends AbstractI
 		Topology topology = createInstance();
 		List<Island> islands = createIslands(1);
 		
-		List<Island> neighbors = topology.getNeighbors(islands.get(0), islands);		
+		List<Island> neighbors = topology.getNeighbors(islands.get(0), islands);
 		Assert.assertEquals(0, neighbors.size());
 	}
 	

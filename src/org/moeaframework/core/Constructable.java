@@ -47,7 +47,7 @@ import org.moeaframework.util.io.Tokenizer;
  * <ol>
  *   <li>Either the class' simple name or fully-qualified name that includes the package is permitted.  The class
  *       must reside in the same package as the return type in order to use the shorter simple name.
- *   <li>Parenthesis can be omitted if using the no-arg constructor. 
+ *   <li>Parenthesis can be omitted if using the no-arg constructor.
  *   <li>The first constructor that matches the supplied arguments is called; therefore, avoid defining multiple
  *       constructors with indistinguishable string representations (e.g., "2" can be parsed as an integer or double).
  * </ol>
@@ -215,7 +215,7 @@ public interface Constructable {
 				
 				try {
 					return returnType.cast(ConstructorUtils.invokeConstructor(definitionClass, castArguments));
-				} catch (IllegalAccessException | IllegalArgumentException | InstantiationException | 
+				} catch (IllegalAccessException | IllegalArgumentException | InstantiationException |
 						InvocationTargetException | NoSuchMethodException e) {
 					continue;
 				}

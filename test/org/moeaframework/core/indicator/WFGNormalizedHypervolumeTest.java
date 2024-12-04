@@ -32,6 +32,7 @@ public class WFGNormalizedHypervolumeTest extends AbstractHypervolumeTest<WFGNor
 		return new WFGNormalizedHypervolume(problem, normalizer);
 	}
 	
+	@Override
 	public boolean includesBetterSolutions() {
 		return true;
 	}

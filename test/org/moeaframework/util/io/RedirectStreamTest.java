@@ -80,7 +80,7 @@ public class RedirectStreamTest {
 	
 	@Test(expected = IOException.class)
 	public void testCaptureWithInvalidCommand() throws IOException, InterruptedException {
-		RedirectStream.capture(new ProcessBuilder("invalidCommand"));		
+		RedirectStream.capture(new ProcessBuilder("invalidCommand"));
 	}
 	
 	@Test(expected = IOException.class)

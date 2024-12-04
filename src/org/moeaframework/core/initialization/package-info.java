@@ -17,6 +17,6 @@
  */
 
 /**
- * Package of various initialization operators.  
+ * Package of various initialization operators.
  */
 package org.moeaframework.core.initialization;

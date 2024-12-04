@@ -228,7 +228,7 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm implements 
 			double localBestValue = RealVariable.getReal(localBestParticle.getVariable(j));
 			double leaderValue = RealVariable.getReal(leader.getVariable(j));
 			
-			velocities[i][j] = W * velocities[i][j] + 
+			velocities[i][j] = W * velocities[i][j] +
 					C1*r1*(localBestValue - particleValue) +
 					C2*r2*(leaderValue - particleValue);
 		}

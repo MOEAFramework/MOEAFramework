@@ -28,15 +28,15 @@ public class OKA1Test extends ProblemTest {
 	public void test() {
 		Problem problem = new OKA1();
 		
-		Assert.assertArrayEquals(new double[] { 2.221441469079183, 3.7889583370899755 }, 
+		Assert.assertArrayEquals(new double[] { 2.221441469079183, 3.7889583370899755 },
 				evaluateAt(problem, Math.PI, Math.PI).getObjectiveValues(),
 				0.0001);
 		
-		Assert.assertArrayEquals(new double[] { 1.9208936072384664, 4.049324370013574 }, 
+		Assert.assertArrayEquals(new double[] { 1.9208936072384664, 4.049324370013574 },
 				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.0001);
 		
-		Assert.assertArrayEquals(new double[] { 5.86229169994112, 2.532902255226027 }, 
+		Assert.assertArrayEquals(new double[] { 5.86229169994112, 2.532902255226027 },
 				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.0001);
 	}

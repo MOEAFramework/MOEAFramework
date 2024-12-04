@@ -28,21 +28,21 @@ public class CF2Test extends ProblemTest {
 	public void test() {
 		Problem problem = new CF2();
 		
-		Assert.assertArrayEquals(new double[] { 6.1293, 3.2 }, 
+		Assert.assertArrayEquals(new double[] { 6.1293, 3.2 },
 				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.0001);
 		
-		Assert.assertArrayEquals(new double[] { 0.0 }, // Raw value: -0.0000014414 
+		Assert.assertArrayEquals(new double[] { 0.0 }, // Raw value: -0.0000014414
 				evaluateAtLowerBounds(problem).getConstraintValues(),
 				0.0001);
 		
 		Assert.assertTrue(evaluateAtLowerBounds(problem).isFeasible());
 		
-		Assert.assertArrayEquals(new double[] { 1.2752, 3.8 }, 
+		Assert.assertArrayEquals(new double[] { 1.2752, 3.8 },
 				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.0001);
 		
-		Assert.assertArrayEquals(new double[] { 0.0 }, // Raw value: -0.000015305 
+		Assert.assertArrayEquals(new double[] { 0.0 }, // Raw value: -0.000015305
 				evaluateAtUpperBounds(problem).getConstraintValues(),
 				0.0001);
 		

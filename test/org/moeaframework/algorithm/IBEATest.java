@@ -38,7 +38,7 @@ public class IBEATest extends JMetalAlgorithmTest {
 	
 	@Test
 	public void testConfiguration() {
-		Problem problem = new MockRealProblem();	
+		Problem problem = new MockRealProblem();
 		IBEA algorithm = new IBEA(problem);
 		
 		Assert.assertEquals("hypervolume", algorithm.getConfiguration().getString("indicator"));
@@ -51,7 +51,7 @@ public class IBEATest extends JMetalAlgorithmTest {
 	
 	@Test(expected = ConfigurationException.class)
 	public void testConfigurationInvalidIndicator() {
-		Problem problem = new MockRealProblem();	
+		Problem problem = new MockRealProblem();
 		IBEA algorithm = new IBEA(problem);
 		
 		algorithm.applyConfiguration(TypedProperties.of("indicator", "foo"));

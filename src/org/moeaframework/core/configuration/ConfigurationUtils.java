@@ -111,7 +111,7 @@ public class ConfigurationUtils {
 		Class<?> type = object.getClass();
 		Prefix prefix = type.getAnnotation(Prefix.class);
 
-		for (Method method : type.getMethods()) {			
+		for (Method method : type.getMethods()) {
 			String methodName = method.getName();
 			Property property = MethodUtils.getAnnotation(method, Property.class, true, false);
 						
@@ -247,7 +247,7 @@ public class ConfigurationUtils {
 			} else if (TypeUtils.isAssignable(parameterType, byte.class)) {
 				properties.setByte(propertyName, (byte)value);
 			} else if (TypeUtils.isAssignable(parameterType, short.class)) {
-				properties.setShort(propertyName, (short)value);	
+				properties.setShort(propertyName, (short)value);
 			} else if (TypeUtils.isAssignable(parameterType, int.class)) {
 				properties.setInt(propertyName, (int)value);
 			} else if (TypeUtils.isAssignable(parameterType, long.class)) {

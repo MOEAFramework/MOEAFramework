@@ -30,7 +30,7 @@ import org.moeaframework.util.validate.Validate;
 /**
  * Extends {@link AdaptiveTimeContinuationExtension} to trigger restarts using &epsilon;-progress.  &epsilon;-progress
  * measures search progress by counting the number of significant improvements, as measured by the number of unoccupied
- * &epsilon;-boxes filled during a fixed time window.  
+ * &epsilon;-boxes filled during a fixed time window.
  * <p>
  * References:
  * <ol>
@@ -78,7 +78,7 @@ public class EpsilonProgressContinuationExtension extends AdaptiveTimeContinuati
 	}
 
 	@Override
-	protected RestartType check(Algorithm algorithm) {		
+	protected RestartType check(Algorithm algorithm) {
 		RestartType superType = super.check(algorithm);
 		
 		EpsilonBoxEvolutionaryAlgorithm ea = (EpsilonBoxEvolutionaryAlgorithm)algorithm;
@@ -95,7 +95,7 @@ public class EpsilonProgressContinuationExtension extends AdaptiveTimeContinuati
 	}
 
 	@Override
-	protected void restart(Algorithm algorithm, RestartType type) {		
+	protected void restart(Algorithm algorithm, RestartType type) {
 		super.restart(algorithm, type);
 		
 		EpsilonBoxEvolutionaryAlgorithm ea = (EpsilonBoxEvolutionaryAlgorithm)algorithm;

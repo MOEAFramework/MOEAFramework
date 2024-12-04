@@ -29,21 +29,21 @@ public class KitaTest extends ProblemTest {
 	public void test() {
 		Problem problem = new Kita();
 		
-		Assert.assertArrayEquals(new double[] { 0.0, 1.0 }, 
+		Assert.assertArrayEquals(new double[] { 0.0, 1.0 },
 				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { -6.5, -7.5, -30.0 }, 
+		Assert.assertArrayEquals(new double[] { -6.5, -7.5, -30.0 },
 				evaluateAtLowerBounds(problem).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
 		
 		Assert.assertTrue(evaluateAtLowerBounds(problem).isFeasible());
 		
-		Assert.assertArrayEquals(new double[] { -42.0, 11.5 }, 
+		Assert.assertArrayEquals(new double[] { -42.0, 11.5 },
 				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { 5.0/3.0, 3.0, 12.0 }, 
+		Assert.assertArrayEquals(new double[] { 5.0/3.0, 3.0, 12.0 },
 				evaluateAtUpperBounds(problem).getConstraintValues(),
 				TestThresholds.HIGH_PRECISION);
 		

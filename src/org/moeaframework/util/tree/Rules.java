@@ -100,7 +100,7 @@ public class Rules implements Serializable {
 
 	/**
 	 * Returns the program scaffolding; or {@code null} if the program has no defined scaffolding.
-	 *  
+	 * 
 	 * @return the program scaffolding; or {@code null} if the program has no defined scaffolding
 	 */
 	public Node getScaffolding() {

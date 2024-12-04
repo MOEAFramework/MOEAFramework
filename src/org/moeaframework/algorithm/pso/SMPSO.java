@@ -113,8 +113,8 @@ public class SMPSO extends AbstractPSOAlgorithm {
 			double localBestValue = RealVariable.getReal(localBestParticle.getVariable(j));
 			double leaderValue = RealVariable.getReal(leader.getVariable(j));
 			
-			double velocity = constrictionCoefficient(C1, C2) * 
-					(W * velocities[i][j] + 
+			double velocity = constrictionCoefficient(C1, C2) *
+					(W * velocities[i][j] +
 					C1*r1*(localBestValue - particleValue) +
 					C2*r2*(leaderValue - particleValue));
 			

@@ -191,7 +191,7 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		
 	/**
 	 * Displays the approximation sets contained in the result series.  In addition to displaying the viewer, this
-	 * method also configures the system look and feel.  Therefore, prefer this static method when creating a 
+	 * method also configures the system look and feel.  Therefore, prefer this static method when creating a
 	 * standalone version of this window.
 	 * 
 	 * @param title the name or title for the data
@@ -215,7 +215,7 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 			}
 			
 			viewer.setLocationRelativeTo(null);
-			viewer.setVisible(true);	
+			viewer.setVisible(true);
 		});
 	}
 	
@@ -590,12 +590,12 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		chart = ChartFactory.createScatterPlot(
 				(title == null ? "" : title + " @ ") + (controller.getIndexType() == IndexType.NFE ?
 						localization.getString("text.NFE") : localization.getString("text.Index")) +
-						" " + slider.getValue(), 
+						" " + slider.getValue(),
 				xAxisSelection.getSelectedItem().toString(),
-				yAxisSelection.getSelectedItem().toString(), 
-				dataset, 
-				PlotOrientation.VERTICAL, 
-				true, 
+				yAxisSelection.getSelectedItem().toString(),
+				dataset,
+				PlotOrientation.VERTICAL,
+				true,
 				true,
 				false);
 		

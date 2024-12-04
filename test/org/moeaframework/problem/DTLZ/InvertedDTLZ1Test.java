@@ -32,15 +32,15 @@ public class InvertedDTLZ1Test extends ProblemTest {
 	public void test() {
 		Problem problem = new InvertedDTLZ1(3);
 		
-		Assert.assertArrayEquals(new double[] { 63.0, 63.0, 0.0 }, 
+		Assert.assertArrayEquals(new double[] { 63.0, 63.0, 0.0 },
 				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.000001);
 		
-		Assert.assertArrayEquals(new double[] { 0.0, 63.0, 63.0 }, 
+		Assert.assertArrayEquals(new double[] { 0.0, 63.0, 63.0 },
 				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.000001);
 		
-		Assert.assertArrayEquals(new double[] { 0.375, 0.375, 0.25 }, 
+		Assert.assertArrayEquals(new double[] { 0.375, 0.375, 0.25 },
 				evaluateAt(problem, Vector.of(7, 0.5)).getObjectiveValues(),
 				0.000001);
 	}

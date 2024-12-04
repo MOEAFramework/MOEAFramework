@@ -142,7 +142,7 @@ public class DefaultEpsilons implements Formattable<Entry<String, Epsilons>> {
 		}
 		
 		return epsilons;
-	}	
+	}
 	
 	/**
 	 * Overrides the &epsilon; value for the given problem.  This expects the problem name to uniquely determine the

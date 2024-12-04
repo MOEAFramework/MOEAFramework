@@ -72,7 +72,7 @@ public class EpsilonMOEATest {
 		
 		population = new TestPopulation();
 		
-		algorithm = new EpsilonMOEA(problem, 100, population, 
+		algorithm = new EpsilonMOEA(problem, 100, population,
 				new EpsilonBoxDominanceArchive(0.01),
 				new TournamentSelection(2), new CompoundVariation(),
 				new RandomInitialization(problem));
@@ -87,7 +87,7 @@ public class EpsilonMOEATest {
 	@Test
 	public void testAddToPopulationDominated() {
 		Solution solutionA = MockSolution.of(problem).withObjectives(0.0, 0.0);
-		Solution solutionB = MockSolution.of(problem).withObjectives(1.0, 1.0);	
+		Solution solutionB = MockSolution.of(problem).withObjectives(1.0, 1.0);
 		Solution solutionC = MockSolution.of(problem).withObjectives(0.5, 0.5);
 		
 		for (int i=0; i<10; i++) {
@@ -128,7 +128,7 @@ public class EpsilonMOEATest {
 	
 	@Test
 	public void testConfiguration() {
-		Problem problem = new MockRealProblem(2);	
+		Problem problem = new MockRealProblem(2);
 		EpsilonMOEA algorithm = new EpsilonMOEA(problem);
 		
 		Assert.assertArrayEquals(algorithm.getArchive().getComparator().getEpsilons().toArray(),

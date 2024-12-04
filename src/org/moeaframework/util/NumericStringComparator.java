@@ -44,7 +44,7 @@ public class NumericStringComparator implements Comparator<String> {
 	@Override
 	public int compare(String str1, String str2) {
 		Matcher matcher1 = INTEGER_PATTERN.matcher(str1);
-		Matcher matcher2 = INTEGER_PATTERN.matcher(str2);		
+		Matcher matcher2 = INTEGER_PATTERN.matcher(str2);
 		int start1 = 0;
 		int start2 = 0;
 		
@@ -61,7 +61,7 @@ public class NumericStringComparator implements Comparator<String> {
 			int val2 = Integer.parseInt(matcher2.group());
 			cmp = Integer.compare(val1, val2);
 			
-			if (cmp != 0) { 
+			if (cmp != 0) {
 				return cmp;
 			}
 			

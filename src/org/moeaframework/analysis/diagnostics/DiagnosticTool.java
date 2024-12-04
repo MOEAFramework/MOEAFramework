@@ -279,6 +279,7 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		resultTable.getSelectionModel().addListSelectionListener(this);
 		resultTable.addMouseListener(new MouseAdapter() {
 			
+			@Override
 			public void mouseClicked(final MouseEvent e) {
 				if (SwingUtilities.isRightMouseButton(e)) {
 					int index = resultTable.rowAtPoint(e.getPoint());
@@ -840,7 +841,7 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 
 			ProjectInfo info = new ProjectInfo(
 					properties.getString("name"),
-					properties.getString("version"), 
+					properties.getString("version"),
 					properties.getString("description"),
 					null,
 					properties.getString("copyright"),

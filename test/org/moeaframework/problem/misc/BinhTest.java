@@ -29,15 +29,15 @@ public class BinhTest extends ProblemTest {
 	public void test() {
 		Problem problem = new Binh();
 		
-		Assert.assertArrayEquals(new double[] { 0.0, 50.0 }, 
+		Assert.assertArrayEquals(new double[] { 0.0, 50.0 },
 				evaluateAt(problem, 0.0, 0.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { 50.0, 200.0 }, 
+		Assert.assertArrayEquals(new double[] { 50.0, 200.0 },
 				evaluateAt(problem, -5.0, -5.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { 200.0, 50.0 }, 
+		Assert.assertArrayEquals(new double[] { 200.0, 50.0 },
 				evaluateAt(problem, 10.0, 10.0).getObjectiveValues(),
 				TestThresholds.HIGH_PRECISION);
 	}

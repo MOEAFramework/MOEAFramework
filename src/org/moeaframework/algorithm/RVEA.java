@@ -249,7 +249,7 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 	}
 
 	@Override
-	public void applyConfiguration(TypedProperties properties) {		
+	public void applyConfiguration(TypedProperties properties) {
 		NormalBoundaryDivisions divisions = getPopulation().getDivisions();
 		double alpha = getPopulation().getAlpha();
 		boolean changed = false;

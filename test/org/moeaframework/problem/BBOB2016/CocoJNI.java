@@ -7,7 +7,7 @@
 package org.moeaframework.problem.BBOB2016;
 
 /**
- * This class contains the declaration of all the CocoJNI functions. 
+ * This class contains the declaration of all the CocoJNI functions.
  */
 public class CocoJNI {
 
@@ -53,7 +53,7 @@ public class CocoJNI {
 	
 	public static native long cocoProblemGetEvaluations(long problemPointer);
 	public static native long cocoProblemGetEvaluationsConstraints(long problemPointer);
-	public static native long cocoProblemGetIndex(long problemPointer); 
+	public static native long cocoProblemGetIndex(long problemPointer);
 	
 	public static native int cocoProblemIsFinalTargetHit(long problemPointer);
 }

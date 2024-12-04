@@ -152,7 +152,7 @@ public class SBXTest extends ParentCentricVariationTest<SBX> {
 
 		Solution[] parents = new Solution[] { s1, s2 };
 
-		// if error, RealVariable#setValue will throw an IllegalArgumentException 
+		// if error, RealVariable#setValue will throw an IllegalArgumentException
 		sbx.evolve(parents);
 		
 		PRNG.setRandom(originalRandom);

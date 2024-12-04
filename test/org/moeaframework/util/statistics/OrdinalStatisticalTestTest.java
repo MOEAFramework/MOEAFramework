@@ -31,6 +31,7 @@ public class OrdinalStatisticalTestTest {
 	public void setUp() {
 		test = new OrdinalStatisticalTest(2) {
 
+			@Override
 			public boolean test(double alpha) {
 				throw new UnsupportedOperationException();
 			}

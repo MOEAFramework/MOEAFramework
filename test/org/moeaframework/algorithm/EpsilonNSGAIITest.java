@@ -28,7 +28,7 @@ public class EpsilonNSGAIITest {
 	
 	@Test
 	public void testConfiguration() {
-		Problem problem = new MockRealProblem(2);	
+		Problem problem = new MockRealProblem(2);
 		EpsilonNSGAII algorithm = new EpsilonNSGAII(problem);
 		
 		Assert.assertArrayEquals(algorithm.getArchive().getComparator().getEpsilons().toArray(),

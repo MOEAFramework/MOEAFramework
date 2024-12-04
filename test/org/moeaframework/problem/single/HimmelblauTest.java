@@ -27,7 +27,7 @@ import org.moeaframework.problem.ProblemTest;
 public class HimmelblauTest extends ProblemTest {
 	
 	@Test
-	public void test() {		
+	public void test() {
 		try (AbstractSingleObjectiveProblem problem = new Himmelblau()) {
 			for (Solution solution : problem.getReferenceSet()) {
 				Assert.assertEquals(0.0, solution.getObjectiveValue(0), TestThresholds.HIGH_PRECISION);

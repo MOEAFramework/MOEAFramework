@@ -248,6 +248,7 @@ public class MetricFileWriter extends ResultWriter {
 		
 		MetricFileWriter writer = new MetricFileWriter(indicators, new BufferedWriter(new FileWriter(file, true))) {
 
+			@Override
 			protected void printHeader() {
 				// skip header when appending
 			}
@@ -287,7 +288,7 @@ public class MetricFileWriter extends ResultWriter {
 			
 		try (MetricFileReader reader = new MetricFileReader(file);
 				MetricFileWriter writer = new MetricFileWriter(null, tempFile)) {
-			while (reader.hasNext()) {				
+			while (reader.hasNext()) {
 				double[] data = reader.next();
 				writer.write(data);
 				numberOfEntries++;

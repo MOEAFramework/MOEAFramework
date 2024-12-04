@@ -103,7 +103,7 @@ public class TimerTest {
 	private File saveDisplayToFile(Timer timer) throws IOException {
 		File file = TempFiles.createFile();
 		
-		try (PrintStream ps = new PrintStream(new FileOutputStream(file))) {	
+		try (PrintStream ps = new PrintStream(new FileOutputStream(file))) {
 			timer.display(ps);
 		}
 		

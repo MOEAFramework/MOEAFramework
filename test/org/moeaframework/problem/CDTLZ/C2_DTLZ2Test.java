@@ -38,21 +38,21 @@ public class C2_DTLZ2Test extends ProblemTest {
 	public void test() {
 		Problem problem = new C2_DTLZ2(12, 3);
 		
-		Assert.assertArrayEquals(new double[] { 3.5, 0.0, 0.0 }, 
+		Assert.assertArrayEquals(new double[] { 3.5, 0.0, 0.0 },
 				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.000001);
 		
-		Assert.assertArrayEquals(new double[] { 6.09 }, 
+		Assert.assertArrayEquals(new double[] { 6.09 },
 				evaluateAtLowerBounds(problem).getConstraintValues(),
 				0.000001);
 		
 		Assert.assertFalse(evaluateAtLowerBounds(problem).isFeasible());
 		
-		Assert.assertArrayEquals(new double[] { 1.31228981e-32, 2.14313190e-16, 3.5 }, 
+		Assert.assertArrayEquals(new double[] { 1.31228981e-32, 2.14313190e-16, 3.5 },
 				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.000001);
 		
-		Assert.assertArrayEquals(new double[] { 6.09 }, 
+		Assert.assertArrayEquals(new double[] { 6.09 },
 				evaluateAtUpperBounds(problem).getConstraintValues(),
 				0.000001);
 		

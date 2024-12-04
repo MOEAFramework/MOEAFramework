@@ -111,7 +111,7 @@ public class SSXTest extends AbstractSubsetOperatorTest<SSX> {
 	 * @param stats2 the percent of swapped values for the second subset
 	 */
 	protected void countSwapped(Subset original1, Subset original2, Subset new1, Subset new2,
-			DescriptiveStatistics stats1, DescriptiveStatistics stats2) {		
+			DescriptiveStatistics stats1, DescriptiveStatistics stats2) {
 		Set<Integer> original1set = original1.getSet();
 		Set<Integer> new1set = new1.getSet();
 		Set<Integer> original2set = original2.getSet();

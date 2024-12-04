@@ -44,7 +44,7 @@ public class SamplesTest {
 
 	public static final String INVALID_MISSING_ENTRY = """
 			0.0 100 foo
-			1.0													
+			1.0
 			1.0 10000 bar
 			""";
 

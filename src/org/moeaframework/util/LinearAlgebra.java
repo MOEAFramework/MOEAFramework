@@ -52,7 +52,7 @@ public class LinearAlgebra {
 	 * @throws DimensionMismatchException if the dimensions of the provided matrix and vector are not valid
 	 * @see <a href="http://introcs.cs.princeton.edu/java/95linear/GaussianElimination.java.html">Reference Code</a>
 	 */
-	public static double[] lsolve(double[][] A, double[] b) {	
+	public static double[] lsolve(double[][] A, double[] b) {
 		int N = b.length;
 		
 		if (A.length != N) {

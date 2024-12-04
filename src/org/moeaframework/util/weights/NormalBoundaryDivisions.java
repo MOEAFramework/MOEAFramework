@@ -180,7 +180,7 @@ public class NormalBoundaryDivisions {
 			return new NormalBoundaryDivisions(
 					properties.getTruncatedInt("divisionsOuter"),
 					properties.getTruncatedInt("divisionsInner"));
-		} 
+		}
 		
 		if (properties.contains("divisionsOuter") || properties.contains("divisionsInner")) {
 			throw new ConfigurationException("must include both divisionsOuter and divisionsInner");

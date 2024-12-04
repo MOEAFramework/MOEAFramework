@@ -45,7 +45,7 @@ public class LaunchDiagnosticTool extends CommandLineUtility {
 			}
 				
 			DiagnosticTool diagnosticTool = new DiagnosticTool();
-			diagnosticTool.setVisible(true);	
+			diagnosticTool.setVisible(true);
 		});
 	}
 	

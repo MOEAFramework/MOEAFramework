@@ -28,7 +28,7 @@ import org.moeaframework.core.variable.Variable;
 public interface Problem extends AutoCloseable, Named {
 
 	/**
-	 * Returns the name of this problem.  Whenever possible, this name should match the name recognized by 
+	 * Returns the name of this problem.  Whenever possible, this name should match the name recognized by
 	 * {@link org.moeaframework.core.spi.ProblemFactory}.
 	 * 
 	 * @return the name of this problem
@@ -80,6 +80,7 @@ public interface Problem extends AutoCloseable, Named {
 	 * Closes any underlying resources used by this problem.  Once closed, further invocations of
 	 * any methods on this problem may throw exceptions.
 	 */
+	@Override
 	public void close();
 	
 	/**

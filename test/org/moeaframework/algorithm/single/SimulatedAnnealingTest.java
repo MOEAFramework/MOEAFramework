@@ -27,6 +27,7 @@ import org.moeaframework.problem.Problem;
 
 public class SimulatedAnnealingTest extends AbstractSingleObjectiveAlgorithmTest<SimulatedAnnealing> {
 	
+	@Override
 	public SimulatedAnnealing createInstance(Problem problem) {
 		return new SimulatedAnnealing(problem);
 	}

@@ -32,7 +32,7 @@ public class EpsilonProgressCollector implements Collector {
 	private final EpsilonBoxEvolutionaryAlgorithm algorithm;
 
 	/**
-	 * Constructs an unattached collector for recording the number of &epsilon;-progress improvements detected in an 
+	 * Constructs an unattached collector for recording the number of &epsilon;-progress improvements detected in an
 	 * {@code EpsilonBoxEvolutionaryAlgorithm}.
 	 */
 	public EpsilonProgressCollector() {
@@ -40,7 +40,7 @@ public class EpsilonProgressCollector implements Collector {
 	}
 	
 	/**
-	 * Constructs a collector for recording the number of &epsilon;-progress improvements detected in the specified 
+	 * Constructs a collector for recording the number of &epsilon;-progress improvements detected in the specified
 	 * {@code EpsilonBoxEvolutionaryAlgorithm}.
 	 * 
 	 * @param algorithm the algorithm this collector records data from

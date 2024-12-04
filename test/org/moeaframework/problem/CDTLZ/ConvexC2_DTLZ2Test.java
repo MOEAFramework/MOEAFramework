@@ -34,21 +34,21 @@ public class ConvexC2_DTLZ2Test extends ProblemTest {
 	public void test() {
 		Problem problem = new ConvexC2_DTLZ2(12, 3);
 		
-		Assert.assertArrayEquals(new double[] { 150.0625, 0.0, 0.0 }, 
+		Assert.assertArrayEquals(new double[] { 150.0625, 0.0, 0.0 },
 				evaluateAtLowerBounds(problem).getObjectiveValues(),
 				0.000001);
 		
-		Assert.assertArrayEquals(new double[] { 15012.451979 }, 
+		Assert.assertArrayEquals(new double[] { 15012.451979 },
 				evaluateAtLowerBounds(problem).getConstraintValues(),
 				0.000001);
 		
 		Assert.assertTrue(evaluateAtLowerBounds(problem).isFeasible());
 		
-		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 12.25 }, 
+		Assert.assertArrayEquals(new double[] { 0.0, 0.0, 12.25 },
 				evaluateAtUpperBounds(problem).getObjectiveValues(),
 				0.000001);
 		
-		Assert.assertArrayEquals(new double[] { 99.991041 }, 
+		Assert.assertArrayEquals(new double[] { 99.991041 },
 				evaluateAtUpperBounds(problem).getConstraintValues(),
 				0.000001);
 		
