@@ -77,8 +77,7 @@ public class OperatorFactoryTest extends AbstractFactoryTest<OperatorProvider, O
 	}
 	
 	private void test(Problem problem, Variation variation) {
-		RandomInitialization initialization = new RandomInitialization(
-				ProblemFactory.getInstance().getProblem("DTLZ2_2"));
+		RandomInitialization initialization = new RandomInitialization(problem);
 		
 		Solution[] parents = initialization.initialize(variation.getArity());
 		Solution[] offspring = variation.evolve(parents);

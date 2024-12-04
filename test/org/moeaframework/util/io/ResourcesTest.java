@@ -231,7 +231,7 @@ public class ResourcesTest {
 	}
 	
 	private File createLocalFile(String content) throws IOException {
-		return Files.writeString(Path.of("Test" + PRNG.nextInt() + ".txt"), "foo").toFile();
+		return Files.writeString(Path.of("Test" + PRNG.nextInt() + ".txt"), content).toFile();
 	}
 
 }

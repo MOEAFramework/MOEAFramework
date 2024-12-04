@@ -165,7 +165,7 @@ public class IBEA extends AbstractEvolutionaryAlgorithm {
 		int worstIndex = 0;
 		
 		for (int i = 1; i < population.size(); i++) {
-			if (fitnessComparator.compare(population.get(worstIndex), population.get(i)) == -1) {
+			if (fitnessComparator.compare(population.get(worstIndex), population.get(i)) < 0) {
 				worstIndex = i;
 			}
 		}
