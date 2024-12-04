@@ -17,6 +17,7 @@
  */
 package org.moeaframework.analysis.sensitivity;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.moeaframework.analysis.parameter.ParameterSet;
 import org.moeaframework.analysis.sample.SampledResults;
 import org.moeaframework.analysis.sample.Samples;
@@ -59,7 +60,7 @@ public interface SensitivityAnalysis<T extends SensitivityResult> {
 	 * @return the sensitivity results
 	 */
 	public default T evaluate(SampledResults<Double> results) {
-		return evaluate(results.stream().mapToDouble(x -> x.getValue()).toArray());
+		return evaluate(results.stream().mapToDouble(Pair::getValue).toArray());
 	}
 	
 }

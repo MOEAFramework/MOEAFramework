@@ -173,7 +173,7 @@ public class Solve extends CommandLineUtility {
 			
 			if (index >= 0) {
 				double lowerBound = Double.parseDouble(content.substring(0, index));
-				double upperBound = Double.parseDouble(content.substring(index+1, content.length()));
+				double upperBound = Double.parseDouble(content.substring(index+1));
 				return new RealVariable(lowerBound, upperBound);
 			} else {
 				throw new ParseException("invalid real specification '" + token + "', expected R(<lb>:<ub>)");
@@ -195,7 +195,7 @@ public class Solve extends CommandLineUtility {
 			
 			if (index >= 0) {
 				int lowerBound = Integer.parseInt(content.substring(0, index));
-				int upperBound = Integer.parseInt(content.substring(index+1, content.length()));
+				int upperBound = Integer.parseInt(content.substring(index+1));
 				return new BinaryIntegerVariable(lowerBound, upperBound);
 			} else {
 				throw new ParseException("invalid integer specification '" + token + "', expected I(<lb>:<ub>)");
