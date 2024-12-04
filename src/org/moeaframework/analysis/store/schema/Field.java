@@ -117,7 +117,7 @@ public class Field<T extends Comparable<? super T>> implements Comparable<Field<
 	
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder(17, 37)
+		return new HashCodeBuilder()
 				.append(normalizedName)
 				.toHashCode();
 	}

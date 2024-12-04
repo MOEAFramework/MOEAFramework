@@ -118,7 +118,7 @@ public class Schema {
 				unusedFields.remove(field);
 			}
 			
-			result.sort(null);
+			Collections.sort(result);
 		} else {
 			for (Field<?> field : fields) {
 				result.add(Pair.of(field, reference.get(field.getName())));
@@ -163,7 +163,7 @@ public class Schema {
 	
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder(17, 37)
+		return new HashCodeBuilder()
 				.append(fields)
 				.toHashCode();
 	}

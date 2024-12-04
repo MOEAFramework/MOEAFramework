@@ -183,7 +183,7 @@ public class Samples implements Iterable<Sample>, Formattable<Sample>, DataStrea
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder(17, 37)
+		return new HashCodeBuilder()
 				.append(samples)
 				.toHashCode();
 	}
