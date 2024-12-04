@@ -387,7 +387,7 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 	 */
 	private List<double[]> getSegments(int k) {
 		// These segments can be found at https://github.com/evo-mx/ZCAT/tree/main/src/seg
-		List<double[]> segments = new ArrayList<double[]>();
+		List<double[]> segments = new ArrayList<>();
 		
 		if (k == 3) {
 			segments.add(new double[] { 0.0,               0.243933581942011 });

@@ -135,7 +135,7 @@ public class RotationMatrixBuilder {
 		super();
 		this.dimension = dimension;
 		
-		planes = new ArrayList<Plane>();
+		planes = new ArrayList<>();
 	}
 	
 	/**
@@ -219,7 +219,7 @@ public class RotationMatrixBuilder {
 	 * @return a reference to this rotation matrix builder
 	 */
 	public RotationMatrixBuilder rotateK(int k) {
-		List<Plane> tempPlanes = new ArrayList<Plane>();
+		List<Plane> tempPlanes = new ArrayList<>();
 		
 		//generate the list of all available rotation planes
 		for (int i = 0; i < dimension - 1; i++) {

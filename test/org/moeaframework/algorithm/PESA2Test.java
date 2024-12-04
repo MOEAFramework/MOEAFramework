@@ -77,7 +77,7 @@ public class PESA2Test extends JMetalAlgorithmTest {
 		// since we're not calling iterate(), force the creation of gridMap
 		pesa2.gridMap = pesa2.createGridMap();
 		
-		Counter<Solution> counter = new Counter<Solution>();
+		Counter<Solution> counter = new Counter<>();
 		
 		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
 			Solution[] solutions = pesa2.selection.select(2, null);

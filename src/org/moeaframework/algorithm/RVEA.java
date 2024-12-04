@@ -142,7 +142,7 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 		population.setScalingFactor(Math.min(iteration / (double)maxIterations, 1.0));
 		
 		// create a random permutation of the population indices
-		List<Integer> indices = new ArrayList<Integer>();
+		List<Integer> indices = new ArrayList<>();
 		
 		for (int i = 0; i < populationSize; i++) {
 			indices.add(i);

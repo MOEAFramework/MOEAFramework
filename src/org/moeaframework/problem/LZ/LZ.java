@@ -325,8 +325,8 @@ public abstract class LZ extends AbstractProblem {
 			case 2 -> {
 				switch (lType) {
 					case 21, 22, 23, 24, 26 -> {
-						List<Double> aa = new ArrayList<Double>();
-						List<Double> bb = new ArrayList<Double>();
+						List<Double> aa = new ArrayList<>();
+						List<Double> bb = new ArrayList<>();
 		
 						for (int n = 1; n < numberOfVariables; n++) {
 							if (n % 2 == 0) {
@@ -344,8 +344,8 @@ public abstract class LZ extends AbstractProblem {
 						y_obj[1] = alpha[1] + g;
 					}
 					case 25 -> {
-						List<Double> aa = new ArrayList<Double>();
-						List<Double> bb = new ArrayList<Double>();
+						List<Double> aa = new ArrayList<>();
+						List<Double> bb = new ArrayList<>();
 		
 						for (int n = 1; n < numberOfVariables; n++) {
 							if (n % 3 == 0) {
@@ -376,9 +376,9 @@ public abstract class LZ extends AbstractProblem {
 			case 3 -> {
 				switch (lType) {
 					case 31, 32 -> {
-						List<Double> aa = new ArrayList<Double>();
-						List<Double> bb = new ArrayList<Double>();
-						List<Double> cc = new ArrayList<Double>();
+						List<Double> aa = new ArrayList<>();
+						List<Double> bb = new ArrayList<>();
+						List<Double> cc = new ArrayList<>();
 		
 						for (int n = 2; n < numberOfVariables; n++) {
 							double a = psfunc3(x_var[n], x_var[0], x_var[1], n);

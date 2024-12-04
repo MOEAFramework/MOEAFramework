@@ -289,7 +289,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 	 * @return the indicator values
 	 */
 	public List<IndicatorValues> applyAll(List<NondominatedPopulation> approximationSets) {
-		List<IndicatorValues> result = new ArrayList<IndicatorValues>();
+		List<IndicatorValues> result = new ArrayList<>();
 		
 		for (NondominatedPopulation approximationSet : approximationSets) {
 			result.add(apply(approximationSet));
@@ -774,14 +774,14 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 
 		@Override
 		public TabularData<Pair<StandardIndicator, Double>> asTabularData() {
-			TabularData<Pair<StandardIndicator, Double>> data = new TabularData<Pair<StandardIndicator, Double>>(asList());
-			data.addColumn(new Column<Pair<StandardIndicator, Double>, String>("Indicator", p -> p.getKey().name()));
-			data.addColumn(new Column<Pair<StandardIndicator, Double>, Double>("Value", Pair::getValue));
+			TabularData<Pair<StandardIndicator, Double>> data = new TabularData<>(asList());
+			data.addColumn(new Column<>("Indicator", p -> p.getKey().name()));
+			data.addColumn(new Column<>("Value", Pair::getValue));
 			return data;
 		}
 		
 		private Iterable<Pair<StandardIndicator, Double>> asList() {
-			List<Pair<StandardIndicator, Double>> results = new ArrayList<Pair<StandardIndicator, Double>>();
+			List<Pair<StandardIndicator, Double>> results = new ArrayList<>();
 			
 			for (StandardIndicator indicator : StandardIndicator.values()) {
 				double value = get(indicator);

@@ -57,7 +57,7 @@ public class AbstractCompoundVariation<T extends Variation> implements Variation
 	public AbstractCompoundVariation() {
 		super();
 
-		operators = new ArrayList<T>();
+		operators = new ArrayList<>();
 	}
 	
 	/**
@@ -124,7 +124,7 @@ public class AbstractCompoundVariation<T extends Variation> implements Variation
 		Solution[] solutions = Arrays.copyOf(parents, parents.length);
 		
 		for (T operator : operators) {
-			List<Solution> result = new ArrayList<Solution>();
+			List<Solution> result = new ArrayList<>();
 			
 			if (operator instanceof Mutation mutation) {
 				for (int i = 0; i < solutions.length; i++) {

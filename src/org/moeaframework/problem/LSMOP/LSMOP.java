@@ -202,7 +202,7 @@ public abstract class LSMOP implements Problem {
 		
 		// Split out the decision variables in each subcomponent
 		double[] x_f = Arrays.copyOfRange(x, 0, M - 1);
-		List<double[]> x_s = new ArrayList<double[]>();
+		List<double[]> x_s = new ArrayList<>();
 		
 		for (int i = 0; i < M; i++) {
 			int sumNNg = 0;

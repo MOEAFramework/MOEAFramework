@@ -343,7 +343,7 @@ public class BBOB2016Problems extends ProblemProvider {
 	
 				/* Initialize all the data of the inner problem */
 				double[] gallagher_peaks = BBOBUtils.uniform(numberOfPeaks-1, rseed);
-				List<Integer> rperm = new ArrayList<Integer>();
+				List<Integer> rperm = new ArrayList<>();
 	
 				for (int i = 0; i < numberOfPeaks-1; i++) {
 					rperm.add(i);

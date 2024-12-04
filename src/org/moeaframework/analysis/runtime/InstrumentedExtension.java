@@ -66,7 +66,7 @@ public class InstrumentedExtension extends PeriodicExtension implements Stateful
 	public InstrumentedExtension(int frequency, FrequencyType frequencyType) {
 		super(frequency, frequencyType);
 		series = new ResultSeries(IndexType.NFE);
-		collectors = new ArrayList<Collector>();
+		collectors = new ArrayList<>();
 	}
 	
 	/**

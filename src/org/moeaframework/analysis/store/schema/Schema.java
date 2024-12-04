@@ -109,7 +109,7 @@ public class Schema {
 	public List<Pair<Field<?>, String>> resolve(Reference reference) {
 		List<Pair<Field<?>, String>> result = new ArrayList<>();
 		
-		Set<String> unusedFields = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		Set<String> unusedFields = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
 		unusedFields.addAll(reference.fields());
 		
 		if (isSchemaless()) {

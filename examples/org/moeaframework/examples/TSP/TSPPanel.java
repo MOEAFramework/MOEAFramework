@@ -80,7 +80,7 @@ public class TSPPanel extends JPanel {
 			throw new IllegalArgumentException("problem instance does not support a graphical display");
 		}
 		
-		tours = new LinkedHashMap<Tour, TourDisplaySetting>();
+		tours = new LinkedHashMap<>();
 		nodeWidth = 4.0;
 		insets = new Insets((int)nodeWidth, (int)nodeWidth, (int)nodeWidth, (int)nodeWidth);
 		autoRepaint = true;

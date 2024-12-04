@@ -86,7 +86,7 @@ public interface DataStream<V> extends Formattable<V>, Iterable<V> {
 	 * @return the partition of results
 	 */
 	public default <R> Partition<V, R> map(Function<V, R> map) {
-		return new ImmutablePartition<V, R>(stream().map(x -> Pair.of(x, map.apply(x))));
+		return new ImmutablePartition<>(stream().map(x -> Pair.of(x, map.apply(x))));
 	}
 	
 	/**
@@ -96,7 +96,7 @@ public interface DataStream<V> extends Formattable<V>, Iterable<V> {
 	 * @throws ClassCastException if the value type is not {@link Comparable}
 	 */
 	public default DataStream<V> sorted() {
-		return new ImmutableDataStream<V>(stream().sorted());
+		return new ImmutableDataStream<>(stream().sorted());
 	}
 
 	/**
@@ -106,7 +106,7 @@ public interface DataStream<V> extends Formattable<V>, Iterable<V> {
 	 * @return the sorted stream
 	 */
 	public default DataStream<V> sorted(Comparator<V> comparator) {
-		return new ImmutableDataStream<V>(stream().sorted(comparator));
+		return new ImmutableDataStream<>(stream().sorted(comparator));
 	}
 	
 	/**
@@ -164,7 +164,7 @@ public interface DataStream<V> extends Formattable<V>, Iterable<V> {
 	 * @return the resulting data stream
 	 */
 	public default DataStream<V> skip(int n) {
-		return new ImmutableDataStream<V>(stream().skip(n));
+		return new ImmutableDataStream<>(stream().skip(n));
 	}
 	
 	/**
@@ -174,7 +174,7 @@ public interface DataStream<V> extends Formattable<V>, Iterable<V> {
 	 * @return the resulting data stream
 	 */
 	public default DataStream<V> filter(Predicate<V> predicate) {
-		return new ImmutableDataStream<V>(stream().filter(predicate));
+		return new ImmutableDataStream<>(stream().filter(predicate));
 	}
 	
 	/**
@@ -197,7 +197,7 @@ public interface DataStream<V> extends Formattable<V>, Iterable<V> {
 	 * @return the partition
 	 */
 	public default <K> Partition<K, V> keyedOn(Function<V, K> key) {
-		return new ImmutablePartition<K, V>(stream().map(x -> Pair.of(key.apply(x), x)));
+		return new ImmutablePartition<>(stream().map(x -> Pair.of(key.apply(x), x)));
 	}
 	
 	/**
@@ -230,7 +230,7 @@ public interface DataStream<V> extends Formattable<V>, Iterable<V> {
 	 * @return the resulting data stream
 	 */
 	public default DataStream<V> distinct() {
-		return new ImmutableDataStream<V>(stream().distinct());
+		return new ImmutableDataStream<>(stream().distinct());
 	}
 	
 	/**
@@ -262,8 +262,8 @@ public interface DataStream<V> extends Formattable<V>, Iterable<V> {
 	
 	@Override
 	public default TabularData<V> asTabularData() {
-		TabularData<V> table = new TabularData<V>(stream().toList());
-		table.addColumn(new Column<V, V>("Data", x -> x));
+		TabularData<V> table = new TabularData<>(stream().toList());
+		table.addColumn(new Column<>("Data", x -> x));
 		return table;
 	}
 	
@@ -274,7 +274,7 @@ public interface DataStream<V> extends Formattable<V>, Iterable<V> {
 	 * @return the constructed data stream
 	 */
 	public static <V> DataStream<V> of() {
-		return new ImmutableDataStream<V>();
+		return new ImmutableDataStream<>();
 	}
 	
 	/**
@@ -285,7 +285,7 @@ public interface DataStream<V> extends Formattable<V>, Iterable<V> {
 	 * @return the constructed data stream
 	 */
 	public static <V> DataStream<V> of(Stream<V> stream) {
-		return new ImmutableDataStream<V>(stream);
+		return new ImmutableDataStream<>(stream);
 	}
 	
 	/**
@@ -337,7 +337,7 @@ public interface DataStream<V> extends Formattable<V>, Iterable<V> {
 	 * @return the constructed data stream
 	 */
 	public static DataStream<Integer> range(int count) {
-		return new ImmutableDataStream<Integer>(IntStream.range(0, count).boxed());
+		return new ImmutableDataStream<>(IntStream.range(0, count).boxed());
 	}
 	
 	/**
@@ -348,7 +348,7 @@ public interface DataStream<V> extends Formattable<V>, Iterable<V> {
 	 * @return the constructed data stream
 	 */
 	public static DataStream<Integer> range(int startInclusive, int endExclusive) {
-		return new ImmutableDataStream<Integer>(IntStream.range(startInclusive, endExclusive).boxed());
+		return new ImmutableDataStream<>(IntStream.range(startInclusive, endExclusive).boxed());
 	}
 	
 	/**
@@ -360,7 +360,7 @@ public interface DataStream<V> extends Formattable<V>, Iterable<V> {
 	 * @return the constructed data stream
 	 */
 	public static <V> DataStream<V> repeat(int count, Supplier<V> supplier) {
-		return new ImmutableDataStream<V>(IntStream.range(0, count).mapToObj(i -> supplier.get()));
+		return new ImmutableDataStream<>(IntStream.range(0, count).mapToObj(i -> supplier.get()));
 	}
 	
 	/**
@@ -373,7 +373,7 @@ public interface DataStream<V> extends Formattable<V>, Iterable<V> {
 	 * @return the constructed data stream
 	 */
 	public static <V> DataStream<V> enumerate(int count, IntFunction<V> function) {
-		return new ImmutableDataStream<V>(IntStream.range(0, count).mapToObj(i -> function.apply(i)));
+		return new ImmutableDataStream<>(IntStream.range(0, count).mapToObj(i -> function.apply(i)));
 	}
 
 }

@@ -74,7 +74,7 @@ public class Sobol implements Sequence {
 	private static void loadDirectionNumbers() throws IOException {
 		try (LineReader lineReader = Resources.asLineReader(Sobol.class, DIRECTIONS_RESOURCE,
 				ResourceOption.REQUIRED).skipComments()) {
-			List<int[]> directions = new ArrayList<int[]>();
+			List<int[]> directions = new ArrayList<>();
 
 			lineReader.readLine(); // remove header line
 

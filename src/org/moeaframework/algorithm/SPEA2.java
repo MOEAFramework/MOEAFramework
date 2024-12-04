@@ -295,14 +295,14 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 		 * @param rawDistanceMatrix the distance matrix
 		 */
 		protected void initialize(double[][] rawDistanceMatrix) {
-			distanceMatrix = new LinkedList<List<Pair<Integer, Double>>>();
+			distanceMatrix = new LinkedList<>();
 			
 			for (int i = 0; i < rawDistanceMatrix.length; i++) {
-				List<Pair<Integer, Double>> distances = new LinkedList<Pair<Integer, Double>>();
+				List<Pair<Integer, Double>> distances = new LinkedList<>();
 				
 				for (int j = 0; j < rawDistanceMatrix[i].length; j++) {
 					if (i != j) {
-						distances.add(new Pair<Integer, Double>(j, rawDistanceMatrix[i][j]));
+						distances.add(new Pair<>(j, rawDistanceMatrix[i][j]));
 					}
 				}
 				
@@ -366,7 +366,7 @@ public class SPEA2 extends AbstractEvolutionaryAlgorithm {
 						iterator.remove();
 					} else if (point.getFirst() > index) {
 						// decrement the index so it stays aligned with the index in distanceMatrix
-						iterator.set(new Pair<Integer, Double>(point.getFirst()-1, point.getSecond()));
+						iterator.set(new Pair<>(point.getFirst()-1, point.getSecond()));
 					}
 				}
 			}

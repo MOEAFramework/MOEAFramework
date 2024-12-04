@@ -49,7 +49,7 @@ public class Rule {
 		super();
 		this.symbol = symbol;
 
-		productions = new ArrayList<Production>();
+		productions = new ArrayList<>();
 	}
 
 	/**

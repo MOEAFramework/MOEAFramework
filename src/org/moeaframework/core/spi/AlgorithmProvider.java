@@ -57,7 +57,7 @@ public abstract class AlgorithmProvider {
 	 * @return the algorithm names
 	 */
 	public Set<String> getDiagnosticToolAlgorithms() {
-		return new HashSet<String>();
+		return new HashSet<>();
 	}
 
 	/**

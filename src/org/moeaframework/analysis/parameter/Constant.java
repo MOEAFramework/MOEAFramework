@@ -109,7 +109,7 @@ public class Constant<T> extends AbstractParameter<T> {
 			throw new InvalidParameterException(tokens[0], "constants require exactly one value");
 		}
 		
-		return new Constant<String>(tokens[0], tokens[2]);
+		return new Constant<>(tokens[0], tokens[2]);
 	}
 
 }

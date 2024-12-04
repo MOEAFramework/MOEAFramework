@@ -47,7 +47,7 @@ public class OptionCompleter {
 	public OptionCompleter() {
 		super();
 
-		options = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		options = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
 	}
 
 	/**

@@ -428,7 +428,7 @@ public class Plot {
 	 * @return the list of doubles
 	 */
 	private List<Double> toList(double[] x) {
-		List<Double> result = new ArrayList<Double>();
+		List<Double> result = new ArrayList<>();
 
 		for (int i = 0; i < x.length; i++) {
 			result.add(x[i]);
@@ -444,10 +444,10 @@ public class Plot {
 	 * @return the list of lists of doubles
 	 */
 	private List<List<Double>> toList(double[][] x) {
-		List<List<Double>> result = new ArrayList<List<Double>>();
+		List<List<Double>> result = new ArrayList<>();
 
 		for (int i = 0; i < x.length; i++) {
-			List<Double> row = new ArrayList<Double>();
+			List<Double> row = new ArrayList<>();
 
 			for (int j = 0; j < x[i].length; j++) {
 				row.add(x[i][j]);
@@ -486,8 +486,8 @@ public class Plot {
 	 * @return a reference to this instance
 	 */
 	public Plot add(String label, Population population, int x, int y) {
-		List<Number> xs = new ArrayList<Number>();
-		List<Number> ys = new ArrayList<Number>();
+		List<Number> xs = new ArrayList<>();
+		List<Number> ys = new ArrayList<>();
 
 		for (Solution solution : population) {
 			if (solution.isFeasible()) {
@@ -543,8 +543,8 @@ public class Plot {
 	 * @return a reference to this instance
 	 */
 	private Plot add(String label, ResultSeries series, String property, XYSeriesCollection dataset) {
-		List<Number> xs = new ArrayList<Number>();
-		List<Number> ys = new ArrayList<Number>();
+		List<Number> xs = new ArrayList<>();
+		List<Number> ys = new ArrayList<>();
 
 		try {
 			for (IndexedResult result : series) {

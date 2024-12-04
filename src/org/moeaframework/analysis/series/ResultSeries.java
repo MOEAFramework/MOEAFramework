@@ -282,11 +282,11 @@ Streamable<IndexedResult> {
 	
 	@Override
 	public TabularData<IndexedResult> asTabularData() {
-		TabularData<IndexedResult> data = new TabularData<IndexedResult>(this);
+		TabularData<IndexedResult> data = new TabularData<>(this);
 		
 		if (!isEmpty()) {
 			if (!indexType.equals(IndexType.Singleton)) {
-				data.addColumn(new Column<IndexedResult, Integer>(getIndexType().name(), IndexedResult::getIndex));
+				data.addColumn(new Column<>(getIndexType().name(), IndexedResult::getIndex));
 			}
 			
 			for (String key : getDefinedProperties()) {
@@ -294,7 +294,7 @@ Streamable<IndexedResult> {
 					continue;
 				}
 				
-				data.addColumn(new Column<IndexedResult, String>(key, o -> o.getProperties().getString(key)));
+				data.addColumn(new Column<>(key, o -> o.getProperties().getString(key)));
 			}
 		}
 		

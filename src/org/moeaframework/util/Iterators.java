@@ -55,7 +55,7 @@ public class Iterators {
 	 */
 	@SafeVarargs
 	public static <T> Iterator<T> join(Iterator<T>... iterators) {
-		return new JoinIterators<T>(iterators);
+		return new JoinIterators<>(iterators);
 	}
 	
 	/**
@@ -67,7 +67,7 @@ public class Iterators {
 	 */
 	@SafeVarargs
 	public static <T> Iterable<T> join(Iterable<T>... iterables) {
-		return new JoinIterables<T>(iterables);
+		return new JoinIterables<>(iterables);
 	}
 	
 	/**
@@ -78,7 +78,7 @@ public class Iterators {
 	 * @return the indexed value
 	 */
 	public static <T> Iterator<IndexedValue<T>> enumerate(Iterator<T> iterator) {
-		return new IndexedIterator<T>(iterator);
+		return new IndexedIterator<>(iterator);
 	}
 	
 	/**
@@ -89,7 +89,7 @@ public class Iterators {
 	 * @return the indexed iterable
 	 */
 	public static <T> Iterable<IndexedValue<T>> enumerate(Iterable<T> iterable) {
-		return new IndexedIterable<T>(iterable);
+		return new IndexedIterable<>(iterable);
 	}
 	
 	/**
@@ -100,7 +100,7 @@ public class Iterators {
 	 * @return the indexed iterable
 	 */
 	public static <T> Iterable<IndexedValue<T>> enumerate(T[] array) {
-		return new IndexedIterable<T>(List.of(array));
+		return new IndexedIterable<>(List.of(array));
 	}
 	
 	/**
@@ -113,7 +113,7 @@ public class Iterators {
 	 * @return an iterator over pairs
 	 */
 	public static <K, T> Iterator<Pair<K, T>> zip(Iterator<K> iterator1, Iterator<T> iterator2) {
-		return new ZipIterator<K, T>(iterator1, iterator2);
+		return new ZipIterator<>(iterator1, iterator2);
 	}
 	
 	/**
@@ -126,7 +126,7 @@ public class Iterators {
 	 * @return an iterable over pairs
 	 */
 	public static <K, T> Iterable<Pair<K, T>> zip(Iterable<K> iterable1, Iterable<T> iterable2) {
-		return new ZipIterable<K, T>(iterable1, iterable2);
+		return new ZipIterable<>(iterable1, iterable2);
 	}
 	
 	/**
@@ -152,7 +152,7 @@ public class Iterators {
 	 * @return the result iterator
 	 */
 	public static <T, R> Iterator<R> map(Iterator<T> iterator, Function<T, R> function) {
-		return new MapIterator<T, R>(iterator, function);
+		return new MapIterator<>(iterator, function);
 	}
 	
 	/**
@@ -165,7 +165,7 @@ public class Iterators {
 	 * @return the result iterable
 	 */
 	public static <T, R> Iterable<R> map(Iterable<T> iterable, Function<T, R> function) {
-		return new MapIterable<T, R>(iterable, function);
+		return new MapIterable<>(iterable, function);
 	}
 	
 	/**
@@ -178,7 +178,7 @@ public class Iterators {
 	 * @return the result iterable
 	 */
 	public static <T, R> Iterable<R> map(T[] array, Function<T, R> function) {
-		return new MapIterable<T, R>(List.of(array), function);
+		return new MapIterable<>(List.of(array), function);
 	}
 	
 	/**
@@ -323,13 +323,13 @@ public class Iterators {
 
 		@Override
 		public Iterator<T> iterator() {
-			List<Iterator<T>> iterators = new ArrayList<Iterator<T>>();
+			List<Iterator<T>> iterators = new ArrayList<>();
 			
 			for (Iterable<T> iterable : iterables) {
 				iterators.add(iterable.iterator());
 			}
 			
-			return new JoinIterators<T>(iterators);
+			return new JoinIterators<>(iterators);
 		}
 		
 	}
@@ -390,7 +390,7 @@ public class Iterators {
 
 		@Override
 		public Iterator<IndexedValue<T>> iterator() {
-			return new IndexedIterator<T>(iterable.iterator());
+			return new IndexedIterator<>(iterable.iterator());
 		}
 		
 	}
@@ -413,7 +413,7 @@ public class Iterators {
 
 		@Override
 		public IndexedValue<T> next() {
-			return new IndexedValue<T>(index++, iterator.next());
+			return new IndexedValue<>(index++, iterator.next());
 		}
 
 		@Override
@@ -437,7 +437,7 @@ public class Iterators {
 
 		@Override
 		public Iterator<Pair<K, T>> iterator() {
-			return new ZipIterator<K, T>(iterable1.iterator(), iterable2.iterator());
+			return new ZipIterator<>(iterable1.iterator(), iterable2.iterator());
 		}
 		
 	}
@@ -515,7 +515,7 @@ public class Iterators {
 
 		@Override
 		public Iterator<R> iterator() {
-			return new MapIterator<T, R>(iterable.iterator(), function);
+			return new MapIterator<>(iterable.iterator(), function);
 		}
 		
 	}

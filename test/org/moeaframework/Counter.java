@@ -27,7 +27,7 @@ public class Counter<T> {
 	
 	public Counter() {
 		super();
-		this.counters = new HashMap<T, Integer>();
+		this.counters = new HashMap<>();
 	}
 	
 	public Set<T> values() {

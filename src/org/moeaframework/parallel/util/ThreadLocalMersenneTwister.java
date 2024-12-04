@@ -54,7 +54,7 @@ public class ThreadLocalMersenneTwister extends Random {
 	static {
 		SEEDER = new SecureRandom();
 
-		LOCAL_RANDOM = new ThreadLocal<MersenneTwister>() {
+		LOCAL_RANDOM = new ThreadLocal<>() {
 
 			@Override
 			protected MersenneTwister initialValue() {

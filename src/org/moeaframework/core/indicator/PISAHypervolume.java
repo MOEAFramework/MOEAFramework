@@ -263,7 +263,7 @@ public class PISAHypervolume extends NormalizedIndicator {
 	 * @return the hypervolume of the normalized approximation set
 	 */
 	static double evaluate(Problem problem, NondominatedPopulation approximationSet) {
-		List<Solution> solutions = new ArrayList<Solution>();
+		List<Solution> solutions = new ArrayList<>();
 
 		outer: for (Solution solution : approximationSet) {
 			//prune any solutions which exceed the Nadir point

@@ -69,7 +69,7 @@ public class RandomGenerator implements WeightGenerator {
 	 * @return the weights
 	 */
 	private List<double[]> initializeWeights2D() {
-		List<double[]> weights = new ArrayList<double[]>();
+		List<double[]> weights = new ArrayList<>();
 		
 		// add boundary weights
 		weights.add(new double[] { 0.0, 1.0 });
@@ -90,7 +90,7 @@ public class RandomGenerator implements WeightGenerator {
 	 */
 	private List<double[]> initializeWeightsND() {
 		int N = 50;
-		List<double[]> candidates = new ArrayList<double[]>(numberOfPoints * N);
+		List<double[]> candidates = new ArrayList<>(numberOfPoints * N);
 
 		// create random weights
 		for (int i = 0; i < numberOfPoints * N; i++) {
@@ -109,7 +109,7 @@ public class RandomGenerator implements WeightGenerator {
 			candidates.add(weight);
 		}
 		
-		List<double[]> weights = new ArrayList<double[]>(numberOfPoints * N);
+		List<double[]> weights = new ArrayList<>(numberOfPoints * N);
 
 		// add boundary weights (1,0,...,0), (0,1,...,0), ..., (0,...,0,1)
 		for (int i = 0; i < numberOfObjectives; i++) {

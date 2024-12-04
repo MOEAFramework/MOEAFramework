@@ -182,7 +182,7 @@ public class PCX extends MultiParentVariation {
 
 		double[] g = Vector.mean(x);
 
-		List<double[]> e_eta = new ArrayList<double[]>();
+		List<double[]> e_eta = new ArrayList<>();
 		e_eta.add(Vector.subtract(x[k - 1], g));
 
 		double D = 0.0;

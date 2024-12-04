@@ -125,7 +125,7 @@ public class ResultFileMetadata extends CommandLineUtility {
 			
 			for (int i = 0; i < fields.length; i++) {
 				final int fieldIndex = i;
-				table.addColumn(new Column<Object[], Object>(fields[i], x -> x[fieldIndex]));
+				table.addColumn(new Column<>(fields[i], x -> x[fieldIndex]));
 			}
 			
 			try (PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {

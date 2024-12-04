@@ -28,8 +28,8 @@ public class ParameterSetTest {
 	public void testSample() {
 		ParameterSet parameterSet = new ParameterSet();
 		parameterSet.add(new IntegerRange("int", 0, 10));
-		parameterSet.add(new Enumeration<String>("string", "foo", "bar"));
-		parameterSet.add(new Constant<Double>("double", 0.5));
+		parameterSet.add(new Enumeration<>("string", "foo", "bar"));
+		parameterSet.add(new Constant<>("double", 0.5));
 		
 		Samples samples = parameterSet.sample(2, new TestSequenceGenerator());
 		
@@ -45,9 +45,9 @@ public class ParameterSetTest {
 	@Test
 	public void testEnumerate() {
 		ParameterSet parameterSet = new ParameterSet();
-		parameterSet.add(new Enumeration<Integer>("int", 0, 1));
-		parameterSet.add(new Enumeration<String>("string", "foo", "bar"));
-		parameterSet.add(new Constant<Double>("double", 0.5));
+		parameterSet.add(new Enumeration<>("int", 0, 1));
+		parameterSet.add(new Enumeration<>("string", "foo", "bar"));
+		parameterSet.add(new Constant<>("double", 0.5));
 		
 		Samples samples = parameterSet.enumerate();
 		
@@ -69,8 +69,8 @@ public class ParameterSetTest {
 	@Test
 	public void testIsEnumerable() {
 		ParameterSet parameterSet = new ParameterSet();
-		parameterSet.add(new Enumeration<String>("string", "foo", "bar"));
-		parameterSet.add(new Constant<Double>("double", 0.5));
+		parameterSet.add(new Enumeration<>("string", "foo", "bar"));
+		parameterSet.add(new Constant<>("double", 0.5));
 		
 		Assert.assertTrue(parameterSet.isEnumerable());
 		
@@ -82,9 +82,9 @@ public class ParameterSetTest {
 	@Test
 	public void testGet() {
 		ParameterSet parameterSet = new ParameterSet();
-		parameterSet.add(new Enumeration<Integer>("int", 0, 1));
-		parameterSet.add(new Enumeration<String>("string", "foo", "bar"));
-		parameterSet.add(new Constant<Double>("double", 0.5));
+		parameterSet.add(new Enumeration<>("int", 0, 1));
+		parameterSet.add(new Enumeration<>("string", "foo", "bar"));
+		parameterSet.add(new Constant<>("double", 0.5));
 		
 		Assert.assertEquals("string", parameterSet.get(1).getName());
 		Assert.assertEquals("string", parameterSet.get("string").getName());
@@ -95,9 +95,9 @@ public class ParameterSetTest {
 	@Test
 	public void testIndexOf() {
 		ParameterSet parameterSet = new ParameterSet();
-		parameterSet.add(new Enumeration<Integer>("int", 0, 1));
-		parameterSet.add(new Enumeration<String>("string", "foo", "bar"));
-		parameterSet.add(new Constant<Double>("double", 0.5));
+		parameterSet.add(new Enumeration<>("int", 0, 1));
+		parameterSet.add(new Enumeration<>("string", "foo", "bar"));
+		parameterSet.add(new Constant<>("double", 0.5));
 		
 		Assert.assertEquals(0, parameterSet.indexOf(parameterSet.get(0)));
 		Assert.assertEquals(1, parameterSet.indexOf(parameterSet.get(1)));

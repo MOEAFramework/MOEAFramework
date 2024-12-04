@@ -109,7 +109,7 @@ public class NSGAII extends AbstractEvolutionaryAlgorithm implements EpsilonBoxE
 		if (selection == null) {
 			// recreate the original NSGA-II implementation using binary tournament selection without replacement;
 			// this version works by maintaining a pool of candidate parents.
-			LinkedList<Solution> pool = new LinkedList<Solution>();
+			LinkedList<Solution> pool = new LinkedList<>();
 			
 			DominanceComparator comparator = new ChainedComparator(
 					new ParetoDominanceComparator(),
@@ -118,7 +118,7 @@ public class NSGAII extends AbstractEvolutionaryAlgorithm implements EpsilonBoxE
 			while (offspring.size() < populationSize) {
 				// ensure the pool has enough solutions
 				while (pool.size() < 2*variation.getArity()) {
-					List<Solution> poolAdditions = new ArrayList<Solution>();
+					List<Solution> poolAdditions = new ArrayList<>();
 					
 					for (Solution solution : population) {
 						poolAdditions.add(solution);

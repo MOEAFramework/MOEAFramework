@@ -357,10 +357,10 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 	 * @return the association of solutions to reference points
 	 */
 	protected List<List<Solution>> associateToReferencePoint(Population population) {
-		List<List<Solution>> result = new ArrayList<List<Solution>>();
+		List<List<Solution>> result = new ArrayList<>();
 
 		for (int i = 0; i < weights.length; i++) {
-			result.add(new ArrayList<Solution>());
+			result.add(new ArrayList<>());
 		}
 
 		for (Solution solution : population) {
@@ -458,12 +458,12 @@ public class ReferencePointNondominatedSortingPopulation extends NondominatedSor
 			// associate each solution to a reference point
 			List<List<Solution>> members = associateToReferencePoint(this);
 			List<List<Solution>> potentialMembers = associateToReferencePoint(front);
-			Set<Integer> excluded = new HashSet<Integer>();
+			Set<Integer> excluded = new HashSet<>();
 			
 			// loop over niche-preservation operation until population is full
 			while (size() < size) {
 				// identify reference point with the fewest associated members
-				List<Integer> minIndices = new ArrayList<Integer>();
+				List<Integer> minIndices = new ArrayList<>();
 				int minCount = Integer.MAX_VALUE;
 
 				for (int i = 0; i < members.size(); i++) {

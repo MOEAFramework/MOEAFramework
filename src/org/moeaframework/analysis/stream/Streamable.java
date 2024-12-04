@@ -46,7 +46,7 @@ public interface Streamable<V>  {
 	 * @return the data stream
 	 */
 	public default DataStream<V> asDataStream() {
-		return new ImmutableDataStream<V>(stream());
+		return new ImmutableDataStream<>(stream());
 	}
 	
 	/**
@@ -57,7 +57,7 @@ public interface Streamable<V>  {
 	 * @return the partition
 	 */
 	public default <K> Partition<K, V> asPartition(Function<V, K> key) {
-		return new ImmutablePartition<K, V>(stream().map(x -> Pair.of(key.apply(x), x)));
+		return new ImmutablePartition<>(stream().map(x -> Pair.of(key.apply(x), x)));
 	}
 
 }

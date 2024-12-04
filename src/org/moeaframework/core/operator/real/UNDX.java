@@ -188,8 +188,8 @@ public class UNDX extends MultiParentVariation {
 
 		double[] g = Vector.mean(x);
 
-		List<double[]> e_zeta = new ArrayList<double[]>();
-		List<double[]> e_eta = new ArrayList<double[]>();
+		List<double[]> e_zeta = new ArrayList<>();
+		List<double[]> e_eta = new ArrayList<>();
 
 		// basis vectors defined by parents
 		for (int i = 0; i < k - 1; i++) {

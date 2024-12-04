@@ -50,7 +50,7 @@ public class IslandModel {
 		this.migration = migration;
 		this.topology = topology;
 		
-		islands = new ArrayList<Island>();
+		islands = new ArrayList<>();
 	}
 
 	/**

@@ -52,7 +52,7 @@ public class RingTopology implements Topology {
 	
 	@Override
 	public List<Island> getNeighbors(Island current, List<Island> allIslands) {
-		List<Island> result = new ArrayList<Island>();
+		List<Island> result = new ArrayList<>();
 		int index = allIslands.indexOf(current);
 		
 		if (allIslands.size() > 1) {

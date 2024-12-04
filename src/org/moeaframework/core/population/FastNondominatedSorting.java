@@ -81,12 +81,12 @@ public class FastNondominatedSorting extends NondominatedSorting {
 		
 		// compute for each solution s_i the solutions s_j that it dominates and the number of times it is dominated
 		int[] dominatedCounts = new int[N];
-		List<List<Integer>> dominatesList = new ArrayList<List<Integer>>();
-		List<Integer> currentFront = new ArrayList<Integer>();
+		List<List<Integer>> dominatesList = new ArrayList<>();
+		List<Integer> currentFront = new ArrayList<>();
 		
 		
 		for (int i = 0; i < N; i++) {
-			List<Integer> dominates = new ArrayList<Integer>();
+			List<Integer> dominates = new ArrayList<>();
 			int dominatedCount = 0;
 			
 			for (int j = 0; j < N; j++) {
@@ -111,7 +111,7 @@ public class FastNondominatedSorting extends NondominatedSorting {
 		int rank = 0;
 		
 		while (!currentFront.isEmpty()) {
-			List<Integer> nextFront = new ArrayList<Integer>();
+			List<Integer> nextFront = new ArrayList<>();
 			Population solutionsInFront = new Population();
 			
 			for (int i = 0; i < currentFront.size(); i++) {

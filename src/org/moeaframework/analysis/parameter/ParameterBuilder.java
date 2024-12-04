@@ -187,7 +187,7 @@ public class ParameterBuilder {
 		 * @return the parameter
 		 */
 		public Constant<Integer> constant(int value) {
-			return new Constant<Integer>(name, value);
+			return new Constant<>(name, value);
 		}
 		
 		/**
@@ -264,7 +264,7 @@ public class ParameterBuilder {
 		}
 		
 		Enumeration<Integer> of(Stream<Integer> stream) {
-			return new Enumeration<Integer>(name, stream.toList());
+			return new Enumeration<>(name, stream.toList());
 		}
 		
 		/**
@@ -296,7 +296,7 @@ public class ParameterBuilder {
 		 * @return the parameter
 		 */
 		public Constant<Long> constant(long value) {
-			return new Constant<Long>(name, value);
+			return new Constant<>(name, value);
 		}
 		
 		/**
@@ -373,7 +373,7 @@ public class ParameterBuilder {
 		}
 		
 		Enumeration<Long> of(Stream<Long> stream) {
-			return new Enumeration<Long>(name, stream.toList());
+			return new Enumeration<>(name, stream.toList());
 		}
 		
 		/**
@@ -405,7 +405,7 @@ public class ParameterBuilder {
 		 * @return the parameter
 		 */
 		public Constant<Double> constant(double value) {
-			return new Constant<Double>(name, value);
+			return new Constant<>(name, value);
 		}
 		
 		/**
@@ -460,7 +460,7 @@ public class ParameterBuilder {
 		}
 		
 		Enumeration<Double> of(Stream<Double> stream) {
-			return new Enumeration<Double>(name, stream.toList());
+			return new Enumeration<>(name, stream.toList());
 		}
 		
 		/**
@@ -492,7 +492,7 @@ public class ParameterBuilder {
 		 * @return the parameter
 		 */
 		public Constant<String> constant(String value) {
-			return new Constant<String>(name, value);
+			return new Constant<>(name, value);
 		}
 		
 		/**
@@ -506,7 +506,7 @@ public class ParameterBuilder {
 		}
 		
 		Enumeration<String> of(Stream<String> stream) {
-			return new Enumeration<String>(name, stream.toList());
+			return new Enumeration<>(name, stream.toList());
 		}
 		
 	}

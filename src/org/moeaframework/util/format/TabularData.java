@@ -93,8 +93,8 @@ public class TabularData<T> implements Displayable {
 	public TabularData(Iterable<T> dataSource) {
 		super();
 		this.dataSource = dataSource;
-		this.columns = new ArrayList<Column<T, ?>>();
-		this.formatters = new LinkedList<Formatter<?>>();
+		this.columns = new ArrayList<>();
+		this.formatters = new LinkedList<>();
 
 		addFormatter(NumberFormatter.getDefault());
 		addFormatter(new VariableFormatter(this));
@@ -507,7 +507,7 @@ public class TabularData<T> implements Displayable {
 	 * @return the formatted data
 	 */
 	private List<String[]> format(CharSequenceTranslator translator) {
-		List<String[]> formattedData = new ArrayList<String[]>();
+		List<String[]> formattedData = new ArrayList<>();
 
 		// reset the column width
 		for (int j = 0; j < columns.size(); j++) {

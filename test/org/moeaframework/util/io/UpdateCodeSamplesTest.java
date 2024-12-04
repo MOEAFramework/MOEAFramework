@@ -288,7 +288,7 @@ public class UpdateCodeSamplesTest {
 				```
 				""";
 		
-		List<String> args = new ArrayList<String>();
+		List<String> args = new ArrayList<>();
 		args.add(markdownFile.getAbsolutePath());
 		
 		if (update) {

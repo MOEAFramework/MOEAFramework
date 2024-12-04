@@ -92,7 +92,7 @@ public class Solution implements Copyable<Solution>, Formattable<Solution>, Seri
 		variables = new Variable[numberOfVariables];
 		objectives = new Objective[numberOfObjectives];
 		constraints = new Constraint[numberOfConstraints];
-		attributes = new HashMap<String, Serializable>();
+		attributes = new HashMap<>();
 	}
 
 	/**
@@ -619,24 +619,21 @@ public class Solution implements Copyable<Solution>, Formattable<Solution>, Seri
 	
 	@Override
 	public TabularData<Solution> asTabularData() {
-		TabularData<Solution> data = new TabularData<Solution>(List.of(this));
+		TabularData<Solution> data = new TabularData<>(List.of(this));
 
 		for (int i = 0; i < getNumberOfVariables(); i++) {
 			final Variable variable = getVariable(i);
-			data.addColumn(new Column<Solution, Variable>(Variable.getNameOrDefault(variable, i),
-					unused -> variable));
+			data.addColumn(new Column<>(Variable.getNameOrDefault(variable, i), unused -> variable));
 		}
 			
 		for (int i = 0; i < getNumberOfObjectives(); i++) {
 			final Objective objective = getObjective(i);
-			data.addColumn(new Column<Solution, Objective>(Objective.getNameOrDefault(objective, i),
-					unused -> objective));
+			data.addColumn(new Column<>(Objective.getNameOrDefault(objective, i), unused -> objective));
 		}
 			
 		for (int i = 0; i < getNumberOfConstraints(); i++) {
 			final Constraint constraint = getConstraint(i);
-			data.addColumn(new Column<Solution, Constraint>(Constraint.getNameOrDefault(constraint, i),
-					unused -> constraint));
+			data.addColumn(new Column<>(Constraint.getNameOrDefault(constraint, i), unused -> constraint));
 		}
 		
 		return data;

@@ -158,7 +158,7 @@ public class SolveTest {
 	}
 	
 	private CommandLine createCommandLine(Solve solve, String... args) throws ParseException {
-		List<String> completeArgs = new ArrayList<String>();
+		List<String> completeArgs = new ArrayList<>();
 		completeArgs.add("-f");
 		completeArgs.add("output.dat");
 		completeArgs.add("-a");

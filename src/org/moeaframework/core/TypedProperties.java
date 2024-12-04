@@ -122,8 +122,8 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 		tokenizer.reset();
 		tokenizer.setDelimiter(separator);
 		
-		Map<String, String> tempProperties = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
-		Set<String> tempAccessedKeys = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		Map<String, String> tempProperties = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		Set<String> tempAccessedKeys = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
 		
 		if (threadSafe) {
 			tempProperties = Collections.synchronizedMap(tempProperties);
@@ -1257,9 +1257,9 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	
 	@Override
 	public TabularData<Entry<String, String>> asTabularData() {
-		TabularData<Entry<String, String>> table = new TabularData<Entry<String, String>>(properties.entrySet());
-		table.addColumn(new Column<Entry<String, String>, String>("Property", Entry::getKey));
-		table.addColumn(new Column<Entry<String, String>, String>("Value", Entry::getValue));
+		TabularData<Entry<String, String>> table = new TabularData<>(properties.entrySet());
+		table.addColumn(new Column<>("Property", Entry::getKey));
+		table.addColumn(new Column<>("Value", Entry::getValue));
 		return table;
 	}
 	
@@ -1277,7 +1277,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * @return the accessed properties
 	 */
 	public Set<String> getAccessedProperties() {
-		Set<String> result = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		Set<String> result = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
 		result.addAll(accessedKeys);
 		return result;
 	}
@@ -1289,7 +1289,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 * @return the unaccessed or orphaned properties
 	 */
 	public Set<String> getUnaccessedProperties() {
-		Set<String> orphanedProperties = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		Set<String> orphanedProperties = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
 		orphanedProperties.addAll(properties.keySet());
 		orphanedProperties.removeAll(accessedKeys);
 		return orphanedProperties;

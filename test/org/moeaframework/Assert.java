@@ -156,7 +156,7 @@ public class Assert extends org.junit.Assert {
 	
 	public static void assertEquals(TypedProperties expected, TypedProperties actual) {
 		if (!expected.equals(actual)) {
-			Set<String> keys = new HashSet<String>();
+			Set<String> keys = new HashSet<>();
 			keys.addAll(expected.keySet());
 			keys.addAll(actual.keySet());
 			

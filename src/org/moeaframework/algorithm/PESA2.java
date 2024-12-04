@@ -155,14 +155,14 @@ public class PESA2 extends AbstractEvolutionaryAlgorithm {
 	 */
 	protected Map<Integer, List<Solution>> createGridMap() {
 		AdaptiveGridArchive archive = getArchive();
-		Map<Integer, List<Solution>> result = new HashMap<Integer, List<Solution>>();
+		Map<Integer, List<Solution>> result = new HashMap<>();
 		
 		for (Solution solution : archive) {
 			int index = archive.findIndex(solution);
 			List<Solution> solutions = result.get(index);
 			
 			if (solutions == null) {
-				solutions = new ArrayList<Solution>();
+				solutions = new ArrayList<>();
 				result.put(index, solutions);
 			}
 			

@@ -53,7 +53,7 @@ public class ContextFreeGrammar {
 	public ContextFreeGrammar() {
 		super();
 
-		rules = new ArrayList<Rule>();
+		rules = new ArrayList<>();
 		wrapLimit = 10;
 	}
 
@@ -150,7 +150,7 @@ public class ContextFreeGrammar {
 		}
 
 		StringBuilder sb = new StringBuilder();
-		Stack<Symbol> remaining = new Stack<Symbol>();
+		Stack<Symbol> remaining = new Stack<>();
 
 		int index = 0;
 		int wraps = 0;
@@ -202,7 +202,7 @@ public class ContextFreeGrammar {
 			return false;
 		}
 
-		Set<Symbol> symbols = new HashSet<Symbol>();
+		Set<Symbol> symbols = new HashSet<>();
 
 		for (int i = 0; i < size(); i++) {
 			Rule rule = get(i);

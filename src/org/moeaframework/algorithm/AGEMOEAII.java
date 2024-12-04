@@ -250,7 +250,7 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 
 			// Survival score
 			List<Solution> remaining = front.asList();
-			List<Solution> assigned = new ArrayList<Solution>();
+			List<Solution> assigned = new ArrayList<>();
 
 			for (Solution solution : extremePoints) {
 				Fitness.setAttribute(solution, Double.POSITIVE_INFINITY);
@@ -396,7 +396,7 @@ public class AGEMOEAII extends AbstractEvolutionaryAlgorithm {
 		 */
 		protected double fitGeometry(Population front, Solution[] extremePoints) {
 			double[] d = new double[front.size()];
-			Set<Solution> extremePointsSet = new HashSet<Solution>(List.of(extremePoints));
+			Set<Solution> extremePointsSet = new HashSet<>(List.of(extremePoints));
 
 			for (int i = 0; i < front.size(); i++) {
 				if (extremePointsSet.contains(front.get(i))) {

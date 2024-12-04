@@ -117,7 +117,7 @@ public class SSXTest extends AbstractSubsetOperatorTest<SSX> {
 		Set<Integer> original2set = original2.getSet();
 		Set<Integer> new2set = new2.getSet();
 		
-		Set<Integer> intersection = new HashSet<Integer>(original1set);
+		Set<Integer> intersection = new HashSet<>(original1set);
 		intersection.retainAll(original2set);
 		
 		original1set.removeAll(intersection);

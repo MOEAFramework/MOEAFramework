@@ -55,7 +55,7 @@ public class Extensions implements Iterable<Extension>, Stateful, Configurable {
 	public Extensions(Algorithm algorithm) {
 		super();
 		this.algorithm = algorithm;
-		this.extensions = new ArrayList<Extension>();
+		this.extensions = new ArrayList<>();
 	}
 	
 	/**

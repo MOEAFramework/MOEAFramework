@@ -126,7 +126,7 @@ public class VectorTest {
 		double[][] input = new double[][] { { 3.0, 1.0 }, { 2.0, 2.0 } };
 		double[][] expected = new double[][] { { 3.0, 1.0 }, { -2.0 / 5.0, 6.0 / 5.0 } };
 
-		List<double[]> basis = new ArrayList<double[]>();
+		List<double[]> basis = new ArrayList<>();
 
 		Assert.assertArrayEquals(expected[0], Vector.orthogonalize(input[0], basis), TestThresholds.HIGH_PRECISION);
 

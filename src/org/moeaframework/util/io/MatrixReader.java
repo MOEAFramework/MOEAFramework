@@ -218,7 +218,7 @@ public class MatrixReader implements Iterable<double[]>, Iterator<double[]>, Clo
 	 * @return the values stored in the file
 	 */
 	public double[][] readAll() {
-		List<double[]> data = new ArrayList<double[]>();
+		List<double[]> data = new ArrayList<>();
 			
 		while (hasNext()) {
 			data.add(next());
@@ -234,7 +234,7 @@ public class MatrixReader implements Iterable<double[]>, Iterator<double[]>, Clo
 	 * @return the values stored in the column
 	 */
 	public double[] readColumn(int index) {
-		List<Double> data = new ArrayList<Double>();
+		List<Double> data = new ArrayList<>();
 				
 		while (hasNext()) {
 			data.add(next()[index]);

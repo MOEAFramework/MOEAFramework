@@ -52,7 +52,7 @@ public class Environment {
 		super();
 		this.parent = parent;
 		
-		memory = new HashMap<String, Object>();
+		memory = new HashMap<>();
 	}
 	
 	/**

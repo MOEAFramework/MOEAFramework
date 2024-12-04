@@ -125,7 +125,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	 */
 	public UpdateCodeSamples() {
 		super();
-		cache = new HashMap<String, String>();
+		cache = new HashMap<>();
 	}
 	
 	@Override
@@ -386,7 +386,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	 */
 	private List<String> getNextCodeBlock(LineReader reader, PrintWriter writer, FileType fileType,
 			String lineSeparator) throws IOException {
-		List<String> content = new ArrayList<String>();
+		List<String> content = new ArrayList<>();
 		boolean inCodeBlock = false;
 		
 		for (String line : reader) {
@@ -482,7 +482,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		String extension = FilenameUtils.getExtension(filename);
 		
 		if (extension.equalsIgnoreCase("java") || extension.equalsIgnoreCase("class")) {
-			List<String> command = new ArrayList<String>();
+			List<String> command = new ArrayList<>();
 			command.add("java");
 			command.add("-classpath");
 			command.add(getClassPath(classpath));
@@ -688,7 +688,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @throws IOException if an I/O error occurred
 		 */
 		public List<String> format(String content, FileType fileType) throws IOException {
-			return format(new ArrayList<String>(content.lines().toList()), fileType);
+			return format(new ArrayList<>(content.lines().toList()), fileType);
 		}
 		
 		/**
@@ -846,7 +846,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			String content = String.join(DEFAULT_LINE_SEPARATOR, lines);
 			content = stripComments(content);
 			
-			List<String> result = new ArrayList<String>(content.lines().toList());
+			List<String> result = new ArrayList<>(content.lines().toList());
 			return stripLeadingAndTrailingBlankLines(result);
 		}
 		
@@ -859,7 +859,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		public List<String> stripIndentation(List<String> lines) {
 			String content = String.join(DEFAULT_LINE_SEPARATOR, lines);
 			content = content.stripIndent();
-			return new ArrayList<String>(content.lines().toList());
+			return new ArrayList<>(content.lines().toList());
 		}
 		
 		/**
@@ -869,7 +869,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @return the updated code block
 		 */
 		public List<String> replaceTabsWithSpaces(List<String> lines) {
-			List<String> result = new ArrayList<String>();
+			List<String> result = new ArrayList<>();
 			
 			for (String line : lines) {
 				result.add(line.replaceAll("[\\t]", "    "));
@@ -885,7 +885,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @return the updated code block
 		 */
 		public List<String> stripLeadingAndTrailingBlankLines(List<String> lines) {
-			List<String> result = new ArrayList<String>(lines);
+			List<String> result = new ArrayList<>(lines);
 			
 			while (result.get(0).isBlank()) {
 				result.remove(0);
@@ -1079,8 +1079,8 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @return the name of the "brush"
 		 */
 		public String getBrush(Language language) {
-			final Set<String> markdownBrush = new HashSet<String>(Arrays.asList("java", "c", "bash", "text"));
-			final Set<String> htmlBrush = new HashSet<String>(Arrays.asList("java"));
+			final Set<String> markdownBrush = new HashSet<>(Arrays.asList("java", "c", "bash", "text"));
+			final Set<String> htmlBrush = new HashSet<>(Arrays.asList("java"));
 			
 			String brushName = language.name().toLowerCase();
 			

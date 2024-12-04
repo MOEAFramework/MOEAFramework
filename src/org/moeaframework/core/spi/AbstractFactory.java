@@ -50,7 +50,7 @@ public class AbstractFactory<T> implements Iterable<T> {
 	public AbstractFactory(Class<T> type) {
 		super();
 		providers = ServiceLoader.load(type);
-		customProviders = new ArrayList<T>();
+		customProviders = new ArrayList<>();
 	}
 	
 	/**

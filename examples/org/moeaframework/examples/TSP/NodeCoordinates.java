@@ -73,7 +73,7 @@ public class NodeCoordinates extends DistanceTable {
 		this.type = type;
 		this.distanceFunction = distanceFunction;
 		
-		nodes = new HashMap<Integer, Node>();
+		nodes = new HashMap<>();
 	}
 	
 	@Override

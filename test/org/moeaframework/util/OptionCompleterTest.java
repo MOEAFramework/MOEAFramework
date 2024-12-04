@@ -78,7 +78,7 @@ public class OptionCompleterTest {
 		OptionCompleter completer1 = new OptionCompleter("subset");
 		Assert.assertEquals("subset", completer1.lookup("sub"));
 
-		List<String> options = new ArrayList<String>();
+		List<String> options = new ArrayList<>();
 		options.add("subset");
 
 		OptionCompleter completer2 = new OptionCompleter(options);

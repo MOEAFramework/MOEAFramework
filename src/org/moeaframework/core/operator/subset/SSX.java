@@ -66,7 +66,7 @@ public class SSX extends TypeSafeCrossover<Subset> {
 		Set<Integer> s1set = s1.getSet();
 		Set<Integer> s2set = s2.getSet();
 		
-		Set<Integer> intersection = new HashSet<Integer>(s1set);
+		Set<Integer> intersection = new HashSet<>(s1set);
 		intersection.retainAll(s2set);
 		
 		s1set.removeAll(intersection);

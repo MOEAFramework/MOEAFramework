@@ -249,15 +249,15 @@ public class IndicatorStatistics implements Formattable<String> {
 	public TabularData<String> asTabularData() {
 		TabularData<String> table = new TabularData<>(data.keySet());
 		
-		table.addColumn(new Column<String, String>("Name", x -> x));
-		table.addColumn(new Column<String, Double>("Min", this::getMin));
-		table.addColumn(new Column<String, Double>("Median", this::getMedian));
-		table.addColumn(new Column<String, Double>("Max", this::getMax));
-		table.addColumn(new Column<String, Double>("IQR (+/-)", this::getIQR));
-		table.addColumn(new Column<String, Integer>("Count", this::getN));
+		table.addColumn(new Column<>("Name", x -> x));
+		table.addColumn(new Column<>("Min", this::getMin));
+		table.addColumn(new Column<>("Median", this::getMedian));
+		table.addColumn(new Column<>("Max", this::getMax));
+		table.addColumn(new Column<>("IQR (+/-)", this::getIQR));
+		table.addColumn(new Column<>("Count", this::getN));
 		
 		if (data.size() > 1) {
-			table.addColumn(new Column<String, String>("Statistically Similar (a=0.05)",
+			table.addColumn(new Column<>("Statistically Similar (a=0.05)",
 					x -> String.join(", ", getStatisticallySimilar(x, 0.05))));
 		}
 		

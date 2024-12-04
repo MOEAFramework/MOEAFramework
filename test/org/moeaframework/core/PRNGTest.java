@@ -170,8 +170,8 @@ public class PRNGTest {
 	@Test
 	public void testShuffleList() {
 		int P = 7;
-		List<Integer> list = new ArrayList<Integer>();
-		List<DescriptiveStatistics> statistics = new ArrayList<DescriptiveStatistics>();
+		List<Integer> list = new ArrayList<>();
+		List<DescriptiveStatistics> statistics = new ArrayList<>();
 
 		for (int i = 0; i < P; i++) {
 			list.add(i);

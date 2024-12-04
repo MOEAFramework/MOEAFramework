@@ -315,18 +315,16 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		showStatistics = new RunnableAction("showStatistics", localization, controller::showStatistics).toButton();
 		
 		//initialize the sorted list of algorithms
-		Vector<String> sortedAlgorithmNames = new Vector<String>(
-				AlgorithmFactory.getInstance().getAllDiagnosticToolAlgorithms());
+		Vector<String> sortedAlgorithmNames = new Vector<>(AlgorithmFactory.getInstance().getAllDiagnosticToolAlgorithms());
 		Collections.sort(sortedAlgorithmNames, String.CASE_INSENSITIVE_ORDER);
 		
-		algorithm = new JComboBox<String>(sortedAlgorithmNames);
+		algorithm = new JComboBox<>(sortedAlgorithmNames);
 		
 		//initialize the sorted list of problems
-		Vector<String> sortedProblemNames = new Vector<String>(
-				ProblemFactory.getInstance().getAllDiagnosticToolProblems());
+		Vector<String> sortedProblemNames = new Vector<>(ProblemFactory.getInstance().getAllDiagnosticToolProblems());
 		Collections.sort(sortedProblemNames, String.CASE_INSENSITIVE_ORDER);
 		
-		problem = new JComboBox<String>(sortedProblemNames);
+		problem = new JComboBox<>(sortedProblemNames);
 		
 		//initialize miscellaneous components
 		numberOfSeeds = new JSpinner(new SpinnerNumberModel(10, 1, Integer.MAX_VALUE, 10));
@@ -699,7 +697,7 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 	 * @return a list of the selected metrics
 	 */
 	protected List<String> getSelectedMetrics() {
-		List<String> selectedMetrics = new ArrayList<String>();
+		List<String> selectedMetrics = new ArrayList<>();
 		
 		for (int index : metricList.getSelectedIndices()) {
 			selectedMetrics.add(metricListModel.getElementAt(index));
@@ -721,7 +719,7 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 	 * @return a list of the selected results
 	 */
 	protected List<ResultKey> getSelectedResults() {
-		List<ResultKey> selectedResults = new ArrayList<ResultKey>();
+		List<ResultKey> selectedResults = new ArrayList<>();
 		
 		for (int index : resultTable.getSelectedRows()) {
 			selectedResults.add(resultListModel.getElementAt(index));
@@ -923,8 +921,8 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		}
 		
 		if (event.getEventType().equals("viewChanged") || event.getEventType().equals("modelChanged")) {
-			Set<String> problems = new HashSet<String>();
-			Set<String> algorithms = new HashSet<String>();
+			Set<String> problems = new HashSet<>();
+			Set<String> algorithms = new HashSet<>();
 			
 			for (ResultKey key : getSelectedResults()) {
 				problems.add(key.getProblem());

@@ -302,10 +302,10 @@ public class ReferenceVectorGuidedPopulation extends Population {
 	 * @return the association of solutions to reference points
 	 */
 	protected List<List<Solution>> associateToReferencePoint(Population population) {
-		List<List<Solution>> result = new ArrayList<List<Solution>>();
+		List<List<Solution>> result = new ArrayList<>();
 
 		for (int i = 0; i < weights.length; i++) {
-			result.add(new ArrayList<Solution>());
+			result.add(new ArrayList<>());
 		}
 
 		for (Solution solution : population) {

@@ -28,7 +28,7 @@ import org.moeaframework.mock.MockRealProblem;
 public abstract class AbstractIslandModelTest {
 
 	protected List<Island> createIslands(int count) {
-		List<Island> result = new ArrayList<Island>();
+		List<Island> result = new ArrayList<>();
 		
 		for (int i = 0; i < count; i++) {
 			result.add(createIsland());

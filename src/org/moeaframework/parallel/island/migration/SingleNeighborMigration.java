@@ -92,7 +92,7 @@ public class SingleNeighborMigration implements Migration {
 	 * @return all solutions in the population that are dominated
 	 */
 	private List<Solution> findDominated(Population population, List<Solution> emigrants) {
-		List<Solution> result = new ArrayList<Solution>();
+		List<Solution> result = new ArrayList<>();
 		ParetoDominanceComparator comparator = new ParetoDominanceComparator();
 		
 		for (Solution solution : population) {

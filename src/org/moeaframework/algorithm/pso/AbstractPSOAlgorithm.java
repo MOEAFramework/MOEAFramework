@@ -434,7 +434,7 @@ public abstract class AbstractPSOAlgorithm extends AbstractAlgorithm implements 
 	 * @return the list of copied solutions
 	 */
 	protected static List<Solution> copyToList(Solution[] solutions) {
-		List<Solution> result = new ArrayList<Solution>(solutions.length);
+		List<Solution> result = new ArrayList<>(solutions.length);
 		
 		for (Solution solution : solutions) {
 			result.add(solution.copy());

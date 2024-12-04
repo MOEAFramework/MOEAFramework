@@ -84,7 +84,7 @@ public class NondominatedSorting {
 	 * @param population the population whose solutions are to be evaluated
 	 */
 	public void evaluate(Population population) {
-		List<Solution> remaining = new ArrayList<Solution>();
+		List<Solution> remaining = new ArrayList<>();
 
 		for (Solution solution : population) {
 			remaining.add(solution);

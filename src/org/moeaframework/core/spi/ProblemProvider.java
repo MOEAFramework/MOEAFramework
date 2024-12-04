@@ -57,7 +57,7 @@ public abstract class ProblemProvider {
 	 * @return the problem names to appear in the diagnostic tool
 	 */
 	public Set<String> getDiagnosticToolProblems() {
-		return new HashSet<String>();
+		return new HashSet<>();
 	}
 
 	/**

@@ -109,7 +109,7 @@ public class NormalBoundaryIntersectionGenerator implements WeightGenerator {
 	 * @return the list of reference points
 	 */
 	private List<double[]> generateWeights(int divisions) {
-		List<double[]> result = new ArrayList<double[]>();
+		List<double[]> result = new ArrayList<>();
 		double[] weight = new double[numberOfObjectives];
 		
 		generateRecursive(result, weight, numberOfObjectives, divisions, divisions, 0);

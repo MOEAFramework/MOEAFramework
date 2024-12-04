@@ -44,7 +44,7 @@ public class Tour {
 	public Tour() {
 		super();
 		
-		nodes = new ArrayList<Integer>();
+		nodes = new ArrayList<>();
 	}
 	
 	/**
@@ -116,7 +116,7 @@ public class Tour {
 	 * @return the edges belonging to this tour
 	 */
 	public List<Edge> toEdges() {
-		List<Edge> result = new ArrayList<Edge>();
+		List<Edge> result = new ArrayList<>();
 		
 		for (int i = 0; i < nodes.size(); i++) {
 			result.add(new Edge(get(i), get(i+1)));
@@ -198,7 +198,7 @@ public class Tour {
 	 */
 	public boolean isHamiltonianCycle(TSPInstance problem) {
 		DistanceTable distanceTable = problem.getDistanceTable();
-		Set<Integer> visited = new HashSet<Integer>();
+		Set<Integer> visited = new HashSet<>();
 		
 		// scan through nodes to determine if any invalid edges are followed
 		for (int i = 0; i < nodes.size(); i++) {

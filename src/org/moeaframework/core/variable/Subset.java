@@ -95,7 +95,7 @@ public class Subset extends AbstractVariable {
 		Validate.that("l", l).isGreaterThanOrEqualTo(0);
 		Validate.that("l", l).isLessThanOrEqualTo("u", u);
 
-		members = new HashSet<Integer>();
+		members = new HashSet<>();
 		
 		for (int i = 0; i < l; i++) {
 			members.add(i);
@@ -200,7 +200,7 @@ public class Subset extends AbstractVariable {
 	 * @return the membership in this subset.
 	 */
 	public Set<Integer> getSet() {
-		return new HashSet<Integer>(members);
+		return new HashSet<>(members);
 	}
 
 	/**
@@ -275,7 +275,7 @@ public class Subset extends AbstractVariable {
 		members.clear();
 		
 		if (s < n / OPT_FACTOR) {
-			Set<Integer> generated = new HashSet<Integer>();
+			Set<Integer> generated = new HashSet<>();
 
 			for (int i = 0; i < s; i++) {
 				while (true) {
@@ -289,7 +289,7 @@ public class Subset extends AbstractVariable {
 				}
 			}
 		} else {
-			List<Integer> pool = new LinkedList<Integer>();
+			List<Integer> pool = new LinkedList<>();
 
 			for (int i = 0; i < n; i++) {
 				pool.add(i);

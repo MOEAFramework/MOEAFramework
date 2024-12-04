@@ -159,7 +159,7 @@ public class EpsilonMOEA extends AbstractEvolutionaryAlgorithm implements Epsilo
 	 */
 	protected void addToPopulation(Solution newSolution) {
 		Population population = getPopulation();
-		List<Integer> dominates = new ArrayList<Integer>();
+		List<Integer> dominates = new ArrayList<>();
 		boolean dominated = false;
 
 		for (int i = 0; i < population.size(); i++) {

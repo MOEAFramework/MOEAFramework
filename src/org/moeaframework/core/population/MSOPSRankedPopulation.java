@@ -227,7 +227,7 @@ public class MSOPSRankedPopulation extends Population {
 		int T = weights.length;
 		
 		// first identify the best/closest weight vectors for this solution
-		List<Integer> bestWeights = new ArrayList<Integer>();
+		List<Integer> bestWeights = new ArrayList<>();
 		
 		for (int i = 0; i < 2*T; i++) {
 			if (ranks[index][i] == sortedRanks[index][0]) {

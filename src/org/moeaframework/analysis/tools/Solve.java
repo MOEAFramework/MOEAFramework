@@ -224,7 +224,7 @@ public class Solve extends CommandLineUtility {
 	 * @throws ParseException if an error occurred while parsing the variable specifications
 	 */
 	List<Variable> parseVariables(CommandLine commandLine) throws ParseException {
-		List<Variable> variables = new ArrayList<Variable>();
+		List<Variable> variables = new ArrayList<>();
 		
 		if (commandLine.hasOption("lowerBounds") && commandLine.hasOption("upperBounds")) {
 			String[] lowerBoundTokens = commandLine.getOptionValue("lowerBounds").split(",");

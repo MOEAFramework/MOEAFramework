@@ -87,7 +87,7 @@ public class Enumeration<T> extends AbstractParameter<T> implements EnumeratedPa
 
 	@Override
 	public List<Sample> enumerate(List<Sample> samples) {
-		List<Sample> result = new ArrayList<Sample>();
+		List<Sample> result = new ArrayList<>();
 		
 		for (Sample sample : samples) {
 			for (T value : values) {
@@ -136,7 +136,7 @@ public class Enumeration<T> extends AbstractParameter<T> implements EnumeratedPa
 			throw new InvalidParameterException(tokens[0], "enumerations require at least one value");
 		}
 		
-		return new Enumeration<String>(tokens[0], Arrays.copyOfRange(tokens, 2, tokens.length));
+		return new Enumeration<>(tokens[0], Arrays.copyOfRange(tokens, 2, tokens.length));
 	}
 
 }

@@ -79,7 +79,7 @@ public abstract class OrdinalStatisticalTest implements StatisticalTest {
 		this.numberOfGroups = numberOfGroups;
 		this.comparator = comparator;
 
-		data = new ArrayList<RankedObservation>();
+		data = new ArrayList<>();
 	}
 
 	/**

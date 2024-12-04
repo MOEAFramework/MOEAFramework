@@ -136,9 +136,9 @@ public class Instrumenter {
 		
 		frequency = 100;
 		frequencyType = FrequencyType.EVALUATIONS;
-		customCollectors = new ArrayList<Collector>();
+		customCollectors = new ArrayList<>();
 		
-		excludedPackages = new ArrayList<String>();
+		excludedPackages = new ArrayList<>();
 		excludedPackages.add("java");
 	}
 	
@@ -608,7 +608,7 @@ public class Instrumenter {
 	public <T extends Algorithm> InstrumentedAlgorithm<T> instrument(T algorithm) {
 		Validate.that("algorithm", algorithm).isNotNull();
 		
-		List<Collector> collectors = new ArrayList<Collector>();
+		List<Collector> collectors = new ArrayList<>();
 		
 		if (!selectedIndicators.isEmpty()) {
 			Validate.that("referenceSet", referenceSet).isNotNull();
@@ -694,9 +694,9 @@ public class Instrumenter {
 		collectors.addAll(customCollectors);
 		
 		InstrumentedExtension extension = new InstrumentedExtension(frequency, frequencyType);
-		instrument(algorithm, extension, collectors, new HashSet<Object>(), new Stack<Object>(), algorithm, null);
+		instrument(algorithm, extension, collectors, new HashSet<>(), new Stack<>(), algorithm, null);
 		
-		InstrumentedAlgorithm<T> instrumentedAlgorithm = new InstrumentedAlgorithm<T>(algorithm);
+		InstrumentedAlgorithm<T> instrumentedAlgorithm = new InstrumentedAlgorithm<>(algorithm);
 		instrumentedAlgorithm.addExtension(extension);
 		
 		return instrumentedAlgorithm;

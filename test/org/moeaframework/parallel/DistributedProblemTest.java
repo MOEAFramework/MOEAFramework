@@ -112,7 +112,7 @@ public class DistributedProblemTest {
 		}
 		
 		TestableFutureProblem blockingProblem = new TestableFutureProblem(0);
-		Set<Long> uniqueIds = new HashSet<Long>();
+		Set<Long> uniqueIds = new HashSet<>();
 				
 		try (DistributedProblem problem = new DistributedProblem(blockingProblem, Executors.newFixedThreadPool(P))) {
 			Population population = new Population();

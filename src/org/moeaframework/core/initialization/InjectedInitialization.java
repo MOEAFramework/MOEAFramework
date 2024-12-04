@@ -53,7 +53,7 @@ public class InjectedInitialization extends RandomInitialization {
 	 */
 	public InjectedInitialization(Problem problem, List<Solution> injectedSolutions) {
 		super(problem);
-		this.injectedSolutions = new ArrayList<Solution>(injectedSolutions);
+		this.injectedSolutions = new ArrayList<>(injectedSolutions);
 	}
 
 	@Override

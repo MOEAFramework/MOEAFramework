@@ -52,7 +52,7 @@ public class DiagnosticToolTest {
 		Assume.assumeHasDisplay();
 		
 		isRunning = new AtomicBoolean(false);
-		controllerStateCounter = new Counter<String>();
+		controllerStateCounter = new Counter<>();
 	}
 	
 	@After

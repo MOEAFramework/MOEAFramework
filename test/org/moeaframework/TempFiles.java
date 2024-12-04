@@ -39,7 +39,7 @@ public class TempFiles {
 	private static Thread cleanupThread;
 	
 	static {
-		filesToCleanup = new ArrayList<java.io.File>();
+		filesToCleanup = new ArrayList<>();
 		
 		cleanupThread = new Thread() {
 

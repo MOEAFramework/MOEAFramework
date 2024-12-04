@@ -176,9 +176,9 @@ public class DefaultEpsilons implements Formattable<Entry<String, Epsilons>> {
 		
 		TabularData<Entry<String, Epsilons>> result = new TabularData<>(orderedData.entrySet());
 		
-		result.addColumn(new Column<Entry<String, Epsilons>, String>("Problem", Entry::getKey));
-		result.addColumn(new Column<Entry<String, Epsilons>, Epsilons>("Epsilons", Entry::getValue));
-		result.addColumn(new Column<Entry<String, Epsilons>, Boolean>("IsOverridden", x -> overrides.containsKey(x.getKey())));
+		result.addColumn(new Column<>("Problem", Entry::getKey));
+		result.addColumn(new Column<>("Epsilons", Entry::getValue));
+		result.addColumn(new Column<>("IsOverridden", x -> overrides.containsKey(x.getKey())));
 		
 		return result;
 	}

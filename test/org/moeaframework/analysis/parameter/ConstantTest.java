@@ -29,13 +29,13 @@ public class ConstantTest {
 	
 	@Test
 	public void testParse() {
-		Constant<Integer> parameter = new Constant<Integer>("foo", 100);
+		Constant<Integer> parameter = new Constant<>("foo", 100);
 		Assert.assertEquals(100, parameter.parse("100"));
 	}
 	
 	@Test
 	public void testParseOutOfBounds() {
-		Constant<Integer> parameter = new Constant<Integer>("foo", 100);
+		Constant<Integer> parameter = new Constant<>("foo", 100);
 		
 		Assert.assertThrows(InvalidParameterException.class, () -> parameter.parse("99"));
 		Assert.assertThrows(InvalidParameterException.class, () -> parameter.parse("foo"));
@@ -43,10 +43,10 @@ public class ConstantTest {
 
 	@Test
 	public void testEnumerate() {
-		List<Sample> samples = new ArrayList<Sample>();
+		List<Sample> samples = new ArrayList<>();
 		samples.add(new Sample());
 		
-		Constant<Integer> parameter = new Constant<Integer>("foo", 100);
+		Constant<Integer> parameter = new Constant<>("foo", 100);
 		parameter.apply(samples);
 		
 		Assert.assertSize(1, samples);
@@ -75,7 +75,7 @@ public class ConstantTest {
 	@Test
 	public void testEncode() {
 		Tokenizer tokenizer = new Tokenizer();
-		Constant<Integer> parameter = new Constant<Integer>("foo", 100);
+		Constant<Integer> parameter = new Constant<>("foo", 100);
 		
 		Assert.assertEquals("foo const 100", parameter.encode(tokenizer));
 	}

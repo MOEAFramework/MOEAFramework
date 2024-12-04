@@ -59,7 +59,7 @@ public interface DistanceMeasure<T> {
 	 * @return the distance measure
 	 */
 	public static <T extends Clusterable> ApacheDistanceMeasure<T> euclideanDistance() {
-		return new ApacheDistanceMeasure<T>(new EuclideanDistance());
+		return new ApacheDistanceMeasure<>(new EuclideanDistance());
 	}
 	
 	/**
@@ -69,7 +69,7 @@ public interface DistanceMeasure<T> {
 	 * @return the distance measure
 	 */
 	public static <T extends Clusterable> ApacheDistanceMeasure<T> manhattanDistance() {
-		return new ApacheDistanceMeasure<T>(new ManhattanDistance());
+		return new ApacheDistanceMeasure<>(new ManhattanDistance());
 	}
 	
 	/**
@@ -79,7 +79,7 @@ public interface DistanceMeasure<T> {
 	 * @return the distance measure
 	 */
 	public static <T extends Clusterable> ApacheDistanceMeasure<T> chebyshevDistance() {
-		return new ApacheDistanceMeasure<T>(new ChebyshevDistance());
+		return new ApacheDistanceMeasure<>(new ChebyshevDistance());
 	}
 
 }

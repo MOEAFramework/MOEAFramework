@@ -119,7 +119,7 @@ public class ImageUtils {
 	 * @return a list of supported image formats
 	 */
 	public static List<ImageFileType> getSupportedImageFormats() {
-		List<ImageFileType> formats = new ArrayList<ImageFileType>();
+		List<ImageFileType> formats = new ArrayList<>();
 		
 		for (ImageFileType format : ImageFileType.values()) {
 			if (format.equals(ImageFileType.SVG) && !supportsSVG()) {

@@ -104,7 +104,7 @@ public class RegisteredOperatorProvider extends OperatorProvider {
 	 * @return the names of all registered operators
 	 */
 	public Set<String> getRegisteredOperators() {
-		Set<String> result = new HashSet<String>();
+		Set<String> result = new HashSet<>();
 		result.addAll(mutationHints.values());
 		result.addAll(crossoverHints.values());
 		result.addAll(constructorMap.keySet());

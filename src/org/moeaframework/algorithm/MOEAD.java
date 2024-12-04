@@ -463,7 +463,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	 * @param populationSize the population size
 	 */
 	private void initializePopulation(int populationSize) {
-		population = new ArrayList<Individual>(populationSize);
+		population = new ArrayList<>(populationSize);
 		
 		if (weightGenerator == null) {
 			weightGenerator = new RandomGenerator(problem.getNumberOfObjectives(), populationSize);
@@ -485,7 +485,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	 * Constructs the neighborhoods for all individuals in the population based on the distances between weights.
 	 */
 	private void initializeNeighborhoods() {
-		List<Individual> sortedPopulation = new ArrayList<Individual>(population);
+		List<Individual> sortedPopulation = new ArrayList<>(population);
 
 		for (Individual individual : population) {
 			Collections.sort(sortedPopulation, new WeightSorter(individual));
@@ -536,7 +536,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	 * @return the population indices to be operated on in the current generation
 	 */
 	private List<Integer> getSubproblemsToSearch() {
-		List<Integer> indices = new ArrayList<Integer>();
+		List<Integer> indices = new ArrayList<>();
 		
 		if (updateUtility < 0) {
 			// return all indices
@@ -577,7 +577,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	 * @return the population indices to be considered during mating
 	 */
 	private List<Integer> getMatingIndices(int index) {
-		List<Integer> matingIndices = new ArrayList<Integer>();
+		List<Integer> matingIndices = new ArrayList<>();
 
 		if (PRNG.nextDouble() <= delta) {
 			for (Individual individual : population.get(index).getNeighbors()) {
@@ -756,7 +756,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 		public Individual(double[] weights) {
 			this.weights = weights;
 
-			neighbors = new ArrayList<Individual>();
+			neighbors = new ArrayList<>();
 			utility = 1.0;
 		}
 

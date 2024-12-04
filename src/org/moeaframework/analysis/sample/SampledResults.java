@@ -81,14 +81,14 @@ public class SampledResults<T> implements Partition<Sample, T> {
 
 	@Override
 	public TabularData<Pair<Sample, T>> asTabularData() {
-		TabularData<Pair<Sample, T>> table = new TabularData<Pair<Sample, T>>(results);
+		TabularData<Pair<Sample, T>> table = new TabularData<>(results);
 		
 		for (Parameter<?> parameter : parameterSet) {
-			table.addColumn(new Column<Pair<Sample, T>, Object>(parameter.getName(),
+			table.addColumn(new Column<>(parameter.getName(),
 					x -> parameter.readValue(x.getKey())));
 		}
 		
-		table.addColumn(new Column<Pair<Sample, T>, T>("Result", Pair::getValue));
+		table.addColumn(new Column<>("Result", Pair::getValue));
 		
 		return table;
 	}

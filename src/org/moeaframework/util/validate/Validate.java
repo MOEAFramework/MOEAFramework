@@ -75,7 +75,7 @@ public final class Validate {
 	 * @return the validator
 	 */
 	public static final <T> ObjectValidator<T> that(String name, T value) {
-		return new ObjectValidator<T>(name, value);
+		return new ObjectValidator<>(name, value);
 	}
 	
 	/**

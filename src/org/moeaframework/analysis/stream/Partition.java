@@ -108,7 +108,7 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 	 * @return the partition of results
 	 */
 	public default <R> Partition<K, R> map(Function<V, R> map) {
-		return new ImmutablePartition<K, R>(stream().map(x -> Pair.of(x.getKey(), map.apply(x.getValue()))));
+		return new ImmutablePartition<>(stream().map(x -> Pair.of(x.getKey(), map.apply(x.getValue()))));
 	}
 	
 	/**
@@ -118,7 +118,7 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 	 * @throws ClassCastException if the key type is not {@link Comparable}
 	 */
 	public default Partition<K, V> sorted() {
-		return new ImmutablePartition<K, V>(stream().sorted());
+		return new ImmutablePartition<>(stream().sorted());
 	}
 
 	/**
@@ -128,7 +128,7 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 	 * @return the sorted partition
 	 */
 	public default Partition<K, V> sorted(Comparator<K> comparator) {
-		return new ImmutablePartition<K, V>(stream().sorted((x, y) -> comparator.compare(x.getKey(), y.getKey())));
+		return new ImmutablePartition<>(stream().sorted((x, y) -> comparator.compare(x.getKey(), y.getKey())));
 	}
 	
 	/**
@@ -187,7 +187,7 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 	 * @return the resulting partition
 	 */
 	public default Partition<K, V> filter(Predicate<K> predicate) {
-		return new ImmutablePartition<K, V>(stream().filter(x -> predicate.test(x.getKey())));
+		return new ImmutablePartition<>(stream().filter(x -> predicate.test(x.getKey())));
 	}
 
 	/**
@@ -199,7 +199,7 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 	 * @return the resulting groups
 	 */
 	public default <G> Groups<G, K, V> groupBy(Function<K, G> group) {
-		return new Groups<G, K, V>(stream()
+		return new Groups<>(stream()
 				.collect(Collectors.groupingBy(x -> group.apply(x.getKey())))
 				.entrySet().stream()
 				.map(x -> Pair.of(x.getKey(), new ImmutablePartition<K, V>(x.getValue()))));
@@ -235,7 +235,7 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 	 * @return the resulting partition
 	 */
 	public default Partition<K, V> distinct() {
-		return new ImmutablePartition<K, V>(stream().distinct());
+		return new ImmutablePartition<>(stream().distinct());
 	}
 	
 	/**
@@ -276,9 +276,9 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 	
 	@Override
 	public default TabularData<Pair<K, V>> asTabularData() {
-		TabularData<Pair<K, V>> table = new TabularData<Pair<K, V>>(stream().toList());
-		table.addColumn(new Column<Pair<K, V>, K>("Key", Pair::getKey));
-		table.addColumn(new Column<Pair<K, V>, V>("Value", Pair::getValue));
+		TabularData<Pair<K, V>> table = new TabularData<>(stream().toList());
+		table.addColumn(new Column<>("Key", Pair::getKey));
+		table.addColumn(new Column<>("Value", Pair::getValue));
 		return table;
 	}
 	
@@ -355,7 +355,7 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 	 * @return the constructed partition
 	 */
 	public static <K, V> Partition<K, V> of(Map<K, V> map) {
-		return new ImmutablePartition<K, V>(map.entrySet().stream().map(Pair::of));
+		return new ImmutablePartition<>(map.entrySet().stream().map(Pair::of));
 	}
 	
 	/**
@@ -368,7 +368,7 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 	 * @return the constructed partition
 	 */
 	public static <K, V> Partition<K, V> of(Function<V, K> key, Stream<V> stream) {
-		return new ImmutableDataStream<V>(stream).keyedOn(key);
+		return new ImmutableDataStream<>(stream).keyedOn(key);
 	}
 	
 	/**
@@ -431,7 +431,7 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 	 * @return the constructed partition
 	 */
 	public static <K, V> Partition<K, V> zip(Iterable<K> keys, Iterable<V> values) {
-		return new ImmutablePartition<K, V>(Iterators.zip(keys, values));
+		return new ImmutablePartition<>(Iterators.zip(keys, values));
 	}
 	
 	/**

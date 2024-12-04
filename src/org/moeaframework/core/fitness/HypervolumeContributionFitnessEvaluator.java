@@ -73,13 +73,13 @@ public class HypervolumeContributionFitnessEvaluator implements FitnessEvaluator
 		} else {
 			int numberOfObjectives = problem.getNumberOfObjectives();
 			List<Solution> solutions = normalize(population);
-			List<Solution> solutionsCopy = new ArrayList<Solution>(solutions);
+			List<Solution> solutionsCopy = new ArrayList<>(solutions);
 			
 			double totalVolume = PISAHypervolume.calculateHypervolume(solutionsCopy, solutionsCopy.size(),
 					numberOfObjectives);
 			
 			for (int i = 0; i < population.size(); i++) {
-				solutionsCopy = new ArrayList<Solution>(solutions);
+				solutionsCopy = new ArrayList<>(solutions);
 				solutionsCopy.remove(i);
 				
 				double volume = PISAHypervolume.calculateHypervolume(solutionsCopy, solutionsCopy.size(),
@@ -105,7 +105,7 @@ public class HypervolumeContributionFitnessEvaluator implements FitnessEvaluator
 		
 		double[] min = population.getLowerBounds();
 		double[] max = population.getUpperBounds();
-		List<Solution> result = new ArrayList<Solution>();
+		List<Solution> result = new ArrayList<>();
 		
 		for (Solution solution : population) {
 			Solution newSolution = solution.copy();

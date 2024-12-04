@@ -41,7 +41,7 @@ public class Manifest extends TypedProperties {
 	 * @throws ManifestValidationException if any differences were detected
 	 */
 	public void validate(Manifest expected) {
-		Set<String> keys = new HashSet<String>();
+		Set<String> keys = new HashSet<>();
 		keys.addAll(keySet());
 		keys.addAll(expected.keySet());
 		

@@ -33,7 +33,7 @@ public class ProgressExtensionTest {
 	
 	@Test
 	public void test() {
-		final List<ProgressEvent> events = new ArrayList<ProgressEvent>();
+		final List<ProgressEvent> events = new ArrayList<>();
 		
 		ProgressExtension extension = new ProgressExtension();
 		extension.addListener(event -> events.add(event));

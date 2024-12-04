@@ -114,7 +114,7 @@ public class TSPInstance {
 	public TSPInstance() {
 		super();
 		
-		tours = new ArrayList<Tour>();
+		tours = new ArrayList<>();
 	}
 	
 	/**

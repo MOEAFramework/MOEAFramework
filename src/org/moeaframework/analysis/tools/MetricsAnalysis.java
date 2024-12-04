@@ -124,7 +124,7 @@ public class MetricsAnalysis extends CommandLineUtility {
 	 * @throws IOException if an I/O error occurred
 	 */
 	private double[][] loadMetrics(File file) throws IOException {
-		List<double[]> metricList = new ArrayList<double[]>();
+		List<double[]> metricList = new ArrayList<>();
 		
 		try (MetricFileReader reader = new MetricFileReader(file)) {
 			while (reader.hasNext()) {

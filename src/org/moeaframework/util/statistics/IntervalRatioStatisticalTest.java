@@ -47,7 +47,7 @@ public abstract class IntervalRatioStatisticalTest implements StatisticalTest {
 		super();
 		this.numberOfGroups = numberOfGroups;
 
-		data = new ArrayList<Observation>();
+		data = new ArrayList<>();
 	}
 
 	/**
@@ -84,7 +84,7 @@ public abstract class IntervalRatioStatisticalTest implements StatisticalTest {
 			n[observation.getGroup()]++;
 		}
 
-		List<double[]> groupedData = new ArrayList<double[]>();
+		List<double[]> groupedData = new ArrayList<>();
 		for (int i = 0; i < numberOfGroups; i++) {
 			groupedData.add(new double[n[i]]);
 		}

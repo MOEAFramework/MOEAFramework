@@ -60,7 +60,7 @@ public class BasicIslandExecutor implements IslandExecutor {
 		final int evaluationsPerIsland = maxEvaluations / islands.size();
 			
 		//start threads to process each island
-		List<Future<NondominatedPopulation>> futures = new ArrayList<Future<NondominatedPopulation>>();
+		List<Future<NondominatedPopulation>> futures = new ArrayList<>();
 			
 		for (final Island island : islands) {
 			futures.add(executorService.submit(() -> {

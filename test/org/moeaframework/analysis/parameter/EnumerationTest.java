@@ -32,14 +32,14 @@ public class EnumerationTest {
 	
 	@Test
 	public void testParse() {
-		Enumeration<Integer> parameter = new Enumeration<Integer>("foo", 100, 200);
+		Enumeration<Integer> parameter = new Enumeration<>("foo", 100, 200);
 		Assert.assertEquals(100, parameter.parse("100"));
 		Assert.assertEquals(200, parameter.parse("200"));
 	}
 	
 	@Test
 	public void testParseOutOfBounds() {
-		Enumeration<Integer> parameter = new Enumeration<Integer>("foo", 100, 200);
+		Enumeration<Integer> parameter = new Enumeration<>("foo", 100, 200);
 		
 		Assert.assertThrows(InvalidParameterException.class, () -> parameter.parse("99"));
 		Assert.assertThrows(InvalidParameterException.class, () -> parameter.parse("foo"));
@@ -47,10 +47,10 @@ public class EnumerationTest {
 
 	@Test
 	public void testEnumerate() {
-		List<Sample> samples = new ArrayList<Sample>();
+		List<Sample> samples = new ArrayList<>();
 		samples.add(new Sample());
 		
-		Enumeration<Integer> parameter = new Enumeration<Integer>("foo", 100, 200);
+		Enumeration<Integer> parameter = new Enumeration<>("foo", 100, 200);
 		
 		List<Sample> result = parameter.enumerate(samples);
 		
@@ -62,7 +62,7 @@ public class EnumerationTest {
 	@Test
 	public void testSample() {
 		Sample sample = new Sample();
-		Enumeration<Integer> parameter = new Enumeration<Integer>("foo", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		Enumeration<Integer> parameter = new Enumeration<>("foo", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 		
 		parameter.sample(sample, 0.0);
 		Assert.assertEquals(0, parameter.readValue(sample));
@@ -79,7 +79,7 @@ public class EnumerationTest {
 		DescriptiveStatistics statistics = new DescriptiveStatistics();
 
 		Sample sample = new Sample();
-		Enumeration<Integer> parameter = new Enumeration<Integer>("foo", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		Enumeration<Integer> parameter = new Enumeration<>("foo", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 		
 		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
 			parameter.sample(sample, PRNG.nextDouble());
@@ -92,7 +92,7 @@ public class EnumerationTest {
 	@Test
 	public void testSampleOutOfBounds() {
 		Sample sample = new Sample();
-		Enumeration<Integer> parameter = new Enumeration<Integer>("foo", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		Enumeration<Integer> parameter = new Enumeration<>("foo", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 		
 		Assert.assertThrows(IllegalArgumentException.class, () -> parameter.sample(sample, -0.001));
 		Assert.assertThrows(IllegalArgumentException.class, () -> parameter.sample(sample, 1.001));
@@ -119,7 +119,7 @@ public class EnumerationTest {
 	@Test
 	public void testEncode() {
 		Tokenizer tokenizer = new Tokenizer();
-		Enumeration<Integer> parameter = new Enumeration<Integer>("foo", 100, 200);
+		Enumeration<Integer> parameter = new Enumeration<>("foo", 100, 200);
 		
 		Assert.assertEquals("foo enum 100 200", parameter.encode(tokenizer));
 	}

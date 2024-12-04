@@ -202,7 +202,7 @@ public class LinePlot extends ResultPlot {
 		//create the legend
 		final LegendItemCollection items = plot.getLegendItems();
 		Iterator<?> iterator = items.iterator();
-		Set<ResultKey> uniqueKeys = new HashSet<ResultKey>();
+		Set<ResultKey> uniqueKeys = new HashSet<>();
 		
 		while (iterator.hasNext()) {
 			LegendItem item = (LegendItem)iterator.next();

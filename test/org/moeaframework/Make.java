@@ -52,7 +52,7 @@ public class Make {
 	 * @return the captured output from make
 	 */
 	public static void runMake(File folder, String... args) throws IOException {
-		List<String> command = new ArrayList<String>();
+		List<String> command = new ArrayList<>();
 		command.add("make");
 		command.addAll(Arrays.asList(args));
 		

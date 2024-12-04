@@ -36,7 +36,7 @@ public class FullyConnectedTopology implements Topology {
 
 	@Override
 	public List<Island> getNeighbors(Island current, List<Island> allIslands) {
-		List<Island> result = new ArrayList<Island>();
+		List<Island> result = new ArrayList<>();
 
 		for (Island otherIsland : allIslands) {
 			if (otherIsland != current) {

@@ -479,22 +479,19 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		if (prototypeSolution != null) {
 			for (int i = 0; i < numberOfObjectives; i++) {
 				final int index = i;
-				axes.add(new AxisSelector<Solution, Number>(
-						Objective.getNameOrDefault(prototypeSolution.getObjective(index), index),
+				axes.add(new AxisSelector<>(Objective.getNameOrDefault(prototypeSolution.getObjective(index), index),
 						s -> s.getObjective(index).getValue()));
 			}
 			
 			for (int i = 0; i < numberOfConstraints; i++) {
 				final int index = i;
-				axes.add(new AxisSelector<Solution, Number>(
-						Constraint.getNameOrDefault(prototypeSolution.getConstraint(index), index),
+				axes.add(new AxisSelector<>(Constraint.getNameOrDefault(prototypeSolution.getConstraint(index), index),
 						s -> s.getConstraint(index).getValue()));
 			}
 			
 			for (int i = 0; i < numberOfVariables; i++) {
 				final int index = i;
-				axes.add(new AxisSelector<Solution, Number>(
-						Variable.getNameOrDefault(prototypeSolution.getVariable(index), index),
+				axes.add(new AxisSelector<>(Variable.getNameOrDefault(prototypeSolution.getVariable(index), index),
 						s -> s.getVariable(index) instanceof RealVariable rv ? rv.getValue() : Double.NaN));
 			}
 		}

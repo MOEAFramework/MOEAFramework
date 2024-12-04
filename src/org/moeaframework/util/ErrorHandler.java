@@ -49,7 +49,7 @@ public class ErrorHandler {
 	public ErrorHandler() {
 		super();
 		messageStream = System.err;
-		emittedMessages = new HashSet<String>();
+		emittedMessages = new HashSet<>();
 	}
 	
 	/**

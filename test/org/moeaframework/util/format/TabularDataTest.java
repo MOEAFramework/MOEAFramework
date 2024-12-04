@@ -53,14 +53,14 @@ public class TabularDataTest {
 		
 	@Before
 	public void setUp() {
-		List<Triple<String, Integer, Variable>> rawData = new ArrayList<Triple<String, Integer, Variable>>();
+		List<Triple<String, Integer, Variable>> rawData = new ArrayList<>();
 		rawData.add(Triple.of("foo", 1, new RealVariable(0.5, 0.0, 1.0)));
 		rawData.add(Triple.of("bar", Integer.MAX_VALUE, new BinaryIntegerVariable(5, 0, 10)));
 		
 		data = new TabularData<>(rawData);
-		data.addColumn(new Column<Triple<String, Integer, Variable>, String>("String", Triple::getLeft));
-		data.addColumn(new Column<Triple<String, Integer, Variable>, Integer>("Integer", Triple::getMiddle));
-		data.addColumn(new Column<Triple<String, Integer, Variable>, Variable>("Variable", Triple::getRight));
+		data.addColumn(new Column<>("String", Triple::getLeft));
+		data.addColumn(new Column<>("Integer", Triple::getMiddle));
+		data.addColumn(new Column<>("Variable", Triple::getRight));
 		
 		expectedOutput = String.join(System.lineSeparator(), new String[] {
 				"String Integer    Variable ",
@@ -112,11 +112,11 @@ public class TabularDataTest {
 				"foo, 1, 0.500000",
 				"bar, 2147483647, 5" });
 		
-		List<String> rawEscapedData = new ArrayList<String>();
+		List<String> rawEscapedData = new ArrayList<>();
 		rawEscapedData.add("foo\"\\\t\r\n|&bar");
 			
 		escapedData = new TabularData<>(rawEscapedData);
-		escapedData.addColumn(new Column<String, String>("key", x -> x));
+		escapedData.addColumn(new Column<>("key", x -> x));
 	}
 	
 	@Test

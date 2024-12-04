@@ -40,7 +40,7 @@ class ExtendedReference extends AbstractReference {
 	
 	@Override
 	public Set<String> fields() {
-		Set<String> result = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+		Set<String> result = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
 		result.addAll(reference.fields());
 		result.add(name);
 		return result;

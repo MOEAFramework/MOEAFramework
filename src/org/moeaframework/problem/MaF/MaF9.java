@@ -61,7 +61,7 @@ public class MaF9 extends AbstractProblem implements AnalyticalProblem {
 
 		// Construct the invalid regions
 		int iterations = (int)Math.ceil(numberOfObjectives / 2.0 - 2.0);
-		invalidRegions = new ArrayList<Polygon>(iterations * numberOfObjectives);
+		invalidRegions = new ArrayList<>(iterations * numberOfObjectives);
 
 		for (int i = 0; i < iterations * numberOfObjectives; i++) {
 			int head = i % numberOfObjectives;
@@ -81,7 +81,7 @@ public class MaF9 extends AbstractProblem implements AnalyticalProblem {
 				throw new IllegalStateException("Lines do not intersect: " + l1 + " " + l2);
 			}
 
-			List<Vector2D> vertices = new ArrayList<Vector2D>();
+			List<Vector2D> vertices = new ArrayList<>();
 
 			for (int j = head; j <= tail; j++) {
 				vertices.add(polygon.getVertex(j));

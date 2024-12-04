@@ -41,7 +41,7 @@ public class ImmigrationQueue {
 	 */
 	public ImmigrationQueue() {
 		super();
-		queue = new ConcurrentLinkedQueue<Solution>();
+		queue = new ConcurrentLinkedQueue<>();
 	}
 	
 	/**
@@ -90,7 +90,7 @@ public class ImmigrationQueue {
 	 * @return the solutions that were removed
 	 */
 	public List<Solution> popAll() {
-		List<Solution> result = new ArrayList<Solution>();
+		List<Solution> result = new ArrayList<>();
 		
 		while (!queue.isEmpty()) {
 			result.add(queue.remove());

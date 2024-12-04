@@ -85,7 +85,7 @@ public class EdgeWeightMatrix extends DistanceTable {
 	
 	@Override
 	public void load(LineReader reader) throws IOException {
-		Queue<Double> entries = new LinkedList<Double>();
+		Queue<Double> entries = new LinkedList<>();
 		Tokenizer tokenizer = new Tokenizer();
 		
 		switch (format) {

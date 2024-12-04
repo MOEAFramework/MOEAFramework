@@ -74,7 +74,7 @@ public class BuildProblem extends CommandLineUtility {
 	public static final String PATH_SEPARATOR = "$(SEPARATOR)";
 	
 	static {
-		LANGUAGES = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
+		LANGUAGES = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 		LANGUAGES.put("c", "c");
 		LANGUAGES.put("cpp", "cpp");
 		LANGUAGES.put("c++", "cpp");
@@ -83,7 +83,7 @@ public class BuildProblem extends CommandLineUtility {
 		LANGUAGES.put("python", "python");
 		LANGUAGES.put("external", "external");
 		
-		EXPERIMENTAL = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
+		EXPERIMENTAL = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 		EXPERIMENTAL.put("matlab", "matlab");
 	}
 	

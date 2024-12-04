@@ -117,8 +117,8 @@ class FractalDimension {
 			return 0.0;
 		}
 		
-		List<Double> X = new ArrayList<Double>();
-		List<Double> Y = new ArrayList<Double>();
+		List<Double> X = new ArrayList<>();
+		List<Double> Y = new ArrayList<>();
 
 		for (double r = R_MAX; r >= R_MIN; r-= R_MIN) {
 			double lr = Math.log(r);

@@ -58,7 +58,7 @@ public class EdgeData extends DistanceTable {
 		this.size = size;
 		this.format = format;
 		
-		edges = new ArrayList<Edge>();
+		edges = new ArrayList<>();
 	}
 	
 	/**
@@ -102,7 +102,7 @@ public class EdgeData extends DistanceTable {
 			}
 			case ADJ_LIST -> {
 				int currentId = -1;
-				Queue<Integer> values = new LinkedList<Integer>();
+				Queue<Integer> values = new LinkedList<>();
 				
 				readNextLine(reader, tokenizer, values);
 					
@@ -173,7 +173,7 @@ public class EdgeData extends DistanceTable {
 			throw new IllegalArgumentException("no node with identifier " + id);
 		}
 		
-		List<Integer> neighbors = new ArrayList<Integer>();
+		List<Integer> neighbors = new ArrayList<>();
 		
 		for (Edge edge : edges) {
 			if (edge.hasEndpoint(id)) {

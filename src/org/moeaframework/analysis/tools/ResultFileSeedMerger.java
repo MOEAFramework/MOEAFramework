@@ -73,7 +73,7 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 	 */
 	private List<NondominatedPopulation> load(File file, Problem problem) throws IOException {
 		try (ResultFileReader reader = ResultFileReader.open(problem, file)) {
-			List<NondominatedPopulation> data = new ArrayList<NondominatedPopulation>();
+			List<NondominatedPopulation> data = new ArrayList<>();
 
 			while (reader.hasNext()) {
 				data.add(new NondominatedPopulation(reader.next().getPopulation()));
@@ -85,7 +85,7 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
-		List<List<NondominatedPopulation>> entries = new ArrayList<List<NondominatedPopulation>>();
+		List<List<NondominatedPopulation>> entries = new ArrayList<>();
 		Epsilons epsilons = OptionUtils.getEpsilons(commandLine);
 
 

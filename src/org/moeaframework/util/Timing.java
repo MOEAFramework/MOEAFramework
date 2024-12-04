@@ -36,7 +36,7 @@ public class Timing {
 	private static Map<String, Timer> timers;
 
 	static {
-		timers = new LinkedHashMap<String, Timer>();
+		timers = new LinkedHashMap<>();
 	}
 
 	/**
@@ -107,11 +107,11 @@ public class Timing {
 	public static TabularData<Timer> asTabularData() {
 		TabularData<Timer> result = new TabularData<>(timers.values());
 		
-		result.addColumn(new Column<Timer, String>("Timer", Timer::getName));
-		result.addColumn(new Column<Timer, Double>("Min", x -> x.getStatistics().getMin()));
-		result.addColumn(new Column<Timer, Double>("Mean", x -> x.getStatistics().getMean()));
-		result.addColumn(new Column<Timer, Double>("Max", x -> x.getStatistics().getMax()));
-		result.addColumn(new Column<Timer, Long>("Count", x -> x.getStatistics().getN()));
+		result.addColumn(new Column<>("Timer", Timer::getName));
+		result.addColumn(new Column<>("Min", x -> x.getStatistics().getMin()));
+		result.addColumn(new Column<>("Mean", x -> x.getStatistics().getMean()));
+		result.addColumn(new Column<>("Max", x -> x.getStatistics().getMax()));
+		result.addColumn(new Column<>("Count", x -> x.getStatistics().getN()));
 		
 		return result;
 	}

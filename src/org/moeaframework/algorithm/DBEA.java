@@ -558,7 +558,7 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 		}
 		
 		// sort the solutions
-		List<Population> sortedSets = new ArrayList<Population>();
+		List<Population> sortedSets = new ArrayList<>();
 		
 		for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
 			sortedSets.add(orderBySmallestObjective(i, unique));

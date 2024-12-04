@@ -93,7 +93,7 @@ public class UniformDesignGenerator implements WeightGenerator {
 	@Override
 	public List<double[]> generate() {
 		// generate uniform design using Hammersley method
-		List<double[]> designs = new ArrayList<double[]>();
+		List<double[]> designs = new ArrayList<>();
 		int[] primes = generateFirstKPrimes(numberOfObjectives-2);
 		
 		for (int i = 0; i < numberOfPoints; i++) {
@@ -116,7 +116,7 @@ public class UniformDesignGenerator implements WeightGenerator {
 		}
 		
 		// transform designs into weight vectors (sum to 1)
-		List<double[]> weights = new ArrayList<double[]>();
+		List<double[]> weights = new ArrayList<>();
 		
 		for (double[] design : designs) {
 			double[] weight = new double[numberOfObjectives];

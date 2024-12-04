@@ -48,7 +48,7 @@ public class SortedListModel<T extends Comparable<T>> extends AbstractListModel<
 	 */
 	public SortedListModel() {
 		super();
-		set = new TreeSet<T>();
+		set = new TreeSet<>();
 	}
 	
 	/**

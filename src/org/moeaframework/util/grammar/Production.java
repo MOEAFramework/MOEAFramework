@@ -40,7 +40,7 @@ public class Production {
 	public Production() {
 		super();
 
-		symbols = new ArrayList<Symbol>();
+		symbols = new ArrayList<>();
 	}
 
 	/**

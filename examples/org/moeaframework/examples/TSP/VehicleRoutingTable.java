@@ -55,8 +55,8 @@ public class VehicleRoutingTable {
 		super();
 		this.size = size;
 		
-		demands = new HashMap<Integer, Integer>();
-		depots = new HashSet<Integer>();
+		demands = new HashMap<>();
+		depots = new HashSet<>();
 	}
 	
 	/**

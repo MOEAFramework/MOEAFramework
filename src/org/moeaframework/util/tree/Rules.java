@@ -77,7 +77,7 @@ public class Rules implements Serializable {
 		maxInitializationDepth = 5;
 		maxVariationDepth = 10;
 		functionCrossoverProbability = 0.5;
-		availableNodes = new ArrayList<Node>();
+		availableNodes = new ArrayList<>();
 	}
 	
 	/**
@@ -307,7 +307,7 @@ public class Rules implements Serializable {
 	 * @return the list of all nodes in the tree rooted at the specified node with the given return type
 	 */
 	public List<Node> listAvailableCrossoverNodes(Node node, Class<?> type) {
-		List<Node> result = new ArrayList<Node>();
+		List<Node> result = new ArrayList<>();
 		
 		if (type.isAssignableFrom(node.getReturnType())) {
 			result.add(node);
@@ -328,7 +328,7 @@ public class Rules implements Serializable {
 	 * @return the list of all available mutations to the given node
 	 */
 	public List<Node> listAvailableMutations(Node node) {
-		List<Node> result = new ArrayList<Node>();
+		List<Node> result = new ArrayList<>();
 		
 		for (Node mutation : availableNodes) {
 			if (isMutationCompatible(node, mutation)) {
@@ -373,7 +373,7 @@ public class Rules implements Serializable {
 	 * @return the list of all available nodes with the given return type
 	 */
 	public List<Node> listAvailableNodes(Class<?> type) {
-		List<Node> result = new ArrayList<Node>();
+		List<Node> result = new ArrayList<>();
 		
 		for (Node node : availableNodes) {
 			if (type.isAssignableFrom(node.getReturnType())) {
@@ -391,7 +391,7 @@ public class Rules implements Serializable {
 	 * @return the list of all available terminal nodes with the given return type
 	 */
 	public List<Node> listAvailableTerminals(Class<?> type) {
-		List<Node> result = new ArrayList<Node>();
+		List<Node> result = new ArrayList<>();
 		
 		for (Node node : availableNodes) {
 			if ((node.getNumberOfArguments() == 0) && type.isAssignableFrom(node.getReturnType())) {
@@ -409,7 +409,7 @@ public class Rules implements Serializable {
 	 * @return the list of all available function (non-terminal) nodes with the given return type
 	 */
 	public List<Node> listAvailableFunctions(Class<?> type) {
-		List<Node> result = new ArrayList<Node>();
+		List<Node> result = new ArrayList<>();
 		
 		for (Node node : availableNodes) {
 			if ((node.getNumberOfArguments() > 0) && type.isAssignableFrom(node.getReturnType())) {

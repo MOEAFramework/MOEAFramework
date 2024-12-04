@@ -50,7 +50,7 @@ public class InstrumenterTest {
 		
 		public TestCollector() {
 			super();
-			instrumentedObjects = new HashSet<Object>();
+			instrumentedObjects = new HashSet<>();
 		}
 
 		public Set<Object> getInstrumentedObjects() {

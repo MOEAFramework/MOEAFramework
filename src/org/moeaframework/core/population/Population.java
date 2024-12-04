@@ -71,7 +71,7 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, Co
 	public Population() {
 		super();
 
-		data = new ArrayList<Solution>();
+		data = new ArrayList<>();
 	}
 
 	/**
@@ -438,7 +438,7 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, Co
 	 * @return the contents of this population as a list
 	 */
 	public List<Solution> asList() {
-		List<Solution> result = new ArrayList<Solution>(size());
+		List<Solution> result = new ArrayList<>(size());
 		
 		for (Solution solution : this) {
 			result.add(solution);
@@ -449,29 +449,26 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, Co
 	
 	@Override
 	public TabularData<Solution> asTabularData() {
-		TabularData<Solution> data = new TabularData<Solution>(this);
+		TabularData<Solution> data = new TabularData<>(this);
 		
 		if (!isEmpty()) {
 			Solution solution = get(0);
 			
 			for (int i = 0; i < solution.getNumberOfVariables(); i++) {
 				final int index = i;
-				data.addColumn(new Column<Solution, Variable>(
-						Variable.getNameOrDefault(solution.getVariable(index), index),
+				data.addColumn(new Column<>(Variable.getNameOrDefault(solution.getVariable(index), index),
 						s -> s.getVariable(index)));
 			}
 			
 			for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
 				final int index = i;
-				data.addColumn(new Column<Solution, Objective>(
-						Objective.getNameOrDefault(solution.getObjective(index), index),
+				data.addColumn(new Column<>(Objective.getNameOrDefault(solution.getObjective(index), index),
 						s -> s.getObjective(index)));
 			}
 			
 			for (int i = 0; i < solution.getNumberOfConstraints(); i++) {
 				final int index = i;
-				data.addColumn(new Column<Solution, Constraint>(
-						Constraint.getNameOrDefault(solution.getConstraint(index), index),
+				data.addColumn(new Column<>(Constraint.getNameOrDefault(solution.getConstraint(index), index),
 						s -> s.getConstraint(index)));
 			}
 		}

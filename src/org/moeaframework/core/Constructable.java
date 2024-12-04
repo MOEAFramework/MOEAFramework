@@ -236,7 +236,7 @@ public interface Constructable {
 	 * @return the constructors
 	 */
 	private static List<Constructor<?>> getOrderedConstructors(Class<?> type) {
-		List<Constructor<?>> result = new ArrayList<Constructor<?>>();
+		List<Constructor<?>> result = new ArrayList<>();
 		Collections.addAll(result, type.getConstructors());
 		result.sort(new ConstructorComparator());
 		return result;
@@ -259,7 +259,7 @@ public interface Constructable {
 		}
 		
 		static {
-			ORDER = new HashMap<Class<?>, Integer>();
+			ORDER = new HashMap<>();
 			ORDER.put(byte.class, 0);
 			ORDER.put(Byte.class, 0);
 			ORDER.put(char.class, 1);

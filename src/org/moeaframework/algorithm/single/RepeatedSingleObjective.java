@@ -98,7 +98,7 @@ public class RepeatedSingleObjective extends AbstractAlgorithm {
 	public RepeatedSingleObjective(Problem problem, WeightGenerator weightGenerator,
 			BiFunction<Problem, double[], Algorithm> creator) {
 		super(problem);
-		algorithms = new ArrayList<Algorithm>();
+		algorithms = new ArrayList<>();
 		
 		for (double[] weight : weightGenerator.generate()) {
 			algorithms.add(creator.apply(problem, weight));

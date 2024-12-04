@@ -210,10 +210,10 @@ public class Samples implements Iterable<Sample>, Formattable<Sample>, DataStrea
 	
 	@Override
 	public TabularData<Sample> asTabularData() {
-		TabularData<Sample> table = new TabularData<Sample>(samples);
+		TabularData<Sample> table = new TabularData<>(samples);
 		
 		for (Parameter<?> parameter : parameterSet) {
-			table.addColumn(new Column<Sample, Object>(parameter.getName(), x -> parameter.readValue(x)));
+			table.addColumn(new Column<>(parameter.getName(), x -> parameter.readValue(x)));
 		}
 				
 		return table;
