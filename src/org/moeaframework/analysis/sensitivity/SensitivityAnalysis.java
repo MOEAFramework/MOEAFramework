@@ -59,7 +59,7 @@ public interface SensitivityAnalysis<T extends SensitivityResult> {
 	 * @return the sensitivity results
 	 */
 	public default T evaluate(SampledResults<Double> results) {
-		return evaluate(results.stream().mapToDouble(x -> x.getValue().doubleValue()).toArray());
+		return evaluate(results.stream().mapToDouble(x -> x.getValue()).toArray());
 	}
 	
 }
