@@ -132,7 +132,7 @@ public class BinaryIntegerVariableTest {
 	
 	@Test
 	public void testBinaryEncoding() {
-		Consumer<Number> test = (value) -> {
+		Consumer<Number> test = value -> {
 			BitSet bits = BinaryIntegerVariable.encode(value.longValue());
 			String expectedString = Long.toBinaryString(value.longValue());
 			
@@ -161,7 +161,7 @@ public class BinaryIntegerVariableTest {
 
 	@Test
 	public void testBinaryDecoding() {
-		Consumer<Number> test = (value) -> {
+		Consumer<Number> test = value -> {
 			BitSet bits = BinaryIntegerVariable.encode(value.longValue());
 			Assert.assertEquals(value.longValue(), BinaryIntegerVariable.decode(bits));
 		};
@@ -207,7 +207,7 @@ public class BinaryIntegerVariableTest {
 
 	@Test
 	public void testGrayToBinaryEncoding() {
-		Consumer<Number> test = (value) -> {
+		Consumer<Number> test = value -> {
 			BitSet bits = BinaryIntegerVariable.encode(value.longValue());
 			bits = BinaryIntegerVariable.binaryToGray(bits);
 			bits = BinaryIntegerVariable.grayToBinary(bits);

@@ -373,13 +373,13 @@ public class MockSolution extends Solution {
 	@Override
 	public double[] getObjectiveValues() {
 		throwIfObjectivesNotSet();
-		return Arrays.stream(objectives.get()).mapToDouble(o -> o.getValue()).toArray();
+		return Arrays.stream(objectives.get()).mapToDouble(Objective::getValue).toArray();
 	}
 	
 	@Override
 	public double[] getCanonicalObjectiveValues() {
 		throwIfObjectivesNotSet();
-		return Arrays.stream(objectives.get()).mapToDouble(o -> o.getCanonicalValue()).toArray();
+		return Arrays.stream(objectives.get()).mapToDouble(Objective::getCanonicalValue).toArray();
 	}
 	
 	@Override
@@ -406,7 +406,7 @@ public class MockSolution extends Solution {
 	@Override
 	public double[] getConstraintValues() {
 		throwIfConstraintsNotSet();
-		return Arrays.stream(constraints.get()).mapToDouble(c -> c.getValue()).toArray();
+		return Arrays.stream(constraints.get()).mapToDouble(Constraint::getValue).toArray();
 	}
 	
 	@Override

@@ -134,7 +134,7 @@ public abstract class FileMap implements Constructable {
 			try (Stream<Path> stream = Files.walk(containerPath, 1)) {
 				matchingFile = stream
 						.skip(1)
-						.map(x -> x.getFileName())
+						.map(Path::getFileName)
 						.filter(x -> CASE_INSENSITIVE_ORDER.compare(x, escapedName) == 0)
 						.findFirst();
 			}

@@ -1258,8 +1258,8 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	@Override
 	public TabularData<Entry<String, String>> asTabularData() {
 		TabularData<Entry<String, String>> table = new TabularData<Entry<String, String>>(properties.entrySet());
-		table.addColumn(new Column<Entry<String, String>, String>("Property", x -> x.getKey()));
-		table.addColumn(new Column<Entry<String, String>, String>("Value", x -> x.getValue()));
+		table.addColumn(new Column<Entry<String, String>, String>("Property", Entry::getKey));
+		table.addColumn(new Column<Entry<String, String>, String>("Value", Entry::getValue));
 		return table;
 	}
 	

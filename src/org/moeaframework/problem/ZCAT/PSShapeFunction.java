@@ -34,9 +34,7 @@ interface PSShapeFunction {
 	 */
 	public double[] apply(double[] y, int m, int n);
 	
-	public static final PSShapeFunction G0 = (y, m, n) -> {
-		return Vector.of(n - m, 0.2210);
-	};
+	public static final PSShapeFunction G0 = (y, m, n) -> Vector.of(n - m, 0.2210);
 	
 	public static final PSShapeFunction G1 = (y, m, n) -> {
 		double[] g = new double[n - m];

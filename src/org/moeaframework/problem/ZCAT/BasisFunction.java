@@ -30,7 +30,7 @@ interface BasisFunction {
 	 */
 	public double apply(double[] J);
 	
-	public static final BasisFunction Z1 = (J) ->	{
+	public static final BasisFunction Z1 = J -> {
 	    double Z = 0.0;
 
 	    for (int i = 0; i < J.length; i++) {
@@ -40,7 +40,7 @@ interface BasisFunction {
 	    return (10.0 / J.length) * Z;
 	};
 	
-	public static final BasisFunction Z2 = (J) -> {
+	public static final BasisFunction Z2 = J -> {
 	    double Z = -Double.MAX_VALUE;
 	    
 	    for (int i = 0; i < J.length; i++) {
@@ -50,7 +50,7 @@ interface BasisFunction {
 	    return 10.0 * Z;
 	};
 	
-	public static final BasisFunction Z3 = (J) -> {
+	public static final BasisFunction Z3 = J -> {
 	    double k = 5.0;
 	    double Z = 0.0;
 	    
@@ -61,7 +61,7 @@ interface BasisFunction {
 	    return (10.0 / J.length) * Z;
 	};
 	
-	public static final BasisFunction Z4 = (J) -> {
+	public static final BasisFunction Z4 = J -> {
 	    double k = 5.0;
 	    double pow1 = -Double.MAX_VALUE;
 	    double pow2 = 0.0;
@@ -74,7 +74,7 @@ interface BasisFunction {
 	    return (10.0 / (2.0 * Math.exp(1.0) - 2.0)) * (Math.exp(Math.pow(pow1, 0.5)) - Math.exp(pow2 / J.length) - 1.0 + Math.exp(1.0));
 	};
 	
-	public static final BasisFunction Z5 = (J) -> {
+	public static final BasisFunction Z5 = J -> {
 	    double Z = 0.0;
 	    
 	    for (int i = 0; i < J.length; i++) {
@@ -84,7 +84,7 @@ interface BasisFunction {
 	    return -0.7 * Z3.apply(J) + (10.0 / J.length) * Z;
 	};
 	
-	public static final BasisFunction Z6 = (J) -> {
+	public static final BasisFunction Z6 = J -> {
 	    double Z = 0.0;
 	    
 	    for (int i = 0; i < J.length; i++) {

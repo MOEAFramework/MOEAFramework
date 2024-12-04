@@ -993,7 +993,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @return the string representation
 		 */
 		public static String toFormatString(EnumSet<FormatFlag> flags) {
-			return "{" + flags.stream().map(f -> f.toString()).collect(Collectors.joining(";")) + "}";
+			return "{" + flags.stream().map(FormatFlag::toString).collect(Collectors.joining(";")) + "}";
 		}
 	}
 	

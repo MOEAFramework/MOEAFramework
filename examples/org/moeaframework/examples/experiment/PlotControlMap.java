@@ -35,7 +35,7 @@ import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
 
 /**
- * Generates a control map plot showing the effects of the rate parameter
+ * Generates a control map plot showing the effects of population size and the number of function evaluations.
  */
 public class PlotControlMap {
 	

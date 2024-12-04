@@ -161,10 +161,10 @@ public class Timer implements Formattable<StatisticalSummary>, Named {
 		TabularData<StatisticalSummary> result = new TabularData<>(List.of(getStatistics()));
 		
 		result.addColumn(new Column<StatisticalSummary, String>("Timer", x -> name == null ? "<unnamed>" : name));
-		result.addColumn(new Column<StatisticalSummary, Double>("Min", x -> x.getMin()));
-		result.addColumn(new Column<StatisticalSummary, Double>("Mean", x -> x.getMean()));
-		result.addColumn(new Column<StatisticalSummary, Double>("Max", x -> x.getMax()));
-		result.addColumn(new Column<StatisticalSummary, Long>("Count", x -> x.getN()));
+		result.addColumn(new Column<StatisticalSummary, Double>("Min", StatisticalSummary::getMin));
+		result.addColumn(new Column<StatisticalSummary, Double>("Mean", StatisticalSummary::getMean));
+		result.addColumn(new Column<StatisticalSummary, Double>("Max", StatisticalSummary::getMax));
+		result.addColumn(new Column<StatisticalSummary, Long>("Count", StatisticalSummary::getN));
 		
 		return result;
 	}

@@ -30,12 +30,12 @@ public class ZDTProblemProvider extends RegisteredProblemProvider {
 	public ZDTProblemProvider() {
 		super();
 		
-		register("ZDT1", () -> new ZDT1(), "pf/ZDT1.pf");
-		register("ZDT2", () -> new ZDT2(), "pf/ZDT2.pf");
-		register("ZDT3", () -> new ZDT3(), "pf/ZDT3.pf");
-		register("ZDT4", () -> new ZDT4(), "pf/ZDT4.pf");
-		register("ZDT5", () -> new ZDT5(), "pf/ZDT5.pf");
-		register("ZDT6", () -> new ZDT6(), "pf/ZDT6.pf");
+		register("ZDT1", ZDT1::new, "pf/ZDT1.pf");
+		register("ZDT2", ZDT2::new, "pf/ZDT2.pf");
+		register("ZDT3", ZDT3::new, "pf/ZDT3.pf");
+		register("ZDT4", ZDT4::new, "pf/ZDT4.pf");
+		register("ZDT5", ZDT5::new, "pf/ZDT5.pf");
+		register("ZDT6", ZDT6::new, "pf/ZDT6.pf");
 		
 		registerDiagnosticToolProblems(getRegisteredProblems());
 	}

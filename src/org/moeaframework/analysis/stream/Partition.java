@@ -355,7 +355,7 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 	 * @return the constructed partition
 	 */
 	public static <K, V> Partition<K, V> of(Map<K, V> map) {
-		return new ImmutablePartition<K, V>(map.entrySet().stream().map(x -> Pair.of(x)));
+		return new ImmutablePartition<K, V>(map.entrySet().stream().map(Pair::of));
 	}
 	
 	/**

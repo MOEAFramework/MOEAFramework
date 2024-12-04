@@ -107,7 +107,7 @@ public class Timing {
 	public static TabularData<Timer> asTabularData() {
 		TabularData<Timer> result = new TabularData<>(timers.values());
 		
-		result.addColumn(new Column<Timer, String>("Timer", x -> x.getName()));
+		result.addColumn(new Column<Timer, String>("Timer", Timer::getName));
 		result.addColumn(new Column<Timer, Double>("Min", x -> x.getStatistics().getMin()));
 		result.addColumn(new Column<Timer, Double>("Mean", x -> x.getStatistics().getMean()));
 		result.addColumn(new Column<Timer, Double>("Max", x -> x.getStatistics().getMax()));

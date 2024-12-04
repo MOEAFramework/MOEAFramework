@@ -618,8 +618,8 @@ public class Plot {
 		ParameterSet parameterSet = result.getParameterSet();
 		int n = parameterSet.size();
 		double[] angles = IntStream.range(0, n).mapToDouble(x -> 2.0 * Math.PI * x / n).toArray();
-		double[] xs = DoubleStream.of(angles).map(x -> Math.cos(x)).toArray();
-		double[] ys = DoubleStream.of(angles).map(x -> Math.sin(x)).toArray();
+		double[] xs = DoubleStream.of(angles).map(Math::cos).toArray();
+		double[] ys = DoubleStream.of(angles).map(Math::sin).toArray();
 
 		if (result instanceof SecondOrderSensitivity secondOrder) {
 			for (int i = 0; i < n; i++) {
@@ -1153,8 +1153,8 @@ public class Plot {
 	 * @return a reference to this instance
 	 */
 	public Plot heatMap(String label, Partition<? extends Pair<? extends Number, ? extends Number>, ? extends Number> partition) {
-		List<? extends Number> xs = partition.keys().stream().map(v -> v.getLeft()).distinct().sorted().toList();
-		List<? extends Number> ys = partition.keys().stream().map(v -> v.getRight()).distinct().sorted().toList();
+		List<? extends Number> xs = partition.keys().stream().map(Pair::getLeft).distinct().sorted().toList();
+		List<? extends Number> ys = partition.keys().stream().map(Pair::getRight).distinct().sorted().toList();
 		List<List<Number>> zs = new ArrayList<>();
 
 		for (Number x : xs) {

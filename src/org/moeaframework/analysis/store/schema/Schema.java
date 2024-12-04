@@ -158,7 +158,7 @@ public class Schema {
 	
 	@Override
 	public String toString() {
-		return "Schema" + List.of(fields).stream().map(x -> x.toString()).collect(Collectors.joining(",", "(", ")"));
+		return "Schema" + List.of(fields).stream().map(List::toString).collect(Collectors.joining(",", "(", ")"));
 	}
 	
 	@Override

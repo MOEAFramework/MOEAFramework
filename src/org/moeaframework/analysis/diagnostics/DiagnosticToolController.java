@@ -227,7 +227,7 @@ public class DiagnosticToolController extends Controller implements SettingChang
 		showLastTrace.addSettingChangedListener(this);
 		showIndividualTraces.addSettingChangedListener(this);
 		
-		addShutdownHook(() -> cancel());
+		addShutdownHook(this::cancel);
 	}
 	
 	/**

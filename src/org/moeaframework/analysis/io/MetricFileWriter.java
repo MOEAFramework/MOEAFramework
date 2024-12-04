@@ -186,7 +186,7 @@ public class MetricFileWriter extends ResultWriter {
 	 * @param values the values
 	 */
 	protected void write(double[] values) {
-		write(DoubleStream.of(values).mapToObj(x -> Double.toString(x)).toArray(String[]::new));
+		write(DoubleStream.of(values).mapToObj(Double::toString).toArray(String[]::new));
 	}
 	
 	/**
@@ -204,7 +204,7 @@ public class MetricFileWriter extends ResultWriter {
 	 */
 	protected void printHeader() {
 		writer.print("# ");
-		write(Stream.of(Metric.values()).map(x -> x.name()).toArray(String[]::new));
+		write(Stream.of(Metric.values()).map(Metric::name).toArray(String[]::new));
 	}
 	
 	/**

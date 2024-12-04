@@ -74,7 +74,7 @@ public class HierarchicalFileMap extends FileMap {
 					matchingKey = stream
 							.skip(1)
 							.filter(Files::isDirectory)
-							.map(x -> x.getFileName())
+							.map(Path::getFileName)
 							.filter(x -> remainingPaths.containsKey(x))
 							.findFirst();
 				}
@@ -91,7 +91,7 @@ public class HierarchicalFileMap extends FileMap {
 					matchingValue = stream
 						.skip(1)
 						.filter(Files::isDirectory)
-						.map(x -> x.getFileName())
+						.map(Path::getFileName)
 						.filter(x -> CASE_INSENSITIVE_ORDER.compare(x, value) == 0)
 						.findFirst();
 				}

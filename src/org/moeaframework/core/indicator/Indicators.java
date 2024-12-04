@@ -776,7 +776,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 		public TabularData<Pair<StandardIndicator, Double>> asTabularData() {
 			TabularData<Pair<StandardIndicator, Double>> data = new TabularData<Pair<StandardIndicator, Double>>(asList());
 			data.addColumn(new Column<Pair<StandardIndicator, Double>, String>("Indicator", p -> p.getKey().name()));
-			data.addColumn(new Column<Pair<StandardIndicator, Double>, Double>("Value", p -> p.getValue()));
+			data.addColumn(new Column<Pair<StandardIndicator, Double>, Double>("Value", Pair::getValue));
 			return data;
 		}
 		

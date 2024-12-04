@@ -88,7 +88,7 @@ public class SampledResults<T> implements Partition<Sample, T> {
 					x -> parameter.readValue(x.getKey())));
 		}
 		
-		table.addColumn(new Column<Pair<Sample, T>, T>("Result", x -> x.getValue()));
+		table.addColumn(new Column<Pair<Sample, T>, T>("Result", Pair::getValue));
 		
 		return table;
 	}

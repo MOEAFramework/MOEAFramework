@@ -206,8 +206,8 @@ public class DefaultNormalizer {
 	 */
 	public void override(String problemName, double[] minimum, double[] maximum) {
 		overrides.add(0, Pair.of(
-				(p) -> p.getName().equalsIgnoreCase(problemName),
-				(p) -> new Normalizer(minimum, maximum)));
+				p -> p.getName().equalsIgnoreCase(problemName),
+				p -> new Normalizer(minimum, maximum)));
 	}
 
 	/**
@@ -226,8 +226,8 @@ public class DefaultNormalizer {
 	 */
 	public void disableNormalization(String problemName) {
 		overrides.add(0, Pair.of(
-				(p) -> p.getName().equalsIgnoreCase(problemName),
-				(p) -> Normalizer.none()));
+				p -> p.getName().equalsIgnoreCase(problemName),
+				p -> Normalizer.none()));
 	}
 
 }

@@ -59,13 +59,13 @@ public class TimingTest {
 	@Test
 	public void testDisplay() throws IOException {
 		Timing.clear();
-		Capture.stream((ps) -> Timing.display(ps)).assertThat((out) -> Assert.assertLineCount(2, out.toString()));
+		Capture.stream(Timing::display).assertThat(out -> Assert.assertLineCount(2, out.toString()));
 		
 		Timing.startTimer("timer1");
 		Timing.stopTimer("timer1");
 		Timing.startTimer("timer2");
 		Timing.stopTimer("timer2");
-		Capture.stream((ps) -> Timing.display(ps)).assertThat((out) -> Assert.assertLineCount(4, out.toString()));
+		Capture.stream(Timing::display).assertThat(out -> Assert.assertLineCount(4, out.toString()));
 	}
 	
 	@Test

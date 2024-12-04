@@ -71,7 +71,7 @@ public class DataStreamTest {
 		Assert.assertEquals(List.of("foo", "bar"), stream.values());
 		Assert.assertArrayEquals(new String[] { "foo", "bar" }, stream.values(String[]::new));
 		
-		Assert.assertEquals(List.of("FOO", "BAR"), stream.map(x -> x.toUpperCase()).values());
+		Assert.assertEquals(List.of("FOO", "BAR"), stream.map(String::toUpperCase).values());
 		Assert.assertEquals(List.of("bar", "foo"), stream.sorted().values());
 		Assert.assertEquals(List.of("bar"), stream.filter(x -> x.startsWith("b")).values());
 		Assert.assertEquals(List.of("foo", "bar"), stream.keyedOn(x -> x).values());
@@ -110,7 +110,7 @@ public class DataStreamTest {
 		Assert.assertEquals(List.of(0, 1), DataStream.range(2).values());
 		Assert.assertEquals(List.of(1, 2), DataStream.range(1, 3).values());
 		Assert.assertEquals(List.of(1, 1), DataStream.repeat(2, () -> 1).values());
-		Assert.assertEquals(List.of(1, 2), DataStream.enumerate(2, (x) -> x + 1).values());
+		Assert.assertEquals(List.of(1, 2), DataStream.enumerate(2, x -> x + 1).values());
 	}
 
 }

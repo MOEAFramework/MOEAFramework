@@ -33,7 +33,7 @@ public class CallbackExtensionExample {
 		NSGAII algorithm = new NSGAII(new Srinivas());
 		
 		algorithm.addExtension(new LoggingExtension());
-		algorithm.addExtension(new CallbackExtension((a) -> {
+		algorithm.addExtension(new CallbackExtension(a -> {
 			LoggingExtension.info(a, "NFE: {0}, Nondominated Solutions: {1}",
 					algorithm.getNumberOfEvaluations(), algorithm.getResult().size());
 		}));

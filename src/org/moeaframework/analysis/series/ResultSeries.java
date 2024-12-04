@@ -286,7 +286,7 @@ Streamable<IndexedResult> {
 		
 		if (!isEmpty()) {
 			if (!indexType.equals(IndexType.Singleton)) {
-				data.addColumn(new Column<IndexedResult, Integer>(getIndexType().name(), o -> o.getIndex()));
+				data.addColumn(new Column<IndexedResult, Integer>(getIndexType().name(), IndexedResult::getIndex));
 			}
 			
 			for (String key : getDefinedProperties()) {

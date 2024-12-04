@@ -216,8 +216,8 @@ public class PopulationTest {
 		
 		Population population = new Population(List.of(solution));
 		
-		CaptureResult result1 = Capture.stream((ps) -> solution.display(ps));
-		CaptureResult result2 = Capture.stream((ps) -> population.display(ps));
+		CaptureResult result1 = Capture.stream(ps -> solution.display(ps));
+		CaptureResult result2 = Capture.stream(ps -> population.display(ps));
 		
 		Assert.assertEquals(result1.toString(), result2.toString());
 	}

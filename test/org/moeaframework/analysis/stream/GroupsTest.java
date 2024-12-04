@@ -46,7 +46,7 @@ public class GroupsTest {
 	@Test
 	public void test() {
 		Partition<String, Integer> partition = Partition.zip(List.of("foo", "bar"), List.of(1, 2));
-		Groups<String, String, Integer> groups = partition.groupBy(x -> x.toUpperCase());
+		Groups<String, String, Integer> groups = partition.groupBy(String::toUpperCase);
 		
 		Assert.assertEquals(2, groups.size());
 		Assert.assertEquals(List.of("BAR", "FOO"), groups.sorted().keys());

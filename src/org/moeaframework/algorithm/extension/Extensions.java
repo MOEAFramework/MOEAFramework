@@ -83,7 +83,7 @@ public class Extensions implements Iterable<Extension>, Stateful, Configurable {
 	 * @param extensionType the extension type to remove
 	 */
 	public void remove(Class<? extends Extension> extensionType) {
-		removeIf((e) -> extensionType.isInstance(e));
+		removeIf(e -> extensionType.isInstance(e));
 	}
 	
 	/**

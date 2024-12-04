@@ -58,9 +58,9 @@ public class TabularDataTest {
 		rawData.add(Triple.of("bar", Integer.MAX_VALUE, new BinaryIntegerVariable(5, 0, 10)));
 		
 		data = new TabularData<>(rawData);
-		data.addColumn(new Column<Triple<String, Integer, Variable>, String>("String", d -> d.getLeft()));
-		data.addColumn(new Column<Triple<String, Integer, Variable>, Integer>("Integer", d -> d.getMiddle()));
-		data.addColumn(new Column<Triple<String, Integer, Variable>, Variable>("Variable", d -> d.getRight()));
+		data.addColumn(new Column<Triple<String, Integer, Variable>, String>("String", Triple::getLeft));
+		data.addColumn(new Column<Triple<String, Integer, Variable>, Integer>("Integer", Triple::getMiddle));
+		data.addColumn(new Column<Triple<String, Integer, Variable>, Variable>("Variable", Triple::getRight));
 		
 		expectedOutput = String.join(System.lineSeparator(), new String[] {
 				"String Integer    Variable ",
@@ -137,67 +137,67 @@ public class TabularDataTest {
 		
 		expectedOutput = expectedOutput.replace("foo", "FOO").replace("bar", "BAR");
 		
-		Capture.stream((ps) -> data.display(ps)).assertEqualsNormalized(expectedOutput);
+		Capture.stream(ps -> data.display(ps)).assertEqualsNormalized(expectedOutput);
 	}
 	
 	@Test
 	public void testPlaintext() throws IOException {
-		Capture.stream((ps) -> data.display(ps)).assertEqualsNormalized(expectedOutput);
+		Capture.stream(ps -> data.display(ps)).assertEqualsNormalized(expectedOutput);
 	}
 	
 	@Test
 	public void testCsv() throws IOException {
-		Capture.stream((ps) -> data.display(TableFormat.CSV, ps)).assertEqualsNormalized(expectedCsv);
+		Capture.stream(ps -> data.display(TableFormat.CSV, ps)).assertEqualsNormalized(expectedCsv);
 	}
 	
 	@Test
 	public void testMarkdown() throws IOException {
-		Capture.stream((ps) -> data.display(TableFormat.Markdown, ps)).assertEqualsNormalized(expectedMarkdown);
+		Capture.stream(ps -> data.display(TableFormat.Markdown, ps)).assertEqualsNormalized(expectedMarkdown);
 	}
 	
 	@Test
 	public void testLatex() throws IOException {
-		Capture.stream((ps) -> data.display(TableFormat.Latex, ps)).assertEqualsNormalized(expectedLatex);
+		Capture.stream(ps -> data.display(TableFormat.Latex, ps)).assertEqualsNormalized(expectedLatex);
 	}
 	
 	@Test
 	public void testJson() throws IOException {
-		Capture.stream((ps) -> data.display(TableFormat.Json, ps)).assertEqualsNormalized(expectedJson);
+		Capture.stream(ps -> data.display(TableFormat.Json, ps)).assertEqualsNormalized(expectedJson);
 	}
 	
 	@Test
 	public void testARFF() throws IOException {
-		Capture.stream((ps) -> data.display(TableFormat.ARFF, ps)).assertEqualsNormalized(expectedARFF);
+		Capture.stream(ps -> data.display(TableFormat.ARFF, ps)).assertEqualsNormalized(expectedARFF);
 	}
 	
 	@Test
 	public void testSavePlaintext() throws IOException {
-		Capture.file((f) -> data.save(TableFormat.Plaintext, f)).assertEqualsNormalized(expectedOutput);
+		Capture.file(f -> data.save(TableFormat.Plaintext, f)).assertEqualsNormalized(expectedOutput);
 	}
 	
 	@Test
 	public void testSaveCsv() throws IOException {
-		Capture.file((f) -> data.save(TableFormat.CSV, f)).assertEqualsNormalized(expectedCsv);
+		Capture.file(f -> data.save(TableFormat.CSV, f)).assertEqualsNormalized(expectedCsv);
 	}
 	
 	@Test
 	public void testSaveMarkdown() throws IOException {
-		Capture.file((f) -> data.save(TableFormat.Markdown, f)).assertEqualsNormalized(expectedMarkdown);
+		Capture.file(f -> data.save(TableFormat.Markdown, f)).assertEqualsNormalized(expectedMarkdown);
 	}
 	
 	@Test
 	public void testSaveLatex() throws IOException {
-		Capture.file((f) -> data.save(TableFormat.Latex, f)).assertEqualsNormalized(expectedLatex);
+		Capture.file(f -> data.save(TableFormat.Latex, f)).assertEqualsNormalized(expectedLatex);
 	}
 	
 	@Test
 	public void testSaveJson() throws IOException {
-		Capture.file((f) -> data.save(TableFormat.Json, f)).assertEqualsNormalized(expectedJson);
+		Capture.file(f -> data.save(TableFormat.Json, f)).assertEqualsNormalized(expectedJson);
 	}
 	
 	@Test
 	public void testSaveARFF() throws IOException {
-		Capture.file((f) -> data.save(TableFormat.ARFF, f)).assertEqualsNormalized(expectedARFF);
+		Capture.file(f -> data.save(TableFormat.ARFF, f)).assertEqualsNormalized(expectedARFF);
 	}
 	
 	@Test
@@ -236,27 +236,27 @@ public class TabularDataTest {
 	
 	@Test
 	public void testPlaintextEscaping() throws IOException {
-		Capture.stream((ps) -> escapedData.display(ps)).assertEqualsNormalized("key\n----------\nfoo\"\\|&bar");
+		Capture.stream(ps -> escapedData.display(ps)).assertEqualsNormalized("key\n----------\nfoo\"\\|&bar");
 	}
 	
 	@Test
 	public void testCsvEscaping() throws IOException {
-		Capture.stream((ps) -> escapedData.display(TableFormat.CSV, ps)).assertEqualsNormalized("key\n\"foo\"\"\\\t\r\n|&bar\"");
+		Capture.stream(ps -> escapedData.display(TableFormat.CSV, ps)).assertEqualsNormalized("key\n\"foo\"\"\\\t\r\n|&bar\"");
 	}
 	
 	@Test
 	public void testMarkdownEscaping() throws IOException {
-		Capture.stream((ps) -> escapedData.display(TableFormat.Markdown, ps)).assertEqualsNormalized("key\n----------------\nfoo\"\\\\&#124;&bar");
+		Capture.stream(ps -> escapedData.display(TableFormat.Markdown, ps)).assertEqualsNormalized("key\n----------------\nfoo\"\\\\&#124;&bar");
 	}
 	
 	@Test
 	public void testLatexEscaping() throws IOException {
-		Capture.stream((ps) -> escapedData.display(TableFormat.Latex, ps)).assertEqualsNormalized("\\begin{tabular}{|l|}\n\\hline\nkey \\\\\n\\hline\nfoo\"\\|\\&bar \\\\\n\\hline\n\\end{tabular}");
+		Capture.stream(ps -> escapedData.display(TableFormat.Latex, ps)).assertEqualsNormalized("\\begin{tabular}{|l|}\n\\hline\nkey \\\\\n\\hline\nfoo\"\\|\\&bar \\\\\n\\hline\n\\end{tabular}");
 	}
 	
 	@Test
 	public void testJsonEscaping() throws IOException {
-		Capture.stream((ps) -> escapedData.display(TableFormat.Json, ps)).assertEqualsNormalized("[{\"key\":\"foo\\\"\\\\\\t\\r\\n|&bar\"}]");
+		Capture.stream(ps -> escapedData.display(TableFormat.Json, ps)).assertEqualsNormalized("[{\"key\":\"foo\\\"\\\\\\t\\r\\n|&bar\"}]");
 	}
 
 }

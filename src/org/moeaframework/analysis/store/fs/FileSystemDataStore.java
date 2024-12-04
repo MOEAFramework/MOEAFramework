@@ -295,7 +295,7 @@ public class FileSystemDataStore implements DataStore {
 						.skip(1)
 						.map(x -> x.getFileName().toString())
 						.filter(x -> x.charAt(0) != '.')
-						.map(x -> getBlob(x))
+						.map(this::getBlob)
 						.toList();
 			}
 		}

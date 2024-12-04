@@ -46,7 +46,7 @@ public class OutputHandler extends StreamHandler {
 				"java.util.logging.SimpleFormatter.format=[%1$tc] %4$s: %5$s%n");
 
 		try (InputStream in = IOUtils.toInputStream(loggingConfiguration, StandardCharsets.UTF_8)) {
-			LogManager.getLogManager().updateConfiguration(in, (k) -> (o, n) -> o == null || force ? n : o);
+			LogManager.getLogManager().updateConfiguration(in, k -> (o, n) -> o == null || force ? n : o);
 		} catch (IOException e) {
 			// fall back to defaults
 		}

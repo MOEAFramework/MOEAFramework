@@ -79,7 +79,7 @@ public final class Rank implements Attribute {
 	 * @return the predicate function
 	 */
 	public static final Predicate<Solution> isRank(final int rank) {
-		return (s) -> Rank.getAttribute(s) == rank;
+		return s -> Rank.getAttribute(s) == rank;
 	}
 
 }

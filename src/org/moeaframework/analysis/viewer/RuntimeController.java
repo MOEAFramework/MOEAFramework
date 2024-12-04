@@ -111,7 +111,7 @@ public class RuntimeController extends Controller implements SettingChangedListe
 		fitMode.addSettingChangedListener(this);
 		showReferenceSet.addSettingChangedListener(this);
 		
-		addShutdownHook(() -> stop());
+		addShutdownHook(this::stop);
 	}
 
 	/**

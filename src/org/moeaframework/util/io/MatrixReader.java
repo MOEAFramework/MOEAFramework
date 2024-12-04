@@ -240,7 +240,7 @@ public class MatrixReader implements Iterable<double[]>, Iterator<double[]>, Clo
 			data.add(next()[index]);
 		}
 		
-		return data.stream().mapToDouble(x -> x.doubleValue()).toArray();
+		return data.stream().mapToDouble(Double::doubleValue).toArray();
 	}
 	
 	/**

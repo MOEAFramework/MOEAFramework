@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Function;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
@@ -244,7 +245,7 @@ public class IteratorsTest {
 	
 	@Test
 	public void testEmptyMap() {
-		Iterator<String> it = Iterators.map(Iterators.of(), x -> x.toString());
+		Iterator<String> it = Iterators.map(Iterators.of(), (Function<Object, String>) Object::toString);
 		Assert.assertFalse(it.hasNext());
 		Assert.assertThrows(NoSuchElementException.class, () -> it.next());
 	}

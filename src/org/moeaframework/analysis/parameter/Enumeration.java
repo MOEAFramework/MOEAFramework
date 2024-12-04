@@ -82,7 +82,7 @@ public class Enumeration<T> extends AbstractParameter<T> implements EnumeratedPa
 		}
 		
 		throw new InvalidParameterException(getName(), "invalid value '" + str + "', expected one of: " +
-				values.stream().map(x -> x.toString()).collect(Collectors.joining(", ")));
+				values.stream().map(Object::toString).collect(Collectors.joining(", ")));
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public class Enumeration<T> extends AbstractParameter<T> implements EnumeratedPa
 
 	@Override
 	public String encode(Tokenizer tokenizer) {
-		return tokenizer.encode(Stream.concat(Stream.of(getName(), "enum"), values().stream().map(x -> x.toString())));
+		return tokenizer.encode(Stream.concat(Stream.of(getName(), "enum"), values().stream().map(Object::toString)));
 	}
 	
 	/**

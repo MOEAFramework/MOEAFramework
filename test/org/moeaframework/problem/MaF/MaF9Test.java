@@ -120,8 +120,8 @@ public class MaF9Test extends ProblemTest {
 				solutions.stream().mapToDouble(x -> RealVariable.getReal(x.getVariable(0))).toArray(),
 				solutions.stream().mapToDouble(x -> RealVariable.getReal(x.getVariable(1))).toArray());
 		plot.scatter("Vertices",
-				problem.polygon.getVertices().stream().mapToDouble(x -> x.getX()).toArray(),
-				problem.polygon.getVertices().stream().mapToDouble(x -> x.getY()).toArray());
+				problem.polygon.getVertices().stream().mapToDouble(Vector2D::getX).toArray(),
+				problem.polygon.getVertices().stream().mapToDouble(Vector2D::getY).toArray());
 		plot.show();
 	}
 

@@ -316,7 +316,7 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, Co
 	 */
 	public Population filter(Predicate<? super Solution> predicate) {
 		Population result = new Population(this);
-		result.removeAll((s) -> !predicate.test(s));
+		result.removeAll(s -> !predicate.test(s));
 		return result;
 	}
 
