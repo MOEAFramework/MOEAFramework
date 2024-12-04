@@ -280,7 +280,7 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 	/**
 	 * The uniform mutation operator.
 	 */
-	private class UniformMutation extends TypeSafeMutation<RealVariable> {
+	private static class UniformMutation extends TypeSafeMutation<RealVariable> {
 		
 		private double perturbationIndex;
 		

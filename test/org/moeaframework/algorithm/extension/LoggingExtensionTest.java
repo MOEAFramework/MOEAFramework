@@ -73,7 +73,7 @@ public class LoggingExtensionTest {
 		LoggingExtension.severe(algorithm, "custom message");
 	}
 
-	private class TestHandler extends Handler {
+	private static class TestHandler extends Handler {
 		
 		private LogRecord lastRecord;
 

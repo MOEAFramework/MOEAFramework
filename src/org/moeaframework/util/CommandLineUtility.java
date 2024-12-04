@@ -63,7 +63,7 @@ public abstract class CommandLineUtility {
 	/**
 	 * Exception handler for formatting and printing the error message to the command line.
 	 */
-	private class CommandLineUncaughtExceptionHandler implements UncaughtExceptionHandler {
+	private static class CommandLineUncaughtExceptionHandler implements UncaughtExceptionHandler {
 
 		@Override
 		public void uncaughtException(Thread t, Throwable e) {

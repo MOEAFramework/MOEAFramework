@@ -870,7 +870,7 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 	 * Comparator for single-objective problems using aggregate constraint violations to handle constrained
 	 * optimization problems.
 	 */
-	private class SingleObjectiveComparator extends ChainedComparator implements Comparator<Solution> {
+	private static class SingleObjectiveComparator extends ChainedComparator implements Comparator<Solution> {
 
 		public SingleObjectiveComparator() {
 			super(new AggregateConstraintComparator(), new ObjectiveComparator(0));

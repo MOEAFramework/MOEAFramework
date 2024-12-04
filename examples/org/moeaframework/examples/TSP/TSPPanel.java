@@ -322,7 +322,7 @@ public class TSPPanel extends JPanel {
 	 * The inner class storing tour display settings.  These settings control the paint and line stroke when rendering
 	 * the tour.
 	 */
-	private class TourDisplaySetting {
+	private static class TourDisplaySetting {
 		
 		/**
 		 * The paint/color used when rendering the tour.

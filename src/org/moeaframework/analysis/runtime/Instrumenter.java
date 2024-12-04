@@ -587,11 +587,8 @@ public class Instrumenter {
 			
 			try {
 				instrument(algorithm, extension, collectors, visited, parents, field.get(object), null);
-			} catch (IllegalArgumentException e) {
-				//should never occur since object is of the specified type
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				//should never occur after setting field.setAccessible(true)
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				//should never occur since we know the argument type and make the field accessible
 				e.printStackTrace();
 			}
 		}

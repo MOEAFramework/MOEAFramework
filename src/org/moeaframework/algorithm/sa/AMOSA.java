@@ -454,7 +454,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 		return dominationAmount;
 	}
 	
-	private class DominationAmount {
+	private static class DominationAmount {
 		
 		private int dominatedAmount;
 		private int dominatesAmount;
@@ -477,7 +477,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 		
 	}
 
-	private class MinimumDeltaDominance {
+	private static class MinimumDeltaDominance {
 		
 		private double minimumDeltaDominance = Double.MAX_VALUE;
 		private int minimumIndex = 0;

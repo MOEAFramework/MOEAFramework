@@ -205,7 +205,7 @@ public class WFGHypervolume implements Indicator {
 	 * Comparator to sort solutions so they are monotonically improving (decreasing) in the last objective.
 	 * Ties are broken by considering other objectives.
 	 */
-	private class WFGObjectiveComparator implements Comparator<Solution> {
+	private static class WFGObjectiveComparator implements Comparator<Solution> {
 		
 		private int slice;
 		
