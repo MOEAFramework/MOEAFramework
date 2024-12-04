@@ -84,7 +84,7 @@ public class Resources {
 	 * @return the normalized resource path
 	 */
 	static String resolvePath(String resource) {
-		return Path.of(resource).normalize().toString().replaceAll("\\\\", "/");
+		return Path.of(resource).normalize().toString().replace('\\', '/');
 	}
 	
 	/**

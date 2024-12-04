@@ -178,13 +178,15 @@ public abstract class Controller {
 			exception.printStackTrace();
 		}
 		
-		String message = exception.getMessage() == null ? exception.toString() : exception.getMessage();
-		
+		StringBuilder message = new StringBuilder();
+		message.append(exception.toString());
+
 		if (exception.getCause() != null && exception.getCause().getMessage() != null) {
-			message += " - Caused by: " + exception.getCause().getMessage();
+			message.append(" - Caused by: ");
+			message.append(exception.getCause().getMessage());
 		}
 		
-		displayError(message);
+		displayError(message.toString());
 	}
 
 }

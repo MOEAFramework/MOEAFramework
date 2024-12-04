@@ -213,7 +213,7 @@ public class BuildProblem extends CommandLineUtility {
 				"."
 		};
 		
-		String packagePath = packageName.replaceAll("\\.", "/");
+		String packagePath = packageName.replace('.', '/');
 
 		Map<String, Object> mappings = new HashMap<>();
 		mappings.put("problemName", problemName);
@@ -267,7 +267,7 @@ public class BuildProblem extends CommandLineUtility {
 	
 	private String normalizeSeparator(Path path) {
 		// avoid using '\' as some systems interpret this as an escape character
-		return path.toString().replaceAll("\\\\", "/");
+		return path.toString().replace('\\', '/');
 	}
 	
 	private Path tryRelativize(Path first, Path second) {
