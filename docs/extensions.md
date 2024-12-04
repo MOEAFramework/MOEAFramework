@@ -10,11 +10,12 @@ For example, let's write an extension that displays the current NFE and the numb
 iteration.  We define the extension by implementing the `Extension` interface and overriding one or more of its methods.
 Here, we override `onStep` to run after each iteration.
 
-<!-- java:examples/org/moeaframework/examples/extensions/CustomExtensionExample.java [32:39] -->
+<!-- java:examples/org/moeaframework/examples/extensions/CustomExtensionExample.java [32:40] -->
 
 ```java
 public static class CustomExtension implements Extension {
 
+    @Override
     public void onStep(Algorithm algorithm) {
         System.out.println("NFE: " + algorithm.getNumberOfEvaluations() +
                 ", Nondominated Solutions: " + algorithm.getResult().size());
@@ -25,7 +26,7 @@ public static class CustomExtension implements Extension {
 
 Then, we simply register the extension with the algorithm:
 
-<!-- java:examples/org/moeaframework/examples/extensions/CustomExtensionExample.java [42:44] -->
+<!-- java:examples/org/moeaframework/examples/extensions/CustomExtensionExample.java [43:45] -->
 
 ```java
 NSGAII algorithm = new NSGAII(new Srinivas());
@@ -96,7 +97,7 @@ custom log messages:
 NSGAII algorithm = new NSGAII(new Srinivas());
 
 algorithm.addExtension(new LoggingExtension());
-algorithm.addExtension(new CallbackExtension((a) -> {
+algorithm.addExtension(new CallbackExtension(a -> {
     LoggingExtension.info(a, "NFE: {0}, Nondominated Solutions: {1}",
             algorithm.getNumberOfEvaluations(), algorithm.getResult().size());
 }));
