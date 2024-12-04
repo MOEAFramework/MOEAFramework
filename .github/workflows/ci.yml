@@ -24,14 +24,13 @@ on:
       java-version:
         type: choice
         required: true
-        description: Java version
+        description: Java version (Maven only)
         options:
           - '17'
           - '18'
           - '19'
           - '20'
           - '21'
-          - '22'
         default: '17'
       macos-version:
         type: choice
@@ -110,7 +109,7 @@ jobs:
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: maven-test-results-ubuntu-${{ env.MIN_JAVA_VERSION }}
+        name: maven-test-results-ubuntu-${{ env.JAVA_VERSION }}
         path: build/target/surefire-reports
 
   content-tests:
@@ -166,20 +165,23 @@ jobs:
       with:
         java-version: ${{ inputs.java-version }}
         java-distribution: ${{ inputs.java-distribution }}
+    - name: Get project info
+      uses: MOEAFramework/.github/actions/get-project-info@main
+      with:
+        skip-validation: true
     - name: Package binary
       uses: MOEAFramework/.github/actions/run-ant@main
       with:
         target: package-binary
     - name: Test CLI
       run: |
-        cd build/MOEAFramework-*
+        cd build/MOEAFramework-${{ env.BUILD_VERSION }}
         . examples/cli-example.sh
     - name: Test examples
       run: |
-        cd build/MOEAFramework-*
+        cd build/MOEAFramework-${{ env.BUILD_VERSION }}
         ./cli TestExamples --headless
     - name: Test sensitivity.sh
-      if: runner.os == 'Linux'
       run: |
-        cd build/MOEAFramework-*
-        examples/org/moeaframework/examples/sensitivity/sensitivity.sh
+        cd build/MOEAFramework-${{ env.BUILD_VERSION }}
+        . examples/org/moeaframework/examples/sensitivity/sensitivity.sh
