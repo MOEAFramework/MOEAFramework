@@ -6,9 +6,8 @@
 <suppressions>
 	<!-- Ignore BBOB2016 code that is copied verbatim from source -->
 	<suppress checks="RegexpHeader" files="src[\\/]org[\\/]moeaframework[\\/]problem[\\/]BBOB2016[\\/]" />
-	<suppress checks="MultipleVariableDeclarationsCheck" files="src[\\/]org[\\/]moeaframework[\\/]problem[\\/]BBOB2016[\\/]" />
 	<suppress checks="RegexpHeader" files="test[\\/]org[\\/]moeaframework[\\/]problem[\\/]BBOB2016[\\/]" />
-	<suppress checks="NeedBraces" files="test[\\/]org[\\/]moeaframework[\\/]problem[\\/]BBOB2016[\\/]" />
+	<suppress checks="MultipleVariableDeclarationsCheck" files="src[\\/]org[\\/]moeaframework[\\/]problem[\\/]BBOB2016[\\/]" />
 	<suppress checks="HideUtilityClassConstructor" files="test[\\/]org[\\/]moeaframework[\\/]problem[\\/]BBOB2016[\\/]" />
 
 	<!-- Ignore CDTLZ classes that do not follow type naming convensions -->

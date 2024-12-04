@@ -22,6 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -236,13 +237,8 @@ public interface Constructable {
 	 */
 	private static List<Constructor<?>> getOrderedConstructors(Class<?> type) {
 		List<Constructor<?>> result = new ArrayList<Constructor<?>>();
-		
-		for (Constructor<?> constructor : type.getConstructors()) {
-			result.add(constructor);
-		}
-		
+		Collections.addAll(result, type.getConstructors());
 		result.sort(new ConstructorComparator());
-		
 		return result;
 	}
 	
