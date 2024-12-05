@@ -346,4 +346,46 @@ public class IteratorsTest {
 		Assert.assertEquals(2, Iterators.count(it));
 	}
 	
+	@Test(expected = NoSuchElementException.class)
+	public void testEmptyMinimum() {
+		Iterator<Integer> it = Iterators.of();
+		Iterators.minimum(it);
+	}
+	
+	@Test
+	public void testMinimum() {
+		Iterator<Integer> it = Iterators.of(2, 1, 4, 3);
+		Assert.assertEquals(1, Iterators.minimum(it));
+	}
+	
+	@Test
+	public void testIterableMinimum() {
+		Iterable<Integer> it = List.of(2, 1, 4, 3);
+		Assert.assertEquals(1, Iterators.minimum(it));
+	}
+	
+	@Test(expected = NoSuchElementException.class)
+	public void testEmptyMaximum() {
+		Iterator<Integer> it = Iterators.of();
+		Iterators.maximum(it);
+	}
+	
+	@Test
+	public void testMaximum() {
+		Iterator<Integer> it = Iterators.of(2, 1, 4, 3);
+		Assert.assertEquals(4, Iterators.maximum(it));
+	}
+	
+	@Test
+	public void testIterableMaximum() {
+		Iterable<Integer> it = List.of(2, 1, 4, 3);
+		Assert.assertEquals(4, Iterators.maximum(it));
+	}
+	
+	@Test
+	public void testMinimumCustomKey() {
+		Iterator<String> it = Iterators.of("hello", "world", "foo", "bar");
+		Assert.assertEquals("foo", Iterators.minimum(it, s -> s.length(), Integer::compare));
+	}
+	
 }

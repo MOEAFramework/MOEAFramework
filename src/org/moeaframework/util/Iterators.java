@@ -18,6 +18,7 @@
 package org.moeaframework.util;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -262,6 +263,83 @@ public class Iterators {
 	 */
 	public static int count(Iterable<?> iterable) {
 		return count(iterable.iterator());
+	}
+	
+	/**
+	 * Finds and returns the minimum element using natural ordering as defined by the {@link Comparable}.
+	 * 
+	 * @param <V> the comparable type
+	 * @param iterator the iterator
+	 * @return the minimum element
+	 * @throws NoSuchElementException if the iterator is empty
+	 */
+	public static <V extends Comparable<? super V>> V minimum(Iterator<V> iterator) {
+		return minimum(iterator, Function.<V>identity(), Comparator.<V>naturalOrder());
+	}
+	
+	/**
+	 * Finds and returns the maximum element using natural ordering as defined by the {@link Comparable}.
+	 * 
+	 * @param <V> the comparable type
+	 * @param iterator the iterator
+	 * @return the maximum element
+	 * @throws NoSuchElementException if the iterator is empty
+	 */
+	public static <V extends Comparable<? super V>> V maximum(Iterator<V> iterator) {
+		return minimum(iterator, Function.<V>identity(), Comparator.<V>naturalOrder().reversed());
+	}
+	
+	/**
+	 * Finds and returns the minimum element using natural ordering as defined by the {@link Comparable}.
+	 * 
+	 * @param <V> the comparable type
+	 * @param iterable the iterable
+	 * @return the minimum element
+	 * @throws NoSuchElementException if the iterator is empty
+	 */
+	public static <V extends Comparable<? super V>> V minimum(Iterable<V> iterable) {
+		return minimum(iterable.iterator());
+	}
+	
+	/**
+	 * Finds and returns the maximum element using natural ordering as defined by the {@link Comparable}.
+	 * 
+	 * @param <V> the comparable type
+	 * @param iterable the iterable
+	 * @return the maximum element
+	 * @throws NoSuchElementException if the iterator is empty
+	 */
+	public static <V extends Comparable<? super V>> V maximum(Iterable<V> iterable) {
+		return maximum(iterable.iterator());
+	}
+	
+	/**
+	 * Finds and returns the minimum element.
+	 * 
+	 * @param <K> the type of the key used for comparison
+	 * @param <V> the type of each element
+	 * @param iterator the iterator
+	 * @param keyExtractor function returning the key used for comparisons
+	 * @param keyComparator comparator for ordering the keys
+	 * @return the minimum element
+	 * @throws NoSuchElementException if the iterator is empty
+	 */
+	public static <K, V> V minimum(Iterator<V> iterator, Function<? super V, ? extends K> keyExtractor,
+			Comparator<? super K> keyComparator) {
+		V value = iterator.next();
+		K key = keyExtractor.apply(value);
+
+		while (iterator.hasNext()) {
+			V otherValue = iterator.next();
+			K otherKey = keyExtractor.apply(otherValue);
+
+			if (keyComparator.compare(otherKey, key) < 0) {
+				value = otherValue;
+				key = otherKey;
+			}
+		}
+
+		return value;
 	}
 	
 	/**
