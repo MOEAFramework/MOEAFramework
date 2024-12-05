@@ -110,7 +110,7 @@ jobs:
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: maven-test-results-ubuntu-${{ env.MIN_JAVA_VERSION }}
+        name: maven-test-results-ubuntu-${{ env.JAVA_VERSION }}
         path: build/target/surefire-reports
 
   content-tests:
