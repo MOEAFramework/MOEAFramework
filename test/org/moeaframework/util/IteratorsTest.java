@@ -383,9 +383,9 @@ public class IteratorsTest {
 	}
 	
 	@Test
-	public void testMinimumCustomKey() {
+	public void testMinimumWithKey() {
 		Iterator<String> it = Iterators.of("hello", "world", "foo", "bar");
-		Assert.assertEquals("foo", Iterators.minimum(it, s -> s.length(), Integer::compare));
+		Assert.assertEquals(Pair.of(3, "foo"), Iterators.minimum(it, s -> s.length()));
 	}
 	
 }

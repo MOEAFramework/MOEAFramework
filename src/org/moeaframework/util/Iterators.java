@@ -274,7 +274,7 @@ public class Iterators {
 	 * @throws NoSuchElementException if the iterator is empty
 	 */
 	public static <V extends Comparable<? super V>> V minimum(Iterator<V> iterator) {
-		return minimum(iterator, Function.<V>identity(), Comparator.<V>naturalOrder());
+		return minimum(iterator, Function.<V>identity(), Comparator.<V>naturalOrder()).getValue();
 	}
 	
 	/**
@@ -286,7 +286,7 @@ public class Iterators {
 	 * @throws NoSuchElementException if the iterator is empty
 	 */
 	public static <V extends Comparable<? super V>> V maximum(Iterator<V> iterator) {
-		return minimum(iterator, Function.<V>identity(), Comparator.<V>naturalOrder().reversed());
+		return minimum(iterator, Function.<V>identity(), Comparator.<V>naturalOrder().reversed()).getValue();
 	}
 	
 	/**
@@ -314,17 +314,47 @@ public class Iterators {
 	}
 	
 	/**
-	 * Finds and returns the minimum element.
+	 * Finds and returns the minimum element based on the given key with a natural ordering.
 	 * 
 	 * @param <K> the type of the key used for comparison
 	 * @param <V> the type of each element
 	 * @param iterator the iterator
 	 * @param keyExtractor function returning the key used for comparisons
-	 * @param keyComparator comparator for ordering the keys
-	 * @return the minimum element
+	 * @return the minimum key and element
 	 * @throws NoSuchElementException if the iterator is empty
 	 */
-	public static <K, V> V minimum(Iterator<V> iterator, Function<? super V, ? extends K> keyExtractor,
+	public static <K extends Comparable<? super K>, V> Pair<K, V> minimum(Iterator<V> iterator,
+			Function<? super V, ? extends K> keyExtractor) {
+		return minimum(iterator, keyExtractor, Comparator.<K>naturalOrder());
+	}
+	
+	/**
+	 * Finds and returns the minimum element based on the given key with a natural ordering.
+	 * 
+	 * @param <K> the type of the key used for comparison
+	 * @param <V> the type of each element
+	 * @param iterator the iterator
+	 * @param keyExtractor function returning the key used for comparisons
+	 * @return the minimum key and element
+	 * @throws NoSuchElementException if the iterator is empty
+	 */
+	public static <K extends Comparable<? super K>, V> Pair<K, V> minimum(Iterable<V> iterable,
+			Function<? super V, ? extends K> keyExtractor) {
+		return minimum(iterable.iterator(), keyExtractor);
+	}
+	
+	/**
+	 * Finds and returns the minimum element based on the given key with the ordering defined by a comparator function.
+	 * 
+	 * @param <K> the type of the key used for comparison
+	 * @param <V> the type of each element
+	 * @param iterator the iterator
+	 * @param keyExtractor function returning the key used for comparisons
+	 * @param keyComparator function for ordering the keys
+	 * @return the minimum key and element
+	 * @throws NoSuchElementException if the iterator is empty
+	 */
+	public static <K, V> Pair<K, V> minimum(Iterator<V> iterator, Function<? super V, ? extends K> keyExtractor,
 			Comparator<? super K> keyComparator) {
 		V value = iterator.next();
 		K key = keyExtractor.apply(value);
@@ -339,7 +369,7 @@ public class Iterators {
 			}
 		}
 
-		return value;
+		return Pair.of(key, value);
 	}
 	
 	/**
