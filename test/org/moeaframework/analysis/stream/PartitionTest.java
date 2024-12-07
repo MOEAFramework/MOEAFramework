@@ -33,6 +33,7 @@ public class PartitionTest {
 		Partition<String, Integer> partition = Partition.of();
 		
 		Assert.assertEquals(0, partition.size());
+		Assert.assertTrue(partition.isEmpty());
 		Assert.assertEquals(List.of(), partition.keys());
 		Assert.assertArrayEquals(new String[0], partition.keys(String[]::new));
 		Assert.assertEquals(List.of(), partition.values());
@@ -68,6 +69,7 @@ public class PartitionTest {
 		Partition<String, Integer> partition = Partition.zip(List.of("foo", "bar"), List.of(1, 2));
 		
 		Assert.assertEquals(2, partition.size());
+		Assert.assertFalse(partition.isEmpty());
 		Assert.assertEquals(List.of("foo", "bar"), partition.keys());
 		Assert.assertArrayEquals(new String[] { "foo", "bar" }, partition.keys(String[]::new));
 		Assert.assertEquals(List.of(1, 2), partition.values());

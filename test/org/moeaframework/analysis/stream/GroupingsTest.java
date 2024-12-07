@@ -19,51 +19,146 @@ package org.moeaframework.analysis.stream;
 
 import java.util.function.Function;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.analysis.parameter.Parameter;
+import org.moeaframework.analysis.sample.Sample;
 
 public class GroupingsTest {
 	
 	@Test
 	public void testIntegerBucket() {
-		Function<Integer, Integer> bucket = Groupings.bucket(10);
-		Assert.assertEquals(5, bucket.apply(0));
-		Assert.assertEquals(5, bucket.apply(5));
-		Assert.assertEquals(5, bucket.apply(9));
-		Assert.assertEquals(15, bucket.apply(10));
-		Assert.assertEquals(15, bucket.apply(15));
-		Assert.assertEquals(15, bucket.apply(19));
+		Parameter<Integer> parameter = Parameter.named("test").asInt().sampledBetween(0, 100);
+		Sample sample = new Sample();
+		
+		Function<Sample, Integer> bucket = Groupings.bucket(parameter, 10);
+		
+		sample.setInt("test", 0);
+		Assert.assertEquals(5, bucket.apply(sample));
+		
+		sample.setInt("test", 5);
+		Assert.assertEquals(5, bucket.apply(sample));
+		
+		sample.setInt("test", 9);
+		Assert.assertEquals(5, bucket.apply(sample));
+		
+		sample.setInt("test", 10);
+		Assert.assertEquals(15, bucket.apply(sample));
+		
+		sample.setInt("test", 15);
+		Assert.assertEquals(15, bucket.apply(sample));
+		
+		sample.setInt("test", 19);
+		Assert.assertEquals(15, bucket.apply(sample));
+		
+		sample.throwIfUnaccessedProperties();
 	}
 	
 	@Test
 	public void testLongBucket() {
-		Function<Long, Long> bucket = Groupings.bucket(10L);
-		Assert.assertEquals(5, bucket.apply(0L));
-		Assert.assertEquals(5, bucket.apply(5L));
-		Assert.assertEquals(5, bucket.apply(9L));
-		Assert.assertEquals(15, bucket.apply(10L));
-		Assert.assertEquals(15, bucket.apply(15L));
-		Assert.assertEquals(15, bucket.apply(19L));
+		Parameter<Long> parameter = Parameter.named("test").asLong().sampledBetween(0L, 100L);
+		Sample sample = new Sample();
+		
+		Function<Sample, Long> bucket = Groupings.bucket(parameter, 10L);
+		
+		sample.setLong("test", 0L);
+		Assert.assertEquals(5L, bucket.apply(sample));
+		
+		sample.setLong("test", 5L);
+		Assert.assertEquals(5L, bucket.apply(sample));
+		
+		sample.setLong("test", 9L);
+		Assert.assertEquals(5L, bucket.apply(sample));
+		
+		sample.setLong("test", 10L);
+		Assert.assertEquals(15L, bucket.apply(sample));
+		
+		sample.setLong("test", 15L);
+		Assert.assertEquals(15L, bucket.apply(sample));
+		
+		sample.setLong("test", 19L);
+		Assert.assertEquals(15L, bucket.apply(sample));
+		
+		sample.throwIfUnaccessedProperties();
 	}
 	
 	@Test
 	public void testDoubleBucket() {
-		Function<Double, Double> bucket = Groupings.bucket(10.0);
-		Assert.assertEquals(5.0, bucket.apply(0.0));
-		Assert.assertEquals(5.0, bucket.apply(5.0));
-		Assert.assertEquals(5.0, bucket.apply(9.9));
-		Assert.assertEquals(15.0, bucket.apply(10.0));
-		Assert.assertEquals(15.0, bucket.apply(15.0));
-		Assert.assertEquals(15.0, bucket.apply(19.9));
+		Parameter<Double> parameter = Parameter.named("test").asDecimal().sampledBetween(0.0, 100.0);
+		Sample sample = new Sample();
+		
+		Function<Sample, Double> bucket = Groupings.bucket(parameter, 10.0);
+		
+		sample.setDouble("test", 0.0);
+		Assert.assertEquals(5.0, bucket.apply(sample));
+		
+		sample.setDouble("test", 5.0);
+		Assert.assertEquals(5.0, bucket.apply(sample));
+		
+		sample.setDouble("test", 9.9);
+		Assert.assertEquals(5.0, bucket.apply(sample));
+		
+		sample.setDouble("test", 10.0);
+		Assert.assertEquals(15.0, bucket.apply(sample));
+		
+		sample.setDouble("test", 15.0);
+		Assert.assertEquals(15.0, bucket.apply(sample));
+		
+		sample.setDouble("test", 19.9);
+		Assert.assertEquals(15.0, bucket.apply(sample));
+		
+		sample.throwIfUnaccessedProperties();
 	}
 	
 	@Test
 	public void testRound() {
-		Function<Double, Integer> round = Groupings.round();
-		Assert.assertEquals(0, round.apply(0.0));
-		Assert.assertEquals(1, round.apply(0.5));
-		Assert.assertEquals(1, round.apply(1.0));
-		Assert.assertEquals(2, round.apply(1.5));
+		Parameter<Double> parameter = Parameter.named("test").asDecimal().sampledBetween(0.0, 100.0);
+		Sample sample = new Sample();
+		
+		Function<Sample, Integer> bucket = Groupings.round(parameter);
+		
+		sample.setDouble("test", 0.0);
+		Assert.assertEquals(0, bucket.apply(sample));
+		
+		sample.setDouble("test", 0.5);
+		Assert.assertEquals(1, bucket.apply(sample));
+		
+		sample.setDouble("test", 1.0);
+		Assert.assertEquals(1, bucket.apply(sample));
+		
+		sample.setDouble("test", 1.5);
+		Assert.assertEquals(2, bucket.apply(sample));
+		
+		sample.throwIfUnaccessedProperties();
+	}
+	
+	@Test
+	public void testExactValue() {
+		Parameter<Double> parameter = Parameter.named("test").asDecimal().sampledBetween(0.0, 100.0);
+		Sample sample = new Sample();
+		
+		Function<Sample, Double> bucket = Groupings.exactValue(parameter);
+		
+		sample.setDouble("test", 0.0);
+		Assert.assertEquals(0.0, bucket.apply(sample));
+		
+		sample.setDouble("test", 0.5);
+		Assert.assertEquals(0.5, bucket.apply(sample));
+		
+		sample.setDouble("test", 1.0);
+		Assert.assertEquals(1.0, bucket.apply(sample));
+		
+		sample.throwIfUnaccessedProperties();
+	}
+	
+	@Test
+	public void testPair() {
+		Function<Double, Pair<Integer, Double>> bucket = Groupings.pair(Groupings.round(), Groupings.exactValue());
+		
+		Assert.assertEquals(Pair.of(0, 0.0), bucket.apply(0.0));
+		Assert.assertEquals(Pair.of(1, 0.5), bucket.apply(0.5));
+		Assert.assertEquals(Pair.of(1, 1.0), bucket.apply(1.0));
 	}
 
 }

@@ -111,15 +111,6 @@ public class Samples implements Iterable<Sample>, Formattable<Sample>, DataStrea
 	}
 
 	/**
-	 * Returns {@code true} if this collection of samples is empty; {@code false} otherwise.
-	 * 
-	 * @return {@code true} if this collection of samples is empty; {@code false} otherwise
-	 */
-	public boolean isEmpty() {
-		return samples.isEmpty();
-	}
-
-	/**
 	 * Adds the given sample to this collection.
 	 * 
 	 * @param sample the sample to add

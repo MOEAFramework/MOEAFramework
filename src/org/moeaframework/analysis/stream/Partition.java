@@ -63,6 +63,15 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 	public Stream<Pair<K, V>> stream();
 	
 	/**
+	 * Returns {@code true} if this partition is empty.
+	 * 
+	 * @return {@code true} if this partition is empty; {@code false} otherwise
+	 */
+	public default boolean isEmpty() {
+		return size() == 0;
+	}
+	
+	/**
 	 * Returns the keys in this partition as a list.
 	 * 
 	 * @return the list of keys

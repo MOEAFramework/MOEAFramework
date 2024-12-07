@@ -146,11 +146,11 @@ public class Assert extends org.junit.Assert {
 		assertEquals(expected.longValue(), actual.longValue());
 	}
 	
-	public static void assertEquals(int expected, Long actual) {
+	public static void assertEquals(long expected, Long actual) {
 		assertEquals(expected, actual.longValue());
 	}
 	
-	public static void assertEquals(Long expected, int actual) {
+	public static void assertEquals(Long expected, long actual) {
 		assertEquals(expected.longValue(), actual);
 	}
 	

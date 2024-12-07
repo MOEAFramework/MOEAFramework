@@ -17,123 +17,93 @@
  */
 package org.moeaframework.analysis.sample;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
-import org.moeaframework.analysis.parameter.InvalidParameterException;
+import org.moeaframework.analysis.parameter.Parameter;
 import org.moeaframework.analysis.parameter.ParameterSet;
-import org.moeaframework.core.TypedProperties;
 
 public class SamplesTest {
 
-	public static final String PARAMETER_FILE = """
-			entry1 decimal 0.0 1.0
-			entry2 int 100 10000
-			entry3 enum foo bar
-			""";
-
-	public static final String COMPLETE = """
-			0.0 100 foo
-			1.0 10000 bar
-			""";
-
-	public static final String INVALID_MISSING_ENTRY = """
-			0.0 100 foo
-			1.0
-			1.0 10000 bar
-			""";
-
-	public static final String INVALID_UNPARSEABLE = """
-			0.0 100 foo
-			1.0 10000foo 1.0
-			1.0 10000 bar
-			""";
-
-	public static final String INVALID_OUT_OF_BOUNDS_1 = """
-			0.0 100 foo
-			1.0 99 1.0
-			1.0 10000 bar
-			""";
-
-	public static final String INVALID_OUT_OF_BOUNDS_2 = """
-			0.0 100 foo
-			1.0 10001 1.0
-			1.0 10000 bar
-			""";
-
-	private ParameterSet parameterSet;
-
-	@Before
-	public void setUp() throws IOException {
-		parameterSet = ParameterSet.load(TempFiles.createFile().withContent(PARAMETER_FILE));
-	}
-
-	@After
-	public void tearDown() {
-		parameterSet = null;
-	}
-
-	private void validateComplete(Samples samples) {
-		Iterator<Sample> it = samples.iterator();
-		TypedProperties properties = null;
-
-		Assert.assertTrue(it.hasNext());
-
-		properties = it.next();
-		Assert.assertEquals(3, properties.size());
-		Assert.assertEquals("0.0", properties.getString("entry1", null));
-		Assert.assertEquals("100", properties.getString("entry2", null));
-		Assert.assertEquals("foo", properties.getString("entry3", null));
-
-		Assert.assertTrue(it.hasNext());
-
-		properties = it.next();
-		Assert.assertEquals(3, properties.size());
-		Assert.assertEquals("1.0", properties.getString("entry1", null));
-		Assert.assertEquals("10000", properties.getString("entry2", null));
-		Assert.assertEquals("bar", properties.getString("entry3", null));
-
-		Assert.assertFalse(it.hasNext());
-		Assert.assertFalse(it.hasNext());
-	}
-
-	private void validateInvalid(Samples samples) {
-		Iterator<Sample> it = samples.iterator();
-		
-		Assert.assertTrue(it.hasNext());
-		it.next();
-		Assert.assertTrue(it.hasNext());
-		it.next(); // should cause an exception
-	}
-
 	@Test
-	public void testFileComplete() throws IOException {
-		validateComplete(Samples.load(TempFiles.createFile().withContent(COMPLETE), parameterSet));
+	public void testEmpty() {
+		Samples samples = new Samples(null);
+		
+		Assert.assertTrue(samples.isEmpty());
+		Assert.assertEquals(0, samples.size());
+		
+		SampledResults<Integer> results = samples.evaluateAll(s -> 5);
+		Assert.assertEquals(0, results.size());
 	}
-
-	@Test(expected = IOException.class)
-	public void testFileMissingEntry() throws IOException {
-		validateInvalid(Samples.load(TempFiles.createFile().withContent(INVALID_MISSING_ENTRY), parameterSet));
+	
+	@Test
+	public void test() {
+		Samples samples = new Samples(null);
+		
+		Sample sample = new Sample();
+		samples.add(sample);
+		
+		Assert.assertFalse(samples.isEmpty());
+		Assert.assertEquals(1, samples.size());
+		Assert.assertSame(sample, samples.get(0));
+		
+		SampledResults<Integer> results = samples.evaluateAll(s -> 5);
+		Assert.assertEquals(1, results.size());
+		Assert.assertSame(sample, results.first().getKey());
+		Assert.assertEquals(5, results.first().getValue());
 	}
-
-	@Test(expected = InvalidParameterException.class)
-	public void testFileUnparseable() throws IOException {
-		validateInvalid(Samples.load(TempFiles.createFile().withContent(INVALID_UNPARSEABLE), parameterSet));
+	
+	@Test
+	public void testEquals() {
+		Samples samples1 = new Samples(null);
+		Samples samples2 = new Samples(null);
+		Samples samples3 = new Samples(null);
+		
+		Sample sample = new Sample();
+		sample.setInt("foo", 5);
+		samples3.add(sample);
+		
+		Assert.assertFalse(samples1.equals(null));
+		
+		Assert.assertTrue(samples1.equals(samples2));
+		Assert.assertTrue(samples2.equals(samples1));
+		Assert.assertEquals(samples1.hashCode(), samples2.hashCode());
+		
+		Assert.assertFalse(samples1.equals(samples3));
+		Assert.assertFalse(samples3.equals(samples1));
+		Assert.assertNotEquals(samples1.hashCode(), samples3.hashCode());
+		
+		samples2.add(sample.copy());
+		Assert.assertTrue(samples2.equals(samples3));
+		Assert.assertTrue(samples3.equals(samples2));
+		Assert.assertEquals(samples2.hashCode(), samples3.hashCode());
 	}
-
-	@Test(expected = InvalidParameterException.class)
-	public void testFileOutOfBounds1() throws IOException {
-		validateInvalid(Samples.load(TempFiles.createFile().withContent(INVALID_OUT_OF_BOUNDS_1), parameterSet));
-	}
-
-	@Test(expected = InvalidParameterException.class)
-	public void testFileOutOfBounds2() throws IOException {
-		validateInvalid(Samples.load(TempFiles.createFile().withContent(INVALID_OUT_OF_BOUNDS_2), parameterSet));
+	
+	@Test
+	public void testSaveLoad() throws IOException {
+		ParameterSet parameterSet = new ParameterSet(
+				Parameter.named("foo").asInt().range(0, 10));
+		
+		Samples samples = new Samples(parameterSet);
+		
+		Sample sample1 = new Sample();
+		sample1.setInt("foo", 10);
+		samples.add(sample1);
+		
+		Sample sample2 = new Sample();
+		sample2.setInt("foo", 5);
+		samples.add(sample2);
+		
+		File tempFile = TempFiles.createFile();
+		samples.save(tempFile);
+		
+		Samples copy = Samples.load(tempFile, parameterSet);
+		Assert.assertEquals(2, copy.size());
+		Assert.assertEquals(10, copy.get(0).getInt("foo"));
+		Assert.assertEquals(5, copy.get(1).getInt("foo"));
 	}
 
 }

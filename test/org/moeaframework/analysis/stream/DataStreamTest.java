@@ -35,6 +35,7 @@ public class DataStreamTest {
 		DataStream<String> stream = DataStream.of();
 		
 		Assert.assertEquals(0, stream.size());
+		Assert.assertTrue(stream.isEmpty());
 		Assert.assertEquals(List.of(), stream.values());
 		Assert.assertArrayEquals(new String[0], stream.values(String[]::new));
 		
@@ -68,6 +69,7 @@ public class DataStreamTest {
 		DataStream<String> stream = DataStream.of(List.of("foo", "bar"));
 		
 		Assert.assertEquals(2, stream.size());
+		Assert.assertFalse(stream.isEmpty());
 		Assert.assertEquals(List.of("foo", "bar"), stream.values());
 		Assert.assertArrayEquals(new String[] { "foo", "bar" }, stream.values(String[]::new));
 		

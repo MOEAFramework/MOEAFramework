@@ -58,6 +58,15 @@ public interface DataStream<V> extends Formattable<V>, Iterable<V> {
 	 * @return the stream
 	 */
 	public Stream<V> stream();
+	
+	/**
+	 * Returns {@code true} if this data stream is empty.
+	 * 
+	 * @return {@code true} if this data stream is empty; {@code false} otherwise
+	 */
+	public default boolean isEmpty() {
+		return size() == 0;
+	}
 
 	/**
 	 * Returns the values in this stream as a list.
