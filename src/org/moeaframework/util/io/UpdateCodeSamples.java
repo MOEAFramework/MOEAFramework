@@ -468,7 +468,10 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			FileUtils.deleteQuietly(classPath.toFile());
 
 			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-			compiler.run(null, null, null, javaPath.toAbsolutePath().toString());
+			
+			if (compiler.run(null, null, null, javaPath.toAbsolutePath().toString()) != 0) {
+				throw new IOException("Failed to compile " + javaPath);
+			}
 		}
 		
 		// execute the main method		
@@ -489,7 +492,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			return baos.toString();
 		} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException |
 				InvocationTargetException e) {
-			throw new IOException("Failed to run main method of " + getClassName(filename), e);
+			throw new IOException("Failed to execute " + getClassName(filename), e);
 		} finally {
 			System.setOut(oldOut);
 		}
