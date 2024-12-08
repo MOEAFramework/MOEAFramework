@@ -580,7 +580,8 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 				int transparency = controller.getPointTransparency().get();
 				
 				if (transparency > 0) {
-					paint = new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.round(255 * (100 - transparency) / 100.0f));
+					paint = new Color(color.getRed(), color.getGreen(), color.getBlue(),
+							Math.round(255 * (100 - transparency) / 100.0f));
 				}
 			}
 			
@@ -625,8 +626,10 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 			case InitialBounds -> {
 				Pair<Range, Range> bounds = getBoundsAt(controller.getStartingIndex());
 				
-				plot.getDomainAxis().setRange(bounds.getLeft());
-				plot.getRangeAxis().setRange(bounds.getRight());
+				if (bounds.getLeft() != null && bounds.getRight() != null) {
+					plot.getDomainAxis().setRange(bounds.getLeft());
+					plot.getRangeAxis().setRange(bounds.getRight());
+				}
 			}
 			case Zoom -> {
 				if ((zoomRangeBounds == null) || (zoomDomainBounds == null)) {
@@ -636,8 +639,10 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 					zoomRangeBounds = bounds.getRight();
 				}
 				
-				plot.getDomainAxis().setRange(zoomDomainBounds);
-				plot.getRangeAxis().setRange(zoomRangeBounds);
+				if (zoomDomainBounds != null && zoomRangeBounds != null) {
+					plot.getDomainAxis().setRange(zoomDomainBounds);
+					plot.getRangeAxis().setRange(zoomRangeBounds);
+				}
 			}
 			case ReferenceSetBounds -> {
 				AxisSelector<Solution, Number> xAxis = xAxisSelection.getItemAt(xAxisSelection.getSelectedIndex());
@@ -645,8 +650,10 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 				
 				Pair<Range, Range> bounds = controller.getReferenceSet().getBoundsAt(0, xAxis, yAxis);
 				
-				plot.getDomainAxis().setRange(bounds.getLeft());
-				plot.getRangeAxis().setRange(bounds.getRight());
+				if (bounds.getLeft() != null && bounds.getRight() != null) {
+					plot.getDomainAxis().setRange(bounds.getLeft());
+					plot.getRangeAxis().setRange(bounds.getRight());
+				}
 			}
 			default -> {
 				// JFreeChart dynamically scales bounds
@@ -740,8 +747,8 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 				rangeMax = Math.max(rangeMax, yValue);
 			}
 			
-			double domainDelta = 0.1 * (domainMax - domainMin);
-			double rangeDelta = 0.1 * (rangeMax - rangeMin);
+			double domainDelta = 0.1 * Math.max(1.0, domainMax - domainMin);
+			double rangeDelta = 0.1 * Math.max(1.0, rangeMax - rangeMin);
 
 			return Pair.of(
 					new Range(domainMin - domainDelta, domainMax + domainDelta),
