@@ -17,11 +17,15 @@
  */
 package org.moeaframework.util.io;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -40,13 +44,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.SystemUtils;
 import org.moeaframework.core.FrameworkException;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.util.CommandLineUtility;
@@ -85,8 +93,6 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	private static final long DEFAULT_SEED = 123456;
 	
 	private static final String DEFAULT_LINE_SEPARATOR = "\n";
-
-	private static final String[] DEFAULT_CLASSPATH = new String[] { "lib/*", "build", "examples" };
 	
 	private static final File[] DEFAULT_PATHS = new File[] { new File("docs/"), new File("website/"), new File("src/README.md.template") };
 	
@@ -101,14 +107,14 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	private static final Pattern END_REGEX = Pattern.compile("^\\s+//\\s*end-example:\\s*([a-zA-Z][a-zA-Z0-9\\-_]*)\\s*$");
 	
 	/**
+	 * {@code true} if compiled files should be cleaned and rebuilt.
+	 */
+	private boolean clean;
+	
+	/**
 	 * {@code true} if running in update mode; {@code false} for validate mode.
 	 */
 	private boolean update;
-	
-	/**
-	 * The classpath used when compiling and running Java examples.
-	 */
-	private String[] classpath;
 	
 	/**
 	 * The seed for making results consistent between runs.
@@ -132,12 +138,11 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
+		options.addOption(Option.builder("c")
+				.longOpt("clean")
+				.build());
 		options.addOption(Option.builder("u")
 				.longOpt("update")
-				.build());
-		options.addOption(Option.builder("c")
-				.longOpt("classpath")
-				.hasArgs()
 				.build());
 		options.addOption(Option.builder("s")
 				.longOpt("seed")
@@ -149,13 +154,14 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
+		clean = commandLine.hasOption("clean");
 		update = commandLine.hasOption("update");
-		classpath = commandLine.hasOption("classpath") ? commandLine.getOptionValues("classpath") : DEFAULT_CLASSPATH;
 		seed = commandLine.hasOption("seed") ? Long.parseLong(commandLine.getOptionValue("seed")) : DEFAULT_SEED;
 						
 		System.out.println("Running in " + (update ? "update" : "validate") + " mode");
-		System.out.println("Using classpath \"" + getClassPath(classpath) + "\"");
 		System.out.println("Using seed " + seed);
+		
+		Settings.PROPERTIES.setInt(Settings.KEY_HELP_WIDTH, 120);
 		
 		boolean fileChanged = false;
 
@@ -281,7 +287,6 @@ public class UpdateCodeSamples extends CommandLineUtility {
 					} else {
 						switch (language) {
 							case Help, Output -> {
-								compile(path);
 								content = execute(path, options);
 							}
 							default -> {
@@ -413,16 +418,6 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	}
 	
 	/**
-	 * Returns the classpath used to start the JVM, using the appropriate separator for the host operating system.
-	 * 
-	 * @param entries the entries in the classpath
-	 * @return the formatted classpath
-	 */
-	private String getClassPath(String... entries) {
-		return String.join(SystemUtils.IS_OS_WINDOWS ? ";" : ":", entries);
-	}
-	
-	/**
 	 * Returns the fully-qualified Java class name derived from the file name.
 	 * 
 	 * @param filename the Java file name
@@ -450,28 +445,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	}
 	
 	/**
-	 * Invokes the Java compiler in a separate process.
-	 * 
-	 * @param filename the Java file to compile
-	 * @throws IOException if a I/O error occurred while running the process
-	 * @throws InterruptedException if the process was interrupted
-	 */
-	private void compile(String filename) throws IOException, InterruptedException {
-		String extension = FilenameUtils.getExtension(filename);
-		
-		if (extension.equalsIgnoreCase("java")) {
-			ProcessBuilder processBuilder = new ProcessBuilder("javac",
-					"-classpath", getClassPath(classpath),
-					filename);
-			
-			RedirectStream.invoke(processBuilder);
-		} else {
-			Validate.that("file extension", extension).failUnsupportedOption("java");
-		}
-	}
-	
-	/**
-	 * Runs the Java program in a separate process.
+	 * Compiles and runs the Java program in a separate process.
 	 * 
 	 * @param filename the Java file to run
 	 * @return the standard output produced by the program
@@ -481,26 +455,43 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	private String execute(String filename, FormattingOptions options) throws IOException, InterruptedException {
 		String extension = FilenameUtils.getExtension(filename);
 		
-		if (extension.equalsIgnoreCase("java") || extension.equalsIgnoreCase("class")) {
-			List<String> command = new ArrayList<>();
-			command.add("java");
-			command.add("-classpath");
-			command.add(getClassPath(classpath));
-			command.add("-D" + Settings.KEY_PRNG_SEED + "=" + seed);
+		if (!extension.equalsIgnoreCase("java")) {
+			Validate.that("file extension", extension).failUnsupportedOption("java");
+		}
+		
+		Path javaPath = Path.of(filename);
+		Path classPath = javaPath.getParent().resolve(
+				FilenameUtils.removeExtension(javaPath.getFileName().toString()) + ".class");
+
+		// compile the Java file
+		if (clean || !Files.exists(classPath) || FileUtils.isFileNewer(javaPath.toFile(), classPath.toFile())) {
+			FileUtils.deleteQuietly(classPath.toFile());
+
+			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+			compiler.run(null, null, null, javaPath.toAbsolutePath().toString());
+		}
+		
+		// execute the main method		
+		String[] args = options.language.equals(Language.Help) ? new String[] { "--help" } : new String[0];
+		PrintStream oldOut = System.out;
 			
-			if (options.language.equals(Language.Help)) {
-				command.add("-D" + Settings.KEY_HELP_WIDTH + "=120");
-			}
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				PrintStream newOut = new PrintStream(baos)) {
+			System.setOut(newOut);
+				
+			Class<?> cls = Class.forName(getClassName(filename), true, Thread.currentThread().getContextClassLoader());
+			Method mainMethod = cls.getDeclaredMethod("main", String[].class);
 			
-			command.add(getClassName(filename));
-			
-			if (options.language.equals(Language.Help)) {
-				command.add("--help");
-			}
-			
-			return RedirectStream.capture(new ProcessBuilder(command));
-		} else {
-			return Validate.that("file extension", extension).failUnsupportedOption("java", "class");
+			PRNG.setSeed(seed);
+			mainMethod.invoke(null, (Object)args);
+				
+			newOut.close();
+			return baos.toString();
+		} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException |
+				InvocationTargetException e) {
+			throw new IOException("Failed to run main method of " + getClassName(filename), e);
+		} finally {
+			System.setOut(oldOut);
 		}
 	}
 	
@@ -816,12 +807,12 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		Bash,
 		
 		/**
-		 * Special mode, similar to Output, but passes in `--help`.
+		 * Similar to {@link Language#Output}, but passes in `--help`.
 		 */
 		Help,
 		
 		/**
-		 * Special mode where the output of the program is captured and displayed in the code block.
+		 * Compiles and executes the program, capturing the standard output.
 		 */
 		Output;
 		
