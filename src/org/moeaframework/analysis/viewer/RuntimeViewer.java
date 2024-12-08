@@ -92,6 +92,11 @@ import org.moeaframework.util.mvc.SelectValueAction;
 public class RuntimeViewer extends JDialog implements ListSelectionListener, ControllerListener {
 
 	private static final long serialVersionUID = -7556845366893802202L;
+	
+	/**
+	 * Specifies the margin, or empty space, for the domain and range bounds.
+	 */
+	private static final double MARGIN = 0.1;
 
 	/**
 	 * The localization instance for producing locale-specific strings.
@@ -747,12 +752,12 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 				rangeMax = Math.max(rangeMax, yValue);
 			}
 			
-			double domainDelta = 0.1 * Math.max(1.0, domainMax - domainMin);
-			double rangeDelta = 0.1 * Math.max(1.0, rangeMax - rangeMin);
+			double domainMargin = MARGIN * Math.max(1.0, domainMax - domainMin);
+			double rangeMargin = MARGIN * Math.max(1.0, rangeMax - rangeMin);
 
 			return Pair.of(
-					new Range(domainMin - domainDelta, domainMax + domainDelta),
-					new Range(rangeMin - rangeDelta, rangeMax + rangeDelta));
+					new Range(domainMin - domainMargin, domainMax + domainMargin),
+					new Range(rangeMin - rangeMargin, rangeMax + rangeMargin));
 		}
 		
 		public XYSeries toXYSeries(int index, AxisSelector<Solution, Number> xAxis,
