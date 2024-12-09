@@ -31,6 +31,8 @@ public class CDTLZProblemProviderTest extends ProblemTest {
 	@Test
 	public void testUnrecognizedProblem() {
 		Assert.assertNull(new CDTLZProblemProvider().getProblem("C4_DTLZ1_2"));
+		Assert.assertNull(new CDTLZProblemProvider().getProblem("C1_DTLZFoo_2"));
+		Assert.assertNull(new CDTLZProblemProvider().getProblem("C1_DTLZ1_Foo"));
 	}
 
 }

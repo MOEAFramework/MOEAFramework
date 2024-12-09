@@ -474,7 +474,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			}
 		}
 		
-		// execute the main method		
+		// execute the main method
 		String[] args = options.language.equals(Language.Help) ? new String[] { "--help" } : new String[0];
 		PrintStream oldOut = System.out;
 			

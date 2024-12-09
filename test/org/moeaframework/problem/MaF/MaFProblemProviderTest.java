@@ -33,6 +33,8 @@ public class MaFProblemProviderTest extends ProblemTest {
 	@Test
 	public void testUnrecognizedProblem() {
 		Assert.assertNull(new MaFProblemProvider().getProblem("MaF16_2"));
+		Assert.assertNull(new MaFProblemProvider().getProblem("MaF1_Foo"));
+		Assert.assertNull(new MaFProblemProvider().getProblem("MaF1Foo_2"));
 	}
 
 }

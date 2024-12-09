@@ -33,7 +33,7 @@ public class ZCATProblemProvider extends RegisteredProblemProvider {
 	 */
 	public ZCATProblemProvider() {
 		super();
-		
+
 		register("ZCAT1_2", () -> new ZCAT1(2), "pf/ZCAT1.2D.pf");
 		register("ZCAT2_2", () -> new ZCAT2(2), "pf/ZCAT2.2D.pf");
 		register("ZCAT3_2", () -> new ZCAT3(2), "pf/ZCAT3.2D.pf");
@@ -54,56 +54,52 @@ public class ZCATProblemProvider extends RegisteredProblemProvider {
 		register("ZCAT18_2", () -> new ZCAT18(2), "pf/ZCAT18.2D.pf");
 		register("ZCAT19_2", () -> new ZCAT19(2), "pf/ZCAT19.2D.pf");
 		register("ZCAT20_2", () -> new ZCAT20(2), "pf/ZCAT20.2D.pf");
-		
+
 		registerDiagnosticToolProblems(getRegisteredProblems());
 	}
-	
+
 	@Override
 	public Problem getProblem(String name) {
 		Problem problem = super.getProblem(name);
-		
+
 		if (problem != null) {
 			return problem;
 		}
-		
+
 		// allow creating any number of objectives, but these will not have reference sets
-		try {
-			Pattern pattern = Pattern.compile("^ZCAT([0-9]+)_([0-9]+)$", Pattern.CASE_INSENSITIVE);
-			Matcher matcher = pattern.matcher(name);
-			
-			if (matcher.matches()) {
-				int instance = Integer.parseInt(matcher.group(1));
-				int numberOfObjectives = Integer.parseInt(matcher.group(2));
-				
-				return switch (instance) {
-					case 1 -> new ZCAT1(numberOfObjectives);
-					case 2 -> new ZCAT2(numberOfObjectives);
-					case 3 -> new ZCAT3(numberOfObjectives);
-					case 4 -> new ZCAT4(numberOfObjectives);
-					case 5 -> new ZCAT5(numberOfObjectives);
-					case 6 -> new ZCAT6(numberOfObjectives);
-					case 7 -> new ZCAT7(numberOfObjectives);
-					case 8 -> new ZCAT8(numberOfObjectives);
-					case 9 -> new ZCAT9(numberOfObjectives);
-					case 10 -> new ZCAT10(numberOfObjectives);
-					case 11 -> new ZCAT11(numberOfObjectives);
-					case 12 -> new ZCAT12(numberOfObjectives);
-					case 13 -> new ZCAT13(numberOfObjectives);
-					case 14 -> new ZCAT14(numberOfObjectives);
-					case 15 -> new ZCAT15(numberOfObjectives);
-					case 16 -> new ZCAT16(numberOfObjectives);
-					case 17 -> new ZCAT17(numberOfObjectives);
-					case 18 -> new ZCAT18(numberOfObjectives);
-					case 19 -> new ZCAT19(numberOfObjectives);
-					case 20 -> new ZCAT20(numberOfObjectives);
-					default -> null;
-				};
-			}
-		} catch (NumberFormatException e) {
-			return null;
+		Pattern pattern = Pattern.compile("^ZCAT([0-9]+)_([0-9]+)$", Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(name);
+
+		if (matcher.matches()) {
+			int instance = Integer.parseInt(matcher.group(1));
+			int numberOfObjectives = Integer.parseInt(matcher.group(2));
+
+			return switch (instance) {
+				case 1 -> new ZCAT1(numberOfObjectives);
+				case 2 -> new ZCAT2(numberOfObjectives);
+				case 3 -> new ZCAT3(numberOfObjectives);
+				case 4 -> new ZCAT4(numberOfObjectives);
+				case 5 -> new ZCAT5(numberOfObjectives);
+				case 6 -> new ZCAT6(numberOfObjectives);
+				case 7 -> new ZCAT7(numberOfObjectives);
+				case 8 -> new ZCAT8(numberOfObjectives);
+				case 9 -> new ZCAT9(numberOfObjectives);
+				case 10 -> new ZCAT10(numberOfObjectives);
+				case 11 -> new ZCAT11(numberOfObjectives);
+				case 12 -> new ZCAT12(numberOfObjectives);
+				case 13 -> new ZCAT13(numberOfObjectives);
+				case 14 -> new ZCAT14(numberOfObjectives);
+				case 15 -> new ZCAT15(numberOfObjectives);
+				case 16 -> new ZCAT16(numberOfObjectives);
+				case 17 -> new ZCAT17(numberOfObjectives);
+				case 18 -> new ZCAT18(numberOfObjectives);
+				case 19 -> new ZCAT19(numberOfObjectives);
+				case 20 -> new ZCAT20(numberOfObjectives);
+				default -> null;
+			};
 		}
-		
+
 		return null;
 	}
-	
+
 }

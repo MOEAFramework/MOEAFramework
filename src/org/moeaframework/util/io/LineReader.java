@@ -174,8 +174,6 @@ public class LineReader extends BufferedReader implements Iterable<String>, Iter
 			if (line != null && trim) {
 				line = line.trim();
 			}
-
-			return line;
 		}
 		
 		return line;

@@ -44,6 +44,7 @@ public class DTLZProblemProviderTest extends ProblemTest {
 	@Test
 	public void testUnrecognizedProblem() {
 		Assert.assertNull(new DTLZProblemProvider().getProblem("DTLZ8_2"));
+		Assert.assertNull(new DTLZProblemProvider().getProblem("DTLZ8_Foo"));
 		Assert.assertNull(new DTLZProblemProvider().getProblem("Foo_DTLZ1_2"));
 	}
 

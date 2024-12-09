@@ -98,27 +98,23 @@ public class DTLZProblemProvider extends RegisteredProblemProvider {
 		}
 		
 		// allow creating any number of objectives, but these will not have reference sets
-		try {
-			Matcher matcher = pattern.matcher(name);
+		Matcher matcher = pattern.matcher(name);
 			
-			if (matcher.matches()) {
-				boolean inverted = matcher.group(1) != null;
-				int instance = Integer.parseInt(matcher.group(2));
-				int numberOfObjectives = Integer.parseInt(matcher.group(3));
+		if (matcher.matches()) {
+			boolean inverted = matcher.group(1) != null;
+			int instance = Integer.parseInt(matcher.group(2));
+			int numberOfObjectives = Integer.parseInt(matcher.group(3));
 				
-				return switch (instance) {
-					case 1 -> inverted ? new InvertedDTLZ1(numberOfObjectives) : new DTLZ1(numberOfObjectives);
-					case 2 -> new DTLZ2(numberOfObjectives);
-					case 3 -> new DTLZ3(numberOfObjectives);
-					case 4 -> new DTLZ4(numberOfObjectives);
-					case 5 -> new DTLZ5(numberOfObjectives);
-					case 6 -> new DTLZ6(numberOfObjectives);
-					case 7 -> new DTLZ7(numberOfObjectives);
-					default -> null;
-				};
-			}
-		} catch (NumberFormatException e) {
-			return null;
+			return switch (instance) {
+				case 1 -> inverted ? new InvertedDTLZ1(numberOfObjectives) : new DTLZ1(numberOfObjectives);
+				case 2 -> new DTLZ2(numberOfObjectives);
+				case 3 -> new DTLZ3(numberOfObjectives);
+				case 4 -> new DTLZ4(numberOfObjectives);
+				case 5 -> new DTLZ5(numberOfObjectives);
+				case 6 -> new DTLZ6(numberOfObjectives);
+				case 7 -> new DTLZ7(numberOfObjectives);
+				default -> null;
+			};
 		}
 		
 		return null;

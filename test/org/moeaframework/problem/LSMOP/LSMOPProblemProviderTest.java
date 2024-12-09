@@ -44,6 +44,7 @@ public class LSMOPProblemProviderTest extends ProblemTest {
 	@Test
 	public void testUnrecognizedProblem() {
 		Assert.assertNull(new LSMOPProblemProvider().getProblem("LSMOPFoo_2"));
+		Assert.assertNull(new LSMOPProblemProvider().getProblem("LSMOP_Foo"));
 	}
 
 }

@@ -58,29 +58,25 @@ public class LSMOPProblemProvider extends RegisteredProblemProvider {
 		}
 		
 		// allow creating any number of objectives, but these will not have reference sets
-		try {
-			Pattern pattern = Pattern.compile("^LSMOP([0-9])_([0-9]+)$", Pattern.CASE_INSENSITIVE);
-			Matcher matcher = pattern.matcher(name);
+		Pattern pattern = Pattern.compile("^LSMOP([0-9])_([0-9]+)$", Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(name);
 			
-			if (matcher.matches()) {
-				int instance = Integer.parseInt(matcher.group(1));
-				int numberOfObjectives = Integer.parseInt(matcher.group(2));
+		if (matcher.matches()) {
+			int instance = Integer.parseInt(matcher.group(1));
+			int numberOfObjectives = Integer.parseInt(matcher.group(2));
 				
-				return switch (instance) {
-					case 1 -> new LSMOP1(numberOfObjectives);
-					case 2 -> new LSMOP2(numberOfObjectives);
-					case 3 -> new LSMOP3(numberOfObjectives);
-					case 4 -> new LSMOP4(numberOfObjectives);
-					case 5 -> new LSMOP5(numberOfObjectives);
-					case 6 -> new LSMOP6(numberOfObjectives);
-					case 7 -> new LSMOP7(numberOfObjectives);
-					case 8 -> new LSMOP8(numberOfObjectives);
-					case 9 -> new LSMOP9(numberOfObjectives);
-					default -> null;
-				};
-			}
-		} catch (NumberFormatException e) {
-			return null;
+			return switch (instance) {
+				case 1 -> new LSMOP1(numberOfObjectives);
+				case 2 -> new LSMOP2(numberOfObjectives);
+				case 3 -> new LSMOP3(numberOfObjectives);
+				case 4 -> new LSMOP4(numberOfObjectives);
+				case 5 -> new LSMOP5(numberOfObjectives);
+				case 6 -> new LSMOP6(numberOfObjectives);
+				case 7 -> new LSMOP7(numberOfObjectives);
+				case 8 -> new LSMOP8(numberOfObjectives);
+				case 9 -> new LSMOP9(numberOfObjectives);
+				default -> null;
+			};
 		}
 		
 		return null;

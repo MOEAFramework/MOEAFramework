@@ -46,34 +46,30 @@ public class MaFProblemProvider extends RegisteredProblemProvider {
 		}
 		
 		// allow creating any number of objectives
-		try {
-			Matcher matcher = pattern.matcher(name);
+		Matcher matcher = pattern.matcher(name);
 			
-			if (matcher.matches()) {
-				int instance = Integer.parseInt(matcher.group(1));
-				int numberOfObjectives = Integer.parseInt(matcher.group(2));
+		if (matcher.matches()) {
+			int instance = Integer.parseInt(matcher.group(1));
+			int numberOfObjectives = Integer.parseInt(matcher.group(2));
 				
-				return switch (instance) {
-					case 1 -> new MaF1(numberOfObjectives);
-					case 2 -> new MaF2(numberOfObjectives);
-					case 3 -> new MaF3(numberOfObjectives);
-					case 4 -> new MaF4(numberOfObjectives);
-					case 5 -> new MaF5(numberOfObjectives);
-					case 6 -> new MaF6(numberOfObjectives);
-					case 7 -> new MaF7(numberOfObjectives);
-					case 8 -> new MaF8(numberOfObjectives);
-					case 9 -> new MaF9(numberOfObjectives);
-					case 10 -> new MaF10(numberOfObjectives);
-					case 11 -> new MaF11(numberOfObjectives);
-					case 12 -> new MaF12(numberOfObjectives);
-					case 13 -> new MaF13(numberOfObjectives);
-					case 14 -> new MaF14(numberOfObjectives);
-					case 15 -> new MaF15(numberOfObjectives);
-					default -> null;
-				};
-			}
-		} catch (NumberFormatException e) {
-			return null;
+			return switch (instance) {
+				case 1 -> new MaF1(numberOfObjectives);
+				case 2 -> new MaF2(numberOfObjectives);
+				case 3 -> new MaF3(numberOfObjectives);
+				case 4 -> new MaF4(numberOfObjectives);
+				case 5 -> new MaF5(numberOfObjectives);
+				case 6 -> new MaF6(numberOfObjectives);
+				case 7 -> new MaF7(numberOfObjectives);
+				case 8 -> new MaF8(numberOfObjectives);
+				case 9 -> new MaF9(numberOfObjectives);
+				case 10 -> new MaF10(numberOfObjectives);
+				case 11 -> new MaF11(numberOfObjectives);
+				case 12 -> new MaF12(numberOfObjectives);
+				case 13 -> new MaF13(numberOfObjectives);
+				case 14 -> new MaF14(numberOfObjectives);
+				case 15 -> new MaF15(numberOfObjectives);
+				default -> null;
+			};
 		}
 		
 		return null;

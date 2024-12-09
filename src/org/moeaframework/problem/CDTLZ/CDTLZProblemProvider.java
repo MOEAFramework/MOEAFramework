@@ -35,31 +35,27 @@ public class CDTLZProblemProvider extends ProblemProvider {
 	public CDTLZProblemProvider() {
 		super();
 	}
-	
+
 	@Override
 	public Problem getProblem(String name) {
-		try {
-			Pattern pattern = Pattern.compile("^((?:CONVEX_)?C[0-9]_DTLZ[0-9])_([0-9]+)$", Pattern.CASE_INSENSITIVE);
-			Matcher matcher = pattern.matcher(name);
-			
-			if (matcher.matches()) {
-				String instance = matcher.group(1);
-				int numberOfObjectives = Integer.parseInt(matcher.group(2));
-				
-				return switch (instance.toUpperCase()) {
-					case "C1_DTLZ1" -> new C1_DTLZ1(numberOfObjectives);
-					case "C1_DTLZ3" -> new C1_DTLZ3(numberOfObjectives);
-					case "C2_DTLZ2" -> new C2_DTLZ2(numberOfObjectives);
-					case "C3_DTLZ1" -> new C3_DTLZ1(numberOfObjectives);
-					case "C3_DTLZ4" -> new C3_DTLZ4(numberOfObjectives);
-					case "CONVEX_C2_DTLZ2" -> new ConvexC2_DTLZ2(numberOfObjectives);
-					default -> null;
-				};
-			}
-		} catch (NumberFormatException e) {
-			return null;
+		Pattern pattern = Pattern.compile("^((?:CONVEX_)?C[0-9]_DTLZ[0-9])_([0-9]+)$", Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(name);
+
+		if (matcher.matches()) {
+			String instance = matcher.group(1);
+			int numberOfObjectives = Integer.parseInt(matcher.group(2));
+
+			return switch (instance.toUpperCase()) {
+				case "C1_DTLZ1" -> new C1_DTLZ1(numberOfObjectives);
+				case "C1_DTLZ3" -> new C1_DTLZ3(numberOfObjectives);
+				case "C2_DTLZ2" -> new C2_DTLZ2(numberOfObjectives);
+				case "C3_DTLZ1" -> new C3_DTLZ1(numberOfObjectives);
+				case "C3_DTLZ4" -> new C3_DTLZ4(numberOfObjectives);
+				case "CONVEX_C2_DTLZ2" -> new ConvexC2_DTLZ2(numberOfObjectives);
+				default -> null;
+			};
 		}
-		
+
 		return null;
 	}
 
@@ -67,5 +63,5 @@ public class CDTLZProblemProvider extends ProblemProvider {
 	public NondominatedPopulation getReferenceSet(String name) {
 		return null;
 	}
-	
+
 }

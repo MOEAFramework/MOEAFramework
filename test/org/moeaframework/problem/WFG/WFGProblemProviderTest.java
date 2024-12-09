@@ -44,6 +44,7 @@ public class WFGProblemProviderTest extends ProblemTest {
 	@Test
 	public void testUnrecognizedProblem() {
 		Assert.assertNull(new WFGProblemProvider().getProblem("WFGFoo_2"));
+		Assert.assertNull(new WFGProblemProvider().getProblem("WFG1_Foo"));
 	}
 
 }

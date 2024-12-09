@@ -90,29 +90,25 @@ public class WFGProblemProvider extends RegisteredProblemProvider {
 		}
 		
 		// allow creating any number of objectives, but these will not have reference sets
-		try {
-			Pattern pattern = Pattern.compile("^WFG([0-9])_([0-9]+)$", Pattern.CASE_INSENSITIVE);
-			Matcher matcher = pattern.matcher(name);
+		Pattern pattern = Pattern.compile("^WFG([0-9])_([0-9]+)$", Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(name);
 			
-			if (matcher.matches()) {
-				int instance = Integer.parseInt(matcher.group(1));
-				int numberOfObjectives = Integer.parseInt(matcher.group(2));
+		if (matcher.matches()) {
+			int instance = Integer.parseInt(matcher.group(1));
+			int numberOfObjectives = Integer.parseInt(matcher.group(2));
 				
-				return switch (instance) {
-					case 1 -> new WFG1(numberOfObjectives);
-					case 2 -> new WFG2(numberOfObjectives);
-					case 3 -> new WFG3(numberOfObjectives);
-					case 4 -> new WFG4(numberOfObjectives);
-					case 5 -> new WFG5(numberOfObjectives);
-					case 6 -> new WFG6(numberOfObjectives);
-					case 7 -> new WFG7(numberOfObjectives);
-					case 8 -> new WFG8(numberOfObjectives);
-					case 9 -> new WFG9(numberOfObjectives);
-					default -> null;
-				};
-			}
-		} catch (NumberFormatException e) {
-			return null;
+			return switch (instance) {
+				case 1 -> new WFG1(numberOfObjectives);
+				case 2 -> new WFG2(numberOfObjectives);
+				case 3 -> new WFG3(numberOfObjectives);
+				case 4 -> new WFG4(numberOfObjectives);
+				case 5 -> new WFG5(numberOfObjectives);
+				case 6 -> new WFG6(numberOfObjectives);
+				case 7 -> new WFG7(numberOfObjectives);
+				case 8 -> new WFG8(numberOfObjectives);
+				case 9 -> new WFG9(numberOfObjectives);
+				default -> null;
+			};
 		}
 		
 		return null;
