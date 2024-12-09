@@ -41,9 +41,6 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 	 */
 	private static OperatorFactory INSTANCE;
 	
-	/**
-	 * Instantiates the static {@code INSTANCE} object.
-	 */
 	static {
 		INSTANCE = new OperatorFactory();
 	}

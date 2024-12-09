@@ -333,10 +333,10 @@ public class Iterators {
 	 * 
 	 * @param <K> the type of the key used for comparison
 	 * @param <V> the type of each element
-	 * @param iterator the iterator
+	 * @param iterable the iterable
 	 * @param keyExtractor function returning the key used for comparisons
 	 * @return the minimum key and element
-	 * @throws NoSuchElementException if the iterator is empty
+	 * @throws NoSuchElementException if the iterable is empty
 	 */
 	public static <K extends Comparable<? super K>, V> Pair<K, V> minimum(Iterable<V> iterable,
 			Function<? super V, ? extends K> keyExtractor) {

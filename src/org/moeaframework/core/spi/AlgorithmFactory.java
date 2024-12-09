@@ -37,9 +37,6 @@ public class AlgorithmFactory extends AbstractFactory<AlgorithmProvider> {
 	 */
 	private static AlgorithmFactory INSTANCE;
 
-	/**
-	 * Instantiates the static {@code INSTANCE} object.
-	 */
 	static {
 		INSTANCE = new AlgorithmFactory();
 	}

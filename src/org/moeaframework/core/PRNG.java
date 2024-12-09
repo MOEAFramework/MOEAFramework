@@ -40,9 +40,6 @@ public class PRNG {
 	 */
 	private static Random random;
 
-	/**
-	 * Initialize the static variables.
-	 */
 	static {
 		random = ThreadLocalMersenneTwister.getInstance();
 		

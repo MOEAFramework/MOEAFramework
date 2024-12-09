@@ -50,9 +50,6 @@ public class Sobol implements Sequence {
 	 */
 	private static final String DIRECTIONS_RESOURCE = "joe-kuo-6.21000";
 
-	/**
-	 * Statically initializes the Sobol' directions.
-	 */
 	static {
 		try {
 			loadDirectionNumbers();

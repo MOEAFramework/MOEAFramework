@@ -35,9 +35,9 @@ along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 	<!-- <module name="NewlineAtEndOfFile"/> -->
 	
 	<!-- No trailing whitespace at end of line -->
-	<!-- <module name="RegexpSingleline">
+	<module name="RegexpSingleline">
 		<property name="format" value="\w+\s+$"/>
-	</module> -->
+	</module>
 	
 	<!-- Package info files should include javadoc comments -->
 	<module name="JavadocPackage" />
@@ -129,7 +129,7 @@ along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 		</module>
 		
 		<!-- Javadoc rules -->
-		<!-- <module name="InvalidJavadocPosition" /> -->
+		<module name="InvalidJavadocPosition" />
 		<module name="JavadocBlockTagLocation" />
 		<module name="JavadocContentLocation" />
 		<module name="JavadocMethod">

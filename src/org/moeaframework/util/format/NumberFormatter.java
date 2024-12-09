@@ -59,9 +59,6 @@ public class NumberFormatter implements Formatter<Number> {
 		DEFAULT = formatter != null ? formatter : new NumberFormatter();
 	}
 	
-	/**
-	 * Initializes the default number formatter.
-	 */
 	static {
 		setDefault(null);
 	}

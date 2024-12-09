@@ -41,9 +41,6 @@ public class ProblemFactory extends AbstractFactory<ProblemProvider> {
 	 */
 	private static ProblemFactory INSTANCE;
 	
-	/**
-	 * Instantiates the static {@code INSTANCE} object.
-	 */
 	static {
 		INSTANCE = new ProblemFactory();
 	}
