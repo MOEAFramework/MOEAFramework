@@ -25,6 +25,7 @@ import org.moeaframework.core.operator.CompoundVariation;
 import org.moeaframework.core.operator.Mutation;
 import org.moeaframework.core.operator.Variation;
 import org.moeaframework.problem.Problem;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Factory for creating and variation (e.g., crossover and mutation) operator instances.
@@ -39,10 +40,10 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 	/**
 	 * The default operator factory.
 	 */
-	private static OperatorFactory INSTANCE;
+	private static OperatorFactory instance;
 	
 	static {
-		INSTANCE = new OperatorFactory();
+		instance = new OperatorFactory();
 	}
 	
 	/**
@@ -51,7 +52,7 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 	 * @return the default operator factory
 	 */
 	public static synchronized OperatorFactory getInstance() {
-		return INSTANCE;
+		return instance;
 	}
 
 	/**
@@ -60,7 +61,8 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 	 * @param instance the default operator factory
 	 */
 	public static synchronized void setInstance(OperatorFactory instance) {
-		OperatorFactory.INSTANCE = instance;
+		Validate.that("instance", instance).isNotNull();
+		OperatorFactory.instance = instance;
 	}
 	
 	/**

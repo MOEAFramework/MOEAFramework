@@ -186,5 +186,10 @@ public class OperatorFactoryTest extends AbstractFactoryTest<OperatorProvider, O
 		Problem problem = new MockProblem(0);
 		createFactory().getVariation("sbx+test_fake_operator", new TypedProperties(), problem);
 	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetNullInstance() {
+		OperatorFactory.setInstance(null);
+	}
 
 }

@@ -90,13 +90,13 @@ public class BBOB2016Test {
 
 		CocoJNI.cocoSetLogLevel("error");
 
-		final String observer_options =
-				"result_folder: Testing_on_bbob-biobj "
-				+ "algorithm_name: Testing "
-				+ "algorithm_info: \"MOEA Framework Testing\"";
+		String observerOptions = String.join(" ",
+				"result_folder: Testing_on_bbob-biobj",
+				"algorithm_name: Testing",
+				"algorithm_info: \"MOEA Framework Testing\"");
 
 		Suite suite = new Suite("bbob-biobj", "year: 2016", "dimensions: 2,3,5,10,20,40");
-		Observer observer = new Observer("bbob-biobj", observer_options);
+		Observer observer = new Observer("bbob-biobj", observerOptions);
 		Benchmark benchmark = new Benchmark(suite, observer);
 		org.moeaframework.problem.BBOB2016.Problem rawProblem = null;
 

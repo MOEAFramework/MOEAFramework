@@ -35,7 +35,7 @@ import org.moeaframework.TestThresholds;
 @Retryable
 public class PRNGTest {
 
-	private static int N = 1000000;
+	private static final int N = 1000000;
 
 	@Test
 	public void testNextFloat() {

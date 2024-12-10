@@ -21,12 +21,14 @@ import java.util.Locale;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
+import org.moeaframework.util.validate.Validate;
+
 /**
  * Formatter for displaying numeric data.  This supports all primitive numeric types as well as their boxed types.
  */
 public class NumberFormatter implements Formatter<Number> {
 	
-	private static NumberFormatter DEFAULT;
+	private static NumberFormatter instance;
 	
 	private int width = -1;
 	
@@ -46,21 +48,22 @@ public class NumberFormatter implements Formatter<Number> {
 	 * 
 	 * @return the default number formatter
 	 */
-	public static NumberFormatter getDefault() {
-		return DEFAULT;
+	public static NumberFormatter getInstance() {
+		return instance;
 	}
 	
 	/**
 	 * Sets the default number formatter.
 	 * 
-	 * @param formatter the formatter to use as the default; if {@code null}, resets to the default settings.
+	 * @param instance the formatter to use as the default.
 	 */
-	public static void setDefault(NumberFormatter formatter) {
-		DEFAULT = formatter != null ? formatter : new NumberFormatter();
+	public static void setInstance(NumberFormatter instance) {
+		Validate.that("instance", instance).isNotNull();
+		NumberFormatter.instance = instance;
 	}
 	
 	static {
-		setDefault(null);
+		instance = new NumberFormatter();
 	}
 	
 	/**

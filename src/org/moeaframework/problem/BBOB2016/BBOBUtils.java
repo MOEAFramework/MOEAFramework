@@ -30,12 +30,12 @@ class BBOBUtils {
 	/**
 	 * The lower bound returned by {@link #createTransformedVariable()}.
 	 */
-	private static double LOWER_BOUND = -100000.0;
+	private static double lowerBound = -100000.0;
 	
 	/**
 	 * The upper bound returned by {@link #createTransformedVariable()}.
 	 */
-	private static double UPPER_BOUND = 100000.0;
+	private static double upperBound = 100000.0;
 	
 	private BBOBUtils() {
 		super();
@@ -49,8 +49,8 @@ class BBOBUtils {
 	 * @param upper the new upper bounds
 	 */
 	public static void setBounds(double lower, double upper) {
-		LOWER_BOUND = lower;
-		UPPER_BOUND = upper;
+		lowerBound = lower;
+		upperBound = upper;
 	}
 	
 	/**
@@ -61,7 +61,7 @@ class BBOBUtils {
 	 * @return a real decision variable used by the BBOB inner functions
 	 */
 	public static RealVariable createTransformedVariable() {
-		return new RealVariable(LOWER_BOUND, UPPER_BOUND);
+		return new RealVariable(lowerBound, upperBound);
 	}
 
 	public static double[] uniform(int N, long inseed) {

@@ -10,9 +10,12 @@
 	<suppress checks="MultipleVariableDeclarationsCheck" files="src[\\/]org[\\/]moeaframework[\\/]problem[\\/]BBOB2016[\\/]" />
 	<suppress checks="HideUtilityClassConstructor" files="test[\\/]org[\\/]moeaframework[\\/]problem[\\/]BBOB2016[\\/]" />
 
-	<!-- Ignore CDTLZ classes that do not follow type naming convensions -->
+	<!-- Ignore classes that do not follow type naming convensions -->
 	<suppress checks="TypeName" files="src[\\/]org[\\/]moeaframework[\\/]problem[\\/]CDTLZ[\\/]" />
 	<suppress checks="TypeName" files="test[\\/]org[\\/]moeaframework[\\/]problem[\\/]CDTLZ[\\/]" />
+	<suppress checks="LambdaParameterName" files="src[\\/]org[\\/]moeaframework[\\/]problem[\\/]LSMOP[\\/]" />
+	<suppress checks="LambdaParameterName" files="src[\\/]org[\\/]moeaframework[\\/]problem[\\/]MaF[\\/]" />
+	<suppress checks="LambdaParameterName" files="src[\\/]org[\\/]moeaframework[\\/]problem[\\/]ZCAT[\\/]" />
 	
 	<!-- Ignore example files without package -->
 	<suppress checks="PackageDeclaration" files="examples[\\/]Example[a-z0-9]+.java" />

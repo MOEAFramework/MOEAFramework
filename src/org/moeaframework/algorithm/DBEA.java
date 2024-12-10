@@ -67,11 +67,6 @@ import org.moeaframework.util.weights.NormalBoundaryIntersectionGenerator;
  * </ol>
  */
 public class DBEA extends AbstractEvolutionaryAlgorithm {
-	
-	/**
-	 * Set to {@code true} to remove random permutations to make unit testing easier.
-	 */
-	static boolean TESTING_MODE = false;
 
 	/**
 	 * The ideal point used for scaling the objectives.
@@ -488,12 +483,6 @@ public class DBEA extends AbstractEvolutionaryAlgorithm {
 
 		double[] f2 = normalizedObjectives(child);
 		int[] order = randomPermutation(population.size());
-		
-		if (TESTING_MODE) {
-			for (int i = 0; i < order.length; i++) {
-				order[i] = i;
-			}
-		}
 		
 		for (int i = 0; i < population.size(); i++) {
 			int j = order[i];

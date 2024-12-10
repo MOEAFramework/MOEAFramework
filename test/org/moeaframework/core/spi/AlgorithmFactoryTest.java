@@ -71,4 +71,9 @@ public class AlgorithmFactoryTest extends AbstractFactoryTest<AlgorithmProvider,
 		}
 	}
 	
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetNullInstance() {
+		AlgorithmFactory.setInstance(null);
+	}
+	
 }

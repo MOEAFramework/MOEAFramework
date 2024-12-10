@@ -24,6 +24,7 @@ import java.util.TreeSet;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.problem.Problem;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Factory for creating algorithm instances. See {@link AlgorithmProvider} for details on adding new providers.
@@ -35,10 +36,10 @@ public class AlgorithmFactory extends AbstractFactory<AlgorithmProvider> {
 	/**
 	 * The default algorithm factory.
 	 */
-	private static AlgorithmFactory INSTANCE;
+	private static AlgorithmFactory instance;
 
 	static {
-		INSTANCE = new AlgorithmFactory();
+		instance = new AlgorithmFactory();
 	}
 	
 	/**
@@ -47,7 +48,7 @@ public class AlgorithmFactory extends AbstractFactory<AlgorithmProvider> {
 	 * @return the default algorithm factory
 	 */
 	public static synchronized AlgorithmFactory getInstance() {
-		return INSTANCE;
+		return instance;
 	}
 
 	/**
@@ -56,7 +57,8 @@ public class AlgorithmFactory extends AbstractFactory<AlgorithmProvider> {
 	 * @param instance the default algorithm factory
 	 */
 	public static synchronized void setInstance(AlgorithmFactory instance) {
-		AlgorithmFactory.INSTANCE = instance;
+		Validate.that("instance", instance).isNotNull();
+		AlgorithmFactory.instance = instance;
 	}
 	
 	/**

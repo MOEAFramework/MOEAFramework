@@ -28,7 +28,7 @@ import org.moeaframework.problem.Problem;
 
 public class MockEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 	
-	private static final int numberOfEvaluationsPerStep = 50;
+	private static final int EVALUATIONS_PER_STEP = 50;
 	
 	private int numberOfSteps;
 		
@@ -37,7 +37,7 @@ public class MockEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	public MockEvolutionaryAlgorithm(Problem problem) {
-		super(problem, numberOfEvaluationsPerStep, new Population(), new NondominatedPopulation(),
+		super(problem, EVALUATIONS_PER_STEP, new Population(), new NondominatedPopulation(),
 				new RandomInitialization(problem), OperatorFactory.getInstance().getVariation(problem));
 	}
 	
@@ -56,7 +56,7 @@ public class MockEvolutionaryAlgorithm extends AbstractEvolutionaryAlgorithm {
 	}
 	
 	public int getNumberOfEvaluationsPerStep() {
-		return numberOfEvaluationsPerStep;
+		return EVALUATIONS_PER_STEP;
 	}
 
 	@Override

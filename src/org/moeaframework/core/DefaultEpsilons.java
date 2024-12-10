@@ -26,6 +26,7 @@ import org.moeaframework.problem.Problem;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Provides &epsilon; values for algorithms and archives using &epsilon;-dominance.  The search order is:
@@ -43,10 +44,10 @@ public class DefaultEpsilons implements Formattable<Entry<String, Epsilons>> {
 	 */
 	public static final Epsilons DEFAULT = Epsilons.of(0.01);
 	
-	private static DefaultEpsilons INSTANCE;
+	private static DefaultEpsilons instance;
 	
 	static {
-		INSTANCE = new DefaultEpsilons();
+		instance = new DefaultEpsilons();
 	}
 	
 	/**
@@ -55,7 +56,7 @@ public class DefaultEpsilons implements Formattable<Entry<String, Epsilons>> {
 	 * @return the default &epsilon; provider
 	 */
 	public static synchronized DefaultEpsilons getInstance() {
-		return INSTANCE;
+		return instance;
 	}
 	
 	/**
@@ -64,7 +65,8 @@ public class DefaultEpsilons implements Formattable<Entry<String, Epsilons>> {
 	 * @param instance default &epsilon; provider
 	 */
 	public static synchronized void setInstance(DefaultEpsilons instance) {
-		INSTANCE = instance;
+		Validate.that("instance", instance).isNotNull();
+		DefaultEpsilons.instance = instance;
 	}
 		
 	private final Map<String, Epsilons> overrides;

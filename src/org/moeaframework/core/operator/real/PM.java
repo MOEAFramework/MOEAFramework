@@ -95,40 +95,32 @@ public class PM extends TypeSafeMutation<RealVariable> {
 	}
 
 	/*
-	 * The following source code is modified from the DTLZ variator module for
-	 * PISA. This implementation was chosen over Kalyanmoy Deb's original PM
-	 * implementation due to license incompatibilities with the LGPL. The DTLZ
-	 * variator module license is provided below.
+	 * The following method is modified from the IBEA implementation for the PISA framework, available at
+	 * <a href="http://www.tik.ee.ethz.ch/pisa/">PISA Homepage</a>.
 	 * 
-	 * Copyright (c) 2002-2003 Swiss Federal Institute of Technology,
-	 * Computer Engineering and Networks Laboratory. All rights reserved.
+	 * Copyright (c) 2002-2003 Swiss Federal Institute of Technology, Computer Engineering and Networks Laboratory.
+	 * All rights reserved.
 	 * 
-	 * PISA - A Platform and Programming Language Independent Interface for
-	 * Search Algorithms.
+	 * PISA - A Platform and Programming Language Independent Interface for Search Algorithms.
 	 * 
-	 * DTLZ - Scalable Test Functions for MOEAs - A variator module for PISA
+	 * IBEA - Indicator Based Evoluationary Algorithm - A selector module for PISA
 	 * 
-	 * Permission to use, copy, modify, and distribute this software and its
-	 * documentation for any purpose, without fee, and without written
-	 * agreement is hereby granted, provided that the above copyright notice
-	 * and the following two paragraphs appear in all copies of this
-	 * software.
+	 * Permission to use, copy, modify, and distribute this software and its documentation for any purpose, without
+	 * fee, and without written agreement is hereby granted, provided that the above copyright notice and the following
+	 * two paragraphs appear in all copies of this software.
 	 * 
-	 * IN NO EVENT SHALL THE SWISS FEDERAL INSTITUTE OF TECHNOLOGY, COMPUTER
-	 * ENGINEERING AND NETWORKS LABORATORY BE LIABLE TO ANY PARTY FOR DIRECT,
-	 * INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF
-	 * THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE SWISS
-	 * FEDERAL INSTITUTE OF TECHNOLOGY, COMPUTER ENGINEERING AND NETWORKS
-	 * LABORATORY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+	 * IN NO EVENT SHALL THE SWISS FEDERAL INSTITUTE OF TECHNOLOGY, COMPUTER ENGINEERING AND NETWORKS LABORATORY BE
+	 * LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
+	 * OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE SWISS FEDERAL INSTITUTE OF TECHNOLOGY, COMPUTER ENGINEERING
+	 * AND NETWORKS LABORATORY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	 * 
-	 * THE SWISS FEDERAL INSTITUTE OF TECHNOLOGY, COMPUTER ENGINEERING AND
-	 * NETWORKS LABORATORY, SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING,
-	 * BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
-	 * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS
-	 * ON AN "AS IS" BASIS, AND THE SWISS FEDERAL INSTITUTE OF TECHNOLOGY,
-	 * COMPUTER ENGINEERING AND NETWORKS LABORATORY HAS NO OBLIGATION TO
-	 * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+	 * THE SWISS FEDERAL INSTITUTE OF TECHNOLOGY, COMPUTER ENGINEERING AND NETWORKS LABORATORY, SPECIFICALLY DISCLAIMS
+	 * ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+	 * PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE SWISS FEDERAL INSTITUTE OF
+	 * TECHNOLOGY, COMPUTER ENGINEERING AND NETWORKS LABORATORY HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
+	 * UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 	 */
+	
 	/**
 	 * Mutates the specified variable using polynomial mutation.
 	 * 

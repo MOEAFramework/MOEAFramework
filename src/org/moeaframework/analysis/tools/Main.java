@@ -42,15 +42,15 @@ import org.moeaframework.util.OptionCompleter;
  */
 public class Main extends CommandLineUtility {
 
-	private static final Map<String, Class<? extends CommandLineUtility>> tools;
+	private static final Map<String, Class<? extends CommandLineUtility>> TOOLS;
 	
-	private static final Map<String, Class<? extends CommandLineUtility>> internalTools;
+	private static final Map<String, Class<? extends CommandLineUtility>> INTERNAL_TOOLS;
 
 	private final TypedProperties buildProperties;
 
 	static {
-		tools = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-		internalTools = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		TOOLS = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		INTERNAL_TOOLS = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
 		registerTool(CalculateIndicator.class);
 		registerTool(EndOfRunEvaluator.class);
@@ -93,9 +93,9 @@ public class Main extends CommandLineUtility {
 	 */
 	public static void registerTool(String name, Class<? extends CommandLineUtility> tool, boolean internal) {
 		if (internal) {
-			internalTools.put(name, tool);
+			INTERNAL_TOOLS.put(name, tool);
 		} else {
-			tools.put(name, tool);
+			TOOLS.put(name, tool);
 		}
 	}
 
@@ -118,8 +118,8 @@ public class Main extends CommandLineUtility {
 		} else if (args.length < 1) {
 			showHelp();
 		} else {
-			OptionCompleter completer = new OptionCompleter(tools.keySet());
-			completer.addAll(internalTools.keySet());
+			OptionCompleter completer = new OptionCompleter(TOOLS.keySet());
+			completer.addAll(INTERNAL_TOOLS.keySet());
 			
 			String command = completer.lookup(args[0]);
 
@@ -127,8 +127,8 @@ public class Main extends CommandLineUtility {
 				throw new FrameworkException("'" + args[0] + "' is not a valid command, use --help to see available options");
 			}
 
-			Class<? extends CommandLineUtility> toolClass = internalTools.containsKey(command) ?
-					internalTools.get(command) : tools.get(command);
+			Class<? extends CommandLineUtility> toolClass = INTERNAL_TOOLS.containsKey(command) ?
+					INTERNAL_TOOLS.get(command) : TOOLS.get(command);
 			String[] toolArgs = Arrays.copyOfRange(args, 1, args.length);
 			
 			Constructor<? extends CommandLineUtility> constructor = toolClass.getDeclaredConstructor();
@@ -168,8 +168,8 @@ public class Main extends CommandLineUtility {
 		
 		Options commands = new Options();
 		
-		for (String tool : tools.keySet()) {
-			commands.addOption(tool, Localization.getString(tools.get(tool), "description"));
+		for (String tool : TOOLS.keySet()) {
+			commands.addOption(tool, Localization.getString(TOOLS.get(tool), "description"));
 		}
 		
 		try (PrintWriter writer = createOutputWriter()) {

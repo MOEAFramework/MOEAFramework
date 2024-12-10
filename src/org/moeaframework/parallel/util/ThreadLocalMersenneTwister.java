@@ -39,17 +39,17 @@ public class ThreadLocalMersenneTwister extends Random {
 	/**
 	 * A RNG used to seed each thread's RNG.
 	 */
-	private static Random SEEDER;
+	private static final Random SEEDER;
 	
 	/**
 	 * A singleton instance of this class.
 	 */
-	private static ThreadLocalMersenneTwister INSTANCE;
+	private static final ThreadLocalMersenneTwister INSTANCE;
 	
 	/**
 	 * Local RNGs for each thread.
 	 */
-	private static ThreadLocal<MersenneTwister> LOCAL_RANDOM;
+	private static final ThreadLocal<MersenneTwister> LOCAL_RANDOM;
 	
 	static {
 		SEEDER = new SecureRandom();

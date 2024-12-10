@@ -27,6 +27,7 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.indicator.Normalizer.NullNormalizer;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.Problem;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Class for constructing normalizers, allowing users to override defaults for specific problems.  The search order is:
@@ -54,10 +55,10 @@ import org.moeaframework.problem.Problem;
  */
 public class DefaultNormalizer {
 	
-	private static DefaultNormalizer INSTANCE;
+	private static DefaultNormalizer instance;
 	
 	static {
-		INSTANCE = new DefaultNormalizer();
+		instance = new DefaultNormalizer();
 	}
 	
 	/**
@@ -66,7 +67,7 @@ public class DefaultNormalizer {
 	 * @return the default normalizer
 	 */
 	public static synchronized DefaultNormalizer getInstance() {
-		return INSTANCE;
+		return instance;
 	}
 	
 	/**
@@ -75,7 +76,8 @@ public class DefaultNormalizer {
 	 * @param instance the default normalizer
 	 */
 	public static synchronized void setInstance(DefaultNormalizer instance) {
-		INSTANCE = instance;
+		Validate.that("instance", instance).isNotNull();
+		DefaultNormalizer.instance = instance;
 	}
 	
 	private final List<Pair<Predicate<Problem>, Function<Problem, Normalizer>>> overrides;

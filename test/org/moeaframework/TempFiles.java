@@ -32,22 +32,26 @@ import java.util.stream.Stream;
  */
 public class TempFiles {
 	
-	private static final List<java.io.File> filesToCleanup;
+	private static final List<java.io.File> FILES_TO_CLEANUP;
 	
-	private static final java.io.File tempDirectory;
-	
-	private static Thread cleanupThread;
-	
-	static {
-		filesToCleanup = new ArrayList<>();
+	private static final java.io.File FILE_DIRECTORY;
 		
-		cleanupThread = new Thread() {
+	static {
+		FILES_TO_CLEANUP = new ArrayList<>();
+		
+		try {
+			FILE_DIRECTORY = TempFiles.createDirectory();
+		} catch (IOException e) {
+			throw new AssertionError(e);
+		}
+		
+		Runtime.getRuntime().addShutdownHook(new Thread() {
 
 			@Override
 			public void run() {
 				// process in reverse order (use reversed() if updating to Java 21+)
-				while (!filesToCleanup.isEmpty()) {
-					java.io.File file = filesToCleanup.remove(filesToCleanup.size() - 1);
+				while (!FILES_TO_CLEANUP.isEmpty()) {
+					java.io.File file = FILES_TO_CLEANUP.remove(FILES_TO_CLEANUP.size() - 1);
 					
 					if (file.exists()) {
 						try {
@@ -68,15 +72,7 @@ public class TempFiles {
 				}
 			}
 			
-		};
-		
-		Runtime.getRuntime().addShutdownHook(cleanupThread);
-		
-		try {
-			tempDirectory = TempFiles.createDirectory();
-		} catch (IOException e) {
-			throw new AssertionError(e);
-		}
+		});
 	}
 	
 	private TempFiles() {
@@ -105,7 +101,7 @@ public class TempFiles {
 	}
 	
 	private static void deleteOnExit(java.io.File file) {
-		filesToCleanup.add(file);
+		FILES_TO_CLEANUP.add(file);
 	}
 	
 	/**
@@ -137,7 +133,7 @@ public class TempFiles {
 			if (file.exists()) {
 				return file;
 			} else {
-				return new java.io.File(tempDirectory, name);
+				return new java.io.File(FILE_DIRECTORY, name);
 			}
 		}
 		

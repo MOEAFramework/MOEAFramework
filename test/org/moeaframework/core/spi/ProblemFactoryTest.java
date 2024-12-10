@@ -112,5 +112,10 @@ public class ProblemFactoryTest extends AbstractFactoryTest<ProblemProvider, Pro
 			Assert.assertNotNull(ProblemFactory.getInstance().getReferenceSet(swapCaseName));
 		}
 	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetNullInstance() {
+		ProblemFactory.setInstance(null);
+	}
 
 }

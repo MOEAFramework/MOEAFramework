@@ -24,6 +24,7 @@ import java.util.TreeSet;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.Problem;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Factory for creating optimization problem instances and their corresponding reference sets, if known.  Problems
@@ -39,10 +40,10 @@ public class ProblemFactory extends AbstractFactory<ProblemProvider> {
 	/**
 	 * The default problem factory.
 	 */
-	private static ProblemFactory INSTANCE;
+	private static ProblemFactory instance;
 	
 	static {
-		INSTANCE = new ProblemFactory();
+		instance = new ProblemFactory();
 	}
 	
 	/**
@@ -51,7 +52,7 @@ public class ProblemFactory extends AbstractFactory<ProblemProvider> {
 	 * @return the default problem factory
 	 */
 	public static synchronized ProblemFactory getInstance() {
-		return INSTANCE;
+		return instance;
 	}
 
 	/**
@@ -60,7 +61,8 @@ public class ProblemFactory extends AbstractFactory<ProblemProvider> {
 	 * @param instance the default problem factory
 	 */
 	public static synchronized void setInstance(ProblemFactory instance) {
-		ProblemFactory.INSTANCE = instance;
+		Validate.that("instance", instance).isNotNull();
+		ProblemFactory.instance = instance;
 	}
 	
 	/**

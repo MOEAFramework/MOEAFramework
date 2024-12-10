@@ -49,7 +49,7 @@ public class TextViewer extends JDialog {
 	/**
 	 * The localization instance for producing locale-specific strings.
 	 */
-	private static Localization localization = Localization.getLocalization(TextViewer.class);
+	private static final Localization LOCALIZATION = Localization.getLocalization(TextViewer.class);
 	
 	private JTextArea textArea;
 	
@@ -66,7 +66,7 @@ public class TextViewer extends JDialog {
 	 * @param owner the parent frame
 	 */
 	public TextViewer(Frame owner) {
-		super(owner, localization.getString("title.textViewer"));
+		super(owner, LOCALIZATION.getString("title.textViewer"));
 		
 		initialize();
 		layoutComponents();
@@ -88,8 +88,8 @@ public class TextViewer extends JDialog {
 	
 	private void save() {
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				localization.getString("text.extension.description"),
-				localization.getString("text.extension"));
+				LOCALIZATION.getString("text.extension.description"),
+				LOCALIZATION.getString("text.extension"));
 		
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setFileFilter(filter);
@@ -119,14 +119,14 @@ public class TextViewer extends JDialog {
 	}
 	
 	private void layoutComponents() {
-		RunnableAction saveAction = new RunnableAction("save", localization, this::save);
+		RunnableAction saveAction = new RunnableAction("save", LOCALIZATION, this::save);
 		
-		RunnableAction decreaseFontSize = new RunnableAction("decreaseFontSize", localization, () -> {
+		RunnableAction decreaseFontSize = new RunnableAction("decreaseFontSize", LOCALIZATION, () -> {
 			float newSize = Math.max(2.0f, textArea.getFont().getSize2D() - 2.0f);
 			textArea.setFont(textArea.getFont().deriveFont(newSize));
 		});
 		
-		RunnableAction increaseFontSize = new RunnableAction("increaseFontSize", localization, () -> {
+		RunnableAction increaseFontSize = new RunnableAction("increaseFontSize", LOCALIZATION, () -> {
 			float newSize = Math.min(64.0f, textArea.getFont().getSize2D() + 2.0f);
 			textArea.setFont(textArea.getFont().deriveFont(newSize));
 		});

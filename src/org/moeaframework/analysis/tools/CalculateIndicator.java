@@ -71,7 +71,7 @@ public class CalculateIndicator extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
-		NumberFormatter formatter = NumberFormatter.getDefault();
+		NumberFormatter formatter = NumberFormatter.getInstance();
 		Epsilons epsilons = OptionUtils.getEpsilons(commandLine);
 		NondominatedPopulation referenceSet = OptionUtils.getReferenceSet(commandLine, false);
 		

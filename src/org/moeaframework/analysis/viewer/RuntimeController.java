@@ -38,7 +38,7 @@ import org.moeaframework.util.mvc.Toggle;
  */
 public class RuntimeController extends Controller implements SettingChangedListener {
 	
-	private static Localization localization = Localization.getLocalization(RuntimeController.class);
+	private static final Localization LOCALIZATION = Localization.getLocalization(RuntimeController.class);
 	
 	/**
 	 * Enumeration of plot fit options.
@@ -156,7 +156,7 @@ public class RuntimeController extends Controller implements SettingChangedListe
 	 * @param population the reference set population
 	 */
 	public void setReferenceSet(NondominatedPopulation population) {
-		referenceSet = new PlotSeries(localization.getString("text.referenceSet"), ResultSeries.of(population));
+		referenceSet = new PlotSeries(LOCALIZATION.getString("text.referenceSet"), ResultSeries.of(population));
 		updateModel();
 	}
 	

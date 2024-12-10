@@ -55,10 +55,10 @@ import org.moeaframework.problem.Problem;
  */
 public class BBOB2016Problems extends ProblemProvider {
 	
-	private static final Pattern singleProblemPattern = Pattern.compile(
+	private static final Pattern FUNCTION_PATTERN = Pattern.compile(
 			"^bbob_f([0-9]+)_i([0-9]+)_d([0-9]+)$");
 	
-	private static final Pattern multiProblemPattern = Pattern.compile(
+	private static final Pattern BIFUNCTION_PATTERN = Pattern.compile(
 			"^bbob_f([0-9]+)_i([0-9]+)_d([0-9]+)((\\,|__)bbob_f([0-9]+)_i([0-9]+)_d([0-9]+))*$");
 	
 	/**
@@ -76,14 +76,14 @@ public class BBOB2016Problems extends ProblemProvider {
 			name = name.substring(11, name.length()-1);
 		}
 		
-		Matcher matcher = multiProblemPattern.matcher(name);
+		Matcher matcher = BIFUNCTION_PATTERN.matcher(name);
 
 		if (matcher.matches()) {
 			String[] parts = name.split("(,|__)");
 			BBOBFunction[] functions = new BBOBFunction[parts.length];
 			
 			for (int i = 0; i < parts.length; i++) {
-				Matcher singleMatcher = singleProblemPattern.matcher(parts[i]);
+				Matcher singleMatcher = FUNCTION_PATTERN.matcher(parts[i]);
 				
 				if (singleMatcher.matches()) {
 					functions[i] = createInstance(

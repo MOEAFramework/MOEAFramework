@@ -93,19 +93,19 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 	/**
 	 * The localization instance for produce locale-specific strings.
 	 */
-	private static Localization localization = Localization.getLocalization(DiagnosticTool.class);
+	private static final Localization LOCALIZATION = Localization.getLocalization(DiagnosticTool.class);
 	
 	/**
 	 * The file extension.
 	 */
-	private static String EXTENSION = localization.getString("file.extension");
+	private static final String EXTENSION = LOCALIZATION.getString("file.extension");
 
 	/**
 	 * The file filter used when selecting the file to save/load.
 	 */
-	private static FileFilter FILTER = new FileNameExtensionFilter(
-			localization.getString("file.extension.description"),
-			localization.getString("file.extension"));
+	private static final FileFilter FILTER = new FileNameExtensionFilter(
+			LOCALIZATION.getString("file.extension.description"),
+			LOCALIZATION.getString("file.extension"));
 
 	/**
 	 * The controller which stores the underlying data model and notifies this diagnostic tool of any changes.
@@ -206,7 +206,7 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 	 * Constructs a new diagnostic tool window.
 	 */
 	public DiagnosticTool() {
-		super(localization.getString("title.diagnosticTool"));
+		super(LOCALIZATION.getString("title.diagnosticTool"));
 
 		setSize(800, 600);
 		setMinimumSize(new Dimension(800, 600));
@@ -242,9 +242,9 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 			@Override
 			public String getColumnName(int column) {
 				return switch (column) {
-					case 0 -> localization.getString("text.algorithm");
-					case 1 -> localization.getString("text.problem");
-					case 2 -> localization.getString("text.numberOfSeeds");
+					case 0 -> LOCALIZATION.getString("text.algorithm");
+					case 1 -> LOCALIZATION.getString("text.problem");
+					case 2 -> LOCALIZATION.getString("text.numberOfSeeds");
 					default -> throw new IllegalStateException();
 				};
 			}
@@ -289,12 +289,12 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 					ResultKey key = resultListModel.getElementAt(index);
 					
 					JPopupMenu popupMenu = new JPopupMenu();
-					popupMenu.add(new RunnableAction("showApproximationSet", localization, () -> {
+					popupMenu.add(new RunnableAction("showApproximationSet", LOCALIZATION, () -> {
 						RuntimeViewer viewer = new RuntimeViewer(DiagnosticTool.this, key.toString());
 						List<ResultSeries> data = controller.get(key);
 							
 						for (int i = 0; i < data.size(); i++) {
-							String name = localization.getString("text.seed", i + 1);
+							String name = LOCALIZATION.getString("text.seed", i + 1);
 							viewer.getController().addSeries(name, data.get(i));
 						}
 							
@@ -311,8 +311,8 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 			
 		});
 		
-		selectAll = new RunnableAction("selectAll", localization, this::selectAllResults).toButton();
-		showStatistics = new RunnableAction("showStatistics", localization, controller::showStatistics).toButton();
+		selectAll = new RunnableAction("selectAll", LOCALIZATION, this::selectAllResults).toButton();
+		showStatistics = new RunnableAction("showStatistics", LOCALIZATION, controller::showStatistics).toButton();
 		
 		//initialize the sorted list of algorithms
 		Vector<String> sortedAlgorithmNames = new Vector<>(AlgorithmFactory.getInstance().getAllDiagnosticToolAlgorithms());
@@ -329,9 +329,9 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		//initialize miscellaneous components
 		numberOfSeeds = new JSpinner(new SpinnerNumberModel(10, 1, Integer.MAX_VALUE, 10));
 		numberOfEvaluations = new JSpinner(new SpinnerNumberModel(10000, 500, Integer.MAX_VALUE, 1000));
-		run = new RunnableAction("run", localization, controller::run).toButton();
-		cancel = new RunnableAction("cancel", localization, controller::cancel).toButton();
-		clear = new RunnableAction("clear", localization, controller::clear).toButton();
+		run = new RunnableAction("run", LOCALIZATION, controller::run).toButton();
+		cancel = new RunnableAction("cancel", LOCALIZATION, controller::cancel).toButton();
+		clear = new RunnableAction("clear", LOCALIZATION, controller::clear).toButton();
 		
 		runProgress = new JProgressBar();
 		overallProgress = new JProgressBar();
@@ -347,8 +347,8 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 	 * Lays out the menu on this window.  This method is invoked by the constructor, and should not be invoked again.
 	 */
 	private void layoutMenu() {
-		JMenu fileMenu = new JMenu(localization.getString("menu.file"));
-		fileMenu.add(new RunnableAction("save", localization, () -> {
+		JMenu fileMenu = new JMenu(LOCALIZATION.getString("menu.file"));
+		fileMenu.add(new RunnableAction("save", LOCALIZATION, () -> {
 				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.setFileFilter(FILTER);
 	
@@ -368,7 +368,7 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 					}
 				}
 			}).toMenuItem());
-		fileMenu.add(new RunnableAction("load", localization, () -> {
+		fileMenu.add(new RunnableAction("load", LOCALIZATION, () -> {
 				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.setFileFilter(FILTER);
 	
@@ -383,16 +383,16 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 				}
 			}).toMenuItem());
 		fileMenu.addSeparator();
-		fileMenu.add(new RunnableAction("exit", localization, this::dispose).toMenuItem());
+		fileMenu.add(new RunnableAction("exit", LOCALIZATION, this::dispose).toMenuItem());
 		
-		JMenu viewMenu = new JMenu(localization.getString("menu.view"));
-		viewMenu.add(new JRadioButtonMenuItem(new ToggleAction("showIndividualTraces", localization, controller.showIndividualTraces())));
-		viewMenu.add(new JRadioButtonMenuItem(new InvertedToggleAction("showQuantiles", localization, controller.showIndividualTraces())));
+		JMenu viewMenu = new JMenu(LOCALIZATION.getString("menu.view"));
+		viewMenu.add(new JRadioButtonMenuItem(new ToggleAction("showIndividualTraces", LOCALIZATION, controller.showIndividualTraces())));
+		viewMenu.add(new JRadioButtonMenuItem(new InvertedToggleAction("showQuantiles", LOCALIZATION, controller.showIndividualTraces())));
 		viewMenu.addSeparator();
-		viewMenu.add(new ToggleAction("showLastTrace", localization, controller.showLastTrace()).toMenuItem());
+		viewMenu.add(new ToggleAction("showLastTrace", LOCALIZATION, controller.showLastTrace()).toMenuItem());
 		
-		JMenu metricsMenu = new JMenu(localization.getString("menu.collect"));
-		metricsMenu.add(new RunnableAction("enableAllIndicators", localization, () -> {
+		JMenu metricsMenu = new JMenu(LOCALIZATION.getString("menu.collect"));
+		metricsMenu.add(new RunnableAction("enableAllIndicators", LOCALIZATION, () -> {
 				controller.includeHypervolume().set(true);
 				controller.includeGenerationalDistance().set(true);
 				controller.includeGenerationalDistancePlus().set(true);
@@ -405,7 +405,7 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 				controller.includeR2().set(true);
 				controller.includeR3().set(true);
 			}).toMenuItem());
-		metricsMenu.add(new RunnableAction("disableAllIndicators", localization, () -> {
+		metricsMenu.add(new RunnableAction("disableAllIndicators", LOCALIZATION, () -> {
 				controller.includeHypervolume().set(false);
 				controller.includeGenerationalDistance().set(false);
 				controller.includeGenerationalDistancePlus().set(false);
@@ -419,26 +419,26 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 				controller.includeR3().set(false);
 			}).toMenuItem());
 		metricsMenu.addSeparator();
-		metricsMenu.add(new ToggleAction("includeHypervolume", localization, controller.includeHypervolume()).toMenuItem());
-		metricsMenu.add(new ToggleAction("includeGenerationalDistance", localization, controller.includeGenerationalDistance()).toMenuItem());
-		metricsMenu.add(new ToggleAction("includeInvertedGenerationalDistance", localization, controller.includeInvertedGenerationalDistance()).toMenuItem());
-		metricsMenu.add(new ToggleAction("includeSpacing", localization, controller.includeSpacing()).toMenuItem());
-		metricsMenu.add(new ToggleAction("includeAdditiveEpsilonIndicator", localization, controller.includeAdditiveEpsilonIndicator()).toMenuItem());
-		metricsMenu.add(new ToggleAction("includeContribution", localization, controller.includeContribution()).toMenuItem());
-		metricsMenu.add(new ToggleAction("includeR1", localization, controller.includeR1()).toMenuItem());
-		metricsMenu.add(new ToggleAction("includeR2", localization, controller.includeR2()).toMenuItem());
-		metricsMenu.add(new ToggleAction("includeR3", localization, controller.includeR3()).toMenuItem());
-		metricsMenu.add(new ToggleAction("includeGenerationalDistancePlus", localization, controller.includeGenerationalDistancePlus()).toMenuItem());
-		metricsMenu.add(new ToggleAction("includeInvertedGenerationalDistancePlus", localization, controller.includeInvertedGenerationalDistancePlus()).toMenuItem());
+		metricsMenu.add(new ToggleAction("includeHypervolume", LOCALIZATION, controller.includeHypervolume()).toMenuItem());
+		metricsMenu.add(new ToggleAction("includeGenerationalDistance", LOCALIZATION, controller.includeGenerationalDistance()).toMenuItem());
+		metricsMenu.add(new ToggleAction("includeInvertedGenerationalDistance", LOCALIZATION, controller.includeInvertedGenerationalDistance()).toMenuItem());
+		metricsMenu.add(new ToggleAction("includeSpacing", LOCALIZATION, controller.includeSpacing()).toMenuItem());
+		metricsMenu.add(new ToggleAction("includeAdditiveEpsilonIndicator", LOCALIZATION, controller.includeAdditiveEpsilonIndicator()).toMenuItem());
+		metricsMenu.add(new ToggleAction("includeContribution", LOCALIZATION, controller.includeContribution()).toMenuItem());
+		metricsMenu.add(new ToggleAction("includeR1", LOCALIZATION, controller.includeR1()).toMenuItem());
+		metricsMenu.add(new ToggleAction("includeR2", LOCALIZATION, controller.includeR2()).toMenuItem());
+		metricsMenu.add(new ToggleAction("includeR3", LOCALIZATION, controller.includeR3()).toMenuItem());
+		metricsMenu.add(new ToggleAction("includeGenerationalDistancePlus", LOCALIZATION, controller.includeGenerationalDistancePlus()).toMenuItem());
+		metricsMenu.add(new ToggleAction("includeInvertedGenerationalDistancePlus", LOCALIZATION, controller.includeInvertedGenerationalDistancePlus()).toMenuItem());
 		metricsMenu.addSeparator();
-		metricsMenu.add(new ToggleAction("includeEpsilonProgress", localization, controller.includeEpsilonProgress()).toMenuItem());
-		metricsMenu.add(new ToggleAction("includeAdaptiveMultimethodVariation", localization, controller.includeAdaptiveMultimethodVariation()).toMenuItem());
-		metricsMenu.add(new ToggleAction("includeAdaptiveTimeContinuation", localization, controller.includeAdaptiveTimeContinuation()).toMenuItem());
-		metricsMenu.add(new ToggleAction("includeElapsedTime", localization, controller.includeElapsedTime()).toMenuItem());
-		metricsMenu.add(new ToggleAction("includePopulationSize", localization, controller.includePopulationSize()).toMenuItem());
+		metricsMenu.add(new ToggleAction("includeEpsilonProgress", LOCALIZATION, controller.includeEpsilonProgress()).toMenuItem());
+		metricsMenu.add(new ToggleAction("includeAdaptiveMultimethodVariation", LOCALIZATION, controller.includeAdaptiveMultimethodVariation()).toMenuItem());
+		metricsMenu.add(new ToggleAction("includeAdaptiveTimeContinuation", LOCALIZATION, controller.includeAdaptiveTimeContinuation()).toMenuItem());
+		metricsMenu.add(new ToggleAction("includeElapsedTime", LOCALIZATION, controller.includeElapsedTime()).toMenuItem());
+		metricsMenu.add(new ToggleAction("includePopulationSize", LOCALIZATION, controller.includePopulationSize()).toMenuItem());
 		
-		JMenu helpMenu = new JMenu(localization.getString("menu.help"));
-		helpMenu.add(new RunnableAction("about", localization, this::showAbout).toMenuItem());
+		JMenu helpMenu = new JMenu(LOCALIZATION.getString("menu.help"));
+		helpMenu.add(new RunnableAction("about", LOCALIZATION, this::showAbout).toMenuItem());
 		
 		JMenu usageMenu = new JMenu();
 		usageMenu.setEnabled(false);
@@ -451,7 +451,7 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 			double used = (total - free) / divisor;
 			double available = max / divisor;
 			
-			usageMenu.setText(localization.getString("text.memory", used, available));
+			usageMenu.setText(LOCALIZATION.getString("text.memory", used, available));
 		});
 		timer.setRepeats(true);
 		timer.setCoalesce(true);
@@ -498,13 +498,13 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		analysisPane.add(showStatistics);
 		
 		JPanel resultPane = new JPanel(new BorderLayout());
-		resultPane.setBorder(BorderFactory.createTitledBorder(localization.getString("text.displayedResults")));
+		resultPane.setBorder(BorderFactory.createTitledBorder(LOCALIZATION.getString("text.displayedResults")));
 		resultPane.add(new JScrollPane(resultTable), BorderLayout.CENTER);
 		resultPane.add(analysisPane, BorderLayout.SOUTH);
 		resultPane.setMinimumSize(new Dimension(100, 100));
 		
 		JPanel metricPane = new JPanel(new BorderLayout());
-		metricPane.setBorder(BorderFactory.createTitledBorder(localization.getString("text.displayedMetrics")));
+		metricPane.setBorder(BorderFactory.createTitledBorder(LOCALIZATION.getString("text.displayedMetrics")));
 		metricPane.add(new JScrollPane(metricList), BorderLayout.CENTER);
 		metricPane.setMinimumSize(new Dimension(100, 100));
 		
@@ -518,20 +518,20 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		buttonPane.add(clear);
 		
 		JPanel controlPane = new JPanel(new GridBagLayout());
-		controlPane.setBorder(BorderFactory.createTitledBorder(localization.getString("text.controls")));
-		controlPane.add(new JLabel(localization.getString("text.algorithm") + ":"), label);
+		controlPane.setBorder(BorderFactory.createTitledBorder(LOCALIZATION.getString("text.controls")));
+		controlPane.add(new JLabel(LOCALIZATION.getString("text.algorithm") + ":"), label);
 		controlPane.add(algorithm, field);
-		controlPane.add(new JLabel(localization.getString("text.problem") + ":"), label);
+		controlPane.add(new JLabel(LOCALIZATION.getString("text.problem") + ":"), label);
 		controlPane.add(problem, field);
-		controlPane.add(new JLabel(localization.getString("text.numberOfSeeds") + ":"), label);
+		controlPane.add(new JLabel(LOCALIZATION.getString("text.numberOfSeeds") + ":"), label);
 		controlPane.add(numberOfSeeds, field);
-		controlPane.add(new JLabel(localization.getString("text.numberOfEvaluations") + ":"), label);
+		controlPane.add(new JLabel(LOCALIZATION.getString("text.numberOfEvaluations") + ":"), label);
 		controlPane.add(numberOfEvaluations, field);
 		controlPane.add(buttonPane, button);
 		controlPane.add(new JPanel(), button);
-		controlPane.add(new JLabel(localization.getString("text.runProgress") + ":"), label);
+		controlPane.add(new JLabel(LOCALIZATION.getString("text.runProgress") + ":"), label);
 		controlPane.add(runProgress, field);
-		controlPane.add(new JLabel(localization.getString("text.overallProgress") + ":"), label);
+		controlPane.add(new JLabel(LOCALIZATION.getString("text.overallProgress") + ":"), label);
 		controlPane.add(overallProgress, field);
 		
 		JPanel controls = new JPanel();
@@ -853,7 +853,7 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 					"www.flaticon.com/terms-of-use",
 					null));
 			
-			AboutDialog dialog = new AboutDialog(this, localization.getString("title.about"), info);
+			AboutDialog dialog = new AboutDialog(this, LOCALIZATION.getString("title.about"), info);
 			dialog.setLocationRelativeTo(this);
 			dialog.setVisible(true);
 			return dialog;

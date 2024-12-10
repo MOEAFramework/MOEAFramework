@@ -26,7 +26,7 @@ import org.moeaframework.problem.AnalyticalProblem;
  */
 public class DTLZ4 extends DTLZ implements AnalyticalProblem {
 
-	private static final double alpha = 100.0;
+	private static final double ALPHA = 100.0;
 
 	/**
 	 * Constructs a DTLZ4 test problem with the specified number of objectives.  This is equivalent to calling
@@ -58,11 +58,11 @@ public class DTLZ4 extends DTLZ implements AnalyticalProblem {
 			f[i] = 1.0 + g;
 
 			for (int j = 0; j < numberOfObjectives - i - 1; j++) {
-				f[i] *= Math.cos(0.5 * Math.PI * Math.pow(x[j], alpha));
+				f[i] *= Math.cos(0.5 * Math.PI * Math.pow(x[j], ALPHA));
 			}
 
 			if (i != 0) {
-				f[i] *= Math.sin(0.5 * Math.PI * Math.pow(x[numberOfObjectives - i - 1], alpha));
+				f[i] *= Math.sin(0.5 * Math.PI * Math.pow(x[numberOfObjectives - i - 1], ALPHA));
 			}
 		}
 

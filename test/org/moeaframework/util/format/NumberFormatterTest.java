@@ -120,19 +120,22 @@ public class NumberFormatterTest {
 	
 	@Test
 	public void testGetAndSetDefault() {
-		Assert.assertNotNull(NumberFormatter.getDefault());
-		Assert.assertEquals(NumberFormatter.getDefault(), NumberFormatter.getDefault());
+		Assert.assertNotNull(NumberFormatter.getInstance());
+		Assert.assertEquals(NumberFormatter.getInstance(), NumberFormatter.getInstance());
 		
-		NumberFormatter.getDefault().setPrecision(10);
-		Assert.assertEquals(10, NumberFormatter.getDefault().getPrecision());
+		NumberFormatter.getInstance().setPrecision(10);
+		Assert.assertEquals(10, NumberFormatter.getInstance().getPrecision());
 		
 		NumberFormatter customFormatter = new NumberFormatter();
-		NumberFormatter.setDefault(customFormatter);
-		Assert.assertEquals(customFormatter, NumberFormatter.getDefault());
+		NumberFormatter.setInstance(customFormatter);
+		Assert.assertEquals(customFormatter, NumberFormatter.getInstance());
 		
-		NumberFormatter.setDefault(null);
-		Assert.assertNotNull(NumberFormatter.getDefault());
-		Assert.assertNotEquals(10, NumberFormatter.getDefault().getPrecision());
+		NumberFormatter.setInstance(new NumberFormatter());
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetNullInstance() {
+		NumberFormatter.setInstance(null);
 	}
 	
 	@Test

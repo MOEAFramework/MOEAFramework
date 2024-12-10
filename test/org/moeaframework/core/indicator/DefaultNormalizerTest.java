@@ -65,6 +65,11 @@ public class DefaultNormalizerTest {
 		Assert.assertArrayEquals(new double[] { 0.5, 0.5 }, population.get(0).getObjectiveValues(), TestThresholds.HIGH_PRECISION);
 	}
 	
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetNullInstance() {
+		DefaultNormalizer.setInstance(null);
+	}
+	
 	@Test
 	public void testCodeOverride() {
 		DefaultNormalizer.getInstance().override(problem, new double[] { 0.0, 0.0 }, new double[] { 2.0, 2.0 });

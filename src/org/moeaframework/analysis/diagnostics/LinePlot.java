@@ -61,7 +61,7 @@ public class LinePlot extends ResultPlot {
 	/**
 	 * The localization instance for produce locale-specific strings.
 	 */
-	private static Localization localization = Localization.getLocalization(LinePlot.class);
+	private static final Localization LOCALIZATION = Localization.getLocalization(LinePlot.class);
 	
 	/**
 	 * The resolution of the line plot, controlling the number of collected samples are included in each plotted point.
@@ -164,8 +164,8 @@ public class LinePlot extends ResultPlot {
 		//create the chart
 		JFreeChart chart = ChartFactory.createXYLineChart(
 				metric,
-				localization.getString("text.NFE"),
-				localization.getString("text.value"),
+				LOCALIZATION.getString("text.NFE"),
+				LOCALIZATION.getString("text.value"),
 				dataset,
 				PlotOrientation.VERTICAL,
 				false,
@@ -234,7 +234,7 @@ public class LinePlot extends ResultPlot {
 				(controller.getLastSeries() != null) &&
 				controller.getLastSeries().getDefinedProperties().contains(metric)) {
 			DefaultTableXYDataset dataset2 = new DefaultTableXYDataset();
-			XYSeries xySeries = new XYSeries(localization.getString("text.last"), false, false);
+			XYSeries xySeries = new XYSeries(LOCALIZATION.getString("text.last"), false, false);
 			
 			for (IndexedResult result : controller.getLastSeries()) {
 				xySeries.add(result.getIndex(), result.getProperties().getDouble(metric));

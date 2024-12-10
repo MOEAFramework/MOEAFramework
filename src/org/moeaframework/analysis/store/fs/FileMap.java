@@ -51,7 +51,7 @@ public abstract class FileMap implements Constructable {
 	
 	static final Comparator<Path> CASE_INSENSITIVE_ORDER = new CaseInsensitivePathComparator();
 			
-	private static final CharSequenceTranslator filenameTranslator;
+	private static final CharSequenceTranslator FILENAME_TRANSLATOR;
 		
 	static {
 		final Map<String, String> filenameEscapeMap = new HashMap<>();
@@ -91,7 +91,7 @@ public abstract class FileMap implements Constructable {
 			
 		};
 		
-		filenameTranslator = new AggregateTranslator(
+		FILENAME_TRANSLATOR = new AggregateTranslator(
 				prefixTranslator,
 				new LookupTranslator(Collections.unmodifiableMap(filenameEscapeMap)));
 	}
@@ -159,7 +159,7 @@ public abstract class FileMap implements Constructable {
 	 * @return the file system-safe path
 	 */
 	public static Path escapePath(String filename) {
-		return Path.of(filenameTranslator.translate(filename));
+		return Path.of(FILENAME_TRANSLATOR.translate(filename));
 	}
 
 }

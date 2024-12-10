@@ -101,7 +101,7 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 	/**
 	 * The localization instance for producing locale-specific strings.
 	 */
-	private static Localization localization = Localization.getLocalization(RuntimeViewer.class);
+	private static final Localization LOCALIZATION = Localization.getLocalization(RuntimeViewer.class);
 	
 	/**
 	 * The title of the plot.
@@ -210,7 +210,7 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 			viewer.getController().setReferenceSet(referenceSet);
 			
 			for (int i = 0; i < series.length; i++) {
-				viewer.getController().addSeries(localization.getString("text.series") + " " + (i + 1), series[i]);
+				viewer.getController().addSeries(LOCALIZATION.getString("text.series") + " " + (i + 1), series[i]);
 			}
 			
 			viewer.setLocationRelativeTo(null);
@@ -240,7 +240,7 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		initialize();
 		layoutComponents();
 		
-		setTitle(localization.getString("title.runtimeViewer"));
+		setTitle(LOCALIZATION.getString("title.runtimeViewer"));
 		setSize(800, 600);
 		setMinimumSize(new Dimension(400, 300));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -279,7 +279,7 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 					int index = seriesList.locationToIndex(e.getPoint());
 					boolean isHovering = index >= 0 && seriesList.getCellBounds(index, index).contains(e.getPoint());
 					
-					RunnableAction removeSeries = new RunnableAction("removeSeries", localization, () -> {
+					RunnableAction removeSeries = new RunnableAction("removeSeries", LOCALIZATION, () -> {
 						controller.removeSeries(index);
 					});
 					
@@ -295,16 +295,16 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 			
 		});
 		
-		selectAll = new RunnableAction("selectAll", localization, () -> {
+		selectAll = new RunnableAction("selectAll", LOCALIZATION, () -> {
 				seriesList.getSelectionModel().setSelectionInterval(0, seriesList.getModel().getSize()-1);
 			}).toButton();
 		
-		selectNone = new RunnableAction("selectNone", localization, () -> {
+		selectNone = new RunnableAction("selectNone", LOCALIZATION, () -> {
 				seriesList.getSelectionModel().clearSelection();
 			}).toButton();
 		
 		paintHelper = new PaintHelper();
-		paintHelper.set(localization.getString("text.referenceSet"), Color.BLACK);
+		paintHelper.set(LOCALIZATION.getString("text.referenceSet"), Color.BLACK);
 		
 		chartContainer = new JPanel(new BorderLayout());
 	}
@@ -325,7 +325,7 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		selectionPane.add(selectNone);
 		
 		JPanel leftPane = new JPanel(new BorderLayout());
-		leftPane.setBorder(BorderFactory.createTitledBorder(localization.getString("text.series")));
+		leftPane.setBorder(BorderFactory.createTitledBorder(LOCALIZATION.getString("text.series")));
 		leftPane.add(new JScrollPane(seriesList), BorderLayout.CENTER);
 		leftPane.add(selectionPane, BorderLayout.SOUTH);
 		leftPane.setMinimumSize(new Dimension(150, 150));
@@ -334,7 +334,7 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		splitPane.setContinuousLayout(true);
         splitPane.setOneTouchExpandable(true);
         
-        RunnableAction savePlot = new RunnableAction("savePlot", localization, () -> {
+        RunnableAction savePlot = new RunnableAction("savePlot", LOCALIZATION, () -> {
         	JFileChooser fileChooser = new JFileChooser();
         	
         	for (ImageFileType fileType : ImageUtils.getSupportedImageFormats()) {
@@ -354,7 +354,7 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
     		}
         });
         
-        RunnableAction addSeries = new RunnableAction("addSeries", localization, () -> {
+        RunnableAction addSeries = new RunnableAction("addSeries", LOCALIZATION, () -> {
         	JFileChooser fileChooser = new JFileChooser();
 
     		int result = fileChooser.showOpenDialog(this);
@@ -369,48 +369,48 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
     		}
         });
         
-		play = new RunnableAction("play", localization, controller::play);
-		stop = new RunnableAction("stop", localization, controller::stop);
+		play = new RunnableAction("play", LOCALIZATION, controller::play);
+		stop = new RunnableAction("stop", LOCALIZATION, controller::stop);
 		
-		RunnableAction start = new RunnableAction("start", localization,
+		RunnableAction start = new RunnableAction("start", LOCALIZATION,
 				() -> controller.setCurrentIndex(controller.getStartingIndex()));
-		RunnableAction end = new RunnableAction("end", localization,
+		RunnableAction end = new RunnableAction("end", LOCALIZATION,
 				() -> controller.setCurrentIndex(controller.getEndingIndex()));
 		
-		PopupAction pointSize = new PopupAction("pointSizeMenu", localization, () -> {
+		PopupAction pointSize = new PopupAction("pointSizeMenu", LOCALIZATION, () -> {
 			JPopupMenu menu = new JPopupMenu();
 			
 			for (int value : new int[] { 8, 10, 12, 14, 16 }) {
-				menu.add(new SelectValueAction<>("pointSize", localization, controller.getPointSize(), value).toMenuItem());
+				menu.add(new SelectValueAction<>("pointSize", LOCALIZATION, controller.getPointSize(), value).toMenuItem());
 			}
 
 			return menu;
 		});
 		
-		PopupAction transparency = new PopupAction("pointTransparencyMenu", localization, () -> {
+		PopupAction transparency = new PopupAction("pointTransparencyMenu", LOCALIZATION, () -> {
 			JPopupMenu menu = new JPopupMenu();
 			
 			for (int value : new int[] { 0, 25, 50, 75, 100 }) {
-				menu.add(new SelectValueAction<>("pointTransparency", localization, controller.getPointTransparency(), value).toMenuItem());
+				menu.add(new SelectValueAction<>("pointTransparency", LOCALIZATION, controller.getPointTransparency(), value).toMenuItem());
 			}
 			
 			return menu;
 		});
 		
-		PopupAction fitMode = new PopupAction("fitMenu", localization, () -> {
+		PopupAction fitMode = new PopupAction("fitMenu", LOCALIZATION, () -> {
 			JPopupMenu menu = new JPopupMenu();
 			
 			for (FitMode value : FitMode.values()) {
-				menu.add(new SelectValueAction<>("fit", localization, controller.getFitMode(), value).toMenuItem());
+				menu.add(new SelectValueAction<>("fit", LOCALIZATION, controller.getFitMode(), value).toMenuItem());
 			}
 			
 			return menu;
 		});
 		
 		JPanel objectiveSelectionPane = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		objectiveSelectionPane.add(new JLabel(localization.getString("text.xAxis")));
+		objectiveSelectionPane.add(new JLabel(LOCALIZATION.getString("text.xAxis")));
 		objectiveSelectionPane.add(xAxisSelection);
-		objectiveSelectionPane.add(new JLabel(localization.getString("text.yAxis")));
+		objectiveSelectionPane.add(new JLabel(LOCALIZATION.getString("text.yAxis")));
 		objectiveSelectionPane.add(yAxisSelection);
 		
         JToolBar toolbar = new JToolBar();
@@ -526,11 +526,11 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		if (controller.getIndexType() == IndexType.NFE) {
 			slider.setMinorTickSpacing(Math.max(controller.getStepSize(), 10));
 			slider.setMajorTickSpacing(controller.getEndingIndex() / 10);
-			sliderLabel.setText(localization.getString("text.NFE"));
+			sliderLabel.setText(LOCALIZATION.getString("text.NFE"));
 		} else {
 			slider.setMinorTickSpacing(1);
 			slider.setMajorTickSpacing(-1);
-			sliderLabel.setText(localization.getString("text.Index"));
+			sliderLabel.setText(LOCALIZATION.getString("text.Index"));
 		}
 	}
 	
@@ -564,7 +564,7 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		
 		chart = ChartFactory.createScatterPlot(
 				(title == null ? "" : title + " @ ") + (controller.getIndexType() == IndexType.NFE ?
-						localization.getString("text.NFE") : localization.getString("text.Index")) +
+						LOCALIZATION.getString("text.NFE") : LOCALIZATION.getString("text.Index")) +
 						" " + slider.getValue(),
 				xAxisSelection.getSelectedItem().toString(),
 				yAxisSelection.getSelectedItem().toString(),

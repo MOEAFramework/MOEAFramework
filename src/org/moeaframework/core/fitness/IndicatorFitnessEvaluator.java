@@ -29,16 +29,16 @@ import org.moeaframework.problem.Problem;
  * each solution into an aggregate fitness within the entire population.
  */
 public abstract class IndicatorFitnessEvaluator implements FitnessEvaluator {
+	
+	/**
+	 * Scaling factor for fitness calculation.
+	 */
+	private static final double KAPPA = 0.05;
 
 	/**
 	 * The problem.
 	 */
 	private final Problem problem;
-
-	/**
-	 * Scaling factor for fitness calculation.
-	 */
-	private static final double kappa = 0.05;
 	
 	/**
 	 * Record of the maximum indicator value from the last call to {@link #evaluate(Population)}.
@@ -69,40 +69,32 @@ public abstract class IndicatorFitnessEvaluator implements FitnessEvaluator {
 	}
 
 	/*
-	 * The following method is modified from the IBEA implementation for the
-	 * PISA framework, available at <a href="http://www.tik.ee.ethz.ch/pisa/">
-	 * PISA Homepage</a>.
+	 * The following method is modified from the IBEA implementation for the PISA framework, available at
+	 * <a href="http://www.tik.ee.ethz.ch/pisa/">PISA Homepage</a>.
 	 * 
-	 * Copyright (c) 2002-2003 Swiss Federal Institute of Technology,
-	 * Computer Engineering and Networks Laboratory. All rights reserved.
+	 * Copyright (c) 2002-2003 Swiss Federal Institute of Technology, Computer Engineering and Networks Laboratory.
+	 * All rights reserved.
 	 * 
-	 * PISA - A Platform and Programming Language Independent Interface for
-	 * Search Algorithms.
+	 * PISA - A Platform and Programming Language Independent Interface for Search Algorithms.
 	 * 
-	 * IBEA - Indicator Based Evoluationary Algorithm - A selector module
-	 * for PISA
+	 * IBEA - Indicator Based Evoluationary Algorithm - A selector module for PISA
 	 * 
-	 * Permission to use, copy, modify, and distribute this software and its
-	 * documentation for any purpose, without fee, and without written
-	 * agreement is hereby granted, provided that the above copyright notice
-	 * and the following two paragraphs appear in all copies of this
-	 * software.
+	 * Permission to use, copy, modify, and distribute this software and its documentation for any purpose, without
+	 * fee, and without written agreement is hereby granted, provided that the above copyright notice and the following
+	 * two paragraphs appear in all copies of this software.
 	 * 
-	 * IN NO EVENT SHALL THE SWISS FEDERAL INSTITUTE OF TECHNOLOGY, COMPUTER
-	 * ENGINEERING AND NETWORKS LABORATORY BE LIABLE TO ANY PARTY FOR DIRECT,
-	 * INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF
-	 * THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE SWISS
-	 * FEDERAL INSTITUTE OF TECHNOLOGY, COMPUTER ENGINEERING AND NETWORKS
-	 * LABORATORY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+	 * IN NO EVENT SHALL THE SWISS FEDERAL INSTITUTE OF TECHNOLOGY, COMPUTER ENGINEERING AND NETWORKS LABORATORY BE
+	 * LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE
+	 * OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE SWISS FEDERAL INSTITUTE OF TECHNOLOGY, COMPUTER ENGINEERING
+	 * AND NETWORKS LABORATORY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	 * 
-	 * THE SWISS FEDERAL INSTITUTE OF TECHNOLOGY, COMPUTER ENGINEERING AND
-	 * NETWORKS LABORATORY, SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING,
-	 * BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
-	 * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS
-	 * ON AN "AS IS" BASIS, AND THE SWISS FEDERAL INSTITUTE OF TECHNOLOGY,
-	 * COMPUTER ENGINEERING AND NETWORKS LABORATORY HAS NO OBLIGATION TO
-	 * PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+	 * THE SWISS FEDERAL INSTITUTE OF TECHNOLOGY, COMPUTER ENGINEERING AND NETWORKS LABORATORY, SPECIFICALLY DISCLAIMS
+	 * ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+	 * PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE SWISS FEDERAL INSTITUTE OF
+	 * TECHNOLOGY, COMPUTER ENGINEERING AND NETWORKS LABORATORY HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
+	 * UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 	 */
+	
 	@Override
 	public void evaluate(Population population) {
 		Normalizer normalizer = new Normalizer(population);
@@ -128,7 +120,7 @@ public abstract class IndicatorFitnessEvaluator implements FitnessEvaluator {
 			
 			for (int j = 0; j < population.size(); j++) {
 				if (i != j) {
-					sum += Math.exp((-fitcomp[j][i] / maxAbsIndicatorValue) / kappa);
+					sum += Math.exp((-fitcomp[j][i] / maxAbsIndicatorValue) / KAPPA);
 				}
 			}
 			
@@ -155,7 +147,7 @@ public abstract class IndicatorFitnessEvaluator implements FitnessEvaluator {
 				Solution solution = population.get(i);
 				double fitness = Fitness.getAttribute(solution);
 				
-				fitness -= Math.exp((-fitcomp[removeIndex][i] / maxAbsIndicatorValue) / kappa);
+				fitness -= Math.exp((-fitcomp[removeIndex][i] / maxAbsIndicatorValue) / KAPPA);
 				
 				Fitness.setAttribute(solution, fitness);
 			}
