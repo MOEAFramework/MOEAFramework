@@ -25,7 +25,7 @@ import org.moeaframework.core.PRNG;
 
 public class RulesTest {
 	
-	private int SAMPLES = 100;
+	private static final int SAMPLES = 100;
 	
 	@Test(expected = NoValidNodeException.class)
 	public void testFullWithMissingNode1() {

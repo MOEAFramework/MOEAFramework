@@ -46,7 +46,7 @@ public class TSPExample extends ExampleUI<GeneticAlgorithm> {
 
 	private static final long serialVersionUID = -3279247471680695959L;
 
-	private static final Color lightGray = new Color(128, 128, 128, 64);
+	private static final Color LIGHT_GRAY = new Color(128, 128, 128, 64);
 	
 	private final TSPInstance instance;
 	
@@ -90,7 +90,7 @@ public class TSPExample extends ExampleUI<GeneticAlgorithm> {
 
 		// display population with light gray lines
 		for (Solution solution : algorithm.getPopulation()) {
-			panel.displayTour(TSPProblem.toTour(solution), lightGray);
+			panel.displayTour(TSPProblem.toTour(solution), LIGHT_GRAY);
 		}
 		
 		// display current optimal solutions with red line

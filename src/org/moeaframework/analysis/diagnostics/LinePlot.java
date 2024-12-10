@@ -66,7 +66,7 @@ public class LinePlot extends ResultPlot {
 	/**
 	 * The resolution of the line plot, controlling the number of collected samples are included in each plotted point.
 	 */
-	private final int RESOLUTION = 500;
+	private static final int RESOLUTION = 500;
 	
 	/**
 	 * Constructs a line plot for the specified metric.

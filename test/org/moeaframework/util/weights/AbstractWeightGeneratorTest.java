@@ -30,7 +30,7 @@ import org.moeaframework.Assert;
 @Ignore("Abstract test class")
 public abstract class AbstractWeightGeneratorTest<T extends WeightGenerator> {
 	
-	protected final int SAMPLES = 100;
+	protected static final int SAMPLES = 100;
 	
 	/**
 	 * Returns a new instance of the weight generator being tested.

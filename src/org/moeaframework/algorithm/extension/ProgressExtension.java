@@ -248,7 +248,7 @@ public class ProgressExtension implements Extension {
 	 */
 	public static class DefaultProgressListener implements ProgressListener {
 		
-		private final int PROGRESS_WIDTH = 40;
+		private static final int PROGRESS_WIDTH = 40;
 		
 		/**
 		 * Constructs the default progress listener.
