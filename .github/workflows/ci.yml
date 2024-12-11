@@ -130,7 +130,7 @@ jobs:
         find . -type f -name "*.java" \
           -exec grep -ioP '\bhttp[s]?://[^\b"><}\s]+\b' {} \; \
           | sort | uniq > hyperlinks.md
-		cat hyperlinks.md
+        cat hyperlinks.md
     - name: Validate links
       uses: gaurav-nelson/github-action-markdown-link-check@v1
       with:
