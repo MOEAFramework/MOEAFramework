@@ -125,11 +125,15 @@ jobs:
       uses: MOEAFramework/.github/actions/run-ant@main
       with:
         target: validate-docs
-    - name: Validate links
-      uses: gaurav-nelson/github-action-markdown-link-check@v1
+    - name: Extract Java hyperlinks
+      run: |
+        find . -type f -name "*.java" \
+          -exec grep -ioP '\bhttp://[0-9a-z\-_\./\\]+\b' {} \; \
+          | sort | uniq > hyperlinks.md
+    - name: Validate hyperlinks
+      uses: umbrelladocs/action-linkspector@v1
       with:
-        folder-path: docs/
-        file-path: README.md
+        fail_on_error: true
     - name: Run Checkstyle
       uses: MOEAFramework/.github/actions/run-ant@main
       with:
