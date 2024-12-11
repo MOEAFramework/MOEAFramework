@@ -42,17 +42,14 @@ import org.moeaframework.util.validate.Validate;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 import org.moeaframework.util.weights.NormalBoundaryIntersectionGenerator;
 
-/* The original Matlab version of I-DBEA was written by Md. Asafuddoula, Tapabrata Ray and Ruhul Sarker.  This class
- * has been tested against their Matlab version to ensure it produces identical results.  See the DBEATest.java class
- * for more information about the testing procedure.
- * 
- * A Java version of I-DBEA written by Md Asafuddoula was also cross-referenced when developing this class.  The Java
+/* The original Matlab version of I-DBEA was written by Md. Asafuddoula, Tapabrata Ray and Ruhul Sarker.  A Java
+ * version of I-DBEA written by Md Asafuddoula was also cross-referenced when developing this class.  The Java
  * version was released under the GNU LGPL, version 3 or later, and is copyright 2015 Md Asafuddoula.
  * 
- * Note: There are some differences between Md Asafuddoula's newer Java version and their older Matlab version,
- * including the removal of corner sort.  Experimental tests on their Java version indicate performance between the
- * two versions differ, becoming more substantial with more objectives, with the Matlab version appearing superior.
- * For this reason, we have replicated the Matlab version within the MOEA Framework.
+ * There are some differences between the two versions, including the removal of corner sort.  Experimental tests on
+ * their Java version indicate performance between the two versions differ, becoming more substantial with more
+ * objectives, with the Matlab version appearing superior.  For this reason, we have replicated the Matlab version
+ * within the MOEA Framework.
  */
 
 /**
