@@ -38,7 +38,9 @@ import org.moeaframework.problem.Problem;
 import org.moeaframework.util.format.TableFormat;
 
 /**
- * Demonstrates using a data store to save results.
+ * Demonstrates using a data store to save results.  The data store defines "containers" and "blobs", which for a file
+ * system are equivalent to directories and files.  We map each unique algorithm configuration to a separate container,
+ * storing the approximation set and indicator values.
  */
 public class DataStoreExample {
 	

@@ -130,10 +130,11 @@ jobs:
         find . -type f -name "*.java" \
           -exec grep -ioP '\bhttp://[0-9a-z\-_\./\\]+\b' {} \; \
           | sort | uniq > hyperlinks.md
-    - name: Validate hyperlinks
-      uses: umbrelladocs/action-linkspector@v1
+    - name: Validate links
+      uses: gaurav-nelson/github-action-markdown-link-check@v1
       with:
-        fail_on_error: true
+        folder-path: docs/
+        file-path: README.md,hyperlinks.md
     - name: Run Checkstyle
       uses: MOEAFramework/.github/actions/run-ant@main
       with:
