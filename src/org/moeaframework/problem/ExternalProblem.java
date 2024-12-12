@@ -70,12 +70,6 @@ import org.moeaframework.util.validate.Validate;
  * When using Sockets, data is transmitted over the network.  Typically, this talks to a local process using a
  * specific port.  However, this can also connect to a remote process over a local-area network or the Internet.
  * 
- * <h2>C/C++ Library</h2>
- * To assist in writing the function in a native language, we provide {@code moeaframework.c} and
- * {@code moeaframework.h} under the {@code examples/} folder.  This library handles setting up the connection using
- * either I/O or sockets, parsing decision variables, and writing the objectives and constraints.  Furthermore, we can
- * use the {@link org.moeaframework.builder.BuildProblem} to generate a template using {@code --language external}.
- * 
  * <p>
  * <b>It is critical that the {@link #close()} method be invoked to ensure the external process is shutdown cleanly.</b>
  * Failure to do so could leave the process running in the background.
