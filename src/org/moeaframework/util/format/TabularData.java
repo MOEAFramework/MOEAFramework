@@ -34,6 +34,7 @@ import org.apache.commons.io.output.CloseShieldOutputStream;
 import org.apache.commons.io.output.CloseShieldWriter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.TypeUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.text.translate.AggregateTranslator;
 import org.apache.commons.text.translate.CharSequenceTranslator;
@@ -537,6 +538,37 @@ public class TabularData<T> implements Displayable {
 		}
 
 		return formattedData;
+	}
+	
+	/**
+	 * Constructs a table of the given pairs.
+	 * 
+	 * @param <K> the type of each key in the pair
+	 * @param <V> the type of each value in the pair
+	 * @param data the table data
+	 * @return the table
+	 */
+	public static <K, V> TabularData<Pair<K, V>> of(Iterable<Pair<K, V>> data) {
+		return of(data, "Key", "Value");
+	}
+	
+	/**
+	 * Constructs a table of the given pairs.
+	 * 
+	 * @param <K> the type of each key in the pair
+	 * @param <V> the type of each value in the pair
+	 * @param data the table data
+	 * @param keyName the column header for the key
+	 * @param valueName the column header for the value
+	 * @return the table
+	 */
+	public static <K, V> TabularData<Pair<K, V>> of(Iterable<Pair<K, V>> data, String keyName, String valueName) {
+		TabularData<Pair<K, V>> result = new TabularData<>(data);
+		
+		result.addColumn(new Column<>(keyName, Pair::getKey));
+		result.addColumn(new Column<>(valueName, Pair::getValue));
+		
+		return result;
 	}
 
 }

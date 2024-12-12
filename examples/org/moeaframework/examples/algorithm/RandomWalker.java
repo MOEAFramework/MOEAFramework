@@ -56,11 +56,11 @@ public class RandomWalker extends AbstractEvolutionaryAlgorithm {
 		Solution parent = population.get(index);
 		
 		// mutate the selected solution
-		Solution offspring = getVariation().evolve(new Solution[] { parent })[0];
+		Solution[] offspring = getVariation().evolve(new Solution[] { parent });
 		
 		// evaluate the offspring, add to population, and truncate the worst solution
-		evaluate(offspring);
-		population.add(offspring);
+		evaluateAll(offspring);
+		population.addAll(offspring);
 		population.truncate(population.size()-1);
 	}
 

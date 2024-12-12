@@ -29,7 +29,6 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.Problem;
-import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;
 import org.moeaframework.util.validate.Validate;
@@ -774,10 +773,7 @@ public class Indicators implements Function<NondominatedPopulation, Indicators.I
 
 		@Override
 		public TabularData<Pair<StandardIndicator, Double>> asTabularData() {
-			TabularData<Pair<StandardIndicator, Double>> data = new TabularData<>(asList());
-			data.addColumn(new Column<>("Indicator", p -> p.getKey().name()));
-			data.addColumn(new Column<>("Value", Pair::getValue));
-			return data;
+			return TabularData.of(asList(), "Indicator", "Value");
 		}
 		
 		private Iterable<Pair<StandardIndicator, Double>> asList() {

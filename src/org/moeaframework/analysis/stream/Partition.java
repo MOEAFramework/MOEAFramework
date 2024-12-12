@@ -36,7 +36,6 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.stream.Streams;
 import org.apache.commons.lang3.tuple.Pair;
 import org.moeaframework.util.Iterators;
-import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;
 
@@ -285,10 +284,7 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 	
 	@Override
 	public default TabularData<Pair<K, V>> asTabularData() {
-		TabularData<Pair<K, V>> table = new TabularData<>(stream().toList());
-		table.addColumn(new Column<>("Key", Pair::getKey));
-		table.addColumn(new Column<>("Value", Pair::getValue));
-		return table;
+		return TabularData.of(stream().toList());
 	}
 	
 	/**

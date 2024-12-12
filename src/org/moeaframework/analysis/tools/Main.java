@@ -21,13 +21,16 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
+import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
+import org.apache.commons.lang3.tuple.Pair;
 import org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool;
 import org.moeaframework.builder.BuildProblem;
 import org.moeaframework.core.FrameworkException;
@@ -36,6 +39,7 @@ import org.moeaframework.core.TypedProperties;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.Localization;
 import org.moeaframework.util.OptionCompleter;
+import org.moeaframework.util.format.TabularData;
 
 /**
  * Entry point to access all command line tools.
@@ -115,6 +119,8 @@ public class Main extends CommandLineUtility {
 
 		if (commandLine.hasOption("version")) {
 			showVersion();
+		} else if (commandLine.hasOption("info")) {
+			showInfo();
 		} else if (args.length < 1) {
 			showHelp();
 		} else {
@@ -143,10 +149,17 @@ public class Main extends CommandLineUtility {
 	@Override
 	public Options getOptions() {
 		Options options = super.getOptions();
+		
+		OptionGroup group = new OptionGroup();
 
-		options.addOption(Option.builder("v")
+		group.addOption(Option.builder("v")
 				.longOpt("version")
 				.build());
+		group.addOption(Option.builder()
+				.longOpt("info")
+				.build());
+		
+		options.addOptionGroup(group);
 		options.addOption(Option.builder()
 				.longOpt("verbose")
 				.build());
@@ -159,6 +172,19 @@ public class Main extends CommandLineUtility {
 	 */
 	protected void showVersion() {
 		System.out.println(buildProperties.getString("version"));
+	}
+	
+	/**
+	 * Displays information about the system for debugging purposes.
+	 */
+	protected void showInfo() {
+		TabularData.of(List.of(
+				Pair.of("Java Version", System.getProperty("java.version")),
+				Pair.of("Java Vendor", System.getProperty("java.vendor")),
+				Pair.of("OS Name", System.getProperty("os.name")),
+				Pair.of("OS Architecture", System.getProperty("os.arch")),
+				Pair.of("OS Version", System.getProperty("os.version")),
+				Pair.of("MOEAFramework Version", buildProperties.getString("version")))).display();
 	}
 
 	@Override

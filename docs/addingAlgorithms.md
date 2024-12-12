@@ -36,10 +36,10 @@ public class RandomWalker extends AbstractEvolutionaryAlgorithm {
         int index = PRNG.nextInt(population.size());
         Solution parent = population.get(index);
 
-        Solution offspring = getVariation().evolve(new Solution[] { parent })[0];
+        Solution[] offspring = getVariation().evolve(new Solution[] { parent });
 
-        evaluate(offspring);
-        population.add(offspring);
+        evaluateAll(offspring);
+        population.addAll(offspring);
         population.truncate(population.size()-1);
     }
 
