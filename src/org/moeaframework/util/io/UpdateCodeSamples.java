@@ -102,9 +102,9 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	
 	private static final Pattern LINES_REGEX = Pattern.compile("(\\-?[0-9]+)?[:\\\\-](\\-?[0-9]+)?");
 	
-	private static final Pattern BEGIN_REGEX = Pattern.compile("^\\s+//\\s*begin-example:\\s*([a-zA-Z][a-zA-Z0-9\\-_]*)\\s*$");
+	private static final Pattern BEGIN_REGEX = Pattern.compile("^\\s+(//|#)\\s*begin-example:\\s*([a-zA-Z][a-zA-Z0-9\\-_]*)\\s*$");
 
-	private static final Pattern END_REGEX = Pattern.compile("^\\s+//\\s*end-example:\\s*([a-zA-Z][a-zA-Z0-9\\-_]*)\\s*$");
+	private static final Pattern END_REGEX = Pattern.compile("^\\s+(//|#)\\s*end-example:\\s*([a-zA-Z][a-zA-Z0-9\\-_]*)\\s*$");
 	
 	/**
 	 * {@code true} if compiled files should be cleaned and rebuilt.
@@ -706,13 +706,13 @@ public class UpdateCodeSamples extends CommandLineUtility {
 				for (int i = 0; i < lines.size(); i++) {
 					Matcher beginMatcher = BEGIN_REGEX.matcher(lines.get(i));
 					
-					if (beginMatcher.matches() && beginMatcher.group(1).equalsIgnoreCase(identifier)) {
+					if (beginMatcher.matches() && beginMatcher.group(2).equalsIgnoreCase(identifier)) {
 						startingLine = i + 1;
 					}
 					
 					Matcher endMatcher = END_REGEX.matcher(lines.get(i));
 					
-					if (endMatcher.matches() && endMatcher.group(1).equalsIgnoreCase(identifier)) {
+					if (endMatcher.matches() && endMatcher.group(2).equalsIgnoreCase(identifier)) {
 						endingLine = i - 1;
 					}
 				}

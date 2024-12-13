@@ -10,7 +10,7 @@ To assist in running these command line tools, we provide an "all in one" script
 
 where `[command]` is one of the tool names.  To view the available commands, run:
 
-<!-- bash:examples/cli-example.sh [2-2] -->
+<!-- bash:.github/workflows/ci.yml [cli-help] -->
 
 ```bash
 ./cli --help
@@ -19,7 +19,7 @@ where `[command]` is one of the tool names.  To view the available commands, run
 For example, here we use the `solve` on the 2-objective DTLZ2 problem using NSGA-II, followed by `calc` (abbreviation of
 `CalculateIndicators`) to compute the hypervolume metric:
 
-<!-- bash:examples/cli-example.sh [8-9] -->
+<!-- bash:.github/workflows/ci.yml [cli-solve] -->
 
 ```bash
 ./cli solve --problem DTLZ2 --algorithm NSGAII --numberOfEvaluations 10000 --output NSGAII_DTLZ2_Runtime.txt

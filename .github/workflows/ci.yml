@@ -179,7 +179,19 @@ jobs:
     - name: Test CLI
       run: |
         cd build/MOEAFramework-*
-        . examples/cli-example.sh
+        
+        # begin-example:cli-help
+        ./cli --help
+        # end-example:cli-help
+
+        # begin-example:cli-version
+        ./cli --version
+        # end-example:cli-version
+
+        # begin-example:cli-solve
+        ./cli solve --problem DTLZ2 --algorithm NSGAII --numberOfEvaluations 10000 --output NSGAII_DTLZ2_Runtime.txt
+        ./cli calc --problem DTLZ2 --indicator hypervolume NSGAII_DTLZ2_Runtime.txt
+        # end-example:cli-solve
     - name: Test examples
       run: |
         cd build/MOEAFramework-*

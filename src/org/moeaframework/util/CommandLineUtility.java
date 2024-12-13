@@ -67,7 +67,7 @@ public abstract class CommandLineUtility {
 
 		@Override
 		public void uncaughtException(Thread t, Throwable e) {
-			System.err.println("ERROR: " + e.getLocalizedMessage());
+			System.err.println("ERROR: " + e.toString());
 			
 			if (Settings.isVerbose()) {
 				System.err.println("Full stack trace:");
