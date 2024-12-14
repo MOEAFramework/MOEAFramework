@@ -37,6 +37,11 @@ public class SettingsTest {
 	}
 	
 	@Test
+	public void testVerbose() {
+		Assert.assertFalse(Settings.isVerbose());
+	}
+	
+	@Test
 	public void testContinuityCorrection() {
 		Assert.assertFalse(Settings.isContinuityCorrection());
 	}

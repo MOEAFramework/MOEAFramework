@@ -259,9 +259,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 				<include name=".classpath" />
 				<include name="docs/**" />
 				<include name="examples/**" />
-				<exclude name="examples/*.exe" />
-				<exclude name="examples/*.o" />
-				<exclude name="examples/*.a" />
 				<include name="META-INF/**" />
 				<include name="pf/**" />
 				<include name="src/**" />

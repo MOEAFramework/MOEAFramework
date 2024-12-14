@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.Reader;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 
@@ -52,7 +53,7 @@ public class Capture {
 				invocable.invoke();
 				return new CaptureResult(baos);
 			} catch (Exception e) {
-				return new CaptureResult(baos, e);
+				return new CaptureResult(baos, e instanceof InvocationTargetException ite ? ite.getCause() : e);
 			}
 		} finally {
 			System.setOut(oldOut);
@@ -144,13 +145,13 @@ public class Capture {
 		
 		private final ByteArrayOutputStream output;
 		
-		private final Exception exception;
+		private final Throwable exception;
 		
 		public CaptureResult(ByteArrayOutputStream output) {
 			this(output, null);
 		}
 		
-		public CaptureResult(ByteArrayOutputStream output, Exception exception) {
+		public CaptureResult(ByteArrayOutputStream output, Throwable exception) {
 			super();
 			this.output = output;
 			this.exception = exception;
@@ -160,7 +161,7 @@ public class Capture {
 			Assert.assertNull("Expected call to complete successfully, but an exception was thrown", exception);
 		}
 		
-		public void assertThrows(Class<? extends Exception> expectedType) {
+		public void assertThrows(Class<? extends Throwable> expectedType) {
 			Assert.assertNotNull("Expected call to throw an exception", exception);
 			Assert.assertEquals("Thrown exception is not the expected type", expectedType, exception.getClass());
 		}
@@ -173,6 +174,16 @@ public class Capture {
 		public void assertEqualsNormalized(String expected) {
 			assertSuccessful();
 			Assert.assertEqualsNormalized(expected, toString());
+		}
+		
+		public void assertContains(String expected) {
+			assertSuccessful();
+			Assert.assertStringContains(toString(), expected);
+		}
+		
+		public void assertNotContains(String exepcted) {
+			assertSuccessful();
+			Assert.assertStringNotContains(toString(), exepcted);
 		}
 		
 		public void assertThat(ThrowingConsumer<CaptureResult> condition) {

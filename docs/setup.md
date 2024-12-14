@@ -12,7 +12,7 @@ these docs are tailored for Eclipse.
 ## Setting up an Eclipse Project
 
 Download the source or compiled binaries from the [Releases page](https://github.com/MOEAFramework/MOEAFramework/releases).
-We generally recommend the compiled binaries, `MOEAFramework-5.0.tar.gz`, unless you are planning to make changes to
+We generally recommend the compiled binaries, `MOEAFramework-5.x.tar.gz`, unless you are planning to make changes to
 the MOEA Framework itself.
 
 <img src="imgs/release-assets.png" width="80%" />

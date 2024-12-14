@@ -25,10 +25,9 @@ package org.moeaframework.core;
 public interface Copyable<T> {
 	
 	/**
-	 * Creates and returns a copy of this object.  It is required that {@code x.copy()} is completely
-	 * independent from {@code x}.  This means any method invoked on {@code x.copy()} in no way alters the state
-	 * of {@code x} and vice versa.  It is typically the case that {@code x.copy().getClass() == x.getClass()} and
-	 * {@code x.copy().equals(x)}.
+	 * Creates and returns a copy of this object.  It is required that {@code x.copy()} is completely independent from
+	 * {@code x}.  This means any method invoked on {@code x.copy()} in no way alters the state of {@code x} and vice
+	 * versa.  It is typically the case that {@code x.copy().getClass() == x.getClass()} and {@code x.copy().equals(x)}.
 	 * 
 	 * @return the copy
 	 */
