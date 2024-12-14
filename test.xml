@@ -51,11 +51,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<fileset file="COPYING" />
 	</path>
 
-	<!-- Calls the build-binary target in build.xml to compile the MOEA Framework -->
-	<target name="build-binary">
-		<ant target="build-binary" />
-	</target>
-
 	<!-- Displays message and fails build if JUnit is not available -->
 	<target name="check-junit">
 		<available classname="org.junit.Assert" classpathref="classpath" property="junit.exists" />
@@ -116,7 +111,9 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	</target>
 
 	<!-- Builds the MOEA Framework Test JAR -->
-	<target name="build-tests" depends="build-binary,check-junit">
+	<target name="build-tests" depends="check-junit">
+		<ant target="build-binary" />
+		
 		<delete dir="${build}" />
 		<mkdir dir="${build}" />
 

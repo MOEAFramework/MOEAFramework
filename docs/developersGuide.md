@@ -1,23 +1,22 @@
 # Developer's Guide
 
-Interested in contributing to the MOEA Framework?  All active development is handled in our GitHub repository at
-http://github.com/MOEAFramework/MOEAFramework.  Please follow the steps below to ensure your contribution is received
-and merged in a timely manner!
+## Contributing
 
-## Checklist
+Have a bug fix or new feature to contribute to the MOEA Framework?  Please submit the change as a pull request (PR) to
+our GitHub repository at http://github.com/MOEAFramework/MOEAFramework.  Before submitting changes, please note:
 
-To make the process of contributing changes as efficient as possible, please follow this checklist:
+1. All contributions will be released under the [GNU Lesser General Public License](META-INF/LGPL-LICENSE).  By
+   submitting a PR, you agree to these terms and conditions.
+   
+2. To properly attribute your contributions, include the copyright and license header at the top of each source file
+   (see any `.java` file for an example).  You may optionally include your name or, if applicable, your institution's
+   name in the header.
 
-- [ ] Acknowledge that your contributions will be included in the MOEA Framework and licensed under the GNU Lesser
-      General Public License.  See `COPYING` for details.
-- [ ] Add any necessary tests to validate your changes.
-- [ ] Include any references or citations in the Javadoc comments.
-- [ ] Include the MOEA Framework copyright header at the beginning of every file.  You may include your name and/or your
-      institution's name in the copyright statement.
-- [ ] Open a [pull request](https://github.com/MOEAFramework/MOEAFramework/pulls) with your changes.
-- [ ] Monitor the pull request to ensure all tests pass and any reviewer feedback is addressed.
-
-If everything looks good, we will approve and merge the changes for you.  Thank you for contributing to this project!
+3. Add any necessary tests and documentation.  Since this project is academic in nature, include any references or
+   citations in the Javadoc comments.
+   
+4. After creating a PR, please verify all CI tests pass.  We may leave comments on the PR that require changes.  If the
+   PR is accepted, we will handle merging and releasing the change.
 
 ## Setting up a Development Environment
 
@@ -47,19 +46,15 @@ ant package-binary
 java -classpath "lib/*:dist/*" examples/Example1.java
 
 # run tests
-ant -f test.xml install-junit
+ant -f test.xml download-junit
 ant -f test.xml test
 ```
 
 ## Versions
 
 We use [semantic versioning](https://semver.org/) following the pattern `{major}.{minor}`.  Two versions with the
-same `{major}` number are expected to be backwards compatible, for example allowing one to upgrade from `4.0` to
-`4.2` without difficulty.  
-
-### Supported Java Versions
-
-Each release of the MOEA Framework targets a specific version of Java:
+same `{major}` number are expected to be backwards compatible, for example allowing one to upgrade from `5.0` to
+`5.2` without difficulty.  Each version also targets a specific version of Java:
 
 * `5.x` - Java 17+
 * `4.x` - Java 17+
@@ -68,53 +63,36 @@ Each release of the MOEA Framework targets a specific version of Java:
 
 To determine if and when to update which Java version we target, we generally look at the
 [support roadmap](https://www.oracle.com/java/technologies/java-se-support-roadmap.html) and favor LTS releases.
-While supporting earlier versions limits our use of newer language features, the tradeoff is supporting the widest
-possible audience.
-
-## Documentation
-
-In addition to Javadoc comments included with source code, we also provide Markdown documentation under the `docs/`
-folder.  When adding example code to the documentation, we strongly recommend using our custom tool to sync examples
-with source code.  This tool looks for special comments embedded in Markdown that identifies the language,
-source file, and section of code, such as `<!-- java:examples/Example1.java [33:40] -->`.  Then, we can either validate
-or update the documentation using:
-
-```
-ant validate-docs
-ant update-docs
-```
-
 
 ## Building, Testing, and Packaging
 
-This project uses Apache Ant to compile, test, and package the code.  If using Eclipse, drag-and-drop `build.xml`
-and `test.xml` into the Ant window, then double-click on any of the targets.  For example, the `package-binary`
-target will create the binary distributions.  Alternatively, from the terminal, we can run:
+Apache Ant is used to compile, test, and package the code.  When using Eclipse, drag-and-drop `build.xml` and `test.xml`
+into the Ant window, then double-click on any of the targets.  For example, the `package-binary` target will create the
+binary distributions.  Alternatively, from the terminal, we can run:
 
 ```
 ant -f build.xml package-binary
 ```
 
-Tests are powered by JUnit.  Individual tests or test classes can be evaluated from within Eclipse by right-clicking
-on the test or class and selecting `Run As > JUnit Test`.  To run all tests using Ant, run the `test` target
-from `test.xml`, or from the terminal run:
+Tests are powered by JUnit 4.  Individual tests or test classes can be evaluated within Eclipse by right-clicking on
+the test or class and selecting `Run As > JUnit Test`.  To run all tests using Ant, run the `test` target from `test.xml`,
+or from the terminal run:
 
 ```
 ant -f test.xml test
 ```
 
-We strongly recommend installing all test dependencies by running:
+We strongly recommend installing all test dependencies beforehand as some tests are skipped if the dependency is
+missing.  Run the following Ant target to download all test dependencies:
 
 ```
 ant -f test.xml download-all
 ```
 
-as some tests are skipped if the dependency is not available.
-
 ### Maven
 
 The MOEA Framework source code is not structured for Maven, but we can produce a Maven-compatible release using the
-`build-maven` target.  We can run tests with:
+`build-maven` target.  Below demonstrates running all tests through Maven:
 
 ```
 ant -f build.xml build-maven
@@ -127,16 +105,62 @@ mvn test
 When code changes are pushed to the GitHub repository, our CI tests are automatically run.  These are powered by the
 `ci.yml` workflow, and run all tests against the supported versions of Java, Maven, etc.
 
-### Snapshots
-
-Snapshots are unofficial, development releases of a project primarily used for testing purposes.  Some project call
-these "nightlies" or "nightly builds".  While we do not publish snapshots on a regular cadence and prefer operating
-from the `master` branch, please open an issue on GitHub if you require one.
-
 ### Releases
 
-New releases are published by the `staging.yml` workflow file running on GitHub Actions.  This workflow stages the
-artifacts to GitHub Releases and Maven and triggers our [integration tests](https://github.com/MOEAFramework/IntegrationTests).
-After validating the release, we then manually release the new version.
+New releases are published by the `staging.yml` workflow file running on GitHub Actions.  The process to create a new
+release is:
+
+1. Merge a PR to increment the version number in `META-INF/build.properties`.  Append `-SNAPSHOT` to the version to create
+   an snapshot release.
+2. After CI passes, trigger the Staging workflow (`staging.yml`).
+3. Verify the [integration tests](https://github.com/MOEAFramework/IntegrationTests) are passing with the new release.
+4. Publish the Maven artifacts, GitHub release, and Website update.
 
 Please note that it can take several hours for the new release to be available for download using Maven.
+
+## Documentation
+
+We publish Markdown documentation under the `docs/` folder along with generated Javadocs from the comments in the
+source code.  To ensure code samples shown in documentation is consistent, we have a custom tool that syncs code
+snippets in documentation with working Java code.  This works by placing a special comment immediately before a code
+block that identifys the language, source file, and section.  For example, this will extract lines 33 to 40 from
+`Example1.java`:
+
+```
+<!-- java:examples/Example1.java [33:40] -->
+```
+
+Rather than using line numbers, we can also identify blocks of code using an identifier.  In the Java code, surround
+the code with these comments:
+
+```
+// begin-example:foo
+...
+// end-example:foo
+```
+
+then reference this block by its identifier in the Markdown docs with:
+
+```
+<!-- java:examples/Example1.java [foo] -->
+```
+
+Then, we can either validate the docs, alerting if any changes are detected, or update the docs to match the code
+samples.
+
+```
+ant validate-docs
+ant update-docs
+```
+
+## Service Providers
+
+We use Java service providers to dynamically locate implementations at runtime.  In the context of this library, this
+includes algorithms, problems, and operators.  To construct a new provider:
+
+1. Implement the provider by extending the appropriate class (`AlgorithmProvider`, `ProblemProvider`, or `OperatorProvider`).
+2. Register the provider by adding it to `META-INF/services`.  For instance, if writing an `AlgorithmProvider`, create the
+   file `META-INF/services/org.moeaframework.core.spi.AlgorithmProvider` with a single line containing the fully-qualitifed
+   class name of your custom provider.
+3. Package the compiled Java classes along with the `META-INF` directory into a JAR.
+4. Add the JAR to the classpath, either by placing it in the `lib/` folder or the Maven `pom.xml`.
