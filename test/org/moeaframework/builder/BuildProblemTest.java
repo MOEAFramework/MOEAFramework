@@ -20,6 +20,7 @@ package org.moeaframework.builder;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -69,7 +70,7 @@ public class BuildProblemTest {
 		if (Assume.isGitHubActions()) {
 			// Note: The licenses imported by the setup-matlab action does not enable MatlabEngine.  We can compile
 			// the example but can't run to end-to-end.  See https://github.com/matlab-actions/setup-matlab/issues/13.
-			File directory = test("matlab", false);
+			File directory = test("matlab", null, null, null, false);
 			
 			CaptureResult result = Capture.output(new ProcessBuilder()
 					.command("matlab", "-batch", "[objs, constrs] = evaluate(zeros(1, 10))")
@@ -88,61 +89,69 @@ public class BuildProblemTest {
 
 	@Test(expected = Exception.class)
 	public void testDisallowExample() throws Exception {
-		File directory = TempFiles.createDirectory();
-
-		BuildProblem.main(new String[] {
-				"--problemName", "Example",
-				"--language", "c",
-				"--numberOfVariables", "10",
-				"--numberOfObjectives", "2",
-				"--directory", directory.toString()
-		});
+		test("c", null, "Example", null, true);
 	}
 	
 	@Test(expected = Exception.class)
 	public void testInvalidProblemName() throws Exception {
-		File directory = TempFiles.createDirectory();
-
-		BuildProblem.main(new String[] {
-				"--problemName", "Foo Bar",
-				"--language", "c",
-				"--numberOfVariables", "10",
-				"--numberOfObjectives", "2",
-				"--directory", directory.toString()
-		});
+		test("c", null, "Foo Bar", null, true);
 	}
 	
 	@Test(expected = Exception.class)
 	public void testInvalidFunctionName() throws Exception {
-		File directory = TempFiles.createDirectory();
-
-		BuildProblem.main(new String[] {
-				"--problemName", "Test",
-				"--functionName", "evaluate!",
-				"--language", "c",
-				"--numberOfVariables", "10",
-				"--numberOfObjectives", "2",
-				"--directory", directory.toString()
-		});
+		test("c", "evaluate!", null, null, true);
 	}
 	
-	private File test(String language) throws Exception {
-		return test(language, true);
+	@Test(expected = Exception.class)
+	public void testInvalidPackageName() throws Exception {
+		test("c", null, null, "package!", true);
+	}
+	
+	private void test(String language) throws Exception {
+		System.out.println("============ Testing BuildProblem (" + language + ") with Defaults ============");
+		test(language, null, null, null, true);
+		System.out.println();
+		
+		System.out.println("========== Testing BuildProblem (" + language + ") with Custom Names ==========");
+		test(language, "myFunc", "MyProblem", "mypackage", true);
+		System.out.println();
 	}
 
-	private File test(String language, boolean run) throws Exception {
+	private File test(String language, String functionName, String problemName, String packageName, boolean run)
+			throws Exception {
+		if (problemName == null) {
+			problemName = "Test";
+		}
+		
 		File directory = TempFiles.createDirectory();
-		File testDirectory = new File(directory, "Test");
+		File testDirectory = new File(directory, problemName);
+		
+		List<String> args = new ArrayList<>();
+		args.add("--problemName");
+		args.add(problemName);
+		args.add("--language");
+		args.add(language);
+		args.add("--numberOfVariables");
+		args.add("10");
+		args.add("--numberOfObjectives");
+		args.add("2");
+		args.add("--directory");
+		args.add(directory.toString());
+		args.add("--classpath");
+		args.add(System.getProperty("java.class.path") + File.pathSeparator + problemName + ".jar" +
+				File.pathSeparator + ".");
+		
+		if (functionName != null) {
+			args.add("--functionName");
+			args.add(functionName);
+		}
+		
+		if (packageName != null) {
+			args.add("--package");
+			args.add(packageName);
+		}
 
-		BuildProblem.main(new String[] {
-				"--problemName", "Test",
-				"--language", language,
-				"--numberOfVariables", "10",
-				"--numberOfObjectives", "2",
-				"--directory", directory.toString(),
-				"--classpath", System.getProperty("java.class.path") + File.pathSeparator + "Test.jar" +
-						File.pathSeparator + "."
-		});
+		BuildProblem.main(args.toArray(String[]::new));
 
 		Assume.assumeMakeExists();
 		Make.runMake(testDirectory);
