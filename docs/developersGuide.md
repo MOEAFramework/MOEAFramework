@@ -124,10 +124,7 @@ We publish Markdown documentation under the `docs/` folder along with generated 
 source code.  To ensure code samples shown in documentation is consistent, we have a custom tool that syncs code
 snippets in documentation with working Java code.  This works by placing a special comment immediately before a code
 block that identifys the language, source file, and section.  For example, this will extract lines 33 to 40 from
-`Example1.java`:
-
-```
-<!-- java:examples/Example1.java [33:40] -->
+`Example1.java` with `<!-- java:examples/Example1.java [33:40] -->`.
 ```
 
 Rather than using line numbers, we can also identify blocks of code using an identifier.  In the Java code, surround
@@ -139,14 +136,8 @@ the code with these comments:
 // end-example:foo
 ```
 
-then reference this block by its identifier in the Markdown docs with:
-
-```
-<!-- java:examples/Example1.java [foo] -->
-```
-
-Then, we can either validate the docs, alerting if any changes are detected, or update the docs to match the code
-samples.
+then reference this block by its identifier in the Markdown docs with `<!-- java:examples/Example1.java [foo] -->`.  Then,
+we can either validate the docs, alerting if any changes are detected, or update the docs to match the code samples:
 
 ```
 ant validate-docs

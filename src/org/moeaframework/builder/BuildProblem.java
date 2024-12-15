@@ -34,6 +34,7 @@ import javax.lang.model.SourceVersion;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringSubstitutor;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.CommandLineUtility;
@@ -127,12 +128,12 @@ public class BuildProblem extends CommandLineUtility {
 				.hasArg()
 				.build());
 		
-		options.addOption(Option.builder("l")
+		options.addOption(Option.builder()
 				.longOpt("lowerBound")
 				.hasArg()
 				.build());
 		
-		options.addOption(Option.builder("u")
+		options.addOption(Option.builder()
 				.longOpt("upperBound")
 				.hasArg()
 				.build());
@@ -194,6 +195,11 @@ public class BuildProblem extends CommandLineUtility {
 			System.err.println("WARNING: " + language + " is experimental and not fully tested.  Please report any issues.");
 		} else {
 			throw new FrameworkException("'" + language + "' is not a supported language");
+		}
+		
+		if (language.equalsIgnoreCase("fortran") && !StringUtils.isAllLowerCase(functionName)) {
+			System.err.println("Converting function name to lower case to support " + language);
+			functionName = functionName.toLowerCase();
 		}
 		
 		Path directory = Path.of(commandLine.getOptionValue("directory", "native"), problemName);

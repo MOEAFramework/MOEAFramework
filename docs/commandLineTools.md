@@ -37,7 +37,8 @@ environment variable.
 
 ```
 usage: java -classpath "lib/*" org.moeaframework.builder.BuildProblem [-c <arg>] [--classpath <arg>] [-d <arg>] [-f
-       <arg>] [-h] [-l <arg>] -n <arg> -o <arg> [--overwrite] -p <arg> [--package <arg>] [-u <arg>]
+       <arg>] [-h] -l <arg> [--lowerBound <arg>] -n <arg> -o <arg> [--overwrite] -p <arg> [--package <arg>]
+       [--upperBound <arg>]
 
 Constructs the scaffolding for a natively-compiled problem in a target language.
 
@@ -48,13 +49,14 @@ The following options are available:
  -d,--directory <arg>             Changes the directory where the files are generated (default: native/)
  -f,--functionName <arg>          The name of the native function (must be a valid function name)
  -h,--help                        Display help information
- -l,--lowerBound <arg>            Sets the lower bound for each real-valued decision variable (default: 0.0)
+ -l,--language <arg>              The target language (supports "c", "cpp", "fortran", "java", "python", and "external")
+    --lowerBound <arg>            Sets the lower bound for each real-valued decision variable (default: 0.0)
  -n,--numberOfVariables <arg>     The number of real-valued decision variables
  -o,--numberOfObjectives <arg>    The number of objectives
     --overwrite                   If set, overwrites any existing content in the directory
  -p,--problemName <arg>           The name of the problem (must be a valid Java identifier)
     --package <arg>               If set, sets the Java package where the classes are created
- -u,--upperBound <arg>            Sets the upper bound for each real-valued decision variable (default: 1.0)
+    --upperBound <arg>            Sets the upper bound for each real-valued decision variable (default: 1.0)
 ```
 
 ### CalculateIndicator
