@@ -5,7 +5,7 @@
 Have a bug fix or new feature to contribute to the MOEA Framework?  Please submit the change as a pull request (PR) to
 our GitHub repository at http://github.com/MOEAFramework/MOEAFramework.  Before submitting changes, please note:
 
-1. All contributions will be released under the [GNU Lesser General Public License](META-INF/LGPL-LICENSE).  By
+1. All contributions will be released under the [GNU Lesser General Public License](../META-INF/LGPL-LICENSE).  By
    submitting a PR, you agree to these terms and conditions.
    
 2. To properly attribute your contributions, include the copyright and license header at the top of each source file
