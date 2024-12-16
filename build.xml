@@ -161,7 +161,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<secure-get src="${jna.url}" dest="lib/jna-${jna.version}.jar" sha1="${jna.sha1}" />
 		
 		<replaceregexp file=".classpath" match="lib/([a-zA-Z0-9]+(-[a-zA-Z0-9]+)?)-[0-9]+\.[0-9]+\.([0-9]+)?\.jar"
-			replace="lib/\1-%\1.version%.jar" byline="true" />
+			replace="lib/\1-${\1.version}.jar" byline="true" />
 		
 		<replace-properties file=".classpath" />
 	</target>

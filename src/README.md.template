@@ -1,7 +1,7 @@
 The MOEA Framework is a free and open source Java library for developing and experimenting with multiobjective
 evolutionary algorithms (MOEAs) and other metaheuristics.
 
-![GitHub Actions status](%repository%/workflows/Tests/badge.svg?branch=master&event=push)
+![GitHub Actions status](${repository}/workflows/Tests/badge.svg?branch=master&event=push)
 ![Maven Central](https://img.shields.io/maven-central/v/org.moeaframework/moeaframework)
 ![GitHub Downloads](https://img.shields.io/github/downloads/MOEAFramework/MOEAFramework/total?label=GitHub%20Downloads)
 
@@ -16,20 +16,20 @@ evolutionary algorithms (MOEAs) and other metaheuristics.
 
 ### Getting Started
 
-Download the latest release from the [GitHub Releases](%repository%/releases) page.  Maven users can add our
+Download the latest release from the [GitHub Releases](${repository}/releases) page.  Maven users can add our
 dependency to their `pom.xml` file:
 
 ```xml
 <dependency>
     <groupId>org.moeaframework</groupId>
     <artifactId>moeaframework</artifactId>
-    <version>%version%</version>
+    <version>${version}</version>
 </dependency>
 ```
 
-Check out our [examples](%repository%/tree/master/examples),
-[online documentation](%repository%/blob/master/docs/README.md), and
-[API Specification (Javadoc)](%website%/javadoc/index.html) to get started.
+Check out our [examples](${repository}/tree/master/examples),
+[online documentation](${repository}/blob/master/docs/README.md), and
+[API Specification (Javadoc)](${website}/javadoc/index.html) to get started.
 
 
 ### Example
@@ -58,4 +58,4 @@ In addition, the MOEA Framework includes a suite of diagnostic and visualization
 
 If you use this software in your work, please cite it as follows (APA style):
 
-> %citation%
+> ${citation}
