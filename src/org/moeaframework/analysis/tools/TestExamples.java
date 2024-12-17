@@ -20,7 +20,6 @@ package org.moeaframework.analysis.tools;
 import java.awt.HeadlessException;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -46,7 +45,6 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.DurationUtils;
 import org.moeaframework.util.Timer;
-import org.moeaframework.util.io.LineReader;
 
 /**
  * Command line utility that scans the {@code examples/} folder for Java files, compiles them, and runs class
@@ -140,7 +138,7 @@ public class TestExamples extends CommandLineUtility {
 				throw new FrameworkException("Failed while compiling " + example);
 			} else {
 				Duration elapsedTime = Duration.ofMillis(Math.round(1000 * timer.stop()));
-				getLogger().info("Succeeded! (" + DurationUtils.formatHighResolution(elapsedTime) + ")");
+				getLogger().info("Success (" + DurationUtils.formatHighResolution(elapsedTime) + ")");
 			}
 		} else {
 			getLogger().info("Skipped (no changes to source)");
@@ -174,7 +172,7 @@ public class TestExamples extends CommandLineUtility {
 				mainMethod.invoke(null, (Object)new String[0]);
 				
 				Duration elapsedTime = Duration.ofMillis(Math.round(1000 * timer.stop()));
-				getLogger().info("Succeeded! (" + DurationUtils.formatHighResolution(elapsedTime) + ")");
+				getLogger().info("Success (" + DurationUtils.formatHighResolution(elapsedTime) + ")");
 			} catch (NoSuchMethodException e) {
 				getLogger().info("Skipped (no main method)");
 			} catch (InvocationTargetException e) {
@@ -190,17 +188,13 @@ public class TestExamples extends CommandLineUtility {
 			
 			if (outStorage.size() > 0) {
 				getLogger().info("================================ Begin Output ================================");
-				try (LineReader reader = LineReader.wrap(new StringReader(outStorage.toString()))) {
-					reader.lines().forEach(s -> getLogger().info(s));
-				}
+				getLogger().info(outStorage.toString());
 				getLogger().info("================================= End Output =================================");
 			}
 			
 			if (errStorage.size() > 0) {
 				getLogger().warning("================================ Begin Error =================================");
-				try (LineReader reader = LineReader.wrap(new StringReader(errStorage.toString()))) {
-					reader.lines().forEach(s -> getLogger().info(s));
-				}
+				getLogger().warning(errStorage.toString());
 				getLogger().warning("================================= End Error ==================================");
 			}
 		} catch (Exception e) {
