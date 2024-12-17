@@ -27,7 +27,6 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.extension.FrequencyType;
 import org.moeaframework.algorithm.extension.RuntimeCollectorExtension;
@@ -289,10 +288,12 @@ public class Solve extends CommandLineUtility {
 		}
 		
 		if (commandLine.getArgs().length > 0) {
-			getLogger().info("Running " + String.join(" ", commandLine.getArgs()));
+			System.out.print("Running ");
+			System.out.println(String.join(" ", commandLine.getArgs()));
 			builder.withCommand(commandLine.getArgs());
 		}
 			
+		System.out.println("Starting optimization");
 		return new ExternalProblem(builder) {
 
 			@Override
@@ -350,33 +351,42 @@ public class Solve extends CommandLineUtility {
 			Solution[] solutions = initialization.initialize(trials);
 			
 			for (Solution solution : solutions) {
-				getLogger().info("Running test " + (++count) + ":");
+				System.out.println("Running test " + (++count) + ":");
 				
 				for (int j = 0; j < solution.getNumberOfVariables(); j++) {
-					getLogger().info("  Variable " + (j+1) + " = " + solution.getVariable(j));
+					System.out.print("  Variable ");
+					System.out.print(j+1);
+					System.out.print(" = ");
+					System.out.println(solution.getVariable(j));
 				}
 				
-				getLogger().info("  * Evaluating solution *");
+				System.out.println("  * Evaluating solution *");
 				problem.evaluate(solution);
-				getLogger().info("  * Evaluation complete *");
+				System.out.println("  * Evaluation complete *");
 				
 				for (int j = 0; j < solution.getNumberOfObjectives(); j++) {
-					getLogger().info("  Objective " + (j+1) + " = " + solution.getObjective(j));
+					System.out.print("  Objective ");
+					System.out.print(j+1);
+					System.out.print(" = ");
+					System.out.println(solution.getObjective(j));
 				}
 				
 				for (int j = 0; j < solution.getNumberOfConstraints(); j++) {
-					getLogger().info("  Constraint " + (j+1) + " = " + solution.getConstraint(j));
+					System.out.print("  Constraint ");
+					System.out.print(j+1);
+					System.out.print(" = ");
+					System.out.println(solution.getConstraint(j));
 				}
 				
 				if ((solution.getNumberOfConstraints() > 0) && solution.violatesConstraints()) {
-					getLogger().info("  Solution is infeasible!");
+					System.out.println("  Solution is infeasible (non-zero constraint value)!");
 				}
 			}
 			
-			getLogger().info("Test succeeded!");
+			System.out.println("Test succeeded!");
 		} catch (Exception e) {
-			getLogger().severe(ExceptionUtils.getStackTrace(e));
-			getLogger().severe("Test failed!  Please see the error message above for details.");
+			e.printStackTrace();
+			System.out.println("Test failed!  Please see the error message above for details.");
 		}
 	}
 

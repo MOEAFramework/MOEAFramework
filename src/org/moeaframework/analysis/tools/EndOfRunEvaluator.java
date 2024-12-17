@@ -44,7 +44,7 @@ import org.moeaframework.util.validate.Validate;
  * Command line utility for evaluating an algorithm using many parameterizations.
  */
 public class EndOfRunEvaluator extends CommandLineUtility {
-	
+
 	private EndOfRunEvaluator() {
 		super();
 	}
@@ -125,23 +125,20 @@ public class EndOfRunEvaluator extends CommandLineUtility {
 			if (epsilons != null) {
 				defaultProperties.setDoubleArray("epsilon", epsilons.toArray());
 			}
-			
-			if (output.getNumberOfEntries() > 0) {
-				getLogger().info("Resuming from existing result file " + outputFile);
-				getLogger().info("Validated entries = " + output.getNumberOfEntries());
-			}
 
 			for (int i = output.getNumberOfEntries(); i < samples.size(); i++) {
-				getLogger().info("Evaluating sample " + (i+1) + " of " + samples.size());
+				System.out.print("Processing sample " + (i+1) + " of " + samples.size() + "...");
 				
 				TypedProperties properties = samples.get(i);
 				properties.addAll(defaultProperties);
 
 				process(commandLine.getOptionValue("algorithm"), properties, problem, output);
+				
+				System.out.println("done.");
 			}
 		}
 		
-		getLogger().info("Finished!");
+		System.out.println("Finished!");
 	}
 
 	private void process(String algorithmName, TypedProperties properties, Problem problem, ResultFileWriter output)

@@ -22,7 +22,6 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.lang.ProcessBuilder.Redirect;
 import java.lang.Thread.UncaughtExceptionHandler;
-import java.util.logging.Logger;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -34,7 +33,6 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang3.SystemUtils;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
-import org.moeaframework.util.io.OutputHandler;
 import org.moeaframework.util.io.RedirectStream;
 import org.moeaframework.util.io.Tokenizer;
 
@@ -89,11 +87,6 @@ public abstract class CommandLineUtility {
 	 * When {@code true}, the usage line is not displayed.
 	 */
 	private boolean hideUsage;
-	
-	/**
-	 * The logger for this command line utility.
-	 */
-	private final Logger logger;
 
 	/**
 	 * Constructs a command line utility.  The constructor for subclasses should provide a private constructor unless
@@ -101,7 +94,6 @@ public abstract class CommandLineUtility {
 	 */
 	public CommandLineUtility() {
 		super();
-		logger = OutputHandler.getLogger(getClass());
 	}
 	
 	/**
@@ -331,15 +323,6 @@ public abstract class CommandLineUtility {
 	 */
 	protected PrintWriter createOutputWriter(File file) throws FileNotFoundException {
 		return file == null ? new PrintWriter(System.out) : new PrintWriter(file);
-	}
-	
-	/**
-	 * Returns a logger that can be used to display log messages associated with this CLI tool.
-	 * 
-	 * @return the logger
-	 */
-	protected Logger getLogger() {
-		return logger;
 	}
 
 }
