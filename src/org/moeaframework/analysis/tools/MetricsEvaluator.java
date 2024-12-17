@@ -103,7 +103,7 @@ public class MetricsEvaluator extends CommandLineUtility {
 				}
 				
 				if (writer.getNumberOfEntries() > 0) {
-					getLogger().info("Resuming from existing metric file " + outputFile);
+					getLogger().info("Resuming from existing metrics file " + outputFile);
 					getLogger().info("Validated entries = " + writer.getNumberOfEntries());
 				}
 
