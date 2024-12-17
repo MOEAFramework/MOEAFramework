@@ -119,7 +119,7 @@ public class RuntimeEvaluator extends CommandLineUtility {
 				String outputFileName = String.format(outputFilePattern, i+1);
 				File outputFile = new File(outputFileName);
 				
-				System.out.print("Processing sample " + (i+1) + " of " + samples.size() + " (" + outputFileName + ")...");
+				getLogger().info("Evaluating sample " + (i+1) + " of " + samples.size() + " (" + outputFileName + ")");
 						
 				try (ResultFileWriter output = ResultFileWriter.open(problem, outputFile)) {
 					TypedProperties defaultProperties = OptionUtils.getProperties(commandLine);
@@ -133,12 +133,10 @@ public class RuntimeEvaluator extends CommandLineUtility {
 	
 					process(commandLine.getOptionValue("algorithm"), properties, problem, frequency, output);
 				}
-				
-				System.out.println("done.");
 			}
 		}
 		
-		System.out.println("Finished!");
+		getLogger().info("Finished!");
 	}
 
 	private void process(String algorithmName, TypedProperties properties, Problem problem, int frequency,

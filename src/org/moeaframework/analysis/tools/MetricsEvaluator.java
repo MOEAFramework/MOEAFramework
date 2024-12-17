@@ -101,8 +101,15 @@ public class MetricsEvaluator extends CommandLineUtility {
 								inputFile + "'");
 					}
 				}
+				
+				if (writer.getNumberOfEntries() > 0) {
+					getLogger().info("Resuming from existing metric file " + outputFile);
+					getLogger().info("Validated entries = " + writer.getNumberOfEntries());
+				}
 
 				while (reader.hasNext()) {
+					getLogger().info("Evaluating sample " + (writer.getNumberOfEntries() + 1));
+					
 					ResultEntry entry = reader.next();
 
 					if (epsilons != null) {
@@ -114,6 +121,8 @@ public class MetricsEvaluator extends CommandLineUtility {
 				}
 			}
 		}
+		
+		getLogger().info("Finished!");
 	}
 	
 	/**

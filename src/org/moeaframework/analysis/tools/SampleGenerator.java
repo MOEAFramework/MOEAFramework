@@ -127,8 +127,7 @@ public class SampleGenerator extends CommandLineUtility {
 		
 		if (commandLine.hasOption("output") && Files.exists(Path.of(commandLine.getOptionValue("output"))) &&
 				!commandLine.hasOption("overwrite")) {
-			System.err.println("Output file exists, skipping sample generation.  Add --overwrite to regenerate");
-			System.err.println("the samples.");
+			getLogger().info("Output file exists, skipping sample generation.  Add --overwrite to regenerate the samples.");
 			return;
 		}
 

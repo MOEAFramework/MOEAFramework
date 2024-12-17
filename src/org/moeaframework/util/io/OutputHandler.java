@@ -51,6 +51,16 @@ public class OutputHandler extends StreamHandler {
 			// fall back to defaults
 		}
 	}
+	
+	/**
+	 * Returns the logger for the given class, associating log messages with the class.
+	 * 
+	 * @param parentClass the caller or parent class that owns the logger
+	 * @return the logger
+	 */
+	public static Logger getLogger(Class<?> parentClass) {
+		return getLogger(parentClass.getSimpleName());
+	}
 
 	/**
 	 * Returns the logger with the given name.

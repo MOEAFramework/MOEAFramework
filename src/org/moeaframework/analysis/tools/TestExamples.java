@@ -38,6 +38,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Settings;
@@ -81,7 +82,7 @@ public class TestExamples extends CommandLineUtility {
 		Path examplesPath = Path.of("examples");
 
 		if (!Files.exists(examplesPath)) {
-			System.out.println("No examples directory!");
+			getLogger().warning("No examples directory!");
 			return;
 		}
 		
@@ -95,42 +96,17 @@ public class TestExamples extends CommandLineUtility {
 		}
 		
 		try (Stream<Path> stream = Files.walk(examplesPath)) {
-			stream.filter(p -> FilenameUtils.getExtension(p.getFileName().toString()).equalsIgnoreCase("java"))
-			.sorted()
-			.forEach(p -> {
-				Timer timer = Timer.startNew();
-				System.out.print("Compiling ");
-				System.out.print(p);
-				System.out.print("...");
-
-				Path classPath = p.getParent().resolve(FilenameUtils.removeExtension(p.getFileName().toString()) + ".class");
-
-				if (commandLine.hasOption("clean") ||
-						!Files.exists(classPath) ||
-						FileUtils.isFileNewer(p.toFile(), classPath.toFile())) {
-					FileUtils.deleteQuietly(classPath.toFile());
-
-					JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-					compiler.run(null, null, null, p.toAbsolutePath().toString());
-
-					System.out.print("done!");
-				} else {
-					System.out.print("skipped!");
-				}
-
-				Duration elapsedTime = Duration.ofMillis(Math.round(1000 * timer.stop()));
-				System.out.print(" (");
-				System.out.print(DurationUtils.formatHighResolution(elapsedTime));
-				System.out.println(")");
-			});
+			stream
+				.filter(p -> FilenameUtils.getExtension(p.getFileName().toString()).equalsIgnoreCase("java"))
+				.sorted()
+				.forEach(p -> compileExample(p, commandLine.hasOption("clean")));
 		}
 
 		try (Stream<Path> stream = Files.walk(examplesPath)) {
-			stream.filter(p -> FilenameUtils.getExtension(p.getFileName().toString()).equalsIgnoreCase("java"))
-			.sorted()
-			.map(p -> p.getName(0).equals(examplesPath) ? p.subpath(1, p.getNameCount()) : p)
-			.map(p -> FilenameUtils.removeExtension(p.toString()).replaceAll("[\\\\/]", "."))
-			.forEach(p -> runExample(p, examplesPath));
+			stream
+				.filter(p -> FilenameUtils.getExtension(p.getFileName().toString()).equalsIgnoreCase("java"))
+				.sorted()
+				.forEach(p -> runExample(p, examplesPath));
 		}
 	}
 	
@@ -144,8 +120,37 @@ public class TestExamples extends CommandLineUtility {
 		return URLClassLoader.newInstance(urls);
 	}
 	
-	private static void runExample(String example, Path... classpath) {
-		Timer timer = Timer.startNew();
+	private void compileExample(Path example, boolean clean) {
+		getLogger().info("Compiling " + example + "...");
+
+		Path classPath = example.getParent().resolve(
+				FilenameUtils.removeExtension(example.getFileName().toString()) + ".class");
+
+		if (clean || !Files.exists(classPath) || FileUtils.isFileNewer(example.toFile(), classPath.toFile())) {
+			Timer timer = Timer.startNew();
+			FileUtils.deleteQuietly(classPath.toFile());
+
+			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+			int exitCode = compiler.run(null, null, null, example.toAbsolutePath().toString());
+			
+			if (exitCode != 0) {
+				getLogger().severe("Failed with non-zero exit code (" + exitCode + ")");
+				throw new FrameworkException("Failed while compiling " + example);
+			} else {
+				Duration elapsedTime = Duration.ofMillis(Math.round(1000 * timer.stop()));
+				getLogger().info("Success (" + DurationUtils.formatHighResolution(elapsedTime) + ")");
+			}
+		} else {
+			getLogger().info("Skipped (no changes to source)");
+		}
+	}
+	
+	private void runExample(Path example, Path examplesPath) {
+		if (example.startsWith(examplesPath)) {
+			example = examplesPath.relativize(example);
+		}
+		
+		String className = FilenameUtils.removeExtension(example.toString()).replaceAll("[\\\\/]", ".");
 		
 		PrintStream systemOut = System.out;
 		PrintStream systemErr = System.err;
@@ -157,21 +162,22 @@ public class TestExamples extends CommandLineUtility {
 			System.setOut(captureOut);
 			System.setErr(captureErr);
 			
-			systemOut.print("Testing ");
-			systemOut.print(example);
-			systemOut.print("...");
-			
+			getLogger().info("Testing " + className + "...");
+
 			try {
-				Class<?> cls = Class.forName(example, true, createClassLoader(classpath));
+				Timer timer = Timer.startNew();
+
+				Class<?> cls = Class.forName(className, true, createClassLoader(examplesPath));
 				Method mainMethod = cls.getDeclaredMethod("main", String[].class);
 				mainMethod.invoke(null, (Object)new String[0]);
 				
-				systemOut.print("done!");
+				Duration elapsedTime = Duration.ofMillis(Math.round(1000 * timer.stop()));
+				getLogger().info("Success (" + DurationUtils.formatHighResolution(elapsedTime) + ")");
 			} catch (NoSuchMethodException e) {
-				systemOut.print("skipped (no main method)");
+				getLogger().info("Skipped (no main method)");
 			} catch (InvocationTargetException e) {
 				if (e.getCause() instanceof HeadlessException) {
-					systemOut.print("skipped (requires graphical display)");
+					getLogger().info("Skipped (requires graphical display)");
 				} else {
 					throw e;
 				}
@@ -180,28 +186,21 @@ public class TestExamples extends CommandLineUtility {
 			captureOut.close();
 			captureErr.close();
 			
-			Duration elapsedTime = Duration.ofMillis(Math.round(1000 * timer.stop()));
-			systemOut.print(" (");
-			systemOut.print(DurationUtils.formatHighResolution(elapsedTime));
-			systemOut.println(")");
-			
 			if (outStorage.size() > 0) {
-				systemOut.println();
-				systemOut.println("================================ Begin Output ================================");
-				systemOut.print(outStorage.toString());
-				systemOut.println("================================= End Output =================================");
-				systemOut.println();
+				getLogger().info("================================ Begin Output ================================");
+				getLogger().info(outStorage.toString());
+				getLogger().info("================================= End Output =================================");
 			}
 			
 			if (errStorage.size() > 0) {
-				systemOut.println();
-				systemOut.println("================================ Begin Error =================================");
-				systemOut.print(errStorage.toString());
-				systemOut.println("================================= End Error ==================================");
-				systemOut.println();
+				getLogger().warning("================================ Begin Error =================================");
+				getLogger().warning(errStorage.toString());
+				getLogger().warning("================================= End Error ==================================");
 			}
 		} catch (Exception e) {
-			throw new FrameworkException("Failure caught while running " + example, e);
+			getLogger().severe("Failed!");
+			getLogger().severe(ExceptionUtils.getStackTrace(e));
+			throw new FrameworkException("Failed while testing " + className);
 		} finally {
 			System.setOut(systemOut);
 			System.setErr(systemErr);
