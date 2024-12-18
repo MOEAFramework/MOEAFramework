@@ -19,6 +19,7 @@ package org.moeaframework.analysis.tools;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.time.Duration;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -32,6 +33,8 @@ import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.DurationUtils;
+import org.moeaframework.util.Timer;
 
 /**
  * Command line utility for evaluating the approximation sets stored in a result file and computing its metric file.
@@ -93,16 +96,24 @@ public class MetricsEvaluator extends CommandLineUtility {
 			Indicators indicator = Indicators.standard(reader.getProblem(), referenceSet);
 
 			try (MetricFileWriter writer = MetricFileWriter.append(indicator, outputFile)) {
-				for (int i = 0; i < writer.getNumberOfEntries(); i++) {
-					if (reader.hasNext()) {
-						reader.next();
-					} else {
-						fail("Output file '" + outputFile + "' contains more entries than input file '" +
-								inputFile + "'");
+				if (writer.getNumberOfEntries() > 0) {
+					System.out.println("Resuming from existing metrics file " + outputFile);
+					System.out.println(writer.getNumberOfEntries() + " valid entries");
+
+					for (int i = 0; i < writer.getNumberOfEntries(); i++) {
+						if (reader.hasNext()) {
+							reader.next();
+						} else {
+							fail("Output file '" + outputFile + "' contains more entries than input file '" +
+									inputFile + "'");
+						}
 					}
 				}
 
 				while (reader.hasNext()) {
+					Timer timer = Timer.startNew();
+					
+					System.out.print("Processing entry " + (writer.getNumberOfEntries()+1) + "...");
 					ResultEntry entry = reader.next();
 
 					if (epsilons != null) {
@@ -111,9 +122,17 @@ public class MetricsEvaluator extends CommandLineUtility {
 					}
 						
 					writer.write(entry);
+					System.out.print("done!");
+					
+					Duration elapsedTime = Duration.ofMillis(Math.round(1000 * timer.stop()));
+					System.out.print(" (");
+					System.out.print(DurationUtils.formatHighResolution(elapsedTime));
+					System.out.println(")");
 				}
 			}
 		}
+		
+		System.out.println("Finished!");
 	}
 	
 	/**

@@ -20,6 +20,7 @@ package org.moeaframework.analysis.tools;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.Duration;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -37,6 +38,7 @@ import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.DurationUtils;
 import org.moeaframework.util.Timer;
 import org.moeaframework.util.validate.Validate;
 
@@ -125,16 +127,27 @@ public class EndOfRunEvaluator extends CommandLineUtility {
 			if (epsilons != null) {
 				defaultProperties.setDoubleArray("epsilon", epsilons.toArray());
 			}
+			
+			if (output.getNumberOfEntries() > 0) {
+				System.out.println("Resuming from existing result file " + outputFile);
+				System.out.println(output.getNumberOfEntries() + " valid entries");
+			}
 
 			for (int i = output.getNumberOfEntries(); i < samples.size(); i++) {
 				System.out.print("Processing sample " + (i+1) + " of " + samples.size() + "...");
 				
+				Timer timer = Timer.startNew();
 				TypedProperties properties = samples.get(i);
 				properties.addAll(defaultProperties);
 
 				process(commandLine.getOptionValue("algorithm"), properties, problem, output);
 				
-				System.out.println("done.");
+				System.out.print("done!");
+				
+				Duration elapsedTime = Duration.ofMillis(Math.round(1000 * timer.stop()));
+				System.out.print(" (");
+				System.out.print(DurationUtils.formatHighResolution(elapsedTime));
+				System.out.println(")");
 			}
 		}
 		

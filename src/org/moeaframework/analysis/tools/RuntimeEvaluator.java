@@ -19,6 +19,7 @@ package org.moeaframework.analysis.tools;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -37,6 +38,8 @@ import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.DurationUtils;
+import org.moeaframework.util.Timer;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -120,6 +123,7 @@ public class RuntimeEvaluator extends CommandLineUtility {
 				File outputFile = new File(outputFileName);
 				
 				System.out.print("Processing sample " + (i+1) + " of " + samples.size() + " (" + outputFileName + ")...");
+				Timer timer = Timer.startNew();
 						
 				try (ResultFileWriter output = ResultFileWriter.open(problem, outputFile)) {
 					TypedProperties defaultProperties = OptionUtils.getProperties(commandLine);
@@ -134,7 +138,12 @@ public class RuntimeEvaluator extends CommandLineUtility {
 					process(commandLine.getOptionValue("algorithm"), properties, problem, frequency, output);
 				}
 				
-				System.out.println("done.");
+				System.out.print("done!");
+				
+				Duration elapsedTime = Duration.ofMillis(Math.round(1000 * timer.stop()));
+				System.out.print(" (");
+				System.out.print(DurationUtils.formatHighResolution(elapsedTime));
+				System.out.println(")");
 			}
 		}
 		
