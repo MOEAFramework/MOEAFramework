@@ -18,7 +18,6 @@
 package org.moeaframework.examples.experiment;
 
 import java.io.File;
-import java.io.Writer;
 
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.algorithm.NSGAIII;
@@ -35,7 +34,6 @@ import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
-import org.moeaframework.util.format.TableFormat;
 
 /**
  * Demonstrates using a data store to save results.  The data store defines "containers" and "blobs", which for a file
@@ -68,13 +66,8 @@ public class DataStoreExample {
 				System.out.println("Evaluating " + reference);
 				algorithm.run(10000);
 								
-				container.getBlob("result").store((Writer out) -> {
-					algorithm.getResult().save(out);
-				});
-				
-				container.getBlob("indicators").store((Writer out) -> {
-					indicators.apply(algorithm.getResult()).save(TableFormat.Plaintext, out);
-				});
+				container.getBlob("result").store(algorithm.getResult());
+				container.getBlob("indicators").store(indicators.apply(algorithm.getResult()));
 			} else {
 				System.out.println("Skipping " + reference + ", found in data store");
 			}

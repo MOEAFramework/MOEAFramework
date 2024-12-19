@@ -20,6 +20,7 @@ package org.moeaframework.analysis.store;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
@@ -33,6 +34,9 @@ import java.time.Instant;
 
 import org.apache.commons.io.output.CloseShieldOutputStream;
 import org.apache.commons.io.output.CloseShieldWriter;
+import org.moeaframework.core.population.Population;
+import org.moeaframework.util.format.Formattable;
+import org.moeaframework.util.format.TableFormat;
 import org.moeaframework.util.io.IOCallback;
 import org.moeaframework.util.io.InputStreamCallback;
 import org.moeaframework.util.io.OutputStreamCallback;
@@ -254,13 +258,12 @@ public interface Blob {
 	 * 
 	 * @return the deserialized object
 	 * @throws IOException if an I/O error occurred
+	 * @throws ClassNotFoundException if the class of the serialized object could not be found
 	 */
-	public default Object extractObject() throws IOException {
+	public default Object extractObject() throws IOException, ClassNotFoundException {
 		try (InputStream in = openInputStream();
 				ObjectInputStream ois = new ObjectInputStream(in)) {
 			return ois.readObject();
-		} catch (ClassNotFoundException e) {
-			throw new IOException("Deserialization failed", e);
 		}
 	}
 	
@@ -271,8 +274,9 @@ public interface Blob {
 	 * @param type the type of the object
 	 * @return the deserialized object cast to the given type
 	 * @throws IOException if an I/O error occurred
+	 * @throws ClassNotFoundException if the class of the serialized object could not be found
 	 */
-	public default <T> T extractObject(Class<T> type) throws IOException {
+	public default <T> T extractObject(Class<T> type) throws IOException, ClassNotFoundException {
 		return type.cast(extractObject());
 	}
 	
@@ -297,6 +301,38 @@ public interface Blob {
 			Files.copy(path, out);
 			out.commit();
 		}
+	}
+	
+	/**
+	 * Stores the given {@link Population} object to this blob as a result file.
+	 * 
+	 * @param population the population to store
+	 * @param tableFormat the output format
+	 * @throws IOException if an I/O error occurred
+	 */
+	public default void store(Population population) throws IOException {
+		store((Writer writer) -> population.save(writer));
+	}
+	
+	/**
+	 * Stores the given {@link Formattable} object to this blob using the {@value TableFormat#Plaintext} format.
+	 * 
+	 * @param formattable the formattable object to store
+	 * @throws IOException if an I/O error occurred
+	 */
+	public default void store(Formattable<?> formattable) throws IOException {
+		store(formattable, TableFormat.Plaintext);
+	}
+	
+	/**
+	 * Stores the given {@link Formattable} object to this blob using the specified table format.
+	 * 
+	 * @param formattable the formattable object to store
+	 * @param tableFormat the table format
+	 * @throws IOException if an I/O error occurred
+	 */
+	public default void store(Formattable<?> formattable, TableFormat tableFormat) throws IOException {
+		store((PrintStream ps) -> formattable.save(tableFormat, ps));
 	}
 	
 	/**
@@ -412,8 +448,9 @@ public interface Blob {
 	 * 
 	 * @param value the object to store
 	 * @throws IOException if an I/O error occurred
+	 * @throws NotSerializableException if the object is not serializable
 	 */
-	public default void storeObject(Object value) throws IOException {
+	public default void storeObject(Object value) throws IOException, NotSerializableException {
 		try (TransactionalOutputStream out = openOutputStream();
 				ObjectOutputStream oos = new ObjectOutputStream(out)) {
 			oos.writeObject(value);

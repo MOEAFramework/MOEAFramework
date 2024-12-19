@@ -4,8 +4,8 @@ This page documents notable changes introduced in each chronological release of 
 
 ## Version 5.0-SNAPSHOT (TBD)
 
-  * Version 5.0 includes substantial changes over previous versions.  While we encourage users to upgrade to this new
-    version to access the latest features, please be aware you will likely need to update your code.
+Version 5.0 includes substantial changes over previous versions.  While we encourage users to upgrade to this new
+version to access the latest features, please be aware you will likely need to update your code.
   
   * Adds `Objective` and `Constraint` classes.  This includes, for example, being able to specify an objective as either
     `Minimize` or `Maximize`.
@@ -77,6 +77,6 @@ This page documents notable changes introduced in each chronological release of 
     Container container = dataStore.getContainer(reference);
     Blob blob = container.getBlob("result");
     
-    blob.store((Writer out) -> algorithm.getResult().save(out));
+    blob.store(algorithm.getResult());
     ```
  
