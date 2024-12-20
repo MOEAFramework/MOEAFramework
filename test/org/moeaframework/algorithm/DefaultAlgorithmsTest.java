@@ -156,6 +156,11 @@ public class DefaultAlgorithmsTest {
 	}
 	
 	@Test
+	public void testGDMOEAD() {
+		test("GD-MOEAD", real, binary, permutation, subset, grammar, program);
+	}
+	
+	@Test
 	public void testGDE3() {
 		test("GDE3", real);
 	}

@@ -5,7 +5,7 @@
 Below lists the optimization algorithms provided by the MOEA Framework organized into categories.
 
 * Multi-objective
-  * Classical - [NSGA-II](#nsga-ii), [MOEA/D](#moead), [GDE3](#gde3), [PAES](#paes), [PESA2](#pesa2), [SPEA2](#spea2), [VEGA](#vega)
+  * Classical - [NSGA-II](#nsga-ii), [MOEA/D](#moead), [GD-MOEA/D](#gd-moead), [GDE3](#gde3), [PAES](#paes), [PESA2](#pesa2), [SPEA2](#spea2), [VEGA](#vega)
   * Epsilon-dominance - [e-MOEA](#e-moea), [e-NSGA-II](#e-nsga-ii)
   * Reference point / vector - [NSGA-III](#nsga-iii), [U-NSGA-III](#u-nsga-iii), [DBEA](#dbea), [RVEA](#rvea)
   * Particle swarm - [OMOPSO](#omopso), [SMPSO](#smpso)
@@ -202,6 +202,29 @@ Parameter            | Default Value     | Description
 `populationSize`     | `100`             | The size of the population
 `de.crossoverRate`   | `0.1`             | The crossover rate for differential evolution
 `de.stepSize`        | `0.5`             | Control the size of each step taken by differential evolution
+
+### GD-MOEA/D
+
+GD-MOEA/D is an extension of MOEA/D that uses weights produced by generalized decomposition [^giagkiozis13].
+
+TODO: Fill in more information
+
+**Algorithm Name:** `"GD-MOEA/D"`  
+**Supported Types:** Any  
+**Supported Operators:** Any
+
+Parameter              | Default Value     | Description
+:--------------------- | :---------------- | :----------
+`populationSize`       | `100`             | The size of the population
+`operator`             | Problem dependent | The variation (crossover and/or mutation) operator
+`de.crossoverRate`     | `0.1`             | The crossover rate for differential evolution
+`de.stepSize`          | `0.5`             | Control the size of each step taken by differential evolution
+`pm.rate`              | `1/N`             | The mutation rate for polynomial mutation
+`pm.distributionIndex` | `20.0`            | The distribution index for polynomial mutation
+`neighborhoodSize`     | `0.1`             | The size of the neighborhood used for mating, given as a percentage of the population size
+`delta`                | `0.9`             | The probability of mating with an individual from the neighborhood versus the entire population
+`eta`                  | `0.01`            | The maximum number of spots in the population that an offspring can replace, given as a percentage of the population size
+`updateUtility`        | Unset             | The frequency, in generations, at which utility values are updated.  If set, this uses the MOEA/D-DRA variant; if unset, then then MOEA/D-DE variant is used
 
 ### IBEA
 
@@ -585,6 +608,7 @@ Parameter                          | Default Value     | Description
 [^deb00]: Deb, K., Pratap, A., Agarwal, S., and Meyarivan, T. (2000). A fast elitist multi-objective genetic algorithm: NSGA-II. IEEE Transactions on Evolutionary Computation, 6(2):182–197.
 [^deb03]: Deb, K., Mohan, M., and Mishra, S. (2003). A fast multi-objective evolutionary algorithm for finding well-spread Pareto-optimal solutions. KanGAL Report No. 2003002, Kanpur Genetic Algorithms Laboratory (KanGAL), Indian Institute of Technology, Kanpur, India.
 [^deb14]: Deb, K. and Jain, H. (2014). An evolutionary many-objective optimization algorithm using reference-point-based nondominated sorting approach, part i: Solving problems with box constraints. IEEE Transactions on Evolutionary Computation, 18(4):577–601.
+[^giagkiozis13]: Giagkiozis, I., R. C. Purshouse, and P. J. Fleming (2013).  "Generalized Decomposition."  Evolutionary Multi-Criterion Optimization, 7th International Conference, pp. 428-442.
 [^hansen04]: Hansen and Kern (2004). Evaluating the cma evolution strategy on multimodal test functions.  In Eighth International Conference on Parallel Problem Solving from Nature PPSN VIII, pages 282–291.
 [^holland75]: Holland, J. H. (1975). Adaptation in Natural and Artificial Systems. University of Michigan Press, Ann Arbor, MI.
 [^hughes03]: Hughes, E. J. (2003). Multiple single objective pareto sampling. In Congress on Evolutionary Computation, pages 2678–2684.
