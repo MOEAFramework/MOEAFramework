@@ -37,13 +37,12 @@ public class GeneralizedDecompositionExample {
 	private static final File GD_WEIGHTS = new File("gd_weights.txt");
 
 	public static void main(String[] args) throws IOException {
-		Problem problem = new DTLZ2(3);
-		
 		if (!NBI_WEIGHTS.exists() || !GD_WEIGHTS.exists()) {
 			System.err.println("Please run ./generateWeights.sh to generate the weight input files");
-			System.exit(-1);
+			return;
 		}
-				
+		
+		Problem problem = new DTLZ2(3);
 		Hypervolume hypervolume = new Hypervolume(problem, NondominatedPopulation.load("pf/DTLZ2.3D.pf"));
 		IndicatorStatistics analysis = new IndicatorStatistics(hypervolume);
 		

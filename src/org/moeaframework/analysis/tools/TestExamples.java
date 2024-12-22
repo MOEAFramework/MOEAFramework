@@ -190,7 +190,6 @@ public class TestExamples extends CommandLineUtility {
 				systemOut.println("================================ Begin Output ================================");
 				systemOut.print(outStorage.toString());
 				systemOut.println("================================= End Output =================================");
-				systemOut.println();
 			}
 			
 			if (errStorage.size() > 0) {
@@ -198,8 +197,9 @@ public class TestExamples extends CommandLineUtility {
 				systemOut.println("================================ Begin Error =================================");
 				systemOut.print(errStorage.toString());
 				systemOut.println("================================= End Error ==================================");
-				systemOut.println();
 			}
+			
+			systemOut.println();
 		} catch (Exception e) {
 			throw new FrameworkException("Failure caught while running " + example, e);
 		} finally {

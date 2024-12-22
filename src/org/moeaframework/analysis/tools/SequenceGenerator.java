@@ -44,7 +44,6 @@ import org.moeaframework.util.weights.UniformDesignGenerator;
 import org.moeaframework.util.weights.WeightGenerator;
 
 //TODO: Add tests for new CLI tool
-//TODO: Add to docs and localization
 
 /**
  * Outputs the raw values from a {@link Sequence} or {@link WeightGenerator}.
