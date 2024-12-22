@@ -172,6 +172,8 @@ jobs:
       with:
         java-version: ${{ inputs.java-version }}
         java-distribution: ${{ inputs.java-distribution }}
+        setup-python: true
+        python-dependencies: cvxopt
     - name: Package binary
       uses: MOEAFramework/.github/actions/run-ant@main
       with:
