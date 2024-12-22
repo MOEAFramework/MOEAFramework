@@ -54,7 +54,6 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		register(fromProblem(EpsilonMOEA::new), "eMOEA", "e-MOEA", "EpsilonMOEA");
 		register(fromProblem(EpsilonNSGAII::new), "eNSGAII", "e-NSGA-II", "eNSGA2", "EpsilonNSGAII");
 		register(fromProblem(GDE3::new), "GDE3");
-		register(fromProblem(GDMOEAD::new), "GD-MOEAD", "GD-MOEA/D");
 		register(fromProblem(IBEA::new), "IBEA");
 		register(fromProblem(MOEAD::new), "MOEAD", "MOEA/D", "MOEA/D-DRA");
 		register(fromProblem(MSOPS::new), "MSOPS");
