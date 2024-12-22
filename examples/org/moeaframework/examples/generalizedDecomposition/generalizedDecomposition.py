@@ -1,0 +1,92 @@
+# Copyright 2009-2024 David Hadka
+#
+# This file is part of the MOEA Framework.
+#
+# The MOEA Framework is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or (at your
+# option) any later version.
+#
+# The MOEA Framework is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+# or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+# License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
+
+"""
+Generalized decomposition essentially solves the inverse of Chebychev's scalarizing function, finding the weights
+that maximize the value of the function.  This provides more control over the distribution of points versus
+randomly-generated weights.
+
+This script outputs the weights for each target point read from standard input.  The weights are computed by solving
+the convex optimization problem:
+
+  minimize norm_inf(x*w)
+  subject to
+    sum(w) = 1
+    0 <= w <= 1
+  where
+    x is the target point
+    w is the weight vector
+
+We can solve norm_inf(x*w) by introducing a slack variable, t, along with the constraints x*w <= t and x*w >= -t.  The
+resulting LP formulation then minimizes the value of t.
+
+References
+----------
+1. Giagkiozis, I., R. C. Purshouse, and P. J. Fleming (2013).  "Generalized Decomposition."  Evolutionary
+   Multi-Criterion Optimization, 7th International Conference, pp. 428-442.
+"""
+
+import sys
+import argparse
+
+try:
+	from cvxopt import matrix, solvers
+except ImportError:
+	print("Requires cvxopt, please install with `pip install cvxopt`", file=sys.stderr)
+	sys.exit(-1)
+	
+if __name__ == "__main__":
+	try:
+		for line in sys.stdin:
+			x = matrix(list(map(float, line.strip().split())))
+			N = x.size[0]
+			
+			# The vectors and matrix columns contains N+1 elements, corresponding to (x_1, x_2, ..., x_N, t).  The
+			# variables below correspond to the LP formulation:
+			#
+			#   minimize c
+			#   subject to
+			#     A*x = b
+			#     G*x <= h
+			
+			# cost function - minimize the slack variable t
+			c = matrix([0.0] * N + [1.0])
+			
+			# equality constraints
+			A = matrix([1.0] * N + [0.0]).T
+			b = matrix([1.0])
+			
+			# inequality constraints
+			G = matrix(
+				list(map(lambda i: [0.0] * i + [-1.0] + [0.0] * (N-i), range(N))) +
+				list(map(lambda i: [0.0] * i + [1.0] + [0.0] * (N-i), range(N))) +
+				list(map(lambda i: [0.0] * i + [x[i]] + [0.0] * (N-i-1) + [-1.0], range(N))) +
+				list(map(lambda i: [0.0] * i + [-x[i]] + [0.0] * (N-i-1) + [-1.0], range(N)))).T
+			h = matrix([0.0] * N + [1.0] * N + [0.0] * (2*N))
+			
+			# solve and print weight
+			solution = solvers.lp(c, G, h, A, b, options={"show_progress": False})
+			
+			weights = solution['x']
+			
+			if weights is None:
+				print("Failed to solve LP:", solution['status'], file=sys.stderr)
+				sys.exit(-1)
+				
+			print(" ".join(map(lambda i: str(weights[i]), range(N))), flush=True)
+	except KeyboardInterrupt:
+		pass

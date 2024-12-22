@@ -195,6 +195,7 @@ jobs:
     - name: Test examples
       run: |
         cd build/MOEAFramework-*
+        . examples/org/moeaframework/examples/generalizedDecomposition/generateWeights.sh
         ./cli TestExamples --headless
     - name: Test sensitivity.sh
       run: |

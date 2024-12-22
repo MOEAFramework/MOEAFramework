@@ -23,9 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.moeaframework.core.FrameworkException;
@@ -209,67 +207,6 @@ public class MatrixReader implements Iterable<double[]>, Iterator<double[]>, Clo
 	@Override
 	public void close() throws IOException {
 		reader.close();
-	}
-	
-	/**
-	 * Reads the entire contents of the file.  In the returned 2-D array, the first index corresponds to each row in
-	 * the file and the second index corresponds to each column.
-	 * 
-	 * @return the values stored in the file
-	 */
-	public double[][] readAll() {
-		List<double[]> data = new ArrayList<>();
-			
-		while (hasNext()) {
-			data.add(next());
-		}
-			
-		return data.toArray(double[][]::new);
-	}
-	
-	/**
-	 * Reads a single column from the file.
-	 * 
-	 * @param index the index of the column
-	 * @return the values stored in the column
-	 */
-	public double[] readColumn(int index) {
-		List<Double> data = new ArrayList<>();
-				
-		while (hasNext()) {
-			data.add(next()[index]);
-		}
-		
-		return data.stream().mapToDouble(Double::doubleValue).toArray();
-	}
-	
-	/**
-	 * Loads the content of the file into a matrix.
-	 * 
-	 * @param file the file containing the matrix
-	 * @return the matrix values
-	 * @throws FileNotFoundException if the file was not found
-	 * @throws IOException if an I/O error occurred while reading the file
-	 */
-	public static double[][] load(File file) throws FileNotFoundException, IOException {
-		try (MatrixReader reader = new MatrixReader(file)) {
-			return reader.readAll();
-		}
-	}
-	
-	/**
-	 * Loads a single column from the file into a matrix.
-	 * 
-	 * @param file the file containing the matrix
-	 * @param index the index of the column
-	 * @return the column values
-	 * @throws FileNotFoundException if the file was not found
-	 * @throws IOException if an I/O error occurred while reading the file
-	 */
-	public static double[] load(File file, int index) throws FileNotFoundException, IOException {
-		try (MatrixReader reader = new MatrixReader(file)) {
-			return reader.readColumn(index);
-		}
 	}
 
 }

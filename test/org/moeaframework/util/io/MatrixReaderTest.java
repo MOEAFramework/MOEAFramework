@@ -93,28 +93,6 @@ public class MatrixReaderTest {
 	}
 	
 	@Test
-	public void testReadAll() throws IOException {
-		try (MatrixReader reader = new MatrixReader(new StringReader(FIXED))) {
-			double[][] data = reader.readAll();
-			
-			Assert.assertFalse(reader.hasNext());
-			Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1 }, data[0], TestThresholds.HIGH_PRECISION);
-			Assert.assertArrayEquals(new double[] { 0, 10, 100 }, data[1], TestThresholds.HIGH_PRECISION);
-		}
-	}
-	
-	@Test
-	public void testReadColumn() throws IOException {
-		try (MatrixReader reader = new MatrixReader(new StringReader(FIXED))) {
-			double[] data = reader.readColumn(2);
-			
-			Assert.assertFalse(reader.hasNext());
-			Assert.assertEquals(-0.1, data[0], TestThresholds.HIGH_PRECISION);
-			Assert.assertEquals(100.0, data[1], TestThresholds.HIGH_PRECISION);
-		}
-	}
-	
-	@Test
 	public void testVariable1() throws IOException {
 		try (MatrixReader reader = new MatrixReader(new StringReader(VARIABLE))) {
 			Assert.assertTrue(reader.hasNext());

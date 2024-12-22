@@ -28,7 +28,7 @@ import org.moeaframework.analysis.parameter.ParameterSet;
 import org.moeaframework.analysis.sensitivity.SobolSensitivityAnalysis;
 import org.moeaframework.analysis.sensitivity.SobolSensitivityAnalysis.SobolSensitivityResult;
 import org.moeaframework.util.CommandLineUtility;
-import org.moeaframework.util.io.MatrixReader;
+import org.moeaframework.util.io.MatrixIO;
 
 /**
  * Global sensitivity analysis of blackbox model output using Saltelli's improved Sobol' global variance decomposition
@@ -101,7 +101,7 @@ public class SobolAnalysis extends CommandLineUtility {
 
 		//load the model response file
 		File input = new File(commandLine.getOptionValue("input"));
-		double[] responses = MatrixReader.load(input, index);
+		double[] responses = MatrixIO.loadColumn(input, index);
 		int N = responses.length / (2 * P + 2);
 		
 		SobolSensitivityAnalysis analysis = new SobolSensitivityAnalysis(parameterSet, N, resamples);
