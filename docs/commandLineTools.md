@@ -406,7 +406,7 @@ The following options are available:
 
 ```
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.WeightGenerator -d <value> [--divisions <value>]
-       [--divisionsInner <value>] [--divisionsOuter <value>] [-h] --method <name> [-n <value>] [-o <file>]
+       [--divisionsInner <value>] [--divisionsOuter <value>] [-g] [-h] --method <name> [-n <value>] [-o <file>]
 
 Outputs randomly-generated weights
 
@@ -416,6 +416,7 @@ The following options are available:
     --divisions <value>         Number of divisions used for NBI weights (for single layer)
     --divisionsInner <value>    Number of inner divisions used for NBI weights (for two layers)
     --divisionsOuter <value>    Number of outer divisions used for NBI weights (for two layers)
+ -g,--generalized               Convert the weights using Generalized Decomposition (GD)
  -h,--help                      Display help information
     --method <name>             The sampling method (random, uniformdesign, normalboundaryintersection)
  -n,--numberOfSamples <value>   Number of samples

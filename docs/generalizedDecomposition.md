@@ -59,24 +59,18 @@ ensure Python 3 and `cvxopt` are installed:
 pip install cvxopt
 ```
 
-Next, we generate the set of target points.  Here, we use the Normal Boundary Intersection (NBI) method to produce
-a set of well-distributed points.  Note that the `--dimensions` parameter must match the number of objectives:
+Next, we generate the weights we will use with MOEA/D.  For comparison, we will generate two sets of weights: (1) the
+first using the Normal Boundary Intersection (NBI) method, and (2) the second using Generalized Decomposition.  Note
+the GD weights are derived from the NBI weights.
 
-<!-- bash:examples/org/moeaframework/examples/generalizedDecomposition/generateWeights.sh [3:3] -->
+<!-- bash:examples/org/moeaframework/examples/generalizedDecomposition/generateWeights.sh [3:4] -->
 
 ```bash
 ./cli WeightGenerator --method normalboundary --dimension 3 --divisions 20 > nbi_weights.txt
+./cli WeightGenerator --method normalboundary --dimension 3 --divisions 20 --generalized > gd_weights.txt
 ```
 
-Then, for each target point we use GD to generate the corresponding weights:
-
-<!-- bash:examples/org/moeaframework/examples/generalizedDecomposition/generateWeights.sh [4:4] -->
-
-```bash
-cat nbi_weights.txt | python3 examples/org/moeaframework/examples/generalizedDecomposition/gd.py > gd_weights.txt
-```
-
-Finally, we can supply these weights to MOEA/D:
+Finally, we can configure MOEA/D to use these weights loaded from the files:
 
 <!-- java:examples/org/moeaframework/examples/generalizedDecomposition/GeneralizedDecompositionExample.java [59:64] -->
 

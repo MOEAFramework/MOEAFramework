@@ -37,6 +37,11 @@ public class SettingsTest {
 	}
 	
 	@Test
+	public void testPython() {
+		Assert.assertNotNull(Settings.getPythonCommand());
+	}
+	
+	@Test
 	public void testVerbose() {
 		Assert.assertFalse(Settings.isVerbose());
 	}

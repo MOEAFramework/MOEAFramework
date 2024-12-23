@@ -104,7 +104,7 @@ public class UNSGAIII extends NSGAIII {
 	
 	/**
 	 * The unified dominance comparator used by U-NSGA-III.  This uses the niche attributes stored by the
-	 * reference-point non-dominated sorting population.  The "niche" of the solution identifies the closest reference
+	 * reference point non-dominated sorting population.  The "niche" of the solution identifies the closest reference
 	 * point, and the "niche distance" measures the perpendicular distance from the solution to the reference point.
 	 * <ol>
 	 *   <li>If one or both parents are infeasible

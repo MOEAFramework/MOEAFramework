@@ -107,6 +107,11 @@ public class Settings {
 	public static final String KEY_VERBOSE = createKey(KEY_PREFIX, "core", "verbose");
 	
 	/**
+	 * The property key for specifying the Python interpreter.
+	 */
+	public static final String KEY_PYTHON_INTERPRETER = createKey(KEY_PREFIX, "core", "python");
+	
+	/**
 	 * The property key for setting a global PRNG seed, which can be used to make results reproducible.  Note,
 	 * however, that the seed is set once during initialization.
 	 */
@@ -302,6 +307,16 @@ public class Settings {
 	 */
 	public static int getMajorVersion() {
 		return PROPERTIES.getInt(KEY_MAJOR_VERSION);
+	}
+	
+	/**
+	 * Returns the configured Python interpreter.  This must either be found on the system path or an absolute
+	 * path to the executable.
+	 * 
+	 * @return the python command
+	 */
+	public static String getPythonCommand() {
+		return PROPERTIES.getString(KEY_PYTHON_INTERPRETER, "python3");
 	}
 	
 	/**

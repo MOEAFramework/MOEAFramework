@@ -29,6 +29,7 @@ import org.moeaframework.Assume;
 import org.moeaframework.Capture;
 import org.moeaframework.Capture.CaptureResult;
 import org.moeaframework.TempFiles;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.core.variable.Variable;
@@ -208,7 +209,7 @@ public class TabularDataTest {
 		data.save(TableFormat.Json, tempFile);
 		
 		ProcessBuilder processBuilder = new ProcessBuilder()
-				.command("python", "-c", "import json; f=open(r'" + tempFile.getAbsolutePath() +
+				.command(Settings.getPythonCommand(), "-c", "import json; f=open(r'" + tempFile.getAbsolutePath() +
 						"'); df = json.load(f); print(df); f.close();");
 		
 		CaptureResult result = Capture.output(processBuilder);
@@ -225,8 +226,8 @@ public class TabularDataTest {
 		data.save(TableFormat.Json, tempFile);
 		
 		ProcessBuilder processBuilder = new ProcessBuilder()
-				.command("python", "-c", "import pandas; df = pandas.read_json(r'" + tempFile.getAbsolutePath() +
-						"'); print(df);");
+				.command(Settings.getPythonCommand(), "-c", "import pandas; df = pandas.read_json(r'" +
+						tempFile.getAbsolutePath() + "'); print(df);");
 		
 		CaptureResult result = Capture.output(processBuilder);
 		

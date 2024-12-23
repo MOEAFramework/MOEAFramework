@@ -17,9 +17,15 @@
  */
 package org.moeaframework.analysis.tools;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.lang.ProcessBuilder.Redirect;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.DoubleStream;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.MissingOptionException;
@@ -27,10 +33,15 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.moeaframework.core.PRNG;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.OptionCompleter;
+import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.io.MatrixIO;
+import org.moeaframework.util.io.Resources;
+import org.moeaframework.util.io.Resources.ResourceOption;
+import org.moeaframework.util.io.Tokenizer;
 import org.moeaframework.util.validate.Validate;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
 import org.moeaframework.util.weights.NormalBoundaryIntersectionGenerator;
@@ -87,12 +98,15 @@ public class WeightGenerator extends CommandLineUtility {
 				.hasArg()
 				.argName("file")
 				.build());
+		options.addOption(Option.builder("g")
+				.longOpt("generalized")
+				.build());
 
 		return options;
 	}
 
 	@Override
-	public void run(CommandLine commandLine) throws IOException, ParseException {
+	public void run(CommandLine commandLine) throws IOException, ParseException, InterruptedException {
 		if (commandLine.hasOption("seed")) {
 			PRNG.setSeed(Long.parseLong(commandLine.getOptionValue("seed")));
 		}
@@ -108,63 +122,99 @@ public class WeightGenerator extends CommandLineUtility {
 		Validate.that("dimension", D).isGreaterThan(0);
 
 		List<double[]> weights = switch (method) {
-		case "random" -> {
-			if (!commandLine.hasOption("numberOfSamples")) {
-				throw new MissingOptionException("Missing --numberOfSamples");
-			}
-
-			int N = Integer.parseInt(commandLine.getOptionValue("numberOfSamples"));			
-			Validate.that("numberOfSamples", N).isGreaterThan(0);
-
-			yield new RandomGenerator(D, N).generate();
-		}
-		case "uniformdesign" -> {
-			if (!commandLine.hasOption("numberOfSamples")) {
-				throw new MissingOptionException("Missing --numberOfSamples");
-			}
-
-			int N = Integer.parseInt(commandLine.getOptionValue("numberOfSamples"));			
-			Validate.that("numberOfSamples", N).isGreaterThan(0);
-
-			yield new UniformDesignGenerator(D, N).generate();
-		}
-		case "normalboundaryintersection" -> {
-			TypedProperties properties = new TypedProperties();
-
-			if (commandLine.hasOption("divisions")) {
-				properties.setString("divisions", commandLine.getOptionValue("divisions"));
-			}
-
-			if (commandLine.hasOption("divisionsInner")) {
-				properties.setString("divisionsInner", commandLine.getOptionValue("divisionsInner"));
-			}
-
-			if (commandLine.hasOption("divisionsOuter")) {
-				properties.setString("divisionsOuter", commandLine.getOptionValue("divisionsOuter"));
-			}
-
-			NormalBoundaryDivisions divisions = NormalBoundaryDivisions.tryFromProperties(properties);
-
-			if (divisions == null) {
-				if (commandLine.hasOption("numberOfSamples")) {
-					int N = Integer.parseInt(commandLine.getOptionValue("numberOfSamples"));			
-					Validate.that("numberOfSamples", N).isGreaterThan(0);
-
-					System.err.println("Using `--numberOfSamples " + N + "` as the number of divisions.");
-					divisions = new NormalBoundaryDivisions(N);
-				} else {
-					throw new MissingOptionException("Missing --divisions");
+			case "random" -> {
+				if (!commandLine.hasOption("numberOfSamples")) {
+					throw new MissingOptionException("Missing --numberOfSamples");
 				}
+	
+				int N = Integer.parseInt(commandLine.getOptionValue("numberOfSamples"));			
+				Validate.that("numberOfSamples", N).isGreaterThan(0);
+	
+				yield new RandomGenerator(D, N).generate();
 			}
-
-			yield new NormalBoundaryIntersectionGenerator(D, divisions).generate();
-		}
-		default -> throw new IllegalStateException();
+			case "uniformdesign" -> {
+				if (!commandLine.hasOption("numberOfSamples")) {
+					throw new MissingOptionException("Missing --numberOfSamples");
+				}
+	
+				int N = Integer.parseInt(commandLine.getOptionValue("numberOfSamples"));			
+				Validate.that("numberOfSamples", N).isGreaterThan(0);
+	
+				yield new UniformDesignGenerator(D, N).generate();
+			}
+			case "normalboundaryintersection" -> {
+				TypedProperties properties = new TypedProperties();
+	
+				if (commandLine.hasOption("divisions")) {
+					properties.setString("divisions", commandLine.getOptionValue("divisions"));
+				}
+	
+				if (commandLine.hasOption("divisionsInner")) {
+					properties.setString("divisionsInner", commandLine.getOptionValue("divisionsInner"));
+				}
+	
+				if (commandLine.hasOption("divisionsOuter")) {
+					properties.setString("divisionsOuter", commandLine.getOptionValue("divisionsOuter"));
+				}
+	
+				NormalBoundaryDivisions divisions = NormalBoundaryDivisions.tryFromProperties(properties);
+	
+				if (divisions == null) {
+					if (commandLine.hasOption("numberOfSamples")) {
+						int N = Integer.parseInt(commandLine.getOptionValue("numberOfSamples"));			
+						Validate.that("numberOfSamples", N).isGreaterThan(0);
+	
+						System.err.println("Using `--numberOfSamples " + N + "` as the number of divisions.");
+						divisions = new NormalBoundaryDivisions(N);
+					} else {
+						throw new MissingOptionException("Missing --divisions");
+					}
+				}
+	
+				yield new NormalBoundaryIntersectionGenerator(D, divisions).generate();
+			}
+			default -> throw new IllegalStateException();
 		};
+		
+		if (commandLine.hasOption("generalized")) {
+			weights = toGeneralizedDecomposition(weights);
+		}
 
 		try (PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
 			MatrixIO.save(output, weights);
 		}
+	}
+	
+	private List<double[]> toGeneralizedDecomposition(List<double[]> weights) throws IOException, InterruptedException {
+		String scriptName = "gd.py";
+		File file = Resources.asFile(WeightGenerator.class, scriptName, ResourceOption.REQUIRED,
+				ResourceOption.TEMPORARY);
+		
+		ProcessBuilder processBuilder = new ProcessBuilder();
+		processBuilder.command(Settings.getPythonCommand(), file.getAbsolutePath());
+		processBuilder.redirectError(Redirect.INHERIT);
+		
+		Process process = processBuilder.start();
+		Tokenizer tokenizer = new Tokenizer();
+		List<double[]> modifiedWeights = new ArrayList<>();
+		
+		try (PrintWriter writer = new PrintWriter(new OutputStreamWriter(process.getOutputStream()));
+				LineReader reader = LineReader.wrap(new InputStreamReader(process.getInputStream()))) {
+			for (double[] weight : weights) {
+				writer.println(tokenizer.encode(DoubleStream.of(weight).mapToObj(Double::toString)));
+				writer.flush();
+				
+				modifiedWeights.add(tokenizer.decode(reader.readLine()).stream().mapToDouble(Double::parseDouble).toArray());
+			}
+		}
+		
+		int exitCode = process.waitFor();
+		
+		if (exitCode != 0) {
+			throw new IOException(scriptName + " failed with exit code " + exitCode);
+		}
+		
+		return modifiedWeights;
 	}
 
 	/**

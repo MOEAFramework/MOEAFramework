@@ -21,6 +21,7 @@ import java.awt.GraphicsEnvironment;
 import java.io.File;
 
 import org.apache.commons.lang3.SystemUtils;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.util.io.RedirectStream;
 
@@ -61,7 +62,7 @@ public class Assume extends org.junit.Assume {
 	}
 	
 	public static void assumePythonExists() {
-		assumeCommand("python", "--version");
+		assumeCommand(Settings.getPythonCommand(), "--version");
 	}
 	
 	public static void assumeMatlabExists() {

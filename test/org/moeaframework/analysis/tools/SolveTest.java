@@ -33,6 +33,7 @@ import org.moeaframework.Assume;
 import org.moeaframework.TempFiles;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.analysis.io.ResultFileReader;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.BinaryVariable;
@@ -134,7 +135,7 @@ public class SolveTest {
 				"-o", "2",
 				"-n", "1000",
 				"-f", outputFile.getPath(),
-				"python", script.getPath() });
+				Settings.getPythonCommand(), script.getPath() });
 		
 		checkOutput(outputFile);
 	}
@@ -152,7 +153,7 @@ public class SolveTest {
 				"-o", "2",
 				"-n", "1000",
 				"-f", outputFile.getPath(),
-				"python", script.getPath() });
+				Settings.getPythonCommand(), script.getPath() });
 		
 		checkOutput(outputFile);
 	}

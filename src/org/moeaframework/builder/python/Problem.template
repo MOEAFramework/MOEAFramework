@@ -3,6 +3,7 @@ package ${packageName};
 import java.io.IOException;
 
 import org.moeaframework.core.FrameworkException;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.ExternalProblem;
@@ -25,7 +26,7 @@ public class ${problemName} extends ExternalProblem {
 	}
 
 	public ${problemName}() {
-		super(new Builder().withCommand("python", SCRIPT));
+		super(new Builder().withCommand(Settings.getPythonCommand(), SCRIPT));
 	}
 
 	@Override
