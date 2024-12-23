@@ -27,9 +27,6 @@ the convex optimization problem:
   subject to
     sum(w) = 1
     0 <= w <= 1
-  where
-    x is the target point
-    w is the weight vector
 
 We can solve norm_inf(x*w) by introducing a slack variable, t, along with the constraints x*w <= t and x*w >= -t.  The
 resulting LP formulation then minimizes the value of t.

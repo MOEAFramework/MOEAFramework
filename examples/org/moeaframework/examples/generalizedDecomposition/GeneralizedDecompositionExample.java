@@ -54,10 +54,10 @@ public class GeneralizedDecompositionExample {
 			algorithm.setWeightGenerator(weights);
 			algorithm.setInitialPopulationSize(weights.size());
 			algorithm.run(10000);
-			analysis.add("MOEA/D", algorithm.getResult());
+			analysis.add("MOEA/D (NBI)", algorithm.getResult());
 		}
 		
-		// run with Generalized Decomposition (GD) weights, derived from the NBI weights
+		// run with Generalized Decomposition (GD) weights (derived from the NBI weights)
 		for (int i = 0; i < 50; i++) {
 			FixedWeights weights = FixedWeights.load(GD_WEIGHTS);
 			
@@ -65,7 +65,7 @@ public class GeneralizedDecompositionExample {
 			algorithm.setWeightGenerator(weights);
 			algorithm.setInitialPopulationSize(weights.size());
 			algorithm.run(10000);
-			analysis.add("GD-MOEA/D", algorithm.getResult());
+			analysis.add("MOEA/D (GD)", algorithm.getResult());
 		}
 		
 		analysis.display();
