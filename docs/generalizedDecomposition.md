@@ -1,37 +1,42 @@
-# Generalized Decomposition
+# MOEA/D and Generalized Decomposition
 
-Some optimization algorithms, including MOEA/D, use the Chebyshev (aka Tchebycheff) scalarizing function to compute
-the utility of solutions:
+## MOEA/D
+
+MOEA/D is a popular multi-objective optimization algorithm that decomposes a multi-objective problem into many
+single-objective subproblems, optimizing these subproblems simultaneously to approximate the Pareto front.  Commonly,
+the Chebyshev (aka Tchebycheff) scalarizing function is used:
 
 $$ g(x) = \text{max}_i \left( w_i \left| f_i(x) - z_i^* \right| \right) $$
 
-where $$x$$ is the solution, $$f_i(x)$$ is the i-th objective function, $$w$$ is the weight vector, and $$z_i^*$$ is
-the ideal objective vector.  Solutions with smaller values for $$g(x)$$ are selected for survival.
-
-One limitation of using this scalarizing function is that a uniformly-distributed set of weight vectors does not
-necessarily produce a uniformly-distributed set of points on the Pareto front.  Generalized decomposition (GD) was
-introduced as a method of producing weights for the Chebyshev scalarizing function to overcome this limitation.
+where $$x$$ represents the decision variables, $$f_i(x)$$ is the i-th objective function, $$w$$ is the weight vector,
+and $$z^*$$ is the ideal objective vector.  Each subproblem uses a different set of weights, and solutions with smaller
+values for $$g(x)$$ are selected for survival with respect to each subproblem.
 
 ## What is Generalized Decomposition?
 
-For a given target point $$x$$, generalized decomposition (GD) finds the weights that minimizes the value of $$g(x)$$.
-That is, if we assume that $$f(x) \geq 0$$ and eliminate the $$z_i^*$$ term, GD derives the optimal weight vector by
-solving:
+One limitation of such scalarizing functions is the weights do not directly correspond to locations on the Pareto
+front.  In practice, using uniformly-distributed weights does not typically produce a uniformly-distributed Pareto
+front, instead resulting in some regions with a higher concentration of points and others lacking coverage.
+
+Generalized decomposition (GD) is a method to overcome this limitation.  We start with a set of target points that
+define the ideal distribution of points on the Pareto front, then solve the inverse of the Chebychev scalarizing
+function to find the weights corresponding to those points.  Without loss of generality, let's assume that
+$$f(x) \geq 0$$ so we can ignore the $$z^*$$ term.  Then, we find the weights, $$w$$, by solving:
 
 $$
 \begin{align}
-\text{Minimize } &c(w) = \lVert w * f(x) \rVert_\infty \\\
+\text{Minimize } &\lVert w * f(x) \rVert_\infty \\\
 \text{Subject to } &\text{sum}(w) = 1 \\\
 &0 \leq w \leq 1
 \end{align}
 $$
 
-where $$c(w)$$ is the cost function we are minimizing.  We can convert $$\lVert w * f(x) \rVert_\infty$$ into linear
-constraints by introducing the slack variable $$t$$ as follows:
+We can convert $$\lVert w * f(x) \rVert_\infty$$ into linear constraints by introducing the slack variable $$t$$ as
+follows:
 
 $$
 \begin{align}
-\text{Minimize } &c(w) = t \\\
+\text{Minimize } &t \\\
 \text{Subject to } &\text{sum}(w) = 1 \\\
 &0 \leq w \leq 1 \\\
 &w * f(x) <= t \\\
@@ -39,9 +44,7 @@ $$
 \end{align}
 $$
 
-This formulation is a linear program (LP) which can be solved using LP algorithms.  In practice, we use the
-primal-dual interior point method.
-
+This formulation is a linear program (LP) which can be solved efficiently using the primal-dual interior point method.
 For more details on the GD procedure, please refer to:
 
 > Giagkiozis, I., R. C. Purshouse, and P. J. Fleming (2013).  "Generalized Decomposition."  Evolutionary Multi-Criterion Optimization, 7th International Conference, pp. 428-442.

@@ -14,6 +14,7 @@
 * [Creating and Using Extensions](extensions.md)
 * [Parallelization and Island Model](parallelizationStrategies.md)
 * [Single-Objective Optimization](singleObjectiveOptimization.md)
+* [MOEA/D and Generalized Decomposition](generalizedDecomposition.md)
 * [Sensitivity Analysis](sensitivityAnalysis.md)
 * [Troubleshooting](troubleshooting.md)
 
