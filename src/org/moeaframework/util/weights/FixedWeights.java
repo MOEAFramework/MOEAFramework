@@ -25,9 +25,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.moeaframework.core.Settings;
 import org.moeaframework.util.io.MatrixIO;
-
-// TODO: add tests for FixedWeights
 
 /**
  * Produces a fixed set of weights, typically loaded from a file.
@@ -39,19 +38,50 @@ public class FixedWeights implements WeightGenerator {
 	 */
 	private final List<double[]> weights;
 	
+	/**
+	 * Constructs a new weight using a fixed set of weights.
+	 * 
+	 * @param weights the fixed set of weights
+	 */
 	public FixedWeights(double[][] weights) {
 		this(Arrays.asList(weights));
 	}
 	
 	/**
-	 * Constructs a new weight generator that generates randomly-sampled weights.
+	 * Constructs a new weight using a fixed set of weights.
 	 * 
-	 * @param numberOfObjectives the number of objectives
-	 * @param numberOfPoints the number of weights to generate
+	 * @param weights the fixed set of weights
 	 */
 	public FixedWeights(List<double[]> weights) {
 		super();
 		this.weights = weights;
+		
+		if (weights.size() > 0) {
+			int expectedLength = weights.get(0).length;
+			
+			for (double[] weight : weights) {
+				double sum = 0.0;
+				
+				if (weight.length != expectedLength) {
+					throw new IllegalArgumentException("Invalid weight vector (incorrect length): " +
+							Arrays.toString(weight));
+				}
+				
+				for (int i = 0; i < weight.length; i++) {
+					if (weight[i] < 0.0 || weight[i] > 1.0) {
+						throw new IllegalArgumentException("Invalid weight vector (values must be between 0.0 and 1.0): " +
+								Arrays.toString(weight));
+					}
+					
+					sum += weight[i];
+				}
+				
+				if (Math.abs(sum - 1.0) > Settings.EPS) {
+					throw new IllegalArgumentException("Invalid weight vector (values must sum to 1.0): " +
+							Arrays.toString(weight));
+				}
+			}
+		}
 	}
 
 	@Override
