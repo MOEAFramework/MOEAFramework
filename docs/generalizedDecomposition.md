@@ -39,8 +39,8 @@ $$
 \text{Minimize } &t \\\
 \text{Subject to } &\text{sum}(w) = 1 \\\
 &0 \leq w \leq 1 \\\
-&w * f(x) <= t \\\
-&w * f(x) >= -t
+&w * f(x) \leq t \\\
+&w * f(x) \geq -t
 \end{align}
 $$
 
@@ -49,7 +49,8 @@ For more details on the GD procedure, please refer to:
 
 > Giagkiozis, I., R. C. Purshouse, and P. J. Fleming (2013).  "Generalized Decomposition."  Evolutionary Multi-Criterion Optimization, 7th International Conference, pp. 428-442.
 
-## Prerequisites
+
+## Example
 
 Since GD involves solving a convex optimization problem, we require the Python `cvxopt` library.  Therefore, please
 ensure Python 3 and `cvxopt` are installed:
@@ -58,15 +59,13 @@ ensure Python 3 and `cvxopt` are installed:
 pip install cvxopt
 ```
 
-## Example
-
-We begin by generating the set of target points.  Here, we use the Normal Boundary Intersection (NBI) method to produce
+Next, we generate the set of target points.  Here, we use the Normal Boundary Intersection (NBI) method to produce
 a set of well-distributed points.  Note that the `--dimensions` parameter must match the number of objectives:
 
 <!-- bash:examples/org/moeaframework/examples/generalizedDecomposition/generateWeights.sh [3:3] -->
 
 ```bash
-./cli SequenceGenerator --weights normalboundary --dimension 3 --divisions 20 > nbi_weights.txt
+./cli WeightGenerator --method normalboundary --dimension 3 --divisions 20 > nbi_weights.txt
 ```
 
 Then, for each target point we use GD to generate the corresponding weights:

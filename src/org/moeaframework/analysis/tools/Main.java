@@ -70,9 +70,9 @@ public class Main extends CommandLineUtility {
 		registerTool(ResultFileViewer.class);
 		registerTool(RuntimeEvaluator.class);
 		registerTool(SampleGenerator.class);
-		registerTool(SequenceGenerator.class);
 		registerTool(SobolAnalysis.class);
 		registerTool(Solve.class);
+		registerTool(WeightGenerator.class);
 
 		registerTool(BuildProblem.class);
 		registerTool(LaunchDiagnosticTool.class);

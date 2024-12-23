@@ -344,31 +344,6 @@ The following options are available:
  -s,--seed <value>              Random number generator seed
 ```
 
-### SequenceGenerator
-
-<!-- help:src/org/moeaframework/analysis/tools/SequenceGenerator.java [:-2] -->
-
-```
-usage: java -classpath "lib/*" org.moeaframework.analysis.tools.SequenceGenerator -d <value> [--divisions <value>]
-       [--divisionsInner <value>] [--divisionsOuter <value>] [-h] [-n <value>] [-o <file>] [--sequence <name> |
-       --weights <name>]
-
-Outputs the raw values from a sequence or weight generator
-
-The following options are available:
-
- -d,--dimension <value>         Dimension (typically the number of objectives)
-    --divisions <value>         Number of divisions used for NBI weights (for single layer)
-    --divisionsInner <value>    Number of inner divisions used for NBI weights (for two layers)
-    --divisionsOuter <value>    Number of outer divisions used for NBI weights (for two layers)
- -h,--help                      Display help information
- -n,--numberOfSamples <value>   Number of samples
- -o,--output <file>             Output file
-    --sequence <name>           Sequence used to produce the values (uniform, latin, sobol, saltelli)
-    --weights <name>            Weight generator used to produce the values (random, uniformdesign,
-                                normalboundaryintersection)
-```
-
 ### SobolAnalysis
 
 <!-- help:src/org/moeaframework/analysis/tools/SobolAnalysis.java [:-2] -->
@@ -424,3 +399,26 @@ The following options are available:
                                      "P(<length>)" for permutations
  -x,--properties <p1=v1;p2=v2;...>   Algorithm properties
 ```
+
+### WeightGenerator
+
+<!-- help:src/org/moeaframework/analysis/tools/WeightGenerator.java [:-2] -->
+
+```
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.WeightGenerator -d <value> [--divisions <value>]
+       [--divisionsInner <value>] [--divisionsOuter <value>] [-h] --method <name> [-n <value>] [-o <file>]
+
+Outputs randomly-generated weights
+
+The following options are available:
+
+ -d,--dimension <value>         Dimension (typically the number of objectives)
+    --divisions <value>         Number of divisions used for NBI weights (for single layer)
+    --divisionsInner <value>    Number of inner divisions used for NBI weights (for two layers)
+    --divisionsOuter <value>    Number of outer divisions used for NBI weights (for two layers)
+ -h,--help                      Display help information
+    --method <name>             The sampling method (random, uniformdesign, normalboundaryintersection)
+ -n,--numberOfSamples <value>   Number of samples
+ -o,--output <file>             Output file
+```
+
