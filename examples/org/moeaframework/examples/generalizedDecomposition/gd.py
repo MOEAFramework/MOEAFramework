@@ -16,20 +16,23 @@
 # along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 
 """
-Generalized decomposition essentially solves the inverse of Chebychev's scalarizing function, finding the weights
-that maximize the value of the function.  This provides more control over the distribution of points versus
-randomly-generated weights.
+Generalized decomposition solves the inverse of Chebychev's scalarizing function, finding the weights, w, that produce
+the minimum value for a target point, x.  We solve the following convex optimization problem:
 
-This script outputs the weights for each target point read from standard input.  The weights are computed by solving
-the convex optimization problem:
-
-  minimize norm_inf(x*w)
+  minimize c(w) = norm_inf(x*w)
   subject to
     sum(w) = 1
     0 <= w <= 1
 
 We can solve norm_inf(x*w) by introducing a slack variable, t, along with the constraints x*w <= t and x*w >= -t.  The
-resulting LP formulation then minimizes the value of t.
+resulting LP formulation then minimizes the value of t:
+
+  minimize c(w) = t
+  subject to
+    sum(w) = 1
+    0 <= w <= 1
+    x*w <= t
+    x*w >= -t
 
 References
 ----------
@@ -52,15 +55,7 @@ if __name__ == "__main__":
 			x = matrix(list(map(float, line.strip().split())))
 			N = x.size[0]
 			
-			# The vectors and matrix columns contains N+1 elements, corresponding to (x_1, x_2, ..., x_N, t).  The
-			# variables below correspond to the LP formulation:
-			#
-			#   minimize c
-			#   subject to
-			#     A*x = b
-			#     G*x <= h
-			
-			# cost function - minimize the slack variable t
+			# cost function
 			c = matrix([0.0] * N + [1.0])
 			
 			# equality constraints
