@@ -71,15 +71,15 @@ Then, for each target point we use GD to generate the corresponding weights:
 <!-- bash:examples/org/moeaframework/examples/generalizedDecomposition/generateWeights.sh [4:4] -->
 
 ```bash
-cat nbi_weights.txt | python3 "${ROOT}/generalizedDecomposition.py" > gd_weights.txt
+cat nbi_weights.txt | python3 examples/org/moeaframework/examples/generalizedDecomposition/gd.py > gd_weights.txt
 ```
 
 Finally, we can supply these weights to MOEA/D:
 
-<!-- java:examples/org/moeaframework/examples/generalizedDecomposition/GeneralizedDecompositionExample.java [62:67] -->
+<!-- java:examples/org/moeaframework/examples/generalizedDecomposition/GeneralizedDecompositionExample.java [59:64] -->
 
 ```java
-FixedWeights weights = FixedWeights.load(GD_WEIGHTS);
+FixedWeights weights = FixedWeights.load(new File("gd_weights.txt"));
 
 MOEAD algorithm = new MOEAD(problem);
 algorithm.setWeightGenerator(weights);
@@ -87,10 +87,7 @@ algorithm.setInitialPopulationSize(weights.size());
 algorithm.run(10000);
 ```
 
-Comparing the resulting hypervolume when using the original NBI weights versus those used by GD, we observe GD often
-outperforms.
-
-<!-- output:examples/org/moeaframework/examples/generalizedDecomposition/GeneralizedDecompositionExample.java -->
+Comparing the hypervolume, we see GD outperform NBI weights:
 
 ```
 Name         Min      Median   Max      IQR (+/-) Count Statistically Similar (a=0.05)
@@ -99,7 +96,7 @@ MOEA/D (GD)  0.409812 0.413551 0.417779 0.002444  50
 MOEA/D (NBI) 0.401969 0.405872 0.410604 0.002854  50
 ```
 
-We can also visually see the difference in distributions produced by both, wherein the GD weights show a more uniform
-distribution across the Pareto front:
+The difference is also visually striking when plotting the results.  Observe how NBI weights (left) tend to form
+clusters near the "steeper" parts of the Pareto front, whereas the GD weights (right) are more uniformly distributed.
 
-<img src="imgs/moead-weights.png" width="40%" />
+<img src="imgs/moead-weights.png" />

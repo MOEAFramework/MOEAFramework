@@ -33,11 +33,8 @@ import org.moeaframework.util.weights.FixedWeights;
  */
 public class GeneralizedDecompositionExample {
 	
-	private static final File NBI_WEIGHTS = new File("nbi_weights.txt");
-	private static final File GD_WEIGHTS = new File("gd_weights.txt");
-
 	public static void main(String[] args) throws IOException {
-		if (!NBI_WEIGHTS.exists() || !GD_WEIGHTS.exists()) {
+		if (!new File("nbi_weights.txt").exists() || !new File("gd_weights.txt").exists()) {
 			System.err.println("Please run ./generateWeights.sh to generate the weight input files");
 			return;
 		}
@@ -48,7 +45,7 @@ public class GeneralizedDecompositionExample {
 		
 		// run with Normal Boundary Intersection (NBI) weights
 		for (int i = 0; i < 50; i++) {
-			FixedWeights weights = FixedWeights.load(NBI_WEIGHTS);
+			FixedWeights weights = FixedWeights.load(new File("nbi_weights.txt"));
 			
 			MOEAD algorithm = new MOEAD(problem);
 			algorithm.setWeightGenerator(weights);
@@ -59,7 +56,7 @@ public class GeneralizedDecompositionExample {
 		
 		// run with Generalized Decomposition (GD) weights (derived from the NBI weights)
 		for (int i = 0; i < 50; i++) {
-			FixedWeights weights = FixedWeights.load(GD_WEIGHTS);
+			FixedWeights weights = FixedWeights.load(new File("gd_weights.txt"));
 			
 			MOEAD algorithm = new MOEAD(problem);
 			algorithm.setWeightGenerator(weights);
