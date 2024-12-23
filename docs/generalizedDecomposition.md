@@ -60,15 +60,15 @@ pip install cvxopt
 We begin by generating the set of target points.  Here, we use the Normal Boundary Intersection (NBI) method to produce
 a set of well-distributed points.  Note that the `--dimensions` parameter must match the number of objectives:
 
-<!-- bash:examples/org/moeaframework/examples/generalizedDecomposition/generateWeights.sh [5:5] -->
+<!-- bash:examples/org/moeaframework/examples/generalizedDecomposition/generateWeights.sh [3:3] -->
 
 ```bash
-./cli SequenceGenerator --weights normalboundary --dimension 3 --divisions 12 > nbi_weights.txt
+./cli SequenceGenerator --weights normalboundary --dimension 3 --divisions 20 > nbi_weights.txt
 ```
 
 Then, for each target point we use GD to generate the corresponding weights:
 
-<!-- bash:examples/org/moeaframework/examples/generalizedDecomposition/generateWeights.sh [6:6] -->
+<!-- bash:examples/org/moeaframework/examples/generalizedDecomposition/generateWeights.sh [4:4] -->
 
 ```bash
 cat nbi_weights.txt | python3 "${ROOT}/generalizedDecomposition.py" > gd_weights.txt
@@ -95,6 +95,11 @@ outperforms.
 ```
 Name         Min      Median   Max      IQR (+/-) Count Statistically Similar (a=0.05)
 ------------ -------- -------- -------- --------- ----- ------------------------------
-MOEA/D (GD)  0.377867 0.387469 0.393323 0.004907  50
-MOEA/D (NBI) 0.366972 0.372217 0.378778 0.004183  50
+MOEA/D (GD)  0.409812 0.413551 0.417779 0.002444  50
+MOEA/D (NBI) 0.401969 0.405872 0.410604 0.002854  50
 ```
+
+We can also visually see the difference in distributions produced by both, wherein the GD weights show a more uniform
+distribution across the Pareto front:
+
+<img src="imgs/moead-weights.png" width="40%" />
