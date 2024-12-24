@@ -6,11 +6,11 @@ MOEA/D is a popular multi-objective optimization algorithm that decomposes a mul
 single-objective subproblems, optimizing these subproblems simultaneously to approximate the Pareto front.  Commonly,
 the Chebyshev (aka Tchebycheff) scalarizing function is used:
 
-$$ g(x) = \text{max}_i \left( w_i \left| f_i(x) - z_i^* \right| \right) $$
+$$ g(x) = \lVert w * \left| f(x) - z^* \right| \rVert_\infty = \max_i \left( w_i \left| f_i(x) - z_i^* \right| \right) $$
 
-where $$x$$ represents the decision variables, $$f_i(x)$$ is the i-th objective function, $$w$$ is the weight vector,
-and $$z^*$$ is the ideal objective vector.  Each subproblem uses a different set of weights, and solutions with smaller
-values for $$g(x)$$ are selected for survival with respect to each subproblem.
+This is also known as the L-inf norm, where $$x$$ represents the decision variables, $$f(x)$$ is the objective
+function, $$w$$ is the weight vector, and $$z^*$$ is the ideal objective vector.  Each subproblem uses a different set
+of weights, such that solutions with smaller values for $$g(x)$$ are selected for survival.
 
 ## What is Generalized Decomposition?
 
@@ -21,7 +21,7 @@ front, instead resulting in some regions with a higher concentration of points a
 Generalized decomposition (GD) is a method to overcome this limitation.  We start with a set of target points that
 define the ideal distribution of points on the Pareto front, then solve the inverse of the Chebychev scalarizing
 function to find the weights corresponding to those points.  Without loss of generality, let's assume that
-$$f(x) \geq 0$$ so we can ignore the $$z^*$$ term.  Then, we find the weights, $$w$$, by solving:
+$$f(x) \geq 0$$ and set $$z^* = 0$$.  Then, we find the weights, $$w$$, by solving:
 
 $$
 \begin{align}
