@@ -107,9 +107,9 @@ public class Settings {
 	public static final String KEY_VERBOSE = createKey(KEY_PREFIX, "core", "verbose");
 	
 	/**
-	 * The property key for specifying the Python interpreter.
+	 * The property key for specifying the Python interpreter command.
 	 */
-	public static final String KEY_PYTHON_INTERPRETER = createKey(KEY_PREFIX, "core", "python");
+	public static final String KEY_PYTHON_INTERPRETER = createKey(KEY_PREFIX, "tools", "python");
 	
 	/**
 	 * The property key for setting a global PRNG seed, which can be used to make results reproducible.  Note,
