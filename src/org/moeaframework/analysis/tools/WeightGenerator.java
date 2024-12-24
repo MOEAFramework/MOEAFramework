@@ -25,6 +25,7 @@ import java.io.PrintWriter;
 import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.DoubleStream;
 
 import org.apache.commons.cli.CommandLine;
@@ -32,6 +33,7 @@ import org.apache.commons.cli.MissingOptionException;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
@@ -61,7 +63,7 @@ public class WeightGenerator extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 
-		options.addOption(Option.builder()
+		options.addOption(Option.builder("m")
 				.longOpt("method")
 				.hasArg()
 				.argName("name")
@@ -201,17 +203,32 @@ public class WeightGenerator extends CommandLineUtility {
 		try (PrintWriter writer = new PrintWriter(new OutputStreamWriter(process.getOutputStream()));
 				LineReader reader = LineReader.wrap(new InputStreamReader(process.getInputStream()))) {
 			for (double[] weight : weights) {
-				writer.println(tokenizer.encode(DoubleStream.of(weight).mapToObj(Double::toString)));
+				String input = tokenizer.encode(DoubleStream.of(weight).mapToObj(Double::toString));
+				writer.println(input);
 				writer.flush();
 				
-				modifiedWeights.add(tokenizer.decode(reader.readLine()).stream().mapToDouble(Double::parseDouble).toArray());
+				String output = reader.readLine();
+				
+				if (output == null) {
+					// unexpected end of output - exit loop so we can fail on process termination
+					break;
+				}
+				
+				modifiedWeights.add(tokenizer.decode(output).stream().mapToDouble(Double::parseDouble).toArray());
 			}
 		}
 		
-		int exitCode = process.waitFor();
+		if (!process.waitFor(30, TimeUnit.SECONDS)) {
+			throw new IOException(scriptName + " failed to terminate after processing all inputs");
+		}
 		
-		if (exitCode != 0) {
-			throw new IOException(scriptName + " failed with exit code " + exitCode);
+		if (process.exitValue() != 0) {
+			throw new IOException(scriptName + " failed with exit code " + process.exitValue());
+		}
+		
+		if (modifiedWeights.size() != weights.size()) {
+			throw new FrameworkException("unexpected number of weights after generalized decomposition (expected: " +
+					weights.size() + ", actual: " + modifiedWeights.size() + ")");
 		}
 		
 		return modifiedWeights;

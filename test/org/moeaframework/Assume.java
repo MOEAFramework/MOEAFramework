@@ -65,6 +65,15 @@ public class Assume extends org.junit.Assume {
 		assumeCommand(Settings.getPythonCommand(), "--version");
 	}
 	
+	public static void assumePythonModule(String module) {
+		try {
+			ProcessBuilder processBuilder = new ProcessBuilder(Settings.getPythonCommand(), "-c", "import " + module);
+			RedirectStream.pipe(processBuilder, System.out);
+		} catch (Exception e) {
+			assumeTrue(module + " is not installed", false);
+		}
+	}
+	
 	public static void assumeMatlabExists() {
 		assumeCommand("matlab", "-batch", "version");
 	}

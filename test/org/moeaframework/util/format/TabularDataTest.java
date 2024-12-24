@@ -208,10 +208,10 @@ public class TabularDataTest {
 		File tempFile = TempFiles.createFile();
 		data.save(TableFormat.Json, tempFile);
 		
-		ProcessBuilder processBuilder = new ProcessBuilder()
-				.command(Settings.getPythonCommand(), "-c", "import json; f=open(r'" + tempFile.getAbsolutePath() +
-						"'); df = json.load(f); print(df); f.close();");
+		String script = "import json; f=open(r'" + tempFile.getAbsolutePath() +
+				"'); df = json.load(f); print(df); f.close();";
 		
+		ProcessBuilder processBuilder = new ProcessBuilder(Settings.getPythonCommand(), "-c", script);
 		CaptureResult result = Capture.output(processBuilder);
 		
 		System.out.println(result.toString());
@@ -225,10 +225,9 @@ public class TabularDataTest {
 		File tempFile = TempFiles.createFile();
 		data.save(TableFormat.Json, tempFile);
 		
-		ProcessBuilder processBuilder = new ProcessBuilder()
-				.command(Settings.getPythonCommand(), "-c", "import pandas; df = pandas.read_json(r'" +
-						tempFile.getAbsolutePath() + "'); print(df);");
+		String script = "import pandas; df = pandas.read_json(r'" + tempFile.getAbsolutePath() + "'); print(df);";
 		
+		ProcessBuilder processBuilder = new ProcessBuilder(Settings.getPythonCommand(), "-c", script);
 		CaptureResult result = Capture.output(processBuilder);
 		
 		System.out.println(result.toString());
