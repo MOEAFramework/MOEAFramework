@@ -307,7 +307,6 @@ public interface Blob {
 	 * Stores the given {@link Population} object to this blob as a result file.
 	 * 
 	 * @param population the population to store
-	 * @param tableFormat the output format
 	 * @throws IOException if an I/O error occurred
 	 */
 	public default void store(Population population) throws IOException {
@@ -315,7 +314,7 @@ public interface Blob {
 	}
 	
 	/**
-	 * Stores the given {@link Formattable} object to this blob using the {@value TableFormat#Plaintext} format.
+	 * Stores the given {@link Formattable} object to this blob using the {@link TableFormat#Plaintext} format.
 	 * 
 	 * @param formattable the formattable object to store
 	 * @throws IOException if an I/O error occurred

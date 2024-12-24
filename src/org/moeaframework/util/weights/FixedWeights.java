@@ -42,6 +42,7 @@ public class FixedWeights implements WeightGenerator {
 	 * Constructs a new weight using a fixed set of weights.
 	 * 
 	 * @param weights the fixed set of weights
+	 * @throws IllegalArgumentException if the weights are not valid
 	 */
 	public FixedWeights(double[][] weights) {
 		this(Arrays.asList(weights));
@@ -51,6 +52,7 @@ public class FixedWeights implements WeightGenerator {
 	 * Constructs a new weight using a fixed set of weights.
 	 * 
 	 * @param weights the fixed set of weights
+	 * @throws IllegalArgumentException if the weights are not valid
 	 */
 	public FixedWeights(List<double[]> weights) {
 		super();
@@ -100,18 +102,45 @@ public class FixedWeights implements WeightGenerator {
 		return result;
 	}
 	
+	/**
+	 * Saves the weights to a file.
+	 * 
+	 * @param file the file
+	 * @throws IOException if an I/O error occurred
+	 */
 	public void save(File file) throws IOException {
 		MatrixIO.save(file, weights);
 	}
 	
-	public void save(Writer writer) throws IOException {
+	/**
+	 * Saves the weights to a writer.
+	 * 
+	 * @param writer the writer
+	 */
+	public void save(Writer writer) {
 		MatrixIO.save(writer, weights);
 	}
 	
+	/**
+	 * Loads the weights from a file.
+	 * 
+	 * @param file the file
+	 * @return the loaded weights
+	 * @throws IllegalArgumentException if the weights are not valid
+	 * @throws IOException if an I/O error occurred
+	 */
 	public static FixedWeights load(File file) throws IOException {
 		return new FixedWeights(MatrixIO.load(file));
 	}
 	
+	/**
+	 * Loads the weights from a reader.
+	 * 
+	 * @param reader the reader
+	 * @return the loaded weights
+	 * @throws IllegalArgumentException if the weights are not valid
+	 * @throws IOException if an I/O error occurred
+	 */
 	public static FixedWeights load(Reader reader) throws IOException {
 		return new FixedWeights(MatrixIO.load(reader));
 	}

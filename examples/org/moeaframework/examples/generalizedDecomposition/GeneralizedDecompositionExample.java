@@ -24,8 +24,8 @@ import org.moeaframework.algorithm.MOEAD;
 import org.moeaframework.analysis.IndicatorStatistics;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.population.NondominatedPopulation;
-import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.DTLZ.DTLZ2;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.util.weights.FixedWeights;
 
 /**

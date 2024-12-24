@@ -125,7 +125,7 @@ public class MatrixIO {
 	 * 
 	 * @param file the file
 	 * @param matrix a 2D array containing the matrix
-	 * @throws IOException 
+	 * @throws IOException if an I/O error occurred while writing the file
 	 */
 	public static void save(File file, double[][] matrix) throws IOException {
 		save(file, Arrays.asList(matrix));
@@ -152,6 +152,7 @@ public class MatrixIO {
 	 * 
 	 * @param file the file
 	 * @param matrix an iterator over the rows in the matrix
+	 * @throws IOException if an I/O error occurred while writing the file
 	 */
 	public static void save(File file, Iterable<double[]> matrix) throws IOException {
 		try (FileWriter writer = new FileWriter(file)) {
