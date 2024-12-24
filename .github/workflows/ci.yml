@@ -67,7 +67,7 @@ jobs:
         java-distribution: ${{ inputs.java-distribution }}
         setup-matlab: true
         setup-python: true
-        python-dependencies: pandas
+        python-dependencies: pandas cvxopt
     - name: Download Java test dependencies
       uses: MOEAFramework/.github/actions/run-ant@main
       with:
@@ -97,7 +97,7 @@ jobs:
         java-distribution: ${{ inputs.java-distribution }}
         setup-matlab: true
         setup-python: true
-        python-dependencies: pandas
+        python-dependencies: pandas cvxopt
     - name: Prepare Maven project
       uses: MOEAFramework/.github/actions/run-ant@main
       with:
