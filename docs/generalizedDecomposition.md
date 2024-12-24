@@ -39,13 +39,12 @@ $$
 \text{Minimize } &t \\\
 \text{Subject to } &\text{sum}(w) = 1 \\\
 &0 \leq w \leq 1 \\\
-&w * f(x) \leq t \\\
-&w * f(x) \geq -t
+&-t \leq w * f(x) \leq t \\\
 \end{align}
 $$
 
-This formulation is a linear program (LP) which can be solved efficiently using the primal-dual interior point method.
-For more details on the GD procedure, please refer to:
+This formulation is a linear program (LP) which can be solved efficiently using the primal-dual method.  For more
+details on the GD procedure, please refer to:
 
 > Giagkiozis, I., R. C. Purshouse, and P. J. Fleming (2013).  "Generalized Decomposition."  Evolutionary Multi-Criterion Optimization, 7th International Conference, pp. 428-442.
 
