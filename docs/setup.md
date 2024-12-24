@@ -14,7 +14,7 @@ these docs are tailored for Eclipse.
 Download the source or compiled binaries from the [Releases page](https://github.com/MOEAFramework/MOEAFramework/releases).
 These are distributed as `.tar.gz` archives that can be extracted using 7-zip (Windows)  or `tar -xzf <file>` (Linux/Mac).
 
-<img src="imgs/release-assets.png" width="70%" />
+<img src="imgs/release-assets.png" width="80%" />
 
 After extracting the archive, select `File > Open Projects from File System` within Eclipse and open the extracted
 directory.  Once imported, you should see the following in the package explorer:
