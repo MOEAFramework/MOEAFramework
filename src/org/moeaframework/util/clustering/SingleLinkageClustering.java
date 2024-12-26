@@ -1,4 +1,4 @@
-/* Copyright 2018-2019 Ibrahim DEMIR, 2009-2024 David Hadka
+/* Copyright 2018-2019 Ibrahim DEMIR, 2009-2025 David Hadka
  *
  * This file is part of the MOEA Framework.
  *

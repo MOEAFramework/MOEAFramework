@@ -52,4 +52,4 @@ algorithm.getResult().display();
 
 If you use this software in your work, please cite it as follows (APA style):
 
-> Hadka, D. (2024). MOEA Framework A Free and Open Source Java Framework for Multiobjective Optimization (Version 5.0-SNAPSHOT) [Computer software]. Retrieved from https://github.com/MOEAFramework/MOEAFramework.
+> Hadka, D. (2025). MOEA Framework A Free and Open Source Java Framework for Multiobjective Optimization (Version 5.0-SNAPSHOT) [Computer software]. Retrieved from https://github.com/MOEAFramework/MOEAFramework.
