@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.util.io;
+package org.moeaframework.util.cli;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,10 +29,10 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.util.io.UpdateCodeSamples.FileType;
-import org.moeaframework.util.io.UpdateCodeSamples.FormatFlag;
-import org.moeaframework.util.io.UpdateCodeSamples.FormattingOptions;
-import org.moeaframework.util.io.UpdateCodeSamples.Language;
+import org.moeaframework.util.cli.UpdateCodeSamples.FileType;
+import org.moeaframework.util.cli.UpdateCodeSamples.FormatFlag;
+import org.moeaframework.util.cli.UpdateCodeSamples.FormattingOptions;
+import org.moeaframework.util.cli.UpdateCodeSamples.Language;
 
 public class UpdateCodeSamplesTest {
 	

@@ -41,9 +41,9 @@ import org.apache.commons.io.FilenameUtils;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Settings;
-import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.DurationUtils;
 import org.moeaframework.util.Timer;
+import org.moeaframework.util.cli.CommandLineUtility;
 
 /**
  * Command line utility that scans the {@code examples/} folder for Java files, compiles them, and runs class

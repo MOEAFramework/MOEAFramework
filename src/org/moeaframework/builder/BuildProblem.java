@@ -37,7 +37,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringSubstitutor;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.cli.CommandLineUtility;
 import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.io.Resources;
 import org.moeaframework.util.io.Resources.ResourceOption;

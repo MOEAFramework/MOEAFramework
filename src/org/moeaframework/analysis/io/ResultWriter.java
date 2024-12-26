@@ -25,7 +25,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
 import org.moeaframework.analysis.series.ResultEntry;
-import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.cli.CommandLineUtility;
 
 /**
  * Abstract class for result writers.

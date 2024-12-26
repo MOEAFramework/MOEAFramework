@@ -30,7 +30,7 @@ import java.lang.reflect.Method;
 import java.nio.file.Files;
 
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.cli.CommandLineUtility;
 import org.moeaframework.util.io.RedirectStream;
 
 /**

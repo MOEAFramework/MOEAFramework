@@ -24,8 +24,8 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.analysis.io.MetricFileReader;
-import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.Iterators;
+import org.moeaframework.util.cli.CommandLineUtility;
 
 /**
  * Command line utility for validating the contents of a metrics file.

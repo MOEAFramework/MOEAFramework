@@ -27,7 +27,7 @@ import org.moeaframework.analysis.io.MetricFileWriter;
 import org.moeaframework.analysis.parameter.ParameterSet;
 import org.moeaframework.analysis.sensitivity.SobolSensitivityAnalysis;
 import org.moeaframework.analysis.sensitivity.SobolSensitivityAnalysis.SobolSensitivityResult;
-import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.cli.CommandLineUtility;
 import org.moeaframework.util.io.MatrixIO;
 
 /**

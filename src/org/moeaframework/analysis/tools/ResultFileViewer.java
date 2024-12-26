@@ -26,7 +26,7 @@ import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.analysis.viewer.RuntimeViewer;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.Problem;
-import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.cli.CommandLineUtility;
 
 /**
  * Command line utility for visualizing the content of result files.

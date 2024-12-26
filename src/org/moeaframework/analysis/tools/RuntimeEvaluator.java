@@ -37,9 +37,9 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.problem.Problem;
-import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.DurationUtils;
 import org.moeaframework.util.Timer;
+import org.moeaframework.util.cli.CommandLineUtility;
 import org.moeaframework.util.validate.Validate;
 
 /**

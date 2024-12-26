@@ -17,16 +17,64 @@
  */
 package org.moeaframework.util;
 
-import org.junit.Ignore;
+import java.util.Locale;
+
+import org.junit.Test;
+import org.moeaframework.Assert;
 
 /**
- * See {@link org.moeaframework.LocalizationTest} for the actual unit tests.
- * <p>
- * Since the localization tests need the LocalStrings.properties file in this package, the file in the {@code test/}
- * directory would interfere with the one in the {@code src/} directory.  Therefore, the actual unit tests are
- * located elsewhere.
+ * If errors occur when running tests within Eclipse, please ensure the text file encoding is UTF-8.
  */
-@Ignore("Tests located at elsewhere")
 public class LocalizationTest {
+
+	@Test
+	public void testInstanceMethods() {
+		Localization english = Localization.getLocalization(LocalizationTest.class);
+		Localization spanish = Localization.getLocalization(LocalizationTest.class, Locale.forLanguageTag("es"));
+		Localization german = Localization.getLocalization(LocalizationTest.class, Locale.forLanguageTag("de"));
+
+		//test without arguments
+		Assert.assertEquals("hello, world", english.getString("test"));
+		Assert.assertEquals("hola, mundo", spanish.getString("test"));
+		Assert.assertEquals("hello, world", german.getString("test"));
+		Assert.assertTrue(english.containsKey("test"));
+		Assert.assertTrue(spanish.containsKey("test"));
+		Assert.assertTrue(german.containsKey("test"));
+
+		//test with arguments
+		Assert.assertEquals("hello, Foo", english.getString("testArgument", "Foo"));
+		Assert.assertEquals("hola, Foo", spanish.getString("testArgument", "Foo"));
+		Assert.assertEquals("hello, Foo", german.getString("testArgument", "Foo"));
+
+		//test if missing key returns the key
+		Assert.assertEquals("missing.key", english.getString("missing.key"));
+		Assert.assertEquals("missing.key", english.getString("missing.key", "Foo"));
+		Assert.assertFalse(english.containsKey("missing.key"));
+	}
+
+	@Test
+	public void testStaticMethods() {
+		Locale defaultLocale = Locale.getDefault();
+
+		Assert.assertEquals("hello, static world", Localization.getString(LocalizationTest.class, "test"));
+		Assert.assertEquals("hello, static Foo", Localization.getString(LocalizationTest.class, "testArgument", "Foo"));
+		Assert.assertTrue(Localization.containsKey(LocalizationTest.class, "test"));
+
+		Locale.setDefault(Locale.forLanguageTag("es"));
+		Assert.assertEquals("hola, estático mundo", Localization.getString(LocalizationTest.class, "test"));
+		Assert.assertEquals("hola, estático Foo", Localization.getString(LocalizationTest.class, "testArgument", "Foo"));
+		Assert.assertTrue(Localization.containsKey(LocalizationTest.class, "test"));
+
+		Locale.setDefault(Locale.forLanguageTag("de"));
+		Assert.assertEquals("hello, static world", Localization.getString(LocalizationTest.class, "test"));
+		Assert.assertEquals("hello, static Foo", Localization.getString(LocalizationTest.class, "testArgument", "Foo"));
+		Assert.assertTrue(Localization.containsKey(LocalizationTest.class, "test"));
+
+		Locale.setDefault(defaultLocale);
+
+		Assert.assertEquals("LocalizationTest.missing.key", Localization.getString(LocalizationTest.class, "missing.key"));
+		Assert.assertEquals("LocalizationTest.missing.key", Localization.getString(LocalizationTest.class, "missing.key", "Foo"));
+		Assert.assertFalse(Localization.containsKey(LocalizationTest.class, "missing.key"));
+	}
 
 }

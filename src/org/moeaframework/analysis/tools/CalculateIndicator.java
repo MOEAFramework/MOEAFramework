@@ -31,9 +31,9 @@ import org.moeaframework.core.indicator.StandardIndicator;
 import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.Problem;
-import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.Iterators;
 import org.moeaframework.util.OptionCompleter;
+import org.moeaframework.util.cli.CommandLineUtility;
 import org.moeaframework.util.format.NumberFormatter;
 import org.moeaframework.util.validate.Validate;
 

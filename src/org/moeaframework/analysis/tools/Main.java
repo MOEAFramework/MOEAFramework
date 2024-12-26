@@ -36,9 +36,9 @@ import org.moeaframework.builder.BuildProblem;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
-import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.Localization;
 import org.moeaframework.util.OptionCompleter;
+import org.moeaframework.util.cli.CommandLineUtility;
 import org.moeaframework.util.format.TabularData;
 
 /**

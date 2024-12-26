@@ -25,8 +25,8 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.problem.Problem;
-import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.Iterators;
+import org.moeaframework.util.cli.CommandLineUtility;
 
 /**
  * Command line utility for validating the contents of a result file.

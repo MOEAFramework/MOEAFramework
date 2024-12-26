@@ -27,7 +27,7 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.AnalyticalProblem;
 import org.moeaframework.problem.Problem;
-import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.cli.CommandLineUtility;
 
 /**
  * Command line utility for generating reference sets for a given problem.  The reference set is created by randomly

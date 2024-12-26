@@ -35,7 +35,7 @@ import org.moeaframework.analysis.parameter.ParameterSet;
 import org.moeaframework.analysis.sample.Sample;
 import org.moeaframework.analysis.sample.Samples;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.cli.CommandLineUtility;
 
 /**
  * Command line utility for calculating the best, probability of attainment, efficiency and controllability metrics.

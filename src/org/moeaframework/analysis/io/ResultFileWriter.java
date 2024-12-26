@@ -37,7 +37,6 @@ import org.moeaframework.core.population.Population;
 import org.moeaframework.core.variable.Variable;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.ErrorHandler;
-import org.moeaframework.util.NumericStringComparator;
 import org.moeaframework.util.io.LineReader;
 
 /**

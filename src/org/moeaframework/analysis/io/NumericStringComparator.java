@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.util;
+package org.moeaframework.analysis.io;
 
 import java.util.Comparator;
 import java.util.regex.Matcher;
@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
  * differ at position 3 and compare {@code "1"} to {@code "2"}.  On the other hand, this comparator identifies the
  * two strings contain {@code 15} and {@code 2}, producing a more natural ordering.
  */
-public class NumericStringComparator implements Comparator<String> {
+class NumericStringComparator implements Comparator<String> {
 	
 	private static final Pattern INTEGER_PATTERN = Pattern.compile("([0-9]+)");
 	

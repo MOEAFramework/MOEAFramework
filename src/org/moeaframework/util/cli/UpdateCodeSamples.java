@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.util.io;
+package org.moeaframework.util.cli;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -57,7 +57,7 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
-import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -71,7 +71,8 @@ import org.moeaframework.util.validate.Validate;
  * 
  *   ```java
  *   ... code block updated from referenced Java file ...
- *   ```}</pre>
+ *   ```
+ * }</pre>
  * <p>
  * The format of the comment is:
  * <pre>{@code <!-- <language>:<filename> [<startingLine>:<endingLine>|<id>] {<flag>,...} -->}</pre>

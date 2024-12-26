@@ -34,7 +34,7 @@ import org.moeaframework.core.indicator.Indicators.IndicatorValues;
 import org.moeaframework.core.indicator.StandardIndicator;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.Problem;
-import org.moeaframework.util.CommandLineUtility;
+import org.moeaframework.util.cli.CommandLineUtility;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.TableFormat;
 import org.moeaframework.util.format.TabularData;

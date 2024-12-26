@@ -32,9 +32,9 @@ import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.Problem;
-import org.moeaframework.util.CommandLineUtility;
 import org.moeaframework.util.DurationUtils;
 import org.moeaframework.util.Timer;
+import org.moeaframework.util.cli.CommandLineUtility;
 
 /**
  * Command line utility for evaluating the approximation sets stored in a result file and computing its metric file.
