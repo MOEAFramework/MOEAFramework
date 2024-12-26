@@ -86,7 +86,7 @@ public class GeneratePlots extends CommandLineUtility {
 					}
 				}
 				
-				ProcessBuilder builder = new ProcessBuilder("/usr/local/bin/gnuplot");
+				ProcessBuilder builder = new ProcessBuilder("gnuplot");
 				builder.redirectOutput(Redirect.INHERIT);
 				builder.redirectError(Redirect.INHERIT);
 				
