@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis.tools;
+package org.moeaframework.util.cli;
 
 import java.awt.HeadlessException;
 import java.io.ByteArrayOutputStream;
@@ -43,7 +43,6 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Settings;
 import org.moeaframework.util.DurationUtils;
 import org.moeaframework.util.Timer;
-import org.moeaframework.util.cli.CommandLineUtility;
 
 /**
  * Command line utility that scans the {@code examples/} folder for Java files, compiles them, and runs class

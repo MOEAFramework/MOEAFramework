@@ -17,6 +17,6 @@
  */
 
 /**
- * Utilities for writing command line interface (CLI) tools.
+ * Tools for writing command line interfaces (CLIs), including several internal tools.
  */
 package org.moeaframework.util.cli;
