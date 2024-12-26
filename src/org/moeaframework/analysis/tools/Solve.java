@@ -45,8 +45,8 @@ import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.core.variable.Variable;
 import org.moeaframework.problem.ExternalProblem;
 import org.moeaframework.problem.ExternalProblem.Builder;
-import org.moeaframework.util.cli.CommandLineUtility;
 import org.moeaframework.problem.Problem;
+import org.moeaframework.util.cli.CommandLineUtility;
 
 /**
  * Command line utility for solving an optimization problem using any of the supported optimization algorithms.  This
