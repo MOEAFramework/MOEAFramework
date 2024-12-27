@@ -31,8 +31,7 @@ resulting LP formulation then minimizes the value of t:
   subject to
     sum(w) = 1
     0 <= w <= 1
-    x*w <= t
-    x*w >= -t
+    -t <= x*w <= t
 
 References
 ----------

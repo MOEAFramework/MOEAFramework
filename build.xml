@@ -59,7 +59,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	</path>
 	
 	<path id="resources">
-		<fileset dir="src" excludes="**/*.java,overview.html,cli.cmd,cli.sh,macros.xml,pom.xml.template,README.md.template" />
+		<fileset dir="src" excludes="**/*.java,**/*.class,overview.html,cli.cmd,cli.sh,macros.xml,pom.xml.template,README.md.template" />
 	</path>
 
 	<!-- Generates the Javadoc webpages -->
@@ -114,10 +114,13 @@ Use of these build scripts requires Apache Ant to be installed.  See
 				excludes="**/package-info.java" includeantruntime="false" encoding="UTF-8">
 			<classpath refid="classpath" />
 		</javac>
+		
+		<copy todir="${build}">
+			<path refid="requiredfiles" />
+		</copy>
 
 		<copy todir="${build}/META-INF">
 			<fileset dir="META-INF" excludes="ZHANG-LICENSE" />
-			<path refid="requiredfiles" />
 		</copy>
 		
 		<exec executable="git" outputproperty="impl.version" errorproperty="impl.error" failifexecutionfails="false">
@@ -330,9 +333,12 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<copy file="src/pom.xml.template" tofile="${build}/pom.xml" />
 		<replace-properties file="${build}/pom.xml" />
 		
+		<copy todir="${build}">
+			<path refid="requiredfiles" />
+		</copy>
+		
 		<copy todir="${build}/src/main/resources/META-INF">
 			<fileset dir="META-INF" />
-			<path refid="requiredfiles" />
 		</copy>
 		
 		<copy todir="${build}/src/main/resources" includeEmptyDirs="false">
@@ -348,11 +354,11 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		</copy>
 		
 		<copy todir="${build}/src/test/resources" includeEmptyDirs="false">
-			<fileset dir="test" excludes="**/*.java" />
+			<fileset dir="test" excludes="**/*.java,**/*.class" />
 		</copy>
 		
 		<copy todir="${build}/examples">
-			<fileset dir="examples" />
+			<fileset dir="examples" excludes="**/*.class" />
 		</copy>
 		
 		<copy todir="${build}/src/main/resources/pf">
