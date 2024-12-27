@@ -24,6 +24,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
+import org.moeaframework.core.constraint.Equal;
+import org.moeaframework.core.constraint.LessThanOrEqual;
+import org.moeaframework.core.objective.Maximize;
+import org.moeaframework.core.objective.Minimize;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.mock.MockSolution;
@@ -38,8 +42,14 @@ public class SolutionTest {
 	@Before
 	public void setUp() {
 		solution = new Solution(1, 2, 2);
-
-		solution.setVariable(0, new RealVariable(0.0, 1.0).withValue(0.5));
+		solution.setVariable(0, new RealVariable(0.0, 1.0));
+		solution.setObjective(0, new Minimize());
+		solution.setObjective(1, new Maximize());
+		solution.setConstraint(0, new Equal(0.0));
+		solution.setConstraint(1, new LessThanOrEqual(0.0));
+		
+		RealVariable.setReal(solution.getVariable(0), 0.5);
+		
 		solution.setObjectiveValue(0, 1.0);
 		solution.setObjectiveValue(1, 2.0);
 		solution.setConstraintValue(0, 0.0);
@@ -52,11 +62,27 @@ public class SolutionTest {
 	public void tearDown() {
 		solution = null;
 	}
+	
+	@Test
+	public void testDefaultTypesOnGet() {
+		solution = new Solution(0, 1, 1);
+		Assert.assertInstanceOf(Minimize.class, solution.getObjective(0));
+		Assert.assertInstanceOf(Equal.class, solution.getConstraint(0));
+	}
+	
+	@Test
+	public void testDefaultTypesOnSet() {
+		solution = new Solution(0, 1, 1);
+		solution.setObjectiveValue(0, 1.0);
+		solution.setConstraintValue(0, 1.0);
+		Assert.assertInstanceOf(Minimize.class, solution.getObjective(0));
+		Assert.assertInstanceOf(Equal.class, solution.getConstraint(0));
+	}
 
 	@Test
 	public void testGetVariable() {
 		Assert.assertEquals(1, solution.getNumberOfVariables());
-		Assert.assertEquals(0.5, ((RealVariable)solution.getVariable(0)).getValue(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.5, RealVariable.getReal(solution.getVariable(0)), TestThresholds.HIGH_PRECISION);
 	}
 
 	@Test
@@ -76,7 +102,7 @@ public class SolutionTest {
 	@Test
 	public void testSetVariable() {
 		solution.setVariable(0, new RealVariable(0.0, 1.0).withValue(0.75));
-		Assert.assertEquals(0.75, ((RealVariable)solution.getVariable(0)).getValue(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.75, RealVariable.getReal(solution.getVariable(0)), TestThresholds.HIGH_PRECISION);
 	}
 
 	@Test
@@ -284,23 +310,26 @@ public class SolutionTest {
 		Assert.assertEquals(solution.getNumberOfVariables(), copy.getNumberOfVariables());
 		for (int i = 0; i < copy.getNumberOfVariables(); i++) {
 			Assert.assertEquals(solution.getVariable(i), copy.getVariable(i));
+			Assert.assertNotSame(solution.getVariable(i), copy.getVariable(i));
 		}
 
 		// copy has the same objectives
 		Assert.assertEquals(solution.getNumberOfObjectives(), copy.getNumberOfObjectives());
 		for (int i = 0; i < copy.getNumberOfObjectives(); i++) {
 			Assert.assertEquals(solution.getObjective(i), copy.getObjective(i), TestThresholds.HIGH_PRECISION);
+			Assert.assertNotSame(solution.getObjective(i), copy.getObjective(i));
 		}
 
 		// copy has the same constraints
 		Assert.assertEquals(solution.getNumberOfConstraints(), copy.getNumberOfConstraints());
 		for (int i = 0; i < copy.getNumberOfConstraints(); i++) {
 			Assert.assertEquals(solution.getConstraint(i), copy.getConstraint(i), TestThresholds.HIGH_PRECISION);
+			Assert.assertNotSame(solution.getConstraint(i), copy.getConstraint(i));
 		}
 
 		// the copy's variables are independent from the original
-		((RealVariable)copy.getVariable(0)).setValue(1.0);
-		Assert.assertEquals(0.5, ((RealVariable)solution.getVariable(0)).getValue(), TestThresholds.HIGH_PRECISION);
+		RealVariable.setReal(copy.getVariable(0), 1.0);
+		Assert.assertEquals(0.5, RealVariable.getReal(solution.getVariable(0)), TestThresholds.HIGH_PRECISION);
 
 		// the equals method works to detect the change
 		Assert.assertFalse(solution.equals(copy));
