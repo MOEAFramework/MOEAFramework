@@ -66,7 +66,8 @@ public class Subset extends AbstractVariable {
 	 * Set of members in this subset for faster querying.
 	 */
 	private Set<Integer> members;
-
+	
+	
 	/**
 	 * Constructs a new decision variable for representing subsets of size {@code k} from a set of size {@code n}.
 	 * 
@@ -74,19 +75,44 @@ public class Subset extends AbstractVariable {
 	 * @param n the size of the original set (i.e., the number of candidate members)
 	 */
 	public Subset(int k, int n) {
-		this(k, k, n);
+		this(null, k, n);
 	}
 
 	/**
+	 * Constructs a new decision variable for representing subsets of size {@code k} from a set of size {@code n} with
+	 * the given name.
+	 * 
+	 * @param name the name of this decision variable
+	 * @param k the fixed size of the subset
+	 * @param n the size of the original set (i.e., the number of candidate members)
+	 */
+	public Subset(String name, int k, int n) {
+		this(name, k, k, n);
+	}
+	
+	/**
 	 * Constructs a new decision variable for representing subsets whose size ranges between {@code l} (minimum size)
-	 * and {@code u} (maximum size) from a set of size {@code n}
+	 * and {@code u} (maximum size) from a set of size {@code n}.
 	 * 
 	 * @param l the minimum size of the subset
 	 * @param u the maximum size of the subset
 	 * @param n the size of the original set (i.e., the number of candidate members)
 	 */
 	public Subset(int l, int u, int n) {
-		super();
+		this(null, l, u, n);
+	}
+
+	/**
+	 * Constructs a new decision variable for representing subsets whose size ranges between {@code l} (minimum size)
+	 * and {@code u} (maximum size) from a set of size {@code n} with the given name.
+	 * 
+	 * @param name the name of this decision variable
+	 * @param l the minimum size of the subset
+	 * @param u the maximum size of the subset
+	 * @param n the size of the original set (i.e., the number of candidate members)
+	 */
+	public Subset(String name, int l, int u, int n) {
+		super(name);
 		this.l = l;
 		this.u = u;
 		this.n = n;
@@ -224,6 +250,7 @@ public class Subset extends AbstractVariable {
 	 * Populates this subset from an array.  Any duplicate values in the array will be ignored.
 	 * 
 	 * @param array the array containing the subset members
+	 * @throws IllegalArgumentException if the permutation array is not a valid subset
 	 */
 	public void fromArray(int[] array) {
 		Validate.that("array.length", array.length).isBetween(l, u);
@@ -263,8 +290,8 @@ public class Subset extends AbstractVariable {
 
 	@Override
 	public Subset copy() {
-		Subset copy = new Subset(l, u, n);
-		copy.members = getSet();
+		Subset copy = new Subset(name, l, u, n);
+		copy.fromArray(toArray());
 		return copy;
 	}
 

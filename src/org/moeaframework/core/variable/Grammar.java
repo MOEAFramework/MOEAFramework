@@ -52,18 +52,19 @@ public class Grammar extends AbstractVariable {
 	 * @param size the initial size of this grammar
 	 */
 	public Grammar(int size) {
-		this(new int[size]);
+		this(null, size);
 	}
 
 	/**
-	 * Constructs a grammar variable with the specified integer codon representation.
+	 * Constructs a grammar variable with the specified initial size and name.
 	 * 
-	 * @param codon the integer codon representation for this grammar
+	 * @param name the name of this decision variable
+	 * @param size the initial size of this grammar
 	 */
-	public Grammar(int[] codon) {
-		super();
+	public Grammar(String name, int size) {
+		super(name);
 
-		fromArray(codon);
+		fromArray(new int[size]);
 	}
 
 	/**
@@ -161,7 +162,9 @@ public class Grammar extends AbstractVariable {
 
 	@Override
 	public Grammar copy() {
-		return new Grammar(codon);
+		Grammar copy = new Grammar(name, codon.length);
+		copy.fromArray(codon);
+		return copy;
 	}
 
 	/**

@@ -13,6 +13,18 @@ version to access the latest features, please be aware you will likely need to u
   * Adds a `name` parameter to `Variable`, `Objective`, and `Constraint`, allowing problems to define custom names for
     each.  If no name is given, the name defaults to `Var<N>`, `Obj<N>`, and `Constr<N>`.
     
+  * Variables no longer have a constructor for setting the value.  Instead, the value must be set in a separate call.
+    This helps avoid any ambiguity in the constructor arguments, as they now only specify the constraints on the
+    variable.
+    ```
+    // old version
+    RealVariable variable = new RealVariable(0.5, 0.0, 1.0);
+    
+    // new version
+    RealVariable variable = new RealVariable(0.0, 1.0);
+    variable.setValue(0.5);
+    ```
+    
   * Updated "result file" format.  Namely, information about the new objective and constraint types is stored in the
     header, allowing it to interpret the data correctly.
     

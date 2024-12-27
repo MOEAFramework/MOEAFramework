@@ -43,12 +43,22 @@ public class BinaryVariable extends AbstractVariable {
 	private final BitSet bitSet;
 
 	/**
-	 * Constructs a binary variable with the specified number of bits. All bits are initially set to {@code false}.
+	 * Constructs a binary variable with the specified number of bits.  All bits are initially set to {@code false}.
 	 * 
 	 * @param numberOfBits the number of bits stored in this variable
 	 */
 	public BinaryVariable(int numberOfBits) {
-		super();
+		this(null, numberOfBits);
+	}
+	
+	/**
+	 * Constructs a binary variable with the specified number of bits.  All bits are initially set to {@code false}.
+	 * 
+	 * @param name the name of this decision variable
+	 * @param numberOfBits the number of bits stored in this variable
+	 */
+	public BinaryVariable(String name, int numberOfBits) {
+		super(name);
 		this.numberOfBits = numberOfBits;
 
 		bitSet = new BitSet(numberOfBits);

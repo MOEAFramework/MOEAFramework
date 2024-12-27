@@ -41,8 +41,8 @@ public class UMTest extends DistributionVariationTest<UM> {
 		UM um = createInstance();
 
 		Solution parent = new Solution(2, 0);
-		parent.setVariable(0, new RealVariable(2.0, 0.0, 10.0));
-		parent.setVariable(1, new RealVariable(-2.0, -2.0, 5.0));
+		parent.setVariable(0, new RealVariable(0.0, 10.0).withValue(2.0));
+		parent.setVariable(1, new RealVariable(-2.0, 5.0).withValue(-2.0));
 
 		Solution[] parents = new Solution[] { parent };
 

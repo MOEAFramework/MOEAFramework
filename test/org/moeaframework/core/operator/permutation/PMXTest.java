@@ -32,8 +32,11 @@ public class PMXTest extends AbstractPermutationOperatorTest<PMX> {
 	@Test
 	public void testEvolve() {
 		for (int i = 0; i < 1000; i++) {
-			Permutation p1 = new Permutation(new int[] { 0, 1, 2, 3, 4, 5 });
-			Permutation p2 = new Permutation(new int[] { 5, 4, 3, 2, 1, 0 });
+			Permutation p1 = new Permutation(6);
+			p1.fromArray(new int[] { 0, 1, 2, 3, 4, 5 });
+			
+			Permutation p2 = new Permutation(6);
+			p2.fromArray(new int[] { 5, 4, 3, 2, 1, 0 });
 
 			new PMX().evolve(p1, p2);
 

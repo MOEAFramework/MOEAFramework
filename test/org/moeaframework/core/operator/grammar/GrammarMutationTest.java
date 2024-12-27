@@ -49,7 +49,11 @@ public class GrammarMutationTest extends AbstractGrammarOperatorTest<GrammarMuta
 
 		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
 			Solution original = new Solution(1, 0);
-			original.setVariable(0, new Grammar(new int[] { 0, 1, 2, 3, 4 }));
+			
+			Grammar grammar = new Grammar(5);
+			grammar.fromArray(new int[] { 0, 1, 2, 3, 4 });
+			
+			original.setVariable(0, grammar);
 
 			Solution mutated = mutation.evolve(new Solution[] { original })[0];
 

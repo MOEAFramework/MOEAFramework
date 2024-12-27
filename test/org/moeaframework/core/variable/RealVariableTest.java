@@ -34,7 +34,7 @@ public class RealVariableTest {
 
 	@Before
 	public void setUp() {
-		variable = new RealVariable(0.5, 0.0, 1.0);
+		variable = new RealVariable(0.0, 1.0).withValue(0.5);
 	}
 
 	@After
@@ -43,10 +43,16 @@ public class RealVariableTest {
 	}
 	
 	@Test
-	public void testNoValueConstructor() {
+	public void testDefaultValue() {
 		Assert.assertTrue(Double.isNaN(new RealVariable(0.0, 1.0).getValue()));
 	}
 
+	@Test
+	public void testName() {
+		Assert.assertNull(new RealVariable(0.0, 1.0).getName());
+		Assert.assertEquals("foo", new RealVariable("foo", 0.0, 1.0).getName());
+	}
+	
 	@Test
 	public void testGetValue() {
 		Assert.assertEquals(0.5, variable.getValue(), TestThresholds.HIGH_PRECISION);
@@ -64,16 +70,16 @@ public class RealVariableTest {
 	public void testEquals() {
 		Assert.assertFalse(variable.equals(null));
 		Assert.assertTrue(variable.equals(variable));
-		Assert.assertTrue(variable.equals(new RealVariable(0.5, 0.0, 1.0)));
-		Assert.assertFalse(variable.equals(new RealVariable(0.75, 0.0, 1.0)));
-		Assert.assertFalse(variable.equals(new RealVariable(0.5, 0.25, 1.0)));
-		Assert.assertFalse(variable.equals(new RealVariable(0.5, 0.0, 0.75)));
+		Assert.assertTrue(variable.equals(new RealVariable(0.0, 1.0).withValue(0.5)));
+		Assert.assertFalse(variable.equals(new RealVariable(0.0, 1.0).withValue(0.75)));
+		Assert.assertFalse(variable.equals(new RealVariable(0.25, 1.0).withValue(0.5)));
+		Assert.assertFalse(variable.equals(new RealVariable(0.0, 0.75).withValue(0.5)));
 	}
 
 	@Test
 	public void testHashCode() {
 		Assert.assertEquals(variable.hashCode(), variable.hashCode());
-		Assert.assertEquals(variable.hashCode(), new RealVariable(0.5, 0.0, 1.0).hashCode());
+		Assert.assertEquals(variable.hashCode(), new RealVariable(0.0, 1.0).withValue(0.5).hashCode());
 	}
 
 	@Test
@@ -88,13 +94,8 @@ public class RealVariableTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testConstructorBoundsCheckLower() {
-		new RealVariable(0.0 - Settings.EPS, 0.0, 1.0);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testConstructorBoundsCheckUpper() {
-		new RealVariable(1.0 + Settings.EPS, 0.0, 1.0);
+	public void testInvalidBounds() {
+		new RealVariable(1.0, 0.0);
 	}
 
 	@Test(expected = IllegalArgumentException.class)

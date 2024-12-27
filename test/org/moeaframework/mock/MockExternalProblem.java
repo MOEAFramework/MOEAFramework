@@ -111,8 +111,8 @@ public class MockExternalProblem extends ExternalProblem {
 	@Override
 	public Solution newSolution() {
 		Solution solution = new Solution(5, 2, 1);
-		solution.setVariable(0, new RealVariable(0.5, 0.0, 1.0));
-		solution.setVariable(1, new BinaryIntegerVariable(5, 0, 10));
+		solution.setVariable(0, new RealVariable(0.0, 1.0).withValue(0.5));
+		solution.setVariable(1, new BinaryIntegerVariable(0, 10).withValue(5));
 		solution.setVariable(2, new BinaryVariable(5));
 		solution.setVariable(3, new Permutation(3));
 		solution.setVariable(4, new Subset(1, 3));

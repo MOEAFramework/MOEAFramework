@@ -35,12 +35,18 @@ public class BinaryIntegerVariableTest {
 
 	@Before
 	public void setUp() {
-		variable = new BinaryIntegerVariable(7, 5, 10);
+		variable = new BinaryIntegerVariable(5, 10).withValue(7);
 	}
 
 	@After
 	public void tearDown() {
 		variable = null;
+	}
+	
+	@Test
+	public void testName() {
+		Assert.assertNull(new BinaryIntegerVariable(5, 10).getName());
+		Assert.assertEquals("foo", new BinaryIntegerVariable("foo", 5, 10).getName());
 	}
 
 	@Test
@@ -62,16 +68,16 @@ public class BinaryIntegerVariableTest {
 	public void testEquals() {
 		Assert.assertFalse(variable.equals(null));
 		Assert.assertTrue(variable.equals(variable));
-		Assert.assertTrue(variable.equals(new BinaryIntegerVariable(7, 5, 10)));
-		Assert.assertFalse(variable.equals(new BinaryIntegerVariable(9, 5, 10)));
-		Assert.assertFalse(variable.equals(new BinaryIntegerVariable(7, 2, 10)));
-		Assert.assertFalse(variable.equals(new BinaryIntegerVariable(7, 5, 9)));
+		Assert.assertTrue(variable.equals(new BinaryIntegerVariable(5, 10).withValue(7)));
+		Assert.assertFalse(variable.equals(new BinaryIntegerVariable(5, 10).withValue(9)));
+		Assert.assertFalse(variable.equals(new BinaryIntegerVariable(2, 10).withValue(7)));
+		Assert.assertFalse(variable.equals(new BinaryIntegerVariable(5, 9).withValue(7)));
 	}
 
 	@Test
 	public void testHashCode() {
 		Assert.assertEquals(variable.hashCode(), variable.hashCode());
-		Assert.assertEquals(variable.hashCode(), new BinaryIntegerVariable(7, 5, 10).hashCode());
+		Assert.assertEquals(variable.hashCode(), new BinaryIntegerVariable(5, 10).withValue(7).hashCode());
 	}
 
 	@Test
@@ -87,13 +93,8 @@ public class BinaryIntegerVariableTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testConstructorBoundsCheckLower() {
-		new BinaryIntegerVariable(-1, 0, 10);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testConstructorBoundsCheckUpper() {
-		new BinaryIntegerVariable(11, 0, 10);
+	public void testInvalidBounds() {
+		new BinaryIntegerVariable(10, 0);
 	}
 
 	@Test(expected = IllegalArgumentException.class)

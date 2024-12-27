@@ -38,7 +38,7 @@ public abstract class DistributionVariationTest<T extends Variation> extends Abs
 		Solution solution = new Solution(variables.length, 0);
 
 		for (int i = 0; i < variables.length; i++) {
-			solution.setVariable(i, new RealVariable(variables[i], Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY));
+			solution.setVariable(i, new RealVariable(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY).withValue(variables[i]));
 		}
 
 		return solution;

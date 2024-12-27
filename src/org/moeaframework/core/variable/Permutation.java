@@ -36,14 +36,24 @@ public class Permutation extends AbstractVariable {
 	 * The permutation array.
 	 */
 	private int[] permutation;
-
+	
 	/**
 	 * Constructs a permutation variable with the specified number of elements.
 	 * 
 	 * @param size the number of elements in the permutation
 	 */
 	public Permutation(int size) {
-		super();
+		this(null, size);
+	}
+
+	/**
+	 * Constructs a permutation variable with the specified number of elements.
+	 * 
+	 * @param name the name of this decision variable
+	 * @param size the number of elements in the permutation
+	 */
+	public Permutation(String name, int size) {
+		super(name);
 		Validate.that("size", size).isGreaterThan(0);
 
 		permutation = new int[size];
@@ -53,22 +63,11 @@ public class Permutation extends AbstractVariable {
 		}
 	}
 
-	/**
-	 * Constructs a permutation variable using the specified permutation array.
-	 * 
-	 * @param permutation the permutation array
-	 * @throws IllegalArgumentException if the permutation array is not a valid permutation
-	 */
-	public Permutation(int[] permutation) {
-		super();
-		Validate.that("permutation", permutation).isNotEmpty();
-		
-		fromArray(permutation);
-	}
-
 	@Override
 	public Permutation copy() {
-		return new Permutation(permutation);
+		Permutation copy = new Permutation(name, permutation.length);
+		copy.fromArray(permutation);
+		return copy;
 	}
 
 	/**

@@ -48,14 +48,24 @@ public class Program extends AbstractVariable {
 	 * The root of the program tree.
 	 */
 	private Root root;
-
+	
 	/**
 	 * Constructs a new program variable with the specified syntax rules.
 	 * 
 	 * @param rules the rules defining the program syntax
 	 */
 	public Program(Rules rules) {
-		super();
+		this(null, rules);
+	}
+
+	/**
+	 * Constructs a new program variable with the specified syntax rules and name.
+	 * 
+	 * @param name the name of this decision variable
+	 * @param rules the rules defining the program syntax
+	 */
+	public Program(String name, Rules rules) {
+		super(name);
 		this.rules = rules;
 		this.root = new Root();
 	}
@@ -99,7 +109,7 @@ public class Program extends AbstractVariable {
 	
 	@Override
 	public Program copy() {
-		Program program = new Program(rules);
+		Program program = new Program(name, rules);
 		
 		if (getBody() != null) {
 			program.setBody(getBody().copyTree());

@@ -55,8 +55,8 @@ public class TabularDataTest {
 	@Before
 	public void setUp() {
 		List<Triple<String, Integer, Variable>> rawData = new ArrayList<>();
-		rawData.add(Triple.of("foo", 1, new RealVariable(0.5, 0.0, 1.0)));
-		rawData.add(Triple.of("bar", Integer.MAX_VALUE, new BinaryIntegerVariable(5, 0, 10)));
+		rawData.add(Triple.of("foo", 1, new RealVariable(.0, 1.0).withValue(0.5)));
+		rawData.add(Triple.of("bar", Integer.MAX_VALUE, new BinaryIntegerVariable(0, 10).withValue(5)));
 		
 		data = new TabularData<>(rawData);
 		data.addColumn(new Column<>("String", Triple::getLeft));
@@ -221,6 +221,7 @@ public class TabularDataTest {
 	@Test
 	public void testJsonUsingPandas() throws IOException, InterruptedException {
 		Assume.assumePythonExists();
+		Assume.assumePythonModule("pandas");
 		
 		File tempFile = TempFiles.createFile();
 		data.save(TableFormat.Json, tempFile);

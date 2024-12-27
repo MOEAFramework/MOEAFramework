@@ -74,18 +74,6 @@ public abstract class AbstractConstraint implements Constraint {
 	public double getValue() {
 		return value;
 	}
-	
-	/**
-	 * Updates this constraint with the given constraint value and returns itself.
-	 * 
-	 * @param value the constraint value
-	 * @return a reference to this constraint
-	 */
-	@Override
-	public Constraint withValue(double value) {
-		setValue(value);
-		return this;
-	}
 
 	@Override
 	public String toString() {

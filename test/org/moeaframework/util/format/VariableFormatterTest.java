@@ -34,8 +34,8 @@ public class VariableFormatterTest {
 		TabularData<Variable> data = new TabularData<>(new ArrayList<Variable>());
 		VariableFormatter formatter = new VariableFormatter(data);
 		
-		Assert.assertEquals("0.500000", formatter.format(new RealVariable(0.5, 0.0, 1.0)));
-		Assert.assertEquals("5", formatter.format(new BinaryIntegerVariable(5, 0, 10)));
+		Assert.assertEquals("0.500000", formatter.format(new RealVariable(0.0, 1.0).withValue(0.5)));
+		Assert.assertEquals("5", formatter.format(new BinaryIntegerVariable(0, 10).withValue(5)));
 		Assert.assertEquals("0000000000", formatter.format(new BinaryVariable(10)));
 	}
 	
@@ -45,7 +45,7 @@ public class VariableFormatterTest {
 		VariableFormatter formatter = new VariableFormatter(data);
 		
 		Assert.assertEquals("[0.500000, 5, 0000000000]", formatter.format(List.of(
-				new RealVariable(0.5, 0.0, 1.0), new BinaryIntegerVariable(5, 0, 10), new BinaryVariable(10))));
+				new RealVariable(0.0, 1.0).withValue(0.5), new BinaryIntegerVariable(0, 10).withValue(5), new BinaryVariable(10))));
 	}
 
 }

@@ -48,6 +48,12 @@ public class ProgramTest {
 	}
 	
 	@Test
+	public void testName() {
+		Assert.assertNull(new Program(rules).getName());
+		Assert.assertEquals("foo", new Program("foo", rules).getName());
+	}
+	
+	@Test
 	public void testVoidReturnType() {
 		rules.setReturnType(Void.class);
 		program.randomize();

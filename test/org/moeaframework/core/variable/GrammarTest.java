@@ -34,34 +34,25 @@ public class GrammarTest {
 
 	@Before
 	public void setUp() {
-		grammar = new Grammar(new int[] { 0, 1, 2, 3, 4 });
+		grammar = new Grammar(5);
+		grammar.fromArray(new int[] { 0, 1, 2, 3, 4 });
 	}
 
 	@After
 	public void tearDown() {
 		grammar = null;
 	}
-
+	
 	@Test
-	public void testSizeConstructor() {
-		Grammar grammar = new Grammar(5);
-		Assert.assertEquals(5, grammar.size());
+	public void testName() {
+		Assert.assertNull(new Grammar(5).getName());
+		Assert.assertEquals("foo", new Grammar("foo", 5).getName());
 	}
 
 	@Test
-	public void testArrayConstructor() {
-		int[] array = new int[] { 0, 1, 2, 3 };
-		Grammar grammar = new Grammar(array);
-
-		Assert.assertEquals(4, grammar.size());
-
-		for (int i = 0; i < grammar.size(); i++) {
-			Assert.assertEquals(array[i], grammar.get(i));
-		}
-
-		// ensure stored array is independent from argument
-		array[1] = 0;
-		Assert.assertEquals(1, grammar.get(1));
+	public void testConstructor() {
+		Grammar grammar = new Grammar(5);
+		Assert.assertEquals(5, grammar.size());
 	}
 
 	@Test
@@ -73,17 +64,20 @@ public class GrammarTest {
 	public void testEquals() {
 		Assert.assertFalse(grammar.equals(null));
 		Assert.assertTrue(grammar.equals(grammar));
-		Assert.assertTrue(grammar.equals(new Grammar(new int[] { 0, 1, 2, 3, 4 })));
+		Assert.assertTrue(grammar.equals(grammar.copy()));
 		Assert.assertFalse(grammar.equals(new Grammar(0)));
-		Assert.assertFalse(grammar.equals(new Grammar(new int[] { 0, 1, 2, 3 })));
-		Assert.assertFalse(grammar.equals(new Grammar(new int[] { 0, 1, 2, 3, 4, 5 })));
-		Assert.assertFalse(grammar.equals(new Grammar(new int[] { 0, 2, 1, 3, 4 })));
+		Assert.assertFalse(grammar.equals(new Grammar(4)));
+		Assert.assertFalse(grammar.equals(new Grammar(6)));
+		
+		Grammar other = new Grammar(5);
+		other.fromArray(new int[] { 0, 2, 1, 3, 4 });
+		Assert.assertFalse(grammar.equals(other));
 	}
 	
 	@Test
 	public void testHashCode() {
 		Assert.assertEquals(grammar.hashCode(), grammar.hashCode());
-		Assert.assertEquals(grammar.hashCode(), new Grammar(new int[] { 0, 1, 2, 3, 4 }).hashCode());
+		Assert.assertEquals(grammar.hashCode(), grammar.copy().hashCode());
 	}
 
 	@Test

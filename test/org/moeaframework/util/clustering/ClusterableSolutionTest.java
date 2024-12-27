@@ -39,7 +39,7 @@ public class ClusterableSolutionTest {
 
 	@Test
 	public void testVariables() {
-		Solution solution = MockSolution.of().withVariables(new RealVariable(0.25, 0.0, 1.0), new BinaryIntegerVariable(2, 0, 5));
+		Solution solution = MockSolution.of().withVariables(new RealVariable(0.0, 1.0).withValue(0.25), new BinaryIntegerVariable(0, 5).withValue(2));
 		ClusterableSolution clusterableSolution = ClusterableSolution.withVariables(solution);
 		
 		Assert.assertSame(solution, clusterableSolution.getSolution());

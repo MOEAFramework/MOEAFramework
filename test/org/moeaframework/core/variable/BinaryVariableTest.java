@@ -52,6 +52,12 @@ public class BinaryVariableTest {
 	}
 
 	@Test
+	public void testName() {
+		Assert.assertNull(new BinaryVariable(5).getName());
+		Assert.assertEquals("foo", new BinaryVariable("foo", 5).getName());
+	}
+	
+	@Test
 	public void testGetValue() {
 		Assert.assertEquals(2, variable.getNumberOfBits());
 		Assert.assertFalse(variable.get(0));

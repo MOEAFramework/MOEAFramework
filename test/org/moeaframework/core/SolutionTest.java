@@ -39,7 +39,7 @@ public class SolutionTest {
 	public void setUp() {
 		solution = new Solution(1, 2, 2);
 
-		solution.setVariable(0, new RealVariable(0.5, 0.0, 1.0));
+		solution.setVariable(0, new RealVariable(0.0, 1.0).withValue(0.5));
 		solution.setObjectiveValue(0, 1.0);
 		solution.setObjectiveValue(1, 2.0);
 		solution.setConstraintValue(0, 0.0);
@@ -75,7 +75,7 @@ public class SolutionTest {
 
 	@Test
 	public void testSetVariable() {
-		solution.setVariable(0, new RealVariable(0.75, 0.0, 1.0));
+		solution.setVariable(0, new RealVariable(0.0, 1.0).withValue(0.75));
 		Assert.assertEquals(0.75, ((RealVariable)solution.getVariable(0)).getValue(), TestThresholds.HIGH_PRECISION);
 	}
 
@@ -194,12 +194,12 @@ public class SolutionTest {
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSetVariableBoundsChecking1() {
-		solution.setVariable(2, new RealVariable(0.5, 0.0, 1.0));
+		solution.setVariable(2, new RealVariable(0.0, 1.0));
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSetVariableBoundsChecking2() {
-		solution.setVariable(-1, new RealVariable(0.5, 0.0, 1.0));
+		solution.setVariable(-1, new RealVariable(0.0, 1.0));
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)

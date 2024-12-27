@@ -47,30 +47,30 @@ public class RealVariable extends AbstractVariable {
 	private final double upperBound;
 
 	/**
-	 * Constructs a real variable in the range {@code lowerBound <= x <= upperBound} with an uninitialized value.
+	 * Constructs a real variable in the range {@code lowerBound <= x <= upperBound}.
 	 * 
 	 * @param lowerBound the lower bound of this decision variable, inclusive
 	 * @param upperBound the upper bound of this decision variable, inclusive
 	 */
 	public RealVariable(double lowerBound, double upperBound) {
-		this(Double.NaN, lowerBound, upperBound);
+		this(null, lowerBound, upperBound);
 	}
 
 	/**
-	 * Constructs a real variable in the range {@code lowerBound <= x <= upperBound} with the specified initial value.
+	 * Constructs a real variable in the range {@code lowerBound <= x <= upperBound} with the given name.
 	 * 
-	 * @param value the initial value of this decision variable
+	 * @param name the name of this decision variable
 	 * @param lowerBound the lower bound of this decision variable, inclusive
 	 * @param upperBound the upper bound of this decision variable, inclusive
-	 * @throws IllegalArgumentException if the value is out of bounds
-	 *         {@code (value < lowerBound) || (value > upperBound)}
 	 */
-	public RealVariable(double value, double lowerBound, double upperBound) {
-		super();
+	public RealVariable(String name, double lowerBound, double upperBound) {
+		super(name);
 		this.lowerBound = lowerBound;
 		this.upperBound = upperBound;
 		
-		setValue(value);
+		Validate.that("lowerBound", lowerBound).isLessThanOrEqualTo("upperBound", upperBound);
+		
+		setValue(Double.NaN);
 	}
 
 	/**
@@ -97,6 +97,20 @@ public class RealVariable extends AbstractVariable {
 		
 		this.value = value;
 	}
+	
+	/**
+	 * Calls {@link #setValue(double)} and returns this instance, mainly allowing one to create and set the value of
+	 * a decision variable on one line.
+	 * 
+	 * @param value the new value for this decision variable
+	 * @return this decision variable
+	 * @throws IllegalArgumentException if the value is out of bounds
+	 *         {@code (value < getLowerBound()) || (value > getUpperBound())}
+	 */
+	public RealVariable withValue(double value) {
+		setValue(value);
+		return this;
+	}
 
 	/**
 	 * Returns the lower bound of this decision variable.
@@ -118,7 +132,7 @@ public class RealVariable extends AbstractVariable {
 
 	@Override
 	public RealVariable copy() {
-		return new RealVariable(value, lowerBound, upperBound);
+		return new RealVariable(name, lowerBound, upperBound).withValue(value);
 	}
 	
 	@Override

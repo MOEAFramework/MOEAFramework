@@ -48,11 +48,17 @@ public class GrammarCrossoverTest extends AbstractGrammarOperatorTest<GrammarCro
 		int count = 0;
 
 		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+			Grammar g1 = new Grammar(5);
+			g1.fromArray(new int[] { 0, 1, 2, 3, 4 });
+			
+			Grammar g2 = new Grammar(3);
+			g2.fromArray(new int[] { 5, 6, 7 });
+			
 			Solution p1 = new Solution(1, 0);
-			p1.setVariable(0, new Grammar(new int[] { 0, 1, 2, 3, 4 }));
+			p1.setVariable(0, g1);
 
 			Solution p2 = new Solution(1, 0);
-			p2.setVariable(0, new Grammar(new int[] { 5, 6, 7 }));
+			p2.setVariable(0, g2);
 
 			Solution[] offspring = crossover.evolve(new Solution[] { p1, p2 });
 

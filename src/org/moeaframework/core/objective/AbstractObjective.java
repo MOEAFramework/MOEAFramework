@@ -76,17 +76,6 @@ public abstract class AbstractObjective implements Objective {
 		return value;
 	}
 	
-	/**
-	 * Updates this objective with the given objective value and returns itself.
-	 * 
-	 * @param value the objective value
-	 * @return a reference to this objective
-	 */
-	public Objective withValue(double value) {
-		setValue(value);
-		return this;
-	}
-	
 	@Override
 	public String getDefinition() {
 		if (name == null) {

@@ -40,8 +40,8 @@ public class PMTest extends MeanCentricVariationTest<PM> {
 		PM pm = createInstance();
 
 		Solution solution = new Solution(2, 0);
-		solution.setVariable(0, new RealVariable(1.0, -10.0, 10.0));
-		solution.setVariable(1, new RealVariable(-1.0, -10.0, 10.0));
+		solution.setVariable(0, new RealVariable(-10.0, 10.0).withValue(1.0));
+		solution.setVariable(1, new RealVariable(-10.0, 10.0).withValue(-1.0));
 
 		Solution[] parents = new Solution[] { solution };
 

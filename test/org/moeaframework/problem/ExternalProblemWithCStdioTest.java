@@ -159,7 +159,7 @@ public class ExternalProblemWithCStdioTest {
 	public void testIntToDoubleCompatibility() {
 		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {
 			Solution solution = problem.newSolution();
-			solution.setVariable(1, new BinaryIntegerVariable(8, 5, 20));
+			solution.setVariable(1, new BinaryIntegerVariable(5, 20).withValue(8));
 			problem.evaluate(solution);
 		}
 	}
@@ -168,7 +168,7 @@ public class ExternalProblemWithCStdioTest {
 	public void testErrorParsingBinary() {
 		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {
 			Solution solution = problem.newSolution();
-			solution.setVariable(2, new RealVariable(0.5, 0.0, 1.0));
+			solution.setVariable(2, new RealVariable(0.0, 1.0).withValue(0.5));
 			problem.evaluate(solution);
 		}
 	}
@@ -177,7 +177,7 @@ public class ExternalProblemWithCStdioTest {
 	public void testErrorParsingInteger() {
 		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {
 			Solution solution = problem.newSolution();
-			solution.setVariable(3, new RealVariable(0.5, 0.0, 1.0));
+			solution.setVariable(3, new RealVariable(0.0, 1.0).withValue(0.5));
 			problem.evaluate(solution);
 		}
 	}
@@ -186,7 +186,7 @@ public class ExternalProblemWithCStdioTest {
 	public void testErrorParsingPermutation() {
 		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {
 			Solution solution = problem.newSolution();
-			solution.setVariable(4, new RealVariable(0.5, 0.0, 1.0));
+			solution.setVariable(4, new RealVariable(0.0, 1.0).withValue(0.5));
 			problem.evaluate(solution);
 		}
 	}
@@ -195,7 +195,7 @@ public class ExternalProblemWithCStdioTest {
 	public void testErrorParsingSubset() {
 		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {
 			Solution solution = problem.newSolution();
-			solution.setVariable(5, new RealVariable(0.5, 0.0, 1.0));
+			solution.setVariable(5, new RealVariable(0.0, 1.0).withValue(0.5));
 			problem.evaluate(solution);
 		}
 	}
@@ -223,7 +223,7 @@ public class ExternalProblemWithCStdioTest {
 		try (TestExternalProblem problem = new TestExternalProblem(createBuilder())) {
 			Solution solution = new Solution(6, 2, 1);
 			copy(solution, problem.newSolution(), 5);
-			solution.setVariable(5, new RealVariable(0.5, 0.0, 1.0));
+			solution.setVariable(5, new RealVariable(0.0, 1.0).withValue(0.5));
 			problem.evaluate(solution);
 		}
 	}

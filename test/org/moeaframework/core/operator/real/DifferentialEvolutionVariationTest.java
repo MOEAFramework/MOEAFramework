@@ -44,20 +44,20 @@ public class DifferentialEvolutionVariationTest extends MeanCentricVariationTest
 		DifferentialEvolutionVariation de = createInstance();
 
 		Solution s1 = new Solution(2, 0);
-		s1.setVariable(0, new RealVariable(0.0, -10.0, 10.0));
-		s1.setVariable(1, new RealVariable(0.0, -10.0, 10.0));
+		s1.setVariable(0, new RealVariable(-10.0, 10.0).withValue(0.0));
+		s1.setVariable(1, new RealVariable(-10.0, 10.0).withValue(0.0));
 
 		Solution s2 = new Solution(2, 0);
-		s2.setVariable(0, new RealVariable(1.0, -10.0, 10.0));
-		s2.setVariable(1, new RealVariable(0.0, -10.0, 10.0));
+		s2.setVariable(0, new RealVariable(-10.0, 10.0).withValue(1.0));
+		s2.setVariable(1, new RealVariable(-10.0, 10.0).withValue(0.0));
 
 		Solution s3 = new Solution(2, 0);
-		s3.setVariable(0, new RealVariable(0.0, -10.0, 10.0));
-		s3.setVariable(1, new RealVariable(0.0, -10.0, 10.0));
+		s3.setVariable(0, new RealVariable(-10.0, 10.0).withValue(0.0));
+		s3.setVariable(1, new RealVariable(-10.0, 10.0).withValue(0.0));
 
 		Solution s4 = new Solution(2, 0);
-		s4.setVariable(0, new RealVariable(5.0, -10.0, 10.0));
-		s4.setVariable(1, new RealVariable(5.0, -10.0, 10.0));
+		s4.setVariable(0, new RealVariable(-10.0, 10.0).withValue(5.0));
+		s4.setVariable(1, new RealVariable(-10.0, 10.0).withValue(5.0));
 
 		Solution[] parents = new Solution[] { s1, s2, s3, s4 };
 		

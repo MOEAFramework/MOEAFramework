@@ -51,59 +51,54 @@ public class BinaryIntegerVariable extends BinaryVariable {
 	private final boolean gray;
 	
 	/**
-	 * Constructs an integer-valued variable in the range {@code lowerBound <= x <= upperBound} with an uninitialized
-	 * value.  Uses gray coding by default.
+	 * Constructs an integer-valued variable in the range {@code lowerBound <= x <= upperBound}.  Uses gray coding by
+	 * default.
 	 * 
 	 * @param lowerBound the lower bound of this decision variable, inclusive
 	 * @param upperBound the upper bound of this decision variable, inclusive
 	 */
 	public BinaryIntegerVariable(int lowerBound, int upperBound) {
-		this(lowerBound, upperBound, true);
+		this(null, lowerBound, upperBound, true);
 	}
 	
 	/**
-	 * Constructs an integer-valued variable in the range {@code lowerBound <= x <= upperBound} with the specified
-	 * initial value.  Uses gray coding by default.
+	 * Constructs an integer-valued variable in the range {@code lowerBound <= x <= upperBound} with the given name.
+	 * Uses gray coding by default.
 	 * 
-	 * @param value the initial value of this decision variable
+	 * @param name the name of this decision variable
 	 * @param lowerBound the lower bound of this decision variable, inclusive
 	 * @param upperBound the upper bound of this decision variable, inclusive
-	 * @throws IllegalArgumentException if the value is out of bounds
-	 *         {@code (value < lowerBound) || (value > upperBound)}
 	 */
-	public BinaryIntegerVariable(int value, int lowerBound, int upperBound) {
-		this(value, lowerBound, upperBound, true);
+	public BinaryIntegerVariable(String name, int lowerBound, int upperBound) {
+		this(name, lowerBound, upperBound, true);
 	}
 	
 	/**
-	 * Constructs an integer-valued variable in the range {@code lowerBound <= x <= upperBound} with an uninitialized
-	 * value.
+	 * Constructs an integer-valued variable in the range {@code lowerBound <= x <= upperBound}.
 	 * 
 	 * @param lowerBound the lower bound of this decision variable, inclusive
 	 * @param upperBound the upper bound of this decision variable, inclusive
 	 * @param gray if the binary representation uses gray coding
 	 */
 	public BinaryIntegerVariable(int lowerBound, int upperBound, boolean gray) {
-		super(getNumberOfBits(lowerBound, upperBound));
-		this.lowerBound = lowerBound;
-		this.upperBound = upperBound;
-		this.gray = gray;
+		this(null, lowerBound, upperBound, gray);
 	}
 	
 	/**
-	 * Constructs an integer-valued variable in the range {@code lowerBound <= x <= upperBound} with the specified
-	 * initial value.  Uses gray coding by default.
+	 * Constructs an integer-valued variable in the range {@code lowerBound <= x <= upperBound} with the given name.
 	 * 
-	 * @param value the initial value of this decision variable
+	 * @param name the name of this decision variable
 	 * @param lowerBound the lower bound of this decision variable, inclusive
 	 * @param upperBound the upper bound of this decision variable, inclusive
 	 * @param gray if the binary representation uses gray coding
-	 * @throws IllegalArgumentException if the value is out of bounds
-	 *         {@code (value < lowerBound) || (value > upperBound)}
 	 */
-	public BinaryIntegerVariable(int value, int lowerBound, int upperBound, boolean gray) {
-		this(lowerBound, upperBound, gray);
-		setValue(value);
+	public BinaryIntegerVariable(String name, int lowerBound, int upperBound, boolean gray) {
+		super(name, getNumberOfBits(lowerBound, upperBound));
+		this.lowerBound = lowerBound;
+		this.upperBound = upperBound;
+		this.gray = gray;
+		
+		Validate.that("lowerBound", lowerBound).isLessThanOrEqualTo("upperBound", upperBound);
 	}
 	
 	/**
@@ -160,6 +155,20 @@ public class BinaryIntegerVariable extends BinaryVariable {
 	}
 	
 	/**
+	 * Calls {@link #setValue(int)} and returns this instance, mainly allowing one to create and set the value of
+	 * a decision variable on one line.
+	 * 
+	 * @param value the new value for this decision variable
+	 * @return this decision variable
+	 * @throws IllegalArgumentException if the value is out of bounds
+	 *         {@code (value < getLowerBound()) || (value > getUpperBound())}
+	 */
+	public BinaryIntegerVariable withValue(int value) {
+		setValue(value);
+		return this;
+	}
+	
+	/**
 	 * Returns {@code true} if the binary representation using gray coding.  Gray coding ensures that two successive
 	 * values differ by only one bit.
 	 * 
@@ -189,7 +198,7 @@ public class BinaryIntegerVariable extends BinaryVariable {
 	
 	@Override
 	public BinaryIntegerVariable copy() {
-		BinaryIntegerVariable result = new BinaryIntegerVariable(lowerBound, upperBound);
+		BinaryIntegerVariable result = new BinaryIntegerVariable(name, lowerBound, upperBound);
 	
 		// copy the bits instead of the value to ensure the clone has the same internal representation
 		for (int i = 0; i < result.getNumberOfBits(); i++) {

@@ -41,16 +41,29 @@ public class PermutationTest {
 	public void tearDown() {
 		permutation = null;
 	}
-
-	@Test
-	public void testConstructor() {
-		Assert.assertTrue(Permutation.isPermutation(permutation.toArray()));
+	
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testEmptySize() {
+		new Permutation(0);
 	}
 
 	@Test
-	public void testArrayConstructor() {
+	public void testDefaultValue() {
+		Assert.assertTrue(Permutation.isPermutation(permutation.toArray()));
+	}
+	
+	@Test
+	public void testName() {
+		Assert.assertNull(new Permutation(5).getName());
+		Assert.assertEquals("foo", new Permutation("foo", 5).getName());
+	}
+
+	@Test
+	public void testFromArray() {
 		int[] array = new int[] { 3, 1, 2, 0 };
-		Permutation permutation = new Permutation(array);
+		Permutation permutation = new Permutation(array.length);
+		permutation.fromArray(array);
 
 		Assert.assertTrue(Permutation.isPermutation(permutation.toArray()));
 		Assert.assertEquals(4, permutation.size());
@@ -65,23 +78,21 @@ public class PermutationTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testEmptySize() {
-		new Permutation(0);
+	public void testFromArrayEmpty() {
+		Permutation permutation = new Permutation(1);
+		permutation.fromArray(new int[] { });
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testEmptyArray() {
-		new Permutation(new int[] { });
+	public void testFromArrayMissingElement() {
+		Permutation permutation = new Permutation(3);
+		permutation.fromArray(new int[] { 0, 3, 2 });
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testArrayConstructorMissingElement() {
-		new Permutation(new int[] { 0, 3, 2 });
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void testArrayConstructorDuplicateElement() {
-		new Permutation(new int[] { 0, 1, 2, 1 });
+	public void testFromArrayDuplicateElement() {
+		Permutation permutation = new Permutation(3);
+		permutation.fromArray(new int[] { 0, 1, 2, 1 });
 	}
 
 	@Test
@@ -93,16 +104,19 @@ public class PermutationTest {
 	public void testEquals() {
 		Assert.assertFalse(permutation.equals(null));
 		Assert.assertTrue(permutation.equals(permutation));
-		Assert.assertTrue(permutation.equals(new Permutation(5)));
+		Assert.assertTrue(permutation.equals(permutation.copy()));
 		Assert.assertFalse(permutation.equals(new Permutation(6)));
 		Assert.assertFalse(permutation.equals(new Permutation(4)));
-		Assert.assertFalse(permutation.equals(new Permutation(new int[] { 0, 2, 1, 3, 4 })));
+		
+		Permutation other = new Permutation(5);
+		other.fromArray(new int[] { 0, 2, 1, 3, 4 });
+		Assert.assertFalse(permutation.equals(other));
 	}
 	
 	@Test
 	public void testHashCode() {
 		Assert.assertEquals(permutation.hashCode(), permutation.hashCode());
-		Assert.assertEquals(permutation.hashCode(), new Permutation(5).hashCode());
+		Assert.assertEquals(permutation.hashCode(), permutation.copy().hashCode());
 	}
 
 	@Test
@@ -125,27 +139,25 @@ public class PermutationTest {
 	@Test
 	public void testSwap() {
 		permutation.swap(2, 3);
-		Assert.assertTrue(Permutation.isPermutation(permutation.toArray()));
-		Assert.assertEquals(2, permutation.get(3));
-		Assert.assertEquals(3, permutation.get(2));
+		Assert.assertArrayEquals(new int[] { 0, 1, 3, 2, 4 }, permutation.toArray());
 
 		permutation.swap(4, 4);
-		Assert.assertTrue(Permutation.isPermutation(permutation.toArray()));
+		Assert.assertArrayEquals(new int[] { 0, 1, 3, 2, 4 }, permutation.toArray());
 	}
 
 	@Test
 	public void testInsert() {
 		permutation.insert(4, 0);
-		Assert.assertEquals(permutation, new Permutation(new int[] { 4, 0, 1, 2, 3 }));
+		Assert.assertArrayEquals(new int[] { 4, 0, 1, 2, 3 }, permutation.toArray());
 
 		permutation.insert(0, 4);
-		Assert.assertEquals(permutation, new Permutation(new int[] { 0, 1, 2, 3, 4 }));
+		Assert.assertArrayEquals(new int[] { 0, 1, 2, 3, 4 }, permutation.toArray());
 
 		permutation.insert(2, 2);
-		Assert.assertEquals(permutation, new Permutation(new int[] { 0, 1, 2, 3, 4 }));
+		Assert.assertArrayEquals(new int[] { 0, 1, 2, 3, 4 }, permutation.toArray());
 
 		permutation.insert(2, 3);
-		Assert.assertEquals(permutation, new Permutation(new int[] { 0, 1, 3, 2, 4 }));
+		Assert.assertArrayEquals(new int[] { 0, 1, 3, 2, 4 }, permutation.toArray());
 	}
 
 	@Test

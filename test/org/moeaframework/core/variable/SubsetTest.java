@@ -33,6 +33,19 @@ import org.moeaframework.core.FrameworkException;
 public class SubsetTest {
 	
 	@Test
+	public void testDefaultValue() {
+		Assert.assertEquals(0, new Subset(0, 10).size());
+		Assert.assertEquals(5, new Subset(5, 10).size());
+		Assert.assertEquals(2, new Subset(2, 5, 10).size());
+	}
+	
+	@Test
+	public void testName() {
+		Assert.assertNull(new Subset(5, 10).getName());
+		Assert.assertEquals("foo", new Subset("foo", 5, 10).getName());
+	}
+	
+	@Test
 	public void testFixedSizeSubsetConstructor() {
 		// Test the constructor
 		Subset subset = new Subset(5, 10);
@@ -162,7 +175,7 @@ public class SubsetTest {
 	public void testHashCode() {
 		Subset subset = new Subset(5, 10);
 		Assert.assertEquals(subset.hashCode(), subset.hashCode());
-		Assert.assertEquals(subset.hashCode(), new Subset(5, 10).hashCode());
+		Assert.assertEquals(subset.hashCode(), subset.copy().hashCode());
 		
 		Subset otherSubset = subset.copy();
 		subset.fromArray(new int[] { 0, 1, 2, 3, 4 });

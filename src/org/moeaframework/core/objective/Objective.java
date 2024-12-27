@@ -81,6 +81,17 @@ public interface Objective extends Comparable<Objective>, Copyable<Objective>, S
 	public NormalizedObjective normalize(double minimum, double maximum);
 	
 	/**
+	 * Updates this objective with the given objective value and returns itself.
+	 * 
+	 * @param value the objective value
+	 * @return a reference to this objective
+	 */
+	public default Objective withValue(double value) {
+		setValue(value);
+		return this;
+	}
+	
+	/**
 	 * Returns the index used by epsilon-dominance.  This is used by
 	 * {@link org.moeaframework.core.population.EpsilonBoxDominanceArchive} in its dominance calculations.
 	 * <p>
