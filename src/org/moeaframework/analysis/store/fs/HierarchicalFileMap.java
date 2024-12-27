@@ -30,7 +30,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.moeaframework.analysis.store.Reference;
 import org.moeaframework.analysis.store.schema.Field;
 import org.moeaframework.analysis.store.schema.Schema;
-import org.moeaframework.core.Constructable;
+import org.moeaframework.core.Defined;
 
 /**
  * Stores files in a hierarchical folder structure, alternating between the index name and the associated index value.
@@ -115,7 +115,7 @@ public class HierarchicalFileMap extends FileMap {
 	
 	@Override
 	public String getDefinition() {
-		return Constructable.createDefinition(FileMap.class, getClass());
+		return Defined.createDefinition(FileMap.class, getClass());
 	}
 
 }

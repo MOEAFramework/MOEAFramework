@@ -21,7 +21,7 @@ import java.util.BitSet;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.moeaframework.core.Constructable;
+import org.moeaframework.core.Defined;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.util.validate.Validate;
 
@@ -170,7 +170,11 @@ public class BinaryVariable extends AbstractVariable {
 	
 	@Override
 	public String getDefinition() {
-		return Constructable.createDefinition(Variable.class, BinaryVariable.class, numberOfBits);
+		if (name == null) {
+			return Defined.createDefinition(Variable.class, BinaryVariable.class, numberOfBits);
+		} else {
+			return Defined.createDefinition(Variable.class, BinaryVariable.class, name, numberOfBits);
+		}
 	}
 	
 	@Override

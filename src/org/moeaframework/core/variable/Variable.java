@@ -19,19 +19,20 @@ package org.moeaframework.core.variable;
 
 import java.io.Serializable;
 
-import org.moeaframework.core.Constructable;
+import org.moeaframework.core.Defined;
 import org.moeaframework.core.Copyable;
 import org.moeaframework.core.Named;
 
 /**
- * Interface for decision variables. This interface ensures independent copies of decision variables can be
- * constructed.  Implementations are strongly encouraged to also override {@link Object#equals(Object)} and
- * {@link Object#hashCode()}.
+ * Interface for decision variables.
+ * <p>
+ * Implementations are encouraged to also override {@link Object#equals(Object)} and {@link Object#hashCode()}.  These
+ * are used, for example, to exclude duplicate solutions from populations.
  */
-public interface Variable extends Copyable<Variable>, Serializable, Constructable, Named {
+public interface Variable extends Copyable<Variable>, Serializable, Defined, Named {
 	
 	/**
-	 * Randomly assign the value of this variable.  In general, the randomization should follow a uniform distribution.
+	 * Randomly assign the value of this variable.
 	 */
 	public void randomize();
 	

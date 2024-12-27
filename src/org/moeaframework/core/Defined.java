@@ -36,8 +36,8 @@ import org.moeaframework.util.Iterators;
 import org.moeaframework.util.io.Tokenizer;
 
 /**
- * Interface for objects that can be constructed from a string representation.  The string representation mimics a Java
- * constructor call, such as:
+ * Interface for objects that can be defined and reconstructed using a string representation.  The string
+ * representation mimics a Java constructor call, such as:
  * <pre>
  *   "Minimize"
  *   "org.moeaframework.core.objective.Minimize"
@@ -49,14 +49,14 @@ import org.moeaframework.util.io.Tokenizer;
  *   <li>Either the class' simple name or fully-qualified name that includes the package is permitted.  The class
  *       must reside in the same package as the return type in order to use the shorter simple name.
  *   <li>Parenthesis can be omitted if using the no-arg constructor.
- *   <li>The first constructor that matches the supplied arguments is called; therefore, avoid defining multiple
- *       constructors with indistinguishable string representations (e.g., "2" can be parsed as an integer or double).
+ *   <li>Duck typing is used, meaning the string {@code "2"} could be considered a string, an integer, or a double.
+ *       Therefore, avoid defining multiple constructors with indistinguishable representations.
  * </ol>
  * While we recommend only using primitive types for the constructor arguments, any type implementing {@code toString()}
  * and a static {@code valueOf(String)} method is supported.  These types should throw {@link IllegalArgumentException}
  * if the supplied string is not compatible with the type.
  */
-public interface Constructable {
+public interface Defined {
 
 	/**
 	 * Returns the string representation, or definition, of this object.

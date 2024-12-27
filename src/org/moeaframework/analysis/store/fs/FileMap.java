@@ -33,7 +33,7 @@ import org.apache.commons.text.translate.CharSequenceTranslator;
 import org.apache.commons.text.translate.LookupTranslator;
 import org.moeaframework.analysis.store.Reference;
 import org.moeaframework.analysis.store.schema.Schema;
-import org.moeaframework.core.Constructable;
+import org.moeaframework.core.Defined;
 
 /**
  * Defines how containers and blobs are mapped to paths on a file system.
@@ -47,7 +47,7 @@ import org.moeaframework.core.Constructable;
  *       First, it prevents interpreting the file name as a relative path.  Second, it reserves the use of hidden files.
  * </ol>
  */
-public abstract class FileMap implements Constructable {
+public abstract class FileMap implements Defined {
 	
 	static final Comparator<Path> CASE_INSENSITIVE_ORDER = new CaseInsensitivePathComparator();
 			

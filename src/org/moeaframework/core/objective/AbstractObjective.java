@@ -19,7 +19,7 @@ package org.moeaframework.core.objective;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.moeaframework.core.Constructable;
+import org.moeaframework.core.Defined;
 
 /**
  * Abstract class for implementing objectives.  The objective value is initialized to {@value Double#NaN}, which
@@ -79,9 +79,9 @@ public abstract class AbstractObjective implements Objective {
 	@Override
 	public String getDefinition() {
 		if (name == null) {
-			return Constructable.createDefinition(Objective.class, getClass());
+			return Defined.createDefinition(Objective.class, getClass());
 		} else {
-			return Constructable.createDefinition(Objective.class, getClass(), name);
+			return Defined.createDefinition(Objective.class, getClass(), name);
 		}
 	}
 	

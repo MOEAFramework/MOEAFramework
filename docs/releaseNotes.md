@@ -14,8 +14,7 @@ version to access the latest features, please be aware you will likely need to u
     each.  If no name is given, the name defaults to `Var<N>`, `Obj<N>`, and `Constr<N>`.
     
   * Variables no longer have a constructor for setting the value.  Instead, the value must be set in a separate call.
-    This helps avoid any ambiguity in the constructor arguments, as they now only specify the constraints on the
-    variable.
+    This helps avoid any ambiguity regarding the ordering of arguments.
     ```
     // old version
     RealVariable variable = new RealVariable(0.5, 0.0, 1.0);

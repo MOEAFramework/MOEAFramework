@@ -109,5 +109,10 @@ public class ProgramTest {
 		
 		return result;
 	}
+	
+	@Test(expected = UnsupportedOperationException.class)
+	public void testDefinition() {
+		new Program(rules).getDefinition();
+	}
 
 }

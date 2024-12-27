@@ -26,7 +26,7 @@ import java.util.Set;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.moeaframework.core.Constructable;
+import org.moeaframework.core.Defined;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.util.validate.Validate;
@@ -377,10 +377,10 @@ public class Subset extends AbstractVariable {
 	
 	@Override
 	public String getDefinition() {
-		if (l == u) {
-			return Constructable.createDefinition(Variable.class, Subset.class, l, n);
+		if (name == null) {
+			return Defined.createDefinition(Variable.class, Subset.class, l, u, n);
 		} else {
-			return Constructable.createDefinition(Variable.class, Subset.class, l, u, n);
+			return Defined.createDefinition(Variable.class, Subset.class, name, l, u, n);
 		}
 	}
 	

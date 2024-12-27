@@ -19,7 +19,7 @@ package org.moeaframework.core.variable;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.moeaframework.core.Constructable;
+import org.moeaframework.core.Defined;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.util.validate.Validate;
@@ -137,7 +137,11 @@ public class RealVariable extends AbstractVariable {
 	
 	@Override
 	public String getDefinition() {
-		return Constructable.createDefinition(Variable.class, RealVariable.class, lowerBound, upperBound);
+		if (name == null) {
+			return Defined.createDefinition(Variable.class, RealVariable.class, lowerBound, upperBound);
+		} else {
+			return Defined.createDefinition(Variable.class, RealVariable.class, name, lowerBound, upperBound);
+		}
 	}
 
 	@Override

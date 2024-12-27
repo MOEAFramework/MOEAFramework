@@ -377,4 +377,12 @@ public class SubsetTest {
 		Subset.setSubset(subset, bitSet);
 	}
 	
+	@Test
+	public void testDefinition() {
+		Assert.assertEquals("Subset(5,5,10)", new Subset(5, 10).getDefinition());
+		Assert.assertEquals("Subset(5,7,10)", new Subset(5, 7, 10).getDefinition());
+		Assert.assertEquals("Subset(foo,5,5,10)", new Subset("foo", 5, 10).getDefinition());
+		Assert.assertEquals("Subset(foo,5,7,10)", new Subset("foo", 5, 7, 10).getDefinition());
+	}
+	
 }

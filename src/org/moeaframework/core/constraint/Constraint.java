@@ -19,7 +19,7 @@ package org.moeaframework.core.constraint;
 
 import java.io.Serializable;
 
-import org.moeaframework.core.Constructable;
+import org.moeaframework.core.Defined;
 import org.moeaframework.core.Copyable;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Named;
@@ -29,7 +29,7 @@ import org.moeaframework.core.Named;
  * feasibility depends on the specific constraint type.  Thus, callers should prefer using specific methods provided
  * by this interface than checking the value itself.
  */
-public interface Constraint extends Comparable<Constraint>, Copyable<Constraint>, Serializable, Constructable, Named {
+public interface Constraint extends Comparable<Constraint>, Copyable<Constraint>, Serializable, Defined, Named {
 	
 	/**
 	 * Returns the value of this constraint.

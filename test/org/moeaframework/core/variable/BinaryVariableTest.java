@@ -286,4 +286,10 @@ public class BinaryVariableTest {
 		BinaryVariable.getBitSet(new RealVariable(0.0, 1.0));
 	}
 	
+	@Test
+	public void testDefinition() {
+		Assert.assertEquals("BinaryVariable(5)", new BinaryVariable(5).getDefinition());
+		Assert.assertEquals("BinaryVariable(foo,5)", new BinaryVariable("foo", 5).getDefinition());
+	}
+	
 }

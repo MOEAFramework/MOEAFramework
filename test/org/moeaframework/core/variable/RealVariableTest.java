@@ -212,5 +212,11 @@ public class RealVariableTest {
 		solution.setVariable(1, new RealVariable(0.0, 1.0));
 		RealVariable.setReal(solution, new double[] { 0.25, 0.75, 0.5 });
 	}
+	
+	@Test
+	public void testDefinition() {
+		Assert.assertEquals("RealVariable(0.0,1.0)", new RealVariable(0.0, 1.0).getDefinition());
+		Assert.assertEquals("RealVariable(foo,0.0,1.0)", new RealVariable("foo", 0.0, 1.0).getDefinition());
+	}
 
 }

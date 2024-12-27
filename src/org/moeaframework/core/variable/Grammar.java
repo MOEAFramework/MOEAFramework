@@ -19,7 +19,7 @@ package org.moeaframework.core.variable;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.moeaframework.core.Constructable;
+import org.moeaframework.core.Defined;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.util.grammar.ContextFreeGrammar;
@@ -267,7 +267,11 @@ public class Grammar extends AbstractVariable {
 	
 	@Override
 	public String getDefinition() {
-		return Constructable.createDefinition(Variable.class, Grammar.class, size());
+		if (name == null) {
+			return Defined.createDefinition(Variable.class, Grammar.class, size());
+		} else {
+			return Defined.createDefinition(Variable.class, Grammar.class, name, size());
+		}
 	}
 	
 	@Override

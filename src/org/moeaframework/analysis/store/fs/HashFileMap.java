@@ -22,7 +22,7 @@ import java.nio.file.Path;
 
 import org.moeaframework.analysis.store.Reference;
 import org.moeaframework.analysis.store.schema.Schema;
-import org.moeaframework.core.Constructable;
+import org.moeaframework.core.Defined;
 
 /**
  * File map that hashes the reference to create a flat folder structure.  An optional prefix is used at the top-level
@@ -61,7 +61,7 @@ public class HashFileMap extends FileMap {
 	
 	@Override
 	public String getDefinition() {
-		return Constructable.createDefinition(FileMap.class, getClass(), prefixLength);
+		return Defined.createDefinition(FileMap.class, getClass(), prefixLength);
 	}
 
 }

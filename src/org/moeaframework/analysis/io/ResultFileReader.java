@@ -28,7 +28,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.moeaframework.analysis.series.ResultEntry;
-import org.moeaframework.core.Constructable;
+import org.moeaframework.core.Defined;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
@@ -239,21 +239,21 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 			
 			for (int i = 0; i < numberOfVariables; i++) {
 				if (header.contains("Variable." + (i+1) + ".Definition")) {
-					stub.setVariableDefinition(i, Constructable.createInstance(Variable.class,
+					stub.setVariableDefinition(i, Defined.createInstance(Variable.class,
 							header.getString("Variable." + (i+1) + ".Definition")));
 				}
 			}
 			
 			for (int i = 0; i < numberOfObjectives; i++) {
 				if (header.contains("Objective." + (i+1) + ".Definition")) {
-					stub.setObjectiveDefinition(i, Constructable.createInstance(Objective.class,
+					stub.setObjectiveDefinition(i, Defined.createInstance(Objective.class,
 							header.getString("Objective." + (i+1) + ".Definition")));
 				}
 			}
 			
 			for (int i = 0; i < numberOfConstraints; i++) {
 				if (header.contains("Constraint." + (i+1) + ".Definition")) {
-					stub.setConstraintDefinition(i, Constructable.createInstance(Constraint.class,
+					stub.setConstraintDefinition(i, Defined.createInstance(Constraint.class,
 							header.getString("Constraint." + (i+1) + ".Definition")));
 				}
 			}

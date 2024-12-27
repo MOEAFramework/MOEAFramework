@@ -27,7 +27,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 import org.moeaframework.analysis.series.ResultEntry;
-import org.moeaframework.core.Constructable;
+import org.moeaframework.core.Defined;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
@@ -149,7 +149,7 @@ public class ResultFileWriter extends ResultWriter {
 							prototype.getVariable(i).getDefinition());
 				} catch (UnsupportedOperationException e) {
 					header.setString("Variable." + (i+1) + ".Definition",
-							Constructable.createUnsupportedDefinition(Variable.class,
+							Defined.createUnsupportedDefinition(Variable.class,
 									prototype.getVariable(i).getClass()));
 				}
 			}
@@ -160,7 +160,7 @@ public class ResultFileWriter extends ResultWriter {
 							prototype.getObjective(i).getDefinition());
 				} catch (UnsupportedOperationException e) {
 					header.setString("Objective." + (i+1) + ".Definition",
-							Constructable.createUnsupportedDefinition(Objective.class,
+							Defined.createUnsupportedDefinition(Objective.class,
 									prototype.getObjective(i).getClass()));
 				}
 			}
@@ -171,7 +171,7 @@ public class ResultFileWriter extends ResultWriter {
 							prototype.getConstraint(i).getDefinition());
 				} catch (UnsupportedOperationException e) {
 					header.setString("Constraint." + (i+1) + ".Definition",
-							Constructable.createUnsupportedDefinition(Constraint.class,
+							Defined.createUnsupportedDefinition(Constraint.class,
 									prototype.getConstraint(i).getClass()));
 				}
 			}

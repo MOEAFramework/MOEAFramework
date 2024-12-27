@@ -263,5 +263,11 @@ public class GrammarTest {
 			Assert.assertUniformDistribution(0, grammar.getMaximumValue()-1, valueStats[j]);
 		}
 	}
+	
+	@Test
+	public void testDefinition() {
+		Assert.assertEquals("Grammar(5)", new Grammar(5).getDefinition());
+		Assert.assertEquals("Grammar(foo,5)", new Grammar("foo", 5).getDefinition());
+	}
 
 }

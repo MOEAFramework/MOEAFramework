@@ -19,7 +19,7 @@ package org.moeaframework.core.objective;
 
 import java.io.Serializable;
 
-import org.moeaframework.core.Constructable;
+import org.moeaframework.core.Defined;
 import org.moeaframework.core.Copyable;
 import org.moeaframework.core.Named;
 
@@ -29,7 +29,7 @@ import org.moeaframework.core.Named;
  * Always prefer using one of the methods, such as {@link #compareTo(Objective)}, for performing operations on
  * objectives rather than using the value directly, as the methods accounts for the direction.
  */
-public interface Objective extends Comparable<Objective>, Copyable<Objective>, Serializable, Constructable, Named {
+public interface Objective extends Comparable<Objective>, Copyable<Objective>, Serializable, Defined, Named {
 
 	/**
 	 * Returns the objective value.
