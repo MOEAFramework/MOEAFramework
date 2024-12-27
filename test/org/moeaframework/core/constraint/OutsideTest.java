@@ -63,5 +63,13 @@ public class OutsideTest {
 		Assert.assertEquals(0.0, Outside.values(4.0, 6.0, 0.1).withValue(3.8).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(0.0, Outside.values(4.0, 6.0, 0.1).withValue(6.2).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
 	}
+	
+	@Test
+	public void testDefinition() {
+		Assert.assertEquals("Outside(0.0,1.0,1.0E-10)", new Outside(0.0, 1.0).getDefinition());
+		Assert.assertEquals("Outside(0.0,1.0,1.0E-5)", new Outside(0.0, 1.0, 0.00001).getDefinition());
+		Assert.assertEquals("Outside(foo,0.0,1.0,1.0E-10)", new Outside("foo", 0.0, 1.0).getDefinition());
+		Assert.assertEquals("Outside(foo,0.0,1.0,1.0E-5)", new Outside("foo", 0.0, 1.0, 0.00001).getDefinition());
+	}
 
 }

@@ -107,5 +107,11 @@ public class MinimizeTest {
 		Assert.assertEquals(0.0, Objective.ideal(Minimize.value().withValue(0.0), Minimize.value().withValue(0.5)).getValue());
 		Assert.assertEquals(0.0, Objective.ideal(Minimize.value().withValue(0.5), Minimize.value().withValue(0.0)).getValue());
 	}
+	
+	@Test
+	public void testDefinition() {
+		Assert.assertEquals("Minimize", new Minimize().getDefinition());
+		Assert.assertEquals("Minimize(foo)", new Minimize("foo").getDefinition());
+	}
 
 }

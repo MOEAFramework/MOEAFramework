@@ -107,5 +107,11 @@ public class MaximizeTest {
 		Assert.assertEquals(0.5, Objective.ideal(Maximize.value().withValue(0.0), Maximize.value().withValue(0.5)).getValue());
 		Assert.assertEquals(0.5, Objective.ideal(Maximize.value().withValue(0.5), Maximize.value().withValue(0.0)).getValue());
 	}
+	
+	@Test
+	public void testDefinition() {
+		Assert.assertEquals("Maximize", new Maximize().getDefinition());
+		Assert.assertEquals("Maximize(foo)", new Maximize("foo").getDefinition());
+	}
 
 }

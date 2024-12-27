@@ -50,7 +50,7 @@ public class NotEqual extends ThresholdConstraint {
 	 * @param threshold the threshold value
 	 */
 	public NotEqual(String name, double threshold) {
-		super(threshold);
+		super(name, threshold);
 	}
 	
 	/**
@@ -61,7 +61,7 @@ public class NotEqual extends ThresholdConstraint {
 	 * @param epsilon the epsilon value
 	 */
 	public NotEqual(String name, double threshold, double epsilon) {
-		super(threshold, epsilon);
+		super(name, threshold, epsilon);
 	}
 	
 	/**

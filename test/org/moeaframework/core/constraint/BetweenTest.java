@@ -62,5 +62,13 @@ public class BetweenTest {
 		Assert.assertEquals(0.2, Between.values(4.0, 6.0, 0.1).withValue(3.8).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(0.2, Between.values(4.0, 6.0, 0.1).withValue(6.2).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
 	}
+	
+	@Test
+	public void testDefinition() {
+		Assert.assertEquals("Between(0.0,1.0,1.0E-10)", new Between(0.0, 1.0).getDefinition());
+		Assert.assertEquals("Between(0.0,1.0,1.0E-5)", new Between(0.0, 1.0, 0.00001).getDefinition());
+		Assert.assertEquals("Between(foo,0.0,1.0,1.0E-10)", new Between("foo", 0.0, 1.0).getDefinition());
+		Assert.assertEquals("Between(foo,0.0,1.0,1.0E-5)", new Between("foo", 0.0, 1.0, 0.00001).getDefinition());
+	}
 
 }

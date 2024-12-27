@@ -60,5 +60,13 @@ public class LessThanTest {
 		Assert.assertEquals(0.2, LessThan.value(5.0, 0.1).withValue(5.2).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(0.0, LessThan.value(5.0, 0.1).withValue(4.8).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
 	}
+	
+	@Test
+	public void testDefinition() {
+		Assert.assertEquals("LessThan(0.0,1.0E-10)", new LessThan(0.0).getDefinition());
+		Assert.assertEquals("LessThan(0.0,1.0E-5)", new LessThan(0.0, 0.00001).getDefinition());
+		Assert.assertEquals("LessThan(foo,0.0,1.0E-10)", new LessThan("foo", 0.0).getDefinition());
+		Assert.assertEquals("LessThan(foo,0.0,1.0E-5)", new LessThan("foo", 0.0, 0.00001).getDefinition());
+	}
 
 }

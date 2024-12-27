@@ -60,5 +60,13 @@ public class NotEqualTest {
 		Assert.assertEquals(0.0, NotEqual.to(5.0, 0.1).withValue(5.2).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(0.0, NotEqual.to(5.0, 0.1).withValue(4.8).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
 	}
+	
+	@Test
+	public void testDefinition() {
+		Assert.assertEquals("NotEqual(0.0,1.0E-10)", new NotEqual(0.0).getDefinition());
+		Assert.assertEquals("NotEqual(0.0,1.0E-5)", new NotEqual(0.0, 0.00001).getDefinition());
+		Assert.assertEquals("NotEqual(foo,0.0,1.0E-10)", new NotEqual("foo", 0.0).getDefinition());
+		Assert.assertEquals("NotEqual(foo,0.0,1.0E-5)", new NotEqual("foo", 0.0, 0.00001).getDefinition());
+	}
 
 }

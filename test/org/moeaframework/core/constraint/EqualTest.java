@@ -60,5 +60,13 @@ public class EqualTest {
 		Assert.assertEquals(0.2, Equal.to(5.0, 0.1).withValue(5.2).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(0.2, Equal.to(5.0, 0.1).withValue(4.8).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
 	}
+	
+	@Test
+	public void testDefinition() {
+		Assert.assertEquals("Equal(0.0,1.0E-10)", new Equal(0.0).getDefinition());
+		Assert.assertEquals("Equal(0.0,1.0E-5)", new Equal(0.0, 0.00001).getDefinition());
+		Assert.assertEquals("Equal(foo,0.0,1.0E-10)", new Equal("foo", 0.0).getDefinition());
+		Assert.assertEquals("Equal(foo,0.0,1.0E-5)", new Equal("foo", 0.0, 0.00001).getDefinition());
+	}
 
 }

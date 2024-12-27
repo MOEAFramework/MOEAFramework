@@ -60,5 +60,13 @@ public class LessThanOrEqualTest {
 		Assert.assertEquals(0.2, LessThanOrEqual.to(5.0, 0.1).withValue(5.2).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(0.0, LessThanOrEqual.to(5.0, 0.1).withValue(4.8).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
 	}
+	
+	@Test
+	public void testDefinition() {
+		Assert.assertEquals("LessThanOrEqual(0.0,1.0E-10)", new LessThanOrEqual(0.0).getDefinition());
+		Assert.assertEquals("LessThanOrEqual(0.0,1.0E-5)", new LessThanOrEqual(0.0, 0.00001).getDefinition());
+		Assert.assertEquals("LessThanOrEqual(foo,0.0,1.0E-10)", new LessThanOrEqual("foo", 0.0).getDefinition());
+		Assert.assertEquals("LessThanOrEqual(foo,0.0,1.0E-5)", new LessThanOrEqual("foo", 0.0, 0.00001).getDefinition());
+	}
 
 }

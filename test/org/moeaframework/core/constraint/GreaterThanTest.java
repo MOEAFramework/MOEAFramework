@@ -60,5 +60,13 @@ public class GreaterThanTest {
 		Assert.assertEquals(0.0, GreaterThan.value(5.0, 0.1).withValue(5.2).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(0.2, GreaterThan.value(5.0, 0.1).withValue(4.8).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
 	}
+	
+	@Test
+	public void testDefinition() {
+		Assert.assertEquals("GreaterThan(0.0,1.0E-10)", new GreaterThan(0.0).getDefinition());
+		Assert.assertEquals("GreaterThan(0.0,1.0E-5)", new GreaterThan(0.0, 0.00001).getDefinition());
+		Assert.assertEquals("GreaterThan(foo,0.0,1.0E-10)", new GreaterThan("foo", 0.0).getDefinition());
+		Assert.assertEquals("GreaterThan(foo,0.0,1.0E-5)", new GreaterThan("foo", 0.0, 0.00001).getDefinition());
+	}
 
 }
