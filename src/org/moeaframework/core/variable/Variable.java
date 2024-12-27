@@ -19,8 +19,8 @@ package org.moeaframework.core.variable;
 
 import java.io.Serializable;
 
-import org.moeaframework.core.Defined;
 import org.moeaframework.core.Copyable;
+import org.moeaframework.core.Defined;
 import org.moeaframework.core.Named;
 
 /**
