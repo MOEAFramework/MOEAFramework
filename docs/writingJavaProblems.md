@@ -171,4 +171,21 @@ solution.isFeasible();
 solution.getSumOfConstraintViolations();
 ```
 
+## Display Names
+
+When displaying results or storing to files, default names are used for variable, objectives, and constraints.  For
+instance, you'll see `Var1`, `Var2`, `Obj1`, `Obj2`, `Constr1`, etc.  We can alternatively assign custom names, as a
+form of self-documentation:
+
+<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [custom-names] -->
+
+```java
+solution.setVariable(0, new RealVariable("x", 0.0, 1.0));
+solution.setVariable(1, new RealVariable("y", 0.0, 1.0));
+
+solution.setObjective(0, new Minimize("minWeight"));
+solution.setObjective(1, new Maximize("maxProfit"));
+
+solution.setConstraint(0, new LessThanOrEqual("cost", 1000));
+```
 
