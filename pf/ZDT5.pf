@@ -16,7 +16,6 @@
 # Variable.11.Definition=BinaryVariable(5)
 # Objective.1.Definition=Minimize
 # Objective.2.Definition=Minimize
-# ExcludeVariables=true
 1.0 17.0
 27.0 0.6296296296296295
 2.0 8.5

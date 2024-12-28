@@ -9,7 +9,6 @@
 # Objective.2.Definition=Minimize
 # Constraint.1.Definition=LessThanOrEqual(0.0,1.0E-10)
 # Constraint.2.Definition=LessThanOrEqual(0.0,1.0E-10)
-# ExcludeVariables=true
 39.74542695821045 15.357540061239781
 11.390295564923125 28.983068482771507
 6.560472432823792 33.52878405628144

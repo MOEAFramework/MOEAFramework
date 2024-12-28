@@ -18,7 +18,6 @@
 # Objective.1.Definition=Minimize
 # Objective.2.Definition=Minimize
 # Objective.3.Definition=Minimize
-# ExcludeVariables=true
 0.0 0.0 6.0
 0.0 0.06282921135425568 5.999259948730469
 4.934386815875769E-4 0.06282146275043488 5.999259948730469

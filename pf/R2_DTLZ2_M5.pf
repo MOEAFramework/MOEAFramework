@@ -38,7 +38,6 @@
 # Objective.3.Definition=Minimize
 # Objective.4.Definition=Minimize
 # Objective.5.Definition=Minimize
-# ExcludeVariables=true
 1.0000002 1.0000019 1.0000018 1.7403608 1.6722097
 1.0000015 1.8465282 1.0815771 1.3645026 1.379306
 1.0000065 1.0000152 1.0000494 1.0000661 2.0

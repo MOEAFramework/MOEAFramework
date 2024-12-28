@@ -17,7 +17,6 @@
 # Constraint.4.Definition=GreaterThanOrEqual(0.0,1.0E-10)
 # Constraint.5.Definition=GreaterThanOrEqual(0.0,1.0E-10)
 # Constraint.6.Definition=GreaterThanOrEqual(0.0,1.0E-10)
-# ExcludeVariables=true
 -262.6035878044515 60.94435024106403
 -273.84271673317005 75.81677090600435
 -161.24859771034755 21.99218201895267

@@ -26,7 +26,6 @@
 # Variable.21.Definition=RealVariable(0.0,1.0)
 # Objective.1.Definition=Minimize
 # Objective.2.Definition=Minimize
-# ExcludeVariables=true
 0.16649852437610943 3.667003160310443
 0.022496129741634355 3.9727698724408245
 0.6974969078601313 3.1026725773856083

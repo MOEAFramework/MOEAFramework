@@ -16,7 +16,6 @@
 # Objective.1.Definition=Minimize
 # Objective.2.Definition=Minimize
 # Constraint.1.Definition=GreaterThanOrEqual(0.0,1.0E-10)
-# ExcludeVariables=true
 0.0 1.0
 0.5 0.75
 0.50062382 0.7493758
