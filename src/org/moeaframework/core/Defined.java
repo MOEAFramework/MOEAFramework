@@ -248,7 +248,7 @@ public interface Defined {
 	 */
 	static class ConstructorComparator implements Comparator<Constructor<?>> {
 		
-		private static final FixedOrderComparator<Class<?>> typeComparator;
+		private static final FixedOrderComparator<Class<?>> TYPE_COMPARATOR;
 		
 		/**
 		 * Constructs a new comparator for sorting constructors.
@@ -276,7 +276,7 @@ public interface Defined {
 			order.put(String.class, 7);
 			order.put(Object.class, FixedOrderComparator.LAST);
 			
-			typeComparator = new FixedOrderComparator<>(order);
+			TYPE_COMPARATOR = new FixedOrderComparator<>(order);
 		}
 
 		@Override
@@ -286,7 +286,7 @@ public interface Defined {
 			}
 			
 			for (Pair<Parameter, Parameter> pair : Iterators.zip(c1.getParameters(), c2.getParameters())) {
-				return typeComparator.compare(pair.getLeft().getType(), pair.getRight().getType());
+				return TYPE_COMPARATOR.compare(pair.getLeft().getType(), pair.getRight().getType());
 			}
 			
 			return 0;

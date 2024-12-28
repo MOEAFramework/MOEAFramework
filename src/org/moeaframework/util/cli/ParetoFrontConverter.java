@@ -29,10 +29,10 @@ import java.util.Set;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.moeaframework.analysis.io.ResultWriter;
-import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.analysis.io.ResultFileWriter;
+import org.moeaframework.analysis.io.ResultWriter;
+import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.Population;
@@ -47,7 +47,7 @@ import org.moeaframework.util.io.LineReader;
  */
 public class ParetoFrontConverter extends CommandLineUtility  {
 	
-	public ParetoFrontConverter() {
+	private ParetoFrontConverter() {
 		super();
 	}
 	

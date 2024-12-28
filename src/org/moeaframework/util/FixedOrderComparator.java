@@ -23,9 +23,15 @@ import java.util.Map;
 /**
  * Sorts elements according to a fixed order.  The order is defined by mapping elements to integer and sorting based
  * on the numeric value.  Elements not defined in the mapping are always sorted last.
+ * 
+ * @param <T> the type of elements being sorted
  */
 public class FixedOrderComparator<T> implements Comparator<T> {
 	
+	/**
+	 * Constant used to place an element at the end of the sorted collection.  If multiple elements map to this value,
+	 * their ordering is undefined.
+	 */
 	public static final int LAST = Integer.MAX_VALUE;
 	
 	private final Map<T, Integer> order;

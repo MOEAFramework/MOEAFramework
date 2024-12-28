@@ -406,9 +406,9 @@ public class ResultFileWriter extends ResultWriter {
 	
 	private static class PropertyComparator implements Comparator<String> {
 		
-		private static final FixedOrderComparator<String> fixedOrderComparator;
+		private static final FixedOrderComparator<String> FIXED_COMPARATOR;
 		
-		private static final NumericStringComparator numericStringComparator;
+		private static final NumericStringComparator NUMERIC_COMPARATOR;
 		
 		static {
 			Map<String, Integer> order = new HashMap<>();
@@ -421,8 +421,8 @@ public class ResultFileWriter extends ResultWriter {
 			order.put("Objective", 6);
 			order.put("Constraint", 7);
 					
-			fixedOrderComparator = new FixedOrderComparator<>(order);
-			numericStringComparator = new NumericStringComparator();
+			FIXED_COMPARATOR = new FixedOrderComparator<>(order);
+			NUMERIC_COMPARATOR = new NumericStringComparator();
 		}
 		
 		public PropertyComparator() {
@@ -431,14 +431,14 @@ public class ResultFileWriter extends ResultWriter {
 
 		@Override
 		public int compare(String property1, String property2) {
-			int cmp = fixedOrderComparator.compare(property1.split(Pattern.quote("."), 2)[0],
+			int cmp = FIXED_COMPARATOR.compare(property1.split(Pattern.quote("."), 2)[0],
 					property2.split(Pattern.quote("."), 2)[0]);
 			
 			if (cmp != 0) {
 				return cmp;
 			}
 			
-			return numericStringComparator.compare(property1, property2);
+			return NUMERIC_COMPARATOR.compare(property1, property2);
 		}
 		
 	}

@@ -408,7 +408,7 @@ The following options are available:
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.WeightGenerator -d <value> [--divisions <value>]
        [--divisionsInner <value>] [--divisionsOuter <value>] [-g] [-h] -m <name> [-n <value>] [-o <file>]
 
-Outputs randomly-generated weights
+Outputs randomly-generated weights.
 
 The following options are available:
 
