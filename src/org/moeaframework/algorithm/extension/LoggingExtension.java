@@ -21,7 +21,6 @@ import java.time.Duration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.util.DurationUtils;
@@ -42,9 +41,9 @@ public class LoggingExtension implements Extension {
 	
 	private final StopWatch timer;
 	
-	private final long logFrequency;
+	private final Duration logFrequency;
 	
-	private long lastUpdate;
+	private Duration lastUpdate;
 	
 	/**
 	 * Constructs a new, default logging extension.
@@ -81,7 +80,7 @@ public class LoggingExtension implements Extension {
 	public LoggingExtension(Logger logger, Duration logFrequency) {
 		super();
 		this.logger = logger;
-		this.logFrequency = DurationUtils.toMilliseconds(logFrequency);
+		this.logFrequency = logFrequency;
 		
 		timer = new StopWatch();
 	}
@@ -92,13 +91,13 @@ public class LoggingExtension implements Extension {
 			timer.start();
 		}
 		
-		long elapsedTime = timer.getTime();
+		Duration elapsedTime = timer.getDuration();
 		
-		if (elapsedTime - lastUpdate >= logFrequency) {
+		if (DurationUtils.isGreaterThanOrEqual(elapsedTime.minus(lastUpdate), logFrequency)) {
 			logger.log(Level.INFO, "{0} running; NFE: {1}; Elapsed Time: {2}", new Object[] {
 	                algorithm.getName(),
 	                algorithm.getNumberOfEvaluations(),
-	                DurationFormatUtils.formatDuration(elapsedTime, "H:mm:ss", true) });
+	                DurationUtils.format(elapsedTime) });
 			lastUpdate = elapsedTime;
 		}
 	}
@@ -106,7 +105,7 @@ public class LoggingExtension implements Extension {
 	@Override
 	public void onRegister(Algorithm algorithm) {
 		timer.start();
-		lastUpdate = timer.getTime();
+		lastUpdate = timer.getDuration();
 		logger.log(Level.INFO, "{0} starting", algorithm.getName());
 	}
 	
@@ -116,7 +115,7 @@ public class LoggingExtension implements Extension {
 		logger.log(Level.INFO, "{0} finished; NFE: {1}; Elapsed Time: {2}", new Object[] {
                 algorithm.getName(),
                 algorithm.getNumberOfEvaluations(),
-                DurationFormatUtils.formatDuration(timer.getTime(), "H:mm:ss", true) });
+                DurationUtils.format(timer.getDuration()) });
 	}
 	
 	/**

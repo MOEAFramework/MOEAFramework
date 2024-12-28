@@ -29,7 +29,7 @@ public class CompoundTerminationConditionTest {
 	@Test
 	public void testNFE() {
 		MockAlgorithm algorithm = new MockAlgorithm();
-		MaxElapsedTime timeTermination = new MaxElapsedTime(1000);
+		MaxElapsedTime timeTermination = new MaxElapsedTime(Duration.ofSeconds(1));
 		MaxFunctionEvaluations nfeTermination = new MaxFunctionEvaluations(10000);
 		CompoundTerminationCondition compound = new CompoundTerminationCondition(timeTermination, nfeTermination);
 		
@@ -48,7 +48,7 @@ public class CompoundTerminationConditionTest {
 	@Test
 	public void testTime() {
 		MockAlgorithm algorithm = new MockAlgorithm();
-		MaxElapsedTime timeTermination = new MaxElapsedTime(1000);
+		MaxElapsedTime timeTermination = new MaxElapsedTime(Duration.ofSeconds(1));
 		MaxFunctionEvaluations nfeTermination = new MaxFunctionEvaluations(10000);
 		CompoundTerminationCondition compound = new CompoundTerminationCondition(timeTermination, nfeTermination);
 		

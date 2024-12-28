@@ -29,7 +29,7 @@ public class MaxElapsedTimeTest {
 	@Test
 	public void test() {
 		MockAlgorithm algorithm = new MockAlgorithm();
-		MaxElapsedTime termination = new MaxElapsedTime(1000);
+		MaxElapsedTime termination = new MaxElapsedTime(Duration.ofSeconds(1));
 		
 		termination.initialize(algorithm);
 		Assert.assertFalse(termination.shouldTerminate(algorithm));

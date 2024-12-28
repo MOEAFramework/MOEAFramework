@@ -19,6 +19,7 @@ package org.moeaframework.core.termination;
 
 import java.time.Duration;
 
+import org.apache.commons.lang3.time.StopWatch;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.util.DurationUtils;
 
@@ -28,24 +29,14 @@ import org.moeaframework.util.DurationUtils;
 public class MaxElapsedTime implements TerminationCondition {
 	
 	/**
-	 * The maximum elapsed time in milliseconds.
+	 * The maximum elapsed time.
 	 */
-	private final long maxTime;
+	private final Duration maxTime;
 	
 	/**
-	 * The starting time in milliseconds.
+	 * The timer measuring the elapsed time.
 	 */
-	private long startTime;
-	
-	/**
-	 * Constructs a new termination condition based on the maximum elapsed time.
-	 * 
-	 * @param maxTime the maximum elapsed time in milliseconds
-	 */
-	public MaxElapsedTime(long maxTime) {
-		super();
-		this.maxTime = maxTime;
-	}
+	private final StopWatch timer;
 	
 	/**
 	 * Constructs a new termination condition based on the maximum elapsed time.
@@ -53,22 +44,24 @@ public class MaxElapsedTime implements TerminationCondition {
 	 * @param maxTime the maximum elapsed time
 	 */
 	public MaxElapsedTime(Duration maxTime) {
-		this(DurationUtils.toMilliseconds(maxTime));
+		super();
+		this.maxTime = maxTime;
+		this.timer = new StopWatch();
 	}
 
 	@Override
 	public void initialize(Algorithm algorithm) {
-		startTime = System.currentTimeMillis();
+		timer.start();
 	}
 
 	@Override
 	public boolean shouldTerminate(Algorithm algorithm) {
-		return (System.currentTimeMillis() - startTime) >= maxTime;
+		return DurationUtils.isGreaterThanOrEqual(timer.getDuration(), maxTime);
 	}
 	
 	@Override
 	public double getPercentComplete(Algorithm algorithm) {
-		return 100.0 * (System.currentTimeMillis() - startTime) / (double)maxTime;
+		return DurationUtils.toPercentage(timer.getDuration(), maxTime);
 	}
 
 }

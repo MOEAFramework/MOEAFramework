@@ -25,6 +25,30 @@ import org.moeaframework.Assert;
 public class DurationUtilsTest {
 	
 	@Test
+	public void testIsGreaterThanOrEqual() {
+		Assert.assertTrue(DurationUtils.isGreaterThanOrEqual(Duration.ofSeconds(10), Duration.ofSeconds(10)));
+		Assert.assertTrue(DurationUtils.isGreaterThanOrEqual(Duration.ofSeconds(11), Duration.ofSeconds(10)));
+		Assert.assertFalse(DurationUtils.isGreaterThanOrEqual(Duration.ofSeconds(9), Duration.ofSeconds(10)));
+		
+		Assert.assertTrue(DurationUtils.isGreaterThanOrEqual(Duration.ofMillis(10), Duration.ofMillis(10)));
+		Assert.assertTrue(DurationUtils.isGreaterThanOrEqual(Duration.ofMillis(11), Duration.ofMillis(10)));
+		Assert.assertFalse(DurationUtils.isGreaterThanOrEqual(Duration.ofMillis(9), Duration.ofMillis(10)));
+	}
+	
+	@Test
+	public void testPercentage() {
+		Assert.assertEquals(0.0, DurationUtils.toPercentage(Duration.ofSeconds(0), Duration.ofSeconds(60)));
+		Assert.assertEquals(50.0, DurationUtils.toPercentage(Duration.ofSeconds(30), Duration.ofSeconds(60)));
+		Assert.assertEquals(100.0, DurationUtils.toPercentage(Duration.ofSeconds(60), Duration.ofSeconds(60)));
+		Assert.assertEquals(200.0, DurationUtils.toPercentage(Duration.ofSeconds(120), Duration.ofSeconds(60)));
+		
+		Assert.assertEquals(0.0, DurationUtils.toPercentage(Duration.ofMillis(0), Duration.ofMillis(500)));
+		Assert.assertEquals(50.0, DurationUtils.toPercentage(Duration.ofMillis(250), Duration.ofMillis(500)));
+		Assert.assertEquals(100.0, DurationUtils.toPercentage(Duration.ofMillis(500), Duration.ofMillis(500)));
+		Assert.assertEquals(200.0, DurationUtils.toPercentage(Duration.ofMillis(1000), Duration.ofMillis(500)));
+	}
+	
+	@Test
 	public void testToMilliseconds() {
 		Assert.assertEquals(5000, DurationUtils.toMilliseconds(Duration.ofSeconds(5)));
 		Assert.assertEquals(500, DurationUtils.toMilliseconds(Duration.ofMillis(500)));

@@ -43,6 +43,28 @@ public class DurationUtils {
 	}
 	
 	/**
+	 * Returns {@code true} if the left-hand side is greater than or equal to the right-hand side duration.
+	 * 
+	 * @param lhs the left-hand side
+	 * @param rhs the right-hand side
+	 * @return {@code true} if greater than or equal; {@code false} otherwise
+	 */
+	public static final boolean isGreaterThanOrEqual(Duration lhs, Duration rhs) {
+		return lhs.compareTo(rhs) >= 0;
+	}
+	
+	/**
+	 * Returns the percentage as a value between {@code 0.0} and {@code 100.0} showing the percent complete.
+	 * 
+	 * @param elapsed the elasped time
+	 * @param total the total time
+	 * @return the percentage
+	 */
+	public static final double toPercentage(Duration elapsed, Duration total) {
+		return 100.0 * DurationUtils.toMilliseconds(elapsed) / (double)DurationUtils.toMilliseconds(total);
+	}
+	
+	/**
 	 * Converts the given duration into fractional seconds.
 	 * 
 	 * @param duration the duration

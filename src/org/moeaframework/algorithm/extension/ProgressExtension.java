@@ -145,7 +145,7 @@ public class ProgressExtension implements Extension {
 		if (percentChange >= 0.0001) {
 			timer.split();
 				
-			statistics.addValue(timer.getSplitTime() / percentChange);
+			statistics.addValue(DurationUtils.toMilliseconds(timer.getSplitDuration()) / percentChange);
 			lastPercentComplete = percentChange;
 			
 			percentComplete = Math.min(Math.max(percentComplete, 0.0), 100.0);
@@ -153,7 +153,7 @@ public class ProgressExtension implements Extension {
 			listeners.fire().progressUpdate(new ProgressEvent(
 					algorithm,
 					percentComplete,
-					Duration.ofMillis(timer.getTime()),
+					timer.getDuration(),
 					Duration.ofMillis(Math.round(statistics.getMean() * (100.0 - percentComplete)))));
 		}
 	}

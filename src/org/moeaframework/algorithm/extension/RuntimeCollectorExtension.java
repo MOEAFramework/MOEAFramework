@@ -18,6 +18,7 @@
 package org.moeaframework.algorithm.extension;
 
 import java.io.IOException;
+import java.time.Duration;
 
 import org.apache.commons.lang3.time.StopWatch;
 import org.moeaframework.algorithm.Algorithm;
@@ -26,6 +27,7 @@ import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.util.DurationUtils;
 
 /**
  * Extends an algorithm to record the approximation sets at periodic intervals.
@@ -64,12 +66,12 @@ public class RuntimeCollectorExtension extends PeriodicExtension {
 
 	@Override
 	public void doAction(Algorithm algorithm) {
-		double elapsedTime = timer.getTime() * 1e-6;
+		Duration elapsedTime = timer.getDuration();
 		NondominatedPopulation result = algorithm.getResult();
 
 		TypedProperties properties = new TypedProperties();
 		properties.setInt(ResultEntry.NFE, algorithm.getNumberOfEvaluations());
-		properties.setDouble(ResultEntry.ElapsedTime, elapsedTime);
+		properties.setDouble(ResultEntry.ElapsedTime, DurationUtils.toSeconds(elapsedTime));
 
 		try {
 			writer.write(new ResultEntry(result, properties));
