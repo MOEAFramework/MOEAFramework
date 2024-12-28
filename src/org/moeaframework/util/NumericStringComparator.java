@@ -15,22 +15,30 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis.io;
+package org.moeaframework.util;
 
 import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Sorts strings containing numeric values.  The string is split into sections that contain numeric and non-numeric
- * characters.  The numbers are sorted according to their natural order, whereas non-numeric sections are sorted
- * lexicographically.
+ * Sorts strings containing numeric values.
  * <p>
- * For example, the default string comparator sorts {@code "Val15"} before {@code "Val2"} because the two strings
- * differ at position 3 and compare {@code "1"} to {@code "2"}.  On the other hand, this comparator identifies the
- * two strings contain {@code 15} and {@code 2}, producing a more natural ordering.
+ * The string is split into sections that contain numeric and non-numeric characters, with each section sorted
+ * independently.  Numeric sections are sorted by their natural order (e.g., {@code 1, 2, 3}), whereas non-numeric
+ * are sorted lexicographically.  The following table demonstrates the difference:
+ * <pre>
+ *   Regular Sort           Numeric Sort
+ *   ------------           ------------
+ *   Value1                 Value1
+ *   Value10                Value2
+ *   Value11                Value10
+ *   Value2                 Value11
+ *   Value20                Value20
+ *   Value21                Value21
+ * </pre>
  */
-class NumericStringComparator implements Comparator<String> {
+public class NumericStringComparator implements Comparator<String> {
 	
 	private static final Pattern INTEGER_PATTERN = Pattern.compile("([0-9]+)");
 	

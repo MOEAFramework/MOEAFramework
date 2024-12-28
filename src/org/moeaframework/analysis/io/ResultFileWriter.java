@@ -25,6 +25,10 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.core.Defined;
@@ -37,6 +41,8 @@ import org.moeaframework.core.population.Population;
 import org.moeaframework.core.variable.Variable;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.ErrorHandler;
+import org.moeaframework.util.FixedOrderComparator;
+import org.moeaframework.util.NumericStringComparator;
 import org.moeaframework.util.io.LineReader;
 
 /**
@@ -145,34 +151,28 @@ public class ResultFileWriter extends ResultWriter {
 	
 			for (int i = 0; i < problem.getNumberOfVariables(); i++) {
 				try {
-					header.setString("Variable." + (i+1) + ".Definition",
-							prototype.getVariable(i).getDefinition());
+					header.setString("Variable." + (i+1) + ".Definition", prototype.getVariable(i).getDefinition());
 				} catch (UnsupportedOperationException e) {
-					header.setString("Variable." + (i+1) + ".Definition",
-							Defined.createUnsupportedDefinition(Variable.class,
-									prototype.getVariable(i).getClass()));
+					header.setString("Variable." + (i+1) + ".Definition", Defined.createUnsupportedDefinition(
+							Variable.class, prototype.getVariable(i).getClass()));
 				}
 			}
 	
 			for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
 				try {
-					header.setString("Objective." + (i+1) + ".Definition",
-							prototype.getObjective(i).getDefinition());
+					header.setString("Objective." + (i+1) + ".Definition", prototype.getObjective(i).getDefinition());
 				} catch (UnsupportedOperationException e) {
-					header.setString("Objective." + (i+1) + ".Definition",
-							Defined.createUnsupportedDefinition(Objective.class,
-									prototype.getObjective(i).getClass()));
+					header.setString("Objective." + (i+1) + ".Definition", Defined.createUnsupportedDefinition(
+							Objective.class, prototype.getObjective(i).getClass()));
 				}
 			}
 	
 			for (int i = 0; i < problem.getNumberOfConstraints(); i++) {
 				try {
-					header.setString("Constraint." + (i+1) + ".Definition",
-							prototype.getConstraint(i).getDefinition());
+					header.setString("Constraint." + (i+1) + ".Definition", prototype.getConstraint(i).getDefinition());
 				} catch (UnsupportedOperationException e) {
-					header.setString("Constraint." + (i+1) + ".Definition",
-							Defined.createUnsupportedDefinition(Constraint.class,
-									prototype.getConstraint(i).getClass()));
+					header.setString("Constraint." + (i+1) + ".Definition", Defined.createUnsupportedDefinition(
+							Constraint.class, prototype.getConstraint(i).getClass()));
 				}
 			}
 		}
@@ -286,7 +286,7 @@ public class ResultFileWriter extends ResultWriter {
 	 */
 	private void printProperties(TypedProperties properties, String prefix) throws IOException {
 		try (StringWriter buffer = new StringWriter()) {
-			properties.save(buffer, new NumericStringComparator());
+			properties.save(buffer, new PropertyComparator());
 		
 			try (LineReader lineReader = LineReader.wrap(new StringReader(buffer.toString()))) {
 				for (String line : lineReader) {
@@ -402,6 +402,45 @@ public class ResultFileWriter extends ResultWriter {
 		replace(tempFile, file);
 		
 		return numberOfEntries;
+	}
+	
+	private static class PropertyComparator implements Comparator<String> {
+		
+		private static final FixedOrderComparator<String> fixedOrderComparator;
+		
+		private static final NumericStringComparator numericStringComparator;
+		
+		static {
+			Map<String, Integer> order = new HashMap<>();
+			order.put("Version", 0);
+			order.put("Problem", 1);
+			order.put("NumberOfVariables", 2);
+			order.put("NumberOfObjectives", 3);
+			order.put("NumberOfConstraints", 4);
+			order.put("Variable", 5);
+			order.put("Objective", 6);
+			order.put("Constraint", 7);
+					
+			fixedOrderComparator = new FixedOrderComparator<>(order);
+			numericStringComparator = new NumericStringComparator();
+		}
+		
+		public PropertyComparator() {
+			super();
+		}
+
+		@Override
+		public int compare(String property1, String property2) {
+			int cmp = fixedOrderComparator.compare(property1.split(Pattern.quote("."), 2)[0],
+					property2.split(Pattern.quote("."), 2)[0]);
+			
+			if (cmp != 0) {
+				return cmp;
+			}
+			
+			return numericStringComparator.compare(property1, property2);
+		}
+		
 	}
 	
 }

@@ -32,6 +32,7 @@ import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.reflect.ConstructorUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import org.moeaframework.util.FixedOrderComparator;
 import org.moeaframework.util.Iterators;
 import org.moeaframework.util.io.Tokenizer;
 
@@ -247,9 +248,7 @@ public interface Defined {
 	 */
 	static class ConstructorComparator implements Comparator<Constructor<?>> {
 		
-		private static final Map<Class<?>, Integer> ORDER;
-		
-		private static final int LOWEST_ORDER = 999;
+		private static final FixedOrderComparator<Class<?>> typeComparator;
 		
 		/**
 		 * Constructs a new comparator for sorting constructors.
@@ -259,23 +258,25 @@ public interface Defined {
 		}
 		
 		static {
-			ORDER = new HashMap<>();
-			ORDER.put(byte.class, 0);
-			ORDER.put(Byte.class, 0);
-			ORDER.put(char.class, 1);
-			ORDER.put(Character.class, 1);
-			ORDER.put(short.class, 2);
-			ORDER.put(Short.class, 2);
-			ORDER.put(int.class, 3);
-			ORDER.put(Integer.class, 3);
-			ORDER.put(long.class, 4);
-			ORDER.put(Long.class, 4);
-			ORDER.put(float.class, 5);
-			ORDER.put(Float.class, 5);
-			ORDER.put(double.class, 6);
-			ORDER.put(Double.class, 6);
-			ORDER.put(String.class, 7);
-			ORDER.put(Object.class, LOWEST_ORDER);
+			Map<Class<?>, Integer> order = new HashMap<>();
+			order.put(byte.class, 0);
+			order.put(Byte.class, 0);
+			order.put(char.class, 1);
+			order.put(Character.class, 1);
+			order.put(short.class, 2);
+			order.put(Short.class, 2);
+			order.put(int.class, 3);
+			order.put(Integer.class, 3);
+			order.put(long.class, 4);
+			order.put(Long.class, 4);
+			order.put(float.class, 5);
+			order.put(Float.class, 5);
+			order.put(double.class, 6);
+			order.put(Double.class, 6);
+			order.put(String.class, 7);
+			order.put(Object.class, FixedOrderComparator.LAST);
+			
+			typeComparator = new FixedOrderComparator<>(order);
 		}
 
 		@Override
@@ -285,11 +286,7 @@ public interface Defined {
 			}
 			
 			for (Pair<Parameter, Parameter> pair : Iterators.zip(c1.getParameters(), c2.getParameters())) {
-				if (pair.getLeft().getType() != pair.getRight().getType()) {
-					return Integer.compare(
-							ORDER.getOrDefault(pair.getLeft().getType(), LOWEST_ORDER),
-							ORDER.getOrDefault(pair.getRight().getType(), LOWEST_ORDER));
-				}
+				return typeComparator.compare(pair.getLeft().getType(), pair.getRight().getType());
 			}
 			
 			return 0;
