@@ -21,7 +21,7 @@ import java.util.Comparator;
 import java.util.Map;
 
 /**
- * Sorts elements according to a fixed order.  The order is defined by mapping elements to integer and sorting based
+ * Sorts elements according to a fixed order.  The order is defined by mapping elements to integers and sorting based
  * on the numeric value.  Elements not defined in the mapping are always sorted last.
  * 
  * @param <T> the type of elements being sorted
@@ -39,7 +39,7 @@ public class FixedOrderComparator<T> implements Comparator<T> {
 	/**
 	 * Creates a new fixed order comparator.
 	 * 
-	 * @param order mapping defining the ordering of elements (smaller values appearing first)
+	 * @param order mapping defining the ordering of elements
 	 */
 	public FixedOrderComparator(Map<T, Integer> order) {
 		super();
