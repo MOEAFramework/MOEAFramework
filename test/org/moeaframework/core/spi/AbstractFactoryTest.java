@@ -18,7 +18,9 @@
 package org.moeaframework.core.spi;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
+import org.apache.commons.lang3.reflect.MethodUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.Assert;
@@ -39,9 +41,23 @@ public abstract class AbstractFactoryTest<T, S extends AbstractFactory<T>> {
 	public abstract Class<T> getProviderType();
 	
 	/**
+	 * Returns the type of the factory.
+	 * @return
+	 */
+	public abstract Class<S> getFactoryType();
+	
+	/**
 	 * Creates a new instance of the factory.
 	 */
-	public abstract S createFactory();
+	@SuppressWarnings("unchecked")
+	public S createFactory() {
+		try {
+			return (S)MethodUtils.invokeStaticMethod(getFactoryType(), "getInstance");
+		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+			Assert.fail(e.getMessage());
+			return null;
+		}
+	}
 
 	/**
 	 * Validates that all providers listed in META-INF/services exist.
@@ -61,6 +77,20 @@ public abstract class AbstractFactoryTest<T, S extends AbstractFactory<T>> {
 	@Test
 	public void testHasProviderNotFound() throws IOException {
 		Assert.assertFalse(createFactory().hasProvider("providerThatDoesNotExist"));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetInstanceThrowsIfNull() throws Throwable {
+		try {
+			MethodUtils.invokeStaticMethod(getFactoryType(), "setInstance", (S)null);
+		} catch (InvocationTargetException e) {
+			throw e.getTargetException();
+		}
+	}
+	
+	@Test
+	public void testGetInstanceHasDefault() throws Throwable {
+		Assert.assertNotNull(createFactory());
 	}
 
 }

@@ -53,8 +53,8 @@ public class OperatorFactoryTest extends AbstractFactoryTest<OperatorProvider, O
 	}
 	
 	@Override
-	public OperatorFactory createFactory() {
-		return OperatorFactory.getInstance();
+	public Class<OperatorFactory> getFactoryType() {
+		return OperatorFactory.class;
 	}
 	
 	@Test
@@ -185,11 +185,6 @@ public class OperatorFactoryTest extends AbstractFactoryTest<OperatorProvider, O
 	public void testNonexistentOperator() {
 		Problem problem = new MockProblem(0);
 		createFactory().getVariation("sbx+test_fake_operator", new TypedProperties(), problem);
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void testSetNullInstance() {
-		OperatorFactory.setInstance(null);
 	}
 
 }

@@ -35,8 +35,8 @@ public class ProblemFactoryTest extends AbstractFactoryTest<ProblemProvider, Pro
 	}
 	
 	@Override
-	public ProblemFactory createFactory() {
-		return ProblemFactory.getInstance();
+	public Class<ProblemFactory> getFactoryType() {
+		return ProblemFactory.class;
 	}
 	
 	@Test
@@ -111,11 +111,6 @@ public class ProblemFactoryTest extends AbstractFactoryTest<ProblemProvider, Pro
 			Assert.assertNotNull(ProblemFactory.getInstance().getProblem(swapCaseName));
 			Assert.assertNotNull(ProblemFactory.getInstance().getReferenceSet(swapCaseName));
 		}
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void testSetNullInstance() {
-		ProblemFactory.setInstance(null);
 	}
 
 }

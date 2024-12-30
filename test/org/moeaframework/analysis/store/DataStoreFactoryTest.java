@@ -36,8 +36,8 @@ public class DataStoreFactoryTest extends AbstractFactoryTest<DataStoreProvider,
 	}
 	
 	@Override
-	public DataStoreFactory createFactory() {
-		return DataStoreFactory.getInstance();
+	public Class<DataStoreFactory> getFactoryType() {
+		return DataStoreFactory.class;
 	}
 	
 	@Test
@@ -56,11 +56,6 @@ public class DataStoreFactoryTest extends AbstractFactoryTest<DataStoreProvider,
 		DataStoreFactory factory = createFactory();
 		
 		Assert.assertThrows(ProviderNotFoundException.class, () -> factory.getDataStore(URI.create("foo:///bar")));
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void testSetNullInstance() {
-		DataStoreFactory.setInstance(null);
 	}
 
 }

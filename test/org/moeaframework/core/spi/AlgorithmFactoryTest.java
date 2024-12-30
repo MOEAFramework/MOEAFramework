@@ -34,8 +34,8 @@ public class AlgorithmFactoryTest extends AbstractFactoryTest<AlgorithmProvider,
 	}
 	
 	@Override
-	public AlgorithmFactory createFactory() {
-		return AlgorithmFactory.getInstance();
+	public Class<AlgorithmFactory> getFactoryType() {
+		return AlgorithmFactory.class;
 	}
 
 	@Test
@@ -69,11 +69,6 @@ public class AlgorithmFactoryTest extends AbstractFactoryTest<AlgorithmProvider,
 			String swapCaseName = StringUtils.swapCase(name);
 			Assert.assertNotNull(AlgorithmFactory.getInstance().getAlgorithm(swapCaseName, new MockRealProblem(2)));
 		}
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void testSetNullInstance() {
-		AlgorithmFactory.setInstance(null);
 	}
 	
 }
