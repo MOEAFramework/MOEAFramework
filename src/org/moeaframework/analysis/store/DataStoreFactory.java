@@ -98,7 +98,7 @@ public class DataStoreFactory extends AbstractFactory<DataStoreProvider> {
 		try {
 			return provider.getDataStore(uri);
 		} catch (ServiceConfigurationError e) {
-			System.err.println(e.getMessage());
+			System.err.println(e.getMessage() + (e.getCause() != null ? ": " + e.getCause().getMessage() : ""));
 		}
 		
 		return null;

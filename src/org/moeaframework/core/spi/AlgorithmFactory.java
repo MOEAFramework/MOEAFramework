@@ -120,7 +120,7 @@ public class AlgorithmFactory extends AbstractFactory<AlgorithmProvider> {
 		try {
 			return provider.getAlgorithm(name, properties, problem);
 		} catch (ServiceConfigurationError e) {
-			System.err.println(e.getMessage());
+			System.err.println(e.getMessage() + (e.getCause() != null ? ": " + e.getCause().getMessage() : ""));
 		}
 		
 		return null;
