@@ -22,19 +22,6 @@ import org.moeaframework.util.tree.Node;
 
 /**
  * The node for determining if food is located in the position directly ahead of the ant.
- * 
- * <table>
- *   <tr>
- *     <th style="width: 15%; text-align: left">Name</th>
- *     <th style="width: 15%; text-align: left">Type</th>
- *     <th style="width: 70%; text-align: left">Description</th>
- *   </tr>
- *   <tr>
- *     <td>Return Value</td>
- *     <td>Boolean</td>
- *     <td>{@code true} if food is located in the position directly ahead of the ant; {@code false} otherwise</td>
- *   </tr>
- * </table>
  */
 public class IsFoodAhead extends Node {
 
