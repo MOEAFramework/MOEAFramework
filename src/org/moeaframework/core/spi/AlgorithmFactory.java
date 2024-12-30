@@ -69,7 +69,7 @@ public class AlgorithmFactory extends AbstractFactory<AlgorithmProvider> {
 	}
 	
 	/**
-	 * Searches through all discovered {@code AlgorithmProvider} instances, returning an instance of the algorithm
+	 * Searches through all discovered {@link AlgorithmProvider} instances, returning an instance of the algorithm
 	 * with the registered name.  The algorithm is initialized using implementation-specific properties.  This
 	 * method must throw an {@link ProviderNotFoundException} if no suitable algorithm is found.
 	 * 
@@ -83,7 +83,7 @@ public class AlgorithmFactory extends AbstractFactory<AlgorithmProvider> {
 	}
 
 	/**
-	 * Searches through all discovered {@code AlgorithmProvider} instances, returning an instance of the algorithm
+	 * Searches through all discovered {@link AlgorithmProvider} instances, returning an instance of the algorithm
 	 * with the registered name.  The algorithm is initialized using implementation-specific properties.  This
 	 * method must throw an {@link ProviderNotFoundException} if no suitable algorithm is found.
 	 * 

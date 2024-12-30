@@ -73,7 +73,7 @@ public class ProblemFactory extends AbstractFactory<ProblemProvider> {
 	}
 	
 	/**
-	 * Searches through all discovered {@code ProblemProvider} instances, returning an instance of the problem with
+	 * Searches through all discovered {@link ProblemProvider} instances, returning an instance of the problem with
 	 * the registered name.  This method must throw an {@link ProviderNotFoundException} if no matching problem is
 	 * found.
 	 * 

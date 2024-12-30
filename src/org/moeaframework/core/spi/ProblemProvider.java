@@ -25,7 +25,7 @@ import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.Problem;
 
 /**
- * Defines an SPI for creating named optimization problems.  Problems are identified by a unique name.  The methods of
+ * Defines a SPI for creating named optimization problems.  Problems are identified by a unique name.  The methods of
  * the provider must return {@code null} if the problem is not supported by the provider.
  * <p>
  * If the provider can supply the problem but an error occurred during instantiation, the provider may throw a

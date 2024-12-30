@@ -22,7 +22,7 @@ import org.moeaframework.core.operator.Variation;
 import org.moeaframework.problem.Problem;
 
 /**
- * Defines an SPI for initializing different operators.  Operators are identified by a unique name.  The methods of
+ * Defines a SPI for initializing different operators.  Operators are identified by a unique name.  The methods of
  * the provider must return {@code null} if the operator is not supported by the provider.
  * <p>
  * If the provider can supply the operator but an error occurred during instantiation, the provider may throw a
