@@ -21,9 +21,9 @@ package org.moeaframework.problem.WFG;
  * 
  * Copyright 2005 The Walking Fish Group (WFG).
  *
- * This material is provided "as is", with no warranty expressed or implied.  Any use is at your own risk. Permission
+ * This material is provided "as is", with no warranty expressed or implied.  Any use is at your own risk.  Permission
  * to use or copy this software for any purpose is hereby granted without fee, provided this notice is retained on all
- * copies. Permission to modify the code and to distribute modified code is granted, provided a notice that the code
+ * copies.  Permission to modify the code and to distribute modified code is granted, provided a notice that the code
  * was modified is included with the above copyright notice.
  *
  * http://www.wfg.csse.uwa.edu.au/
@@ -38,7 +38,7 @@ class Problems {
 	}
 
 	/**
-	 * Returns {@code true} if the supplied arguments are valid; {@code false} otherwise. Specifically, returns
+	 * Returns {@code true} if the supplied arguments are valid; {@code false} otherwise.  Specifically, returns
 	 * {@code true} if {@code (k >= 1) && (k < z.length)}, {@code M >= 2} and {@code k % (M-1) == 0}.
 	 * 
 	 * @param z the decision variables

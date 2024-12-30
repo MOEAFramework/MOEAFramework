@@ -22,7 +22,7 @@ import java.util.EventListener;
 import org.moeaframework.algorithm.Algorithm;
 
 /**
- * The listener interface for receiving time continuation (restart) events. The {@link #restarted} method is called
+ * The listener interface for receiving time continuation (restart) events.  The {@link #restarted} method is called
  * immediately after the restart has occurred, prior to the {@link Algorithm#step()} method returning.
  */
 public interface RestartListener extends EventListener {

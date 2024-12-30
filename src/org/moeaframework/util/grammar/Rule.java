@@ -40,7 +40,7 @@ public class Rule {
 	private final List<Production> productions;
 
 	/**
-	 * Constructs a rule with the specified symbol. At least one production must be provided through the
+	 * Constructs a rule with the specified symbol.  At least one production must be provided through the
 	 * {@link #add(Production)} method.
 	 * 
 	 * @param symbol the non-terminal symbol of this rule

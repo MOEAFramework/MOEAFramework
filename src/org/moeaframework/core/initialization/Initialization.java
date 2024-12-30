@@ -20,7 +20,7 @@ package org.moeaframework.core.initialization;
 import org.moeaframework.core.Solution;
 
 /**
- * Interface for an initialization routine. Initialization routines generate the initial population used by an
+ * Interface for an initialization routine.  Initialization routines generate the initial population used by an
  * algorithm.
  */
 public interface Initialization {

@@ -18,8 +18,8 @@
 package org.moeaframework.util.sequence;
 
 /**
- * Interface for generating a sequence of real numbers. The nature of the sequence is specific to the implementation;
- * generated sequences may be deterministic or stochastic, uniform or non-uniform, etc. Refer to the implementing
+ * Interface for generating a sequence of real numbers.  The nature of the sequence is specific to the implementation;
+ * generated sequences may be deterministic or stochastic, uniform or non-uniform, etc.  Refer to the implementing
  * class' documentation for details.
  */
 public interface Sequence {

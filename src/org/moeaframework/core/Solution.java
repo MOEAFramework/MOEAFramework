@@ -117,9 +117,9 @@ public class Solution implements Copyable<Solution>, Formattable<Solution>, Seri
 	}
 
 	/**
-	 * Returns an independent copy of this solution. It is required that {@code x.copy()} is completely independent
-	 * from {@code x} . This means any method invoked on {@code x.copy()} in no way alters the state of {@code x}
-	 * and vice versa. It is typically the case that {@code x.copy().getClass() == x.getClass()} and
+	 * Returns an independent copy of this solution.  It is required that {@code x.copy()} is completely independent
+	 * from {@code x}.  This means any method invoked on {@code x.copy()} in no way alters the state of {@code x}
+	 * and vice versa.  It is typically the case that {@code x.copy().getClass() == x.getClass()} and
 	 * {@code x.copy().equals(x)}
 	 * <p>
 	 * Note that a solution's attributes are not copied, as the attributes are generally specific to each instance.
@@ -437,8 +437,8 @@ public class Solution implements Copyable<Solution>, Formattable<Solution>, Seri
 	}
 
 	/**
-	 * Returns an array containing the constraint values of this solution. Modifying the returned array will not modify
-	 * the internal state of this solution.
+	 * Returns an array containing the constraint values of this solution.  Modifying the returned array will not
+	 * modify the internal state of this solution.
 	 * 
 	 * @return an array containing the constraint values of this solution
 	 */
@@ -465,7 +465,7 @@ public class Solution implements Copyable<Solution>, Formattable<Solution>, Seri
 	}
 
 	/**
-	 * Associates the specified value with the specified key. Returns the old value associated with the key, or
+	 * Associates the specified value with the specified key.  Returns the old value associated with the key, or
 	 * {@code null} if no prior value has been associated with the key.
 	 * 
 	 * @param key the key with which the specified value is to be associated

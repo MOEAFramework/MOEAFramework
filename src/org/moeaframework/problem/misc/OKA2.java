@@ -22,12 +22,12 @@ import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.AbstractProblem;
 
 /**
- * Tatsuya Okabe's OKA2 test problem. The probability density of points becomes more sparse the closer a population
+ * Tatsuya Okabe's OKA2 test problem.  The probability density of points becomes more sparse the closer a population
  * gets to the Pareto front.
  * <p>
  * References:
  * <ol>
- *   <li>Okabe, T., et al. "On Test Functions for Evolutionary Multi-Objective Optimization." Parallel Problem Solving
+ *   <li>Okabe, T., et al.  "On Test Functions for Evolutionary Multi-Objective Optimization." Parallel Problem Solving
  *       from Nature, pp. 792-802, 2004.
  * </ol>
  */

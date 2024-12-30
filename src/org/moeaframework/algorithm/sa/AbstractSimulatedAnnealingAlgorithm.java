@@ -33,8 +33,8 @@ import org.moeaframework.problem.Problem;
 import org.moeaframework.util.validate.Validate;
 
 /**
- * Abstract class of fundamental simulated annealing algorithm. While the iterations of evolving SA algorithms vary,
- * fundamental mechanics of SA algorithm stands on solidification of fluids. This includes the current, initial (max),
+ * Abstract class of fundamental simulated annealing algorithm.  While the iterations of evolving SA algorithms vary,
+ * fundamental mechanics of SA algorithm stands on solidification of fluids.  This includes the current, initial (max),
  * and stopping (min) temperatures.
  */
 public abstract class AbstractSimulatedAnnealingAlgorithm extends AbstractAlgorithm implements Configurable {

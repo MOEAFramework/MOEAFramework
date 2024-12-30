@@ -25,14 +25,14 @@ import org.moeaframework.core.population.Population;
 import org.moeaframework.util.validate.Validate;
 
 /**
- * Deterministic tournament selection operator. The tournament size specifies the number of candidate solutions
- * selected randomly from a population. The winner of a tournament is the best solution in the pool. Unlike
+ * Deterministic tournament selection operator.  The tournament size specifies the number of candidate solutions
+ * selected randomly from a population.  The winner of a tournament is the best solution in the pool.  Unlike
  * probabilistic tournament selection, the best solution is always returned in deterministic tournament selection.
  * If two or more solutions are the best in the pool, one solution is randomly selected with equal probability as the
  * tournament winner.
  * <p>
  * Binary tournament selection exhibits the same selection pressure as linear ranking but without the computational
- * overhead required for ranking. Larger tournament sizes result in greedier selection. Solutions are selected with
+ * overhead required for ranking.  Larger tournament sizes result in greedier selection.  Solutions are selected with
  * replacement.
  */
 public class TournamentSelection implements Selection {
@@ -43,7 +43,7 @@ public class TournamentSelection implements Selection {
 	private DominanceComparator comparator;
 
 	/**
-	 * The tournament size. This is the number of solutions sampled from which the tournament winner is selected.
+	 * The tournament size.  This is the number of solutions sampled from which the tournament winner is selected.
 	 */
 	private int size;
 

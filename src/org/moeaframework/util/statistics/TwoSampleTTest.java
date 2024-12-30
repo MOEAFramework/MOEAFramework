@@ -23,7 +23,7 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.inference.TestUtils;
 
 /**
- * The Two-Sample t test determines if the mean of two populations are different. The independent flag in the
+ * The Two-Sample t test determines if the mean of two populations are different.  The independent flag in the
  * constructor is used to choose between the unpaired (independent) and paired (dependent) test.
  * <ul>
  *   <li>Null Hypothesis: The two population means are equal.

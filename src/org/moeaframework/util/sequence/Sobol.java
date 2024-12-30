@@ -28,7 +28,7 @@ import org.moeaframework.util.io.Resources.ResourceOption;
 import org.moeaframework.util.io.Tokenizer;
 
 /**
- * Generates sequences using the Sobol' low-discrepancy sequence generator. When replacing uniformly random numbers
+ * Generates sequences using the Sobol' low-discrepancy sequence generator.  When replacing uniformly random numbers
  * in Monte-Carlo integration, the error growth rate is reduced from {@code 1.0/sqrt(n)} to {@code 1.0/n}, where
  * {@code n} is the size of the sequence.
  */
@@ -40,7 +40,7 @@ public class Sobol implements Sequence {
 	private static final int SCALE = 31;
 
 	/**
-	 * The directions used by Kuo and Joe's Sobol' sequence generator. The array is structured so that
+	 * The directions used by Kuo and Joe's Sobol' sequence generator.  The array is structured so that
 	 * {@code directions[i] = [a, m1, m2, ..., mk]} for dimension {@code i-1}.
 	 */
 	private static final int[][] DIRECTIONS;
@@ -135,7 +135,7 @@ public class Sobol implements Sequence {
 	 * 
 	 * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
 	 * BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-	 * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+	 * DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT HOLDERS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
 	 * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 	 * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
 	 * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF

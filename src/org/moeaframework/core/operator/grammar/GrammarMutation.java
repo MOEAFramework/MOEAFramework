@@ -27,7 +27,7 @@ import org.moeaframework.core.variable.Variable;
 import org.moeaframework.util.validate.Validate;
 
 /**
- * Uniform mutation for grammars. Each integer codon in the grammar representation is uniformly mutated with a
+ * Uniform mutation for grammars.  Each integer codon in the grammar representation is uniformly mutated with a
  * specified probability.
  * <p>
  * This variation operator is type-safe.
@@ -99,7 +99,7 @@ public class GrammarMutation implements Mutation {
 	}
 
 	/**
-	 * Performs uniform mutation on the specified grammar. Each integer codon in the grammar representation is
+	 * Performs uniform mutation on the specified grammar.  Each integer codon in the grammar representation is
 	 * uniformly mutated with the specified probability in the range {@code [0, getMaximumValue()-1]}.
 	 * 
 	 * @param grammar the grammar to mutate

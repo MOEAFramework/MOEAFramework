@@ -28,10 +28,10 @@ import org.moeaframework.problem.Problem;
  * If the provider can supply the operator but an error occurred during instantiation, the provider may throw a
  * {@link ProviderNotFoundException} along with the details causing the exception.
  * <p>
- * To provide a custom {@code OperatorProvider}, first extend this class and implement the two abstract methods. Next,
- * build a JAR file containing the custom provider. Within the JAR file, create the file
+ * To provide a custom {@code OperatorProvider}, first extend this class and implement the two abstract methods.  Next,
+ * build a JAR file containing the custom provider.  Within the JAR file, create the file
  * {@code META-INF/services/org.moeaframework.core.spi.OperatorProvider} containing on a single line the class name of
- * the custom provider. Lastly, add this JAR file to the classpath. Once these steps are completed, the
+ * the custom provider.  Lastly, add this JAR file to the classpath.  Once these steps are completed, the
  * operators(s) are now accessible via the methods in this class.
  */
 public abstract class OperatorProvider {

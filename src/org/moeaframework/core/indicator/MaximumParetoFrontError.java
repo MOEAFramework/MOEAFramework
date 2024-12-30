@@ -21,7 +21,7 @@ import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.Problem;
 
 /**
- * Maximum Pareto front error metric. Represents the maximum distance from solutions in an approximation set to the
+ * Maximum Pareto front error metric.  Represents the maximum distance from solutions in an approximation set to the
  * nearest solution in the reference set.
  */
 public class MaximumParetoFrontError extends NormalizedIndicator {
@@ -55,7 +55,7 @@ public class MaximumParetoFrontError extends NormalizedIndicator {
 
 	/**
 	 * Computes the maximum Pareto front error for the specified problem given an approximation set and reference set.
-	 * While not necessary, the approximation and reference sets should be normalized. Returns
+	 * While not necessary, the approximation and reference sets should be normalized.  Returns
 	 * {@code Double.POSITIVE_INFINITY} if the approximation set is empty.
 	 * 
 	 * @param problem the problem

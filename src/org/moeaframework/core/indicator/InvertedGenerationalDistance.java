@@ -22,7 +22,7 @@ import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.Problem;
 
 /**
- * Inverted generational distance (IGD) indicator. Represents average distance from solutions in the reference set to
+ * Inverted generational distance (IGD) indicator.  Represents average distance from solutions in the reference set to
  * the nearest solution in an approximation set.
  */
 public class InvertedGenerationalDistance extends NormalizedIndicator {
@@ -75,7 +75,7 @@ public class InvertedGenerationalDistance extends NormalizedIndicator {
 
 	/**
 	 * Computes the inverted generational distance for the specified problem given an approximation set and reference
-	 * set. While not necessary, the approximation and reference sets should be normalized. Returns
+	 * set.  While not necessary, the approximation and reference sets should be normalized.  Returns
 	 * {@code Double.POSITIVE_INFINITY} if the approximation set is empty.
 	 * 
 	 * @param problem the problem

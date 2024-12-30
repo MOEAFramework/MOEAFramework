@@ -51,7 +51,7 @@ public class SPX extends MultiParentVariation {
 	private double epsilon;
 	
 	/**
-	 * Constructs a SPX operator with default settings, taking 10 parents and producing 2 offspring. The expansion
+	 * Constructs a SPX operator with default settings, taking 10 parents and producing 2 offspring.  The expansion
 	 * rate is set to {@code sqrt(numberOfParents+1)} to preserve the covariance matrix of the population.
 	 */
 	public SPX() {
@@ -59,7 +59,7 @@ public class SPX extends MultiParentVariation {
 	}
 
 	/**
-	 * Constructs a SPX operator with the specified number of parents and number of offspring. The expansion rate is
+	 * Constructs a SPX operator with the specified number of parents and number of offspring.  The expansion rate is
 	 * set to {@code sqrt(numberOfParents+1)} to preserve the covariance matrix of the population.
 	 * 
 	 * @param numberOfParents the number of parents

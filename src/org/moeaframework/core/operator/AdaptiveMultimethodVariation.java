@@ -26,7 +26,7 @@ import org.moeaframework.core.attribute.OperatorIndex;
 import org.moeaframework.core.population.Population;
 
 /**
- * Auto-adaptive multi-method recombination operator. Applies operators with probabilities proportional to the number
+ * Auto-adaptive multi-method recombination operator.  Applies operators with probabilities proportional to the number
  * of offspring produced by each operator in the archive.
  */
 public class AdaptiveMultimethodVariation extends AbstractCompoundVariation<Variation> {

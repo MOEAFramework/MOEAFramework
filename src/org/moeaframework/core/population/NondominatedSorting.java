@@ -30,8 +30,8 @@ import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.population.NondominatedPopulation.DuplicateMode;
 
 /**
- * Non-dominated sorting algorithm for dominance depth ranking. Assigns the {@code rank} and {@code crowdingDistance}
- * attributes to solutions. Solutions of rank 0 belong to the Pareto non-dominated front.
+ * Non-dominated sorting algorithm for dominance depth ranking.  Assigns the {@code rank} and {@code crowdingDistance}
+ * attributes to solutions.  Solutions of rank 0 belong to the Pareto non-dominated front.
  * <p>
  * Despite its name, this naive non-dominated sort implementation tends to be faster than the "fast non-dominated sort"
  * implementation from [1].  This is primarily due to the fact that for the average case, the "fast" version always

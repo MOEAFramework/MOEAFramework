@@ -140,7 +140,7 @@ public class BinaryVariable extends AbstractVariable {
 	}
 
 	/**
-	 * Returns the Hamming distance between this instance and the specified {@code BinaryVariable}. The Hamming
+	 * Returns the Hamming distance between this instance and the specified {@code BinaryVariable}.  The Hamming
 	 * distance is the number of bit positions in which the two binary strings differ.
 	 * 
 	 * @param variable the other {@code BinaryVariable}

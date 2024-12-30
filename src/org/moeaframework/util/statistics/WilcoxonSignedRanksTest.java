@@ -63,7 +63,7 @@ public class WilcoxonSignedRanksTest extends OrdinalStatisticalTest {
 	private final double median;
 
 	/**
-	 * The value of {@code T} from the last invocation of {@link #test}. This is package private and intended only
+	 * The value of {@code T} from the last invocation of {@link #test}.  This is package private and intended only
 	 * for testing.
 	 */
 	double lastT;
@@ -121,8 +121,8 @@ public class WilcoxonSignedRanksTest extends OrdinalStatisticalTest {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * When the samples from both populations are less than 20, only alpha values of 0.05 and 0.01 are valid. This
-	 * is because a table is used to accurately determine the critical values. When more than 20 samples are
+	 * When the samples from both populations are less than 20, only alpha values of 0.05 and 0.01 are valid.  This
+	 * is because a table is used to accurately determine the critical values.  When more than 20 samples are
 	 * available, the normal approximation is used allowing any value for alpha.
 	 * 
 	 * @throws IllegalArgumentException if an insufficient sampling size is provided, or if an invalid alpha value

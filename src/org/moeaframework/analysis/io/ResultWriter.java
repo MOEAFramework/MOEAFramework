@@ -40,8 +40,8 @@ public abstract class ResultWriter implements Closeable {
 	}
 	
 	/**
-	 * Returns the number of entries in the file. If the file already existed, this returns the number of complete
-	 * entries in the output file. This value is incremented on every invocation to the {@link #write} method.
+	 * Returns the number of entries in the file.  If the file already existed, this returns the number of complete
+	 * entries in the output file.  This value is incremented on every invocation to the {@link #write} method.
 	 * 
 	 * @return the number of entries in the file
 	 */

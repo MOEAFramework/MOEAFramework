@@ -21,7 +21,7 @@ import org.moeaframework.core.Solution;
 
 /**
  * Applies any number of comparators in succession, returning the result from the first comparator producing a non-zero
- * return value. If no comparators produce a non-zero return value, {@code 0} is returned.
+ * return value.  If no comparators produce a non-zero return value, {@code 0} is returned.
  * <p>
  * For example, the following:
  * <pre>
@@ -47,7 +47,7 @@ public class ChainedComparator implements DominanceComparator {
 
 	/**
 	 * Constructs a chained comparator for applying the specified comparators in order, returning the result from the
-	 * first comparator producing a non-zero return value. If no comparators produce a non-zero return value, {@code 0}
+	 * first comparator producing a non-zero return value.  If no comparators produce a non-zero return value, {@code 0}
 	 * is returned.
 	 * 
 	 * @param comparators the comparators in the order they are to be applied

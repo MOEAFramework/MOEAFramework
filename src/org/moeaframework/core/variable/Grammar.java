@@ -26,7 +26,7 @@ import org.moeaframework.util.grammar.ContextFreeGrammar;
 import org.moeaframework.util.validate.Validate;
 
 /**
- * Decision variable for grammars. This class represents the grammar as a variable-length integer codon which is
+ * Decision variable for grammars.  This class represents the grammar as a variable-length integer codon which is
  * subsequently converted into a grammar using {@link ContextFreeGrammar#build}.
  * 
  * @see ContextFreeGrammar
@@ -41,7 +41,7 @@ public class Grammar extends AbstractVariable {
 	private int[] codon;
 
 	/**
-	 * The number of values that each codon can represent. Each index in the codon array can be assigned a value in
+	 * The number of values that each codon can represent.  Each index in the codon array can be assigned a value in
 	 * the range {@code [0, maximumValue-1]}.
 	 */
 	private int maximumValue = 256;
@@ -98,7 +98,7 @@ public class Grammar extends AbstractVariable {
 	}
 
 	/**
-	 * Sets the integer codon representation of this grammar. The stored object is a clone of the argument, and thus
+	 * Sets the integer codon representation of this grammar.  The stored object is a clone of the argument, and thus
 	 * can be modified independently of this instance.
 	 * 
 	 * @param codon the new integer codon representation for this grammar
@@ -169,7 +169,7 @@ public class Grammar extends AbstractVariable {
 
 	/**
 	 * Removes the indices in the range {@code [start, end]} from the integer codon representation, returning array of
-	 * the values removed by this cut operation. For example,
+	 * the values removed by this cut operation.  For example,
 	 * <pre>
 	 *   Grammar grammar = new Grammar(new int[] { 0, 1, 2, 3, 4, 5 });
 	 *   int[] removed = grammar.cut(2, 4);

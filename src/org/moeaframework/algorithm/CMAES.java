@@ -58,8 +58,8 @@ import org.moeaframework.util.validate.Validate;
  * <p>
  * References:
  * <ol>
- *   <li>Hansen and Kern (2004). Evaluating the CMA Evolution Strategy on Multimodal Test Functions. In Proceedings of
- *       the Eighth International Conference on Parallel Problem Solving from Nature PPSN VIII, pp. 282-291,
+ *   <li>Hansen and Kern (2004).  Evaluating the CMA Evolution Strategy on Multimodal Test Functions.  In Proceedings
+ *       of the Eighth International Conference on Parallel Problem Solving from Nature PPSN VIII, pp. 282-291,
  *       Berlin: Springer.
  *   <li>Hansen, N. (2011).  The CMA Evolution Strategy: A Tutorial.  Available at
  *       https://www.lri.fr/~hansen/cmatutorial.pdf.

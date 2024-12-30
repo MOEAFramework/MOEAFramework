@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.TreeSet;
 
 /**
- * Utility for auto-completion, finding the closest matching unique option from a set of options. For instance,
+ * Utility for auto-completion, finding the closest matching unique option from a set of options.  For instance,
  * <pre>{@code
  *   OptionCompleter completer = new OptionCompleter();
  *   completer.add("subset");
@@ -88,7 +88,7 @@ public class OptionCompleter {
 	}
 
 	/**
-	 * Adds an option to this {@code OptionCompleter}. Duplicate options are ignored.
+	 * Adds an option to this {@code OptionCompleter}.  Duplicate options are ignored.
 	 * 
 	 * @param option the option
 	 */
@@ -97,7 +97,7 @@ public class OptionCompleter {
 	}
 	
 	/**
-	 * Adds the given options to this {@code OptionCompleter}. Duplicate options are ignored.
+	 * Adds the given options to this {@code OptionCompleter}.  Duplicate options are ignored.
 	 * 
 	 * @param options the options
 	 */

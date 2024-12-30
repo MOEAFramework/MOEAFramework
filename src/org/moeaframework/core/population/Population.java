@@ -578,7 +578,7 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, Co
 		private int currentIndex;
 
 		/**
-         * The modification count that the list is expected to have. If the list doesn't have this count, then a
+         * The modification count that the list is expected to have.  If the list doesn't have this count, then a
          * {@link java.util.ConcurrentModificationException} may be thrown by the operations.
          */
 		private int expectedModCount;

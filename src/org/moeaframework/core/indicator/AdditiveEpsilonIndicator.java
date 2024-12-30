@@ -22,7 +22,7 @@ import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.Problem;
 
 /**
- * Additive &epsilon;-indicator for minimization problems. Finds the minimum &epsilon; value for the approximation
+ * Additive &epsilon;-indicator for minimization problems.  Finds the minimum &epsilon; value for the approximation
  * set to &epsilon;-dominate the reference set.
  */
 public class AdditiveEpsilonIndicator extends NormalizedIndicator {

@@ -30,8 +30,8 @@ import org.moeaframework.core.termination.TerminationCondition;
 import org.moeaframework.problem.Problem;
 
 /**
- * Interface for an optimization algorithm. An optimization algorithm operates by performing a series of optimization
- * steps, though the amount of work performed by each step depends on the algorithm. For example, an algorithm
+ * Interface for an optimization algorithm.  An optimization algorithm operates by performing a series of optimization
+ * steps, though the amount of work performed by each step depends on the algorithm.  For example, an algorithm
  * may completely solve a problem in one step or may require hundreds of thousands of steps.
  */
 public interface Algorithm extends Stateful, Extensible, Named {
@@ -127,7 +127,7 @@ public interface Algorithm extends Stateful, Extensible, Named {
 	}
 	
 	/**
-	 * Evaluates the specified solutions. This method calls {@link #evaluate(Solution)} on each of the solutions.
+	 * Evaluates the specified solutions.  This method calls {@link #evaluate(Solution)} on each of the solutions.
 	 * Subclasses should prefer calling this method over {@code evaluate} whenever possible, as this ensures the
 	 * solutions can be evaluated in parallel.
 	 * 
@@ -157,7 +157,7 @@ public interface Algorithm extends Stateful, Extensible, Named {
 	public void evaluate(Solution solution);
 
 	/**
-	 * Returns the number of times the {@code evaluate} method was invoked. This is the primary measure of runtime
+	 * Returns the number of times the {@code evaluate} method was invoked.  This is the primary measure of runtime
 	 * for optimization algorithms.
 	 * 
 	 * @return the number of times the {@code evaluate} method was invoked

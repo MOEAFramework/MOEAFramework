@@ -39,7 +39,7 @@ import org.moeaframework.core.selection.UniformSelection;
 import org.moeaframework.util.validate.Validate;
 
 /**
- * Decorator for {@link EvolutionaryAlgorithm}s to add time continuation (restarts). Restarts occur if either
+ * Decorator for {@link EvolutionaryAlgorithm}s to add time continuation (restarts).  Restarts occur if either
  * <ol>
  *   <li>the number of fitness function evaluations since the last restart exceeds {@code maxWindowSize}; or
  *   <li>the population-to-archive ratio exceeds {@code populationRatio} by more than {@code 25%}.
@@ -265,7 +265,7 @@ public class AdaptiveTimeContinuationExtension extends PeriodicExtension impleme
 	}
 
 	/**
-	 * Performs a check to determine if a restart should occur. Returns {@code RestartType.NONE} if no restart should
+	 * Performs a check to determine if a restart should occur.  Returns {@code RestartType.NONE} if no restart should
 	 * occur; or {@code RestartType.HARD} if the population-to-archive ratio exceeds {@code populationRatio} by more
 	 * than {@code 25%} or the number of fitness evaluations since the last restart exceeds {@code maxWindowSize}.
 	 * 
@@ -291,8 +291,8 @@ public class AdaptiveTimeContinuationExtension extends PeriodicExtension impleme
 	}
 
 	/**
-	 * Performs a restart. If the type is {@code RestartType.HARD}, the population is emptied, resized and filled with
-	 * solutions selected and mutated from the archive. If the type is {@code RestartType.SOFT}, the population is not
+	 * Performs a restart.  If the type is {@code RestartType.HARD}, the population is emptied, resized and filled with
+	 * solutions selected and mutated from the archive.  If the type is {@code RestartType.SOFT}, the population is not
 	 * emptied; new solutions are only added to fill any empty slots.
 	 * 
 	 * @param algorithm the evolutionary algorithm

@@ -90,7 +90,7 @@ public abstract class IndicatorFitnessEvaluator implements FitnessEvaluator {
 	 * 
 	 * THE SWISS FEDERAL INSTITUTE OF TECHNOLOGY, COMPUTER ENGINEERING AND NETWORKS LABORATORY, SPECIFICALLY DISCLAIMS
 	 * ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-	 * PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE SWISS FEDERAL INSTITUTE OF
+	 * PARTICULAR PURPOSE.  THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE SWISS FEDERAL INSTITUTE OF
 	 * TECHNOLOGY, COMPUTER ENGINEERING AND NETWORKS LABORATORY HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
 	 * UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 	 */
@@ -130,7 +130,7 @@ public abstract class IndicatorFitnessEvaluator implements FitnessEvaluator {
 	
 	/**
 	 * After calling {@link #evaluate(Population)}, this method is used to iteratively remove solutions from the
-	 * population while updating the fitness value. There must be no other modifications to the population
+	 * population while updating the fitness value.  There must be no other modifications to the population
 	 * between invocations of {@link #evaluate(Population)} and this method other than removing solutions using
 	 * this method.
 	 * 

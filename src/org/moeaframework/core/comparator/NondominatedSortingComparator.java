@@ -23,7 +23,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.FastNondominatedSorting;
 
 /**
- * Compares two solutions using their rank and crowding distance. Rank is the primary comparison criteria and the
+ * Compares two solutions using their rank and crowding distance.  Rank is the primary comparison criteria and the
  * crowding distance is used to break ties.
  * 
  * @see FastNondominatedSorting

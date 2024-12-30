@@ -76,7 +76,7 @@ public class KruskalWallisTest extends OrdinalStatisticalTest {
 	}
 
 	/**
-	 * Computes the chi-squared approximation of the Kruskal-Wallis test statistic. See equation (22-1) in the
+	 * Computes the chi-squared approximation of the Kruskal-Wallis test statistic.  See equation (22-1) in the
 	 * reference book for details.
 	 * 
 	 * @return the chi-squared approximation of the Kruskal-Wallis test statistic
@@ -100,7 +100,7 @@ public class KruskalWallisTest extends OrdinalStatisticalTest {
 	}
 
 	/**
-	 * Computes the correction factor for ties. See equation (22-3) in the reference book for details.
+	 * Computes the correction factor for ties.  See equation (22-3) in the reference book for details.
 	 * 
 	 * @return the correction factor for ties
 	 */

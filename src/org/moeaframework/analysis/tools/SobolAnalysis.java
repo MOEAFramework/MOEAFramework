@@ -34,7 +34,7 @@ import org.moeaframework.util.io.MatrixIO;
  * Global sensitivity analysis of blackbox model output using Saltelli's improved Sobol' global variance decomposition
  * procedure.
  * <p>
- * The following code was derived and translated from the C code used in the study cited below. Refer to this article
+ * The following code was derived and translated from the C code used in the study cited below.  Refer to this article
  * for a description of the procedure.
  * <p>
  * References:

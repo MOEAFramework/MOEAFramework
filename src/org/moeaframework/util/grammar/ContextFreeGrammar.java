@@ -30,7 +30,7 @@ import java.util.Set;
 import java.util.Stack;
 
 /**
- * A context-free grammar. The rule at index {@code 0} is the starting rule when building derivation trees.
+ * A context-free grammar.  The rule at index {@code 0} is the starting rule when building derivation trees.
  * 
  * @see Rule
  */

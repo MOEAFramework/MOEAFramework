@@ -570,7 +570,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	}
 
 	/**
-	 * Returns the population indices to be considered during mating. With probability {@code delta} the neighborhood
+	 * Returns the population indices to be considered during mating.  With probability {@code delta} the neighborhood
 	 * is returned; otherwise, the entire population is returned.
 	 * 
 	 * @param index the index of the first parent
@@ -613,7 +613,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	}
 
 	/**
-	 * Updates the population with the specified solution. Only the specified population indices are considered for
+	 * Updates the population with the specified solution.  Only the specified population indices are considered for
 	 * updating. A maximum of {@code eta} indices will be modified.
 	 * 
 	 * @param solution the solution

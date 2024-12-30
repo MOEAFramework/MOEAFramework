@@ -21,7 +21,7 @@ import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.population.Population;
 
 /**
- * Interface for an evolutionary algorithm. Evolutionary algorithms are characterized by their use of a
+ * Interface for an evolutionary algorithm.  Evolutionary algorithms are characterized by their use of a
  * <em>population</em> and inspiration from biological and other natural processes.
  */
 public interface EvolutionaryAlgorithm extends Algorithm {

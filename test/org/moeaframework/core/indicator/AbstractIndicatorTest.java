@@ -109,7 +109,7 @@ public abstract class AbstractIndicatorTest<T extends Indicator> {
 	}
 
 	/**
-	 * Returns a new, randomly-generated approximation set for the specified problem. The resulting approximation set
+	 * Returns a new, randomly-generated approximation set for the specified problem.  The resulting approximation set
 	 * will contain at least {@code N} solutions, but depending on the degree of dominance the actual size may be
 	 * significantly less than {@code N}.
 	 * 

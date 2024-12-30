@@ -31,7 +31,7 @@ import org.moeaframework.problem.Problem;
 
 /*
  * The following source code is derived from the Coco Framework available at <https://github.com/numbbo/coco> under the
- * 3-clause BSD license. The original code is copyright 2013 by the NumBBO/CoCO team.  See the AUTHORS file located in
+ * 3-clause BSD license.  The original code is copyright 2013 by the NumBBO/CoCO team.  See the AUTHORS file located in
  * the Coco Framework repository for more details.
  */
 

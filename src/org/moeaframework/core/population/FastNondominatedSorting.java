@@ -25,8 +25,8 @@ import org.moeaframework.core.attribute.Rank;
 import org.moeaframework.core.comparator.DominanceComparator;
 
 /**
- * Fast non-dominated sorting algorithm for dominance depth ranking. Assigns the {@code rank} and
- * {@code crowdingDistance} attributes to solutions. Solutions of rank 0 belong to the Pareto non-dominated front.
+ * Fast non-dominated sorting algorithm for dominance depth ranking.  Assigns the {@code rank} and
+ * {@code crowdingDistance} attributes to solutions.  Solutions of rank 0 belong to the Pareto non-dominated front.
  * Requires at worst {@code O(MN^2)} operations instead of {@code O(MN^3)} required by a naive implementation of
  * {@link NondominatedSorting}, but tends to run slower than the naive implementation except on edge cases (e.g.,
  * for N solutions there are N fronts).

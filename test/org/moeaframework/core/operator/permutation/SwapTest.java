@@ -62,7 +62,7 @@ public class SwapTest extends AbstractPermutationOperatorTest<Swap> {
 	}
 
 	/**
-	 * Returns {@code true} if {@code p2} is the result of a swap from {@code p1}; {@code false} otherwise. Also checks
+	 * Returns {@code true} if {@code p2} is the result of a swap from {@code p1}; {@code false} otherwise.  Also checks
 	 * if the swap is valid.
 	 * 
 	 * @param p1 the first permutation

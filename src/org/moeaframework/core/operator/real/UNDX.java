@@ -55,13 +55,13 @@ public class UNDX extends MultiParentVariation {
 
 	/**
 	 * The standard deviation of the normal distribution controlling the spread of solutions in the remaining
-	 * orthogonal directions not defined by the parents. This value is divided by {@code Math.sqrt(n)} prior to use,
+	 * orthogonal directions not defined by the parents.  This value is divided by {@code Math.sqrt(n)} prior to use,
 	 * where {@code n} is the number of decision variables.
 	 */
 	private double eta;
 	
 	/**
-	 * Constructs a UNDX operator with default settings, taking 10 parents and producing 2 offspring. The parameters
+	 * Constructs a UNDX operator with default settings, taking 10 parents and producing 2 offspring.  The parameters
 	 * {@code zeta=0.5} and {@code eta=0.35} are used as suggested by Kita et al. (1999).
 	 */
 	public UNDX() {
@@ -69,7 +69,7 @@ public class UNDX extends MultiParentVariation {
 	}
 
 	/**
-	 * Constructs a UNDX operator with the specified number of parents and offspring. The parameters {@code zeta=0.5}
+	 * Constructs a UNDX operator with the specified number of parents and offspring.  The parameters {@code zeta=0.5}
 	 * and {@code eta=0.35} are used as suggested by Kita et al. (1999).
 	 * 
 	 * @param numberOfParents the number of parents required by this operator
@@ -80,7 +80,7 @@ public class UNDX extends MultiParentVariation {
 	}
 
 	/**
-	 * Constructs a UNDX operator with the specified number of parents and offspring. The parameters
+	 * Constructs a UNDX operator with the specified number of parents and offspring.  The parameters
 	 * {@code sigma_zeta=0.5} and {@code sigma_eta=0.35} are used as suggested by Kita et al. (1999).
 	 * 
 	 * @param numberOfParents the number of parents required by this operator

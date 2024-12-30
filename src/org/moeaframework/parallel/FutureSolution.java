@@ -48,7 +48,7 @@ public class FutureSolution extends Solution {
 	private long distributedEvaluationID;
 	
 	/**
-	 * Constructs a future solution. This future solution replaces the nested solution; there should exist no direct
+	 * Constructs a future solution.  This future solution replaces the nested solution; there should exist no direct
 	 * access to the nested solution.
 	 * 
 	 * @param solution the nested solution
@@ -67,7 +67,7 @@ public class FutureSolution extends Solution {
 	}
 
 	/**
-	 * Sets the unique identifier for this solution. This is assigned automatically by {@link DistributedProblem} when
+	 * Sets the unique identifier for this solution.  This is assigned automatically by {@link DistributedProblem} when
 	 * evaluating the solution.
 	 * 
 	 * @param distributedEvaluationID a unique identifier for this solution
@@ -77,7 +77,7 @@ public class FutureSolution extends Solution {
 	}
 	
 	/**
-	 * Returns the unique identifier for this solution. This can be used to:
+	 * Returns the unique identifier for this solution.  This can be used to:
 	 * <ol>
 	 *   <li>Configure the random number generator (RNG) seed on stochastic problems, allowing reproducible results.
 	 *   <li>Tracking files or other resources associated with the solution, such as writing program inputs to disk.
@@ -90,7 +90,7 @@ public class FutureSolution extends Solution {
 	}
 	
 	/**
-	 * Updates this solution with the result of the {@code Future}, or blocks until the result is available. Since the
+	 * Updates this solution with the result of the {@code Future}, or blocks until the result is available.  Since the
 	 * result is a serialized copy of this solution, the objectives, constraints, and attributes must be copied.
 	 */
 	synchronized void update() {

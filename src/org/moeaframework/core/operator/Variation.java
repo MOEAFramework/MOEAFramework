@@ -22,15 +22,15 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.configuration.Configurable;
 
 /**
- * Interface for variation operators. Variation operators manipulate one or more existing solutions, called
+ * Interface for variation operators.  Variation operators manipulate one or more existing solutions, called
  * <em>parents</em>, to produce one or more new solutions, called <em>children</em> or <em>offspring</em>.
  * <p>
  * A variation operator is <em>type-safe</em> if it checks variable types at runtime and operates only on those
- * variables it supports. Unsupported variables must be left unmodified. A type-safe variation operator must ensure
- * casts are valid and never throw a {@code ClassCastException}. A type-safe variation class should indicate this fact
+ * variables it supports.  Unsupported variables must be left unmodified. A type-safe variation operator must ensure
+ * casts are valid and never throw a {@code ClassCastException}.  A type-safe variation class should indicate this fact
  * by stating "This variation operator is type-safe" in the class comments.
  * <p>
- * Mixed-type encodings are supported by using type-safe variation operators. Variation operators for each type in the
+ * Mixed-type encodings are supported by using type-safe variation operators.  Variation operators for each type in the
  * encoding are applied sequentially, each operating on only those variables with the correct type.
  */
 public interface Variation extends Configurable, Named {
@@ -53,7 +53,7 @@ public interface Variation extends Configurable, Named {
 
 	/**
 	 * Evolves one or more parent solutions (specified by {@code getArity}) and produces one or more child solutions.
-	 * By contract, the parents must not be modified. The copy constructor should be used to create copies of the
+	 * By contract, the parents must not be modified.  The copy constructor should be used to create copies of the
 	 * parents with these copies subsequently modified.
 	 * 
 	 * @param parents the array of parent solutions

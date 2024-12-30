@@ -34,8 +34,8 @@ import org.moeaframework.util.SerializationUtils;
 import org.moeaframework.util.Vector;
 
 /**
- * Adaptive grid archive. Divides objective space into a number of grid cells, maintaining a count of the number of
- * solutions within each grid cell. When the size of the archive exceeds a specified capacity, a solution from the
+ * Adaptive grid archive.  Divides objective space into a number of grid cells, maintaining a count of the number of
+ * solutions within each grid cell.  When the size of the archive exceeds a specified capacity, a solution from the
  * most crowded grid cell is selected and removed from the archive.
  * <p>
  * This implementation currently stores the density of each grid cell in an array.  As such,
@@ -262,7 +262,7 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 	}
 
 	/**
-	 * Returns a solution residing in the densest grid cell. If there are more than one such solution or multiple
+	 * Returns a solution residing in the densest grid cell.  If there are more than one such solution or multiple
 	 * cells with the same density, the first solution encountered is returned.
 	 * 
 	 * @return a solution residing in the densest grid cell

@@ -18,7 +18,7 @@
 package org.moeaframework.util.statistics;
 
 /**
- * An observation with a rank. Rank-based statistics use this type of observation to manage ranks.
+ * An observation with a rank.  Rank-based statistics use this type of observation to manage ranks.
  */
 public class RankedObservation extends Observation {
 
@@ -28,7 +28,7 @@ public class RankedObservation extends Observation {
 	private double rank;
 
 	/**
-	 * Constructs a ranked observation with the specified value and group. The rank of this observation is default
+	 * Constructs a ranked observation with the specified value and group.  The rank of this observation is default
 	 * to 0.0.
 	 * 
 	 * @param value the value of this observation

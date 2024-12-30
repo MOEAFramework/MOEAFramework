@@ -27,7 +27,7 @@ import org.moeaframework.problem.Problem;
 import org.moeaframework.util.validate.Validate;
 
 /**
- * Factory for creating algorithm instances. See {@link AlgorithmProvider} for details on adding new providers.
+ * Factory for creating algorithm instances.  See {@link AlgorithmProvider} for details on adding new providers.
  * <p>
  * This class is thread safe.
  */
@@ -84,7 +84,7 @@ public class AlgorithmFactory extends AbstractFactory<AlgorithmProvider> {
 
 	/**
 	 * Searches through all discovered {@code AlgorithmProvider} instances, returning an instance of the algorithm
-	 * with the registered name. The algorithm is initialized using implementation-specific properties.  This
+	 * with the registered name.  The algorithm is initialized using implementation-specific properties.  This
 	 * method must throw an {@link ProviderNotFoundException} if no suitable algorithm is found.
 	 * 
 	 * @param name the name identifying the algorithm

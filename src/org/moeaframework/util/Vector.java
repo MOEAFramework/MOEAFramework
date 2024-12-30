@@ -157,7 +157,7 @@ public class Vector {
 	}
 
 	/**
-	 * Returns the dot (inner) product of the two specified vectors. The two vectors must be the same length.
+	 * Returns the dot (inner) product of the two specified vectors.  The two vectors must be the same length.
 	 * 
 	 * @param u the first vector
 	 * @param v the second vector
@@ -202,7 +202,7 @@ public class Vector {
 	}
 
 	/**
-	 * Returns the projection of {@code u} onto {@code v}. The two vectors must be the same length.
+	 * Returns the projection of {@code u} onto {@code v}.  The two vectors must be the same length.
 	 * 
 	 * @param u the vector being projected
 	 * @param v the vector onto which {@code u} is being projected
@@ -232,7 +232,7 @@ public class Vector {
 	}
 
 	/**
-	 * Returns the vector {@code u} orthogonal to the already orthogonalized vectors {@code vs}. This method is
+	 * Returns the vector {@code u} orthogonal to the already orthogonalized vectors {@code vs}.  This method is
 	 * provided to allow incremental construction of the orthogonal basis:
 	 * <pre>
 	 *   List&lt;double[]&gt; basis = new ArrayList&lt;double[]&gt;();

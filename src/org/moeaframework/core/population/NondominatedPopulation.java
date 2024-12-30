@@ -31,9 +31,9 @@ import org.moeaframework.core.variable.Variable;
 import org.moeaframework.util.io.Resources;
 
 /**
- * A population that maintains the property of pair-wise non-dominance between all solutions. When the {@code add}
+ * A population that maintains the property of pair-wise non-dominance between all solutions.  When the {@code add}
  * method is invoked with a new solution, all solutions currently in the population that are dominated by the new
- * solution are removed. If the new solution is dominated by any member of the population, the new solution is not
+ * solution are removed.  If the new solution is dominated by any member of the population, the new solution is not
  * added.
  * <p>
  * <strong>Avoid modifying solutions contained in non-dominated populations.</strong>  Since the dominance checks are
@@ -145,7 +145,7 @@ public class NondominatedPopulation extends Population {
 
 	/**
 	 * If {@code newSolution} is dominates any solution or is non-dominated with all solutions in this population,
-	 * the dominated solutions are removed and {@code newSolution} is added to this population. Otherwise,
+	 * the dominated solutions are removed and {@code newSolution} is added to this population.  Otherwise,
 	 * {@code newSolution} is dominated and is not added to this population.
 	 */
 	@Override
@@ -179,7 +179,7 @@ public class NondominatedPopulation extends Population {
 	}
 
 	/**
-	 * Adds the specified solution to the population, bypassing the non-domination check. This method should only be
+	 * Adds the specified solution to the population, bypassing the non-domination check.  This method should only be
 	 * used when a non-domination check has been performed elsewhere, such as in a subclass.
 	 * <p>
 	 * <b>This method should only be used internally, and should never be made public by any subclasses.</b>

@@ -30,8 +30,8 @@ import org.moeaframework.problem.AnalyticalProblem;
  * References:
  * <ol>
  *   <li>Deb, K. and Saxena, D. K. (2006). Searching for Pareto-optimal solutions through dimensionality reduction
- *       for certain large-dimensional multi-objective optimization problems. In The 2006 IEEE Congress on Evolutionary
- *       Computation, pages 3353–3360.
+ *       for certain large-dimensional multi-objective optimization problems.  In The 2006 IEEE Congress on
+ *       Evolutionary Computation, pages 3353–3360.
  * </ol>
  */
 public class DTLZ5 extends DTLZ implements AnalyticalProblem {

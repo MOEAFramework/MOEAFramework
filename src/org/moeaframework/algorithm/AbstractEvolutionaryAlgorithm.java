@@ -31,9 +31,9 @@ import org.moeaframework.problem.Problem;
 import org.moeaframework.util.validate.Validate;
 
 /**
- * Abstract class providing default implementations for several {@link EvolutionaryAlgorithm} methods. Primarily,
+ * Abstract class providing default implementations for several {@link EvolutionaryAlgorithm} methods.  Primarily,
  * the {@link #initialize()} method generates and evaluates the initial population, adding the solutions to the archive
- * if available. The {@link #getResult()} method returns the non-dominated solutions from the population and, if
+ * if available.  The {@link #getResult()} method returns the non-dominated solutions from the population and, if
  * available, the archive.  The majority of evolutionary algorithms should only need to override the {@link #iterate()}
  * method.
  */

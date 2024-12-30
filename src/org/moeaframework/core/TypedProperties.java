@@ -327,7 +327,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	//   1. If no truncation is required, the number is parsed as-is.
 	//   2. If the truncation alters the value more than the defined machine precision, Settings.EPS,
 	//      then a warning is optionally displayed.
-	//   3. If the truncation would alter the value more than 1.0, an exception is thrown. This includes
+	//   3. If the truncation would alter the value more than 1.0, an exception is thrown.  This includes
 	//      trying to parse a value that exceeds the maximum or minimum value that fits within a type.
 	
 	/**

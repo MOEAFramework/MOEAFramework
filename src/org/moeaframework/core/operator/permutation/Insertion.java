@@ -23,7 +23,7 @@ import org.moeaframework.core.operator.TypeSafeMutation;
 import org.moeaframework.core.variable.Permutation;
 
 /**
- * Insertion mutation operator. Randomly selects an entry in the permutation and inserts it at some other position
+ * Insertion mutation operator.  Randomly selects an entry in the permutation and inserts it at some other position
  * in the permutation.
  * <p>
  * This operator is type-safe.

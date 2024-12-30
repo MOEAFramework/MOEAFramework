@@ -53,7 +53,7 @@ public class GrammarCrossover extends TypeSafeCrossover<Grammar> {
 	}
 
 	/**
-	 * Performs single-point crossover on the specified grammars. Crossover points are chosen for both parents and
+	 * Performs single-point crossover on the specified grammars.  Crossover points are chosen for both parents and
 	 * the tail sections swapped.  The two grammars are modified as a result of this operation.
 	 * 
 	 * @param g1 the first grammar

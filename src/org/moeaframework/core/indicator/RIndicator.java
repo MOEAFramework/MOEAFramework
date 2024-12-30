@@ -214,7 +214,7 @@ public abstract class RIndicator extends NormalizedIndicator {
 	}
 	
 	/**
-	 * Returns the default number of subdivisions for a given problem. The defaults, for an M objective problem, are:
+	 * Returns the default number of subdivisions for a given problem.  The defaults, for an M objective problem, are:
 	 * <ul>
 	 *   <li>if M=2, then 500
 	 *   <li>if M=3, then 30

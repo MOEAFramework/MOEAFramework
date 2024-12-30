@@ -48,7 +48,7 @@ public abstract class AbstractOperatorTest<T extends Variation, V extends Variab
 	}
 	
 	/**
-	 * Tests if the specified variation operator is type safe. The variation operator should be constructed so that it
+	 * Tests if the specified variation operator is type safe.  The variation operator should be constructed so that it
 	 * is guaranteed to be applied to the parents (i.e., a probability of 1).
 	 */
 	@Test
@@ -103,7 +103,7 @@ public abstract class AbstractOperatorTest<T extends Variation, V extends Variab
 	}
 
 	/**
-	 * Variable for testing type safety. Since this variable is unknown to the operators, only the copy() method is
+	 * Variable for testing type safety.  Since this variable is unknown to the operators, only the copy() method is
 	 * valid.
 	 */
 	private static class NewVariable extends MockUnsupportedVariable {

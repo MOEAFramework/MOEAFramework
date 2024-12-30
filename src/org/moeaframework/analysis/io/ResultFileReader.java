@@ -285,7 +285,7 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	}
 
 	/**
-	 * Returns the next population in the file; or {@code null} if the end of the file is reached. If the last
+	 * Returns the next population in the file; or {@code null} if the end of the file is reached.  If the last
 	 * entry in the file is incomplete, {@code null} is returned.
 	 * 
 	 * @return the next population in the file; or {@code null} if the end of the file is reached

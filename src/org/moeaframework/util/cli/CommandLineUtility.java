@@ -38,7 +38,7 @@ import org.moeaframework.util.io.RedirectStream;
 import org.moeaframework.util.io.Tokenizer;
 
 /**
- * Abstract class for providing command line utilities. This class is provided to ensure a standard interface for
+ * Abstract class for providing command line utilities.  This class is provided to ensure a standard interface for
  * command line utilities as well as handling the quirks of different operating systems.
  * <p>
  * Upon calling {@link #start(String[])}, this class registers an uncaught exception handler on the calling thread.

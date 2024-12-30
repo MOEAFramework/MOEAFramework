@@ -20,7 +20,7 @@ package org.moeaframework.core.fitness;
 import org.moeaframework.core.population.Population;
 
 /**
- * Evaluates a population and assigns fitness values to its solutions. This class is intended to be used by
+ * Evaluates a population and assigns fitness values to its solutions.  This class is intended to be used by
  * indicator-based algorithms.
  */
 public interface FitnessEvaluator {

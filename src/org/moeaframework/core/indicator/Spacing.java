@@ -23,7 +23,7 @@ import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.Problem;
 
 /**
- * Spacing metric. Represents the spread of the Pareto front.
+ * Spacing metric.  Represents the spread of the Pareto front.
  */
 public class Spacing implements Indicator {
 

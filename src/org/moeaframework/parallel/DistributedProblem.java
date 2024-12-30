@@ -118,9 +118,9 @@ public class DistributedProblem extends ProblemWrapper {
 	}
 	
 	/**
-	 * The {@link Callable} sent to the {@code ExecutorService} for distributed processing. Note that serialization may
-	 * result in the solution being evaluated and returned may be a different instance than provided to the
-	 * constructor. It is therefore necessary to ensure the required fields are copied when appropriate.
+	 * The {@link Callable} sent to the {@code ExecutorService} for distributed processing.  Note that serialization
+	 * may result in the solution being evaluated and returned may be a different instance than provided to the
+	 * constructor.  It is therefore necessary to ensure the required fields are copied when appropriate.
 	 */
 	private static class ProblemEvaluator implements Callable<Solution>, Serializable {
 

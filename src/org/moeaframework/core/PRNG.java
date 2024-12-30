@@ -26,7 +26,7 @@ import java.util.Set;
 import org.moeaframework.parallel.util.ThreadLocalMersenneTwister;
 
 /**
- * Static methods for generating random or pseudo-random numbers. Any source of randomness implementing the
+ * Static methods for generating random or pseudo-random numbers.  Any source of randomness implementing the
  * {@link Random} interface can be used as the random source.
  * <p>
  * {@code PRNG} relies on an underlying source of randomness, and inherits thread safety from the underlying

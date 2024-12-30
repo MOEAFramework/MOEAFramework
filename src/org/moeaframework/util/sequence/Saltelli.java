@@ -22,7 +22,7 @@ import org.moeaframework.util.validate.Validate;
 
 /**
  * Extension of Sobol's sequence for generating the samples for Saltelli's version of Sobol' global variance
- * decomposition. This approach allows the first-, second-, and total-order sensitivities to be computed with
+ * decomposition.  This approach allows the first-, second-, and total-order sensitivities to be computed with
  * lower error rates and fewer samples than other approaches, and is the sequences required for using
  * {@link SobolAnalysis}.
  * <p>

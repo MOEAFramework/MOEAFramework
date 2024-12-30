@@ -23,7 +23,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.attribute.CrowdingDistance;
 
 /**
- * Compares solutions using their crowding distance. Solutions with larger crowding distances are preferred.
+ * Compares solutions using their crowding distance.  Solutions with larger crowding distances are preferred.
  */
 public class CrowdingComparator implements DominanceComparator, Comparator<Solution> {
 

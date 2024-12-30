@@ -69,7 +69,7 @@ public interface Problem extends AutoCloseable, Named {
 	public void evaluate(Solution solution);
 
 	/**
-	 * Returns a new solution for this problem. Implementations must initialize the variables so that the
+	 * Returns a new solution for this problem.  Implementations must initialize the variables so that the
 	 * valid range of values is defined, but typically leave the actual value at a default or undefined state.
 	 * 
 	 * @return a new solution for this problem

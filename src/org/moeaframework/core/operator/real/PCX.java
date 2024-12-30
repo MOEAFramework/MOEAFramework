@@ -64,7 +64,7 @@ public class PCX extends MultiParentVariation {
 	}
 
 	/**
-	 * Constructs a PCX operator with the specified number of parents and offspring. The {@code eta} and {@code zeta}
+	 * Constructs a PCX operator with the specified number of parents and offspring.  The {@code eta} and {@code zeta}
 	 * parameters are set to {@code 0.1}, as suggested by Deb et al. (2002).
 	 * 
 	 * @param numberOfParents the number of parents required by this operator

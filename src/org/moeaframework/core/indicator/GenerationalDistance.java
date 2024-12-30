@@ -22,7 +22,7 @@ import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.Problem;
 
 /**
- * Generational distance (GD) indicator. Represents average distance from solutions in an approximation set to the
+ * Generational distance (GD) indicator.  Represents average distance from solutions in an approximation set to the
  * nearest solution in the reference set.
  */
 public class GenerationalDistance extends NormalizedIndicator {
@@ -76,7 +76,7 @@ public class GenerationalDistance extends NormalizedIndicator {
 
 	/**
 	 * Computes the generational distance for the specified problem given an approximation set and reference set.
-	 * While not necessary, the approximation and reference sets should be normalized. Returns
+	 * While not necessary, the approximation and reference sets should be normalized.  Returns
 	 * {@code Double.POSITIVE_INFINITY} if the approximation set is empty.
 	 * 
 	 * @param problem the problem

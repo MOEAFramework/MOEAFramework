@@ -21,7 +21,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.Population;
 
 /**
- * Interface for selection operators. Selection operators pick one or more solutions from a population using some
+ * Interface for selection operators.  Selection operators pick one or more solutions from a population using some
  * selection criteria.
  */
 public interface Selection {

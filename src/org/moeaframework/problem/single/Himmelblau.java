@@ -28,7 +28,7 @@ import org.moeaframework.core.variable.RealVariable;
  * <p>
  * References:
  * <ol>
- *   <li>Himmelblau, D. (1972). Applied Nonlinear Programming. McGraw-Hill. ISBN 0-07-028921-2.
+ *   <li>Himmelblau, D. (1972).  Applied Nonlinear Programming. McGraw-Hill.  ISBN 0-07-028921-2.
  * </ol>
  */
 public class Himmelblau extends AbstractSingleObjectiveProblem {
