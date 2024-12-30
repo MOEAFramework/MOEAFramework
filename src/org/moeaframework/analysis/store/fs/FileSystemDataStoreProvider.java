@@ -45,7 +45,6 @@ public class FileSystemDataStoreProvider extends DataStoreProvider {
 				String path = toPath(uri);
 				return new FileSystemDataStore(new File(path));
 			} catch (IOException e) {
-				e.printStackTrace();
 				throw new ServiceConfigurationError("Failed to create FileSystemDataStore", e);
 			}
 		}

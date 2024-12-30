@@ -143,7 +143,7 @@ public interface Defined {
 			
 			for (int i = 0; i < arguments.length; i++) {
 				if (MethodUtils.getMatchingMethod(arguments[i].getClass(), "toString").getDeclaringClass() == Object.class) {
-					System.err.println(instanceType + " does not override toString()");
+					System.err.println(arguments[i].getClass() + " does not override toString()");
 				}
 				
 				tokens[i] = arguments[i].toString();
