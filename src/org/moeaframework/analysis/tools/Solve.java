@@ -19,9 +19,12 @@ package org.moeaframework.analysis.tools;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.Character.Subset;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -31,6 +34,7 @@ import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.extension.FrequencyType;
 import org.moeaframework.algorithm.extension.RuntimeCollectorExtension;
 import org.moeaframework.analysis.io.ResultFileWriter;
+import org.moeaframework.core.Defined;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
@@ -96,8 +100,9 @@ public class Solve extends CommandLineUtility {
 				.build());
 		options.addOption(Option.builder("v")
 				.longOpt("variables")
-				.hasArg()
-				.argName("v1,v2,...")
+				.hasArgs()
+				.argName("v1;v2;...")
+				.valueSeparator(';')
 				.build());
 		options.addOption(Option.builder("o")
 				.longOpt("objectives")
@@ -111,13 +116,15 @@ public class Solve extends CommandLineUtility {
 				.build());
 		options.addOption(Option.builder("l")
 				.longOpt("lowerBounds")
-				.hasArg()
-				.argName("v1,v2,...")
+				.hasArgs()
+				.argName("l1,l2,...")
+				.valueSeparator(',')
 				.build());
 		options.addOption(Option.builder("u")
 				.longOpt("upperBounds")
-				.hasArg()
-				.argName("v1,v2,...")
+				.hasArgs()
+				.argName("u1,u2,...")
+				.valueSeparator(',')
 				.build());
 		
 		options.addOption(Option.builder("S")
@@ -156,57 +163,35 @@ public class Solve extends CommandLineUtility {
 	 * @throws ParseException if an error occurred while parsing the variable specification
 	 */
 	private Variable parseVariableSpecification(String token) throws ParseException {
-		if (!token.endsWith(")")) {
+		Pattern pattern = Pattern.compile("([a-zA-Z]+)\\(([^\\)]+)\\)");
+		Matcher matcher = pattern.matcher(token);
+		
+		if (!matcher.matches()) {
 			throw new ParseException("Invalid variable specification '" + token + "', not properly formatted");
 		}
 		
-		if (token.startsWith("R(")) {
-			// real-valued decision variable
-			String content = token.substring(2, token.length()-1);
-			int index = content.indexOf(':');
-			
-			if (index >= 0) {
-				double lowerBound = Double.parseDouble(content.substring(0, index));
-				double upperBound = Double.parseDouble(content.substring(index+1));
-				return new RealVariable(lowerBound, upperBound);
-			} else {
-				throw new ParseException("Invalid real specification '" + token + "', expected R(<lb>:<ub>)");
-			}
-		} else if (token.startsWith("B(")) {
-			// binary decision variable
-			String content = token.substring(2, token.length()-1);
-			
-			try {
-				int length = Integer.parseInt(content.trim());
-				return new BinaryVariable(length);
-			} catch (NumberFormatException e) {
-				throw new ParseException("Invalid binary specification '" + token + "', expected B(<length>)");
-			}
-		} else if (token.startsWith("I(")) {
-			// binary integer decision variable
-			String content = token.substring(2, token.length()-1);
-			int index = content.indexOf(':');
-			
-			if (index >= 0) {
-				int lowerBound = Integer.parseInt(content.substring(0, index));
-				int upperBound = Integer.parseInt(content.substring(index+1));
-				return new BinaryIntegerVariable(lowerBound, upperBound);
-			} else {
-				throw new ParseException("Invalid integer specification '" + token + "', expected I(<lb>:<ub>)");
-			}
-		} else if (token.startsWith("P(")) {
-			// permutation
-			String content = token.substring(2, token.length()-1);
-			
-			try {
-				int length = Integer.parseInt(content.trim());
-				return new Permutation(length);
-			} catch (NumberFormatException e) {
-				throw new ParseException("Invalid permutation specification '" + token + "', expected P(<length>)");
-			}
-		} else {
-			throw new ParseException("Invalid variable specification '" + token + "', unknown type");
+		String type = matcher.group(1);
+		String args = matcher.group(2);
+		
+		if (type.equalsIgnoreCase("R") || type.equalsIgnoreCase("Real")) {
+			type = RealVariable.class.getSimpleName();
+		} else if (type.equalsIgnoreCase("B") || type.equalsIgnoreCase("Binary")) {
+			type = BinaryVariable.class.getSimpleName();
+		} else if (type.equalsIgnoreCase("I") || type.equalsIgnoreCase("Int") || type.equalsIgnoreCase("Integer")) {
+			type = BinaryIntegerVariable.class.getSimpleName();
+		} else if (type.equalsIgnoreCase("P")) {
+			type = Permutation.class.getSimpleName();
+		} else if (type.equalsIgnoreCase("S")) {
+			type = Subset.class.getSimpleName();
 		}
+		
+		Variable result = Defined.createInstance(Variable.class, type + "(" + args + ")");
+		
+		if (result == null) {
+			throw new ParseException("Invalid variable specification '" + token + "', type not supported");
+		}
+		
+		return result;
 	}
 	
 	/**
@@ -221,8 +206,8 @@ public class Solve extends CommandLineUtility {
 		List<Variable> variables = new ArrayList<>();
 		
 		if (commandLine.hasOption("lowerBounds") && commandLine.hasOption("upperBounds")) {
-			String[] lowerBoundTokens = commandLine.getOptionValue("lowerBounds").split(",");
-			String[] upperBoundTokens = commandLine.getOptionValue("upperBounds").split(",");
+			String[] lowerBoundTokens = commandLine.getOptionValues("lowerBounds");
+			String[] upperBoundTokens = commandLine.getOptionValues("upperBounds");
 			
 			if (lowerBoundTokens.length != upperBoundTokens.length) {
 				throw new ParseException("Lower bound and upper bounds not the same length");
@@ -234,10 +219,10 @@ public class Solve extends CommandLineUtility {
 				variables.add(new RealVariable(lowerBound, upperBound));
 			}
 		} else if (commandLine.hasOption("variables")) {
-			String[] tokens = commandLine.getOptionValue("variables").split(",");
+			String[] tokens = commandLine.getOptionValues("variables");
 			
 			for (String token : tokens) {
-				variables.add(parseVariableSpecification(token.trim().toUpperCase()));
+				variables.add(parseVariableSpecification(token.trim()));
 			}
 		} else {
 			throw new ParseException("Must specify either the problem, the variables, or the lower and upper bounds arguments");

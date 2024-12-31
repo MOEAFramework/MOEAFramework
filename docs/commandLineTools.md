@@ -370,8 +370,8 @@ The following options are available:
 
 ```
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.Solve -a <name> [-b <name>] [-c <value>] [-e
-       <e1,e2,...>] -f <file> [-F <value>] [-h] [-H <value>] [-l <v1,v2,...>] -n <value> [-o <value>] [-P <value>] [-r
-       <value>] [-s <value>] [-S] [-t <trials>] [-u <v1,v2,...>] [-v <v1,v2,...>] [-X <p1=v1;p2=v2;...>]
+       <e1,e2,...>] -f <file> [-F <value>] [-h] [-H <value>] [-l <l1,l2,...>] -n <value> [-o <value>] [-P <value>] [-r
+       <value>] [-s <value>] [-S] [-t <trials>] [-u <u1,u2,...>] [-v <v1;v2;...>] [-X <p1=v1;p2=v2;...>]
 
 Solves an optimization problem using any optimization algorithm supported by the MOEA Framework.
 
@@ -385,7 +385,7 @@ The following options are available:
  -F,--runtimeFrequency <value>       Output population every N evaluations (default 100)
  -h,--help                           Display help information
  -H,--hostname <value>               Hostname used when using sockets (default localhost)
- -l,--lowerBounds <v1,v2,...>        Lower bounds of real-valued decision variables
+ -l,--lowerBounds <l1,l2,...>        Lower bounds of real-valued decision variables
  -n,--numberOfEvaluations <value>    Maximum number of evaluations
  -o,--objectives <value>             Number of objectives
  -P,--port <value>                   Port used when using sockets (default 16801)
@@ -393,10 +393,10 @@ The following options are available:
  -s,--seed <value>                   Random number seed
  -S,--useSocket                      Communicate with external problem using sockets
  -t,--test <trials>                  Runs a few trials to test the connection with the external problem
- -u,--upperBounds <v1,v2,...>        Upper bounds of real-valued decision variables
- -v,--variables <v1,v2,...>          Comma-separated list of decision variable specifications.  Use "R(<lb>:<ub>)" for
-                                     real-valued, "B(<length>)" for binary, "I(<lb>:<ub>)" for integer-valued, and
-                                     "P(<length>)" for permutations
+ -u,--upperBounds <u1,u2,...>        Upper bounds of real-valued decision variables
+ -v,--variables <v1;v2;...>          Semicolon-separated list of decision variable specifications.  Use "R(<lb>,<ub>)"
+                                     for reals, "B(<length>)" for binary, "I(<lb>,<ub>)" for integers, "P(<length>)" for
+                                     permutations
  -X,--properties <p1=v1;p2=v2;...>   Algorithm properties
 ```
 

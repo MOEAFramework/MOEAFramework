@@ -77,8 +77,9 @@ class OptionUtils {
 	public static void addEpsilonOption(Options options) {
 		options.addOption(Option.builder("e")
 				.longOpt("epsilon")
-				.hasArg()
+				.hasArgs()
 				.argName("e1,e2,...")
+				.valueSeparator(',')
 				.build());
 	}
 	

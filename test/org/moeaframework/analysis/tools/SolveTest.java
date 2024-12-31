@@ -80,7 +80,7 @@ public class SolveTest {
 	public void testParseVariables() throws ParseException {
 		Solve solve = new Solve();
 		
-		CommandLine commandLine = createCommandLine(solve, "-v", "R(-10.1:20.9),B(10),I(-5:5),P(5)");
+		CommandLine commandLine = createCommandLine(solve, "-v", "R(-10.1,20.9);B(10);I(-5,5);P(5)");
 		
 		List<Variable> variables = solve.parseVariables(commandLine);
 		Assert.assertEquals(4, variables.size());
@@ -149,7 +149,7 @@ public class SolveTest {
 		
 		Solve.main(new String[] {
 				"-a", "NSGAII",
-				"-v", "R(0:1),R(0:1),R(0:1),R(0:1),R(0:1),R(0:1),R(0:1),R(0:1),R(0:1),R(0:1),R(0:1)",
+				"-v", "R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1)",
 				"-o", "2",
 				"-n", "1000",
 				"-f", outputFile.getPath(),
