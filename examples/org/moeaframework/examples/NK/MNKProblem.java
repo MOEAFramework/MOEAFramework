@@ -220,7 +220,7 @@ public class MNKProblem implements Problem {
 				N = Integer.parseInt(tokens[1]);
 				K = Integer.parseInt(tokens[2]);
 			} else {
-				throw new IOException("expected two or three values on first line");
+				throw new IOException("Expected two or three values on first line");
 			}
 			
 			checkArguments();

@@ -85,7 +85,7 @@ public class NodeCoordinates extends DistanceTable {
 			String[] tokens = tokenizer.decodeToArray(line);
 
 			if (tokens.length != type.getLength() + 1) {
-				throw new IOException("invalid number of tokens for node entry");
+				throw new IOException("Invalid number of tokens for node entry");
 			}
 
 			double[] position = new double[type.getLength()];
@@ -162,7 +162,7 @@ public class NodeCoordinates extends DistanceTable {
 		int[] neighbors = new int[size-1];
 		
 		if (!nodes.containsKey(id)) {
-			throw new IllegalArgumentException("no node with identifier " + id);
+			throw new IllegalArgumentException("No node with identifier " + id);
 		}
 		
 		for (Node node : nodes.values()) {
@@ -180,11 +180,11 @@ public class NodeCoordinates extends DistanceTable {
 		Node node2 = get(id2);
 		
 		if (node1 == null) {
-			throw new IllegalArgumentException("no node with identifier " + id1);
+			throw new IllegalArgumentException("No node with identifier " + id1);
 		}
 		
 		if (node2 == null) {
-			throw new IllegalArgumentException("no node with identifier " + id2);
+			throw new IllegalArgumentException("No node with identifier " + id2);
 		}
 		
 		return distanceFunction.distance(get(id1), get(id2));

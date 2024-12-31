@@ -163,7 +163,7 @@ public class RepeatedSingleObjective extends AbstractAlgorithm {
 		int expectedSize = stream.readInt();
 		
 		if (algorithms.size() != expectedSize) {
-			throw new IOException("the number of instances used by RSO differs from the loaded state");
+			throw new IOException("The number of instances used by RSO differs from the loaded state");
 		}
 		
 		for (Algorithm algorithm : algorithms) {

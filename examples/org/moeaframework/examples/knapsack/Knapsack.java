@@ -119,7 +119,7 @@ public class Knapsack implements Problem {
 				nsacks = Integer.parseInt(matcher.group(1));
 				nitems = Integer.parseInt(matcher.group(2));
 			} else {
-				throw new IOException("knapsack data file not properly formatted: invalid specification line");
+				throw new IOException("Knapsack data file not properly formatted: invalid specification line");
 			}
 			
 			capacity = new int[nsacks];
@@ -135,7 +135,7 @@ public class Knapsack implements Problem {
 				if (matcher.matches()) {
 					capacity[i] = Integer.parseInt(matcher.group(1));
 				} else {
-					throw new IOException("knapsack data file not properly formatted: invalid capacity line");
+					throw new IOException("Knapsack data file not properly formatted: invalid capacity line");
 				}
 	
 				for (int j = 0; j < nitems; j++) {
@@ -146,7 +146,7 @@ public class Knapsack implements Problem {
 					if (matcher.matches()) {
 						weight[i][j] = Integer.parseInt(matcher.group(1));
 					} else {
-						throw new IOException("knapsack data file not properly formatted: invalid weight line");
+						throw new IOException("Knapsack data file not properly formatted: invalid weight line");
 					}
 	
 					line = lineReader.readLine(); // the item profit
@@ -155,7 +155,7 @@ public class Knapsack implements Problem {
 					if (matcher.matches()) {
 						profit[i][j] = Integer.parseInt(matcher.group(1));
 					} else {
-						throw new IOException("knapsack data file not properly formatted: invalid profit line");
+						throw new IOException("Knapsack data file not properly formatted: invalid profit line");
 					}
 				}
 			}

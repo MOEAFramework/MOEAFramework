@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.MissingOptionException;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.core.PRNG;
@@ -68,7 +69,7 @@ public class ReferenceSetGenerator extends CommandLineUtility {
 	}
 
 	@Override
-	public void run(CommandLine commandLine) throws IOException {
+	public void run(CommandLine commandLine) throws IOException, MissingOptionException {
 		NondominatedPopulation set = OptionUtils.getArchive(commandLine);
 		
 		int numberOfPoints = Integer.parseInt(commandLine.getOptionValue("numberOfPoints"));

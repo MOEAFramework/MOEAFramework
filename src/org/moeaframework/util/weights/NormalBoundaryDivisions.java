@@ -183,7 +183,7 @@ public class NormalBoundaryDivisions {
 		}
 		
 		if (properties.contains("divisionsOuter") || properties.contains("divisionsInner")) {
-			throw new ConfigurationException("must include both divisionsOuter and divisionsInner");
+			throw new ConfigurationException("Must include both divisionsOuter and divisionsInner");
 		}
 		
 		if (properties.contains("divisions")) {

@@ -22,6 +22,7 @@ import java.io.Serializable;
 import org.moeaframework.core.Copyable;
 import org.moeaframework.core.Defined;
 import org.moeaframework.core.Named;
+import org.moeaframework.core.TypeMismatchException;
 
 /**
  * Defines an objective for optimization, including the value and the direction.
@@ -140,8 +141,7 @@ public interface Objective extends Comparable<Objective>, Copyable<Objective>, S
 	@Override
 	public default int compareTo(Objective other) {
 		if (getClass() != other.getClass()) {
-			throw new IllegalArgumentException("unable to compare objective values between " +
-					getClass().getSimpleName() + " and " + other.getClass().getSimpleName());
+			throw TypeMismatchException.notComparable(getClass(), other.getClass());
 		}
 		
 		return compareTo(other.getValue());

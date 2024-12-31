@@ -21,8 +21,8 @@ import java.io.Serializable;
 
 import org.moeaframework.core.Copyable;
 import org.moeaframework.core.Defined;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Named;
+import org.moeaframework.core.TypeMismatchException;
 
 /**
  * Defines a constraint.  While all constraints are assigned a value, the interpretation of that value with respect to
@@ -76,8 +76,7 @@ public interface Constraint extends Comparable<Constraint>, Copyable<Constraint>
 	@Override
 	public default int compareTo(Constraint other) {
 		if (getClass() != other.getClass()) {
-			throw new FrameworkException("unable to compare constraint values between " + getClass().getSimpleName() +
-					" and " + other.getClass().getSimpleName());
+			throw TypeMismatchException.notComparable(getClass(), other.getClass());
 		}
 		
 		return Double.compare(getMagnitudeOfViolation(), other.getMagnitudeOfViolation());

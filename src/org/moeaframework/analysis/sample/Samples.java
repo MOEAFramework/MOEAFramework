@@ -252,7 +252,7 @@ public class Samples implements Iterable<Sample>, Formattable<Sample>, DataStrea
 				String[] tokens = tokenizer.decodeToArray(line);
 				
 				if (tokens.length != parameterSet.size()) {
-					throw new IOException("invalid line: " + line);
+					throw new IOException("Invalid line, expected " + parameterSet.size() + " entries: " + line);
 				}
 				
 				Sample sample = new Sample();

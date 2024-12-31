@@ -244,7 +244,8 @@ public class ReferenceVectorGuidedPopulation extends Population {
 		
 		for (Solution solution : this) {
 			if (solution.getNumberOfObjectives() != numberOfObjectives) {
-				throw new FrameworkException("incorrect number of objectives");
+				throw new FrameworkException("Incorrect number of objectives, expected " + numberOfObjectives +
+						" but solution has " + solution.getNumberOfObjectives());
 			}
 
 			for (int i = 0; i < numberOfObjectives; i++) {
@@ -397,7 +398,7 @@ public class ReferenceVectorGuidedPopulation extends Population {
 
 	@Override
 	public void truncate(int size, Comparator<? super Solution> comparator) {
-		throw new UnsupportedOperationException("call truncate() instead");
+		throw new UnsupportedOperationException("Call truncate() instead");
 	}
 	
 	/**

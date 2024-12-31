@@ -215,7 +215,7 @@ public interface Defined {
 						parameterType = ClassUtils.primitiveToWrapper(parameterType);
 					}
 					
-					if (parameterType == String.class) {
+					if (parameterType.equals(String.class)) {
 						if (arguments[i].startsWith("\"") && arguments[i].endsWith("\"")) {
 							arguments[i] = arguments[i].substring(1, arguments[i].length() - 1);
 						} else {
@@ -242,7 +242,7 @@ public interface Defined {
 			throw new FrameworkException(definition + " is not a recognized or accessible class", e);
 		}
 		
-		throw new FrameworkException("unable to create " + definition + ", no constructor found matching arguments " +
+		throw new FrameworkException("Unable to create " + definition + ", no constructor found matching arguments " +
 				Arrays.toString(arguments));
 	}
 	

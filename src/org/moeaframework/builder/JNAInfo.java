@@ -85,7 +85,7 @@ public class JNAInfo extends CommandLineUtility {
 		String result = commandLine.getOptionValue("problem");
 		
 		if (result == null) {
-			throw new IllegalArgumentException("must supply a problem name along with the given options");
+			throw new IllegalArgumentException("Must supply a problem name along with the given options");
 		}
 		
 		return result;

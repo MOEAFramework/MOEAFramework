@@ -160,7 +160,7 @@ public interface DataStream<V> extends Formattable<V>, Iterable<V> {
 	 */
 	public default V single() {
 		if (size() != 1) {
-			throw new NoSuchElementException("expected data stream to contain exactly one value, but found " + size());
+			throw new NoSuchElementException("Expected data stream to contain exactly one value, but found " + size());
 		}
 		
 		return any();

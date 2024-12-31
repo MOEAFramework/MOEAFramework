@@ -102,7 +102,7 @@ public class AdaptiveGridArchive extends NondominatedPopulation {
 		try {
 			ArithmeticUtils.pow(numberOfDivisions, problem.getNumberOfObjectives());
 		} catch (MathArithmeticException e) {
-			throw new FrameworkException("number of divisions (bisections) too large for adaptive grid archive", e);
+			throw new FrameworkException("Number of divisions (bisections) too large for adaptive grid archive", e);
 		}
 
 		adaptGrid();

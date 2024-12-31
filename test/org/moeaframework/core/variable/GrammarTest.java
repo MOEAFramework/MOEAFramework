@@ -267,7 +267,7 @@ public class GrammarTest {
 	@Test
 	public void testDefinition() {
 		Assert.assertEquals("Grammar(5)", new Grammar(5).getDefinition());
-		Assert.assertEquals("Grammar(foo,5)", new Grammar("foo", 5).getDefinition());
+		Assert.assertEquals("Grammar(\"foo\",5)", new Grammar("foo", 5).getDefinition());
 	}
 
 }

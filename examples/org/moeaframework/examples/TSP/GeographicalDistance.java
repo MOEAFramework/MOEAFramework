@@ -57,7 +57,7 @@ public class GeographicalDistance extends DistanceFunction {
 	@Override
 	public double distance(int length, double[] position1, double[] position2) {
 		if (length != 2) {
-			throw new IllegalArgumentException("nodes must be 2D");
+			throw new IllegalArgumentException("Nodes must be 2D");
 		}
 		
 		double latitude1 = toGeographical(position1[0]);

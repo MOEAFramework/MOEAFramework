@@ -182,7 +182,7 @@ public interface Partition<K, V> extends Formattable<Pair<K, V>> {
 	 */
 	public default Pair<K, V> single() {
 		if (size() != 1) {
-			throw new NoSuchElementException("expected partition to contain exactly one key-value pair, but found " + size());
+			throw new NoSuchElementException("Expected partition to contain exactly one key-value pair, but found " + size());
 		}
 		
 		return any();

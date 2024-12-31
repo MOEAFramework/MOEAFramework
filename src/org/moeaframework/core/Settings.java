@@ -25,6 +25,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.util.Properties;
 import java.util.regex.Matcher;
@@ -249,7 +250,7 @@ public class Settings {
 				}
 			}
 		} catch (IOException e) {
-			throw new FrameworkException(e);
+			throw new UncheckedIOException(e);
 		}
 		
 		// inject build properties
@@ -257,7 +258,7 @@ public class Settings {
 			String version = TypedProperties.loadBuildProperties().getString("version");
 			
 			if (version == null) {
-				throw new FrameworkException("unable to load version, please ensure META-INF/ is included in build path");
+				throw new FrameworkException("Unable to load version, please ensure META-INF/ is included in build path");
 			}
 			
 			PROPERTIES.setString(KEY_VERSION, version);
@@ -266,12 +267,12 @@ public class Settings {
 			Matcher matcher = pattern.matcher(version);
 			
 			if (!matcher.matches()) {
-				throw new FrameworkException("version must be in 'major.minor' format");
+				throw new FrameworkException("Version must be in 'major.minor' format");
 			}
 			
 			PROPERTIES.setString(KEY_MAJOR_VERSION, matcher.group(1));
 		} catch (IOException e) {
-			throw new FrameworkException(e);
+			throw new UncheckedIOException(e);
 		}
 	}
 	

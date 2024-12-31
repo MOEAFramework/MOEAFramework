@@ -17,12 +17,10 @@
  */
 package org.moeaframework.core.spi;
 
-import org.moeaframework.core.FrameworkException;
-
 /**
  * Exception indicating a provider was not found.
  */
-public class ProviderNotFoundException extends FrameworkException {
+public class ProviderNotFoundException extends ProviderException {
 
 	private static final long serialVersionUID = 273130604019491242L;
 
@@ -42,7 +40,7 @@ public class ProviderNotFoundException extends FrameworkException {
 	 * @param cause the cause of this exception
 	 */
 	public ProviderNotFoundException(String name, Throwable cause) {
-		super("no provider for " + name, cause);
+		super("No provider for " + name, cause);
 	}
 	
 }

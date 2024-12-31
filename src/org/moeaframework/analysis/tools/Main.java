@@ -30,10 +30,10 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
+import org.apache.commons.cli.UnrecognizedOptionException;
 import org.apache.commons.lang3.tuple.Pair;
 import org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool;
 import org.moeaframework.builder.BuildProblem;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.util.Localization;
@@ -134,7 +134,8 @@ public class Main extends CommandLineUtility {
 			String command = completer.lookup(args[0]);
 
 			if (command == null) {
-				throw new FrameworkException("'" + args[0] + "' is not a valid command, use --help to see available options");
+				throw new UnrecognizedOptionException("'" + args[0] +
+						"' is not a valid command, use --help to see available options");
 			}
 
 			Class<? extends CommandLineUtility> toolClass = INTERNAL_TOOLS.containsKey(command) ?
@@ -203,17 +204,20 @@ public class Main extends CommandLineUtility {
 		}
 		
 		try (PrintWriter writer = createOutputWriter()) {
-			helpFormatter.printWrapped(writer, width, buildProperties.getString("name") + ": " + buildProperties.getString("description"));
+			helpFormatter.printWrapped(writer, width, buildProperties.getString("name") + ": " +
+					buildProperties.getString("description"));
 			writer.println();
 			helpFormatter.printWrapped(writer, width, Localization.getString(getClass(), "description"));
 			writer.println();
 			helpFormatter.setOptPrefix("");
-			helpFormatter.printOptions(writer, width, commands, helpFormatter.getLeftPadding(), helpFormatter.getDescPadding());
+			helpFormatter.printOptions(writer, width, commands, helpFormatter.getLeftPadding(),
+					helpFormatter.getDescPadding());
 			writer.println();
 			helpFormatter.printWrapped(writer, width, Localization.getString(CommandLineUtility.class, "header"));
 			writer.println();
 			helpFormatter.setOptPrefix("-");
-			helpFormatter.printOptions(writer, width, getLocalizedOptions(), helpFormatter.getLeftPadding(), helpFormatter.getDescPadding());
+			helpFormatter.printOptions(writer, width, getLocalizedOptions(), helpFormatter.getLeftPadding(),
+					helpFormatter.getDescPadding());
 			helpFormatter.printWrapped(writer, width, Localization.getString(CommandLineUtility.class, "footer"));
 		}
 	}

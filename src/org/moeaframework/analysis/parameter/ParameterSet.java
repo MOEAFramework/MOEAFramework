@@ -31,7 +31,6 @@ import java.util.List;
 
 import org.moeaframework.analysis.sample.Sample;
 import org.moeaframework.analysis.sample.Samples;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.io.Tokenizer;
 import org.moeaframework.util.sequence.Sequence;
@@ -174,7 +173,7 @@ public class ParameterSet implements Iterable<Parameter<?>> {
 	 * values per enumeration, the result will contain {@code N^k} samples.
 	 * 
 	 * @return the enumerated samples
-	 * @throws FrameworkException if any parameter is not enumerable or a constant
+	 * @throws IllegalArgumentException if any parameter is not enumerable or a constant
 	 */
 	public Samples enumerate() {
 		List<Sample> result = new ArrayList<>();
@@ -202,7 +201,7 @@ public class ParameterSet implements Iterable<Parameter<?>> {
 	 * @param numberOfSamples the number of samples to generate
 	 * @param sequence the sequence generator
 	 * @return the generated samples
-	 * @throws FrameworkException if any parameter is not sampled or a constant
+	 * @throws IllegalArgumentException if any parameter is not sampled or a constant
 	 */
 	public Samples sample(int numberOfSamples, Sequence sequence) {
 		// Identify which parameters are sampled vs constants.

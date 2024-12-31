@@ -91,7 +91,7 @@ public class BBOB2016Problems extends ProblemProvider {
 							Integer.parseInt(singleMatcher.group(3)),
 							Integer.parseInt(singleMatcher.group(2)));
 				} else {
-					throw new FrameworkException("unable to parse BBOB function " + parts[i]);
+					throw new FrameworkException("Unable to parse BBOB function " + parts[i]);
 				}
 			}
 			
@@ -400,7 +400,7 @@ public class BBOB2016Problems extends ProblemProvider {
 				problem = new TransformObjectiveShift(problem, fopt);
 				yield problem;
 			}
-			default -> throw new FrameworkException("unknown BBOB function " + function);
+			default -> throw new FrameworkException("Unknown BBOB function " + function);
 		};
 	}
 

@@ -262,7 +262,7 @@ public class MetricsAnalysis extends CommandLineUtility {
 		}
 		
 		if (evalIndex == -1) {
-			throw new FrameworkException("no maxEvaluations parameter");
+			throw new FrameworkException("Missing maxEvaluations parameter");
 		}
 
 		//find lowest band reaching attainment
@@ -351,7 +351,8 @@ public class MetricsAnalysis extends CommandLineUtility {
 		
 		for (Parameter<?> parameter : parameterSet) {
 			if (!(parameter instanceof NumericParameter<?>)) {
-				throw new FrameworkException("only supports numeric parameters");
+				throw new FrameworkException("Only supports numeric parameters, found " +
+						parameter.getClass().getSimpleName());
 			}
 		}
 		
@@ -372,7 +373,7 @@ public class MetricsAnalysis extends CommandLineUtility {
 			if (commandLine.hasOption("hypervolume")) {
 				threshold *= Double.parseDouble(commandLine.getOptionValue("hypervolume"));
 			} else {
-				throw new MissingOptionException("requires hypervolume option");
+				throw new MissingOptionException("Missing --hypervolume option");
 			}
 		}
 		

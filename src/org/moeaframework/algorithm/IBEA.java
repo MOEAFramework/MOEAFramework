@@ -195,7 +195,7 @@ public class IBEA extends AbstractEvolutionaryAlgorithm {
 			} else if ("epsilon".equalsIgnoreCase(indicator)) {
 				setFitnessEvaluator(new AdditiveEpsilonIndicatorFitnessEvaluator(problem));
 			} else {
-				throw new ConfigurationException("invalid indicator: " + indicator);
+				throw new ConfigurationException("Invalid indicator: " + indicator);
 			}
 		}
 		

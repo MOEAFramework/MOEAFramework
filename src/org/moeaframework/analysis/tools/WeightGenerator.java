@@ -227,7 +227,7 @@ public class WeightGenerator extends CommandLineUtility {
 		}
 		
 		if (modifiedWeights.size() != weights.size()) {
-			throw new FrameworkException("unexpected number of weights after generalized decomposition (expected: " +
+			throw new FrameworkException("Unexpected number of weights after generalized decomposition (expected: " +
 					weights.size() + ", actual: " + modifiedWeights.size() + ")");
 		}
 		

@@ -20,11 +20,11 @@ package org.moeaframework.util.io;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -146,13 +146,13 @@ public class LineReader extends BufferedReader implements Iterable<String>, Iter
 	 * Reads the next line from this reader, converting any checked I/O exception into an unchecked exception.
 	 * 
 	 * @return the new line read
-	 * @throws FrameworkException if any checked I/O exception was thrown
+	 * @throws UncheckedIOException if any checked I/O exception was thrown
 	 */
 	private String readLineUncheckedException() {
 		try {
 			return readLine();
 		} catch (IOException e) {
-			throw new FrameworkException("caught exception while itereating over line reader", e);
+			throw new UncheckedIOException("Caught exception while reading line", e);
 		}
 	}
 

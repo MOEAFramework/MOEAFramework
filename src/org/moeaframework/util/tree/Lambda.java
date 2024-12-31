@@ -92,7 +92,7 @@ public class Lambda extends Node {
 		this.variableNames = variableNames;
 		
 		if (!node.isValid()) {
-			throw new IllegalArgumentException("lambda function is not valid");
+			throw new IllegalArgumentException("Lambda function is not valid");
 		}
 	}
 

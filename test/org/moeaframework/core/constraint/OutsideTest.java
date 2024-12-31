@@ -68,8 +68,8 @@ public class OutsideTest {
 	public void testDefinition() {
 		Assert.assertEquals("Outside(0.0,1.0,1.0E-10)", new Outside(0.0, 1.0).getDefinition());
 		Assert.assertEquals("Outside(0.0,1.0,1.0E-5)", new Outside(0.0, 1.0, 0.00001).getDefinition());
-		Assert.assertEquals("Outside(foo,0.0,1.0,1.0E-10)", new Outside("foo", 0.0, 1.0).getDefinition());
-		Assert.assertEquals("Outside(foo,0.0,1.0,1.0E-5)", new Outside("foo", 0.0, 1.0, 0.00001).getDefinition());
+		Assert.assertEquals("Outside(\"foo\",0.0,1.0,1.0E-10)", new Outside("foo", 0.0, 1.0).getDefinition());
+		Assert.assertEquals("Outside(\"foo\",0.0,1.0,1.0E-5)", new Outside("foo", 0.0, 1.0, 0.00001).getDefinition());
 	}
 
 }

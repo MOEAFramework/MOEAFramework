@@ -111,7 +111,7 @@ public class MinimizeTest {
 	@Test
 	public void testDefinition() {
 		Assert.assertEquals("Minimize", new Minimize().getDefinition());
-		Assert.assertEquals("Minimize(foo)", new Minimize("foo").getDefinition());
+		Assert.assertEquals("Minimize(\"foo\")", new Minimize("foo").getDefinition());
 	}
 
 }

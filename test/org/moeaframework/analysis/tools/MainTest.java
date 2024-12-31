@@ -18,12 +18,12 @@
 package org.moeaframework.analysis.tools;
 
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.UnrecognizedOptionException;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Capture;
 import org.moeaframework.Capture.CaptureResult;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PropertyScope;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
@@ -39,7 +39,7 @@ public class MainTest {
 	@Test
 	public void testUnrecognizedCommand() throws Exception {
 		CaptureResult result = Capture.output(Main.class, "Foo");
-		result.assertThrows(FrameworkException.class);
+		result.assertThrows(UnrecognizedOptionException.class);
 	}
 	
 	@Test

@@ -20,28 +20,28 @@ package org.moeaframework.core.spi;
 import org.moeaframework.core.FrameworkException;
 
 /**
- * Exception indicating an error occurred while locating a provider.
+ * Exception indicating an error occurred while locating or instantiating a provider.
  */
-public class ProviderLookupException extends FrameworkException {
+public class ProviderException extends FrameworkException {
 
 	private static final long serialVersionUID = 273130604019491242L;
 
 	/**
-	 * Constructs an exception indicating an error occurred while locating a provider.
+	 * Constructs an exception indicating an error occurred while locating or instantiating a provider.
 	 * 
 	 * @param message a message describing the error
 	 */
-	public ProviderLookupException(String message) {
+	public ProviderException(String message) {
 		super(message);
 	}
 	
 	/**
-	 * Constructs an exception indicating an error occurred while locating a provider.
+	 * Constructs an exception indicating an error occurred while locating or instantiating a provider.
 	 * 
 	 * @param message a message describing the error
 	 * @param cause the cause of this exception
 	 */
-	public ProviderLookupException(String message, Throwable cause) {
+	public ProviderException(String message, Throwable cause) {
 		super(message, cause);
 	}
 	

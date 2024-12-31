@@ -20,10 +20,11 @@ package org.moeaframework.analysis.tools;
 import java.io.IOException;
 
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.MissingOptionException;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.moeaframework.core.Epsilons;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.population.NondominatedPopulation;
@@ -114,8 +115,10 @@ class OptionUtils {
 	 * @param commandLine the command line inputs
 	 * @param allowMissing if {@code true}, returns {@code null} if the option is missing
 	 * @return the problem instance
+	 * @throws MissingOptionException if the option is missing and {@code allowMissing} is false
 	 */
-	public static Problem getProblemInstance(CommandLine commandLine, boolean allowMissing) {
+	public static Problem getProblemInstance(CommandLine commandLine, boolean allowMissing)
+			throws MissingOptionException {
 		if (commandLine.hasOption("problem")) {
 			return ProblemFactory.getInstance().getProblem(commandLine.getOptionValue("problem"));
 		}
@@ -124,7 +127,7 @@ class OptionUtils {
 			return null;
 		}
 		
-		throw new FrameworkException("no problem specified");
+		throw new MissingOptionException("No problem specified");
 	}
 	
 	/**
@@ -135,9 +138,10 @@ class OptionUtils {
 	 * @param allowMissing if {@code true}, returns {@code null} if the option is missing
 	 * @return the loaded reference set
 	 * @throws IOException if an I/O error occurred
+	 * @throws MissingOptionException if the option is missing and {@code allowMissing} is false
 	 */
 	public static NondominatedPopulation getReferenceSet(CommandLine commandLine, boolean allowMissing)
-			throws IOException {
+			throws IOException, MissingOptionException {
 		NondominatedPopulation referenceSet = null;
 		
 		if (commandLine.hasOption("reference")) {
@@ -147,7 +151,7 @@ class OptionUtils {
 		}
 		
 		if (!allowMissing && referenceSet == null) {
-			throw new FrameworkException("no reference set available");
+			throw new MissingOptionException("No reference set available");
 		}
 		
 		return referenceSet;
@@ -189,8 +193,9 @@ class OptionUtils {
 	 * 
 	 * @param commandLine the command line inputs
 	 * @return the properties
+	 * @throws ParseException if the properties are not formatted correctly
 	 */
-	public static TypedProperties getProperties(CommandLine commandLine) {
+	public static TypedProperties getProperties(CommandLine commandLine) throws ParseException {
 		TypedProperties properties = new TypedProperties();
 
 		if (commandLine.hasOption("properties")) {
@@ -200,7 +205,7 @@ class OptionUtils {
 				if (tokens.length == 2) {
 					properties.setString(tokens[0], tokens[1]);
 				} else {
-					throw new FrameworkException("malformed property argument '" + property +
+					throw new ParseException("Malformed property argument '" + property +
 							"', expected 'key=value' format");
 				}
 			}

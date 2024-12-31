@@ -1,8 +1,8 @@
 package ${packageName};
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.ExternalProblem;
@@ -20,7 +20,7 @@ public class ${problemName} extends ExternalProblem {
 			EXECUTABLE = Resources.asFile(${problemName}.class, "${problemName}.exe",
 				ResourceOption.REQUIRED, ResourceOption.TEMPORARY, ResourceOption.EXECUTABLE).getPath();
 		} catch (IOException e) {
-			throw new FrameworkException("Failed to locate executable", e);
+			throw new UncheckedIOException("Failed to locate executable", e);
 		}
 	}
 

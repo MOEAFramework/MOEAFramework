@@ -25,6 +25,7 @@ import java.time.Duration;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.analysis.parameter.ParameterSet;
@@ -99,7 +100,7 @@ public class EndOfRunEvaluator extends CommandLineUtility {
 	}
 
 	@Override
-	public void run(CommandLine commandLine) throws IOException {
+	public void run(CommandLine commandLine) throws IOException, ParseException {
 		File parameterFile = new File(commandLine.getOptionValue("parameterFile"));
 		File outputFile = new File(commandLine.getOptionValue("output"));
 		File inputFile = new File(commandLine.getOptionValue("input"));

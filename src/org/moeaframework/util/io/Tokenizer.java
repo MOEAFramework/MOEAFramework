@@ -134,16 +134,16 @@ public class Tokenizer {
 	 */
 	public void escapeChar(CharSequence original, CharSequence replacement) {
 		if (original.length() != 1) {
-			throw new IllegalArgumentException("original must be a single character, given '" + original + "'");
+			throw new IllegalArgumentException("Original must be a single character, given '" + original + "'");
 		}
 		
 		if (replacement.length() != 2 && replacement.charAt(0) != '\\') {
-			throw new IllegalArgumentException("replacement must be a two-character string starting with \\, given '" +
+			throw new IllegalArgumentException("Replacement must be a two-character string starting with \\, given '" +
 					replacement + "'");
 		}
 		
 		if (specialCharacterMap.containsKey(original) || escapeMap.containsKey(original)) {
-			throw new IllegalArgumentException("original is already a default escape character, given '" + original +
+			throw new IllegalArgumentException("Original is already a default escape character, given '" + original +
 					"'");
 		}
 		

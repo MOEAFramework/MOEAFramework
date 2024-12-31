@@ -22,6 +22,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.UncheckedIOException;
 import java.lang.ProcessBuilder.Redirect;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -29,7 +30,6 @@ import java.util.stream.Stream;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.io.FilenameUtils;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.NondominatedPopulation;
@@ -133,7 +133,7 @@ public class GeneratePlots extends CommandLineUtility {
 			
 			System.out.println("done!");
 		} catch (IOException e) {
-			throw new FrameworkException("Failed to generate plot for " + path, e);
+			throw new UncheckedIOException("Failed to generate plot for " + path, e);
 		}
 	}
 

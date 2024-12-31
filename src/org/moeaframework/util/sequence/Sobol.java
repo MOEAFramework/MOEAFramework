@@ -18,10 +18,10 @@
 package org.moeaframework.util.sequence;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.io.Resources;
 import org.moeaframework.util.io.Resources.ResourceOption;
@@ -54,7 +54,7 @@ public class Sobol implements Sequence {
 		try {
 			DIRECTIONS = loadDirectionNumbers(DIRECTIONS_RESOURCE);
 		} catch (IOException e) {
-			throw new FrameworkException("failed to load " + DIRECTIONS_RESOURCE, e);
+			throw new UncheckedIOException("Failed to load " + DIRECTIONS_RESOURCE, e);
 		}
 	}
 
@@ -144,14 +144,15 @@ public class Sobol implements Sequence {
 	@Override
 	public double[][] generate(int N, int D) {
 		if (D > DIRECTIONS.length + 1) {
-			throw new FrameworkException("not enough dimensions");
+			throw new IllegalArgumentException("Number of dimensions (D = " + D +
+					") too large for Sobol direction file");
 		}
 
 		// max number of bits needed
 		int L = (int)Math.ceil(Math.log(N) / Math.log(2));
 
 		if (L > SCALE) {
-			throw new FrameworkException("not enough bits");
+			throw new IllegalArgumentException("Number of samples (N = " + N + ") too large for number of bits");
 		}
 
 		double[][] points = new double[N][D];

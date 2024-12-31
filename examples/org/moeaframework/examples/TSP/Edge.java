@@ -85,7 +85,7 @@ public class Edge {
 		} else if (id == id2) {
 			return id1;
 		} else {
-			throw new IllegalArgumentException("edge does not have endpoint " + id);
+			throw new IllegalArgumentException("Edge does not have endpoint " + id);
 		}
 	}
 

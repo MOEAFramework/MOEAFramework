@@ -60,6 +60,7 @@ public interface Variable extends Copyable<Variable>, Serializable, Defined, Nam
 	 * </ol>
 	 * 
 	 * @return the encoded value as a string
+	 * @throws VariableEncodingException if an error occurred while encoding this variable
 	 */
 	public String encode();
 	
@@ -68,6 +69,7 @@ public interface Variable extends Copyable<Variable>, Serializable, Defined, Nam
 	 * by {@link #encode()}.
 	 * 
 	 * @param value the value as a string
+	 * @throws VariableEncodingException if an error occurred while decoding this variable
 	 */
 	public void decode(String value);
 	

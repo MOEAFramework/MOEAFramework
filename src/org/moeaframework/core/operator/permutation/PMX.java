@@ -19,8 +19,8 @@ package org.moeaframework.core.operator.permutation;
 
 import java.util.Arrays;
 
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
+import org.moeaframework.core.TypeMismatchException;
 import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.operator.TypeSafeCrossover;
 import org.moeaframework.core.variable.Permutation;
@@ -71,14 +71,14 @@ public class PMX extends TypeSafeCrossover<Permutation> {
 	 * 
 	 * @param p1 the first permutation
 	 * @param p2 the second permutation
-	 * @throws FrameworkException if the permutations are not the same size
+	 * @throws TypeMismatchException if the permutations are not the same size
 	 */
 	@Override
 	public void evolve(Permutation p1, Permutation p2) {
 		int n = p1.size();
 
 		if (n != p2.size()) {
-			throw new FrameworkException("permutations not same size");
+			throw new TypeMismatchException("Permutations not same size");
 		}
 
 		// select cutting points

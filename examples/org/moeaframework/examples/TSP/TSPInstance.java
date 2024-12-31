@@ -277,7 +277,7 @@ public class TSPInstance {
 		if (problem.getDataType().equals(DataType.TOUR)) {
 			tours.addAll(problem.getTours());
 		} else {
-			throw new IllegalArgumentException("not a tour file");
+			throw new IllegalArgumentException("Expected " + DataType.TOUR + " but was " + problem.getDataType());
 		}
 	}
 	

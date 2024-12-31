@@ -21,8 +21,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 
 /**
@@ -89,7 +89,7 @@ public class RedirectStream extends Thread {
 				inputStream.close();
 			}
 		} catch (IOException e) {
-			throw new FrameworkException(e);
+			throw new UncheckedIOException(e);
 		}
 	}
 

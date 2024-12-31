@@ -65,8 +65,8 @@ public class NotEqualTest {
 	public void testDefinition() {
 		Assert.assertEquals("NotEqual(0.0,1.0E-10)", new NotEqual(0.0).getDefinition());
 		Assert.assertEquals("NotEqual(0.0,1.0E-5)", new NotEqual(0.0, 0.00001).getDefinition());
-		Assert.assertEquals("NotEqual(foo,0.0,1.0E-10)", new NotEqual("foo", 0.0).getDefinition());
-		Assert.assertEquals("NotEqual(foo,0.0,1.0E-5)", new NotEqual("foo", 0.0, 0.00001).getDefinition());
+		Assert.assertEquals("NotEqual(\"foo\",0.0,1.0E-10)", new NotEqual("foo", 0.0).getDefinition());
+		Assert.assertEquals("NotEqual(\"foo\",0.0,1.0E-5)", new NotEqual("foo", 0.0, 0.00001).getDefinition());
 	}
 
 }

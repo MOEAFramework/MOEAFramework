@@ -17,13 +17,9 @@
  */
 package org.moeaframework.core;
 
-import java.io.IOException;
-
 /**
- * The framework exception is the parent type of all exceptions specific to the MOEA Framework.  Framework exceptions
- * only cover exceptional cases caused by the MOEA Framework itself; user exceptions are still covered by Java's
- * built-in exceptions (i.e., {@link IllegalArgumentException}) or those defined in third-party libraries.  Unhandled
- * checked exceptions, such as {@link IOException}, should be wrapped in an appropriate framework exception.
+ * The framework exception is the parent type of all exceptions specific to the MOEA Framework.  Whenever possible,
+ * prefer using one of Java's built-in exceptions.
  */
 public class FrameworkException extends RuntimeException {
 

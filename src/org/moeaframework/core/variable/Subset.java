@@ -135,12 +135,12 @@ public class Subset extends AbstractVariable {
 	 */
 	public void validate() {
 		if ((members.size() < l) || (members.size() > u)) {
-			throw new FrameworkException("subset not valid (invalid size)");
+			throw new FrameworkException("Subset not valid (invalid size)");
 		}
 		
 		for (int value : members) {
 			if ((value < 0) || (value >= n)) {
-				throw new FrameworkException("subset not valid (contains invalid member)");
+				throw new FrameworkException("Subset not valid (contains invalid member)");
 			}
 		}
 	}
@@ -335,7 +335,7 @@ public class Subset extends AbstractVariable {
 	 */
 	public int randomMember() {
 		if (members.size() == 0) {
-			throw new FrameworkException("no member exists (set is empty)");
+			throw new FrameworkException("No member exists (set is empty)");
 		} else {
 			return PRNG.nextItem(members);
 		}
@@ -348,7 +348,7 @@ public class Subset extends AbstractVariable {
 	 */
 	public int randomNonmember() {
 		if (members.size() == n) {
-			throw new FrameworkException("no non-member exists (set contains all values)");
+			throw new FrameworkException("No non-member exists (set contains all values)");
 		} else if (members.size() < n / OPT_FACTOR) {
 			while (true) {
 				int value = PRNG.nextInt(n);

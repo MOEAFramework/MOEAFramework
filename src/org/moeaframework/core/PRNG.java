@@ -371,7 +371,7 @@ public class PRNG {
 			count++;
 		}
 		
-		throw new ConcurrentModificationException("set modified while selecting item");
+		throw new ConcurrentModificationException("Set modified while selecting item");
 	}
 
 }

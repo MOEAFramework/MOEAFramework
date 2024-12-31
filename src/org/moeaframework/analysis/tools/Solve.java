@@ -32,7 +32,6 @@ import org.moeaframework.algorithm.extension.FrequencyType;
 import org.moeaframework.algorithm.extension.RuntimeCollectorExtension;
 import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.core.Epsilons;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
@@ -65,6 +64,7 @@ public class Solve extends CommandLineUtility {
 		
 		OptionUtils.addProblemOption(options);
 		OptionUtils.addEpsilonOption(options);
+		OptionUtils.addPropertiesOption(options);
 
 		options.addOption(Option.builder("f")
 				.longOpt("output")
@@ -77,12 +77,6 @@ public class Solve extends CommandLineUtility {
 				.hasArg()
 				.argName("name")
 				.required()
-				.build());
-		options.addOption(Option.builder("x")
-				.longOpt("properties")
-				.hasArgs()
-				.argName("p1=v1;p2=v2;...")
-				.valueSeparator(';')
 				.build());
 		options.addOption(Option.builder("s")
 				.longOpt("seed")
@@ -163,7 +157,7 @@ public class Solve extends CommandLineUtility {
 	 */
 	private Variable parseVariableSpecification(String token) throws ParseException {
 		if (!token.endsWith(")")) {
-			throw new ParseException("invalid variable specification '" + token + "', not properly formatted");
+			throw new ParseException("Invalid variable specification '" + token + "', not properly formatted");
 		}
 		
 		if (token.startsWith("R(")) {
@@ -176,7 +170,7 @@ public class Solve extends CommandLineUtility {
 				double upperBound = Double.parseDouble(content.substring(index+1));
 				return new RealVariable(lowerBound, upperBound);
 			} else {
-				throw new ParseException("invalid real specification '" + token + "', expected R(<lb>:<ub>)");
+				throw new ParseException("Invalid real specification '" + token + "', expected R(<lb>:<ub>)");
 			}
 		} else if (token.startsWith("B(")) {
 			// binary decision variable
@@ -186,7 +180,7 @@ public class Solve extends CommandLineUtility {
 				int length = Integer.parseInt(content.trim());
 				return new BinaryVariable(length);
 			} catch (NumberFormatException e) {
-				throw new ParseException("invalid binary specification '" + token + "', expected B(<length>)");
+				throw new ParseException("Invalid binary specification '" + token + "', expected B(<length>)");
 			}
 		} else if (token.startsWith("I(")) {
 			// binary integer decision variable
@@ -198,7 +192,7 @@ public class Solve extends CommandLineUtility {
 				int upperBound = Integer.parseInt(content.substring(index+1));
 				return new BinaryIntegerVariable(lowerBound, upperBound);
 			} else {
-				throw new ParseException("invalid integer specification '" + token + "', expected I(<lb>:<ub>)");
+				throw new ParseException("Invalid integer specification '" + token + "', expected I(<lb>:<ub>)");
 			}
 		} else if (token.startsWith("P(")) {
 			// permutation
@@ -208,10 +202,10 @@ public class Solve extends CommandLineUtility {
 				int length = Integer.parseInt(content.trim());
 				return new Permutation(length);
 			} catch (NumberFormatException e) {
-				throw new ParseException("invalid permutation specification '" + token + "', expected P(<length>)");
+				throw new ParseException("Invalid permutation specification '" + token + "', expected P(<length>)");
 			}
 		} else {
-			throw new ParseException("invalid variable specification '" + token + "', unknown type");
+			throw new ParseException("Invalid variable specification '" + token + "', unknown type");
 		}
 	}
 	
@@ -231,7 +225,7 @@ public class Solve extends CommandLineUtility {
 			String[] upperBoundTokens = commandLine.getOptionValue("upperBounds").split(",");
 			
 			if (lowerBoundTokens.length != upperBoundTokens.length) {
-				throw new ParseException("lower bound and upper bounds not the same length");
+				throw new ParseException("Lower bound and upper bounds not the same length");
 			}
 			
 			for (int i = 0; i < lowerBoundTokens.length; i++) {
@@ -246,7 +240,7 @@ public class Solve extends CommandLineUtility {
 				variables.add(parseVariableSpecification(token.trim().toUpperCase()));
 			}
 		} else {
-			throw new ParseException("must specify either the problem, the variables, or the lower and upper bounds arguments");
+			throw new ParseException("Must specify either the problem, the variables, or the lower and upper bounds arguments");
 		}
 		
 		return variables;
@@ -391,22 +385,8 @@ public class Solve extends CommandLineUtility {
 	}
 
 	@Override
-	public void run(CommandLine commandLine) throws IOException {
-		// parse the algorithm parameters
-		TypedProperties properties = new TypedProperties();
-
-		if (commandLine.hasOption("properties")) {
-			for (String property : commandLine.getOptionValues("properties")) {
-				String[] tokens = property.split("=");
-
-				if (tokens.length == 2) {
-					properties.setString(tokens[0], tokens[1]);
-				} else {
-					throw new FrameworkException("malformed property argument");
-				}
-			}
-		}
-		
+	public void run(CommandLine commandLine) throws IOException, ParseException {
+		TypedProperties properties = OptionUtils.getProperties(commandLine);
 		Epsilons epsilons = OptionUtils.getEpsilons(commandLine);
 
 		if (epsilons != null) {

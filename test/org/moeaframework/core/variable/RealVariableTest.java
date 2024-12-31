@@ -216,7 +216,7 @@ public class RealVariableTest {
 	@Test
 	public void testDefinition() {
 		Assert.assertEquals("RealVariable(0.0,1.0)", new RealVariable(0.0, 1.0).getDefinition());
-		Assert.assertEquals("RealVariable(foo,0.0,1.0)", new RealVariable("foo", 0.0, 1.0).getDefinition());
+		Assert.assertEquals("RealVariable(\"foo\",0.0,1.0)", new RealVariable("foo", 0.0, 1.0).getDefinition());
 	}
 
 }

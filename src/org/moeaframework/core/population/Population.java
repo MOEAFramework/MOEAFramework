@@ -361,7 +361,7 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, Co
 		}
 		
 		if (lower == null) {
-			throw new UnsupportedOperationException("population must contain at least one solution to compute bounds");
+			throw new UnsupportedOperationException("Population must contain at least one solution to compute bounds");
 		}
 		
 		return lower;
@@ -387,7 +387,7 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, Co
 		}
 		
 		if (upper == null) {
-			throw new UnsupportedOperationException("population must contain at least one solution to compute bounds");
+			throw new UnsupportedOperationException("Population must contain at least one solution to compute bounds");
 		}
 		
 		return upper;
@@ -532,7 +532,7 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, Co
 			ResultEntry entry = Iterators.last(input.iterator());
 			
 			if (entry == null) {
-				throw new FrameworkException("result file is empty");
+				throw new FrameworkException("Result file is empty");
 			} else {
 				return entry.getPopulation();
 			}

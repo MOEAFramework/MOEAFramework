@@ -131,7 +131,7 @@ public class RegisteredOperatorProvider extends OperatorProvider {
 			Variable variable = solution.getVariable(i);
 			
 			if (variable == null) {
-				throw new ProviderLookupException("variable is null");
+				throw new ProviderException("Variable is null");
 			}
 			
 			Class<? extends Variable> type = variable.getClass();

@@ -198,7 +198,7 @@ public class ConfigurationUtils {
 		} else if (TypeUtils.isAssignable(Variation.class, parameterType) ||
 				TypeUtils.isAssignable(DifferentialEvolutionVariation.class, parameterType)) {
 			if (problem == null) {
-				throw new ConfigurationException("must provide problem if setting variation operator");
+				throw new ConfigurationException("Must provide problem if setting variation operator");
 			}
 						
 			String operator = properties.getString(propertyName);
@@ -206,7 +206,7 @@ public class ConfigurationUtils {
 		} else if (TypeUtils.isAssignable(Mutation.class, parameterType) ||
 				TypeUtils.isAssignable(SelfAdaptiveNormalVariation.class, parameterType)) {
 			if (problem == null) {
-				throw new ConfigurationException("must provide problem if setting mutation operator");
+				throw new ConfigurationException("Must provide problem if setting mutation operator");
 			}
 						
 			String operator = properties.getString(propertyName);
@@ -218,7 +218,7 @@ public class ConfigurationUtils {
 		try {
 			method.invoke(object, value);
 		} catch (IllegalAccessException | InvocationTargetException e) {
-			throw new ConfigurationException("failed to apply property " + propertyName, e);
+			throw new ConfigurationException("Failed to apply property " + propertyName, e);
 		}
 	}
 	
@@ -273,7 +273,7 @@ public class ConfigurationUtils {
 				properties.addAll(valueProperties);
 			}
 		} catch (IllegalAccessException | InvocationTargetException e) {
-			throw new ConfigurationException("failed to read property " + propertyName, e);
+			throw new ConfigurationException("Failed to read property " + propertyName, e);
 		}
 	}
 	
@@ -358,7 +358,7 @@ public class ConfigurationUtils {
 		try {
 			return returnType.cast(method.invoke(object));
 		} catch (IllegalAccessException | InvocationTargetException e) {
-			throw new ConfigurationException("failed to call " + method.getName(), e);
+			throw new ConfigurationException("Failed to call " + method.getName(), e);
 		}
 	}
 

@@ -97,7 +97,7 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 
 			// validate the inputs
 			if (entries.isEmpty()) {
-				throw new IOException("requires at least one file");
+				throw new IOException("Requires at least one file");
 			}
 
 			int numberOfEntries = -1;
@@ -106,7 +106,8 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 				if (numberOfEntries < 0) {
 					numberOfEntries = entries.get(i).size();
 				} else if (numberOfEntries != entries.get(i).size()) {
-					throw new IOException("unbalanced number of entries: " + commandLine.getArgs()[i]);
+					throw new IOException(commandLine.getArgs()[i] +
+							" is not valid, all input files must contains the same number of entries");
 				}
 			}
 

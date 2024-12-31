@@ -78,9 +78,9 @@ public class BasicIslandExecutor implements IslandExecutor {
 			try {
 				result.addAll(future.get());
 			} catch (InterruptedException e) {
-				throw new FrameworkException("execution was interrupted", e);
+				throw new FrameworkException("Execution of island model was interrupted", e);
 			} catch (ExecutionException e) {
-				throw new FrameworkException("execution failed", e);
+				throw new FrameworkException("Execution of island model failed", e);
 			}
 		}
 

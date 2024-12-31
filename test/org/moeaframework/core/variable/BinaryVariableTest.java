@@ -289,7 +289,7 @@ public class BinaryVariableTest {
 	@Test
 	public void testDefinition() {
 		Assert.assertEquals("BinaryVariable(5)", new BinaryVariable(5).getDefinition());
-		Assert.assertEquals("BinaryVariable(foo,5)", new BinaryVariable("foo", 5).getDefinition());
+		Assert.assertEquals("BinaryVariable(\"foo\",5)", new BinaryVariable("foo", 5).getDefinition());
 	}
 	
 }

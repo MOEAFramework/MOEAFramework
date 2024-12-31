@@ -24,12 +24,12 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.UncheckedIOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.core.Defined;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
@@ -340,8 +340,9 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	 * 
 	 * @param line the line containing the encoded solution
 	 * @return the solution
+	 * @throws IOException if the solution could not be parsed
 	 */
-	private Solution parseSolution(String line) {
+	private Solution parseSolution(String line) throws IOException {
 		String[] entries = tokenizer.decodeToArray(line);
 		Solution solution = null;
 		
@@ -409,7 +410,7 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 
 			return nextEntry != null;
 		} catch (IOException e) {
-			throw new FrameworkException(e);
+			throw new UncheckedIOException(e);
 		}
 	}
 
@@ -426,9 +427,10 @@ public class ResultFileReader implements Closeable, Iterator<ResultEntry>, Itera
 	 * @param variable the decision variable
 	 * @param string the string representation of the decision variable
 	 * @return the variable with the decoded value
+	 * @throws IOException if an error occurred during decoding and the error handler is configured to throw
 	 * @see ResultFileWriter#encode(Variable)
 	 */
-	public Variable decode(Variable variable, String string) {
+	public Variable decode(Variable variable, String string) throws IOException {
 		if (string.equals("-")) {
 			errorHandler.warn(ENCODING_WARNING);
 		} else {

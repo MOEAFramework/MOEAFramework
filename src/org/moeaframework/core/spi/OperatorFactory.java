@@ -107,7 +107,7 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 		} else if (variation instanceof Mutation mutation) {
 			return mutation;
 		} else {
-			throw new ProviderLookupException("the operator '" + name + "' is not a mutation operator");
+			throw new ProviderException("The operator '" + name + "' is not a mutation operator");
 		}
 	}
 	

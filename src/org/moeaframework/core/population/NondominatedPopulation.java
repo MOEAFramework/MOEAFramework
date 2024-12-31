@@ -175,7 +175,7 @@ public class NondominatedPopulation extends Population {
 	 */
 	@Override
 	public void replace(int index, Solution newSolution) {
-		throw new UnsupportedOperationException("replace not supported with NondominatedPopulation");
+		throw new UnsupportedOperationException("Replace not supported with NondominatedPopulation");
 	}
 
 	/**

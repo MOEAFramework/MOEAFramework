@@ -1311,7 +1311,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 		Set<String> orphanedProperties = getUnaccessedProperties();
 		
 		if (!orphanedProperties.isEmpty()) {
-			System.err.println("properties not accessed: " + String.join(", ", orphanedProperties));
+			System.err.println("Properties not accessed: " + String.join(", ", orphanedProperties));
 		}
 	}
 	
@@ -1325,7 +1325,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 		Set<String> orphanedProperties = getUnaccessedProperties();
 		
 		if (!orphanedProperties.isEmpty()) {
-			throw new ConfigurationException("properties not accessed: " + String.join(", ", orphanedProperties));
+			throw new ConfigurationException("Properties not accessed: " + String.join(", ", orphanedProperties));
 		}
 	}
 	

@@ -486,7 +486,7 @@ public class DiagnosticToolController extends Controller implements SettingChang
 	 */
 	public void run() {
 		if (thread != null) {
-			System.err.println("job already running");
+			System.err.println("Job already running");
 			return;
 		}
 		

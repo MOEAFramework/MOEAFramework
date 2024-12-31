@@ -19,12 +19,12 @@ package org.moeaframework.util.io;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.io.UncheckedIOException;
 import java.util.NoSuchElementException;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.core.FrameworkException;
 
 public class MatrixReaderTest {
 
@@ -85,7 +85,7 @@ public class MatrixReaderTest {
 		}
 	}
 	
-	@Test(expected = FrameworkException.class)
+	@Test(expected = UncheckedIOException.class)
 	public void testFixed4() throws IOException {
 		try (MatrixReader reader = new MatrixReader(new StringReader(FIXED), 2)) {
 			Assert.assertFalse(reader.hasNext());
@@ -105,7 +105,7 @@ public class MatrixReaderTest {
 		}
 	}
 	
-	@Test(expected = FrameworkException.class)
+	@Test(expected = UncheckedIOException.class)
 	public void testVariable2() throws IOException {
 		try (MatrixReader reader = new MatrixReader(new StringReader(VARIABLE), 3)) {
 			Assert.assertTrue(reader.hasNext());
@@ -114,14 +114,14 @@ public class MatrixReaderTest {
 		}
 	}
 	
-	@Test(expected = FrameworkException.class)
+	@Test(expected = UncheckedIOException.class)
 	public void testVariable3() throws IOException {
 		try (MatrixReader reader = new MatrixReader(new StringReader(VARIABLE), 2)) {
 			Assert.assertFalse(reader.hasNext());
 		}
 	}
 
-	@Test(expected = FrameworkException.class)
+	@Test(expected = UncheckedIOException.class)
 	public void testUnparseable1() throws IOException {
 		try (MatrixReader reader = new MatrixReader(new StringReader(UNPARSEABLE))) {
 			Assert.assertTrue(reader.hasNext());
@@ -130,7 +130,7 @@ public class MatrixReaderTest {
 		}
 	}
 	
-	@Test(expected = FrameworkException.class)
+	@Test(expected = UncheckedIOException.class)
 	public void testUnparseable2() throws IOException {
 		try (MatrixReader reader = new MatrixReader(new StringReader(UNPARSEABLE), 3)) {
 			Assert.assertTrue(reader.hasNext());

@@ -468,7 +468,7 @@ public abstract class ExternalProblem implements Problem {
 		 */
 		public BufferedReader getReader() {
 			if (!isStarted()) {
-				throw new IllegalStateException("must call start() before using problem instance");
+				throw new IllegalStateException("Must call start() before using problem instance");
 			}
 			
 			return reader;
@@ -481,7 +481,7 @@ public abstract class ExternalProblem implements Problem {
 		 */
 		public BufferedWriter getWriter() {
 			if (!isStarted()) {
-				throw new IllegalStateException("must call start() before using problem instance");
+				throw new IllegalStateException("Must call start() before using problem instance");
 			}
 			
 			return writer;

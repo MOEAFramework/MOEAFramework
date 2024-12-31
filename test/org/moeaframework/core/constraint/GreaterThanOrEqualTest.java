@@ -65,8 +65,8 @@ public class GreaterThanOrEqualTest {
 	public void testDefinition() {
 		Assert.assertEquals("GreaterThanOrEqual(0.0,1.0E-10)", new GreaterThanOrEqual(0.0).getDefinition());
 		Assert.assertEquals("GreaterThanOrEqual(0.0,1.0E-5)", new GreaterThanOrEqual(0.0, 0.00001).getDefinition());
-		Assert.assertEquals("GreaterThanOrEqual(foo,0.0,1.0E-10)", new GreaterThanOrEqual("foo", 0.0).getDefinition());
-		Assert.assertEquals("GreaterThanOrEqual(foo,0.0,1.0E-5)", new GreaterThanOrEqual("foo", 0.0, 0.00001).getDefinition());
+		Assert.assertEquals("GreaterThanOrEqual(\"foo\",0.0,1.0E-10)", new GreaterThanOrEqual("foo", 0.0).getDefinition());
+		Assert.assertEquals("GreaterThanOrEqual(\"foo\",0.0,1.0E-5)", new GreaterThanOrEqual("foo", 0.0, 0.00001).getDefinition());
 	}
 
 }

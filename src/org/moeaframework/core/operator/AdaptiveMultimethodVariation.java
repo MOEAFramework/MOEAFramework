@@ -188,7 +188,7 @@ public class AdaptiveMultimethodVariation extends AbstractCompoundVariation<Vari
 	@Override
 	public Solution[] evolve(Solution[] parents) {
 		if (operators.isEmpty()) {
-			throw new IllegalStateException("no operators added");
+			throw new IllegalStateException("No operators added");
 		}
 
 		int index = selectOperator();
@@ -205,7 +205,7 @@ public class AdaptiveMultimethodVariation extends AbstractCompoundVariation<Vari
 	@Override
 	public int getArity() {
 		if (operators.isEmpty()) {
-			throw new IllegalStateException("no operators added");
+			throw new IllegalStateException("No operators added");
 		}
 
 		int arity = 0;

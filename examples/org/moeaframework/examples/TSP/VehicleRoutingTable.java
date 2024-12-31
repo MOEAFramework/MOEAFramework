@@ -111,7 +111,7 @@ public class VehicleRoutingTable {
 	 */
 	public int getDemand(int id) {
 		if ((id < 1) || (id > size)) {
-			throw new IllegalArgumentException("no node with identifier " + id);
+			throw new IllegalArgumentException("No node with identifier " + id);
 		}
 		
 		if (demands.containsKey(id)) {
@@ -130,7 +130,7 @@ public class VehicleRoutingTable {
 	 */
 	public boolean isDepot(int id) {
 		if ((id < 1) || (id > size)) {
-			throw new IllegalArgumentException("no node with identifier " + id);
+			throw new IllegalArgumentException("No node with identifier " + id);
 		}
 		
 		return depots.contains(id);

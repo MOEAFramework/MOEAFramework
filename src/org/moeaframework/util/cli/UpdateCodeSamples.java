@@ -719,7 +719,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 				}
 				
 				if (startingLine < 0 || endingLine < 0 || endingLine < startingLine) {
-					throw new IOException("failed to find code block identified by '" + identifier + "'");
+					throw new IOException("Failed to find code block identified by '" + identifier + "'");
 				}
 				
 				// offset line numbers since we start at 1

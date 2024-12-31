@@ -111,7 +111,7 @@ public class MaximizeTest {
 	@Test
 	public void testDefinition() {
 		Assert.assertEquals("Maximize", new Maximize().getDefinition());
-		Assert.assertEquals("Maximize(foo)", new Maximize("foo").getDefinition());
+		Assert.assertEquals("Maximize(\"foo\")", new Maximize("foo").getDefinition());
 	}
 
 }

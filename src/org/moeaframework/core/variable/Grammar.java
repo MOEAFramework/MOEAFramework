@@ -301,7 +301,7 @@ public class Grammar extends AbstractVariable {
 	@Override
 	public void decode(String value) {
 		if (!value.startsWith("Grammar(") || !value.endsWith(")")) {
-			throw new FrameworkException("failed to decode grammar, missing 'Grammar(' ... ')'");
+			throw new FrameworkException("Failed to decode grammar, missing 'Grammar(' ... ')'");
 		}
 		
 		String[] tokens = value.substring(8, value.length()-1).split(",");

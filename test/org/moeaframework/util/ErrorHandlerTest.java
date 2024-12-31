@@ -23,7 +23,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.Capture;
 import org.moeaframework.Capture.CaptureResult;
-import org.moeaframework.core.FrameworkException;
 
 public class ErrorHandlerTest {
 
@@ -66,14 +65,14 @@ public class ErrorHandlerTest {
 		Assert.assertFalse(errorHandler.isError());
 	}
 	
-	@Test(expected = FrameworkException.class)
+	@Test(expected = IOException.class)
 	public void testExceptionOnWarn() throws IOException {
 		ErrorHandler errorHandler = new ErrorHandler();
 		errorHandler.setWarningsAreFatal(true);
 		errorHandler.warn("test warning");
 	}
 	
-	@Test(expected = FrameworkException.class)
+	@Test(expected = IOException.class)
 	public void testExceptionOnError() throws IOException {
 		ErrorHandler errorHandler = new ErrorHandler();
 		errorHandler.setErrorsAreFatal(true);

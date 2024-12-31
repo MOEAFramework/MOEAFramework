@@ -139,7 +139,7 @@ public abstract class IndicatorFitnessEvaluator implements FitnessEvaluator {
 	 */
 	public void removeAndUpdate(Population population, int removeIndex) {
 		if (fitcomp == null) {
-			throw new FrameworkException("evaluate must be called first");
+			throw new FrameworkException("Evaluate must be called first");
 		}
 		
 		for (int i = 0; i < population.size(); i++) {

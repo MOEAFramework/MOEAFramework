@@ -18,13 +18,13 @@
 package org.moeaframework.algorithm.extension;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.time.Duration;
 
 import org.apache.commons.lang3.time.StopWatch;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.analysis.series.ResultEntry;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.util.DurationUtils;
@@ -76,7 +76,7 @@ public class RuntimeCollectorExtension extends PeriodicExtension {
 		try {
 			writer.write(new ResultEntry(result, properties));
 		} catch (IOException e) {
-			throw new FrameworkException(e);
+			throw new UncheckedIOException(e);
 		}
 	}
 	

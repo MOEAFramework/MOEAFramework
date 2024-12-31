@@ -73,7 +73,7 @@ public class EdgeWeightMatrix extends DistanceTable {
 		String line = reader.readLine();
 			
 		if (line == null) {
-			throw new EOFException("unexpectedly reached EOF");
+			throw new EOFException("Unexpectedly reached EOF");
 		}
 		
 		String[] tokens = tokenizer.decodeToArray(line);
@@ -196,12 +196,12 @@ public class EdgeWeightMatrix extends DistanceTable {
 					}
 				}
 			}
-			default -> throw new IllegalArgumentException("unsupported matrix type");
+			default -> throw new IllegalArgumentException("Unsupported matrix type " + format);
 		}
 		
 		// sanity check
 		if (!entries.isEmpty()) {
-			throw new IOException("edge weight matrix is longer than expected");
+			throw new IOException("Edge weight matrix is longer than expected");
 		}
 	}
 	
@@ -241,7 +241,7 @@ public class EdgeWeightMatrix extends DistanceTable {
 		int[] neighbors = new int[size-1];
 		
 		if ((id < 1) || (id > size)) {
-			throw new IllegalArgumentException("no node with identifier " + id);
+			throw new IllegalArgumentException("No node with identifier " + id);
 		}
 		
 		for (int i = 1; i <= size; i++) {
@@ -256,11 +256,11 @@ public class EdgeWeightMatrix extends DistanceTable {
 	@Override
 	public double getDistanceBetween(int id1, int id2) {
 		if ((id1 < 1) || (id1 > size)) {
-			throw new IllegalArgumentException("no node with identifier " + id1);
+			throw new IllegalArgumentException("No node with identifier " + id1);
 		}
 		
 		if ((id2 < 1) || (id2 > size)) {
-			throw new IllegalArgumentException("no node with identifier " + id2);
+			throw new IllegalArgumentException("No node with identifier " + id2);
 		}
 		
 		return matrix[id1-1][id2-1];

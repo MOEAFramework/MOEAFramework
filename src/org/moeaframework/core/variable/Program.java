@@ -26,7 +26,6 @@ import java.util.Base64;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.util.tree.Environment;
 import org.moeaframework.util.tree.Node;
@@ -167,14 +166,14 @@ public class Program extends AbstractVariable {
 			oos.writeObject(root);
 			return "Program(" + Base64.getEncoder().encodeToString(baos.toByteArray()) + ")";
 		} catch (IOException e) {
-			throw new FrameworkException("failed to encode program", e);
+			throw new VariableEncodingException("Failed to encode program", e);
 		}
 	}
 	
 	@Override
 	public void decode(String value) {
 		if (!value.startsWith("Program(") || !value.endsWith(")")) {
-			throw new FrameworkException("failed to decode program, missing 'Program(' ... ')'");
+			throw new VariableEncodingException("Failed to decode program, missing 'Program(' ... ')'");
 		}
 		
 		byte[] encoding = Base64.getDecoder().decode(value.substring(8, value.length()-1));
@@ -183,7 +182,7 @@ public class Program extends AbstractVariable {
 				ObjectInputStream ois = new ObjectInputStream(baos)) {
 			root = (Root)ois.readObject();
 		} catch (IOException | ClassNotFoundException e) {
-			throw new FrameworkException("failed to decode program", e);
+			throw new VariableEncodingException("Failed to decode program", e);
 		}
 	}
 	

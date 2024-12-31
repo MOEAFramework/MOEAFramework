@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.UncheckedIOException;
 import java.text.MessageFormat;
 import java.util.List;
 
@@ -109,7 +110,7 @@ public class NativeHypervolume extends NormalizedIndicator {
 	 */
 	static double evaluate(Problem problem, NondominatedPopulation approximationSet) {
 		if (Settings.getHypervolume() == null) {
-			throw new FrameworkException("must specify hypervolume command as system property or in " +
+			throw new FrameworkException("Must specify hypervolume command as system property or in " +
 					Settings.DEFAULT_CONFIGURATION_FILE);
 		}
 		
@@ -207,7 +208,7 @@ public class NativeHypervolume extends NormalizedIndicator {
 			// invoke the native process
 			return invokeNativeProcess(MessageFormat.format(command, arguments));
 		} catch (IOException e) {
-			throw new FrameworkException(e);
+			throw new UncheckedIOException(e);
 		}
 	}
 	

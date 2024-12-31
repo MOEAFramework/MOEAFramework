@@ -63,7 +63,7 @@ public interface AggregateObjectiveComparator extends DominanceComparator, Compa
 				double q = properties.getDouble("angleScalingFactor", 100.0);
 				return new VectorAngleDistanceScalingComparator(weights, q);
 			} else {
-				throw new ConfigurationException("unrecognized weighting method: " + method);
+				throw new ConfigurationException("Unsupported weighting method: " + method);
 			}
 		}
 		

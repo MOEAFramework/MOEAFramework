@@ -146,7 +146,7 @@ public class ContextFreeGrammar {
 	 */
 	public String build(int[] array) {
 		if (array.length == 0) {
-			throw new GrammarException("codon array is empty");
+			throw new GrammarException("Codon array is empty");
 		}
 
 		StringBuilder sb = new StringBuilder();
@@ -256,7 +256,7 @@ public class ContextFreeGrammar {
 		try (StringReader reader = new StringReader(str)) {
 			return load(reader);
 		} catch (IOException e) {
-			throw new GrammarException("failed to parse grammar", e);
+			throw new GrammarException("Failed to parse grammar", e);
 		}
 	}
 	
@@ -310,19 +310,19 @@ public class ContextFreeGrammar {
 				} while ((tokenizer.ttype == ':') || (tokenizer.ttype == '='));
 
 				if ((rule == null) || (production != null)) {
-					throw new GrammarException("unexpected rule separator", tokenizer.lineno());
+					throw new GrammarException("Unexpected rule separator", tokenizer.lineno());
 				}
 
 				tokenizer.pushBack();
 			} else if (tokenizer.ttype == '|') {
 				if ((rule != null) && (production == null)) {
-					throw new GrammarException("rule must contain at least one production", tokenizer.lineno());
+					throw new GrammarException("Rule must contain at least one production", tokenizer.lineno());
 				}
 
 				production = null;
 			} else if (tokenizer.ttype == StreamTokenizer.TT_EOL) {
 				if ((rule != null) && (production == null)) {
-					throw new GrammarException("rule must contain at least one production", tokenizer.lineno());
+					throw new GrammarException("Rule must contain at least one production", tokenizer.lineno());
 				}
 
 				rule = null;
@@ -344,7 +344,7 @@ public class ContextFreeGrammar {
 					string = string.substring(1, string.length() - 1);
 
 					if (string.isEmpty()) {
-						throw new GrammarException("invalid symbol", tokenizer.lineno());
+						throw new GrammarException("Invalid symbol", tokenizer.lineno());
 					}
 
 					if (rule == null) {
@@ -359,7 +359,7 @@ public class ContextFreeGrammar {
 					}
 				} else {
 					if (rule == null) {
-						throw new GrammarException("rule must start with non-terminal", tokenizer.lineno());
+						throw new GrammarException("Rule must start with non-terminal", tokenizer.lineno());
 					} else if (production == null) {
 						production = new Production();
 						production.add(new Symbol(string, true));
@@ -372,7 +372,7 @@ public class ContextFreeGrammar {
 		}
 
 		if ((rule != null) && (production == null)) {
-			throw new GrammarException("rule must contain at least one production", tokenizer.lineno());
+			throw new GrammarException("Rule must contain at least one production", tokenizer.lineno());
 		}
 
 		return grammar;

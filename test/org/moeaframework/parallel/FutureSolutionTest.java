@@ -105,7 +105,7 @@ public class FutureSolutionTest {
 
 			@Override
 			public void evaluate(Solution solution) {
-				throw new FrameworkException("error!");
+				throw new FrameworkException("Error!");
 			}
 			
 		};

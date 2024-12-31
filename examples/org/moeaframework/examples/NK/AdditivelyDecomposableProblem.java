@@ -203,7 +203,7 @@ public class AdditivelyDecomposableProblem implements Problem {
 			String[] tokens = tokenizer.decodeToArray(reader.readLine());
 			
 			if (tokens.length != 3) {
-				throw new IOException("expected 3 values on first line");
+				throw new IOException("Expected 3 values on first line, found " + tokens.length);
 			}
 			
 			n = Integer.parseInt(tokens[0]);
@@ -219,7 +219,7 @@ public class AdditivelyDecomposableProblem implements Problem {
 			tokens = tokenizer.decodeToArray(reader.readLine());
 			
 			if (tokens.length != numberOfFunctions * (1 << k)) {
-				throw new IOException("incorrect number of values on second line, expected " +
+				throw new IOException("Incorrect number of values on second line, expected " +
 						(numberOfFunctions * (1 << k)));
 			}
 			
@@ -237,7 +237,7 @@ public class AdditivelyDecomposableProblem implements Problem {
 			tokens = tokenizer.decodeToArray(reader.readLine());
 			
 			if (tokens.length != n) {
-				throw new IOException("incorrect number of values on fourth line, expected " + n);
+				throw new IOException("Incorrect number of values on fourth line, expected " + n);
 			}
 			
 			for (int i = 0; i < n; i++) {

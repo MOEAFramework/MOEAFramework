@@ -239,8 +239,9 @@ public class ResultFileWriter extends ResultWriter {
 	 * Prints the solution to the result file.
 	 * 
 	 * @param solution the solution
+	 * @throws IOException if an error occurred during encoding and the error handler is configured to throw
 	 */
-	private void printSolution(Solution solution) {
+	private void printSolution(Solution solution) throws IOException {
 		boolean writeSeparator = false;
 		
 		if (!excludeVariables) {
@@ -311,8 +312,9 @@ public class ResultFileWriter extends ResultWriter {
 	 * 
 	 * @param variable the decision variable to encode
 	 * @return the string representation of the decision variable
+	 * @throws IOException if an error occurred during encoding and the error handler is configured to throw
 	 */
-	public String encode(Variable variable) {
+	public String encode(Variable variable) throws IOException {
 		try {
 			return variable.encode();
 		} catch (Exception e) {

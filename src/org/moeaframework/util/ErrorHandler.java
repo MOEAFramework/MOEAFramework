@@ -17,12 +17,11 @@
  */
 package org.moeaframework.util;
 
+import java.io.IOException;
 import java.io.PrintStream;
 import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.moeaframework.core.FrameworkException;
 
 /**
  * Helper class for managing warnings and errors.
@@ -123,11 +122,11 @@ public class ErrorHandler {
 	 * Called when a warning condition is encountered.
 	 * 
 	 * @param message the warning message
-	 * @throws FrameworkException if {@code warningsAreFatal} is {@code true}
+	 * @throws IOException if {@code warningsAreFatal} is {@code true}
 	 */
-	public void warn(String message) {
+	public void warn(String message) throws IOException {
 		if (warningsAreFatal) {
-			throw new FrameworkException(message);
+			throw new IOException(message);
 		}
 		
 		if (!suppressDuplicates || !emittedMessages.contains(message)) {
@@ -142,9 +141,9 @@ public class ErrorHandler {
 	 * 
 	 * @param pattern the warning message pattern used by {@link MessageFormat}
 	 * @param arguments the arguments used to format the message
-	 * @throws FrameworkException if {@code warningsAreFatal} is {@code true}
+	 * @throws IOException if {@code warningsAreFatal} is {@code true}
 	 */
-	public void warn(String pattern, Object... arguments) {
+	public void warn(String pattern, Object... arguments) throws IOException {
 		warn(MessageFormat.format(pattern, arguments));
 	}
 	
@@ -152,11 +151,11 @@ public class ErrorHandler {
 	 * Called when an error condition is encountered.
 	 * 
 	 * @param message the error message
-	 * @throws FrameworkException if {@code errorsAreFatal} is {@code true}
+	 * @throws IOException if {@code errorsAreFatal} is {@code true}
 	 */
-	public void error(String message) {
+	public void error(String message) throws IOException {
 		if (errorsAreFatal) {
-			throw new FrameworkException(message);
+			throw new IOException(message);
 		}
 		
 		if (!suppressDuplicates || !emittedMessages.contains(message)) {
@@ -172,9 +171,9 @@ public class ErrorHandler {
 	 * 
 	 * @param pattern the error message pattern used by {@link MessageFormat}
 	 * @param arguments the arguments used to format the message
-	 * @throws FrameworkException if {@code errorsAreFatal} is {@code true}
+	 * @throws IOException if {@code errorsAreFatal} is {@code true}
 	 */
-	public void error(String pattern, Object... arguments) {
+	public void error(String pattern, Object... arguments) throws IOException {
 		error(MessageFormat.format(pattern, arguments));
 	}
 	
@@ -182,9 +181,9 @@ public class ErrorHandler {
 	 * Called when an exception occurs.
 	 * 
 	 * @param throwable the exception
-	 * @throws FrameworkException if {@code errorsAreFatal} is {@code true}
+	 * @throws IOException if {@code errorsAreFatal} is {@code true}
 	 */
-	public void error(Throwable throwable) {
+	public void error(Throwable throwable) throws IOException {
 		if (displayFullStackTrace) {
 			error(throwable.getStackTrace().toString());
 		} else {

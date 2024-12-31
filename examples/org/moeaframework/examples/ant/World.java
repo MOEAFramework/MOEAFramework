@@ -142,7 +142,7 @@ public class World {
 			String line = lineReader.readLine();
 			
 			if (line == null) {
-				throw new IOException("trail missing header line");
+				throw new IOException("Trail missing header line");
 			}
 			
 			String[] tokens = tokenizer.decodeToArray(line);

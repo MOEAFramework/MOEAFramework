@@ -84,7 +84,7 @@ public interface Stateful {
 		String expectedClassName = (String)stream.readObject();
 		
 		if (expectedClassName != null && !expectedClassName.equals(object.getClass().getCanonicalName())) {
-			throw new IOException("failed to load state created from " + expectedClassName + " into " +
+			throw new IOException("Failed to load state created from " + expectedClassName + " into " +
 					object.getClass().getCanonicalName());
 		}
 	}

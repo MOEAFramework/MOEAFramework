@@ -39,7 +39,7 @@ public class SpacingTest extends AbstractIndicatorTest<Spacing> {
 	
 	@Override
 	public void testEmptyReferenceSet() {
-		throw new IllegalArgumentException("bypass this test, spacing does not require a reference set");
+		throw new IllegalArgumentException("Bypass this test, spacing does not require a reference set");
 	}
 	
 	@Test

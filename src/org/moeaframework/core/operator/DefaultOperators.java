@@ -118,7 +118,7 @@ public class DefaultOperators extends RegisteredOperatorProvider {
 		registerConfigurable("ptm", PointMutation::new);
 		registerConfigurable("stx", SubtreeCrossover::new);
 		registerConfigurable("bx", () -> {
-			throw new ConfigurationException("use 'stx' instead of 'bx' for subtree crossover");
+			throw new ConfigurationException("Use 'stx' instead of 'bx' for subtree crossover");
 		});
 		
 		// subset

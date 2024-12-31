@@ -65,8 +65,8 @@ public class EqualTest {
 	public void testDefinition() {
 		Assert.assertEquals("Equal(0.0,1.0E-10)", new Equal(0.0).getDefinition());
 		Assert.assertEquals("Equal(0.0,1.0E-5)", new Equal(0.0, 0.00001).getDefinition());
-		Assert.assertEquals("Equal(foo,0.0,1.0E-10)", new Equal("foo", 0.0).getDefinition());
-		Assert.assertEquals("Equal(foo,0.0,1.0E-5)", new Equal("foo", 0.0, 0.00001).getDefinition());
+		Assert.assertEquals("Equal(\"foo\",0.0,1.0E-10)", new Equal("foo", 0.0).getDefinition());
+		Assert.assertEquals("Equal(\"foo\",0.0,1.0E-5)", new Equal("foo", 0.0, 0.00001).getDefinition());
 	}
 
 }

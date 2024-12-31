@@ -296,13 +296,13 @@ public abstract class Node implements Serializable, Named {
 			Node argument = getArgument(i);
 			
 			if (argument == null) {
-				System.err.println("argument is null");
+				System.err.println("Invalid argument to " + getClass().getSimpleName() + " (" + i + "): value is null");
 				return false;
 			}
 			
 			if (!getArgumentType(i).isAssignableFrom(argument.getReturnType())) {
-				System.err.println(getClass().getSimpleName() + " (" + i + "): " + getArgumentType(i) +
-						" not assignable from " + argument.getReturnType());
+				System.err.println("Invalid argument to " + getClass().getSimpleName() + " (" + i + "): " +
+						getArgumentType(i) + " not assignable from " + argument.getReturnType());
 				return false;
 			}
 			
@@ -551,7 +551,7 @@ public abstract class Node implements Serializable, Named {
 			}
 		}
 		
-		throw new IndexOutOfBoundsException("index does not reference node in tree");
+		throw new IndexOutOfBoundsException("Index does not reference node in tree");
 	}
 
 }

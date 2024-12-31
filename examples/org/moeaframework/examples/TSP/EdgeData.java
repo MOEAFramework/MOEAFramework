@@ -73,7 +73,7 @@ public class EdgeData extends DistanceTable {
 		String line = reader.readLine();
 		
 		if (line == null) {
-			throw new EOFException("unexpectedly reached EOF");
+			throw new EOFException("Unexpectedly reached EOF");
 		}
 		
 		String[] tokens = tokenizer.decodeToArray(line);
@@ -124,7 +124,7 @@ public class EdgeData extends DistanceTable {
 					}
 				}
 			}
-			default -> throw new IllegalArgumentException("edge format not supported");
+			default -> throw new IllegalArgumentException("Unsupported edge format " + format);
 		}
 	}
 	
@@ -137,11 +137,11 @@ public class EdgeData extends DistanceTable {
 	 */
 	private void addEdge(int id1, int id2) {
 		if ((id1 < 1) || (id1 > size)) {
-			throw new IllegalArgumentException("no node with identifier " + id1);
+			throw new IllegalArgumentException("No node with identifier " + id1);
 		}
 		
 		if ((id2 < 1) || (id2 > size)) {
-			throw new IllegalArgumentException("no node with identifier " + id2);
+			throw new IllegalArgumentException("No node with identifier " + id2);
 		}
 		
 		edges.add(new Edge(id1, id2));
@@ -170,7 +170,7 @@ public class EdgeData extends DistanceTable {
 	@Override
 	public int[] getNeighborsOf(int id) {
 		if ((id < 1) || (id > size)) {
-			throw new IllegalArgumentException("no node with identifier " + id);
+			throw new IllegalArgumentException("No node with identifier " + id);
 		}
 		
 		List<Integer> neighbors = new ArrayList<>();

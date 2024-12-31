@@ -23,10 +23,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.ErrorHandler;
 
 /**
@@ -149,7 +149,7 @@ public class MatrixReader implements Iterable<double[]>, Iterator<double[]>, Clo
 
 			return nextRow != null;
 		} catch (IOException e) {
-			throw new FrameworkException(e);
+			throw new UncheckedIOException(e);
 		}
 	}
 

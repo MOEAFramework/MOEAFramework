@@ -77,7 +77,7 @@ public class TSPPanel extends JPanel {
 		this.problem = problem;
 		
 		if (DisplayDataType.NO_DISPLAY.equals(problem.getDisplayDataType())) {
-			throw new IllegalArgumentException("problem instance does not support a graphical display");
+			throw new IllegalArgumentException("Problem instance does not support a graphical display");
 		}
 		
 		tours = new LinkedHashMap<>();

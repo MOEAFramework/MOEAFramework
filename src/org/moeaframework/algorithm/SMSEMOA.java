@@ -208,7 +208,7 @@ public class SMSEMOA extends AbstractEvolutionaryAlgorithm {
 			} else if ("crowding".equalsIgnoreCase(indicator)) {
 				setFitnessEvaluator(null);
 			} else {
-				throw new ConfigurationException("invalid indicator: " + indicator);
+				throw new ConfigurationException("Invalid indicator: " + indicator);
 			}
 		}
 		

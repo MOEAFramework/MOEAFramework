@@ -17,8 +17,8 @@
  */
 package org.moeaframework.core.operator.binary;
 
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
+import org.moeaframework.core.TypeMismatchException;
 import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.operator.TypeSafeCrossover;
 import org.moeaframework.core.variable.BinaryVariable;
@@ -57,11 +57,12 @@ public class HUX extends TypeSafeCrossover<BinaryVariable> {
 	 * 
 	 * @param v1 the first variable
 	 * @param v2 the second variable
+	 * @throws TypeMismatchException if the variables have different lengths
 	 */
 	@Override
 	public void evolve(BinaryVariable v1, BinaryVariable v2) {
 		if (v1.getNumberOfBits() != v2.getNumberOfBits()) {
-			throw new FrameworkException("binary variables not same length");
+			throw new TypeMismatchException("Binary variables not same length");
 		}
 
 		for (int i = 0; i < v1.getNumberOfBits(); i++) {

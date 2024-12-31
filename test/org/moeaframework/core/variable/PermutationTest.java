@@ -253,7 +253,7 @@ public class PermutationTest {
 	@Test
 	public void testDefinition() {
 		Assert.assertEquals("Permutation(5)", new Permutation(5).getDefinition());
-		Assert.assertEquals("Permutation(foo,5)", new Permutation("foo", 5).getDefinition());
+		Assert.assertEquals("Permutation(\"foo\",5)", new Permutation("foo", 5).getDefinition());
 	}
 
 }

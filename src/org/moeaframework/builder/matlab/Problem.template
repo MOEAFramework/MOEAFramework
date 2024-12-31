@@ -1,6 +1,7 @@
 package ${packageName};
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 
 import com.mathworks.engine.MatlabEngine;
 
@@ -18,7 +19,7 @@ public class ${problemName} extends AbstractProblem {
 		try {
 			Resources.asFile(${problemName}.class, "${functionName}.m", ResourceOption.REQUIRED).getPath();
 		} catch (IOException e) {
-			throw new FrameworkException("Failed to locate ${functionName}.m", e);
+			throw new UncheckedIOException("Failed to locate ${functionName}.m", e);
 		}
 	}
 

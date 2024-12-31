@@ -308,7 +308,7 @@ public class BinaryIntegerVariableTest {
 	@Test
 	public void testDefinition() {
 		Assert.assertEquals("BinaryIntegerVariable(0,1)", new BinaryIntegerVariable(0, 1).getDefinition());
-		Assert.assertEquals("BinaryIntegerVariable(foo,0,1)", new BinaryIntegerVariable("foo", 0, 1).getDefinition());
+		Assert.assertEquals("BinaryIntegerVariable(\"foo\",0,1)", new BinaryIntegerVariable("foo", 0, 1).getDefinition());
 	}
 
 }

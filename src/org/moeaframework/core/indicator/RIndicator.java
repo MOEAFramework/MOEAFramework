@@ -197,7 +197,7 @@ public abstract class RIndicator extends NormalizedIndicator {
 		int i = 0;
 		
 		if (number >= ArithmeticUtils.pow(k, length)) {
-			throw new FrameworkException("number can not be represented in base-k with specified number of digits");
+			throw new FrameworkException("Number can not be represented in base-k with specified number of digits");
 		}
 		
 		while (number != 0) {

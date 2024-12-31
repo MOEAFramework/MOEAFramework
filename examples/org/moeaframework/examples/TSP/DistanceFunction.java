@@ -43,7 +43,7 @@ public abstract class DistanceFunction {
 		double[] position2 = node2.getPosition();
 		
 		if (position1.length != position2.length) {
-			throw new IllegalArgumentException("nodes are not the same dimension");
+			throw new IllegalArgumentException("Nodes are not the same dimension");
 		}
 		
 		return distance(position1.length, position1, position2);

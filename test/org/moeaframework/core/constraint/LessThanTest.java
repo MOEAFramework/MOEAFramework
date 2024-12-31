@@ -65,8 +65,8 @@ public class LessThanTest {
 	public void testDefinition() {
 		Assert.assertEquals("LessThan(0.0,1.0E-10)", new LessThan(0.0).getDefinition());
 		Assert.assertEquals("LessThan(0.0,1.0E-5)", new LessThan(0.0, 0.00001).getDefinition());
-		Assert.assertEquals("LessThan(foo,0.0,1.0E-10)", new LessThan("foo", 0.0).getDefinition());
-		Assert.assertEquals("LessThan(foo,0.0,1.0E-5)", new LessThan("foo", 0.0, 0.00001).getDefinition());
+		Assert.assertEquals("LessThan(\"foo\",0.0,1.0E-10)", new LessThan("foo", 0.0).getDefinition());
+		Assert.assertEquals("LessThan(\"foo\",0.0,1.0E-5)", new LessThan("foo", 0.0, 0.00001).getDefinition());
 	}
 
 }
