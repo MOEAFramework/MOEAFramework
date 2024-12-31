@@ -77,7 +77,7 @@ public class MainTest {
 		try (PropertyScope scope = Settings.createScope()) {
 			CaptureResult result = Capture.output(Main.class, "--verbose", "CustomTool");
 			result.assertSuccessful();
-			result.assertEqualsNormalized("CustomTool.Run");
+			result.assertContains("CustomTool.Run");
 			Assert.assertTrue(Settings.isVerbose());
 		}
 	}

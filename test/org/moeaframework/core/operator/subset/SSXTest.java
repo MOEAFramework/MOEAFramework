@@ -53,9 +53,9 @@ public class SSXTest extends AbstractSubsetOperatorTest<SSX> {
 			Subset s2copy = s2.copy();
 			
 			new SSX().evolve(s1copy, s2copy);
-
-			s1copy.validate();
-			s2copy.validate();
+			
+			Assert.assertTrue(s1copy.isValid());
+			Assert.assertTrue(s2copy.isValid());
 			
 			countSwapped(s1, s2, s1copy, s2copy, stats1, stats2);
 		}
@@ -88,8 +88,9 @@ public class SSXTest extends AbstractSubsetOperatorTest<SSX> {
 			
 			new SSX().evolve(s1copy, s2copy);
 
-			s1copy.validate();
-			s2copy.validate();
+			Assert.assertTrue(s1copy.isValid());
+			Assert.assertTrue(s2copy.isValid());
+			
 			Assert.assertEquals(size1, s1copy.size());
 			Assert.assertEquals(size2, s2copy.size());
 			

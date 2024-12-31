@@ -258,7 +258,8 @@ public class Settings {
 			String version = TypedProperties.loadBuildProperties().getString("version");
 			
 			if (version == null) {
-				throw new FrameworkException("Unable to load version, please ensure META-INF/ is included in build path");
+				throw new InvalidPropertyException("version",
+						"Not found, please ensure META-INF/ is included in the build path");
 			}
 			
 			PROPERTIES.setString(KEY_VERSION, version);
@@ -267,7 +268,7 @@ public class Settings {
 			Matcher matcher = pattern.matcher(version);
 			
 			if (!matcher.matches()) {
-				throw new FrameworkException("Version must be in 'major.minor' format");
+				throw new InvalidPropertyException("version", "Must be in 'major.minor' format");
 			}
 			
 			PROPERTIES.setString(KEY_MAJOR_VERSION, matcher.group(1));

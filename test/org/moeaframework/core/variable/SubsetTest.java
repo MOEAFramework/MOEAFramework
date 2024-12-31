@@ -49,7 +49,7 @@ public class SubsetTest {
 	public void testFixedSizeSubsetConstructor() {
 		// Test the constructor
 		Subset subset = new Subset(5, 10);
-		subset.validate();
+		Assert.assertTrue(subset.isValid());
 		
 		Assert.assertEquals(5, subset.getL());
 		Assert.assertEquals(5, subset.getU());
@@ -60,7 +60,7 @@ public class SubsetTest {
 	@Test
 	public void testVariableSizeSubsetConstructor() {
 		Subset subset = new Subset(0, 10, 10);
-		subset.validate();
+		Assert.assertTrue(subset.isValid());
 		
 		Assert.assertEquals(0, subset.getL());
 		Assert.assertEquals(10, subset.getU());
@@ -107,11 +107,11 @@ public class SubsetTest {
 		Assert.assertNotEquals(subset.hashCode(), subset2.hashCode());
 	}
 	
-	@Test(expected = FrameworkException.class)
-	public void testAddException() {
+	@Test
+	public void testAddNotValid() {
 		Subset subset = new Subset(5, 10);
 		subset.add(subset.randomNonmember());
-		subset.validate();
+		Assert.assertFalse(subset.isValid());
 	}
 	
 	@Test
@@ -120,7 +120,7 @@ public class SubsetTest {
 		
 		Subset subset2 = subset.copy();
 		subset2.replace(subset.randomMember(), subset.randomNonmember());
-		subset2.validate();
+		Assert.assertTrue(subset2.isValid());
 		
 		Assert.assertEquals(subset.size(), subset2.size());
 		Assert.assertFalse(subset.equals(subset2));
@@ -143,11 +143,11 @@ public class SubsetTest {
 		}
 	}
 	
-	@Test(expected = FrameworkException.class)
-	public void testRemoveException() {
+	@Test
+	public void testRemoveNotValid() {
 		Subset subset = new Subset(5, 10);
 		subset.remove(subset.randomMember());
-		subset.validate();
+		Assert.assertFalse(subset.isValid());
 	}
 
 	@Test
@@ -273,7 +273,7 @@ public class SubsetTest {
 		
 		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
 			subset.randomize();
-			subset.validate();
+			Assert.assertTrue(subset.isValid());
 						
 			for (int j = 0; j < subset.getN(); j++) {
 				valueStats[j].addValue(subset.contains(j) ? 1 : 0);

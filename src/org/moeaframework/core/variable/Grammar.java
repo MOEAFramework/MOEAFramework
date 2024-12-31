@@ -20,7 +20,6 @@ package org.moeaframework.core.variable;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.Defined;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.util.grammar.ContextFreeGrammar;
 import org.moeaframework.util.validate.Validate;
@@ -301,7 +300,7 @@ public class Grammar extends AbstractVariable {
 	@Override
 	public void decode(String value) {
 		if (!value.startsWith("Grammar(") || !value.endsWith(")")) {
-			throw new FrameworkException("Failed to decode grammar, missing 'Grammar(' ... ')'");
+			throw new VariableEncodingException("Failed to decode grammar, missing 'Grammar(' ... ')'");
 		}
 		
 		String[] tokens = value.substring(8, value.length()-1).split(",");

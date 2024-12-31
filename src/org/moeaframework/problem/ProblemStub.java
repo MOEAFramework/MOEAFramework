@@ -300,7 +300,7 @@ public class ProblemStub extends AbstractProblem {
 		private static final long serialVersionUID = -5784052018627328509L;
 
 		public ProblemStubException() {
-			super("attempting an operation that requires a problem definition");
+			super("Attempting an operation that requires a problem definition");
 		}
 		
 	}

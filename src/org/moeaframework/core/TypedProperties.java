@@ -428,7 +428,8 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 		double diff = Math.abs(originalValue - truncatedValue);
 		
 		if (diff >= 1.0) {
-			throw new FrameworkException(key + " can not be converted to an integer (" + originalValue + ")");
+			throw new InvalidPropertyException(key, "Truncating " + originalValue +
+					" to an integer would result in a rounding error of " + diff);
 		}
 		
 		if (diff > Settings.EPS && !Settings.isSuppressTruncationWarning()) {
@@ -450,7 +451,8 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 		int truncatedValue = (int)originalValue;
 		
 		if (truncatedValue != originalValue) {
-			throw new FrameworkException(key + " can not be converted to an integer (" + originalValue + ")");
+			throw new InvalidPropertyException(key, "Truncating " + originalValue +
+					" to an integer would result in a rounding error of " + Math.abs(truncatedValue - originalValue));
 		}
 		
 		return truncatedValue;
@@ -468,7 +470,8 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 		double diff = Math.abs(originalValue - truncatedValue);
 		
 		if (diff >= 1.0) {
-			throw new FrameworkException(key + " can not be converted to a long (" + originalValue + ")");
+			throw new InvalidPropertyException(key, "Truncating " + originalValue +
+					" to an integer would result in a rounding error of " + diff);
 		}
 		
 		if (diff > Settings.EPS && !Settings.isSuppressTruncationWarning()) {

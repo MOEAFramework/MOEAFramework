@@ -32,16 +32,6 @@ public class ProblemException extends FrameworkException {
 	private final Problem problem;
 
 	/**
-	 * Constructs an problem exception originating from the specified problem.
-	 * 
-	 * @param problem the problem responsible for this exception
-	 */
-	public ProblemException(Problem problem) {
-		super();
-		this.problem = problem;
-	}
-
-	/**
 	 * Constructs an problem exception originating from the specified problem with the given cause.
 	 * 
 	 * @param problem the problem responsible for this exception

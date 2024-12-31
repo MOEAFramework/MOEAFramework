@@ -129,20 +129,22 @@ public class Subset extends AbstractVariable {
 	}
 	
 	/**
-	 * Checks if this subset is valid, throwing an exception if it is not.
+	 * Returns {@code true} if this subset satisfies the size requirements and all members are valid.
 	 * 
-	 * @throws FrameworkException if this subset is not valid
+	 * @returns {@code true} if this subset is valid; {@code false} otherwise
 	 */
-	public void validate() {
+	public boolean isValid() {
 		if ((members.size() < l) || (members.size() > u)) {
-			throw new FrameworkException("Subset not valid (invalid size)");
+			return false;
 		}
 		
 		for (int value : members) {
 			if ((value < 0) || (value >= n)) {
-				throw new FrameworkException("Subset not valid (contains invalid member)");
+				return false;
 			}
 		}
+		
+		return true;
 	}
 
 	/**
@@ -186,27 +188,39 @@ public class Subset extends AbstractVariable {
 	 * 
 	 * @param oldValue the old member
 	 * @param newValue the new member
+	 * @throws IllegalArgumentException if either value is not valid
 	 */
 	public void replace(int oldValue, int newValue) {
-		members.remove(oldValue);
-		members.add(newValue);
+		remove(oldValue);
+		add(newValue);
 	}
 	
 	/**
 	 * Adds a new member to this subset, increasing the subset size by 1.
+	 * <p>
+	 * This operation can result in a subset that violates the subset size requirements.  Use {@link #isValid()} after
+	 * making modifications to verify the resulting subset is valid.
 	 * 
 	 * @param value the new member
+	 * @throws IllegalArgumentException if the value is not a valid member
 	 */
 	public void add(int value) {
+		Validate.that("value", value).isBetween(0, n-1);
 		members.add(value);
 	}
 	
 	/**
-	 * Removes a member from this subset, decreasing the subset size by 1.
+	 * Removes a member from this subset, decreasing the subset size by 1.  This has no effect if the value is not
+	 * already a member of the subset.  
+	 * <p>
+	 * This operation can result in a subset that violates the subset size requirements.  Use {@link #isValid()} after
+	 * making modifications to verify the resulting subset is valid.
 	 * 
 	 * @param value the member to remove
+	 * @throws IllegalArgumentException if the value is not a valid member
 	 */
 	public void remove(int value) {
+		Validate.that("value", value).isBetween(0, n-1);
 		members.remove(value);
 	}
 	
@@ -230,8 +244,8 @@ public class Subset extends AbstractVariable {
 	}
 
 	/**
-	 * Returns the membership in this subset as an array.  The ordering is non-deterministic and may change
-	 * between calls.
+	 * Returns the membership in this subset as an array.  The ordering is non-deterministic and may change between
+	 * calls.
 	 * 
 	 * @return the membership in this subset as an array
 	 */
@@ -250,14 +264,14 @@ public class Subset extends AbstractVariable {
 	 * Populates this subset from an array.  Any duplicate values in the array will be ignored.
 	 * 
 	 * @param array the array containing the subset members
-	 * @throws IllegalArgumentException if the permutation array is not a valid subset
+	 * @throws IllegalArgumentException if the array is not a valid subset
 	 */
 	public void fromArray(int[] array) {
 		Validate.that("array.length", array.length).isBetween(l, u);
 		members.clear();
 
 		for (int i = 0; i < array.length; i++) {
-			Validate.that("array[i]", array[i]).isBetween(0, n-1);
+			Validate.that("array[" + i + "]", array[i]).isBetween(0, n-1);
 			members.add(array[i]);
 		}
 	}
@@ -335,7 +349,7 @@ public class Subset extends AbstractVariable {
 	 */
 	public int randomMember() {
 		if (members.size() == 0) {
-			throw new FrameworkException("No member exists (set is empty)");
+			throw new FrameworkException("Subset is empty");
 		} else {
 			return PRNG.nextItem(members);
 		}
@@ -348,7 +362,7 @@ public class Subset extends AbstractVariable {
 	 */
 	public int randomNonmember() {
 		if (members.size() == n) {
-			throw new FrameworkException("No non-member exists (set contains all values)");
+			throw new FrameworkException("Subset contains all possible values");
 		} else if (members.size() < n / OPT_FACTOR) {
 			while (true) {
 				int value = PRNG.nextInt(n);

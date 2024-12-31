@@ -18,19 +18,20 @@
 package org.moeaframework.core;
 
 /**
- * Thrown when attempting to read a property and no default value was given.
+ * Thrown when attempting to parse or read a property with an invalid value.
  */
-public class PropertyNotFoundException extends IllegalArgumentException {
+public class InvalidPropertyException extends FrameworkException {
 
-	private static final long serialVersionUID = 2355313923356588354L;
+	private static final long serialVersionUID = -4394678990139883139L;
 
 	/**
-	 * Creates an exception indicating the given property was not found.
+	 * Creates an exception indicating a property is invalid.
 	 * 
 	 * @param propertyName the name of the property
+	 * @param message a message describing why the property is invalid
 	 */
-	public PropertyNotFoundException(String propertyName) {
-		super("Property '" + propertyName + "' is not set and no default given");
+	public InvalidPropertyException(String propertyName, String message) {
+		super("Invalid property '" + propertyName + "': " + message);
 	}
 
 }
