@@ -16,8 +16,10 @@
 # along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 import sys
 import math
+import argparse
 import functools
 import operator
+import socket
 
 nvars = 11
 nobjs = 2
@@ -36,24 +38,38 @@ def evaluate(vars):
             f[i] *= math.sin(0.5 * math.pi * vars[nobjs-i-1])
 
     return f
-
-if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        if sys.argv[1] == "-h" or sys.argv[1] == "--help":
-            sys.exit(f"Usage: python {sys.argv[0]} <nvars> <nobjs>")
-        
-        if len(sys.argv) == 2:
-            nobjs = float(sys.argv[1])
-            nvars = nobjs + 9
-        elif len(sys.argv) == 3:
-            nvars = float(sys.argv[1])
-            nobjs = float(sys.argv[2])
-
-    for line in sys.stdin:
-        vars = list(map(float, line.split(' ')))
+    
+def process(input, output):
+    for line in input:
+        vars = list(map(float, line.strip().split(' ')))
 
         if len(vars) != nvars:
             sys.exit(f"Incorrect number of variables (expected: {nvars}, actual: {len(vars)})")
 
         objs = evaluate(vars)
-        print(" ".join(map(str, objs)), flush=True)
+        print(" ".join(map(str, objs)), file=output, flush=True)
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Python implementation of the DTLZ2 problem")
+
+    parser.add_argument("-o", "--objs", help="number of objectives (default: 2)", type=int, metavar="<N>", default=2)
+    parser.add_argument("-s", "--sockets", help="enable communication over sockets", action="store_true")
+    parser.add_argument("-p", "--port", help="port (default: 16802)", type=int, metavar="<N>", default=16801)
+    
+    args = parser.parse_args()
+    
+    if args.objs:
+        nobjs = args.objs
+        nvars = args.objs + 9
+
+    if args.sockets:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+            sock.bind(("127.0.0.1", args.port))
+            sock.listen()
+            connection, address = sock.accept()
+        
+            with connection:
+                with connection.makefile("rw") as f:
+                    process(f, f)
+    else:
+        process(sys.stdin, sys.stdout)

@@ -32,7 +32,9 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.extension.FrequencyType;
+import org.moeaframework.algorithm.extension.ProgressExtension;
 import org.moeaframework.algorithm.extension.RuntimeCollectorExtension;
+import org.moeaframework.algorithm.extension.ProgressExtension.DefaultProgressListener;
 import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.core.Defined;
 import org.moeaframework.core.Epsilons;
@@ -251,7 +253,7 @@ public class Solve extends CommandLineUtility {
 		Builder builder = new Builder();
 		
 		if (commandLine.hasOption("useSocket")) {
-			String hostname = null;
+			String hostname = "127.0.0.1";
 			int port = ExternalProblem.DEFAULT_PORT;
 			
 			if (commandLine.hasOption("hostname")) {
@@ -414,8 +416,8 @@ public class Solve extends CommandLineUtility {
 					problem);
 
 			try (ResultFileWriter writer = ResultFileWriter.open(problem, file)) {
-				algorithm.addExtension(new RuntimeCollectorExtension(writer, runtimeFrequency,
-						FrequencyType.EVALUATIONS));
+				algorithm.addExtension(new RuntimeCollectorExtension(writer, runtimeFrequency, FrequencyType.EVALUATIONS));
+				algorithm.addExtension(new ProgressExtension().withListener(new DefaultProgressListener()));
 				algorithm.run(maxEvaluations);
 			}
 		} catch (ParseException e) {

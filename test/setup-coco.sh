@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 COCO_VERSION=${1:-v2.6.3}
 
