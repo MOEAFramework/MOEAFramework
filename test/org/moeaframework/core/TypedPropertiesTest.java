@@ -347,11 +347,11 @@ public class TypedPropertiesTest {
 		
 		// if the truncation would change the value by more than 1, throw instead of warn
 		Assert.assertThrows(NumberFormatException.class, () -> properties.getInt("long"));
-		Assert.assertThrows(FrameworkException.class, () -> properties.getTruncatedInt("long"));
-		Assert.assertThrows(FrameworkException.class, () -> properties.getTruncatedInt("max_double"));
-		Assert.assertThrows(FrameworkException.class, () -> properties.getTruncatedLong("max_double"));
-		Assert.assertThrows(FrameworkException.class, () -> properties.getTruncatedInt("min_double"));
-		Assert.assertThrows(FrameworkException.class, () -> properties.getTruncatedLong("min_double"));
+		Assert.assertThrows(InvalidPropertyException.class, () -> properties.getTruncatedInt("long"));
+		Assert.assertThrows(InvalidPropertyException.class, () -> properties.getTruncatedInt("max_double"));
+		Assert.assertThrows(InvalidPropertyException.class, () -> properties.getTruncatedLong("max_double"));
+		Assert.assertThrows(InvalidPropertyException.class, () -> properties.getTruncatedInt("min_double"));
+		Assert.assertThrows(InvalidPropertyException.class, () -> properties.getTruncatedLong("min_double"));
 	}
 	
 	// Ensures the largest and smallest integers can be stored as doubles without altering the value.

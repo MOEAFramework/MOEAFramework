@@ -239,7 +239,7 @@ public interface Defined {
 				}
 			}
 		} catch (ClassNotFoundException | SecurityException e) {
-			throw new FrameworkException(definition + " is not a recognized or accessible class", e);
+			throw new FrameworkException("Unable to create " + definition + ", not a valid or accessible class", e);
 		}
 		
 		throw new FrameworkException("Unable to create " + definition + ", no constructor found matching arguments " +

@@ -66,7 +66,7 @@ public class ResultFileWriter extends ResultWriter {
 	 * The message displayed when an unsupported decision variable type is encountered.
 	 */
 	static final String ENCODING_WARNING =
-			"unsupported decision variable type, could cause unexpected behavior or data loss";
+			"Unsupported decision variable type, could cause unexpected behavior or data loss";
 	
 	/**
 	 * The stream for appending data to the file.

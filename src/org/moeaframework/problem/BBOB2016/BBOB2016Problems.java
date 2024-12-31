@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.ProblemProvider;
 import org.moeaframework.problem.Problem;
@@ -91,7 +90,7 @@ public class BBOB2016Problems extends ProblemProvider {
 							Integer.parseInt(singleMatcher.group(3)),
 							Integer.parseInt(singleMatcher.group(2)));
 				} else {
-					throw new FrameworkException("Unable to parse BBOB function " + parts[i]);
+					throw new IllegalArgumentException("Unable to parse BBOB function " + parts[i]);
 				}
 			}
 			
@@ -400,7 +399,7 @@ public class BBOB2016Problems extends ProblemProvider {
 				problem = new TransformObjectiveShift(problem, fopt);
 				yield problem;
 			}
-			default -> throw new FrameworkException("Unknown BBOB function " + function);
+			default -> throw new IllegalArgumentException("Unknown BBOB function " + function);
 		};
 	}
 

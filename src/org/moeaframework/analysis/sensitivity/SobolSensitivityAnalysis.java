@@ -26,7 +26,6 @@ import org.apache.commons.math3.stat.StatUtils;
 import org.moeaframework.analysis.parameter.Parameter;
 import org.moeaframework.analysis.parameter.ParameterSet;
 import org.moeaframework.analysis.sample.Samples;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.util.sequence.Saltelli;
 
@@ -50,7 +49,7 @@ import org.moeaframework.util.sequence.Saltelli;
  *   <li>Saltelli, A., et al. "Global Sensitivity Analysis: The Primer." John Wiley &amp; Sons Ltd, 2008.
  * </ol>
  */
-public class SobolSensitivityAnalysis implements SensitivityAnalysis<org.moeaframework.analysis.sensitivity.SobolSensitivityAnalysis.SobolSensitivityResult> {
+public class SobolSensitivityAnalysis implements SensitivityAnalysis<SobolSensitivityAnalysis.SobolSensitivityResult> {
 
 	private final int resamples;
 
@@ -97,8 +96,8 @@ public class SobolSensitivityAnalysis implements SensitivityAnalysis<org.moeafra
 		int expectedResponses = N * (2 * parameterSet.size() + 2);
 		
 		if (expectedResponses != responses.length) {
-			throw new FrameworkException("Expected N * (2 * P + 2) = " + expectedResponses + " responses, given " +
-					responses.length);
+			throw new IllegalArgumentException("Expected N * (2 * P + 2) = " + expectedResponses +
+					" responses, given " + responses.length);
 		}
 		
 		return new SobolSensitivityResult(responses);
