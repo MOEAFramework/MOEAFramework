@@ -17,8 +17,14 @@
  */
 package org.moeaframework.snippet;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import org.apache.commons.io.output.CloseShieldOutputStream;
 import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.analysis.io.ResultFileWriter;
+import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.constraint.Between;
 import org.moeaframework.core.constraint.Equal;
@@ -30,8 +36,10 @@ import org.moeaframework.core.constraint.NotEqual;
 import org.moeaframework.core.constraint.Outside;
 import org.moeaframework.core.objective.Maximize;
 import org.moeaframework.core.objective.Minimize;
+import org.moeaframework.core.population.Population;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.mock.MockProblem;
 import org.moeaframework.problem.CEC2009.UF1;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
@@ -129,7 +137,7 @@ public class ProblemSnippet {
 	}
 
 	@Test
-	public void names() {
+	public void names() throws IOException {
 		Solution solution = new Solution(2, 2, 1);
 
 		// begin-example: custom-names
@@ -141,6 +149,14 @@ public class ProblemSnippet {
 		
 		solution.setConstraint(0, new LessThanOrEqual("cost", 1000));
 		// end-example: custom-names
+				
+		try (PrintWriter out = new PrintWriter(CloseShieldOutputStream.wrap(System.out));
+				ResultFileWriter writer = new ResultFileWriter(MockProblem.of(solution), out)) {
+			Population population = new Population();
+			population.add(solution);
+			
+			writer.write(new ResultEntry(population));
+		}
 	}
 
 }

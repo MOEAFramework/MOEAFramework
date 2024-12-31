@@ -21,6 +21,8 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.problem.AbstractProblem;
 
 public class MockProblem extends AbstractProblem {
+	
+	private final Solution prototype;
 		
 	public MockProblem(int numberOfObjectives) {
 		this(0, numberOfObjectives);
@@ -31,7 +33,12 @@ public class MockProblem extends AbstractProblem {
 	}
 
 	public MockProblem(int numberOfVariables, int numberOfObjectives, int numberOfConstraints) {
-		super(numberOfVariables, numberOfObjectives, numberOfConstraints);
+		this(new Solution(numberOfVariables, numberOfObjectives, numberOfConstraints));
+	}
+	
+	public MockProblem(Solution prototype) {
+		super(prototype.getNumberOfVariables(), prototype.getNumberOfObjectives(), prototype.getNumberOfConstraints());
+		this.prototype = prototype;
 	}
 	
 	@Override
@@ -46,7 +53,11 @@ public class MockProblem extends AbstractProblem {
 
 	@Override
 	public Solution newSolution() {
-		return new Solution(getNumberOfVariables(), getNumberOfObjectives(), getNumberOfConstraints());
+		return prototype.copy();
+	}
+	
+	public static MockProblem of(Solution solution) {
+		return new MockProblem(solution);
 	}
 
 }

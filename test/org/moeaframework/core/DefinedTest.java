@@ -31,7 +31,9 @@ public class DefinedTest {
 	@Test
 	public void testNoArguments() {
 		Assert.assertInstanceOf(Minimize.class, Defined.createInstance(Objective.class, "Minimize"));
+		Assert.assertInstanceOf(Minimize.class, Defined.createInstance(Objective.class, "Minimize()"));
 		Assert.assertInstanceOf(Minimize.class, Defined.createInstance(Objective.class, "org.moeaframework.core.objective.Minimize"));
+		Assert.assertInstanceOf(Minimize.class, Defined.createInstance(Objective.class, "org.moeaframework.core.objective.Minimize()"));
 	}
 	
 	@Test
@@ -41,34 +43,26 @@ public class DefinedTest {
 		Assert.assertInstanceOf(LessThan.class, Defined.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(2)"));
 		Assert.assertInstanceOf(LessThan.class, Defined.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(2, 0.000001)"));
 		
-		LessThan constraint = (LessThan)Defined.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(2, 0.000001)");
+		LessThan constraint = (LessThan)Defined.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(\"foo\", 2, 0.000001)");
+		Assert.assertEquals("foo", constraint.getName());
 		Assert.assertEquals(2.0, constraint.getThreshold(), TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(0.000001, constraint.getEpsilon(), TestThresholds.HIGH_PRECISION);
 	}
 	
+	@Test(expected = FrameworkException.class)
+	public void testUnquotedString() {
+		Defined.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(foo, 2, 0.000001)");
+	}
+	
 	@Test
 	public void testDifferentPackage() {
-		Assert.assertInstanceOf(TestConstraint.class, Defined.createInstance(Constraint.class,
-				"org.moeaframework.core.DefinedTest$TestConstraint(2.0)"));
-	}
-	
-	@Test
-	public void testString() {
-		String definition = "DefinedTest$TestConstraint(foo\\,\\ bar,2.0)";
-		
-		TestConstraint result = Defined.createInstance(TestConstraint.class, definition);
-		Assert.assertEquals("foo, bar", result.getName());
-		Assert.assertEquals(2.0, result.getThreshold(), TestThresholds.HIGH_PRECISION);
-	}
-	
-	@Test
-	public void testUnsupported() {
-		Assert.assertNull(Defined.createInstance(Objective.class, "!Foo"));
+		Assert.assertInstanceOf(TestNestedConstraint.class, Defined.createInstance(Constraint.class,
+				"org.moeaframework.core.DefinedTest$TestNestedConstraint(2.0)"));
 	}
 	
 	@Test(expected = FrameworkException.class)
 	public void testInvalidArgument() {
-		Defined.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(error)");
+		Defined.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(\"error\")");
 	}
 	
 	@Test(expected = FrameworkException.class)
@@ -78,31 +72,32 @@ public class DefinedTest {
 	
 	@Test(expected = FrameworkException.class)
 	public void testAdditionalArgument() {
-		Defined.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(foo, 0.000001, 5.0, bar)");
+		Defined.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(\"foo\", 0.000001, 5.0, bar)");
 	}
 	
 	@Test
 	public void testCreateDefinition() {
 		Assert.assertEquals("Minimize", Defined.createDefinition(Objective.class, Minimize.class));
 		Assert.assertEquals("LessThan(2.0)", Defined.createDefinition(Constraint.class, LessThan.class, 2.0));
-		Assert.assertEquals("org.moeaframework.core.DefinedTest$TestConstraint(2.0)",
-				Defined.createDefinition(Constraint.class, TestConstraint.class, 2.0));
+		Assert.assertEquals("org.moeaframework.core.DefinedTest$TestNestedConstraint(2.0)",
+				Defined.createDefinition(Constraint.class, TestNestedConstraint.class, 2.0));
 	}
 	
 	@Test
-	public void testCreateUnsupportedDefinition() {
+	public void testUnsupportedDefinition() {
 		Assert.assertEquals("!Minimize", Defined.createUnsupportedDefinition(Objective.class, Minimize.class));
+		Assert.assertNull(Defined.createInstance(Objective.class, "!Minimize"));
 	}
 	
-	public static class TestConstraint extends ThresholdConstraint {
+	public static class TestNestedConstraint extends ThresholdConstraint {
 
 		private static final long serialVersionUID = 4343261347377782831L;
 
-		public TestConstraint(double threshold) {
+		public TestNestedConstraint(double threshold) {
 			super(threshold);
 		}
 		
-		public TestConstraint(String name, double threshold) {
+		public TestNestedConstraint(String name, double threshold) {
 			super(name, threshold);
 		}
 
@@ -113,7 +108,7 @@ public class DefinedTest {
 
 		@Override
 		public Constraint copy() {
-			return new TestConstraint(name, threshold);
+			return new TestNestedConstraint(name, threshold);
 		}
 		
 	}

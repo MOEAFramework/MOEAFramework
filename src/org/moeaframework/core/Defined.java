@@ -138,19 +138,27 @@ public interface Defined {
 		
 		sb.append(toClassName(parentType, instanceType));
 		
-		if (arguments != null && arguments.length > 0) {
-			String[] tokens = new String[arguments.length];
+		if (arguments != null && arguments.length > 0) {			
+			sb.append("(");
 			
 			for (int i = 0; i < arguments.length; i++) {
+				if (i > 0) {
+					sb.append(tokenizer.getDelimiter());
+				}
+				
 				if (MethodUtils.getMatchingMethod(arguments[i].getClass(), "toString").getDeclaringClass() == Object.class) {
 					System.err.println(arguments[i].getClass() + " does not override toString()");
 				}
 				
-				tokens[i] = arguments[i].toString();
+				String token = tokenizer.escape(arguments[i].toString());
+				
+				if (arguments[i] instanceof String) {
+					token = "\"" + token + "\"";
+				}
+				
+				sb.append(token);
 			}
 			
-			sb.append("(");
-			sb.append(tokenizer.encode(tokens));
 			sb.append(")");
 		}
 		
@@ -205,6 +213,14 @@ public interface Defined {
 					
 					if (parameterType.isPrimitive()) {
 						parameterType = ClassUtils.primitiveToWrapper(parameterType);
+					}
+					
+					if (parameterType == String.class) {
+						if (arguments[i].startsWith("\"") && arguments[i].endsWith("\"")) {
+							arguments[i] = arguments[i].substring(1, arguments[i].length() - 1);
+						} else {
+							continue outer;
+						}
 					}
 
 					try {
