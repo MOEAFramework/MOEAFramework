@@ -371,7 +371,7 @@ The following options are available:
 ```
 usage: java -classpath "lib/*" org.moeaframework.analysis.tools.Solve -a <name> [-b <name>] [-c <value>] [-e
        <e1,e2,...>] -f <file> [-F <value>] [-h] [-H <value>] [-l <v1,v2,...>] -n <value> [-o <value>] [-P <value>] [-r
-       <value>] [-s <value>] [-S] [-t <trials>] [-u <v1,v2,...>] [-v <v1,v2,...>] [-x <p1=v1;p2=v2;...>]
+       <value>] [-s <value>] [-S] [-t <trials>] [-u <v1,v2,...>] [-v <v1,v2,...>] [-X <p1=v1;p2=v2;...>]
 
 Solves an optimization problem using any optimization algorithm supported by the MOEA Framework.
 
@@ -397,7 +397,7 @@ The following options are available:
  -v,--variables <v1,v2,...>          Comma-separated list of decision variable specifications.  Use "R(<lb>:<ub>)" for
                                      real-valued, "B(<length>)" for binary, "I(<lb>:<ub>)" for integer-valued, and
                                      "P(<length>)" for permutations
- -x,--properties <p1=v1;p2=v2;...>   Algorithm properties
+ -X,--properties <p1=v1;p2=v2;...>   Algorithm properties
 ```
 
 ### WeightGenerator
