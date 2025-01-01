@@ -48,10 +48,10 @@ public abstract class AbstractFactoryTest<T, S extends AbstractFactory<T>> {
 	/**
 	 * Creates a new instance of the factory.
 	 */
-	@SuppressWarnings("unchecked")
 	public S createFactory() {
 		try {
-			return (S)MethodUtils.invokeStaticMethod(getFactoryType(), "getInstance");
+			Class<S> type = getFactoryType();
+			return type.cast(MethodUtils.invokeStaticMethod(type, "getInstance"));
 		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
 			Assert.fail(e.getMessage());
 			return null;
