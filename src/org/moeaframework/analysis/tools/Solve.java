@@ -19,10 +19,12 @@ package org.moeaframework.analysis.tools;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.Character.Subset;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,12 +43,23 @@ import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
+import org.moeaframework.core.constraint.Constraint;
+import org.moeaframework.core.constraint.Equal;
+import org.moeaframework.core.constraint.GreaterThan;
+import org.moeaframework.core.constraint.GreaterThanOrEqual;
+import org.moeaframework.core.constraint.LessThan;
+import org.moeaframework.core.constraint.LessThanOrEqual;
+import org.moeaframework.core.constraint.NotEqual;
 import org.moeaframework.core.initialization.RandomInitialization;
+import org.moeaframework.core.objective.Maximize;
+import org.moeaframework.core.objective.Minimize;
+import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.core.variable.Permutation;
 import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.core.variable.Subset;
 import org.moeaframework.core.variable.Variable;
 import org.moeaframework.problem.ExternalProblem;
 import org.moeaframework.problem.ExternalProblem.Builder;
@@ -59,6 +72,40 @@ import org.moeaframework.util.cli.CommandLineUtility;
  * See {@link ExternalProblem} for details on developing an external problem.
  */
 public class Solve extends CommandLineUtility {
+	
+	private static final Map<String, Class<? extends Variable>> VARIABLE_ALIASES;
+	
+	private static final Map<String, Class<? extends Objective>> OBJECTIVE_ALIASES;
+	
+	private static final Map<String, Class<? extends Constraint>> CONSTRAINT_ALIASES;
+	
+	private static final char TOKEN_SEPARATOR = ';';
+	
+	static {
+		VARIABLE_ALIASES = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		OBJECTIVE_ALIASES = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		CONSTRAINT_ALIASES = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		
+		VARIABLE_ALIASES.put("R", RealVariable.class);
+		VARIABLE_ALIASES.put("Real", RealVariable.class);
+		VARIABLE_ALIASES.put("B", BinaryVariable.class);
+		VARIABLE_ALIASES.put("Binary", BinaryVariable.class);
+		VARIABLE_ALIASES.put("I", BinaryIntegerVariable.class);
+		VARIABLE_ALIASES.put("Int", BinaryIntegerVariable.class);
+		VARIABLE_ALIASES.put("Integer", BinaryIntegerVariable.class);
+		VARIABLE_ALIASES.put("P", Permutation.class);
+		VARIABLE_ALIASES.put("S", Subset.class);
+		
+		OBJECTIVE_ALIASES.put("Min", Minimize.class);
+		OBJECTIVE_ALIASES.put("Max", Maximize.class);
+		
+		CONSTRAINT_ALIASES.put("LT", LessThan.class);
+		CONSTRAINT_ALIASES.put("LEQ", LessThanOrEqual.class);
+		CONSTRAINT_ALIASES.put("GT", GreaterThan.class);
+		CONSTRAINT_ALIASES.put("GEQ", GreaterThanOrEqual.class);
+		CONSTRAINT_ALIASES.put("EQ", Equal.class);
+		CONSTRAINT_ALIASES.put("NEQ", NotEqual.class);
+	}
 
 	Solve() {
 		super();
@@ -103,18 +150,17 @@ public class Solve extends CommandLineUtility {
 		options.addOption(Option.builder("v")
 				.longOpt("variables")
 				.hasArgs()
-				.argName("v1;v2;...")
-				.valueSeparator(';')
+				.argName("spec")
 				.build());
 		options.addOption(Option.builder("o")
 				.longOpt("objectives")
 				.hasArg()
-				.argName("value")
+				.argName("spec")
 				.build());
 		options.addOption(Option.builder("c")
 				.longOpt("constraints")
 				.hasArg()
-				.argName("value")
+				.argName("spec")
 				.build());
 		options.addOption(Option.builder("l")
 				.longOpt("lowerBounds")
@@ -158,42 +204,80 @@ public class Solve extends CommandLineUtility {
 	}
 	
 	/**
-	 * Parses a single variable specification from the command line.  This method is case sensitive.
+	 * Parses a single specification token from the command line using {@link Defined#createInstance(Class, String)}.
 	 * 
-	 * @param token the variable specification from the command line
-	 * @return the generated variable object
-	 * @throws ParseException if an error occurred while parsing the variable specification
+	 * @param returnType the return type or expected type for the specification
+	 * @param aliases aliases recognized for this specification
+	 * @param token the token to parse
+	 * @return the parsed result
+	 * @throws ParseException if an error occurred while parsing the specification
 	 */
-	private Variable parseVariableSpecification(String token) throws ParseException {
-		Pattern pattern = Pattern.compile("([a-zA-Z]+)\\(([^\\)]+)\\)");
+	private <T> T parseSpecificationToken(Class<? extends T> returnType, Map<String, Class<? extends T>> aliases,
+			String token) throws ParseException {
+		Pattern pattern = Pattern.compile("([a-zA-Z]+)(?:\\(([^\\)]+)\\))?");
 		Matcher matcher = pattern.matcher(token);
 		
 		if (!matcher.matches()) {
-			throw new ParseException("Invalid variable specification '" + token + "', not properly formatted");
+			throw new ParseException("Invalid definition for " + returnType.getSimpleName() +
+					", not properly formatted: '" + token + "'");
 		}
 		
-		String type = matcher.group(1);
+		String identifier = matcher.group(1);
 		String args = matcher.group(2);
 		
-		if (type.equalsIgnoreCase("R") || type.equalsIgnoreCase("Real")) {
-			type = RealVariable.class.getSimpleName();
-		} else if (type.equalsIgnoreCase("B") || type.equalsIgnoreCase("Binary")) {
-			type = BinaryVariable.class.getSimpleName();
-		} else if (type.equalsIgnoreCase("I") || type.equalsIgnoreCase("Int") || type.equalsIgnoreCase("Integer")) {
-			type = BinaryIntegerVariable.class.getSimpleName();
-		} else if (type.equalsIgnoreCase("P")) {
-			type = Permutation.class.getSimpleName();
-		} else if (type.equalsIgnoreCase("S")) {
-			type = Subset.class.getSimpleName();
+		if (aliases.containsKey(identifier)) {
+			identifier = aliases.get(identifier).getName();
 		}
 		
-		Variable result = Defined.createInstance(Variable.class, type + "(" + args + ")");
+		T result = Defined.createInstance(returnType, identifier + (args == null ? "" : "(" + args + ")"));
 		
 		if (result == null) {
-			throw new ParseException("Invalid variable specification '" + token + "', type not supported");
+			throw new ParseException("Invalid definition for " + returnType.getSimpleName() +
+					", type not recognized: '" + token + "'");
 		}
 		
 		return result;
+	}
+	
+	private <T> List<T> parseSpecifications(CommandLine commandLine, String option, Class<? extends T> returnType,
+			Map<String, Class<? extends T>> aliases, Supplier<T> defaultSupplier) throws ParseException {
+		List<T> result = new ArrayList<>();
+		
+		if (!commandLine.hasOption(option)) {
+			return result;
+		}
+		
+		if (defaultSupplier != null) {
+			try {
+				int numberOfObjectives = Integer.parseInt(commandLine.getOptionValue(option));
+				
+				for (int i = 0; i < numberOfObjectives; i++) {
+					result.add(defaultSupplier.get());
+				}
+				
+				return result;
+			} catch (NumberFormatException e) {
+				// fall through
+			}
+		}
+		
+		String[] tokens = commandLine.getOptionValue(option).split(Pattern.quote(String.valueOf(TOKEN_SEPARATOR)));
+		
+		for (String token : tokens) {
+			result.add(parseSpecificationToken(returnType, aliases, token.trim()));
+		}
+		
+		return result;
+	}
+	
+	List<Objective> parseObjectives(CommandLine commandLine) throws ParseException {
+		return parseSpecifications(commandLine, "objectives", Objective.class, OBJECTIVE_ALIASES,
+				Objective::createDefault);
+	}
+	
+	List<Constraint> parseConstraints(CommandLine commandLine) throws ParseException {
+		return parseSpecifications(commandLine, "constraints", Constraint.class, CONSTRAINT_ALIASES,
+				Constraint::createDefault);
 	}
 	
 	/**
@@ -204,15 +288,23 @@ public class Solve extends CommandLineUtility {
 	 * @return the parsed variable specifications
 	 * @throws ParseException if an error occurred while parsing the variable specifications
 	 */
-	List<Variable> parseVariables(CommandLine commandLine) throws ParseException {
-		List<Variable> variables = new ArrayList<>();
+	List<Variable> parseVariables(CommandLine commandLine) throws ParseException {		
+		if (commandLine.hasOption("variables") &&
+				(commandLine.hasOption("lowerBounds") || commandLine.hasOption("upperBounds"))) {
+			throw new ParseException("Can not combine --variables with --lowerBounds / --upperBounds");
+		}
 		
+		if (commandLine.hasOption("variables")) {
+			return parseSpecifications(commandLine, "variables", Variable.class, VARIABLE_ALIASES, null);
+		}
+
 		if (commandLine.hasOption("lowerBounds") && commandLine.hasOption("upperBounds")) {
+			List<Variable> variables = new ArrayList<>();
 			String[] lowerBoundTokens = commandLine.getOptionValues("lowerBounds");
 			String[] upperBoundTokens = commandLine.getOptionValues("upperBounds");
 			
 			if (lowerBoundTokens.length != upperBoundTokens.length) {
-				throw new ParseException("Lower bound and upper bounds not the same length");
+				throw new ParseException("--lowerBounds and --upperBounds must be the same length");
 			}
 			
 			for (int i = 0; i < lowerBoundTokens.length; i++) {
@@ -220,17 +312,15 @@ public class Solve extends CommandLineUtility {
 				double upperBound = Double.parseDouble(upperBoundTokens[i]);
 				variables.add(new RealVariable(lowerBound, upperBound));
 			}
-		} else if (commandLine.hasOption("variables")) {
-			String[] tokens = commandLine.getOptionValues("variables");
 			
-			for (String token : tokens) {
-				variables.add(parseVariableSpecification(token.trim()));
-			}
-		} else {
-			throw new ParseException("Must specify either the problem, the variables, or the lower and upper bounds arguments");
+			return variables;
 		}
 		
-		return variables;
+		if (commandLine.hasOption("lowerBounds") || commandLine.hasOption("upperBounds")) {
+			throw new ParseException("Must provide both --lowerBounds and --upperBounds");
+		}
+		
+		throw new ParseException("Missing variable specification");
 	}
 	
 	/**
@@ -242,13 +332,17 @@ public class Solve extends CommandLineUtility {
 	 * @throws IOException if an error occurred starting the external program
 	 */
 	Problem createExternalProblem(final CommandLine commandLine) throws ParseException, IOException {
-		final int numberOfObjectives = Integer.parseInt(commandLine.getOptionValue("objectives"));
-		
-		final int numberOfConstraints = commandLine.hasOption("constraints") ?
-				Integer.parseInt(commandLine.getOptionValue("constraints")) :
-				0;
-		
 		final List<Variable> variables = parseVariables(commandLine);
+		final List<Objective> objectives = parseObjectives(commandLine);
+		final List<Constraint> constraints = parseConstraints(commandLine);
+		
+		if (variables.isEmpty()) {
+			throw new ParseException("At least one variable must be defined");
+		}
+		
+		if (objectives.isEmpty()) {
+			throw new ParseException("At least one objective must be defined");
+		}
 		
 		Builder builder = new Builder();
 		
@@ -289,20 +383,28 @@ public class Solve extends CommandLineUtility {
 
 			@Override
 			public int getNumberOfObjectives() {
-				return numberOfObjectives;
+				return objectives.size();
 			}
 
 			@Override
 			public int getNumberOfConstraints() {
-				return numberOfConstraints;
+				return constraints.size();
 			}
 
 			@Override
 			public Solution newSolution() {
-				Solution solution = new Solution(variables.size(), numberOfObjectives, numberOfConstraints);
+				Solution solution = new Solution(variables.size(), objectives.size(), constraints.size());
 
 				for (int i = 0; i < variables.size(); i++) {
 					solution.setVariable(i, variables.get(i).copy());
+				}
+				
+				for (int i = 0; i < objectives.size(); i++) {
+					solution.setObjective(i, objectives.get(i).copy());
+				}
+				
+				for (int i = 0; i < constraints.size(); i++) {
+					solution.setConstraint(i, constraints.get(i).copy());
 				}
 
 				return solution;
@@ -349,14 +451,14 @@ public class Solve extends CommandLineUtility {
 					System.out.print("  Objective ");
 					System.out.print(j+1);
 					System.out.print(" = ");
-					System.out.println(solution.getObjective(j));
+					System.out.println(solution.getObjectiveValue(j));
 				}
 				
 				for (int j = 0; j < solution.getNumberOfConstraints(); j++) {
 					System.out.print("  Constraint ");
 					System.out.print(j+1);
 					System.out.print(" = ");
-					System.out.println(solution.getConstraint(j));
+					System.out.println(solution.getConstraintValue(j));
 				}
 				
 				if ((solution.getNumberOfConstraints() > 0) && solution.violatesConstraints()) {

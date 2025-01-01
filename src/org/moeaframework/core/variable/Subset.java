@@ -131,7 +131,7 @@ public class Subset extends AbstractVariable {
 	/**
 	 * Returns {@code true} if this subset satisfies the size requirements and all members are valid.
 	 * 
-	 * @returns {@code true} if this subset is valid; {@code false} otherwise
+	 * @return {@code true} if this subset is valid; {@code false} otherwise
 	 */
 	public boolean isValid() {
 		if ((members.size() < l) || (members.size() > u)) {

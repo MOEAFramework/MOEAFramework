@@ -257,6 +257,7 @@ public class ProgressExtension implements Extension {
 			super();
 		}
 		
+		// TODO: Need one extra println on termination to clear last line
 		@Override
 		public void progressUpdate(ProgressEvent event) {
 			System.out.print("E: ");

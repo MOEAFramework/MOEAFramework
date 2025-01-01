@@ -54,12 +54,6 @@ public class DefinedTest {
 		Defined.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(foo, 2, 0.000001)");
 	}
 	
-	@Test
-	public void testDifferentPackage() {
-		Assert.assertInstanceOf(TestNestedConstraint.class, Defined.createInstance(Constraint.class,
-				"org.moeaframework.core.DefinedTest$TestNestedConstraint(2.0)"));
-	}
-	
 	@Test(expected = FrameworkException.class)
 	public void testInvalidArgument() {
 		Defined.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(\"error\")");
@@ -75,6 +69,26 @@ public class DefinedTest {
 		Defined.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(\"foo\", 0.000001, 5.0, bar)");
 	}
 	
+	@Test(expected = FrameworkException.class)
+	public void testUnrecognizedClassName() {
+		Defined.createInstance(Objective.class, "Foo()");
+	}
+	
+	@Test(expected = FrameworkException.class)
+	public void testMissingCloseParenthesis() {
+		Defined.createInstance(Objective.class, "Minimize(");
+	}
+	
+	@Test(expected = FrameworkException.class)
+	public void testMissingOpenParenthesis() {
+		Defined.createInstance(Objective.class, "Minimize)");
+	}
+	
+	@Test(expected = FrameworkException.class)
+	public void testMissingCloseParenthesisWithArgs() {
+		Defined.createInstance(Objective.class, "LessThan(\"foo\",");
+	}
+	
 	@Test
 	public void testCreateDefinition() {
 		Assert.assertEquals("Minimize", Defined.createDefinition(Objective.class, Minimize.class));
@@ -87,6 +101,12 @@ public class DefinedTest {
 	public void testUnsupportedDefinition() {
 		Assert.assertEquals("!Minimize", Defined.createUnsupportedDefinition(Objective.class, Minimize.class));
 		Assert.assertNull(Defined.createInstance(Objective.class, "!Minimize"));
+	}
+	
+	@Test
+	public void testDifferentPackage() {
+		Assert.assertInstanceOf(TestNestedConstraint.class, Defined.createInstance(Constraint.class,
+				"org.moeaframework.core.DefinedTest$TestNestedConstraint(2.0)"));
 	}
 	
 	public static class TestNestedConstraint extends ThresholdConstraint {

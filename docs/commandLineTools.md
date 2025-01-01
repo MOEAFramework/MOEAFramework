@@ -369,9 +369,9 @@ The following options are available:
 <!-- help:src/org/moeaframework/analysis/tools/Solve.java [:-2] -->
 
 ```
-usage: java -classpath "lib/*" org.moeaframework.analysis.tools.Solve -a <name> [-b <name>] [-c <value>] [-e
-       <e1,e2,...>] -f <file> [-F <value>] [-h] [-H <value>] [-l <l1,l2,...>] -n <value> [-o <value>] [-P <value>] [-r
-       <value>] [-s <value>] [-S] [-t <trials>] [-u <u1,u2,...>] [-v <v1;v2;...>] [-X <p1=v1;p2=v2;...>]
+usage: java -classpath "lib/*" org.moeaframework.analysis.tools.Solve -a <name> [-b <name>] [-c <spec>] [-e <e1,e2,...>]
+       -f <file> [-F <value>] [-h] [-H <value>] [-l <l1,l2,...>] -n <value> [-o <spec>] [-P <value>] [-r <value>] [-s
+       <value>] [-S] [-t <trials>] [-u <u1,u2,...>] [-v <spec>] [-X <p1=v1;p2=v2;...>]
 
 Solves an optimization problem using any optimization algorithm supported by the MOEA Framework.
 
@@ -379,7 +379,7 @@ The following options are available:
 
  -a,--algorithm <name>               Algorithm name
  -b,--problem <name>                 Problem name
- -c,--constraints <value>            Number of constraints (default 0)
+ -c,--constraints <spec>             Number of constraints (default 0)
  -e,--epsilon <e1,e2,...>            Epsilon values for epsilon-dominance
  -f,--output <file>                  Output file
  -F,--runtimeFrequency <value>       Output population every N evaluations (default 100)
@@ -387,14 +387,14 @@ The following options are available:
  -H,--hostname <value>               Hostname used when using sockets (default localhost)
  -l,--lowerBounds <l1,l2,...>        Lower bounds of real-valued decision variables
  -n,--numberOfEvaluations <value>    Maximum number of evaluations
- -o,--objectives <value>             Number of objectives
+ -o,--objectives <spec>              Number of objectives
  -P,--port <value>                   Port used when using sockets (default 16801)
  -r,--retries <value>                The number of retries when establishing a socket connection (default 5)
  -s,--seed <value>                   Random number seed
  -S,--useSocket                      Communicate with external problem using sockets
  -t,--test <trials>                  Runs a few trials to test the connection with the external problem
  -u,--upperBounds <u1,u2,...>        Upper bounds of real-valued decision variables
- -v,--variables <v1;v2;...>          Semicolon-separated list of decision variable specifications.  Use "R(<lb>,<ub>)"
+ -v,--variables <spec>               Semicolon-separated list of decision variable specifications.  Use "R(<lb>,<ub>)"
                                      for reals, "B(<length>)" for binary, "I(<lb>,<ub>)" for integers, "P(<length>)" for
                                      permutations
  -X,--properties <p1=v1;p2=v2;...>   Algorithm properties
