@@ -35,8 +35,8 @@ import org.apache.commons.cli.ParseException;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.extension.FrequencyType;
 import org.moeaframework.algorithm.extension.ProgressExtension;
-import org.moeaframework.algorithm.extension.RuntimeCollectorExtension;
 import org.moeaframework.algorithm.extension.ProgressExtension.DefaultProgressListener;
+import org.moeaframework.algorithm.extension.RuntimeCollectorExtension;
 import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.core.Defined;
 import org.moeaframework.core.Epsilons;
@@ -368,7 +368,6 @@ public class Solve extends CommandLineUtility {
 			builder.withCommand(commandLine.getArgs());
 		}
 			
-		System.out.println("Starting optimization");
 		return new ExternalProblem(builder) {
 
 			@Override
@@ -511,6 +510,8 @@ public class Solve extends CommandLineUtility {
 				runTests(problem, commandLine);
 				return;
 			}
+			
+			System.out.println("Starting optimization");
 
 			Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(
 					commandLine.getOptionValue("algorithm"),
@@ -522,6 +523,8 @@ public class Solve extends CommandLineUtility {
 				algorithm.addExtension(new ProgressExtension().withListener(new DefaultProgressListener()));
 				algorithm.run(maxEvaluations);
 			}
+			
+			System.out.println("Result written to " + file);
 		} catch (ParseException e) {
 			throw new IOException(e);
 		} finally {

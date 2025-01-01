@@ -42,7 +42,6 @@ public abstract class AbstractFactoryTest<T, S extends AbstractFactory<T>> {
 	
 	/**
 	 * Returns the type of the factory.
-	 * @return
 	 */
 	public abstract Class<S> getFactoryType();
 	
