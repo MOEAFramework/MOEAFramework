@@ -198,6 +198,10 @@ jobs:
       if: runner.os == 'Linux'
       run: |
         cd build/MOEAFramework-*
+
+        if [ -z "$SHELL" ]; then
+          SHELL=bash
+        fi
         
         cp ~/.bash_profile ~/.bash_profile.bkup
         eval "$(./cli init --permanent)"
