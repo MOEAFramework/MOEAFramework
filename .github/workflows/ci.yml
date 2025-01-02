@@ -194,25 +194,18 @@ jobs:
         ./cli solve --problem DTLZ2 --algorithm NSGAII --numberOfEvaluations 10000 --output NSGAII_DTLZ2_Runtime.txt
         ./cli calc --problem DTLZ2 --indicator hypervolume NSGAII_DTLZ2_Runtime.txt
         # end-example:cli-solve
-    - name: Test CLI init
+    - name: Test CLI init (Linux)
       if: runner.os == 'Linux'
       run: |
         cd build/MOEAFramework-*
-
-        if [ -z "$SHELL" ]; then
-          export SHELL=bash
-        fi
         
         cp ~/.bash_profile ~/.bash_profile.bkup
-        eval "$(./cli init --permanent)"
-        EXPECTED="$(./cli init)"
+        eval "$(./cli init --shell bash --permanent)"
+        EXPECTED="$(./cli init --shell bash)"
         ACTUAL="$(diff ~/.bash_profile ~/.bash_profile.bkup | grep "<" | cut -c 3-)"
         [ "$EXPECTED" = "$ACTUAL" ]
 
-        # begin-example:cli-init
-        eval "$(./cli init)"
-        # end-example:cli-init
-
+        eval "$(./cli init --shell bash)"
         which cli
     - name: Test examples
       run: |

@@ -54,6 +54,10 @@ public class Initialize extends CommandLineUtility {
 		options.addOption(Option.builder("p")
 				.longOpt("permanent")
 				.build());
+		options.addOption(Option.builder("s")
+				.longOpt("shell")
+				.hasArg()
+				.build());
 
 		return options;
 	}
@@ -71,7 +75,7 @@ public class Initialize extends CommandLineUtility {
 				System.out.println("set PATH=%PATH%;" + root);
 			}
 		} else if (SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_UNIX || SystemUtils.IS_OS_MAC) {
-			String shell = getShell();
+			String shell = getShell(commandLine);
 			String shellConfig = getShellConfigFile(shell);
 			
 			if (commandLine.hasOption("permanent") && shellConfig != null) {
@@ -91,11 +95,15 @@ public class Initialize extends CommandLineUtility {
 	 * 
 	 * @return the shell name (e.g., {@code "bash"})
 	 */
-	private String getShell() {
-		String shell = System.getenv("SHELL");
+	private String getShell(CommandLine commandLine) {
+		String shell = commandLine.getOptionValue("shell");
+				
+		if (shell == null) {
+			shell = System.getenv("SHELL");
+		}
 		
 		if (shell == null) {
-			throw new FrameworkException("Unable to determine shell, missing $SHELL environment variable");
+			throw new FrameworkException("Unable to determine shell, please provide --shell option");
 		}
 		
 		return FilenameUtils.getName(shell);
