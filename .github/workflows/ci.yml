@@ -206,7 +206,8 @@ jobs:
         [ "$EXPECTED" = "$ACTUAL" ]
 
         eval "$(./cli init --shell bash)"
-        which cli
+        [ "$MOEAFRAMEWORK_ROOT" = "$(pwd)" ]
+        [ "$(which cli)" = "$(pwd)/cli" ]
     - name: Test examples
       run: |
         cd build/MOEAFramework-*
