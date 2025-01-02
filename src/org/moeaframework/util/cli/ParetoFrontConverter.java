@@ -131,7 +131,7 @@ public class ParetoFrontConverter extends CommandLineUtility  {
 	}
 	
 	/**
-	 * Starts the command line utility for converting Pareto front files.
+	 * The main entry point for this command line utility.
 	 * 
 	 * @param args the command line arguments
 	 * @throws Exception if an error occurred

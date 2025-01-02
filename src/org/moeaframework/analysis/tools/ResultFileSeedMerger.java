@@ -135,7 +135,7 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 	}
 
 	/**
-	 * Starts the command line utility for merging the approximation sets in one or more result files across the seeds.
+	 * The main entry point for this command line utility.
 	 * 
 	 * @param args the command line arguments
 	 * @throws Exception if an error occurred

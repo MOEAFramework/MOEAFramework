@@ -173,7 +173,7 @@ public class RuntimeEvaluator extends CommandLineUtility {
 	}
 
 	/**
-	 * Starts the command line utility for evaluating an algorithm using many parameterizations.
+	 * The main entry point for this command line utility.
 	 * 
 	 * @param args the command line arguments
 	 * @throws Exception if an error occurred

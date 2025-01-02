@@ -138,7 +138,7 @@ public class GeneratePlots extends CommandLineUtility {
 	}
 
 	/**
-	 * Starts the command line utility for generating plots.
+	 * The main entry point for this command line utility.
 	 * 
 	 * @param args the command line arguments
 	 * @throws Exception if an error occurred

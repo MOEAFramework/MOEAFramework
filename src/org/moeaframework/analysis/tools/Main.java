@@ -60,6 +60,7 @@ public class Main extends CommandLineUtility {
 
 		registerTool(CalculateIndicator.class);
 		registerTool(EndOfRunEvaluator.class);
+		registerTool(Initialize.class);
 		registerTool(MetricsAnalysis.class);
 		registerTool(MetricsEvaluator.class);
 		registerTool(MetricsValidator.class);
@@ -223,7 +224,7 @@ public class Main extends CommandLineUtility {
 	}
 
 	/**
-	 * Starts the command line utility main entry point.
+	 * The main entry point for this command line utility.
 	 * 
 	 * @param args the command line arguments
 	 * @throws Exception if an error occurred

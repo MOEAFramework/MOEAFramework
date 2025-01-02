@@ -82,7 +82,7 @@ public class ResultFileValidator extends CommandLineUtility {
 	}
 	
 	/**
-	 * Starts the command line utility for counting the number of entries in a result file.
+	 * The main entry point for this command line utility.
 	 * 
 	 * @param args the command line arguments
 	 * @throws Exception if an error occurred

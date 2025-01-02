@@ -97,7 +97,7 @@ public class ReferenceSetGenerator extends CommandLineUtility {
 	}
 	
 	/**
-	 * Starts the command line utility for generating reference sets for a given problem.
+	 * The main entry point for this command line utility.
 	 * 
 	 * @param args the command line arguments
 	 * @throws Exception if an error occurred
