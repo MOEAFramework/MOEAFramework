@@ -200,7 +200,7 @@ jobs:
         cd build/MOEAFramework-*
 
         if [ -z "$SHELL" ]; then
-          SHELL=bash
+          export SHELL=bash
         fi
         
         cp ~/.bash_profile ~/.bash_profile.bkup
