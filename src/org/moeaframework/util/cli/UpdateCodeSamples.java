@@ -196,17 +196,17 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	private boolean scan(File file) throws IOException, InterruptedException {
 		boolean fileChanged = false;
 		
-		if (!file.exists()) {
-			System.out.println("Skipping " + file + ", does not exist");
-		}
-		
-		if (file.isDirectory()) {
-			System.out.println("Scanning directory " + file);
-			for (File nestedFile : file.listFiles()) {
-				fileChanged |= scan(nestedFile);
+		if (file.exists()) {
+			if (file.isDirectory()) {
+				System.out.println("Scanning directory " + file);
+				for (File nestedFile : file.listFiles()) {
+					fileChanged |= scan(nestedFile);
+				}
+			} else {
+				fileChanged |= process(file);
 			}
 		} else {
-			fileChanged |= process(file);
+			System.out.println("Skipping " + file + ", does not exist");
 		}
 		
 		return fileChanged;

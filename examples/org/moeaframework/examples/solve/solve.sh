@@ -12,7 +12,7 @@
 #     Integer       I(<lb>,<ub>) or Integer(<lb>,<ub>)
 #     Binary        B(<len>) or Binary(<len>)
 #     Permutation   P(<len>) or Permutation(<len>)
-#     Subset        S(<...>) or Subset(<...>)
+#     Subset        S(<k>,<n>) or Subset(<k>,<n>)
 #
 # Objectives are specified either as an integer value, in which case the default direction is used (Minimize), or as
 # a ';'-separated list of:
