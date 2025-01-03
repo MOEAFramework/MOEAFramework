@@ -26,8 +26,14 @@ For example, here we use the `solve` on the 2-objective DTLZ2 problem using NSGA
 ./cli calc --problem DTLZ2 --indicator hypervolume NSGAII_DTLZ2_Runtime.txt
 ```
 
-If you plan to use these tools often, consider adding the MOEA Framework installation folder to your system's `PATH`
-environment variable.
+## Installing CLI Tool
+
+If you plan to use these tools often, you can optionally add the MOEA Framework directory to your system's `PATH` so it
+is always available.  To see the recommended commands needed to register the tool, run:
+
+```bash
+./cli init
+```
 
 ## Available Tools
 

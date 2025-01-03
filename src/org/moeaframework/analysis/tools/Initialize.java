@@ -29,20 +29,21 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.cli.CommandLineUtility;
 
 /**
- * Command line utility to help setup the MOEA Framework on the host system.  For example:
+ * Command line utility to help setup the MOEA Framework on the host system.  This prints out the suggested commands to
+ * configure the system / profile:
  * <pre>{@code
- *   # Windows
- *   cli.cmd init
- *   
- *   # Linux / Unix / Mac
- *   eval "$(./cli init)"
+ *   ./cli init
  * }</pre>
  * <p>
- * <strong>Using the {@code --permanent} option will alter the system configuration.  Consider making a backup of your
- * profile before continuing.</strong>
+ * On Linux or Mac systems, we can evaluate these commands within the shell directly
+ * <pre>{@code
+ *   eval "$(./cli init)"
+ * }</pre>
  */
 public class Initialize extends CommandLineUtility {
 	
+	private static final String ROOT_ENVVAR = "MOEAFRAMEWORK_ROOT";
+		
 	private Initialize() {
 		super();
 	}
@@ -64,14 +65,14 @@ public class Initialize extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws IOException {
-		String root = System.getenv().getOrDefault("MOEAFRAMEWORK_ROOT", Path.of("").toAbsolutePath().toString());
+		String root = System.getenv().getOrDefault(ROOT_ENVVAR, Path.of("").toAbsolutePath().toString());
 		
 		if (SystemUtils.IS_OS_WINDOWS) {
 			if (commandLine.hasOption("permanent")) {
-				System.out.println("setx MOEAFRAMEWORK_ROOT=" + root);
+				System.out.println("setx " + ROOT_ENVVAR + "=" + root);
 				System.out.println("setx PATH=%PATH%;" + root);
 			} else {
-				System.out.println("set MOEAFRAMEWORK_ROOT=" + root);
+				System.out.println("set " + ROOT_ENVVAR + "=" + root);
 				System.out.println("set PATH=%PATH%;" + root);
 			}
 		} else if (SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_UNIX || SystemUtils.IS_OS_MAC) {
@@ -79,11 +80,11 @@ public class Initialize extends CommandLineUtility {
 			String shellConfig = getShellConfigFile(shell);
 			
 			if (commandLine.hasOption("permanent") && shellConfig != null) {
-				System.out.println("echo 'export MOEAFRAMEWORK_ROOT=\"" + root + "\"' >> " + shellConfig);
-				System.out.println("echo 'export PATH=\"$MOEAFRAMEWORK_ROOT:$PATH\"' >> " + shellConfig);
+				System.out.println("echo 'export " + ROOT_ENVVAR + "=\"" + root + "\"' >> " + shellConfig);
+				System.out.println("echo 'export PATH=\"$" + ROOT_ENVVAR + ":$PATH\"' >> " + shellConfig);
 			} else {
-				System.out.println("export MOEAFRAMEWORK_ROOT=\"" + root + "\"");
-				System.out.println("export PATH=\"$MOEAFRAMEWORK_ROOT:$PATH\"");
+				System.out.println("export " + ROOT_ENVVAR + "=\"" + root + "\"");
+				System.out.println("export PATH=\"$" + ROOT_ENVVAR + ":$PATH\"");
 			}
 		} else {
 			System.err.println("Setup instructions not available for " + SystemUtils.OS_NAME);
