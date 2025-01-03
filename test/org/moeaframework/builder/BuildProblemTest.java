@@ -64,7 +64,7 @@ public class BuildProblemTest {
 	}
 	
 	@Test
-	public void testMatlabPartial() throws Exception {
+	public void testMatlab() throws Exception {
 		Assume.assumeMatlabExists();
 		
 		if (Assume.isGitHubActions()) {

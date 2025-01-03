@@ -16,7 +16,7 @@ where `[command]` is one of the tool names.  To view the available commands, run
 ./cli --help
 ```
 
-For example, here we use the `solve` on the 2-objective DTLZ2 problem using NSGA-II, followed by `calc` (abbreviation of
+For example, here we run `solve` on the 2-objective DTLZ2 problem using NSGA-II, followed by `calc` (abbreviation of
 `CalculateIndicators`) to compute the hypervolume metric:
 
 <!-- bash:.github/workflows/ci.yml [cli-solve] -->
