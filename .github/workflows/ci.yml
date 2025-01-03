@@ -194,7 +194,7 @@ jobs:
         ./cli solve --problem DTLZ2 --algorithm NSGAII --numberOfEvaluations 10000 --output NSGAII_DTLZ2_Runtime.txt
         ./cli calc --problem DTLZ2 --indicator hypervolume NSGAII_DTLZ2_Runtime.txt
         # end-example:cli-solve
-    - name: Test CLI init (Linux)
+    - name: Test CLI init (Bash)
       if: runner.os == 'Linux'
       run: |
         cd build/MOEAFramework-*
@@ -208,6 +208,22 @@ jobs:
         eval "$(./cli init --shell bash)"
         [ "$MOEAFRAMEWORK_ROOT" = "$(pwd)" ]
         [ "$(which cli)" = "$(pwd)/cli" ]
+    - name: Test CLI init (Command Prompt)
+      if: runner.os == 'Windows'
+      shell: cmd
+      run: |
+        cd build/MOEAFramework-*
+        
+        ./cli init
+        ./cli init --permanent
+    - name: Test CLI init (Powershell)
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: |
+        cd build/MOEAFramework-*
+        
+        ./cli init
+        ./cli init --permanent
     - name: Test examples
       run: |
         cd build/MOEAFramework-*

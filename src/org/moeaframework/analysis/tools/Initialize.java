@@ -68,12 +68,22 @@ public class Initialize extends CommandLineUtility {
 		String root = System.getenv().getOrDefault(ROOT_ENVVAR, Path.of("").toAbsolutePath().toString());
 		
 		if (SystemUtils.IS_OS_WINDOWS) {
-			if (commandLine.hasOption("permanent")) {
-				System.out.println("setx " + ROOT_ENVVAR + "=" + root);
-				System.out.println("setx PATH=%PATH%;" + root);
+			if (System.getenv("PSModulePath") != null) {
+				if (commandLine.hasOption("permanent")) {
+					System.out.println("[Environment]::SetEnvironmentVariable(\"" + ROOT_ENVVAR + "\", \"" + root + "\", [EnvironmentVariableTarget]::Machine)");
+					System.out.println("[Environment]::SetEnvironmentVariable(\"PATH\", \"$($env:PATH);$($env:" + ROOT_ENVVAR + ")\", [EnvironmentVariableTarget]::Machine)");
+				} else {
+					System.out.println("$env:" + ROOT_ENVVAR + "=\"" + root + "\"");
+					System.out.println("$env:PATH=\"$($env:PATH);$($env:" + ROOT_ENVVAR + ")\"");
+				}
 			} else {
-				System.out.println("set " + ROOT_ENVVAR + "=" + root);
-				System.out.println("set PATH=%PATH%;" + root);
+				if (commandLine.hasOption("permanent")) {
+					System.out.println("setx " + ROOT_ENVVAR + "=" + root);
+					System.out.println("setx PATH=%PATH%;" + root);
+				} else {
+					System.out.println("set " + ROOT_ENVVAR + "=" + root);
+					System.out.println("set PATH=%PATH%;" + root);
+				}
 			}
 		} else if (SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_UNIX || SystemUtils.IS_OS_MAC) {
 			String shell = getShell(commandLine);
