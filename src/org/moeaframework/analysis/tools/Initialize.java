@@ -17,6 +17,7 @@
  */
 package org.moeaframework.analysis.tools;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -66,50 +67,54 @@ public class Initialize extends CommandLineUtility {
 	@Override
 	public void run(CommandLine commandLine) throws IOException {
 		String root = System.getenv().getOrDefault(ROOT_ENVVAR, Path.of("").toAbsolutePath().toString());
+		String separator = File.pathSeparator;
+		String shell = getShell(commandLine);
+		String shellConfig = getShellConfigFile(shell);
 		
-		if (SystemUtils.IS_OS_WINDOWS) {
-			if (System.getenv("PSModulePath") != null) {
-				if (commandLine.hasOption("permanent")) {
-					System.out.println("[Environment]::SetEnvironmentVariable(\"" + ROOT_ENVVAR + "\", \"" + root + "\", [EnvironmentVariableTarget]::Machine)");
-					System.out.println("[Environment]::SetEnvironmentVariable(\"PATH\", \"$($env:PATH);$($env:" + ROOT_ENVVAR + ")\", [EnvironmentVariableTarget]::Machine)");
-				} else {
-					System.out.println("$env:" + ROOT_ENVVAR + "=\"" + root + "\"");
-					System.out.println("$env:PATH=\"$($env:PATH);$($env:" + ROOT_ENVVAR + ")\"");
-				}
+		if (shell.equalsIgnoreCase("pwsh") || shell.equalsIgnoreCase("powershell")) {
+			if (commandLine.hasOption("permanent")) {
+				System.out.println("[Environment]::SetEnvironmentVariable(\"" + ROOT_ENVVAR + "\", \"" + root + "\", [EnvironmentVariableTarget]::Machine)");
+				System.out.println("$MachinePath = [Environment]::GetEnvironmentVariable(\"PATH\", [EnvironmentVariableTarget]::Machine)");
+				System.out.println("[Environment]::SetEnvironmentVariable(\"PATH\", \"" + root + separator + "$($MachinePath)\", [EnvironmentVariableTarget]::Machine)");
 			} else {
-				if (commandLine.hasOption("permanent")) {
-					System.out.println("setx " + ROOT_ENVVAR + "=" + root);
-					System.out.println("setx PATH=%PATH%;" + root);
-				} else {
-					System.out.println("set " + ROOT_ENVVAR + "=" + root);
-					System.out.println("set PATH=%PATH%;" + root);
-				}
+				System.out.println("$env:" + ROOT_ENVVAR + "=\"" + root + "\"");
+				System.out.println("$env:PATH=\"$($env:" + ROOT_ENVVAR + ")" + separator + "$($env:PATH)\"");
 			}
-		} else if (SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_UNIX || SystemUtils.IS_OS_MAC) {
-			String shell = getShell(commandLine);
-			String shellConfig = getShellConfigFile(shell);
-			
+		} else if (shell.equalsIgnoreCase("cmd")) {
+			// We don't offer a permanent version for Command Prompt.  While `setx /M` would work, it truncates the
+			// value if longer than 1024 characters, potentially corrupting the path.  Use the PowerShell version
+			// or manually configure the environment variables.
+			System.out.println("set " + ROOT_ENVVAR + "=" + root);
+			System.out.println("set PATH=" + root + separator + "%PATH%");
+		} else {
 			if (commandLine.hasOption("permanent") && shellConfig != null) {
 				System.out.println("echo 'export " + ROOT_ENVVAR + "=\"" + root + "\"' >> " + shellConfig);
-				System.out.println("echo 'export PATH=\"$" + ROOT_ENVVAR + ":$PATH\"' >> " + shellConfig);
+				System.out.println("echo 'export PATH=\"$" + ROOT_ENVVAR + separator + "$PATH\"' >> " + shellConfig);
 			} else {
 				System.out.println("export " + ROOT_ENVVAR + "=\"" + root + "\"");
-				System.out.println("export PATH=\"$" + ROOT_ENVVAR + ":$PATH\"");
+				System.out.println("export PATH=\"$" + ROOT_ENVVAR + separator + "$PATH\"");
 			}
-		} else {
-			System.err.println("Setup instructions not available for " + SystemUtils.OS_NAME);
 		}
 	}
 	
 	/**
-	 * Returns the configured default shell.  Note that this can differ from the current shell used to invoke Java.
+	 * Returns the configured shell using some heuristics based on the environment.
 	 * 
-	 * @return the shell name (e.g., {@code "bash"})
+	 * @return the shell name
 	 */
 	private String getShell(CommandLine commandLine) {
 		String shell = commandLine.getOptionValue("shell");
+		
+		// this could produce false positives if the env var is set outside PowerShell
+		if (shell == null && System.getenv("PSModulePath") != null) {
+			shell = "pwsh";
+		}
+		
+		if (shell == null && SystemUtils.IS_OS_WINDOWS) {
+			shell = "cmd";
+		}
 				
-		if (shell == null) {
+		if (shell == null && (SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_UNIX || SystemUtils.IS_OS_MAC)) {
 			shell = System.getenv("SHELL");
 		}
 		

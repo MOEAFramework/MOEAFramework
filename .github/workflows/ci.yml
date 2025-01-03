@@ -194,42 +194,62 @@ jobs:
         ./cli solve --problem DTLZ2 --algorithm NSGAII --numberOfEvaluations 10000 --output NSGAII_DTLZ2_Runtime.txt
         ./cli calc --problem DTLZ2 --indicator hypervolume NSGAII_DTLZ2_Runtime.txt
         # end-example:cli-solve
-    - name: Test CLI init (Bash)
+    - name: Test CLI (init --shell bash)
       if: runner.os == 'Linux'
       run: |
         cd build/MOEAFramework-*
         
+        eval "$(./cli init --shell bash)"
+        [ "$MOEAFRAMEWORK_ROOT" = "$(pwd)" ]
+        [ "$(which cli)" = "$(pwd)/cli" ]
+    - name: Test CLI (init --shell bash --permanent)
+      if: runner.os == 'Linux'
+      run: |
+        cd build/MOEAFramework-*
+      
         cp ~/.bash_profile ~/.bash_profile.bkup
         eval "$(./cli init --shell bash --permanent)"
         EXPECTED="$(./cli init --shell bash)"
         ACTUAL="$(diff ~/.bash_profile ~/.bash_profile.bkup | grep "<" | cut -c 3-)"
         [ "$EXPECTED" = "$ACTUAL" ]
-
-        eval "$(./cli init --shell bash)"
-        [ "$MOEAFRAMEWORK_ROOT" = "$(pwd)" ]
-        [ "$(which cli)" = "$(pwd)/cli" ]
-    - name: Test CLI init (Command Prompt)
+    - name: Test CLI (init --shell cmd)
       if: runner.os == 'Windows'
       shell: cmd
-      run: |
-        cd build/MOEAFramework-*
-        
-        ./cli init > commands.cmd
-        type commands.cmd
-        ./commands
-        where cli
-        ./cli init --permanent
-    - name: Test CLI init (Powershell)
+      run: cd build/MOEAFramework-* && cli init --shell cmd > commands.cmd && commands && where cli
+    - name: Test CLI (init --shell pwsh)
       if: runner.os == 'Windows'
       shell: pwsh
       run: |
         cd build/MOEAFramework-*
         
-        ./cli init > commands.ps1
-        . ./commands.ps1
-        (Get-Command cli).Path
+        # TODO: Temporary fix until we rename this
+        Remove-Alias cli -Force
         
-        ./cli init --permanent
+        $commands = ./cli init | Out-String
+        Invoke-Expression $commands
+        
+        $actual = (Get-Command cli).Path
+        $expected = Join-Path (Get-Location) "cli.cmd"
+        if ($actual -ne $expected) {
+          Write-Warning "FAILED: Incorrect local path: '$($actual)', expected '$($expected)'"
+          exit -1
+        }
+    - name: Test CLI (init --shell pwsh --permanent)
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: |
+        cd build/MOEAFramework-*
+      
+        $oldPath = [Environment]::GetEnvironmentVariable("PATH", [EnvironmentVariableTarget]::Machine)
+        $commands = ./cli init --permanent | Out-String
+        Invoke-Expression $commands
+        
+        $actual = [Environment]::GetEnvironmentVariable("PATH", [EnvironmentVariableTarget]::Machine)
+        $expected = "$(Get-Location);$($oldPath)"
+        if ($actual -ne $expected) {
+          Write-Warning "FAILED: Incorrect system path: '$($actual)', expected '$($expected)'"
+          exit -1
+        }
     - name: Test examples
       run: |
         cd build/MOEAFramework-*

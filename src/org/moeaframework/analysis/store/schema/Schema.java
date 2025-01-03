@@ -137,7 +137,7 @@ public class Schema {
 	/**
 	 * Returns {@code true} if schemaless or has no defined fields; {@code false} otherwise
 	 * 
-	 * @return @code true} if schemaless; {@code false} otherwise
+	 * @return {@code true} if schemaless; {@code false} otherwise
 	 */
 	public boolean isSchemaless() {
 		return fields.isEmpty();
