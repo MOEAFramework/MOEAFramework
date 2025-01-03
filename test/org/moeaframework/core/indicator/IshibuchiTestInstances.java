@@ -23,8 +23,8 @@ import org.moeaframework.mock.MockSolution;
 
 // Test instances found in Section 4 in:
 //
-//   H. Ishibuchi, H. Masuda, Y. Tanigaki and Y. Nojima, “Modified distance calculation in generational distance and
-//   inverted generational distance,” Proc. of 8th International Conference on Evolutionary Multi-Criterion
+//   H. Ishibuchi, H. Masuda, Y. Tanigaki and Y. Nojima, "Modified distance calculation in generational distance and
+//   inverted generational distance," Proc. of 8th International Conference on Evolutionary Multi-Criterion
 //   Optimization, Part I, pp. 110-125, Guimarães, Portugal, March 29-April 1, 2015.
 //
 // Note that the paper uses GD and IGD indicators with powers of 1 and no normalization.  Custom versions of these

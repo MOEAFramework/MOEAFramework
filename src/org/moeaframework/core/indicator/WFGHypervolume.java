@@ -33,7 +33,7 @@ import org.moeaframework.problem.Problem;
  * <p>
  * References:
  * <ol>
- *   <li>While, Ronald Lyndon et al. “A Fast Way of Calculating Exact Hypervolumes.” IEEE Transactions on Evolutionary
+ *   <li>While, Ronald Lyndon et al. "A Fast Way of Calculating Exact Hypervolumes." IEEE Transactions on Evolutionary
  *       Computation 16 (2012): 86-95.
  * </ol>
  */
