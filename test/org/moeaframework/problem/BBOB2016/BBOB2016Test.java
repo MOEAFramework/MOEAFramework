@@ -68,7 +68,7 @@ public class BBOB2016Test {
 		try {
 			System.loadLibrary("CocoJNI");
 		} catch (UnsatisfiedLinkError e) {
-			Assume.assumeTrue("CocoJNI not found, please compile and place on the Java library path", false);
+			Assume.assumeNoException("CocoJNI not found, please compile and place on the Java library path", e);
 		}
 
 		CocoJNI.cocoSetLogLevel("error");

@@ -45,20 +45,21 @@ public abstract class AbstractSingleObjectiveAlgorithmTest<T extends Algorithm &
 		T algorithm = createInstance(new MockRealProblem());
 		TypedProperties properties = algorithm.getConfiguration();
 		
-		if (algorithm instanceof SingleObjectiveEvolutionaryAlgorithm soAlgorithm) {
-			Assert.assertEquals("linear", properties.getString("method"));
-			Assert.assertInstanceOf(LinearDominanceComparator.class, soAlgorithm.getComparator());
+		Assume.assumeInstanceOf(SingleObjectiveEvolutionaryAlgorithm.class, algorithm);
+		
+		Assert.assertEquals("linear", properties.getString("method"));
+		Assert.assertInstanceOf(LinearDominanceComparator.class,
+				((SingleObjectiveEvolutionaryAlgorithm)algorithm).getComparator());
 			
-			properties.setString("method", "min-max");
-			algorithm.applyConfiguration(properties);
-			Assert.assertInstanceOf(MinMaxDominanceComparator.class, soAlgorithm.getComparator());
+		properties.setString("method", "min-max");
+		algorithm.applyConfiguration(properties);
+		Assert.assertInstanceOf(MinMaxDominanceComparator.class,
+				((SingleObjectiveEvolutionaryAlgorithm)algorithm).getComparator());
 			
-			properties.setString("method", "angle");
-			algorithm.applyConfiguration(properties);
-			Assert.assertInstanceOf(VectorAngleDistanceScalingComparator.class, soAlgorithm.getComparator());
-		} else {
-			Assume.assumeTrue("algorithm is not SingleObjectiveEvolutionaryAlgorithm, skipping test", false);
-		}
+		properties.setString("method", "angle");
+		algorithm.applyConfiguration(properties);
+		Assert.assertInstanceOf(VectorAngleDistanceScalingComparator.class,
+				((SingleObjectiveEvolutionaryAlgorithm)algorithm).getComparator());
 	}
 	
 	@Test(expected = ConfigurationException.class)

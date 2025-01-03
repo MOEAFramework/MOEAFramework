@@ -32,16 +32,17 @@ public class Assume extends org.junit.Assume {
 		super();
 	}
 	
+	public static void assumeInstanceOf(Class<?> type, Object object) {
+		assumeTrue("Expected object of type " + type + " but found " + object.getClass().getName() + ", skipping test",
+				type.isInstance(object));
+	}
+	
 	public static void assumeFileExists(File file) {
-		if (!file.exists()) {
-			assumeTrue(file + " does not exist, skipping test", false);
-		}
+		assumeTrue(file + " does not exist, skipping test", file.exists());
 	}
 	
 	public static void assumePOSIX() {
-		if (!SystemUtils.IS_OS_UNIX) {
-			assumeTrue("System is not POSIX-compliant, skipping test", false);
-		}
+		assumeTrue("System is not POSIX-compliant, skipping test", SystemUtils.IS_OS_UNIX);
 	}
 	
 	public static void assumeCommand(String... args) {
@@ -49,7 +50,7 @@ public class Assume extends org.junit.Assume {
 			ProcessBuilder processBuilder = new ProcessBuilder(args);
 			RedirectStream.pipe(processBuilder, System.out);
 		} catch (Exception e) {
-			assumeTrue(args[0] + " is not available on this system, skipping test", false);
+			assumeNoException(args[0] + " is not available on this system, skipping test", e);
 		}
 	}
 	
@@ -70,7 +71,7 @@ public class Assume extends org.junit.Assume {
 			ProcessBuilder processBuilder = new ProcessBuilder(Settings.getPythonCommand(), "-c", "import " + module);
 			RedirectStream.pipe(processBuilder, System.out);
 		} catch (Exception e) {
-			assumeTrue(module + " is not installed", false);
+			assumeNoException(module + " is not installed", e);
 		}
 	}
 	
