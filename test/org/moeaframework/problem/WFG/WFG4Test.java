@@ -58,5 +58,12 @@ public class WFG4Test extends WFGTest {
 		testGenerate("WFG4_2");
 		testGenerate("WFG4_3");
 	}
+	
+	@Test
+	public void testRepeat() {
+		for (int i = 0; i < 100; i++) {
+			testGenerate();
+		}
+	}
 
 }

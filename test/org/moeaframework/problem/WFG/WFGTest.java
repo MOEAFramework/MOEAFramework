@@ -17,10 +17,13 @@
  */
 package org.moeaframework.problem.WFG;
 
+import java.util.Arrays;
+
 import org.junit.Ignore;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
 import org.moeaframework.TestThresholds;
+import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.population.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.spi.ProblemFactory;
@@ -34,7 +37,21 @@ public abstract class WFGTest extends ProblemTest {
 		NondominatedPopulation result = new NondominatedPopulation(DuplicateMode.ALLOW_DUPLICATES);
 		
 		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
-			result.add(problem.generate());
+			// result.add(problem.generate());
+			
+			// TODO: Temporary to debug WFG4
+			Solution solution = problem.generate();
+			
+			if (!result.add(solution)) {
+				System.out.println("Failed to add solution!");
+				
+				for (Solution other : result) {
+					int cmp = result.getComparator().compare(solution, other);
+					if (cmp != 0) {
+						System.out.println(problemName + " " + Arrays.toString(solution.getObjectiveValues()) + " " + Arrays.toString(other.getObjectiveValues()) + " " + cmp);
+					}
+				}
+			}
 		}
 		
 		Assume.assumeFalse("WFG2 is disjoint and can generate dominated solutions", problem instanceof WFG2);
