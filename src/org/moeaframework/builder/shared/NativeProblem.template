@@ -13,8 +13,8 @@ public class ${problemName} extends AbstractProblem {
 	public static native void ${functionName}(double[] vars, double[] objs, double[] constrs);
 	
 	static {
-        Native.register("${problemName}");
-    }
+		Native.register("${problemName}");
+	}
 
 	public ${problemName}() {
 		super(${numberOfVariables}, ${numberOfObjectives}, ${numberOfConstraints});
