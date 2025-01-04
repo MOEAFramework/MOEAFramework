@@ -93,7 +93,7 @@ along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 		</module>
 		-->
 		<module name="IllegalInstantiation">
-            <property name="classes" value="java.lang.Boolean, java.lang.String" />
+            <property name="classes" value="java.lang.Boolean, java.lang.Byte, java.lang.Char, java.lang.Integer, java.lang.Long, java.lang.Float, java.lang.Double" />
         </module>
 		<module name="IllegalType" />
         <module name="InnerAssignment" />
