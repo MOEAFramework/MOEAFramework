@@ -3,5 +3,5 @@ CPP.template -> ${problemName}.cpp
 Header.template -> ${problemName}.h
 ../shared/NativeProblem.template -> src/${packagePath}/${problemName}.java
 ../shared/ProblemProvider.template -> src/${packagePath}/${problemName}Provider.java
-../shared/Service.template -> META-INF/services/org.moeaframework.problem.ProblemProvider
+../shared/Service.template -> META-INF/services/org.moeaframework.core.spi.ProblemProvider
 ../shared/Example.template -> src/${packagePath}/Example.java

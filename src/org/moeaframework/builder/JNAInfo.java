@@ -21,6 +21,11 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
+import org.moeaframework.core.FrameworkException;
+import org.moeaframework.core.Solution;
+import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.core.spi.ProviderNotFoundException;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.util.cli.CommandLineUtility;
 
 import com.sun.jna.NativeLibrary;
@@ -70,8 +75,50 @@ public class JNAInfo extends CommandLineUtility {
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
 		if (commandLine.hasOption("test")) {
-			NativeLibrary instance = NativeLibrary.getInstance(getRequiredProblemName(commandLine));
-			System.out.println("Found " + instance.getName() + " at " + instance.getFile());
+			String problemName = getRequiredProblemName(commandLine);
+			Problem problem = null;
+			
+			try {
+				NativeLibrary.getInstance(problemName);
+				pass("Located native library");
+			} catch (UnsatisfiedLinkError e) {
+				fail("Failed to locate native library");
+			}
+			
+			try {
+				problem = ProblemFactory.getInstance().getProblem(getRequiredProblemName(commandLine));
+				pass("Problem registered with SPI");
+			} catch (ProviderNotFoundException e) {
+				fail("Problem not registered correctly with SPI");
+			}
+			
+			if (problem != null) {
+				Solution solution = problem.newSolution();
+				
+				for (int i = 0; i < solution.getNumberOfVariables(); i++) {
+					solution.getVariable(i).randomize();
+				}
+				
+				try {
+					problem.evaluate(solution);
+				} catch (Exception e) {
+					fail("Problem evaluation failed: " + e.getMessage());
+				}
+				
+				for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
+					if (Double.isNaN(solution.getObjective(i).getValue())) {
+						fail("Objective at index " + i + " was unset (NaN)");
+					}
+				}
+				
+				for (int i = 0; i < solution.getNumberOfConstraints(); i++) {
+					if (Double.isNaN(solution.getConstraint(i).getValue())) {
+						fail("Constraint at index " + i + " was unset (NaN)");
+					}
+				}
+				
+				pass("Problem evaluated successfully");
+			}
 		} else if (commandLine.hasOption("libName")) {
 			System.out.println(System.mapLibraryName(getRequiredProblemName(commandLine)));
 		} else if (commandLine.hasOption("sysArch")) {
@@ -79,6 +126,15 @@ public class JNAInfo extends CommandLineUtility {
 		} else {
 			throw new IllegalArgumentException("No option selected");
 		}
+	}
+	
+	private void pass(String message) {
+		System.out.println("\u2705 " + message);
+	}
+	
+	private void fail(String message) {
+		System.out.println("\u274c " + message);
+		throw new FrameworkException("Test failed!");
 	}
 	
 	private String getRequiredProblemName(CommandLine commandLine) {
