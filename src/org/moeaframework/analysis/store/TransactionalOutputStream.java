@@ -67,7 +67,7 @@ public abstract class TransactionalOutputStream extends FilterOutputStream {
 		if (isCommitted) {
 			doCommit();
 		} else {
-			System.err.println("Stream closed without being committed, data being discarded");
+			System.err.println("Transactional stream closed without being committed, data being discarded");
 			doRollback();
 		}
 		

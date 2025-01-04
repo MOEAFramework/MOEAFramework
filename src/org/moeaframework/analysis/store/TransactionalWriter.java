@@ -67,7 +67,7 @@ public abstract class TransactionalWriter extends FilterWriter {
 		if (isCommitted) {
 			doCommit();
 		} else {
-			System.err.println("Stream closed without being committed, data being discarded");
+			System.err.println("Transactional writer closed without being committed, data being discarded");
 			doRollback();
 		}
 		
