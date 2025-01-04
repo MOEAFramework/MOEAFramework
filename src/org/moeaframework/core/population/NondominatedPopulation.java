@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Arrays;
 import java.util.Iterator;
 
 import org.moeaframework.core.Settings;
@@ -157,10 +158,22 @@ public class NondominatedPopulation extends Population {
 			int flag = comparator.compare(newSolution, oldSolution);
 
 			if (flag < 0) {
+				// TODO: Remove this after debugging WFG4
+				if (Settings.isVerbose()) {
+					System.out.println(Arrays.toString(newSolution.getObjectiveValues()) + " dominates " + Arrays.toString(oldSolution.getObjectiveValues()));
+				}
 				iterator.remove();
 			} else if (flag > 0) {
+				// TODO: Remove this after debugging WFG4
+				if (Settings.isVerbose()) {
+					System.out.println(Arrays.toString(newSolution.getObjectiveValues()) + " is dominated by " + Arrays.toString(oldSolution.getObjectiveValues()));
+				}
 				return false;
 			} else if (isDuplicate(newSolution, oldSolution)) {
+				// TODO: Remove this after debugging WFG4
+				if (Settings.isVerbose()) {
+					System.out.println(Arrays.toString(newSolution.getObjectiveValues()) + " is duplicate of " + Arrays.toString(oldSolution.getObjectiveValues()));
+				}
 				return false;
 			}
 		}

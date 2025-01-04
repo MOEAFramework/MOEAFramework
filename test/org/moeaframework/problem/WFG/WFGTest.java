@@ -17,13 +17,11 @@
  */
 package org.moeaframework.problem.WFG;
 
-import java.util.Arrays;
-
 import org.junit.Ignore;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.core.Solution;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.population.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.spi.ProblemFactory;
@@ -36,22 +34,18 @@ public abstract class WFGTest extends ProblemTest {
 		WFG problem = (WFG)ProblemFactory.getInstance().getProblem(problemName);
 		NondominatedPopulation result = new NondominatedPopulation(DuplicateMode.ALLOW_DUPLICATES);
 		
+		// TODO: Remove this after debugging WFG4
+		if (problem instanceof WFG4) {
+			Settings.PROPERTIES.setBoolean(Settings.KEY_VERBOSE, true);
+		}
+		
 		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
-			// result.add(problem.generate());
-			
-			// TODO: Temporary to debug WFG4
-			Solution solution = problem.generate();
-			
-			if (!result.add(solution)) {
-				System.out.println("Failed to add solution!");
-				
-				for (Solution other : result) {
-					int cmp = result.getComparator().compare(solution, other);
-					if (cmp != 0) {
-						System.out.println(problemName + " " + Arrays.toString(solution.getObjectiveValues()) + " " + Arrays.toString(other.getObjectiveValues()) + " " + cmp);
-					}
-				}
-			}
+			result.add(problem.generate());
+		}
+		
+		// TODO: Remove this after debugging WFG4
+		if (problem instanceof WFG4) {
+			Settings.PROPERTIES.setBoolean(Settings.KEY_VERBOSE, false);
 		}
 		
 		Assume.assumeFalse("WFG2 is disjoint and can generate dominated solutions", problem instanceof WFG2);
