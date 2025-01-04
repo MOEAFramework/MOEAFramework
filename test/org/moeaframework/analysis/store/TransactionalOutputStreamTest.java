@@ -17,96 +17,63 @@
  */
 package org.moeaframework.analysis.store;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.mock.MockTransactionalOutputStream;
 
 public class TransactionalOutputStreamTest {
 
 	@Test
 	public void testCommit() throws IOException {
-		try (ByteArrayOutputStream innerStream = new ByteArrayOutputStream()) {
-			TestTransactionalOutputStream stream = new TestTransactionalOutputStream(innerStream);
-			
-			try {
-				stream.write("foo".getBytes());
-				stream.commit();
-			} finally {
-				stream.close();
-			}
-			
-			Assert.assertEquals("foo", innerStream.toString());
-			Assert.assertTrue(stream.isCommitted);
-			Assert.assertFalse(stream.isRolledBack);
+		MockTransactionalOutputStream stream = null;
+		
+		try {
+			stream = new MockTransactionalOutputStream();
+			stream.write("foo".getBytes());
+			stream.commit();
+		} finally {
+			stream.close();
 		}
+		
+		Assert.assertEquals("foo", stream.toString());
+		stream.assertClosed();
+		stream.assertCommitted();
 	}
 	
 	@Test
 	public void testMultipleCalls() throws IOException {
-		try (ByteArrayOutputStream innerStream = new ByteArrayOutputStream()) {
-			TestTransactionalOutputStream stream = new TestTransactionalOutputStream(innerStream);
-			
-			try {
-				stream.write("foo".getBytes());
-				stream.commit();
-				stream.commit();
-			} finally {
-				stream.close();
-				stream.close();
-			}
-			
-			Assert.assertEquals("foo", innerStream.toString());
-			Assert.assertTrue(stream.isCommitted);
-			Assert.assertFalse(stream.isRolledBack);
+		MockTransactionalOutputStream stream = null;
+		
+		try {
+			stream = new MockTransactionalOutputStream();
+			stream.write("foo".getBytes());
+			stream.commit();
+			stream.commit();
+		} finally {
+			stream.close();
+			stream.close();
 		}
+		
+		Assert.assertEquals("foo", stream.toString());
+		stream.assertClosed();
+		stream.assertCommitted();
 	}
 	
 	@Test
 	public void testRollback() throws IOException {
-		try (ByteArrayOutputStream innerStream = new ByteArrayOutputStream()) {
-			TestTransactionalOutputStream stream = new TestTransactionalOutputStream(innerStream);
-			
-			try {
-				stream.write("foo".getBytes());
-			} finally {
-				stream.close();
-			}
-			
-			Assert.assertEquals("foo", innerStream.toString());
-			Assert.assertFalse(stream.isCommitted);
-			Assert.assertTrue(stream.isRolledBack);
-		}
-	}
-	
-	public static class TestTransactionalOutputStream extends TransactionalOutputStream {
+		MockTransactionalOutputStream stream = null;
 		
-		boolean isCommitted;
-		
-		boolean isRolledBack;
-		
-		public TestTransactionalOutputStream(OutputStream out) {
-			super(out);
+		try {
+			stream = new MockTransactionalOutputStream();
+			stream.write("foo".getBytes());
+		} finally {
+			stream.close();
 		}
 		
-		@Override
-		protected void doCommit() throws IOException {
-			Assert.assertFalse("Transactional output stream was previously committed", isCommitted);
-			Assert.assertFalse("Transactional output stream was previously rolled back", isRolledBack);
-			
-			isCommitted = true;
-		}
-
-		@Override
-		protected void doRollback() throws IOException {
-			Assert.assertFalse("Transactional output stream was previously committed", isCommitted);
-			Assert.assertFalse("Transactional output stream was previously rolled back", isRolledBack);
-			
-			isRolledBack = true;
-		}
-		
+		stream.assertClosed();
+		stream.assertRolledBack();
 	}
 
 }

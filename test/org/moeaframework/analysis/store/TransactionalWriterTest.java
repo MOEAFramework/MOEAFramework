@@ -18,95 +18,62 @@
 package org.moeaframework.analysis.store;
 
 import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.mock.MockTransactionalWriter;
 
 public class TransactionalWriterTest {
 
 	@Test
 	public void testCommit() throws IOException {
-		try (StringWriter innerWriter = new StringWriter()) {
-			TestTransactionalWriter writer = new TestTransactionalWriter(innerWriter);
+		MockTransactionalWriter writer = null;
 			
-			try {
-				writer.write("foo");
-				writer.commit();
-			} finally {
-				writer.close();
-			}
-			
-			Assert.assertEquals("foo", innerWriter.toString());
-			Assert.assertTrue(writer.isCommitted);
-			Assert.assertFalse(writer.isRolledBack);
+		try {
+			writer = new MockTransactionalWriter();
+			writer.write("foo");
+			writer.commit();
+		} finally {
+			writer.close();
 		}
+		
+		Assert.assertEquals("foo", writer.toString());
+		writer.assertClosed();
+		writer.assertCommitted();
 	}
 	
 	@Test
 	public void testMultipleCalls() throws IOException {
-		try (StringWriter innerWriter = new StringWriter()) {
-			TestTransactionalWriter writer = new TestTransactionalWriter(innerWriter);
-			
-			try {
-				writer.write("foo");
-				writer.commit();
-				writer.commit();
-			} finally {
-				writer.close();
-				writer.close();
-			}
-			
-			Assert.assertEquals("foo", innerWriter.toString());
-			Assert.assertTrue(writer.isCommitted);
-			Assert.assertFalse(writer.isRolledBack);
+		MockTransactionalWriter writer = null;
+		
+		try {
+			writer = new MockTransactionalWriter();
+			writer.write("foo");
+			writer.commit();
+			writer.commit();
+		} finally {
+			writer.close();
+			writer.close();
 		}
+		
+		Assert.assertEquals("foo", writer.toString());
+		writer.assertClosed();
+		writer.assertCommitted();
 	}
 	
 	@Test
 	public void testRollback() throws IOException {
-		try (StringWriter innerWriter = new StringWriter()) {
-			TestTransactionalWriter writer = new TestTransactionalWriter(innerWriter);
-			
-			try {
-				writer.write("foo");
-			} finally {
-				writer.close();
-			}
-			
-			Assert.assertEquals("foo", innerWriter.toString());
-			Assert.assertFalse(writer.isCommitted);
-			Assert.assertTrue(writer.isRolledBack);
-		}
-	}
-	
-	public static class TestTransactionalWriter extends TransactionalWriter {
+		MockTransactionalWriter writer = null;
 		
-		boolean isCommitted;
-		
-		boolean isRolledBack;
-		
-		public TestTransactionalWriter(Writer out) {
-			super(out);
+		try {
+			writer = new MockTransactionalWriter();
+			writer.write("foo");
+		} finally {
+			writer.close();
 		}
 		
-		@Override
-		protected void doCommit() throws IOException {
-			Assert.assertFalse("Transactional writer was previously committed", isCommitted);
-			Assert.assertFalse("Transactional writer was previously rolled back", isRolledBack);
-			
-			isCommitted = true;
-		}
-
-		@Override
-		protected void doRollback() throws IOException {
-			Assert.assertFalse("Transactional writer was previously committed", isCommitted);
-			Assert.assertFalse("Transactional writer was previously rolled back", isRolledBack);
-			
-			isRolledBack = true;
-		}
-		
+		writer.assertClosed();
+		writer.assertRolledBack();
 	}
 
 }

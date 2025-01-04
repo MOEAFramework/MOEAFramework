@@ -84,6 +84,7 @@ public class LoggingExtensionTest {
 
 		@Override
 		public void close() {}
+		
 		@Override
 		public void flush() {}
 	}
