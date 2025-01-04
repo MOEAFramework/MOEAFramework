@@ -48,6 +48,11 @@ public class ReferenceTest {
 		Assert.assertContains(reference.fields(), "int");
 		Assert.assertEquals("foo", reference.get("string"));
 		Assert.assertEquals("5", reference.get("int"));
+		
+		Assert.assertContains(reference.fields(), "STRING");
+		Assert.assertContains(reference.fields(), "INT");
+		Assert.assertEquals("foo", reference.get("STRING"));
+		Assert.assertEquals("5", reference.get("INT"));
 	}
 	
 	@Test
@@ -61,6 +66,13 @@ public class ReferenceTest {
 		Assert.assertEquals("foo", extendedReference.get("string"));
 		Assert.assertEquals("5", extendedReference.get("int"));
 		Assert.assertEquals("newVal", extendedReference.get("newKey"));
+		
+		Assert.assertContains(reference.fields(), "STRING");
+		Assert.assertContains(reference.fields(), "INT");
+		Assert.assertContains(extendedReference.fields(), "NEWKEY");
+		Assert.assertEquals("foo", reference.get("STRING"));
+		Assert.assertEquals("5", reference.get("INT"));
+		Assert.assertEquals("newVal", extendedReference.get("NEWKEY"));
 	}
 	
 	@Test
@@ -72,6 +84,11 @@ public class ReferenceTest {
 		Assert.assertContains(overwriteReference.fields(), "int");
 		Assert.assertEquals("bar", overwriteReference.get("string"));
 		Assert.assertEquals("5", overwriteReference.get("int"));
+		
+		Assert.assertContains(overwriteReference.fields(), "STRING");
+		Assert.assertContains(overwriteReference.fields(), "INT");
+		Assert.assertEquals("bar", overwriteReference.get("STRING"));
+		Assert.assertEquals("5", overwriteReference.get("INT"));
 	}
 
 }
