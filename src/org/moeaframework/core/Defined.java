@@ -147,7 +147,7 @@ public interface Defined {
 				}
 				
 				if (MethodUtils.getMatchingMethod(arguments[i].getClass(), "toString").getDeclaringClass() == Object.class) {
-					System.err.println(arguments[i].getClass() + " does not override toString()");
+					System.err.println("WARNING: " + arguments[i].getClass() + " does not override toString()");
 				}
 				
 				String token = tokenizer.escape(arguments[i].toString());

@@ -552,7 +552,7 @@ public class Plot {
 				ys.add(result.getProperties().getDouble(property));
 			}
 		} catch (NumberFormatException e) {
-			System.err.println("Unable to plot " + property + ", not a numeric type");
+			System.err.println("WARNING: Unable to plot " + property + ", not a numeric type");
 			return this;
 		}
 

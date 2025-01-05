@@ -733,7 +733,7 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 			// assign diagD to eigenvalue square roots
 			for (int i = 0; i < N; i++) {
 				if (diagD[i] < 0) { // numerical problem?
-					System.err.println("An eigenvalue has become negative, setting to 0!");
+					System.err.println("WARNING: An eigenvalue has become negative, setting to 0!");
 					diagD[i] = 0;
 				}
 
@@ -751,7 +751,7 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 			population.sort(new ObjectiveComparator(0));
 			
 			if (population.get(0).getObjective(0) == population.get(Math.min(lambda-1, lambda/2 + 1) - 1).getObjective(0)) {
-				System.err.println("Flat fitness landscape, consider reformulation of fitness, step size increased");
+				System.err.println("WARNING: Flat fitness landscape, consider reformulation of fitness, step size increased");
 				sigma *= Math.exp(0.2 + cs/damps);
 			}
 		}
@@ -1236,11 +1236,11 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 				/* check here, is the normalization the right one? */
 				if (Math.abs(cc - C[i>j?i:j][i>j?j:i])/Math.sqrt(C[i][i]*C[j][j]) > 1e-10
 						&& Math.abs(cc - C[i>j?i:j][i>j?j:i]) > 1e-9) { /* quite large */
-					System.err.println("Imprecise result detected " + i + " " + j + " " + cc + " " + C[i>j?i:j][i>j?j:i] + " " + (cc-C[i>j?i:j][i>j?j:i]));
+					System.err.println("WARNING: Imprecise result detected " + i + " " + j + " " + cc + " " + C[i>j?i:j][i>j?j:i] + " " + (cc-C[i>j?i:j][i>j?j:i]));
 					++res;
 				}
 				if (Math.abs(dd - (i==j?1:0)) > 1e-10) {
-					System.err.println("Imprecise result detected (Q not orthog.) " + i + " " + j + " " + dd);
+					System.err.println("WARNING: Imprecise result detected (Q not orthog.) " + i + " " + j + " " + dd);
 					++res;
 				}
 			}

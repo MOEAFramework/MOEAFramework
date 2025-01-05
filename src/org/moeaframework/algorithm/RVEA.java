@@ -136,7 +136,7 @@ public class RVEA extends AbstractEvolutionaryAlgorithm {
 		// update the scaling factor for computing the angle-penalized distance
 		if (maxIterations < 0) {
 			maxIterations = Settings.DEFAULT_MAX_ITERATIONS;
-			System.err.println("maxIterations not configured for RVEA, defaulting to " + maxIterations);
+			System.err.println("WARNING: maxIterations not configured for RVEA, defaulting to " + maxIterations);
 		}
 		
 		population.setScalingFactor(Math.min(iteration / (double)maxIterations, 1.0));

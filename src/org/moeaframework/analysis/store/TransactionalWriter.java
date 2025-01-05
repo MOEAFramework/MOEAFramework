@@ -21,6 +21,8 @@ import java.io.FilterWriter;
 import java.io.IOException;
 import java.io.Writer;
 
+import org.moeaframework.core.Settings;
+
 /**
  * Writer with a transaction mechanism requiring one to call {@link #commit()} before the content is stored.  The
  * typical use is:
@@ -67,7 +69,10 @@ public abstract class TransactionalWriter extends FilterWriter {
 		if (isCommitted) {
 			doCommit();
 		} else {
-			System.err.println("Transactional writer closed without being committed, data being discarded");
+			if (Settings.isVerbose()) {
+				System.err.println("Transactional writer closed without being committed, data being discarded");
+			}
+			
 			doRollback();
 		}
 		

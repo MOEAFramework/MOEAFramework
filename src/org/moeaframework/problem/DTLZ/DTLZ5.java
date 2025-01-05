@@ -56,7 +56,7 @@ public class DTLZ5 extends DTLZ implements AnalyticalProblem {
 		super(numberOfVariables, numberOfObjectives);
 		
 		if (numberOfObjectives > 3) {
-			System.err.println("DLTZ5 is known to produce additional solutions than expected for M > 3");
+			System.err.println("WARNING: DLTZ5 is known to produce additional solutions than expected for M > 3");
 		}
 	}
 	

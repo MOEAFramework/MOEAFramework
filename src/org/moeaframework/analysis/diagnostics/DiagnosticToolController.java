@@ -46,6 +46,7 @@ import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.analysis.viewer.TextViewer;
 import org.moeaframework.core.DefaultEpsilons;
 import org.moeaframework.core.Epsilons;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.indicator.StandardIndicator;
@@ -486,7 +487,10 @@ public class DiagnosticToolController extends Controller implements SettingChang
 	 */
 	public void run() {
 		if (thread != null) {
-			System.err.println("Job already running");
+			if (Settings.isVerbose()) {
+				System.err.println("Job already running");
+			}
+			
 			return;
 		}
 		

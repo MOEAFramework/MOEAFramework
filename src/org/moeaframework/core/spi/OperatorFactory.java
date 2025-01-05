@@ -198,7 +198,8 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 		try {
 			return provider.getVariation(name, properties, problem);
 		} catch (ServiceConfigurationError e) {
-			System.err.println(e.getMessage() + (e.getCause() != null ? ": " + e.getCause().getMessage() : ""));
+			System.err.println("ERROR: " + e.getMessage() +
+					(e.getCause() != null ? ": " + e.getCause().getMessage() : ""));
 		}
 		
 		return null;

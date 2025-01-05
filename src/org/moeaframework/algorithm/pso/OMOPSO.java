@@ -266,7 +266,7 @@ public class OMOPSO extends AbstractPSOAlgorithm {
 		public double getDelta(double difference) {
 			if (maxIterations < 0) {
 				maxIterations = Settings.DEFAULT_MAX_ITERATIONS;
-				System.err.println("maxIterations not configured for OMOPSO, defaulting to " + maxIterations);
+				System.err.println("WARNING: maxIterations not configured for OMOPSO, defaulting to " + maxIterations);
 			}
 			
 			int currentIteration = getNumberOfEvaluations() / getSwarmSize();

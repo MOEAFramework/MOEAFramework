@@ -105,7 +105,8 @@ public class ProblemFactory extends AbstractFactory<ProblemProvider> {
 		try {
 			return provider.getProblem(name);
 		} catch (ServiceConfigurationError e) {
-			System.err.println(e.getMessage() + (e.getCause() != null ? ": " + e.getCause().getMessage() : ""));
+			System.err.println("ERROR: " + e.getMessage() +
+					(e.getCause() != null ? ": " + e.getCause().getMessage() : ""));
 		}
 		
 		return null;

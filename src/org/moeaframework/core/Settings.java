@@ -25,7 +25,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.util.Properties;
 import java.util.regex.Matcher;
@@ -144,11 +143,6 @@ public class Settings {
 	public static final String KEY_FAST_NONDOMINATED_SORTING = createKey(KEY_PREFIX, "core", "fast_nondominated_sorting");
 	
 	/**
-	 * The property key to indicate that truncation warnings should be suppressed.
-	 */
-	public static final String KEY_SUPPRESS_TRUNCATION_WARNING = createKey(KEY_PREFIX, "core", "suppress_truncation_warning");
-	
-	/**
 	 * The property key for the continuity correction flag.
 	 */
 	public static final String KEY_CONTINUITY_CORRECTION = createKey(KEY_PREFIX, "util", "statistics", "continuity_correction");
@@ -228,20 +222,22 @@ public class Settings {
 				}
 			}
 		} catch (SecurityException e) {
-			System.err.println("Unable to read system properties: " + e);
+			System.err.println("WARNING: Unable to read system properties: " + e);
 		}
 		
 		//properties file
+		String propertiesResource = PROPERTIES.getString(KEY_CONFIGURATION_FILE, DEFAULT_CONFIGURATION_FILE);
+		
 		try {
-			String resource = PROPERTIES.getString(KEY_CONFIGURATION_FILE, DEFAULT_CONFIGURATION_FILE);
-			File file = new File(resource);
+			
+			File file = new File(propertiesResource);
 			
 			if (file.exists()) {
 				try (FileReader reader = new FileReader(file)) {
 					PROPERTIES.load(reader);
 				}
 			} else {
-				try (InputStream stream = ClassLoader.getSystemResourceAsStream("/" + resource)) {
+				try (InputStream stream = ClassLoader.getSystemResourceAsStream("/" + propertiesResource)) {
 					if (stream != null) {
 						try (InputStreamReader reader = new InputStreamReader(stream)) {
 							PROPERTIES.load(reader);
@@ -250,7 +246,7 @@ public class Settings {
 				}
 			}
 		} catch (IOException e) {
-			throw new UncheckedIOException(e);
+			System.err.println("WARNING: Unable to read properties file '" + propertiesResource + "': " + e);
 		}
 		
 		// inject build properties
@@ -273,7 +269,7 @@ public class Settings {
 			
 			PROPERTIES.setString(KEY_MAJOR_VERSION, matcher.group(1));
 		} catch (IOException e) {
-			throw new UncheckedIOException(e);
+			System.err.println("WARNING: Unable to build properties: " + e);
 		}
 	}
 	
@@ -370,16 +366,6 @@ public class Settings {
 	 */
 	public static boolean useFastNondominatedSorting() {
 		return PROPERTIES.getBoolean(KEY_FAST_NONDOMINATED_SORTING, false);
-	}
-	
-	/**
-	 * Returns {@code true} if truncation warnings, when implicitly converting a real-valued property to an integer
-	 * and truncating the decimal value, should be suppressed.
-	 * 
-	 * @return {@code true} if truncation warnings are suppressed; {@code false} otherwise
-	 */
-	public static boolean isSuppressTruncationWarning() {
-		return PROPERTIES.getBoolean(KEY_SUPPRESS_TRUNCATION_WARNING, true);
 	}
 	
 	/**

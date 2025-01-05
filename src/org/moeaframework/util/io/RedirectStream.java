@@ -170,8 +170,8 @@ public class RedirectStream extends Thread {
 			inputThread.join(TIMEOUT);
 			outputThread.join(TIMEOUT);
 			
-			if (inputThread.isAlive() || outputThread.isAlive()) {
-				System.err.println("RedirectStream thread failed to terminate within timeout");
+			if ((inputThread.isAlive() || outputThread.isAlive()) && Settings.isVerbose()) {
+				System.err.println("WARNING: RedirectStream thread failed to terminate within timeout");
 			}
 		}
 	}

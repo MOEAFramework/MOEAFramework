@@ -21,6 +21,8 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.moeaframework.core.Settings;
+
 /**
  * Output stream with a transaction mechanism requiring one to call {@link #commit()} before the content is stored.
  * The typical use is:
@@ -67,7 +69,10 @@ public abstract class TransactionalOutputStream extends FilterOutputStream {
 		if (isCommitted) {
 			doCommit();
 		} else {
-			System.err.println("Transactional stream closed without being committed, data being discarded");
+			if (Settings.isVerbose()) {
+				System.err.println("Transactional stream closed without being committed, data being discarded");
+			}
+			
 			doRollback();
 		}
 		

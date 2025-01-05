@@ -200,7 +200,7 @@ public class BuildProblem extends CommandLineUtility {
 		if (language.equalsIgnoreCase("fortran") && !StringUtils.isAllLowerCase(functionName)) {
 			// Fortran is not case sensitive and compiles to a lowercase symbol (see `nm -g libProblem.dylib`), but
 			// linking through JNA is case sensitive.  Use a lower case name for compatibility.
-			System.err.println("Converting function name to lower case to support " + language);
+			System.err.println("WARNING: Converting function name to lower case to support " + language);
 			functionName = functionName.toLowerCase();
 		}
 		

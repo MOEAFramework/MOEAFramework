@@ -74,7 +74,8 @@ public class NormalBoundaryIntersectionGenerator implements WeightGenerator {
 		
 		if (divisions.getInnerDivisions() > 0) {
 			if (divisions.getOuterDivisions() >= numberOfObjectives) {
-				System.err.println("The specified number of outer divisions produces intermediate reference points, recommend setting divisionsOuter < numberOfObjectives.");
+				System.err.println("WARNING: The specified number of outer divisions produces intermediate " +
+						"reference points, recommend setting divisionsOuter < numberOfObjectives.");
 			}
 
 			weights = generateWeights(divisions.getOuterDivisions());
@@ -93,7 +94,8 @@ public class NormalBoundaryIntersectionGenerator implements WeightGenerator {
 			weights.addAll(inner);
 		} else {
 			if (divisions.getOuterDivisions() < numberOfObjectives) {
-				System.err.println("No intermediate reference points will be generated for the specified number of divisions, recommend increasing divisions");
+				System.err.println("WARNING: No intermediate reference points will be generated for the specified " +
+						"number of divisions, recommend increasing divisions");
 			}
 
 			weights = generateWeights(divisions.getOuterDivisions());

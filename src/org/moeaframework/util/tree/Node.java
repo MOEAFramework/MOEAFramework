@@ -296,12 +296,13 @@ public abstract class Node implements Serializable, Named {
 			Node argument = getArgument(i);
 			
 			if (argument == null) {
-				System.err.println("Invalid argument to " + getClass().getSimpleName() + " (" + i + "): value is null");
+				System.err.println("WARNING: Invalid argument to " + getClass().getSimpleName() + " (" + i + "): " +
+						"value is null");
 				return false;
 			}
 			
 			if (!getArgumentType(i).isAssignableFrom(argument.getReturnType())) {
-				System.err.println("Invalid argument to " + getClass().getSimpleName() + " (" + i + "): " +
+				System.err.println("WARNING: Invalid argument to " + getClass().getSimpleName() + " (" + i + "): " +
 						getArgumentType(i) + " not assignable from " + argument.getReturnType());
 				return false;
 			}

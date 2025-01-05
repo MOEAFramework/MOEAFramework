@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.moeaframework.core.Settings;
 import org.moeaframework.util.io.RedirectStream;
 
 public class Make {
@@ -35,7 +36,10 @@ public class Make {
 			runMake(new File("."), "--version");
 			isMakeAvailable = true;
 		} catch (IOException e) {
-			System.err.println(e);
+			if (Settings.isVerbose()) {
+				System.err.println(e);
+			}
+			
 			isMakeAvailable = false;
 		}
 	}

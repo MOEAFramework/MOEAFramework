@@ -166,7 +166,10 @@ public class WeightGenerator extends CommandLineUtility {
 						int N = Integer.parseInt(commandLine.getOptionValue("numberOfSamples"));			
 						Validate.that("numberOfSamples", N).isGreaterThan(0);
 	
-						System.err.println("Using `--numberOfSamples " + N + "` as the number of divisions.");
+						if (Settings.isVerbose()) {
+							System.err.println("Using `--numberOfSamples " + N + "` as the number of divisions.");
+						}
+						
 						divisions = new NormalBoundaryDivisions(N);
 					} else {
 						throw new MissingOptionException("Missing --divisions");

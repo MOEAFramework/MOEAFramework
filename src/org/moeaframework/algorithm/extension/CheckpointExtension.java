@@ -98,7 +98,7 @@ public class CheckpointExtension extends PeriodicExtension {
 		try {
 			saveToStateFile(algorithm);
 		} catch (IOException e) {
-			System.err.println("An error occurred while writing the state file:");
+			System.err.println("WARNING: Failed to write state file, continuing without checkpoints!");
 			e.printStackTrace();
 		}
 	}
@@ -111,7 +111,7 @@ public class CheckpointExtension extends PeriodicExtension {
 			try {
 				loadFromStateFile(algorithm);
 			} catch (IOException | ClassNotFoundException e) {
-				System.err.println("An error occurred while reading the state file:");
+				System.err.println("WARNING Failed to read state file, continuing without checkpoints!");
 				e.printStackTrace();
 			}
 		}

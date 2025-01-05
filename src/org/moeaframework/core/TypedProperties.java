@@ -432,7 +432,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 					" to an integer would result in a rounding error of " + diff);
 		}
 		
-		if (diff > Settings.EPS && !Settings.isSuppressTruncationWarning()) {
+		if (diff > Settings.EPS && Settings.isVerbose()) {
 			System.err.println(key + " given as real-valued number but expected an integer, converting " +
 					originalValue + " to " + truncatedValue);
 		}
@@ -474,7 +474,7 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 					" to an integer would result in a rounding error of " + diff);
 		}
 		
-		if (diff > Settings.EPS && !Settings.isSuppressTruncationWarning()) {
+		if (diff > Settings.EPS && Settings.isVerbose()) {
 			System.err.println(key + " given as real-valued number but expected a long, converting " +
 					originalValue + " to " + truncatedValue);
 		}
