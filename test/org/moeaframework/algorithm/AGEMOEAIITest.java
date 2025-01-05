@@ -36,7 +36,7 @@ import org.moeaframework.util.clustering.DistanceMeasure;
 public class AGEMOEAIITest extends JMetalAlgorithmTest {
 	
 	public AGEMOEAIITest() {
-		super("AGE-MOEA-II");
+		super("AGE-MOEA-II", true);
 	}
 	
 	@Test

@@ -128,7 +128,7 @@ public class LinePlot extends ResultPlot {
 					}
 				}
 			}
-
+			
 			if (statistics.getN() > 0) {
 				ySeries.add(currentNFE,
 						statistics.getPercentile(50),
@@ -137,6 +137,13 @@ public class LinePlot extends ResultPlot {
 			}
 
 			currentNFE += RESOLUTION;
+		}
+		
+		if (ySeries.getItemCount() == 1) {
+			ySeries.add(ySeries.getX(0).intValue() - RESOLUTION,
+					ySeries.getYValue(0),
+					ySeries.getYLowValue(0),
+					ySeries.getYHighValue(0));
 		}
 		
 		dataset.addSeries(ySeries);
