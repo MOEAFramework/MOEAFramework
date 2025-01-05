@@ -21,7 +21,6 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
-import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.operator.CompoundVariation;
 import org.moeaframework.core.operator.DefaultOperators;
@@ -67,7 +66,7 @@ public class OperatorFactoryTest extends AbstractFactoryTest<OperatorProvider, O
 			try {
 				Variation variation = createFactory().getVariation(operator, new TypedProperties(), problem);
 				test(problem, variation);
-			} catch (ConfigurationException e) {
+			} catch (ProviderException e) {
 				// this operator is renamed and displays an error
 				if (!operator.equalsIgnoreCase("bx")) {
 					throw e;

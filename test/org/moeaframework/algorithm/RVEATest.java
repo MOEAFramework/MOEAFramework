@@ -22,7 +22,7 @@ import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.spi.AlgorithmFactory;
-import org.moeaframework.core.spi.ProviderNotFoundException;
+import org.moeaframework.core.spi.ProviderException;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.weights.NormalBoundaryDivisions;
@@ -34,7 +34,7 @@ public class RVEATest {
 		new RVEA(new MockRealProblem());
 	}
 	
-	@Test(expected=ProviderNotFoundException.class)
+	@Test(expected=ProviderException.class)
 	public void testProviderRequiresAtLeastTwoObjectives() {
 		AlgorithmFactory.getInstance().getAlgorithm("RVEA", new TypedProperties(), new MockRealProblem());
 	}

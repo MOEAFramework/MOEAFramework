@@ -54,7 +54,7 @@ import org.moeaframework.core.selection.UniformSelection;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.OperatorFactory;
 import org.moeaframework.core.spi.ProblemFactory;
-import org.moeaframework.core.spi.ProviderNotFoundException;
+import org.moeaframework.core.spi.ProviderException;
 import org.moeaframework.core.variable.Program;
 import org.moeaframework.mock.MockBinaryProblem;
 import org.moeaframework.mock.MockGrammarProblem;
@@ -278,7 +278,7 @@ public class DefaultAlgorithmsTest {
 				System.out.print("  Test run on " + problem.getName() + "...");
 				testRun(name, problem);
 				System.out.println("passed!");
-			} catch (ProviderNotFoundException e) {
+			} catch (ProviderException e) {
 				if (isSupported) {
 					System.out.println("failed!");
 					throw new AssertionError(name + " failed test run on " + problem.getName(), e);
