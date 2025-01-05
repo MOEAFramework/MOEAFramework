@@ -136,7 +136,7 @@ public class RegisteredAlgorithmProvider extends AlgorithmProvider {
 		try {
 			return constructor.apply(properties, problem);
 		} catch (FrameworkException | IllegalArgumentException e) {
-			throw new ProviderNotFoundException(name, e);
+			throw new ProviderException(name, e);
 		}
 	}
 

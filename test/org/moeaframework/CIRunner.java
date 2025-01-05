@@ -161,6 +161,9 @@ public class CIRunner extends BlockJUnit4ClassRunner {
 				statement.evaluate();
 				System.out.println(description.getDisplayName() + " was successful after retry");
 				return;
+			} catch (AssumptionViolatedException e) {
+				notifier.addFailedAssumption(e);
+				break;
 			} catch (Throwable t) {
 				failedAttempts++;
 				caughtThrowable = t;

@@ -146,7 +146,7 @@ public class RegisteredProblemProvider extends ProblemProvider {
 		try {
 			return constructor.get();
 		} catch (FrameworkException | IllegalArgumentException e) {
-			throw new ProviderNotFoundException(name, e);
+			throw new ProviderException(name, e);
 		}
 	}
 
