@@ -27,6 +27,7 @@ import java.util.function.BiFunction;
 
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.core.FrameworkException;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.problem.Problem;
 
@@ -41,6 +42,11 @@ public class RegisteredAlgorithmProvider extends AlgorithmProvider {
 	private final Map<String, BiFunction<TypedProperties, Problem, Algorithm>> constructorMap;
 	
 	/**
+	 * Mapping of algorithm name aliases to the registered algorithm name.
+	 */
+	private final Map<String, String> aliasMap;
+	
+	/**
 	 * Collection of algorithms to appear in the diagnostic tool.
 	 */
 	private final Set<String> diagnosticToolAlgorithms;
@@ -51,7 +57,19 @@ public class RegisteredAlgorithmProvider extends AlgorithmProvider {
 	public RegisteredAlgorithmProvider() {
 		super();
 		constructorMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		aliasMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 		diagnosticToolAlgorithms = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+	}
+	
+	/**
+	 * Returns all algorithms that have been registered with this provider.  Note that this does not necessarily
+	 * include all algorithms that can be instantiated by the provider, only those that have been explicitly
+	 * registered.
+	 * 
+	 * @return the algorithm names
+	 */
+	public Set<String> getRegisteredAlgorithms() {
+		return Collections.unmodifiableSet(constructorMap.keySet());
 	}
 	
 	@Override
@@ -81,11 +99,25 @@ public class RegisteredAlgorithmProvider extends AlgorithmProvider {
 	 * Registers a new algorithm with this provider.
 	 * 
 	 * @param constructor the function that creates a new instance of the algorithm
-	 * @param names the name or names for this algorithm
+	 * @param name the registered name for this algorithm
+	 * @param aliases optional aliases for this algorithm
 	 */
-	protected final void register(BiFunction<TypedProperties, Problem, Algorithm> constructor, String... names) {
-		for (String name : names) {
-			constructorMap.put(name, constructor);
+	protected final void register(BiFunction<TypedProperties, Problem, Algorithm> constructor, String name,
+			String... aliases) {
+		if (constructorMap.containsKey(name) && Settings.isVerbose()) {
+			System.err.println("WARNING: Previously registered algorithm '" + name + "' is being redefined by " +
+					getClass().getSimpleName());
+		}
+		
+		constructorMap.put(name, constructor);
+		
+		for (String alias : aliases) {
+			if (aliasMap.containsKey(alias) && Settings.isVerbose()) {
+				System.err.println("WARNING: Previously registered alias '" + alias + "' is being redefined by " +
+						getClass().getSimpleName());
+			}
+			
+			aliasMap.put(alias, name);
 		}
 	}
 
@@ -93,15 +125,19 @@ public class RegisteredAlgorithmProvider extends AlgorithmProvider {
 	public Algorithm getAlgorithm(String name, TypedProperties properties, Problem problem) {
 		BiFunction<TypedProperties, Problem, Algorithm> constructor = constructorMap.get(name);
 		
-		if (constructor != null) {
-			try {
-				return constructor.apply(properties, problem);
-			} catch (FrameworkException | IllegalArgumentException e) {
-				throw new ProviderNotFoundException(name, e);
-			}
+		if (constructor == null && aliasMap.containsKey(name)) {
+			constructor = constructorMap.get(aliasMap.get(name));
 		}
 		
-		return null;
+		if (constructor == null) {
+			return null;
+		}
+		
+		try {
+			return constructor.apply(properties, problem);
+		} catch (FrameworkException | IllegalArgumentException e) {
+			throw new ProviderNotFoundException(name, e);
+		}
 	}
 
 }

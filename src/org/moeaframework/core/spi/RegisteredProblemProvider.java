@@ -27,6 +27,8 @@ import java.util.TreeSet;
 import java.util.function.Supplier;
 
 import org.moeaframework.core.Epsilons;
+import org.moeaframework.core.FrameworkException;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.Problem;
 
@@ -80,6 +82,11 @@ public class RegisteredProblemProvider extends ProblemProvider {
 	 * @param referenceSet the path of the file containing the reference set
 	 */
 	protected final void register(String name, Supplier<Problem> constructor, String referenceSet) {
+		if (constructorMap.containsKey(name) && Settings.isVerbose()) {
+			System.err.println("WARNING: Previously registered problem '" + name + "' is being redefined by " +
+					getClass().getSimpleName());
+		}
+		
 		constructorMap.put(name, constructor);
 		referenceSetMap.put(name, referenceSet);
 	}
@@ -120,7 +127,7 @@ public class RegisteredProblemProvider extends ProblemProvider {
 	 * @return the problem names
 	 */
 	public Set<String> getRegisteredProblems() {
-		return constructorMap.keySet();
+		return Collections.unmodifiableSet(constructorMap.keySet());
 	}
 	
 	@Override
@@ -132,26 +139,31 @@ public class RegisteredProblemProvider extends ProblemProvider {
 	public Problem getProblem(String name) {
 		Supplier<Problem> constructor = constructorMap.get(name);
 		
-		if (constructor != null) {
-			return constructor.get();
+		if (constructor == null) {
+			return null;
 		}
 		
-		return null;
+		try {
+			return constructor.get();
+		} catch (FrameworkException | IllegalArgumentException e) {
+			throw new ProviderNotFoundException(name, e);
+		}
 	}
 
 	@Override
 	public NondominatedPopulation getReferenceSet(String name) {
 		String referenceSet = referenceSetMap.get(name);
 		
-		if (referenceSet != null) {
-			try {
-				return NondominatedPopulation.load(referenceSet);
-			} catch (IOException e) {
-				return null;
-			}
+		if (referenceSet == null) {
+			return null;
 		}
 		
-		return null;
+		try {
+			return NondominatedPopulation.load(referenceSet);
+		} catch (IOException e) {
+			System.err.println("WARNING: Failed to load reference set '" + referenceSet + "': " + e.getMessage());
+			return null;
+		}
 	}
 	
 	@Override

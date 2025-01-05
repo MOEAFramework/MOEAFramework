@@ -27,6 +27,8 @@ import java.util.TreeMap;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
+import org.moeaframework.core.FrameworkException;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.operator.CompoundVariation;
@@ -95,6 +97,11 @@ public class RegisteredOperatorProvider extends OperatorProvider {
 	 * @param constructor the function that creates a new instance of the operator
 	 */
 	protected final void register(String name, BiFunction<TypedProperties, Problem, Variation> constructor) {
+		if (constructorMap.containsKey(name) && Settings.isVerbose()) {
+			System.err.println("WARNING: Previously registered operator '" + name + "' is being redefined by " +
+					getClass().getSimpleName());
+		}
+		
 		constructorMap.put(name, constructor);
 	}
 	
@@ -183,11 +190,15 @@ public class RegisteredOperatorProvider extends OperatorProvider {
 	public Variation getVariation(String name, TypedProperties properties, Problem problem) {
 		BiFunction<TypedProperties, Problem, Variation> constructor = constructorMap.get(name);
 		
-		if (constructor != null) {
-			return constructor.apply(properties, problem);
+		if (constructor == null) {
+			return null;
 		}
 		
-		return null;
+		try {
+			return constructor.apply(properties, problem);
+		} catch (FrameworkException | IllegalArgumentException e) {
+			throw new ProviderNotFoundException(name, e);
+		}
 	}
 
 }
