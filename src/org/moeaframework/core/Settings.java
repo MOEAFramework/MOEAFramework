@@ -290,6 +290,16 @@ public class Settings {
 	}
 	
 	/**
+	 * Returns {@code true} if debugging mode is enabled.  This is primarily intended for internal use as a way to
+	 * enable debug tracing on CI.
+	 * 
+	 * @return {@code true} if debugging mode is enabled; {@code false} otherwise
+	 */
+	public static boolean isDebug() {
+		return System.getenv("RUNNER_DEBUG") != null || System.getenv("MOEA_DEBUG") != null;
+	}
+	
+	/**
 	 * Returns the current version.
 	 * 
 	 * @return the version
