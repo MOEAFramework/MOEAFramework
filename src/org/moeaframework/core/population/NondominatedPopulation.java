@@ -28,6 +28,7 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
+import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.core.variable.Variable;
 import org.moeaframework.util.io.Resources;
 
@@ -161,18 +162,21 @@ public class NondominatedPopulation extends Population {
 				// TODO: Remove this after debugging WFG4
 				if (Settings.isVerbose()) {
 					System.out.println(Arrays.toString(newSolution.getObjectiveValues()) + " dominates " + Arrays.toString(oldSolution.getObjectiveValues()));
+					System.out.println(Arrays.toString(RealVariable.getReal(newSolution)) + " / " + Arrays.toString(RealVariable.getReal(oldSolution)));
 				}
 				iterator.remove();
 			} else if (flag > 0) {
 				// TODO: Remove this after debugging WFG4
 				if (Settings.isVerbose()) {
 					System.out.println(Arrays.toString(newSolution.getObjectiveValues()) + " is dominated by " + Arrays.toString(oldSolution.getObjectiveValues()));
+					System.out.println(Arrays.toString(RealVariable.getReal(newSolution)) + " / " + Arrays.toString(RealVariable.getReal(oldSolution)));
 				}
 				return false;
 			} else if (isDuplicate(newSolution, oldSolution)) {
 				// TODO: Remove this after debugging WFG4
 				if (Settings.isVerbose()) {
 					System.out.println(Arrays.toString(newSolution.getObjectiveValues()) + " is duplicate of " + Arrays.toString(oldSolution.getObjectiveValues()));
+					System.out.println(Arrays.toString(RealVariable.getReal(newSolution)) + " / " + Arrays.toString(RealVariable.getReal(oldSolution)));
 				}
 				return false;
 			}

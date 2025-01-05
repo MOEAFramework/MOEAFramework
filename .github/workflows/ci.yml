@@ -32,7 +32,7 @@ on:
           - '20'
           - '21'
           - '22'
-        default: '17'
+        default: '19'
       macos-version:
         type: choice
         required: true
@@ -222,7 +222,7 @@ jobs:
       run: |
         cd build/MOEAFramework-*
         
-        # TODO: Temporary fix until we rename this
+        # TODO: Temporary fix - removing Clear-Item alias that conflicts with name
         Remove-Alias cli -Force
         
         $commands = ./cli init | Out-String

@@ -733,7 +733,7 @@ public class CMAES extends AbstractAlgorithm implements Configurable {
 			// assign diagD to eigenvalue square roots
 			for (int i = 0; i < N; i++) {
 				if (diagD[i] < 0) { // numerical problem?
-					System.err.println("An eigenvalue has become negative!");
+					System.err.println("An eigenvalue has become negative, setting to 0!");
 					diagD[i] = 0;
 				}
 
