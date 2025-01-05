@@ -19,8 +19,11 @@ package org.moeaframework.algorithm.single;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
+import org.moeaframework.CIRunner;
+import org.moeaframework.Retryable;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.AlgorithmTest;
 import org.moeaframework.core.Solution;
@@ -35,6 +38,7 @@ import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.single.Rosenbrock;
 
+@RunWith(CIRunner.class)
 @Ignore("Abstract test class")
 public abstract class AbstractSingleObjectiveAlgorithmTest<T extends Algorithm & Configurable> extends AlgorithmTest {
 	
@@ -69,6 +73,7 @@ public abstract class AbstractSingleObjectiveAlgorithmTest<T extends Algorithm &
 	}
 	
 	@Test
+	@Retryable
 	public void testRosenbrock() {
 		Rosenbrock problem = new Rosenbrock();
 		
