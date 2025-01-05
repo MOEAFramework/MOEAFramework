@@ -32,6 +32,10 @@ public class Assume extends org.junit.Assume {
 		super();
 	}
 	
+	public static void skip(String message) {
+		assumeTrue(message, false);
+	}
+	
 	public static void assumeInstanceOf(Class<?> type, Object object) {
 		assumeTrue("Expected object of type " + type + " but found " + object.getClass().getName() + ", skipping test",
 				type.isInstance(object));
