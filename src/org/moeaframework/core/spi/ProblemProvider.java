@@ -28,9 +28,6 @@ import org.moeaframework.problem.Problem;
  * Defines a SPI for creating named optimization problems.  Problems are identified by a unique name.  The methods of
  * the provider must return {@code null} if the problem is not supported by the provider.
  * <p>
- * If the provider can supply the problem but an error occurred during instantiation, the provider may throw a
- * {@link ProviderNotFoundException} along with the details causing the exception.
- * <p>
  * To provide a custom {@code ProblemProvider}, first extend this class and implement the two abstract methods.  Next,
  * build a JAR file containing the custom provider.  Within the JAR file, create the file
  * {@code META-INF/services/org.moeaframework.core.spi.ProblemProvider} containing on a single line the class name of
@@ -65,6 +62,7 @@ public abstract class ProblemProvider {
 	 * 
 	 * @param name the problem name
 	 * @return the problem with the specified name, or {@code null} if this provider does not support the problem
+	 * @throws ProviderException if the creation of the problem failed for any reason
 	 */
 	public abstract Problem getProblem(String name);
 

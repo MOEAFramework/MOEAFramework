@@ -29,9 +29,6 @@ import org.moeaframework.problem.Problem;
  * {@link TypedProperties}.  The methods of the provider must return {@code null} if the algorithm is not supported by
  * the provider.
  * <p>
- * If the provider can supply the algorithm but an error occurred during instantiation, the provider may throw a
- * {@link ProviderNotFoundException} along with the details causing the exception.
- * <p>
  * To provide a custom {@code AlgorithmProvider}, first extend this class and implement the abstract method.  Next,
  * build a JAR file containing the custom provider.  Within the JAR file, create the file
  * {@code META-INF/services/org.moeaframework.core.spi.AlgorithmProvider} containing on a single line the class name
@@ -69,6 +66,7 @@ public abstract class AlgorithmProvider {
 	 * @param properties optional properties for the algorithm
 	 * @param problem the problem
 	 * @return the algorithm with the specified name, or {@code null} if this provider does not support the algorithm
+	 * @throws ProviderException if the creation of the algorithm failed for any reason
 	 */
 	public abstract Algorithm getAlgorithm(String name, TypedProperties properties, Problem problem);
 

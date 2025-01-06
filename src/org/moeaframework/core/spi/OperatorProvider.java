@@ -25,9 +25,6 @@ import org.moeaframework.problem.Problem;
  * Defines a SPI for initializing different operators.  Operators are identified by a unique name.  The methods of
  * the provider must return {@code null} if the operator is not supported by the provider.
  * <p>
- * If the provider can supply the operator but an error occurred during instantiation, the provider may throw a
- * {@link ProviderNotFoundException} along with the details causing the exception.
- * <p>
  * To provide a custom {@code OperatorProvider}, first extend this class and implement the two abstract methods.  Next,
  * build a JAR file containing the custom provider.  Within the JAR file, create the file
  * {@code META-INF/services/org.moeaframework.core.spi.OperatorProvider} containing on a single line the class name of
@@ -69,6 +66,7 @@ public abstract class OperatorProvider {
 	 * @param properties the implementation-specific properties
 	 * @param problem the problem to be solved
 	 * @return an instance of the variation operator with the specified name
+	 * @throws ProviderException if the creation of the operator failed for any reason
 	 */
 	public abstract Variation getVariation(String name, TypedProperties properties, Problem problem);
 

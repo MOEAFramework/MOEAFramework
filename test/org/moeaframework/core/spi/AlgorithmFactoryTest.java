@@ -40,7 +40,7 @@ public class AlgorithmFactoryTest extends AbstractFactoryTest<AlgorithmProvider,
 
 	@Test
 	public void testCustomProvider() {
-		AlgorithmProvider provider = new TestAlgorithmProvider();
+		TestAlgorithmProvider provider = new TestAlgorithmProvider();
 		
 		AlgorithmFactory factory = new AlgorithmFactory();
 		factory.addProvider(provider);
@@ -56,6 +56,19 @@ public class AlgorithmFactoryTest extends AbstractFactoryTest<AlgorithmProvider,
 		
 		Assert.assertThrows(ProviderNotFoundException.class, () -> factory.getAlgorithm(
 				"testAlgorithm",
+				new TypedProperties(),
+				new MockRealProblem()));
+	}
+	
+	@Test(expected = ProviderException.class)
+	public void testException() {
+		TestAlgorithmProvider provider = new TestAlgorithmProvider();
+		provider.setException(new ProviderException("Test illegal argument"));
+		
+		AlgorithmFactory factory = new AlgorithmFactory();
+		factory.addProvider(provider);
+		
+		Assert.assertNotNull(factory.getAlgorithm("testAlgorithm",
 				new TypedProperties(),
 				new MockRealProblem()));
 	}

@@ -27,7 +27,6 @@ import java.util.TreeSet;
 import java.util.function.Supplier;
 
 import org.moeaframework.core.Epsilons;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.Problem;
@@ -145,7 +144,9 @@ public class RegisteredProblemProvider extends ProblemProvider {
 		
 		try {
 			return constructor.get();
-		} catch (FrameworkException | IllegalArgumentException e) {
+		} catch (ProviderException e) {
+			throw e;
+		} catch (Exception e) {
 			throw new ProviderException(name, e);
 		}
 	}

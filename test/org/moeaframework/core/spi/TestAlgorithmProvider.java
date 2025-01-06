@@ -23,13 +23,23 @@ import org.moeaframework.mock.MockEvolutionaryAlgorithm;
 import org.moeaframework.problem.Problem;
 
 public class TestAlgorithmProvider extends AlgorithmProvider {
+	
+	private ProviderException exception;
 
 	@Override
 	public Algorithm getAlgorithm(String name, TypedProperties properties, Problem problem) {
 		if (name.equalsIgnoreCase("testAlgorithm")) {
+			if (exception != null) {
+				throw exception;
+			}
+			
 			return new MockEvolutionaryAlgorithm(problem);
 		} else {
 			return null;
 		}
+	}
+	
+	public void setException(ProviderException exception) {
+		this.exception = exception;
 	}
 }

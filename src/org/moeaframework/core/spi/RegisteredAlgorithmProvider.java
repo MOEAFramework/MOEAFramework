@@ -26,7 +26,6 @@ import java.util.TreeSet;
 import java.util.function.BiFunction;
 
 import org.moeaframework.algorithm.Algorithm;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.problem.Problem;
@@ -135,7 +134,9 @@ public class RegisteredAlgorithmProvider extends AlgorithmProvider {
 		
 		try {
 			return constructor.apply(properties, problem);
-		} catch (FrameworkException | IllegalArgumentException e) {
+		} catch (ProviderException e) {
+			throw e;
+		} catch (Exception e) {
 			throw new ProviderException(name, e);
 		}
 	}

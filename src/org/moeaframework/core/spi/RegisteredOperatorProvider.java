@@ -27,7 +27,6 @@ import java.util.TreeMap;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
@@ -196,7 +195,9 @@ public class RegisteredOperatorProvider extends OperatorProvider {
 		
 		try {
 			return constructor.apply(properties, problem);
-		} catch (FrameworkException | IllegalArgumentException e) {
+		} catch (IllegalArgumentException | ProviderException e) {
+			throw e;
+		} catch (Exception e) {
 			throw new ProviderException(name, e);
 		}
 	}
