@@ -61,32 +61,32 @@ public interface Problem extends AutoCloseable, Named {
 	public int getNumberOfConstraints();
 
 	/**
-	 * Evaluates the solution, updating the solution's objectives in place.  Algorithms must explicitly
-	 * call this method when appropriate to evaluate new solutions or reevaluate modified solutions.
+	 * Evaluates the solution, updating the solution's objectives in place.  Algorithms must explicitly call this
+	 * method when appropriate to evaluate new solutions or reevaluate modified solutions.
 	 * 
 	 * @param solution the solution to be evaluated
 	 */
 	public void evaluate(Solution solution);
 
 	/**
-	 * Returns a new solution for this problem.  Implementations must initialize the variables so that the
-	 * valid range of values is defined, but typically leave the actual value at a default or undefined state.
+	 * Returns a new solution for this problem.  Implementations must initialize the variables so that the valid range
+	 * of values is defined, but typically leave the actual value at a default or undefined state.
 	 * 
 	 * @return a new solution for this problem
 	 */
 	public Solution newSolution();
 	
 	/**
-	 * Closes any underlying resources used by this problem.  Once closed, further invocations of
-	 * any methods on this problem may throw exceptions.
+	 * Closes any underlying resources used by this problem.  Once closed, further invocations of any methods on this
+	 * problem may throw exceptions.
 	 */
 	@Override
 	public void close();
 	
 	/**
-	 * Returns {@code true} if all decision variables used by this solution are the given type.
-	 * This also considers if the given types are compatible.  For example, {@code BinaryIntegerVariable}
-	 * is compatible with {@code BinaryVariable}.
+	 * Returns {@code true} if all decision variables used by this solution are the given type.  This also considers if
+	 * the given types are compatible.  For example, {@code BinaryIntegerVariable} is compatible with
+	 * {@code BinaryVariable}.
 	 * 
 	 * @param type the type of decision variable
 	 * @return {@code true} if all decision variables are the given type; {@code false} otherwise.
