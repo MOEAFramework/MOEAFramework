@@ -25,20 +25,20 @@ import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.ProblemTest;
 
 public class GriewankTest extends ProblemTest {
-	
+
 	@Test
 	public void test() {
-		try (AbstractSingleObjectiveProblem problem = new Griewank()) {
-			for (Solution solution : problem.getReferenceSet()) {
-				Assert.assertEquals(0.0, solution.getObjectiveValue(0), TestThresholds.HIGH_PRECISION);
-				Assert.assertGreaterThan(MockSolution.of(solution).addNoise(0.1).evaluate(problem).getObjectiveValue(0), 0.0);
-			}
-			
-			Assert.assertEquals(180.01205465, MockSolution.of(problem).atLowerBounds().evaluate().getObjectiveValue(0), 0.0000001);
-			Assert.assertEquals(180.01205465, MockSolution.of(problem).atUpperBounds().evaluate().getObjectiveValue(0), 0.0000001);
+		AbstractSingleObjectiveProblem problem = new Griewank();
+
+		for (Solution solution : problem.getReferenceSet()) {
+			Assert.assertEquals(0.0, solution.getObjectiveValue(0), TestThresholds.HIGH_PRECISION);
+			Assert.assertGreaterThan(MockSolution.of(solution).addNoise(0.1).evaluate(problem).getObjectiveValue(0), 0.0);
 		}
+
+		Assert.assertEquals(180.01205465, MockSolution.of(problem).atLowerBounds().evaluate().getObjectiveValue(0), 0.0000001);
+		Assert.assertEquals(180.01205465, MockSolution.of(problem).atUpperBounds().evaluate().getObjectiveValue(0), 0.0000001);
 	}
-	
+
 	@Test
 	public void testProblemProvider() {
 		assertProblemDefined("Griewank", 1);

@@ -25,20 +25,20 @@ import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.ProblemTest;
 
 public class SphereTest extends ProblemTest {
-	
+
 	@Test
 	public void test() {
-		try (AbstractSingleObjectiveProblem problem = new Sphere()) {
-			for (Solution solution : problem.getReferenceSet()) {
-				Assert.assertEquals(0.0, solution.getObjectiveValue(0), TestThresholds.HIGH_PRECISION);
-				Assert.assertGreaterThan(MockSolution.of(solution).addNoise(0.1).evaluate(problem).getObjectiveValue(0), 0.0);
-			}
-			
-			Assert.assertEquals(200.0, MockSolution.of(problem).atLowerBounds().evaluate().getObjectiveValue(0), 0.0000001);
-			Assert.assertEquals(200.0, MockSolution.of(problem).atUpperBounds().evaluate().getObjectiveValue(0), 0.0000001);
+		AbstractSingleObjectiveProblem problem = new Sphere();
+
+		for (Solution solution : problem.getReferenceSet()) {
+			Assert.assertEquals(0.0, solution.getObjectiveValue(0), TestThresholds.HIGH_PRECISION);
+			Assert.assertGreaterThan(MockSolution.of(solution).addNoise(0.1).evaluate(problem).getObjectiveValue(0), 0.0);
 		}
+
+		Assert.assertEquals(200.0, MockSolution.of(problem).atLowerBounds().evaluate().getObjectiveValue(0), 0.0000001);
+		Assert.assertEquals(200.0, MockSolution.of(problem).atUpperBounds().evaluate().getObjectiveValue(0), 0.0000001);
 	}
-	
+
 	@Test
 	public void testProblemProvider() {
 		assertProblemDefined("Sphere", 1);

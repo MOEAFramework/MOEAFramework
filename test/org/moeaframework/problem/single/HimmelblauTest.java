@@ -25,23 +25,23 @@ import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.ProblemTest;
 
 public class HimmelblauTest extends ProblemTest {
-	
+
 	@Test
 	public void test() {
-		try (AbstractSingleObjectiveProblem problem = new Himmelblau()) {
-			for (Solution solution : problem.getReferenceSet()) {
-				Assert.assertEquals(0.0, solution.getObjectiveValue(0), TestThresholds.HIGH_PRECISION);
-				Assert.assertGreaterThan(MockSolution.of(solution).addNoise(0.1).evaluate(problem).getObjectiveValue(0), 0.0);
-			}
-			
-			// local maximum
-			Assert.assertEquals(181.617, MockSolution.of(problem).at(-0.270845, -0.923039).evaluate().getObjectiveValue(0), 0.001);
-			
-			Assert.assertEquals(890.0, MockSolution.of(problem).atLowerBounds().evaluate().getObjectiveValue(0), 0.0000001);
-			Assert.assertEquals(2186.0, MockSolution.of(problem).atUpperBounds().evaluate().getObjectiveValue(0), 0.0000001);
+		AbstractSingleObjectiveProblem problem = new Himmelblau();
+
+		for (Solution solution : problem.getReferenceSet()) {
+			Assert.assertEquals(0.0, solution.getObjectiveValue(0), TestThresholds.HIGH_PRECISION);
+			Assert.assertGreaterThan(MockSolution.of(solution).addNoise(0.1).evaluate(problem).getObjectiveValue(0), 0.0);
 		}
+
+		// local maximum
+		Assert.assertEquals(181.617, MockSolution.of(problem).at(-0.270845, -0.923039).evaluate().getObjectiveValue(0), 0.001);
+
+		Assert.assertEquals(890.0, MockSolution.of(problem).atLowerBounds().evaluate().getObjectiveValue(0), 0.0000001);
+		Assert.assertEquals(2186.0, MockSolution.of(problem).atUpperBounds().evaluate().getObjectiveValue(0), 0.0000001);
 	}
-	
+
 	@Test
 	public void testProblemProvider() {
 		assertProblemDefined("Himmelblau", 1);

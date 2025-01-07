@@ -79,6 +79,11 @@ public interface Problem extends AutoCloseable, Named {
 	/**
 	 * Closes any underlying resources used by this problem.  Once closed, further invocations of any methods on this
 	 * problem may throw exceptions.
+	 * <p>
+	 * While most problems do not use any disposable resources and this method can simply no-op, the best practice is
+	 * wrapping the constructed problem instance inside a try-with-resources block so it is automatically closed.  Java
+	 * may flag offending code with a warning.  Implementations that do require closing should indicate this in any
+	 * documentation.
 	 */
 	@Override
 	public void close();

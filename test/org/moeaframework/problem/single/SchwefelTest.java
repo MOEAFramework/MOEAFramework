@@ -24,20 +24,20 @@ import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.ProblemTest;
 
 public class SchwefelTest extends ProblemTest {
-	
+
 	@Test
 	public void test() {
-		try (AbstractSingleObjectiveProblem problem = new Schwefel()) {
-			for (Solution solution : problem.getReferenceSet()) {
-				Assert.assertEquals(0.0, solution.getObjectiveValue(0), 0.0001);
-				Assert.assertGreaterThan(MockSolution.of(solution).addNoise(0.1).evaluate(problem).getObjectiveValue(0), 0.0);
-			}
-			
-			Assert.assertEquals(476.78748294, MockSolution.of(problem).atLowerBounds().evaluate().getObjectiveValue(0), 0.0000001);
-			Assert.assertEquals(1199.14411706, MockSolution.of(problem).atUpperBounds().evaluate().getObjectiveValue(0), 0.0000001);
+		AbstractSingleObjectiveProblem problem = new Schwefel();
+
+		for (Solution solution : problem.getReferenceSet()) {
+			Assert.assertEquals(0.0, solution.getObjectiveValue(0), 0.0001);
+			Assert.assertGreaterThan(MockSolution.of(solution).addNoise(0.1).evaluate(problem).getObjectiveValue(0), 0.0);
 		}
+
+		Assert.assertEquals(476.78748294, MockSolution.of(problem).atLowerBounds().evaluate().getObjectiveValue(0), 0.0000001);
+		Assert.assertEquals(1199.14411706, MockSolution.of(problem).atUpperBounds().evaluate().getObjectiveValue(0), 0.0000001);
 	}
-	
+
 	@Test
 	public void testProblemProvider() {
 		assertProblemDefined("Schwefel", 1);

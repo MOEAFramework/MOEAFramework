@@ -25,17 +25,17 @@ import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.ProblemTest;
 
 public class BealeTest extends ProblemTest {
-	
+
 	@Test
 	public void test() {
-		try (AbstractSingleObjectiveProblem problem = new Beale()) {
-			for (Solution solution : problem.getReferenceSet()) {
-				Assert.assertEquals(0.0, solution.getObjectiveValue(0), TestThresholds.HIGH_PRECISION);
-				Assert.assertGreaterThan(MockSolution.of(solution).addNoise(0.1).evaluate(problem).getObjectiveValue(0), 0.0);
-			}
+		AbstractSingleObjectiveProblem problem = new Beale();
+
+		for (Solution solution : problem.getReferenceSet()) {
+			Assert.assertEquals(0.0, solution.getObjectiveValue(0), TestThresholds.HIGH_PRECISION);
+			Assert.assertGreaterThan(MockSolution.of(solution).addNoise(0.1).evaluate(problem).getObjectiveValue(0), 0.0);
 		}
 	}
-	
+
 	@Test
 	public void testProblemProvider() {
 		assertProblemDefined("Beale", 1);

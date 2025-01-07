@@ -68,7 +68,7 @@ public class NondominatedPopulationTest {
 		Assert.assertTrue(population.contains(solution2));
 		Assert.assertTrue(population.contains(solution4));
 	}
-	
+
 	@Test(expected = UnsupportedOperationException.class)
 	public void testReplace() {
 		NondominatedPopulation population = new NondominatedPopulation();
@@ -83,73 +83,70 @@ public class NondominatedPopulationTest {
 	@Test
 	public void testNoDuplicates() {
 		NondominatedPopulation population = new NondominatedPopulation(DuplicateMode.NO_DUPLICATE_OBJECTIVES);
-		
-		try (MockBinaryProblem problem = new MockBinaryProblem()) {
-			Solution solution1 = MockSolution.of(problem).withObjectives(0.5);
-			BinaryVariable.setBitSet(solution1.getVariable(0), new BitSet(10));
-			
-			Solution solution2 = solution1.copy();
-			
-			Solution solution3 = solution1.copy();
-			BitSet bits = new BitSet(10);
-			bits.set(3);
-			BinaryVariable.setBitSet(solution3.getVariable(0), bits);
-			
-			Assert.assertTrue(population.add(solution1));
-			Assert.assertFalse(population.add(solution2));
-			Assert.assertFalse(population.add(solution3));
-		}
+
+		MockBinaryProblem problem = new MockBinaryProblem();
+		Solution solution1 = MockSolution.of(problem).withObjectives(0.5);
+		BinaryVariable.setBitSet(solution1.getVariable(0), new BitSet(10));
+
+		Solution solution2 = solution1.copy();
+
+		Solution solution3 = solution1.copy();
+		BitSet bits = new BitSet(10);
+		bits.set(3);
+		BinaryVariable.setBitSet(solution3.getVariable(0), bits);
+
+		Assert.assertTrue(population.add(solution1));
+		Assert.assertFalse(population.add(solution2));
+		Assert.assertFalse(population.add(solution3));
 	}
-	
+
 	@Test
 	public void testAllowDuplicates() {
 		NondominatedPopulation population = new NondominatedPopulation(DuplicateMode.ALLOW_DUPLICATES);
-		
-		try (MockBinaryProblem problem = new MockBinaryProblem()) {
-			Solution solution1 = MockSolution.of(problem).withObjectives(0.5);
-			BinaryVariable.setBitSet(solution1.getVariable(0), new BitSet(10));
-			
-			Solution solution2 = solution1.copy();
-			
-			Solution solution3 = solution1.copy();
-			BitSet bits = new BitSet(10);
-			bits.set(3);
-			BinaryVariable.setBitSet(solution3.getVariable(0), bits);
-			
-			Assert.assertTrue(population.add(solution1));
-			Assert.assertTrue(population.add(solution2));
-			Assert.assertTrue(population.add(solution3));
-		}
+
+		MockBinaryProblem problem = new MockBinaryProblem();
+		Solution solution1 = MockSolution.of(problem).withObjectives(0.5);
+		BinaryVariable.setBitSet(solution1.getVariable(0), new BitSet(10));
+
+		Solution solution2 = solution1.copy();
+
+		Solution solution3 = solution1.copy();
+		BitSet bits = new BitSet(10);
+		bits.set(3);
+		BinaryVariable.setBitSet(solution3.getVariable(0), bits);
+
+		Assert.assertTrue(population.add(solution1));
+		Assert.assertTrue(population.add(solution2));
+		Assert.assertTrue(population.add(solution3));
 	}
-	
+
 	@Test
 	public void testAllowDuplicateObjectives() {
 		NondominatedPopulation population = new NondominatedPopulation(DuplicateMode.ALLOW_DUPLICATE_OBJECTIVES);
-		
-		try (MockBinaryProblem problem = new MockBinaryProblem()) {
-			Solution solution1 = MockSolution.of(problem).withObjectives(0.5);
-			BinaryVariable.setBitSet(solution1.getVariable(0), new BitSet(10));
-			
-			Solution solution2 = solution1.copy();
-			
-			Solution solution3 = solution1.copy();
-			BitSet bits = new BitSet(10);
-			bits.set(3);
-			BinaryVariable.setBitSet(solution3.getVariable(0), bits);
-			
-			Assert.assertTrue(population.add(solution1));
-			Assert.assertFalse(population.add(solution2));
-			Assert.assertTrue(population.add(solution3));
-		}
+
+		MockBinaryProblem problem = new MockBinaryProblem();
+		Solution solution1 = MockSolution.of(problem).withObjectives(0.5);
+		BinaryVariable.setBitSet(solution1.getVariable(0), new BitSet(10));
+
+		Solution solution2 = solution1.copy();
+
+		Solution solution3 = solution1.copy();
+		BitSet bits = new BitSet(10);
+		bits.set(3);
+		BinaryVariable.setBitSet(solution3.getVariable(0), bits);
+
+		Assert.assertTrue(population.add(solution1));
+		Assert.assertFalse(population.add(solution2));
+		Assert.assertTrue(population.add(solution3));
 	}
-	
+
 	@Test
 	public void testCopy() {
 		NondominatedPopulation population = new NondominatedPopulation();
 		population.add(MockSolution.of().withObjectives(0.0, 1.0));
-		
+
 		NondominatedPopulation copy = population.copy();
-		
+
 		Assert.assertNotSame(population, copy);
 		Assert.assertSame(population.getComparator(), copy.getComparator());
 		Assert.assertEquals(population, copy, true);

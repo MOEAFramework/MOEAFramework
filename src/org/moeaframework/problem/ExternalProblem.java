@@ -71,8 +71,9 @@ import org.moeaframework.util.validate.Validate;
  * specific port.  However, this can also connect to a remote process over a local-area network or the Internet.
  * 
  * <p>
- * <b>It is critical that the {@link #close()} method be invoked to ensure the external process is shutdown cleanly.</b>
- * Failure to do so could leave the process running in the background.
+ * <strong>Users are required to call {@link #close()} to ensure the process and any resources are shutdown and
+ * disposed.</strong>  Failure to do so could leave any spawned processes running in the background.  We recommend
+ * using a try-with-resources block to automatically close the problem.
  */
 public abstract class ExternalProblem implements Problem {
 	

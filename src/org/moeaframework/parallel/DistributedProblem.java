@@ -24,6 +24,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.ProblemException;
@@ -34,15 +35,19 @@ import org.moeaframework.problem.ProblemWrapper;
  * provided {@link ExecutorService}.  The {@code ExecutorService} defines the type and method of distribution.  The
  * problem must be {@link Serializable} if executing on remote nodes.
  * <p>
- * Internally, this works by using {@link java.util.concurrent.Future}s, via the {@link FutureSolution} wrapper,
- * to allow performing the evaluations asynchronously until the result is required.  To best utilize this feature,
- * implementations should prefer calling {@link org.moeaframework.algorithm.Algorithm#evaluateAll(Solution[])} to submit
- * all solutions at once for evaluation.
+ * Internally, this works by using {@link Future}s, via the {@link FutureSolution} wrapper, to perform the evaluations
+ * asynchronously.  Methods requiring the result will block until the result is available.  To best utilize this
+ * feature, implementations should prefer calling {@link Algorithm#evaluateAll(Solution[])} to submit all solutions at
+ * once for evaluation.
  * <p>
- * Any {@code ExecutorService} can be used.  For example, {@link Executors} provides various options for distributing
+ * Any {@link ExecutorService} can be used.  For example, {@link Executors} provides various options for distributing
  * locally.  For remote evaluations, Java frameworks such as <a href="https://github.com/jppf-grid/JPPF">JPPF</a>,
  * <a href="http://www.gridgain.com">GridGain</a>, and <a href="https://ignite.apache.org/">Apache Ignite</a> should
  * work out-of-the-box.
+ * <p>
+ * <strong>Users are required to call {@link #close()} to ensure the process and any resources are shutdown and
+ * disposed.</strong>  Failure to do so could leave any spawned processes running in the background.  We recommend
+ * using a try-with-resources block to automatically close the problem.
  */
 public class DistributedProblem extends ProblemWrapper {
 
