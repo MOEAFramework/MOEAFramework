@@ -82,7 +82,7 @@ island-model parallelization runs multiple algorithm instances in parallel.  The
 island-model using NSGA-II.  More advanced configurations can be used, altering the island topology and migration
 strategy, or even using different optimization algorithms on each island.
 
-<!-- java:examples/org/moeaframework/examples/parallel/IslandModelExample.java [44:60] -->
+<!-- java:examples/org/moeaframework/examples/parallel/IslandModelExample.java [45:61] -->
 
 ```java
 Problem problem = new UF1();
@@ -92,7 +92,7 @@ Selection migrationSelection = new TournamentSelection(2, new ChainedComparator(
 
 Migration migration = new SingleNeighborMigration(1, migrationSelection);
 Topology topology = new FullyConnectedTopology();
-IslandModel model = new IslandModel(1000, migration, topology);
+IslandModel model = new IslandModel(Frequency.ofEvaluations(1000), migration, topology);
 
 for (int i = 0; i < 8; i++) {
     NSGAII algorithm = new NSGAII(problem);

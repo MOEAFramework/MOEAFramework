@@ -19,7 +19,7 @@ package org.moeaframework.analysis.runtime;
 
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.extension.AlgorithmWrapper;
-import org.moeaframework.algorithm.extension.FrequencyType;
+import org.moeaframework.algorithm.extension.Frequency;
 import org.moeaframework.analysis.series.ResultSeries;
 
 /**
@@ -42,14 +42,13 @@ public class InstrumentedAlgorithm<T extends Algorithm> extends AlgorithmWrapper
 	 * Registers the extension with the algorithm if one does not already exist.
 	 * 
 	 * @param frequency the frequency
-	 * @param frequencyType the frequency type
 	 * @return the extension
 	 */
-	public InstrumentedExtension registerExtension(int frequency, FrequencyType frequencyType) {
+	public InstrumentedExtension registerExtension(Frequency frequency) {
 		InstrumentedExtension extension = getExtensions().get(InstrumentedExtension.class);
 		
 		if (extension == null) {
-			extension = new InstrumentedExtension(frequency, frequencyType);
+			extension = new InstrumentedExtension(frequency);
 			getExtensions().add(extension);
 		}
 		

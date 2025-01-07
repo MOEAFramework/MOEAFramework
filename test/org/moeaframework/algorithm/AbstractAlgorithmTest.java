@@ -25,6 +25,7 @@ import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.algorithm.extension.CheckpointExtension;
 import org.moeaframework.algorithm.extension.Extension;
+import org.moeaframework.algorithm.extension.Frequency;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.mock.MockRealProblem;
@@ -243,7 +244,7 @@ public class AbstractAlgorithmTest {
 		File file = TempFiles.createFile();
 		
 		Algorithm algorithm = new TestAbstractAlgorithm();
-		algorithm.addExtension(new CheckpointExtension(file, 0));
+		algorithm.addExtension(new CheckpointExtension(file, Frequency.ofEvaluations(1)));
 		Assert.assertEquals(0, algorithm.getNumberOfEvaluations());
 		
 		algorithm.step();
@@ -251,7 +252,7 @@ public class AbstractAlgorithmTest {
 		Assert.assertFileWithContent(file);
 		
 		algorithm = new TestAbstractAlgorithm();
-		algorithm.addExtension(new CheckpointExtension(file, 0));
+		algorithm.addExtension(new CheckpointExtension(file, Frequency.ofEvaluations(1)));
 		Assert.assertEquals(200, algorithm.getNumberOfEvaluations());
 	}
 	

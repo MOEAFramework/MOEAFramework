@@ -20,6 +20,7 @@ package org.moeaframework.parallel.island;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.moeaframework.algorithm.extension.Frequency;
 import org.moeaframework.parallel.island.migration.Migration;
 import org.moeaframework.parallel.island.topology.Topology;
 
@@ -29,7 +30,7 @@ import org.moeaframework.parallel.island.topology.Topology;
  */
 public class IslandModel {
 	
-	private final int migrationFrequency;
+	private final Frequency migrationFrequency;
 	
 	private final Migration migration;
 	
@@ -40,11 +41,11 @@ public class IslandModel {
 	/**
 	 * Constructs a new island model.
 	 * 
-	 * @param migrationFrequency the migration frequency, in function evaluations
+	 * @param migrationFrequency the migration frequency
 	 * @param migration the migration strategy
 	 * @param topology the island topology
 	 */
-	public IslandModel(int migrationFrequency, Migration migration, Topology topology) {
+	public IslandModel(Frequency migrationFrequency, Migration migration, Topology topology) {
 		super();
 		this.migrationFrequency = migrationFrequency;
 		this.migration = migration;
@@ -54,11 +55,11 @@ public class IslandModel {
 	}
 
 	/**
-	 * Returns the migration frequency, in function evaluations, used by this island model.
+	 * Returns the migration frequency used by this island model.
 	 * 
 	 * @return the migration frequency
 	 */
-	public int getMigrationFrequency() {
+	public Frequency getMigrationFrequency() {
 		return migrationFrequency;
 	}
 

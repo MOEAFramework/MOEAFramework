@@ -24,6 +24,7 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.algorithm.extension.CheckpointExtension;
+import org.moeaframework.algorithm.extension.Frequency;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.mock.MockEvolutionaryAlgorithm;
@@ -57,7 +58,7 @@ public class AbstractEvolutionaryAlgorithmTest {
 
 		for (int i = 0; i < 10; i++) {
 			AbstractEvolutionaryAlgorithm algorithm = newInstance();
-			algorithm.addExtension(new CheckpointExtension(file, 0));
+			algorithm.addExtension(new CheckpointExtension(file, Frequency.ofIterations(1)));
 			
 			Assert.assertEquals(lastNFE, algorithm.getNumberOfEvaluations());
 			Assert.assertEquals(lastResult, algorithm.getResult());

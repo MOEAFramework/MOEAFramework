@@ -24,7 +24,7 @@ import java.io.ObjectOutputStream;
 import org.apache.commons.lang3.event.EventListenerSupport;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.EvolutionaryAlgorithm;
-import org.moeaframework.algorithm.extension.FrequencyType;
+import org.moeaframework.algorithm.extension.Frequency;
 import org.moeaframework.algorithm.extension.LoggingExtension;
 import org.moeaframework.algorithm.extension.PeriodicExtension;
 import org.moeaframework.core.Solution;
@@ -121,7 +121,7 @@ public class AdaptiveTimeContinuationExtension extends PeriodicExtension impleme
 	public AdaptiveTimeContinuationExtension(int windowSize, int maxWindowSize, double injectionRate,
 			int minimumPopulationSize, int maximumPopulationSize, Selection restartSelection,
 			Variation restartVariation) {
-		super(windowSize, FrequencyType.ITERATIONS);
+		super(Frequency.ofIterations(windowSize));
 		setMaxWindowSize(maxWindowSize);
 		setInjectionRate(injectionRate);
 		setMinimumPopulationSize(minimumPopulationSize);
@@ -142,7 +142,7 @@ public class AdaptiveTimeContinuationExtension extends PeriodicExtension impleme
 	 * @return the window size, in iterations
 	 */
 	public int getWindowSize() {
-		return frequency;
+		return frequency.getValue();
 	}
 	
 	/**
@@ -153,7 +153,7 @@ public class AdaptiveTimeContinuationExtension extends PeriodicExtension impleme
 	@Property
 	public void setWindowSize(int windowSize) {
 		Validate.that("windowSize", windowSize).isGreaterThan(0);
-		this.frequency = windowSize;
+		this.frequency = Frequency.ofIterations(windowSize);
 	}
 
 	/**

@@ -24,6 +24,7 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.CallCounter;
 import org.moeaframework.algorithm.NSGAII;
+import org.moeaframework.algorithm.extension.Frequency;
 import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
@@ -50,7 +51,7 @@ public class BasicIslandExecutorTest extends AbstractIslandModelTest {
 		
 		CallCounter<Migration> counter = CallCounter.of(new SingleNeighborMigration(1, migrationSelection));
 		Topology topology = new FullyConnectedTopology();
-		IslandModel model = new IslandModel(1000, counter.getProxy(), topology);
+		IslandModel model = new IslandModel(Frequency.ofEvaluations(1000), counter.getProxy(), topology);
 				
 		for (int i = 0; i < 2; i++) {
 			NSGAII algorithm = new NSGAII(new MockRealProblem(2));

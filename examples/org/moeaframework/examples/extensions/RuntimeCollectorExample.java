@@ -21,7 +21,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.algorithm.extension.FrequencyType;
+import org.moeaframework.algorithm.extension.Frequency;
 import org.moeaframework.algorithm.extension.RuntimeCollectorExtension;
 import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.problem.Problem;
@@ -38,7 +38,7 @@ public class RuntimeCollectorExample {
 		
 		try (ResultFileWriter writer = ResultFileWriter.open(problem, file)) {
 			NSGAII algorithm = new NSGAII(problem);
-			algorithm.addExtension(new RuntimeCollectorExtension(writer, 1000, FrequencyType.EVALUATIONS));
+			algorithm.addExtension(new RuntimeCollectorExtension(writer, Frequency.ofEvaluations(1000)));
 			algorithm.run(100000);
 		}
 	}

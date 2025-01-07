@@ -23,25 +23,21 @@ import java.io.ObjectOutputStream;
 
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.core.Stateful;
+import org.moeaframework.util.validate.Validate;
 
 /**
- * An extension that performs an action at a fixed frequency, specified by its {@link FrequencyType}.
+ * An extension that performs an action at a given {@link Frequency}.
  */
 public abstract class PeriodicExtension implements Extension, Stateful {
 	
 	/**
 	 * The frequency that the {@link #doAction(Algorithm)} method is invoked.
 	 */
-	protected int frequency;
-	
-	/**
-	 * The type of frequency.
-	 */
-	protected final FrequencyType frequencyType;
+	protected Frequency frequency;
 	
 	/**
 	 * The number of invocations of the {@link Algorithm#step()} method.  Only used if the frequency type is
-	 * {@code STEPS}.
+	 * {@link Frequency.Type#ITERATIONS}.
 	 */
 	protected int iteration;
 
@@ -55,12 +51,10 @@ public abstract class PeriodicExtension implements Extension, Stateful {
 	 * Extension that performs an action at a fixed frequency.
 	 * 
 	 * @param frequency the frequency the {@link #doAction(Algorithm)} method is invoked
-	 * @param frequencyType the type of frequency
 	 */
-	public PeriodicExtension(int frequency, FrequencyType frequencyType) {
+	public PeriodicExtension(Frequency frequency) {
 		super();
 		this.frequency = frequency;
-		this.frequencyType = frequencyType;
 	}
 
 	/**
@@ -72,18 +66,18 @@ public abstract class PeriodicExtension implements Extension, Stateful {
 	
 	@Override
 	public void onRegister(Algorithm algorithm) {
-		switch (frequencyType) {
+		switch (frequency.getType()) {
 			case EVALUATIONS -> lastInvocation = algorithm.getNumberOfEvaluations();
 			case ITERATIONS -> lastInvocation = 0;
-			default -> throw new IllegalStateException();
+			default -> Validate.that("frequency.getType()", frequency.getType()).failUnsupportedOption();
 		}
 	}
 	
 	@Override
 	public void onStep(Algorithm algorithm) {
-		switch (frequencyType) {
+		switch (frequency.getType()) {
 			case EVALUATIONS -> {
-				if ((algorithm.getNumberOfEvaluations() - lastInvocation) >= frequency) {
+				if ((algorithm.getNumberOfEvaluations() - lastInvocation) >= frequency.getValue()) {
 					doAction(algorithm);
 					lastInvocation = algorithm.getNumberOfEvaluations();
 				}
@@ -91,19 +85,20 @@ public abstract class PeriodicExtension implements Extension, Stateful {
 			case ITERATIONS -> {
 				iteration++;
 				
-				if ((iteration - lastInvocation) >= frequency) {
+				if ((iteration - lastInvocation) >= frequency.getValue()) {
 					doAction(algorithm);
 					lastInvocation = iteration;
 				}
 			}
-			default -> throw new IllegalStateException();
+			default -> Validate.that("frequency.getType()", frequency.getType()).failUnsupportedOption();
 		}
 	}
 	
 	@Override
 	public void saveState(ObjectOutputStream stream) throws IOException {
 		Stateful.writeTypeSafety(stream, this);
-		stream.writeInt(frequency);
+		stream.writeInt(frequency.getValue());
+		stream.writeObject(frequency.getType());
 		stream.writeInt(iteration);
 		stream.writeInt(lastInvocation);
 	}
@@ -111,7 +106,7 @@ public abstract class PeriodicExtension implements Extension, Stateful {
 	@Override
 	public void loadState(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		Stateful.checkTypeSafety(stream, this);
-		frequency = stream.readInt();
+		frequency = new Frequency(stream.readInt(), (Frequency.Type)stream.readObject());
 		iteration = stream.readInt();
 		lastInvocation = stream.readInt();
 	}

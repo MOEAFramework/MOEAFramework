@@ -30,6 +30,7 @@ import org.moeaframework.Assume;
 import org.moeaframework.TempFiles;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.NSGAII;
+import org.moeaframework.algorithm.extension.Frequency;
 import org.moeaframework.analysis.IndicatorStatistics;
 import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
 import org.moeaframework.analysis.runtime.Instrumenter;
@@ -158,7 +159,7 @@ public class PlotTest {
 		
 		Instrumenter instrumenter = new Instrumenter()
 				.withReferenceSet("pf/UF1.pf")
-				.withFrequency(100)
+				.withFrequency(Frequency.ofEvaluations(100))
 				.attachElapsedTimeCollector()
 				.attachGenerationalDistanceCollector();
 		

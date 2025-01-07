@@ -22,6 +22,7 @@ import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.algorithm.extension.CheckpointExtension;
+import org.moeaframework.algorithm.extension.Frequency;
 import org.moeaframework.algorithm.extension.LoggingExtension;
 import org.moeaframework.problem.misc.Srinivas;
 
@@ -37,14 +38,14 @@ public class CheckpointExample {
 
 		NSGAII algorithm = new NSGAII(new Srinivas());
 		algorithm.addExtension(new LoggingExtension());
-		algorithm.addExtension(new CheckpointExtension(checkpointFile, 1000));
+		algorithm.addExtension(new CheckpointExtension(checkpointFile, Frequency.ofEvaluations(1000)));
 		algorithm.run(500000);
 		
 		System.out.println("========== End of first run ==========");
 		
 		algorithm = new NSGAII(new Srinivas());
 		algorithm.addExtension(new LoggingExtension());
-		algorithm.addExtension(new CheckpointExtension(checkpointFile, 1000));
+		algorithm.addExtension(new CheckpointExtension(checkpointFile, Frequency.ofEvaluations(1000)));
 		algorithm.run(1000000 - algorithm.getNumberOfEvaluations());
 	}
 

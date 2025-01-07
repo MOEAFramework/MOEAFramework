@@ -33,7 +33,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.moeaframework.algorithm.Algorithm;
-import org.moeaframework.algorithm.extension.FrequencyType;
+import org.moeaframework.algorithm.extension.Frequency;
 import org.moeaframework.algorithm.extension.ProgressExtension;
 import org.moeaframework.algorithm.extension.ProgressExtension.DefaultProgressListener;
 import org.moeaframework.algorithm.extension.RuntimeCollectorExtension;
@@ -489,10 +489,10 @@ public class Solve extends CommandLineUtility {
 		}
 
 		// parse the runtime frequency
-		int runtimeFrequency = 100;
+		Frequency frequency = Frequency.ofEvaluations(100);
 
 		if (commandLine.hasOption("runtimeFrequency")) {
-			runtimeFrequency = Integer.parseInt(commandLine.getOptionValue("runtimeFrequency"));
+			frequency = Frequency.ofEvaluations(Integer.parseInt(commandLine.getOptionValue("runtimeFrequency")));
 		}
 
 		// open the resources and begin processing
@@ -519,7 +519,7 @@ public class Solve extends CommandLineUtility {
 					problem);
 
 			try (ResultFileWriter writer = ResultFileWriter.open(problem, file)) {
-				algorithm.addExtension(new RuntimeCollectorExtension(writer, runtimeFrequency, FrequencyType.EVALUATIONS));
+				algorithm.addExtension(new RuntimeCollectorExtension(writer, frequency));
 				algorithm.addExtension(new ProgressExtension().withListener(new DefaultProgressListener()));
 				algorithm.run(maxEvaluations);
 			}

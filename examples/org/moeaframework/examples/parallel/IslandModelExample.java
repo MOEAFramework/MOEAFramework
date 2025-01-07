@@ -20,6 +20,7 @@ package org.moeaframework.examples.parallel;
 import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
+import org.moeaframework.algorithm.extension.Frequency;
 import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
@@ -48,7 +49,7 @@ public class IslandModelExample {
 		
 		Migration migration = new SingleNeighborMigration(1, migrationSelection);
 		Topology topology = new FullyConnectedTopology();
-		IslandModel model = new IslandModel(1000, migration, topology);
+		IslandModel model = new IslandModel(Frequency.ofEvaluations(1000), migration, topology);
 		
 		for (int i = 0; i < 8; i++) {
 			NSGAII algorithm = new NSGAII(problem);

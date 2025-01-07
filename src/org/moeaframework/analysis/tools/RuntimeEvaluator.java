@@ -26,6 +26,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.moeaframework.algorithm.Algorithm;
+import org.moeaframework.algorithm.extension.Frequency;
 import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.analysis.parameter.ParameterSet;
 import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
@@ -105,10 +106,10 @@ public class RuntimeEvaluator extends CommandLineUtility {
 		File inputFile = new File(commandLine.getOptionValue("input"));
 		Epsilons epsilons = OptionUtils.getEpsilons(commandLine);
 		String outputFilePattern = commandLine.getOptionValue("output");
-		int frequency = 1000;
+		Frequency frequency = Frequency.ofEvaluations(1000);
 		
 		if (commandLine.hasOption("frequency")) {
-			frequency = Integer.parseInt(commandLine.getOptionValue("frequency"));
+			frequency = Frequency.ofEvaluations(Integer.parseInt(commandLine.getOptionValue("frequency")));
 		}
 		
 		if (commandLine.hasOption("seed")) {
@@ -151,7 +152,7 @@ public class RuntimeEvaluator extends CommandLineUtility {
 		System.out.println("Finished!");
 	}
 
-	private void process(String algorithmName, TypedProperties properties, Problem problem, int frequency,
+	private void process(String algorithmName, TypedProperties properties, Problem problem, Frequency frequency,
 			ResultFileWriter output) throws IOException {
 		int maxEvaluations = properties.getTruncatedInt("maxEvaluations");
 		Validate.that("maxEvaluations", maxEvaluations).isGreaterThanOrEqualTo(0);

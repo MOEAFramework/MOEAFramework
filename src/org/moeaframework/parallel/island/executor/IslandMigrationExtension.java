@@ -20,7 +20,6 @@ package org.moeaframework.parallel.island.executor;
 import java.util.List;
 
 import org.moeaframework.algorithm.Algorithm;
-import org.moeaframework.algorithm.extension.FrequencyType;
 import org.moeaframework.algorithm.extension.PeriodicExtension;
 import org.moeaframework.parallel.island.Island;
 import org.moeaframework.parallel.island.IslandModel;
@@ -47,7 +46,7 @@ public class IslandMigrationExtension extends PeriodicExtension {
 	 * @param model the island model
 	 */
 	public IslandMigrationExtension(Island island, IslandModel model) {
-		super(model.getMigrationFrequency(), FrequencyType.EVALUATIONS);
+		super(model.getMigrationFrequency());
 		this.island = island;
 		this.model = model;
 	}

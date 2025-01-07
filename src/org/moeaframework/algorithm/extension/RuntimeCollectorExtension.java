@@ -49,10 +49,9 @@ public class RuntimeCollectorExtension extends PeriodicExtension {
 	 * 
 	 * @param writer the result file writer where the runtime information is stored
 	 * @param frequency the frequency at which the runtime snapshots are recorded
-	 * @param frequencyType the type of frequency
 	 */
-	public RuntimeCollectorExtension(ResultFileWriter writer, int frequency, FrequencyType frequencyType) {
-		super(frequency, frequencyType);
+	public RuntimeCollectorExtension(ResultFileWriter writer, Frequency frequency) {
+		super(frequency);
 		this.writer = writer;
 		
 		timer = new StopWatch();

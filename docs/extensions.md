@@ -110,7 +110,7 @@ algorithm.run(10000);
 Checkpoints are useful when performing expensive or long-running optimizations.  This will periodically save
 the state of the optimization to a file, which can be resumed at a later point if the run is interrupted.
 
-<!-- java:examples/org/moeaframework/examples/extensions/CheckpointExample.java [35:48] -->
+<!-- java:examples/org/moeaframework/examples/extensions/CheckpointExample.java [36:49] -->
 
 ```java
 File checkpointFile = new File("checkpoint.dat");
@@ -118,14 +118,14 @@ checkpointFile.delete();
 
 NSGAII algorithm = new NSGAII(new Srinivas());
 algorithm.addExtension(new LoggingExtension());
-algorithm.addExtension(new CheckpointExtension(checkpointFile, 1000));
+algorithm.addExtension(new CheckpointExtension(checkpointFile, Frequency.ofEvaluations(1000)));
 algorithm.run(500000);
 
 System.out.println("========== End of first run ==========");
 
 algorithm = new NSGAII(new Srinivas());
 algorithm.addExtension(new LoggingExtension());
-algorithm.addExtension(new CheckpointExtension(checkpointFile, 1000));
+algorithm.addExtension(new CheckpointExtension(checkpointFile, Frequency.ofEvaluations(1000)));
 algorithm.run(1000000 - algorithm.getNumberOfEvaluations());
 ```
 
@@ -141,7 +141,7 @@ File file = new File("runtime.dat");
 
 try (ResultFileWriter writer = ResultFileWriter.open(problem, file)) {
     NSGAII algorithm = new NSGAII(problem);
-    algorithm.addExtension(new RuntimeCollectorExtension(writer, 1000, FrequencyType.EVALUATIONS));
+    algorithm.addExtension(new RuntimeCollectorExtension(writer, Frequency.ofEvaluations(1000)));
     algorithm.run(100000);
 }
 ```

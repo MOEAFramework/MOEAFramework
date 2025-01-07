@@ -22,6 +22,7 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.algorithm.DefaultAlgorithms;
+import org.moeaframework.algorithm.extension.Frequency;
 import org.moeaframework.analysis.series.IndexedResult;
 import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.analysis.series.ResultSeries;
@@ -122,7 +123,7 @@ public abstract class AbstractCollectorTest<T extends Collector> {
 		
 		try (Problem problem = ProblemFactory.getInstance().getProblem(problemName)) {
 			Instrumenter instrumenter = new Instrumenter()
-					.withFrequency(100)
+					.withFrequency(Frequency.ofEvaluations(100))
 					.attach(testCollector);
 
 			TypedProperties properties = new TypedProperties();

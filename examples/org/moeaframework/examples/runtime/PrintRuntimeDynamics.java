@@ -20,6 +20,7 @@ package org.moeaframework.examples.runtime;
 import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
+import org.moeaframework.algorithm.extension.Frequency;
 import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
 import org.moeaframework.analysis.runtime.Instrumenter;
 import org.moeaframework.problem.CEC2009.UF1;
@@ -38,7 +39,7 @@ public class PrintRuntimeDynamics {
 		// Instrument the algorithm to collect the hypervolume and generational distance
 		Instrumenter instrumenter = new Instrumenter()
 				.withReferenceSet("pf/UF1.pf")
-				.withFrequency(100)
+				.withFrequency(Frequency.ofEvaluations(100))
 				.attachHypervolumeCollector()
 				.attachGenerationalDistanceCollector();
 		

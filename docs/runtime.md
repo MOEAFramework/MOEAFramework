@@ -9,7 +9,7 @@ algorithms.
 As demonstrated below, we configure the `Instrumenter` with the reference set, collection frequency (every 100 NFE),
 and specify what to collect.  Here, we collect the hypervolume and generational distance metrics:
 
-<!-- java:examples/org/moeaframework/examples/runtime/PrintRuntimeDynamics.java [34:49] -->
+<!-- java:examples/org/moeaframework/examples/runtime/PrintRuntimeDynamics.java [35:50] -->
 
 ```java
 Problem problem = new UF1();
@@ -17,7 +17,7 @@ NSGAII algorithm = new NSGAII(problem);
 
 Instrumenter instrumenter = new Instrumenter()
         .withReferenceSet("pf/UF1.pf")
-        .withFrequency(100)
+        .withFrequency(Frequency.ofEvaluations(100))
         .attachHypervolumeCollector()
         .attachGenerationalDistanceCollector();
 
@@ -51,7 +51,7 @@ NFE   GenerationalDistance Hypervolume
 
 Alternatively, we can pass the observations to the `Plot` class to produce a line graph of the runtime data:
 
-<!-- java:examples/org/moeaframework/examples/runtime/PlotRuntimeDynamics.java [50:53] -->
+<!-- java:examples/org/moeaframework/examples/runtime/PlotRuntimeDynamics.java [51:54] -->
 
 ```java
 new Plot()
@@ -66,7 +66,7 @@ new Plot()
 We can also collect the approximation set throughout a run, using the built-in `RuntimeViewer` to display an interactive
 plot showing the convergence of the approximation set.
 
-<!-- java:examples/org/moeaframework/examples/runtime/RuntimeViewerExample.java [35:50] -->
+<!-- java:examples/org/moeaframework/examples/runtime/RuntimeViewerExample.java [36:51] -->
 
 ```java
 Problem problem = new UF1();
@@ -74,7 +74,7 @@ NSGAII algorithm = new NSGAII(problem);
 
 Instrumenter instrumenter = new Instrumenter()
         .withReferenceSet("pf/UF1.pf")
-        .withFrequency(100);
+        .withFrequency(Frequency.ofEvaluations(100));
 
 InstrumentedAlgorithm<NSGAII> instrumentedAlgorithm = instrumenter.instrument(algorithm);
 instrumentedAlgorithm.run(10000);

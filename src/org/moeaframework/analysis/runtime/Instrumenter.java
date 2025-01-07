@@ -31,7 +31,7 @@ import java.util.Stack;
 
 import org.apache.commons.lang3.StringUtils;
 import org.moeaframework.algorithm.Algorithm;
-import org.moeaframework.algorithm.extension.FrequencyType;
+import org.moeaframework.algorithm.extension.Frequency;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.indicator.AdditiveEpsilonIndicator;
@@ -98,13 +98,8 @@ public class Instrumenter {
 	/**
 	 * The frequency that data is collected.
 	 */
-	private int frequency;
-	
-	/**
-	 * The units for the frequency, either in terms of the number of evaluations or number of steps (iterations).
-	 */
-	private FrequencyType frequencyType;
-	
+	private Frequency frequency;
+
 	/**
 	 * The &epsilon; values used when creating approximation sets.
 	 */
@@ -134,8 +129,7 @@ public class Instrumenter {
 		
 		selectedIndicators = EnumSet.noneOf(StandardIndicator.class);
 		
-		frequency = 100;
-		frequencyType = FrequencyType.EVALUATIONS;
+		frequency = Frequency.ofEvaluations(100);
 		customCollectors = new ArrayList<>();
 		
 		excludedPackages = new ArrayList<>();
@@ -179,19 +173,8 @@ public class Instrumenter {
 	 * @param frequency the frequency
 	 * @return a reference to this instrumenter
 	 */
-	public Instrumenter withFrequency(int frequency) {
+	public Instrumenter withFrequency(Frequency frequency) {
 		this.frequency = frequency;
-		return this;
-	}
-	
-	/**
-	 * Indicates if the frequency is defined in terms of the number of evaluations or number of steps (iterations).
-	 * 
-	 * @param frequencyType the frequency type, either EVALUATIONS or STEPS
-	 * @return a reference to this instrumenter
-	 */
-	public Instrumenter withFrequencyType(FrequencyType frequencyType) {
-		this.frequencyType = frequencyType;
 		return this;
 	}
 	
@@ -693,7 +676,7 @@ public class Instrumenter {
 		
 		collectors.addAll(customCollectors);
 		
-		InstrumentedExtension extension = new InstrumentedExtension(frequency, frequencyType);
+		InstrumentedExtension extension = new InstrumentedExtension(frequency);
 		instrument(algorithm, extension, collectors, new HashSet<>(), new Stack<>(), algorithm, null);
 		
 		InstrumentedAlgorithm<T> instrumentedAlgorithm = new InstrumentedAlgorithm<>(algorithm);

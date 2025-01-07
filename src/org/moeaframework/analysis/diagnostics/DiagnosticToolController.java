@@ -37,6 +37,7 @@ import java.util.TreeMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.moeaframework.algorithm.Algorithm;
+import org.moeaframework.algorithm.extension.Frequency;
 import org.moeaframework.algorithm.extension.ProgressExtension;
 import org.moeaframework.algorithm.extension.ProgressExtension.ProgressListener;
 import org.moeaframework.analysis.IndicatorStatistics;
@@ -513,7 +514,7 @@ public class DiagnosticToolController extends Controller implements SettingChang
 
 					// setup the instrumenter to collect the necessary info
 					Instrumenter instrumenter = new Instrumenter()
-							.withFrequency(100)
+							.withFrequency(Frequency.ofEvaluations(100))
 							.withReferenceSet(referenceSet)
 							.withEpsilons(epsilons);
 					

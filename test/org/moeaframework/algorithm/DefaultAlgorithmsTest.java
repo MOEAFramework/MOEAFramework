@@ -28,7 +28,7 @@ import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.algorithm.continuation.EpsilonProgressContinuationExtension;
 import org.moeaframework.algorithm.extension.CheckpointExtension;
-import org.moeaframework.algorithm.extension.FrequencyType;
+import org.moeaframework.algorithm.extension.Frequency;
 import org.moeaframework.algorithm.sa.AMOSA;
 import org.moeaframework.analysis.runtime.IndicatorCollector;
 import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
@@ -393,7 +393,7 @@ public class DefaultAlgorithmsTest {
 		
 		for (int i = 0; i < STEPS; i++) {
 			algorithm = AlgorithmFactory.getInstance().getAlgorithm(name, properties, problem);
-			algorithm.addExtension(new CheckpointExtension(file, 0));
+			algorithm.addExtension(new CheckpointExtension(file, Frequency.ofIterations(1)));
 			algorithm.step();
 		}
 		
@@ -412,7 +412,7 @@ public class DefaultAlgorithmsTest {
 		PRNG.setSeed(seed);
 		Algorithm algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, new TypedProperties(), problem);
 		InstrumentedAlgorithm<?> instrumentedAlgorithm = new InstrumentedAlgorithm<>(algorithm);
-		instrumentedAlgorithm.registerExtension(100, FrequencyType.EVALUATIONS);
+		instrumentedAlgorithm.registerExtension(Frequency.ofEvaluations(100));
 		instrumentedAlgorithm.addCollector(new IndicatorCollector(new Hypervolume(problem, referenceSet)).attach(algorithm));
 		
 		for (int i = 0; i < STEPS; i++) {
@@ -429,10 +429,10 @@ public class DefaultAlgorithmsTest {
 			algorithm = AlgorithmFactory.getInstance().getAlgorithm(algorithmName, new TypedProperties(), problem);
 			
 			instrumentedAlgorithm = new InstrumentedAlgorithm<>(algorithm);
-			instrumentedAlgorithm.registerExtension(100, FrequencyType.EVALUATIONS);
+			instrumentedAlgorithm.registerExtension(Frequency.ofEvaluations(100));
 			instrumentedAlgorithm.addCollector(new IndicatorCollector(new Hypervolume(problem, referenceSet)).attach(algorithm));
 			
-			algorithm.addExtension(new CheckpointExtension(file, 0));
+			algorithm.addExtension(new CheckpointExtension(file, Frequency.ofIterations(1)));
 			algorithm.step();
 		}
 		

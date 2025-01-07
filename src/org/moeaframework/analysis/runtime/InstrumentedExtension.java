@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.moeaframework.algorithm.Algorithm;
-import org.moeaframework.algorithm.extension.FrequencyType;
+import org.moeaframework.algorithm.extension.Frequency;
 import org.moeaframework.algorithm.extension.PeriodicExtension;
 import org.moeaframework.analysis.series.IndexType;
 import org.moeaframework.analysis.series.ResultEntry;
@@ -48,23 +48,12 @@ public class InstrumentedExtension extends PeriodicExtension implements Stateful
 	private List<Collector> collectors;
 
 	/**
-	 * Decorates the specified algorithm to periodically collect information about its runtime behavior.  Frequency is
-	 * given in number of evaluations.
-	 * 
-	 * @param frequency the frequency, in evaluations, that data is collected
-	 */
-	public InstrumentedExtension(int frequency) {
-		this(frequency, FrequencyType.EVALUATIONS);
-	}
-	
-	/**
 	 * Decorates the specified algorithm to periodically collect information about its runtime behavior.
 	 * 
 	 * @param frequency the frequency that data is collected
-	 * @param frequencyType if frequency is defined by EVALUATIONS or STEPS
 	 */
-	public InstrumentedExtension(int frequency, FrequencyType frequencyType) {
-		super(frequency, frequencyType);
+	public InstrumentedExtension(Frequency frequency) {
+		super(frequency);
 		series = new ResultSeries(IndexType.NFE);
 		collectors = new ArrayList<>();
 	}

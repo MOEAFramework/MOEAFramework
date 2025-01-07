@@ -29,8 +29,8 @@ public class PeriodicExtensionTest {
 		
 		private int numberOfActions;
 
-		public TestPeriodicExtension(int frequency, FrequencyType frequencyType) {
-			super(frequency, frequencyType);
+		public TestPeriodicExtension(Frequency frequency) {
+			super(frequency);
 		}
 
 		@Override
@@ -46,48 +46,48 @@ public class PeriodicExtensionTest {
 
 	@Test
 	public void testEvaluationsExact() {
-		test(10, FrequencyType.EVALUATIONS, 1000);
+		test(Frequency.ofEvaluations(10), 1000);
 	}
 	
 	@Test
 	public void testEvaluationsLarger() {
-		test(100, FrequencyType.EVALUATIONS, 100);
+		test(Frequency.ofEvaluations(100), 100);
 	}
 	
 	@Test
 	public void testEvaluationsSmaller() {
-		test(1, FrequencyType.EVALUATIONS, 1000);
+		test(Frequency.ofEvaluations(1), 1000);
 	}
 	
 	@Test
 	public void testEvaluationsMax() {
-		test(10000, FrequencyType.EVALUATIONS, 1);
+		test(Frequency.ofEvaluations(10000), 1);
 	}
 	
 	@Test
 	public void testEvaluationsUneven() {
-		test(34, FrequencyType.EVALUATIONS, 250);
+		test(Frequency.ofEvaluations(34), 250);
 	}
 	
 	@Test
 	public void testStepsExact() {
-		test(1, FrequencyType.ITERATIONS, 1000);
+		test(Frequency.ofIterations(1), 1000);
 	}
 	
 	@Test
 	public void testStepsLarger() {
-		test(10, FrequencyType.ITERATIONS, 100);
+		test(Frequency.ofIterations(10), 100);
 	}
 	
 	@Test
 	public void testStepsMax() {
-		test(1000, FrequencyType.ITERATIONS, 1);
+		test(Frequency.ofIterations(1000), 1);
 	}
 	
-	public void test(int frequency, FrequencyType type, int expected) {
+	public void test(Frequency frequency, int expected) {
 		MockAlgorithm algorithm = new MockAlgorithmWithExtensions();
 		
-		TestPeriodicExtension extension = new TestPeriodicExtension(frequency, type);
+		TestPeriodicExtension extension = new TestPeriodicExtension(frequency);
 		algorithm.addExtension(extension);
 		
 		

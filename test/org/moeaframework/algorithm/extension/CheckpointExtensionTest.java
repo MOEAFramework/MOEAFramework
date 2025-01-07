@@ -34,7 +34,7 @@ public class CheckpointExtensionTest {
 		file.delete();
 		
 		NSGAII original = new NSGAII(new MockRealProblem(2));
-		original.addExtension(new CheckpointExtension(file, 100));
+		original.addExtension(new CheckpointExtension(file, Frequency.ofEvaluations(100)));
 		
 		Assert.assertFalse(file.exists());
 		Assert.assertEquals(0, original.getNumberOfEvaluations());
@@ -45,7 +45,7 @@ public class CheckpointExtensionTest {
 		Assert.assertEquals(100, original.getNumberOfEvaluations());
 		
 		NSGAII restored = new NSGAII(new MockRealProblem(2));
-		restored.addExtension(new CheckpointExtension(file, 100));
+		restored.addExtension(new CheckpointExtension(file, Frequency.ofEvaluations(100)));
 		
 		Assert.assertTrue(file.exists());
 		Assert.assertEquals(100, restored.getNumberOfEvaluations());
@@ -56,7 +56,7 @@ public class CheckpointExtensionTest {
 		File file = TempFiles.createFile().withContent("foo");
 		
 		NSGAII algorithm = new NSGAII(new MockRealProblem(2));
-		algorithm.addExtension(new CheckpointExtension(file, 100));
+		algorithm.addExtension(new CheckpointExtension(file, Frequency.ofEvaluations(100)));
 		algorithm.step();
 		
 		Assert.assertNotNull(algorithm);
