@@ -115,12 +115,11 @@ public class ReferenceVectorGuidedPopulationTest {
 	}
 	
 	/**
-	 * Tests that the truncate method works correctly with a small scaling factor.  While s2 and s3 are closer to the
-	 * weight vectors, s1 will be retained since it is closer to the origin and a scaling factor of 0.0 favors
-	 * convergence over diversity.
+	 * While s2 and s3 are closer to the weight vectors, s1 will be retained since it is closer to the origin and a
+	 * scaling factor of 0.0 favors convergence over diversity.
 	 */
 	@Test
-	public void testTruncate1() {
+	public void testTruncateWithSmallScalingFactor() {
 		ReferenceVectorGuidedPopulation population = new ReferenceVectorGuidedPopulation(
 				2, new NormalBoundaryDivisions(1), 2.0);
 		
@@ -140,11 +139,11 @@ public class ReferenceVectorGuidedPopulationTest {
 	}
 	
 	/**
-	 * Tests that the truncate method works correctly with a large scaling factor.  With a scaling factor of 1.0, the
-	 * algorithm prefers diversity and selects the two solutions closer to the weight vectors, s2 and s3.
+	 * With a scaling factor of 1.0, the algorithm prefers diversity and selects the two solutions closer to the
+	 * weight vectors, s2 and s3.
 	 */
 	@Test
-	public void testTruncate2() {
+	public void testTruncateWithLargeScalingFactor() {
 		ReferenceVectorGuidedPopulation population = new ReferenceVectorGuidedPopulation(
 				2, new NormalBoundaryDivisions(1), 2.0);
 		

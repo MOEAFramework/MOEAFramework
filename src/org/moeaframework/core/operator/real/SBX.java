@@ -22,6 +22,7 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.operator.TypeSafe;
 import org.moeaframework.core.operator.Variation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.core.variable.Variable;
@@ -45,6 +46,7 @@ import org.moeaframework.util.validate.Validate;
  *       Technology, Kanpur, India.  Technical Report No. IITK/ME/SMD-94027, 1994.
  * </ol>
  */
+@TypeSafe
 @Prefix("sbx")
 public class SBX implements Variation {
 

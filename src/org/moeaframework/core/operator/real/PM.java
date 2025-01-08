@@ -20,6 +20,7 @@ package org.moeaframework.core.operator.real;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.configuration.Prefix;
 import org.moeaframework.core.configuration.Property;
+import org.moeaframework.core.operator.TypeSafe;
 import org.moeaframework.core.operator.TypeSafeMutation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.validate.Validate;
@@ -42,6 +43,7 @@ import org.moeaframework.util.validate.Validate;
  *       and Informatics, 26(4):30-45, 1996.
  * </ol>
  */
+@TypeSafe
 @Prefix("pm")
 public class PM extends TypeSafeMutation<RealVariable> {
 

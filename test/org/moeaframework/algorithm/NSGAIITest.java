@@ -48,13 +48,8 @@ public class NSGAIITest extends JMetalAlgorithmTest {
 				new TypedProperties(), allowBetterPerformance, AlgorithmFactory.getInstance());
 	}
 	
-	/**
-	 * Selection with and without replacement should produce statistically similar results.  Differences may appear
-	 * throughout search due to better diversity when using without replacement, but end-of-run indicators
-	 * should be identical on simple problems.
-	 */
 	@Test
-	public void testSelection() {
+	public void testSelectionWithAndWithoutReplacementEquivalent() {
 		test("UF1",
 				"NSGAII",
 				TypedProperties.of("withReplacement", false),
@@ -64,12 +59,8 @@ public class NSGAIITest extends JMetalAlgorithmTest {
 				AlgorithmFactory.getInstance());
 	}
 	
-	/**
-	 * When using selection without replacement, the same parent should never be selected twice.  This only hold true
-	 * if the population size is a multiple of {@code 2*variation.getArity()}.
-	 */
 	@Test
-	public void testSelectionIsUnique() {
+	public void testSelectionWithoutReplacementIsUnique() {
 		Problem problem = ProblemFactory.getInstance().getProblem("UF1");
 
 		Variation variation = new SBX(1.0, 20.0) {

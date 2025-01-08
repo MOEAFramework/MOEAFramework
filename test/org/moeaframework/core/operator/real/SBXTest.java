@@ -126,7 +126,7 @@ public class SBXTest extends ParentCentricVariationTest<SBX> {
 	 * out-of-bounds values if this happens and must be guarded against.
 	 */
 	@Test
-	public void testRNGError() {
+	public void testHandleOutOfBoundRNGValues() {
 		Random originalRandom = PRNG.getRandom();
 		
 		PRNG.setRandom(new Random() {

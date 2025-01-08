@@ -46,11 +46,8 @@ public class SaltelliTest extends AbstractSequenceTest<Saltelli> {
 		checkSaltelli(points, D);
 	}
 
-	/**
-	 * Tests if an exception is thrown when requesting a Saltelli sequence with an invalid size.
-	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void testSize() {
+	public void testInvalidSize() {
 		Saltelli sequence = new Saltelli();
 
 		sequence.generate(7, 2);

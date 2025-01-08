@@ -158,9 +158,6 @@ public class AdaptiveTimeContinuationExtensionTest {
 		Assert.assertEquals(4, population.size());
 	}
 	
-	/**
-	 * Ensures an empty archive results in an error rather than an infinite loop.
-	 */
 	@Test(expected=IllegalArgumentException.class)
 	public void testEmptyArchive() {
 		for (int i=0; i<100; i++) {
@@ -168,10 +165,6 @@ public class AdaptiveTimeContinuationExtensionTest {
 		}
 	}
 	
-	/**
-	 * Ensures that if the population ratio would result in a population size exceeding the maximum population size, a
-	 * sequence of back-to-back restarts would not occur due to the population ratio being violated.
-	 */
 	@Test
 	public void testPopulationRatioConflictWithMaxPopulationSize() {
 		archive.add(MockSolution.of().withObjectives(1.0, 0.0));

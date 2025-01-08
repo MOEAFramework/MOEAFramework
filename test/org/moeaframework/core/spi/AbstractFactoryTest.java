@@ -58,9 +58,6 @@ public abstract class AbstractFactoryTest<T, S extends AbstractFactory<T>> {
 		}
 	}
 
-	/**
-	 * Validates that all providers listed in META-INF/services exist.
-	 */
 	@Test
 	public void testDefaultProviders() throws IOException {
 		String resource = "/META-INF/services/" + getProviderType().getName();

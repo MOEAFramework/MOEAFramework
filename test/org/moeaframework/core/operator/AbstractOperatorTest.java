@@ -44,13 +44,9 @@ public abstract class AbstractOperatorTest<T extends Variation, V extends Variab
 	 * @return {@code true} if the operator is type safe; {@code false} otherwise
 	 */
 	public boolean isTypeSafe() {
-		return true;
+		return createInstance().getClass().getDeclaredAnnotation(TypeSafe.class) != null;
 	}
 	
-	/**
-	 * Tests if the specified variation operator is type safe.  The variation operator should be constructed so that it
-	 * is guaranteed to be applied to the parents (i.e., a probability of 1).
-	 */
 	@Test
 	public void testTypeSafety() {
 		Assume.assumeTrue("Operator is not type safe, skipping test", isTypeSafe());
@@ -69,9 +65,6 @@ public abstract class AbstractOperatorTest<T extends Variation, V extends Variab
 		variation.evolve(parents);
 	}
 	
-	/**
-	 * Tests if the parents remain unchanged during variation.
-	 */
 	@Test
 	public void testParentImmutability() {
 		T variation = createInstance();

@@ -46,9 +46,6 @@ public class IntervalRatioStatisticalTestTest {
 		test = null;
 	}
 
-	/**
-	 * Tests if the {@link IntervalRatioStatisticalTest#categorize} procedure correctly organized categories/groups.
-	 */
 	@Test
 	public void testCategorize() {
 		test.add(2.0, 0);
@@ -91,11 +88,8 @@ public class IntervalRatioStatisticalTestTest {
 				DoubleStream.of(a1).sorted().boxed().toList().equals(DoubleStream.of(a2).sorted().boxed().toList()));
 	}
 
-	/**
-	 * Tests if the {@link IntervalRatioStatisticalTest#add} method correctly throws an exception for invalid groups.
-	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void testGroupException1() {
+	public void testInvalidGroupException1() {
 		test.add(0.0, -1);
 	}
 
@@ -103,7 +97,7 @@ public class IntervalRatioStatisticalTestTest {
 	 * Tests if the {@link IntervalRatioStatisticalTest#add} method correctly throws an exception for invalid groups.
 	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void testGroupException2() {
+	public void testInvalidGroupException2() {
 		test.add(0.0, 2);
 	}
 

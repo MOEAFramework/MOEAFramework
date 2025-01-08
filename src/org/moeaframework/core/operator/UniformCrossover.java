@@ -27,6 +27,7 @@ import org.moeaframework.util.validate.Validate;
 /**
  * Crossover operator where each index is randomly swapped between the parents with a 50% chance.
  */
+@TypeSafe
 @Prefix("ux")
 public class UniformCrossover implements Variation {
 

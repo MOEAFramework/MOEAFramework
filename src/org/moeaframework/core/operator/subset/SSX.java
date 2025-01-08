@@ -22,6 +22,7 @@ import java.util.Set;
 
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.configuration.Prefix;
+import org.moeaframework.core.operator.TypeSafe;
 import org.moeaframework.core.operator.TypeSafeCrossover;
 import org.moeaframework.core.variable.Subset;
 
@@ -31,6 +32,7 @@ import org.moeaframework.core.variable.Subset;
  * <p>
  * This variation operator is type-safe.
  */
+@TypeSafe
 @Prefix("ssx")
 public class SSX extends TypeSafeCrossover<Subset> {
 

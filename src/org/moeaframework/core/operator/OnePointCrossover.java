@@ -28,6 +28,7 @@ import org.moeaframework.util.validate.Validate;
  * One-point or single-point crossover.  A crossover point is selected and all decision variables to the left/right
  * are swapped between the two parents.  The two children resulting from this swapping are returned.
  */
+@TypeSafe
 @Prefix("1x")
 public class OnePointCrossover implements Variation {
 

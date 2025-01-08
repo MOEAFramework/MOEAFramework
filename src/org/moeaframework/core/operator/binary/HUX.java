@@ -20,6 +20,7 @@ package org.moeaframework.core.operator.binary;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.TypeMismatchException;
 import org.moeaframework.core.configuration.Prefix;
+import org.moeaframework.core.operator.TypeSafe;
 import org.moeaframework.core.operator.TypeSafeCrossover;
 import org.moeaframework.core.variable.BinaryVariable;
 
@@ -28,6 +29,7 @@ import org.moeaframework.core.variable.BinaryVariable;
  * <p>
  * This variation operator is type-safe.
  */
+@TypeSafe
 @Prefix("hux")
 public class HUX extends TypeSafeCrossover<BinaryVariable> {
 

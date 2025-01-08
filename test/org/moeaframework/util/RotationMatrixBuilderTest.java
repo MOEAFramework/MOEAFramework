@@ -31,24 +31,14 @@ public class RotationMatrixBuilderTest {
 	 */
 	private static final int N = 10;
 	
-	/**
-	 * Asserts that the matrix is a rotation matrix; that is, the matrix is orthogonal and has a determinant of {@code 1}.
-	 * 
-	 * @param rm the matrix to test
-	 */
-	public void testRotationMatrix(RealMatrix rm) {
+	public void assertRotationMatrix(RealMatrix rm) {
 		LUDecomposition lu = new LUDecomposition(rm);
 		
 		Assert.assertEquals(1.0, lu.getDeterminant(), TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(rm.transpose(), lu.getSolver().getInverse(), TestThresholds.LOW_PRECISION);
 	}
 	
-	/**
-	 * Tests if the matrix is the identity matrix.
-	 * 
-	 * @param rm the matrix to test
-	 */
-	public void testIdentityMatrix(RealMatrix rm) {
+	public void assertIdentityMatrix(RealMatrix rm) {
 		for (int i=0; i<rm.getRowDimension(); i++) {
 			for (int j=0; j<rm.getColumnDimension(); j++) {
 				if (i == j) {
@@ -69,21 +59,18 @@ public class RotationMatrixBuilderTest {
 		for (int n=2; n<N; n++) {
 			RotationMatrixBuilder builder = new RotationMatrixBuilder(n);
 			
-			testIdentityMatrix(builder.create());
+			assertIdentityMatrix(builder.create());
 			builder.rotatePlane(0, n-1).withTheta(Math.PI/2);
-			testRotationMatrix(builder.create());
+			assertRotationMatrix(builder.create());
 			builder.rotatePlane(0, n-1).withTheta(Math.PI/2);
-			testRotationMatrix(builder.create());
+			assertRotationMatrix(builder.create());
 			builder.rotatePlane(0, n-1).withTheta(Math.PI/2);
-			testRotationMatrix(builder.create());
+			assertRotationMatrix(builder.create());
 			builder.rotatePlane(0, n-1).withTheta(Math.PI/2);
-			testIdentityMatrix(builder.create());
+			assertIdentityMatrix(builder.create());
 		}
 	}
 	
-	/**
-	 * Tests if the {@code rotateK} method produces valid rotation matrices.
-	 */
 	@Test
 	public void testRotateK() {
 		for (int n=2; n<N; n++) {
@@ -92,15 +79,12 @@ public class RotationMatrixBuilderTest {
 				builder.rotateK(k);
 				
 				for (int i=0; i<100; i++) {
-					testRotationMatrix(builder.withRandomThetas().create());
+					assertRotationMatrix(builder.withRandomThetas().create());
 				}
 			}
 		}
 	}
 	
-	/**
-	 * Tests if the {@code rotateK} method produces valid rotation matrices.
-	 */
 	@Test
 	public void testRotateAll() {
 		for (int n=2; n<N; n++) {
@@ -109,25 +93,19 @@ public class RotationMatrixBuilderTest {
 				builder.rotateAll();
 				
 				for (int i=0; i<100; i++) {
-					testRotationMatrix(builder.withThetas(Math.PI/4).create());
+					assertRotationMatrix(builder.withThetas(Math.PI/4).create());
 				}
 			}
 		}
 	}
 	
-	/**
-	 * Tests if an exception is thrown if the same axes are given for the plane of rotation.
-	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void testRotatePlaneException() {
+	public void testRotatePlaneWithSameAxesException() {
 		new RotationMatrixBuilder(3).rotatePlane(1, 1);
 	}
 	
-	/**
-	 * Tests if an exception is thrown if the number of rotation planes exceeds the valid number of rotation planes.
-	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void testRotateKException() {
+	public void testRotateKExceedsNumberOfRotationPlanesException() {
 		new RotationMatrixBuilder(3).rotateK(4);
 	}
 

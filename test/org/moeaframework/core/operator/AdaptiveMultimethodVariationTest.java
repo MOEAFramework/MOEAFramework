@@ -25,6 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.CallCounter;
+import org.moeaframework.Counter;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.attribute.OperatorIndex;
@@ -128,36 +129,20 @@ public class AdaptiveMultimethodVariationTest {
 		}
 	}
 	
-	/**
-	 * Extends {@link AdaptiveMultimethodVariation} to count the number of invocations to
-	 * {@link #getOperatorProbabilities()}.
-	 */
-	private class AdaptiveMultimethodVariationCounter extends AdaptiveMultimethodVariation {
-		
-		private int count = 0;
-
-		public AdaptiveMultimethodVariationCounter(Population archive) {
-			super(archive);
-		}
-
-		@Override
-		protected double[] getOperatorProbabilities() {
-			count++;
-			return super.getOperatorProbabilities();
-		}
-		
-		public int getCount() {
-			return count;
-		}
-		
-	}
-	
-	/**
-	 * Tests if the number of invocations between probability updates matches the UPDATE_WINDOW.
-	 */
 	@Test
 	public void testProbabilityUpdateInvocationCount() {
-		AdaptiveMultimethodVariationCounter variation = new AdaptiveMultimethodVariationCounter(population);
+		Counter<AdaptiveMultimethodVariation> counter = new Counter<>();
+		
+		AdaptiveMultimethodVariation variation = new AdaptiveMultimethodVariation(population) {
+			
+			@Override
+			protected double[] getOperatorProbabilities() {
+				counter.incrementAndGet(this);
+				return super.getOperatorProbabilities();
+			}
+			
+		};
+		
 		variation.addOperator(new MockVariation(2));
 		variation.addOperator(new MockVariation(2));
 		
@@ -170,7 +155,7 @@ public class AdaptiveMultimethodVariationTest {
 			variation.evolve(selection.select(variation.getArity(), population));
 		}
 		
-		Assert.assertEquals(numberOfSamples / variation.getUpdateWindow(), variation.getCount());
+		Assert.assertEquals(numberOfSamples / variation.getUpdateWindow(), counter.get(variation));
 	}
 	
 }

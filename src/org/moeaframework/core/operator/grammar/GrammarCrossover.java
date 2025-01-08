@@ -19,6 +19,7 @@ package org.moeaframework.core.operator.grammar;
 
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.configuration.Prefix;
+import org.moeaframework.core.operator.TypeSafe;
 import org.moeaframework.core.operator.TypeSafeCrossover;
 import org.moeaframework.core.variable.Grammar;
 
@@ -27,6 +28,7 @@ import org.moeaframework.core.variable.Grammar;
  * <p>
  * This variation operator is type-safe.
  */
+@TypeSafe
 @Prefix("gx")
 public class GrammarCrossover extends TypeSafeCrossover<Grammar> {
 	

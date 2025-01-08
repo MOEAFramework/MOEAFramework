@@ -19,6 +19,7 @@ package org.moeaframework.core.operator.permutation;
 
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.configuration.Prefix;
+import org.moeaframework.core.operator.TypeSafe;
 import org.moeaframework.core.operator.TypeSafeMutation;
 import org.moeaframework.core.variable.Permutation;
 
@@ -27,6 +28,7 @@ import org.moeaframework.core.variable.Permutation;
  * <p>
  * This operator is type-safe.
  */
+@TypeSafe
 @Prefix("swap")
 public class Swap extends TypeSafeMutation<Permutation> {
 
