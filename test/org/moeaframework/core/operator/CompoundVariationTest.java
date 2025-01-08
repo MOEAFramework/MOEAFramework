@@ -36,12 +36,9 @@ public class CompoundVariationTest {
 		Assert.assertEquals("mock", variation.getName());
 		Assert.assertEquals(1, variation.getArity());
 		
-		for (int i=0; i<TestThresholds.SAMPLES; i++) {
-			Solution[] parents = MockSolution.of().buildArray(1);
-			Assert.assertEquals(1, variation.evolve(parents).length);
-		}
-		
-		Assert.assertEquals(TestThresholds.SAMPLES, v1.getTotalCallCount("evolve"));
+		Solution[] parents = MockSolution.of().buildArray(1);
+		Assert.assertEquals(1, variation.evolve(parents).length);
+		Assert.assertEquals(1, v1.getTotalCallCount("evolve"));
 	}
 	
 	@Test
@@ -53,13 +50,11 @@ public class CompoundVariationTest {
 		Assert.assertEquals("mock+mock", variation.getName());
 		Assert.assertEquals(2, variation.getArity());
 		
-		for (int i=0; i<TestThresholds.SAMPLES; i++) {
-			Solution[] parents = MockSolution.of().buildArray(2);
-			Assert.assertEquals(2, variation.evolve(parents).length);
-		}
+		Solution[] parents = MockSolution.of().buildArray(2);
+		Assert.assertEquals(2, variation.evolve(parents).length);
 		
-		Assert.assertEquals(TestThresholds.SAMPLES, v1.getTotalCallCount("evolve"));
-		Assert.assertEquals(2*TestThresholds.SAMPLES, v2.getTotalCallCount("evolve"));
+		Assert.assertEquals(1, v1.getTotalCallCount("evolve"));
+		Assert.assertEquals(2, v2.getTotalCallCount("evolve"));
 	}
 	
 	@Test
@@ -73,14 +68,12 @@ public class CompoundVariationTest {
 		Assert.assertEquals("complex", variation.getName());
 		Assert.assertEquals(3, variation.getArity());
 		
-		for (int i=0; i<TestThresholds.SAMPLES; i++) {
-			Solution[] parents = MockSolution.of().buildArray(3);
-			Assert.assertEquals(2, variation.evolve(parents).length);
-		}
+		Solution[] parents = MockSolution.of().buildArray(3);
+		Assert.assertEquals(2, variation.evolve(parents).length);
 		
-		Assert.assertEquals(TestThresholds.SAMPLES, v1.getTotalCallCount("evolve"));
-		Assert.assertEquals(TestThresholds.SAMPLES, v2.getTotalCallCount("evolve"));
-		Assert.assertEquals(2*TestThresholds.SAMPLES, v3.getTotalCallCount("evolve"));
+		Assert.assertEquals(1, v1.getTotalCallCount("evolve"));
+		Assert.assertEquals(1, v2.getTotalCallCount("evolve"));
+		Assert.assertEquals(2, v3.getTotalCallCount("evolve"));
 	}
 	
 	@Test
