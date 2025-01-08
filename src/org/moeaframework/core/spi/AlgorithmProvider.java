@@ -35,7 +35,7 @@ import org.moeaframework.problem.Problem;
  *   <li>Compile and bundle the {@code .class} file(s) along with the {@code META-INF} folder into a JAR.
  *   <li>Include this JAR on the classpath.
  * </ol>
- * Providers can also be registered directly with {@link AlgorithmFactory#addProvider(AlgorithmProvider)}.
+ * Providers can also be registered directly with {@link AlgorithmFactory}.
  * <p>
  * As algorithm names are often used in file names, it is best to avoid characters which are not compatible with the
  * file system.  It is suggested that names match the following regular expression: {@code ^[a-zA-Z0-9()\-,]+$}.

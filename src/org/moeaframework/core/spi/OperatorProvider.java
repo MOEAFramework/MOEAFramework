@@ -32,7 +32,7 @@ import org.moeaframework.problem.Problem;
  *   <li>Compile and bundle the {@code .class} file(s) along with the {@code META-INF} folder into a JAR.
  *   <li>Include this JAR on the classpath.
  * </ol>
- * Providers can also be registered directly with {@link OperatorFactory#addProvider(OperatorProvider)}.
+ * Providers can also be registered directly with {@link OperatorFactory}.
  */
 public abstract class OperatorProvider {
 	
