@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 public class CallCounter<T> {
@@ -127,7 +128,8 @@ public class CallCounter<T> {
 	@SuppressWarnings("unchecked")
 	public static <T> CallCounter<T> of(T instance) {
 		ProxyInvocationHandler<T> handler = new ProxyInvocationHandler<>(instance);
-		T proxy = (T)Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), instance.getClass().getInterfaces(), handler);
+		T proxy = (T)Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(),
+				ClassUtils.getAllInterfaces(instance.getClass()).toArray(Class<?>[]::new), handler);
 		return new CallCounter<>(proxy, handler);
 	}
 	
@@ -138,7 +140,8 @@ public class CallCounter<T> {
 		};
 		
 		ProxyInvocationHandler<Consumer<T>> handler = new ProxyInvocationHandler<>(mock);
-		Consumer<T> proxy = (Consumer<T>)Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), mock.getClass().getInterfaces(), handler);
+		Consumer<T> proxy = (Consumer<T>)Proxy.newProxyInstance(
+				Thread.currentThread().getContextClassLoader(), mock.getClass().getInterfaces(), handler);
 		return new CallCounter<>(proxy, handler);
 	}
 	
@@ -149,7 +152,8 @@ public class CallCounter<T> {
 		};
 		
 		ProxyInvocationHandler<BiConsumer<T, U>> handler = new ProxyInvocationHandler<>(mock);
-		BiConsumer<T, U> proxy = (BiConsumer<T, U>)Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), mock.getClass().getInterfaces(), handler);
+		BiConsumer<T, U> proxy = (BiConsumer<T, U>)Proxy.newProxyInstance(
+				Thread.currentThread().getContextClassLoader(), mock.getClass().getInterfaces(), handler);
 		return new CallCounter<>(proxy, handler);
 	}
 

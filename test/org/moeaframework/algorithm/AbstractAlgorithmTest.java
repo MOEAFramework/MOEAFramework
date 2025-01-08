@@ -22,6 +22,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.CallCounter;
 import org.moeaframework.TempFiles;
 import org.moeaframework.algorithm.extension.CheckpointExtension;
 import org.moeaframework.algorithm.extension.Extension;
@@ -66,42 +67,6 @@ public class AbstractAlgorithmTest {
 			return numberOfIterations;
 		}
 
-	}
-	
-	private static class TestExtension implements Extension {
-		
-		private int registerCount = 0;
-		private int stepCount = 0;
-		private int initializeCount = 0;
-		private int terminateCount = 0;
-
-		@Override
-		public void onRegister(Algorithm algorithm) {
-			registerCount++;
-		}
-
-		@Override
-		public void onStep(Algorithm algorithm) {
-			stepCount++;
-		}
-
-		@Override
-		public void onInitialize(Algorithm algorithm) {
-			initializeCount++;
-		}
-
-		@Override
-		public void onTerminate(Algorithm algorithm) {
-			terminateCount++;
-		}
-		
-		public void assertCalls(int expectedSteps) {
-			Assert.assertEquals(1, registerCount);
-			Assert.assertEquals(1, initializeCount);
-			Assert.assertEquals(expectedSteps, stepCount);
-			Assert.assertEquals(1, terminateCount);
-		}
-		
 	}
 
 	@Test
@@ -258,15 +223,18 @@ public class AbstractAlgorithmTest {
 	
 	@Test
 	public void testExtensions() {
-		TestExtension extension = new TestExtension();
+		CallCounter<Extension> counter = CallCounter.of(new Extension() { });
 		
 		Algorithm algorithm = new TestAbstractAlgorithm();
-		algorithm.addExtension(extension);
+		algorithm.addExtension(counter.getProxy());
 		algorithm.step();
 		algorithm.step();
 		algorithm.terminate();
-		
-		extension.assertCalls(2);
+
+		Assert.assertEquals(1, counter.getTotalCallCount("onRegister"));
+		Assert.assertEquals(1, counter.getTotalCallCount("onInitialize"));
+		Assert.assertEquals(2, counter.getTotalCallCount("onStep"));
+		Assert.assertEquals(1, counter.getTotalCallCount("onTerminate"));
 	}
 
 }
