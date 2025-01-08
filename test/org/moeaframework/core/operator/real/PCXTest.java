@@ -32,11 +32,6 @@ public class PCXTest extends ParentCentricVariationTest<PCX> {
 	public PCX createInstance() {
 		return new PCX(3, TestThresholds.SAMPLES);
 	}
-	
-	@Override
-	public boolean isTypeSafe() {
-		return false;
-	}
 
 	@Test
 	@Retryable

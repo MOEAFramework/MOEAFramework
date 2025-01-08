@@ -32,11 +32,6 @@ public class UNDXTest extends MeanCentricVariationTest<UNDX> {
 	public UNDX createInstance() {
 		return new UNDX(3, TestThresholds.SAMPLES);
 	}
-	
-	@Override
-	public boolean isTypeSafe() {
-		return false;
-	}
 
 	@Test
 	@Retryable

@@ -43,11 +43,6 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest<AdaptiveM
 		return new AdaptiveMetropolis(3, TestThresholds.SAMPLES, 1.0);
 	}
 	
-	@Override
-	public boolean isTypeSafe() {
-		return false;
-	}
-	
 	/**
 	 * This is sample output from running Jasper Vrugt's AMALGAM codes in MATLAB that is positive definite.
 	 */

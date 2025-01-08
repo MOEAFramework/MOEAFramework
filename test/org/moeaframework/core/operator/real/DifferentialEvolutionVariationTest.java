@@ -34,11 +34,6 @@ public class DifferentialEvolutionVariationTest extends MeanCentricVariationTest
 		return new DifferentialEvolutionVariation(1.0, 1.0);
 	}
 	
-	@Override
-	public boolean isTypeSafe() {
-		return false;
-	}
-	
 	@Test
 	public void testOffspring() {
 		DifferentialEvolutionVariation de = createInstance();

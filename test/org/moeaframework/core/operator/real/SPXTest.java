@@ -32,11 +32,6 @@ public class SPXTest extends MeanCentricVariationTest<SPX> {
 	public SPX createInstance() {
 		return new SPX(3, TestThresholds.SAMPLES);
 	}
-	
-	@Override
-	public boolean isTypeSafe() {
-		return false;
-	}
 
 	@Test
 	@Retryable
