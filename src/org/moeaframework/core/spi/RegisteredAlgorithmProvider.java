@@ -31,7 +31,7 @@ import org.moeaframework.core.TypedProperties;
 import org.moeaframework.problem.Problem;
 
 /**
- * Algorithm provider that lets callers register algorithms by name.
+ * Algorithm provider that lets callers register algorithms by name.  Names are case-insensitive.
  */
 public class RegisteredAlgorithmProvider extends AlgorithmProvider {
 	
@@ -63,7 +63,7 @@ public class RegisteredAlgorithmProvider extends AlgorithmProvider {
 	/**
 	 * Returns all algorithms that have been registered with this provider.  Note that this does not necessarily
 	 * include all algorithms that can be instantiated by the provider, only those that have been explicitly
-	 * registered.
+	 * registered.  This also does not include aliases.
 	 * 
 	 * @return the algorithm names
 	 */
@@ -95,7 +95,8 @@ public class RegisteredAlgorithmProvider extends AlgorithmProvider {
 	}
 	
 	/**
-	 * Registers a new algorithm with this provider.
+	 * Registers a new algorithm with this provider.  The official name of the algorithm should be the first string
+	 * argument, with any alternative spellings or aliases following.
 	 * 
 	 * @param constructor the function that creates a new instance of the algorithm
 	 * @param name the registered name for this algorithm

@@ -37,7 +37,7 @@ import org.moeaframework.core.variable.Variable;
 import org.moeaframework.problem.Problem;
 
 /**
- * Operator provider that lets callers register operators by name.
+ * Operator provider that lets callers register operators by name.  Names are case-insensitive.
  */
 public class RegisteredOperatorProvider extends OperatorProvider {
 	

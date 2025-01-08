@@ -51,23 +51,23 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		register(fromProblem(AMOSA::new), "AMOSA");
 		register(fromProblem(CMAES::new), "CMA-ES", "CMAES", "MO-CMA-ES");
 		register(fromProblem(DBEA::new), "DBEA", "I-DBEA");
-		register(fromProblem(EpsilonMOEA::new), "eMOEA", "e-MOEA", "EpsilonMOEA");
-		register(fromProblem(EpsilonNSGAII::new), "eNSGAII", "e-NSGA-II", "eNSGA2", "EpsilonNSGAII");
+		register(fromProblem(EpsilonMOEA::new), "e-MOEA", "eMOEA", "EpsilonMOEA");
+		register(fromProblem(EpsilonNSGAII::new), "e-NSGA-II", "eNSGAII", "eNSGA2", "EpsilonNSGAII");
 		register(fromProblem(GDE3::new), "GDE3");
 		register(fromProblem(IBEA::new), "IBEA");
-		register(fromProblem(MOEAD::new), "MOEAD", "MOEA/D", "MOEA/D-DRA");
+		register(fromProblem(MOEAD::new), "MOEA/D", "MOEAD", "MOEA/D-DRA");
 		register(fromProblem(MSOPS::new), "MSOPS");
-		register(fromProblem(NSGAII::new), "NSGAII", "NSGA-II", "NSGA2");
-		register(fromProblem(NSGAIII::new), "NSGAIII", "NSGA-III", "NSGA3");
+		register(fromProblem(NSGAII::new), "NSGA-II", "NSGAII", "NSGA2");
+		register(fromProblem(NSGAIII::new), "NSGA-III", "NSGAIII", "NSGA3");
 		register(fromProblem(OMOPSO::new), "OMOPSO");
 		register(fromProblem(PAES::new), "PAES");
 		register(fromProblem(PESA2::new), "PESA2");
 		register(fromProblem(RandomSearch::new), "Random");
 		register(fromProblem(RVEA::new), "RVEA");
 		register(fromProblem(SMPSO::new), "SMPSO");
-		register(fromProblem(SMSEMOA::new), "SMSEMOA", "SMS-EMOA");
+		register(fromProblem(SMSEMOA::new), "SMS-EMOA", "SMSEMOA");
 		register(fromProblem(SPEA2::new), "SPEA2");
-		register(fromProblem(UNSGAIII::new), "UNSGAIII", "U-NSGA-III", "UNSGA3");
+		register(fromProblem(UNSGAIII::new), "U-NSGA-III", "UNSGAIII", "UNSGA3");
 		register(fromProblem(VEGA::new), "VEGA");
 		
 		// single-objective
@@ -80,32 +80,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		register(this::newRSO, "RSO");
 		
 		// register all to appear in the diagnostic tool
-		registerDiagnosticToolAlgorithm("AGE-MOEA-II");
-		registerDiagnosticToolAlgorithm("AMOSA");
-		registerDiagnosticToolAlgorithm("CMA-ES");
-		registerDiagnosticToolAlgorithm("DBEA");
-		registerDiagnosticToolAlgorithm("e-MOEA");
-		registerDiagnosticToolAlgorithm("e-NSGA-II");
-		registerDiagnosticToolAlgorithm("GDE3");
-		registerDiagnosticToolAlgorithm("IBEA");
-		registerDiagnosticToolAlgorithm("MOEA/D");
-		registerDiagnosticToolAlgorithm("NSGA-II");
-		registerDiagnosticToolAlgorithm("NSGA-III");
-		registerDiagnosticToolAlgorithm("OMOPSO");
-		registerDiagnosticToolAlgorithm("PAES");
-		registerDiagnosticToolAlgorithm("PESA2");
-		registerDiagnosticToolAlgorithm("Random");
-		registerDiagnosticToolAlgorithm("RVEA");
-		registerDiagnosticToolAlgorithm("SPEA2");
-		registerDiagnosticToolAlgorithm("SMPSO");
-		registerDiagnosticToolAlgorithm("SMS-EMOA");
-		registerDiagnosticToolAlgorithm("U-NSGA-III");
-		registerDiagnosticToolAlgorithm("VEGA");
-		registerDiagnosticToolAlgorithm("DifferentialEvolution");
-		registerDiagnosticToolAlgorithm("GeneticAlgorithm");
-		registerDiagnosticToolAlgorithm("EvolutionStrategy");
-		registerDiagnosticToolAlgorithm("SimulatedAnnealing");
-		registerDiagnosticToolAlgorithm("RSO");
+		registerDiagnosticToolAlgorithms(getRegisteredAlgorithms());
 	}
 	
 	/**

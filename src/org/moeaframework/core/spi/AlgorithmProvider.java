@@ -25,15 +25,17 @@ import org.moeaframework.core.TypedProperties;
 import org.moeaframework.problem.Problem;
 
 /**
- * Defines a SPI for algorithms.  Algorithms are identified by a unique name and may be given optional
- * {@link TypedProperties}.  The methods of the provider must return {@code null} if the algorithm is not supported by
- * the provider.
+ * Defines a SPI for algorithms.
  * <p>
- * To provide a custom {@code AlgorithmProvider}, first extend this class and implement the abstract method.  Next,
- * build a JAR file containing the custom provider.  Within the JAR file, create the file
- * {@code META-INF/services/org.moeaframework.core.spi.AlgorithmProvider} containing on a single line the class name
- * of the custom provider.  Lastly, add this JAR file to the classpath.  Once these steps are completed, the
- * algorithms(s) are now accessible via the {@link AlgorithmFactory#getAlgorithm} methods.
+ * To create a custom {@code AlgorithmProvider}:
+ * <ol>
+ *   <li>Extend this class and implement the abstract methods.
+ *   <li>Create the file {@code META-INF/services/org.moeaframework.core.spi.AlgorithmProvider} with a line identifying
+ *       the fully-qualified class name of the custom provider.
+ *   <li>Compile and bundle the {@code .class} file(s) along with the {@code META-INF} folder into a JAR.
+ *   <li>Include this JAR on the classpath.
+ * </ol>
+ * Providers can also be registered directly with {@link AlgorithmFactory#addProvider(AlgorithmProvider)}.
  * <p>
  * As algorithm names are often used in file names, it is best to avoid characters which are not compatible with the
  * file system.  It is suggested that names match the following regular expression: {@code ^[a-zA-Z0-9()\-,]+$}.

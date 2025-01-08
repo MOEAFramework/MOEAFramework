@@ -22,14 +22,17 @@ import org.moeaframework.core.operator.Variation;
 import org.moeaframework.problem.Problem;
 
 /**
- * Defines a SPI for initializing different operators.  Operators are identified by a unique name.  The methods of
- * the provider must return {@code null} if the operator is not supported by the provider.
+ * Defines a SPI for variation operators.
  * <p>
- * To provide a custom {@code OperatorProvider}, first extend this class and implement the two abstract methods.  Next,
- * build a JAR file containing the custom provider.  Within the JAR file, create the file
- * {@code META-INF/services/org.moeaframework.core.spi.OperatorProvider} containing on a single line the class name of
- * the custom provider.  Lastly, add this JAR file to the classpath.  Once these steps are completed, the
- * operators(s) are now accessible via the methods in this class.
+ * To create a custom {@code OperatorProvider}:
+ * <ol>
+ *   <li>Extend this class and implement the abstract methods.
+ *   <li>Create the file {@code META-INF/services/org.moeaframework.core.spi.OperatorProvider} with a line identifying
+ *       the fully-qualified class name of the custom provider.
+ *   <li>Compile and bundle the {@code .class} file(s) along with the {@code META-INF} folder into a JAR.
+ *   <li>Include this JAR on the classpath.
+ * </ol>
+ * Providers can also be registered directly with {@link OperatorFactory#addProvider(OperatorProvider)}.
  */
 public abstract class OperatorProvider {
 	
@@ -60,9 +63,10 @@ public abstract class OperatorProvider {
 	
 	/**
 	 * Returns an instance of the variation operator with the specified name.  This method must return {@code null}
-	 * if no suitable operator is found.
+	 * if the named operator is not supported, or no suitable operator could be identified using hints.
 	 * 
-	 * @param name the name identifying the variation operator
+	 * @param name the name identifying the variation operator, or {@code null} to select a default operator based on
+	 *        the hints
 	 * @param properties the implementation-specific properties
 	 * @param problem the problem to be solved
 	 * @return an instance of the variation operator with the specified name

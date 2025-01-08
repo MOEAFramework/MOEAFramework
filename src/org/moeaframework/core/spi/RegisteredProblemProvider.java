@@ -32,13 +32,7 @@ import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.Problem;
 
 /**
- * Problem provider that lets callers register problems by name.  For example:
- * <pre>
- *    RegisteredProblemProvider myProvider = new RegisteredProblemProvider();
- *    myProvider.register("MyProblem", () -> new MyProblem(), "pf/myProbem.pf");
- * 
- *    ProblemFactory.getInstance().addProvider(myProvider);
- * </pre>
+ * Problem provider that lets callers register problems by name.  Names are case-insensitive.
  */
 public class RegisteredProblemProvider extends ProblemProvider {
 	
