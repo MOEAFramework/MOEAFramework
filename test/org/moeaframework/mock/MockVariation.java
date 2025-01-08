@@ -17,6 +17,8 @@
  */
 package org.moeaframework.mock;
 
+import java.util.stream.IntStream;
+
 import org.moeaframework.Assert;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.Variation;
@@ -24,10 +26,17 @@ import org.moeaframework.core.operator.Variation;
 public class MockVariation implements Variation {
 
 	private final int arity;
-		
+	
+	private final int offspring;
+	
 	public MockVariation(int arity) {
+		this(arity, 1);
+	}
+		
+	public MockVariation(int arity, int offspring) {
 		super();
 		this.arity = arity;
+		this.offspring = offspring;
 	}
 	
 	@Override
@@ -43,7 +52,7 @@ public class MockVariation implements Variation {
 	@Override
 	public Solution[] evolve(Solution[] parents) {
 		Assert.assertEquals(arity, parents.length);
-		return new Solution[] { parents[0].copy() };
+		return IntStream.range(0, offspring).mapToObj(i -> parents[0].copy()).toArray(Solution[]::new);
 	}
 	
 }

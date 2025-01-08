@@ -456,6 +456,16 @@ public class MockSolution extends Solution {
 	public Solution deepCopy() {
 		return build();
 	}
+	
+	public Solution[] buildArray(int n) {
+		Solution[] result = new Solution[n];
+		
+		for (int i = 0; i < n; i++) {
+			result[i] = build();
+		}
+		
+		return result;
+	}
 
 	public Solution build() {
 		Solution solution = new Solution(getNumberOfVariables(), getNumberOfObjectives(), getNumberOfConstraints());
