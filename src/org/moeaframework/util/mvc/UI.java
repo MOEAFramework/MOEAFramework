@@ -86,9 +86,8 @@ public class UI {
 		}
 		
 		if (SystemUtils.IS_OS_MAC) {
-			Taskbar taskbar = Taskbar.getTaskbar();
-
 			try {
+				Taskbar taskbar = Taskbar.getTaskbar();
 				taskbar.setIconImage(Settings.getIcon().getResolutionVariant(256, 256));
 			} catch (Exception e) {
 				if (Settings.isVerbose()) {
@@ -101,7 +100,8 @@ public class UI {
 	/**
 	 * Creates a window asynchronously, scheduling the window to be created and displayed on the event dispatch thread.
 	 * The returned future can be used to await this task, blocking until the window is displayed.  If invoked from the
-	 * event dispatch thread, the window is created immediately.
+	 * event dispatch thread, the window is created immediately.  Any exceptions will be thrown by the future wrapped
+	 * in an {@link ExecutionException}.
 	 * 
 	 * @param <T> the type of window
 	 * @param supplier a function that creates the window
@@ -109,27 +109,36 @@ public class UI {
 	 */
 	public static <T extends Window> CompletableFuture<T> show(Supplier<T> supplier) {		
 		if (SwingUtilities.isEventDispatchThread()) {
-			T window = supplier.get();
-			
-			window.setIconImages(Settings.getIcon().getResolutionVariants());
-			window.pack();
-
-			if (window instanceof JFrame frame) {
-				frame.setLocationRelativeTo(null);
-				frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			} else if (window instanceof JDialog dialog) {
-				dialog.setLocationRelativeTo(dialog.getOwner());
-				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			try {
+				T window = supplier.get();
+				
+				window.setIconImages(Settings.getIcon().getResolutionVariants());
+				window.pack();
+	
+				if (window instanceof JFrame frame) {
+					frame.setLocationRelativeTo(null);
+					frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				} else if (window instanceof JDialog dialog) {
+					dialog.setLocationRelativeTo(dialog.getOwner());
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				}
+	
+				window.setVisible(true);
+				return CompletableFuture.completedFuture(window);
+			} catch (Exception e) {
+				return CompletableFuture.failedFuture(e);
 			}
-
-			window.setVisible(true);
-			return CompletableFuture.completedFuture(window);
 		} else {
 			CompletableFuture<T> future = new CompletableFuture<>();
 
 			SwingUtilities.invokeLater(() -> {
-				CompletableFuture<T> innerFuture = show(supplier);
-				innerFuture.thenAccept((window) -> future.complete(window));
+				try {
+					future.complete(show(supplier).get());
+				} catch (ExecutionException e) {
+					future.completeExceptionally(e.getCause());
+				} catch (Exception e) {
+					future.completeExceptionally(e);
+				}
 			});
 			
 			return future;
@@ -146,8 +155,18 @@ public class UI {
 	public static <T extends Window> T showAndWait(Supplier<T> supplier) {
 		try {
 			return show(supplier).get();
-		} catch (ExecutionException | InterruptedException e) {
-			throw new FrameworkException("Failed to create or show window", e);
+		} catch (Exception e) {
+			Throwable cause = e;
+			
+			if (cause instanceof ExecutionException ex) {
+				cause = ex.getCause();
+			}
+			
+			if (cause instanceof RuntimeException re) {
+				throw re;
+			}
+			
+			throw new FrameworkException("Failed to create or show window", e.getCause());
 		}
 	}
 	
