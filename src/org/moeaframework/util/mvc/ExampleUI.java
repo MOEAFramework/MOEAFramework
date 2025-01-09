@@ -20,10 +20,8 @@ package org.moeaframework.util.mvc;
 import java.awt.Window;
 
 import javax.swing.JFrame;
-import javax.swing.UIManager;
 
 import org.moeaframework.algorithm.Algorithm;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.termination.CancellationSignal;
 
 /**
@@ -35,14 +33,6 @@ import org.moeaframework.core.termination.CancellationSignal;
 public abstract class ExampleUI<T extends Algorithm> extends JFrame implements ControllerListener {
 	
 	private static final long serialVersionUID = 5771940090079596225L;
-	
-	static {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) {
-			// couldn't set system look and feel, continue with default
-		}
-	}
 	
 	private final ExampleController<T> controller;
 	
@@ -57,16 +47,12 @@ public abstract class ExampleUI<T extends Algorithm> extends JFrame implements C
 		
 		controller = new ExampleController<>(this, algorithm);
 		controller.addControllerListener(this);
-		
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setIconImages(Settings.getIcon().getResolutionVariants());
 	}
 	
 	/**
-	 * Displays this window and starts optimization.
+	 * Triggers the start of this example.
 	 */
 	public void start() {
-		setVisible(true);
 		controller.start();
 	}
 

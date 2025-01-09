@@ -2,6 +2,7 @@
 
 ROOT="$(dirname -- "${BASH_SOURCE[0]}")"
 CLASSPATH="${ROOT}/lib/*:${ROOT}/examples"
+ARGS=()
 
 if [ -d "${ROOT}/lib" ]; then
 	MOEAFRAMEWORK_LIB="$(find "${ROOT}/lib" -type f -name "MOEAFramework-*.jar" | head -n 1)"
@@ -21,10 +22,14 @@ if [ -z "${MOEAFRAMEWORK_LIB}" ]; then
 	fi
 fi
 
-if ! java -classpath "${CLASSPATH}" org.moeaframework.analysis.tools.Main --version >/dev/null 2>&1; then
+if [ "$(uname -s)" == "Darwin" ]; then
+	ARGS+=("-Xdock:name=MOEA Framework")
+fi
+
+if ! java -classpath "${CLASSPATH}" "${ARGS[@]}" org.moeaframework.analysis.tools.Main --version >/dev/null 2>&1; then
 	echo "Unable to run MOEA Framework command line tools!" >&2
 	echo "If building from source code, please run 'ant package-binary' first." >&2
 	exit -1
 fi
 
-java -classpath "${CLASSPATH}" org.moeaframework.analysis.tools.Main "$@"
+java -classpath "${CLASSPATH}" "${ARGS[@]}" org.moeaframework.analysis.tools.Main "$@"

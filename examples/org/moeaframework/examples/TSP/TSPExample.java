@@ -20,6 +20,7 @@ package org.moeaframework.examples.TSP;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,6 +36,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.mvc.ExampleUI;
+import org.moeaframework.util.mvc.UI;
 
 /**
  * Demonstration of optimizing a TSP problem using the MOEA Framework.  A window will appear showing the progress of
@@ -61,8 +63,7 @@ public class TSPExample extends ExampleUI<GeneticAlgorithm> {
 		initialize();
 		layoutComponents();
 		
-		setSize(500, 400);
-		setLocationRelativeTo(null);
+		setPreferredSize(new Dimension(500, 400));
 	}
 	
 	private void initialize() {
@@ -109,19 +110,19 @@ public class TSPExample extends ExampleUI<GeneticAlgorithm> {
 	 * @param instance the TSPLIB instance to solve
 	 */
 	public static void solve(TSPInstance instance) {
-		// create the optimization problem and evolutionary algorithm
-		Problem problem = new TSPProblem(instance);
-		
-		TypedProperties properties = new TypedProperties();
-		properties.setDouble("swap.rate", 0.7);
-		properties.setDouble("insertion.rate", 0.9);
-		properties.setDouble("pmx.rate", 0.4);
-		
-		GeneticAlgorithm algorithm = new GeneticAlgorithm(problem);
-		algorithm.applyConfiguration(properties);
-		
-		TSPExample example = new TSPExample(instance, algorithm);
-		example.start();
+		UI.showAndWait(() -> {
+			Problem problem = new TSPProblem(instance);
+			
+			TypedProperties properties = new TypedProperties();
+			properties.setDouble("swap.rate", 0.7);
+			properties.setDouble("insertion.rate", 0.9);
+			properties.setDouble("pmx.rate", 0.4);
+			
+			GeneticAlgorithm algorithm = new GeneticAlgorithm(problem);
+			algorithm.applyConfiguration(properties);
+			
+			return new TSPExample(instance, algorithm);
+		}).start();
 	}
 	
 	/**

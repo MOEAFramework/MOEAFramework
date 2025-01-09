@@ -36,6 +36,7 @@ import org.jfree.data.xy.XYSeries;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.core.Solution;
 import org.moeaframework.util.mvc.ExampleUI;
+import org.moeaframework.util.mvc.UI;
 
 /**
  * A GUI for displaying the actual and approximated functions used in a symbolic regression problem instance.
@@ -74,8 +75,9 @@ public class SymbolicRegressionGUI extends ExampleUI<GeneticAlgorithm> {
 		initialize();
 		layoutComponents();
 
-		setSize(600, 600);
-		setLocationRelativeTo(null);
+		Dimension size = new Dimension(600, 600);
+		setMinimumSize(size);
+		setSize(size);
 	}
 
 	private void initialize() {
@@ -145,11 +147,12 @@ public class SymbolicRegressionGUI extends ExampleUI<GeneticAlgorithm> {
 	 * @param problem the symbolic regression problem instance
 	 */
 	public static void runDemo(AbstractSymbolicRegression problem) {
-		GeneticAlgorithm algorithm = new GeneticAlgorithm(problem);
-		algorithm.setInitialPopulationSize(500);
-		
-		SymbolicRegressionGUI gui = new SymbolicRegressionGUI(problem, algorithm);
-		gui.start();
+		UI.showAndWait(() -> {
+			GeneticAlgorithm algorithm = new GeneticAlgorithm(problem);
+			algorithm.setInitialPopulationSize(500);
+			
+			return new SymbolicRegressionGUI(problem, algorithm);
+		}).start();
 	}
 
 }

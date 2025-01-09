@@ -65,7 +65,8 @@ SCRIPT_DIR="$(dirname -- "${BASH_SOURCE[0]}")"
 
 # Using sockets instead of standard I/O:
 ./cli Solve --algorithm NSGAII \
-    --variables "R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1)" \
+    --lowerBounds "0,0,0,0,0,0,0,0,0,0,0" \
+    --upperBounds "1,1,1,1,1,1,1,1,1,1,1" \
     --objectives 2 \
     --numberOfEvaluations 10000 \
     --useSocket \

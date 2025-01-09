@@ -22,8 +22,6 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.swing.SwingUtilities;
-
 import org.jfree.ui.about.AboutDialog;
 import org.junit.After;
 import org.junit.Before;
@@ -33,15 +31,13 @@ import org.moeaframework.Assume;
 import org.moeaframework.Counter;
 import org.moeaframework.TempFiles;
 import org.moeaframework.analysis.viewer.TextViewer;
+import org.moeaframework.util.mvc.ControllerListener;
+import org.moeaframework.util.mvc.UI;
 
 /**
  * GUI tests have limited scope and, in general, do not validate the content being displayed.
  */
 public class DiagnosticToolTest {
-	
-	private DiagnosticTool tool;
-	
-	private DiagnosticToolController controller;
 	
 	private AtomicBoolean isRunning;
 	
@@ -57,14 +53,13 @@ public class DiagnosticToolTest {
 	
 	@After
 	public void tearDown() {
-		tool = null;
-		controller = null;
+		isRunning = null;
+		controllerStateCounter = null;
 	}
 	
 	@Test
 	public void testDisplay() throws InterruptedException, InvocationTargetException {
-		// Render the UI and display plots to check for any errors
-		runTest("NSGAII", "DTLZ2_2", 1000, 5);
+		DiagnosticTool tool = runTest("NSGAII", "DTLZ2_2", 1000, 5);
 		tool.setVisible(true);
 		tool.selectAllMetrics();
 		tool.selectAllResults();
@@ -82,36 +77,33 @@ public class DiagnosticToolTest {
 	
 	@Test
 	public void test() throws InterruptedException, InvocationTargetException {
-		runTest("NSGAII", "DTLZ2_2", 1000, 5);
+		DiagnosticTool tool = runTest("NSGAII", "DTLZ2_2", 1000, 5);
 		assertEvents(5);
-		assertResult("NSGAII", "DTLZ2_2", 5);
+		assertResult(tool, "NSGAII", "DTLZ2_2", 5);
 	}
 	
 	@Test
 	public void testJMetal() throws InterruptedException, InvocationTargetException {
 		Assume.assumeJMetalExists();
-		runTest("NSGAII-JMetal", "DTLZ2_2", 1000, 5);
-		assertResult("NSGAII-JMetal", "DTLZ2_2", 5);
+		DiagnosticTool tool = runTest("NSGAII-JMetal", "DTLZ2_2", 1000, 5);
+		assertResult(tool, "NSGAII-JMetal", "DTLZ2_2", 5);
 	}
 	
 	@Test
 	public void testSaveLoadData() throws IOException, InterruptedException, InvocationTargetException {
-		runTest("NSGAII", "DTLZ2_2", 1000, 5);
+		DiagnosticTool tool = runTest("NSGAII", "DTLZ2_2", 1000, 5);
 		
 		File tempFile = TempFiles.createFile();
 		tool.getController().saveData(tempFile);
 		tool.getController().loadData(tempFile);
 	}
 	
-	public void runTest(String algorithmName, String problemName, int numberOfEvaluations, int numberOfSeeds)
-			throws InterruptedException, InvocationTargetException {
-		tool = new DiagnosticTool();
-		controller = tool.getController();
+	private DiagnosticTool runTest(String algorithmName, String problemName, int numberOfEvaluations, int numberOfSeeds)
+			throws InterruptedException {
+		DiagnosticTool tool = new DiagnosticTool();
+		DiagnosticToolController controller = tool.getController();
 		
-		// Wait for event queue to clear before tracking events
-		SwingUtilities.invokeAndWait(() -> {});
-		
-		controller.addControllerListener(event -> {
+		ControllerListener listener = event -> {
 			controllerStateCounter.incrementAndGet(event.getEventType());
 			
 			if (event.getEventType().equals("stateChanged")) {
@@ -119,7 +111,11 @@ public class DiagnosticToolTest {
 				Assert.assertNotEquals(isRunning.get(), controller.isRunning());
 				isRunning.set(controller.isRunning());
 			}
-		});
+		};
+		
+		// Drain the event queue and register the listener
+		UI.clearEventQueue();
+		controller.addControllerListener(listener);
 		
 		tool.setAlgorithm(algorithmName);
 		tool.setProblem(problemName);
@@ -133,13 +129,17 @@ public class DiagnosticToolTest {
 		controller.run();
 		controller.join();
 		
-		// Drain the event queue and check if finished
-		SwingUtilities.invokeAndWait(() -> {});
+		// Drain the event queue and unregister the listener
+		UI.clearEventQueue();
+		controller.removeControllerListener(listener);
+		
 		Assert.assertFalse(controller.isRunning());
 		
 		Assert.assertEquals(100, controller.getOverallProgress());
 		Assert.assertEquals(100, controller.getRunProgress());
 		Assert.assertNotNull(controller.getLastSeries());
+		
+		return tool;
 	}
 	
 	private void assertEvents(int expectedSeeds) {
@@ -150,7 +150,9 @@ public class DiagnosticToolTest {
 		Assert.assertEquals(11 * expectedSeeds + 1, controllerStateCounter.get("progressChanged"));
 	}
 	
-	private void assertResult(String algorithmName, String problemName, int expectedSeeds) {
+	private void assertResult(DiagnosticTool tool, String algorithmName, String problemName, int expectedSeeds) {
+		DiagnosticToolController controller = tool.getController();
+		
 		ResultKey key = new ResultKey(algorithmName, problemName);
 		Assert.assertNotNull(controller.get(key));
 		Assert.assertSize(expectedSeeds, controller.get(key));

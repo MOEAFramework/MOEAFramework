@@ -1,0 +1,183 @@
+/* Copyright 2009-2025 David Hadka
+ *
+ * This file is part of the MOEA Framework.
+ *
+ * The MOEA Framework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * The MOEA Framework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+ * License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package org.moeaframework.util.mvc;
+
+import java.awt.Taskbar;
+import java.awt.Window;
+import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Supplier;
+
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
+import org.apache.commons.lang3.SystemUtils;
+import org.moeaframework.core.FrameworkException;
+import org.moeaframework.core.Settings;
+
+/**
+ * Utilities for creating UIs in a consistent manner.  For best results, the constructor of the window should be called
+ * within {@link #show(Supplier)} or {@link #showAndWait(Supplier)}.  Within the constructor:
+ * <ol>
+ *   <li>Set the window title.
+ *   <li>Layout all components.
+ *   <li>Set {@link Window#setPreferredSize(java.awt.Dimension)}
+ * </ol>
+ * 
+ * <h2>OS-Specific Details</h2>
+ * <ul>
+ *   <li>Mac (Darwin) - Call {@code java} with {@code -Xdock:name=...} to set the application title.  Otherwise, the
+ *       class name will appear in the title bar.
+ * </ul>
+ */
+public class UI {
+	
+	static {
+		configureLookAndFeel();
+	}
+	
+	private UI() {
+		super();
+	}
+	
+	/**
+	 * Optionally configure all windows to display their menu in Mac's system menu instead of within the window itself.
+	 * This has no effect and is safe to call on other operating systems.
+	 * <p>
+	 * <strong>This must be called before displaying any UI components!</strong>
+	 * 
+	 * @param value if {@code true}, place menus in the system menu
+	 */
+	public static void setUseScreenMenuBar(boolean value) {
+		if (SystemUtils.IS_OS_MAC) {
+			System.setProperty("apple.laf.useScreenMenuBar", Boolean.toString(value));
+		}
+	}
+	
+	/**
+	 * Configures the system look and feel.  This method is called automatically any time this class is used, and
+	 * therefore does not need to be explicitly invoked in user code.
+	 */
+	public static void configureLookAndFeel() {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+			if (Settings.isVerbose()) {
+				System.err.println("ERROR: Unable to set system look and feel: " + e);
+			}
+		}
+		
+		if (SystemUtils.IS_OS_MAC) {
+			Taskbar taskbar = Taskbar.getTaskbar();
+
+			try {
+				taskbar.setIconImage(Settings.getIcon().getResolutionVariant(256, 256));
+			} catch (Exception e) {
+				if (Settings.isVerbose()) {
+					System.err.println("ERROR: Unable to set taskbar icon: " + e);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Creates a window asynchronously, scheduling the window to be created and displayed on the event dispatch thread.
+	 * The returned future can be used to await this task, blocking until the window is displayed.  If invoked from the
+	 * event dispatch thread, the window is created immediately.
+	 * 
+	 * @param <T> the type of window
+	 * @param supplier a function that creates the window
+	 * @return the future used to access the displayed window
+	 */
+	public static <T extends Window> CompletableFuture<T> show(Supplier<T> supplier) {		
+		if (SwingUtilities.isEventDispatchThread()) {
+			T window = supplier.get();
+			
+			window.setIconImages(Settings.getIcon().getResolutionVariants());
+			window.pack();
+
+			if (window instanceof JFrame frame) {
+				frame.setLocationRelativeTo(null);
+				frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			} else if (window instanceof JDialog dialog) {
+				dialog.setLocationRelativeTo(dialog.getOwner());
+				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			}
+
+			window.setVisible(true);
+			return CompletableFuture.completedFuture(window);
+		} else {
+			CompletableFuture<T> future = new CompletableFuture<>();
+
+			SwingUtilities.invokeLater(() -> {
+				CompletableFuture<T> innerFuture = show(supplier);
+				innerFuture.thenAccept((window) -> future.complete(window));
+			});
+			
+			return future;
+		}
+	}
+	
+	/**
+	 * Creates a window synchronously.
+	 * 
+	 * @param <T> the type of window
+	 * @param supplier a function that creates the window
+	 * @return the window after it is displayed
+	 */
+	public static <T extends Window> T showAndWait(Supplier<T> supplier) {
+		try {
+			return show(supplier).get();
+		} catch (ExecutionException | InterruptedException e) {
+			throw new FrameworkException("Failed to create or show window", e);
+		}
+	}
+	
+	/**
+	 * Blocks until all events scheduled in the event queue are processed.  This method no-ops if run from the event
+	 * dispatch thread.
+	 */
+	public static void clearEventQueue() {
+		if (SwingUtilities.isEventDispatchThread()) {
+			System.err.println("WARNING: Unable to clear event queue, already running on event dispatch thread");
+		} else {
+			try {
+				SwingUtilities.invokeAndWait(() -> {});
+			} catch (InvocationTargetException | InterruptedException e) {
+				// do nothing
+			}
+		}
+	}
+	
+	/**
+	 * Disposes all dialogs and windows.
+	 */
+	public static void disposeAll() {
+		SwingUtilities.invokeLater(() -> {
+			for (Window window : Window.getWindows()) {
+				if (window.isShowing()) {
+					window.dispose();
+				}
+			}
+		});
+	}
+
+}

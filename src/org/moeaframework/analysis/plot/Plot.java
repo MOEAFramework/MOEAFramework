@@ -20,10 +20,8 @@ package org.moeaframework.analysis.plot;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dialog;
 import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.Paint;
 import java.awt.Window;
 import java.awt.geom.Ellipse2D;
@@ -89,9 +87,9 @@ import org.moeaframework.analysis.series.IndexedResult;
 import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.analysis.stream.Partition;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.Population;
+import org.moeaframework.util.mvc.UI;
 
 /**
  * Provides simple 2D plotting capabilities.  This is intended to allow the rapid creation of 2D plots, supporting:
@@ -583,7 +581,7 @@ public class Plot {
 
 		return this;
 	}
-	
+
 	/**
 	 * Displays sensitivity analysis results in a "spider web" plot.
 	 * 
@@ -632,19 +630,19 @@ public class Plot {
 					if (ys[j] - ys[i] < 0) {
 						angle += Math.PI;
 					}
-					
+
 					Path2D path = new Path2D.Double();
 					path.moveTo(xs[i] - size * Math.sin(angle), ys[i] + size * Math.cos(angle));
 					path.lineTo(xs[i] + size * Math.sin(angle), ys[i] - size * Math.cos(angle));
 					path.lineTo(xs[j] + size * Math.sin(angle), ys[j] - size * Math.cos(angle));
 					path.lineTo(xs[j] - size * Math.sin(angle), ys[j] + size * Math.cos(angle));
 					path.closePath();
-					
+
 					XYShapeAnnotation annotation = new XYShapeAnnotation(path,
 							plot.getRenderer().getDefaultStroke(),
 							lineColor,
 							lineColor);
-					
+
 					plot.addAnnotation(annotation);
 				}
 			}
@@ -654,7 +652,7 @@ public class Plot {
 			for (int i = 0; i < n; i++) {
 				Sensitivity<?> value = firstOrder.getFirstOrder(parameterSet.get(i));
 				double size = sizeScaling * Math.pow(value.getSensitivity(), sensitivityScaling) / 2.0;
-				
+
 				XYShapeAnnotation annotation = new XYShapeAnnotation(
 						new Ellipse2D.Double(xs[i] - size / 2.0, ys[i] - size / 2.0, size, size),
 						plot.getRenderer().getDefaultStroke(),
@@ -669,7 +667,7 @@ public class Plot {
 			for (int i = 0; i < n; i++) {
 				Sensitivity<?> value = totalOrder.getTotalOrder(parameterSet.get(i));
 				double size = sizeScaling * Math.pow(value.getSensitivity(), sensitivityScaling) / 2.0;
-				
+
 				XYShapeAnnotation annotation = new XYShapeAnnotation(
 						new Ellipse2D.Double(xs[i] - size / 2.0, ys[i] - size / 2.0, size, size),
 						plot.getRenderer().getDefaultStroke(),
@@ -678,7 +676,7 @@ public class Plot {
 				plot.addAnnotation(annotation);
 			}
 		}
-		
+
 		for (int i = 0; i < n; i++) {
 			XYTextAnnotation annotation = new XYTextAnnotation(parameterSet.get(i).getName(),
 					labelOffset * xs[i], labelOffset * ys[i]);
@@ -686,12 +684,12 @@ public class Plot {
 			annotation.setFont(plot.getRenderer().getDefaultItemLabelFont());
 			plot.addAnnotation(annotation);
 		}
-		
+
 		plot.setBackgroundPaint(Color.WHITE);
-		
+
 		plot.setDomainGridlinesVisible(false);
 		plot.setDomainMinorGridlinesVisible(false);
-		
+
 		plot.setRangeGridlinesVisible(false);
 		plot.setRangeMinorGridlinesVisible(false);
 
@@ -704,7 +702,7 @@ public class Plot {
 		plot.getRangeAxis().setAutoRange(false);
 		plot.getRangeAxis().setLowerBound(DoubleStream.of(ys).min().getAsDouble() - 0.5);
 		plot.getRangeAxis().setUpperBound(DoubleStream.of(ys).max().getAsDouble() + 0.5);
-		
+
 		return this;
 	}
 
@@ -1378,70 +1376,48 @@ public class Plot {
 	 * @return the window that was created
 	 */
 	public JFrame show(int width, int height) {
-		JFrame frame = new JFrame();
-
-		frame.getContentPane().setLayout(new BorderLayout());
-		frame.getContentPane().add(getChartPanel(), BorderLayout.CENTER);
-
-		frame.setPreferredSize(new Dimension(width, height));
-		frame.pack();
-
-		frame.setLocationRelativeTo(null);
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.setTitle(WINDOW_TITLE);
-		frame.setIconImages(Settings.getIcon().getResolutionVariants());
-		frame.setVisible(true);
-
-		return frame;
+		return UI.showAndWait(() -> {
+			JFrame frame = new JFrame(WINDOW_TITLE);
+	
+			frame.getContentPane().setLayout(new BorderLayout());
+			frame.getContentPane().add(getChartPanel(), BorderLayout.CENTER);
+			frame.setPreferredSize(new Dimension(width, height));
+	
+			return frame;
+		});
 	}
 
 	/**
 	 * Displays the chart in a blocking JDialog.
 	 * 
+	 * @param owner the owner of this dialog, which will be blocked until this dialog is closed
 	 * @return the window that was created
 	 */
-	public JDialog showDialog() {
-		return showDialog(800, 600);
+	public JDialog showDialog(Window owner) {
+		return showDialog(owner, 800, 600);
 	}
 
 	/**
 	 * Displays the chart in a blocking JDialog.
 	 * 
+	 * @param owner the owner of this dialog, which will be blocked until this dialog is closed
 	 * @param width the width of the chart
 	 * @param height the height of the chart
 	 * @return the window that was created
 	 */
-	public JDialog showDialog(int width, int height) {
-		JDialog dialog = new JDialog();
-
-		dialog.getContentPane().setLayout(new BorderLayout());
-		dialog.getContentPane().add(getChartPanel(), BorderLayout.CENTER);
-
-		dialog.setPreferredSize(new Dimension(width, height));
-		dialog.pack();
-
-		dialog.setLocationRelativeTo(null);
-		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		dialog.setTitle(WINDOW_TITLE);
-		dialog.setModalityType(ModalityType.APPLICATION_MODAL);
-		dialog.setIconImages(Settings.getIcon().getResolutionVariants());
-		dialog.setVisible(true);
-
-		return dialog;
-	}
-
-	/**
-	 * Disposes all displayed plot windows.
-	 */
-	public static void disposeAll() {
-		for (Window window : Window.getWindows()) {
-			if (((window instanceof Frame frame) && frame.getTitle().equals(WINDOW_TITLE)) ||
-					((window instanceof Dialog dialog) && dialog.getTitle().equals(WINDOW_TITLE))) {
-				if (window.isShowing()) {
-					window.dispose();
-				}
-			}
-		}
+	public JDialog showDialog(Window owner, int width, int height) {
+		return UI.showAndWait(() -> {
+			JDialog dialog = new JDialog(owner, WINDOW_TITLE);
+	
+			dialog.getContentPane().setLayout(new BorderLayout());
+			dialog.getContentPane().add(getChartPanel(), BorderLayout.CENTER);
+	
+			dialog.setPreferredSize(new Dimension(width, height));
+			dialog.pack();
+	
+			dialog.setModalityType(ModalityType.APPLICATION_MODAL);	
+			return dialog;
+		});
 	}
 
 }

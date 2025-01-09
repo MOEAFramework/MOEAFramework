@@ -63,6 +63,7 @@ import org.moeaframework.util.mvc.Controller;
 import org.moeaframework.util.mvc.SettingChangedEvent;
 import org.moeaframework.util.mvc.SettingChangedListener;
 import org.moeaframework.util.mvc.Toggle;
+import org.moeaframework.util.mvc.UI;
 
 /**
  * The controller manages the underlying data model, performs the evaluation of jobs, and notifies any listeners when
@@ -471,11 +472,11 @@ public class DiagnosticToolController extends Controller implements SettingChang
 				
 				ps.close();
 				
-				TextViewer viewer = new TextViewer(frame);
-				viewer.setText(output.toString());
-				viewer.setLocationRelativeTo(frame);
-				viewer.setVisible(true);
-				return viewer;
+				return UI.showAndWait(() -> {
+					TextViewer viewer = new TextViewer(frame);
+					viewer.setText(output.toString());
+					return viewer;
+				});
 			} catch (IOException e) {
 				handleException(e);
 				return null;

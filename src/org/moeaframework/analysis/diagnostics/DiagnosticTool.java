@@ -69,10 +69,11 @@ import org.jfree.ui.about.AboutDialog;
 import org.jfree.ui.about.ProjectInfo;
 import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.analysis.viewer.RuntimeViewer;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
+import org.moeaframework.util.Iterators;
+import org.moeaframework.util.Iterators.IndexedValue;
 import org.moeaframework.util.Localization;
 import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.io.Resources;
@@ -82,6 +83,7 @@ import org.moeaframework.util.mvc.ControllerListener;
 import org.moeaframework.util.mvc.InvertedToggleAction;
 import org.moeaframework.util.mvc.RunnableAction;
 import org.moeaframework.util.mvc.ToggleAction;
+import org.moeaframework.util.mvc.UI;
 
 /**
  * The main window of the diagnostic tool.
@@ -208,11 +210,8 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 	public DiagnosticTool() {
 		super(LOCALIZATION.getString("title.diagnosticTool"));
 
-		setSize(800, 600);
-		setMinimumSize(new Dimension(800, 600));
+		setPreferredSize(new Dimension(800, 600));
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setIconImages(Settings.getIcon().getResolutionVariants());
 		
 		initialize();
 		layoutMenu();
@@ -290,19 +289,19 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 					
 					JPopupMenu popupMenu = new JPopupMenu();
 					popupMenu.add(new RunnableAction("showApproximationSet", LOCALIZATION, () -> {
-						RuntimeViewer viewer = new RuntimeViewer(DiagnosticTool.this, key.toString());
-						List<ResultSeries> data = controller.get(key);
+						UI.show(() -> {
+							RuntimeViewer viewer = new RuntimeViewer(DiagnosticTool.this, key.toString());
+								
+							for (IndexedValue<ResultSeries> indexedSeries : Iterators.enumerate(controller.get(key))) {
+								String name = LOCALIZATION.getString("text.seed", indexedSeries.getIndex() + 1);
+								viewer.getController().addSeries(name, indexedSeries.getValue());
+							}
+								
+							viewer.getController().setReferenceSet(
+									ProblemFactory.getInstance().getReferenceSet(key.getProblem()));
 							
-						for (int i = 0; i < data.size(); i++) {
-							String name = LOCALIZATION.getString("text.seed", i + 1);
-							viewer.getController().addSeries(name, data.get(i));
-						}
-							
-						viewer.getController().setReferenceSet(
-								ProblemFactory.getInstance().getReferenceSet(key.getProblem()));
-							
-						viewer.setLocationRelativeTo(DiagnosticTool.this);
-						viewer.setVisible(true);
+							return viewer;
+						});
 					}).toMenuItem());
 					
 					popupMenu.show(resultTable, e.getX(), e.getY());
@@ -853,10 +852,7 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 					"www.flaticon.com/terms-of-use",
 					null));
 			
-			AboutDialog dialog = new AboutDialog(this, LOCALIZATION.getString("title.about"), info);
-			dialog.setLocationRelativeTo(this);
-			dialog.setVisible(true);
-			return dialog;
+			return UI.showAndWait(() -> new AboutDialog(this, LOCALIZATION.getString("title.about"), info));
 		} catch (Exception ex) {
 			controller.handleException(ex);
 			return null;

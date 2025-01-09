@@ -28,14 +28,12 @@ import java.io.PrintWriter;
 
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.commons.io.FilenameUtils;
-import org.moeaframework.core.Settings;
 import org.moeaframework.util.Localization;
 import org.moeaframework.util.mvc.RunnableAction;
 
@@ -71,10 +69,7 @@ public class TextViewer extends JDialog {
 		initialize();
 		layoutComponents();
 
-		setSize(800, 600);
-		setMinimumSize(new Dimension(800, 600));
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setIconImages(Settings.getIcon().getResolutionVariants());
+		setPreferredSize(new Dimension(800, 600));
 	}
 	
 	/**

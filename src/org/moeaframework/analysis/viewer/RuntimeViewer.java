@@ -40,7 +40,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -50,7 +49,6 @@ import javax.swing.JSlider;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -72,7 +70,6 @@ import org.moeaframework.analysis.series.IndexedResult;
 import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.analysis.viewer.RuntimeController.FitMode;
 import org.moeaframework.core.Named;
-import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.constraint.Constraint;
 import org.moeaframework.core.objective.Objective;
@@ -85,6 +82,7 @@ import org.moeaframework.util.mvc.ControllerListener;
 import org.moeaframework.util.mvc.PopupAction;
 import org.moeaframework.util.mvc.RunnableAction;
 import org.moeaframework.util.mvc.SelectValueAction;
+import org.moeaframework.util.mvc.UI;
 
 /**
  * Viewer showing approximation set runtime plots.
@@ -198,13 +196,7 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 	 * @param series the series containing approximation set data to display
 	 */
 	public static void show(String title, NondominatedPopulation referenceSet, ResultSeries... series) {
-		SwingUtilities.invokeLater(() -> {
-			try {
-				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			} catch (Exception e) {
-				//silently handle
-			}
-				
+		UI.show(() -> {
 			RuntimeViewer viewer = new RuntimeViewer(null, title);
 			
 			viewer.getController().setReferenceSet(referenceSet);
@@ -213,8 +205,7 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 				viewer.getController().addSeries(LOCALIZATION.getString("text.series") + " " + (i + 1), series[i]);
 			}
 			
-			viewer.setLocationRelativeTo(null);
-			viewer.setVisible(true);
+			return viewer;
 		});
 	}
 	
@@ -241,10 +232,7 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		layoutComponents();
 		
 		setTitle(LOCALIZATION.getString("title.runtimeViewer"));
-		setSize(800, 600);
-		setMinimumSize(new Dimension(400, 300));
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setIconImages(Settings.getIcon().getResolutionVariants());
+		setPreferredSize(new Dimension(800, 600));
 		
 		controller.fireEvent("stateChanged");
 	}

@@ -42,6 +42,7 @@ import org.moeaframework.core.spi.AlgorithmFactory;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.CEC2009.UF1;
 import org.moeaframework.problem.Problem;
+import org.moeaframework.util.mvc.UI;
 
 /**
  * These tests do not check for the correctness of the plots, only that the code runs without error.
@@ -56,7 +57,7 @@ public class PlotTest {
 	@After
 	public void tearDown() {
 		if (isJUnitTest()) {
-			Plot.disposeAll();
+			UI.disposeAll();
 		}
 	}
 	

@@ -30,6 +30,7 @@ import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.mock.MockSolution;
+import org.moeaframework.util.mvc.UI;
 
 /**
  * GUI tests have limited scope and, in general, do not validate the content being displayed.
@@ -63,19 +64,21 @@ public class RuntimeViewerTest {
 	
 	@Test
 	public void testWithReferenceSet() {
-		RuntimeViewer viewer = new RuntimeViewer("Viewer");
-		viewer.getController().setReferenceSet(referenceSet);
-		viewer.getController().addSeries("Test", series);
-		viewer.setVisible(true);
-		viewer.dispose();
+		UI.showAndWait(() -> {
+			RuntimeViewer viewer = new RuntimeViewer("Viewer");
+			viewer.getController().setReferenceSet(referenceSet);
+			viewer.getController().addSeries("Test", series);
+			return viewer;
+		}).dispose();
 	}
 	
 	@Test
 	public void testNoReferenceSet() {
-		RuntimeViewer viewer = new RuntimeViewer("Viewer");
-		viewer.getController().addSeries("Test", series);
-		viewer.setVisible(true);
-		viewer.dispose();
+		UI.showAndWait(() -> {
+			RuntimeViewer viewer = new RuntimeViewer("Viewer");
+			viewer.getController().addSeries("Test", series);
+			return viewer;
+		}).dispose();
 	}
 	
 	@Test

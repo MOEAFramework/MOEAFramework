@@ -17,11 +17,9 @@
  */
 package org.moeaframework.analysis.diagnostics;
 
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-
 import org.apache.commons.cli.CommandLine;
 import org.moeaframework.util.cli.CommandLineUtility;
+import org.moeaframework.util.mvc.UI;
 
 /**
  * Command line utility for launching the diagnostic tool.
@@ -37,16 +35,7 @@ public class LaunchDiagnosticTool extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
-		SwingUtilities.invokeLater(() -> {
-			try {
-				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			} catch (Exception e) {
-				//silently handle
-			}
-				
-			DiagnosticTool diagnosticTool = new DiagnosticTool();
-			diagnosticTool.setVisible(true);
-		});
+		UI.show(() -> new DiagnosticTool());
 	}
 	
 	/**

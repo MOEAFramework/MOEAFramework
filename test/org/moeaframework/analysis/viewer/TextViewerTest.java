@@ -21,6 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
+import org.moeaframework.util.mvc.UI;
 
 /**
  * GUI tests have limited scope and, in general, do not validate the content being displayed.
@@ -34,10 +35,11 @@ public class TextViewerTest {
 	
 	@Test
 	public void test() {
-		TextViewer viewer = new TextViewer();
-		viewer.setText("foo");
-		viewer.setVisible(true);
-		viewer.dispose();
+		UI.showAndWait(() -> {
+			TextViewer viewer = new TextViewer();
+			viewer.setText("foo");
+			return viewer;
+		}).dispose();
 	}
 	
 	@Test
