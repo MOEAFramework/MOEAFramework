@@ -111,8 +111,8 @@ New releases are published by the `staging.yml` workflow file running on GitHub 
 release is:
 
 1. Merge a PR to increment the version number in `META-INF/build.properties`.  Append `-SNAPSHOT` to the version to create
-   an snapshot release.
-2. After CI passes, trigger the Staging workflow (`staging.yml`).
+   a snapshot release.
+2. After CI passes, manually trigger the Staging workflow (`staging.yml`).
 3. Verify the [integration tests](https://github.com/MOEAFramework/IntegrationTests) are passing with the new release.
 4. Publish the Maven artifacts, GitHub release, and Website update.
 
@@ -144,14 +144,28 @@ ant validate-docs
 ant update-docs
 ```
 
+## Errors, Exceptions, and Warnings
+
+The following guidance should be used when emitting any kind of error or warning:
+
+1. All errors and warnings should be written to the standard error stream (`System.err`).  Informational messages may
+   also be written to standard error to keep these messages separate from output.
+2. Prefix the error or warning message with `ERROR:` or `WARNING:`.  Do not prefix exception messages.
+3. The first word should be capitalized (unless referencing a variable, parameter, etc. that is not capitalized).
+4. Surround any displayed values or inputs in single quotes, especially with strings that may contain whitespace.
+5. For invalid inputs, display both the expected format alongside the invalid input.
+
+For exceptions:
+
+1. Throw the most appropriate exception type for the problem, preferring existing Java exception types.  For example,
+   `IllegalArgumentException` for invalid inputs, `IOException` for any errors related to I/O, files, parsing, etc.
+2. If no existing exception types are appropriate to represent an error, create a new type extending from
+   `FrameworkException`.
+
 ## Service Providers
 
-We use Java service providers to dynamically locate implementations at runtime.  In the context of this library, this
-includes algorithms, problems, and operators.  To construct a new provider:
+The Java Service Provider Interface (SPI) is a standardized way to implement plugin-style functionality for specific
+Java types.  We use the SPI to dynamically locate and construct algorithms, problems, operators, etc. at runtime.
+Consequently, when adding a new implementation of these types, it's mandatory to add a corresponding provider.
+See the Javadocs for the specific provider type, such as `AlgorithmFactory`, for more details.
 
-1. Implement the provider by extending the appropriate class (`AlgorithmProvider`, `ProblemProvider`, or `OperatorProvider`).
-2. Register the provider by adding it to `META-INF/services`.  For instance, if writing an `AlgorithmProvider`, create the
-   file `META-INF/services/org.moeaframework.core.spi.AlgorithmProvider` with a single line containing the fully-qualitifed
-   class name of your custom provider.
-3. Package the compiled Java classes along with the `META-INF` directory into a JAR.
-4. Add the JAR to the classpath, either by placing it in the `lib/` folder or the Maven `pom.xml`.
