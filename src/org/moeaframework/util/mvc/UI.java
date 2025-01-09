@@ -62,7 +62,7 @@ public class UI {
 	 * Optionally configure all windows to display their menu in Mac's system menu instead of within the window itself.
 	 * This has no effect and is safe to call on other operating systems.
 	 * <p>
-	 * <strong>This must be called before displaying any UI components!</strong>
+	 * <strong>Must be called before displaying any UI components!</strong>
 	 * 
 	 * @param value if {@code true}, place menus in the system menu
 	 */
@@ -73,8 +73,11 @@ public class UI {
 	}
 	
 	/**
-	 * Configures the system look and feel.  This method is called automatically any time this class is used, and
-	 * therefore does not need to be explicitly invoked in user code.
+	 * Configures the system look and feel.
+	 * <p>
+	 * <strong>Must be called before displaying any UI components!</strong>  Note that it is not necessary to call this
+	 * method explicitly so long as you are displaying windows using the methods in this class, since this method is
+	 * called automatically when this class is first loaded.
 	 */
 	public static void configureLookAndFeel() {
 		try {
@@ -166,7 +169,7 @@ public class UI {
 				throw re;
 			}
 			
-			throw new FrameworkException("Failed to create or show window", e.getCause());
+			throw new FrameworkException("Failed to create or show window", cause);
 		}
 	}
 	
@@ -181,7 +184,7 @@ public class UI {
 			try {
 				SwingUtilities.invokeAndWait(() -> {});
 			} catch (InvocationTargetException | InterruptedException e) {
-				// do nothing
+				// ignore
 			}
 		}
 	}
