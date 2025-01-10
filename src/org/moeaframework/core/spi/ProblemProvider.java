@@ -63,7 +63,7 @@ public abstract class ProblemProvider {
 	 * Returns the problem with the specified name, or {@code null} if this provider does not support the problem.
 	 * 
 	 * @param name the problem name
-	 * @return the problem with the specified name, or {@code null} if this provider does not support the problem
+	 * @return the problem instance or {@code null}
 	 * @throws ProviderException if the creation of the problem failed for any reason
 	 */
 	public abstract Problem getProblem(String name);
@@ -73,8 +73,7 @@ public abstract class ProblemProvider {
 	 * problem or no reference set is available.
 	 * 
 	 * @param name the problem name
-	 * @return the reference set for the specified problem, or {@code null} if this provider does not support the
-	 *         problem or no reference set is available
+	 * @return the reference set or {@code null}
 	 */
 	public abstract NondominatedPopulation getReferenceSet(String name);
 	
@@ -83,8 +82,7 @@ public abstract class ProblemProvider {
 	 * does not support the problem or no defaults are provided.
 	 * 
 	 * @param name the problem name
-	 * @return the &epsilon; values for the specified problem, or {@code null} if this provider does not support the
-	 *         problem or no reference set is available
+	 * @return the &epsilon; values for the specified problem or {@code null}
 	 */
 	public Epsilons getEpsilons(String name) {
 		return null;

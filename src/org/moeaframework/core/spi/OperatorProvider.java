@@ -69,7 +69,7 @@ public abstract class OperatorProvider {
 	 *        the hints
 	 * @param properties the implementation-specific properties
 	 * @param problem the problem to be solved
-	 * @return an instance of the variation operator with the specified name
+	 * @return an instance of the variation operator or {@code null}
 	 * @throws ProviderException if the creation of the operator failed for any reason
 	 */
 	public abstract Variation getVariation(String name, TypedProperties properties, Problem problem);

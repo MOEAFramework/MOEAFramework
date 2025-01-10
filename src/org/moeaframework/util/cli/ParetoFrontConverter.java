@@ -20,15 +20,11 @@ package org.moeaframework.util.cli;
 import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
-import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.Set;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.analysis.io.ResultWriter;
@@ -39,7 +35,6 @@ import org.moeaframework.core.population.Population;
 import org.moeaframework.core.spi.ProblemProvider;
 import org.moeaframework.core.spi.RegisteredProblemProvider;
 import org.moeaframework.problem.Problem;
-import org.moeaframework.util.SerializationUtils;
 import org.moeaframework.util.io.LineReader;
 
 /**
@@ -58,14 +53,9 @@ public class ParetoFrontConverter extends CommandLineUtility  {
 		
 		for (ProblemProvider provider : providers) {
 			if (provider instanceof RegisteredProblemProvider registeredProvider) {
-				Field referenceSetField = FieldUtils.getField(registeredProvider.getClass(), "referenceSetMap", true);
-				
-				Map<String, String> referenceSetMap = SerializationUtils.castMap(String.class, String.class,
-						HashMap::new, referenceSetField.get(registeredProvider));
-				
-				for (String problemName : referenceSetMap.keySet()) {					
+				for (String problemName : registeredProvider.getRegisteredProblems()) {					
 					Problem problem = registeredProvider.getProblem(problemName);
-					String referenceSet = referenceSetMap.get(problemName);
+					String referenceSet = registeredProvider.getReferenceSetPath(problemName);
 					
 					if (referenceSet == null) {
 						continue;

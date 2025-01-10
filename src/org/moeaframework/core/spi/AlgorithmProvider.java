@@ -67,7 +67,7 @@ public abstract class AlgorithmProvider {
 	 * @param name the algorithm name
 	 * @param properties optional properties for the algorithm
 	 * @param problem the problem
-	 * @return the algorithm with the specified name, or {@code null} if this provider does not support the algorithm
+	 * @return the algorithm instance or {@code null}
 	 * @throws ProviderException if the creation of the algorithm failed for any reason
 	 */
 	public abstract Algorithm getAlgorithm(String name, TypedProperties properties, Problem problem);

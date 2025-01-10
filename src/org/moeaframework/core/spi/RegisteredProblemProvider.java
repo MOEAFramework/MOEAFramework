@@ -144,10 +144,21 @@ public class RegisteredProblemProvider extends ProblemProvider {
 			throw new ProviderException(name, e);
 		}
 	}
+	
+	/**
+	 * Returns the file path or resource name to load the reference set for the specified problem, or {@code null} if
+	 * this provider has no reference set defined for the problem.
+	 * 
+	 * @param name the problem name
+	 * @return the reference set path, resource name, or {@code null}
+	 */
+	public String getReferenceSetPath(String name) {
+		return referenceSetMap.get(name);
+	}
 
 	@Override
 	public NondominatedPopulation getReferenceSet(String name) {
-		String referenceSet = referenceSetMap.get(name);
+		String referenceSet = getReferenceSetPath(name);
 		
 		if (referenceSet == null) {
 			return null;
