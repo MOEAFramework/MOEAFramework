@@ -125,7 +125,6 @@ source code.  To ensure code samples shown in documentation is consistent, we ha
 snippets in documentation with working Java code.  This works by placing a special comment immediately before a code
 block that identifys the language, source file, and section.  For example, this will extract lines 33 to 40 from
 `Example1.java` with `<!-- java:examples/Example1.java [33:40] -->`.
-```
 
 Rather than using line numbers, we can also identify blocks of code using an identifier.  In the Java code, surround
 the code with these comments:
