@@ -27,6 +27,7 @@ lib/nashorn-*.jar
 lib/asm-*.jar
 lib/junit-*.jar
 lib/hamcrest-*.jar
+lib/jfreesvg-*.jar
 test/checkstyle/checkstyle-*.jar
 
 # Eclipse
