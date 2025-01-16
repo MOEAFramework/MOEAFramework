@@ -61,8 +61,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	<path id="resources">
 		<fileset dir="src" excludes="**/*.java,**/*.class,overview.html,cli.cmd,cli.sh,macros.xml,pom.xml.template,README.md.template" />
 	</path>
-
-	<!-- Generates the Javadoc webpages -->
+	
 	<target name="build-javadoc">
 		<delete dir="${javadoc}" />
 		<mkdir dir="${javadoc}" />
@@ -86,7 +85,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		</javadoc>
 	</target>
 
-	<!-- Builds the MOEA Framework JAR file -->
 	<target name="build-binary">
 		<tstamp />
 
@@ -149,7 +147,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 				jarfile="${dist}/${shortname}-${version}.jar" />
 	</target>
 	
-	<!-- Update the lib/ folder and .classpath file with the latest versions from build.properties -->
 	<target name="update-libraries">
 		<delete dir="lib" />
 		<mkdir dir="lib" />
@@ -169,7 +166,25 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<replace-properties file=".classpath" />
 	</target>
 	
-	<!-- Updates README.md from the template -->
+	<target name="setup-hooks">
+		<echo file=".git/hooks/pre-commit"><![CDATA[#!/usr/bin/env bash
+			
+temp_file=$(mktemp)
+find src -type f -name "*.java" -exec grep -EHn '^\t*[ ]{4,}[^ ]' {} \; >> "${temp_file}"
+find test -type f -name "*.java" -not -name "UpdateCodeSamplesTest.java" -exec grep -EHn '^\t*[ ]{4,}[^ ]' {} \; >> "${temp_file}"
+find examples -type f -name "*.java" -exec grep -EHn '^\t*[ ]{4,}[^ ]' {} \; >> "${temp_file}"
+find .github/workflows -type f -name "*.yml" -exec grep -EHn '^[ ]*\t+[^ ]' {} \; >> "${temp_file}"
+			
+if [ -s "${temp_file}" ]; then
+	echo "Please fix the following formatting / whitespace issues before committing:"
+	cat "${temp_file}"
+	exit -1
+fi
+]]></echo>
+		
+		<chmod perm="+x" type="file" verbose="true" file=".git/hooks/pre-commit" />
+	</target>
+	
 	<target name="update-readme">
 		<copy file="src/README.md.template" tofile="README.md" overwrite="true" />
 		
@@ -179,7 +194,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<replace-properties file="README.md" />
 	</target>
 	
-	<!-- Updates code samples used in the docs -->
 	<target name="update-docs" depends="build-binary,update-readme">
 		<java classname="org.moeaframework.util.cli.UpdateCodeSamples" fork="true" failonerror="true">
 			<classpath refid="classpath" />
@@ -189,7 +203,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		</java>
 	</target>
 	
-	<!-- Validates code samples used in the docs -->
 	<target name="validate-docs" depends="build-binary">
 		<java classname="org.moeaframework.util.cli.UpdateCodeSamples" fork="true" failonerror="true">
 			<classpath refid="classpath" />
@@ -198,7 +211,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		</java>
 	</target>
 
-	<!-- Packages the MOEA Framework JAR file along with javadocs and required files -->
 	<target name="package-binary" depends="build-binary, build-javadoc"
 			description="Creates the binary distribution file">
 		<delete dir="${build}" />
@@ -251,7 +263,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<tar destfile="${dist}/${shortname}-${version}.tar.gz" basedir="${build}" compression="gzip" longfile="gnu" />
 	</target>
 
-	<!-- Packages the MOEA Framework source code, libraries and required files  -->
 	<target name="package-source" description="Creates the source code distribution file">
 		<delete dir="${build}" />
 		<mkdir dir="${base}" />
@@ -296,7 +307,6 @@ Use of these build scripts requires Apache Ant to be installed.  See
 				longfile="gnu" />
 	</target>
 
-	<!-- Builds the website -->
 	<target name="package-website" depends="build-javadoc" description="Creates the website">
 		<delete dir="${build}" />
 		<mkdir dir="${build}" />
