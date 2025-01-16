@@ -472,9 +472,9 @@ public class Iterators {
 		}
 		
 		@Override
-	    public void remove() {
-	        iterators.get(index).remove();
-	    }
+		public void remove() {
+			iterators.get(index).remove();
+		}
 	
 		@Override
 		public T next() {

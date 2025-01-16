@@ -76,54 +76,54 @@ import org.moeaframework.util.validate.Validate;
  * using a try-with-resources block to automatically close the problem.
  */
 public abstract class ExternalProblem implements Problem {
-	
+
 	/**
 	 * The default port used by the MOEA Framework to connect to remote evaluation processes via sockets.
 	 */
 	public static final int DEFAULT_PORT = 16801;
-	
+
 	/**
 	 * Builder for defining the process or connection to the external problem.
 	 */
 	public static class Builder {
-		
+
 		private String[] command;
-		
+
 		private File workingDirectory;
-				
+
 		private InetSocketAddress socketAddress;
-		
+
 		private InputStream inputStream;
-		
+
 		private OutputStream outputStream;
-		
+
 		private OutputStream errorStream;
-		
+
 		private PrintStream debug;
-		
+
 		private int retryAttempts;
-				
+
 		private Duration retryDelay;
-		
+
 		private Duration shutdownTimeout;
-		
+
 		/**
 		 * Constructs a new builder.
 		 */
 		public Builder() {
 			super();
-			
+
 			if (Settings.isExternalProblemDebuggingEnabled()) {
 				withDebugging();
 			} else {
 				withDebugging(OutputStream.nullOutputStream());
 			}
-			
+
 			retryAttempts = Settings.getExternalProblemRetryAttempts();
 			retryDelay = Settings.getExternalProblemRetryDelay();
 			shutdownTimeout = Settings.getExternalProblemShutdownTimeout();
 		}
-		
+
 		/**
 		 * Configures this builder to start a process using the given command and optional arguments.
 		 * 
@@ -134,7 +134,7 @@ public abstract class ExternalProblem implements Problem {
 			this.command = command;
 			return this;
 		}
-		
+
 		/**
 		 * Sets the working directory where the process is started.
 		 * 
@@ -145,7 +145,7 @@ public abstract class ExternalProblem implements Problem {
 			this.workingDirectory = directory;
 			return this;
 		}
-		
+
 		/**
 		 * Sets the working directory where the process is started.
 		 * 
@@ -155,7 +155,7 @@ public abstract class ExternalProblem implements Problem {
 		public Builder withWorkingDirectory(Path path) {
 			return withWorkingDirectory(path.toFile());
 		}
-		
+
 		/**
 		 * Configures this builder to communicate with a local process using the given port.
 		 * 
@@ -166,7 +166,7 @@ public abstract class ExternalProblem implements Problem {
 			socketAddress = new InetSocketAddress(port);
 			return this;
 		}
-		
+
 		/**
 		 * Configures this builder to communicate with the specified address and port.
 		 * 
@@ -178,7 +178,7 @@ public abstract class ExternalProblem implements Problem {
 			socketAddress = new InetSocketAddress(address, port);
 			return this;
 		}
-		
+
 		/**
 		 * Configures this builder to communicate with the specified hostname and port.
 		 * 
@@ -190,7 +190,7 @@ public abstract class ExternalProblem implements Problem {
 			socketAddress = new InetSocketAddress(hostname, port);
 			return this;
 		}
-		
+
 		/**
 		 * Configures this builder to communicate using the given input and output streams.  This is primarily intended
 		 * for internal use.
@@ -204,7 +204,7 @@ public abstract class ExternalProblem implements Problem {
 			this.outputStream = outputStream;
 			return this;
 		}
-		
+
 		/**
 		 * Enables writing debugging info to standard output.
 		 * 
@@ -213,7 +213,7 @@ public abstract class ExternalProblem implements Problem {
 		public Builder withDebugging() {
 			return withDebugging(CloseShieldOutputStream.wrap(System.out));
 		}
-		
+
 		/**
 		 * Enables writing debugging info to the given output stream.  The given stream is not closed when the problem
 		 * is closed.
@@ -225,7 +225,7 @@ public abstract class ExternalProblem implements Problem {
 			this.debug = new PrintStream(debug);
 			return this;
 		}
-		
+
 		/**
 		 * Redirects the process' standard error to the given stream.  The given stream is not closed when the problem
 		 * is closed.
@@ -237,7 +237,7 @@ public abstract class ExternalProblem implements Problem {
 			this.errorStream = errorStream;
 			return this;
 		}
-		
+
 		/**
 		 * Sets the retry options when trying to connect to the external process with sockets.
 		 * 
@@ -250,7 +250,7 @@ public abstract class ExternalProblem implements Problem {
 			this.retryDelay = retryDelay;
 			return this;
 		}
-		
+
 		/**
 		 * Overrides the timeout given to allow the process to cleanly terminate before sending a kill signal.
 		 * 
@@ -261,7 +261,7 @@ public abstract class ExternalProblem implements Problem {
 			this.shutdownTimeout = shutdownTimeout;
 			return this;
 		}
-		
+
 		/**
 		 * Creates a copy of this builder.  Note that streams are shared between the two instances.
 		 * 
@@ -281,7 +281,7 @@ public abstract class ExternalProblem implements Problem {
 			copy.shutdownTimeout = shutdownTimeout;
 			return copy;
 		}
-		
+
 		/**
 		 * Returns the constructed instance.
 		 * 
@@ -290,24 +290,24 @@ public abstract class ExternalProblem implements Problem {
 		protected Instance build() {
 			return new Instance(this);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Instance of the external problem.  This manages the lifecycle of the process and connections.
 	 */
 	protected static class Instance implements Closeable {
-		
+
 		private final Builder builder;
-		
+
 		private Process process;
-		
+
 		private Socket socket;
-		
+
 		private BufferedReader reader;
-		
+
 		private BufferedWriter writer;
-		
+
 		/**
 		 * Constructs an instance of an external problem.
 		 * 
@@ -317,7 +317,7 @@ public abstract class ExternalProblem implements Problem {
 			super();
 			this.builder = builder.copy();
 		}
-		
+
 		/**
 		 * Returns {@code true} if the underlying process or connections are established; {@code false} otherwise.
 		 * 
@@ -337,29 +337,29 @@ public abstract class ExternalProblem implements Problem {
 			if (builder.socketAddress == null) {
 				return null;
 			}
-			
+
 			int attempt = 0;
 			PrintStream debug = getDebug();
-			
+
 			while (true) {
 				attempt += 1;
-				
+
 				Socket socket = new Socket();
-				
+
 				try {
 					debug.println("Connecting to " + builder.socketAddress);
 					socket.connect(builder.socketAddress);
 					return socket;
 				} catch (SocketException e) {
 					socket.close();
-					
+
 					if (attempt > builder.retryAttempts) {
 						throw e;
 					}
-					
+
 					debug.println(e.getMessage() + ", retrying attempt " + attempt + " of " + builder.retryAttempts +
 							"...");
-					
+
 					try {
 						Thread.sleep(DurationUtils.toMilliseconds(builder.retryDelay));
 					} catch (InterruptedException ie) {
@@ -369,7 +369,7 @@ public abstract class ExternalProblem implements Problem {
 				}
 			}
 		}
-		
+
 		/**
 		 * Determines if the given executable is local to the working directory.
 		 * 
@@ -378,21 +378,21 @@ public abstract class ExternalProblem implements Problem {
 		 */
 		private boolean isLocalExecutable(String executable) {
 			File file = new File(executable);
-			
+
 			if (file.isAbsolute()) {
 				return false;
 			}
-			
+
 			file = new File(builder.workingDirectory, executable);
 			return file.exists() && file.isFile() && file.canExecute();
 		}
-		
+
 		/**
 		 * Starts the process specified by the command.  The following order is used to locate the executable:
 		 * <ol>
 		 *   <li>If absolute, use the given path
-	     *   <li>If executable exists in working directory, supply relative path appropriate for the OS
-	     *     <ol>
+		 *   <li>If executable exists in working directory, supply relative path appropriate for the OS
+		 *     <ol>
 		 *       <li>Windows - Path is relative to where Java was launched
 		 *       <li>Linux - Path is relative to working directory, including "./" prefix
 		 *     </ol>
@@ -404,23 +404,23 @@ public abstract class ExternalProblem implements Problem {
 		 */
 		private Process startProcess() throws IOException {
 			String[] command = builder.command;
-			
+
 			if (command == null || command.length == 0) {
 				return null;
 			}
-			
+
 			// Create a clone of the command as we will potentially modify it below
 			command = command.clone();
-			
+
 			if (isLocalExecutable(command[0])) {
 				File relativePath = SystemUtils.IS_OS_WINDOWS ? builder.workingDirectory : new File(".");
 				command[0] = new File(relativePath, command[0]).getPath();
 			}
-			
+
 			getDebug().println("Starting process '" + String.join(" ", command) + "'");
 			return new ProcessBuilder(command).directory(builder.workingDirectory).start();
 		}
-		
+
 		/**
 		 * Starts the underlying process and establishes any connections.
 		 * 
@@ -430,23 +430,23 @@ public abstract class ExternalProblem implements Problem {
 			if (isStarted()) {
 				return;
 			}
-			
+
 			// Start the process, if configured
 			process = startProcess();
-			
+
 			if (process != null) {
 				RedirectStream.redirect(process.getErrorStream(),
 						builder.errorStream != null ? builder.errorStream : System.err);
 			}
-			
+
 			// Start the socket connection, if configured
 			socket = connectWithRetries();
-			
+
 			// If we are not reading from the process' output, pipe it to stdout to avoid blocking on a full buffer
 			if (process != null && ((builder.inputStream != null && builder.outputStream != null) || socket != null)) {
 				RedirectStream.redirect(process.getInputStream(), System.out);
 			}
-			
+
 			// Set up the reader / writer for communication
 			if (builder.inputStream != null && builder.outputStream != null) {
 				reader = new BufferedReader(new InputStreamReader(builder.inputStream));
@@ -461,7 +461,7 @@ public abstract class ExternalProblem implements Problem {
 				Validate.fail("Must configure a program or socket connection");
 			}
 		}
-		
+
 		/**
 		 * Returns the reader used to read content from the external problem.
 		 * 
@@ -471,10 +471,10 @@ public abstract class ExternalProblem implements Problem {
 			if (!isStarted()) {
 				throw new IllegalStateException("Must call start() before using problem instance");
 			}
-			
+
 			return reader;
 		}
-		
+
 		/**
 		 * Returns the writer used to write content to the external problem.
 		 * 
@@ -484,10 +484,10 @@ public abstract class ExternalProblem implements Problem {
 			if (!isStarted()) {
 				throw new IllegalStateException("Must call start() before using problem instance");
 			}
-			
+
 			return writer;
 		}
-		
+
 		/**
 		 * Returns the stream where debugging logs are written.
 		 * 
@@ -496,7 +496,7 @@ public abstract class ExternalProblem implements Problem {
 		public PrintStream getDebug() {
 			return builder.debug;
 		}
-		
+
 		/**
 		 * Returns the underlying process, primarily intended for testing purposes.
 		 * 
@@ -505,7 +505,7 @@ public abstract class ExternalProblem implements Problem {
 		public Process getProcess() {
 			return process;
 		}
-		
+
 		/**
 		 * Returns the underlying socket, primarily intended for testing purposes.
 		 * 
@@ -518,25 +518,25 @@ public abstract class ExternalProblem implements Problem {
 		@Override
 		public void close() throws IOException {
 			PrintStream debug = getDebug();
-			
+
 			if (writer != null) {
 				writer.close();
 			}
-			
+
 			if (reader != null) {
 				reader.close();
 			}
-			
+
 			if (socket != null) {
 				socket.close();
 			}
-			
+
 			if (process != null) {
 				try {
 					if (process.isAlive()) {
 						debug.println("Waiting for process to exit...");
 					}
-					
+
 					if (process.waitFor(DurationUtils.toMilliseconds(builder.shutdownTimeout), TimeUnit.MILLISECONDS)) {
 						int exitCode = process.exitValue();
 						debug.println("Process exited with code " + exitCode);
@@ -549,15 +549,15 @@ public abstract class ExternalProblem implements Problem {
 				}
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * The instance backing this external problem, which manages the underlying resources including the process,
 	 * socket, and streams.
 	 */
 	protected final Instance instance;
-	
+
 	/**
 	 * The tokenizer for encoding and decoding lines sent to and read from the external process.
 	 */
@@ -600,28 +600,28 @@ public abstract class ExternalProblem implements Problem {
 				throw new ProblemException(this, "error while starting external problem", e);
 			}
 		}
-		
+
 		BufferedReader reader = instance.getReader();
 		BufferedWriter writer = instance.getWriter();
 		PrintStream debug = instance.getDebug();
-		
+
 		// send variables to external process
 		try {
 			StringBuilder sb = new StringBuilder();
-						
+
 			for (int i = 0; i < solution.getNumberOfVariables(); i++) {
 				if (i > 0) {
 					sb.append(tokenizer.getDelimiter());
 				}
-				
+
 				sb.append(tokenizer.escape(encode(solution.getVariable(i))));
 			}
-			
+
 			sb.append(System.lineSeparator());
-			
+
 			debug.print("<< ");
 			debug.print(sb.toString());
-			
+
 			writer.write(sb.toString());
 			writer.flush();
 		} catch (IOException e) {
@@ -637,26 +637,26 @@ public abstract class ExternalProblem implements Problem {
 					debug.println("Reached end of stream");
 					instance.close();
 				}
-				
+
 				throw new ProblemException(this, "end of stream reached when response expected");
 			}
 
 			debug.print(">> ");
 			debug.println(line);
-			
+
 			String[] tokens = tokenizer.decodeToArray(line);
-			
+
 			if (tokens.length != (solution.getNumberOfObjectives() + solution.getNumberOfConstraints())) {
 				throw new ProblemException(this, "response contained fewer tokens than expected");
 			}
-			
+
 			int index = 0;
 
 			for (int i = 0; i < solution.getNumberOfObjectives(); i++) {
 				solution.setObjectiveValue(i, Double.parseDouble(tokens[index]));
 				index++;
 			}
-			
+
 			for (int i = 0; i < solution.getNumberOfConstraints(); i++) {
 				solution.setConstraintValue(i, Double.parseDouble(tokens[index]));
 				index++;
@@ -679,7 +679,7 @@ public abstract class ExternalProblem implements Problem {
 				variable instanceof Subset)) {
 			throw new ProblemException(this, "encoding " + variable.getClass().getSimpleName() + " not supported");
 		}
-		
+
 		// use toString() instead of encode() as we want to send the value
 		return variable.toString();
 	}

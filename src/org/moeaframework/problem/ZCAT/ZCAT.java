@@ -32,38 +32,38 @@ import org.moeaframework.util.validate.Validate;
  * Abstract class for implementing ZCAT test problems.
  */
 public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem {
-	
+
 	/**
 	 * The precision when considering if two floating-point numbers are equal.  This differs from {@code Settings.EPS}
 	 * to match the original ZCAT source code.
 	 */
 	public static final double EPSILON = Math.ulp(1.0);
-	
+
 	/**
 	 * The difficulty level between {@code 1} and {@code 6}.
 	 */
 	protected final int level;
-	
+
 	/**
 	 * {@code true} if bias is applied; {@code false} otherwise.
 	 */
 	protected final boolean bias;
-	
+
 	/**
 	 * {@code true} if imbalance is applied; {@code false} otherwise.
 	 */
 	protected final boolean imbalance;
-	
+
 	/**
 	 * The shape function for the Pareto front.
 	 */
 	protected final PFShapeFunction F;
-	
+
 	/**
 	 * The shape function for the Pareto set.
 	 */
 	protected final PSShapeFunction G;
-	
+
 	/**
 	 * Constructs a new ZCAT problem.
 	 * 
@@ -78,7 +78,7 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 			PFShapeFunction F, PSShapeFunction G) {
 		this(10 * numberOfObjectives, numberOfObjectives, level, bias, imbalance, F, G);
 	}
-	
+
 	/**
 	 * Constructs a new ZCAT problem.
 	 * 
@@ -98,13 +98,13 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 		this.imbalance = imbalance;
 		this.F = F;
 		this.G = G;
-		
+
 		Validate.that("numberOfObjectives", numberOfObjectives).isGreaterThanOrEqualTo(2);
 		Validate.that("level", level).isBetween(1, 6);
 		Validate.that("F", F).isNotNull();
 		Validate.that("G", G).isNotNull();
 	}
-	
+
 	@Override
 	public String getName() {
 		return getClass().getSimpleName() + "_" + numberOfObjectives;
@@ -113,26 +113,26 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 	@Override
 	public void evaluate(Solution solution) {
 		double[] x = RealVariable.getReal(solution);
-		
+
 		double[] y = getY(x);                // Normalization
 		double[] alpha = getAlpha(y, F);     // Position
 		double[] beta = getBeta(y, G);       // Distance
 		double[] f = evaluateF(alpha, beta); // Fitness values
-		
+
 		solution.setObjectiveValues(f);
 	}
 
 	@Override
 	public Solution newSolution() {
 		Solution solution = new Solution(numberOfVariables, numberOfObjectives);
-		
+
 		for (int i = 0; i < numberOfVariables; i++) {
 			solution.setVariable(i, new RealVariable(-0.5 * (i + 1), 0.5 * (i + 1)));
 		}
-		
+
 		return solution;
 	}
-	
+
 	/**
 	 * The dimension of the Pareto front / Pareto set.  This is typically {@code numberOfObjectives-1} but can
 	 * differ for certain degenerate (ZCAT14 - ZCAT16) or hybrid (ZCAT19 - ZCAT20) problems.
@@ -143,7 +143,7 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 	public int getDimension(double[] y) {
 		return numberOfObjectives - 1;
 	}
-	
+
 	/**
 	 * Computes the position of the solution on the Pareto front.
 	 * 
@@ -153,14 +153,14 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 	 */
 	protected double[] getAlpha(double[] y, PFShapeFunction F) {
 		double[] a = F.apply(y, numberOfObjectives);
-		
+
 		for (int i = 0; i < numberOfObjectives; i++) {
 			a[i] = Math.pow(i + 1, 2.0) * a[i];
 		}
-		
+
 		return a;
 	}
-	
+
 	/**
 	 * Computes the distance of the solution to the Pareto front.
 	 * 
@@ -173,7 +173,7 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 		double[] z = getZ(y, m, G);
 		double[] w = getW(z, m);
 		double[] b = new double[numberOfObjectives];
-		
+
 		if (numberOfVariables == m) {
 			Arrays.fill(b, 0.0);
 		} else {
@@ -183,10 +183,10 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 				b[i] = Math.pow(i + 1, 2.0) * Zvalue;
 			}
 		}
-		
+
 		return b;
 	}
-	
+
 	/**
 	 * Computes the {@code J} vector.
 	 * 
@@ -197,7 +197,7 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 	protected double[] getJ(int i, double[] w) {
 		double[] J = new double[0];
 		int size = 0;
-		
+
 		for (int j = 1; j <= w.length; j++) {
 			if ((j - i) % numberOfObjectives == 0) {
 				size++;
@@ -205,14 +205,14 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 				J[size - 1] = w[j - 1];
 			}
 		}
-		
+
 		if (size == 0) {
 			return new double[] { w[0] };
 		}
-		
+
 		return J;
 	}
-	
+
 	/**
 	 * Applies bias to the {@code z} vector when enabled.
 	 * 
@@ -222,14 +222,14 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 	 */
 	protected double[] getW(double[] z, int m) {
 		double[] w = new double[numberOfVariables - m];
-		
+
 		for (int i = 0; i < numberOfVariables - m; i++) {
 			w[i] = bias ? Zbias(z[i]) : z[i];
 		}
-		
+
 		return w;
 	}
-	
+
 	/**
 	 * Normalizes the decision variables.
 	 * 
@@ -238,17 +238,17 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 	 */
 	protected double[] getY(double[] x) {
 		double[] y = new double[numberOfVariables];
-		
+
 		for (int i = 0; i < numberOfVariables; i++) {
 			double lb = -0.5 * (i + 1);
 			double ub = 0.5 * (i + 1);
-			
+
 			y[i] = (x[i] - lb) / (ub - lb);
 		}
 
 		return y;
 	}
-	
+
 	/**
 	 * Applies the Pareto shape function to the decision variables.
 	 * 
@@ -260,7 +260,7 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 	protected double[] getZ(double[] y, int m, PSShapeFunction G) {
 		double[] g = G.apply(y, m, numberOfVariables);
 		double[] z = new double[numberOfVariables - m];
-		
+
 		for (int i = m; i < numberOfVariables; i++) {
 			double diff = y[i] - g[i - m];
 			z[i - m] = Math.abs(diff) < EPSILON ? 0.0 : diff;
@@ -268,7 +268,7 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 
 		return z;
 	}
-	
+
 	/**
 	 * Calculates the bias for a single element of the {@code z} vector.
 	 * 
@@ -276,9 +276,9 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 	 * @return the value with bias applied
 	 */
 	protected double Zbias(double z) {
-	    return Math.pow(Math.abs(z), 0.05);
+		return Math.pow(Math.abs(z), 0.05);
 	}
-	
+
 	/**
 	 * Applies imbalance / the difficulty level to the intermediate vector {@code w}.
 	 * 
@@ -296,16 +296,16 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 		}
 
 		return switch (level) {
-			case 1 -> BasisFunction.Z1.apply(w);
-			case 2 -> BasisFunction.Z2.apply(w);
-			case 3 -> BasisFunction.Z3.apply(w);
-			case 4 -> BasisFunction.Z4.apply(w);
-			case 5 -> BasisFunction.Z5.apply(w);
-			case 6 -> BasisFunction.Z6.apply(w);
-			default -> BasisFunction.Z1.apply(w);
+		case 1 -> BasisFunction.Z1.apply(w);
+		case 2 -> BasisFunction.Z2.apply(w);
+		case 3 -> BasisFunction.Z3.apply(w);
+		case 4 -> BasisFunction.Z4.apply(w);
+		case 5 -> BasisFunction.Z5.apply(w);
+		case 6 -> BasisFunction.Z6.apply(w);
+		default -> BasisFunction.Z1.apply(w);
 		};
 	}
-	
+
 	/**
 	 * Evaluates the final objective values by combining the position and distance values.
 	 * 
@@ -315,51 +315,51 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 	 */
 	protected double[] evaluateF(double[] alpha, double[] beta) {
 		double[] f = new double[numberOfObjectives];
-		
+
 		for (int i = 0; i < numberOfObjectives; i++) {
 			f[i] = alpha[i] + beta[i];
 		}
-		
+
 		return f;
 	}
-	
+
 	@Override
 	public Solution generate() {
 		Solution solution = newSolution();
-		
+
 		double y0 = PRNG.nextDouble();
 		int m = getDimension(new double[] { y0 });
 		int k = getNumberOfSegments(F);
-		
+
 		if (k > 0) {
 			List<double[]> segments = getSegments(k);
-			
+
 			double[] segment = PRNG.nextItem(segments); // pick random segment
 			y0 = PRNG.nextDouble(segment[0], segment[1]);
 		}
-		
+
 		double[] y = new double[m];
 		y[0] = y0;
-		
-	    for (int i = 1; i < m; i++) {
-	        y[i] = PRNG.nextDouble();
-	    }
-	    
-	    double[] g = G.apply(y, m, numberOfVariables);
-	    
-	    for (int i = 0; i < m; i++) {
-	    	setDecisionVariable(y[i], i, solution);
-	    }
-	    
-	    for (int i = m; i < numberOfVariables; i++) {
-	    	setDecisionVariable(g[i - m], i, solution);
-	    }
-	    
-	    evaluate(solution);
-		
+
+		for (int i = 1; i < m; i++) {
+			y[i] = PRNG.nextDouble();
+		}
+
+		double[] g = G.apply(y, m, numberOfVariables);
+
+		for (int i = 0; i < m; i++) {
+			setDecisionVariable(y[i], i, solution);
+		}
+
+		for (int i = m; i < numberOfVariables; i++) {
+			setDecisionVariable(g[i - m], i, solution);
+		}
+
+		evaluate(solution);
+
 		return solution;
 	}
-	
+
 	/**
 	 * Returns the number of segments in the Pareto front for the given shape function.  This is controlled
 	 * by the {@code k} constant defined in each function.
@@ -378,7 +378,7 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 			return 0;
 		}
 	}
-	
+
 	/**
 	 * Defines the lower and upper bounds of {@code y[0]} for each segment.
 	 * 
@@ -388,7 +388,7 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 	private List<double[]> getSegments(int k) {
 		// These segments can be found at https://github.com/evo-mx/ZCAT/tree/main/src/seg
 		List<double[]> segments = new ArrayList<>();
-		
+
 		if (k == 3) {
 			segments.add(new double[] { 0.0,               0.243933581942011 });
 			segments.add(new double[] {	0.417357435020449, 0.643933581942011 });
@@ -407,10 +407,10 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 		} else {
 			Validate.that("k", k).failUnsupportedOption();
 		}
-		
+
 		return segments;
 	}
-	
+
 	/**
 	 * Sets the decision variable of the solution by scaling the value {@code y} within the bounds.
 	 * 
@@ -422,5 +422,5 @@ public abstract class ZCAT extends AbstractProblem implements AnalyticalProblem 
 		RealVariable variable = (RealVariable)solution.getVariable(i);
 		variable.setValue(y * (variable.getUpperBound() - variable.getLowerBound()) + variable.getLowerBound());
 	}
-	
+
 }

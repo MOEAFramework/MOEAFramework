@@ -222,15 +222,15 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	private String determineLineSeparator(File file) throws IOException {
 		String content = Files.readString(file.toPath());
 
-	    if (content.matches("(?s).*(\\r\\n).*")) {
-	        return "\r\n";
-	    } else if (content.matches("(?s).*(\\n).*")) {
-	        return "\n";
-	    } else if (content.matches("(?s).*(\\r).*")) {
-	        return "\r";
-	    } else {
-	        return DEFAULT_LINE_SEPARATOR;
-	    }
+		if (content.matches("(?s).*(\\r\\n).*")) {
+			return "\r\n";
+		} else if (content.matches("(?s).*(\\n).*")) {
+			return "\n";
+		} else if (content.matches("(?s).*(\\r).*")) {
+			return "\r";
+		} else {
+			return DEFAULT_LINE_SEPARATOR;
+		}
 	}
 	
 	/**

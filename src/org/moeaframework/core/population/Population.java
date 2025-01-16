@@ -578,9 +578,9 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, Co
 		private int currentIndex;
 
 		/**
-         * The modification count that the list is expected to have.  If the list doesn't have this count, then a
-         * {@link java.util.ConcurrentModificationException} may be thrown by the operations.
-         */
+		 * The modification count that the list is expected to have.  If the list doesn't have this count, then a
+		 * {@link java.util.ConcurrentModificationException} may be thrown by the operations.
+		 */
 		private int expectedModCount;
 		
 		/**
@@ -635,10 +635,10 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, Co
 		}
 
 		/**
-         * Checks the modification count of the list is the value that this object expects.
-         * 
-         * @throws ConcurrentModificationException if the list's modification count is not the value that was expected
-         */
+		 * Checks the modification count of the list is the value that this object expects.
+		 * 
+		 * @throws ConcurrentModificationException if the list's modification count is not the value that was expected
+		 */
 		private void checkModCount() {
 			if (modCount != expectedModCount) {
 				throw new ConcurrentModificationException();

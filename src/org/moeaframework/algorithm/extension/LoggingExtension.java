@@ -31,20 +31,20 @@ import org.moeaframework.util.io.OutputHandler;
  * static methods can be used to write log messages if the algorithm has logging enabled.
  */
 public class LoggingExtension implements Extension {
-	
+
 	/**
 	 * The default logging frequency for status messages.
 	 */
 	public static final Duration DEFAULT_LOG_FREQUENCY = Duration.ofSeconds(1);
-	
+
 	private final Logger logger;
-	
+
 	private final StopWatch timer;
-	
+
 	private final Duration logFrequency;
-	
+
 	private Duration lastUpdate;
-	
+
 	/**
 	 * Constructs a new, default logging extension.
 	 */
@@ -60,7 +60,7 @@ public class LoggingExtension implements Extension {
 	public LoggingExtension(String name) {
 		this(name, DEFAULT_LOG_FREQUENCY);
 	}
-	
+
 	/**
 	 * Constructs a new logger with the given name and settings.
 	 * 
@@ -70,7 +70,7 @@ public class LoggingExtension implements Extension {
 	public LoggingExtension(String name, Duration logFrequency) {
 		this(OutputHandler.getLogger(name), logFrequency);
 	}
-	
+
 	/**
 	 * Constructs a new logger with the given name and settings.
 	 * 
@@ -81,43 +81,43 @@ public class LoggingExtension implements Extension {
 		super();
 		this.logger = logger;
 		this.logFrequency = logFrequency;
-		
+
 		timer = new StopWatch();
 	}
-	
+
 	@Override
 	public void onStep(Algorithm algorithm) {
 		if (timer.isStopped()) {
 			timer.start();
 		}
-		
+
 		Duration elapsedTime = timer.getDuration();
-		
+
 		if (DurationUtils.isGreaterThanOrEqual(elapsedTime.minus(lastUpdate), logFrequency)) {
 			logger.log(Level.INFO, "{0} running; NFE: {1}; Elapsed Time: {2}", new Object[] {
-	                algorithm.getName(),
-	                algorithm.getNumberOfEvaluations(),
-	                DurationUtils.format(elapsedTime) });
+					algorithm.getName(),
+					algorithm.getNumberOfEvaluations(),
+					DurationUtils.format(elapsedTime) });
 			lastUpdate = elapsedTime;
 		}
 	}
-	
+
 	@Override
 	public void onRegister(Algorithm algorithm) {
 		timer.start();
 		lastUpdate = timer.getDuration();
 		logger.log(Level.INFO, "{0} starting", algorithm.getName());
 	}
-	
+
 	@Override
 	public void onTerminate(Algorithm algorithm) {
 		timer.stop();
 		logger.log(Level.INFO, "{0} finished; NFE: {1}; Elapsed Time: {2}", new Object[] {
-                algorithm.getName(),
-                algorithm.getNumberOfEvaluations(),
-                DurationUtils.format(timer.getDuration()) });
+				algorithm.getName(),
+				algorithm.getNumberOfEvaluations(),
+				DurationUtils.format(timer.getDuration()) });
 	}
-	
+
 	/**
 	 * Returns the logger used by this extension.
 	 * 
@@ -126,7 +126,7 @@ public class LoggingExtension implements Extension {
 	public Logger getLogger() {
 		return logger;
 	}
-	
+
 	/**
 	 * Writes a log message using this extension.
 	 * 
@@ -137,7 +137,7 @@ public class LoggingExtension implements Extension {
 	public void log(Level level, String message, Object... params) {
 		logger.log(level, message, params);
 	}
-	
+
 	/**
 	 * Writes an informational ({@link Level#INFO}) log message if the algorithm has logging enabled.
 	 * 
@@ -148,7 +148,7 @@ public class LoggingExtension implements Extension {
 	public static void info(Algorithm algorithm, String message, Object... params) {
 		log(algorithm, Level.INFO, message, params);
 	}
-	
+
 	/**
 	 * Writes a warning ({@link Level#WARNING}) log message if the algorithm has logging enabled.
 	 * 
@@ -159,7 +159,7 @@ public class LoggingExtension implements Extension {
 	public static void warning(Algorithm algorithm, String message, Object... params) {
 		log(algorithm, Level.WARNING, message, params);
 	}
-	
+
 	/**
 	 * Writes a severe ({@link Level#SEVERE}) log message if the algorithm has logging enabled.
 	 * 
@@ -170,7 +170,7 @@ public class LoggingExtension implements Extension {
 	public static void severe(Algorithm algorithm, String message, Object... params) {
 		log(algorithm, Level.SEVERE, message, params);
 	}
-	
+
 	/**
 	 * Writes a log message if the algorithm has logging enabled.
 	 * 
@@ -181,7 +181,7 @@ public class LoggingExtension implements Extension {
 	 */
 	public static void log(Algorithm algorithm, Level level, String message, Object... params) {
 		LoggingExtension extension = algorithm.getExtensions().get(LoggingExtension.class);
-		
+
 		if (extension != null) {
 			extension.log(level, message, params);
 		}
