@@ -113,7 +113,7 @@ public class TempFiles {
 	 * 
 	 *     # And import this class instead:
 	 *     import static org.moeaframework.TempFiles.File;
-     * </pre>
+	 * </pre>
 	 */
 	public static class File extends java.io.File {
 	

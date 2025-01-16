@@ -50,8 +50,8 @@ public class PlotRuntimeDynamics {
 		
 		// Render a plot of the runtime dynamics series
 		new Plot()
-		    .add(instrumentedAlgorithm.getSeries())
-		    .show();
+			.add(instrumentedAlgorithm.getSeries())
+			.show();
 	}
 
 }

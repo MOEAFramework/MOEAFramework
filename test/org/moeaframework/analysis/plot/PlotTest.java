@@ -199,15 +199,15 @@ public class PlotTest {
 	}
 
 	public static boolean isJUnitTest() {
-	    StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-	    
-	    for (StackTraceElement element : stackTrace) {
-	        if (element.getClassName().startsWith("org.junit.")) {
-	            return true;
-	        }
-	    }
-	    
-	    return false;
+		StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+
+		for (StackTraceElement element : stackTrace) {
+			if (element.getClassName().startsWith("org.junit.")) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 	
 	public static void main(String[] args) throws IOException {

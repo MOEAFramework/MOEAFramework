@@ -35,38 +35,38 @@ public class LoggingExtensionTest {
 	public void test() throws IOException {
 		Logger logger = Logger.getLogger("test");
 		TestHandler handler = new TestHandler();
-		
-	    handler.setLevel(Level.ALL);
-	    logger.setUseParentHandlers(false);
-	    logger.addHandler(handler);
-	    logger.setLevel(Level.ALL);
+
+		handler.setLevel(Level.ALL);
+		logger.setUseParentHandlers(false);
+		logger.addHandler(handler);
+		logger.setLevel(Level.ALL);
 
 		NSGAII algorithm = new NSGAII(new MockRealProblem(2));
 		algorithm.addExtension(new LoggingExtension(logger, Duration.ofSeconds(0)));
-		
+
 		Assert.assertNotNull(handler.lastRecord);
 		Assert.assertStringContains(handler.lastRecord.getMessage(), "starting");
 		Assert.assertEquals("NSGA-II", handler.lastRecord.getParameters()[0]);
-		
+
 		algorithm.step();
-		
+
 		Assert.assertNotNull(handler.lastRecord);
 		Assert.assertStringContains(handler.lastRecord.getMessage(), "running");
 		Assert.assertEquals("NSGA-II", handler.lastRecord.getParameters()[0]);
 		Assert.assertEquals(100, handler.lastRecord.getParameters()[1]);
-		
+
 		algorithm.terminate();
-		
+
 		Assert.assertNotNull(handler.lastRecord);
 		Assert.assertStringContains(handler.lastRecord.getMessage(), "finished");
 		Assert.assertEquals("NSGA-II", handler.lastRecord.getParameters()[0]);
 		Assert.assertEquals(100, handler.lastRecord.getParameters()[1]);
-		
+
 		LoggingExtension.severe(algorithm, "custom message");
 		Assert.assertNotNull(handler.lastRecord);
 		Assert.assertStringContains(handler.lastRecord.getMessage(), "custom message");
 	}
-	
+
 	@Test
 	public void testNoLogger() throws IOException {
 		NSGAII algorithm = new NSGAII(new MockRealProblem(2));
@@ -74,7 +74,7 @@ public class LoggingExtensionTest {
 	}
 
 	private static class TestHandler extends Handler {
-		
+
 		private LogRecord lastRecord;
 
 		@Override
@@ -84,7 +84,7 @@ public class LoggingExtensionTest {
 
 		@Override
 		public void close() {}
-		
+
 		@Override
 		public void flush() {}
 	}

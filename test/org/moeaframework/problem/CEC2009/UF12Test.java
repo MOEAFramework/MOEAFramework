@@ -50,11 +50,11 @@ public class UF12Test extends ProblemTest {
 	}
 	
 	/*
-     * The following source code is modified from the CEC 2009 test problem suite available at
-     * {@link http://dces.essex.ac.uk/staff/qzhang/}.  Permission to distribute these modified source codes under the
-     * GNU Lesser General Public License was obtained via e-mail correspondence with the original authors.
-     */
-	
+	 * The following source code is modified from the CEC 2009 test problem suite available at
+	 * {@link http://dces.essex.ac.uk/staff/qzhang/}.  Permission to distribute these modified source codes under the
+	 * GNU Lesser General Public License was obtained via e-mail correspondence with the original authors.
+	 */
+
 	private static final double PI = 3.1415926535897932384626433832795;
 	
 	/**
