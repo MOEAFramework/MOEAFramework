@@ -1,4 +1,4 @@
-![GitHub Actions status](https://github.com/MOEAFramework/MOEAFramework/workflows/Tests/badge.svg?branch=master&event=push)
+[![Tests](https://github.com/MOEAFramework/MOEAFramework/actions/workflows/ci.yml/badge.svg)](https://github.com/MOEAFramework/MOEAFramework/actions/workflows/ci.yml)
 ![Maven Central](https://img.shields.io/maven-central/v/org.moeaframework/moeaframework)
 ![GitHub Downloads](https://img.shields.io/github/downloads/MOEAFramework/MOEAFramework/total?label=GitHub%20Downloads)
 
