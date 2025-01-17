@@ -36,6 +36,8 @@
 #     Between               Between(<lhs>,<rhs>)
 #     Outside               Outside(<lhs>,<rhs>)
 
+set -e
+
 SCRIPT_DIR="$(dirname -- "${BASH_SOURCE[0]}")"
 
 # Defining real-valued decision variables using lower and upper bounds:

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 ROOT="$(dirname -- "${BASH_SOURCE[0]}")"
 CLASSPATH="${ROOT}/lib/*:${ROOT}/examples"
 ARGS=()
