@@ -2,7 +2,7 @@
 
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
-## Version 5.0-SNAPSHOT (TBD)
+## Version 5.0 (17 Jan 2025)
 
 Version 5.0 includes substantial changes over previous versions.  While we encourage users to upgrade to this new
 version to access the latest features, please be aware you will likely need to update your code.
@@ -56,8 +56,8 @@ version to access the latest features, please be aware you will likely need to u
     ```
     ParameterSet parameters = new ParameterSet(
         Parameter.named("populationSize").asInt().range(100, 1000, 10),
-        Parameter.named("sbx.rate").asDecimal().range(0.0, 1.0, 0.1),
-        Parameter.named("pm.rate").asDecimal().range(0.0, 1.0, 0.1));
+        Parameter.named("sbx.rate").asDouble().range(0.0, 1.0, 0.1),
+        Parameter.named("pm.rate").asDouble().range(0.0, 1.0, 0.1));
     
     Samples samples = parameters.enumerate();
     ```

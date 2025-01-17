@@ -23,7 +23,7 @@ dependency to their `pom.xml` file:
 <dependency>
     <groupId>org.moeaframework</groupId>
     <artifactId>moeaframework</artifactId>
-    <version>5.0-SNAPSHOT</version>
+    <version>5.0</version>
 </dependency>
 ```
 
@@ -52,4 +52,4 @@ algorithm.getResult().display();
 
 If you use this software in your work, please cite it as follows (APA style):
 
-> Hadka, D. (2025). MOEA Framework A Free and Open Source Java Framework for Multiobjective Optimization (Version 5.0-SNAPSHOT) [Computer software]. Retrieved from https://github.com/MOEAFramework/MOEAFramework.
+> Hadka, D. (2025). MOEA Framework A Free and Open Source Java Framework for Multiobjective Optimization (Version 5.0) [Computer software]. Retrieved from https://github.com/MOEAFramework/MOEAFramework.
