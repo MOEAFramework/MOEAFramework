@@ -1,9 +1,10 @@
-[![Tests](https://github.com/MOEAFramework/MOEAFramework/actions/workflows/ci.yml/badge.svg)](https://github.com/MOEAFramework/MOEAFramework/actions/workflows/ci.yml)
+![Tests](https://github.com/MOEAFramework/MOEAFramework/actions/workflows/ci.yml/badge.svg)
 ![Maven Central](https://img.shields.io/maven-central/v/org.moeaframework/moeaframework)
 ![GitHub Downloads](https://img.shields.io/github/downloads/MOEAFramework/MOEAFramework/total?label=GitHub%20Downloads)
 
 The MOEA Framework is a free and open source Java library for developing and experimenting with multiobjective
 evolutionary algorithms (MOEAs) and other metaheuristics.
+
 
 ### Features
 

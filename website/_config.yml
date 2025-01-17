@@ -1,6 +1,7 @@
 theme: jekyll-theme-slate
 title: ${name}
 description: ${description}
+version: ${version}
 github:
   repository_url: ${repository}
 google_analytics: G-G5Q9J52Z1T
