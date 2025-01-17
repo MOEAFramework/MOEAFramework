@@ -84,15 +84,15 @@ public class PermutationTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testFromArrayMissingElement() {
+	public void testFromArrayInvalidValue() {
 		Permutation permutation = new Permutation(3);
 		permutation.fromArray(new int[] { 0, 3, 2 });
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testFromArrayDuplicateElement() {
+	public void testFromArrayDuplicateValue() {
 		Permutation permutation = new Permutation(3);
-		permutation.fromArray(new int[] { 0, 1, 2, 1 });
+		permutation.fromArray(new int[] { 0, 1, 1 });
 	}
 
 	@Test

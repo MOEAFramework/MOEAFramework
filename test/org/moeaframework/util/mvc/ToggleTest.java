@@ -41,6 +41,9 @@ public class ToggleTest {
 		action.putValue(Action.SELECTED_KEY, false);
 		action.actionPerformed(new ActionEvent(action, 0, "clicked"));
 		Assert.assertEquals(false, toggle.get());
+		
+		toggle.flip();
+		Assert.assertEquals(true, action.getValue(Action.SELECTED_KEY));
 	}
 	
 	@Test
@@ -57,6 +60,9 @@ public class ToggleTest {
 		action.putValue(Action.SELECTED_KEY, false);
 		action.actionPerformed(new ActionEvent(action, 0, "clicked"));
 		Assert.assertEquals(true, toggle.get());
+		
+		toggle.flip();
+		Assert.assertEquals(true, action.getValue(Action.SELECTED_KEY));
 	}
 	
 	@Test
