@@ -328,7 +328,7 @@ public class ParameterBuilder {
 		 * @param stepSize the step size
 		 * @return the parameter
 		 */
-		public Enumeration<Long> raneExclusive(long startInclusive, long endExclusive, long stepSize) {
+		public Enumeration<Long> rangeExclusive(long startInclusive, long endExclusive, long stepSize) {
 			return of(LongStream.iterate(startInclusive, i -> i < endExclusive, i -> i + stepSize));
 		}
 		

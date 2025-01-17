@@ -78,9 +78,9 @@ public class MockSolution extends Solution {
 
 	public static MockSolution of(Solution solution) {
 		MockSolution mock = new MockSolution(solution);
-		mock.withVariables(IntStream.range(0, solution.getNumberOfVariables()).mapToObj(solution::getVariable).toArray(Variable[]::new));
-		mock.withObjectives(IntStream.range(0, solution.getNumberOfObjectives()).mapToObj(solution::getObjective).toArray(Objective[]::new));
-		mock.withConstraints(IntStream.range(0, solution.getNumberOfConstraints()).mapToObj(solution::getConstraint).toArray(Constraint[]::new));
+		mock.withVariables(IntStream.range(0, solution.getNumberOfVariables()).mapToObj(solution::getVariable).map(Variable::copy).toArray(Variable[]::new));
+		mock.withObjectives(IntStream.range(0, solution.getNumberOfObjectives()).mapToObj(solution::getObjective).map(Objective::copy).toArray(Objective[]::new));
+		mock.withConstraints(IntStream.range(0, solution.getNumberOfConstraints()).mapToObj(solution::getConstraint).map(Constraint::copy).toArray(Constraint[]::new));
 		mock.addAttributes(solution.getAttributes());
 		return mock;
 	}
