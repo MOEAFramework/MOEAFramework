@@ -17,6 +17,7 @@
  */
 package org.moeaframework.mock;
 
+import org.junit.Assert;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.AbstractProblem;
 
@@ -43,11 +44,18 @@ public class MockProblem extends AbstractProblem {
 	
 	@Override
 	public void evaluate(Solution solution) {
-		// Simple way to make the objective values variable but deterministic
-		int value = solution.getVariable(0).hashCode();
-				
-		for (int i = 0; i < getNumberOfObjectives(); i++) {
-			solution.setObjectiveValue(i, i % 2 == 0 ? value : Integer.MAX_VALUE - value);
+		if (solution instanceof MockSolution mockSolution && mockSolution.getNumberOfObjectives() > 0) {
+			// When given a MockSolution with results, simply leave it as-is.
+		} else if (solution.getNumberOfVariables() > 0) {
+			// When given a solution with at least one variable, derive the objective values from the variable hash.
+			// This ensures resulting values are distinct but also deterministic.
+			int value = solution.getVariable(0).hashCode();
+					
+			for (int i = 0; i < getNumberOfObjectives(); i++) {
+				solution.setObjectiveValue(i, i % 2 == 0 ? value : Integer.MAX_VALUE - value);
+			}
+		} else {
+			Assert.fail("MockProblem must either be supplied with a MockSolution or at least one decision variable");
 		}
 	}
 

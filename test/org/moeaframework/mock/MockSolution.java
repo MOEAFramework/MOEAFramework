@@ -77,12 +77,10 @@ public class MockSolution extends Solution {
 	}
 
 	public static MockSolution of(Solution solution) {
-		Solution copy = solution.copy();
-
 		MockSolution mock = new MockSolution(solution);
-		mock.withVariables(IntStream.range(0, copy.getNumberOfVariables()).mapToObj(solution::getVariable).toArray(Variable[]::new));
-		mock.withObjectives(IntStream.range(0, copy.getNumberOfObjectives()).mapToObj(solution::getObjective).toArray(Objective[]::new));
-		mock.withConstraints(IntStream.range(0, copy.getNumberOfConstraints()).mapToObj(solution::getConstraint).toArray(Constraint[]::new));
+		mock.withVariables(IntStream.range(0, solution.getNumberOfVariables()).mapToObj(solution::getVariable).toArray(Variable[]::new));
+		mock.withObjectives(IntStream.range(0, solution.getNumberOfObjectives()).mapToObj(solution::getObjective).toArray(Objective[]::new));
+		mock.withConstraints(IntStream.range(0, solution.getNumberOfConstraints()).mapToObj(solution::getConstraint).toArray(Constraint[]::new));
 		mock.addAttributes(solution.getAttributes());
 		return mock;
 	}
@@ -448,13 +446,13 @@ public class MockSolution extends Solution {
 	}
 
 	@Override
-	public Solution copy() {
-		return build();
+	public MockSolution copy() {
+		return deepCopy();
 	}
 
 	@Override
-	public Solution deepCopy() {
-		return build();
+	public MockSolution deepCopy() {
+		return MockSolution.of(this);
 	}
 	
 	public Solution[] buildArray(int n) {

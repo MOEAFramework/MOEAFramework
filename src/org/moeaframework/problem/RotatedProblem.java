@@ -22,6 +22,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.RotationMatrixBuilder;
 import org.moeaframework.util.Vector;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Decorator to create rotated variants of test problems.  The rotation is defined by a rotation matrix, which should
@@ -65,6 +66,8 @@ public class RotatedProblem extends ProblemWrapper {
 		super(problem);
 		this.rotation = rotation;
 		
+		Validate.that("problem", problem).isType(RealVariable.class);
+		
 		//calculate the expanded lower and upper bounds
 		Solution solution = problem.newSolution();
 		
@@ -76,27 +79,28 @@ public class RotatedProblem extends ProblemWrapper {
 			RealVariable variable = (RealVariable)solution.getVariable(i);
 			
 			center[i] = (variable.getLowerBound() + variable.getUpperBound()) / 2.0;
-			lowerBounds[i] = Math.sqrt(2.0) * (variable.getLowerBound() - center[i]);
-			upperBounds[i] = Math.sqrt(2.0) * (variable.getUpperBound() - center[i]);
+			lowerBounds[i] = Math.sqrt(2.0) * (variable.getLowerBound() - center[i]) + center[i];
+			upperBounds[i] = Math.sqrt(2.0) * (variable.getUpperBound() - center[i]) + center[i];
 		}
 	}
 
 	@Override
 	public String getName() {
-		return "Rotated " + super.getName();
+		return "Rotated " + problem.getName();
 	}
 
 	@Override
 	public int getNumberOfConstraints() {
-		return super.getNumberOfConstraints() + 1;
+		return problem.getNumberOfConstraints() + 1;
 	}
 
 	@Override
 	public void evaluate(Solution solution) {
-		Solution temp = super.newSolution();
+		Solution temp = problem.newSolution();
 		
 		//apply the rotation
 		double[] x = RealVariable.getReal(solution);
+		x = Vector.subtract(x, center);
 		x = rotation.operate(x);
 		x = Vector.add(x, center);
 		
@@ -118,17 +122,17 @@ public class RotatedProblem extends ProblemWrapper {
 		}
 		
 		//evaluate the solution
-		super.evaluate(temp);
+		problem.evaluate(temp);
 		
 		//extract the results
 		solution.setObjectiveValues(temp.getObjectiveValues());
 		
-		for (int i = 0; i < super.getNumberOfConstraints(); i++) {
+		for (int i = 0; i < problem.getNumberOfConstraints(); i++) {
 			solution.setConstraintValue(i, temp.getConstraintValue(i));
 		}
 		
 		//set the bounds violation constraint
-		solution.setConstraintValue(super.getNumberOfConstraints(), boundsViolation);
+		solution.setConstraintValue(problem.getNumberOfConstraints(), boundsViolation);
 	}
 
 	@Override

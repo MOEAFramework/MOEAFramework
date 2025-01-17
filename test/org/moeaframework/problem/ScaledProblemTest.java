@@ -24,8 +24,10 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestResources;
 import org.moeaframework.TestThresholds;
-import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.core.variable.RealVariable;
+import org.moeaframework.mock.MockProblem;
+import org.moeaframework.mock.MockSolution;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 
 @SuppressWarnings("resource")
@@ -44,17 +46,31 @@ public class ScaledProblemTest {
 	}
 	
 	@Test
-	public void testBase1LeavesSolutionUnchanged() {
-		Problem problem = new DTLZ2(2);
-		ScaledProblem scaledProblem = new ScaledProblem(problem, 1.0);
+	public void testScaledValues() {
+		MockSolution solution = MockSolution.of()
+				.withVariables(new RealVariable(0.0, 1.0))
+				.withObjectives(2.0, 3.0, 4.0)
+				.withConstraints(2.0, 3.0);
 		
-		Solution solution = problem.newSolution();
-		Solution scaledSolution = solution.copy();
-		
+		ScaledProblem problem = new ScaledProblem(MockProblem.of(solution), 2.0);
 		problem.evaluate(solution);
-		scaledProblem.evaluate(scaledSolution);
 		
-		Assert.assertArrayEquals(solution.getObjectiveValues(), scaledSolution.getObjectiveValues(), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 2.0, 6.0, 16.0 }, solution.getObjectiveValues(), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 2.0, 3.0 }, solution.getConstraintValues(), TestThresholds.HIGH_PRECISION);
+	}
+	
+	@Test
+	public void testBase1LeavesSolutionUnchanged() {
+		MockSolution solution = MockSolution.of()
+				.withVariables(new RealVariable(0.0, 1.0))
+				.withObjectives(2.0, 3.0, 4.0)
+				.withConstraints(2.0, 3.0);
+		
+		ScaledProblem problem = new ScaledProblem(MockProblem.of(solution), 1.0);
+		problem.evaluate(solution);
+		
+		Assert.assertArrayEquals(new double[] { 2.0, 3.0, 4.0 }, solution.getObjectiveValues(), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 2.0, 3.0 }, solution.getConstraintValues(), TestThresholds.HIGH_PRECISION);
 	}
 
 }
