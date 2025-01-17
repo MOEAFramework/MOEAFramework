@@ -24,66 +24,64 @@ import org.moeaframework.util.io.Tokenizer;
 import org.moeaframework.util.validate.Validate;
 
 /**
- * Parameter representing an {@link Integer} value, ranging from {@value Integer#MIN_VALUE} to
- * {@value Integer#MAX_VALUE}.
+ * Parameter representing a {@link Long} value, ranging from {@value Long#MIN_VALUE} to {@value Long#MAX_VALUE}.
  */
-public class IntegerRange extends AbstractParameter<Integer> implements SampledParameter<Integer>,
-NumericParameter<Integer> {
+public class SampledLong extends AbstractParameter<Long> implements SampledParameter<Long>, NumericParameter<Long> {
 	
-	private final int lowerBound;
+	private final long lowerBound;
 	
-	private final int upperBound;
+	private final long upperBound;
 
 	/**
-	 * Constructs a new integer parameter with the given sampling bounds.
+	 * Constructs a new long parameter with the given sampling bounds.
 	 * 
 	 * @param name the parameter name
 	 * @param lowerBound the lower bound
 	 * @param upperBound the upper bound
 	 */
-	public IntegerRange(String name, int lowerBound, int upperBound) {
+	public SampledLong(String name, long lowerBound, long upperBound) {
 		super(name);
 		this.lowerBound = lowerBound;
 		this.upperBound = upperBound;
 	}
 
 	@Override
-	public Integer getLowerBound() {
+	public Long getLowerBound() {
 		return lowerBound;
 	}
 
 	@Override
-	public Integer getUpperBound() {
+	public Long getUpperBound() {
 		return upperBound;
 	}
 	
 	@Override
-	public Integer parse(String str) {
+	public Long parse(String str) {
 		try {
-			int value = Integer.parseInt(str);
+			long value = Long.parseLong(str);
 			
 			if (value < lowerBound || value > upperBound) {
-				throw new InvalidParameterException(getName(), "integer value expected in range [" + lowerBound +
+				throw new InvalidParameterException(getName(), "long value expected in range [" + lowerBound +
 						", " + upperBound + "], but given " + value);
 			}
 			
 			return value;
 		} catch (NumberFormatException e) {
-			throw new InvalidParameterException(getName(), "value is not an integer, given '" + str + "'");
+			throw new InvalidParameterException(getName(), "value is not a long, given '" + str + "'");
 		}
 	}
 	
 	@Override
 	public void sample(Sample sample, double scale) {
 		Validate.that("scale", scale).isBetween(0.0, 1.0);
-		sample.setInt(getName(), (int)(lowerBound + scale *
+		sample.setLong(getName(), (long)(lowerBound + scale *
 				Math.nextAfter(upperBound - lowerBound + 1, Double.NEGATIVE_INFINITY)));
 	}
 	
 	@Override
 	public String encode(Tokenizer tokenizer) {
-		return tokenizer.encode(List.of(getName(), "int", Integer.toString(getLowerBound()),
-				Integer.toString(getUpperBound())));
+		return tokenizer.encode(List.of(getName(), "long", Long.toString(getLowerBound()),
+				Long.toString(getUpperBound())));
 	}
 	
 	/**
@@ -94,22 +92,22 @@ NumericParameter<Integer> {
 	 * @return the decoded parameter
 	 * @throws InvalidParameterException if the string representation is not a valid parameter
 	 */
-	public static IntegerRange decode(Tokenizer tokenizer, String line) {
+	public static SampledLong decode(Tokenizer tokenizer, String line) {
 		String[] tokens = tokenizer.decodeToArray(line);
 		
 		if (tokens.length < 2) {
 			throw new InvalidParameterException(tokens[0], "missing type");
 		}
 		
-		if (!tokens[1].equalsIgnoreCase("int")) {
-			throw new InvalidParameterException(tokens[0], "type does not match 'int'");
+		if (!tokens[1].equalsIgnoreCase("long")) {
+			throw new InvalidParameterException(tokens[0], "type does not match 'long'");
 		}
 		
 		if (tokens.length != 4) {
 			throw new InvalidParameterException(tokens[0], "ranges require a lower and upper bound");
 		}
 		
-		return new IntegerRange(tokens[0], Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]));
+		return new SampledLong(tokens[0], Long.parseLong(tokens[2]), Long.parseLong(tokens[3]));
 	}
 
 }

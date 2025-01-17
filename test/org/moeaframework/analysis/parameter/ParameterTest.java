@@ -26,9 +26,9 @@ public class ParameterTest {
 	public void testDecode() {
 		Assert.assertInstanceOf(Constant.class, Parameter.decode("foo const 1"));
 		Assert.assertInstanceOf(Enumeration.class, Parameter.decode("foo enum 1 2 3"));
-		Assert.assertInstanceOf(IntegerRange.class, Parameter.decode("foo int 1 2"));
-		Assert.assertInstanceOf(LongRange.class, Parameter.decode("foo long 1 2"));
-		Assert.assertInstanceOf(DecimalRange.class, Parameter.decode("foo decimal 1.0 2.0"));
+		Assert.assertInstanceOf(SampledInteger.class, Parameter.decode("foo int 1 2"));
+		Assert.assertInstanceOf(SampledLong.class, Parameter.decode("foo long 1 2"));
+		Assert.assertInstanceOf(SampledDouble.class, Parameter.decode("foo decimal 1.0 2.0"));
 	}
 	
 	@Test(expected = InvalidParameterException.class)

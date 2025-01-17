@@ -114,9 +114,9 @@ public class SobolSensitivityAnalysisTest {
 	}
 	
 	protected SobolSensitivityResult test(int N, TestFunction function) {
-		Parameter<Double> x = Parameter.named("x").asDecimal().sampledBetween(0.0, 1.0);
-		Parameter<Double> y = Parameter.named("y").asDecimal().sampledBetween(0.0, 1.0);
-		Parameter<Double> z = Parameter.named("z").asDecimal().sampledBetween(0.0, 1.0);
+		Parameter<Double> x = Parameter.named("x").asDouble().sampledBetween(0.0, 1.0);
+		Parameter<Double> y = Parameter.named("y").asDouble().sampledBetween(0.0, 1.0);
+		Parameter<Double> z = Parameter.named("z").asDouble().sampledBetween(0.0, 1.0);
 		
 		ParameterSet parameterSet = new ParameterSet(x, y, z);
 		SobolSensitivityAnalysis analysis = new SobolSensitivityAnalysis(parameterSet, N);

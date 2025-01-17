@@ -53,19 +53,19 @@ public class ParameterSetLegacyFormatTest {
 		Assert.assertEquals(3, parameterSet.size());
 
 		Assert.assertEquals("entry1", parameterSet.get(0).getName());
-		Assert.assertInstanceOf(DecimalRange.class, parameterSet.get(0));
-		Assert.assertEquals(0.0, ((DecimalRange)parameterSet.get(0)).getLowerBound(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(1.0, ((DecimalRange)parameterSet.get(0)).getUpperBound(), TestThresholds.HIGH_PRECISION);
+		Assert.assertInstanceOf(SampledDouble.class, parameterSet.get(0));
+		Assert.assertEquals(0.0, ((SampledDouble)parameterSet.get(0)).getLowerBound(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, ((SampledDouble)parameterSet.get(0)).getUpperBound(), TestThresholds.HIGH_PRECISION);
 
 		Assert.assertEquals("entry2", parameterSet.get(1).getName());
-		Assert.assertInstanceOf(DecimalRange.class, parameterSet.get(1));
-		Assert.assertEquals(100, ((DecimalRange)parameterSet.get(1)).getLowerBound(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(10000, ((DecimalRange)parameterSet.get(1)).getUpperBound(), TestThresholds.HIGH_PRECISION);
+		Assert.assertInstanceOf(SampledDouble.class, parameterSet.get(1));
+		Assert.assertEquals(100, ((SampledDouble)parameterSet.get(1)).getLowerBound(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(10000, ((SampledDouble)parameterSet.get(1)).getUpperBound(), TestThresholds.HIGH_PRECISION);
 
 		Assert.assertEquals("entry3", parameterSet.get(2).getName());
-		Assert.assertInstanceOf(DecimalRange.class, parameterSet.get(2));
-		Assert.assertEquals(0.0, ((DecimalRange)parameterSet.get(2)).getLowerBound(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(1.0, ((DecimalRange)parameterSet.get(2)).getUpperBound(), TestThresholds.HIGH_PRECISION);
+		Assert.assertInstanceOf(SampledDouble.class, parameterSet.get(2));
+		Assert.assertEquals(0.0, ((SampledDouble)parameterSet.get(2)).getLowerBound(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, ((SampledDouble)parameterSet.get(2)).getUpperBound(), TestThresholds.HIGH_PRECISION);
 	}
 
 	@Test(expected = InvalidParameterException.class)

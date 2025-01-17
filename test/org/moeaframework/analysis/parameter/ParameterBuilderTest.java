@@ -54,7 +54,7 @@ public class ParameterBuilderTest {
 		Assert.assertEquals("foo", random.getName());
 		Assert.assertEquals(2, random.size());
 		
-		IntegerRange sampled = Parameter.named("foo").asInt().sampledBetween(5, 10);
+		SampledInteger sampled = Parameter.named("foo").asInt().sampledBetween(5, 10);
 		Assert.assertEquals("foo", sampled.getName());
 		Assert.assertEquals(5, sampled.getLowerBound());
 		Assert.assertEquals(10, sampled.getUpperBound());
@@ -90,35 +90,35 @@ public class ParameterBuilderTest {
 		Assert.assertEquals("foo", random.getName());
 		Assert.assertEquals(2, random.size());
 		
-		LongRange sampled = Parameter.named("foo").asLong().sampledBetween(5L, 10L);
+		SampledLong sampled = Parameter.named("foo").asLong().sampledBetween(5L, 10L);
 		Assert.assertEquals("foo", sampled.getName());
 		Assert.assertEquals(5L, sampled.getLowerBound());
 		Assert.assertEquals(10L, sampled.getUpperBound());
 	}
 	
 	@Test
-	public void testDecimal() {
-		Constant<Double> constant = Parameter.named("foo").asDecimal().constant(5.0);
+	public void testDouble() {
+		Constant<Double> constant = Parameter.named("foo").asDouble().constant(5.0);
 		Assert.assertEquals("foo", constant.getName());
 		Assert.assertEquals(5.0, constant.getValue());
 		
-		Enumeration<Double> rangeInclusive = Parameter.named("foo").asDecimal().range(5.0, 10.0, 1.0);
+		Enumeration<Double> rangeInclusive = Parameter.named("foo").asDouble().range(5.0, 10.0, 1.0);
 		Assert.assertEquals("foo", rangeInclusive.getName());
 		Assert.assertEquals(List.of(5.0, 6.0, 7.0, 8.0, 9.0, 10.0), rangeInclusive.values());
 		
-		Enumeration<Double> rangeExclusive = Parameter.named("foo").asDecimal().rangeExclusive(5.0, 10.0, 1.0);
+		Enumeration<Double> rangeExclusive = Parameter.named("foo").asDouble().rangeExclusive(5.0, 10.0, 1.0);
 		Assert.assertEquals("foo", rangeExclusive.getName());
 		Assert.assertEquals(List.of(5.0, 6.0, 7.0, 8.0, 9.0), rangeExclusive.values());
 
-		Enumeration<Double> values = Parameter.named("foo").asDecimal().withValues(5.0, 10.0);
+		Enumeration<Double> values = Parameter.named("foo").asDouble().withValues(5.0, 10.0);
 		Assert.assertEquals("foo", values.getName());
 		Assert.assertEquals(List.of(5.0, 10.0), values.values());
 		
-		Enumeration<Double> random = Parameter.named("foo").asDecimal().random(5.0, 10.0, 2);
+		Enumeration<Double> random = Parameter.named("foo").asDouble().random(5.0, 10.0, 2);
 		Assert.assertEquals("foo", random.getName());
 		Assert.assertEquals(2.0, random.size());
 		
-		DecimalRange sampled = Parameter.named("foo").asDecimal().sampledBetween(5.0, 10.0);
+		SampledDouble sampled = Parameter.named("foo").asDouble().sampledBetween(5.0, 10.0);
 		Assert.assertEquals("foo", sampled.getName());
 		Assert.assertEquals(5.0, sampled.getLowerBound());
 		Assert.assertEquals(10.0, sampled.getUpperBound());

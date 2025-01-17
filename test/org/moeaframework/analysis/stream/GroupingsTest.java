@@ -85,7 +85,7 @@ public class GroupingsTest {
 	
 	@Test
 	public void testDoubleBucket() {
-		Parameter<Double> parameter = Parameter.named("test").asDecimal().sampledBetween(0.0, 100.0);
+		Parameter<Double> parameter = Parameter.named("test").asDouble().sampledBetween(0.0, 100.0);
 		Sample sample = new Sample();
 		
 		Function<Sample, Double> bucket = Groupings.bucket(parameter, 10.0);
@@ -113,7 +113,7 @@ public class GroupingsTest {
 	
 	@Test
 	public void testRound() {
-		Parameter<Double> parameter = Parameter.named("test").asDecimal().sampledBetween(0.0, 100.0);
+		Parameter<Double> parameter = Parameter.named("test").asDouble().sampledBetween(0.0, 100.0);
 		Sample sample = new Sample();
 		
 		Function<Sample, Integer> bucket = Groupings.round(parameter);
@@ -135,7 +135,7 @@ public class GroupingsTest {
 	
 	@Test
 	public void testExactValue() {
-		Parameter<Double> parameter = Parameter.named("test").asDecimal().sampledBetween(0.0, 100.0);
+		Parameter<Double> parameter = Parameter.named("test").asDouble().sampledBetween(0.0, 100.0);
 		Sample sample = new Sample();
 		
 		Function<Sample, Double> bucket = Groupings.exactValue(parameter);

@@ -115,9 +115,9 @@ public interface Parameter<T> extends Named {
 		Map<String, BiFunction<Tokenizer, String, Parameter<?>>> types = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 		types.put("const", Constant::decode);
 		types.put("enum", Enumeration::decode);
-		types.put("int", IntegerRange::decode);
-		types.put("long", LongRange::decode);
-		types.put("decimal", DecimalRange::decode);
+		types.put("int", SampledInteger::decode);
+		types.put("long", SampledLong::decode);
+		types.put("decimal", SampledDouble::decode);
 		
 		BiFunction<Tokenizer, String, Parameter<?>> decoder = types.get(tokens[1]);
 		
@@ -127,7 +127,7 @@ public interface Parameter<T> extends Named {
 				try {
 					double lowerBound = Double.parseDouble(tokens[1]);
 					double upperBound = Double.parseDouble(tokens[2]);
-					return new DecimalRange(tokens[0], lowerBound, upperBound);
+					return new SampledDouble(tokens[0], lowerBound, upperBound);
 				} catch (NumberFormatException e) {
 					// fall through
 				}

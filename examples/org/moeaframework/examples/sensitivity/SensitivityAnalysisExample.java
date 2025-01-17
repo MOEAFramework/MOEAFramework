@@ -41,10 +41,10 @@ public class SensitivityAnalysisExample {
 		
 		// configure the parameters being analyzed
 		Parameter<Integer> populationSize = Parameter.named("populationSize").asInt().sampledBetween(10, 500);
-		Parameter<Double> sbxRate = Parameter.named("sbx.rate").asDecimal().sampledBetween(0.0, 1.0);
-		Parameter<Double> sbxDistributionIndex = Parameter.named("sbx.distributionIndex").asDecimal().sampledBetween(1.0, 50.0);
-		Parameter<Double> pmRate = Parameter.named("pm.rate").asDecimal().sampledBetween(0.0, 1.0);
-		Parameter<Double> pmDistributionIndex = Parameter.named("pm.distributionIndex").asDecimal().sampledBetween(1.0, 50.0);
+		Parameter<Double> sbxRate = Parameter.named("sbx.rate").asDouble().sampledBetween(0.0, 1.0);
+		Parameter<Double> sbxDistributionIndex = Parameter.named("sbx.distributionIndex").asDouble().sampledBetween(1.0, 50.0);
+		Parameter<Double> pmRate = Parameter.named("pm.rate").asDouble().sampledBetween(0.0, 1.0);
+		Parameter<Double> pmDistributionIndex = Parameter.named("pm.distributionIndex").asDouble().sampledBetween(1.0, 50.0);
 		
 		ParameterSet parameters = new ParameterSet(populationSize, sbxRate, sbxDistributionIndex, pmRate, pmDistributionIndex);
 		

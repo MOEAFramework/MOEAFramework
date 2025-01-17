@@ -64,8 +64,8 @@ public class ParameterBuilder {
 	 * 
 	 * @return the typed parameter builder
 	 */
-	public DecimalBuilder asDecimal() {
-		return new DecimalBuilder(name);
+	public DoubleBuilder asDouble() {
+		return new DoubleBuilder(name);
 	}
 	
 	/**
@@ -98,13 +98,13 @@ public class ParameterBuilder {
 	}
 	
 	/**
-	 * Shorthand for calling {@link DecimalBuilder#constant(double)}.
+	 * Shorthand for calling {@link DoubleBuilder#constant(double)}.
 	 * 
 	 * @param value the constant value
 	 * @return the constant parameter
 	 */
 	public Constant<Double> asConstant(double value) {
-		return asDecimal().constant(value);
+		return asDouble().constant(value);
 	}
 	
 	/**
@@ -138,13 +138,13 @@ public class ParameterBuilder {
 	}
 	
 	/**
-	 * Shorthand for calling {@link DecimalBuilder#withValues(double...)}.
+	 * Shorthand for calling {@link DoubleBuilder#withValues(double...)}.
 	 * 
 	 * @param values the enumerated values
 	 * @return the enumerated parameter
 	 */
 	public Enumeration<Double> withValues(double... values) {
-		return asDecimal().withValues(values);
+		return asDouble().withValues(values);
 	}
 	
 	/**
@@ -274,8 +274,8 @@ public class ParameterBuilder {
 		 * @param endInclusive the upper bound (inclusive)
 		 * @return the parameter
 		 */
-		public IntegerRange sampledBetween(int startInclusive, int endInclusive) {
-			return new IntegerRange(name, startInclusive, endInclusive);
+		public SampledInteger sampledBetween(int startInclusive, int endInclusive) {
+			return new SampledInteger(name, startInclusive, endInclusive);
 		}
 		
 	}
@@ -383,8 +383,8 @@ public class ParameterBuilder {
 		 * @param endInclusive the upper bound (inclusive)
 		 * @return the parameter
 		 */
-		public LongRange sampledBetween(long startInclusive, long endInclusive) {
-			return new LongRange(name, startInclusive, endInclusive);
+		public SampledLong sampledBetween(long startInclusive, long endInclusive) {
+			return new SampledLong(name, startInclusive, endInclusive);
 		}
 		
 	}
@@ -392,9 +392,9 @@ public class ParameterBuilder {
 	/**
 	 * A typed parameter builder for decimal for floating-point values.
 	 */
-	public static class DecimalBuilder extends TypedParameterBuilder {
+	public static class DoubleBuilder extends TypedParameterBuilder {
 		
-		DecimalBuilder(String name) {
+		DoubleBuilder(String name) {
 			super(name);
 		}
 		
@@ -470,8 +470,8 @@ public class ParameterBuilder {
 		 * @param endInclusive the upper bound (inclusive)
 		 * @return the parameter
 		 */
-		public DecimalRange sampledBetween(double startInclusive, double endInclusive) {
-			return new DecimalRange(name, startInclusive, endInclusive);
+		public SampledDouble sampledBetween(double startInclusive, double endInclusive) {
+			return new SampledDouble(name, startInclusive, endInclusive);
 		}
 		
 	}

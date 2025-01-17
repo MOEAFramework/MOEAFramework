@@ -28,7 +28,7 @@ import org.moeaframework.util.validate.Validate;
 /**
  * Parameter representing a {@link Double} value.
  */
-public class DecimalRange extends AbstractParameter<Double> implements SampledParameter<Double>,
+public class SampledDouble extends AbstractParameter<Double> implements SampledParameter<Double>,
 NumericParameter<Double> {
 	
 	private static final DecimalFormat PRECISION_FORMAT;
@@ -49,7 +49,7 @@ NumericParameter<Double> {
 	 * @param lowerBound the lower bound
 	 * @param upperBound the upper bound
 	 */
-	public DecimalRange(String name, double lowerBound, double upperBound) {
+	public SampledDouble(String name, double lowerBound, double upperBound) {
 		super(name);
 		this.lowerBound = lowerBound;
 		this.upperBound = upperBound;
@@ -101,7 +101,7 @@ NumericParameter<Double> {
 	 * @return the decoded parameter
 	 * @throws InvalidParameterException if the string representation is not a valid parameter
 	 */
-	public static DecimalRange decode(Tokenizer tokenizer, String line) {
+	public static SampledDouble decode(Tokenizer tokenizer, String line) {
 		String[] tokens = tokenizer.decodeToArray(line);
 		
 		if (tokens.length < 2) {
@@ -116,7 +116,7 @@ NumericParameter<Double> {
 			throw new InvalidParameterException(tokens[0], "ranges require a lower and upper bound");
 		}
 		
-		return new DecimalRange(tokens[0], Double.parseDouble(tokens[2]), Double.parseDouble(tokens[3]));
+		return new SampledDouble(tokens[0], Double.parseDouble(tokens[2]), Double.parseDouble(tokens[3]));
 	}
 	
 	/**

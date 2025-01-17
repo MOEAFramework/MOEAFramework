@@ -25,36 +25,37 @@ import org.moeaframework.analysis.sample.Sample;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.util.io.Tokenizer;
 
-public class DecimalRangeTest {
+public class SampledLongTest {
 	
 	@Test
 	public void testParse() {
-		DecimalRange parameter = new DecimalRange("foo", 100.0, 1000.0);
-		Assert.assertEquals(500.5, parameter.parse("500.5"));
+		SampledLong parameter = new SampledLong("foo", 100, 1000);
+		Assert.assertEquals(500, parameter.parse("500"));
 	}
 	
 	@Test
 	public void testParseOutOfBounds() {
-		DecimalRange parameter = new DecimalRange("foo", 100.0, 1000.0);
+		SampledLong parameter = new SampledLong("foo", 100, 1000);
 		
-		Assert.assertThrows(InvalidParameterException.class, () -> parameter.parse("99.9"));
-		Assert.assertThrows(InvalidParameterException.class, () -> parameter.parse("1000.1"));
+		Assert.assertThrows(InvalidParameterException.class, () -> parameter.parse("99"));
+		Assert.assertThrows(InvalidParameterException.class, () -> parameter.parse("1001"));
+		Assert.assertThrows(InvalidParameterException.class, () -> parameter.parse("555.5"));
 		Assert.assertThrows(InvalidParameterException.class, () -> parameter.parse("foo"));
 	}
 
 	@Test
 	public void testSample() {
 		Sample sample = new Sample();
-		DecimalRange parameter = new DecimalRange("foo", 100.0, 1000.0);
+		SampledLong parameter = new SampledLong("foo", 100, 1000);
 		
 		parameter.sample(sample, 0.0);
-		Assert.assertEquals(100.0, parameter.readValue(sample));
+		Assert.assertEquals(100, parameter.readValue(sample));
 		
 		parameter.sample(sample, 1.0);
-		Assert.assertEquals(1000.0, parameter.readValue(sample));
+		Assert.assertEquals(1000, parameter.readValue(sample));
 		
 		parameter.sample(sample, 0.5);
-		Assert.assertEquals(550.0, parameter.readValue(sample));
+		Assert.assertEquals(550, parameter.readValue(sample));
 	}
 	
 	@Test
@@ -62,20 +63,20 @@ public class DecimalRangeTest {
 		DescriptiveStatistics statistics = new DescriptiveStatistics();
 
 		Sample sample = new Sample();
-		DecimalRange parameter = new DecimalRange("foo", 0.0, 10.0);
+		SampledLong parameter = new SampledLong("foo", 0, 10);
 		
 		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
 			parameter.sample(sample, PRNG.nextDouble());
 			statistics.addValue(parameter.readValue(sample));
 		}
 
-		Assert.assertUniformDistribution(0.0, 10.0, statistics);
+		Assert.assertUniformDistribution(0, 10, statistics);
 	}
 	
 	@Test
 	public void testSampleOutOfBounds() {
 		Sample sample = new Sample();
-		DecimalRange parameter = new DecimalRange("foo", 100.0, 1000.0);
+		SampledLong parameter = new SampledLong("foo", 100, 1000);
 		
 		Assert.assertThrows(IllegalArgumentException.class, () -> parameter.sample(sample, -0.001));
 		Assert.assertThrows(IllegalArgumentException.class, () -> parameter.sample(sample, 1.001));
@@ -84,37 +85,30 @@ public class DecimalRangeTest {
 	@Test
 	public void testDecode() {
 		Tokenizer tokenizer = new Tokenizer();
-		DecimalRange parameter = DecimalRange.decode(tokenizer, "foo decimal 100.0 1000.0");
+		SampledLong parameter = SampledLong.decode(tokenizer, "foo long 100 1000");
 		
 		Assert.assertEquals("foo", parameter.getName());
-		Assert.assertEquals(100.0, parameter.getLowerBound());
-		Assert.assertEquals(1000.0, parameter.getUpperBound());
+		Assert.assertEquals(100, parameter.getLowerBound());
+		Assert.assertEquals(1000, parameter.getUpperBound());
 	}
 	
 	@Test
 	public void testDecodeInvalid() {
 		Tokenizer tokenizer = new Tokenizer();
 		
-		Assert.assertThrows(InvalidParameterException.class, () -> DecimalRange.decode(tokenizer, "foo"));
-		Assert.assertThrows(InvalidParameterException.class, () -> DecimalRange.decode(tokenizer, "foo decimal"));
-		Assert.assertThrows(InvalidParameterException.class, () -> DecimalRange.decode(tokenizer, "foo decimal 100.0"));
-		Assert.assertThrows(InvalidParameterException.class, () -> DecimalRange.decode(tokenizer, "foo decimal 100.0 1000.0 10.0"));
-		Assert.assertThrows(InvalidParameterException.class, () -> DecimalRange.decode(tokenizer, "foo unexpected 100.0 1000.0"));
+		Assert.assertThrows(InvalidParameterException.class, () -> SampledLong.decode(tokenizer, "foo"));
+		Assert.assertThrows(InvalidParameterException.class, () -> SampledLong.decode(tokenizer, "foo long"));
+		Assert.assertThrows(InvalidParameterException.class, () -> SampledLong.decode(tokenizer, "foo long 100"));
+		Assert.assertThrows(InvalidParameterException.class, () -> SampledLong.decode(tokenizer, "foo long 100 1000 10"));
+		Assert.assertThrows(InvalidParameterException.class, () -> SampledLong.decode(tokenizer, "foo unexpected 100 1000"));
 	}
 	
 	@Test
 	public void testEncode() {
 		Tokenizer tokenizer = new Tokenizer();
-		DecimalRange parameter = new DecimalRange("foo", 100.0, 1000.0);
+		SampledLong parameter = new SampledLong("foo", 100, 1000);
 		
-		Assert.assertEquals("foo decimal 100.0 1000.0", parameter.encode(tokenizer));
-	}
-	
-	@Test
-	public void testApplyPrecision() {
-		Assert.assertEquals("0.0", DecimalRange.applyPrecision(0.000000000000001));
-		Assert.assertEquals("0.5555555556", DecimalRange.applyPrecision(0.555555555555555));
-		Assert.assertEquals("1.0", DecimalRange.applyPrecision(0.999999999999999));
+		Assert.assertEquals("foo long 100 1000", parameter.encode(tokenizer));
 	}
 
 }

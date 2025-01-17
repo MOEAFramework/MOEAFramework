@@ -27,7 +27,7 @@ public class ParameterSetTest {
 	@Test
 	public void testSample() {
 		ParameterSet parameterSet = new ParameterSet();
-		parameterSet.add(new IntegerRange("int", 0, 10));
+		parameterSet.add(new SampledInteger("int", 0, 10));
 		parameterSet.add(new Enumeration<>("string", "foo", "bar"));
 		parameterSet.add(new Constant<>("double", 0.5));
 		
@@ -74,7 +74,7 @@ public class ParameterSetTest {
 		
 		Assert.assertTrue(parameterSet.isEnumerable());
 		
-		parameterSet.add(new IntegerRange("int", 0, 10));
+		parameterSet.add(new SampledInteger("int", 0, 10));
 		
 		Assert.assertFalse(parameterSet.isEnumerable());
 	}

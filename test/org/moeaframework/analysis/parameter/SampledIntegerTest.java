@@ -25,28 +25,29 @@ import org.moeaframework.analysis.sample.Sample;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.util.io.Tokenizer;
 
-public class LongRangeTest {
+public class SampledIntegerTest {
 	
 	@Test
 	public void testParse() {
-		LongRange parameter = new LongRange("foo", 100, 1000);
+		SampledInteger parameter = new SampledInteger("foo", 100, 1000);
 		Assert.assertEquals(500, parameter.parse("500"));
 	}
 	
 	@Test
 	public void testParseOutOfBounds() {
-		LongRange parameter = new LongRange("foo", 100, 1000);
+		SampledInteger parameter = new SampledInteger("foo", 100, 1000);
 		
 		Assert.assertThrows(InvalidParameterException.class, () -> parameter.parse("99"));
 		Assert.assertThrows(InvalidParameterException.class, () -> parameter.parse("1001"));
 		Assert.assertThrows(InvalidParameterException.class, () -> parameter.parse("555.5"));
+		Assert.assertThrows(InvalidParameterException.class, () -> parameter.parse(Long.toString(Long.MAX_VALUE)));
 		Assert.assertThrows(InvalidParameterException.class, () -> parameter.parse("foo"));
 	}
 
 	@Test
 	public void testSample() {
 		Sample sample = new Sample();
-		LongRange parameter = new LongRange("foo", 100, 1000);
+		SampledInteger parameter = new SampledInteger("foo", 100, 1000);
 		
 		parameter.sample(sample, 0.0);
 		Assert.assertEquals(100, parameter.readValue(sample));
@@ -63,7 +64,7 @@ public class LongRangeTest {
 		DescriptiveStatistics statistics = new DescriptiveStatistics();
 
 		Sample sample = new Sample();
-		LongRange parameter = new LongRange("foo", 0, 10);
+		SampledInteger parameter = new SampledInteger("foo", 0, 10);
 		
 		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
 			parameter.sample(sample, PRNG.nextDouble());
@@ -76,7 +77,7 @@ public class LongRangeTest {
 	@Test
 	public void testSampleOutOfBounds() {
 		Sample sample = new Sample();
-		LongRange parameter = new LongRange("foo", 100, 1000);
+		SampledInteger parameter = new SampledInteger("foo", 100, 1000);
 		
 		Assert.assertThrows(IllegalArgumentException.class, () -> parameter.sample(sample, -0.001));
 		Assert.assertThrows(IllegalArgumentException.class, () -> parameter.sample(sample, 1.001));
@@ -85,7 +86,7 @@ public class LongRangeTest {
 	@Test
 	public void testDecode() {
 		Tokenizer tokenizer = new Tokenizer();
-		LongRange parameter = LongRange.decode(tokenizer, "foo long 100 1000");
+		SampledInteger parameter = SampledInteger.decode(tokenizer, "foo int 100 1000");
 		
 		Assert.assertEquals("foo", parameter.getName());
 		Assert.assertEquals(100, parameter.getLowerBound());
@@ -96,19 +97,21 @@ public class LongRangeTest {
 	public void testDecodeInvalid() {
 		Tokenizer tokenizer = new Tokenizer();
 		
-		Assert.assertThrows(InvalidParameterException.class, () -> LongRange.decode(tokenizer, "foo"));
-		Assert.assertThrows(InvalidParameterException.class, () -> LongRange.decode(tokenizer, "foo long"));
-		Assert.assertThrows(InvalidParameterException.class, () -> LongRange.decode(tokenizer, "foo long 100"));
-		Assert.assertThrows(InvalidParameterException.class, () -> LongRange.decode(tokenizer, "foo long 100 1000 10"));
-		Assert.assertThrows(InvalidParameterException.class, () -> LongRange.decode(tokenizer, "foo unexpected 100 1000"));
+		Assert.assertThrows(InvalidParameterException.class, () -> SampledInteger.decode(tokenizer, "foo"));
+		Assert.assertThrows(InvalidParameterException.class, () -> SampledInteger.decode(tokenizer, "foo int"));
+		Assert.assertThrows(InvalidParameterException.class, () -> SampledInteger.decode(tokenizer, "foo int 100"));
+		Assert.assertThrows(InvalidParameterException.class, () -> SampledInteger.decode(tokenizer, "foo int 100 1000 10"));
+		Assert.assertThrows(InvalidParameterException.class, () -> SampledInteger.decode(tokenizer, "foo unexpected 100 1000"));
 	}
 	
 	@Test
 	public void testEncode() {
 		Tokenizer tokenizer = new Tokenizer();
-		LongRange parameter = new LongRange("foo", 100, 1000);
+		SampledInteger parameter = new SampledInteger("foo", 100, 1000);
 		
-		Assert.assertEquals("foo long 100 1000", parameter.encode(tokenizer));
+		Assert.assertEquals("foo int 100 1000", parameter.encode(tokenizer));
 	}
+	
+	
 
 }

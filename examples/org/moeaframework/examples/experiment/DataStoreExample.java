@@ -47,7 +47,7 @@ public class DataStoreExample {
 		Indicators indicators = Indicators.standard(problem, NondominatedPopulation.load("./pf/DTLZ2.2D.pf"));
 		
 		Enumeration<Integer> populationSize = Parameter.named("populationSize").asInt().range(10, 100, 10);
-		Enumeration<Double> sbxRate = Parameter.named("sbx.rate").asDecimal().range(0.0, 1.0, 0.1);
+		Enumeration<Double> sbxRate = Parameter.named("sbx.rate").asDouble().range(0.0, 1.0, 0.1);
 		
 		ParameterSet parameters = new ParameterSet(populationSize, sbxRate);
 		Samples samples = parameters.enumerate();
