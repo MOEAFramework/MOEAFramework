@@ -168,18 +168,23 @@ Use of these build scripts requires Apache Ant to be installed.  See
 	
 	<target name="setup-hooks">
 		<echo file=".git/hooks/pre-commit"><![CDATA[#!/usr/bin/env bash
-			
-temp_file=$(mktemp)
-find src -type f -name "*.java" -exec grep -EHn '^\t*[ ]{4,}[^ ]' {} \; >> "${temp_file}"
-find test -type f -name "*.java" -not -name "UpdateCodeSamplesTest.java" -exec grep -EHn '^\t*[ ]{4,}[^ ]' {} \; >> "${temp_file}"
-find examples -type f -name "*.java" -exec grep -EHn '^\t*[ ]{4,}[^ ]' {} \; >> "${temp_file}"
-find .github/workflows -type f -name "*.yml" -exec grep -EHn '^[ ]*\t+[^ ]' {} \; >> "${temp_file}"
-			
-if [ -s "${temp_file}" ]; then
-	echo "Please fix the following formatting / whitespace issues before committing:"
-	cat "${temp_file}"
-	exit -1
-fi
+
+while read file; do
+	if [[ "$file" == ".classpath" ]]; then
+		echo "Do not commit changes to classpath (use --no-verify if you really want to)"
+		exit -1
+	fi
+
+	if [[ "$file" =~ .java$ ]] && grep -EHn '^\t*[ ]{4,}[^ ]' "$file"; then
+		echo "Found Java file with incorrect indentation (must use tabs)"
+		exit -1
+	fi
+
+	if [[ "$file" =~ (.yml|.yaml)$ ]] && grep -EHn '^[ ]*\t+[^ ]' "$file"; then
+		echo "Found YAML file with incorrect indentation (must use spaces)"
+		exit -1
+	fi
+done < <(git diff --cached --name-only --diff-filter=ACM)
 ]]></echo>
 		
 		<chmod perm="+x" type="file" verbose="true" file=".git/hooks/pre-commit" />
