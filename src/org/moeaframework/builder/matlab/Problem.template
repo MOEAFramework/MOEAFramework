@@ -39,8 +39,8 @@ public class ${problemName} extends AbstractProblem {
 			
 			Object[] results = engine.feval(2, "${functionName}", vars);
 	
-			solution.setObjectives((double[])results[0]);
-			solution.setConstraints((double[])results[1]);
+			solution.setObjectiveValues((double[])results[0]);
+			solution.setConstraintValues((double[])results[1]);
 		} catch (Exception e) {
 			throw new FrameworkException("Failed while invoking Matlab function ${functionName}", e);
 		}
