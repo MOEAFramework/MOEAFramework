@@ -37,6 +37,7 @@ import org.moeaframework.Assume;
 import org.moeaframework.TempFiles;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.analysis.io.ResultFileReader;
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.constraint.Between;
 import org.moeaframework.core.constraint.Constraint;
@@ -178,6 +179,12 @@ public class SolveTest {
 				"--upperBounds", convert(new double[] { 10, 10.5 }, ',')));
 	}
 	
+	@Test(expected = FrameworkException.class)
+	public void testParseVariablesWithInvalidType() throws ParseException {
+		solve.parseVariables(createCommandLine(
+				"--variables", "Foo(0,1)"));
+	}
+	
 	@Test
 	public void testParseObjectivesWithDefaults() throws ParseException {
 		CommandLine commandLine = createCommandLine(
@@ -272,13 +279,35 @@ public class SolveTest {
 		solve.run(commandLine);
 		checkOutput(commandLine, 10);
 	}
+	
+	@Test(expected = ParseException.class)
+	public void testInternalProblemWithArgs() throws Exception {
+		CommandLine commandLine = createCommandLine(
+				"--problem", "DTLZ2_2",
+				"--numberOfEvaluations", "1000",
+				"--",
+				Settings.getPythonCommand(),
+				SCRIPT.getAbsolutePath());
+		
+		solve.run(commandLine);
+	}
 
 	@Test
 	public void testExternalProblem() throws Exception {
 		Assume.assumePythonExists();
 		
 		CommandLine commandLine = createCommandLine(
-				"--problem", "DTLZ2_2",
+				"--numberOfEvaluations", "1000",
+				"--variables", "R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1)",
+				"--objectives", "2",
+				"--test",
+				"--",
+				Settings.getPythonCommand(),
+				SCRIPT.getAbsolutePath());
+		
+		solve.run(commandLine);
+		
+		commandLine = createCommandLine(
 				"--numberOfEvaluations", "1000",
 				"--variables", "R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1)",
 				"--objectives", "2",
@@ -295,7 +324,19 @@ public class SolveTest {
 		Assume.assumePythonExists();
 		
 		CommandLine commandLine = createCommandLine(
-				"--problem", "DTLZ2_2",
+				"--numberOfEvaluations", "1000",
+				"--variables", "R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1)",
+				"--objectives", "2",
+				"--useSocket",
+				"--test",
+				"--",
+				Settings.getPythonCommand(),
+				SCRIPT.getAbsolutePath(),
+				"--sockets");
+		
+		solve.run(commandLine);
+		
+		commandLine = createCommandLine(
 				"--numberOfEvaluations", "1000",
 				"--variables", "R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1);R(0,1)",
 				"--objectives", "2",

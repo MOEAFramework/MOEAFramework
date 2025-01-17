@@ -42,6 +42,20 @@ public class WeightGeneratorTest {
 	}
 	
 	@Test
+	public void testUniformDesign() throws Exception {
+		File resultFile = TempFiles.createFile();
+		
+		WeightGenerator.main(new String[] {
+				"-m", "uniform",
+				"-d", "3",
+				"-n", "100",
+				"-o", resultFile.getPath() });
+		
+		Assert.assertLinePattern(resultFile, Assert.getSpaceSeparatedNumericPattern(3));
+		Assert.assertLineCount(100, resultFile);
+	}
+	
+	@Test
 	public void testNBI() throws Exception {
 		File resultFile = TempFiles.createFile();
 		

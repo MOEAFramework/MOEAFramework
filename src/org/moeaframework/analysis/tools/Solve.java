@@ -501,6 +501,10 @@ public class Solve extends CommandLineUtility {
 		
 		try {
 			if (commandLine.hasOption("problem")) {
+				if (commandLine.getArgs().length > 0) {
+					throw new ParseException("No arguments should be specified when using --problem");
+				}
+				
 				problem = OptionUtils.getProblemInstance(commandLine, false);
 			} else {
 				problem = createExternalProblem(commandLine);
@@ -525,8 +529,6 @@ public class Solve extends CommandLineUtility {
 			}
 			
 			System.out.println("Result written to " + file);
-		} catch (ParseException e) {
-			throw new IOException(e);
 		} finally {
 			if (problem != null) {
 				problem.close();
