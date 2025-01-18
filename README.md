@@ -18,7 +18,7 @@ evolutionary algorithms (MOEAs) and other metaheuristics.
 ### :warning: Upgrading to V5 :warning:
 
 Version 5.0 was recently released, which includes breaking changes that will likely requiring code modifications if
-updating from a previous version.  Refer to the [Release Notes](docs/releaseNotes.md) for details.
+upgrading from a previous version.  Refer to the [Release Notes](docs/releaseNotes.md) for details.
 <!-- end-section:github -->
 
 
