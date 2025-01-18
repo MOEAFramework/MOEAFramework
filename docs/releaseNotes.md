@@ -9,9 +9,10 @@ version to access the latest features, please be aware you will likely need to u
   
   * Adds `Objective` and `Constraint` classes.  This includes, for example, being able to specify an objective as either
     `Minimize` or `Maximize`.
+    [Example](../examples/org/moeaframework/examples/srinivas/Srinivas.java#L63-L76)
     
-  * Adds a `name` parameter to `Variable`, `Objective`, and `Constraint`, allowing problems to define custom names for
-    each.  If no name is given, the name defaults to `Var<N>`, `Obj<N>`, and `Constr<N>`.
+  * Adds an optional `name` parameter to `Variable`, `Objective`, and `Constraint`.  When provided, this name is used
+    when displaying or saving results, providing a way to store additional context or self-documentation.
     
   * Variables no longer have a constructor for setting the value.  Instead, the value must be set in a separate call.
     This helps avoid any ambiguity regarding the ordering of arguments.
@@ -27,7 +28,9 @@ version to access the latest features, please be aware you will likely need to u
   * Updated "result file" format.  Namely, information about the new objective and constraint types is stored in the
     header, allowing it to interpret the data correctly.
     
-  * Removes `Executor` and `Analyzer`.  If previously using the `Analyzer`, switch to `IndicatorStatistics`.
+  * Removes `Executor` and `Analyzer`.  Instead, algorithms should be created using their constructors and analysis
+    performed using `IndicatorStatistics`.
+    [Example](../examples/org/moeaframework/examples/indicators/IndicatorStatisticsExample.java)
   
   * Reorganized class and package structure.  For instance, `Population` and its subclasses were moved to
     `org.moeaframework.core.population`.  If you see import errors, try updating the import.
@@ -52,42 +55,16 @@ version to access the latest features, please be aware you will likely need to u
       ./cli calc --problem DTLZ2 --indicator hypervolume NSGAII_DTLZ2_Runtime.txt
       ```
        
-  * New parameter definitions and sampling package.  
-    ```
-    ParameterSet parameters = new ParameterSet(
-        Parameter.named("populationSize").asInt().range(100, 1000, 10),
-        Parameter.named("sbx.rate").asDouble().range(0.0, 1.0, 0.1),
-        Parameter.named("pm.rate").asDouble().range(0.0, 1.0, 0.1));
-    
-    Samples samples = parameters.enumerate();
-    ```
+  * New parameter definitions and sampling package.
+    [Example](../examples/org/moeaframework/examples/experiment/ParameterSampleExample.java#L44-L50)
     
   * Streams API.  This simplifies common data manipulation and aggregation procedures, such as grouping samples and
-    computing the average hypervolume:
-    ```
-    double averageHypervolume = DataStream.of(samples)
-        .map(sample -> {
-            NSGAII algorithm = new NSGAII(new DTLZ2(2));
-            algorithm.applyConfiguration(sample);
-            return algorithm.getResult()
-        })
-        .groupBy(Groupings.bucket("populationSize", 100))
-        .map(result -> hypervolume.evaluate(result))
-        .measure(Measures.average());
-    ```
+    computing the average hypervolume.
+    [Example](../examples/org/moeaframework/examples/experiment/ParameterSampleExample.java#L65-L69)
   
   * New data store package.  This provides a means to store a large number of output files without needing to manage
     or organize the data.
-    ```
-    DataStore dataStore = new FileSystemDataStore(new File("results"));
-    
-    NSGAII algorithm = new NSGAIII(problem);
-	algorithm.run(10000);
-    	
-    Reference reference = Reference.of(algorithm.getConfiguration());
-    Container container = dataStore.getContainer(reference);
-    Blob blob = container.getBlob("result");
-    
-    blob.store(algorithm.getResult());
-    ```
+    [Example](../examples/org/moeaframework/examples/experiment/DataStoreExample.java#L55-L74)
  
+  * Adds example for Generalized Decomposition.
+    [Example](../examples/org/moeaframework/examples/generalizedDecomposition/GeneralizedDecompositionExample.java)
