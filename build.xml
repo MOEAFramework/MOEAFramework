@@ -200,7 +200,8 @@ done < <(git diff --cached --name-only --diff-filter=ACM)
 	<target name="update-readme">
 		<copy file="src/README.md.template" tofile="README.md" overwrite="true" />
 		
-		<replaceregexp file="README.md" match="\s*&lt;!-- begin-carousel --&gt;.*&lt;!-- end-carousel --&gt;"
+		<replaceregexp file="README.md"
+			match="\s*&lt;!-- begin-section:website --&gt;.*&lt;!-- end-section:website --&gt;"
 			replace="" flags="gis" />
 		
 		<replace-properties file="README.md" />
@@ -328,6 +329,10 @@ done < <(git diff --cached --name-only --diff-filter=ACM)
 		</copy>
 		
 		<copy file="src/README.md.template" tofile="${build}/index.md" />
+		
+		<replaceregexp file="${build}/index.md"
+			match="\s*&lt;!-- begin-section:github --&gt;.*&lt;!-- end-section:github --&gt;"
+			replace="" flags="gis" />
 		
 		<copy todir="${build}/assets/images">
 			<fileset file="docs/imgs/runtimeViewer.png" />
