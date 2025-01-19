@@ -43,7 +43,7 @@ public class NormalizationExample {
 		NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/UF1.pf");
 		
 		Hypervolume defaultHypervolume = new Hypervolume(problem, referenceSet);
-		System.out.println("Normalized by reference set (default): " + defaultHypervolume.evaluate(approximationSet.copy()));
+		System.out.println("Normalized by reference set (default): " + defaultHypervolume.evaluate(approximationSet));
 		
 		// Explicit bounds
 		Hypervolume explicitHypervolume = new Hypervolume(problem, new double[] { 0.0, 0.0 }, new double[] { 2.0, 2.0 });

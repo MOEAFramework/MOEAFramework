@@ -35,7 +35,7 @@ version to access the latest features, please be aware you will likely need to u
   * Reorganized class and package structure.  For instance, `Population` and its subclasses were moved to
     `org.moeaframework.core.population`.  If you see import errors, try updating the import.
     
-  * Replaces `EncodingUtils` with static methods on each variable types:
+  * Replaces `EncodingUtils` with static methods on each variable type:
     ```
     // old version
     double[] values = EncodingUtils.getReal(solution);

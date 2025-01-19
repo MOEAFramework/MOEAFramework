@@ -150,7 +150,7 @@ combining results from multiple algorithms and seeds:
 NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/UF1.pf");
 
 Hypervolume defaultHypervolume = new Hypervolume(problem, referenceSet);
-System.out.println("Normalized by reference set (default): " + defaultHypervolume.evaluate(approximationSet.copy()));
+System.out.println("Normalized by reference set (default): " + defaultHypervolume.evaluate(approximationSet));
 ```
 
 We can alternatively specify the lower and upper bounds explicitly:
