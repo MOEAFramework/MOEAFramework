@@ -4,8 +4,8 @@ Performance indicators measure the quality of an approximation set, i.e., the re
 measuring in some manner the convergence (proximity) and / or diversity (spread) of solutions.  Often, but not always,
 this measurement is in relation to a reference set containing the optimal solutions to the problem.
 
-The MOEA Framework supports the common performance indicators, including hypervolume, generational distance (GD),
-inverted generational distance (IGD), epsilon-indciator, and the R-indicators.  We can construct the specific indicator
+The MOEA Framework supports commonly-used performance indicators, including hypervolume, generational distance (GD),
+inverted generational distance (IGD), epsilon-indicator, and the R-indicators.  We can construct the specific indicator
 we are evaluating:
 
 <!-- java:examples/org/moeaframework/examples/indicators/HypervolumeExample.java [34:45] -->
