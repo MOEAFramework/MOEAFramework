@@ -6,7 +6,7 @@ github:
   repository_url: ${repository}
 google_analytics: G-G5Q9J52Z1T
 carousel:
-  - image: assets/images/diagnosticTool.png
-  - image: assets/images/runtimeViewer.png
+  - image: assets/images/diagnostic-tool.png
+  - image: assets/images/runtime-viewer.png
   - image: assets/images/tsp.png
-  - image: assets/images/symbolicRegression.png
+  - image: assets/images/symbolic-regression.png

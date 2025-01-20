@@ -26,13 +26,17 @@ as the build error `<className> cannot be resolved to a type`, typically also sh
 
 To confirm this is the case, look for the file `src/module-info.java`:
 
-![image](imgs/troubleshooting-modules1.png)
+<p align="center">
+	<img src="imgs/troubleshooting-modules1.png" />
+</p>
 
 To fix, we recommend starting from scratch by deleting the broken project including the source directory.  Download
 and extract the MOEA Framework again, but when importing make sure you uncheck or disable modules.  For example, in
 Eclipse, you should uncheck the following:
 
-![image](imgs/troubleshooting-modules2.png)
+<p align="center">
+	<img src="imgs/troubleshooting-modules2.png" />
+</p>
 
 ## Errors
 

@@ -335,8 +335,8 @@ done < <(git diff --cached --name-only --diff-filter=ACM)
 			replace="" flags="gis" />
 		
 		<copy todir="${build}/assets/images">
-			<fileset file="docs/imgs/runtimeViewer.png" />
-			<fileset file="docs/imgs/diagnosticTool.png" />
+			<fileset file="docs/imgs/runtime-viewer.png" />
+			<fileset file="docs/imgs/diagnostic-tool.png" />
 		</copy>
 		
 		<copy todir="${build}/javadoc">

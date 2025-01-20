@@ -59,7 +59,9 @@ new Plot()
     .show();
 ```
 
-![Performance Indicator Plot](imgs/runtime-linegraph.png)
+<p align="center">
+	<img src="imgs/runtime-linegraph.png" width="60%" />
+</p>
 
 ## Visualizing Approximation Set Convergence
 
@@ -84,7 +86,11 @@ RuntimeViewer.show("NSGAII on UF1",
         instrumentedAlgorithm.getSeries());
 ```
 
-![Runtime Viewer](imgs/runtimeViewer.png)
+<p align="center">
+	<img src="imgs/runtime-viewer.png" />
+</p>
+
+![Runtime Viewer](imgs/.png)
 
 ## Diagnostic Tool
 
@@ -98,4 +104,6 @@ Diagnostic Tool, run:
 Below is an example comparing NSGA-II and $\epsilon$-MOEA on the UF1 test problem.  Note how the controls on the
 left-hand side allow us to select and view different problems, algorithms, and quality indicators.
 
-![Runtime Viewer](imgs/diagnosticTool.png)
+<p align="center">
+	<img src="imgs/diagnostic-tool.png" />
+</p>

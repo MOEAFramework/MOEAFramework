@@ -14,19 +14,25 @@ these docs are tailored for Eclipse.
 Download the source or compiled binaries from the [Releases page](https://github.com/MOEAFramework/MOEAFramework/releases).
 These are distributed as `.tar.gz` archives that can be extracted using 7-zip (Windows)  or `tar -xzf <file>` (Linux/Mac).
 
-<img src="imgs/release-assets.png" width="80%" />
+<p align="center">
+	<img src="imgs/release-assets.png" width="80%" />
+</p>
 
 After extracting the archive, select `File > Open Projects from File System` within Eclipse and open the extracted
 directory.  Once imported, you should see the following in the package explorer:
 
-<img src="imgs/eclipse-project.png" width="40%" />
+<p align="center">
+	<img src="imgs/eclipse-project.png" width="40%" />
+</p>
 
 ### Running Examples
 
 The examples are contained in the `examples/` directory.  Navigate to the `examples > (default package)`
 to view the introductory examples:
 
-<img src="imgs/eclipse-examples.png" width="23%" />
+<p align="center">
+	<img src="imgs/eclipse-examples.png" width="23%" />
+</p>
 
 Right-click on an example and select `Run As > Java Application`.  You should soon see output appearing in the
 console.

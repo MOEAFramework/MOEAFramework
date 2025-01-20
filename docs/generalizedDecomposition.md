@@ -94,4 +94,6 @@ MOEA/D (NBI) 0.401969 0.405872 0.410604 0.002854  50
 The difference is also visually striking when plotting the results.  Observe how NBI weights (left) tend to form
 clusters near the "steeper" parts of the Pareto front, whereas the GD weights (right) are more uniformly distributed.
 
-<img src="imgs/moead-weights.png" />
+<p align="center">
+	<img src="imgs/moead-weights.png" />
+</p>

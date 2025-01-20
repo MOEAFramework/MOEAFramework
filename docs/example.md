@@ -38,7 +38,9 @@ new Plot()
     .show();
 ```
 
-<img src="imgs/plot-approximationSet.png" width="80%" />
+<p align="center">
+	<img src="imgs/plot-approximationSet.png" width="70%" />
+</p>
 
 ## Performance indicators
 
