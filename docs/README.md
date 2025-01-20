@@ -2,7 +2,7 @@
 
 ## General
 
-* [Release Notes](releaseNotes.md)
+* [Introduction](intro.md)
 * [Setup](setup.md)
 * [An Example](example.md)
 * [Performance Indicators](indicators.md)
@@ -28,6 +28,7 @@
 
 ## Developers
 
+* [Release Notes](releaseNotes.md)
 * [API Specification (Javadoc)](http://moeaframework.org/javadoc/index.html)
 * [Developers Guide](developersGuide.md)
 * [Credits](credits.md)
