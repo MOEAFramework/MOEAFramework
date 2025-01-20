@@ -90,8 +90,6 @@ RuntimeViewer.show("NSGAII on UF1",
 	<img src="imgs/runtime-viewer.png" />
 </p>
 
-![Runtime Viewer](imgs/.png)
-
 ## Diagnostic Tool
 
 The Diagnostic Tool is a GUI that provides a convenient way to run and visualize the algorithms.  To start the
