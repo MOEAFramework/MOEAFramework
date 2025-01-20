@@ -76,7 +76,7 @@ each representing a potential solution to the problem with its genetic code, whe
 Some form of selection pressure is applied to retain more fit individuals in the population.  This is depicted below, where
 this process of selection, recombination, and survival repeat, evolving the population towards better and better solutions.
 
-![Algorithm](imgs/algorithm.png)
+<img src="imgs/algorithm.png" width="40%" />
 
 When applied to a multi-objective problem, we refer to these algorithms as **multi-objective evolutionary algorithms**
 or **MOEAs**.
