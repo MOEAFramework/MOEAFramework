@@ -49,8 +49,7 @@ MOEA Framework, and a Makefile for compiling and testing the code.
 We run this tool as follows:
 
 ```bash
-java -classpath "lib/*" org.moeaframework.builder.BuildProblem --problemName TestProblem --language c \
-	--numberOfVariables 1 --numberOfObjectives 2 --lowerBound -10.0 --upperBound 10.0
+./cli BuildProblem --problemName TestProblem --language c --numberOfVariables 1 --numberOfObjectives 2 --lowerBound -10.0 --upperBound 10.0
 ```
 
 By default, the generated files are created under the `native/` folder, such as `native/TestProblem` in this
