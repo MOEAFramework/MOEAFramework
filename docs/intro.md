@@ -92,7 +92,7 @@ $$ F_{\text{linear}}(x) = \sum_{i = 1}^k \lambda_i \left| f_i(x) - z_i^\* \right
 
 and the Chebyshev or Tchebycheff method:
 
-$$ F_{\text{chebyshev}}(x) = \max_{i \in \{ 1, \ldots, k \} } \lambda_i * \left| f_i(x) - z_i^\* \right| $$
+$$ F_{\text{chebyshev}}(x) = \max_{i \in \{ 1, \ldots, k \} } \lambda_i \left| f_i(x) - z_i^\* \right| $$
 
 where $z^\*$ is the ideal point, though for simplicity we often assume $z^\* = 0$.  One key distinction between these two
 approaches is linear weights are unable to enumerate all Pareto optimal solutions when the Pareto front is non-convex,
@@ -129,11 +129,11 @@ to increase.
 
 A variety of quality indicators exist that measure different characteristics of the Pareto front, such as convergence,
 spread, and uniformity.  When considering convergence, one important property is **Pareto compliance**.  We say a 
-quality indicator, $\mathcal{I}$, is Pareto compliant if  
+quality indicator, $I$, is Pareto compliant if  
 
-$$ A \prec B \rightarrow \mathcal{I}(A) \lt \mathcal{I}(B) $$
+$$ A \prec B \rightarrow I(A) \lt I(B) $$
 
-where $A \prec B$ represents "strict dominance", meaning every solution in $B$ is either equal to or dominated by a
-solution in $A$.  This property is useful when comparing the numeric output of a quality indicator, since a better
-value implies Pareto dominance.  Nevertheless, even those indicators which are not Pareto compliant can be useful when
-comparing specific traits of approximation sets.
+where $A \prec B$ represents "strict dominance" between two approximation sets.  This means every solution in $B$ is
+either equal to or dominated by a solution in $A$.  This property is useful when comparing the numeric output of a
+quality indicator, since a better value implies Pareto dominance.  Nevertheless, even those indicators which are not
+Pareto compliant can be useful when comparing specific traits of approximation sets.
