@@ -6,7 +6,7 @@ MOEA/D is a popular multi-objective optimization algorithm that decomposes a mul
 single-objective subproblems, optimizing these subproblems simultaneously to approximate the Pareto front.  Commonly,
 the Chebyshev (aka Tchebycheff) scalarizing function is used:
 
-$$ g(x) = \lVert w * \left| f(x) - z^* \right| \rVert_\infty = \max_i \left( w_i \left| f_i(x) - z_i^* \right| \right) $$
+$$ g(x) = \lVert w \left| f(x) - z^* \right| \rVert_\infty = \max_i \left( w_i \left| f_i(x) - z_i^* \right| \right) $$
 
 This is also known as the L-inf norm, where $$x$$ represents the decision variables, $$f(x)$$ is the objective
 function, $$w$$ is the weight vector, and $$z^*$$ is the ideal objective vector.  Each subproblem uses a different set

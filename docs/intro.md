@@ -100,15 +100,16 @@ regardless of what weights are provided.
 
 The simplest approach at solving a multi-objective problem using scalarizing functions is supplying a single weight
 vector and using the identified solution.  This, of course, assumes the weight is representative of the desired
-solution, though in practice it is non-trivial to select such weights (see [Generalized Decomposition](generalizedDecomposition.md).
+solution, though in practice it is non-trivial to select such weights (see
+[Generalized Decomposition](generalizedDecomposition.md)).
 
 Alternatively, we can sample a large number of weights, repeatedly solving the resulting single-objective formulation.
-This approach, known as Repeated Single Objective (RSO), is capable of producing the Pareto front, but can be
-computationally expensive.
+This approach, known as Repeated Single Objective (RSO), can be computationally expensive due to the cost of solving
+each single-objective formulation.
 
 Decomposition approaches combine this idea of sampling many weights with population-based evolutionary algorithms by
 associating a weight vector with each member of the population.  During the survival / replacement phase, the offspring
-producing the best value for each weight vector survives to the following generation.  This concept is used by the
+yielding the best value for each weight vector survives to the following generation.  This concept is used by the
 population MOEA/D algorithm.
 
 ## Quality Indicators
