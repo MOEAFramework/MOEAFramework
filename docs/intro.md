@@ -45,8 +45,8 @@ civil engineer Vilfredo Pareto.  Formally, a solution $x_1$ is said to Pareto do
 
 $$
 \begin{align}
-\forall i \in \left{ 1, 2, \ldots, k \right}, &f_i(x_1) \leq f_i(x_2) \\\
-\exists j \in \left{ 1, 2, \ldots, k \right}, &f_j(x_1) < f_j(x_2)
+\forall i \in \{ 1, 2, \ldots, k \}, &f_i(x_1) \leq f_i(x_2) \\\
+\exists j \in \{ 1, 2, \ldots, k \}, &f_j(x_1) < f_j(x_2)
 \end{align}
 $$
 
@@ -88,11 +88,11 @@ or **MOEAs**.
 Early attempts at constructing MOEAs involved translating the multi-objective problem into a single-objective
 formulation, using a process called **scalarization**.  Two commonly-used scalarizing functions are linear weights:
 
-$$ F_{\text{linear}}(x) = \sum_{i = 1}^k \lambda_i * \left| f_i(x) - z_i^\* \right| $$
+$$ F_{\text{linear}}(x) = \sum_{i = 1}^k \lambda_i \left| f_i(x) - z_i^\* \right| $$
 
 and the Chebyshev or Tchebycheff method:
 
-$$ F_{\text{chebyshev}}(x) = \max_{i \in \left{ 1, \ldots, k \right} } \lambda_i * \left| f_i(x) - z_i^\* \right| $$
+$$ F_{\text{chebyshev}}(x) = \max_{i \in \{ 1, \ldots, k \} } \lambda_i * \left| f_i(x) - z_i^\* \right| $$
 
 where $z^\*$ is the ideal point, though for simplicity we often assume $z^\* = 0$.  One key distinction between these two
 approaches is linear weights are unable to enumerate all Pareto optimal solutions when the Pareto front is non-convex,
@@ -120,7 +120,7 @@ numerical value.  One such indicator is **hypervolume**.  Hypervolume measures t
 approximation set, as depicted below:
 
 <p align="center">
-	<img src="imgs/hypervolume.png" />
+	<img src="imgs/hypervolume.png" width="40%" />
 </p>
 
 We assume for the sake of this example that the objectives are minimized, with the ideal point at the lower-left
