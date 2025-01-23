@@ -35,7 +35,7 @@ $$
 $$
 
 We need to be careful when defining optimality for a multi-objective problem.  While in some problem formulations it's
-possible to minimize each objective function independently, more likley than not there exist tradeoffs between the objectives.
+possible to minimize each objective function independently, more likely than not there exist tradeoffs between the objectives.
 That is, trying to improve the value of one (or more) objectives results in a loss or degredation in other objectives.
 Consequently, there is typically no singular optimal solution.
 
@@ -107,7 +107,7 @@ each single-objective formulation.
 Decomposition approaches combine this idea of sampling many weights with population-based evolutionary algorithms by
 associating a weight vector with each member of the population.  During the survival / replacement phase, the offspring
 yielding the best value for each weight vector survives to the following generation.  This concept is used by the
-population MOEA/D algorithm.
+popular MOEA/D algorithm.
 
 ## Quality Indicators
 
