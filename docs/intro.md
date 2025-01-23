@@ -18,14 +18,13 @@ where
 * $g_i(x)$ are **inequality** constraints, and
 * $h_j(x)$ are **equality** constraints.
 
-The solution $x^\*$ that minimizes the function $f(x)$ is called the **optimal solution**.  Note that $x^\*$ is not
+This formulation of the problem is called the "standard form", since we can rewrite expressions to fit this format.  For instance, we can
+convert $\max_x f(x) \rightarrow \min_x -f(x)$ to convert a maximization problem into minimization.  Additionally, while we reference the
+$n$-dimensional real-valued space $\mathbb{R}^n$, we can generalize this to other representations, such aas bit strings $`\{0, 1`\}^n$.
+
+The solution $x^\* \in X$ that minimizes the function $f(x)$ is called the **optimal solution**.  Furthermore, $x^\*$ is not
 necessarily unique, as multiple distinct solutions could satisfy these criteria.  This is especially true when $f(x)$
 is a non-linear, multi-modal function.
-
-> [!NOTE]
-> This formulation is called the "standard form" of the optimization problem.  Observe that we can convert a problem to this
-> standard form by rewriting the expressions.  For instance, we can convert a maximization problem into minimization by
-> negating the objective function.
 
 ## Multi-objective Optimization
 
@@ -45,8 +44,8 @@ civil engineer Vilfredo Pareto.  Formally, a solution $x_1$ is said to Pareto do
 
 $$
 \begin{align}
-\forall i \in \{ 1, 2, \ldots, k \}, &f_i(x_1) \leq f_i(x_2) \\\
-\exists j \in \{ 1, 2, \ldots, k \}, &f_j(x_1) < f_j(x_2)
+\forall i \in `\{ 1, 2, \ldots, k `\}, &f_i(x_1) \leq f_i(x_2) \\\
+\exists j \in `\{ 1, 2, \ldots, k `\}, &f_j(x_1) < f_j(x_2)
 \end{align}
 $$
 
@@ -92,7 +91,7 @@ $$ F_{\text{linear}}(x) = \sum_{i = 1}^k \lambda_i \left| f_i(x) - z_i^\* \right
 
 and the Chebyshev or Tchebycheff method:
 
-$$ F_{\text{chebyshev}}(x) = \max_{i \in \{ 1, \ldots, k \} } \lambda_i \left| f_i(x) - z_i^\* \right| $$
+$$ F_{\text{chebyshev}}(x) = \max_{i \in `\{ 1, \ldots, k `\} } \lambda_i \left| f_i(x) - z_i^\* \right| $$
 
 where $z^\*$ is the ideal point, though for simplicity we often assume $z^\* = 0$.  One key distinction between these two
 approaches is linear weights are unable to enumerate all Pareto optimal solutions when the Pareto front is non-convex,
