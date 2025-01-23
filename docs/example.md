@@ -45,8 +45,9 @@ new Plot()
 ## Performance indicators
 
 We can also measure the quality of the resulting Pareto non-dominated solutions using one or more performance
-indicators, such as Hypervolume.  Below we construct an `Indicators` class with the known reference set for the
-DTLZ2 problem, then calculate and display the performance indicator values:
+indicators.  While we can construct and evaluate each indicator separately, the `Indicators` class provides a
+convenient way to calculate multiple indicators simultaneously.  Below we load the reference set for the DTLZ2
+problem and calculate all indicator values:
 
 <!-- java:examples/Example3.java [42:46] -->
 
