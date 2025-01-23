@@ -51,11 +51,9 @@ $$
 
 In other words, a solution Pareto dominates another if it is not worse in any objective and better in at least one.  We can
 then extend the idea of optimality using Pareto dominance, such that a solution $x^\*$ is **Pareto optimal** if no other
-feasible solutions exist that dominate it.  The set of Pareto optimal solutions is known as the **Pareto front**.
-
-Since tradeoffs typically exist between objectives, the Pareto front typically contains multiple solutions.  Since these
-solutions, by definition, do not dominate each other, we say they are **non-dominated**.  Formally, two solutions are
-non-dominated if $x_1 \nprec x_2$ and $x_2 \nprec x_1$.
+feasible solutions exist that dominate it.  The set of Pareto optimal solutions is known as the **Pareto front**.  We also
+say these Pareto optimal solutions are **non-dominated**.  That is, two solutions are non-dominated when $x_1 \nprec x_2$
+and $x_2 \nprec x_1$.
 
 ## Optimization Algorithms and Metaheuristics
 
