@@ -29,6 +29,7 @@ import org.moeaframework.core.comparator.DominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
 import org.moeaframework.core.variable.Variable;
 import org.moeaframework.util.io.Resources;
+import org.moeaframework.util.io.Resources.ResourceOption;
 
 /**
  * A population that maintains the property of pair-wise non-dominance between all solutions.  When the {@code add}
@@ -254,7 +255,7 @@ public class NondominatedPopulation extends Population {
 		if (file.exists()) {
 			return load(file);
 		} else {
-			try (Reader reader = Resources.asReader(NondominatedPopulation.class, "/" + resource)) {
+			try (Reader reader = Resources.asReader(NondominatedPopulation.class, resource, ResourceOption.ABSOLUTE)) {
 				if (reader != null) {
 					return load(reader);
 				}

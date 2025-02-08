@@ -53,7 +53,7 @@ public class TestResources {
 		if (file.exists()) {
 			return file;
 		} else {
-			return Resources.asFile(TestResources.class, "/" + resource, ResourceOption.REQUIRED,
+			return Resources.asFile(TestResources.class, resource, ResourceOption.REQUIRED, ResourceOption.ABSOLUTE,
 					ResourceOption.TEMPORARY);
 		}
 	}

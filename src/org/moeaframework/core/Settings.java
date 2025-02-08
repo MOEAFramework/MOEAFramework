@@ -20,11 +20,8 @@ package org.moeaframework.core;
 import java.awt.Toolkit;
 import java.awt.image.BaseMultiResolutionImage;
 import java.awt.image.MultiResolutionImage;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.Reader;
 import java.time.Duration;
 import java.util.Properties;
 import java.util.regex.Matcher;
@@ -33,6 +30,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.population.NondominatedPopulation.DuplicateMode;
+import org.moeaframework.util.io.Resources;
+import org.moeaframework.util.io.Resources.ResourceOption;
 
 /**
  * Global settings used by this framework.
@@ -229,20 +228,10 @@ public class Settings {
 		String propertiesResource = PROPERTIES.getString(KEY_CONFIGURATION_FILE, DEFAULT_CONFIGURATION_FILE);
 		
 		try {
-			
-			File file = new File(propertiesResource);
-			
-			if (file.exists()) {
-				try (FileReader reader = new FileReader(file)) {
+			try (Reader reader = Resources.asReader(Settings.class, propertiesResource, ResourceOption.FILE,
+					ResourceOption.ABSOLUTE)) {
+				if (reader != null) {
 					PROPERTIES.load(reader);
-				}
-			} else {
-				try (InputStream stream = ClassLoader.getSystemResourceAsStream("/" + propertiesResource)) {
-					if (stream != null) {
-						try (InputStreamReader reader = new InputStreamReader(stream)) {
-							PROPERTIES.load(reader);
-						}
-					}
 				}
 			}
 		} catch (IOException e) {

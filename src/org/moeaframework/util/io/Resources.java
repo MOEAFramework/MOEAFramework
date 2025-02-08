@@ -46,9 +46,8 @@ public class Resources {
 	public enum ResourceOption {
 		
 		/**
-		 * First search for a file referenced by the resource path.  Any leading {@code "/"} in the resource path,
-		 * which is typically used to indicate the resource path is absolute (starting at the root of the classpath),
-		 * is ignored when locating the file.  The file will be resolved relative to the base directory.
+		 * First search for a file referenced by the resource path.  The file will be resolved relative to the base
+		 * directory.  Any leading {@code "/"} is ignored.
 		 */
 		FILE,
 				
@@ -68,7 +67,13 @@ public class Resources {
 		 * The resource is required and a {@link ResourceNotFoundException} is thrown if the resource could not be
 		 * found.  There is no need to check for {@code null} return values when using this option.
 		 */
-		REQUIRED
+		REQUIRED,
+		
+		/**
+		 * Treat the resource as an absolute path instead of a relative path.  This is equivalent to prefixing the
+		 * resource name with {@code "/"}.
+		 */
+		ABSOLUTE
 		
 	}
 	
@@ -178,7 +183,13 @@ public class Resources {
 			}
 		}
 		
-		InputStream input = owner.getResourceAsStream(resolvePath(resource));
+		String path = resolvePath(resource);
+		
+		if (options.contains(ResourceOption.ABSOLUTE) && !path.startsWith("/")) {
+			path = "/" + path;
+		}
+		
+		InputStream input = owner.getResourceAsStream(path);
 		
 		if (input != null) {
 			return input;
@@ -232,8 +243,11 @@ public class Resources {
 			resultFile = File.createTempFile("temp", extension);
 			resultFile.deleteOnExit();
 		}
+		
+		EnumSet<ResourceOption> streamOptions = EnumSet.copyOf(options);
+		streamOptions.add(ResourceOption.REQUIRED);
 
-		try (InputStream input = asStream(owner, resource, ResourceOption.REQUIRED);
+		try (InputStream input = asStream(owner, resource, streamOptions);
 				OutputStream output = new FileOutputStream(resultFile)) {
 			input.transferTo(output);
 		}
