@@ -199,22 +199,6 @@ public class ResourcesTest {
 	}
 	
 	@Test
-	public void testFileConvertsAbsoluteToRelativePath() throws IOException {
-		File file = createLocalFile("foo");
-		
-		try {
-			File locatedFile = Resources.asFile(ResourcesTest.class, "/" + file.getName(), ResourceOption.FILE);
-			
-			Assert.assertNotNull(locatedFile);
-			Assert.assertEquals(file, locatedFile);
-			
-			Capture.file(locatedFile).assertEquals("foo");
-		} finally {
-			file.delete();
-		}
-	}
-	
-	@Test
 	public void testFileSetExecutable() throws IOException {
 		File file = null;
 	

@@ -46,8 +46,8 @@ public class Resources {
 	public enum ResourceOption {
 		
 		/**
-		 * First search for a file referenced by the resource path.  The file will be resolved relative to the base
-		 * directory.  Any leading {@code "/"} is ignored.
+		 * First search for a file referenced by the resource path.  The file will be resolved relative to the working
+		 * directory, unless the file is an absolute path.
 		 */
 		FILE,
 				
@@ -99,7 +99,7 @@ public class Resources {
 	 * @return the file reference
 	 */
 	static File resolveFile(String resource) {
-		return new File(resource.startsWith("/") ? resource.substring(1) : resource);
+		return new File(resource);
 	}
 	
 	/**
