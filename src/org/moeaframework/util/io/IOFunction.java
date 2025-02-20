@@ -20,12 +20,14 @@ package org.moeaframework.util.io;
 import java.io.IOException;
 
 /**
- * Callback function used for an I/O operation.
+ * Function used for an I/O operation.  This is distinct from {@link java.util.function.Function} as it can
+ * throw an {@link IOException}.
  * 
  * @param <T> the type of the stream, reader, writer, or input object
+ * @param <R> the return type
  */
 @FunctionalInterface
-public interface IOCallback<T> {
+public interface IOFunction<T, R> extends IOConsumer<T> {
 	
 	/**
 	 * Invokes this callback with the given stream, reader, writer, or object.
@@ -35,8 +37,14 @@ public interface IOCallback<T> {
 	 * exception if the operation failed and needs to be aborted.
 	 * 
 	 * @param stream the stream, reader, or writer
+	 * @return the resulting object
 	 * @throws IOException if an I/O error occurred
 	 */
-	public void accept(T stream) throws IOException;
+	public R apply(T stream) throws IOException;
+	
+	@Override
+	public default void accept(T stream) throws IOException {
+		apply(stream);
+	}
 	
 }

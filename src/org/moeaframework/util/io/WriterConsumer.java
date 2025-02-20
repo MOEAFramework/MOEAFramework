@@ -17,12 +17,12 @@
  */
 package org.moeaframework.util.io;
 
-import java.io.Reader;
+import java.io.Writer;
 
 /**
- * Callback function accepting a {@link Reader}.
+ * IO consumer function accepting a {@link Writer}.
  */
 @FunctionalInterface
-public interface ReaderCallback extends IOCallback<Reader> {
+public interface WriterConsumer extends IOConsumer<Writer> {
 	
 }

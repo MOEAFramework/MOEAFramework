@@ -20,17 +20,18 @@ package org.moeaframework.examples.experiment;
 import java.io.File;
 
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.algorithm.NSGAIII;
 import org.moeaframework.analysis.parameter.Enumeration;
 import org.moeaframework.analysis.parameter.Parameter;
 import org.moeaframework.analysis.parameter.ParameterSet;
 import org.moeaframework.analysis.sample.Sample;
 import org.moeaframework.analysis.sample.Samples;
+import org.moeaframework.analysis.store.Blob;
 import org.moeaframework.analysis.store.Container;
 import org.moeaframework.analysis.store.DataStore;
 import org.moeaframework.analysis.store.Reference;
 import org.moeaframework.analysis.store.fs.FileSystemDataStore;
 import org.moeaframework.core.indicator.Indicators;
+import org.moeaframework.core.indicator.Indicators.IndicatorValues;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
@@ -55,22 +56,24 @@ public class DataStoreExample {
 		DataStore dataStore = new FileSystemDataStore(new File("results"));
 		
 		for (Sample sample : samples) {
-			NSGAII algorithm = new NSGAIII(problem);
-			algorithm.applyConfiguration(sample);
-			
-			// Locate the container for this algorithm
-			Reference reference = Reference.of(algorithm.getConfiguration());
+			Reference reference = Reference.of(sample);
 			Container container = dataStore.getContainer(reference);
-
-			if (!container.exists()) {
-				System.out.println("Evaluating " + reference);
+			
+			Blob resultBlob = container.getBlob("result");
+			Blob indicatorBlob = container.getBlob("indicators");
+			
+			resultBlob.ifMissing(b -> {
+				NSGAII algorithm = new NSGAII(problem);
+				algorithm.applyConfiguration(sample);
 				algorithm.run(10000);
-								
-				container.getBlob("result").store(algorithm.getResult());
-				container.getBlob("indicators").store(indicators.apply(algorithm.getResult()));
-			} else {
-				System.out.println("Skipping " + reference + ", found in data store");
-			}
+				b.store(algorithm.getResult());
+			});
+						
+			indicatorBlob.ifMissing(b -> {
+				NondominatedPopulation result = resultBlob.extractNondominatedPopulation();
+				IndicatorValues values = indicators.apply(result);
+				b.store(values);
+			});
 		}
 	}
 

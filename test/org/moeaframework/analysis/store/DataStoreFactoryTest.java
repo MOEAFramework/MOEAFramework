@@ -18,7 +18,6 @@
 package org.moeaframework.analysis.store;
 
 import java.io.IOException;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -41,21 +40,26 @@ public class DataStoreFactoryTest extends AbstractFactoryTest<DataStoreProvider,
 	}
 	
 	@Test
-	public void testDefault() throws IOException {
+	public void testFile() throws IOException {
 		DataStoreFactory factory = createFactory();
 		
-		DataStore dataStore = factory.getDataStore(URI.create("file://./results"));
+		DataStore dataStore = factory.getDataStore("file://./results");
 		
 		Assert.assertNotNull(dataStore);
 		Assert.assertInstanceOf(FileSystemDataStore.class, dataStore);
 		Assert.assertTrue(Files.isSameFile(Path.of("./results"), ((FileSystemDataStore)dataStore).getRoot()));
 	}
 	
-	@Test
+	@Test(expected = ProviderNotFoundException.class)
 	public void testNoProvider() {
 		DataStoreFactory factory = createFactory();
-		
-		Assert.assertThrows(ProviderNotFoundException.class, () -> factory.getDataStore(URI.create("foo:///bar")));
+		factory.getDataStore("foo:///bar");
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testInvalidURI() {
+		DataStoreFactory factory = createFactory();
+		factory.getDataStore("://bar");
 	}
 
 }

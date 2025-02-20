@@ -17,12 +17,12 @@
  */
 package org.moeaframework.util.io;
 
-import java.io.OutputStream;
+import java.io.PrintStream;
 
 /**
- * Callback function accepting an {@link OutputStream}.
+ * IO consumer function accepting a {@link PrintStream}.
  */
 @FunctionalInterface
-public interface OutputStreamCallback extends IOCallback<OutputStream> {
+public interface PrintStreamConsumer extends IOConsumer<PrintStream> {
 	
 }

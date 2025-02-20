@@ -26,6 +26,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.Writer;
 import java.time.Instant;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -33,12 +34,17 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.TempFiles.File;
+import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.core.population.Population;
 import org.moeaframework.mock.MockInputStream;
 import org.moeaframework.mock.MockOutputStream;
 import org.moeaframework.mock.MockReader;
 import org.moeaframework.mock.MockTransactionalOutputStream;
 import org.moeaframework.mock.MockTransactionalWriter;
 import org.moeaframework.mock.MockWriter;
+import org.moeaframework.util.format.Column;
+import org.moeaframework.util.format.Formattable;
+import org.moeaframework.util.format.TabularData;
 
 public class BlobTest {
 	
@@ -73,6 +79,18 @@ public class BlobTest {
 	}
 	
 	@Test
+	public void testExtractText() throws IOException {
+		blob.setContent("foo");
+		Assert.assertEquals("foo", blob.extractText());
+	}
+	
+	@Test
+	public void testExtractBytes() throws IOException {
+		blob.setContent("foo".getBytes());
+		Assert.assertArrayEquals("foo".getBytes(), blob.extractBytes());
+	}
+	
+	@Test
 	public void testExtractWriter() throws IOException {
 		try (MockWriter writer = new MockWriter()) {
 			blob.setContent("foo");
@@ -91,7 +109,7 @@ public class BlobTest {
 	}
 	
 	@Test
-	public void testExtractInputStreamCallback() throws IOException {
+	public void testExtractInputStreamConsumer() throws IOException {
 		try (MockOutputStream result = new MockOutputStream()) {
 			blob.setContent("foo");
 			
@@ -105,7 +123,7 @@ public class BlobTest {
 	}
 	
 	@Test
-	public void testExtractReaderCallback() throws IOException {
+	public void testExtractReaderConsumer() throws IOException {
 		try (MockWriter result = new MockWriter()) {
 			blob.setContent("foo");
 			
@@ -119,9 +137,42 @@ public class BlobTest {
 	}
 	
 	@Test
+	public void testExtractInputStreamFunction() throws IOException {
+		try (MockOutputStream result = new MockOutputStream()) {
+			blob.setContent("foo");
+			
+			blob.extract((InputStream stream) -> {
+				stream.transferTo(result);
+				stream.close(); // has no effect
+			});
+			
+			Assert.assertEquals("foo", result.toString());
+		}
+	}
+	
+	@Test
+	public void testExtractReaderFunction() throws IOException {
+		blob.setContent("foo");
+		int result = blob.extract((Reader reader) -> reader.read());
+		Assert.assertEquals('f', result);
+	}
+	
+	@Test
+	public void testExtractInputStreaamFunction() throws IOException {
+		blob.setContent(new byte[] { 0x05, 0x1F });
+		int result = blob.extract((InputStream stream) -> stream.read());
+		Assert.assertEquals(0x05, result);
+	}
+	
+	@Test
 	public void testExtractIfFound() throws IOException {
 		blob.extractIfFound((Reader reader) -> {
 			Assert.fail("Blob does not exist");
+		});
+		
+		blob.extractIfFound((Reader reader) -> {
+			Assert.fail("Blob does not exist");
+			return reader.read();
 		});
 		
 		blob.setContent("foo");
@@ -133,6 +184,9 @@ public class BlobTest {
 			
 			Assert.assertEquals("foo", result.toString());
 		}
+		
+		int result = blob.extractIfFound((Reader reader) -> reader.read());
+		Assert.assertEquals('f', result);
 	}
 
 	@Test
@@ -149,6 +203,38 @@ public class BlobTest {
 		
 		blob.store(file.toPath());
 		blob.assertContent("foo");
+	}
+	
+	@Test
+	public void testStoreText() throws IOException {
+		blob.store("foo");
+		blob.assertContent("foo");
+	}
+	
+	@Test
+	public void testStoreBytes() throws IOException {
+		blob.store("foo".getBytes());
+		blob.assertContent("foo");
+	}
+	
+	@Test
+	public void testStoreFormattable() throws IOException {
+		Formattable<String> formattable = new Formattable<>() {
+
+			@Override
+			public TabularData<String> asTabularData() {
+				List<String> data = List.of("foo");
+				
+				TabularData<String> table = new TabularData<>(data);
+				table.addColumn(new Column<String, String>("Value", x -> x));
+				
+				return table;
+			}
+			
+		};
+		
+		blob.store(formattable);
+		blob.assertContent("Value \n----- \nfoo   \n");
 	}
 	
 	@Test
@@ -216,6 +302,18 @@ public class BlobTest {
 		});
 		
 		blob.assertContent("foo");
+	}
+	
+	@Test
+	public void testStoreExtractPopulation() throws IOException {
+		Population expected = NondominatedPopulation.load("./pf/DTLZ2.2D.pf");
+		blob.store(expected);
+		
+		Population actual = blob.extractPopulation();
+		Assert.assertEquals(expected, actual);
+		
+		actual = blob.extractNondominatedPopulation();
+		Assert.assertEquals(expected, actual);
 	}
 	
 	@Test

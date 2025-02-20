@@ -34,6 +34,16 @@ public class FileSystemDataStoreProviderTest {
 		test("file:///foo/bar", "/foo/bar");
 	}
 	
+	@Test
+	public void testNoSchema() {
+		test("foo", "foo");
+		test("/foo", "/foo");
+		test("./foo", "./foo");
+		test("../foo", "../foo");
+		test("foo/bar", "foo/bar");
+		test("/foo/bar", "/foo/bar");
+	}
+	
 	public void test(String uri, String expectedPath) {
 		FileSystemDataStoreProvider provider = new FileSystemDataStoreProvider();
 		Assert.assertEquals(expectedPath, provider.toPath(URI.create(uri)));

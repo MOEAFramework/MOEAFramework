@@ -88,6 +88,18 @@ public class DataStoreFactory extends AbstractFactory<DataStoreProvider> {
 	}
 	
 	/**
+	 * Convenience method for calling {@link #getDataStore(URI)} with a string representation of the URI.
+	 * 
+	 * @param str the string representation of the URI
+	 * @return an instance of the data store with the registered name
+	 * @throws IllegalArgumentException if the string is not a valid URI
+	 * @throws ProviderNotFoundException if no provider for the URI is available
+	 */
+	public DataStore getDataStore(String str) {
+		return getDataStore(URI.create(str));
+	}
+	
+	/**
 	 * Attempts to instantiate the given data store using the given provider.
 	 * 
 	 * @param provider the data store provider

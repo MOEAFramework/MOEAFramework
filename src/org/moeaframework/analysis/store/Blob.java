@@ -32,17 +32,22 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.function.IOFunction;
 import org.apache.commons.io.output.CloseShieldOutputStream;
 import org.apache.commons.io.output.CloseShieldWriter;
+import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TableFormat;
-import org.moeaframework.util.io.IOCallback;
-import org.moeaframework.util.io.InputStreamCallback;
-import org.moeaframework.util.io.OutputStreamCallback;
-import org.moeaframework.util.io.PrintStreamCallback;
-import org.moeaframework.util.io.ReaderCallback;
-import org.moeaframework.util.io.WriterCallback;
+import org.moeaframework.util.io.IOConsumer;
+import org.moeaframework.util.io.InputStreamConsumer;
+import org.moeaframework.util.io.InputStreamFunction;
+import org.moeaframework.util.io.OutputStreamConsumer;
+import org.moeaframework.util.io.PrintStreamConsumer;
+import org.moeaframework.util.io.ReaderConsumer;
+import org.moeaframework.util.io.ReaderFunction;
+import org.moeaframework.util.io.WriterConsumer;
 
 /**
  * Reference to a blob, which is simply a piece of data identified by its container and name.
@@ -126,15 +131,15 @@ public interface Blob {
 	TransactionalOutputStream openOutputStream() throws IOException;
 	
 	/**
-	 * Executes the callback function if this blob is missing.
+	 * Executes the consumer function if this blob is missing.
 	 * 
-	 * @param callback the callback function
-	 * @return {@code true} if the blob is missing and the callback was invoked; {@code false} otherwise
+	 * @param consumer the consumer function
+	 * @return {@code true} if the blob is missing and the consumer was invoked; {@code false} otherwise
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default boolean ifMissing(IOCallback<Blob> callback) throws IOException {
+	public default boolean ifMissing(IOConsumer<Blob> consumer) throws IOException {
 		if (!exists()) {
-			callback.accept(this);
+			consumer.accept(this);
 			return true;
 		}
 		
@@ -142,19 +147,35 @@ public interface Blob {
 	}
 	
 	/**
-	 * Executes the callback function if this blob exists.
+	 * Executes the consumer function if this blob exists.
 	 * 
-	 * @param callback the callback function
-	 * @return {@code true} if the blob exists and the callback was invoked; {@code false} otherwise
+	 * @param consumer the consumer function
+	 * @return {@code true} if the blob exists and the consumer was invoked; {@code false} otherwise
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default boolean ifFound(IOCallback<Blob> callback) throws IOException {
+	public default boolean ifFound(IOConsumer<Blob> consumer) throws IOException {
 		if (exists()) {
-			callback.accept(this);
+			consumer.accept(this);
 			return true;
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * Executes the function if this blob exists.
+	 * 
+	 * @param <R> the return type
+	 * @param function the function
+	 * @return the object if the blob exists and the function was invoked; {@code null} otherwise
+	 * @throws IOException if an I/O error occurred
+	 */
+	public default <R> R ifFound(IOFunction<Blob, R> function) throws IOException {
+		if (exists()) {
+			return function.apply(this);
+		}
+		
+		return null;
 	}
 	
 	/**
@@ -177,6 +198,48 @@ public interface Blob {
 		try (InputStream in = openInputStream()) {
 			Files.copy(in, path, StandardCopyOption.REPLACE_EXISTING);
 		}
+	}
+	
+	/**
+	 * Extracts the content of this blob to a string.
+	 * 
+	 * @return the content of the blob
+	 * @throws IOException if an I/O error occurred
+	 */
+	public default String extractText() throws IOException {
+		return extract((Reader in) -> IOUtils.toString(in));
+	}
+	
+	/**
+	 * Extracts the content of this blob to bytes.
+	 * 
+	 * @return the content of the blob
+	 * @throws IOException if an I/O error occurred
+	 */
+	public default byte[] extractBytes() throws IOException {
+		return extract((InputStream in) -> IOUtils.toByteArray(in));
+	}
+	
+	/**
+	 * Extracts the content of this blob to a population.  If the blob is a result file containing multiple entries,
+	 * the last entry is read.
+	 * 
+	 * @return the population stored in the blob
+	 * @throws IOException if an I/O error occurred
+	 */
+	public default Population extractPopulation() throws IOException {
+		return extract((Reader reader) -> Population.load(reader));
+	}
+	
+	/**
+	 * Extracts the content of this blob to a non-dominated population.  If the blob is a result file containing
+	 * multiple entries, the last entry is read.
+	 * 
+	 * @return the non-dominated population stored in the blob
+	 * @throws IOException if an I/O error occurred
+	 */
+	public default NondominatedPopulation extractNondominatedPopulation() throws IOException {
+		return extract((Reader reader) -> NondominatedPopulation.load(reader));
 	}
 	
 	/**
@@ -204,53 +267,109 @@ public interface Blob {
 	}
 	
 	/**
-	 * Executes a callback with an {@link InputStream} for reading this blob.  The input stream is automatically closed
-	 * when the callback returns.
+	 * Executes a consumer with an {@link InputStream} for reading this blob.  The input stream is automatically closed
+	 * when the consumer returns.
 	 * 
-	 * @param callback the callback function
+	 * @param consumer the consumer function
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default void extract(InputStreamCallback callback) throws IOException {
+	public default void extract(InputStreamConsumer consumer) throws IOException {
 		try (InputStream in = openInputStream()) {
-			callback.accept(in);
+			consumer.accept(in);
 		}
 	}
 	
 	/**
-	 * Executes a callback with a {@link Reader} for reading this blob.  The reader is automatically closed when the
-	 * callback returns.
+	 * Executes a consumer with a {@link Reader} for reading this blob.  The reader is automatically closed when the
+	 * consumer returns.
 	 * 
-	 * @param callback the callback function
+	 * @param consumer the consumer function
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default void extract(ReaderCallback callback) throws IOException {
+	public default void extract(ReaderConsumer consumer) throws IOException {
 		try (Reader in = openReader()) {
-			callback.accept(in);
+			consumer.accept(in);
 		}
 	}
 	
 	/**
-	 * Executes the callback with an {@link InputStream} for reading this blob, but only if the blob exists.  The
-	 * stream is automatically closed when the callback returns.
+	 * Executes a function with an {@link InputStream} for reading this blob.  The input stream is automatically closed
+	 * when the function returns.
 	 * 
-	 * @param callback the callback function
-	 * @return {@code true} if the blob exists and the callback was invoked; {@code false} otherwise
+	 * @param <R> the return type
+	 * @param function the function
+	 * @return the object read from the stream
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default boolean extractIfFound(InputStreamCallback callback) throws IOException {
-		return ifFound(b -> b.extract(callback));
+	public default <R> R extract(InputStreamFunction<R> function) throws IOException {
+		try (InputStream in = openInputStream()) {
+			return function.apply(in);
+		}
 	}
 	
 	/**
-	 * Executes the callback with a {@link Reader} for reading this blob, but only if the blob exists.  The reader is
-	 * automatically closed when the callback returns.
+	 * Executes a function with a {@link Reader} for reading this blob.  The reader is automatically closed when the
+	 * function returns.
 	 * 
-	 * @param callback the callback function
-	 * @return {@code true} if the blob exists and the callback was invoked; {@code false} otherwise
+	 * @param <R> the return type
+	 * @param function the function
+	 * @return the object read from the reader
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default boolean extractIfFound(ReaderCallback callback) throws IOException {
-		return ifFound(b -> b.extract(callback));
+	public default <R> R extract(ReaderFunction<R> function) throws IOException {
+		try (Reader in = openReader()) {
+			return function.apply(in);
+		}
+	}
+	
+	/**
+	 * Executes the consumer with an {@link InputStream} for reading this blob, but only if the blob exists.  The
+	 * stream is automatically closed when the consumer returns.
+	 * 
+	 * @param consumer the consumer function
+	 * @return {@code true} if the blob exists and the consumer was invoked; {@code false} otherwise
+	 * @throws IOException if an I/O error occurred
+	 */
+	public default boolean extractIfFound(InputStreamConsumer consumer) throws IOException {
+		return ifFound((IOConsumer<Blob>)b -> b.extract(consumer));
+	}
+	
+	/**
+	 * Executes the consumer with a {@link Reader} for reading this blob, but only if the blob exists.  The reader is
+	 * automatically closed when the consumer returns.
+	 * 
+	 * @param consumer the consumer function
+	 * @return {@code true} if the blob exists and the consumer was invoked; {@code false} otherwise
+	 * @throws IOException if an I/O error occurred
+	 */
+	public default boolean extractIfFound(ReaderConsumer consumer) throws IOException {
+		return ifFound((IOConsumer<Blob>)b -> b.extract(consumer));
+	}
+	
+	/**
+	 * Executes the function with an {@link InputStream} for reading this blob, but only if the blob exists.  The
+	 * stream is automatically closed when the function returns.
+	 * 
+	 * @param <R> the return type
+	 * @param function the function
+	 * @return the object read from the blob; or {@code null} if not found
+	 * @throws IOException if an I/O error occurred
+	 */
+	public default <R> R extractIfFound(InputStreamFunction<R> function) throws IOException {
+		return ifFound((IOFunction<Blob, R>)b -> b.extract(function));
+	}
+	
+	/**
+	 * Executes the function with a {@link Reader} for reading this blob, but only if the blob exists.  The reader is
+	 * automatically closed when the function returns.
+	 * 
+	 * @param <R> the return type
+	 * @param function the function
+	 * @return the object read from the blob; or {@code null} if not found
+	 * @throws IOException if an I/O error occurred
+	 */
+	public default <R> R extractIfFound(ReaderFunction<R> function) throws IOException {
+		return ifFound((IOFunction<Blob, R>)b -> b.extract(function));
 	}
 	
 	/**
@@ -301,6 +420,26 @@ public interface Blob {
 			Files.copy(path, out);
 			out.commit();
 		}
+	}
+	
+	/**
+	 * Stores the given string to this blob.
+	 * 
+	 * @param text the text to store
+	 * @throws IOException if an I/O error occurred
+	 */
+	public default void store(String text) throws IOException {
+		store((Writer writer) -> writer.append(text));
+	}
+	
+	/**
+	 * Stores the given data to this blob.
+	 * 
+	 * @param data the data to store
+	 * @throws IOException if an I/O error occurred
+	 */
+	public default void store(byte[] data) throws IOException {
+		store((OutputStream stream) -> stream.write(data));
 	}
 	
 	/**
@@ -361,85 +500,85 @@ public interface Blob {
 	}
 	
 	/**
-	 * Executes a callback with an {@link OutputStream} for writing to this blob.  The output stream is automatically
-	 * closed when the callback returns.
+	 * Executes a consumer with an {@link OutputStream} for writing to this blob.  The output stream is automatically
+	 * closed when the consumer returns.
 	 * 
-	 * @param callback the callback function
+	 * @param consumer the consumer function
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default void store(OutputStreamCallback callback) throws IOException {
+	public default void store(OutputStreamConsumer consumer) throws IOException {
 		try (TransactionalOutputStream out = openOutputStream();
 				CloseShieldOutputStream shielded = CloseShieldOutputStream.wrap(out)) {
-			callback.accept(shielded);
+			consumer.accept(shielded);
 			out.commit();
 		}
 	}
 	
 	/**
-	 * Executes a callback with a {@link PrintStream} for writing to this blob.  The output stream is automatically
-	 * closed when the callback returns.
+	 * Executes a consumer with a {@link PrintStream} for writing to this blob.  The output stream is automatically
+	 * closed when the consumer returns.
 	 * 
-	 * @param callback the callback function
+	 * @param consumer the consumer function
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default void store(PrintStreamCallback callback) throws IOException {
+	public default void store(PrintStreamConsumer consumer) throws IOException {
 		try (TransactionalOutputStream out = openOutputStream();
 				CloseShieldOutputStream shielded = CloseShieldOutputStream.wrap(out);
 				PrintStream ps = new PrintStream(shielded)) {
-			callback.accept(ps);
+			consumer.accept(ps);
 			out.commit();
 		}
 	}
 	
 	/**
-	 * Executes a callback with a {@link Writer} for writing to this blob.  The output stream is automatically
-	 * closed when the callback returns.
+	 * Executes a consumer with a {@link Writer} for writing to this blob.  The output stream is automatically
+	 * closed when the consumer returns.
 	 * 
-	 * @param callback the callback function
+	 * @param consumer the consumer function
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default void store(WriterCallback callback) throws IOException {
+	public default void store(WriterConsumer consumer) throws IOException {
 		try (TransactionalWriter out = openWriter();
 				CloseShieldWriter shielded = CloseShieldWriter.wrap(out)) {
-			callback.accept(shielded);
+			consumer.accept(shielded);
 			out.commit();
 		}
 	}
 	
 	/**
-	 * Executes the callback with an {@link OutputStream} for writing to this blob, but only if the blob does not
-	 * already exist.  The stream is automatically closed when the callback returns.
+	 * Executes the consumer with an {@link OutputStream} for writing to this blob, but only if the blob does not
+	 * already exist.  The stream is automatically closed when the consumer returns.
 	 * 
-	 * @param callback the callback function
-	 * @return {@code true} if the blob did not exist and the callback was invoked; {@code false} otherwise
+	 * @param consumer the consumer function
+	 * @return {@code true} if the blob did not exist and the consumer was invoked; {@code false} otherwise
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default boolean storeIfMissing(OutputStreamCallback callback) throws IOException {
-		return ifMissing(b -> b.store(callback));
+	public default boolean storeIfMissing(OutputStreamConsumer consumer) throws IOException {
+		return ifMissing((IOConsumer<Blob>)b -> b.store(consumer));
 	}
 	
 	/**
-	 * Executes the callback with a {@link PrintStream} for writing to this blob, but only if the blob does not
-	 * already exist.  The stream is automatically closed when the callback returns.
+	 * Executes the consumer with a {@link PrintStream} for writing to this blob, but only if the blob does not
+	 * already exist.  The stream is automatically closed when the consumer returns.
 	 * 
-	 * @param callback the callback function
-	 * @return {@code true} if the blob did not exist and the callback was invoked; {@code false} otherwise
+	 * @param consumer the consumer function
+	 * @return {@code true} if the blob did not exist and the consumer was invoked; {@code false} otherwise
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default boolean storeIfMissing(PrintStreamCallback callback) throws IOException {
-		return ifMissing(b -> b.store(callback));
+	public default boolean storeIfMissing(PrintStreamConsumer consumer) throws IOException {
+		return ifMissing((IOConsumer<Blob>)b -> b.store(consumer));
 	}
 	
 	/**
-	 * Executes the callback with a {@link Writer} for writing to this blob, but only if the blob does not
-	 * already exist.  The stream is automatically closed when the callback returns.
+	 * Executes the consumer with a {@link Writer} for writing to this blob, but only if the blob does not
+	 * already exist.  The stream is automatically closed when the consumer returns.
 	 * 
-	 * @param callback the callback function
-	 * @return {@code true} if the blob did not exist and the callback was invoked; {@code false} otherwise
+	 * @param consumer the consumer function
+	 * @return {@code true} if the blob did not exist and the consumer was invoked; {@code false} otherwise
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default boolean storeIfMissing(WriterCallback callback) throws IOException {
-		return ifMissing(b -> b.store(callback));
+	public default boolean storeIfMissing(WriterConsumer consumer) throws IOException {
+		return ifMissing((IOConsumer<Blob>)b -> b.store(consumer));
 	}
 	
 	/**

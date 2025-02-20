@@ -17,12 +17,27 @@
  */
 package org.moeaframework.util.io;
 
-import java.io.Writer;
+import java.io.IOException;
 
 /**
- * Callback function accepting a {@link Writer}.
+ * Consumer function used for an I/O operation.  This is distinct from {@link java.util.function.Consumer} as it can
+ * throw an {@link IOException}.
+ * 
+ * @param <T> the type of the stream, reader, writer, or input object
  */
 @FunctionalInterface
-public interface WriterCallback extends IOCallback<Writer> {
+public interface IOConsumer<T> {
+	
+	/**
+	 * Invokes this callback with the given stream, reader, writer, or object.
+	 * <p>
+	 * When dealing with a stream, reader, or writer, any resources are automatically closed when the callback
+	 * returns.  Thus, the callback itself does not need close the stream.  However, the callback should throw an
+	 * exception if the operation failed and needs to be aborted.
+	 * 
+	 * @param stream the stream, reader, or writer
+	 * @throws IOException if an I/O error occurred
+	 */
+	public void accept(T stream) throws IOException;
 	
 }
