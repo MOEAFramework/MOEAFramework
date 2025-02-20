@@ -28,7 +28,7 @@ instrumentedAlgorithm.getSeries().display();
 ```
 
 Observe how we use the `Instrumenter` to instrument the algorithm, receiving back an `InstrumentedAlgorithm`.  This class
-handles collecting the data as the algorithm runs, returning the data as `Observations`.  Calling `display()` prints
+handles collecting the data as the algorithm runs, returning the data as `ResultSeries`.  Calling `display()` prints
 a table with the data:
 
 <!-- output:examples/org/moeaframework/examples/runtime/PrintRuntimeDynamics.java [:12] {Truncated} -->
@@ -49,7 +49,7 @@ NFE   GenerationalDistance Hypervolume
 ...
 ```
 
-Alternatively, we can pass the observations to the `Plot` class to produce a line graph of the runtime data:
+Alternatively, we can pass the series to the `Plot` class to produce a line graph of the runtime data:
 
 <!-- java:examples/org/moeaframework/examples/runtime/PlotRuntimeDynamics.java [51:54] -->
 
