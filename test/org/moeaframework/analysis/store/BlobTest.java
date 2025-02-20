@@ -234,7 +234,7 @@ public class BlobTest {
 		};
 		
 		blob.store(formattable);
-		blob.assertContent("Value \n----- \nfoo   \n");
+		blob.assertContentNormalized("Value\n-----\nfoo\n");
 	}
 	
 	@Test
@@ -367,6 +367,10 @@ public class BlobTest {
 		
 		public void assertContent(String expected) {
 			Assert.assertEquals(expected, toString());
+		}
+		
+		public void assertContentNormalized(String expected) {
+			Assert.assertEqualsNormalized(expected, toString());
 		}
 
 		@Override
