@@ -31,6 +31,7 @@ import org.moeaframework.Capture;
 import org.moeaframework.Capture.CaptureResult;
 import org.moeaframework.TempFiles;
 import org.moeaframework.TestThresholds;
+import org.moeaframework.analysis.io.EmptyResultFileException;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.BinaryVariable;
@@ -246,6 +247,12 @@ public class PopulationTest {
 		
 		Population result = Population.load(file);
 		Assert.assertEquals(population, result);
+	}
+	
+	@Test(expected = EmptyResultFileException.class)
+	public void testLoadOfInvalidFile() throws IOException {
+		File file = TempFiles.createFile().withContent("foo");
+		Population.load(file);
 	}
 	
 	@Test

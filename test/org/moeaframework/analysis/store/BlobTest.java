@@ -34,6 +34,7 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.TempFiles.File;
+import org.moeaframework.analysis.io.EmptyResultFileException;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.mock.MockInputStream;
@@ -314,6 +315,14 @@ public class BlobTest {
 		
 		actual = blob.extractNondominatedPopulation();
 		Assert.assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testExtractPopulationOnInvalidFile() throws IOException {
+		blob.store("foo");
+		
+		Assert.assertThrows(EmptyResultFileException.class, () -> blob.extractPopulation());
+		Assert.assertThrows(EmptyResultFileException.class, () -> blob.extractNondominatedPopulation());
 	}
 	
 	@Test

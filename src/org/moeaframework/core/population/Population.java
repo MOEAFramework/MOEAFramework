@@ -37,11 +37,11 @@ import java.util.function.Predicate;
 
 import org.apache.commons.io.input.CloseShieldReader;
 import org.apache.commons.io.output.CloseShieldWriter;
+import org.moeaframework.analysis.io.EmptyResultFileException;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.core.Copyable;
-import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Stateful;
 import org.moeaframework.core.constraint.Constraint;
@@ -510,11 +510,14 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, Co
 	 * 
 	 * @param file the file
 	 * @return the population
+	 * @throws EmptyResultFileException if the result file was empty or not properly formatted
 	 * @throws IOException if an I/O error occurred
 	 */
 	public static Population load(File file) throws IOException {
 		try (FileReader reader = new FileReader(file)) {
 			return load(reader);
+		} catch (EmptyResultFileException e) {
+			throw new EmptyResultFileException(file);
 		}
 	}
 	
@@ -524,15 +527,15 @@ public class Population implements Iterable<Solution>, Formattable<Solution>, Co
 	 * 
 	 * @param reader the reader
 	 * @return the population
+	 * @throws EmptyResultFileException if the result file was empty or not properly formatted
 	 * @throws IOException if an I/O error occurred
-	 * @throws FrameworkException if the reader did not contain a population
 	 */
 	public static Population load(Reader reader) throws IOException {
 		try (ResultFileReader input = new ResultFileReader(null, CloseShieldReader.wrap(reader), true)) {
 			ResultEntry entry = Iterators.last(input.iterator());
 			
 			if (entry == null) {
-				throw new FrameworkException("Result file is empty");
+				throw new EmptyResultFileException();
 			} else {
 				return entry.getPopulation();
 			}

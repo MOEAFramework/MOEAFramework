@@ -270,6 +270,7 @@ public class NondominatedPopulation extends Population {
 	 * 
 	 * @param file the file containing the reference set
 	 * @return the non-dominated population
+	 * @throws EmptyResultFileException if the result file was empty or not properly formatted
 	 * @throws IOException if an I/O error occurred or the file was not found
 	 */
 	public static NondominatedPopulation load(File file) throws IOException {
@@ -282,6 +283,7 @@ public class NondominatedPopulation extends Population {
 	 * 
 	 * @param reader the reader
 	 * @return the non-dominated population
+	 * @throws EmptyResultFileException if the result file was empty or not properly formatted
 	 * @throws IOException if an I/O error occurred or the file was not found
 	 */
 	public static NondominatedPopulation load(Reader reader) throws IOException {
