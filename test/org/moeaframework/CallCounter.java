@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import org.apache.commons.io.function.IOConsumer;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -153,6 +154,18 @@ public class CallCounter<T> {
 		
 		ProxyInvocationHandler<BiConsumer<T, U>> handler = new ProxyInvocationHandler<>(mock);
 		BiConsumer<T, U> proxy = (BiConsumer<T, U>)Proxy.newProxyInstance(
+				Thread.currentThread().getContextClassLoader(), mock.getClass().getInterfaces(), handler);
+		return new CallCounter<>(proxy, handler);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> CallCounter<IOConsumer<T>> mockIOConsumer() {
+		IOConsumer<T> mock = t -> {
+			// do nothing
+		};
+		
+		ProxyInvocationHandler<IOConsumer<T>> handler = new ProxyInvocationHandler<>(mock);
+		IOConsumer<T> proxy = (IOConsumer<T>)Proxy.newProxyInstance(
 				Thread.currentThread().getContextClassLoader(), mock.getClass().getInterfaces(), handler);
 		return new CallCounter<>(proxy, handler);
 	}

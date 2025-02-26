@@ -28,10 +28,12 @@ import java.io.Writer;
 import java.time.Instant;
 import java.util.List;
 
+import org.apache.commons.io.function.IOConsumer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.CallCounter;
 import org.moeaframework.TempFiles;
 import org.moeaframework.TempFiles.File;
 import org.moeaframework.analysis.io.EmptyResultFileException;
@@ -62,20 +64,20 @@ public class BlobTest {
 	}
 	
 	@Test
-	public void testExtractFile() throws IOException {
+	public void testExtractToFile() throws IOException {
 		File file = TempFiles.createFile();
 		
 		blob.setContent("foo");
-		blob.extract(file);
+		blob.extractTo(file);
 		Assert.assertFileWithContent("foo", file);
 	}
 	
 	@Test
-	public void testExtractPath() throws IOException {
+	public void testExtractToPath() throws IOException {
 		File file = TempFiles.createFile();
 		
 		blob.setContent("foo");
-		blob.extract(file.toPath());
+		blob.extractTo(file.toPath());
 		Assert.assertFileWithContent("foo", file);
 	}
 	
@@ -92,129 +94,78 @@ public class BlobTest {
 	}
 	
 	@Test
-	public void testExtractWriter() throws IOException {
+	public void testExtractToWriter() throws IOException {
 		try (MockWriter writer = new MockWriter()) {
 			blob.setContent("foo");
-			blob.extract(writer);
+			blob.extractTo(writer);
 			Assert.assertEquals("foo", writer.toString());
 		}
 	}
 	
 	@Test
-	public void testExtractOutputStream() throws IOException {
+	public void testExtractToOutputStream() throws IOException {
 		try (MockOutputStream stream = new MockOutputStream()) {
 			blob.setContent("foo");
-			blob.extract(stream);
+			blob.extractTo(stream);
 			Assert.assertEquals("foo", stream.toString());
 		}
 	}
 	
 	@Test
-	public void testExtractInputStreamConsumer() throws IOException {
-		try (MockOutputStream result = new MockOutputStream()) {
-			blob.setContent("foo");
+	public void testExtractInputStream() throws IOException {
+		blob.setContent("foo");
 			
-			blob.extract((InputStream stream) -> {
+		String text = blob.extractInputStream((InputStream stream) -> {
+			try (MockOutputStream result = new MockOutputStream()) {
 				stream.transferTo(result);
 				stream.close(); // has no effect
-			});
+				return result.toString();
+			}
+		});
 			
-			Assert.assertEquals("foo", result.toString());
-		}
+		Assert.assertEquals("foo", text);
 	}
 	
 	@Test
-	public void testExtractReaderConsumer() throws IOException {
-		try (MockWriter result = new MockWriter()) {
-			blob.setContent("foo");
+	public void testExtractReader() throws IOException {
+		blob.setContent("foo");
 			
-			blob.extract((Reader reader) -> {
+		String text = blob.extractReader((Reader reader) -> {
+			try (MockWriter result = new MockWriter()) {
 				reader.transferTo(result);
 				reader.close(); // has no effect
-			});
-			
-			Assert.assertEquals("foo", result.toString());
-		}
-	}
-	
-	@Test
-	public void testExtractInputStreamFunction() throws IOException {
-		try (MockOutputStream result = new MockOutputStream()) {
-			blob.setContent("foo");
-			
-			blob.extract((InputStream stream) -> {
-				stream.transferTo(result);
-				stream.close(); // has no effect
-			});
-			
-			Assert.assertEquals("foo", result.toString());
-		}
-	}
-	
-	@Test
-	public void testExtractReaderFunction() throws IOException {
-		blob.setContent("foo");
-		int result = blob.extract((Reader reader) -> reader.read());
-		Assert.assertEquals('f', result);
-	}
-	
-	@Test
-	public void testExtractInputStreaamFunction() throws IOException {
-		blob.setContent(new byte[] { 0x05, 0x1F });
-		int result = blob.extract((InputStream stream) -> stream.read());
-		Assert.assertEquals(0x05, result);
-	}
-	
-	@Test
-	public void testExtractIfFound() throws IOException {
-		blob.extractIfFound((Reader reader) -> {
-			Assert.fail("Blob does not exist");
+				return result.toString();
+			}
 		});
-		
-		blob.extractIfFound((Reader reader) -> {
-			Assert.fail("Blob does not exist");
-			return reader.read();
-		});
-		
-		blob.setContent("foo");
-		
-		try (MockWriter result = new MockWriter()) {
-			blob.extractIfFound((Reader reader) -> {
-				reader.transferTo(result);
-			});
 			
-			Assert.assertEquals("foo", result.toString());
-		}
-		
-		int result = blob.extractIfFound((Reader reader) -> reader.read());
-		Assert.assertEquals('f', result);
+		Assert.assertEquals("foo", text);
 	}
 
 	@Test
-	public void testStoreFile() throws IOException {
+	public void testStoreFromFile() throws IOException {
 		File file = TempFiles.createFile().withContent("foo");
 		
-		blob.store(file);
+		blob.storeFrom(file);
 		blob.assertContent("foo");
 	}
 	
 	@Test
-	public void testStorePath() throws IOException {
+	public void testStoreFromPath() throws IOException {
 		File file = TempFiles.createFile().withContent("foo");
 		
-		blob.store(file.toPath());
+		blob.storeFrom(file.toPath());
 		blob.assertContent("foo");
 	}
 	
 	@Test
 	public void testStoreText() throws IOException {
-		blob.store("foo");
+		blob.storeText("foo");
 		blob.assertContent("foo");
 	}
 	
 	@Test
 	public void testStoreBytes() throws IOException {
-		blob.store("foo".getBytes());
+		blob.storeBytes("foo".getBytes());
 		blob.assertContent("foo");
 	}
 	
@@ -234,14 +185,14 @@ public class BlobTest {
 			
 		};
 		
-		blob.store(formattable);
+		blob.storeText(formattable);
 		blob.assertContentNormalized("Value\n-----\nfoo\n");
 	}
 	
 	@Test
-	public void testStoreReader() throws IOException {		
+	public void testStoreFromReader() throws IOException {		
 		try (MockReader reader = new MockReader("foo")) {
-			blob.store(reader);
+			blob.storeFrom(reader);
 			blob.assertContent("foo");
 			
 			Assert.assertFalse(reader.isClosed());
@@ -249,9 +200,9 @@ public class BlobTest {
 	}
 	
 	@Test
-	public void testStoreInputStream() throws IOException {		
+	public void testStoreFromInputStream() throws IOException {		
 		try (MockInputStream reader = new MockInputStream("foo")) {
-			blob.store(reader);
+			blob.storeFrom(reader);
 			blob.assertContent("foo");
 			
 			Assert.assertFalse(reader.isClosed());
@@ -259,8 +210,8 @@ public class BlobTest {
 	}
 	
 	@Test
-	public void testStoreOutputStreamCallback() throws IOException {
-		blob.store((OutputStream stream) -> {
+	public void testStoreOutputStream() throws IOException {
+		blob.storeOutputStream((OutputStream stream) -> {
 			stream.write("foo".getBytes());
 			stream.close(); // has no effect
 		});
@@ -269,8 +220,8 @@ public class BlobTest {
 	}
 	
 	@Test
-	public void testStorePrintStreamCallback() throws IOException {
-		blob.store((PrintStream stream) -> {
+	public void testStorePrintStream() throws IOException {
+		blob.storePrintStream((PrintStream stream) -> {
 			stream.print("foo");
 			stream.close(); // has no effect
 		});
@@ -279,26 +230,9 @@ public class BlobTest {
 	}
 	
 	@Test
-	public void testStoreWriterCallback() throws IOException {
-		blob.store((Writer writer) -> {
+	public void testStoreWriter() throws IOException {
+		blob.storeWriter((Writer writer) -> {
 			writer.write("foo");
-			writer.close(); // has no effect
-		});
-		
-		blob.assertContent("foo");
-	}
-	
-	@Test
-	public void testStoreIfMissing() throws IOException {
-		blob.storeIfMissing((Writer writer) -> {
-			writer.write("foo");
-			writer.close(); // has no effect
-		});
-		
-		blob.assertContent("foo");
-		
-		blob.storeIfMissing((Writer writer) -> {
-			writer.write("bar");
 			writer.close(); // has no effect
 		});
 		
@@ -308,21 +242,16 @@ public class BlobTest {
 	@Test
 	public void testStoreExtractPopulation() throws IOException {
 		Population expected = NondominatedPopulation.load("./pf/DTLZ2.2D.pf");
-		blob.store(expected);
+		blob.storePopulation(expected);
 		
 		Population actual = blob.extractPopulation();
-		Assert.assertEquals(expected, actual);
-		
-		actual = blob.extractNondominatedPopulation();
 		Assert.assertEquals(expected, actual);
 	}
 	
 	@Test
 	public void testExtractPopulationOnInvalidFile() throws IOException {
-		blob.store("foo");
-		
+		blob.storeText("foo");
 		Assert.assertThrows(EmptyResultFileException.class, () -> blob.extractPopulation());
-		Assert.assertThrows(EmptyResultFileException.class, () -> blob.extractNondominatedPopulation());
 	}
 	
 	@Test
@@ -337,6 +266,41 @@ public class BlobTest {
 		Assert.assertEquals(5, val);
 		
 		Assert.assertThrows(ClassCastException.class, () -> blob.extractObject(Double.class));
+	}
+	
+	@Test
+	public void testStoreExtractState() throws IOException, ClassNotFoundException {
+		Population expected = NondominatedPopulation.load("./pf/DTLZ2.2D.pf");
+		blob.storeState(expected);
+		
+		Population actual = new Population();
+		blob.extractState(actual);
+		
+		Assert.assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testIfMissing() throws IOException {
+		CallCounter<IOConsumer<Blob>> counter = CallCounter.mockIOConsumer();
+		
+		blob.ifMissing(counter.getProxy());
+		Assert.assertEquals(1, counter.getTotalCallCount());
+		
+		blob.storeText("foo");
+		blob.ifMissing(counter.getProxy());
+		Assert.assertEquals(1, counter.getTotalCallCount());
+	}
+	
+	@Test
+	public void testIfFound() throws IOException {
+		CallCounter<IOConsumer<Blob>> counter = CallCounter.mockIOConsumer();
+		
+		blob.ifFound(counter.getProxy());
+		Assert.assertEquals(0, counter.getTotalCallCount());
+		
+		blob.storeText("foo");
+		blob.ifFound(counter.getProxy());
+		Assert.assertEquals(1, counter.getTotalCallCount());
 	}
 	
 	public static class TestBlob implements Blob {

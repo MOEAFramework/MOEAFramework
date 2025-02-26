@@ -33,6 +33,7 @@ import org.moeaframework.analysis.store.fs.FileSystemDataStore;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.indicator.Indicators.IndicatorValues;
 import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.core.population.Population;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
 
@@ -62,18 +63,30 @@ public class DataStoreExample {
 			Blob resultBlob = container.getBlob("result");
 			Blob indicatorBlob = container.getBlob("indicators");
 			
+			System.out.println("Processing " + reference + "...");
+			
 			resultBlob.ifMissing(b -> {
+				System.out.print("    Running algorithm...");
+				
 				NSGAII algorithm = new NSGAII(problem);
 				algorithm.applyConfiguration(sample);
 				algorithm.run(10000);
-				b.store(algorithm.getResult());
+				b.storePopulation(algorithm.getResult());
+				
+				System.out.println("done.");
 			});
 						
 			indicatorBlob.ifMissing(b -> {
-				NondominatedPopulation result = resultBlob.extractNondominatedPopulation();
-				IndicatorValues values = indicators.apply(result);
-				b.store(values);
+				System.out.print("    Evaluating indicators...");
+				
+				Population result = resultBlob.extractPopulation();
+				IndicatorValues values = indicators.apply(new NondominatedPopulation(result));
+				b.storeText(values);
+				
+				System.out.println("done.");
 			});
+			
+			System.out.println("    Finished sample!");
 		}
 	}
 

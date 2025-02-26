@@ -33,21 +33,14 @@ import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.function.IOConsumer;
 import org.apache.commons.io.function.IOFunction;
 import org.apache.commons.io.output.CloseShieldOutputStream;
 import org.apache.commons.io.output.CloseShieldWriter;
-import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.core.Stateful;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TableFormat;
-import org.moeaframework.util.io.IOConsumer;
-import org.moeaframework.util.io.InputStreamConsumer;
-import org.moeaframework.util.io.InputStreamFunction;
-import org.moeaframework.util.io.OutputStreamConsumer;
-import org.moeaframework.util.io.PrintStreamConsumer;
-import org.moeaframework.util.io.ReaderConsumer;
-import org.moeaframework.util.io.ReaderFunction;
-import org.moeaframework.util.io.WriterConsumer;
 
 /**
  * Reference to a blob, which is simply a piece of data identified by its container and name.
@@ -163,29 +156,13 @@ public interface Blob {
 	}
 	
 	/**
-	 * Executes the function if this blob exists.
-	 * 
-	 * @param <R> the return type
-	 * @param function the function
-	 * @return the object if the blob exists and the function was invoked; {@code null} otherwise
-	 * @throws IOException if an I/O error occurred
-	 */
-	public default <R> R ifFound(IOFunction<Blob, R> function) throws IOException {
-		if (exists()) {
-			return function.apply(this);
-		}
-		
-		return null;
-	}
-	
-	/**
 	 * Extracts the content of this blob to a file.
 	 * 
 	 * @param file the destination file
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default void extract(File file) throws IOException {
-		extract(file.toPath());
+	public default void extractTo(File file) throws IOException {
+		extractTo(file.toPath());
 	}
 	
 	/**
@@ -194,52 +171,10 @@ public interface Blob {
 	 * @param path the destination path
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default void extract(Path path) throws IOException {
+	public default void extractTo(Path path) throws IOException {
 		try (InputStream in = openInputStream()) {
 			Files.copy(in, path, StandardCopyOption.REPLACE_EXISTING);
 		}
-	}
-	
-	/**
-	 * Extracts the content of this blob to a string.
-	 * 
-	 * @return the content of the blob
-	 * @throws IOException if an I/O error occurred
-	 */
-	public default String extractText() throws IOException {
-		return extract((Reader in) -> IOUtils.toString(in));
-	}
-	
-	/**
-	 * Extracts the content of this blob to bytes.
-	 * 
-	 * @return the content of the blob
-	 * @throws IOException if an I/O error occurred
-	 */
-	public default byte[] extractBytes() throws IOException {
-		return extract((InputStream in) -> IOUtils.toByteArray(in));
-	}
-	
-	/**
-	 * Extracts the content of this blob to a population.  If the blob is a result file containing multiple entries,
-	 * the last entry is read.
-	 * 
-	 * @return the population stored in the blob
-	 * @throws IOException if an I/O error occurred
-	 */
-	public default Population extractPopulation() throws IOException {
-		return extract((Reader reader) -> Population.load(reader));
-	}
-	
-	/**
-	 * Extracts the content of this blob to a non-dominated population.  If the blob is a result file containing
-	 * multiple entries, the last entry is read.
-	 * 
-	 * @return the non-dominated population stored in the blob
-	 * @throws IOException if an I/O error occurred
-	 */
-	public default NondominatedPopulation extractNondominatedPopulation() throws IOException {
-		return extract((Reader reader) -> NondominatedPopulation.load(reader));
 	}
 	
 	/**
@@ -248,7 +183,7 @@ public interface Blob {
 	 * @param out the output stream
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default void extract(OutputStream out) throws IOException {
+	public default void extractTo(OutputStream out) throws IOException {
 		try (InputStream in = openInputStream()) {
 			in.transferTo(out);
 		}
@@ -260,36 +195,63 @@ public interface Blob {
 	 * @param out the writer
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default void extract(Writer out) throws IOException {
+	public default void extractTo(Writer out) throws IOException {
 		try (Reader in = openReader()) {
 			in.transferTo(out);
 		}
 	}
 	
 	/**
-	 * Executes a consumer with an {@link InputStream} for reading this blob.  The input stream is automatically closed
-	 * when the consumer returns.
+	 * Stores the contents of a file to this blob.
 	 * 
-	 * @param consumer the consumer function
+	 * @param file the source file
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default void extract(InputStreamConsumer consumer) throws IOException {
-		try (InputStream in = openInputStream()) {
-			consumer.accept(in);
+	public default void storeFrom(File file) throws IOException {
+		storeFrom(file.toPath());
+	}
+	
+	/**
+	 * Stores the contents of a path to this blob.
+	 * 
+	 * @param path the source path
+	 * @throws IOException if an I/O error occurred
+	 */
+	public default void storeFrom(Path path) throws IOException {
+		try (TransactionalOutputStream out = openOutputStream()) {
+			Files.copy(path, out);
+			out.commit();
 		}
 	}
 	
 	/**
-	 * Executes a consumer with a {@link Reader} for reading this blob.  The reader is automatically closed when the
-	 * consumer returns.
+	 * Extracts the content of this blob to a string.
 	 * 
-	 * @param consumer the consumer function
+	 * @return the content of the blob
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default void extract(ReaderConsumer consumer) throws IOException {
-		try (Reader in = openReader()) {
-			consumer.accept(in);
-		}
+	public default String extractText() throws IOException {
+		return extractReader(IOUtils::toString);
+	}
+	
+	/**
+	 * Extracts the content of this blob to bytes.
+	 * 
+	 * @return the content of the blob
+	 * @throws IOException if an I/O error occurred
+	 */
+	public default byte[] extractBytes() throws IOException {
+		return extractInputStream(IOUtils::toByteArray);
+	}
+	
+	/**
+	 * Extracts the content of this blob to a {@link Population}.
+	 * 
+	 * @return the content of the blob
+	 * @throws IOException if an I/O error occurred
+	 */
+	public default Population extractPopulation() throws IOException {
+		return extractReader(Population::load);
 	}
 	
 	/**
@@ -301,7 +263,7 @@ public interface Blob {
 	 * @return the object read from the stream
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default <R> R extract(InputStreamFunction<R> function) throws IOException {
+	public default <R> R extractInputStream(IOFunction<InputStream, R> function) throws IOException {
 		try (InputStream in = openInputStream()) {
 			return function.apply(in);
 		}
@@ -316,60 +278,26 @@ public interface Blob {
 	 * @return the object read from the reader
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default <R> R extract(ReaderFunction<R> function) throws IOException {
+	public default <R> R extractReader(IOFunction<Reader, R> function) throws IOException {
 		try (Reader in = openReader()) {
 			return function.apply(in);
 		}
 	}
 	
 	/**
-	 * Executes the consumer with an {@link InputStream} for reading this blob, but only if the blob exists.  The
-	 * stream is automatically closed when the consumer returns.
+	 * Extracts the state and loads it into the {@link Stateful} object.
 	 * 
-	 * @param consumer the consumer function
-	 * @return {@code true} if the blob exists and the consumer was invoked; {@code false} otherwise
+	 * @param value the stateful object
+	 * @return the stateful object
 	 * @throws IOException if an I/O error occurred
+	 * @throws ClassNotFoundException 
 	 */
-	public default boolean extractIfFound(InputStreamConsumer consumer) throws IOException {
-		return ifFound((IOConsumer<Blob>)b -> b.extract(consumer));
-	}
-	
-	/**
-	 * Executes the consumer with a {@link Reader} for reading this blob, but only if the blob exists.  The reader is
-	 * automatically closed when the consumer returns.
-	 * 
-	 * @param consumer the consumer function
-	 * @return {@code true} if the blob exists and the consumer was invoked; {@code false} otherwise
-	 * @throws IOException if an I/O error occurred
-	 */
-	public default boolean extractIfFound(ReaderConsumer consumer) throws IOException {
-		return ifFound((IOConsumer<Blob>)b -> b.extract(consumer));
-	}
-	
-	/**
-	 * Executes the function with an {@link InputStream} for reading this blob, but only if the blob exists.  The
-	 * stream is automatically closed when the function returns.
-	 * 
-	 * @param <R> the return type
-	 * @param function the function
-	 * @return the object read from the blob; or {@code null} if not found
-	 * @throws IOException if an I/O error occurred
-	 */
-	public default <R> R extractIfFound(InputStreamFunction<R> function) throws IOException {
-		return ifFound((IOFunction<Blob, R>)b -> b.extract(function));
-	}
-	
-	/**
-	 * Executes the function with a {@link Reader} for reading this blob, but only if the blob exists.  The reader is
-	 * automatically closed when the function returns.
-	 * 
-	 * @param <R> the return type
-	 * @param function the function
-	 * @return the object read from the blob; or {@code null} if not found
-	 * @throws IOException if an I/O error occurred
-	 */
-	public default <R> R extractIfFound(ReaderFunction<R> function) throws IOException {
-		return ifFound((IOFunction<Blob, R>)b -> b.extract(function));
+	public default <T extends Stateful> T extractState(T value) throws IOException, ClassNotFoundException {
+		try (InputStream in = openInputStream();
+				ObjectInputStream ois = new ObjectInputStream(in)) {
+			value.loadState(ois);
+			return value;
+		}
 	}
 	
 	/**
@@ -400,36 +328,13 @@ public interface Blob {
 	}
 	
 	/**
-	 * Stores the contents of a file to this blob.
-	 * 
-	 * @param file the source file
-	 * @throws IOException if an I/O error occurred
-	 */
-	public default void store(File file) throws IOException {
-		store(file.toPath());
-	}
-	
-	/**
-	 * Stores the contents of a path to this blob.
-	 * 
-	 * @param path the source path
-	 * @throws IOException if an I/O error occurred
-	 */
-	public default void store(Path path) throws IOException {
-		try (TransactionalOutputStream out = openOutputStream()) {
-			Files.copy(path, out);
-			out.commit();
-		}
-	}
-	
-	/**
 	 * Stores the given string to this blob.
 	 * 
 	 * @param text the text to store
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default void store(String text) throws IOException {
-		store((Writer writer) -> writer.append(text));
+	public default void storeText(String text) throws IOException {
+		storeWriter((Writer writer) -> writer.append(text));
 	}
 	
 	/**
@@ -438,8 +343,8 @@ public interface Blob {
 	 * @param data the data to store
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default void store(byte[] data) throws IOException {
-		store((OutputStream stream) -> stream.write(data));
+	public default void storeBytes(byte[] data) throws IOException {
+		storeOutputStream((OutputStream stream) -> stream.write(data));
 	}
 	
 	/**
@@ -448,8 +353,8 @@ public interface Blob {
 	 * @param population the population to store
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default void store(Population population) throws IOException {
-		store((Writer writer) -> population.save(writer));
+	public default void storePopulation(Population population) throws IOException {
+		storeWriter(population::save);
 	}
 	
 	/**
@@ -458,8 +363,8 @@ public interface Blob {
 	 * @param formattable the formattable object to store
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default void store(Formattable<?> formattable) throws IOException {
-		store(formattable, TableFormat.Plaintext);
+	public default void storeText(Formattable<?> formattable) throws IOException {
+		storeText(formattable, TableFormat.Plaintext);
 	}
 	
 	/**
@@ -469,8 +374,8 @@ public interface Blob {
 	 * @param tableFormat the table format
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default void store(Formattable<?> formattable, TableFormat tableFormat) throws IOException {
-		store((PrintStream ps) -> formattable.save(tableFormat, ps));
+	public default void storeText(Formattable<?> formattable, TableFormat tableFormat) throws IOException {
+		storePrintStream((PrintStream ps) -> formattable.save(tableFormat, ps));
 	}
 	
 	/**
@@ -479,7 +384,7 @@ public interface Blob {
 	 * @param in the input stream
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default void store(InputStream in) throws IOException {
+	public default void storeFrom(InputStream in) throws IOException {
 		try (TransactionalOutputStream out = openOutputStream()) {
 			in.transferTo(out);
 			out.commit();
@@ -492,7 +397,7 @@ public interface Blob {
 	 * @param reader the reader
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default void store(Reader reader) throws IOException {
+	public default void storeFrom(Reader reader) throws IOException {
 		try (TransactionalWriter writer = openWriter()) {
 			reader.transferTo(writer);
 			writer.commit();
@@ -500,13 +405,13 @@ public interface Blob {
 	}
 	
 	/**
-	 * Executes a consumer with an {@link OutputStream} for writing to this blob.  The output stream is automatically
-	 * closed when the consumer returns.
+	 * Executes a consumer with an {@link OutputStream} for writing to this blob.  The stream is automatically closed
+	 * when the consumer returns.
 	 * 
-	 * @param consumer the consumer function
+	 * @param consumer the consumer
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default void store(OutputStreamConsumer consumer) throws IOException {
+	public default void storeOutputStream(IOConsumer<OutputStream> consumer) throws IOException {
 		try (TransactionalOutputStream out = openOutputStream();
 				CloseShieldOutputStream shielded = CloseShieldOutputStream.wrap(out)) {
 			consumer.accept(shielded);
@@ -515,13 +420,13 @@ public interface Blob {
 	}
 	
 	/**
-	 * Executes a consumer with a {@link PrintStream} for writing to this blob.  The output stream is automatically
-	 * closed when the consumer returns.
+	 * Executes a consumer with a {@link PrintStream} for writing to this blob.  The stream is automatically closed
+	 * when the consumer returns.
 	 * 
-	 * @param consumer the consumer function
+	 * @param consumer the consumer
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default void store(PrintStreamConsumer consumer) throws IOException {
+	public default void storePrintStream(IOConsumer<PrintStream> consumer) throws IOException {
 		try (TransactionalOutputStream out = openOutputStream();
 				CloseShieldOutputStream shielded = CloseShieldOutputStream.wrap(out);
 				PrintStream ps = new PrintStream(shielded)) {
@@ -531,13 +436,13 @@ public interface Blob {
 	}
 	
 	/**
-	 * Executes a consumer with a {@link Writer} for writing to this blob.  The output stream is automatically
-	 * closed when the consumer returns.
+	 * Executes a consumer with a {@link Writer} for writing to this blob.  The writer is automatically closed when the
+	 * consumer returns.
 	 * 
 	 * @param consumer the consumer function
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default void store(WriterConsumer consumer) throws IOException {
+	public default void storeWriter(IOConsumer<Writer> consumer) throws IOException {
 		try (TransactionalWriter out = openWriter();
 				CloseShieldWriter shielded = CloseShieldWriter.wrap(out)) {
 			consumer.accept(shielded);
@@ -546,40 +451,18 @@ public interface Blob {
 	}
 	
 	/**
-	 * Executes the consumer with an {@link OutputStream} for writing to this blob, but only if the blob does not
-	 * already exist.  The stream is automatically closed when the consumer returns.
+	 * Stores a {@link Stateful} object to the blob.
 	 * 
-	 * @param consumer the consumer function
-	 * @return {@code true} if the blob did not exist and the consumer was invoked; {@code false} otherwise
+	 * @param value the stateful object to store
 	 * @throws IOException if an I/O error occurred
 	 */
-	public default boolean storeIfMissing(OutputStreamConsumer consumer) throws IOException {
-		return ifMissing((IOConsumer<Blob>)b -> b.store(consumer));
-	}
-	
-	/**
-	 * Executes the consumer with a {@link PrintStream} for writing to this blob, but only if the blob does not
-	 * already exist.  The stream is automatically closed when the consumer returns.
-	 * 
-	 * @param consumer the consumer function
-	 * @return {@code true} if the blob did not exist and the consumer was invoked; {@code false} otherwise
-	 * @throws IOException if an I/O error occurred
-	 */
-	public default boolean storeIfMissing(PrintStreamConsumer consumer) throws IOException {
-		return ifMissing((IOConsumer<Blob>)b -> b.store(consumer));
-	}
-	
-	/**
-	 * Executes the consumer with a {@link Writer} for writing to this blob, but only if the blob does not
-	 * already exist.  The stream is automatically closed when the consumer returns.
-	 * 
-	 * @param consumer the consumer function
-	 * @return {@code true} if the blob did not exist and the consumer was invoked; {@code false} otherwise
-	 * @throws IOException if an I/O error occurred
-	 */
-	public default boolean storeIfMissing(WriterConsumer consumer) throws IOException {
-		return ifMissing((IOConsumer<Blob>)b -> b.store(consumer));
-	}
+	public default <T extends Stateful> void storeState(T value) throws IOException {
+		try (TransactionalOutputStream out = openOutputStream();
+				ObjectOutputStream oos = new ObjectOutputStream(out)) {
+			value.saveState(oos);
+			out.commit();
+		}
+	}	
 	
 	/**
 	 * Stores a serializable object to the blob.

@@ -19,7 +19,6 @@ package org.moeaframework.analysis.store.fs;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
@@ -49,7 +48,7 @@ public class FileSystemDataStoreTest {
 		
 		Assert.assertFalse(blob.exists());
 		
-		blob.store((PrintStream ps) -> ps.print("foo"));
+		blob.storeText("foo");
 		
 		Assert.assertTrue(container.exists());
 		Assert.assertTrue(blob.exists());
