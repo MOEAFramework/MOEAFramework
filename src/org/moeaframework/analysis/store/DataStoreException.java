@@ -17,10 +17,14 @@
  */
 package org.moeaframework.analysis.store;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import org.moeaframework.core.FrameworkException;
 
 /**
- * An exception indicating a problem with a data store.
+ * An exception indicating a problem with a data store.  All exceptions thrown when accessing the contents of a data
+ * store should extend from this type, unless a more specific type exists.
  */
 public class DataStoreException extends FrameworkException {
 
@@ -44,5 +48,41 @@ public class DataStoreException extends FrameworkException {
 	public DataStoreException(String message) {
 		super(message);
 	}
+	
+	/**
+	 * Wraps an I/O exception into a unchecked data store exception.
+	 * 
+	 * @param exception the I/O exception
+	 * @return the unchecked data store exception
+	 */
+	private static DataStoreException wrap(IOException exception) {
+		return new DataStoreException("Failed with I/O exception", exception);
+	}
+	
+	/**
+	 * Wraps an I/O exception into a unchecked data store exception.
+	 * 
+	 * @param exception the I/O exception
+	 * @param container the container that was being accessed
+	 * @return the unchecked data store exception
+	 */
+	public static DataStoreException wrap(IOException exception, Container container) {
+		return wrap(exception);
+	}
 
+	/**
+	 * Wraps an I/O exception into a unchecked data store exception.
+	 * 
+	 * @param exception the I/O exception
+	 * @param blob the blob that was being accessed
+	 * @return the unchecked data store exception
+	 */
+	public static DataStoreException wrap(IOException exception, Blob blob) {
+		if (exception instanceof FileNotFoundException) {
+			return new BlobNotFoundException(blob);
+		}
+		
+		return wrap(exception);
+	}
+	
 }

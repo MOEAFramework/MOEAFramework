@@ -150,7 +150,7 @@ public class FileSystemDataStore implements DataStore {
 	}
 	
 	@Override
-	public List<Container> listContainers() throws IOException {
+	public List<Container> listContainers() throws DataStoreException {
 		try (Stream<Path> stream = Files.walk(root)) {
 			return stream
 					.skip(1)
@@ -169,11 +169,13 @@ public class FileSystemDataStore implements DataStore {
 						} catch (FileNotFoundException e) {
 							return null;
 						} catch (IOException e) {
-							throw new DataStoreException("Encountered error while listing containers", e);
+							throw new DataStoreException("Failed while loading", e);
 						}
 					})
 					.filter(reference -> reference != null)
 					.toList();
+		} catch (IOException e) {
+			throw new DataStoreException("Failed while listing containers", e);
 		}
 	}
 
@@ -255,48 +257,60 @@ public class FileSystemDataStore implements DataStore {
 		}
 		
 		@Override
-		public void create() throws IOException {
-			Path container = fileMap.mapContainer(getSchema(), getRoot(), reference);
-			mkdirs(container);
-			
-			Path dest = container.resolve(REFERENCE_FILENAME);
-			
-			if (!Files.exists(dest)) {
-				Path temp = Files.createTempFile("datastore", null);
+		public void create() throws DataStoreException {
+			try {
+				Path container = fileMap.mapContainer(getSchema(), getRoot(), reference);
+				mkdirs(container);
 				
-				try (TransactionalFileWriter writer = new TransactionalFileWriter(temp.toFile(), dest.toFile())) {
-					TypedProperties properties = new TypedProperties();
+				Path dest = container.resolve(REFERENCE_FILENAME);
+				
+				if (!Files.exists(dest)) {
+					Path temp = Files.createTempFile("datastore", null);
 					
-					for (String field : reference.fields()) {
-						properties.setString(field, reference.get(field));
+					try (TransactionalFileWriter writer = new TransactionalFileWriter(temp.toFile(), dest.toFile())) {
+						TypedProperties properties = new TypedProperties();
+						
+						for (String field : reference.fields()) {
+							properties.setString(field, reference.get(field));
+						}
+						
+						properties.save(writer);
+						writer.commit();
 					}
-					
-					properties.save(writer);
-					writer.commit();
 				}
+			} catch (IOException e) {
+				throw DataStoreException.wrap(e, this);
 			}
 		}
 
 		@Override
-		public boolean exists() throws IOException {
-			return Files.exists(fileMap.mapContainer(getSchema(), getRoot(), reference));
+		public boolean exists() throws DataStoreException {
+			try {
+				return Files.exists(fileMap.mapContainer(getSchema(), getRoot(), reference));
+			} catch (IOException e) {
+				throw DataStoreException.wrap(e, this);
+			}
 		}
 		
 		@Override
-		public List<Blob> listBlobs() throws IOException {
-			Path container = fileMap.mapContainer(getSchema(), getRoot(), reference);
-			
-			if (!Files.exists(container)) {
-				return List.of();
-			}
-			
-			try (Stream<Path> stream = Files.walk(container, 1)) {
-				return stream
-						.skip(1)
-						.map(x -> x.getFileName().toString())
-						.filter(x -> x.charAt(0) != '.')
-						.map(this::getBlob)
-						.toList();
+		public List<Blob> listBlobs() throws DataStoreException {
+			try {
+				Path container = fileMap.mapContainer(getSchema(), getRoot(), reference);
+				
+				if (!Files.exists(container)) {
+					return List.of();
+				}
+				
+				try (Stream<Path> stream = Files.walk(container, 1)) {
+					return stream
+							.skip(1)
+							.map(x -> x.getFileName().toString())
+							.filter(x -> x.charAt(0) != '.')
+							.map(this::getBlob)
+							.toList();
+				}
+			} catch (IOException e) {
+				throw DataStoreException.wrap(e, this);
 			}
 		}
 		
@@ -325,46 +339,74 @@ public class FileSystemDataStore implements DataStore {
 		}
 
 		@Override
-		public boolean exists() throws IOException {
-			return Files.exists(fileMap.mapBlob(getSchema(), getRoot(), reference, name));
+		public boolean exists() throws DataStoreException {
+			try {
+				return Files.exists(fileMap.mapBlob(getSchema(), getRoot(), reference, name));
+			} catch (IOException e) {
+				throw DataStoreException.wrap(e, this);
+			}
 		}
 
 		@Override
-		public boolean delete() throws IOException {
-			return Files.deleteIfExists(fileMap.mapBlob(getSchema(), getRoot(), reference, name));
+		public boolean delete() throws DataStoreException {
+			try {
+				return Files.deleteIfExists(fileMap.mapBlob(getSchema(), getRoot(), reference, name));
+			} catch (IOException e) {
+				throw DataStoreException.wrap(e, this);
+			}
 		}
 
 		@Override
-		public Instant lastModified() throws IOException {
-			return Files.getLastModifiedTime(fileMap.mapBlob(getSchema(), getRoot(), reference, name)).toInstant();
+		public Instant lastModified() throws DataStoreException {
+			try {
+				return Files.getLastModifiedTime(fileMap.mapBlob(getSchema(), getRoot(), reference, name)).toInstant();
+			} catch (IOException e) {
+				throw DataStoreException.wrap(e, this);
+			}
 		}
 
 		@Override
-		public Reader openReader() throws IOException {
-			return new FileReader(fileMap.mapBlob(getSchema(), getRoot(), reference, name).toFile());
+		public Reader openReader() throws DataStoreException {
+			try {
+				return new FileReader(fileMap.mapBlob(getSchema(), getRoot(), reference, name).toFile());
+			} catch (IOException e) {
+				throw DataStoreException.wrap(e, this);
+			}
 		}
 
 		@Override
-		public InputStream openInputStream() throws IOException {
-			return new FileInputStream(fileMap.mapBlob(getSchema(), getRoot(), reference, name).toFile());
+		public InputStream openInputStream() throws DataStoreException {
+			try {
+				return new FileInputStream(fileMap.mapBlob(getSchema(), getRoot(), reference, name).toFile());
+			} catch (IOException e) {
+				throw DataStoreException.wrap(e, this);
+			}
 		}
 
 		@Override
-		public TransactionalWriter openWriter() throws IOException {
-			getContainer().create();
-			
-			Path dest = fileMap.mapBlob(getSchema(), getRoot(), reference, name);
-			Path temp = Files.createTempFile("datastore", null);
-			return new TransactionalFileWriter(temp.toFile(), dest.toFile());
+		public TransactionalWriter openWriter() throws DataStoreException {
+			try {
+				getContainer().create();
+				
+				Path dest = fileMap.mapBlob(getSchema(), getRoot(), reference, name);
+				Path temp = Files.createTempFile("datastore", null);
+				return new TransactionalFileWriter(temp.toFile(), dest.toFile());
+			} catch (IOException e) {
+				throw DataStoreException.wrap(e, this);
+			}
 		}
 
 		@Override
-		public TransactionalOutputStream openOutputStream() throws IOException {
-			getContainer().create();
-			
-			Path dest = fileMap.mapBlob(getSchema(), getRoot(), reference, name);
-			Path temp = Files.createTempFile("datastore", null);
-			return new TransactionalFileOutputStream(temp.toFile(), dest.toFile());
+		public TransactionalOutputStream openOutputStream() throws DataStoreException {
+			try {
+				getContainer().create();
+				
+				Path dest = fileMap.mapBlob(getSchema(), getRoot(), reference, name);
+				Path temp = Files.createTempFile("datastore", null);
+				return new TransactionalFileOutputStream(temp.toFile(), dest.toFile());
+			} catch (IOException e) {
+				throw DataStoreException.wrap(e, this);
+			}
 		}
 		
 	}

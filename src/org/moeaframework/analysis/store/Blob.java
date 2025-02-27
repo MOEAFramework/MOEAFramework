@@ -65,43 +65,43 @@ public interface Blob {
 	 * Returns {@code true} if the blob exists; {@code false} otherwise.
 	 * 
 	 * @return {@code true} if the blob exists; {@code false} otherwise
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	boolean exists() throws IOException;
+	boolean exists() throws DataStoreException;
 	
 	/**
 	 * Deletes this blob if it exists.
 	 * 
 	 * @return {@code true} if the blob was deleted; {@code false} if the blob does not exist
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	boolean delete() throws IOException;
+	boolean delete() throws DataStoreException;
 	
 	/**
 	 * Returns the last modified time of the blob.
 	 * 
 	 * @return the last modified time
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	Instant lastModified() throws IOException;
+	Instant lastModified() throws DataStoreException;
 	
 	/**
 	 * Creates and returns a {@link Reader} for reading text from this blob.  The caller is responsible for closing the
 	 * reader when finished.
 	 * 
 	 * @return a reader for this blob
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	Reader openReader() throws IOException;
+	Reader openReader() throws DataStoreException;
 	
 	/**
 	 * Creates and returns an {@link InputStream} for reading binary data from this blob.  The caller is responsible for
 	 * closing the stream when finished.
 	 * 
 	 * @return an input stream for this blob
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	InputStream openInputStream() throws IOException;
+	InputStream openInputStream() throws DataStoreException;
 	
 	/**
 	 * Creates and returns a {@link TransactionalWriter} for writing text to this blob.  The caller is responsible for
@@ -109,9 +109,9 @@ public interface Blob {
 	 * content is discarded.
 	 * 
 	 * @return the writer for this blob
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	TransactionalWriter openWriter() throws IOException;
+	TransactionalWriter openWriter() throws DataStoreException;
 	
 	/**
 	 * Creates and returns a {@link TransactionalOutputStream} for writing binary data to this blob.  The caller is
@@ -119,24 +119,28 @@ public interface Blob {
 	 * any written content is discarded.
 	 * 
 	 * @return the output stream for this blob
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	TransactionalOutputStream openOutputStream() throws IOException;
+	TransactionalOutputStream openOutputStream() throws DataStoreException;
 	
 	/**
 	 * Executes the consumer function if this blob is missing.
 	 * 
 	 * @param consumer the consumer function
 	 * @return {@code true} if the blob is missing and the consumer was invoked; {@code false} otherwise
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public default boolean ifMissing(IOConsumer<Blob> consumer) throws IOException {
-		if (!exists()) {
-			consumer.accept(this);
-			return true;
+	public default boolean ifMissing(IOConsumer<Blob> consumer) throws DataStoreException {
+		try {
+			if (!exists()) {
+				consumer.accept(this);
+				return true;
+			}
+			
+			return false;
+		} catch (IOException e) {
+			throw DataStoreException.wrap(e, this);
 		}
-		
-		return false;
 	}
 	
 	/**
@@ -144,24 +148,28 @@ public interface Blob {
 	 * 
 	 * @param consumer the consumer function
 	 * @return {@code true} if the blob exists and the consumer was invoked; {@code false} otherwise
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public default boolean ifFound(IOConsumer<Blob> consumer) throws IOException {
-		if (exists()) {
-			consumer.accept(this);
-			return true;
+	public default boolean ifFound(IOConsumer<Blob> consumer) throws DataStoreException {
+		try {
+			if (exists()) {
+				consumer.accept(this);
+				return true;
+			}
+			
+			return false;
+		} catch (IOException e) {
+			throw DataStoreException.wrap(e, this);
 		}
-		
-		return false;
 	}
 	
 	/**
 	 * Extracts the content of this blob to a file.
 	 * 
 	 * @param file the destination file
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public default void extractTo(File file) throws IOException {
+	public default void extractTo(File file) throws DataStoreException {
 		extractTo(file.toPath());
 	}
 	
@@ -169,11 +177,13 @@ public interface Blob {
 	 * Extracts the content of this blob to a path.
 	 * 
 	 * @param path the destination path
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public default void extractTo(Path path) throws IOException {
+	public default void extractTo(Path path) throws DataStoreException {
 		try (InputStream in = openInputStream()) {
 			Files.copy(in, path, StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			throw DataStoreException.wrap(e, this);
 		}
 	}
 	
@@ -181,11 +191,13 @@ public interface Blob {
 	 * Transfers the content of this blob to an output stream.
 	 * 
 	 * @param out the output stream
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public default void extractTo(OutputStream out) throws IOException {
+	public default void extractTo(OutputStream out) throws DataStoreException {
 		try (InputStream in = openInputStream()) {
 			in.transferTo(out);
+		} catch (IOException e) {
+			throw DataStoreException.wrap(e, this);
 		}
 	}
 	
@@ -193,11 +205,13 @@ public interface Blob {
 	 * Transfers the content of this blob to a writer.
 	 * 
 	 * @param out the writer
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public default void extractTo(Writer out) throws IOException {
+	public default void extractTo(Writer out) throws DataStoreException {
 		try (Reader in = openReader()) {
 			in.transferTo(out);
+		} catch (IOException e) {
+			throw DataStoreException.wrap(e, this);
 		}
 	}
 	
@@ -205,9 +219,9 @@ public interface Blob {
 	 * Stores the contents of a file to this blob.
 	 * 
 	 * @param file the source file
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public default void storeFrom(File file) throws IOException {
+	public default void storeFrom(File file) throws DataStoreException {
 		storeFrom(file.toPath());
 	}
 	
@@ -215,12 +229,14 @@ public interface Blob {
 	 * Stores the contents of a path to this blob.
 	 * 
 	 * @param path the source path
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public default void storeFrom(Path path) throws IOException {
+	public default void storeFrom(Path path) throws DataStoreException {
 		try (TransactionalOutputStream out = openOutputStream()) {
 			Files.copy(path, out);
 			out.commit();
+		} catch (IOException e) {
+			throw DataStoreException.wrap(e, this);
 		}
 	}
 	
@@ -228,9 +244,9 @@ public interface Blob {
 	 * Extracts the content of this blob to a string.
 	 * 
 	 * @return the content of the blob
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public default String extractText() throws IOException {
+	public default String extractText() throws DataStoreException {
 		return extractReader(IOUtils::toString);
 	}
 	
@@ -238,9 +254,9 @@ public interface Blob {
 	 * Extracts the content of this blob to bytes.
 	 * 
 	 * @return the content of the blob
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public default byte[] extractBytes() throws IOException {
+	public default byte[] extractBytes() throws DataStoreException {
 		return extractInputStream(IOUtils::toByteArray);
 	}
 	
@@ -248,9 +264,9 @@ public interface Blob {
 	 * Extracts the content of this blob to a {@link Population}.
 	 * 
 	 * @return the content of the blob
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public default Population extractPopulation() throws IOException {
+	public default Population extractPopulation() throws DataStoreException {
 		return extractReader(Population::load);
 	}
 	
@@ -261,11 +277,13 @@ public interface Blob {
 	 * @param <R> the return type
 	 * @param function the function
 	 * @return the object read from the stream
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public default <R> R extractInputStream(IOFunction<InputStream, R> function) throws IOException {
+	public default <R> R extractInputStream(IOFunction<InputStream, R> function) throws DataStoreException {
 		try (InputStream in = openInputStream()) {
 			return function.apply(in);
+		} catch (IOException e) {
+			throw DataStoreException.wrap(e, this);
 		}
 	}
 	
@@ -276,11 +294,13 @@ public interface Blob {
 	 * @param <R> the return type
 	 * @param function the function
 	 * @return the object read from the reader
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public default <R> R extractReader(IOFunction<Reader, R> function) throws IOException {
+	public default <R> R extractReader(IOFunction<Reader, R> function) throws DataStoreException {
 		try (Reader in = openReader()) {
 			return function.apply(in);
+		} catch (IOException e) {
+			throw DataStoreException.wrap(e, this);
 		}
 	}
 	
@@ -289,14 +309,16 @@ public interface Blob {
 	 * 
 	 * @param value the stateful object
 	 * @return the stateful object
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 * @throws ClassNotFoundException 
 	 */
-	public default <T extends Stateful> T extractState(T value) throws IOException, ClassNotFoundException {
+	public default <T extends Stateful> T extractState(T value) throws DataStoreException, ClassNotFoundException {
 		try (InputStream in = openInputStream();
 				ObjectInputStream ois = new ObjectInputStream(in)) {
 			value.loadState(ois);
 			return value;
+		} catch (IOException e) {
+			throw DataStoreException.wrap(e, this);
 		}
 	}
 	
@@ -304,13 +326,15 @@ public interface Blob {
 	 * Extracts the blob and deserializes the content.
 	 * 
 	 * @return the deserialized object
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 * @throws ClassNotFoundException if the class of the serialized object could not be found
 	 */
-	public default Object extractObject() throws IOException, ClassNotFoundException {
+	public default Object extractObject() throws DataStoreException, ClassNotFoundException {
 		try (InputStream in = openInputStream();
 				ObjectInputStream ois = new ObjectInputStream(in)) {
 			return ois.readObject();
+		} catch (IOException e) {
+			throw DataStoreException.wrap(e, this);
 		}
 	}
 	
@@ -320,10 +344,10 @@ public interface Blob {
 	 * @param <T> the return type
 	 * @param type the type of the object
 	 * @return the deserialized object cast to the given type
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 * @throws ClassNotFoundException if the class of the serialized object could not be found
 	 */
-	public default <T> T extractObject(Class<T> type) throws IOException, ClassNotFoundException {
+	public default <T> T extractObject(Class<T> type) throws DataStoreException, ClassNotFoundException {
 		return type.cast(extractObject());
 	}
 	
@@ -331,9 +355,9 @@ public interface Blob {
 	 * Stores the given string to this blob.
 	 * 
 	 * @param text the text to store
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public default void storeText(String text) throws IOException {
+	public default void storeText(String text) throws DataStoreException {
 		storeWriter((Writer writer) -> writer.append(text));
 	}
 	
@@ -341,9 +365,9 @@ public interface Blob {
 	 * Stores the given data to this blob.
 	 * 
 	 * @param data the data to store
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public default void storeBytes(byte[] data) throws IOException {
+	public default void storeBytes(byte[] data) throws DataStoreException {
 		storeOutputStream((OutputStream stream) -> stream.write(data));
 	}
 	
@@ -351,9 +375,9 @@ public interface Blob {
 	 * Stores the given {@link Population} object to this blob as a result file.
 	 * 
 	 * @param population the population to store
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public default void storePopulation(Population population) throws IOException {
+	public default void storePopulation(Population population) throws DataStoreException {
 		storeWriter(population::save);
 	}
 	
@@ -361,9 +385,9 @@ public interface Blob {
 	 * Stores the given {@link Formattable} object to this blob using the {@link TableFormat#Plaintext} format.
 	 * 
 	 * @param formattable the formattable object to store
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public default void storeText(Formattable<?> formattable) throws IOException {
+	public default void storeText(Formattable<?> formattable) throws DataStoreException {
 		storeText(formattable, TableFormat.Plaintext);
 	}
 	
@@ -372,9 +396,9 @@ public interface Blob {
 	 * 
 	 * @param formattable the formattable object to store
 	 * @param tableFormat the table format
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public default void storeText(Formattable<?> formattable, TableFormat tableFormat) throws IOException {
+	public default void storeText(Formattable<?> formattable, TableFormat tableFormat) throws DataStoreException {
 		storePrintStream((PrintStream ps) -> formattable.save(tableFormat, ps));
 	}
 	
@@ -382,12 +406,14 @@ public interface Blob {
 	 * Stores the content read from an input stream to this this blob.
 	 * 
 	 * @param in the input stream
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public default void storeFrom(InputStream in) throws IOException {
+	public default void storeFrom(InputStream in) throws DataStoreException {
 		try (TransactionalOutputStream out = openOutputStream()) {
 			in.transferTo(out);
 			out.commit();
+		} catch (IOException e) {
+			throw DataStoreException.wrap(e, this);
 		}
 	}
 	
@@ -395,12 +421,14 @@ public interface Blob {
 	 * Stores the content read from a reader to this this blob.
 	 * 
 	 * @param reader the reader
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public default void storeFrom(Reader reader) throws IOException {
+	public default void storeFrom(Reader reader) throws DataStoreException {
 		try (TransactionalWriter writer = openWriter()) {
 			reader.transferTo(writer);
 			writer.commit();
+		} catch (IOException e) {
+			throw DataStoreException.wrap(e, this);
 		}
 	}
 	
@@ -409,13 +437,15 @@ public interface Blob {
 	 * when the consumer returns.
 	 * 
 	 * @param consumer the consumer
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public default void storeOutputStream(IOConsumer<OutputStream> consumer) throws IOException {
+	public default void storeOutputStream(IOConsumer<OutputStream> consumer) throws DataStoreException {
 		try (TransactionalOutputStream out = openOutputStream();
 				CloseShieldOutputStream shielded = CloseShieldOutputStream.wrap(out)) {
 			consumer.accept(shielded);
 			out.commit();
+		} catch (IOException e) {
+			throw DataStoreException.wrap(e, this);
 		}
 	}
 	
@@ -424,14 +454,16 @@ public interface Blob {
 	 * when the consumer returns.
 	 * 
 	 * @param consumer the consumer
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public default void storePrintStream(IOConsumer<PrintStream> consumer) throws IOException {
+	public default void storePrintStream(IOConsumer<PrintStream> consumer) throws DataStoreException {
 		try (TransactionalOutputStream out = openOutputStream();
 				CloseShieldOutputStream shielded = CloseShieldOutputStream.wrap(out);
 				PrintStream ps = new PrintStream(shielded)) {
 			consumer.accept(ps);
 			out.commit();
+		} catch (IOException e) {
+			throw DataStoreException.wrap(e, this);
 		}
 	}
 	
@@ -440,13 +472,15 @@ public interface Blob {
 	 * consumer returns.
 	 * 
 	 * @param consumer the consumer function
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public default void storeWriter(IOConsumer<Writer> consumer) throws IOException {
+	public default void storeWriter(IOConsumer<Writer> consumer) throws DataStoreException {
 		try (TransactionalWriter out = openWriter();
 				CloseShieldWriter shielded = CloseShieldWriter.wrap(out)) {
 			consumer.accept(shielded);
 			out.commit();
+		} catch (IOException e) {
+			throw DataStoreException.wrap(e, this);
 		}
 	}
 	
@@ -454,13 +488,16 @@ public interface Blob {
 	 * Stores a {@link Stateful} object to the blob.
 	 * 
 	 * @param value the stateful object to store
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
+	 * @throws NotSerializableException if the object is not serializable
 	 */
-	public default <T extends Stateful> void storeState(T value) throws IOException {
+	public default <T extends Stateful> void storeState(T value) throws DataStoreException {
 		try (TransactionalOutputStream out = openOutputStream();
 				ObjectOutputStream oos = new ObjectOutputStream(out)) {
 			value.saveState(oos);
 			out.commit();
+		} catch (IOException e) {
+			throw DataStoreException.wrap(e, this);
 		}
 	}	
 	
@@ -468,14 +505,18 @@ public interface Blob {
 	 * Stores a serializable object to the blob.
 	 * 
 	 * @param value the object to store
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 * @throws NotSerializableException if the object is not serializable
 	 */
-	public default void storeObject(Object value) throws IOException, NotSerializableException {
+	public default void storeObject(Object value) throws DataStoreException, NotSerializableException {
 		try (TransactionalOutputStream out = openOutputStream();
 				ObjectOutputStream oos = new ObjectOutputStream(out)) {
 			oos.writeObject(value);
 			out.commit();
+		} catch (NotSerializableException e) {
+			throw e;
+		} catch (IOException e) {
+			throw DataStoreException.wrap(e, this);
 		}
 	}
 

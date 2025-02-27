@@ -17,7 +17,6 @@
  */
 package org.moeaframework.analysis.store;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -43,9 +42,9 @@ public interface DataStore {
 	 * Returns a list of all containers in this data store.
 	 * 
 	 * @return a list of containers
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public List<Container> listContainers() throws IOException;
+	public List<Container> listContainers() throws DataStoreException;
 
 	/**
 	 * Returns the container for the given {@link Referenceable} object.

@@ -17,7 +17,6 @@
  */
 package org.moeaframework.analysis.store;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -44,34 +43,34 @@ public interface Container {
 	 * Creates the underlying, physical container.  Containers are automatically created when writing a blob, so
 	 * an explicit call to create the container is not required.
 	 * 
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	void create() throws IOException;
+	void create() throws DataStoreException;
 	
 	/**
 	 * Returns {@code true} if the underlying, physical container exists.
 	 * 
 	 * @return {@code true} if the container exists; {@code false} otherwise
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	boolean exists() throws IOException;
+	boolean exists() throws DataStoreException;
 	
 	/**
 	 * Returns all blobs stored in this container.
 	 * 
 	 * @return the blobs in this container
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	List<Blob> listBlobs() throws IOException;
+	List<Blob> listBlobs() throws DataStoreException;
 	
 	/**
 	 * Returns {@code true} if the blob identified by this name exists within this container.
 	 * 
 	 * @param name the blob name
 	 * @return {@code true} if the blob exists; {@code false} otherwise
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public default boolean contains(String name) throws IOException {
+	public default boolean contains(String name) throws DataStoreException {
 		return getBlob(name).exists();
 	}
 
