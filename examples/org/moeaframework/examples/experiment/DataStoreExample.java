@@ -18,6 +18,7 @@
 package org.moeaframework.examples.experiment;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.analysis.parameter.Enumeration;
@@ -44,7 +45,7 @@ import org.moeaframework.problem.Problem;
  */
 public class DataStoreExample {
 	
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws IOException {
 		Problem problem = new DTLZ2(2);
 		Indicators indicators = Indicators.standard(problem, NondominatedPopulation.load("./pf/DTLZ2.2D.pf"));
 		

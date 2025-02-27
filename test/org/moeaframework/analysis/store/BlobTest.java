@@ -20,6 +20,7 @@ package org.moeaframework.analysis.store;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.NotSerializableException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.Reader;
@@ -82,13 +83,13 @@ public class BlobTest {
 	}
 	
 	@Test
-	public void testExtractText() throws IOException {
+	public void testExtractText() {
 		blob.setContent("foo");
 		Assert.assertEquals("foo", blob.extractText());
 	}
 	
 	@Test
-	public void testExtractBytes() throws IOException {
+	public void testExtractBytes() {
 		blob.setContent("foo".getBytes());
 		Assert.assertArrayEquals("foo".getBytes(), blob.extractBytes());
 	}
@@ -158,19 +159,19 @@ public class BlobTest {
 	}
 	
 	@Test
-	public void testStoreText() throws IOException {
+	public void testStoreText() {
 		blob.storeText("foo");
 		blob.assertContent("foo");
 	}
 	
 	@Test
-	public void testStoreBytes() throws IOException {
+	public void testStoreBytes() {
 		blob.storeBytes("foo".getBytes());
 		blob.assertContent("foo");
 	}
 	
 	@Test
-	public void testStoreFormattable() throws IOException {
+	public void testStoreFormattable() {
 		Formattable<String> formattable = new Formattable<>() {
 
 			@Override
@@ -210,7 +211,7 @@ public class BlobTest {
 	}
 	
 	@Test
-	public void testStoreOutputStream() throws IOException {
+	public void testStoreOutputStream() {
 		blob.storeOutputStream((OutputStream stream) -> {
 			stream.write("foo".getBytes());
 			stream.close(); // has no effect
@@ -220,7 +221,7 @@ public class BlobTest {
 	}
 	
 	@Test
-	public void testStorePrintStream() throws IOException {
+	public void testStorePrintStream() {
 		blob.storePrintStream((PrintStream stream) -> {
 			stream.print("foo");
 			stream.close(); // has no effect
@@ -230,7 +231,7 @@ public class BlobTest {
 	}
 	
 	@Test
-	public void testStoreWriter() throws IOException {
+	public void testStoreWriter() {
 		blob.storeWriter((Writer writer) -> {
 			writer.write("foo");
 			writer.close(); // has no effect
@@ -255,7 +256,7 @@ public class BlobTest {
 	}
 	
 	@Test
-	public void testStoreExtractObject() throws IOException, ClassNotFoundException {
+	public void testStoreExtractObject() throws NotSerializableException, ClassNotFoundException {
 		blob.storeObject(5);
 		
 		Object obj = blob.extractObject();
@@ -280,7 +281,7 @@ public class BlobTest {
 	}
 	
 	@Test
-	public void testIfMissing() throws IOException {
+	public void testIfMissing() {
 		CallCounter<IOConsumer<Blob>> counter = CallCounter.mockIOConsumer();
 		
 		blob.ifMissing(counter.getProxy());
@@ -292,7 +293,7 @@ public class BlobTest {
 	}
 	
 	@Test
-	public void testIfFound() throws IOException {
+	public void testIfFound() {
 		CallCounter<IOConsumer<Blob>> counter = CallCounter.mockIOConsumer();
 		
 		blob.ifFound(counter.getProxy());
@@ -357,12 +358,12 @@ public class BlobTest {
 		}
 
 		@Override
-		public boolean exists() throws IOException {
+		public boolean exists() throws DataStoreException {
 			return content != null;
 		}
 
 		@Override
-		public boolean delete() throws IOException {
+		public boolean delete() throws DataStoreException {
 			if (content != null) {
 				content = null;
 				return true;
@@ -372,30 +373,30 @@ public class BlobTest {
 		}
 
 		@Override
-		public Instant lastModified() throws IOException {
+		public Instant lastModified() throws DataStoreException {
 			throw new UnsupportedOperationException();
 		}
 
 		@Override
-		public Reader openReader() throws IOException {
+		public Reader openReader() throws DataStoreException {
 			if (content != null) {
 				return new StringReader(toString());
 			}
 			
-			throw new IOException("Test blob does not exist");
+			throw new BlobNotFoundException(this);
 		}
 
 		@Override
-		public InputStream openInputStream() throws IOException {
+		public InputStream openInputStream() throws DataStoreException {
 			if (content != null) {
 				return new ByteArrayInputStream(content);
 			}
 			
-			throw new IOException("Test blob does not exist");
+			throw new BlobNotFoundException(this);
 		}
 
 		@Override
-		public TransactionalWriter openWriter() throws IOException {
+		public TransactionalWriter openWriter() throws DataStoreException {
 			return new MockTransactionalWriter() {
 
 				@Override
@@ -408,7 +409,7 @@ public class BlobTest {
 		}
 
 		@Override
-		public TransactionalOutputStream openOutputStream() throws IOException {
+		public TransactionalOutputStream openOutputStream() throws DataStoreException {
 			return new MockTransactionalOutputStream() {
 
 				@Override
