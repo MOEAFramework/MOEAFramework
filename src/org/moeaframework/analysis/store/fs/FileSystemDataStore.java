@@ -76,10 +76,10 @@ public class FileSystemDataStore implements DataStore {
 	 * Constructs a default file system data store at the specified directory.
 	 * 
 	 * @param root the root directory
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 * @throws ManifestValidationException if the existing manifest failed validation
 	 */
-	public FileSystemDataStore(File root) throws IOException {
+	public FileSystemDataStore(File root) {
 		this(root, new HierarchicalFileMap());
 	}
 	
@@ -88,10 +88,10 @@ public class FileSystemDataStore implements DataStore {
 	 * 
 	 * @param root the root directory
 	 * @param schema the schema defining the structure of the data store
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 * @throws ManifestValidationException if the existing manifest failed validation
 	 */
-	public FileSystemDataStore(File root, Schema schema) throws IOException {
+	public FileSystemDataStore(File root, Schema schema) {
 		this(root.toPath(), new HashFileMap(2), schema);
 	}
 	
@@ -100,10 +100,10 @@ public class FileSystemDataStore implements DataStore {
 	 * 
 	 * @param root the root directory
 	 * @param fileMap the file map that determines the layout of files
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 * @throws ManifestValidationException if the existing manifest failed validation
 	 */
-	public FileSystemDataStore(File root, FileMap fileMap) throws IOException {
+	public FileSystemDataStore(File root, FileMap fileMap) {
 		this(root.toPath(), fileMap, Schema.schemaless());
 	}
 
@@ -113,10 +113,10 @@ public class FileSystemDataStore implements DataStore {
 	 * @param root the root directory
 	 * @param fileMap the file map that determines the layout of files
 	 * @param schema the schema defining the structure of the data store
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 * @throws ManifestValidationException if the existing manifest failed validation
 	 */
-	public FileSystemDataStore(Path root, FileMap fileMap, Schema schema) throws IOException {
+	public FileSystemDataStore(Path root, FileMap fileMap, Schema schema) {
 		super();
 		this.root = root;
 		this.fileMap = fileMap;
@@ -169,7 +169,7 @@ public class FileSystemDataStore implements DataStore {
 						} catch (FileNotFoundException e) {
 							return null;
 						} catch (IOException e) {
-							throw new DataStoreException("Failed while loading", e);
+							throw new DataStoreException("Failed while loading " + referenceFile, e);
 						}
 					})
 					.filter(reference -> reference != null)
@@ -202,25 +202,29 @@ public class FileSystemDataStore implements DataStore {
 	/**
 	 * Writes the manifest file or validates the existing manifest file.
 	 * 
-	 * @throws IOException if an I/O error occurred
+	 * @throws DataStoreException if an error occurred accessing the data store
 	 * @throws ManifestValidationException if the existing manifest
 	 */
-	private void createOrValidateManifest() throws IOException, ManifestValidationException {
-		Path path = getRoot().resolve(MANIFEST_FILENAME);
-		Manifest expectedManifest = getManifest();
-		
-		if (Files.exists(path)) {
-			try (FileReader reader = new FileReader(path.toFile())) {
-				Manifest actualManifest = new Manifest();
-				actualManifest.load(reader);
-				actualManifest.validate(expectedManifest);
-			}
-		} else {
-			mkdirs(path.getParent());
+	private void createOrValidateManifest() throws DataStoreException {
+		try {
+			Path path = getRoot().resolve(MANIFEST_FILENAME);
+			Manifest expectedManifest = getManifest();
 			
-			try (FileWriter writer = new FileWriter(path.toFile())) {
-				expectedManifest.save(writer);
+			if (Files.exists(path)) {
+				try (FileReader reader = new FileReader(path.toFile())) {
+					Manifest actualManifest = new Manifest();
+					actualManifest.load(reader);
+					actualManifest.validate(expectedManifest);
+				}
+			} else {
+				mkdirs(path.getParent());
+				
+				try (FileWriter writer = new FileWriter(path.toFile())) {
+					expectedManifest.save(writer);
+				}
 			}
+		} catch (IOException e) {
+			throw new DataStoreException("Failed while creating or validating manifest", e);
 		}
 	}
 	

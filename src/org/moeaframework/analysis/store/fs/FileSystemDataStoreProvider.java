@@ -18,7 +18,6 @@
 package org.moeaframework.analysis.store.fs;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 import java.util.ServiceConfigurationError;
 
@@ -44,7 +43,7 @@ public class FileSystemDataStoreProvider extends DataStoreProvider {
 			try {
 				String path = toPath(uri);
 				return new FileSystemDataStore(new File(path));
-			} catch (IOException e) {
+			} catch (Exception e) {
 				throw new ServiceConfigurationError("Failed to create FileSystemDataStore", e);
 			}
 		}

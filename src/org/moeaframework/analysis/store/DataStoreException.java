@@ -23,8 +23,9 @@ import java.io.IOException;
 import org.moeaframework.core.FrameworkException;
 
 /**
- * An exception indicating a problem with a data store.  All exceptions thrown when accessing the contents of a data
- * store should extend from this type, unless a more specific type exists.
+ * An exception indicating a problem with a data store.  Generally, this should be used for exceptions emitted from the
+ * data store itself and for wrapping {@link IOException} as it typically represents an issue accessing the content in
+ * the data store.  However, other Java exceptions should be left unchanged.
  */
 public class DataStoreException extends FrameworkException {
 

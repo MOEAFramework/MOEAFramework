@@ -87,7 +87,7 @@ public class DataStoreExample {
 				System.out.println("done.");
 			});
 			
-			System.out.println("    Finished sample!");
+			System.out.println("    Finished!");
 		}
 	}
 
