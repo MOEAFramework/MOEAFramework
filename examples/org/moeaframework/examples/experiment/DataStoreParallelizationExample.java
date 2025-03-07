@@ -19,12 +19,12 @@ package org.moeaframework.examples.experiment;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.analysis.parameter.Enumeration;
 import org.moeaframework.analysis.parameter.Parameter;
 import org.moeaframework.analysis.parameter.ParameterSet;
-import org.moeaframework.analysis.sample.Sample;
 import org.moeaframework.analysis.sample.Samples;
 import org.moeaframework.analysis.store.Blob;
 import org.moeaframework.analysis.store.Container;
@@ -41,60 +41,47 @@ import org.moeaframework.util.Timer;
 import org.moeaframework.problem.Problem;
 
 /**
- * Demonstrates using a data store to save results.  The data store defines "containers" and "blobs", which for a file
- * system are equivalent to directories and files.  We map each unique algorithm configuration to a separate container,
- * storing the approximation set and indicator values.
+ * Parallelized version of DataStoreExample.
  */
-public class DataStoreExample {
-	
-	public static void main(String[] args) throws IOException {
+public class DataStoreParallelizationExample {
+
+	public static void main(String[] args) throws IOException, InterruptedException, ExecutionException {
 		Problem problem = new DTLZ2(2);
 		Indicators indicators = Indicators.standard(problem, NondominatedPopulation.load("./pf/DTLZ2.2D.pf"));
-		
+
 		Enumeration<Integer> populationSize = Parameter.named("populationSize").asInt().range(10, 100, 10);
 		Enumeration<Double> sbxRate = Parameter.named("sbx.rate").asDouble().range(0.0, 1.0, 0.1);
 		Enumeration<Long> seed = Parameter.named("seed").asLong().rangeExclusive(0, 10);
-		
+
 		ParameterSet parameters = new ParameterSet(populationSize, sbxRate, seed);
 		Samples samples = parameters.enumerate();
-		
+
 		DataStore dataStore = new FileSystemDataStore(new File("results"));
 		Timer timer = Timer.startNew();
-				
-		for (Sample sample : samples) {
+
+		samples.distributeAll(sample -> {			
 			Reference reference = Reference.of(sample);
 			Container container = dataStore.getContainer(reference);
 			
 			Blob resultBlob = container.getBlob("result");
 			Blob indicatorBlob = container.getBlob("indicators");
 			
-			System.out.println("Processing " + reference + "...");
-			
 			if (!resultBlob.exists()) {
-				System.out.print("    Running algorithm...");
-				
 				PRNG.setSeed(sample.getLong("seed"));
 				
 				NSGAII algorithm = new NSGAII(problem);
 				algorithm.applyConfiguration(sample);
 				algorithm.run(10000);
-				resultBlob.storePopulation(algorithm.getResult());
 				
-				System.out.println("done.");
+				resultBlob.storePopulation(algorithm.getResult());
 			}
 		
 			if (!indicatorBlob.exists()) {
-				System.out.print("    Evaluating indicators...");
-				
 				Population result = resultBlob.extractPopulation();
 				IndicatorValues values = indicators.apply(new NondominatedPopulation(result));
 				indicatorBlob.storeText(values);
-				
-				System.out.println("done.");
 			}
-			
-			System.out.println("    Finished!");
-		}
+		});
 		
 		timer.stop();
 		System.out.println("Finished in " + timer.getElapsedTime() + "s");

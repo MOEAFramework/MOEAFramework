@@ -35,11 +35,8 @@ public class FileSystemDataStoreTest {
 		File tempDirectory = TempFiles.createDirectory();
 		HierarchicalFileMap fileMap = new HierarchicalFileMap();
 		FileSystemDataStore dataStore = new FileSystemDataStore(tempDirectory, fileMap);
-		
-		TypedProperties properties1 = new TypedProperties();
-		properties1.setString("foo", "bar");
-		
-		Reference reference = Reference.of(properties1);
+
+		Reference reference = Reference.of(TypedProperties.of("foo", "bar"));
 		Container container = dataStore.getContainer(reference);
 		
 		Assert.assertFalse(container.exists());

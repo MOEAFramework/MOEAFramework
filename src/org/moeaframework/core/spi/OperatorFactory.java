@@ -143,7 +143,7 @@ public class OperatorFactory extends AbstractFactory<OperatorProvider> {
 	 * @return an instance of the variation operator
 	 * @throws ProviderNotFoundException if no provider for the algorithm is available
 	 */
-	public Variation getVariation(String name, TypedProperties properties, Problem problem) {
+	public synchronized Variation getVariation(String name, TypedProperties properties, Problem problem) {
 		if (name == null) {
 			name = properties.getString("operator", null);
 		}

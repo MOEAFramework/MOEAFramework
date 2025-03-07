@@ -29,12 +29,17 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.tuple.Pair;
 import org.moeaframework.analysis.parameter.Parameter;
 import org.moeaframework.analysis.parameter.ParameterSet;
 import org.moeaframework.analysis.stream.DataStream;
@@ -162,6 +167,82 @@ public class Samples implements Iterable<Sample>, Formattable<Sample>, DataStrea
 		
 		for (Sample sample : samples) {
 			results.add(sample, function.apply(sample));
+		}
+		
+		return results;
+	}
+	
+	/**
+	 * Evaluates each sample.
+	 * 
+	 * @param consumer the consumer used to evaluate each sample
+	 */
+	public void evaluateAll(Consumer<Sample> consumer) {
+		evaluateAll((sample) -> {
+			consumer.accept(sample);
+			return null;
+		});
+	}
+	
+	/**
+	 * Evaluates each sample in parallel, distributing across all available processors, and collecting the results in
+	 * a {@link SampledResults}.
+	 * 
+	 * @param <T> the return type of the function
+	 * @param function the function used to evaluate each sample
+	 * @return the results
+	 * @throws InterruptedException if the current thread was interrupted while waiting for evaluations to complete
+	 * @throws ExecutionException if the function threw an exception
+	 */
+	public <T> SampledResults<T> distributeAll(Function<Sample, T> function) throws InterruptedException,
+	ExecutionException {
+		ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+		
+		try {
+			return evaluateAll(function, executor);
+		} finally {
+			executor.shutdown();
+		}
+	}
+	
+	/**
+	 * Evaluates each sample in parallel, distributing across all available processors.
+	 * 
+	 * @param consumer the consumer used to evaluate each sample
+	 * @throws InterruptedException if the current thread was interrupted while waiting for evaluations to complete
+	 * @throws ExecutionException if the consumer threw an exception
+	 */
+	public void distributeAll(Consumer<Sample> consumer) throws InterruptedException, ExecutionException {
+		distributeAll((sample) -> {
+			consumer.accept(sample);
+			return null;
+		});
+	}
+	
+	/**
+	 * Evaluates each sample using the provided executor service, potentially distributing the evaluations in parallel.
+	 * As such, the function should not have any side-effects.  The caller is expected to manage the lifecycle of the
+	 * executor.
+	 * 
+	 * @param <T> the return type of the function
+	 * @param function the function used to evaluate each sample
+	 * @param executor the executor for distributing the evaluations
+	 * @return the results
+	 * @throws InterruptedException if the current thread was interrupted while waiting for evaluations to complete
+	 * @throws ExecutionException if the function threw an exception
+	 */
+	public <T> SampledResults<T> evaluateAll(Function<Sample, T> function, ExecutorService executor)
+			throws InterruptedException, ExecutionException {
+		SampledResults<T> results = new SampledResults<>(parameterSet);
+		List<Future<Pair<Sample, T>>> futures = new ArrayList<>();
+		
+		for (Sample sample : samples) {
+			futures.add(executor.submit(() -> Pair.of(sample, function.apply(sample))));
+		}
+		
+		for (Future<Pair<Sample, T>> future : futures) {
+			Pair<Sample, T> result = future.get();
+			results.add(result.getKey(), result.getValue());
 		}
 		
 		return results;
