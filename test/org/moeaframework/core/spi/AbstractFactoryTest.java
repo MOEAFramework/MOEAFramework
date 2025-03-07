@@ -19,6 +19,9 @@ package org.moeaframework.core.spi;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.junit.Ignore;
@@ -64,8 +67,7 @@ public abstract class AbstractFactoryTest<T, S extends AbstractFactory<T>> {
 		
 		try (LineReader lineReader = Resources.asLineReader(Settings.class, resource, ResourceOption.REQUIRED).skipComments()) {
 			for (String line : lineReader) {
-				System.out.println("Testing existence of provider " + line);
-				Assert.assertTrue(createFactory().hasProvider(line));
+				Assert.assertTrue("Provider " + line + " not found", createFactory().hasProvider(line));
 			}
 		}
 	}
@@ -85,8 +87,30 @@ public abstract class AbstractFactoryTest<T, S extends AbstractFactory<T>> {
 	}
 	
 	@Test
-	public void testGetInstanceHasDefault() throws Throwable {
+	public void testGetInstanceHasDefault() {
 		Assert.assertNotNull(createFactory());
 	}
 
+	@Test
+	public void testSignature() {
+		Class<S> type = getFactoryType();
+		
+		Method getInstance = MethodUtils.getAccessibleMethod(type, "getInstance");
+		Assert.assertEquals("getInstance must return " + type, type, getInstance.getReturnType());
+		Assert.assertTrue("getInstance must be public", Modifier.isPublic(getInstance.getModifiers()));
+		Assert.assertTrue("getInstance must be static", Modifier.isStatic(getInstance.getModifiers()));
+		Assert.assertTrue("getInstance must be synchronized", Modifier.isSynchronized(getInstance.getModifiers()));
+		
+		Method setInstance = MethodUtils.getAccessibleMethod(type, "setInstance", type);
+		Assert.assertTrue("setInstance must be public", Modifier.isPublic(setInstance.getModifiers()));
+		Assert.assertTrue("setInstance must be static", Modifier.isStatic(setInstance.getModifiers()));
+		Assert.assertTrue("setInstance must be synchronized", Modifier.isSynchronized(setInstance.getModifiers()));
+		
+		Assert.assertTrue("Factories must have at least one public, synchronized getter.  This is necessary to " +
+				"ensure access to the ServiceLoader is thread-safe.",
+				Stream.of(type.getMethods()).anyMatch(m ->
+					m.getName().startsWith("get") && Modifier.isPublic(m.getModifiers()) &&
+					!Modifier.isStatic(m.getModifiers()) && Modifier.isSynchronized(m.getModifiers())));
+	}
+	
 }
