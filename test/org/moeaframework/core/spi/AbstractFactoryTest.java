@@ -96,12 +96,14 @@ public abstract class AbstractFactoryTest<T, S extends AbstractFactory<T>> {
 		Class<S> type = getFactoryType();
 		
 		Method getInstance = MethodUtils.getAccessibleMethod(type, "getInstance");
+		Assert.assertNotNull("getInstance missing", getInstance);
 		Assert.assertEquals("getInstance must return " + type, type, getInstance.getReturnType());
 		Assert.assertTrue("getInstance must be public", Modifier.isPublic(getInstance.getModifiers()));
 		Assert.assertTrue("getInstance must be static", Modifier.isStatic(getInstance.getModifiers()));
 		Assert.assertTrue("getInstance must be synchronized", Modifier.isSynchronized(getInstance.getModifiers()));
 		
 		Method setInstance = MethodUtils.getAccessibleMethod(type, "setInstance", type);
+		Assert.assertNotNull("setInstance missing", getInstance);
 		Assert.assertTrue("setInstance must be public", Modifier.isPublic(setInstance.getModifiers()));
 		Assert.assertTrue("setInstance must be static", Modifier.isStatic(setInstance.getModifiers()));
 		Assert.assertTrue("setInstance must be synchronized", Modifier.isSynchronized(setInstance.getModifiers()));
@@ -109,8 +111,9 @@ public abstract class AbstractFactoryTest<T, S extends AbstractFactory<T>> {
 		Assert.assertTrue("Factories must have at least one public, synchronized getter.  This is necessary to " +
 				"ensure access to the ServiceLoader is thread-safe.",
 				Stream.of(type.getMethods()).anyMatch(m ->
-					m.getName().startsWith("get") && Modifier.isPublic(m.getModifiers()) &&
-					!Modifier.isStatic(m.getModifiers()) && Modifier.isSynchronized(m.getModifiers())));
+					m.getName().startsWith("get") && !m.getName().equals("getInstance") &&
+					Modifier.isPublic(m.getModifiers()) && !Modifier.isStatic(m.getModifiers()) &&
+					Modifier.isSynchronized(m.getModifiers())));
 	}
 	
 }
