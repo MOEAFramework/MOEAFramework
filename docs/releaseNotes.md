@@ -2,6 +2,16 @@
 
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
+## Version 5.1 (In Development)
+
+  * Fixes `ResultFileViewer` tool, which wasn't starting the viewer when invoking the CLI.
+  
+  * Adds `distributeAll` to `Samples` to evaluate each sample in parallel.
+  
+  * Redesigns the data store interfaces to avoid "ambiguous method" errors, simplify the available methods, and wrap
+    errors in `DataStoreException`.
+
+
 ## Version 5.0 (17 Jan 2025)
 
 Version 5.0 includes substantial changes over previous versions.  While we encourage users to upgrade to this new
