@@ -15,37 +15,34 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis.store.fs;
+package org.moeaframework.snippet;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import org.junit.Test;
-import org.moeaframework.Assert;
-import org.moeaframework.TempFiles;
+import org.moeaframework.analysis.store.Blob;
+import org.moeaframework.analysis.store.Container;
+import org.moeaframework.analysis.store.DataStore;
 import org.moeaframework.analysis.store.Reference;
-import org.moeaframework.analysis.store.schema.Schema;
+import org.moeaframework.analysis.store.fs.FileSystemDataStore;
 
-public class HashFileMapTest {
-	
+public class DataStoreSnippet {
+
 	@Test
-	public void testCaseSensitivity() throws IOException {
-		File tempDirectory = TempFiles.createDirectory();
-		Schema schema = Schema.schemaless();
-		HashFileMap fileMap = new HashFileMap(2);
+	public void snippet() {
+		// begin-example: datastore
+		DataStore dataStore = new FileSystemDataStore(new File("result"));
 		
-		Reference reference1 = Reference.of("foo", "bar");
-		Path blobPath1 = fileMap.mapBlob(schema, tempDirectory.toPath(), reference1, "baz");
+		Reference reference = Reference.of("case", "Test1");
+		Container container = dataStore.getContainer(reference);
 		
-		Files.createDirectories(blobPath1.getParent());
-		Files.createFile(blobPath1);
+		Blob blob = container.getBlob("hello");
+		blob.storeText("Hello world!");
 		
-		Reference reference2 = Reference.of("FOO", "BAR");
-		Path blobPath2 = fileMap.mapBlob(schema, tempDirectory.toPath(), reference2, "BAZ");
+		System.out.println(blob.extractText());
 		
-		Assert.assertEquals(blobPath1, blobPath2);
+		
+		// end-example: datastore
 	}
-
+	
 }

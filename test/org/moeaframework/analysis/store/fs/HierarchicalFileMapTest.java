@@ -17,7 +17,6 @@
  */
 package org.moeaframework.analysis.store.fs;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,98 +27,80 @@ import org.moeaframework.TempFiles;
 import org.moeaframework.analysis.store.Reference;
 import org.moeaframework.analysis.store.schema.Field;
 import org.moeaframework.analysis.store.schema.Schema;
-import org.moeaframework.core.TypedProperties;
 
 public class HierarchicalFileMapTest {
 	
 	@Test
 	public void testSchemaless() throws IOException {
-		File tempDirectory = TempFiles.createDirectory();
+		Path path = TempFiles.createDirectory().toPath();
+		
 		Schema schema = Schema.schemaless();
 		HierarchicalFileMap fileMap = new HierarchicalFileMap();
 		
-		TypedProperties properties1 = new TypedProperties();
-		properties1.setString("foo", "bar");
+		Reference reference1 = Reference.root();
 		
-		Reference reference1 = Reference.of(properties1);
-		Path containerPath1 = fileMap.mapContainer(schema, tempDirectory.toPath(), reference1);
-		Assert.assertTrue(containerPath1.endsWith(Path.of("foo/bar")));
-		Assert.assertTrue(containerPath1.startsWith(tempDirectory.toPath()));
+		Assert.assertEquals(path, fileMap.mapContainer(schema, path, reference1));
+		Assert.assertEquals(path.resolve("baz"), fileMap.mapBlob(schema, path, reference1, "baz"));
 		
-		Path blobPath1 = fileMap.mapBlob(schema, tempDirectory.toPath(), reference1, "baz");
-		Assert.assertTrue(blobPath1.endsWith(Path.of("baz")));
-		Assert.assertTrue(blobPath1.startsWith(containerPath1));
+		Reference reference2 = Reference.of("foo", "bar");
 		
-		Files.createDirectories(containerPath1);
-		Files.writeString(blobPath1, "foo");
+		Assert.assertEquals(path.resolve("foo/bar"), fileMap.mapContainer(schema, path, reference2));
+		Assert.assertEquals(path.resolve("foo/bar/baz"), fileMap.mapBlob(schema, path, reference2, "baz"));
 		
-		TypedProperties properties2 = new TypedProperties();
-		properties2.setString("aaa", "aaa");
-		properties2.setString("foo", "bar");
+		Files.createDirectories(path.resolve("foo/bar"));
+		Files.writeString(path.resolve("foo/bar/baz"), "foo");
 		
-		Reference reference2 = Reference.of(properties2);
-		Path containerPath2 = fileMap.mapContainer(schema, tempDirectory.toPath(), reference2);
-		Assert.assertTrue(containerPath2.endsWith(Path.of("aaa/aaa")));
-		Assert.assertTrue(containerPath2.startsWith(containerPath1));
+		Reference reference3 = reference2.with("aaa", "bbb");
 		
-		Path blobPath2 = fileMap.mapBlob(schema, tempDirectory.toPath(), reference2, "baz");
-		Assert.assertTrue(blobPath2.endsWith(Path.of("baz")));
-		Assert.assertTrue(blobPath2.startsWith(containerPath2));
+		Assert.assertEquals(path.resolve("foo/bar/aaa/bbb"), fileMap.mapContainer(schema, path, reference3));
+		Assert.assertEquals(path.resolve("foo/bar/aaa/bbb/baz"), fileMap.mapBlob(schema, path, reference3, "baz"));
 	}
 	
 	@Test
 	public void testSchema() throws IOException {
-		File tempDirectory = TempFiles.createDirectory();
-		HierarchicalFileMap fileMap = new HierarchicalFileMap();
+		Path path = TempFiles.createDirectory().toPath();
 		
 		Schema schema = Schema.of(Field.named("foo").asString());
+		HierarchicalFileMap fileMap = new HierarchicalFileMap();
 		
-		TypedProperties properties1 = new TypedProperties();
-		properties1.setString("foo", "bar");
+		Reference reference1 = Reference.root();
 		
-		Reference reference1 = Reference.of(properties1);
-		Path containerPath1 = fileMap.mapContainer(schema, tempDirectory.toPath(), reference1);
-		Assert.assertTrue(containerPath1.endsWith(Path.of("foo/bar")));
-		Assert.assertTrue(containerPath1.startsWith(tempDirectory.toPath()));
+		Assert.assertEquals(path, fileMap.mapContainer(schema, path, reference1));
+		Assert.assertEquals(path.resolve("baz"), fileMap.mapBlob(schema, path, reference1, "baz"));
 		
-		Path blobPath1 = fileMap.mapBlob(schema, tempDirectory.toPath(), reference1, "baz");
-		Assert.assertTrue(blobPath1.endsWith(Path.of("baz")));
-		Assert.assertTrue(blobPath1.startsWith(containerPath1));
+		Reference reference2 = Reference.of("foo", "bar");
 		
-		Files.createDirectories(containerPath1);
-		Files.writeString(blobPath1, "foo");
+		Assert.assertEquals(path.resolve("foo/bar"), fileMap.mapContainer(schema, path, reference2));
+		Assert.assertEquals(path.resolve("foo/bar/baz"), fileMap.mapBlob(schema, path, reference2, "baz"));
 		
-		TypedProperties properties2 = new TypedProperties();
-		properties2.setString("aaa", "aaa");
-		properties2.setString("foo", "bar");
+		Files.createDirectories(path.resolve("foo/bar"));
+		Files.writeString(path.resolve("foo/bar/baz"), "foo");
 		
-		Reference reference2 = Reference.of(properties2);
-		Assert.assertThrows(IllegalArgumentException.class, () -> fileMap.mapContainer(schema, tempDirectory.toPath(), reference2));
-		Assert.assertThrows(IllegalArgumentException.class, () -> fileMap.mapBlob(schema, tempDirectory.toPath(), reference2, "baz"));
+		Reference reference3 = reference2.with("aaa", "bbb");
+		
+		Assert.assertThrows(IllegalArgumentException.class, () -> fileMap.mapContainer(schema, path, reference3));
+		Assert.assertThrows(IllegalArgumentException.class, () -> fileMap.mapBlob(schema, path, reference3, "baz"));
 	}
 	
 	@Test
 	public void testCaseSensitivity() throws IOException {
-		File tempDirectory = TempFiles.createDirectory();
+		Path path = TempFiles.createDirectory().toPath();
+		
 		Schema schema = Schema.schemaless();
 		HierarchicalFileMap fileMap = new HierarchicalFileMap();
 		
-		TypedProperties properties1 = new TypedProperties();
-		properties1.setString("foo", "bar");
+		Reference reference1 = Reference.of("foo", "bar");
 		
-		Reference reference1 = Reference.of(properties1);
-		Path containerPath1 = fileMap.mapContainer(schema, tempDirectory.toPath(), reference1);
-		Path blobPath1 = fileMap.mapBlob(schema, tempDirectory.toPath(), reference1, "baz");
+		Path containerPath1 = fileMap.mapContainer(schema, path, reference1);
+		Path blobPath1 = fileMap.mapBlob(schema, path, reference1, "baz");
 		
 		Files.createDirectories(containerPath1);
 		Files.createFile(blobPath1);
 		
-		TypedProperties properties2 = new TypedProperties();
-		properties2.setString("FOO", "BAR");
+		Reference reference2 = Reference.of("FOO", "BAR");
 		
-		Reference reference2 = Reference.of(properties2);
-		Path containerPath2 = fileMap.mapContainer(schema, tempDirectory.toPath(), reference2);
-		Path blobPath2 = fileMap.mapBlob(schema, tempDirectory.toPath(), reference2, "BAZ");
+		Path containerPath2 = fileMap.mapContainer(schema, path, reference2);
+		Path blobPath2 = fileMap.mapBlob(schema, path, reference2, "BAZ");
 		
 		Assert.assertEquals(containerPath1, containerPath2);
 		Assert.assertEquals(blobPath1, blobPath2);

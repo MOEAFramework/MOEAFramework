@@ -47,15 +47,15 @@ public class Manifest extends TypedProperties {
 		
 		for (String key : keys) {
 			if (!contains(key)) {
-				throw new ManifestValidationException("Manifest missing '" + key + "'");
+				throw new ManifestValidationException("Manifest missing key '" + key + "'");
 			}
 			
 			if (!expected.contains(key)) {
-				throw new ManifestValidationException("Manifest missing '" + key + "'");
+				throw new ManifestValidationException("Manifest contains unexpected key '" + key + "'");
 			}
 			
 			if (!getString(key).equals(expected.getString(key))) {
-				throw new ManifestValidationException("Manifests contain different values for '" + key +
+				throw new ManifestValidationException("Manifests contain different values for key '" + key +
 						"', expected '" + expected.getString(key) + "' but was '" + getString(key) + "'");
 			}
 		}

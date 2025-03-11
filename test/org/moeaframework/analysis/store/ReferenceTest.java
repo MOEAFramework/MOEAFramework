@@ -21,6 +21,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.core.PropertyNotFoundException;
 import org.moeaframework.core.TypedProperties;
 
 public class ReferenceTest {
@@ -53,11 +54,13 @@ public class ReferenceTest {
 		Assert.assertContains(reference.fields(), "INT");
 		Assert.assertEquals("foo", reference.get("STRING"));
 		Assert.assertEquals("5", reference.get("INT"));
+		
+		Assert.assertThrows(PropertyNotFoundException.class, () -> reference.get("missing"));
 	}
 	
 	@Test
-	public void testExtend() {
-		Reference extendedReference = reference.extend("newKey", "newVal");
+	public void testWith() {
+		Reference extendedReference = reference.with("newKey", "newVal");
 		
 		Assert.assertSize(3, extendedReference.fields());
 		Assert.assertContains(extendedReference.fields(), "string");
@@ -73,11 +76,13 @@ public class ReferenceTest {
 		Assert.assertEquals("foo", reference.get("STRING"));
 		Assert.assertEquals("5", reference.get("INT"));
 		Assert.assertEquals("newVal", extendedReference.get("NEWKEY"));
+		
+		Assert.assertThrows(PropertyNotFoundException.class, () -> reference.get("missing"));
 	}
 	
 	@Test
 	public void testOverwrite() {
-		Reference overwriteReference = reference.extend("string", "bar");
+		Reference overwriteReference = reference.with("string", "bar");
 		
 		Assert.assertSize(2, overwriteReference.fields());
 		Assert.assertContains(overwriteReference.fields(), "string");
@@ -89,6 +94,32 @@ public class ReferenceTest {
 		Assert.assertContains(overwriteReference.fields(), "INT");
 		Assert.assertEquals("bar", overwriteReference.get("STRING"));
 		Assert.assertEquals("5", overwriteReference.get("INT"));
+	}
+	
+	@Test
+	public void testRoot() {
+		Reference root = Reference.root();
+		
+		Assert.assertNotNull(root);
+		Assert.assertSize(0, root.fields());
+		Assert.assertTrue(root.isRoot());
+		
+		Assert.assertThrows(PropertyNotFoundException.class, () -> root.get("missing"));
+	}
+	
+	@Test
+	public void testEqualsAndHashCode() {
+		Reference reference1 = Reference.of("string", "foo");
+		Reference reference2 = Reference.of("STRING", "FOO");
+		Reference reference3 = Reference.of("string", "bar");
+		
+		Assert.assertNotEquals(reference1, null);
+		Assert.assertEquals(reference1, reference1);
+		Assert.assertEquals(reference1, reference2);
+		Assert.assertNotEquals(reference1, reference3);
+		
+		Assert.assertEquals(reference1.hashCode(), reference2.hashCode());
+		Assert.assertNotEquals(reference1.hashCode(), reference3.hashCode());
 	}
 
 }

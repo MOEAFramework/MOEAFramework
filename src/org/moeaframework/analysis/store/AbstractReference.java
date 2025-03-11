@@ -17,7 +17,10 @@
  */
 package org.moeaframework.analysis.store;
 
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import org.moeaframework.analysis.store.schema.Field;
 
 /**
  * Abstract implementation of a reference.
@@ -27,10 +30,39 @@ abstract class AbstractReference implements Reference {
 	public AbstractReference() {
 		super();
 	}
+	
+	@Override
+	public int hashCode() {
+		return toNormalizedMap(this).hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		
+		if (obj == this) {
+			return true;
+		}
+		
+		if (obj instanceof Reference) {
+			Map<String, String> lhs = toNormalizedMap(this);
+			Map<String, String> rhs = toNormalizedMap(((Reference)obj));
+			return lhs.equals(rhs);
+		}
+		
+		return false;
+	}
 
 	@Override
 	public String toString() {
 		return "Reference" + fields().stream().map(x -> x + "=" + get(x)).collect(Collectors.joining(",", "(", ")"));
+	}
+	
+	private static Map<String, String> toNormalizedMap(Reference reference) {
+		return reference.fields().stream().collect(Collectors.toMap(x -> Field.normalize(x),
+				x -> Field.normalize(reference.get(x))));
 	}
 	
 }

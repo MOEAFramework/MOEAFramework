@@ -15,33 +15,19 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis.store;
+package org.moeaframework.analysis.store.schema;
 
-import java.util.Collections;
-import java.util.Set;
+import java.io.IOException;
 
-import org.moeaframework.core.TypedProperties;
+import org.junit.Test;
+import org.moeaframework.Assert;
 
-/**
- * Reference constructed from the keys and values defined by a {@link TypedProperties} object.
- */
-class TypedPropertiesReference extends AbstractReference {
+public class FieldTest {
 	
-	private final TypedProperties properties;
-	
-	public TypedPropertiesReference(TypedProperties properties) {
-		super();
-		this.properties = properties.copy();
+	@Test
+	public void testNormalize() throws IOException {
+		Assert.assertEquals(Field.normalize("abcdefghijklmnopqrstuvwxyz"), Field.normalize("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+		Assert.assertEquals(Field.normalize("abcçdefgğhıijklmnoöprsştuüvyz"), Field.normalize("ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZ"));
 	}
-	
-	@Override
-	public Set<String> fields() {
-		return Collections.unmodifiableSet(properties.keySet());
-	}
-	
-	@Override
-	public String get(String field) {
-		return properties.getString(field);
-	}
-	
+
 }

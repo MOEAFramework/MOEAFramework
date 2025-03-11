@@ -26,6 +26,10 @@ import java.util.List;
  * is referenced by a {@link Reference}, and each blob is referenced by a name.  A data store is itself an abstract
  * representation of the underlying storage, as the content could be stored on a local file system, cloud storage, or
  * a database.
+ * <p>
+ * In addition to the container associated with each reference, there also exists a top-level or "root" container that
+ * can store data applicable to the entire data store.  This is useful, for example, to store the parameter samplings
+ * used to generate the data.
  */
 public interface DataStore {
 	
@@ -39,12 +43,22 @@ public interface DataStore {
 	public Container getContainer(Reference reference);
 	
 	/**
-	 * Returns a list of all containers in this data store.
+	 * Returns a list of all containers, excluding the root container, in this data store.
 	 * 
 	 * @return a list of containers
 	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
 	public List<Container> listContainers() throws DataStoreException;
+	
+	/**
+	 * Returns the root container for this data store.  This container is useful for storing general information or
+	 * data about the experiment or data store.
+	 * 
+	 * @return the root container
+	 */
+	public default Container getRootContainer() {
+		return getContainer(Reference.root());
+	}
 
 	/**
 	 * Returns the container for the given {@link Referenceable} object.

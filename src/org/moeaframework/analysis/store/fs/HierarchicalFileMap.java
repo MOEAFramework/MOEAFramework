@@ -54,6 +54,11 @@ public class HierarchicalFileMap extends FileMap {
 	@Override
 	public Path mapContainer(Schema schema, Path root, Reference reference) throws IOException {
 		Path path = root;
+		
+		if (reference.isRoot()) {
+			return path;
+		}
+		
 		List<Pair<Field<?>, String>> resolvedPath = schema.resolve(reference);
 		Map<Path, Path> remainingPaths = new TreeMap<>(CASE_INSENSITIVE_ORDER);
 

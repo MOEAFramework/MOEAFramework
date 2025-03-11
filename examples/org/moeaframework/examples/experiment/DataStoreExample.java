@@ -62,7 +62,7 @@ public class DataStoreExample {
 		Timer timer = Timer.startNew();
 				
 		for (Sample sample : samples) {
-			Reference reference = Reference.of(sample);
+			Reference reference = sample.getReference();
 			Container container = dataStore.getContainer(reference);
 			
 			Blob resultBlob = container.getBlob("result");

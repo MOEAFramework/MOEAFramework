@@ -43,7 +43,7 @@ public class ConcurrencyTest {
 
 		for (int i = 0; i < TRIALS; i++) {
 			samples.distributeAll(sample -> {			
-				Reference reference = Reference.of(sample);
+				Reference reference = sample.getReference();
 				Container container = dataStore.getContainer(reference);
 				Blob blob = container.getBlob("result");
 				

@@ -19,30 +19,67 @@ package org.moeaframework.analysis.store.fs;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.analysis.store.Blob;
 import org.moeaframework.analysis.store.Container;
 import org.moeaframework.analysis.store.Reference;
-import org.moeaframework.core.TypedProperties;
 
 public class FileSystemDataStoreTest {
 	
-	@Test
-	public void test() throws IOException {
+	private FileSystemDataStore dataStore;
+	
+	@Before
+	public void setUp() throws IOException {
 		File tempDirectory = TempFiles.createDirectory();
 		HierarchicalFileMap fileMap = new HierarchicalFileMap();
-		FileSystemDataStore dataStore = new FileSystemDataStore(tempDirectory, fileMap);
-
-		Reference reference = Reference.of(TypedProperties.of("foo", "bar"));
+		dataStore = new FileSystemDataStore(tempDirectory, fileMap);
+	}
+	
+	@After
+	public void tearDown() {
+		dataStore = null;
+	}
+	
+	@Test
+	public void test() {
+		Reference reference = Reference.of("foo", "bar");
 		Container container = dataStore.getContainer(reference);
 		
+		Assert.assertNotNull(container);
 		Assert.assertFalse(container.exists());
 		
 		Blob blob = container.getBlob("baz");
 		
+		Assert.assertNotNull(blob);
+		Assert.assertFalse(blob.exists());
+		
+		blob.storeText("foo");
+		
+		Assert.assertTrue(container.exists());
+		Assert.assertTrue(blob.exists());
+		
+		List<Container> containers = dataStore.listContainers();
+		
+		Assert.assertSize(1, containers);
+		Assert.assertEquals("bar", containers.get(0).getReference().get("foo"));
+	}
+	
+	@Test
+	public void testRootContainer() {
+		Container container = dataStore.getRootContainer();
+		
+		Assert.assertNotNull(container);
+		Assert.assertTrue(container.exists());
+		
+		Blob blob = container.getBlob("baz");
+		
+		Assert.assertNotNull(blob);
 		Assert.assertFalse(blob.exists());
 		
 		blob.storeText("foo");

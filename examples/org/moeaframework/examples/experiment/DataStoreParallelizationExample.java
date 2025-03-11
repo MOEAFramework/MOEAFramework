@@ -60,7 +60,7 @@ public class DataStoreParallelizationExample {
 		Timer timer = Timer.startNew();
 
 		samples.distributeAll(sample -> {			
-			Reference reference = Reference.of(sample);
+			Reference reference = sample.getReference();
 			Container container = dataStore.getContainer(reference);
 			
 			Blob resultBlob = container.getBlob("result");

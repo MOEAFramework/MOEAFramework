@@ -44,7 +44,11 @@ public class HashFileMap extends FileMap {
 	
 	@Override
 	public Path mapContainer(Schema schema, Path root, Reference reference) throws IOException {
-		return map(root, Hash.of(schema, reference));
+		if (reference.isRoot()) {
+			return root;
+		} else {
+			return map(root, Hash.of(schema, reference));
+		}
 	}
 	
 	private Path map(Path root, Hash hash) {

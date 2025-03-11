@@ -134,15 +134,6 @@ public class FileSystemDataStore implements DataStore {
 	public Schema getSchema() {
 		return schema;
 	}
-	
-	/**
-	 * Returns the root directory for this data store.
-	 * 
-	 * @return the root directory
-	 */
-	public Path getRoot() {
-		return root;
-	}
 
 	@Override
 	public Container getContainer(Reference key) {
@@ -207,7 +198,7 @@ public class FileSystemDataStore implements DataStore {
 	 */
 	private void createOrValidateManifest() throws DataStoreException {
 		try {
-			Path path = getRoot().resolve(MANIFEST_FILENAME);
+			Path path = root.resolve(MANIFEST_FILENAME);
 			Manifest expectedManifest = getManifest();
 			
 			if (Files.exists(path)) {
@@ -263,7 +254,7 @@ public class FileSystemDataStore implements DataStore {
 		@Override
 		public void create() throws DataStoreException {
 			try {
-				Path container = fileMap.mapContainer(getSchema(), getRoot(), reference);
+				Path container = fileMap.mapContainer(getSchema(), root, reference);
 				mkdirs(container);
 				
 				Path dest = container.resolve(REFERENCE_FILENAME);
@@ -290,7 +281,7 @@ public class FileSystemDataStore implements DataStore {
 		@Override
 		public boolean exists() throws DataStoreException {
 			try {
-				return Files.exists(fileMap.mapContainer(getSchema(), getRoot(), reference));
+				return Files.exists(fileMap.mapContainer(getSchema(), root, reference));
 			} catch (IOException e) {
 				throw DataStoreException.wrap(e, this);
 			}
@@ -299,7 +290,7 @@ public class FileSystemDataStore implements DataStore {
 		@Override
 		public List<Blob> listBlobs() throws DataStoreException {
 			try {
-				Path container = fileMap.mapContainer(getSchema(), getRoot(), reference);
+				Path container = fileMap.mapContainer(getSchema(), root, reference);
 				
 				if (!Files.exists(container)) {
 					return List.of();
@@ -345,7 +336,7 @@ public class FileSystemDataStore implements DataStore {
 		@Override
 		public boolean exists() throws DataStoreException {
 			try {
-				return Files.exists(fileMap.mapBlob(getSchema(), getRoot(), reference, name));
+				return Files.exists(fileMap.mapBlob(getSchema(), root, reference, name));
 			} catch (IOException e) {
 				throw DataStoreException.wrap(e, this);
 			}
@@ -354,7 +345,7 @@ public class FileSystemDataStore implements DataStore {
 		@Override
 		public boolean delete() throws DataStoreException {
 			try {
-				return Files.deleteIfExists(fileMap.mapBlob(getSchema(), getRoot(), reference, name));
+				return Files.deleteIfExists(fileMap.mapBlob(getSchema(), root, reference, name));
 			} catch (IOException e) {
 				throw DataStoreException.wrap(e, this);
 			}
@@ -363,7 +354,7 @@ public class FileSystemDataStore implements DataStore {
 		@Override
 		public Instant lastModified() throws DataStoreException {
 			try {
-				return Files.getLastModifiedTime(fileMap.mapBlob(getSchema(), getRoot(), reference, name)).toInstant();
+				return Files.getLastModifiedTime(fileMap.mapBlob(getSchema(), root, reference, name)).toInstant();
 			} catch (IOException e) {
 				throw DataStoreException.wrap(e, this);
 			}
@@ -372,7 +363,7 @@ public class FileSystemDataStore implements DataStore {
 		@Override
 		public Reader openReader() throws DataStoreException {
 			try {
-				return new FileReader(fileMap.mapBlob(getSchema(), getRoot(), reference, name).toFile());
+				return new FileReader(fileMap.mapBlob(getSchema(), root, reference, name).toFile());
 			} catch (IOException e) {
 				throw DataStoreException.wrap(e, this);
 			}
@@ -381,7 +372,7 @@ public class FileSystemDataStore implements DataStore {
 		@Override
 		public InputStream openInputStream() throws DataStoreException {
 			try {
-				return new FileInputStream(fileMap.mapBlob(getSchema(), getRoot(), reference, name).toFile());
+				return new FileInputStream(fileMap.mapBlob(getSchema(), root, reference, name).toFile());
 			} catch (IOException e) {
 				throw DataStoreException.wrap(e, this);
 			}
@@ -392,7 +383,7 @@ public class FileSystemDataStore implements DataStore {
 			try {
 				getContainer().create();
 				
-				Path dest = fileMap.mapBlob(getSchema(), getRoot(), reference, name);
+				Path dest = fileMap.mapBlob(getSchema(), root, reference, name);
 				Path temp = Files.createTempFile("datastore", null);
 				return new TransactionalFileWriter(temp.toFile(), dest.toFile());
 			} catch (IOException e) {
@@ -405,7 +396,7 @@ public class FileSystemDataStore implements DataStore {
 			try {
 				getContainer().create();
 				
-				Path dest = fileMap.mapBlob(getSchema(), getRoot(), reference, name);
+				Path dest = fileMap.mapBlob(getSchema(), root, reference, name);
 				Path temp = Files.createTempFile("datastore", null);
 				return new TransactionalFileOutputStream(temp.toFile(), dest.toFile());
 			} catch (IOException e) {

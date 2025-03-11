@@ -34,24 +34,24 @@ public class SchemaTest {
 		Assert.assertTrue(schema.isSchemaless());
 		Assert.assertSize(0, schema.getFields());
 		
-		TypedProperties properties = new TypedProperties();
+		Reference reference = Reference.root();
 		
 		// Empty
-		List<Pair<Field<?>, String>> resolvedFields = schema.resolve(Reference.of(properties));
+		List<Pair<Field<?>, String>> resolvedFields = schema.resolve(reference);
 		Assert.assertSize(0, resolvedFields);
 		
 		// Single field
-		properties.setString("foo", "bar");
+		reference = reference.with("foo", "bar");
 		
-		resolvedFields = schema.resolve(Reference.of(properties));
+		resolvedFields = schema.resolve(reference);
 		Assert.assertSize(1, resolvedFields);
 		Assert.assertEquals("foo", resolvedFields.get(0).getKey().getName());
 		Assert.assertEquals("bar", resolvedFields.get(0).getValue());
 		
 		// Multiple fields
-		properties.setString("aaa", "bbb");
+		reference = reference.with("aaa", "bbb");
 		
-		resolvedFields = schema.resolve(Reference.of(properties));
+		resolvedFields = schema.resolve(reference);
 		Assert.assertSize(2, resolvedFields);
 		Assert.assertEquals("aaa", resolvedFields.get(0).getKey().getName());
 		Assert.assertEquals("bbb", resolvedFields.get(0).getValue());
@@ -65,7 +65,7 @@ public class SchemaTest {
 		Assert.assertFalse(schema.isSchemaless());
 		Assert.assertSize(1, schema.getFields());
 
-		List<Pair<Field<?>, String>> resolvedFields = schema.resolve(Reference.of(TypedProperties.of("foo", "bar")));
+		List<Pair<Field<?>, String>> resolvedFields = schema.resolve(Reference.of("foo", "bar"));
 		Assert.assertSize(1, resolvedFields);
 		Assert.assertEquals("foo", resolvedFields.get(0).getKey().getName());
 		Assert.assertEquals("bar", resolvedFields.get(0).getValue());
@@ -80,7 +80,7 @@ public class SchemaTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testSchemaExtraField() throws IOException {
 		Schema schema = Schema.of(Field.named("foo").asString());
-		schema.resolve(Reference.of(TypedProperties.of("aaa", "bbb")));
+		schema.resolve(Reference.of("aaa", "bbb"));
 	}
 
 }

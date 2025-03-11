@@ -18,8 +18,6 @@
 package org.moeaframework.analysis.store;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
@@ -47,7 +45,6 @@ public class DataStoreFactoryTest extends AbstractFactoryTest<DataStoreProvider,
 		
 		Assert.assertNotNull(dataStore);
 		Assert.assertInstanceOf(FileSystemDataStore.class, dataStore);
-		Assert.assertTrue(Files.isSameFile(Path.of("./results"), ((FileSystemDataStore)dataStore).getRoot()));
 	}
 	
 	@Test(expected = ProviderNotFoundException.class)

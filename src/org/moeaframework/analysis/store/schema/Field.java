@@ -50,15 +50,15 @@ public class Field<T extends Comparable<? super T>> implements Comparable<Field<
 	}
 	
 	/**
-	 * Produces a normalized version of that name that allows for case-insensitive operations.  This is based on the
+	 * Produces a normalized version of a string that allows for case-insensitive operations.  This is based on the
 	 * implementation of Apache Commons CaseInsensitiveMap.
 	 * 
-	 * @param name the original field name
-	 * @return the normalized field name
+	 * @param str the original string
+	 * @return the normalized string
 	 * @see <a href="https://issues.apache.org/jira/browse/COLLECTIONS-294">COLLECTIONS-294</a>
 	 */
-	private final String normalize(String name) {
-		final char[] chars = name.toCharArray();
+	public static final String normalize(String str) {
+		final char[] chars = str.toCharArray();
 		
 		for (int i = chars.length - 1; i >= 0; i--) {
 			chars[i] = Character.toLowerCase(Character.toUpperCase(chars[i]));
