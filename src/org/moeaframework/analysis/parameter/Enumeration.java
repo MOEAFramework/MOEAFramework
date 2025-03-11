@@ -91,8 +91,7 @@ public class Enumeration<T> extends AbstractParameter<T> implements EnumeratedPa
 		
 		for (Sample sample : samples) {
 			for (T value : values) {
-				Sample newSample = new Sample();
-				newSample.addAll(sample);
+				Sample newSample = sample.copy();
 				assignValue(newSample, value);
 				result.add(newSample);
 			}

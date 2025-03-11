@@ -59,7 +59,7 @@ import org.moeaframework.util.validate.Validate;
  * <p>
  * Keys are case-insensitive.
  */
-public class TypedProperties implements Formattable<Entry<String, String>> {
+public class TypedProperties implements Formattable<Entry<String, String>>, Copyable<TypedProperties> {
 	
 	private static final Tokenizer PROEPRTY_TOKENIZER;
 	
@@ -1127,7 +1127,8 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	}
 	
 	/**
-	 * Adds all properties from the specified properties object.
+	 * Adds all properties from the specified {@link Properties} object.  Use caution as the inserted values are
+	 * represented as strings and might not be formatted properly for the given types.
 	 * 
 	 * @param properties the properties
 	 */
@@ -1188,6 +1189,13 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 */
 	public boolean isEmpty() {
 		return properties.isEmpty();
+	}
+	
+	@Override
+	public TypedProperties copy() {
+		TypedProperties copy = new TypedProperties();
+		copy.addAll(this);
+		return copy;
 	}
 	
 	@Override
@@ -1361,6 +1369,19 @@ public class TypedProperties implements Formattable<Entry<String, String>> {
 	 */
 	public static TypedProperties of() {
 		return new TypedProperties();
+	}
+	
+	/**
+	 * Convenience method to construct a typed properties instance containing the same data as a {@link Properties}
+	 * object.
+	 * <p>
+	 * The returned instance is mutable and can be modified by the caller.
+	 * 
+	 * @param properties the properties
+	 * @return the typed properties instance
+	 */
+	public static TypedProperties of(Properties properties) {
+		return new TypedProperties(properties);
 	}
 	
 	/**

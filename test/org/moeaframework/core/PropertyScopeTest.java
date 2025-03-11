@@ -38,9 +38,7 @@ public class PropertyScopeTest {
 	}
 	
 	private TypedProperties createTestProperties() {
-		TypedProperties properties = new TypedProperties();
-		properties.addAll(original);
-		return properties;
+		return original.copy();
 	}
 	
 	private void assertOriginalProperties(TypedProperties properties) {

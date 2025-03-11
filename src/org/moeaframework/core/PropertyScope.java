@@ -51,9 +51,7 @@ public class PropertyScope implements AutoCloseable {
 	public PropertyScope(TypedProperties properties) {
 		super();
 		this.properties = properties;
-		
-		originalValues = new TypedProperties();
-		originalValues.addAll(properties);
+		this.originalValues = properties.copy();
 	}
 	
 	/**

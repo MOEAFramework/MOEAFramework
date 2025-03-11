@@ -63,8 +63,7 @@ public class HashTest {
 		properties1.setDouble("double", 2.0);
 		properties1.setString("str", "hello");
 		
-		TypedProperties properties2 = new TypedProperties();
-		properties2.addAll(properties1);
+		TypedProperties properties2 = properties1.copy();
 		
 		TypedProperties properties3 = new TypedProperties();
 		properties3.setInt("int", 5);

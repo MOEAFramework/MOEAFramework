@@ -408,10 +408,26 @@ public class TypedPropertiesTest {
 	}
 	
 	@Test
-	public void testEquals() {
+	public void testCopy() {
+		properties.setString("foo", "bar");
+		
+		TypedProperties copy = properties.copy();
+		
+		Assert.assertNotNull(copy);
+		Assert.assertNotSame(properties, copy);
+		Assert.assertEquals(properties, copy);
+		
+		copy.setString("foo", "baz");
+		Assert.assertNotEquals(properties, copy);
+		Assert.assertEquals("bar", properties.getString("foo"));
+	}
+	
+	@Test
+	public void testEqualsAndHashCode() {
 		TypedProperties clone = new TypedProperties();
 		clone.addAll(properties);
 		
+		Assert.assertNotEquals(clone, null);
 		Assert.assertEquals(clone, properties);
 		Assert.assertEquals(clone.hashCode(), properties.hashCode());
 		

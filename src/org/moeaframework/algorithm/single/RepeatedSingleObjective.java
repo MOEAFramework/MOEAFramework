@@ -68,8 +68,7 @@ public class RepeatedSingleObjective extends AbstractAlgorithm {
 	 */
 	public RepeatedSingleObjective(Problem problem, int instances, String algorithmName, TypedProperties properties) {
 		this(problem, instances, (p, w) -> {
-			TypedProperties localProperties = new TypedProperties();
-			localProperties.addAll(properties);
+			TypedProperties localProperties = properties.copy();
 			localProperties.setDoubleArray("weights", w);
 			
 			return AlgorithmFactory.getInstance().getAlgorithm(algorithmName, localProperties, p);

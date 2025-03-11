@@ -37,11 +37,7 @@ public class Sample extends TypedProperties implements Referenceable {
 		super(TypedProperties.DEFAULT_SEPARATOR, true);
 	}
 
-	/**
-	 * Creates a copy of this parameter.
-	 * 
-	 * @return the copy
-	 */
+	@Override
 	public Sample copy() {
 		Sample copy = new Sample();
 		copy.addAll(this);
