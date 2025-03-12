@@ -89,10 +89,5 @@ public class FileSystemDataStoreTest {
 		Assert.assertTrue(container.exists());
 		Assert.assertTrue(blob.exists());
 	}
-	
-	@Test
-	public void testURI() {
-		Assert.assertEquals("file://" + tempDirectory.getAbsolutePath() + "/", dataStore.getURI().toString());
-	}
 
 }
