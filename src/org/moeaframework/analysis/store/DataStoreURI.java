@@ -79,6 +79,9 @@ public class DataStoreURI implements Displayable {
 	public Path getPath() {
 		if (isFileScheme(uri) && uri.getAuthority() != null) {
 			return Path.of(uri.getAuthority(), uri.getPath());
+		} else if (uri.getPath().matches("^/[a-zA-Z]:.*")) {
+			// Windows-style file URIs have a leading "/" in the path, for example, "file:///C:/path"
+			return Path.of(uri.getPath().substring(1));
 		} else {
 			return Path.of(uri.getPath());
 		}
@@ -184,8 +187,6 @@ public class DataStoreURI implements Displayable {
 	 * @return the data store URI
 	 */
 	public static DataStoreURI parse(URI uri) {
-		System.out.println("URI: " + uri);
-		
 		if (uri.isOpaque() && isFileScheme(uri)) {
 			uri = URI.create(
 				(uri.getScheme() == null ? "" : (uri.getScheme() + "://")) +
@@ -193,10 +194,7 @@ public class DataStoreURI implements Displayable {
 				(uri.getFragment() == null ? "" : "#" + uri.getFragment()));
 		}
 	
-		DataStoreURI dsUri = new DataStoreURI(uri);
-		dsUri.display(System.out);
-		System.out.println();
-		return dsUri;
+		return new DataStoreURI(uri);
 	}
 	
 	/**

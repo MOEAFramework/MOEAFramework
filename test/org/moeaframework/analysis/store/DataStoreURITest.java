@@ -148,5 +148,10 @@ public class DataStoreURITest {
 		Assert.assertNotEquals(DataStoreURI.parse("foo").hashCode(), DataStoreURI.parse("/foo").hashCode());
 		Assert.assertNotEquals(DataStoreURI.parse("foo").hashCode(), DataStoreURI.parse("foo/bar").hashCode());
 	}
+	
+	@Test
+	public void testWindows() {
+		Assert.assertEquals(Path.of("D:/path/to/foo/"), DataStoreURI.parse("file:///D:/path/to/foo/").getPath());
+	}
 
 }
