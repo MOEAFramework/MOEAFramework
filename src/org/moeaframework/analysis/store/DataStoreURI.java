@@ -184,6 +184,8 @@ public class DataStoreURI implements Displayable {
 	 * @return the data store URI
 	 */
 	public static DataStoreURI parse(URI uri) {
+		System.out.println("URI: " + uri);
+		
 		if (uri.isOpaque() && isFileScheme(uri)) {
 			uri = URI.create(
 				(uri.getScheme() == null ? "" : (uri.getScheme() + "://")) +
@@ -191,7 +193,10 @@ public class DataStoreURI implements Displayable {
 				(uri.getFragment() == null ? "" : "#" + uri.getFragment()));
 		}
 	
-		return new DataStoreURI(uri);
+		DataStoreURI dsUri = new DataStoreURI(uri);
+		dsUri.display(System.out);
+		System.out.println();
+		return dsUri;
 	}
 	
 	/**
