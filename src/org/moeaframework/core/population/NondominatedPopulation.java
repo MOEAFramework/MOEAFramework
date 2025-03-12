@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Iterator;
 
+import org.moeaframework.analysis.io.EmptyResultFileException;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
@@ -273,7 +274,7 @@ public class NondominatedPopulation extends Population {
 	 * @throws EmptyResultFileException if the result file was empty or not properly formatted
 	 * @throws IOException if an I/O error occurred or the file was not found
 	 */
-	public static NondominatedPopulation load(File file) throws IOException {
+	public static NondominatedPopulation load(File file) throws EmptyResultFileException, IOException {
 		return new NondominatedPopulation(Population.load(file));
 	}
 	
@@ -286,7 +287,7 @@ public class NondominatedPopulation extends Population {
 	 * @throws EmptyResultFileException if the result file was empty or not properly formatted
 	 * @throws IOException if an I/O error occurred or the file was not found
 	 */
-	public static NondominatedPopulation load(Reader reader) throws IOException {
+	public static NondominatedPopulation load(Reader reader) throws EmptyResultFileException, IOException {
 		return new NondominatedPopulation(Population.load(reader));
 	}
 

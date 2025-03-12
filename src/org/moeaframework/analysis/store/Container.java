@@ -83,7 +83,8 @@ public interface Container {
 	}
 	
 	/**
-	 * Returns the URI for this container, which can be used with {@link DataStoreFactory#getContainer(java.net.URI)}.
+	 * Returns the URI for this container, which can be used with
+	 * {@link DataStoreFactory#resolveContainer(java.net.URI)}.
 	 * 
 	 * @return the URI
 	 */

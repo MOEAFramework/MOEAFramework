@@ -166,6 +166,7 @@ public interface Reference {
 	/**
 	 * Creates a new reference with the designated field name added or overwritten with the given value.
 	 * 
+	 * @param <T> the enum type
 	 * @param name the new or overwritten field name
 	 * @param value the new value assigned to the field
 	 * @return a new reference with this modification
@@ -281,6 +282,7 @@ public interface Reference {
 	/**
 	 * Constructs a reference containing the given field name and value.
 	 * 
+	 * @param <T> the enum type
 	 * @param name the field name
 	 * @param value the value assigned to the field
 	 * @return a new reference based on the name and value

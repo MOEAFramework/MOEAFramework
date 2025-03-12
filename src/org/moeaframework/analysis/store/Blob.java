@@ -308,10 +308,11 @@ public interface Blob {
 	/**
 	 * Extracts the state and loads it into the {@link Stateful} object.
 	 * 
+	 * @param <T> the object type
 	 * @param value the stateful object
 	 * @return the stateful object
 	 * @throws DataStoreException if an error occurred accessing the data store
-	 * @throws ClassNotFoundException 
+	 * @throws ClassNotFoundException if the class of the serialized object could not be found
 	 */
 	public default <T extends Stateful> T extractState(T value) throws DataStoreException, ClassNotFoundException {
 		try (InputStream in = openInputStream();
@@ -488,9 +489,9 @@ public interface Blob {
 	/**
 	 * Stores a {@link Stateful} object to the blob.
 	 * 
+	 * @param <T> the object type
 	 * @param value the stateful object to store
 	 * @throws DataStoreException if an error occurred accessing the data store
-	 * @throws NotSerializableException if the object is not serializable
 	 */
 	public default <T extends Stateful> void storeState(T value) throws DataStoreException {
 		try (TransactionalOutputStream out = openOutputStream();
@@ -522,7 +523,7 @@ public interface Blob {
 	}
 	
 	/**
-	 * Returns the URI for this blob, which can be used with {@link DataStoreFactory#getBlob(java.net.URI)}.
+	 * Returns the URI for this blob, which can be used with {@link DataStoreFactory#resolveBlob(java.net.URI)}.
 	 * 
 	 * @return the URI
 	 */
