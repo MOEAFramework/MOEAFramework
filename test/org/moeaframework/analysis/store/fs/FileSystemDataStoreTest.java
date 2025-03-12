@@ -19,7 +19,6 @@ package org.moeaframework.analysis.store.fs;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.util.List;
 
 import org.junit.After;
@@ -30,7 +29,6 @@ import org.moeaframework.TempFiles;
 import org.moeaframework.analysis.store.Blob;
 import org.moeaframework.analysis.store.Container;
 import org.moeaframework.analysis.store.Reference;
-import org.moeaframework.analysis.store.schema.Schema;
 
 public class FileSystemDataStoreTest {
 	
