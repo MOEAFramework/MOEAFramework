@@ -28,6 +28,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -41,6 +42,7 @@ import org.moeaframework.analysis.store.Blob;
 import org.moeaframework.analysis.store.Container;
 import org.moeaframework.analysis.store.DataStore;
 import org.moeaframework.analysis.store.DataStoreException;
+import org.moeaframework.analysis.store.DataStoreURI;
 import org.moeaframework.analysis.store.Reference;
 import org.moeaframework.analysis.store.TransactionalOutputStream;
 import org.moeaframework.analysis.store.TransactionalWriter;
@@ -87,12 +89,23 @@ public class FileSystemDataStore implements DataStore {
 	 * Constructs a default file system data store at the specified directory.
 	 * 
 	 * @param root the root directory
+	 * @throws DataStoreException if an error occurred accessing the data store
+	 * @throws ManifestValidationException if the existing manifest failed validation
+	 */
+	public FileSystemDataStore(Path root) {
+		this(root, new HierarchicalFileMap(), Schema.schemaless());
+	}
+	
+	/**
+	 * Constructs a default file system data store at the specified directory.
+	 * 
+	 * @param root the root directory
 	 * @param schema the schema defining the structure of the data store
 	 * @throws DataStoreException if an error occurred accessing the data store
 	 * @throws ManifestValidationException if the existing manifest failed validation
 	 */
 	public FileSystemDataStore(File root, Schema schema) {
-		this(root.toPath(), new HashFileMap(2), schema);
+		this(root.toPath(), new HierarchicalFileMap(), schema);
 	}
 	
 	/**
@@ -169,6 +182,11 @@ public class FileSystemDataStore implements DataStore {
 			throw new DataStoreException("Failed while listing containers", e);
 		}
 	}
+	
+	@Override
+	public URI getURI() {
+		return DataStoreURI.resolvePath(root);
+	}
 
 	/**
 	 * Creates all directories, including any missing parents, for the specified path.
@@ -239,6 +257,11 @@ public class FileSystemDataStore implements DataStore {
 		public FileSystemContainer(Reference reference) {
 			super();
 			this.reference = reference;
+		}
+		
+		@Override
+		public DataStore getDataStore() {
+			return FileSystemDataStore.this;
 		}
 
 		@Override

@@ -17,19 +17,19 @@
  */
 package org.moeaframework.analysis.store.fs;
 
-import java.io.File;
 import java.net.URI;
 import java.util.ServiceConfigurationError;
 
 import org.moeaframework.analysis.store.DataStore;
 import org.moeaframework.analysis.store.DataStoreProvider;
+import org.moeaframework.analysis.store.DataStoreURI;
 
 /**
  * Provider for the {@link FileSystemDataStore}.  The URI should either begin with {@code file://} for paths relative
  * to the working directory, or {@code file:///} for absolute paths.  This is also the default of no schema is defined.
  */
 public class FileSystemDataStoreProvider extends DataStoreProvider {
-	
+		
 	/**
 	 * Constructs the default data store provider.
 	 */
@@ -39,33 +39,17 @@ public class FileSystemDataStoreProvider extends DataStoreProvider {
 	
 	@Override
 	public DataStore getDataStore(URI uri) {
-		if (uri.getScheme() == null || uri.getScheme().equalsIgnoreCase("file")) {
+		DataStoreURI dsUri = DataStoreURI.parse(uri);
+		
+		if (dsUri.getScheme().equalsIgnoreCase(DataStoreURI.FILE_SCHEME)) {
 			try {
-				String path = toPath(uri);
-				return new FileSystemDataStore(new File(path));
+				return new FileSystemDataStore(dsUri.getPath());
 			} catch (Exception e) {
 				throw new ServiceConfigurationError("Failed to create FileSystemDataStore", e);
 			}
 		}
 		
 		return null;
-	}
-	
-	/**
-	 * Returns the file path extracted from the given URI.
-	 * 
-	 * @param uri the URI
-	 * @return the file path
-	 */
-	String toPath(URI uri) {
-		String authority = uri.getAuthority();
-		String path = uri.getPath();
-		
-		if (authority != null) {
-			path = authority + path;
-		}
-		
-		return path;
 	}
 
 }

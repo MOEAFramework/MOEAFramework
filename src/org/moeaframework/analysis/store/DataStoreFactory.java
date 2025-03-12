@@ -100,6 +100,61 @@ public class DataStoreFactory extends AbstractFactory<DataStoreProvider> {
 	}
 	
 	/**
+	 * Resolves a URI to a container.
+	 * 
+	 * @param uri the URI referencing a container
+	 * @return the container
+	 * @throws ProviderNotFoundException if no provider for the URI is available
+	 */
+	public Container resolveContainer(URI uri) {
+		DataStoreURI dsUri = DataStoreURI.parse(uri);
+		return getDataStore(uri).getContainer(Reference.of(dsUri.getQuery()));
+	}
+	
+	/**
+	 * Convenience method for calling {@link #resolveContainer(URI)} with a string representation of the URI.
+	 * 
+	 * @param str the string representation of the URI
+	 * @return the container
+	 * @throws IllegalArgumentException if the string is not a valid URI
+	 * @throws ProviderNotFoundException if no provider for the URI is available
+	 */
+	public Container resolveContainer(String str) {
+		return resolveContainer(URI.create(str));
+	}
+	
+	/**
+	 * Resolves a URI to a blob.
+	 * 
+	 * @param uri the URI referencing a blob
+	 * @return the blob
+	 * @throws DataStoreException if the URI is not a valid reference to a blob
+	 * @throws ProviderNotFoundException if no provider for the URI is available
+	 */
+	public Blob resolveBlob(URI uri) {
+		DataStoreURI dsUri = DataStoreURI.parse(uri);
+		
+		if (dsUri.getFragment() == null || dsUri.getFragment().isBlank()) {
+			throw new DataStoreException("URI does not reference a blob, fragment is missing or empty");
+		}
+		
+		return getDataStore(uri).getContainer(Reference.of(dsUri.getQuery())).getBlob(dsUri.getFragment());
+	}
+	
+	/**
+	 * Convenience method for calling {@link #resolveBlob(URI)} with a string representation of the URI.
+	 * 
+	 * @param str the string representation of the URI
+	 * @return the blob
+	 * @throws DataStoreException if the URI is not a valid reference to a blob
+	 * @throws IllegalArgumentException if the string is not a valid URI
+	 * @throws ProviderNotFoundException if no provider for the URI is available
+	 */
+	public Blob resolveBlob(String str) {
+		return resolveBlob(URI.create(str));
+	}
+		
+	/**
 	 * Attempts to instantiate the given data store using the given provider.
 	 * 
 	 * @param provider the data store provider

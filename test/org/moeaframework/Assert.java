@@ -530,6 +530,10 @@ public class Assert extends org.junit.Assert {
 		assertFalse("Expected empty collection but contained elements", iterable.iterator().hasNext());
 	}
 	
+	public static void assertEmpty(TypedProperties properties) {
+		assertTrue("Expected empty properties but has size " + properties.size(), properties.isEmpty());
+	}
+	
 	public static void assertEmpty(Population population) {
 		assertTrue("Expected empty population but has size " + population.size(), population.isEmpty());
 	}

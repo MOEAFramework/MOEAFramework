@@ -17,6 +17,7 @@
  */
 package org.moeaframework.analysis.store;
 
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -49,6 +50,13 @@ public interface DataStore {
 	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
 	public List<Container> listContainers() throws DataStoreException;
+	
+	/**
+	 * Returns the URI for this data store, which can be used with {@link DataStoreFactory#getDataStore(java.net.URI)}.
+	 * 
+	 * @return the URI
+	 */
+	public URI getURI();
 	
 	/**
 	 * Returns the root container for this data store.  This container is useful for storing general information or

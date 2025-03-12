@@ -27,6 +27,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.Reader;
 import java.io.Writer;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -519,5 +520,13 @@ public interface Blob {
 			throw DataStoreException.wrap(e, this);
 		}
 	}
-
+	
+	/**
+	 * Returns the URI for this blob, which can be used with {@link DataStoreFactory#getBlob(java.net.URI)}.
+	 * 
+	 * @return the URI
+	 */
+	public default URI getURI() {
+		return DataStoreURI.resolve(this);
+	}
 }

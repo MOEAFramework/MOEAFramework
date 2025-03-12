@@ -17,32 +17,61 @@
  */
 package org.moeaframework.snippet;
 
-import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 
 import org.junit.Test;
+import org.moeaframework.TempFiles.File;
 import org.moeaframework.analysis.store.Blob;
 import org.moeaframework.analysis.store.Container;
 import org.moeaframework.analysis.store.DataStore;
+import org.moeaframework.analysis.store.DataStoreFactory;
 import org.moeaframework.analysis.store.Reference;
 import org.moeaframework.analysis.store.fs.FileSystemDataStore;
+import org.moeaframework.analysis.store.schema.Field;
+import org.moeaframework.analysis.store.schema.Schema;
+import org.moeaframework.core.PropertyNotFoundException;
 
 public class DataStoreSnippet {
 
 	@Test
-	public void snippet() {
-		// begin-example: datastore
-		DataStore dataStore = new FileSystemDataStore(new File("result"));
+	public void basicSnippet() throws IOException {
+		// begin-example: datastore-create
+		DataStore dataStore = new FileSystemDataStore(new File("sample"));
+		// end-example: datastore-create
 		
-		Reference reference = Reference.of("case", "Test1");
+		// begin-example: datastore-container
+		Reference reference = Reference.of("populationSize", 100);
 		Container container = dataStore.getContainer(reference);
+		// end-example: datastore-container
 		
+		// begin-example: datastore-container
 		Blob blob = container.getBlob("hello");
 		blob.storeText("Hello world!");
 		
 		System.out.println(blob.extractText());
+		// end-example: datastore-container
 		
+		// begin-example: datastore-uri
+		URI uri = blob.getURI();
+		DataStoreFactory.getInstance().resolveBlob(uri);
+		// end-example: datastore-uri
+	}
+	
+	@Test(expected = PropertyNotFoundException.class)
+	public void schemaSnippet() throws IOException {
+		// begin-example: datastore-schema
+		Schema schema = Schema.of(
+				Field.named("populationSize").asInt());
 		
-		// end-example: datastore
+		DataStore dataStore = new FileSystemDataStore(new File("sample-schema"), schema);
+		
+		Reference reference = Reference.of("sbx.rate", 1.0);
+		Container container = dataStore.getContainer(reference);
+		
+		Blob blob = container.getBlob("hello");
+		blob.storeText("Hello world!");
+		// end-example: datastore-schema
 	}
 	
 }

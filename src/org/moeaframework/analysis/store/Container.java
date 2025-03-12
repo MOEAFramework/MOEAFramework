@@ -17,12 +17,20 @@
  */
 package org.moeaframework.analysis.store;
 
+import java.net.URI;
 import java.util.List;
 
 /**
  * A container of blobs.
  */
 public interface Container {
+	
+	/**
+	 * Gets the data store managing this container.
+	 * 
+	 * @return the data store
+	 */
+	DataStore getDataStore();
 	
 	/**
 	 * Gets the reference for this container.
@@ -72,6 +80,15 @@ public interface Container {
 	 */
 	public default boolean contains(String name) throws DataStoreException {
 		return getBlob(name).exists();
+	}
+	
+	/**
+	 * Returns the URI for this container, which can be used with {@link DataStoreFactory#getContainer(java.net.URI)}.
+	 * 
+	 * @return the URI
+	 */
+	public default URI getURI() {
+		return DataStoreURI.resolve(this);
 	}
 
 }
