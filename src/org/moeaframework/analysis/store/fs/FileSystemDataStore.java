@@ -42,7 +42,6 @@ import org.moeaframework.analysis.store.Blob;
 import org.moeaframework.analysis.store.Container;
 import org.moeaframework.analysis.store.DataStore;
 import org.moeaframework.analysis.store.DataStoreException;
-import org.moeaframework.analysis.store.DataStoreURI;
 import org.moeaframework.analysis.store.Reference;
 import org.moeaframework.analysis.store.TransactionalOutputStream;
 import org.moeaframework.analysis.store.TransactionalWriter;
@@ -82,7 +81,7 @@ public class FileSystemDataStore implements DataStore {
 	 * @throws ManifestValidationException if the existing manifest failed validation
 	 */
 	public FileSystemDataStore(File root) {
-		this(root, new HierarchicalFileMap());
+		this(root.toPath());
 	}
 	
 	/**
@@ -93,7 +92,7 @@ public class FileSystemDataStore implements DataStore {
 	 * @throws ManifestValidationException if the existing manifest failed validation
 	 */
 	public FileSystemDataStore(Path root) {
-		this(root, new HierarchicalFileMap(), Schema.schemaless());
+		this(root, Schema.schemaless());
 	}
 	
 	/**
@@ -105,19 +104,32 @@ public class FileSystemDataStore implements DataStore {
 	 * @throws ManifestValidationException if the existing manifest failed validation
 	 */
 	public FileSystemDataStore(File root, Schema schema) {
-		this(root.toPath(), new HierarchicalFileMap(), schema);
+		this(root.toPath(), schema);
 	}
 	
 	/**
-	 * Constructs a file system data store at the specified directory.
+	 * Constructs a default file system data store at the specified directory.
 	 * 
 	 * @param root the root directory
-	 * @param fileMap the file map that determines the layout of files
+	 * @param schema the schema defining the structure of the data store
 	 * @throws DataStoreException if an error occurred accessing the data store
 	 * @throws ManifestValidationException if the existing manifest failed validation
 	 */
-	public FileSystemDataStore(File root, FileMap fileMap) {
-		this(root.toPath(), fileMap, Schema.schemaless());
+	public FileSystemDataStore(Path root, Schema schema) {
+		this(root, new HierarchicalFileMap(), schema);
+	}
+	
+	/**
+	 * Constructs a default file system data store at the specified directory.
+	 * 
+	 * @param root the root directory
+	 * @param fileMap the file map that determines the layout of files
+	 * @param schema the schema defining the structure of the data store
+	 * @throws DataStoreException if an error occurred accessing the data store
+	 * @throws ManifestValidationException if the existing manifest failed validation
+	 */
+	public FileSystemDataStore(File root, FileMap fileMap, Schema schema) {
+		this(root.toPath(), fileMap, schema);
 	}
 
 	/**
@@ -185,7 +197,7 @@ public class FileSystemDataStore implements DataStore {
 	
 	@Override
 	public URI getURI() {
-		return DataStoreURI.resolvePath(root);
+		return root.toUri();
 	}
 
 	/**

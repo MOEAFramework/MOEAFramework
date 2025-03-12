@@ -19,6 +19,7 @@ package org.moeaframework.analysis.store.fs;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 
 import org.junit.After;
@@ -29,20 +30,23 @@ import org.moeaframework.TempFiles;
 import org.moeaframework.analysis.store.Blob;
 import org.moeaframework.analysis.store.Container;
 import org.moeaframework.analysis.store.Reference;
+import org.moeaframework.analysis.store.schema.Schema;
 
 public class FileSystemDataStoreTest {
+	
+	private File tempDirectory;
 	
 	private FileSystemDataStore dataStore;
 	
 	@Before
 	public void setUp() throws IOException {
-		File tempDirectory = TempFiles.createDirectory();
-		HierarchicalFileMap fileMap = new HierarchicalFileMap();
-		dataStore = new FileSystemDataStore(tempDirectory, fileMap);
+		tempDirectory = TempFiles.createDirectory();
+		dataStore = new FileSystemDataStore(tempDirectory);
 	}
 	
 	@After
 	public void tearDown() {
+		tempDirectory = null;
 		dataStore = null;
 	}
 	
@@ -86,6 +90,11 @@ public class FileSystemDataStoreTest {
 		
 		Assert.assertTrue(container.exists());
 		Assert.assertTrue(blob.exists());
+	}
+	
+	@Test
+	public void testURI() {
+		Assert.assertEquals("file://" + tempDirectory.getAbsolutePath() + "/", dataStore.getURI().toString());
 	}
 
 }

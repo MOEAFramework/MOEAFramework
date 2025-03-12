@@ -242,11 +242,7 @@ public class DataStoreURI implements Displayable {
 	 * @return the URI
 	 */
 	public static URI resolvePath(Path path) {
-		try {
-			return new URI(DataStoreURI.FILE_SCHEME, path.toString(), null);
-		} catch (URISyntaxException e) {
-			throw new DataStoreException("Invalid URI syntax", e);
-		}
+		return path.toUri();
 	}
 	
 	/**
