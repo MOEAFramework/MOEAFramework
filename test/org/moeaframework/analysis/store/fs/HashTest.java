@@ -55,7 +55,7 @@ public class HashTest {
 	public void testReference() throws IOException {
 		Schema schema = Schema.of(
 				Field.named("int").asInt(),
-				Field.named("double").asDecimal(),
+				Field.named("double").asDouble(),
 				Field.named("str").asString());
 		
 		TypedProperties properties1 = new TypedProperties();

@@ -48,11 +48,11 @@ public class FieldBuilder {
 	}
 	
 	/**
-	 * Builds and returns a field storing a decial value.
+	 * Builds and returns a field storing a double value.
 	 * 
 	 * @return the field
 	 */
-	public Field<Double> asDecimal() {
+	public Field<Double> asDouble() {
 		return new Field<>(name, Double.class);
 	}
 	
