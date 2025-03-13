@@ -22,6 +22,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.lang.ProcessBuilder.Redirect;
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.util.Scanner;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -88,6 +89,11 @@ public abstract class CommandLineUtility {
 	 * When {@code true}, the usage line is not displayed.
 	 */
 	private boolean hideUsage;
+	
+	/**
+	 * When {@code true}, prompts to confirm an operation are skipped.
+	 */
+	private boolean acceptConfirmations;
 
 	/**
 	 * Constructs a command line utility.  The constructor for subclasses should provide a private constructor unless
@@ -283,12 +289,39 @@ public abstract class CommandLineUtility {
 	}
 	
 	/**
+	 * Sets the flag to hide and automatically respond to confirmation (yes/no) prompts.
+	 * 
+	 * @param acceptConfirmations if {@code true}, accept all confirmation prompts
+	 */
+	public void setAcceptConfirmations(boolean acceptConfirmations) {
+		this.acceptConfirmations = acceptConfirmations;
+	}
+	
+	/**
 	 * Exits this command line utility with an error.
 	 * 
 	 * @param message the error message
 	 */
 	public void fail(String... message) {
 		throw new FrameworkException(String.join(System.lineSeparator(), message));
+	}
+	
+	/**
+	 * Display a confirmation (yes/no) prompt to the user and wait for user input.
+	 * 
+	 * @param prompt the prompt message
+	 * @return {@code true} if the prompt was approved; {@code false} otherwise
+	 */
+	protected boolean prompt(String prompt) {
+		if (acceptConfirmations) {
+			return true;
+		}
+		
+		try (Scanner scanner = new Scanner(System.in)) {
+			System.out.print(prompt + " [y/N] ");
+			String response = scanner.nextLine();
+			return response.equalsIgnoreCase("y") || response.equalsIgnoreCase("yes");
+		}
 	}
 	
 	/**

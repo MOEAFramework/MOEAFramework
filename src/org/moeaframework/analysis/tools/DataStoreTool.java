@@ -20,7 +20,6 @@ package org.moeaframework.analysis.tools;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Scanner;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -87,6 +86,8 @@ public class DataStoreTool extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws IOException {
+		setAcceptConfirmations(commandLine.hasOption("yes"));
+		
 		try (PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
 			DataStoreURI dsUri = DataStoreURI.parse(commandLine.getOptionValue("uri"));
 
@@ -108,20 +109,21 @@ public class DataStoreTool extends CommandLineUtility {
 				}
 			} else if (commandLine.hasOption("delete")) {
 				if (dsUri.getFragment() != null && !dsUri.getFragment().isBlank()) {
-					if (commandLine.hasOption("yes") || prompt("Are you sure you want to delete this blob?")) {
-						Blob blob = DataStoreFactory.getInstance().resolveBlob(dsUri.getURI());
+					Blob blob = DataStoreFactory.getInstance().resolveBlob(dsUri.getURI());
+
+					if (blob.exists() && prompt("Are you sure you want to delete this blob?")) {
 						blob.delete();
 					}
 				} else if (!dsUri.getQuery().isEmpty()) {
-					if (commandLine.hasOption("yes") || prompt("Are you sure you want to delete this container?")) {
-						Container container = DataStoreFactory.getInstance().resolveContainer(dsUri.getURI());
-						
+					Container container = DataStoreFactory.getInstance().resolveContainer(dsUri.getURI());
+
+					if (container.exists() && prompt("Are you sure you want to delete this container?")) {
 						for (Blob blob : container.listBlobs()) {
 							blob.delete();
 						}
 					}
 				} else {
-					if (commandLine.hasOption("yes") || prompt("Are you sure you want to delete the entire data store?")) {
+					if (prompt("Are you sure you want to delete the entire data store?")) {
 						DataStore dataStore = DataStoreFactory.getInstance().getDataStore(dsUri.getURI());
 					
 						for (Container container : dataStore.listContainers()) {
@@ -153,14 +155,6 @@ public class DataStoreTool extends CommandLineUtility {
 			} else {
 				throw new FrameworkException("Unknown operation, pick one of --list, --get, or --set");
 			}
-		}
-	}
-	
-	private boolean prompt(String prompt) {
-		try (Scanner scanner = new Scanner(System.in)) {
-			System.out.print(prompt + " [y/N] ");
-			String response = scanner.nextLine();
-			return response.equalsIgnoreCase("y") || response.equalsIgnoreCase("yes");
 		}
 	}
 
