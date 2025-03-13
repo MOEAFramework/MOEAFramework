@@ -78,6 +78,9 @@ public class DataStoreTool extends CommandLineUtility {
 				.hasArg()
 				.argName("file")
 				.build());
+		options.addOption(Option.builder("y")
+				.longOpt("yes")
+				.build());
 
 		return options;
 	}
@@ -105,12 +108,12 @@ public class DataStoreTool extends CommandLineUtility {
 				}
 			} else if (commandLine.hasOption("delete")) {
 				if (dsUri.getFragment() != null && !dsUri.getFragment().isBlank()) {
-					if (prompt("Are you sure you want to delete this blob?")) {
+					if (commandLine.hasOption("yes") || prompt("Are you sure you want to delete this blob?")) {
 						Blob blob = DataStoreFactory.getInstance().resolveBlob(dsUri.getURI());
 						blob.delete();
 					}
 				} else if (!dsUri.getQuery().isEmpty()) {
-					if (prompt("Are you sure you want to delete this container?")) {
+					if (commandLine.hasOption("yes") || prompt("Are you sure you want to delete this container?")) {
 						Container container = DataStoreFactory.getInstance().resolveContainer(dsUri.getURI());
 						
 						for (Blob blob : container.listBlobs()) {
@@ -118,7 +121,7 @@ public class DataStoreTool extends CommandLineUtility {
 						}
 					}
 				} else {
-					if (prompt("Are you sure you want to delete the entire data store?")) {
+					if (commandLine.hasOption("yes") || prompt("Are you sure you want to delete the entire data store?")) {
 						DataStore dataStore = DataStoreFactory.getInstance().getDataStore(dsUri.getURI());
 					
 						for (Container container : dataStore.listContainers()) {

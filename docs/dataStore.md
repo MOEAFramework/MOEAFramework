@@ -162,9 +162,13 @@ Observe how the query section specifies the key-value pairs and the fragment (th
 name.  We can also use these URIs to access the data store via the command line:
 
 ```
-./cli datastore --uri "file://results" --container "populationSize=100&seed=1" --blob "result" --get
-./cli datastore --container "file://results?populationSize=100&seed=1" --list
-./cli datastore --blob "file://results?populationSize=100&seed=1#result" --get
-echo "Hello world" | ./cli datastore --blob "file://results?populationSize=100&seed=1#greeting --set"
+# List contents of a container
+./cli datastore --uri "file://results?populationSize=100&seed=1" --list
+
+# Get blob
+./cli datastore --uri "file://results?populationSize=100&seed=1#result" --get
+
+# Write to blob
+echo "Hello world" | ./cli datastore --uri "file://results?populationSize=100&seed=1#greeting --set"
 ```
 
