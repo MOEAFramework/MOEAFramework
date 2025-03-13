@@ -88,9 +88,9 @@ public class DataStoreURITest {
 	
 	@Test
 	public void testHttpsScheme() {
-		DataStoreURI uri = DataStoreURI.parse("https://example.com/foo");
+		DataStoreURI uri = DataStoreURI.parse("https://localhost/foo");
 		Assert.assertEquals("https", uri.getScheme());
-		Assert.assertEquals("example.com", uri.getServer());
+		Assert.assertEquals("localhost", uri.getServer());
 		Assert.assertEquals(Path.of("/foo"), uri.getPath());
 		Assert.assertEmpty(uri.getQuery());
 		Assert.assertNull(uri.getFragment());
@@ -98,9 +98,9 @@ public class DataStoreURITest {
 	
 	@Test
 	public void testHttpsSchemeWithUserInfo() {
-		DataStoreURI uri = DataStoreURI.parse("https://user:pass@example.com:8080/foo");
+		DataStoreURI uri = DataStoreURI.parse("https://user:pass@localhost:8080/foo");
 		Assert.assertEquals("https", uri.getScheme());
-		Assert.assertEquals("user:pass@example.com:8080", uri.getServer());
+		Assert.assertEquals("user:pass@localhost:8080", uri.getServer());
 		Assert.assertEquals(Path.of("/foo"), uri.getPath());
 		Assert.assertEmpty(uri.getQuery());
 		Assert.assertNull(uri.getFragment());
@@ -108,9 +108,9 @@ public class DataStoreURITest {
 	
 	@Test
 	public void testHttpsSchemeWithAllParts() {
-		DataStoreURI uri = DataStoreURI.parse("https://example.com/foo?a=b#c");
+		DataStoreURI uri = DataStoreURI.parse("https://localhost/foo?a=b#c");
 		Assert.assertEquals("https", uri.getScheme());
-		Assert.assertEquals("example.com", uri.getServer());
+		Assert.assertEquals("localhost", uri.getServer());
 		Assert.assertEquals(Path.of("/foo"), uri.getPath());
 		Assert.assertEquals(1, uri.getQuery().size());
 		Assert.assertEquals("b", uri.getQuery().getString("a"));

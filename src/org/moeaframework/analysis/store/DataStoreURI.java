@@ -209,6 +209,10 @@ public class DataStoreURI implements Displayable {
 		StringBuilder sb = new StringBuilder();
 		
 		for (String field : reference.fields()) {
+			if (sb.length() > 0) {
+				sb.append("&");
+			}
+			
 			sb.append(URLEncoder.encode(field, UTF8));
 			sb.append("=");
 			sb.append(URLEncoder.encode(reference.get(field), UTF8));

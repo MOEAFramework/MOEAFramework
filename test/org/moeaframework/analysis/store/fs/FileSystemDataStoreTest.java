@@ -89,5 +89,18 @@ public class FileSystemDataStoreTest {
 		Assert.assertTrue(container.exists());
 		Assert.assertTrue(blob.exists());
 	}
+	
+	@Test
+	public void testURI() {
+		Reference reference = Reference.of("foo", "bar").with("hello", "world");
+		Container container = dataStore.getContainer(reference);
+		Assert.assertStringEndsWith(container.getURI().toString(), "?foo=bar&hello=world");
+		
+		Blob blob = container.getBlob("baz");
+		Assert.assertStringEndsWith(blob.getURI().toString(), "?foo=bar&hello=world#baz");
+		
+		Blob escapedBlob = container.getBlob("a&b=c?d#e");
+		Assert.assertStringEndsWith(escapedBlob.getURI().toString(), "?foo=bar&hello=world#a%2526b%253Dc%253Fd%2523e");
+	}
 
 }

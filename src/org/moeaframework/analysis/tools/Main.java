@@ -59,6 +59,7 @@ public class Main extends CommandLineUtility {
 		INTERNAL_TOOLS = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
 		registerTool(CalculateIndicator.class);
+		registerTool(DataStoreTool.class);
 		registerTool(EndOfRunEvaluator.class);
 		registerTool(Initialize.class);
 		registerTool(MetricsAnalysis.class);

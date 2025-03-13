@@ -1,4 +1,4 @@
-# Storing Experimental Data
+f# Storing Experimental Data
 
 Large experiments typically produce a large amount of data which must be organized and stored in some accessible way.
 While you are certainly free to manage the data produced by the MOEA Framework in any manner, we also provide a
@@ -137,5 +137,34 @@ for (int seed = 0; seed < 10; seed++) {
         blob.storePopulation(algorithm.getResult());
     }
 }
+```
+
+## Referencing and Accessing Content
+
+In the previous examples, we used accessed containers and blobs through the programmatic interface.  The data store and
+its contents can alternatively be referenced by a URI.  For instance, here we get the URI for a blob, then resolve that
+same blob using the URI:
+
+<!-- java:test/org/moeaframework/snippet/DataStoreSnippet.java [datastore-uri] -->
+
+```java
+URI uri = blob.getURI();
+DataStoreFactory.getInstance().resolveBlob(uri);
+```
+
+For the file system data store, the URI will look similar to:
+
+```
+file://results?populationSize=100&seed=1#result
+```
+
+Observe how the query section specifies the key-value pairs and the fragment (the part after `#`) specifies the blob
+name.  We can also use these URIs to access the data store via the command line:
+
+```
+./cli datastore --uri "file://results" --container "populationSize=100&seed=1" --blob "result" --get
+./cli datastore --container "file://results?populationSize=100&seed=1" --list
+./cli datastore --blob "file://results?populationSize=100&seed=1#result" --get
+echo "Hello world" | ./cli datastore --blob "file://results?populationSize=100&seed=1#greeting --set"
 ```
 

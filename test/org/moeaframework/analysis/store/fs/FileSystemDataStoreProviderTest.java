@@ -42,9 +42,9 @@ public class FileSystemDataStoreProviderTest {
 		assertDataStore("file:temp/dataStore", Path.of("temp/dataStore"));
 		assertDataStore("temp/dataStore", Path.of("temp/dataStore"));
 		
-		assertDataStore("file://./temp/dataStore", Path.of("./temp/dataStore"));
-		assertDataStore("file:./temp/dataStore", Path.of("./temp/dataStore"));
-		assertDataStore("./temp/dataStore", Path.of("./temp/dataStore"));
+		assertDataStore("file://./temp/dataStore", Path.of("temp/dataStore"));
+		assertDataStore("file:./temp/dataStore", Path.of("temp/dataStore"));
+		assertDataStore("./temp/dataStore", Path.of("temp/dataStore"));
 	}
 	
 	@Test

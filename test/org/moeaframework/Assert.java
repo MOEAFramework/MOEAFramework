@@ -401,7 +401,11 @@ public class Assert extends org.junit.Assert {
 	}
 	
 	public static void assertStringStartsWith(String line, String substring) {
-		assertTrue("Line does not contain expected substring: '" + line + "'", line.startsWith(substring));
+		assertTrue("Line does not start with expected text: '" + line + "'", line.startsWith(substring));
+	}
+	
+	public static void assertStringEndsWith(String line, String substring) {
+		assertTrue("Line does not end with expected text: '" + line + "'", line.endsWith(substring));
 	}
 	
 	public static <T> void assertContains(Collection<? extends T> collection, T expected) {
