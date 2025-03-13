@@ -60,9 +60,7 @@ public class DataStoreTool extends CommandLineUtility {
 		operationGroup.addOption(Option.builder()
 				.longOpt("delete")
 				.build());
-		
-		// TODO: copy. create, clone?
-		
+				
 		options.addOptionGroup(operationGroup);
 		
 		options.addOption(Option.builder("u")
