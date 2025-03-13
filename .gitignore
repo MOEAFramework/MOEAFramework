@@ -4,6 +4,7 @@
 /javadoc/
 /native/
 /results/
+/temp/
 /test-results/
 /*.arff
 /*.csv

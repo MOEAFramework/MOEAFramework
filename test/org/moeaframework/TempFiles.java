@@ -19,11 +19,10 @@ package org.moeaframework;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Stream;
+
+import org.apache.commons.io.FileUtils;
 
 /**
  * Static methods for creating temporary files and directories.  All files and directories produced using these methods
@@ -34,16 +33,11 @@ public class TempFiles {
 	
 	private static final List<java.io.File> FILES_TO_CLEANUP;
 	
-	private static final java.io.File FILE_DIRECTORY;
+	private static final java.io.File TEMP_DIRECTORY;
 		
 	static {
 		FILES_TO_CLEANUP = new ArrayList<>();
-		
-		try {
-			FILE_DIRECTORY = TempFiles.createDirectory();
-		} catch (IOException e) {
-			throw new AssertionError(e);
-		}
+		TEMP_DIRECTORY = new java.io.File("temp");
 		
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 
@@ -53,21 +47,14 @@ public class TempFiles {
 				while (!FILES_TO_CLEANUP.isEmpty()) {
 					java.io.File file = FILES_TO_CLEANUP.remove(FILES_TO_CLEANUP.size() - 1);
 					
-					if (file.exists()) {
-						try {
-							if (file.isDirectory()) {
-								try (Stream<Path> stream = Files.walk(file.toPath())) {
-									stream
-										.sorted(Comparator.reverseOrder())
-										.map(Path::toFile)
-										.forEach(java.io.File::delete);
-								}
-							} else {
-								file.delete();
-							}
-						} catch (IOException e) {
-							System.err.println(e);
+					try {
+						if (file.isDirectory()) {
+							FileUtils.deleteDirectory(file);
+						} else {
+							FileUtils.delete(file);
 						}
+					} catch (IOException e) {
+						System.err.println(e);
 					}
 				}
 			}
@@ -133,7 +120,7 @@ public class TempFiles {
 			if (file.exists()) {
 				return file;
 			} else {
-				return new java.io.File(FILE_DIRECTORY, name);
+				return new java.io.File(TEMP_DIRECTORY, name);
 			}
 		}
 		

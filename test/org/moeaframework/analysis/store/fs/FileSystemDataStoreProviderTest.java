@@ -38,53 +38,45 @@ public class FileSystemDataStoreProviderTest {
 
 	@Test
 	public void testGetDataStore() {
-		assertDataStore("file://foo", Path.of("foo"));
-		assertDataStore("file:foo", Path.of("foo"));
-		assertDataStore("foo", Path.of("foo"));
+		assertDataStore("file://temp/dataStore", Path.of("temp/dataStore"));
+		assertDataStore("file:temp/dataStore", Path.of("temp/dataStore"));
+		assertDataStore("temp/dataStore", Path.of("temp/dataStore"));
 		
-		assertDataStore("file://./foo", Path.of("./foo"));
-		assertDataStore("file:./foo", Path.of("./foo"));
-		assertDataStore("./foo", Path.of("./foo"));
-		
-		assertDataStore("file://../foo", Path.of("../foo"));
-		assertDataStore("file:../foo", Path.of("../foo"));
-		assertDataStore("../foo", Path.of("../foo"));
-		
-		assertDataStore("file://foo/bar", Path.of("foo/bar"));
-		assertDataStore("file:foo/bar", Path.of("foo/bar"));
-		assertDataStore("foo/bar", Path.of("foo/bar"));
+		assertDataStore("file://./temp/dataStore", Path.of("./temp/dataStore"));
+		assertDataStore("file:./temp/dataStore", Path.of("./temp/dataStore"));
+		assertDataStore("./temp/dataStore", Path.of("./temp/dataStore"));
 	}
 	
 	@Test
 	public void testGetDataStoreAbsolutePaths() {
 		Assume.assumeFalse("Absolute paths fail with drive letter on Windows, skipping.", SystemUtils.IS_OS_WINDOWS);
 		
-		assertDataStore("file://" + Path.of(".").toAbsolutePath().toString(), Path.of("."));
-		assertDataStore("file:" + Path.of(".").toAbsolutePath().toString(), Path.of("."));
-		assertDataStore(Path.of(".").toAbsolutePath().toString(), Path.of("."));
+		assertDataStore("file://" + Path.of("./temp/dataStore").toAbsolutePath().toString(), Path.of("temp/dataStore"));
+		assertDataStore("file:" + Path.of("./temp/dataStore").toAbsolutePath().toString(), Path.of("temp/dataStore"));
+		assertDataStore(Path.of("./temp/dataStore").toAbsolutePath().toString(), Path.of("temp/dataStore"));
 	}
 	
 	@Test
 	public void testGetContainer() {
-		assertContainer("file://foo?a=b", Reference.of("a", "b"));
-		assertContainer("file:foo?a=b", Reference.of("a", "b"));
-		assertContainer("foo?a=b", Reference.of("a", "b"));
-		assertContainer("file://foo", Reference.root());
-		assertContainer("file:foo", Reference.root());
-		assertContainer("foo", Reference.root());
+		assertContainer("file://temp/dataStore?a=b", Reference.of("a", "b"));
+		assertContainer("file:temp/dataStore?a=b", Reference.of("a", "b"));
+		assertContainer("temp/dataStore?a=b", Reference.of("a", "b"));
+		assertContainer("file://temp/dataStore", Reference.root());
+		assertContainer("file:temp/dataStore", Reference.root());
+		assertContainer("temp/dataStore", Reference.root());
 	}
 	
 	@Test
 	public void testGetBlob() {
-		assertBlob("file://foo?a=b#info", Reference.of("a", "b"), "info");
-		assertBlob("foo?a=b#info", Reference.of("a", "b"), "info");
-		assertBlob("file://foo#info", Reference.root(), "info");
-		assertBlob("foo#info", Reference.root(), "info");
+		assertBlob("file://temp/dataStore?a=b#info", Reference.of("a", "b"), "info");
+		assertBlob("temp/dataStore?a=b#info", Reference.of("a", "b"), "info");
+		assertBlob("file://temp/dataStore#info", Reference.root(), "info");
+		assertBlob("temp/dataStore#info", Reference.root(), "info");
 	}
 	
 	@Test(expected = DataStoreException.class)
 	public void testResolveBlobNoFragment() {
-		Assert.assertNotNull(DataStoreFactory.getInstance().resolveBlob(URI.create("file:foo?a=b")));
+		Assert.assertNotNull(DataStoreFactory.getInstance().resolveBlob(URI.create("file:temp/dataStore?a=b")));
 	}
 	
 	private void assertDataStore(String uri, Path expectedPath) {

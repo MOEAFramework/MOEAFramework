@@ -230,7 +230,7 @@ public class FileSystemDataStore implements DataStore {
 		try {
 			Path path = root.resolve(MANIFEST_FILENAME);
 			Manifest expectedManifest = getManifest();
-			
+						
 			if (Files.exists(path)) {
 				try (FileReader reader = new FileReader(path.toFile())) {
 					Manifest actualManifest = new Manifest();

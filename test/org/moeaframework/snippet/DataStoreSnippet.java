@@ -22,22 +22,22 @@ import java.net.URI;
 
 import org.junit.Test;
 import org.moeaframework.TempFiles.File;
+import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.analysis.store.Blob;
 import org.moeaframework.analysis.store.Container;
 import org.moeaframework.analysis.store.DataStore;
 import org.moeaframework.analysis.store.DataStoreFactory;
 import org.moeaframework.analysis.store.Reference;
 import org.moeaframework.analysis.store.fs.FileSystemDataStore;
-import org.moeaframework.analysis.store.schema.Field;
-import org.moeaframework.analysis.store.schema.Schema;
-import org.moeaframework.core.PropertyNotFoundException;
+import org.moeaframework.problem.Problem;
+import org.moeaframework.problem.CEC2009.UF1;
 
 public class DataStoreSnippet {
 
 	@Test
 	public void basicSnippet() throws IOException {
 		// begin-example: datastore-create
-		DataStore dataStore = new FileSystemDataStore(new File("sample"));
+		DataStore dataStore = new FileSystemDataStore(new File("results"));
 		// end-example: datastore-create
 		
 		// begin-example: datastore-container
@@ -45,33 +45,83 @@ public class DataStoreSnippet {
 		Container container = dataStore.getContainer(reference);
 		// end-example: datastore-container
 		
-		// begin-example: datastore-container
-		Blob blob = container.getBlob("hello");
+		// begin-example: datastore-blob
+		Blob blob = container.getBlob("greeting");
 		blob.storeText("Hello world!");
 		
 		System.out.println(blob.extractText());
-		// end-example: datastore-container
+		// end-example: datastore-blob
+	}
+	
+	@Test
+	public void layoutSnippet() throws IOException {
+		DataStore dataStore = new FileSystemDataStore(new File("results"));
+		
+		// begin-example: datastore-layout
+		Reference reference = Reference.of("populationSize", 200);
+		Container container = dataStore.getContainer(reference);
+		// end-example: datastore-layout
+		
+		Blob blob = container.getBlob("greeting");
+		blob.storeText("Hello world from the second container!");
+	}
+	
+	@Test
+	public void algorithmSnippet() throws IOException {
+		DataStore dataStore = new FileSystemDataStore(new File("results"));
+		
+		// begin-example: datastore-algorithm
+		Problem problem = new UF1();
+		
+		NSGAII algorithm = new NSGAII(problem);
+		algorithm.run(10000);
+		
+		Reference reference = Reference.of(algorithm.getConfiguration());
+		Container container = dataStore.getContainer(reference);
+		
+		Blob blob = container.getBlob("result");
+		blob.storePopulation(algorithm.getResult());
+		// end-example: datastore-algorithm
+		
+		// begin-example: datastore-exists
+		if (!blob.exists()) {
+			algorithm.run(10000);
+			blob.storePopulation(algorithm.getResult());
+		}
+		// end-example: datastore-exists
+	}
+	
+	@Test
+	public void existsSnippet() throws IOException {
+		DataStore dataStore = new FileSystemDataStore(new File("results"));
+		
+		// begin-example: datastore-exists
+		Problem problem = new UF1();
+		NSGAII algorithm = new NSGAII(problem);
+		
+		Reference reference = Reference.of(algorithm.getConfiguration());
+		Container container = dataStore.getContainer(reference);
+		Blob blob = container.getBlob("result");
+		
+		if (!blob.exists()) {
+			algorithm.run(10000);
+			blob.storePopulation(algorithm.getResult());
+		}
+		// end-example: datastore-exists
+	}
+	
+	@Test
+	public void uriSnippet() throws IOException {
+		DataStore dataStore = new FileSystemDataStore(new File("results"));
+		
+		Reference reference = Reference.of("populationSize", 200);
+		Container container = dataStore.getContainer(reference);
+		Blob blob = container.getBlob("greeting");
 		
 		// begin-example: datastore-uri
 		URI uri = blob.getURI();
 		DataStoreFactory.getInstance().resolveBlob(uri);
 		// end-example: datastore-uri
-	}
-	
-	@Test(expected = PropertyNotFoundException.class)
-	public void schemaSnippet() throws IOException {
-		// begin-example: datastore-schema
-		Schema schema = Schema.of(
-				Field.named("populationSize").asInt());
-		
-		DataStore dataStore = new FileSystemDataStore(new File("sample-schema"), schema);
-		
-		Reference reference = Reference.of("sbx.rate", 1.0);
-		Container container = dataStore.getContainer(reference);
-		
-		Blob blob = container.getBlob("hello");
-		blob.storeText("Hello world!");
-		// end-example: datastore-schema
 	}
 	
 }

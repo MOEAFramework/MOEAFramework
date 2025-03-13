@@ -23,17 +23,15 @@ import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.stream.Stream;
-
 import javax.lang.model.SourceVersion;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringSubstitutor;
 import org.moeaframework.core.FrameworkException;
@@ -208,7 +206,7 @@ public class BuildProblem extends CommandLineUtility {
 		
 		if (directory.toFile().exists()) {
 			if (commandLine.hasOption("overwrite")) {
-				deleteDirectory(directory);
+				FileUtils.deleteDirectory(directory.toFile());
 			} else {
 				throw new FrameworkException(directory + " already exists, delete this folder or choose a different name");
 			}
@@ -283,15 +281,6 @@ public class BuildProblem extends CommandLineUtility {
 			return first.relativize(second);
 		} catch (IllegalArgumentException e) {
 			return second.toAbsolutePath();
-		}
-	}
-	
-	static void deleteDirectory(Path directory) throws IOException {
-		try (Stream<Path> stream = Files.walk(directory)) {
-			stream
-				.sorted(Comparator.reverseOrder())
-				.map(Path::toFile)
-				.forEach(File::delete);
 		}
 	}
 
