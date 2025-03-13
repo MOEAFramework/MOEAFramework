@@ -63,7 +63,7 @@ Under the covers, the file system data store structures the content as folders a
 > &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :file_folder: 100/ <br/>
 > &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :page_facing_up: greeting
 
-Observe how the keys, in this case `"populationSize"`, and the values, `100`, form the folder hierarchy.  Suppose we
+Observe how the keys and values, in this case `populationSize` and `100`, form the folder hierarchy.  Suppose we
 change the value to `200` and write the same blob:
 
 <!-- java:test/org/moeaframework/snippet/DataStoreSnippet.java [datastore-layout] -->
@@ -104,9 +104,8 @@ Blob blob = container.getBlob("result");
 blob.storePopulation(algorithm.getResult());
 ```
 
-What if we previously ran this experiment?  With the above code, we end up re-running the algorithm each time even
-though the data store might already contain the results.  We can alternatively check if the results exist before
-performing the expensive computations:
+But what happens if we run this code multiple times?  Each time, we will re-run the algorithm and overwrite the result
+file.  We can improve upon this by first checking if the results exist before performing any expensive operations:
 
 <!-- java:test/org/moeaframework/snippet/DataStoreSnippet.java [datastore-exists] -->
 
