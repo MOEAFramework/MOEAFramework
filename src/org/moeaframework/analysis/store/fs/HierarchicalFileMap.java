@@ -18,13 +18,16 @@
 package org.moeaframework.analysis.store.fs;
 
 import java.io.IOException;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.moeaframework.analysis.store.Reference;
@@ -48,8 +51,15 @@ public class HierarchicalFileMap extends FileMap {
 		super();
 	}
 	
-	// Implementation Note: Files.walk(path, 1) includes path as the first visited file, so we call skip(1) to only
-	// include the path contents.
+	// Implementation Notes:
+	//
+	//   1. Files.walk(path, 1) includes path as the first visited file, so we call skip(1) to only include the path
+	//      contents.
+	//
+	//   2. The same key can appear in multiple locations in the file hierarchy.  We scan for all possible matches,
+	//      preferring the longest path.
+	//
+	//   TODO: Sort problem and algorithm first for better structure?
 	
 	@Override
 	public Path mapContainer(Schema schema, Path root, Reference reference) throws IOException {
@@ -60,48 +70,33 @@ public class HierarchicalFileMap extends FileMap {
 		}
 		
 		List<Pair<Field<?>, String>> resolvedPath = schema.resolve(reference);
-		Map<Path, Path> remainingPaths = new TreeMap<>(CASE_INSENSITIVE_ORDER);
+		Map<Path, Path> escapedPathSegments = new TreeMap<>(CASE_INSENSITIVE_ORDER);
 
 		for (Pair<Field<?>, String> entry : resolvedPath) {
 			Path escapedKey = escapePath(entry.getKey().getName());
 			Path escapedValue = escapePath(entry.getValue());
 			
-			remainingPaths.put(escapedKey, escapedValue);
+			escapedPathSegments.put(escapedKey, escapedValue);
 		}
 		
 		// When schemaless, match any existing folder structure
 		if (schema.isSchemaless()) {
-			while (Files.exists(path) && !remainingPaths.isEmpty()) {
-				Optional<Path> matchingKey = Optional.empty();
-				Optional<Path> matchingValue = Optional.empty();
+			HierarchicalFileVisitor visitor = new HierarchicalFileVisitor(root, escapedPathSegments);
+			Files.walkFileTree(path, visitor);
+			
+			Optional<Path> longestPath = visitor.getMatches().stream()
+					.sorted((x, y) -> -Integer.compare(x.getNameCount(), y.getNameCount()))
+					.findFirst();
+			
+			if (longestPath.isPresent()) {
+				path = longestPath.get();
 				
-				try (Stream<Path> stream = Files.walk(path, 1)) {
-					matchingKey = stream
-							.skip(1)
-							.filter(Files::isDirectory)
-							.map(Path::getFileName)
-							.filter(x -> remainingPaths.containsKey(x))
-							.findFirst();
+				// remove the matched keys
+				Path relativePath = root.relativize(path);
+				
+				for (int i = 0; i < relativePath.getNameCount(); i += 2) {
+					escapedPathSegments.remove(relativePath.getName(i));
 				}
-					
-				if (!matchingKey.isPresent()) {
-					break;
-				}
-				
-				Path key = matchingKey.get();
-				Path value = remainingPaths.remove(key);
-				path = path.resolve(key);
-				
-				try (Stream<Path> stream = Files.walk(path, 1)) {
-					matchingValue = stream
-						.skip(1)
-						.filter(Files::isDirectory)
-						.map(Path::getFileName)
-						.filter(x -> CASE_INSENSITIVE_ORDER.compare(x, value) == 0)
-						.findFirst();
-				}
-				
-				path = path.resolve(matchingValue.orElse(value));
 			}
 		}
 		
@@ -110,7 +105,7 @@ public class HierarchicalFileMap extends FileMap {
 			Path escapedKey = escapePath(entry.getKey().getName());
 			Path escapedValue = escapePath(entry.getValue());
 			
-			if (remainingPaths.containsKey(escapedKey)) {
+			if (escapedPathSegments.containsKey(escapedKey)) {
 				path = path.resolve(escapedKey).resolve(escapedValue);
 			}
 		}
@@ -121,6 +116,62 @@ public class HierarchicalFileMap extends FileMap {
 	@Override
 	public String getDefinition() {
 		return Defined.createDefinition(FileMap.class, getClass());
+	}
+	
+	/**
+	 * File visitor that collects all paths that match the path segments.
+	 */
+	private static class HierarchicalFileVisitor extends SimpleFileVisitor<Path> {
+		
+		private final Path root;
+		
+		private final Map<Path, Path> escapedPathSegments;
+		
+		private final List<Path> matches;
+		
+		public HierarchicalFileVisitor(Path root, Map<Path, Path> escapedPathSegments) {
+			super();
+			this.root = root;
+			this.escapedPathSegments = escapedPathSegments;
+			
+			matches = new ArrayList<>();
+		}
+
+		@Override
+		public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+			if (dir.equals(root)) {
+				return FileVisitResult.CONTINUE;
+			}
+			
+			Path relativePath = root.relativize(dir);
+			
+			if (relativePath.getNameCount() > 1) {
+				if (relativePath.getNameCount() % 2 == 1) {
+					if (!escapedPathSegments.containsKey(relativePath.getFileName())) {
+						return FileVisitResult.SKIP_SUBTREE;
+					}
+				} else {
+					if (CASE_INSENSITIVE_ORDER.compare(
+							escapedPathSegments.get(relativePath.getName(relativePath.getNameCount()-2)),
+							relativePath.getFileName()) != 0) {
+						return FileVisitResult.SKIP_SUBTREE;
+					}
+				}
+			}
+			
+			matches.add(dir);
+			return FileVisitResult.CONTINUE;
+		}
+
+		@Override
+		public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+			return FileVisitResult.SKIP_SIBLINGS;
+		}
+		
+		public List<Path> getMatches() {
+			return matches;
+		}
+		
 	}
 
 }
