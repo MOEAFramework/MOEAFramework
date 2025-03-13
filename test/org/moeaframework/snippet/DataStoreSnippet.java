@@ -29,6 +29,7 @@ import org.moeaframework.analysis.store.DataStore;
 import org.moeaframework.analysis.store.DataStoreFactory;
 import org.moeaframework.analysis.store.Reference;
 import org.moeaframework.analysis.store.fs.FileSystemDataStore;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.CEC2009.UF1;
 
@@ -92,22 +93,26 @@ public class DataStoreSnippet {
 	}
 	
 	@Test
-	public void existsSnippet() throws IOException {
+	public void seedsSnippet() throws IOException {
 		DataStore dataStore = new FileSystemDataStore(new File("results"));
-		
-		// begin-example: datastore-exists
 		Problem problem = new UF1();
-		NSGAII algorithm = new NSGAII(problem);
 		
-		Reference reference = Reference.of(algorithm.getConfiguration());
-		Container container = dataStore.getContainer(reference);
-		Blob blob = container.getBlob("result");
-		
-		if (!blob.exists()) {
-			algorithm.run(10000);
-			blob.storePopulation(algorithm.getResult());
+		// begin-example: datastore-seeds
+		for (int seed = 0; seed < 10; seed++) {
+			PRNG.setSeed(seed);
+			
+			NSGAII algorithm = new NSGAII(problem);
+			
+			Reference reference = Reference.of(algorithm.getConfiguration()).with("seed", seed);
+			Container container = dataStore.getContainer(reference);
+			Blob blob = container.getBlob("result");
+			
+			if (!blob.exists()) {
+				algorithm.run(10000);
+				blob.storePopulation(algorithm.getResult());
+			}
 		}
-		// end-example: datastore-exists
+		// end-example: datastore-seeds
 	}
 	
 	@Test

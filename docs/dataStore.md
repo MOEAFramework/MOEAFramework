@@ -20,10 +20,6 @@ graph TD
     C -->|Name| G[Blob]
 ```
 
-These names are intentional to abstract the programmatic interfaces from their underlying representation.  By default,
-we provide a file storage backend, where containers are mapped to folders and blobs to files, but the backend could
-easily be replaced by a database or cloud storage.
-
 ## Basic Usage
 
 For this demonstration, we will create a data store backed by the file system.  Here, the content will be stored in the
@@ -45,8 +41,8 @@ Reference reference = Reference.of("populationSize", 100);
 Container container = dataStore.getContainer(reference);
 ```
 
-If we change `100` to a different value, it would reference a different container.  Next, we can access blobs within
-the container by name.  Below, we create a blob named `"greeting"` and store the text `"Hello world!"`.
+Changing the key, value, or both will reference a different container.  Next, we can access blobs within the container
+by name.  Below, we create a blob named `"greeting"` and store the text `"Hello world!"`.
 
 <!-- java:test/org/moeaframework/snippet/DataStoreSnippet.java [datastore-blob] -->
 
@@ -82,11 +78,11 @@ We would see the following hierarchy:
 > :file_folder: results/ <br/>
 > &nbsp; &nbsp; &nbsp; :file_folder: populationSize/ <br/>
 > &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :file_folder: 100/ <br/>
-> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :page_facing_up: greeting
+> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :page_facing_up: greeting <br/>
 > &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :file_folder: 200/ <br/>
 > &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :page_facing_up: greeting
 
-This layout also works with multiple key-value pairs, with the folder hierarchy structured accordingly.
+This layout also works with multiple key-value pairs, with each additional key-value pair producing nested folders.
 
 ## Storing Algorithm Results
 
@@ -108,29 +104,39 @@ Blob blob = container.getBlob("result");
 blob.storePopulation(algorithm.getResult());
 ```
 
-> [!TIP]
-> Some run parameters are not stored in the algorithm's configuration, such as the `seed` or `maxEvaluations`.
-> Use the `with(...)` method to include such parameters in the reference, such as `reference.with("maxEvaluations", 10000)`.
-
-## Persistent Storage
-
-Perhaps the most useful feature of the data store is for persistent storage, where we can check if the output was
-previously saved and, if so, avoid recomputing the result.
+What if we previously ran this experiment?  With the above code, we end up re-running the algorithm each time even
+though the data store might already contain the results.  We can alternatively check if the results exist before
+performing the expensive computations:
 
 <!-- java:test/org/moeaframework/snippet/DataStoreSnippet.java [datastore-exists] -->
 
 ```java
-Problem problem = new UF1();
-NSGAII algorithm = new NSGAII(problem);
-
-Reference reference = Reference.of(algorithm.getConfiguration());
-Container container = dataStore.getContainer(reference);
-Blob blob = container.getBlob("result");
-
 if (!blob.exists()) {
     algorithm.run(10000);
     blob.storePopulation(algorithm.getResult());
 }
 ```
 
+One last point: while all of the properties defined by the algorithm's configuration are used to uniquely reference
+its container, some run parameters including `seed` and `maxEvaluations` are not included in the configuration.  Instead,
+we must modify the reference as follows:
+
+<!-- java:test/org/moeaframework/snippet/DataStoreSnippet.java [datastore-seeds] -->
+
+```java
+for (int seed = 0; seed < 10; seed++) {
+    PRNG.setSeed(seed);
+
+    NSGAII algorithm = new NSGAII(problem);
+
+    Reference reference = Reference.of(algorithm.getConfiguration()).with("seed", seed);
+    Container container = dataStore.getContainer(reference);
+    Blob blob = container.getBlob("result");
+
+    if (!blob.exists()) {
+        algorithm.run(10000);
+        blob.storePopulation(algorithm.getResult());
+    }
+}
+```
 
