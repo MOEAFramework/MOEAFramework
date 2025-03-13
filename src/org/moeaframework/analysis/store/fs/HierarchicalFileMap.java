@@ -91,8 +91,12 @@ public class HierarchicalFileMap extends FileMap {
 			if (longestPath.isPresent()) {
 				path = longestPath.get();
 				
-				// remove the matched keys
+				// If the longest path ended on a key, append the value.  Also remove all keys from path segments.
 				Path relativePath = root.relativize(path);
+				
+				if (relativePath.getNameCount() % 2 == 1) {
+					path = path.resolve(escapedPathSegments.get(relativePath.getFileName()));
+				}
 				
 				for (int i = 0; i < relativePath.getNameCount(); i += 2) {
 					escapedPathSegments.remove(relativePath.getName(i));
@@ -109,7 +113,7 @@ public class HierarchicalFileMap extends FileMap {
 				path = path.resolve(escapedKey).resolve(escapedValue);
 			}
 		}
-			
+					
 		return path;
 	}
 	

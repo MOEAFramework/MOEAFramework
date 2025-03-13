@@ -25,7 +25,7 @@ import org.moeaframework.problem.DTLZ.DTLZ2;
 
 public class ConcurrencyTest {
 	
-	private static final int SEEDS = Runtime.getRuntime().availableProcessors();
+	private static final int SEEDS = 16; //Runtime.getRuntime().availableProcessors();
 	
 	private static final int TRIALS = 5;
 	

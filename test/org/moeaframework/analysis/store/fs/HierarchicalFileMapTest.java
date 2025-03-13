@@ -105,5 +105,22 @@ public class HierarchicalFileMapTest {
 		Assert.assertEquals(containerPath1, containerPath2);
 		Assert.assertEquals(blobPath1, blobPath2);
 	}
+	
+	@Test
+	public void testMultipleMatchingPaths() throws IOException {
+		Path path = TempFiles.createDirectory().toPath();
+		
+		Schema schema = Schema.schemaless();
+		HierarchicalFileMap fileMap = new HierarchicalFileMap();
+		
+		Reference reference1 = Reference.root().with("a", 1).with("b", 2).with("c", 3);
+		Reference reference2 = Reference.root().with("a", 1).with("c", 2);
+		
+		Files.createDirectories(fileMap.mapContainer(schema, path, reference1));
+		Files.createDirectories(fileMap.mapContainer(schema, path, reference2));
+
+		Assert.assertEquals(path.resolve("a/1/b/2/c/3"), fileMap.mapContainer(schema, path, reference1));
+		Assert.assertEquals(path.resolve("a/1/c/2"), fileMap.mapContainer(schema, path, reference2));
+	}
 
 }
