@@ -167,7 +167,7 @@ name.  We can also use these URIs to access the data store via the command line:
 ./cli datastore --uri "file://results?populationSize=100&seed=1" --list
 
 # Write to blob
-echo "Hello world" | ./cli datastore --uri "file://results?populationSize=100&seed=1#greeting --set"
+echo "Hello world" | ./cli datastore --uri "file://results?populationSize=100&seed=1#greeting" --set
 
 # Get blob
 ./cli datastore --uri "file://results?populationSize=100&seed=1#result" --get
