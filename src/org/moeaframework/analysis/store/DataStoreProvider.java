@@ -20,15 +20,7 @@ package org.moeaframework.analysis.store;
 import java.net.URI;
 
 /**
- * Defines a SPI for creating data stores.  A data store is identified by a URI with a specific schema.  We recommend
- * using the components of a URI as follows:
- * <ul>
- *   <li><strong>Scheme</strong> - Identifies the type of data store
- *   <li><strong>Authority</strong> - The server containing the data store
- *   <li><strong>Path</strong> - Unique identifier for the specific data store
- *   <li><strong>Query</strong> - Key=value pairs defining the {@link Reference} to the {@link Container}
- *   <li><strong>Fragment</strong> - Name of the {@link Blob}
- * </ul>
+ * Defines a SPI for creating data stores.  A data store is identified by a URI with a specific schema.
  * <p>
  * <strong>Avoid including secrets in the URI itself.</strong>  The provided URI may appear in logs, exception
  * messages, or command line arguments, and is not a safe place to store secrets.  Instead, if required, provide a

@@ -31,7 +31,7 @@ public class DataStoreURITest {
 		Assert.assertNull(uri.getServer());
 		Assert.assertEquals(Path.of("/foo"), uri.getPath());
 		Assert.assertEmpty(uri.getQuery());
-		Assert.assertNull(uri.getFragment());
+		Assert.assertNull(uri.getName());
 	}
 	
 	@Test
@@ -41,18 +41,29 @@ public class DataStoreURITest {
 		Assert.assertNull(uri.getServer());
 		Assert.assertEquals(Path.of("../foo"), uri.getPath());
 		Assert.assertEmpty(uri.getQuery());
-		Assert.assertNull(uri.getFragment());
+		Assert.assertNull(uri.getName());
 	}
 	
 	@Test
-	public void testDefaultSchemeWithAllParts() {
+	public void testDefaultSchemeWithQuery() {
+		DataStoreURI uri = DataStoreURI.parse("../foo?a=b&_name=c");
+		Assert.assertEquals("file", uri.getScheme());
+		Assert.assertNull(uri.getServer());
+		Assert.assertEquals(Path.of("../foo"), uri.getPath());
+		Assert.assertEquals(1, uri.getQuery().size());
+		Assert.assertEquals("b", uri.getQuery().getString("a"));
+		Assert.assertEquals("c", uri.getName());
+	}
+	
+	@Test
+	public void testDefaultSchemeWithFragment() {
 		DataStoreURI uri = DataStoreURI.parse("../foo?a=b#c");
 		Assert.assertEquals("file", uri.getScheme());
 		Assert.assertNull(uri.getServer());
 		Assert.assertEquals(Path.of("../foo"), uri.getPath());
 		Assert.assertEquals(1, uri.getQuery().size());
 		Assert.assertEquals("b", uri.getQuery().getString("a"));
-		Assert.assertEquals("c", uri.getFragment());
+		Assert.assertEquals("c", uri.getName());
 	}
 	
 	@Test
@@ -62,7 +73,7 @@ public class DataStoreURITest {
 		Assert.assertNull(uri.getServer());
 		Assert.assertEquals(Path.of("/foo"), uri.getPath());
 		Assert.assertEmpty(uri.getQuery());
-		Assert.assertNull(uri.getFragment());
+		Assert.assertNull(uri.getName());
 	}
 	
 	@Test
@@ -72,18 +83,29 @@ public class DataStoreURITest {
 		Assert.assertNull(uri.getServer());
 		Assert.assertEquals(Path.of("../foo"), uri.getPath());
 		Assert.assertEmpty(uri.getQuery());
-		Assert.assertNull(uri.getFragment());
+		Assert.assertNull(uri.getName());
 	}
 	
 	@Test
-	public void testFileSchemeWithAllParts() {
+	public void testFileSchemeWithQuery() {
+		DataStoreURI uri = DataStoreURI.parse("file:../foo?a=b&_name=c");
+		Assert.assertEquals("file", uri.getScheme());
+		Assert.assertNull(uri.getServer());
+		Assert.assertEquals(Path.of("../foo"), uri.getPath());
+		Assert.assertEquals(1, uri.getQuery().size());
+		Assert.assertEquals("b", uri.getQuery().getString("a"));
+		Assert.assertEquals("c", uri.getName());
+	}
+	
+	@Test
+	public void testFileSchemeWithFragment() {
 		DataStoreURI uri = DataStoreURI.parse("file:../foo?a=b#c");
 		Assert.assertEquals("file", uri.getScheme());
 		Assert.assertNull(uri.getServer());
 		Assert.assertEquals(Path.of("../foo"), uri.getPath());
 		Assert.assertEquals(1, uri.getQuery().size());
 		Assert.assertEquals("b", uri.getQuery().getString("a"));
-		Assert.assertEquals("c", uri.getFragment());
+		Assert.assertEquals("c", uri.getName());
 	}
 	
 	@Test
@@ -93,7 +115,7 @@ public class DataStoreURITest {
 		Assert.assertEquals("localhost", uri.getServer());
 		Assert.assertEquals(Path.of("/foo"), uri.getPath());
 		Assert.assertEmpty(uri.getQuery());
-		Assert.assertNull(uri.getFragment());
+		Assert.assertNull(uri.getName());
 	}
 	
 	@Test
@@ -103,18 +125,18 @@ public class DataStoreURITest {
 		Assert.assertEquals("user:pass@localhost:8080", uri.getServer());
 		Assert.assertEquals(Path.of("/foo"), uri.getPath());
 		Assert.assertEmpty(uri.getQuery());
-		Assert.assertNull(uri.getFragment());
+		Assert.assertNull(uri.getName());
 	}
 	
 	@Test
-	public void testHttpsSchemeWithAllParts() {
-		DataStoreURI uri = DataStoreURI.parse("https://localhost/foo?a=b#c");
+	public void testHttpsSchemeWithQuery() {
+		DataStoreURI uri = DataStoreURI.parse("https://localhost/foo?a=b&_name=c");
 		Assert.assertEquals("https", uri.getScheme());
 		Assert.assertEquals("localhost", uri.getServer());
 		Assert.assertEquals(Path.of("/foo"), uri.getPath());
 		Assert.assertEquals(1, uri.getQuery().size());
 		Assert.assertEquals("b", uri.getQuery().getString("a"));
-		Assert.assertEquals("c", uri.getFragment());
+		Assert.assertEquals("c", uri.getName());
 	}
 	
 	@Test
@@ -133,6 +155,8 @@ public class DataStoreURITest {
 		Assert.assertNotEquals(DataStoreURI.parse("foo"), DataStoreURI.parse("foo/bar"));
 
 		Assert.assertEquals(DataStoreURI.parse("file:foo?a=b#c"), DataStoreURI.parse("file:foo?A=b#c"));
+		Assert.assertEquals(DataStoreURI.parse("file:foo?a=b#c"), DataStoreURI.parse("file:foo?A=b&_name=c"));
+
 	}
 	
 	@Test

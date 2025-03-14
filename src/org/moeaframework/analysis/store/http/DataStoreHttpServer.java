@@ -34,7 +34,6 @@ import org.moeaframework.analysis.store.Container;
 import org.moeaframework.analysis.store.DataStore;
 import org.moeaframework.analysis.store.DataStoreURI;
 import org.moeaframework.analysis.store.Reference;
-import org.moeaframework.core.TypedProperties;
 import org.moeaframework.util.Iterators;
 import org.moeaframework.util.Iterators.IndexedValue;
 import org.moeaframework.util.io.OutputHandler;
@@ -51,12 +50,6 @@ import com.sun.net.httpserver.HttpServer;
  * network.  This is primarily intended for testing and debugging purposes.
  */
 public class DataStoreHttpServer {
-	
-	/**
-	 * Since HTTP requests do not include the {@code #fragment} portion of a URL, pass the blob name as a query
-	 * parameter.
-	 */
-	private static final String NAME_KEY = "_name";
 	
 	/**
 	 * Shutdown delay to allow any active requests to finish.
@@ -241,21 +234,13 @@ public class DataStoreHttpServer {
 
 		public void handle(HttpExchange exchange) throws IOException {
 			HttpRequestContext ctx = HttpRequestContext.begin(exchange, logger);
-			
-			//InputStream in = exchange.getRequestBody();
 			DataStoreURI dsUri = ctx.getDataStoreURI();			
-			TypedProperties query = dsUri.getQuery();
-			String blobName = null;
 			
-			if (query.contains(NAME_KEY)) {
-				blobName = query.getString(NAME_KEY);
-				query.remove(NAME_KEY);
-			}
-			
-			Reference reference = Reference.of(query);
+			Reference reference = dsUri.getReference();
+			String blobName = dsUri.getName();
 
 			ctx.info("Reference=" + reference);
-			ctx.info("Blob Name=" + blobName);
+			ctx.info("Name=" + blobName);
 			
 			if (ctx.isGet()) {
 				if (blobName != null) {
@@ -270,7 +255,7 @@ public class DataStoreHttpServer {
 					} else {
 						ctx.fail(404);
 					}
-				} else if (!dsUri.getQuery().isEmpty()) {
+				} else if (!reference.isRoot()) {
 					Container container = dataStore.getContainer(reference);
 					
 					if (container.exists()) {
@@ -400,16 +385,7 @@ public class DataStoreHttpServer {
 			StringBuilder sb = new StringBuilder();
 			sb.append(requestUri.getPath());
 			sb.append("?");
-			
-			if (!blob.getContainer().getReference().isRoot()) {
-				sb.append(blob.getURI().getQuery());
-				sb.append("&");
-			}
-			
-			sb.append(NAME_KEY);
-			sb.append("=");
-			sb.append(blob.getURI().getFragment());
-			
+			sb.append(blob.getURI().getQuery());
 			return sb.toString();
 		}
 		

@@ -134,11 +134,12 @@ public class DataStoreFactory extends AbstractFactory<DataStoreProvider> {
 	public Blob resolveBlob(URI uri) {
 		DataStoreURI dsUri = DataStoreURI.parse(uri);
 		
-		if (dsUri.getFragment() == null || dsUri.getFragment().isBlank()) {
-			throw new DataStoreException("URI does not reference a blob, fragment is missing or empty");
+		if (dsUri.getName() == null || dsUri.getName().isBlank()) {
+			throw new DataStoreException("URI does not reference a blob, " + DataStoreURI.NAME_PARAMETER +
+					" is missing or empty");
 		}
 		
-		return getDataStore(uri).getContainer(Reference.of(dsUri.getQuery())).getBlob(dsUri.getFragment());
+		return getDataStore(uri).getContainer(Reference.of(dsUri.getQuery())).getBlob(dsUri.getName());
 	}
 	
 	/**

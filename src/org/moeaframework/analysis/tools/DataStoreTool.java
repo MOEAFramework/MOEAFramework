@@ -100,17 +100,17 @@ public class DataStoreTool extends CommandLineUtility {
 			DataStoreURI dsUri = DataStoreURI.parse(commandLine.getOptionValue("uri"));
 
 			if (commandLine.hasOption("type")) {
-				if (dsUri.getFragment() != null && !dsUri.getFragment().isBlank()) {
+				if (dsUri.getName() != null && !dsUri.getName().isBlank()) {
 					output.println("blob");
-				} else if (!dsUri.getQuery().isEmpty()) {
+				} else if (!dsUri.getReference().isRoot()) {
 					output.println("container");
 				} else {
 					output.println("datastore");
 				}
 			} else if (commandLine.hasOption("list")) {
-				if (dsUri.getFragment() != null && !dsUri.getFragment().isBlank()) {
+				if (dsUri.getName() != null && !dsUri.getName().isBlank()) {
 					throw new FrameworkException("--list can only be used with a URI referencing a data store or container");
-				} else if (!dsUri.getQuery().isEmpty()) {
+				} else if (!dsUri.getReference().isRoot()) {
 					Container container = DataStoreFactory.getInstance().resolveContainer(dsUri.getURI());
 					
 					for (Blob blob : container.listBlobs()) {
@@ -124,13 +124,13 @@ public class DataStoreTool extends CommandLineUtility {
 					}
 				}
 			} else if (commandLine.hasOption("delete")) {
-				if (dsUri.getFragment() != null && !dsUri.getFragment().isBlank()) {
+				if (dsUri.getName() != null && !dsUri.getName().isBlank()) {
 					Blob blob = DataStoreFactory.getInstance().resolveBlob(dsUri.getURI());
 
 					if (blob.exists() && prompt("Are you sure you want to delete this blob?")) {
 						blob.delete();
 					}
-				} else if (!dsUri.getQuery().isEmpty()) {
+				} else if (!dsUri.getReference().isRoot()) {
 					Container container = DataStoreFactory.getInstance().resolveContainer(dsUri.getURI());
 
 					if (container.exists() && prompt("Are you sure you want to delete this container?")) {
@@ -150,14 +150,14 @@ public class DataStoreTool extends CommandLineUtility {
 					}
 				}
 			} else if (commandLine.hasOption("get")) {
-				if (dsUri.getFragment() == null || dsUri.getFragment().isBlank()) {
+				if (dsUri.getName() == null || dsUri.getName().isBlank()) {
 					throw new FrameworkException("--get can only be used with a URI referencing a blob");
 				} else {
 					Blob blob = DataStoreFactory.getInstance().resolveBlob(dsUri.getURI());
 					blob.extractTo(output);
 				}
 			} else if (commandLine.hasOption("set")) {
-				if (dsUri.getFragment() == null || dsUri.getFragment().isBlank()) {
+				if (dsUri.getName() == null || dsUri.getName().isBlank()) {
 					throw new FrameworkException("--set can only be used with a URI referencing a blob");
 				} else {
 					Blob blob = DataStoreFactory.getInstance().resolveBlob(dsUri.getURI());

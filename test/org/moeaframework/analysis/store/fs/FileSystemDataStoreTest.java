@@ -97,10 +97,10 @@ public class FileSystemDataStoreTest {
 		Assert.assertStringEndsWith(container.getURI().toString(), "?foo=bar&hello=world");
 		
 		Blob blob = container.getBlob("baz");
-		Assert.assertStringEndsWith(blob.getURI().toString(), "?foo=bar&hello=world#baz");
+		Assert.assertStringEndsWith(blob.getURI().toString(), "?foo=bar&hello=world&_name=baz");
 		
 		Blob escapedBlob = container.getBlob("a&b=c?d#e");
-		Assert.assertStringEndsWith(escapedBlob.getURI().toString(), "?foo=bar&hello=world#a%2526b%253Dc%253Fd%2523e");
+		Assert.assertStringEndsWith(escapedBlob.getURI().toString(), "?foo=bar&hello=world&_name=a%2526b%253Dc%253Fd%2523e");
 	}
 
 }

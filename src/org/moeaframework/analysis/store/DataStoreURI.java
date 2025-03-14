@@ -23,15 +23,59 @@ import org.moeaframework.util.format.TabularData;
 public class DataStoreURI implements Displayable {
 	
 	/**
+	 * The query parameter used to identify the blob name.
+	 */
+	public static final String NAME_PARAMETER = "_name";
+	
+	/**
 	 * The file scheme string constant.
 	 */
 	public static final String FILE_SCHEME = "file";
 	
 	private final URI uri;
 	
+	private final String scheme;
+	
+	private final Path path;
+	
+	private final TypedProperties query;
+	
+	private final Reference reference;
+	
+	private final String name;
+	
 	private DataStoreURI(URI uri) {
 		super();
 		this.uri = uri;
+		
+		scheme = isFileScheme(uri) ? FILE_SCHEME : uri.getScheme();
+		
+		if (uri.getAuthority() != null && scheme.equals(FILE_SCHEME)) {
+			path = Path.of(uri.getAuthority(), uri.getPath());
+		} else if (uri.getPath().matches("^/[a-zA-Z]:.*")) {
+			// Windows-style file URIs have a leading "/" in the path, for example, "file:///C:/path"
+			path = Path.of(uri.getPath().substring(1));
+		} else {
+			path = Path.of(uri.getPath());
+		}
+		
+		// Parse the query parameters, removing _name if specified
+		query = new TypedProperties();
+		
+		if (uri.getQuery() != null) {
+			for (String parameter : uri.getQuery().split("&")) {
+				String[] parts = parameter.split("=", 2);
+				String key = URLDecoder.decode(parts[0], StandardCharsets.UTF_8);
+				String value = URLDecoder.decode(parts[1], StandardCharsets.UTF_8);
+
+				query.setString(key, value);
+			}
+		}
+		
+		name = query.getString(NAME_PARAMETER, uri.getFragment());
+		
+		query.remove(NAME_PARAMETER);
+		reference = Reference.of(query);
 	}
 	
 	/**
@@ -49,7 +93,7 @@ public class DataStoreURI implements Displayable {
 	 * @return the scheme
 	 */
 	public String getScheme() {
-		return uri.getScheme() == null ? FILE_SCHEME : uri.getScheme();
+		return scheme;
 	}
 	
 	/**
@@ -59,7 +103,7 @@ public class DataStoreURI implements Displayable {
 	 * @return the server component
 	 */
 	public String getServer() {
-		if (isFileScheme(uri)) {
+		if (scheme.equals(FILE_SCHEME)) {
 			return null;
 		} else {
 			return uri.getAuthority();
@@ -72,43 +116,37 @@ public class DataStoreURI implements Displayable {
 	 * @return the path
 	 */
 	public Path getPath() {
-		if (isFileScheme(uri) && uri.getAuthority() != null) {
-			return Path.of(uri.getAuthority(), uri.getPath());
-		} else if (uri.getPath().matches("^/[a-zA-Z]:.*")) {
-			// Windows-style file URIs have a leading "/" in the path, for example, "file:///C:/path"
-			return Path.of(uri.getPath().substring(1));
-		} else {
-			return Path.of(uri.getPath());
-		}
+		return path;
 	}
 	
 	/**
-	 * Returns the query component of the URI, converted into a {@link TypedProperties}.
+	 * Returns the query component of the URI, converted into a {@link TypedProperties}.  This is for testing purposes
+	 * only.
 	 * 
 	 * @return the query
 	 */
-	public TypedProperties getQuery() {
-		TypedProperties query = new TypedProperties();
-		
-		if (uri.getQuery() != null) {
-			for (String parameter : uri.getQuery().split("&")) {
-				String[] parts = parameter.split("=", 2);
-				query.setString(
-						URLDecoder.decode(parts[0], StandardCharsets.UTF_8),
-						URLDecoder.decode(parts[1], StandardCharsets.UTF_8));
-			}
-		}
-		
-		return query;
+	TypedProperties getQuery() {
+		return query.copy();
 	}
 	
 	/**
-	 * Returns the fragment component of the URI, or {@code null} if not specified.
+	 * Returns the reference specified by the URI.
 	 * 
-	 * @return the fragment
+	 * @return the reference
 	 */
-	public String getFragment() {
-		return uri.getFragment();
+	public Reference getReference() {
+		return reference;
+	}
+	
+	/**
+	 * Returns the blob name specified in the URI.  This can be defined in {@link URI#getFragment()} or using the
+	 * {@value DataStoreURI#NAME_PARAMETER} query parameter.  The latter is recommended as the fragment part is
+	 * typically excluded from HTTP requests.
+	 * 
+	 * @return the blob name, or {@code null} if not specified
+	 */
+	public String getName() {
+		return name;
 	}
 
 	public void display(PrintStream out) {
@@ -143,7 +181,7 @@ public class DataStoreURI implements Displayable {
 				.append(getServer())
 				.append(getPath())
 				.append(getQuery())
-				.append(getFragment())
+				.append(getName())
 				.toHashCode();
 	}
 
@@ -161,7 +199,7 @@ public class DataStoreURI implements Displayable {
 					.append(getServer(), rhs.getServer())
 					.append(getPath(), rhs.getPath())
 					.append(getQuery(), rhs.getQuery())
-					.append(getFragment(), rhs.getFragment())
+					.append(getName(), rhs.getName())
 					.isEquals();
 		}
 	}
@@ -230,10 +268,21 @@ public class DataStoreURI implements Displayable {
 	 */
 	public static URI resolve(Blob blob) {
 		URI containerUri = resolve(blob.getContainer());
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(containerUri.getQuery() != null ? containerUri.getQuery() : "");
+		
+		if (sb.length() > 0) {
+			sb.append("&");
+		}
+		
+		sb.append(NAME_PARAMETER);
+		sb.append("=");
+		sb.append(URLEncoder.encode(blob.getName(), StandardCharsets.UTF_8));
 
 		try {
 			return new URI(containerUri.getScheme(), containerUri.getAuthority(), containerUri.getPath(),
-					containerUri.getQuery(), URLEncoder.encode(blob.getName(), StandardCharsets.UTF_8));
+					sb.toString(), null);
 		} catch (URISyntaxException e) {
 			throw new DataStoreException("Invalid URI syntax for data store blob", e);
 		}
