@@ -139,26 +139,28 @@ for (int seed = 0; seed < 10; seed++) {
 }
 ```
 
-## Referencing and Accessing Content
+## Accessing Content
 
-In the previous examples, we used accessed containers and blobs through the programmatic interface.  The data store and
-its contents can alternatively be referenced by a URI.  For instance, here we get the URI for a blob, then resolve that
-same blob using the URI:
+In the previous examples, we accessed containers and blobs through the programmatic interface.  We can also access
+the content through the CLI or web server.
 
-<!-- java:test/org/moeaframework/snippet/DataStoreSnippet.java [datastore-geturi] -->
+### CLI
 
-```java
-URI uri = blob.getURI();
-```
-
-For the file system data store, the URI will look similar to:
+The datastore and its containers and blobs can be referenced using a URI.  Below are some examples:
 
 ```
-file://results?populationSize=100&seed=1#result
+# The data store rooted at the path ./results/
+file://results
+
+# The container with attributes populationSize=100 and seed=1
+file://results?populationSize=100&seed=1
+
+# The blob named "greeting"
+file://results?populationSize=100&seed=1#greeting
 ```
 
-Observe how the query section specifies the key-value pairs and the fragment (the part after `#`) specifies the blob
-name.  We can also use these URIs to access the data store via the command line:
+Using the `datastore` CLI tool, we can specify the URI along with an operation, such as listing the content of a
+container or reading / writing a blob.
 
 <!-- bash:.github/workflows/ci.yml [datastore] -->
 
@@ -169,24 +171,35 @@ name.  We can also use these URIs to access the data store via the command line:
 # Write to blob
 echo "Hello world" | ./cli datastore --uri "file://results?populationSize=100&seed=1#greeting" --set
 
-# Get blob
+# Read from blob
 ./cli datastore --uri "file://results?populationSize=100&seed=1#greeting" --get
 ```
 
-Lastly, we can start a simple HTTP server that provides read-only access to the data store over a network:
+### Web Server
 
-<!-- bash:.github/workflows/ci.yml [datastore-server] -->
+> [!WARNING]  
+> The web server only supports unsecured (HTTP) connections.  Use caution when running the server on a
+> publicly-accessible network.
+
+The web server provides read-only access to the data store content.  First we start the server:
 
 ```bash
-# Start server
 ./cli datastore --uri "file://results" --server &
 ```
 
-We can then query the contents of containers or blobs:
+The logging output will show the base URL to use when accessing the web server:
 
-<!-- bash:.github/workflows/ci.yml [datastore-query] -->
+```
+Server configured at 127.0.0.1:8080/results
+```
+
+We can then query the contents using `curl` or through a browser.  Note we pass the blob name as the query parameter
+`__name`.
 
 ```bash
+# Check if the server is running
+curl "127.0.0.1:8080/_health
+
 # Request the contents of a container
 curl "127.0.0.1:8080/results?populationSize=100&seed=1"
 
@@ -194,7 +207,8 @@ curl "127.0.0.1:8080/results?populationSize=100&seed=1"
 curl "127.0.0.1:8080/results?populationSize=100&seed=1&__name=greeting"
 ```
 
-For instance, the container contents are returned as JSON:
+When listing the contents of a data store or container, JSON text is returned.  For example, here is the output from
+a container:
 
 ```
 {
@@ -213,7 +227,3 @@ For instance, the container contents are returned as JSON:
    ]
 }
 ```
-
-> [!WARNING]  
-> The HTTP server only supports unsecured connections.  Use caution when running the server on a publicly-accessible
-> network.

@@ -1,3 +1,20 @@
+/* Copyright 2009-2025 David Hadka
+ *
+ * This file is part of the MOEA Framework.
+ *
+ * The MOEA Framework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * The MOEA Framework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+ * License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.moeaframework.analysis.store.http;
 
 import java.io.FilterOutputStream;
@@ -6,6 +23,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -35,6 +53,11 @@ public class DataStoreHttpServer {
 	 * Since HTTP requests do not include the {@code #fragment} portion of a URL, pass it instead as part of the query.
 	 */
 	private static final String NAME_KEY = "__name";
+	
+	/**
+	 * Shutdown delay, in seconds, to allow any active requests to finish.
+	 */
+	private static final int SHUTDOWN_DELAY = 1;
 		
 	private final Logger logger;
 	
@@ -46,16 +69,18 @@ public class DataStoreHttpServer {
 		super();
 		this.dataStore = dataStore;
 		
-		// normalize and make path absolute
-		path = path.replace('\\', '/');
-
-		if (!path.startsWith("/")) {
-			path = "/" + path;
+		if (path.equalsIgnoreCase("_health")) {
+			throw new IllegalArgumentException("_health is a reserved endpoint, try with a different path");
 		}
+		
+		// normalize path
+		path = path.replace('\\', '/');
+		path = (path.startsWith("/") ? "" : "/") + path;
 				
 		logger = OutputHandler.getLogger(DataStoreHttpServer.class.getSimpleName());
 		server = HttpServer.create(new InetSocketAddress("localhost", 8080), 0);
 		server.createContext(path, new DataStoreHttpHandler());
+		server.createContext("/_health", new HealthHttpHandler());
 		
 		logger.info("Server configured at " + server.getAddress().getHostString() + ":" +
 				server.getAddress().getPort() + path);
@@ -72,13 +97,14 @@ public class DataStoreHttpServer {
 	
 	public void shutdown() {
 		logger.info("Shutting down server!");
-		server.stop(1);
+		server.stop(SHUTDOWN_DELAY);
 	}
 	
-	/**
-	 * Manages the lifecycle of a request, including associating a unique request id.
-	 */
 	private static class HttpRequestContext {
+		
+		private static final int CHUNKED_RESPONSE = 0;
+		
+		private static final int EMPTY_RESPONSE = -1;
 		
 		private final UUID requestId;
 		
@@ -112,7 +138,7 @@ public class DataStoreHttpServer {
 		public void fail(int code) throws IOException {
 			Validate.that("code", code).isGreaterThanOrEqualTo(300);
 			
-			exchange.sendResponseHeaders(code, -1);
+			exchange.sendResponseHeaders(code, EMPTY_RESPONSE);
 			exchange.close();
 			
 			info("FAIL (" + code + ")");
@@ -131,8 +157,9 @@ public class DataStoreHttpServer {
 			
 			info("Begin response");
 			
-			exchange.getResponseHeaders().add("Content-Type", contentType != null ? contentType : "application/octet-stream");
-			exchange.sendResponseHeaders(code, 0); // 0 indicates chunked response
+			exchange.getResponseHeaders().add("Content-Type",
+					contentType != null ? contentType : "application/octet-stream");
+			exchange.sendResponseHeaders(code, CHUNKED_RESPONSE);
 			
 			return new HttpOutputStream(this, exchange.getResponseBody());
 		}
@@ -142,6 +169,7 @@ public class DataStoreHttpServer {
 		}
 		
 	}
+	
 	
 	private static class HttpOutputStream extends FilterOutputStream {
 		
@@ -170,7 +198,6 @@ public class DataStoreHttpServer {
 				
 		public DataStoreHttpHandler() {
 			super();
-
 		}
 
 		public void handle(HttpExchange exchange) throws IOException {
@@ -345,6 +372,22 @@ public class DataStoreHttpServer {
 			sb.append(blob.getURI().getFragment());
 			
 			return sb.toString();
+		}
+		
+	}
+	
+	private class HealthHttpHandler implements HttpHandler {
+		
+		public HealthHttpHandler() {
+			super();
+		}
+
+		public void handle(HttpExchange exchange) throws IOException {
+			HttpRequestContext ctx = HttpRequestContext.begin(exchange, logger);
+			
+			try (OutputStream out = ctx.beginResponse(200)) {
+				out.write("OK".getBytes(StandardCharsets.UTF_8));
+			}
 		}
 		
 	}

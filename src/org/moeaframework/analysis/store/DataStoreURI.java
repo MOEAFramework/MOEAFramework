@@ -5,7 +5,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -26,11 +26,6 @@ public class DataStoreURI implements Displayable {
 	 * The file scheme string constant.
 	 */
 	public static final String FILE_SCHEME = "file";
-	
-	/**
-	 * The charset used to encode URIs.
-	 */
-	public static final Charset UTF8 = Charset.forName("UTF-8");
 	
 	private final URI uri;
 	
@@ -98,7 +93,9 @@ public class DataStoreURI implements Displayable {
 		if (uri.getQuery() != null) {
 			for (String parameter : uri.getQuery().split("&")) {
 				String[] parts = parameter.split("=", 2);
-				query.setString(URLDecoder.decode(parts[0], UTF8), URLDecoder.decode(parts[1], UTF8));
+				query.setString(
+						URLDecoder.decode(parts[0], StandardCharsets.UTF_8),
+						URLDecoder.decode(parts[1], StandardCharsets.UTF_8));
 			}
 		}
 		
@@ -213,9 +210,9 @@ public class DataStoreURI implements Displayable {
 				sb.append("&");
 			}
 			
-			sb.append(URLEncoder.encode(field, UTF8));
+			sb.append(URLEncoder.encode(field, StandardCharsets.UTF_8));
 			sb.append("=");
-			sb.append(URLEncoder.encode(reference.get(field), UTF8));
+			sb.append(URLEncoder.encode(reference.get(field), StandardCharsets.UTF_8));
 		}
 		
 		try {
@@ -236,7 +233,7 @@ public class DataStoreURI implements Displayable {
 
 		try {
 			return new URI(containerUri.getScheme(), containerUri.getAuthority(), containerUri.getPath(),
-					containerUri.getQuery(), URLEncoder.encode(blob.getName(), UTF8));
+					containerUri.getQuery(), URLEncoder.encode(blob.getName(), StandardCharsets.UTF_8));
 		} catch (URISyntaxException e) {
 			throw new DataStoreException("Invalid URI syntax for data store blob", e);
 		}
