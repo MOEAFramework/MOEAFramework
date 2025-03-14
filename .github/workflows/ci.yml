@@ -209,6 +209,7 @@ jobs:
         # begin-example:datastore-server
         # Start server
         ./cli datastore --uri "file://results" --server &
+        sleep 1
 
         # Request the contents of a container
         curl "127.0.0.1:8080/results?populationSize=100&seed=1"
@@ -218,7 +219,7 @@ jobs:
         # end-example:datastore-server
 
         pid=$(ps | grep "org.moeaframework.analysis.tools.Main datastore" | grep -v "grep" | awk '{print $1}')
-        kill -9 "$pid""
+        kill -9 "$pid"
     - name: Test CLI (init --shell bash)
       if: runner.os == 'Linux'
       run: |
