@@ -68,6 +68,27 @@ public class DataStoreToolTest {
 				"--uri", tempDirectory.toURI().toString() + "?a=b#foo",
 				"--get",
 				"--output", outputFile.toString() }));
+		
+		DataStoreTool.main(new String[] {
+				"--uri", tempDirectory.toURI().toString(),
+				"--type",
+				"--output", outputFile.toString() });
+		
+		Assert.assertFileWithContent("datastore" + System.lineSeparator(), outputFile);
+		
+		DataStoreTool.main(new String[] {
+				"--uri", tempDirectory.toURI().toString() + "?a=b",
+				"--type",
+				"--output", outputFile.toString() });
+		
+		Assert.assertFileWithContent("container" + System.lineSeparator(), outputFile);
+		
+		DataStoreTool.main(new String[] {
+				"--uri", tempDirectory.toURI().toString() + "?a=b#foo",
+				"--type",
+				"--output", outputFile.toString() });
+		
+		Assert.assertFileWithContent("blob" + System.lineSeparator(), outputFile);
 	}
 
 }

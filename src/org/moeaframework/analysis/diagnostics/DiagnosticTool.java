@@ -455,7 +455,7 @@ public class DiagnosticTool extends JFrame implements ListSelectionListener, Con
 		timer.setRepeats(true);
 		timer.setCoalesce(true);
 		timer.start();
-		controller.addShutdownHook(() -> timer.stop());
+		controller.addShutdownHook(timer::stop);
 		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.add(fileMenu);

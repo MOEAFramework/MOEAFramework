@@ -194,6 +194,31 @@ jobs:
         ./cli solve --problem DTLZ2 --algorithm NSGAII --numberOfEvaluations 10000 --output NSGAII_DTLZ2_Runtime.txt
         ./cli calc --problem DTLZ2 --indicator hypervolume NSGAII_DTLZ2_Runtime.txt
         # end-example:cli-solve
+
+        # begin-example:datastore
+        # List contents of a container
+        ./cli datastore --uri "file://results?populationSize=100&seed=1" --list
+
+        # Write to blob
+        echo "Hello world" | ./cli datastore --uri "file://results?populationSize=100&seed=1#greeting --set"
+
+        # Get blob
+        ./cli datastore --uri "file://results?populationSize=100&seed=1#result" --get
+        # end-example:datastore
+
+        # begin-example:datastore-server
+        # Start server
+        ./cli datastore --uri "file://results" --server &
+
+        # Request the contents of a container
+        curl "127.0.0.1:8080/results?populationSize=100&seed=1"
+
+        # Request the contents of a blob
+        curl "127.0.0.1:8080/results?populationSize=100&seed=1&__name=greeting"
+        # end-example:datastore-server
+
+        pid=$(ps | grep "org.moeaframework.analysis.tools.Main datastore" | grep -v "grep" | awk '{print $1}')
+        kill -9 "$pid""
     - name: Test CLI (init --shell bash)
       if: runner.os == 'Linux'
       run: |

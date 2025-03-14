@@ -36,6 +36,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.moeaframework.analysis.store.Blob;
@@ -334,6 +335,7 @@ public class FileSystemDataStore implements DataStore {
 				try (Stream<Path> stream = Files.walk(container, 1)) {
 					return stream
 							.skip(1)
+							.filter(Predicate.not(Files::isDirectory))
 							.map(x -> x.getFileName().toString())
 							.filter(x -> x.charAt(0) != '.')
 							.map(this::getBlob)

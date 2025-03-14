@@ -20,6 +20,7 @@ package org.moeaframework.analysis.tools;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Path;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -30,6 +31,7 @@ import org.moeaframework.analysis.store.Container;
 import org.moeaframework.analysis.store.DataStore;
 import org.moeaframework.analysis.store.DataStoreFactory;
 import org.moeaframework.analysis.store.DataStoreURI;
+import org.moeaframework.analysis.store.http.DataStoreHttpServer;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.cli.CommandLineUtility;
 
@@ -48,6 +50,9 @@ public class DataStoreTool extends CommandLineUtility {
 		
 		OptionGroup operationGroup = new OptionGroup();
 		operationGroup.addOption(Option.builder()
+				.longOpt("type")
+				.build());
+		operationGroup.addOption(Option.builder()
 				.longOpt("list")
 				.build());
 		operationGroup.addOption(Option.builder()
@@ -58,6 +63,9 @@ public class DataStoreTool extends CommandLineUtility {
 				.build());
 		operationGroup.addOption(Option.builder()
 				.longOpt("delete")
+				.build());
+		operationGroup.addOption(Option.builder()
+				.longOpt("server")
 				.build());
 				
 		options.addOptionGroup(operationGroup);
@@ -91,7 +99,15 @@ public class DataStoreTool extends CommandLineUtility {
 		try (PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
 			DataStoreURI dsUri = DataStoreURI.parse(commandLine.getOptionValue("uri"));
 
-			if (commandLine.hasOption("list")) {
+			if (commandLine.hasOption("type")) {
+				if (dsUri.getFragment() != null && !dsUri.getFragment().isBlank()) {
+					output.println("blob");
+				} else if (!dsUri.getQuery().isEmpty()) {
+					output.println("container");
+				} else {
+					output.println("datastore");
+				}
+			} else if (commandLine.hasOption("list")) {
 				if (dsUri.getFragment() != null && !dsUri.getFragment().isBlank()) {
 					throw new FrameworkException("--list can only be used with a URI referencing a data store or container");
 				} else if (!dsUri.getQuery().isEmpty()) {
@@ -152,8 +168,21 @@ public class DataStoreTool extends CommandLineUtility {
 						blob.storeFrom(System.in);
 					}
 				}
+			} else if (commandLine.hasOption("server")) {
+				DataStore dataStore = DataStoreFactory.getInstance().getDataStore(dsUri.getURI());
+				String path = null;
+				
+				if (commandLine.getArgs().length >= 1) {
+					path = commandLine.getArgs()[0];
+				} else {
+					path = Path.of(".").relativize(dsUri.getPath()).toString();
+				}
+				
+				DataStoreHttpServer server = new DataStoreHttpServer(dataStore, path);
+				server.registerShutdownHook();
+				server.start();
 			} else {
-				throw new FrameworkException("Unknown operation, pick one of --list, --get, or --set");
+				throw new FrameworkException("Unknown operation, see --help for available operations");
 			}
 		}
 	}

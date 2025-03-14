@@ -123,10 +123,13 @@ public class DataStoreSnippet {
 		Container container = dataStore.getContainer(reference);
 		Blob blob = container.getBlob("greeting");
 		
-		// begin-example: datastore-uri
+		// begin-example: datastore-geturi
 		URI uri = blob.getURI();
+		// end-example: datastore-geturi
+		
+		// begin-example: datastore-resolveuri
 		DataStoreFactory.getInstance().resolveBlob(uri);
-		// end-example: datastore-uri
+		// end-example: datastore-resolveuri
 	}
 	
 }

@@ -145,11 +145,10 @@ In the previous examples, we used accessed containers and blobs through the prog
 its contents can alternatively be referenced by a URI.  For instance, here we get the URI for a blob, then resolve that
 same blob using the URI:
 
-<!-- java:test/org/moeaframework/snippet/DataStoreSnippet.java [datastore-uri] -->
+<!-- java:test/org/moeaframework/snippet/DataStoreSnippet.java [datastore-geturi] -->
 
 ```java
 URI uri = blob.getURI();
-DataStoreFactory.getInstance().resolveBlob(uri);
 ```
 
 For the file system data store, the URI will look similar to:
@@ -161,14 +160,54 @@ file://results?populationSize=100&seed=1#result
 Observe how the query section specifies the key-value pairs and the fragment (the part after `#`) specifies the blob
 name.  We can also use these URIs to access the data store via the command line:
 
-```
+<!-- bash:.github/workflows/ci.yml [datastore] -->
+
+```bash
 # List contents of a container
 ./cli datastore --uri "file://results?populationSize=100&seed=1" --list
 
-# Get blob
-./cli datastore --uri "file://results?populationSize=100&seed=1#result" --get
-
 # Write to blob
 echo "Hello world" | ./cli datastore --uri "file://results?populationSize=100&seed=1#greeting --set"
+
+# Get blob
+./cli datastore --uri "file://results?populationSize=100&seed=1#result" --get
 ```
 
+Lastly, we can start a simple HTTP server that provides read-only access to the data store over a network:
+
+<!-- bash:.github/workflows/ci.yml [datastore-server] -->
+
+```bash
+# Start server
+./cli datastore --uri "file://results" --server &
+
+# Request the contents of a container
+curl "127.0.0.1:8080/results?populationSize=100&seed=1"
+
+# Request the contents of a blob
+curl "127.0.0.1:8080/results?populationSize=100&seed=1&__name=greeting"
+```
+
+Below we see the list of blobs in the container:
+
+```
+{
+   "type":"container",
+   "url":"\/results?populationSize=100&seed=1",
+   "reference":{
+      "populationSize":"100",
+      "seed":1
+   },
+   "blobs":[
+      {
+         "type":"blob",
+         "name":"greeting",
+         "url":"\/results?populationSize=100&seed=1&__name=greeting"
+      }
+   ]
+}
+```
+
+> [!WARNING]  
+> The HTTP server only supports unsecured connections.  Use caution when running the server on a publicly-accessible
+> network.
