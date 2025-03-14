@@ -56,7 +56,7 @@ public class DataStoreHttpServer {
 	 * Since HTTP requests do not include the {@code #fragment} portion of a URL, pass the blob name as a query
 	 * parameter.
 	 */
-	private static final String NAME_KEY = "__name";
+	private static final String NAME_KEY = "_name";
 	
 	/**
 	 * Shutdown delay to allow any active requests to finish.

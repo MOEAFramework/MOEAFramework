@@ -63,19 +63,19 @@ public class DataStoreHttpServerTest {
 			// Requests should 404 if no data store is configured
 			Assert.assertNull(get("http://localhost:8080/test"));
 			Assert.assertNull(get("http://localhost:8080/test?foo=bar"));
-			Assert.assertNull(get("http://localhost:8080/test?foo=bar&__name=baz"));
+			Assert.assertNull(get("http://localhost:8080/test?foo=bar&_name=baz"));
 			
 			// Register data store
 			server.configure("test", dataStore);
 						
 			Assert.assertEquals(
-					"{\"type\":\"container\",\"url\":\"\\/test?foo=bar\",\"reference\":{\"foo\":\"bar\"},\"blobs\":[{\"type\":\"blob\",\"name\":\"baz\",\"url\":\"\\/test?foo=bar&__name=baz\"}]}",
+					"{\"type\":\"container\",\"url\":\"\\/test?foo=bar\",\"reference\":{\"foo\":\"bar\"},\"blobs\":[{\"type\":\"blob\",\"name\":\"baz\",\"url\":\"\\/test?foo=bar&_name=baz\"}]}",
 					get("http://localhost:8080/test?foo=bar"));
 			
-			Assert.assertEquals("Hello world!", get("http://localhost:8080/test?foo=bar&__name=baz"));
+			Assert.assertEquals("Hello world!", get("http://localhost:8080/test?foo=bar&_name=baz"));
 			
 			Assert.assertNull(get("http://localhost:8080/test?foo=missing"));
-			Assert.assertNull(get("http://localhost:8080/test?foo=bar&__name=missing"));
+			Assert.assertNull(get("http://localhost:8080/test?foo=bar&_name=missing"));
 		} finally {
 			server.shutdown();
 		}

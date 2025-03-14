@@ -194,7 +194,7 @@ Configured data store at 127.0.0.1:8080/results
 ```
 
 We can then query the contents using `curl` or through a browser.  Note we pass the blob name as the query parameter
-`__name`.
+`_name`.
 
 ```bash
 # Check if the server is running
@@ -204,7 +204,7 @@ curl "127.0.0.1:8080/_health
 curl "127.0.0.1:8080/results?populationSize=100&seed=1"
 
 # Request the contents of a blob
-curl "127.0.0.1:8080/results?populationSize=100&seed=1&__name=greeting"
+curl "127.0.0.1:8080/results?populationSize=100&seed=1&_name=greeting"
 ```
 
 When listing the contents of a data store or container, JSON text is returned.  For example, here is the output from
@@ -222,7 +222,7 @@ a container:
       {
          "type":"blob",
          "name":"greeting",
-         "url":"\/results?populationSize=100&seed=1&__name=greeting"
+         "url":"\/results?populationSize=100&seed=1&_name=greeting"
       }
    ]
 }
