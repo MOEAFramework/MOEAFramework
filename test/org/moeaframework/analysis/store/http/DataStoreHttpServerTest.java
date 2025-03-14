@@ -59,17 +59,16 @@ public class DataStoreHttpServerTest {
 			server.start();
 			assertStart();
 			
-			Assert.assertEquals(
-					"OK",
-					get("http://localhost:8080/_health"));
+			Assert.assertEquals("OK", get("http://localhost:8080/_health"));
 						
 			Assert.assertEquals(
 					"{\"type\":\"container\",\"url\":\"\\/test?foo=bar\",\"reference\":{\"foo\":\"bar\"},\"blobs\":[{\"type\":\"blob\",\"name\":\"baz\",\"url\":\"\\/test?foo=bar&__name=baz\"}]}",
 					get("http://localhost:8080/test?foo=bar"));
 			
-			Assert.assertEquals(
-					"Hello world!",
-					get("http://localhost:8080/test?foo=bar&__name=baz"));
+			Assert.assertEquals("Hello world!", get("http://localhost:8080/test?foo=bar&__name=baz"));
+			
+			Assert.assertNull(get("http://localhost:8080/test?foo=missing"));
+			Assert.assertNull(get("http://localhost:8080/test?foo=bar&__name=missing"));
 		} finally {
 			server.shutdown();
 		}
@@ -119,12 +118,16 @@ public class DataStoreHttpServerTest {
 			connection.setReadTimeout(DurationUtils.toMillisInt(TIMEOUT));
 			
 			connection.connect();
-			
-			Assert.assertEquals(200, connection.getResponseCode());
 
-			try (InputStream in = connection.getInputStream()) {
-				return new String(in.readAllBytes(), StandardCharsets.UTF_8);
+			if (connection.getResponseCode() == 200) {
+				try (InputStream in = connection.getInputStream()) {
+					return new String(in.readAllBytes(), StandardCharsets.UTF_8);
+				}
+			} else if (connection.getResponseCode() != 404) {
+				Assert.fail("Unexpected response status " + connection.getResponseCode());
 			}
+			
+			return null;
 		} finally {
 			if (connection != null) {
 				connection.disconnect();

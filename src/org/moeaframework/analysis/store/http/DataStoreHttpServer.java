@@ -120,6 +120,7 @@ public class DataStoreHttpServer {
 			this.requestId = UUID.randomUUID();
 			exchange.getResponseHeaders().add("REQUEST_ID", requestId.toString());
 			
+			info("Start request from " + exchange.getRemoteAddress().getHostString());
 			info(exchange.getRequestMethod() + " " + exchange.getRequestURI());
 		}
 
@@ -141,7 +142,8 @@ public class DataStoreHttpServer {
 			exchange.sendResponseHeaders(code, EMPTY_RESPONSE);
 			exchange.close();
 			
-			info("FAIL (" + code + ")");
+			info("Status code " + code);
+			info("End request");
 		}
 		
 		public void setFileName(String filename) {
@@ -155,7 +157,7 @@ public class DataStoreHttpServer {
 		public HttpOutputStream beginResponse(int code, String contentType) throws IOException {
 			Validate.that("code", code).isBetween(200, 299);
 			
-			info("Begin response");
+			info("Status code " + code);
 			
 			exchange.getResponseHeaders().add("Content-Type",
 					contentType != null ? contentType : "application/octet-stream");
@@ -189,7 +191,7 @@ public class DataStoreHttpServer {
 		@Override
 		public void close() throws IOException {
 			super.close();
-			context.info("End response");
+			context.info("End request");
 		}
 		
 	}
