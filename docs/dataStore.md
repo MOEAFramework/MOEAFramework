@@ -180,7 +180,13 @@ Lastly, we can start a simple HTTP server that provides read-only access to the 
 ```bash
 # Start server
 ./cli datastore --uri "file://results" --server &
+```
 
+We can then query the contents of containers or blobs:
+
+<!-- bash:.github/workflows/ci.yml [datastore-query] -->
+
+```bash
 # Request the contents of a container
 curl "127.0.0.1:8080/results?populationSize=100&seed=1"
 
@@ -188,7 +194,7 @@ curl "127.0.0.1:8080/results?populationSize=100&seed=1"
 curl "127.0.0.1:8080/results?populationSize=100&seed=1&__name=greeting"
 ```
 
-Below we see the list of blobs in the container:
+For instance, the container contents are returned as JSON:
 
 ```
 {
