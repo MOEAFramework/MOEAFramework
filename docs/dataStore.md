@@ -170,7 +170,7 @@ name.  We can also use these URIs to access the data store via the command line:
 echo "Hello world" | ./cli datastore --uri "file://results?populationSize=100&seed=1#greeting" --set
 
 # Get blob
-./cli datastore --uri "file://results?populationSize=100&seed=1#result" --get
+./cli datastore --uri "file://results?populationSize=100&seed=1#greeting" --get
 ```
 
 Lastly, we can start a simple HTTP server that provides read-only access to the data store over a network:

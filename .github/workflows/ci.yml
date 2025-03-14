@@ -203,7 +203,7 @@ jobs:
         echo "Hello world" | ./cli datastore --uri "file://results?populationSize=100&seed=1#greeting" --set
 
         # Get blob
-        ./cli datastore --uri "file://results?populationSize=100&seed=1#result" --get
+        ./cli datastore --uri "file://results?populationSize=100&seed=1#greeting" --get
         # end-example:datastore
 
         # begin-example:datastore-server
