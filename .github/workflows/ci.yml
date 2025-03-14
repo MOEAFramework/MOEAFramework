@@ -194,7 +194,9 @@ jobs:
         ./cli solve --problem DTLZ2 --algorithm NSGAII --numberOfEvaluations 10000 --output NSGAII_DTLZ2_Runtime.txt
         ./cli calc --problem DTLZ2 --indicator hypervolume NSGAII_DTLZ2_Runtime.txt
         # end-example:cli-solve
-
+    - name: Test CLI DataStore
+      if: runner.os == 'Linux'
+      run: |
         # begin-example:datastore
         # List contents of a container
         ./cli datastore --uri "file://results?populationSize=100&seed=1" --list
