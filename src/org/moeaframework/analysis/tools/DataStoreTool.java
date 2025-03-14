@@ -85,6 +85,9 @@ public class DataStoreTool extends CommandLineUtility {
 				.hasArg()
 				.argName("file")
 				.build());
+		options.addOption(Option.builder("j")
+				.longOpt("json")
+				.build());
 		options.addOption(Option.builder("y")
 				.longOpt("yes")
 				.build());
@@ -113,14 +116,22 @@ public class DataStoreTool extends CommandLineUtility {
 				} else if (!dsUri.getReference().isRoot()) {
 					Container container = DataStoreFactory.getInstance().resolveContainer(dsUri.getURI());
 					
-					for (Blob blob : container.listBlobs()) {
-						output.println(blob.getURI());
+					if (commandLine.hasOption("json")) {
+						output.println(container.toJSON(container.getDataStore().getURI()));
+					} else {
+						for (Blob blob : container.listBlobs()) {
+							output.println(blob.getURI());
+						}
 					}
 				} else {
 					DataStore dataStore = DataStoreFactory.getInstance().getDataStore(dsUri.getURI());
 				
-					for (Container container : dataStore.listContainers()) {
-						output.println(container.getURI());
+					if (commandLine.hasOption("json")) {
+						output.println(dataStore.toJSON(dataStore.getURI()));
+					} else {
+						for (Container container : dataStore.listContainers()) {
+							output.println(container.getURI());
+						}
 					}
 				}
 			} else if (commandLine.hasOption("delete")) {

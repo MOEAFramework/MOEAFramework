@@ -20,25 +20,29 @@ package org.moeaframework.analysis.store;
 import java.net.URI;
 import java.util.List;
 
+import org.apache.commons.text.StringEscapeUtils;
+import org.moeaframework.util.Iterators;
+import org.moeaframework.util.Iterators.IndexedValue;
+
 /**
  * A container of blobs.
  */
 public interface Container {
-	
+
 	/**
 	 * Gets the data store managing this container.
 	 * 
 	 * @return the data store
 	 */
 	DataStore getDataStore();
-	
+
 	/**
 	 * Gets the reference for this container.
 	 * 
 	 * @return the reference
 	 */
 	Reference getReference();
-	
+
 	/**
 	 * Gets a reference to a blob with the given name.
 	 * 
@@ -46,7 +50,7 @@ public interface Container {
 	 * @return the blob reference
 	 */
 	Blob getBlob(String name);
-	
+
 	/**
 	 * Creates the underlying, physical container.  Containers are automatically created when writing a blob, so
 	 * an explicit call to create the container is not required.
@@ -54,7 +58,7 @@ public interface Container {
 	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
 	void create() throws DataStoreException;
-	
+
 	/**
 	 * Returns {@code true} if the underlying, physical container exists.
 	 * 
@@ -62,7 +66,7 @@ public interface Container {
 	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
 	boolean exists() throws DataStoreException;
-	
+
 	/**
 	 * Returns all blobs stored in this container.
 	 * 
@@ -70,7 +74,7 @@ public interface Container {
 	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
 	List<Blob> listBlobs() throws DataStoreException;
-	
+
 	/**
 	 * Returns {@code true} if the blob identified by this name exists within this container.
 	 * 
@@ -81,7 +85,7 @@ public interface Container {
 	public default boolean contains(String name) throws DataStoreException {
 		return getBlob(name).exists();
 	}
-	
+
 	/**
 	 * Returns the URI for this container, which can be used with
 	 * {@link DataStoreFactory#resolveContainer(java.net.URI)}.
@@ -90,6 +94,68 @@ public interface Container {
 	 */
 	public default URI getURI() {
 		return DataStoreURI.resolve(this);
+	}
+	
+	/**
+	 * Returns the contents of this container formatted as JSON.
+	 * 
+	 * @return the JSON string
+	 */
+	public default String toJSON() {
+		return toJSON(getDataStore().getURI());
+	}
+
+	/**
+	 * Returns the contents of this container formatted as JSON.
+	 * 
+	 * @param baseURI the base URI, which is used to produce URLs
+	 * @return the JSON string
+	 */
+	default String toJSON(URI baseURI) {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("{");
+		sb.append("\"type\":\"container\",");
+		sb.append("\"url\":\"");
+		sb.append(StringEscapeUtils.escapeJson(DataStoreURI.resolve(baseURI, this).toString()));
+		sb.append("\",");
+		sb.append("\"reference\":{");
+
+		for (IndexedValue<String> field : Iterators.enumerate(getReference().fields())) {
+			if (field.getIndex() > 0) {
+				sb.append(",");
+			}
+
+			sb.append("\"");
+			sb.append(StringEscapeUtils.escapeJson(field.getValue()));
+			sb.append("\":\"");
+			sb.append(StringEscapeUtils.escapeJson(getReference().get(field.getValue())));
+			sb.append("\"");
+		}
+
+		sb.append("},");
+		sb.append("\"blobs\":[");
+
+		for (IndexedValue<Blob> blob : Iterators.enumerate(listBlobs())) {
+			if (blob.getIndex() > 0) {
+				sb.append(",");
+			}
+
+			sb.append("{");
+			sb.append("\"type\":\"blob\",");
+			sb.append("\"name\":\"");
+			sb.append(StringEscapeUtils.escapeJson(blob.getValue().getName()));
+			sb.append("\",");
+			sb.append("\"url\":\"");
+			sb.append(StringEscapeUtils.escapeJson(DataStoreURI.resolve(baseURI, blob.getValue()).toString()));
+			sb.append("\"");
+			sb.append("}");
+		}
+
+		sb.append("]");
+		sb.append("}");
+		
+		return sb.toString();
 	}
 
 }

@@ -239,7 +239,10 @@ public class DataStoreURI implements Displayable {
 	 * @return the URI
 	 */
 	public static URI resolve(Container container) {
-		URI baseUri = container.getDataStore().getURI();
+		return resolve(container.getDataStore().getURI(), container);
+	}
+	
+	static URI resolve(URI baseURI, Container container) {
 		Reference reference = container.getReference();
 		StringBuilder sb = new StringBuilder();
 		
@@ -254,7 +257,7 @@ public class DataStoreURI implements Displayable {
 		}
 		
 		try {
-			return new URI(baseUri.getScheme(), baseUri.getAuthority(), baseUri.getPath(), sb.toString(), null);
+			return new URI(baseURI.getScheme(), baseURI.getAuthority(), baseURI.getPath(), sb.toString(), null);
 		} catch (URISyntaxException e) {
 			throw new DataStoreException("Invalid URI syntax for data store container", e);
 		}
@@ -267,7 +270,11 @@ public class DataStoreURI implements Displayable {
 	 * @return the URI
 	 */
 	public static URI resolve(Blob blob) {
-		URI containerUri = resolve(blob.getContainer());
+		return resolve(blob.getContainer().getDataStore().getURI(), blob);
+	}
+	
+	static URI resolve(URI baseURI, Blob blob) {
+		URI containerUri = resolve(baseURI, blob.getContainer());
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append(containerUri.getQuery() != null ? containerUri.getQuery() : "");

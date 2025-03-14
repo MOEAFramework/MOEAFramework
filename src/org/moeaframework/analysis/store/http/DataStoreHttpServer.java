@@ -22,20 +22,16 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-import org.apache.commons.text.StringEscapeUtils;
 import org.moeaframework.analysis.store.Blob;
 import org.moeaframework.analysis.store.Container;
 import org.moeaframework.analysis.store.DataStore;
 import org.moeaframework.analysis.store.DataStoreURI;
 import org.moeaframework.analysis.store.Reference;
-import org.moeaframework.util.Iterators;
-import org.moeaframework.util.Iterators.IndexedValue;
 import org.moeaframework.util.io.OutputHandler;
 import org.moeaframework.util.validate.Validate;
 
@@ -260,133 +256,19 @@ public class DataStoreHttpServer {
 					
 					if (container.exists()) {
 						try (PrintWriter out = new PrintWriter(ctx.beginResponse(200, "application/json"))) {
-							out.print("{");
-							out.print("\"type\":\"container\",");
-							out.print("\"url\":\"");
-							out.print(StringEscapeUtils.escapeJson(toURL(exchange.getRequestURI(), container)));
-							out.print("\",");
-							out.print("\"reference\":{");
-							
-							for (IndexedValue<String> field : Iterators.enumerate(container.getReference().fields())) {
-								if (field.getIndex() > 0) {
-									out.print(",");
-								}
-								
-								out.print("\"");
-								out.print(StringEscapeUtils.escapeJson(field.getValue()));
-								out.print("\":\"");
-								out.print(StringEscapeUtils.escapeJson(container.getReference().get(field.getValue())));
-								out.print("\"");
-							}
-							
-							out.print("},");
-							out.print("\"blobs\":[");
-							
-							for (IndexedValue<Blob> blob : Iterators.enumerate(container.listBlobs())) {
-								if (blob.getIndex() > 0) {
-									out.print(",");
-								}
-								
-								out.print("{");
-								out.print("\"type\":\"blob\",");
-								out.print("\"name\":\"");
-								out.print(StringEscapeUtils.escapeJson(blob.getValue().getName()));
-								out.print("\",");
-								out.print("\"url\":\"");
-								out.print(StringEscapeUtils.escapeJson(toURL(exchange.getRequestURI(), blob.getValue())));
-								out.print("\"");
-								out.print("}");
-							}
-							
-							out.print("]");
-							out.print("}");
+							out.println(container.toJSON(exchange.getRequestURI()));
 						}
 					} else {
 						ctx.fail(404);
 					}
 				} else {					
 					try (PrintWriter out = new PrintWriter(ctx.beginResponse(200, "application/json"))) {
-						out.print("{");
-						out.print("\"type\":\"datastore\",");
-						out.print("\"url\":\"");
-						out.print(StringEscapeUtils.escapeJson(exchange.getRequestURI().getPath()));
-						out.print("\",");
-						out.print("\"blobs\":[");
-						
-						for (IndexedValue<Blob> blob : Iterators.enumerate(dataStore.getRootContainer().listBlobs())) {
-							if (blob.getIndex() > 0) {
-								out.print(",");
-							}
-							
-							out.print("{");
-							out.print("\"type\":\"blob\",");
-							out.print("\"name\":\"");
-							out.print(StringEscapeUtils.escapeJson(blob.getValue().getName()));
-							out.print("\",");
-							out.print("\"url\":\"");
-							out.print(StringEscapeUtils.escapeJson(toURL(exchange.getRequestURI(), blob.getValue())));
-							out.print("\"");
-							out.print("}");
-						}
-						
-						out.print("],");
-						out.print("\"containers\":[");
-						
-						for (IndexedValue<Container> container : Iterators.enumerate(dataStore.listContainers())) {
-							if (container.getIndex() > 0) {
-								out.print(",");
-							}
-							
-							out.print("{");
-							out.print("\"type\":\"container\",");
-							out.print("\"url\":\"");
-							out.print(StringEscapeUtils.escapeJson(toURL(exchange.getRequestURI(), container.getValue())));
-							out.print("\",");
-							out.print("\"reference\":{");
-							
-							for (IndexedValue<String> field : Iterators.enumerate(container.getValue().getReference().fields())) {
-								if (field.getIndex() > 0) {
-									out.print(",");
-								}
-								
-								out.print("\"");
-								out.print(StringEscapeUtils.escapeJson(field.getValue()));
-								out.print("\":\"");
-								out.print(StringEscapeUtils.escapeJson(container.getValue().getReference().get(field.getValue())));
-								out.print("\"");
-							}
-							
-							out.print("}");
-							out.print("}");
-						}
-						
-						out.print("]");
-						out.print("}");
+						out.println(dataStore.toJSON(exchange.getRequestURI()));
 					}
 				}
 			}
 			
 			ctx.fail(500);
-		}
-		
-		private String toURL(URI requestUri, Container container) {
-			StringBuilder sb = new StringBuilder();
-			sb.append(requestUri.getPath());
-			
-			if (!container.getReference().isRoot()) {
-				sb.append("?");
-				sb.append(container.getURI().getQuery());
-			}
-			
-			return sb.toString();
-		}
-		
-		private String toURL(URI requestUri, Blob blob) {
-			StringBuilder sb = new StringBuilder();
-			sb.append(requestUri.getPath());
-			sb.append("?");
-			sb.append(blob.getURI().getQuery());
-			return sb.toString();
 		}
 		
 	}

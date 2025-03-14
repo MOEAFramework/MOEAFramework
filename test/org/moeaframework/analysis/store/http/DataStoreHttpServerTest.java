@@ -69,11 +69,12 @@ public class DataStoreHttpServerTest {
 			server.configure("test", dataStore);
 						
 			Assert.assertEquals(
-					"{\"type\":\"container\",\"url\":\"\\/test?foo=bar\",\"reference\":{\"foo\":\"bar\"},\"blobs\":[{\"type\":\"blob\",\"name\":\"baz\",\"url\":\"\\/test?foo=bar&_name=baz\"}]}",
+					"{\"type\":\"container\",\"url\":\"\\/test?foo=bar\",\"reference\":{\"foo\":\"bar\"},\"blobs\":[{\"type\":\"blob\",\"name\":\"baz\",\"url\":\"\\/test?foo=bar&_name=baz\"}]}" + System.lineSeparator(),
 					get("http://localhost:8080/test?foo=bar"));
 			
 			Assert.assertEquals("Hello world!", get("http://localhost:8080/test?foo=bar&_name=baz"));
 			
+			Assert.assertNull(get("http://localhost:8080/missing"));
 			Assert.assertNull(get("http://localhost:8080/test?foo=missing"));
 			Assert.assertNull(get("http://localhost:8080/test?foo=bar&_name=missing"));
 		} finally {
