@@ -27,7 +27,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 
-import org.apache.commons.lang3.time.DurationUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.junit.Test;
 import org.moeaframework.Assert;
@@ -37,6 +36,7 @@ import org.moeaframework.analysis.store.Container;
 import org.moeaframework.analysis.store.DataStore;
 import org.moeaframework.analysis.store.Reference;
 import org.moeaframework.analysis.store.fs.FileSystemDataStore;
+import org.moeaframework.util.DurationUtils;
 
 public class DataStoreHttpServerTest {
 	
@@ -121,8 +121,8 @@ public class DataStoreHttpServerTest {
 			URL url = URI.create(path).toURL();
 			connection = (HttpURLConnection)url.openConnection();
 			connection.setRequestMethod("GET");
-			connection.setConnectTimeout(DurationUtils.toMillisInt(TIMEOUT));
-			connection.setReadTimeout(DurationUtils.toMillisInt(TIMEOUT));
+			connection.setConnectTimeout((int)(DurationUtils.toMilliseconds(TIMEOUT)));
+			connection.setReadTimeout((int)(DurationUtils.toMilliseconds(TIMEOUT)));
 			
 			connection.connect();
 

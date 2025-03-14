@@ -24,6 +24,7 @@ import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -44,20 +45,23 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 /**
- * Provides read-only HTTP access to data stores.  Note that this uses unsecured HTTP connections and is only intended
- * for debugging and testing purposes.
+ * Provides read-only HTTP access to data stores.
+ * <p>
+ * <strong>This server uses unsecured HTTP connections.</strong>  Use caution when running on a publicly-accessible
+ * network.  This is primarily intended for testing and debugging purposes.
  */
 public class DataStoreHttpServer {
 	
 	/**
-	 * Since HTTP requests do not include the {@code #fragment} portion of a URL, pass it instead as part of the query.
+	 * Since HTTP requests do not include the {@code #fragment} portion of a URL, pass the blob name as a query
+	 * parameter.
 	 */
 	private static final String NAME_KEY = "__name";
 	
 	/**
-	 * Shutdown delay, in seconds, to allow any active requests to finish.
+	 * Shutdown delay to allow any active requests to finish.
 	 */
-	private static final int SHUTDOWN_DELAY = 1;
+	private static final Duration SHUTDOWN_DELAY = Duration.ofSeconds(1);
 		
 	private final Logger logger;
 			
@@ -69,11 +73,21 @@ public class DataStoreHttpServer {
 	 * @throws IOException if an error occurred starting the server, such as {@link java.net.BindException}
 	 */
 	public DataStoreHttpServer() throws IOException {
+		this(new InetSocketAddress("localhost", 8080));
+	}
+	
+	/**
+	 * Creates a new HTTP server to provide read-only access data stores.
+	 * 
+	 * @param address the socket address the server binds to
+	 * @throws IOException if an error occurred starting the server, such as {@link java.net.BindException}
+	 */
+	public DataStoreHttpServer(InetSocketAddress address) throws IOException {
 		super();
 		
 		logger = OutputHandler.getLogger(DataStoreHttpServer.class.getSimpleName());
 		
-		server = HttpServer.create(new InetSocketAddress("localhost", 8080), 0);
+		server = HttpServer.create(address, 0);
 		server.createContext("/_health", new HealthHttpHandler(logger));
 		
 		logger.info("Starting server!");
@@ -96,6 +110,9 @@ public class DataStoreHttpServer {
 		}
 				
 		server.createContext(path, new DataStoreHttpHandler(dataStore, logger));
+		
+		logger.info("Configured data store at " + server.getAddress().getHostString() + ":" +
+ 				server.getAddress().getPort() + path);
 	}
 	
 	/**
@@ -111,7 +128,7 @@ public class DataStoreHttpServer {
 	 */
 	public void shutdown() {
 		logger.info("Shutting down server!");
-		server.stop(SHUTDOWN_DELAY);
+		server.stop((int)(SHUTDOWN_DELAY.getSeconds()));
 	}
 	
 	private static class HttpRequestContext {

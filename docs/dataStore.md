@@ -190,7 +190,7 @@ The web server provides read-only access to the data store content.  First we st
 The logging output will show the base URL to use when accessing the web server:
 
 ```
-Server configured at 127.0.0.1:8080/results
+Configured data store at 127.0.0.1:8080/results
 ```
 
 We can then query the contents using `curl` or through a browser.  Note we pass the blob name as the query parameter
