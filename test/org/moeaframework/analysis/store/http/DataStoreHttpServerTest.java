@@ -53,13 +53,20 @@ public class DataStoreHttpServerTest {
 
 		blob.storeText("Hello world!");
 
-		DataStoreHttpServer server = new DataStoreHttpServer(dataStore, "/test");
+		DataStoreHttpServer server = new DataStoreHttpServer();
 
 		try {
-			server.start();
 			assertStart();
 			
 			Assert.assertEquals("OK", get("http://localhost:8080/_health"));
+			
+			// Requests should 404 if no data store is configured
+			Assert.assertNull(get("http://localhost:8080/test"));
+			Assert.assertNull(get("http://localhost:8080/test?foo=bar"));
+			Assert.assertNull(get("http://localhost:8080/test?foo=bar&__name=baz"));
+			
+			// Register data store
+			server.configure("test", dataStore);
 						
 			Assert.assertEquals(
 					"{\"type\":\"container\",\"url\":\"\\/test?foo=bar\",\"reference\":{\"foo\":\"bar\"},\"blobs\":[{\"type\":\"blob\",\"name\":\"baz\",\"url\":\"\\/test?foo=bar&__name=baz\"}]}",

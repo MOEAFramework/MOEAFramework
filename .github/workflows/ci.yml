@@ -197,6 +197,8 @@ jobs:
     - name: Test CLI DataStore
       if: runner.os == 'Linux'
       run: |
+        cd build/MOEAFramework-*
+
         # begin-example:datastore
         # List contents of a container
         ./cli datastore --uri "file://results?populationSize=100&seed=1" --list

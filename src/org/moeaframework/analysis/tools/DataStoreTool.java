@@ -178,9 +178,9 @@ public class DataStoreTool extends CommandLineUtility {
 					path = Path.of(".").relativize(dsUri.getPath()).toString();
 				}
 				
-				DataStoreHttpServer server = new DataStoreHttpServer(dataStore, path);
+				DataStoreHttpServer server = new DataStoreHttpServer();
 				server.registerShutdownHook();
-				server.start();
+				server.configure(path, dataStore);
 			} else {
 				throw new FrameworkException("Unknown operation, see --help for available operations");
 			}

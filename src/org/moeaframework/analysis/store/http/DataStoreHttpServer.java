@@ -44,7 +44,7 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 /**
- * Provides read-only HTTP access to a data store.  Note that this uses unsecured HTTP connections and is only intended
+ * Provides read-only HTTP access to data stores.  Note that this uses unsecured HTTP connections and is only intended
  * for debugging and testing purposes.
  */
 public class DataStoreHttpServer {
@@ -60,41 +60,55 @@ public class DataStoreHttpServer {
 	private static final int SHUTDOWN_DELAY = 1;
 		
 	private final Logger logger;
-	
-	private final DataStore dataStore;
-		
+			
 	private final HttpServer server;
 	
-	public DataStoreHttpServer(DataStore dataStore, String path) throws IOException {
+	/**
+	 * Creates a new HTTP server to provide read-only access data stores.
+	 * 
+	 * @throws IOException if an error occurred starting the server, such as {@link java.net.BindException}
+	 */
+	public DataStoreHttpServer() throws IOException {
 		super();
-		this.dataStore = dataStore;
 		
-		if (path.equalsIgnoreCase("_health")) {
-			throw new IllegalArgumentException("_health is a reserved endpoint, try with a different path");
-		}
-		
-		// normalize path
-		path = path.replace('\\', '/');
-		path = (path.startsWith("/") ? "" : "/") + path;
-				
 		logger = OutputHandler.getLogger(DataStoreHttpServer.class.getSimpleName());
-		server = HttpServer.create(new InetSocketAddress("localhost", 8080), 0);
-		server.createContext(path, new DataStoreHttpHandler());
-		server.createContext("/_health", new HealthHttpHandler());
 		
-		logger.info("Server configured at " + server.getAddress().getHostString() + ":" +
-				server.getAddress().getPort() + path);
-	}
-
-	public void start() throws IOException {
+		server = HttpServer.create(new InetSocketAddress("localhost", 8080), 0);
+		server.createContext("/_health", new HealthHttpHandler(logger));
+		
 		logger.info("Starting server!");
 		server.start();
 	}
 	
+	/**
+	 * Associates the given URI path with the data store.
+	 * 
+	 * @param path the URI path that directs requests to this data store
+	 * @param dataStore the data store
+	 */
+	public void configure(String path, DataStore dataStore) {
+		// normalize path
+		path = path.replace('\\', '/');
+		path = (path.startsWith("/") ? "" : "/") + path;
+		
+		if (path.equalsIgnoreCase("_health")) {
+			throw new IllegalArgumentException("_health is a reserved endpoint, try with a different path");
+		}
+				
+		server.createContext(path, new DataStoreHttpHandler(dataStore, logger));
+	}
+	
+	/**
+	 * Registers a shutdown hook to stop this server when the JVM shuts down.
+	 */
 	public void registerShutdownHook() {
 		Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
 	}
 	
+	/**
+	 * Shuts down this HTTP server.  This should either be called explicitly when the server is not longer in use, or
+	 * by {@link #registerShutdownHook()}.
+	 */
 	public void shutdown() {
 		logger.info("Shutting down server!");
 		server.stop(SHUTDOWN_DELAY);
@@ -196,10 +210,16 @@ public class DataStoreHttpServer {
 		
 	}
 
-	private class DataStoreHttpHandler implements HttpHandler {
+	private static class DataStoreHttpHandler implements HttpHandler {
+		
+		private final DataStore dataStore;
+		
+		private final Logger logger;
 				
-		public DataStoreHttpHandler() {
+		public DataStoreHttpHandler(DataStore dataStore, Logger logger) {
 			super();
+			this.dataStore = dataStore;
+			this.logger = logger;
 		}
 
 		public void handle(HttpExchange exchange) throws IOException {
@@ -378,10 +398,13 @@ public class DataStoreHttpServer {
 		
 	}
 	
-	private class HealthHttpHandler implements HttpHandler {
+	private static class HealthHttpHandler implements HttpHandler {
 		
-		public HealthHttpHandler() {
+		private final Logger logger;
+		
+		public HealthHttpHandler(Logger logger) {
 			super();
+			this.logger = logger;
 		}
 
 		public void handle(HttpExchange exchange) throws IOException {
