@@ -31,6 +31,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.apache.commons.io.output.CloseShieldOutputStream;
 import org.apache.commons.lang3.SystemUtils;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
@@ -331,7 +332,7 @@ public abstract class CommandLineUtility {
 	 * @return the writer
 	 */
 	protected PrintWriter createOutputWriter() {
-		return new PrintWriter(System.out);
+		return new PrintWriter(CloseShieldOutputStream.wrap(System.out));
 		
 	}
 	
@@ -356,7 +357,7 @@ public abstract class CommandLineUtility {
 	 * @throws FileNotFoundException if opening the file for writing failed
 	 */
 	protected PrintWriter createOutputWriter(File file) throws FileNotFoundException {
-		return file == null ? new PrintWriter(System.out) : new PrintWriter(file);
+		return file == null ? createOutputWriter() : new PrintWriter(file);
 	}
 
 }

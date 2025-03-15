@@ -27,11 +27,13 @@ import java.time.Duration;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.moeaframework.analysis.store.Blob;
 import org.moeaframework.analysis.store.Container;
 import org.moeaframework.analysis.store.DataStore;
 import org.moeaframework.analysis.store.DataStoreURI;
 import org.moeaframework.analysis.store.Reference;
+import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.io.OutputHandler;
 import org.moeaframework.util.validate.Validate;
 
@@ -139,7 +141,7 @@ public class DataStoreHttpServer {
 			
 			this.requestId = UUID.randomUUID();
 			exchange.getResponseHeaders().add("REQUEST_ID", requestId.toString());
-			
+						
 			info("Start request from " + exchange.getRemoteAddress().getHostString());
 			info(exchange.getRequestMethod() + " " + exchange.getRequestURI());
 		}
@@ -186,6 +188,10 @@ public class DataStoreHttpServer {
 			return new HttpOutputStream(this, exchange.getResponseBody());
 		}
 		
+		public void severe(String message) {
+			logger.info(requestId + ": " + message);
+		}
+		
 		public void info(String message) {
 			logger.info(requestId + ": " + message);
 		}
@@ -230,45 +236,51 @@ public class DataStoreHttpServer {
 
 		public void handle(HttpExchange exchange) throws IOException {
 			HttpRequestContext ctx = HttpRequestContext.begin(exchange, logger);
-			DataStoreURI dsUri = ctx.getDataStoreURI();			
 			
-			Reference reference = dsUri.getReference();
-			String blobName = dsUri.getName();
-
-			ctx.info("Reference=" + reference);
-			ctx.info("Name=" + blobName);
-			
-			if (ctx.isGet()) {
-				if (blobName != null) {
-					Blob blob = dataStore.getContainer(reference).getBlob(blobName);
-					
-					if (blob.exists()) {
-						ctx.setFileName(blobName);
+			try {
+				DataStoreURI dsUri = ctx.getDataStoreURI();			
+				
+				Reference reference = dsUri.getReference();
+				String blobName = dsUri.getName();
+	
+				ctx.info("Reference=" + reference);
+				ctx.info("Name=" + blobName);
+							
+				if (ctx.isGet()) {
+					if (blobName != null) {
+						Blob blob = dataStore.getContainer(reference).getBlob(blobName);
 						
-						try (OutputStream out = ctx.beginResponse(200)) {
-							blob.extractTo(out);
+						if (blob.exists()) {
+							ctx.setFileName(blobName);
+							
+							try (OutputStream out = ctx.beginResponse(200)) {
+								blob.extractTo(out);
+							}
+						} else {
+							ctx.fail(404);
 						}
-					} else {
-						ctx.fail(404);
-					}
-				} else if (!reference.isRoot()) {
-					Container container = dataStore.getContainer(reference);
-					
-					if (container.exists()) {
+					} else if (!reference.isRoot()) {
+						Container container = dataStore.getContainer(reference);
+						
+						if (container.exists()) {
+							try (PrintWriter out = new PrintWriter(ctx.beginResponse(200, "application/json"))) {
+								out.println(container.toJSON(exchange.getRequestURI()));
+							}
+						} else {
+							ctx.fail(404);
+						}
+					} else {					
 						try (PrintWriter out = new PrintWriter(ctx.beginResponse(200, "application/json"))) {
-							out.println(container.toJSON(exchange.getRequestURI()));
+							out.println(dataStore.toJSON(exchange.getRequestURI()));
 						}
-					} else {
-						ctx.fail(404);
 					}
-				} else {					
-					try (PrintWriter out = new PrintWriter(ctx.beginResponse(200, "application/json"))) {
-						out.println(dataStore.toJSON(exchange.getRequestURI()));
-					}
+				} else {
+					ctx.fail(400);
 				}
+			} catch (FrameworkException e) {
+				ctx.severe(ExceptionUtils.getStackTrace(e));
+				ctx.fail(500);
 			}
-			
-			ctx.fail(500);
 		}
 		
 	}

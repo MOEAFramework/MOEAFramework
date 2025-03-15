@@ -17,6 +17,8 @@
  */
 package org.moeaframework.examples.experiment;
 
+import java.io.File;
+
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.analysis.parameter.Enumeration;
 import org.moeaframework.analysis.parameter.Parameter;
@@ -47,7 +49,10 @@ public class ParameterSampleExample {
 		
 		// Enumerate the samples
 		ParameterSet parameters = new ParameterSet(populationSize, seed);
+		parameters.save(new File("parameters.txt"));
+		
 		Samples samples = parameters.enumerate();
+		samples.save(new File("samples.txt"));
 		
 		// Evaluate each sample
 		SampledResults<NondominatedPopulation> results = samples.evaluateAll(sample -> {
@@ -56,9 +61,10 @@ public class ParameterSampleExample {
 			NSGAII algorithm = new NSGAII(problem);
 			algorithm.applyConfiguration(sample);
 			algorithm.run(10000);
+			
 			return algorithm.getResult();
 		});
-												
+														
 		// Calculate the average hypervolume for population size
 		Hypervolume hypervolume = new Hypervolume(problem, NondominatedPopulation.load("./pf/DTLZ2.2D.pf"));
 
