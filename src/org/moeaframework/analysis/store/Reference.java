@@ -18,7 +18,9 @@
 package org.moeaframework.analysis.store;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.moeaframework.core.TypedProperties;
 
 /**
@@ -54,6 +56,17 @@ public interface Reference {
 	 */
 	public default boolean isRoot() {
 		return fields().isEmpty();
+	}
+	
+	/**
+	 * Returns this reference formatted as JSON.
+	 * 
+	 * @return the JSON representation
+	 */
+	public default String toJSON() {
+		return fields().stream()
+				.map(x -> "\"" + StringEscapeUtils.escapeJson(x) + "\":\"" + StringEscapeUtils.escapeJson(get(x)) + "\"")
+				.collect(Collectors.joining(",", "{", "}"));
 	}
 	
 	/**

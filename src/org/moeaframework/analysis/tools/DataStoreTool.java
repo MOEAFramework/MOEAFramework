@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Path;
+import java.util.stream.Stream;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -56,6 +57,9 @@ public class DataStoreTool extends CommandLineUtility {
 				.longOpt("list")
 				.build());
 		operationGroup.addOption(Option.builder()
+				.longOpt("details")
+				.build());
+		operationGroup.addOption(Option.builder()
 				.longOpt("get")
 				.build());
 		operationGroup.addOption(Option.builder()
@@ -85,9 +89,6 @@ public class DataStoreTool extends CommandLineUtility {
 				.hasArg()
 				.argName("file")
 				.build());
-		options.addOption(Option.builder("j")
-				.longOpt("json")
-				.build());
 		options.addOption(Option.builder("y")
 				.longOpt("yes")
 				.build());
@@ -112,27 +113,31 @@ public class DataStoreTool extends CommandLineUtility {
 				}
 			} else if (commandLine.hasOption("list")) {
 				if (dsUri.getName() != null && !dsUri.getName().isBlank()) {
-					throw new FrameworkException("--list can only be used with a URI referencing a data store or container");
+					Blob blob = DataStoreFactory.getInstance().resolveBlob(dsUri.getURI());
+					output.println(blob.getURI());
 				} else if (!dsUri.getReference().isRoot()) {
 					Container container = DataStoreFactory.getInstance().resolveContainer(dsUri.getURI());
 					
-					if (commandLine.hasOption("json")) {
-						output.println(container.toJSON(container.getDataStore().getURI()));
-					} else {
-						for (Blob blob : container.listBlobs()) {
-							output.println(blob.getURI());
-						}
+					try (Stream<Blob> stream = container.streamBlobs()) {
+						stream.forEach(x -> output.println(x.getURI()));
 					}
 				} else {
 					DataStore dataStore = DataStoreFactory.getInstance().getDataStore(dsUri.getURI());
 				
-					if (commandLine.hasOption("json")) {
-						output.println(dataStore.toJSON(dataStore.getURI()));
-					} else {
-						for (Container container : dataStore.listContainers()) {
-							output.println(container.getURI());
-						}
+					try (Stream<Container> stream = dataStore.streamContainers()) {
+						stream.forEach(x -> output.println(x.getURI()));
 					}
+				}
+			} else if (commandLine.hasOption("details")) {
+				if (dsUri.getName() != null && !dsUri.getName().isBlank()) {
+					Blob blob = DataStoreFactory.getInstance().resolveBlob(dsUri.getURI());
+					output.println(blob.toJSON());
+				} else if (!dsUri.getReference().isRoot()) {
+					Container container = DataStoreFactory.getInstance().resolveContainer(dsUri.getURI());
+					output.println(container.toJSON());
+				} else {
+					DataStore dataStore = DataStoreFactory.getInstance().getDataStore(dsUri.getURI());
+					output.println(dataStore.toJSON());
 				}
 			} else if (commandLine.hasOption("delete")) {
 				if (dsUri.getName() != null && !dsUri.getName().isBlank()) {
@@ -145,18 +150,14 @@ public class DataStoreTool extends CommandLineUtility {
 					Container container = DataStoreFactory.getInstance().resolveContainer(dsUri.getURI());
 
 					if (container.exists() && prompt("Are you sure you want to delete this container?")) {
-						for (Blob blob : container.listBlobs()) {
-							blob.delete();
-						}
+						container.delete();
 					}
 				} else {
 					if (prompt("Are you sure you want to delete the entire data store?")) {
 						DataStore dataStore = DataStoreFactory.getInstance().getDataStore(dsUri.getURI());
-					
-						for (Container container : dataStore.listContainers()) {
-							for (Blob blob : container.listBlobs()) {
-								blob.delete();
-							}
+						
+						try (Stream<Container> stream = dataStore.streamContainers()) {
+							stream.forEach(Container::delete);
 						}
 					}
 				}

@@ -19,10 +19,10 @@ package org.moeaframework.analysis.store;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.text.StringEscapeUtils;
-import org.moeaframework.util.Iterators;
-import org.moeaframework.util.Iterators.IndexedValue;
 
 /**
  * A container of blobs.
@@ -66,14 +66,34 @@ public interface Container {
 	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
 	boolean exists() throws DataStoreException;
+	
+	/**
+	 * Deletes this container if it exists, including all blobs contained within.
+	 * 
+	 * @return {@code true} if the container was deleted; {@code false} if the container does not exist
+	 * @throws DataStoreException if an error occurred accessing the data store
+	 */
+	boolean delete() throws DataStoreException;
 
+	/**
+	 * Returns a stream of all blobs stored in this container.  The caller must close the stream when finished.
+	 * 
+	 * @return a stream of blobs in this container
+	 * @throws DataStoreException if an error occurred accessing the data store
+	 */
+	Stream<Blob> streamBlobs() throws DataStoreException;
+	
 	/**
 	 * Returns all blobs stored in this container.
 	 * 
 	 * @return the blobs in this container
 	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	List<Blob> listBlobs() throws DataStoreException;
+	default List<Blob> listBlobs() throws DataStoreException {
+		try (Stream<Blob> stream = streamBlobs()) {
+			return stream.toList();
+		}
+	}
 
 	/**
 	 * Returns {@code true} if the blob identified by this name exists within this container.
@@ -104,7 +124,7 @@ public interface Container {
 	public default String toJSON() {
 		return toJSON(getDataStore().getURI());
 	}
-
+	
 	/**
 	 * Returns the contents of this container formatted as JSON.
 	 * 
@@ -112,47 +132,35 @@ public interface Container {
 	 * @return the JSON string
 	 */
 	default String toJSON(URI baseURI) {
+		return toJSON(baseURI, true);
+	}
+
+	/**
+	 * Returns the contents of this container formatted as JSON.
+	 * 
+	 * @param baseURI the base URI, which is used to produce URLs
+	 * @param includeBlobs when {@code true}, includes the details of blobs
+	 * @return the JSON string
+	 */
+	default String toJSON(URI baseURI, boolean includeBlobs) {
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append("{");
 		sb.append("\"type\":\"container\",");
-		sb.append("\"url\":\"");
+		sb.append("\"uri\":\"");
 		sb.append(StringEscapeUtils.escapeJson(DataStoreURI.resolve(baseURI, this).toString()));
 		sb.append("\",");
-		sb.append("\"reference\":{");
-
-		for (IndexedValue<String> field : Iterators.enumerate(getReference().fields())) {
-			if (field.getIndex() > 0) {
-				sb.append(",");
+		sb.append("\"reference\":");
+		sb.append(getReference().toJSON());
+		
+		if (includeBlobs) {
+			sb.append(",\"blobs\":");
+	
+			try (Stream<Blob> stream = streamBlobs()) {
+				sb.append(stream.map(x -> x.toJSON(baseURI)).collect(Collectors.joining(",", "[", "]")));
 			}
-
-			sb.append("\"");
-			sb.append(StringEscapeUtils.escapeJson(field.getValue()));
-			sb.append("\":\"");
-			sb.append(StringEscapeUtils.escapeJson(getReference().get(field.getValue())));
-			sb.append("\"");
 		}
 
-		sb.append("},");
-		sb.append("\"blobs\":[");
-
-		for (IndexedValue<Blob> blob : Iterators.enumerate(listBlobs())) {
-			if (blob.getIndex() > 0) {
-				sb.append(",");
-			}
-
-			sb.append("{");
-			sb.append("\"type\":\"blob\",");
-			sb.append("\"name\":\"");
-			sb.append(StringEscapeUtils.escapeJson(blob.getValue().getName()));
-			sb.append("\",");
-			sb.append("\"url\":\"");
-			sb.append(StringEscapeUtils.escapeJson(DataStoreURI.resolve(baseURI, blob.getValue()).toString()));
-			sb.append("\"");
-			sb.append("}");
-		}
-
-		sb.append("]");
 		sb.append("}");
 		
 		return sb.toString();

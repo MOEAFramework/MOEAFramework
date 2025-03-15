@@ -50,13 +50,13 @@ public class FileSystemDataStoreTest {
 	
 	@Test
 	public void test() {
-		Reference reference = Reference.of("foo", "bar");
+		Reference reference = Reference.of("a", "b");
 		Container container = dataStore.getContainer(reference);
 		
 		Assert.assertNotNull(container);
 		Assert.assertFalse(container.exists());
 		
-		Blob blob = container.getBlob("baz");
+		Blob blob = container.getBlob("c");
 		
 		Assert.assertNotNull(blob);
 		Assert.assertFalse(blob.exists());
@@ -69,7 +69,24 @@ public class FileSystemDataStoreTest {
 		List<Container> containers = dataStore.listContainers();
 		
 		Assert.assertSize(1, containers);
-		Assert.assertEquals("bar", containers.get(0).getReference().get("foo"));
+		Assert.assertEquals(reference, containers.get(0).getReference());
+		
+		blob.delete();
+		
+		Assert.assertTrue(container.exists());
+		Assert.assertFalse(blob.exists());
+		
+		blob.storeText("foo");
+		
+		Assert.assertTrue(container.exists());
+		Assert.assertTrue(blob.exists());
+		
+		container.delete();
+		
+		Assert.assertFalse(container.exists());
+		Assert.assertFalse(blob.exists());
+		
+		Assert.assertSize(0, dataStore.listContainers());
 	}
 	
 	@Test
@@ -79,7 +96,7 @@ public class FileSystemDataStoreTest {
 		Assert.assertNotNull(container);
 		Assert.assertTrue(container.exists());
 		
-		Blob blob = container.getBlob("baz");
+		Blob blob = container.getBlob("c");
 		
 		Assert.assertNotNull(blob);
 		Assert.assertFalse(blob.exists());
@@ -88,6 +105,56 @@ public class FileSystemDataStoreTest {
 		
 		Assert.assertTrue(container.exists());
 		Assert.assertTrue(blob.exists());
+		
+		blob.delete();
+		
+		Assert.assertTrue(container.exists());
+		Assert.assertFalse(blob.exists());
+		
+		blob.storeText("foo");
+		
+		Assert.assertTrue(container.exists());
+		Assert.assertTrue(blob.exists());
+		
+		container.delete();
+		
+		Assert.assertTrue(container.exists()); // root container always exists even when deleted
+		Assert.assertFalse(blob.exists());
+	}
+	
+	@Test
+	public void testNestedContainers() {
+		Reference reference1 = Reference.of("a", "b");
+		
+		Container container1 = dataStore.getContainer(reference1);
+		container1.create();
+		
+		Reference reference2 = reference1.with("c", "d");
+		
+		Container container2 = dataStore.getContainer(reference2);
+		container2.create();
+		
+		Assert.assertSize(2, dataStore.listContainers());
+		
+		Assert.assertTrue(container1.exists());
+		Assert.assertTrue(container2.exists());
+		
+		dataStore.getRootContainer().delete();
+		
+		Assert.assertTrue(container1.exists());
+		Assert.assertTrue(container2.exists());
+		
+		container1.delete();
+		
+		Assert.assertFalse(container1.exists());
+		Assert.assertTrue(container2.exists());
+		
+		container2.delete();
+		
+		Assert.assertFalse(container1.exists());
+		Assert.assertFalse(container2.exists());
+		
+		Assert.assertSize(0, dataStore.listContainers());
 	}
 	
 	@Test

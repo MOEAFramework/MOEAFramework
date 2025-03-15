@@ -51,16 +51,6 @@ public class HierarchicalFileMap extends FileMap {
 		super();
 	}
 	
-	// Implementation Notes:
-	//
-	//   1. Files.walk(path, 1) includes path as the first visited file, so we call skip(1) to only include the path
-	//      contents.
-	//
-	//   2. The same key can appear in multiple locations in the file hierarchy.  We scan for all possible matches,
-	//      preferring the longest path.
-	//
-	//   TODO: Sort problem and algorithm first for better structure?
-	
 	@Override
 	public Path mapContainer(Schema schema, Path root, Reference reference) throws IOException {
 		Path path = root;

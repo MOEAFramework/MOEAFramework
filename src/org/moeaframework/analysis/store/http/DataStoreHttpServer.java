@@ -264,7 +264,7 @@ public class DataStoreHttpServer {
 						
 						if (container.exists()) {
 							try (PrintWriter out = new PrintWriter(ctx.beginResponse(200, "application/json"))) {
-								out.println(container.toJSON(exchange.getRequestURI()));
+								out.println(container.toJSON(exchange.getRequestURI(), true));
 							}
 						} else {
 							ctx.fail(404);

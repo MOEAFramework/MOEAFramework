@@ -38,6 +38,7 @@ import org.apache.commons.io.function.IOConsumer;
 import org.apache.commons.io.function.IOFunction;
 import org.apache.commons.io.output.CloseShieldOutputStream;
 import org.apache.commons.io.output.CloseShieldWriter;
+import org.apache.commons.text.StringEscapeUtils;
 import org.moeaframework.core.Stateful;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.util.format.Formattable;
@@ -530,4 +531,36 @@ public interface Blob {
 	public default URI getURI() {
 		return DataStoreURI.resolve(this);
 	}
+	
+	/**
+	 * Returns a description of this blob formatted as JSON.
+	 * 
+	 * @return the JSON string
+	 */
+	public default String toJSON() {
+		return toJSON(getContainer().getDataStore().getURI());
+	}
+	
+	/**
+	 * Returns a description of this blob formatted as JSON.
+	 * 
+	 * @param baseURI the base URI, which is used to produce URLs
+	 * @return the JSON string
+	 */
+	default String toJSON(URI baseURI) {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("{");
+		sb.append("\"type\":\"blob\",");
+		sb.append("\"name\":\"");
+		sb.append(StringEscapeUtils.escapeJson(getName()));
+		sb.append("\",");
+		sb.append("\"uri\":\"");
+		sb.append(StringEscapeUtils.escapeJson(DataStoreURI.resolve(baseURI, this).toString()));
+		sb.append("\"");
+		sb.append("}");
+
+		return sb.toString();
+	}
+	
 }

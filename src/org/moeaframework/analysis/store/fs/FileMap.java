@@ -131,9 +131,8 @@ public abstract class FileMap implements Defined {
 		Optional<Path> matchingFile = Optional.empty();
 		
 		if (Files.exists(containerPath)) {
-			try (Stream<Path> stream = Files.walk(containerPath, 1)) {
+			try (Stream<Path> stream = Files.list(containerPath)) {
 				matchingFile = stream
-						.skip(1)
 						.map(Path::getFileName)
 						.filter(x -> CASE_INSENSITIVE_ORDER.compare(x, escapedName) == 0)
 						.findFirst();

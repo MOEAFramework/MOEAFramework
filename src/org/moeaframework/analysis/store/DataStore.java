@@ -19,10 +19,10 @@ package org.moeaframework.analysis.store;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.text.StringEscapeUtils;
-import org.moeaframework.util.Iterators;
-import org.moeaframework.util.Iterators.IndexedValue;
 
 /**
  * Interface for storing data or objects to some persistent backend.
@@ -48,12 +48,25 @@ public interface DataStore {
 	public Container getContainer(Reference reference);
 	
 	/**
+	 * Returns a stream of all containers, excluding the root container, in this data store.  The caller must close
+	 * the stream when finished.
+	 * 
+	 * @return a stream of containers
+	 * @throws DataStoreException if an error occurred accessing the data store
+	 */
+	public Stream<Container> streamContainers() throws DataStoreException;
+	
+	/**
 	 * Returns a list of all containers, excluding the root container, in this data store.
 	 * 
 	 * @return a list of containers
 	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public List<Container> listContainers() throws DataStoreException;
+	public default List<Container> listContainers() throws DataStoreException {
+		try (Stream<Container> stream = streamContainers()) {
+			return stream.toList();
+		}
+	}
 	
 	/**
 	 * Returns the URI for this data store, which can be used with {@link DataStoreFactory#getDataStore(java.net.URI)}.
@@ -103,59 +116,21 @@ public interface DataStore {
 
 		sb.append("{");
 		sb.append("\"type\":\"datastore\",");
-		sb.append("\"url\":\"");
+		sb.append("\"uri\":\"");
 		sb.append(StringEscapeUtils.escapeJson(baseURI.toString()));
 		sb.append("\",");
-		sb.append("\"blobs\":[");
+		sb.append("\"blobs\":");
 		
-		for (IndexedValue<Blob> blob : Iterators.enumerate(getRootContainer().listBlobs())) {
-			if (blob.getIndex() > 0) {
-				sb.append(",");
-			}
-			
-			sb.append("{");
-			sb.append("\"type\":\"blob\",");
-			sb.append("\"name\":\"");
-			sb.append(StringEscapeUtils.escapeJson(blob.getValue().getName()));
-			sb.append("\",");
-			sb.append("\"url\":\"");
-			sb.append(StringEscapeUtils.escapeJson(DataStoreURI.resolve(baseURI, blob.getValue()).toString()));
-			sb.append("\"");
-			sb.append("}");
+		try (Stream<Blob> stream = getRootContainer().streamBlobs()) {
+			sb.append(stream.map(x -> x.toJSON(baseURI)).collect(Collectors.joining(",", "[", "]")));
 		}
 		
-		sb.append("],");
-		sb.append("\"containers\":[");
+		sb.append(",\"containers\":");
 		
-		for (IndexedValue<Container> container : Iterators.enumerate(listContainers())) {
-			if (container.getIndex() > 0) {
-				sb.append(",");
-			}
-			
-			sb.append("{");
-			sb.append("\"type\":\"container\",");
-			sb.append("\"url\":\"");
-			sb.append(StringEscapeUtils.escapeJson(DataStoreURI.resolve(baseURI, container.getValue()).toString()));
-			sb.append("\",");
-			sb.append("\"reference\":{");
-			
-			for (IndexedValue<String> field : Iterators.enumerate(container.getValue().getReference().fields())) {
-				if (field.getIndex() > 0) {
-					sb.append(",");
-				}
-				
-				sb.append("\"");
-				sb.append(StringEscapeUtils.escapeJson(field.getValue()));
-				sb.append("\":\"");
-				sb.append(StringEscapeUtils.escapeJson(container.getValue().getReference().get(field.getValue())));
-				sb.append("\"");
-			}
-			
-			sb.append("}");
-			sb.append("}");
+		try (Stream<Container> stream = streamContainers()) {
+			sb.append(stream.map(x -> x.toJSON(baseURI, false)).collect(Collectors.joining(",", "[", "]")));
 		}
-		
-		sb.append("]");
+
 		sb.append("}");
 		
 		return sb.toString();
