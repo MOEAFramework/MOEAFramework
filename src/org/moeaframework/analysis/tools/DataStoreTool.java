@@ -32,6 +32,7 @@ import org.moeaframework.analysis.store.Container;
 import org.moeaframework.analysis.store.DataStore;
 import org.moeaframework.analysis.store.DataStoreFactory;
 import org.moeaframework.analysis.store.DataStoreURI;
+import org.moeaframework.analysis.store.Reference;
 import org.moeaframework.analysis.store.http.DataStoreHttpServer;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.cli.CommandLineUtility;
@@ -52,24 +53,31 @@ public class DataStoreTool extends CommandLineUtility {
 		OptionGroup operationGroup = new OptionGroup();
 		operationGroup.addOption(Option.builder()
 				.longOpt("type")
+				.required()
 				.build());
 		operationGroup.addOption(Option.builder()
 				.longOpt("list")
+				.required()
 				.build());
 		operationGroup.addOption(Option.builder()
 				.longOpt("details")
+				.required()
 				.build());
 		operationGroup.addOption(Option.builder()
 				.longOpt("get")
+				.required()
 				.build());
 		operationGroup.addOption(Option.builder()
 				.longOpt("set")
+				.required()
 				.build());
 		operationGroup.addOption(Option.builder()
 				.longOpt("delete")
+				.required()
 				.build());
 		operationGroup.addOption(Option.builder()
 				.longOpt("server")
+				.required()
 				.build());
 				
 		options.addOptionGroup(operationGroup);
@@ -159,6 +167,8 @@ public class DataStoreTool extends CommandLineUtility {
 						try (Stream<Container> stream = dataStore.streamContainers()) {
 							stream.forEach(Container::delete);
 						}
+						
+						dataStore.getRootContainer().delete();
 					}
 				}
 			} else if (commandLine.hasOption("get")) {

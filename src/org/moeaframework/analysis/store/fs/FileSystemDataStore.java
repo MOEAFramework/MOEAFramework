@@ -341,6 +341,7 @@ public class FileSystemDataStore implements DataStore {
 						Files.deleteIfExists(referenceFile);
 					} else {
 						FileUtils.deleteDirectory(container.toFile());
+						cleanTree(container.getParent());
 					}
 					
 					return true;
@@ -349,6 +350,13 @@ public class FileSystemDataStore implements DataStore {
 				return false;
 			} catch (IOException e) {
 				throw DataStoreException.wrap(e, this);
+			}
+		}
+		
+		private void cleanTree(Path path) throws IOException {
+			while (path != null && path.startsWith(root) && Files.exists(path) && Files.list(path).findAny().isEmpty()) {
+				Files.delete(path);
+				path = path.getParent();
 			}
 		}
 		
