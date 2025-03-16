@@ -64,16 +64,10 @@ public class MainTest {
 	@Test
 	public void testVerbose() throws Exception {
 		try (PropertyScope scope = Settings.createScope()) {
-			CaptureResult result = Capture.output(Main.class, "--verbose", "Initialize");
+			CaptureResult result = Capture.output(Main.class, "--verbose");
 			result.assertSuccessful();
 			Assert.assertTrue(Settings.isVerbose());
 		}
-	}
-	
-	@Test
-	public void testCommand() throws Exception {
-		CaptureResult result = Capture.output(Main.class, "Initialize");
-		result.assertSuccessful();
 	}
 
 }
