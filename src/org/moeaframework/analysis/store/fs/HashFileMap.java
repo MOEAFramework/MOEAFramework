@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import org.moeaframework.analysis.store.Reference;
-import org.moeaframework.analysis.store.schema.Schema;
 import org.moeaframework.core.Defined;
 
 /**
@@ -43,24 +42,20 @@ public class HashFileMap extends FileMap {
 	}
 	
 	@Override
-	public Path mapContainer(Schema schema, Path root, Reference reference) throws IOException {
+	public Path mapContainer(Path root, Reference reference) throws IOException {
 		if (reference.isRoot()) {
 			return root;
 		} else {
-			return map(root, Hash.of(schema, reference));
+			String hexString = Hash.of(reference).toString();
+			Path path = root;
+			
+			if (prefixLength > 0) {
+				String prefix = hexString.substring(0, prefixLength);
+				path = path.resolve(prefix);
+			}
+					
+			return path.resolve(hexString);
 		}
-	}
-	
-	private Path map(Path root, Hash hash) {
-		String hexString = hash.toString();
-		Path path = root;
-		
-		if (prefixLength > 0) {
-			String prefix = hexString.substring(0, prefixLength);
-			path = path.resolve(prefix);
-		}
-				
-		return path.resolve(hexString);
 	}
 	
 	@Override

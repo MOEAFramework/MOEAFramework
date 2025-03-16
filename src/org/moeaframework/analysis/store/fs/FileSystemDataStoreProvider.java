@@ -26,7 +26,7 @@ import org.moeaframework.analysis.store.DataStoreURI;
 
 /**
  * Provider for the {@link FileSystemDataStore}.  The URI should either begin with {@code file://} for paths relative
- * to the working directory, or {@code file:///} for absolute paths.  This is also the default of no schema is defined.
+ * to the working directory, or {@code file:///} for absolute paths.  This is also the default if no scheme is defined.
  */
 public class FileSystemDataStoreProvider extends DataStoreProvider {
 		

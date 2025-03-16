@@ -53,8 +53,11 @@ ant -f test.xml test
 ## Versions
 
 We use [semantic versioning](https://semver.org/) following the pattern `{major}.{minor}`.  Two versions with the
-same `{major}` number are expected to be backwards compatible, for example allowing one to upgrade from `5.0` to
-`5.2` without difficulty.  Each version also targets a specific version of Java:
+same `{major}` number are expected to be backwards compatible, including both the API and data file formats.  However,
+we may at times make breaking changes to address a bug or when developing a new feature spanning several releases.
+Such breaking changes will be identified in the release notes.
+
+Each version also targets a specific version of Java:
 
 * `5.x` - Java 17+
 * `4.x` - Java 17+

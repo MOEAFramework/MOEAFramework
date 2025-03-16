@@ -21,7 +21,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -29,16 +28,11 @@ import java.util.HexFormat;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.tuple.Pair;
 import org.moeaframework.analysis.store.Reference;
-import org.moeaframework.analysis.store.schema.Field;
-import org.moeaframework.analysis.store.schema.Schema;
 import org.moeaframework.core.FrameworkException;
 
 class Hash {
-	
-	private static final Charset UTF8 = StandardCharsets.UTF_8;
-	
+		
 	private static final HexFormat HEX = HexFormat.of();
 	
 	private final String hashValue;
@@ -96,15 +90,15 @@ class Hash {
 	}
 	
 	public static Hash of(String data) {
-		return of(data.getBytes(UTF8));
+		return of(data.getBytes(StandardCharsets.UTF_8));
 	}
 	
-	public static Hash of(Schema schema, Reference reference) {
+	public static Hash of(Reference reference) {
 		MessageDigest digest = newMessageDigest();
 		
-		for (Pair<Field<?>, String> entries : schema.resolve(reference)) {
-			digest.update(entries.getKey().getNormalizedName().getBytes(UTF8));
-			digest.update(entries.getKey().getNormalizedValue(entries.getValue()).getBytes(UTF8));
+		for (String field : reference.fields()) {
+			digest.update(Reference.normalize(field).getBytes(StandardCharsets.UTF_8));
+			digest.update(Reference.normalize(reference.get(field)).getBytes(StandardCharsets.UTF_8));
 		}
 		
 		return new Hash(digest);

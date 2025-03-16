@@ -23,8 +23,6 @@ import java.util.regex.Pattern;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.analysis.store.Reference;
-import org.moeaframework.analysis.store.schema.Field;
-import org.moeaframework.analysis.store.schema.Schema;
 import org.moeaframework.core.TypedProperties;
 
 public class HashTest {
@@ -53,11 +51,6 @@ public class HashTest {
 	
 	@Test
 	public void testReference() throws IOException {
-		Schema schema = Schema.of(
-				Field.named("int").asInt(),
-				Field.named("double").asDouble(),
-				Field.named("str").asString());
-		
 		TypedProperties properties1 = new TypedProperties();
 		properties1.setInt("int", 5);
 		properties1.setDouble("double", 2.0);
@@ -70,9 +63,9 @@ public class HashTest {
 		properties3.setDouble("double", 5.0);
 		properties3.setString("str", "hello");
 		
-		Assert.assertEquals(Hash.of(schema, Reference.of(properties1)).toString(), Hash.of(schema, Reference.of(properties2)).toString());
-		Assert.assertNotEquals(Hash.of(schema, Reference.of(properties1)).toString(), Hash.of(schema, Reference.of(properties3)).toString());
-		Assert.assertStringMatches(Hash.of(schema, Reference.of(properties1)).toString(), REGEX);
+		Assert.assertEquals(Hash.of(Reference.of(properties1)).toString(), Hash.of(Reference.of(properties2)).toString());
+		Assert.assertNotEquals(Hash.of(Reference.of(properties1)).toString(), Hash.of(Reference.of(properties3)).toString());
+		Assert.assertStringMatches(Hash.of(Reference.of(properties1)).toString(), REGEX);
 	}
 
 }

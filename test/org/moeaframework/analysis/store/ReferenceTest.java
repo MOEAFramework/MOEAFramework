@@ -17,6 +17,8 @@
  */
 package org.moeaframework.analysis.store;
 
+import java.io.IOException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -120,6 +122,12 @@ public class ReferenceTest {
 		
 		Assert.assertEquals(reference1.hashCode(), reference2.hashCode());
 		Assert.assertNotEquals(reference1.hashCode(), reference3.hashCode());
+	}
+	
+	@Test
+	public void testNormalize() throws IOException {
+		Assert.assertEquals(Reference.normalize("abcdefghijklmnopqrstuvwxyz"), Reference.normalize("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+		Assert.assertEquals(Reference.normalize("abcçdefgğhıijklmnoöprsştuüvyz"), Reference.normalize("ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZ"));
 	}
 
 }

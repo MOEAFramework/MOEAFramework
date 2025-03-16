@@ -32,7 +32,6 @@ import org.apache.commons.text.translate.AggregateTranslator;
 import org.apache.commons.text.translate.CharSequenceTranslator;
 import org.apache.commons.text.translate.LookupTranslator;
 import org.moeaframework.analysis.store.Reference;
-import org.moeaframework.analysis.store.schema.Schema;
 import org.moeaframework.core.Defined;
 
 /**
@@ -106,28 +105,26 @@ public abstract class FileMap implements Defined {
 	/**
 	 * Returns the path to the container associated with the given reference.
 	 * 
-	 * @param schema the schema defining the structure
 	 * @param root the root directory
 	 * @param reference the container reference
 	 * @return the container path
 	 * @throws IOException if an I/O error occurred
 	 */
-	abstract Path mapContainer(Schema schema, Path root, Reference reference) throws IOException;
+	abstract Path mapContainer(Path root, Reference reference) throws IOException;
 	
 	/**
 	 * Returns the path to the blob associated with the given reference and name.  The default implementation places
-	 * the blobs directly inside the container mapped by {@link #mapContainer(Schema, Path, Reference)}.
+	 * the blobs directly inside the container mapped by {@link #mapContainer(Path, Reference)}.
 	 * 
-	 * @param schema the schema defining the structure
 	 * @param root the root directory
 	 * @param reference the container reference
 	 * @param name the blob name
 	 * @return the blob path
 	 * @throws IOException if an I/O error occurred
 	 */
-	public Path mapBlob(Schema schema, Path root, Reference reference, String name) throws IOException {
+	public Path mapBlob(Path root, Reference reference, String name) throws IOException {
 		Path escapedName = escapePath(name);
-		Path containerPath = mapContainer(schema, root, reference);
+		Path containerPath = mapContainer(root, reference);
 		Optional<Path> matchingFile = Optional.empty();
 		
 		if (Files.exists(containerPath)) {

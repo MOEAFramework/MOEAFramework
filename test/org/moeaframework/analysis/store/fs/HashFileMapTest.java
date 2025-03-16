@@ -26,24 +26,22 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.analysis.store.Reference;
-import org.moeaframework.analysis.store.schema.Schema;
 
 public class HashFileMapTest {
 	
 	@Test
 	public void testCaseSensitivity() throws IOException {
 		File tempDirectory = TempFiles.createDirectory();
-		Schema schema = Schema.schemaless();
 		HashFileMap fileMap = new HashFileMap(2);
 		
-		Reference reference1 = Reference.of("foo", "bar");
-		Path blobPath1 = fileMap.mapBlob(schema, tempDirectory.toPath(), reference1, "baz");
+		Reference reference1 = Reference.of("a", "b");
+		Path blobPath1 = fileMap.mapBlob(tempDirectory.toPath(), reference1, "c");
 		
 		Files.createDirectories(blobPath1.getParent());
 		Files.createFile(blobPath1);
 		
-		Reference reference2 = Reference.of("FOO", "BAR");
-		Path blobPath2 = fileMap.mapBlob(schema, tempDirectory.toPath(), reference2, "BAZ");
+		Reference reference2 = Reference.of("A", "B");
+		Path blobPath2 = fileMap.mapBlob(tempDirectory.toPath(), reference2, "C");
 		
 		Assert.assertEquals(blobPath1, blobPath2);
 	}

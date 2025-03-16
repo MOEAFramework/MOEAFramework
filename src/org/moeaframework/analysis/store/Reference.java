@@ -27,9 +27,7 @@ import org.moeaframework.core.TypedProperties;
  * A reference that uniquely identifies or addresses as specific {@link Container}.
  * <p>
  * References are generic in nature, treating the field names and values as strings.  While names are expected to be
- * case-insensitive, no other requirements are in place regarding their types and ordering.  When such additional
- * requirements are desired, the reference should be used with and validated by a
- * {@link org.moeaframework.analysis.store.schema.Schema}.
+ * case-insensitive, no other requirements are in place regarding their types and ordering.
  */
 public interface Reference {
 		
@@ -311,6 +309,24 @@ public interface Reference {
 	 */
 	public static Reference root() {
 		return of(TypedProperties.of());
+	}
+	
+	/**
+	 * Produces a normalized version of a string that allows for case-insensitive operations.  This is based on the
+	 * implementation of Apache Commons CaseInsensitiveMap.
+	 * 
+	 * @param str the original string
+	 * @return the normalized string
+	 * @see <a href="https://issues.apache.org/jira/browse/COLLECTIONS-294">COLLECTIONS-294</a>
+	 */
+	public static String normalize(String str) {
+		final char[] chars = str.toCharArray();
+		
+		for (int i = chars.length - 1; i >= 0; i--) {
+			chars[i] = Character.toLowerCase(Character.toUpperCase(chars[i]));
+		}
+		
+		return String.valueOf(chars);
 	}
 
 }

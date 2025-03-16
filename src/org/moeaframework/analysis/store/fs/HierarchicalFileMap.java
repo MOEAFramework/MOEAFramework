@@ -29,105 +29,94 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.moeaframework.analysis.store.Reference;
-import org.moeaframework.analysis.store.schema.Field;
-import org.moeaframework.analysis.store.schema.Schema;
 import org.moeaframework.core.Defined;
 
 /**
- * Stores files in a hierarchical folder structure, alternating between the index name and the associated index value.
- * When given a {@link Schema}, the structure defined by the schema is used.  However, if schemaless, this reuses
- * the existing folder hierarchy.
+ * Stores files in a hierarchical folder structure, alternating between the reference key and the associated value.
+ * Keys are ordered, though any existing folder structure is reused.
  * <p>
  * Paths are treated in a case-insensitive manner, even on platforms with case-sensitive file systems.
  */
 public class HierarchicalFileMap extends FileMap {
-	
+
 	/**
 	 * Constructs a new hierarchical file map.
 	 */
 	public HierarchicalFileMap() {
 		super();
 	}
-	
+
 	@Override
-	public Path mapContainer(Schema schema, Path root, Reference reference) throws IOException {
+	public Path mapContainer(Path root, Reference reference) throws IOException {
 		Path path = root;
-		
+
 		if (reference.isRoot()) {
 			return path;
 		}
-		
-		List<Pair<Field<?>, String>> resolvedPath = schema.resolve(reference);
+
 		Map<Path, Path> escapedPathSegments = new TreeMap<>(CASE_INSENSITIVE_ORDER);
 
-		for (Pair<Field<?>, String> entry : resolvedPath) {
-			Path escapedKey = escapePath(entry.getKey().getName());
-			Path escapedValue = escapePath(entry.getValue());
-			
+		for (String field : reference.fields()) {
+			Path escapedKey = escapePath(field);
+			Path escapedValue = escapePath(reference.get(field));
+
 			escapedPathSegments.put(escapedKey, escapedValue);
 		}
-		
-		// When schemaless, match any existing folder structure
-		if (schema.isSchemaless()) {
-			HierarchicalFileVisitor visitor = new HierarchicalFileVisitor(root, escapedPathSegments);
-			Files.walkFileTree(path, visitor);
-			
-			Optional<Path> longestPath = visitor.getMatches().stream()
-					.sorted((x, y) -> -Integer.compare(x.getNameCount(), y.getNameCount()))
-					.findFirst();
-			
-			if (longestPath.isPresent()) {
-				path = longestPath.get();
-				
-				// If the longest path ended on a key, append the value.  Also remove all keys from path segments.
-				Path relativePath = root.relativize(path);
-				
-				if (relativePath.getNameCount() % 2 == 1) {
-					path = path.resolve(escapedPathSegments.get(relativePath.getFileName()));
-				}
-				
-				for (int i = 0; i < relativePath.getNameCount(); i += 2) {
-					escapedPathSegments.remove(relativePath.getName(i));
-				}
+
+		// Match any existing folder structure, though note the same key could appear at multiple locations / depths
+		// within the hierarchy.
+		HierarchicalFileVisitor visitor = new HierarchicalFileVisitor(root, escapedPathSegments);
+		Files.walkFileTree(path, visitor);
+
+		Optional<Path> longestPath = visitor.getMatches().stream()
+				.sorted((x, y) -> -Integer.compare(x.getNameCount(), y.getNameCount()))
+				.findFirst();
+
+		if (longestPath.isPresent()) {
+			path = longestPath.get();
+
+			// If the longest path ended on a key, append the value.  Also remove all keys from path segments.
+			Path relativePath = root.relativize(path);
+
+			if (relativePath.getNameCount() % 2 == 1) {
+				path = path.resolve(escapedPathSegments.get(relativePath.getFileName()));
+			}
+
+			for (int i = 0; i < relativePath.getNameCount(); i += 2) {
+				escapedPathSegments.remove(relativePath.getName(i));
 			}
 		}
-		
+
 		// Remaining folder structure must match order
-		for (Pair<Field<?>, String> entry : resolvedPath) {
-			Path escapedKey = escapePath(entry.getKey().getName());
-			Path escapedValue = escapePath(entry.getValue());
-			
-			if (escapedPathSegments.containsKey(escapedKey)) {
-				path = path.resolve(escapedKey).resolve(escapedValue);
-			}
+		for (Map.Entry<Path, Path> entry : escapedPathSegments.entrySet()) {
+			path = path.resolve(entry.getKey()).resolve(entry.getValue());
 		}
-					
+
 		return path;
 	}
-	
+
 	@Override
 	public String getDefinition() {
 		return Defined.createDefinition(FileMap.class, getClass());
 	}
-	
+
 	/**
 	 * File visitor that collects all paths that match the path segments.
 	 */
 	private static class HierarchicalFileVisitor extends SimpleFileVisitor<Path> {
-		
+
 		private final Path root;
-		
+
 		private final Map<Path, Path> escapedPathSegments;
-		
+
 		private final List<Path> matches;
-		
+
 		public HierarchicalFileVisitor(Path root, Map<Path, Path> escapedPathSegments) {
 			super();
 			this.root = root;
 			this.escapedPathSegments = escapedPathSegments;
-			
+
 			matches = new ArrayList<>();
 		}
 
@@ -136,22 +125,22 @@ public class HierarchicalFileMap extends FileMap {
 			if (dir.equals(root)) {
 				return FileVisitResult.CONTINUE;
 			}
-			
+
 			Path relativePath = root.relativize(dir);
-			
+
 			if (relativePath.getNameCount() % 2 == 1) {
 				if (!escapedPathSegments.containsKey(relativePath.getFileName())) {
 					return FileVisitResult.SKIP_SUBTREE;
 				}
 			} else {
 				Path keyPath = relativePath.getName(relativePath.getNameCount()-2);
-					
+
 				if (!escapedPathSegments.containsKey(keyPath) ||
 						CASE_INSENSITIVE_ORDER.compare(escapedPathSegments.get(keyPath), relativePath.getFileName()) != 0) {
 					return FileVisitResult.SKIP_SUBTREE;
 				}
 			}
-			
+
 			matches.add(dir);
 			return FileVisitResult.CONTINUE;
 		}
@@ -160,11 +149,11 @@ public class HierarchicalFileMap extends FileMap {
 		public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
 			return FileVisitResult.SKIP_SIBLINGS;
 		}
-		
+
 		public List<Path> getMatches() {
 			return matches;
 		}
-		
+
 	}
 
 }

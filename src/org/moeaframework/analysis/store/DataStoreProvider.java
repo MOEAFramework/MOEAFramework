@@ -20,7 +20,7 @@ package org.moeaframework.analysis.store;
 import java.net.URI;
 
 /**
- * Defines a SPI for creating data stores.  A data store is identified by a URI with a specific schema.
+ * Defines a SPI for creating data stores.  A data store is identified by a URI with a specific scheme.
  * <p>
  * <strong>Avoid including secrets in the URI itself.</strong>  The provided URI may appear in logs, exception
  * messages, or command line arguments, and is not a safe place to store secrets.  Instead, if required, provide a
