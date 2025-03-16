@@ -1,4 +1,4 @@
-f# Storing Experimental Data
+# Storing Experimental Data
 
 Large experiments typically produce a large amount of data which must be organized and stored in some accessible way.
 While you are certainly free to manage the data produced by the MOEA Framework in any manner, we also provide a
@@ -41,8 +41,8 @@ Reference reference = Reference.of("populationSize", 100);
 Container container = dataStore.getContainer(reference);
 ```
 
-Changing the key, value, or both will reference a different container.  Next, we can access blobs within the container
-by name.  Below, we create a blob named `"greeting"` and store the text `"Hello world!"`.
+Next, we can access blobs within the container by name.  Below, we create a blob named `"greeting"` and store the text
+`"Hello world!"`.
 
 <!-- java:test/org/moeaframework/snippet/DataStoreSnippet.java [datastore-blob] -->
 
@@ -166,13 +166,13 @@ container or reading / writing a blob.
 
 ```bash
 # List contents of a container
-./cli datastore --uri "file://results?populationSize=100&seed=1" --list
+./cli datastore list "file://results?populationSize=100&seed=1"
 
 # Write to blob
-echo "Hello world" | ./cli datastore --uri "file://results?populationSize=100&seed=1#greeting" --set
+echo "Hello world" | ./cli datastore set "file://results?populationSize=100&seed=1#greeting"
 
 # Read from blob
-./cli datastore --uri "file://results?populationSize=100&seed=1#greeting" --get
+./cli datastore get "file://results?populationSize=100&seed=1#greeting"
 ```
 
 ### Web Server
@@ -184,7 +184,7 @@ echo "Hello world" | ./cli datastore --uri "file://results?populationSize=100&se
 The web server provides read-only access to the data store content.  First we start the server:
 
 ```bash
-./cli datastore --uri "file://results" --server &
+./cli datastore server "file://results"
 ```
 
 The logging output will show the base URL to use when accessing the web server:
@@ -213,7 +213,7 @@ a container:
 ```
 {
    "type":"container",
-   "url":"\/results?populationSize=100&seed=1",
+   "uri":"\/results?populationSize=100&seed=1",
    "reference":{
       "populationSize":"100",
       "seed":1
@@ -222,7 +222,7 @@ a container:
       {
          "type":"blob",
          "name":"greeting",
-         "url":"\/results?populationSize=100&seed=1&_name=greeting"
+         "uri":"\/results?populationSize=100&seed=1&_name=greeting"
       }
    ]
 }

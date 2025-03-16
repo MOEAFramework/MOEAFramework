@@ -32,61 +32,61 @@ public class DataStoreToolTest {
 		File outputFile = TempFiles.createFile();
 		
 		DataStoreTool.main(new String[] {
-				"--uri", tempDirectory.toURI().toString(),
-				"--list",
-				"--output", outputFile.toString() });
+				"--output", outputFile.toString(),
+				"list",
+				tempDirectory.toURI().toString() });
 		
 		Assert.assertLineCount(0, outputFile);
 		
 		File inputFile = TempFiles.createFile().withContent("foo");
 		
 		DataStoreTool.main(new String[] {
-				"--uri", tempDirectory.toURI().toString() + "?a=b#foo",
-				"--set",
-				"--input", inputFile.toString() });
+				"--input", inputFile.toString(),
+				"set",
+				tempDirectory.toURI().toString() + "?a=b#foo" });
 		
 		DataStoreTool.main(new String[] {
-				"--uri", tempDirectory.toURI().toString() + "?a=b#foo",
-				"--get",
-				"--output", outputFile.toString() });
+				"--output", outputFile.toString(),
+				"get",
+				tempDirectory.toURI().toString() + "?a=b#foo" });
 		
 		Assert.assertFileWithContent("foo", outputFile);
 		
 		DataStoreTool.main(new String[] {
-				"--uri", tempDirectory.toURI().toString() + "?a=b",
-				"--list",
-				"--output", outputFile.toString() });
+				"--output", outputFile.toString(),
+				"list",
+				tempDirectory.toURI().toString() + "?a=b" });
 		
 		Assert.assertLineCount(1, outputFile);
 		
 		DataStoreTool.main(new String[] {
-				"--uri", tempDirectory.toURI().toString() + "?a=b#foo",
-				"--delete",
-				"--yes" });
+				"--yes", 
+				"delete",
+				tempDirectory.toURI().toString() + "?a=b#foo" });
 		
 		Assert.assertThrows(BlobNotFoundException.class, () -> DataStoreTool.main(new String[] {
-				"--uri", tempDirectory.toURI().toString() + "?a=b#foo",
-				"--get",
-				"--output", outputFile.toString() }));
+				"--output", outputFile.toString(),
+				"get",
+				tempDirectory.toURI().toString() + "?a=b#foo" }));
 		
 		DataStoreTool.main(new String[] {
-				"--uri", tempDirectory.toURI().toString(),
-				"--type",
-				"--output", outputFile.toString() });
+				"--output", outputFile.toString(),
+				"type",
+				tempDirectory.toURI().toString() });
 		
 		Assert.assertFileWithContent("datastore" + System.lineSeparator(), outputFile);
 		
 		DataStoreTool.main(new String[] {
-				"--uri", tempDirectory.toURI().toString() + "?a=b",
-				"--type",
-				"--output", outputFile.toString() });
+				"--output", outputFile.toString(),
+				"type",
+				tempDirectory.toURI().toString() + "?a=b" });
 		
 		Assert.assertFileWithContent("container" + System.lineSeparator(), outputFile);
 		
 		DataStoreTool.main(new String[] {
-				"--uri", tempDirectory.toURI().toString() + "?a=b#foo",
-				"--type",
-				"--output", outputFile.toString() });
+				"--output", outputFile.toString(),
+				"type",
+				tempDirectory.toURI().toString() + "?a=b#foo" });
 		
 		Assert.assertFileWithContent("blob" + System.lineSeparator(), outputFile);
 	}

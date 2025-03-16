@@ -25,17 +25,17 @@ import java.util.stream.Stream;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.moeaframework.analysis.store.Blob;
 import org.moeaframework.analysis.store.Container;
 import org.moeaframework.analysis.store.DataStore;
 import org.moeaframework.analysis.store.DataStoreFactory;
 import org.moeaframework.analysis.store.DataStoreURI;
-import org.moeaframework.analysis.store.Reference;
 import org.moeaframework.analysis.store.http.DataStoreHttpServer;
 import org.moeaframework.core.FrameworkException;
+import org.moeaframework.util.OptionCompleter;
 import org.moeaframework.util.cli.CommandLineUtility;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Command line utility for accessing a {@link DataStore}.
@@ -50,42 +50,9 @@ public class DataStoreTool extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		OptionGroup operationGroup = new OptionGroup();
-		operationGroup.addOption(Option.builder()
-				.longOpt("type")
-				.required()
-				.build());
-		operationGroup.addOption(Option.builder()
-				.longOpt("list")
-				.required()
-				.build());
-		operationGroup.addOption(Option.builder()
-				.longOpt("details")
-				.required()
-				.build());
-		operationGroup.addOption(Option.builder()
-				.longOpt("get")
-				.required()
-				.build());
-		operationGroup.addOption(Option.builder()
-				.longOpt("set")
-				.required()
-				.build());
-		operationGroup.addOption(Option.builder()
-				.longOpt("delete")
-				.required()
-				.build());
-		operationGroup.addOption(Option.builder()
-				.longOpt("server")
-				.required()
-				.build());
-				
-		options.addOptionGroup(operationGroup);
-		
 		options.addOption(Option.builder("u")
 				.longOpt("uri")
 				.hasArg()
-				.required()
 				.build());
 		options.addOption(Option.builder("i")
 				.longOpt("input")
@@ -103,15 +70,48 @@ public class DataStoreTool extends CommandLineUtility {
 
 		return options;
 	}
+	
+	private String getOperation(CommandLine commandLine) {
+		String[] args = commandLine.getArgs();
+		OptionCompleter options = new OptionCompleter("type", "list", "details", "get", "set", "delete", "server");
+		
+		if (args.length < 1) {
+			throw new IllegalArgumentException("Missing operation, please specify: " +
+					String.join(", ", options.getOptions()));
+		}
+		
+		String operation = options.lookup(args[0]);
+		
+		if (operation == null) {
+			Validate.that("operation", operation).failUnsupportedOption(options.getOptions());
+		}
+		
+		return operation;
+	}
+	
+	private DataStoreURI getURI(CommandLine commandLine) {
+		if (commandLine.hasOption("uri")) {
+			return DataStoreURI.parse(commandLine.getOptionValue("uri"));
+		}
+		
+		String[] args = commandLine.getArgs();
+		
+		if (args.length < 2) {
+			throw new IllegalArgumentException("Missing URI, please specify after operation or with --uri");
+		}
+		
+		return DataStoreURI.parse(args[1]);
+	}
 
 	@Override
 	public void run(CommandLine commandLine) throws IOException {
 		setAcceptConfirmations(commandLine.hasOption("yes"));
 		
+		String operation = getOperation(commandLine);
+		DataStoreURI dsUri = getURI(commandLine);
+		
 		try (PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
-			DataStoreURI dsUri = DataStoreURI.parse(commandLine.getOptionValue("uri"));
-
-			if (commandLine.hasOption("type")) {
+			if (operation.equalsIgnoreCase("type")) {
 				if (dsUri.getName() != null && !dsUri.getName().isBlank()) {
 					output.println("blob");
 				} else if (!dsUri.getReference().isRoot()) {
@@ -119,7 +119,7 @@ public class DataStoreTool extends CommandLineUtility {
 				} else {
 					output.println("datastore");
 				}
-			} else if (commandLine.hasOption("list")) {
+			} else if (operation.equalsIgnoreCase("list")) {
 				if (dsUri.getName() != null && !dsUri.getName().isBlank()) {
 					Blob blob = DataStoreFactory.getInstance().resolveBlob(dsUri.getURI());
 					output.println(blob.getURI());
@@ -136,7 +136,7 @@ public class DataStoreTool extends CommandLineUtility {
 						stream.forEach(x -> output.println(x.getURI()));
 					}
 				}
-			} else if (commandLine.hasOption("details")) {
+			} else if (operation.equalsIgnoreCase("details")) {
 				if (dsUri.getName() != null && !dsUri.getName().isBlank()) {
 					Blob blob = DataStoreFactory.getInstance().resolveBlob(dsUri.getURI());
 					output.println(blob.toJSON());
@@ -147,7 +147,7 @@ public class DataStoreTool extends CommandLineUtility {
 					DataStore dataStore = DataStoreFactory.getInstance().getDataStore(dsUri.getURI());
 					output.println(dataStore.toJSON());
 				}
-			} else if (commandLine.hasOption("delete")) {
+			} else if (operation.equalsIgnoreCase("delete")) {
 				if (dsUri.getName() != null && !dsUri.getName().isBlank()) {
 					Blob blob = DataStoreFactory.getInstance().resolveBlob(dsUri.getURI());
 
@@ -171,14 +171,14 @@ public class DataStoreTool extends CommandLineUtility {
 						dataStore.getRootContainer().delete();
 					}
 				}
-			} else if (commandLine.hasOption("get")) {
+			} else if (operation.equalsIgnoreCase("get")) {
 				if (dsUri.getName() == null || dsUri.getName().isBlank()) {
 					throw new FrameworkException("--get can only be used with a URI referencing a blob");
 				} else {
 					Blob blob = DataStoreFactory.getInstance().resolveBlob(dsUri.getURI());
 					blob.extractTo(output);
 				}
-			} else if (commandLine.hasOption("set")) {
+			} else if (operation.equalsIgnoreCase("set")) {
 				if (dsUri.getName() == null || dsUri.getName().isBlank()) {
 					throw new FrameworkException("--set can only be used with a URI referencing a blob");
 				} else {
@@ -190,21 +190,16 @@ public class DataStoreTool extends CommandLineUtility {
 						blob.storeFrom(System.in);
 					}
 				}
-			} else if (commandLine.hasOption("server")) {
+			} else if (operation.equalsIgnoreCase("server")) {
 				DataStore dataStore = DataStoreFactory.getInstance().getDataStore(dsUri.getURI());
-				String path = null;
-				
-				if (commandLine.getArgs().length >= 1) {
-					path = commandLine.getArgs()[0];
-				} else {
-					path = Path.of(".").relativize(dsUri.getPath()).toString();
-				}
+				String[] args = commandLine.getArgs();
+				String path = args.length >= 3 ? args[2] : Path.of(".").relativize(dsUri.getPath()).toString();
 				
 				DataStoreHttpServer server = new DataStoreHttpServer();
 				server.registerShutdownHook();
 				server.configure(path, dataStore);
 			} else {
-				throw new FrameworkException("Unknown operation, see --help for available operations");
+				throw new IllegalArgumentException("Unsupported operation " + operation);
 			}
 		}
 	}

@@ -201,13 +201,13 @@ jobs:
 
         # begin-example:datastore
         # List contents of a container
-        ./cli datastore --uri "file://results?populationSize=100&seed=1" --list
+        ./cli datastore list "file://results?populationSize=100&seed=1"
 
         # Write to blob
-        echo "Hello world" | ./cli datastore --uri "file://results?populationSize=100&seed=1#greeting" --set
+        echo "Hello world" | ./cli datastore set "file://results?populationSize=100&seed=1#greeting"
 
         # Read from blob
-        ./cli datastore --uri "file://results?populationSize=100&seed=1#greeting" --get
+        ./cli datastore get "file://results?populationSize=100&seed=1#greeting"
         # end-example:datastore
     - name: Test CLI (init --shell bash)
       if: runner.os == 'Linux'

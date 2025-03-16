@@ -48,10 +48,12 @@ public class TempFiles {
 					java.io.File file = FILES_TO_CLEANUP.remove(FILES_TO_CLEANUP.size() - 1);
 					
 					try {
-						if (file.isDirectory()) {
-							FileUtils.deleteDirectory(file);
-						} else {
-							FileUtils.delete(file);
+						if (file.exists()) {
+							if (file.isDirectory()) {
+								FileUtils.deleteDirectory(file);
+							} else {
+								FileUtils.delete(file);
+							}
 						}
 					} catch (IOException e) {
 						System.err.println(e);
