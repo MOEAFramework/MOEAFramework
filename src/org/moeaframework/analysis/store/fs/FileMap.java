@@ -140,15 +140,6 @@ public abstract class FileMap implements Defined {
 	}
 	
 	/**
-	 * Updates the manifest with information about this file map.
-	 * 
-	 * @param manifest the manifest
-	 */
-	public void updateManifest(Manifest manifest) {
-		manifest.setString("fileMap", getDefinition());
-	}
-	
-	/**
 	 * Returns a file system-safe path for the give file name.
 	 * 
 	 * @param filename the file name

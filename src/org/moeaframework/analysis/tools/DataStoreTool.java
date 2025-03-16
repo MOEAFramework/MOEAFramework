@@ -182,14 +182,10 @@ public class DataStoreTool extends SubcommandUtility {
 						container.delete();
 					}
 				} else {
-					if (prompt("Are you sure you want to delete the entire data store?")) {
-						DataStore dataStore = DataStoreFactory.getInstance().getDataStore(uri.getURI());
-						
-						try (Stream<Container> stream = dataStore.streamContainers()) {
-							stream.forEach(Container::delete);
-						}
-						
-						dataStore.getRootContainer().delete();
+					DataStore dataStore = DataStoreFactory.getInstance().getDataStore(uri.getURI());
+
+					if (dataStore.exists() && prompt("Are you sure you want to delete the entire data store?")) {
+						dataStore.delete();
 					}
 				}
 			}

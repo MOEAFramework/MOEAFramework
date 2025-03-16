@@ -76,6 +76,38 @@ public interface DataStore {
 	public URI getURI();
 	
 	/**
+	 * Returns the application intent that specifies what operations are valid against a data store.
+	 * 
+	 * @return the application intent
+	 * @throws DataStoreException if an error occurred accessing the data store
+	 */
+	public Intent getIntent() throws DataStoreException;
+	
+	/**
+	 * Sets the application intent that specifies what operations are valid against a data store.
+	 * 
+	 * @param intent the application intent
+	 * @throws DataStoreException if an error occurred accessing the data store
+	 */
+	public void setIntent(Intent intent) throws DataStoreException;
+	
+	/**
+	 * Returns {@code true} if the underlying, physical data store exists.
+	 * 
+	 * @return {@code true} if the data store exists; {@code false} otherwise
+	 * @throws DataStoreException if an error occurred accessing the data store
+	 */
+	boolean exists() throws DataStoreException;
+	
+	/**
+	 * Deletes this data store if it exists, including all containers and blobs contained within.
+	 * 
+	 * @return {@code true} if the data store was deleted; {@code false} otherwise
+	 * @throws DataStoreException if an error occurred accessing the data store
+	 */
+	public boolean delete() throws DataStoreException;
+	
+	/**
 	 * Returns the root container for this data store.  This container is useful for storing general information or
 	 * data about the experiment or data store.
 	 * 
@@ -116,6 +148,9 @@ public interface DataStore {
 
 		sb.append("{");
 		sb.append("\"type\":\"datastore\",");
+		sb.append("\"intent\":\"");
+		sb.append(getIntent().toString());
+		sb.append("\",");
 		sb.append("\"uri\":\"");
 		sb.append(StringEscapeUtils.escapeJson(baseURI.toString()));
 		sb.append("\",");

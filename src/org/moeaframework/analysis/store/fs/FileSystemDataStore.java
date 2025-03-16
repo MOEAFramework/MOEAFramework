@@ -44,9 +44,11 @@ import org.moeaframework.analysis.store.Blob;
 import org.moeaframework.analysis.store.Container;
 import org.moeaframework.analysis.store.DataStore;
 import org.moeaframework.analysis.store.DataStoreException;
+import org.moeaframework.analysis.store.Intent;
 import org.moeaframework.analysis.store.Reference;
 import org.moeaframework.analysis.store.TransactionalOutputStream;
 import org.moeaframework.analysis.store.TransactionalWriter;
+import org.moeaframework.core.Defined;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
 
@@ -68,16 +70,17 @@ public class FileSystemDataStore implements DataStore {
 
 	private final Path root;
 
-	private final FileMap fileMap;
-
 	private final Lock mkdirLock;
+
+	private FileMap fileMap;
+
+	private Intent intent;
 
 	/**
 	 * Constructs a default file system data store at the specified directory.
 	 * 
 	 * @param root the root directory
 	 * @throws DataStoreException if an error occurred accessing the data store
-	 * @throws ManifestValidationException if the existing manifest failed validation
 	 */
 	public FileSystemDataStore(File root) {
 		this(root.toPath());
@@ -88,39 +91,41 @@ public class FileSystemDataStore implements DataStore {
 	 * 
 	 * @param root the root directory
 	 * @throws DataStoreException if an error occurred accessing the data store
-	 * @throws ManifestValidationException if the existing manifest failed validation
 	 */
 	public FileSystemDataStore(Path root) {
-		this(root, new HierarchicalFileMap());
+		this(root, new HierarchicalFileMap(), Intent.READ_WRITE);
 	}
 
 	/**
 	 * Constructs a default file system data store at the specified directory.
 	 * 
 	 * @param root the root directory
-	 * @param fileMap the file map that determines the layout of files
+	 * @param fileMap the file map used when creating a new data store; otherwise the map is read from the manifest
+	 * @param intent the application intent that determines what operations are permitted
 	 * @throws DataStoreException if an error occurred accessing the data store
-	 * @throws ManifestValidationException if the existing manifest failed validation
 	 */
-	public FileSystemDataStore(File root, FileMap fileMap) {
-		this(root.toPath(), fileMap);
+	public FileSystemDataStore(File root, FileMap fileMap, Intent intent) {
+		this(root.toPath(), fileMap, intent);
 	}
 
 	/**
 	 * Constructs a hierarchical file system data store at the specified directory.
 	 * 
 	 * @param root the root directory
-	 * @param fileMap the file map that determines the layout of files
+	 * @param fileMap the file map used when creating a new data store; otherwise the map is read from the manifest
+	 * @param intent the application intent that determines what operations are permitted
 	 * @throws DataStoreException if an error occurred accessing the data store
-	 * @throws ManifestValidationException if the existing manifest failed validation
 	 */
-	public FileSystemDataStore(Path root, FileMap fileMap) {
+	public FileSystemDataStore(Path root, FileMap fileMap, Intent intent) {
 		super();
 		this.root = root;
-		this.fileMap = fileMap;
 		this.mkdirLock = new ReentrantLock();
+		this.fileMap = fileMap;
+		this.intent = intent;
 
-		createOrValidateManifest();
+		if (!tryLoadManifest()) {
+			writeManifest();
+		}
 	}
 
 	@Override
@@ -161,6 +166,46 @@ public class FileSystemDataStore implements DataStore {
 	public URI getURI() {
 		return root.toUri();
 	}
+	
+	@Override
+	public Intent getIntent() throws DataStoreException {
+		return intent;
+	}
+	
+	@Override
+	public void setIntent(Intent intent) throws DataStoreException {
+		this.intent = intent;
+		writeManifest();
+	}
+	
+	@Override
+	public boolean exists() throws DataStoreException {
+		return Files.exists(root.resolve(MANIFEST_FILENAME));
+	}
+	
+	@Override
+	public boolean delete() throws DataStoreException {
+		checkWriteIntent();
+		
+		if (!exists()) {
+			return false;
+		}
+
+		try (Stream<Container> stream = streamContainers()) {
+			stream.forEach(Container::delete);
+		}
+		
+		getRootContainer().delete();
+		
+		try {
+			Files.deleteIfExists(root.resolve(MANIFEST_FILENAME));
+		} catch (IOException e) {
+			throw new DataStoreException("Failed to delete the manifest", e);
+		}
+		
+		return true;
+		
+	}
 
 	/**
 	 * Creates all directories, including any missing parents, for the specified path.
@@ -183,44 +228,54 @@ public class FileSystemDataStore implements DataStore {
 	}
 
 	/**
-	 * Writes the manifest file or validates the existing manifest file.
+	 * Checks if write operations are permitted and, if not, raises a security exception.
 	 * 
-	 * @throws DataStoreException if an error occurred accessing the data store
-	 * @throws ManifestValidationException if the existing manifest
+	 * @throws SecurityException if write operations are not permitted
 	 */
-	private void createOrValidateManifest() throws DataStoreException {
-		try {
-			Path path = root.resolve(MANIFEST_FILENAME);
-			Manifest expectedManifest = getManifest();
-
-			if (Files.exists(path)) {
-				try (FileReader reader = new FileReader(path.toFile())) {
-					Manifest actualManifest = new Manifest();
-					actualManifest.load(reader);
-					actualManifest.validate(expectedManifest);
-				}
-			} else {
-				mkdirs(path.getParent());
-
-				try (FileWriter writer = new FileWriter(path.toFile())) {
-					expectedManifest.save(writer);
-				}
-			}
-		} catch (IOException e) {
-			throw new DataStoreException("Failed while creating or validating manifest", e);
+	private void checkWriteIntent() {
+		if (intent != null && !intent.equals(Intent.READ_WRITE)) {
+			throw new SecurityException("Write operation not permitted, data store is read-only");
 		}
 	}
 
-	/**
-	 * Constructs the manifest for this data store.
-	 * 
-	 * @return the manifest
-	 */
-	private Manifest getManifest() {
-		Manifest manifest = new Manifest();
-		manifest.setInt("version", Settings.getMajorVersion());
-		fileMap.updateManifest(manifest);
-		return manifest;
+	private boolean tryLoadManifest() throws DataStoreException {
+		try {
+			Path path = root.resolve(MANIFEST_FILENAME);
+
+			if (Files.exists(path)) {
+				TypedProperties manifest = new TypedProperties();
+
+				try (FileReader reader = new FileReader(path.toFile())) {
+					manifest.load(reader);
+				}
+
+				fileMap = Defined.createInstance(FileMap.class, manifest.getString("fileMap"));
+				intent = manifest.getEnum("intent", Intent.class, Intent.READ_WRITE);
+				return true;
+			} else {
+				return false;
+			}
+		} catch (IOException e) {
+			throw new DataStoreException("Failed while loading manifest", e);
+		}
+	}
+	
+	private void writeManifest() throws DataStoreException {
+		try {
+			Path path = root.resolve(MANIFEST_FILENAME);
+			mkdirs(path.getParent());
+
+			TypedProperties manifest = new TypedProperties();
+			manifest.setInt("version", Settings.getMajorVersion());
+			manifest.setString("fileMap", fileMap.getDefinition());
+			manifest.setEnum("intent", intent);
+
+			try (FileWriter writer = new FileWriter(path.toFile())) {
+				manifest.save(writer);
+			}
+		} catch (IOException e) {
+			throw new DataStoreException("Failed while writing manifest", e);
+		}
 	}
 
 	class FileSystemContainer implements Container {
@@ -249,6 +304,8 @@ public class FileSystemDataStore implements DataStore {
 
 		@Override
 		public void create() throws DataStoreException {
+			checkWriteIntent();
+
 			try {
 				Path container = fileMap.mapContainer(root, reference);
 				mkdirs(container);
@@ -279,47 +336,49 @@ public class FileSystemDataStore implements DataStore {
 			try {
 				Path container = fileMap.mapContainer(root, reference);
 				Path referenceFile = container.resolve(REFERENCE_FILENAME);
-				
+
 				return Files.exists(referenceFile) || reference.isRoot();
 			} catch (IOException e) {
 				throw DataStoreException.wrap(e, this);
 			}
 		}
-		
+
 		@Override
 		public boolean delete() throws DataStoreException {
+			checkWriteIntent();
+			
 			try {
 				Path container = fileMap.mapContainer(root, reference);
 				Path referenceFile = container.resolve(REFERENCE_FILENAME);
-				
+
 				if (Files.exists(referenceFile) || reference.isRoot()) {
 					if (Files.list(container).anyMatch(Files::isDirectory)) {
 						try (Stream<Blob> stream = streamBlobs()) {
 							stream.forEach(Blob::delete);
 						}
-						
+
 						Files.deleteIfExists(referenceFile);
 					} else {
 						FileUtils.deleteDirectory(container.toFile());
 						cleanTree(container.getParent());
 					}
-					
+
 					return true;
 				}
-				
+
 				return false;
 			} catch (IOException e) {
 				throw DataStoreException.wrap(e, this);
 			}
 		}
-		
+
 		private void cleanTree(Path path) throws IOException {
 			while (path != null && path.startsWith(root) && Files.exists(path) && Files.list(path).findAny().isEmpty()) {
 				Files.delete(path);
 				path = path.getParent();
 			}
 		}
-		
+
 		@Override
 		public Stream<Blob> streamBlobs() throws DataStoreException {
 			try {
@@ -330,10 +389,10 @@ public class FileSystemDataStore implements DataStore {
 				}
 
 				return Files.list(container)
-							.filter(Predicate.not(Files::isDirectory))
-							.map(x -> x.getFileName().toString())
-							.filter(x -> x.charAt(0) != '.')
-							.map(this::getBlob);
+						.filter(Predicate.not(Files::isDirectory))
+						.map(x -> x.getFileName().toString())
+						.filter(x -> x.charAt(0) != '.')
+						.map(this::getBlob);
 			} catch (IOException e) {
 				throw DataStoreException.wrap(e, this);
 			}
@@ -374,6 +433,8 @@ public class FileSystemDataStore implements DataStore {
 
 		@Override
 		public boolean delete() throws DataStoreException {
+			checkWriteIntent();
+			
 			try {
 				return Files.deleteIfExists(fileMap.mapBlob(root, reference, name));
 			} catch (IOException e) {
@@ -410,6 +471,8 @@ public class FileSystemDataStore implements DataStore {
 
 		@Override
 		public TransactionalWriter openWriter() throws DataStoreException {
+			checkWriteIntent();
+			
 			try {
 				getContainer().create();
 
@@ -423,6 +486,8 @@ public class FileSystemDataStore implements DataStore {
 
 		@Override
 		public TransactionalOutputStream openOutputStream() throws DataStoreException {
+			checkWriteIntent();
+			
 			try {
 				getContainer().create();
 

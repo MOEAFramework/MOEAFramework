@@ -28,6 +28,7 @@ import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.analysis.store.Blob;
 import org.moeaframework.analysis.store.Container;
+import org.moeaframework.analysis.store.Intent;
 import org.moeaframework.analysis.store.Reference;
 
 public class FileSystemDataStoreTest {
@@ -168,6 +169,25 @@ public class FileSystemDataStoreTest {
 		
 		Blob escapedBlob = container.getBlob("a&b=c?d#e");
 		Assert.assertStringEndsWith(escapedBlob.getURI().toString(), "?foo=bar&hello=world&_name=a%2526b%253Dc%253Fd%2523e");
+	}
+	
+	@Test
+	public void testReadOnly() {
+		dataStore.setIntent(Intent.READ_ONLY);
+		
+		Reference reference = Reference.of("a", "b");
+		
+		Container container = dataStore.getContainer(reference);
+		Assert.assertThrows(SecurityException.class, () -> container.create());
+		
+		Blob blob = container.getBlob("c");
+		Assert.assertThrows(SecurityException.class, () -> blob.storeText("foo"));
+
+		Assert.assertThrows(SecurityException.class, () -> blob.delete());
+		Assert.assertThrows(SecurityException.class, () -> container.delete());
+		Assert.assertThrows(SecurityException.class, () -> dataStore.delete());
+		
+		dataStore.setIntent(Intent.READ_WRITE);
 	}
 
 }
