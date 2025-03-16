@@ -21,6 +21,8 @@ import java.io.File;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.Capture;
+import org.moeaframework.Capture.CaptureResult;
 import org.moeaframework.TempFiles;
 import org.moeaframework.analysis.store.BlobNotFoundException;
 
@@ -30,65 +32,42 @@ public class DataStoreToolTest {
 	public void test() throws Exception {
 		File tempDirectory = TempFiles.createDirectory();
 		File outputFile = TempFiles.createFile();
-		
-		DataStoreTool.main(new String[] {
-				"--output", outputFile.toString(),
-				"list",
-				tempDirectory.toURI().toString() });
-		
-		Assert.assertLineCount(0, outputFile);
-		
 		File inputFile = TempFiles.createFile().withContent("foo");
 		
-		DataStoreTool.main(new String[] {
-				"--input", inputFile.toString(),
-				"set",
-				tempDirectory.toURI().toString() + "?a=b#foo" });
+		CaptureResult result = Capture.output(DataStoreTool.class, "list", tempDirectory.toURI().toString());
+		result.assertSuccessful();
+		Assert.assertLineCount(0, result.toString());
 		
-		DataStoreTool.main(new String[] {
-				"--output", outputFile.toString(),
-				"get",
-				tempDirectory.toURI().toString() + "?a=b#foo" });
+		result = Capture.output(DataStoreTool.class, "set", "--input", inputFile.toString(),
+				tempDirectory.toURI().toString() + "?a=b#foo");
+		result.assertSuccessful();
 		
+		result = Capture.output(DataStoreTool.class, "get", "--output", outputFile.toString(),
+				tempDirectory.toURI().toString() + "?a=b#foo");
+		result.assertSuccessful();
 		Assert.assertFileWithContent("foo", outputFile);
 		
-		DataStoreTool.main(new String[] {
-				"--output", outputFile.toString(),
-				"list",
-				tempDirectory.toURI().toString() + "?a=b" });
+		result = Capture.output(DataStoreTool.class, "list", tempDirectory.toURI().toString() + "?a=b");
+		result.assertSuccessful();
+		Assert.assertLineCount(1, result.toString());
 		
-		Assert.assertLineCount(1, outputFile);
+		result = Capture.output(DataStoreTool.class, "delete", "--yes", tempDirectory.toURI().toString() + "?a=b#foo");
+		result.assertSuccessful();
 		
-		DataStoreTool.main(new String[] {
-				"--yes", 
-				"delete",
-				tempDirectory.toURI().toString() + "?a=b#foo" });
+		result = Capture.output(DataStoreTool.class, "get", tempDirectory.toURI().toString() + "?a=b#foo");
+		result.assertThrows(BlobNotFoundException.class);
 		
-		Assert.assertThrows(BlobNotFoundException.class, () -> DataStoreTool.main(new String[] {
-				"--output", outputFile.toString(),
-				"get",
-				tempDirectory.toURI().toString() + "?a=b#foo" }));
+		result = Capture.output(DataStoreTool.class, "type", tempDirectory.toURI().toString());
+		result.assertSuccessful();
+		result.assertContains("datastore");
 		
-		DataStoreTool.main(new String[] {
-				"--output", outputFile.toString(),
-				"type",
-				tempDirectory.toURI().toString() });
+		result = Capture.output(DataStoreTool.class, "type", tempDirectory.toURI().toString() + "?a=b");
+		result.assertSuccessful();
+		result.assertContains("container");
 		
-		Assert.assertFileWithContent("datastore" + System.lineSeparator(), outputFile);
-		
-		DataStoreTool.main(new String[] {
-				"--output", outputFile.toString(),
-				"type",
-				tempDirectory.toURI().toString() + "?a=b" });
-		
-		Assert.assertFileWithContent("container" + System.lineSeparator(), outputFile);
-		
-		DataStoreTool.main(new String[] {
-				"--output", outputFile.toString(),
-				"type",
-				tempDirectory.toURI().toString() + "?a=b#foo" });
-		
-		Assert.assertFileWithContent("blob" + System.lineSeparator(), outputFile);
+		result = Capture.output(DataStoreTool.class, "type", tempDirectory.toURI().toString() + "?a=b#foo");
+		result.assertSuccessful();
+		result.assertContains("blob");
 	}
 
 }

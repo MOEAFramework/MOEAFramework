@@ -65,6 +65,11 @@ public class DataStoreURI implements Displayable {
 		if (uri.getQuery() != null) {
 			for (String parameter : uri.getQuery().split("&")) {
 				String[] parts = parameter.split("=", 2);
+				
+				if (parts.length < 2 || parts[0].isBlank()) {
+					throw new IllegalArgumentException("Invalid query string '" + uri.getQuery() + "'");
+				}
+				
 				String key = URLDecoder.decode(parts[0], StandardCharsets.UTF_8);
 				String value = URLDecoder.decode(parts[1], StandardCharsets.UTF_8);
 

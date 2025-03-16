@@ -18,18 +18,16 @@
 package org.moeaframework.util.cli;
 
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.MissingOptionException;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
-import org.junit.Before;
 import org.junit.Test;
-import org.moeaframework.Assert;
+import org.moeaframework.Capture;
+import org.moeaframework.Capture.CaptureResult;
 
 public class CommandLineUtilityTest {
-	
-	private boolean invoked;
-	
-	public class MockCommandLineUtility extends CommandLineUtility {
+		
+	public static class MockCommandLineUtility extends CommandLineUtility {
 
 		@Override
 		public Options getOptions() {
@@ -45,54 +43,45 @@ public class CommandLineUtilityTest {
 
 		@Override
 		public void run(CommandLine commandLine) throws Exception {
-			invoked = true;
+			System.out.println("Invoked run");
+		}
+		
+		public static void main(String[] args) throws Exception {
+			new MockCommandLineUtility().start(args);
 		}
 		
 	}
-	
-	@Before
-	public void setUp() {
-		invoked = false;
-	}
-	
+
 	@Test
 	public void testHelp() throws Exception {
-		new MockCommandLineUtility().start(new String[] { "--help" });
-		Assert.assertFalse(invoked);
+		CaptureResult result = Capture.output(MockCommandLineUtility.class, "--help");
+		result.assertSuccessful();
+		result.assertNotContains("Invoked run");
 	}
 	
 	@Test
 	public void testHelpWithValidOption() throws Exception {
-		new MockCommandLineUtility().start(new String[] { "--test", "--help" });
-		Assert.assertFalse(invoked);
+		CaptureResult result = Capture.output(MockCommandLineUtility.class, "--test", "--help");
+		result.assertSuccessful();
 	}
 	
 	@Test
 	public void testInvalidOption() throws Exception {
-		try {
-			new MockCommandLineUtility().start(new String[] { "--invalid" });
-		} catch (ParseException e) {
-			// this always throws a parse exception due to missing required option and invalid option
-		}
-		
-		Assert.assertFalse(invoked);
+		CaptureResult result = Capture.output(MockCommandLineUtility.class,  "--invalid");
+		result.assertThrows(MissingOptionException.class);
 	}
 	
 	@Test
 	public void testMissingOption() throws Exception {
-		try {
-			new MockCommandLineUtility().start(new String[] {});
-		} catch (ParseException e) {
-			// this always throws a parse exception due to missing required option
-		}
-		
-		Assert.assertFalse(invoked);
+		CaptureResult result = Capture.output(MockCommandLineUtility.class);
+		result.assertThrows(MissingOptionException.class);
 	}
 	
 	@Test
 	public void testNormal() throws Exception {
-		new MockCommandLineUtility().start(new String[] { "--test" });
-		Assert.assertTrue(invoked);
+		CaptureResult result = Capture.output(MockCommandLineUtility.class, "--test");
+		result.assertSuccessful();
+		result.assertContains("Invoked run");
 	}
 
 }

@@ -17,9 +17,7 @@
  */
 package org.moeaframework.analysis.tools;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.UnrecognizedOptionException;
-import org.junit.Before;
+import org.apache.commons.cli.ParseException;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Capture;
@@ -27,19 +25,13 @@ import org.moeaframework.Capture.CaptureResult;
 import org.moeaframework.core.PropertyScope;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
-import org.moeaframework.util.cli.CommandLineUtility;
 
 public class MainTest {
-	
-	@Before
-	public void setUp() {
-		Main.registerTool(CustomTool.class);
-	}
 
 	@Test
 	public void testUnrecognizedCommand() throws Exception {
 		CaptureResult result = Capture.output(Main.class, "Foo");
-		result.assertThrows(UnrecognizedOptionException.class);
+		result.assertThrows(ParseException.class);
 	}
 	
 	@Test
@@ -50,56 +42,38 @@ public class MainTest {
 	
 	@Test
 	public void testVersion() throws Exception {
-		CaptureResult result = Capture.output(Main.class, "--version", "CustomTool");
+		CaptureResult result = Capture.output(Main.class, "--version");
 		result.assertSuccessful();
 		result.assertEqualsNormalized(TypedProperties.loadBuildProperties().getString("version"));
-		result.assertNotContains("CustomTool.Run");
 	}
 	
 	@Test
 	public void testInfo() throws Exception {
-		CaptureResult result = Capture.output(Main.class, "--info", "CustomTool");
+		CaptureResult result = Capture.output(Main.class, "--info");
 		result.assertSuccessful();
 		result.assertContains("Version");
-		result.assertNotContains("CustomTool.Run");
 	}
 	
 	@Test
 	public void testHelp() throws Exception {
-		CaptureResult result = Capture.output(Main.class, "--help", "CustomTool");
+		CaptureResult result = Capture.output(Main.class, "--help");
 		result.assertSuccessful();
-		result.assertContains("CustomTool");
-		result.assertNotContains("CustomTool.Run");
+		result.assertContains("Select one of the available commands:");
 	}
 	
 	@Test
 	public void testVerbose() throws Exception {
 		try (PropertyScope scope = Settings.createScope()) {
-			CaptureResult result = Capture.output(Main.class, "--verbose", "CustomTool");
+			CaptureResult result = Capture.output(Main.class, "--verbose", "Initialize");
 			result.assertSuccessful();
-			result.assertContains("CustomTool.Run");
 			Assert.assertTrue(Settings.isVerbose());
 		}
 	}
 	
 	@Test
 	public void testCommand() throws Exception {
-		CaptureResult result = Capture.output(Main.class, "CustomTool");
+		CaptureResult result = Capture.output(Main.class, "Initialize");
 		result.assertSuccessful();
-		result.assertEqualsNormalized("CustomTool.Run");
-	}
-	
-	public static class CustomTool extends CommandLineUtility {
-
-		@Override
-		public void run(CommandLine commandLine) throws Exception {
-			System.out.println("CustomTool.Run");
-		}
-		
-		public static void main(String[] args) throws Exception {
-			new CustomTool().start(args);
-		}
-		
 	}
 
 }

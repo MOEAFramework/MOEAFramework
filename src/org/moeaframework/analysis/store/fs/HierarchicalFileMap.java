@@ -139,17 +139,16 @@ public class HierarchicalFileMap extends FileMap {
 			
 			Path relativePath = root.relativize(dir);
 			
-			if (relativePath.getNameCount() > 1) {
-				if (relativePath.getNameCount() % 2 == 1) {
-					if (!escapedPathSegments.containsKey(relativePath.getFileName())) {
-						return FileVisitResult.SKIP_SUBTREE;
-					}
-				} else {
-					if (CASE_INSENSITIVE_ORDER.compare(
-							escapedPathSegments.get(relativePath.getName(relativePath.getNameCount()-2)),
-							relativePath.getFileName()) != 0) {
-						return FileVisitResult.SKIP_SUBTREE;
-					}
+			if (relativePath.getNameCount() % 2 == 1) {
+				if (!escapedPathSegments.containsKey(relativePath.getFileName())) {
+					return FileVisitResult.SKIP_SUBTREE;
+				}
+			} else {
+				Path keyPath = relativePath.getName(relativePath.getNameCount()-2);
+					
+				if (!escapedPathSegments.containsKey(keyPath) ||
+						CASE_INSENSITIVE_ORDER.compare(escapedPathSegments.get(keyPath), relativePath.getFileName()) != 0) {
+					return FileVisitResult.SKIP_SUBTREE;
 				}
 			}
 			
