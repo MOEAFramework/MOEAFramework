@@ -53,8 +53,11 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
 
 /**
- * Data store backed by the local file system.  A {@link FileMap} determines the layout of the containers and blobs.
- * Unless otherwise specified, {@link HashFileMap} is used.
+ * Data store backed by the local file system.  If the data store already exists, the settings are loaded from a
+ * manifest file and arguments passed to the constructor are ignored.
+ * <p>
+ * The layout of containers and blobs on the file system are managed by a {@link FileMap}, which defaults to
+ * {@link HierarchicalFileMap} if not specified.
  */
 public class FileSystemDataStore implements DataStore {
 
@@ -93,7 +96,7 @@ public class FileSystemDataStore implements DataStore {
 	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
 	public FileSystemDataStore(Path root) {
-		this(root, new HierarchicalFileMap(), Intent.READ_WRITE);
+		this(root, new HierarchicalFileMap());
 	}
 
 	/**
@@ -101,11 +104,10 @@ public class FileSystemDataStore implements DataStore {
 	 * 
 	 * @param root the root directory
 	 * @param fileMap the file map used when creating a new data store; otherwise the map is read from the manifest
-	 * @param intent the application intent that determines what operations are permitted
 	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public FileSystemDataStore(File root, FileMap fileMap, Intent intent) {
-		this(root.toPath(), fileMap, intent);
+	public FileSystemDataStore(File root, FileMap fileMap) {
+		this(root.toPath(), fileMap);
 	}
 
 	/**
@@ -113,15 +115,14 @@ public class FileSystemDataStore implements DataStore {
 	 * 
 	 * @param root the root directory
 	 * @param fileMap the file map used when creating a new data store; otherwise the map is read from the manifest
-	 * @param intent the application intent that determines what operations are permitted
 	 * @throws DataStoreException if an error occurred accessing the data store
 	 */
-	public FileSystemDataStore(Path root, FileMap fileMap, Intent intent) {
+	public FileSystemDataStore(Path root, FileMap fileMap) {
 		super();
 		this.root = root;
 		this.mkdirLock = new ReentrantLock();
 		this.fileMap = fileMap;
-		this.intent = intent;
+		this.intent = Intent.READ_WRITE;
 
 		if (!tryLoadManifest()) {
 			writeManifest();

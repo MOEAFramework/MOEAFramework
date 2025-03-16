@@ -33,6 +33,7 @@ import org.moeaframework.analysis.store.Container;
 import org.moeaframework.analysis.store.DataStore;
 import org.moeaframework.analysis.store.DataStoreFactory;
 import org.moeaframework.analysis.store.DataStoreURI;
+import org.moeaframework.analysis.store.Intent;
 import org.moeaframework.analysis.store.http.DataStoreHttpServer;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.cli.CommandLineUtility;
@@ -52,6 +53,8 @@ public class DataStoreTool extends SubcommandUtility {
 		add(Subcommand.of("get", DataStoreGetCommand.class));
 		add(Subcommand.of("set", DataStoreSetCommand.class));
 		add(Subcommand.of("server", DataStoreServerCommand.class));
+		add(Subcommand.of("lock", DataStoreLockCommand.class));
+		add(Subcommand.of("unlock", DataStoreUnlockCommand.class));
 	}
 	
 	/**
@@ -64,8 +67,8 @@ public class DataStoreTool extends SubcommandUtility {
 		new DataStoreTool().start(args);
 	}
 	
-	private static class DataStoreTypeCommand extends CommandLineUtility {
-
+	private static abstract class AbstractDataStoreCommand extends CommandLineUtility {
+		
 		@Override
 		public void run(CommandLine commandLine) throws Exception {
 			if (commandLine.getArgs().length < 1) {
@@ -76,76 +79,109 @@ public class DataStoreTool extends SubcommandUtility {
 						
 			try (PrintWriter output = createOutputWriter()) {
 				if (uri.getName() != null && !uri.getName().isBlank()) {
-					output.println("blob");
+					onBlob(DataStoreFactory.getInstance().resolveBlob(uri.getURI()), commandLine);
 				} else if (!uri.getReference().isRoot()) {
-					output.println("container");
+					onContainer(DataStoreFactory.getInstance().resolveContainer(uri.getURI()), commandLine);
 				} else {
-					output.println("datastore");
+					onDataStore(DataStoreFactory.getInstance().getDataStore(uri.getURI()), commandLine);
 				}
 			}
 		}
 		
+		public void onDataStore(DataStore dataStore, CommandLine commandLine) throws Exception {
+			throw new FrameworkException("Command can not be used with a URI referencing a data store");
+		}
+		
+		public void onContainer(Container container, CommandLine commandLine) throws Exception {
+			throw new FrameworkException("Command can not be used with a URI referencing a container");
+		}
+		
+		public void onBlob(Blob blob, CommandLine commandLine) throws Exception {
+			throw new FrameworkException("Command can not be used with a URI referencing a blob");
+		}
+		
 	}
 	
-	private static class DataStoreListCommand extends CommandLineUtility {
+	private static class DataStoreTypeCommand extends AbstractDataStoreCommand {
 
 		@Override
-		public void run(CommandLine commandLine) throws Exception {
-			if (commandLine.getArgs().length < 1) {
-				throw new ParseException("Expected one argument containing the URI");
-			}
-			
-			DataStoreURI uri = DataStoreURI.parse(commandLine.getArgs()[0]);
-			
+		public void onDataStore(DataStore dataStore, CommandLine commandLine) {
 			try (PrintWriter output = createOutputWriter()) {
-				if (uri.getName() != null && !uri.getName().isBlank()) {
-					Blob blob = DataStoreFactory.getInstance().resolveBlob(uri.getURI());
-					output.println(blob.getURI());
-				} else if (!uri.getReference().isRoot()) {
-					Container container = DataStoreFactory.getInstance().resolveContainer(uri.getURI());
-					
-					try (Stream<Blob> stream = container.streamBlobs()) {
-						stream.forEach(x -> output.println(x.getURI()));
-					}
-				} else {
-					DataStore dataStore = DataStoreFactory.getInstance().getDataStore(uri.getURI());
-				
-					try (Stream<Container> stream = dataStore.streamContainers()) {
-						stream.forEach(x -> output.println(x.getURI()));
-					}
-				}
+				output.println("datastore");
+			}
+		}
+		
+		@Override
+		public void onContainer(Container container, CommandLine commandLine) {
+			try (PrintWriter output = createOutputWriter()) {
+				output.println("container");
+			}
+		}
+		
+		@Override
+		public void onBlob(Blob blob, CommandLine commandLine) {
+			try (PrintWriter output = createOutputWriter()) {
+				output.println("blob");
 			}
 		}
 		
 	}
 	
-	private static class DataStoreDetailsCommand extends CommandLineUtility {
+	private static class DataStoreListCommand extends AbstractDataStoreCommand {
+		
+		@Override
+		public void onDataStore(DataStore dataStore, CommandLine commandLine) {
+			try (PrintWriter output = createOutputWriter()) {
+				try (Stream<Container> stream = dataStore.streamContainers()) {
+					stream.forEach(x -> output.println(x.getURI()));
+				}
+			}
+		}
+		
+		@Override
+		public void onContainer(Container container, CommandLine commandLine) {
+			try (PrintWriter output = createOutputWriter()) {
+				try (Stream<Blob> stream = container.streamBlobs()) {
+					stream.forEach(x -> output.println(x.getURI()));
+				}
+			}
+		}
+		
+		@Override
+		public void onBlob(Blob blob, CommandLine commandLine) {
+			try (PrintWriter output = createOutputWriter()) {
+				output.println(blob.getURI());
+			}
+		}
+		
+	}
+	
+	private static class DataStoreDetailsCommand extends AbstractDataStoreCommand {
 
 		@Override
-		public void run(CommandLine commandLine) throws Exception {
-			if (commandLine.getArgs().length < 1) {
-				throw new ParseException("Expected one argument containing the URI");
-			}
-			
-			DataStoreURI uri = DataStoreURI.parse(commandLine.getArgs()[0]);
-			
+		public void onDataStore(DataStore dataStore, CommandLine commandLine) {
 			try (PrintWriter output = createOutputWriter()) {
-				if (uri.getName() != null && !uri.getName().isBlank()) {
-					Blob blob = DataStoreFactory.getInstance().resolveBlob(uri.getURI());
-					output.println(blob.toJSON());
-				} else if (!uri.getReference().isRoot()) {
-					Container container = DataStoreFactory.getInstance().resolveContainer(uri.getURI());
-					output.println(container.toJSON());
-				} else {
-					DataStore dataStore = DataStoreFactory.getInstance().getDataStore(uri.getURI());
-					output.println(dataStore.toJSON());
-				}
+				output.println(dataStore.toJSON());
+			}
+		}
+		
+		@Override
+		public void onContainer(Container container, CommandLine commandLine) {
+			try (PrintWriter output = createOutputWriter()) {
+				output.println(container.toJSON());
+			}
+		}
+		
+		@Override
+		public void onBlob(Blob blob, CommandLine commandLine) {
+			try (PrintWriter output = createOutputWriter()) {
+				output.println(blob.toJSON());
 			}
 		}
 		
 	}
 	
-	private static class DataStoreDeleteCommand extends CommandLineUtility {
+	private static class DataStoreDeleteCommand extends AbstractDataStoreCommand {
 
 		@Override
 		public Options getOptions() {
@@ -161,39 +197,33 @@ public class DataStoreTool extends SubcommandUtility {
 		@Override
 		public void run(CommandLine commandLine) throws Exception {
 			setAcceptConfirmations(commandLine.hasOption("yes"));
-			
-			if (commandLine.getArgs().length < 1) {
-				throw new ParseException("Expected one argument containing the URI");
+			super.run(commandLine);
+		}
+		
+		@Override
+		public void onDataStore(DataStore dataStore, CommandLine commandLine) {
+			if (dataStore.exists() && prompt("Are you sure you want to delete the entire data store?")) {
+				dataStore.delete();
 			}
-			
-			DataStoreURI uri = DataStoreURI.parse(commandLine.getArgs()[0]);
-			
-			try (PrintWriter output = createOutputWriter()) {
-				if (uri.getName() != null && !uri.getName().isBlank()) {
-					Blob blob = DataStoreFactory.getInstance().resolveBlob(uri.getURI());
-	
-					if (blob.exists() && prompt("Are you sure you want to delete this blob?")) {
-						blob.delete();
-					}
-				} else if (!uri.getReference().isRoot()) {
-					Container container = DataStoreFactory.getInstance().resolveContainer(uri.getURI());
-	
-					if (container.exists() && prompt("Are you sure you want to delete this container?")) {
-						container.delete();
-					}
-				} else {
-					DataStore dataStore = DataStoreFactory.getInstance().getDataStore(uri.getURI());
-
-					if (dataStore.exists() && prompt("Are you sure you want to delete the entire data store?")) {
-						dataStore.delete();
-					}
-				}
+		}
+		
+		@Override
+		public void onContainer(Container container, CommandLine commandLine) {
+			if (container.exists() && prompt("Are you sure you want to delete this container?")) {
+				container.delete();
+			}
+		}
+		
+		@Override
+		public void onBlob(Blob blob, CommandLine commandLine) {
+			if (blob.exists() && prompt("Are you sure you want to delete this blob?")) {
+				blob.delete();
 			}
 		}
 		
 	}
 	
-	private static class DataStoreGetCommand extends CommandLineUtility {
+	private static class DataStoreGetCommand extends AbstractDataStoreCommand {
 		
 		@Override
 		public Options getOptions() {
@@ -207,28 +237,17 @@ public class DataStoreTool extends SubcommandUtility {
 			
 			return options;
 		}
-
+		
 		@Override
-		public void run(CommandLine commandLine) throws Exception {
-			if (commandLine.getArgs().length < 1) {
-				throw new ParseException("Expected one argument containing the URI");
-			}
-			
-			DataStoreURI uri = DataStoreURI.parse(commandLine.getArgs()[0]);
-			
-			if (uri.getName() == null || uri.getName().isBlank()) {
-				throw new FrameworkException("get can only be used with a URI referencing a blob");
-			}
-			
+		public void onBlob(Blob blob, CommandLine commandLine) throws Exception {
 			try (PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
-				Blob blob = DataStoreFactory.getInstance().resolveBlob(uri.getURI());
 				blob.extractTo(output);
 			}
 		}
 		
 	}
 	
-	private static class DataStoreSetCommand extends CommandLineUtility {
+	private static class DataStoreSetCommand extends AbstractDataStoreCommand {
 		
 		@Override
 		public Options getOptions() {
@@ -242,33 +261,19 @@ public class DataStoreTool extends SubcommandUtility {
 			
 			return options;
 		}
-
+		
 		@Override
-		public void run(CommandLine commandLine) throws Exception {
-			if (commandLine.getArgs().length < 1) {
-				throw new ParseException("Expected one argument containing the URI");
-			}
-			
-			DataStoreURI uri = DataStoreURI.parse(commandLine.getArgs()[0]);
-			
-			if (uri.getName() == null || uri.getName().isBlank()) {
-				throw new FrameworkException("set can only be used with a URI referencing a blob");
-			}
-			
-			try (PrintWriter output = createOutputWriter()) {
-				Blob blob = DataStoreFactory.getInstance().resolveBlob(uri.getURI());
-				
-				if (commandLine.hasOption("input")) {
-					blob.storeFrom(new File(commandLine.getOptionValue("input")));
-				} else {
-					blob.storeFrom(System.in);
-				}
+		public void onBlob(Blob blob, CommandLine commandLine) throws Exception {
+			if (commandLine.hasOption("input")) {
+				blob.storeFrom(new File(commandLine.getOptionValue("input")));
+			} else {
+				blob.storeFrom(System.in);
 			}
 		}
 		
 	}
 	
-	private static class DataStoreServerCommand extends CommandLineUtility {
+	private static class DataStoreServerCommand extends AbstractDataStoreCommand {
 		
 		@Override
 		public Options getOptions() {
@@ -289,15 +294,10 @@ public class DataStoreTool extends SubcommandUtility {
 			
 			return options;
 		}
-
+		
 		@Override
-		public void run(CommandLine commandLine) throws Exception {
-			if (commandLine.getArgs().length < 1) {
-				throw new ParseException("Expected one argument containing the URI");
-			}
-			
+		public void onDataStore(DataStore dataStore, CommandLine commandLine) throws Exception {
 			DataStoreURI uri = DataStoreURI.parse(commandLine.getArgs()[0]);
-			DataStore dataStore = DataStoreFactory.getInstance().getDataStore(uri.getURI());
 			
 			DataStoreHttpServer server = new DataStoreHttpServer(new InetSocketAddress(
 					commandLine.getOptionValue("hostname", "localhost"),
@@ -306,6 +306,42 @@ public class DataStoreTool extends SubcommandUtility {
 			server.configure(
 					commandLine.getOptionValue("path", Path.of(".").relativize(uri.getPath()).toString()),
 					dataStore);
+		}
+		
+	}
+	
+	private static abstract class DataStoreIntentCommand extends AbstractDataStoreCommand {
+		
+		private final Intent intent;
+		
+		public DataStoreIntentCommand(Intent intent) {
+			super();
+			this.intent = intent;
+		}
+
+		@Override
+		public void onDataStore(DataStore dataStore, CommandLine commandLine) throws Exception {
+			dataStore.setIntent(intent);
+			
+			try (PrintWriter output = createOutputWriter()) {
+				output.println("Data store is now in " + dataStore.getIntent() + " mode");
+			}
+		}
+		
+	}
+	
+	private static class DataStoreLockCommand extends DataStoreIntentCommand {
+
+		public DataStoreLockCommand() {
+			super(Intent.READ_ONLY);
+		}
+		
+	}
+	
+	private static class DataStoreUnlockCommand extends DataStoreIntentCommand {
+
+		public DataStoreUnlockCommand() {
+			super(Intent.READ_WRITE);
 		}
 		
 	}
