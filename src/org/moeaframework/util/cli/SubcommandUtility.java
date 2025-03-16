@@ -38,6 +38,10 @@ public abstract class SubcommandUtility extends CommandLineUtility {
 
 	private final Map<String, Subcommand> subcommands;
 
+	/**
+	 * Constructs a subcommand-based command line utility.  The constructor for subclasses should provide a private
+	 * constructor unless programmatic access is also desired.
+	 */
 	public SubcommandUtility() {
 		super();
 		subcommands = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
@@ -93,7 +97,8 @@ public abstract class SubcommandUtility extends CommandLineUtility {
 				
 		for (Subcommand subcommand : subcommands.values()) {
 			if (subcommand.isVisible()) {
-				options.addOption(subcommand.getName(), Localization.getString(subcommand.getImplementation(), "description"));
+				options.addOption(subcommand.getName(),
+						Localization.getString(subcommand.getImplementation(), "description"));
 			}
 		}
 		
@@ -160,18 +165,46 @@ public abstract class SubcommandUtility extends CommandLineUtility {
 			return isVisible;
 		}
 		
+		/**
+		 * Creates a subcommand with the given implementation.  The command name is derived from the class name.
+		 * 
+		 * @param implementation the subcommand implementation
+		 * @return the subcommand
+		 */
 		public static Subcommand of(Class<? extends CommandLineUtility> implementation) {
 			return of(implementation.getSimpleName(), implementation);
 		}
 		
+		/**
+		 * Creates a subcommand with the given name and implementation.
+		 * 
+		 * @param name the name of the subcommand
+		 * @param implementation the subcommand implementation
+		 * @return the subcommand
+		 */
 		public static Subcommand of(String name, Class<? extends CommandLineUtility> implementation) {
 			return new Subcommand(name, implementation, true);
 		}
 		
+		/**
+		 * Creates a hidden subcommand with the given implementation.  The command name is derived from the class name.
+		 * Hidden commands are not displayed in help messages but can still be invoked.
+		 * 
+		 * @param implementation the subcommand implementation
+		 * @return the subcommand
+		 */
 		public static Subcommand hidden(Class<? extends CommandLineUtility> implementation) {
 			return hidden(implementation.getSimpleName(), implementation);
 		}
 		
+		/**
+		 * Creates a hidden subcommand with the given name and implementation.  Hidden commands are not displayed in
+		 * help messages but can still be invoked.
+		 * 
+		 * @param name the name of the subcommand
+		 * @param implementation the subcommand implementation
+		 * @return the subcommand
+		 */
 		public static Subcommand hidden(String name, Class<? extends CommandLineUtility> implementation) {
 			return new Subcommand(name, implementation, false);
 		}

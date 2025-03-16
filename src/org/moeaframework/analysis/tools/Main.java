@@ -41,10 +41,12 @@ public class Main extends SubcommandUtility {
 
 	private Main() {
 		super();
+		add(Subcommand.of(BuildProblem.class));
 		add(Subcommand.of(CalculateIndicator.class));
 		add(Subcommand.of(DataStoreTool.class));
 		add(Subcommand.of(EndOfRunEvaluator.class));
 		add(Subcommand.of(Initialize.class));
+		add(Subcommand.of(LaunchDiagnosticTool.class));
 		add(Subcommand.of(MetricsAnalysis.class));
 		add(Subcommand.of(MetricsEvaluator.class));
 		add(Subcommand.of(MetricsValidator.class));
@@ -60,9 +62,6 @@ public class Main extends SubcommandUtility {
 		add(Subcommand.of(SobolAnalysis.class));
 		add(Subcommand.of(Solve.class));
 		add(Subcommand.of(WeightGenerator.class));
-
-		add(Subcommand.of(BuildProblem.class));
-		add(Subcommand.of(LaunchDiagnosticTool.class));
 		
 		add(Subcommand.hidden(GeneratePlots.class));
 		add(Subcommand.hidden(TestExamples.class));
