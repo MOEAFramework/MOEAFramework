@@ -31,7 +31,7 @@ import org.moeaframework.util.validate.Validate;
  * the left-most arrow in the figure below), which is subsequently applied to the third individual (shown as the
  * right-most arrow in the figure below).
  * <p>
- * <img src="doc-files/DifferentialEvolution-1.png" alt="Example DifferentialEvolution operator distribution" />
+ * <img src="doc-files/DifferentialEvolution.png" alt="Example DifferentialEvolution operator distribution" />
  * <p>
  * The scaling factor parameter adjusts the magnitude of the difference vector, allowing the user to decrease or
  * increase the magnitude in relation to the actual difference between the individuals.  The crossover rate parameter

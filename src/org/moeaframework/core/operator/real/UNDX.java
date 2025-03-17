@@ -33,7 +33,7 @@ import org.moeaframework.util.validate.Validate;
  * number of parents and offspring.  Offspring are centered around the centroid, forming a normal distribution whose
  * shape is controlled by the positions of the parents, as depicted in the figure below.
  * <p>
- * <img src="doc-files/UNDX-1.png" alt="Example UNDX operator distribution" />
+ * <img src="doc-files/UNDX.png" alt="Example UNDX operator distribution" />
  * <p>
  * References:
  * <ol>

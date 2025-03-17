@@ -32,7 +32,7 @@ import org.moeaframework.util.validate.Validate;
  * Parent-centric crossover (PCX) operator.  PCX is a multiparent operator, allowing a user-defined number of parents
  * and offspring.  Offspring are clustered around the parents, as depicted in the figure below.
  * <p>
- * <img src="doc-files/PCX-1.png" alt="Example PCX operator distribution" />
+ * <img src="doc-files/PCX.png" alt="Example PCX operator distribution" />
  * <p>
  * References:
  * <ol>

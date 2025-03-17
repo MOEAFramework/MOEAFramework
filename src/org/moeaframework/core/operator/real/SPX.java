@@ -31,7 +31,7 @@ import org.moeaframework.util.validate.Validate;
  * of the parents.  For example, the figure below shows three parent points and the offspring distribution,
  * clearly filling an expanded triangular simplex.
  * <p>
- * <img src="doc-files/SPX-1.png" alt="Example SPX operator distribution" />
+ * <img src="doc-files/SPX.png" alt="Example SPX operator distribution" />
  * <p>
  * References:
  * <ol>

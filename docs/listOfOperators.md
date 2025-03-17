@@ -45,7 +45,7 @@ variables [^deb94].  It accepts two parents and produces two offspring.  An exam
 offspring nearer to the two parents, is shown below. 
 
 <p align="center">
-	<img src="../src/org/moeaframework/core/operator/real/doc-files/SBX-1.png" />
+	<img src="../src/org/moeaframework/core/operator/real/doc-files/SBX.png" />
 </p>
 
 The distribution index controls the shape of the offspring distribution. Larger values for the distribution index
@@ -78,7 +78,7 @@ is calculated between the first two individuals (shown as the left-most arrow in
 subsequently applied to the third individual (shown as the right-most arrow in the figure below). 
 
 <p align="center">
-	<img src="../src/org/moeaframework/core/operator/real/doc-files/DifferentialEvolution-1.png" />
+	<img src="../src/org/moeaframework/core/operator/real/doc-files/DifferentialEvolution.png" />
 </p>
 
 The scaling factor parameter adjusts the magnitude of the difference vector, allowing the user to decrease or increase
@@ -96,7 +96,7 @@ PCX is a multiparent operator, allowing a user-defined number of parents and off
 clustered around the parents, as depicted in the figure below.
 
 <p align="center">
-	<img src="../src/org/moeaframework/core/operator/real/doc-files/PCX-1.png" />
+	<img src="../src/org/moeaframework/core/operator/real/doc-files/PCX.png" />
 </p>
 
 Parameter            | Default Value     | Description
@@ -113,7 +113,7 @@ are centered around the centroid, forming a normal distribution whose shape is c
 parents, as depicted in the figure below.
 
 <p align="center">
-	<img src="../src/org/moeaframework/core/operator/real/doc-files/UNDX-1.png" />
+	<img src="../src/org/moeaframework/core/operator/real/doc-files/UNDX.png" />
 </p>
 
 Parameter            | Default Value     | Description
@@ -132,7 +132,7 @@ example, the figure below shows three parent points and the offspring distributi
 triangular simplex. 
 
 <p align="center">
-	<img src="../src/org/moeaframework/core/operator/real/doc-files/SPX-1.png" />
+	<img src="../src/org/moeaframework/core/operator/real/doc-files/SPX.png" />
 </p>
 
 Parameter            | Default Value     | Description
@@ -148,7 +148,7 @@ depicts the offspring distribution. It is recommended each decision variable is 
 where $N$ is the number of decision variables. This results in one mutation per offspring on average. 
 
 <p align="center">
-	<img src="../src/org/moeaframework/core/operator/real/doc-files/UM-1.png" />
+	<img src="../src/org/moeaframework/core/operator/real/doc-files/UM.png" />
 </p>
 
 Parameter            | Default Value     | Description

@@ -33,7 +33,7 @@ import org.moeaframework.util.validate.Validate;
  * single-point crossover on real-valued decision variables.  An example of this distribution, which favors offspring
  * nearer to the two parents, is shown below.
  * <p>
- * <img src="doc-files/SBX-1.png" alt="Example SBX operator distribution" />
+ * <img src="doc-files/SBX.png" alt="Example SBX operator distribution" />
  * <p>
  * The distribution index controls the shape of the offspring distribution.  Larger values for the distribution index
  * generates offspring closer to the parents.
