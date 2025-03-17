@@ -157,7 +157,7 @@ public interface Container {
 			sb.append(",\"blobs\":");
 	
 			try (Stream<Blob> stream = streamBlobs()) {
-				sb.append(stream.map(x -> x.toJSON(baseURI)).collect(Collectors.joining(",", "[", "]")));
+				sb.append(stream.map(x -> x.toJSON(baseURI, full)).collect(Collectors.joining(",", "[", "]")));
 			}
 		}
 

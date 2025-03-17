@@ -442,6 +442,15 @@ public class FileSystemDataStore implements DataStore {
 				throw DataStoreException.wrap(e, this);
 			}
 		}
+		
+		@Override
+		public long size() throws DataStoreException {
+			try {
+				return Files.size(fileMap.mapBlob(root, reference, name));
+			} catch (IOException e) {
+				throw DataStoreException.wrap(e, this);
+			}
+		}
 
 		@Override
 		public Instant lastModified() throws DataStoreException {

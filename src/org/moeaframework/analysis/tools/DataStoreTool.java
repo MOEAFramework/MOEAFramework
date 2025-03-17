@@ -190,7 +190,7 @@ public class DataStoreTool extends SubcommandUtility {
 		public void onBlob(Blob blob, CommandLine commandLine) {
 			try (PrintWriter output = createOutputWriter()) {
 				DataStoreURI uri = DataStoreURI.parse(commandLine.getArgs()[0]);
-				output.println(blob.toJSON(uri.getURI()));
+				output.println(blob.toJSON(uri.getURI(), commandLine.hasOption("full")));
 			}
 		}
 		

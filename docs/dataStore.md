@@ -185,8 +185,8 @@ format, search, and filter this data.
 # Find all containers with populationSize = 100
 ./cli datastore details "file://results" | jq -r '.containers[] | select(.reference.populationSize == "100")'
 
-# Find all containers with fewer than 2 blobs
-./cli datastore details --full "file://results" | jq -r '.containers[] | select(.blobs | length < 2)'
+# Find all containers missing the "result" blob
+./cli datastore details --full file://results | jq -r '.containers[] | select(isempty(.blobs[] | select(.name == "result")))'
 ```
 
 Finally, after generating all of the data, we can protect the data by locking, or assigning a read-only intent, to the

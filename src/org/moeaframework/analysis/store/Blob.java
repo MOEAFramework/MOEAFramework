@@ -80,6 +80,14 @@ public interface Blob {
 	boolean delete() throws DataStoreException;
 	
 	/**
+	 * Returns the size of the blob, in bytes.
+	 * 
+	 * @return the size of the blob
+	 * @throws DataStoreException if an error occurred accessing the data store
+	 */
+	long size() throws DataStoreException;
+	
+	/**
 	 * Returns the last modified time of the blob.
 	 * 
 	 * @return the last modified time
@@ -548,6 +556,17 @@ public interface Blob {
 	 * @return the JSON string
 	 */
 	default String toJSON(URI baseURI) {
+		return toJSON(baseURI, false);
+	}
+	
+	/**
+	 * Returns a description of this blob formatted as JSON.
+	 * 
+	 * @param baseURI the base URI, which is used to produce URLs
+	 * @param full if {@code true}, output the full data (can produce large output)
+	 * @return the JSON string
+	 */
+	default String toJSON(URI baseURI, boolean full) {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("{");
@@ -555,6 +574,16 @@ public interface Blob {
 		sb.append("\"name\":\"");
 		sb.append(StringEscapeUtils.escapeJson(getName()));
 		sb.append("\",");
+		
+		if (full) {
+			sb.append("\"lastModified\":\"");
+			sb.append(lastModified().toString());
+			sb.append("\",");
+			sb.append("\"size\":");
+			sb.append(size());
+			sb.append(",");
+		}
+		
 		sb.append("\"uri\":\"");
 		sb.append(StringEscapeUtils.escapeJson(DataStoreURI.resolve(baseURI, this).toString()));
 		sb.append("\"");
