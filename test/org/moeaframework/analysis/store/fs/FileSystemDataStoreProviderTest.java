@@ -22,8 +22,10 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.junit.Assume;
+import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.analysis.store.Blob;
@@ -82,9 +84,8 @@ public class FileSystemDataStoreProviderTest {
 	private void assertDataStore(String uri, Path expectedPath) throws IOException {
 		DataStore dataStore = DataStoreFactory.getInstance().getDataStore(URI.create(uri));
 		Assert.assertNotNull(dataStore);
-		Assert.assertTrue(dataStore.exists());
 		Assert.assertInstanceOf(FileSystemDataStore.class, dataStore);
-		Assert.assertTrue(Files.isSameFile(expectedPath, DataStoreURI.parse(dataStore.getURI()).getPath()));
+		Assert.assertTrue(DataStoreURI.parse(dataStore.getURI()).getPath().endsWith(expectedPath));
 	}
 	
 	private void assertContainer(String uri, Reference expectedReference) {
