@@ -123,10 +123,8 @@ public class FileSystemDataStore implements DataStore {
 		this.mkdirLock = new ReentrantLock();
 		this.fileMap = fileMap;
 		this.intent = Intent.READ_WRITE;
-
-		if (!tryLoadManifest()) {
-			writeManifest();
-		}
+		
+		tryLoadManifest();
 	}
 
 	@Override
@@ -137,6 +135,10 @@ public class FileSystemDataStore implements DataStore {
 	@Override
 	public Stream<Container> streamContainers() throws DataStoreException {
 		try {
+			if (!Files.exists(root)) {
+				return Stream.empty();
+			}
+			
 			return Files.walk(root)
 					.skip(1)
 					.filter(Files::isDirectory)
@@ -206,6 +208,12 @@ public class FileSystemDataStore implements DataStore {
 		
 		return true;
 		
+	}
+	
+	void create() throws DataStoreException {
+		if (!exists()) {
+			writeManifest();
+		}
 	}
 
 	/**
@@ -306,6 +314,10 @@ public class FileSystemDataStore implements DataStore {
 		@Override
 		public void create() throws DataStoreException {
 			checkWriteIntent();
+			
+			if (!FileSystemDataStore.this.exists()) {
+				FileSystemDataStore.this.create();
+			}
 
 			try {
 				Path container = fileMap.mapContainer(root, reference);

@@ -145,8 +145,8 @@ In the previous examples, we accessed containers and blobs through the programma
 the content through the CLI.
 
 To begin, each data store, container, and blob has a unique Uniform Resource Identifier (URI).  Similar to a URL one
-uses to access a web page, the URI contains the necessary data to locate the data store, container, or blob.  Below are
-some examples using a file system data store:
+uses to access a web page, the URI contains the necessary information to locate the data store, container, or blob.
+Below are some example URIs:
 
 ```
 # The data store rooted at the path ./results/
@@ -159,7 +159,7 @@ file://results?populationSize=100&seed=1
 file://results?populationSize=100&seed=1#greeting
 ```
 
-The `datastore` CLI tools provides a number of operations that can be performed, including listing contents, reading or
+The `datastore` CLI tools provide a number of operations that can be performed, including listing contents, reading or
 writing to blobs, etc.
 
 <!-- bash:.github/workflows/ci.yml [datastore] -->
@@ -189,8 +189,8 @@ format, search, and filter this data.
 ./cli datastore details --full file://results | jq -r '.containers[] | select(isempty(.blobs[] | select(.name == "result")))'
 ```
 
-Finally, after generating all of the data, we can protect the data by locking, or assigning a read-only intent, to the
-data store.
+The CLI also lets us protect the contents of a data store by locking it.  This essentially flags the data store as
+"read only" and fails any operations that would add, remove, or modify content.
 
 ```bash
 ./cli datastore lock "file://results"
@@ -202,5 +202,6 @@ data store.
 ```
 
 > [!NOTE]  
-> Locking the data store only protects against unintended changes from the MOEA Framework itself.  The underlying data
-> can still be modified or deleted by other means (e.g., deleting the folder contents in the file browser).
+> Locking the data store only protects against changes made by or with the MOEA Framework library.  The underlying data
+> can still be modified or deleted by other means (e.g., deleting the folder contents in the file browser).  Always
+> backup your data!

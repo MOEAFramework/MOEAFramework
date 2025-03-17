@@ -376,6 +376,11 @@ public class BlobTest {
 		public Instant lastModified() throws DataStoreException {
 			throw new UnsupportedOperationException();
 		}
+		
+		@Override
+		public long size() throws DataStoreException {
+			throw new UnsupportedOperationException();
+		}
 
 		@Override
 		public Reader openReader() throws DataStoreException {
