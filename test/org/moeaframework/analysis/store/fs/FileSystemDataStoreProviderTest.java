@@ -37,7 +37,7 @@ import org.moeaframework.analysis.store.Reference;
 public class FileSystemDataStoreProviderTest {
 
 	@Test
-	public void testGetDataStore() {
+	public void testGetDataStore() throws IOException {
 		assertDataStore("file://temp/dataStore", Path.of("temp/dataStore"));
 		assertDataStore("file:temp/dataStore", Path.of("temp/dataStore"));
 		assertDataStore("temp/dataStore", Path.of("temp/dataStore"));
@@ -48,7 +48,7 @@ public class FileSystemDataStoreProviderTest {
 	}
 	
 	@Test
-	public void testGetDataStoreAbsolutePaths() {
+	public void testGetDataStoreAbsolutePaths() throws IOException {
 		Assume.assumeFalse("Absolute paths fail with drive letter on Windows, skipping.", SystemUtils.IS_OS_WINDOWS);
 		
 		assertDataStore("file://" + Path.of("./temp/dataStore").toAbsolutePath().toString(), Path.of("temp/dataStore"));
@@ -79,15 +79,12 @@ public class FileSystemDataStoreProviderTest {
 		Assert.assertNotNull(DataStoreFactory.getInstance().resolveBlob(URI.create("file:temp/dataStore?a=b")));
 	}
 	
-	private void assertDataStore(String uri, Path expectedPath) {
-		try {
-			DataStore dataStore = DataStoreFactory.getInstance().getDataStore(URI.create(uri));
-			Assert.assertNotNull(dataStore);
-			Assert.assertInstanceOf(FileSystemDataStore.class, dataStore);
-			Assert.assertTrue(Files.isSameFile(expectedPath, DataStoreURI.parse(dataStore.getURI()).getPath()));
-		} catch (IOException e) {
-			Assert.fail("Unexpected exception: " + e.getMessage());
-		}
+	private void assertDataStore(String uri, Path expectedPath) throws IOException {
+		DataStore dataStore = DataStoreFactory.getInstance().getDataStore(URI.create(uri));
+		Assert.assertNotNull(dataStore);
+		Assert.assertTrue(dataStore.exists());
+		Assert.assertInstanceOf(FileSystemDataStore.class, dataStore);
+		Assert.assertTrue(Files.isSameFile(expectedPath, DataStoreURI.parse(dataStore.getURI()).getPath()));
 	}
 	
 	private void assertContainer(String uri, Reference expectedReference) {
