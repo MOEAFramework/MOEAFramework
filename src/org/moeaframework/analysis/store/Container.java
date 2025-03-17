@@ -139,10 +139,10 @@ public interface Container {
 	 * Returns the contents of this container formatted as JSON.
 	 * 
 	 * @param baseURI the base URI, which is used to produce URLs
-	 * @param includeBlobs when {@code true}, includes the details of blobs
+	 * @param full if {@code true}, output the full data (can produce large output)
 	 * @return the JSON string
 	 */
-	default String toJSON(URI baseURI, boolean includeBlobs) {
+	default String toJSON(URI baseURI, boolean full) {
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append("{");
@@ -153,7 +153,7 @@ public interface Container {
 		sb.append("\"reference\":");
 		sb.append(getReference().toJSON());
 		
-		if (includeBlobs) {
+		if (full) {
 			sb.append(",\"blobs\":");
 	
 			try (Stream<Blob> stream = streamBlobs()) {

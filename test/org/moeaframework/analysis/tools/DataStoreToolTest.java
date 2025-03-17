@@ -51,11 +51,19 @@ public class DataStoreToolTest {
 		result.assertSuccessful();
 		Assert.assertLineCount(1, result.toString());
 		
+		result = Capture.output(DataStoreTool.class, "exists", tempDirectory.toURI().toString() + "?a=b#foo");
+		result.assertSuccessful();
+		result.assertContains("true");
+		
 		result = Capture.output(DataStoreTool.class, "delete", "--yes", tempDirectory.toURI().toString() + "?a=b#foo");
 		result.assertSuccessful();
 		
 		result = Capture.output(DataStoreTool.class, "get", tempDirectory.toURI().toString() + "?a=b#foo");
 		result.assertThrows(BlobNotFoundException.class);
+		
+		result = Capture.output(DataStoreTool.class, "exists", tempDirectory.toURI().toString() + "?a=b#foo");
+		result.assertSuccessful();
+		result.assertContains("false");
 		
 		result = Capture.output(DataStoreTool.class, "type", tempDirectory.toURI().toString());
 		result.assertSuccessful();
@@ -68,6 +76,26 @@ public class DataStoreToolTest {
 		result = Capture.output(DataStoreTool.class, "type", tempDirectory.toURI().toString() + "?a=b#foo");
 		result.assertSuccessful();
 		result.assertContains("blob");
+		
+		result = Capture.output(DataStoreTool.class, "lock", tempDirectory.toURI().toString());
+		result.assertSuccessful();
+		
+		result = Capture.output(DataStoreTool.class, "delete", "--yes", tempDirectory.toURI().toString() + "?a=b");
+		result.assertThrows(SecurityException.class);
+		
+		result = Capture.output(DataStoreTool.class, "exists", tempDirectory.toURI().toString() + "?a=b");
+		result.assertSuccessful();
+		result.assertContains("true");
+		
+		result = Capture.output(DataStoreTool.class, "unlock", tempDirectory.toURI().toString());
+		result.assertSuccessful();
+		
+		result = Capture.output(DataStoreTool.class, "delete", "--yes", tempDirectory.toURI().toString() + "?a=b");
+		result.assertSuccessful();
+		
+		result = Capture.output(DataStoreTool.class, "exists", tempDirectory.toURI().toString() + "?a=b");
+		result.assertSuccessful();
+		result.assertContains("false");
 	}
 
 }

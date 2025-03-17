@@ -144,6 +144,17 @@ public interface DataStore {
 	 * @return the JSON string
 	 */
 	default String toJSON(URI baseURI) {
+		return toJSON(baseURI, false);
+	}
+	
+	/**
+	 * Returns the contents of this data store formatted as JSON.
+	 * 
+	 * @param baseURI the base URI, which is used to produce URLs
+	 * @param full if {@code true}, output the full data (can produce large output)
+	 * @return the JSON string
+	 */
+	default String toJSON(URI baseURI, boolean full) {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("{");
@@ -163,7 +174,7 @@ public interface DataStore {
 		sb.append(",\"containers\":");
 		
 		try (Stream<Container> stream = streamContainers()) {
-			sb.append(stream.map(x -> x.toJSON(baseURI, false)).collect(Collectors.joining(",", "[", "]")));
+			sb.append(stream.map(x -> x.toJSON(baseURI, full)).collect(Collectors.joining(",", "[", "]")));
 		}
 
 		sb.append("}");

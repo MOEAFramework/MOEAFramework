@@ -50,6 +50,7 @@ public class DataStoreTool extends SubcommandUtility {
 		add(Subcommand.of("list", DataStoreListCommand.class));
 		add(Subcommand.of("details", DataStoreDetailsCommand.class));
 		add(Subcommand.of("delete", DataStoreDeleteCommand.class));
+		add(Subcommand.of("exists", DataStoreExistsCommand.class));
 		add(Subcommand.of("get", DataStoreGetCommand.class));
 		add(Subcommand.of("set", DataStoreSetCommand.class));
 		add(Subcommand.of("server", DataStoreServerCommand.class));
@@ -157,25 +158,39 @@ public class DataStoreTool extends SubcommandUtility {
 	}
 	
 	private static class DataStoreDetailsCommand extends AbstractDataStoreCommand {
+		
+		@Override
+		public Options getOptions() {
+			Options options = super.getOptions();
+			
+			options.addOption(Option.builder("f")
+					.longOpt("full")
+					.build());
+			
+			return options;
+		}
 
 		@Override
 		public void onDataStore(DataStore dataStore, CommandLine commandLine) {
 			try (PrintWriter output = createOutputWriter()) {
-				output.println(dataStore.toJSON());
+				DataStoreURI uri = DataStoreURI.parse(commandLine.getArgs()[0]);
+				output.println(dataStore.toJSON(uri.getURI(), commandLine.hasOption("full")));
 			}
 		}
 		
 		@Override
 		public void onContainer(Container container, CommandLine commandLine) {
 			try (PrintWriter output = createOutputWriter()) {
-				output.println(container.toJSON());
+				DataStoreURI uri = DataStoreURI.parse(commandLine.getArgs()[0]);
+				output.println(container.toJSON(uri.getURI(), commandLine.hasOption("full")));
 			}
 		}
 		
 		@Override
 		public void onBlob(Blob blob, CommandLine commandLine) {
 			try (PrintWriter output = createOutputWriter()) {
-				output.println(blob.toJSON());
+				DataStoreURI uri = DataStoreURI.parse(commandLine.getArgs()[0]);
+				output.println(blob.toJSON(uri.getURI()));
 			}
 		}
 		
@@ -218,6 +233,31 @@ public class DataStoreTool extends SubcommandUtility {
 		public void onBlob(Blob blob, CommandLine commandLine) {
 			if (blob.exists() && prompt("Are you sure you want to delete this blob?")) {
 				blob.delete();
+			}
+		}
+		
+	}
+	
+	private static class DataStoreExistsCommand extends AbstractDataStoreCommand {
+		
+		@Override
+		public void onDataStore(DataStore dataStore, CommandLine commandLine) {
+			try (PrintWriter output = createOutputWriter()) {
+				output.println(dataStore.exists());
+			}
+		}
+		
+		@Override
+		public void onContainer(Container container, CommandLine commandLine) {
+			try (PrintWriter output = createOutputWriter()) {
+				output.println(container.exists());
+			}
+		}
+		
+		@Override
+		public void onBlob(Blob blob, CommandLine commandLine) {
+			try (PrintWriter output = createOutputWriter()) {
+				output.println(blob.exists());
 			}
 		}
 		

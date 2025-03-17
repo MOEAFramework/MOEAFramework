@@ -139,14 +139,14 @@ for (int seed = 0; seed < 10; seed++) {
 }
 ```
 
-## Accessing Content
+## CLI Interface
 
 In the previous examples, we accessed containers and blobs through the programmatic interface.  We can also access
-the content through the CLI or web server.
+the content through the CLI.
 
-### CLI
-
-The datastore and its containers and blobs can be referenced using a URI.  Below are some examples:
+To begin, each data store, container, and blob has a unique Uniform Resource Identifier (URI).  Similar to a URL one
+uses to access a web page, the URI contains the necessary data to locate the data store, container, or blob.  Below are
+some examples using a file system data store:
 
 ```
 # The data store rooted at the path ./results/
@@ -159,8 +159,8 @@ file://results?populationSize=100&seed=1
 file://results?populationSize=100&seed=1#greeting
 ```
 
-Using the `datastore` CLI tool, we can specify the URI along with an operation, such as listing the content of a
-container or reading / writing a blob.
+The `datastore` CLI tools provides a number of operations that can be performed, including listing contents, reading or
+writing to blobs, etc.
 
 <!-- bash:.github/workflows/ci.yml [datastore] -->
 
@@ -175,55 +175,32 @@ echo "Hello world" | ./cli datastore set "file://results?populationSize=100&seed
 ./cli datastore get "file://results?populationSize=100&seed=1#greeting"
 ```
 
-### Web Server
-
-> [!WARNING]  
-> The web server only supports unsecured (HTTP) connections.  Use caution when running the server on a
-> publicly-accessible network.
-
-The web server provides read-only access to the data store content.  First we start the server:
+The `details` command outputs JSON information about the contents.  Combining this with `jq` is a powerful way to
+format, search, and filter this data.
 
 ```bash
-./cli datastore server "file://results"
+# Pretty-print the JSON
+./cli datastore details "file://results" | jq .
+
+# Find all containers with populationSize = 100
+./cli datastore details "file://results" | jq -r '.containers[] | select(.reference.populationSize == "100")'
+
+# Find all containers with fewer than 2 blobs
+./cli datastore details --full "file://results" | jq -r '.containers[] | select(.blobs | length < 2)'
 ```
 
-The logging output will show the base URL to use when accessing the web server:
-
-```
-Configured data store at 127.0.0.1:8080/results
-```
-
-We can then query the contents using `curl` or through a browser.  Note we pass the blob name as the query parameter
-`_name`.
+Finally, after generating all of the data, we can protect the data by locking, or assigning a read-only intent, to the
+data store.
 
 ```bash
-# Check if the server is running
-curl "127.0.0.1:8080/_health
+./cli datastore lock "file://results"
 
-# Request the contents of a container
-curl "127.0.0.1:8080/results?populationSize=100&seed=1"
+# Delete fails because the data store is read-only
+./cli datastore delete "file://results?populationSize=100&seed=1"
 
-# Request the contents of a blob
-curl "127.0.0.1:8080/results?populationSize=100&seed=1&_name=greeting"
+./cli datastore unlock "files://results"
 ```
 
-When listing the contents of a data store or container, JSON text is returned.  For example, here is the output from
-a container:
-
-```
-{
-   "type":"container",
-   "uri":"\/results?populationSize=100&seed=1",
-   "reference":{
-      "populationSize":"100",
-      "seed":1
-   },
-   "blobs":[
-      {
-         "type":"blob",
-         "name":"greeting",
-         "uri":"\/results?populationSize=100&seed=1&_name=greeting"
-      }
-   ]
-}
-```
+> [!NOTE]  
+> Locking the data store only protects against unintended changes from the MOEA Framework itself.  The underlying data
+> can still be modified or deleted by other means (e.g., deleting the folder contents in the file browser).
