@@ -34,6 +34,9 @@ import org.moeaframework.analysis.store.DataStore;
 import org.moeaframework.analysis.store.DataStoreFactory;
 import org.moeaframework.analysis.store.DataStoreURI;
 import org.moeaframework.analysis.store.Intent;
+import org.moeaframework.analysis.store.fs.FileSystemDataStore;
+import org.moeaframework.analysis.store.fs.HashFileMap;
+import org.moeaframework.analysis.store.fs.HierarchicalFileMap;
 import org.moeaframework.analysis.store.http.DataStoreHttpServer;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.cli.CommandLineUtility;
@@ -51,8 +54,10 @@ public class DataStoreTool extends SubcommandUtility {
 		add(Subcommand.of("details", DataStoreDetailsCommand.class));
 		add(Subcommand.of("delete", DataStoreDeleteCommand.class));
 		add(Subcommand.of("exists", DataStoreExistsCommand.class));
+		add(Subcommand.of("create", DataStoreCreateCommand.class));
 		add(Subcommand.of("get", DataStoreGetCommand.class));
 		add(Subcommand.of("set", DataStoreSetCommand.class));
+		add(Subcommand.of("copy", DataStoreCopyCommand.class));
 		add(Subcommand.of("server", DataStoreServerCommand.class));
 		add(Subcommand.of("lock", DataStoreLockCommand.class));
 		add(Subcommand.of("unlock", DataStoreUnlockCommand.class));
@@ -263,6 +268,38 @@ public class DataStoreTool extends SubcommandUtility {
 		
 	}
 	
+	private static class DataStoreCreateCommand extends AbstractDataStoreCommand {
+
+		@Override
+		public Options getOptions() {
+			Options options = super.getOptions();
+			
+			options.addOption(Option.builder("h")
+					.longOpt("hash")
+					.build());
+			
+			return options;
+		}
+		
+		@Override
+		public void onDataStore(DataStore dataStore, CommandLine commandLine) {
+			try (PrintWriter output = createOutputWriter()) {
+				if (dataStore.exists()) {
+					output.println("Data store already exists!");
+				}
+				
+				DataStoreURI uri = DataStoreURI.parse(commandLine.getArgs()[0]);
+				
+				FileSystemDataStore newDataStore = new FileSystemDataStore(uri.getPath(),
+						commandLine.hasOption("hash") ? new HashFileMap(2) : new HierarchicalFileMap());
+				newDataStore.create();
+				
+				output.println("Data store created at " + newDataStore.getURI());
+			}
+		}
+		
+	}
+	
 	private static class DataStoreGetCommand extends AbstractDataStoreCommand {
 		
 		@Override
@@ -308,6 +345,56 @@ public class DataStoreTool extends SubcommandUtility {
 				blob.storeFrom(new File(commandLine.getOptionValue("input")));
 			} else {
 				blob.storeFrom(System.in);
+			}
+		}
+		
+	}
+	
+	private static class DataStoreCopyCommand extends AbstractDataStoreCommand {
+		
+		@Override
+		public void onDataStore(DataStore dataStore, CommandLine commandLine) throws Exception {
+			if (commandLine.getArgs().length < 2) {
+				throw new ParseException("Missing the destination URI");
+			}
+			
+			DataStoreURI uri = DataStoreURI.parse(commandLine.getArgs()[1]);
+			
+			if ((uri.getName() != null && !uri.getName().isBlank()) || !uri.getReference().isRoot()) {
+				throw new ParseException("Destination URI must reference a data store");
+			}
+			
+			try (PrintWriter output = createOutputWriter()) {
+				copy(dataStore, DataStoreFactory.getInstance().getDataStore(uri.getURI()), output);
+			}
+		}
+		
+		private void copy(DataStore src, DataStore dest, PrintWriter output) {
+			copy(src.getRootContainer(), dest.getRootContainer(), output);
+			
+			try (Stream<Container> stream = src.streamContainers()) {
+				stream.forEach(srcContainer -> {
+					output.println("Copying container: " + srcContainer.getReference() + "...");
+
+					Container destContainer = dest.getContainer(srcContainer.getReference());
+					copy(srcContainer, destContainer, output);
+				});
+			}
+		}
+		
+		private void copy(Container src, Container dest, PrintWriter output) {
+			try (Stream<Blob> blobStream = src.streamBlobs()) {
+				blobStream.forEach(srcBlob -> {
+					output.print("  > Copying blob: " + srcBlob.getName() + "...");
+					
+					Blob destBlob = dest.getBlob(srcBlob.getName());
+					
+					destBlob.storeOutputStream(destStream -> {
+						srcBlob.extractTo(destStream);
+					});
+					
+					output.println("done.");
+				});
 			}
 		}
 		

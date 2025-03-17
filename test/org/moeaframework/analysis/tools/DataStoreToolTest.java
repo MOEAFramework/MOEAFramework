@@ -97,5 +97,31 @@ public class DataStoreToolTest {
 		result.assertSuccessful();
 		result.assertContains("false");
 	}
+	
+	@Test
+	public void testCopy() throws Exception {
+		File srcDirectory = TempFiles.createDirectory();
+		File destDirectory = TempFiles.createDirectory();
+		
+		File inputFile = TempFiles.createFile().withContent("foo");
+		
+		CaptureResult result = Capture.output(DataStoreTool.class, "create", srcDirectory.toURI().toString());
+		result.assertSuccessful();
+		
+		result = Capture.output(DataStoreTool.class, "create", "--hash", destDirectory.toURI().toString());
+		result.assertSuccessful();
+		
+		result = Capture.output(DataStoreTool.class, "set", "--input", inputFile.toString(),
+				srcDirectory.toURI().toString() + "?a=b#foo");
+		result.assertSuccessful();
+		
+		result = Capture.output(DataStoreTool.class, "copy", srcDirectory.toURI().toString(),
+				destDirectory.toURI().toString());
+		result.assertSuccessful();
+		
+		result = Capture.output(DataStoreTool.class, "get", destDirectory.toURI().toString() + "?a=b#foo");
+		result.assertSuccessful();
+		result.assertContains("foo");
+	}
 
 }

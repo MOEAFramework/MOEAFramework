@@ -210,7 +210,13 @@ public class FileSystemDataStore implements DataStore {
 		
 	}
 	
-	void create() throws DataStoreException {
+	/**
+	 * Creates the underlying, physical data store.  Data stores are automatically created when writing a blob, so
+	 * an explicit call to create is not required.
+	 * 
+	 * @throws DataStoreException if an error occurred accessing the data store
+	 */
+	public void create() throws DataStoreException {
 		if (!exists()) {
 			writeManifest();
 		}

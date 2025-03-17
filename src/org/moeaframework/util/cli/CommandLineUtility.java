@@ -332,7 +332,7 @@ public abstract class CommandLineUtility {
 	 * @return the writer
 	 */
 	protected PrintWriter createOutputWriter() {
-		return new PrintWriter(CloseShieldOutputStream.wrap(System.out));
+		return new PrintWriter(CloseShieldOutputStream.wrap(System.out), true);
 		
 	}
 	
