@@ -29,6 +29,12 @@ import org.apache.commons.cli.Options;
 import org.moeaframework.util.Iterators;
 import org.moeaframework.util.Iterators.IndexedValue;
 
+/**
+ * Builds and formats usage strings as shown in help messages.
+ * <p>
+ * This is based on the Apache Commons CLI {@link HelpFormatter#printUsage(java.io.PrintWriter, int, String, Options)}
+ * implementation, extended to allow listing subcommands and positional arguments.
+ */
 class UsageBuilder {
 
 	private String executable;

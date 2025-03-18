@@ -44,8 +44,6 @@ public abstract class SubcommandUtility extends CommandLineUtility {
 	public SubcommandUtility() {
 		super();
 		subcommands = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-
-		//setCommandString("java -classpath \"lib/*\" " + getClass().getName() + " [command]");
 	}
 	
 	/**
