@@ -122,7 +122,7 @@ class UsageBuilder {
 		
 		if (utility != null) {
 			sb.append(" ");
-			sb.append(utility.getName());
+			sb.append(utility.getEnclosingClass() == null ? utility.getName() : utility.getEnclosingClass().getName());
 		}
 		
 		for (String command : commands) {
