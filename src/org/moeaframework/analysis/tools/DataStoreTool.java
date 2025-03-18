@@ -18,7 +18,6 @@
 package org.moeaframework.analysis.tools;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.nio.file.Path;
@@ -48,7 +47,7 @@ import org.moeaframework.util.cli.CommandLineUtility;
  */
 public class DataStoreTool extends CommandLineUtility {
 		
-	private DataStoreTool() throws IOException {
+	private DataStoreTool() {
 		super();
 	}
 	

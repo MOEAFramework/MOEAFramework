@@ -50,7 +50,8 @@ import org.moeaframework.util.io.Tokenizer;
  * <p>
  * By default, Unix-style CLIs are supported where options are passed in using either the single character short form
  * (e.g., {@code -h}) or the long form (e.g., {@code --help}.  Alternatively, if any commands are specified, the CLI
- * behaves more like the Git CLI, where the first positional argument specifies the command to execute.
+ * behaves more like the Git CLI, where the first positional argument specifies the command to execute.  Each command
+ * simply invokes its underlying implementation, which is itself another command line utility.
  * <p>
  * Implementations should provide a main method that invokes {@link #start(String[])}.  Any unhandled exception should
  * be propagated out of the main method, allowing the CLI to exit with a non-zero status code.
