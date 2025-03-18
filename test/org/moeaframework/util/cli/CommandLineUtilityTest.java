@@ -17,17 +17,20 @@
  */
 package org.moeaframework.util.cli;
 
+import java.util.List;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.MissingOptionException;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.junit.Test;
 import org.moeaframework.Capture;
 import org.moeaframework.Capture.CaptureResult;
 
 public class CommandLineUtilityTest {
 		
-	public static class MockCommandLineUtility extends CommandLineUtility {
+	public static class MockStandardUtility extends CommandLineUtility {
 
 		@Override
 		public Options getOptions() {
@@ -47,41 +50,98 @@ public class CommandLineUtilityTest {
 		}
 		
 		public static void main(String[] args) throws Exception {
-			new MockCommandLineUtility().start(args);
+			new MockStandardUtility().start(args);
 		}
 		
+	}
+	
+	public static class MockCommandBasedUtility extends CommandLineUtility {
+
+		@Override
+		public List<Command> getCommands() {
+			List<Command> commands = super.getCommands();
+			
+			commands.add(Command.of(MockCommand.class));
+			
+			return commands;
+		}
+		
+		@Override
+		public void run(CommandLine commandLine) throws Exception {
+			runCommand(commandLine);
+		}
+		
+		public static void main(String[] args) throws Exception {
+			new MockCommandBasedUtility().start(args);
+		}
+		
+	}
+	
+	public static class MockCommand extends CommandLineUtility {
+
+		@Override
+		public void run(CommandLine commandLine) throws Exception {
+			System.out.println("Run Mock Command");
+		}
+				
 	}
 
 	@Test
 	public void testHelp() throws Exception {
-		CaptureResult result = Capture.output(MockCommandLineUtility.class, "--help");
+		CaptureResult result = Capture.output(MockStandardUtility.class, "--help");
 		result.assertSuccessful();
 		result.assertNotContains("Invoked run");
 	}
 	
 	@Test
 	public void testHelpWithValidOption() throws Exception {
-		CaptureResult result = Capture.output(MockCommandLineUtility.class, "--test", "--help");
+		CaptureResult result = Capture.output(MockStandardUtility.class, "--test", "--help");
 		result.assertSuccessful();
 	}
 	
 	@Test
 	public void testInvalidOption() throws Exception {
-		CaptureResult result = Capture.output(MockCommandLineUtility.class,  "--invalid");
+		CaptureResult result = Capture.output(MockStandardUtility.class,  "--invalid");
 		result.assertThrows(MissingOptionException.class);
 	}
 	
 	@Test
 	public void testMissingOption() throws Exception {
-		CaptureResult result = Capture.output(MockCommandLineUtility.class);
+		CaptureResult result = Capture.output(MockStandardUtility.class);
 		result.assertThrows(MissingOptionException.class);
 	}
 	
 	@Test
 	public void testNormal() throws Exception {
-		CaptureResult result = Capture.output(MockCommandLineUtility.class, "--test");
+		CaptureResult result = Capture.output(MockStandardUtility.class, "--test");
 		result.assertSuccessful();
 		result.assertContains("Invoked run");
+	}
+	
+	@Test
+	public void testCommandHelp() throws Exception {
+		CaptureResult result = Capture.output(MockCommandBasedUtility.class, "--help");
+		result.assertSuccessful();
+		result.assertContains("MockCommand");
+	}
+
+	@Test
+	public void testInvalidCommand() throws Exception {
+		CaptureResult result = Capture.output(MockCommandBasedUtility.class, "invalid");
+		result.assertThrows(ParseException.class);
+	}
+	
+	@Test
+	public void testMissingCommand() throws Exception {
+		CaptureResult result = Capture.output(MockCommandBasedUtility.class);
+		result.assertThrows(ParseException.class);
+	}
+	
+	@Test
+	public void testCommandsNormal() throws Exception {
+		CaptureResult result = Capture.output(MockCommandBasedUtility.class, "mock");
+		result.assertSuccessful();
+		result.assertContains("Run Mock Command");
 	}
 
 }

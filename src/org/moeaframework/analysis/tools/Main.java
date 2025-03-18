@@ -29,42 +29,19 @@ import org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool;
 import org.moeaframework.builder.BuildProblem;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
+import org.moeaframework.util.cli.Command;
+import org.moeaframework.util.cli.CommandLineUtility;
 import org.moeaframework.util.cli.GeneratePlots;
-import org.moeaframework.util.cli.SubcommandUtility;
 import org.moeaframework.util.cli.TestExamples;
 import org.moeaframework.util.format.TabularData;
 
 /**
  * Entry point to access all command line tools.
  */
-public class Main extends SubcommandUtility {
+public class Main extends CommandLineUtility {
 
 	private Main() {
 		super();
-		add(Subcommand.of(BuildProblem.class));
-		add(Subcommand.of(CalculateIndicator.class));
-		add(Subcommand.of(DataStoreTool.class));
-		add(Subcommand.of(EndOfRunEvaluator.class));
-		add(Subcommand.of(Initialize.class));
-		add(Subcommand.of(LaunchDiagnosticTool.class));
-		add(Subcommand.of(MetricsAnalysis.class));
-		add(Subcommand.of(MetricsEvaluator.class));
-		add(Subcommand.of(MetricsValidator.class));
-		add(Subcommand.of(ReferenceSetGenerator.class));
-		add(Subcommand.of(ResultFileConverter.class));
-		add(Subcommand.of(ResultFileMerger.class));
-		add(Subcommand.of(ResultFileMetadata.class));
-		add(Subcommand.of(ResultFileSeedMerger.class));
-		add(Subcommand.of(ResultFileValidator.class));
-		add(Subcommand.of(ResultFileViewer.class));
-		add(Subcommand.of(RuntimeEvaluator.class));
-		add(Subcommand.of(SampleGenerator.class));
-		add(Subcommand.of(SobolAnalysis.class));
-		add(Subcommand.of(Solve.class));
-		add(Subcommand.of(WeightGenerator.class));
-		
-		add(Subcommand.hidden(GeneratePlots.class));
-		add(Subcommand.hidden(TestExamples.class));
 	}
 
 	@Override
@@ -80,7 +57,7 @@ public class Main extends SubcommandUtility {
 		} else if (commandLine.getArgs().length < 1) {
 			showHelp();
 		} else {
-			super.run(commandLine);
+			runCommand(commandLine);
 		}
 	}
 
@@ -103,6 +80,38 @@ public class Main extends SubcommandUtility {
 				.build());
 
 		return options;
+	}
+	
+	@Override
+	public List<Command> getCommands() {
+		List<Command> commands = super.getCommands();
+		
+		commands.add(Command.of(BuildProblem.class));
+		commands.add(Command.of(CalculateIndicator.class));
+		commands.add(Command.of(DataStoreTool.class));
+		commands.add(Command.of(EndOfRunEvaluator.class));
+		commands.add(Command.of(Initialize.class));
+		commands.add(Command.of(LaunchDiagnosticTool.class));
+		commands.add(Command.of(MetricsAnalysis.class));
+		commands.add(Command.of(MetricsEvaluator.class));
+		commands.add(Command.of(MetricsValidator.class));
+		commands.add(Command.of(ReferenceSetGenerator.class));
+		commands.add(Command.of(ResultFileConverter.class));
+		commands.add(Command.of(ResultFileMerger.class));
+		commands.add(Command.of(ResultFileMetadata.class));
+		commands.add(Command.of(ResultFileSeedMerger.class));
+		commands.add(Command.of(ResultFileValidator.class));
+		commands.add(Command.of(ResultFileViewer.class));
+		commands.add(Command.of(RuntimeEvaluator.class));
+		commands.add(Command.of(SampleGenerator.class));
+		commands.add(Command.of(SobolAnalysis.class));
+		commands.add(Command.of(Solve.class));
+		commands.add(Command.of(WeightGenerator.class));
+		
+		commands.add(Command.hidden(GeneratePlots.class));
+		commands.add(Command.hidden(TestExamples.class));
+		
+		return commands;
 	}
 
 	/**

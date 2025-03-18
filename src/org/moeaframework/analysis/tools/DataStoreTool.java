@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.apache.commons.cli.CommandLine;
@@ -39,28 +40,41 @@ import org.moeaframework.analysis.store.fs.HashFileMap;
 import org.moeaframework.analysis.store.fs.HierarchicalFileMap;
 import org.moeaframework.analysis.store.http.DataStoreHttpServer;
 import org.moeaframework.core.FrameworkException;
+import org.moeaframework.util.cli.Command;
 import org.moeaframework.util.cli.CommandLineUtility;
-import org.moeaframework.util.cli.SubcommandUtility;
 
 /**
  * Command line utility for accessing a {@link DataStore}.
  */
-public class DataStoreTool extends SubcommandUtility {
+public class DataStoreTool extends CommandLineUtility {
 		
 	private DataStoreTool() throws IOException {
 		super();
-		add(Subcommand.of("type", DataStoreTypeCommand.class));
-		add(Subcommand.of("list", DataStoreListCommand.class));
-		add(Subcommand.of("details", DataStoreDetailsCommand.class));
-		add(Subcommand.of("delete", DataStoreDeleteCommand.class));
-		add(Subcommand.of("exists", DataStoreExistsCommand.class));
-		add(Subcommand.of("create", DataStoreCreateCommand.class));
-		add(Subcommand.of("get", DataStoreGetCommand.class));
-		add(Subcommand.of("set", DataStoreSetCommand.class));
-		add(Subcommand.of("copy", DataStoreCopyCommand.class));
-		add(Subcommand.of("server", DataStoreServerCommand.class));
-		add(Subcommand.of("lock", DataStoreLockCommand.class));
-		add(Subcommand.of("unlock", DataStoreUnlockCommand.class));
+	}
+	
+	@Override
+	public List<Command> getCommands() {
+		List<Command> commands = super.getCommands();
+		
+		commands.add(Command.of("type", DataStoreTypeCommand.class));
+		commands.add(Command.of("list", DataStoreListCommand.class));
+		commands.add(Command.of("details", DataStoreDetailsCommand.class));
+		commands.add(Command.of("delete", DataStoreDeleteCommand.class));
+		commands.add(Command.of("exists", DataStoreExistsCommand.class));
+		commands.add(Command.of("create", DataStoreCreateCommand.class));
+		commands.add(Command.of("get", DataStoreGetCommand.class));
+		commands.add(Command.of("set", DataStoreSetCommand.class));
+		commands.add(Command.of("copy", DataStoreCopyCommand.class));
+		commands.add(Command.of("server", DataStoreServerCommand.class));
+		commands.add(Command.of("lock", DataStoreLockCommand.class));
+		commands.add(Command.of("unlock", DataStoreUnlockCommand.class));
+		
+		return commands;
+	}
+	
+	@Override
+	public void run(CommandLine commandLine) throws Exception {
+		runCommand(commandLine);
 	}
 	
 	/**

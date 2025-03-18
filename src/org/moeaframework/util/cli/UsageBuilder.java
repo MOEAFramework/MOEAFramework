@@ -31,9 +31,6 @@ import org.moeaframework.util.Iterators.IndexedValue;
 
 /**
  * Builds and formats usage strings as shown in help messages.
- * <p>
- * This is based on the Apache Commons CLI {@link HelpFormatter#printUsage(java.io.PrintWriter, int, String, Options)}
- * implementation, extended to allow listing subcommands and positional arguments.
  */
 class UsageBuilder {
 
@@ -54,32 +51,69 @@ class UsageBuilder {
 		positionalArgs = new ArrayList<>();
 	}
 	
+	/**
+	 * Sets the executable used to start Java.  By default, this is a generic {@code java} command, but can be
+	 * overridden if a different command is used.
+	 * 
+	 * @param executable the executable string
+	 * @return this usage builder
+	 */
 	public UsageBuilder withExecutable(String executable) {
 		this.executable = executable;
 		return this;
 	}
 	
+	/**
+	 * Sets the command line utility that was invoked.
+	 * 
+	 * @param utility the command line utility
+	 * @return this usage builder
+	 */
 	public UsageBuilder withUtility(Class<? extends CommandLineUtility> utility) {
 		this.utility = utility;
 		return this;
 	}
 	
+	/**
+	 * Sets the commands, if supported, that were called.  Each command is appended to any previously-added commands.
+	 * 
+	 * @param command the command name
+	 * @return this usage builder
+	 */
 	public UsageBuilder withCommand(String command) {
 		commands.add(command);
 		return this;
 	}
 	
+	/**
+	 * Sets the supported options.
+	 * 
+	 * @param options the options
+	 * @return this usage builder
+	 */
 	public UsageBuilder withOptions(Options options) {
 		this.options = options;
 		return this;
 	}
 	
+	/**
+	 * Sets the positional arguments.  If a positional argument can be repeated, we recommend including an ellipsis
+	 * {@code "..."} in the name.
+	 * 
+	 * @param args the positional argument names
+	 * @return this usage builder
+	 */
 	public UsageBuilder withPositionalArgs(String... args) {
 		positionalArgs.clear();
 		positionalArgs.addAll(List.of(args));
 		return this;
 	}
-
+	
+	/**
+	 * Constructs the usage string.  This implementation is derived from Apache Commons CLI's {@link HelpFormatter}.
+	 * 
+	 * @return the usage string
+	 */
 	public String build() {
 		StringBuilder sb = new StringBuilder();
 		Set<OptionGroup> processedGroups = new HashSet<>();

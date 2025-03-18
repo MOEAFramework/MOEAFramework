@@ -22,6 +22,10 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.lang.ProcessBuilder.Redirect;
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 import org.apache.commons.cli.CommandLine;
@@ -36,6 +40,7 @@ import org.apache.commons.lang3.SystemUtils;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
 import org.moeaframework.util.Localization;
+import org.moeaframework.util.OptionCompleter;
 import org.moeaframework.util.io.RedirectStream;
 import org.moeaframework.util.io.Tokenizer;
 
@@ -43,23 +48,12 @@ import org.moeaframework.util.io.Tokenizer;
  * Abstract class for providing command line utilities.  This class is provided to ensure a standard interface for
  * command line utilities as well as handling the quirks of different operating systems.
  * <p>
- * Upon calling {@link #start(String[])}, this class registers an uncaught exception handler on the calling thread.
- * The purpose of this handler is to catch any exceptions and display a formatted error message on the command line.
+ * By default, Unix-style CLIs are supported where options are passed in using either the single character short form
+ * (e.g., {@code -h}) or the long form (e.g., {@code --help}.  Alternatively, if any commands are specified, the CLI
+ * behaves more like the Git CLI, where the first positional argument specifies the command to execute.
  * <p>
- * As such, subclasses should include a main method similar to the following:
- * <pre>
- *     public class MyCustomUtility extends CommandLineUtility {
- * 
- *         // implement the run and getOptions methods
- * 
- *         public static void main(String[] args) throws Exception {
- *             new MyCustomUtility().start(args);
- *         }
- * 
- *     }
- * </pre>
- * Note that the main method always throws an {@link Exception}.  This ensures the error is propagated to the uncaught
- * exception handler.
+ * Implementations should provide a main method that invokes {@link #start(String[])}.  Any unhandled exception should
+ * be propagated out of the main method, allowing the CLI to exit with a non-zero status code.
  */
 public abstract class CommandLineUtility {
 	
@@ -83,12 +77,12 @@ public abstract class CommandLineUtility {
 	/**
 	 * Builder used to construct the usage message.
 	 */
-	protected UsageBuilder usageBuilder;
+	private UsageBuilder usageBuilder;
 	
 	/**
 	 * Formatter for help messages.
 	 */
-	protected HelpFormatter helpFormatter;	
+	private final HelpFormatter helpFormatter;
 	
 	/**
 	 * When {@code true}, prompts to confirm an operation are skipped.
@@ -117,7 +111,7 @@ public abstract class CommandLineUtility {
 	 * 
 	 * @return the console width
 	 */
-	protected int getConsoleWidth() {
+	private int getConsoleWidth() {
 		int width = Settings.PROPERTIES.getInt(Settings.KEY_HELP_WIDTH, -1);
 		
 		if (width <= 0) {
@@ -161,6 +155,16 @@ public abstract class CommandLineUtility {
 				.build());
 
 		return options;
+	}
+	
+	/**
+	 * Return the commands made available by this command line utility.  The base implementation returns an empty list,
+	 * indicating no commands are configured.
+	 * 
+	 * @return the commands
+	 */
+	public List<Command> getCommands() {
+		return new ArrayList<>();
 	}
 
 	/**
@@ -218,6 +222,39 @@ public abstract class CommandLineUtility {
 	}
 	
 	/**
+	 * Finds the matching command and invokes its {@link #start(String[])} method.  Implementations are expected to
+	 * call this from their {@link #run(CommandLine)} method after processing any options.
+	 * 
+	 * @param commandLine the parsed command line
+	 * @throws Exception if any exception occurred while running this command
+	 */
+	protected void runCommand(CommandLine commandLine) throws Exception {
+		String[] args = commandLine.getArgs();
+		List<Command> commands = getCommands();
+		
+		if (args.length < 1) {
+			throw new ParseException("No command specified, use --help to see available options");
+		}
+		
+		OptionCompleter completer = new OptionCompleter(commands.stream().map(Command::getName).toList());
+		String match = completer.lookup(args[0]);
+				
+		if (match == null) {
+			throw new ParseException("'" + args[0] + "' is not a valid command, use --help to see available options");
+		}
+		
+		Command command = commands.stream().filter(x -> x.getName().equals(match)).findFirst().get();
+		String[] commandArgs = Arrays.copyOfRange(commandLine.getArgs(), 1, commandLine.getArgs().length);
+		
+		Constructor<? extends CommandLineUtility> constructor = command.getImplementation().getDeclaredConstructor();
+		constructor.setAccessible(true);
+			
+		CommandLineUtility commandInstance = constructor.newInstance();
+		commandInstance.setUsageBuilder(usageBuilder.withCommand(command.getName()));
+		commandInstance.start(commandArgs);
+	}
+	
+	/**
 	 * Returns the options with their descriptions loaded using {@link Localization}.
 	 * 
 	 * @return the available command line options
@@ -248,6 +285,8 @@ public abstract class CommandLineUtility {
 	 */
 	protected void showHelp() {
 		int width = getConsoleWidth();
+		Options options = getLocalizedOptions();
+		List<Command> commands = getCommands();
 		
 		try (PrintWriter writer = createOutputWriter()) {
 			helpFormatter.printWrapped(writer, width, Localization.getString(getClass(), "title"));
@@ -256,17 +295,37 @@ public abstract class CommandLineUtility {
 			String usagePrefix = Localization.getString(CommandLineUtility.class, "usage");
 			helpFormatter.printWrapped(writer, width, usagePrefix.length() + 1, usagePrefix + " " + getUsageString());
 			writer.println();
-			
+
 			if (Localization.containsKey(getClass(), "description")) {
 				helpFormatter.printWrapped(writer, width, Localization.getString(getClass(), "description"));
+				writer.println();
+			}
+			
+			if (!commands.isEmpty()) {
+				helpFormatter.printWrapped(writer, width, Localization.getString(CommandLineUtility.class, "commands"));
+				writer.println();
+				
+				Options commandOptions = new Options();
+
+				for (Command command : commands) {
+					if (command.isVisible()) {
+						commandOptions.addOption(command.getName(),
+								Localization.getString(command.getImplementation(), "title"));
+					}
+				}
+				
+				helpFormatter.setOptPrefix("");
+				helpFormatter.printOptions(writer, width, commandOptions, helpFormatter.getLeftPadding(),
+						helpFormatter.getDescPadding());
+				helpFormatter.setOptPrefix(HelpFormatter.DEFAULT_OPT_PREFIX);
+
 				writer.println();
 			}
 			
 			helpFormatter.printWrapped(writer, width, Localization.getString(CommandLineUtility.class, "header"));
 			writer.println();
 			
-			helpFormatter.printOptions(writer, width, getLocalizedOptions(), helpFormatter.getLeftPadding(),
-					helpFormatter.getDescPadding());
+			helpFormatter.printOptions(writer, width, options, helpFormatter.getLeftPadding(), helpFormatter.getDescPadding());
 			writer.println();
 			
 			helpFormatter.printWrapped(writer, width, Localization.getString(CommandLineUtility.class, "footer"));
