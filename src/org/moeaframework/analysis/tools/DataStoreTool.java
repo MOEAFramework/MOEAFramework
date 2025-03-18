@@ -274,7 +274,7 @@ public class DataStoreTool extends SubcommandUtility {
 		public Options getOptions() {
 			Options options = super.getOptions();
 			
-			options.addOption(Option.builder("h")
+			options.addOption(Option.builder()
 					.longOpt("hash")
 					.build());
 			

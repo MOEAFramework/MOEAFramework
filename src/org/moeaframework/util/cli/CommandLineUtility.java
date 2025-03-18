@@ -81,15 +81,14 @@ public abstract class CommandLineUtility {
 	}
 	
 	/**
-	 * The command string used to invoke this command line utility.  If {@code null}, this displays as
-	 * {@code java full.class.Name}.
+	 * Builder used to construct the usage message.
 	 */
-	private String commandString;
+	protected UsageBuilder usageBuilder;
 	
 	/**
-	 * When {@code true}, the usage line is not displayed.
+	 * Formatter for help messages.
 	 */
-	private boolean hideUsage;
+	protected HelpFormatter helpFormatter;	
 	
 	/**
 	 * When {@code true}, prompts to confirm an operation are skipped.
@@ -102,6 +101,10 @@ public abstract class CommandLineUtility {
 	 */
 	public CommandLineUtility() {
 		super();
+		usageBuilder = new UsageBuilder();
+		
+		helpFormatter = new HelpFormatter();
+		helpFormatter.setLeftPadding(2);
 	}
 	
 	/**
@@ -183,6 +186,12 @@ public abstract class CommandLineUtility {
 	public void start(String[] args) throws Exception {
 		Thread.currentThread().setUncaughtExceptionHandler(new CommandLineUncaughtExceptionHandler());
 		
+		if (System.getProperty("cli.executable") != null) {
+			usageBuilder.withExecutable(System.getProperty("cli.executable"));
+		} else {
+			usageBuilder.withUtility(getClass());
+		}
+		
 		// trim last argument because of an error with Windows newline characters
 		if (args.length > 0) {
 			args[args.length - 1] = args[args.length - 1].trim();
@@ -238,55 +247,54 @@ public abstract class CommandLineUtility {
 	 * Format and display the help information that details the available command line options.
 	 */
 	protected void showHelp() {
-		Options options = getLocalizedOptions();
-		HelpFormatter helpFormatter = new HelpFormatter();
 		int width = getConsoleWidth();
-
+		
 		try (PrintWriter writer = createOutputWriter()) {
-			if (!hideUsage) {
-				helpFormatter.printUsage(writer, width, getCommandString(), options);
+			helpFormatter.printWrapped(writer, width, Localization.getString(getClass(), "title"));
+			writer.println();
+			
+			String usagePrefix = Localization.getString(CommandLineUtility.class, "usage");
+			helpFormatter.printWrapped(writer, width, usagePrefix.length() + 1, usagePrefix + " " + getUsageString());
+			writer.println();
+			
+			if (Localization.containsKey(getClass(), "description")) {
+				helpFormatter.printWrapped(writer, width, Localization.getString(getClass(), "description"));
 				writer.println();
 			}
 			
-			helpFormatter.printWrapped(writer, width, Localization.getString(getClass(), "description"));
-			writer.println();
 			helpFormatter.printWrapped(writer, width, Localization.getString(CommandLineUtility.class, "header"));
 			writer.println();
-			helpFormatter.printOptions(writer, width, getLocalizedOptions(), helpFormatter.getLeftPadding(), helpFormatter.getDescPadding());
+			
+			helpFormatter.printOptions(writer, width, getLocalizedOptions(), helpFormatter.getLeftPadding(),
+					helpFormatter.getDescPadding());
+			writer.println();
+			
 			helpFormatter.printWrapped(writer, width, Localization.getString(CommandLineUtility.class, "footer"));
 		}
 	}
-
+	
 	/**
-	 * Returns the command string used to invoke this command line utility.
+	 * Sets the usage builder used to create and format the usage string.
 	 * 
-	 * @return the command string used to invoke this command line utility
+	 * @param usageBuilder the usage builder
 	 */
-	protected String getCommandString() {
-		if (commandString == null) {
-			return "java -classpath \"lib/*\" " + getClass().getName();
-		} else {
-			return commandString;
-		}
-	}
-
-	/**
-	 * Sets the command string used to invoke this command line utility.
-	 * 
-	 * @param commandString the command string used to invoke this command line utility; or {@code null} to use the
-	 *        default Java command line string
-	 */
-	protected void setCommandString(String commandString) {
-		this.commandString = commandString;
+	protected void setUsageBuilder(UsageBuilder usageBuilder) {
+		this.usageBuilder = usageBuilder;
 	}
 	
 	/**
-	 * Sets the flag to hide the usage line from the help message.
+	 * Returns the formatted usage string.
 	 * 
-	 * @param hideUsage if {@code true}, hides the usage line
+	 * @return the formatted usage string
 	 */
-	public void setHideUsage(boolean hideUsage) {
-		this.hideUsage = hideUsage;
+	protected String getUsageString() {
+		if (Localization.containsKey(getClass(), "args")) {
+			usageBuilder.withPositionalArgs(Localization.getString(getClass(), "args").split(","));
+		}
+		
+		usageBuilder.withOptions(getOptions());
+		
+		return usageBuilder.build();
 	}
 	
 	/**

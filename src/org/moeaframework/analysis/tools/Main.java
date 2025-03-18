@@ -90,7 +90,7 @@ public class Main extends SubcommandUtility {
 		
 		OptionGroup group = new OptionGroup();
 
-		group.addOption(Option.builder("v")
+		group.addOption(Option.builder()
 				.longOpt("version")
 				.build());
 		group.addOption(Option.builder()
@@ -98,7 +98,7 @@ public class Main extends SubcommandUtility {
 				.build());
 		
 		options.addOptionGroup(group);
-		options.addOption(Option.builder()
+		options.addOption(Option.builder("v")
 				.longOpt("verbose")
 				.build());
 

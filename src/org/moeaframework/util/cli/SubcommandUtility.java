@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.moeaframework.util.Localization;
@@ -46,7 +45,7 @@ public abstract class SubcommandUtility extends CommandLineUtility {
 		super();
 		subcommands = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
-		setCommandString("java -classpath \"lib/*\" " + getClass().getName() + " [command]");
+		//setCommandString("java -classpath \"lib/*\" " + getClass().getName() + " [command]");
 	}
 	
 	/**
@@ -74,23 +73,22 @@ public abstract class SubcommandUtility extends CommandLineUtility {
 		
 		return subcommands.get(subcommand);
 	}
-	
+
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
 		Subcommand command = getSubcommand(commandLine);
 		String[] commandArgs = Arrays.copyOfRange(commandLine.getArgs(), 1, commandLine.getArgs().length);
-			
+		
 		Constructor<? extends CommandLineUtility> constructor = command.getImplementation().getDeclaredConstructor();
 		constructor.setAccessible(true);
 			
 		CommandLineUtility commandInstance = constructor.newInstance();
-		commandInstance.setHideUsage(true);
+		commandInstance.setUsageBuilder(usageBuilder.withCommand(command.getName()));
 		commandInstance.start(commandArgs);
 	}
 
 	@Override
 	protected void showHelp() {
-		HelpFormatter helpFormatter = new HelpFormatter();
 		int width = getConsoleWidth();
 		
 		Options options = new Options();
@@ -98,24 +96,39 @@ public abstract class SubcommandUtility extends CommandLineUtility {
 		for (Subcommand subcommand : subcommands.values()) {
 			if (subcommand.isVisible()) {
 				options.addOption(subcommand.getName(),
-						Localization.getString(subcommand.getImplementation(), "description"));
+						Localization.getString(subcommand.getImplementation(), "title"));
 			}
 		}
 		
 		try (PrintWriter writer = createOutputWriter()) {
-			helpFormatter.printWrapped(writer, width, Localization.getString(getClass(), "description"));
+			helpFormatter.printWrapped(writer, width, Localization.getString(getClass(), "title"));
 			writer.println();
+			
+			String usagePrefix = Localization.getString(CommandLineUtility.class, "usage");
+			helpFormatter.printWrapped(writer, width, usagePrefix.length() + 1, usagePrefix + " " + getUsageString());
+			writer.println();
+
+			if (Localization.containsKey(getClass(), "description")) {
+				helpFormatter.printWrapped(writer, width, Localization.getString(getClass(), "description"));
+				writer.println();
+			}
+			
 			helpFormatter.printWrapped(writer, width, Localization.getString(SubcommandUtility.class, "commands"));
 			writer.println();
+			
 			helpFormatter.setOptPrefix("");
 			helpFormatter.printOptions(writer, width, options, helpFormatter.getLeftPadding(),
 					helpFormatter.getDescPadding());
 			writer.println();
+			
 			helpFormatter.printWrapped(writer, width, Localization.getString(CommandLineUtility.class, "header"));
 			writer.println();
+			
 			helpFormatter.setOptPrefix("-");
 			helpFormatter.printOptions(writer, width, getLocalizedOptions(), helpFormatter.getLeftPadding(),
 					helpFormatter.getDescPadding());
+			writer.println();
+			
 			helpFormatter.printWrapped(writer, width, Localization.getString(CommandLineUtility.class, "footer"));
 		}
 	}
