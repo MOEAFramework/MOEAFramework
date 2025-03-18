@@ -9,7 +9,7 @@ This page documents notable changes introduced in each chronological release of 
   * Adds `distributeAll` to `Samples` to evaluate each sample in parallel.
   
   * Redesigns the data store interfaces to avoid "ambiguous method" errors, simplify the available methods, and wrap
-    errors in `DataStoreException`.
+    errors in `DataStoreException`.  Also adds a CLI tool for managing data stores.
 
 
 ## Version 5.0 (17 Jan 2025)

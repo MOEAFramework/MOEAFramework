@@ -15,10 +15,16 @@
 * [Parallelization and Island Model](parallelizationStrategies.md)
 * [Single-Objective Optimization](singleObjectiveOptimization.md)
 * [MOEA/D and Generalized Decomposition](generalizedDecomposition.md)
-* [Sensitivity Analysis](sensitivityAnalysis.md)
 * [Troubleshooting](troubleshooting.md)
 
+## Experiments / Analysis
+
+* [Designing Experiments](experiments.md)
+* [Storing Experimental Data](dataStore.md)
+* [Sensitivity Analysis](sensitivityAnalysis.md)
+
 ## References
+
 * [List of Decision Variables](listOfDecisionVariables.md)
 * [List of Algorithms](listOfAlgorithms.md)
 * [List of Variation Operators](listOfOperators.md)
