@@ -45,8 +45,8 @@ import org.moeaframework.util.cli.CommandLineUtility;
 import org.moeaframework.util.validate.Validate;
 
 /**
- * Command line utility for evaluating an algorithm using many parameterizations.  Unlike {@link EndOfRunEvaluator}, this class
- * outputs runtime data.  Each run is stored in a separate file.
+ * Command line utility for evaluating an algorithm using many parameterizations.  Unlike {@link EndOfRunEvaluator},
+ * this class outputs runtime data.  Each run is stored in a separate file.
  */
 public class RuntimeEvaluator extends CommandLineUtility {
 

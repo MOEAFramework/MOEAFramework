@@ -37,20 +37,22 @@ class UsageBuilder {
 	private String executable;
 
 	private Class<? extends CommandLineUtility> utility;
-	
+
 	private List<String> commands;
 
 	private Options options;
 
 	private List<String> positionalArgs;
-	
+
+	private OptionStyle optionStyle;
+
 	public UsageBuilder() {
 		super();
-		executable = "java -classpath \"lib/*\"";
 		commands = new ArrayList<>();
 		positionalArgs = new ArrayList<>();
+		optionStyle = OptionStyle.NONE;
 	}
-	
+
 	/**
 	 * Sets the executable used to start Java.  By default, this is a generic {@code java} command, but can be
 	 * overridden if a different command is used.
@@ -62,7 +64,7 @@ class UsageBuilder {
 		this.executable = executable;
 		return this;
 	}
-	
+
 	/**
 	 * Sets the command line utility that was invoked.
 	 * 
@@ -73,7 +75,7 @@ class UsageBuilder {
 		this.utility = utility;
 		return this;
 	}
-	
+
 	/**
 	 * Sets the commands, if supported, that were called.  Each command is appended to any previously-added commands.
 	 * 
@@ -84,7 +86,7 @@ class UsageBuilder {
 		commands.add(command);
 		return this;
 	}
-	
+
 	/**
 	 * Sets the supported options.
 	 * 
@@ -95,10 +97,10 @@ class UsageBuilder {
 		this.options = options;
 		return this;
 	}
-	
+
 	/**
-	 * Sets the positional arguments.  If a positional argument can be repeated, we recommend including an ellipsis
-	 * {@code "..."} in the name.
+	 * Sets the positional arguments.  Each argument is wrapped in "<" and ">".  However, if the string starts and
+	 * ends with double quotes, then the argument is displayed as-is without any additional formatting.
 	 * 
 	 * @param args the positional argument names
 	 * @return this usage builder
@@ -108,7 +110,18 @@ class UsageBuilder {
 		positionalArgs.addAll(List.of(args));
 		return this;
 	}
-	
+
+	/**
+	 * Sets the style for formatting options.
+	 * 
+	 * @param optionStyle the style for formatting options
+	 * @return this usage builder
+	 */
+	public UsageBuilder withOptionStyle(OptionStyle optionStyle) {
+		this.optionStyle = optionStyle;
+		return this;
+	}
+
 	/**
 	 * Constructs the usage string.  This implementation is derived from Apache Commons CLI's {@link HelpFormatter}.
 	 * 
@@ -117,47 +130,65 @@ class UsageBuilder {
 	public String build() {
 		StringBuilder sb = new StringBuilder();
 		Set<OptionGroup> processedGroups = new HashSet<>();
-		
+
 		sb.append(executable != null ? executable.trim() : "");
-		
+
 		if (utility != null) {
 			sb.append(" ");
 			sb.append(utility.getEnclosingClass() == null ? utility.getName() : utility.getEnclosingClass().getName());
 		}
-		
+
 		for (String command : commands) {
 			sb.append(" ");
 			sb.append(command.trim());
 		}
-		
-		List<Option> sortedOptions = new ArrayList<>(options.getOptions());
-		sortedOptions.sort(new HelpFormatter().getOptionComparator());
 
-		for (Option option : sortedOptions) {			
-			OptionGroup group = options.getOptionGroup(option);
-			
-			if (group == null) {
-				sb.append(" ");
-				sb.append(formatOption(option, option.isRequired()));
-			} else if (!processedGroups.contains(group)) {
-				processedGroups.add(group);
-				sb.append(" ");
-				sb.append(formatOptionGroup(group));
+		if (options != null) {
+			List<Option> sortedOptions = new ArrayList<>(options.getOptions());
+			sortedOptions.sort(new HelpFormatter().getOptionComparator());
+
+			if (optionStyle.equals(OptionStyle.NONE)) {
+				if (!sortedOptions.isEmpty()) {
+					sb.append(" [options]");
+				}
+			} else {
+				for (Option option : sortedOptions) {			
+					OptionGroup group = options.getOptionGroup(option);
+					
+					if (optionStyle.equals(OptionStyle.REQUIRED_ONLY) &&
+							!option.isRequired() || (group != null && !group.isRequired())) {
+						continue;
+					}
+
+					if (group == null) {
+						sb.append(" ");
+						sb.append(formatOption(option, option.isRequired()));
+					} else if (!processedGroups.contains(group)) {
+						processedGroups.add(group);
+						sb.append(" ");
+						sb.append(formatOptionGroup(group));
+					}
+				}
 			}
 		}
-		
+
 		for (String arg : positionalArgs) {
-			sb.append(" <");
-			sb.append(arg.trim());
-			sb.append(">");
+			if (arg.startsWith("\"") && arg.endsWith("\"") ) {
+				sb.append(" ");
+				sb.append(arg.substring(1, arg.length()-1));
+			} else {
+				sb.append(" <");
+				sb.append(arg.trim());
+				sb.append(">");
+			}
 		}
-		
+
 		return sb.toString();
 	}
 
 	private String formatOption(Option option, boolean required) {
 		StringBuilder sb = new StringBuilder();
-		
+
 		if (!required) {
 			sb.append("[");
 		}
@@ -168,7 +199,7 @@ class UsageBuilder {
 			sb.append("--");
 			sb.append(option.getLongOpt());
 		}
-		
+
 		if (option.hasArg()) {
 			sb.append(" ");
 			sb.append("<");
@@ -179,7 +210,7 @@ class UsageBuilder {
 		if (!required) {
 			sb.append("]");
 		}
-		
+
 		return sb.toString();
 	}
 
@@ -189,19 +220,19 @@ class UsageBuilder {
 		if (!group.isRequired()) {
 			sb.append("[");
 		}
-		
+
 		for (IndexedValue<Option> option : Iterators.enumerate(group.getOptions())) {
 			if (option.getIndex() > 0) {
 				sb.append(" | ");
 			}
-			
+
 			sb.append(formatOption(option.getValue(), true));
 		}
-		
+
 		if (!group.isRequired()) {
 			sb.append("]");
 		}
-		
+
 		return sb.toString();
 	}
 

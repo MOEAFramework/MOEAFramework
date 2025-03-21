@@ -191,12 +191,6 @@ public abstract class CommandLineUtility {
 	public void start(String[] args) throws Exception {
 		Thread.currentThread().setUncaughtExceptionHandler(new CommandLineUncaughtExceptionHandler());
 		
-		if (System.getProperty("cli.executable") != null) {
-			usageBuilder.withExecutable(System.getProperty("cli.executable"));
-		} else {
-			usageBuilder.withUtility(getClass());
-		}
-		
 		// trim last argument because of an error with Windows newline characters
 		if (args.length > 0) {
 			args[args.length - 1] = args[args.length - 1].trim();
@@ -310,14 +304,12 @@ public abstract class CommandLineUtility {
 
 				for (Command command : commands) {
 					if (command.isVisible()) {
-						commandOptions.addOption(command.getName(),
-								Localization.getString(command.getImplementation(), "title"));
+						commandOptions.addOption(command.getName(), Localization.getString(command.getImplementation(), "title"));
 					}
 				}
 				
 				helpFormatter.setOptPrefix("");
-				helpFormatter.printOptions(writer, width, commandOptions, helpFormatter.getLeftPadding(),
-						helpFormatter.getDescPadding());
+				helpFormatter.printOptions(writer, width, commandOptions, helpFormatter.getLeftPadding(), helpFormatter.getDescPadding());
 				helpFormatter.setOptPrefix(HelpFormatter.DEFAULT_OPT_PREFIX);
 
 				writer.println();
@@ -348,11 +340,22 @@ public abstract class CommandLineUtility {
 	 * @return the formatted usage string
 	 */
 	protected String getUsageString() {
-		if (Localization.containsKey(getClass(), "args")) {
-			usageBuilder.withPositionalArgs(Localization.getString(getClass(), "args").split(","));
+		usageBuilder.withExecutable(Settings.getCLIExecutable());
+		
+		if (!Settings.PROPERTIES.contains(Settings.KEY_CLI_EXECUTABALE)) {
+			usageBuilder.withUtility(getClass());
 		}
 		
 		usageBuilder.withOptions(getOptions());
+		usageBuilder.withOptionStyle(Settings.getCLIOptionStyle());
+		
+		if (Localization.containsKey(getClass(), "args")) {
+			String args = Localization.getString(getClass(), "args");
+			
+			Tokenizer tokenizer = new Tokenizer();
+			tokenizer.setDelimiter(',');
+			usageBuilder.withPositionalArgs(tokenizer.decodeToArray(args));
+		}
 		
 		return usageBuilder.build();
 	}

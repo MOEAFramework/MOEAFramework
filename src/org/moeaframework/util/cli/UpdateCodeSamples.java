@@ -478,13 +478,15 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		// execute the main method
 		String[] args = options.language.equals(Language.Help) ? new String[] { "--help" } : new String[0];
 		PrintStream oldOut = System.out;
-			
+					
 		try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				PrintStream newOut = new PrintStream(baos)) {
 			System.setOut(newOut);
 				
 			Class<?> cls = Class.forName(getClassName(filename), true, Thread.currentThread().getContextClassLoader());
 			Method mainMethod = cls.getDeclaredMethod("main", String[].class);
+			
+			Settings.PROPERTIES.setString(Settings.KEY_CLI_EXECUTABALE, "./cli " + cls.getSimpleName());
 			
 			PRNG.setSeed(seed);
 			mainMethod.invoke(null, (Object)args);

@@ -44,9 +44,7 @@ is always available.  To see the recommended commands needed to register the too
 ```
 Constructs the scaffolding for a natively-compiled problem in a target language.
 
-Usage: java -classpath "lib/*" org.moeaframework.builder.BuildProblem [-c <arg>] [--classpath <arg>] [-d <arg>] [-f
-       <arg>] [-h] -l <arg> [--lowerBound <arg>] -n <arg> -o <arg> [--overwrite] -p <arg> [--package <arg>]
-       [--upperBound <arg>]
+Usage: ./cli BuildProblem [options]
 
 The following options are available:
 
@@ -73,8 +71,7 @@ The following options are available:
 ```
 Calculates the indicator value for an approximation set.
 
-Usage: java -classpath "lib/*" org.moeaframework.analysis.tools.CalculateIndicator [-b <name>] [-e <e1,e2,...>] [-h] -i
-       <name> [-o <file>] [-r <file>]
+Usage: ./cli CalculateIndicator [options] <file...>
 
 The following options are available:
 
@@ -86,6 +83,35 @@ The following options are available:
   -r,--reference <file>      Reference set file
 ```
 
+### DataStoreTool
+
+<!-- help:src/org/moeaframework/analysis/tools/DataStoreTool.java [:-2] -->
+
+```
+Access and manage the content of a data store.
+
+Usage: ./cli DataStoreTool [options] <command>
+
+Select one of the available commands:
+
+  copy      Copies the contents of one data store to another.
+  create    Creates the data store if one doesn't already exist.
+  delete    Deletes the data store, container, or blob.
+  details   Show details of data store, container, or blob.
+  exists    Checks if the data store, container, or blob exists.
+  get       Gets the content of the blob.
+  list      List the contents of the data store or container.
+  lock      Locks the data store, allowing read-only operations.
+  server    Starts a web server providing read-only access.
+  set       Sets the content of the blob.
+  type      Display the type of the given URI.
+  unlock    Unlocks the data store, allowing read and write operations.
+
+The following options are available:
+
+  -h,--help   Display help information
+```
+
 ### EndOfRunEvaluator
 
 <!-- help:src/org/moeaframework/analysis/tools/EndOfRunEvaluator.java [:-2] -->
@@ -93,8 +119,7 @@ The following options are available:
 ```
 Evaluates an optimization algorithm on the specified problem, storing end-of-run approximation sets.
 
-Usage: java -classpath "lib/*" org.moeaframework.analysis.tools.EndOfRunEvaluator -a <name> [-b <name>] [-e <e1,e2,...>]
-       [--force] [-h] -i <file> -o <file> [--overwrite] -p <file> [-s <value>] [-X <p1=v1;p2=v2;...>]
+Usage: ./cli EndOfRunEvaluator [options]
 
 The following options are available:
 
@@ -111,6 +136,20 @@ The following options are available:
   -X,--properties <p1=v1;p2=v2;...>   Fixed algorithm properties
 ```
 
+### LaunchDiagnosticTool
+
+<!-- help:src/org/moeaframework/analysis/diagnostics/LaunchDiagnosticTool.java [:-2] -->
+
+```
+Launches the diagnostic tool GUI.
+
+Usage: ./cli LaunchDiagnosticTool [options]
+
+The following options are available:
+
+  -h,--help   Display help information
+```
+
 ### MetricsAnalysis
 
 <!-- help:src/org/moeaframework/analysis/tools/MetricsAnalysis.java [:-2] -->
@@ -118,8 +157,7 @@ The following options are available:
 ```
 Calculates the best, attainment, efficiency and controllability metrics.
 
-Usage: java -classpath "lib/*" org.moeaframework.analysis.tools.MetricsAnalysis [-b <width>] [-c] [-e] [-h] -i <file> -m
-       <value> [-o <file>] -p <file> [-t <percent>]
+Usage: ./cli MetricsAnalysis [options] <file...>
 
 The following options are available:
 
@@ -141,8 +179,7 @@ The following options are available:
 ```
 Evaluates the approximation sets stored in a result file.
 
-Usage: java -classpath "lib/*" org.moeaframework.analysis.tools.MetricsEvaluator [-b <name>] [-e <e1,e2,...>] [--force]
-       [-h] -i <file> -o <file> [--overwrite] [-r <file>]
+Usage: ./cli MetricsEvaluator [options]
 
 Outputs a metric file containing the hypervolume, generational distance, inverted generational distance, spacing,
 additive epsilon-indicator, and maximum Pareto front error performance indicators.
@@ -166,7 +203,7 @@ The following options are available:
 ```
 Validates the number of rows stored in a metrics file.
 
-Usage: java -classpath "lib/*" org.moeaframework.analysis.tools.MetricsValidator -c <N> [-h] [-o <file>]
+Usage: ./cli MetricsValidator [options] <file...>
 
 The following options are available:
 
@@ -182,8 +219,7 @@ The following options are available:
 ```
 Generates a reference set for any problem whose analytical solution is known.
 
-Usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ReferenceSetGenerator [-b <name>] [-e <e1,e2,...>] [-h]
-       -n <value> [-o <file>] [-s <value>]
+Usage: ./cli ReferenceSetGenerator [options]
 
 The following options are available:
 
@@ -202,8 +238,7 @@ The following options are available:
 ```
 Converts a result file into a different file format.
 
-Usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileConverter [-b <name>] [-f <fmt>] [-h] -i
-       <file> [-o <file>]
+Usage: ./cli ResultFileConverter [options]
 
 The following options are available:
 
@@ -221,8 +256,7 @@ The following options are available:
 ```
 Merges the approximation sets contained in one or more result files to produce the combined reference set.
 
-Usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileMerger [-b <name>] [-e <e1,e2,...>] [-h] -o
-       <file>
+Usage: ./cli ResultFileMerger [options] <file...>
 
 The following options are available:
 
@@ -239,8 +273,7 @@ The following options are available:
 ```
 Extracts metadata and/or performance metrics from a result file.
 
-Usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileMetadata [-b <name>] [-e <e1,e2,...>] [-f
-       <fmt>] [-h] -i <file> [-o <file>] [-r <file>]
+Usage: ./cli ResultFileMetadata [options] <field...>
 
 The following options are available:
 
@@ -260,8 +293,7 @@ The following options are available:
 ```
 Merges the approximation sets contained in one or more result files across each seed.
 
-Usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileSeedMerger [-b <name>] [-e <e1,e2,...>] [-h]
-       -o <file>
+Usage: ./cli ResultFileSeedMerger [options] <file...>
 
 Unlike ResultFileMerger that merges all approximation sets into one reference set, this utility merges each entry across
 its seeds.  The output will contain N approximation sets if the inputs all contain N approximation sets.
@@ -281,7 +313,7 @@ The following options are available:
 ```
 Validates the number of approximation sets stored in a result file.
 
-Usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileValidator [-b <name>] -c <N> [-h] [-o <file>]
+Usage: ./cli ResultFileValidator [options] <file...>
 
 The following options are available:
 
@@ -298,7 +330,7 @@ The following options are available:
 ```
 Visualizes the contents of a result file.
 
-Usage: java -classpath "lib/*" org.moeaframework.analysis.tools.ResultFileViewer [-b <name>] [-h] [-r <file>]
+Usage: ./cli ResultFileViewer [options] <file...>
 
 The following options are available:
 
@@ -314,8 +346,7 @@ The following options are available:
 ```
 Records the approximation set at a fixed sampling frequency from each parameterization.
 
-Usage: java -classpath "lib/*" org.moeaframework.analysis.tools.RuntimeEvaluator -a <name> [-b <name>] [-e <e1,e2,...>]
-       [-f <nfe>] [-h] -i <file> -o <file> -p <file> [-s <value>] [-X <p1=v1;p2=v2;...>]
+Usage: ./cli RuntimeEvaluator [options]
 
 The following options are available:
 
@@ -338,8 +369,7 @@ The following options are available:
 ```
 Generates parameter samples for running the Evaluator.
 
-Usage: java -classpath "lib/*" org.moeaframework.analysis.tools.SampleGenerator [-h] -m <name> -n <value> [-o <file>]
-       [--overwrite] -p <file> [-s <value>]
+Usage: ./cli SampleGenerator [options]
 
 The following options are available:
 
@@ -359,8 +389,7 @@ The following options are available:
 ```
 Performs Sobol' global variance analysis.
 
-Usage: java -classpath "lib/*" org.moeaframework.analysis.tools.SobolAnalysis [-h] -i <file> -m <value> [-o <file>] -p
-       <file> [-r <number>]
+Usage: ./cli SobolAnalysis [options]
 
 The following options are available:
 
@@ -377,11 +406,13 @@ The following options are available:
 <!-- help:src/org/moeaframework/analysis/tools/Solve.java [:-2] -->
 
 ```
-Solves an optimization problem using any optimization algorithm supported by the MOEA Framework.
+Solves an optimization problem.
 
-Usage: java -classpath "lib/*" org.moeaframework.analysis.tools.Solve -a <name> [-b <name>] [-c <spec>] [-e <e1,e2,...>]
-       -f <file> [-F <value>] [-h] [-H <value>] [-l <l1,l2,...>] -n <value> [-o <spec>] [-P <value>] [-r <value>] [-s
-       <value>] [-S] [-t <trials>] [-u <u1,u2,...>] [-v <spec>] [-X <p1=v1;p2=v2;...>]
+Usage: ./cli Solve [options] -- <executable>
+
+Supports solving any built-in problem given its name or by starting a external process.  When using an external process,
+the decision variables must be defined using the syntax "R(<lb>,<ub>)" for reals, "B(<length>)" for binary,
+"I(<lb>,<ub>)" for integers, "P(<length>)" for permutations.
 
 The following options are available:
 
@@ -402,9 +433,7 @@ The following options are available:
   -S,--useSocket                      Communicate with external problem using sockets
   -t,--test <trials>                  Runs a few trials to test the connection with the external problem
   -u,--upperBounds <u1,u2,...>        Upper bounds of real-valued decision variables
-  -v,--variables <spec>               Semicolon-separated list of decision variable specifications.  Use "R(<lb>,<ub>)"
-                                      for reals, "B(<length>)" for binary, "I(<lb>,<ub>)" for integers, "P(<length>)"
-                                      for permutations
+  -v,--variables <spec>               Semicolon-separated list of decision variable specifications
   -X,--properties <p1=v1;p2=v2;...>   Algorithm properties
 ```
 
@@ -415,8 +444,7 @@ The following options are available:
 ```
 Outputs randomly-generated weights.
 
-Usage: java -classpath "lib/*" org.moeaframework.analysis.tools.WeightGenerator -d <value> [--divisions <value>]
-       [--divisionsInner <value>] [--divisionsOuter <value>] [-g] [-h] -m <name> [-n <value>] [-o <file>]
+Usage: ./cli WeightGenerator [options]
 
 The following options are available:
 

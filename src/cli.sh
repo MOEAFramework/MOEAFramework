@@ -4,7 +4,7 @@ set -e
 
 ROOT="$(dirname -- "${BASH_SOURCE[0]}")"
 CLASSPATH="${ROOT}/lib/*:${ROOT}/examples"
-ARGS=("-Dcli.executable=$0")
+ARGS=("-Dorg.moeaframework.util.cli.executable=$0")
 
 if [ -d "${ROOT}/lib" ]; then
 	MOEAFRAMEWORK_LIB="$(find "${ROOT}/lib" -type f -name "MOEAFramework-*.jar" | head -n 1)"

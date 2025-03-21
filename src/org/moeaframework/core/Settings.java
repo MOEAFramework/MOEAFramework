@@ -30,6 +30,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.moeaframework.core.indicator.Hypervolume;
 import org.moeaframework.core.population.NondominatedPopulation.DuplicateMode;
+import org.moeaframework.util.cli.OptionStyle;
 import org.moeaframework.util.io.Resources;
 import org.moeaframework.util.io.Resources.ResourceOption;
 
@@ -140,6 +141,16 @@ public class Settings {
 	 * The property key to indicate that fast non-dominated sorting should be used.
 	 */
 	public static final String KEY_FAST_NONDOMINATED_SORTING = createKey(KEY_PREFIX, "core", "fast_nondominated_sorting");
+	
+	/**
+	 * The property key storing the command or executable used to start Java.
+	 */
+	public static final String KEY_CLI_EXECUTABALE = createKey(KEY_PREFIX, "util", "cli", "executable");
+	
+	/**
+	 * The property key storing the option formatting style.
+	 */
+	public static final String KEY_CLI_OPTION_STYLE = createKey(KEY_PREFIX, "util", "cli", "style");
 	
 	/**
 	 * The property key for the continuity correction flag.
@@ -314,6 +325,25 @@ public class Settings {
 	 */
 	public static String getPythonCommand() {
 		return PROPERTIES.getString(KEY_PYTHON_INTERPRETER, "python3");
+	}
+	
+	/**
+	 * Returns the command or executable used to start Java.  This is primarily used when generating help messages to
+	 * show a usage string matching the original command.
+	 * 
+	 * @return the command or executable used to start Java
+	 */
+	public static String getCLIExecutable() {
+		return PROPERTIES.getString(KEY_CLI_EXECUTABALE, "java -classpath \"lib/*\"");
+	}
+	
+	/**
+	 * Returns the formatting style for CLI options.
+	 * 
+	 * @return the formatting style for CLI options
+	 */
+	public static OptionStyle getCLIOptionStyle() {
+		return PROPERTIES.getEnum(KEY_CLI_OPTION_STYLE, OptionStyle.class, OptionStyle.NONE);
 	}
 	
 	/**
