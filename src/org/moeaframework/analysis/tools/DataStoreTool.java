@@ -86,7 +86,7 @@ public class DataStoreTool extends CommandLineUtility {
 		new DataStoreTool().start(args);
 	}
 	
-	private static abstract class AbstractDataStoreCommand extends CommandLineUtility {
+	private abstract static class AbstractDataStoreCommand extends CommandLineUtility {
 		
 		@Override
 		public void run(CommandLine commandLine) throws Exception {
@@ -450,7 +450,7 @@ public class DataStoreTool extends CommandLineUtility {
 		
 	}
 	
-	private static abstract class DataStoreIntentCommand extends AbstractDataStoreCommand {
+	private abstract static class DataStoreIntentCommand extends AbstractDataStoreCommand {
 		
 		private final Intent intent;
 		

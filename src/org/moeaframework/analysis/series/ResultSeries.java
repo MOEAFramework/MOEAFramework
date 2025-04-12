@@ -47,8 +47,14 @@ Streamable<IndexedResult> {
 	
 	private static final long serialVersionUID = -2606447194387896979L;
 	
+	/**
+	 * The index type of this series.
+	 */
 	private final IndexType indexType;
 	
+	/**
+	 * The result entries comprising this series.
+	 */
 	private final SortedMap<Integer, ResultEntry> data;
 	
 	/**

@@ -37,8 +37,8 @@ import org.moeaframework.core.indicator.Indicators.IndicatorValues;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.problem.DTLZ.DTLZ2;
-import org.moeaframework.util.Timer;
 import org.moeaframework.problem.Problem;
+import org.moeaframework.util.Timer;
 
 /**
  * Demonstrates using a data store to save results.  The data store defines "containers" and "blobs", which for a file

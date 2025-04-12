@@ -30,8 +30,8 @@ import org.moeaframework.analysis.store.DataStoreFactory;
 import org.moeaframework.analysis.store.Reference;
 import org.moeaframework.analysis.store.fs.FileSystemDataStore;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.CEC2009.UF1;
+import org.moeaframework.problem.Problem;
 
 public class DataStoreSnippet {
 

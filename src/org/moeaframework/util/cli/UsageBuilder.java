@@ -173,7 +173,7 @@ class UsageBuilder {
 		}
 
 		for (String arg : positionalArgs) {
-			if (arg.startsWith("\"") && arg.endsWith("\"") ) {
+			if (arg.startsWith("\"") && arg.endsWith("\"")) {
 				sb.append(" ");
 				sb.append(arg.substring(1, arg.length()-1));
 			} else {

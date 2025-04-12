@@ -93,6 +93,12 @@ public class ResultEntry implements Serializable {
 		return properties;
 	}
 	
+	/**
+	 * Encodes and writes the content of this result entry to the stream using Java's serialization API.
+	 * 
+	 * @param out the serialization output stream
+	 * @throws IOException if an I/O error occurred
+	 */
 	private void writeObject(ObjectOutputStream out) throws IOException {
 		out.defaultWriteObject();
 		
@@ -104,6 +110,13 @@ public class ResultEntry implements Serializable {
 		}
 	}
 	
+	/**
+	 * Reads and decodes the content of this result entry using Java's serialization API.
+	 * 
+	 * @param in the serialization input stream
+	 * @throws IOException if an I/O error occurred
+	 * @throws ClassNotFoundException if the class being deserialized is not defined
+	 */
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 		in.defaultReadObject();
 		
