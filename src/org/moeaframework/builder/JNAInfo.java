@@ -18,9 +18,12 @@
 package org.moeaframework.builder;
 
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.ProblemFactory;
@@ -47,17 +50,47 @@ public class JNAInfo extends CommandLineUtility {
 	public Options getOptions() {
 		Options options = super.getOptions();
 		
-		options.addOption(Option.builder("p")
-				.longOpt("problem")
-				.hasArg()
-				.build());
-		
 		OptionGroup group = new OptionGroup();
 		group.setRequired(true);
 
 		group.addOption(Option.builder("s")
 				.longOpt("sysArch")
 				.build());
+		
+		group.addOption(Option.builder("l")
+				.longOpt("libName")
+				.hasArg()
+				.argName("name")
+				.build());
+		
+		group.addOption(Option.builder("f")
+				.longOpt("findLib")
+				.hasArg()
+				.argName("name")
+				.build());
+
+		group.addOption(Option.builder("t")
+				.longOpt("testProblem")
+				.hasArg()
+				.argName("name")
+				.build());
+		
+		options.addOptionGroup(group);
+		
+		return options;
+	}
+	
+	private Options getLegacyOptions() {
+		Options options = super.getOptions();
+		
+		options.addOption(Option.builder("p")
+				.longOpt("problem")
+				.hasArg()
+				.required()
+				.build());
+		
+		OptionGroup group = new OptionGroup();
+		group.setRequired(true);
 		
 		group.addOption(Option.builder("l")
 				.longOpt("libName")
@@ -73,11 +106,47 @@ public class JNAInfo extends CommandLineUtility {
 	}
 
 	@Override
-	public void run(CommandLine commandLine) throws Exception {
-		if (commandLine.hasOption("test")) {
-			String problemName = getRequiredProblemName(commandLine);
-			Problem problem = null;
+	public void start(String[] args) throws Exception {
+		Options options = getLegacyOptions();
+		CommandLineParser commandLineParser = new DefaultParser();
+		
+		try {
+			CommandLine commandLine = commandLineParser.parse(options, args, true);
 			
+			if (commandLine.hasOption("problem")) {
+				if (commandLine.hasOption("test")) {
+					super.start(new String[] { "--testProblem", commandLine.getOptionValue("problem") });
+				} else if (commandLine.hasOption("libName")) {
+					super.start(new String[] { "--libName", commandLine.getOptionValue("problem") });
+				} else {
+					super.start(args);
+				}
+			} else {
+				super.start(args);
+			}
+		} catch (ParseException e) {
+			super.start(args);
+		}
+	}
+
+	@Override
+	public void run(CommandLine commandLine) throws Exception {
+		if (commandLine.hasOption("findLib")) {
+			String name = commandLine.getOptionValue("findLib");
+
+			
+			try {
+				NativeLibrary.getInstance(name);
+				pass("Located native library");
+			} catch (UnsatisfiedLinkError e) {
+				fail("Failed to locate native library");
+			}
+		}
+		
+		if (commandLine.hasOption("testProblem")) {
+			String problemName = commandLine.getOptionValue("testProblem");
+			Problem problem = null;
+
 			try {
 				NativeLibrary.getInstance(problemName);
 				pass("Located native library");
@@ -86,7 +155,7 @@ public class JNAInfo extends CommandLineUtility {
 			}
 			
 			try {
-				problem = ProblemFactory.getInstance().getProblem(getRequiredProblemName(commandLine));
+				problem = ProblemFactory.getInstance().getProblem(problemName);
 				pass("Problem registered with SPI");
 			} catch (ProviderNotFoundException e) {
 				fail("Problem not registered correctly with SPI");
@@ -119,12 +188,14 @@ public class JNAInfo extends CommandLineUtility {
 				
 				pass("Problem evaluated successfully");
 			}
-		} else if (commandLine.hasOption("libName")) {
-			System.out.println(System.mapLibraryName(getRequiredProblemName(commandLine)));
-		} else if (commandLine.hasOption("sysArch")) {
+		}
+		
+		if (commandLine.hasOption("libName")) {
+			System.out.println(System.mapLibraryName(commandLine.getOptionValue("libName")));
+		}
+		
+		if (commandLine.hasOption("sysArch")) {
 			System.out.println(Platform.RESOURCE_PREFIX);
-		} else {
-			throw new IllegalArgumentException("No option selected");
 		}
 	}
 	
@@ -135,16 +206,6 @@ public class JNAInfo extends CommandLineUtility {
 	private void fail(String message) {
 		System.out.println("\u274c " + message);
 		throw new FrameworkException("Test failed!");
-	}
-	
-	private String getRequiredProblemName(CommandLine commandLine) {
-		String result = commandLine.getOptionValue("problem");
-		
-		if (result == null) {
-			throw new IllegalArgumentException("Must supply a problem name along with the given options");
-		}
-		
-		return result;
 	}
 
 	/**

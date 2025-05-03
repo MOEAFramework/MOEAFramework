@@ -19,26 +19,49 @@ package org.moeaframework.builder;
 
 import java.io.IOException;
 
+import org.apache.commons.cli.MissingOptionException;
+import org.apache.commons.cli.MissingArgumentException;
 import org.apache.commons.lang3.SystemUtils;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Capture;
+import org.moeaframework.core.FrameworkException;
 
 public class JNAInfoTest {
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testMissingProblemNameOnTest() throws Exception {
-		JNAInfo.main(new String[] { "--test" });
+	
+	@Test(expected = MissingOptionException.class)
+	public void testMissingOption() throws Exception {
+		JNAInfo.main(new String[] { });
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
-	public void testMissingProblemNameOnLibName() throws Exception {
+	@Test(expected = MissingArgumentException.class)
+	public void testFindLibMissingArg() throws Exception {
+		JNAInfo.main(new String[] { "--findLib" });
+	}
+
+	@Test(expected = MissingArgumentException.class)
+	public void testTestProblemMissingArg() throws Exception {
+		JNAInfo.main(new String[] { "--testProblem" });
+	}
+	
+	@Test(expected = MissingArgumentException.class)
+	public void testLibNameMissingArg() throws Exception {
 		JNAInfo.main(new String[] { "--libName" });
+	}
+	
+	@Test(expected = FrameworkException.class)
+	public void testFindLibMissingLibrary() throws Exception {
+		JNAInfo.main(new String[] { "--findLib", "foo" });
+	}
+	
+	@Test(expected = FrameworkException.class)
+	public void testTestProblemMissingLibrary() throws Exception {
+		JNAInfo.main(new String[] { "--testProblem", "foo" });
 	}
 	
 	@Test
 	public void testLibName() throws IOException {
-		String actual = Capture.output(JNAInfo.class, "--libName", "--problem", "TestProblem").toString().trim();
+		String actual = Capture.output(JNAInfo.class, "--libName", "TestProblem").toString().trim();
 		String expected = SystemUtils.IS_OS_WINDOWS ? "TestProblem.dll" :
 			SystemUtils.IS_OS_MAC ? "libTestProblem.dylib" :
 			"libTestProblem.so";
@@ -52,6 +75,16 @@ public class JNAInfoTest {
 		String expected = SystemUtils.IS_OS_WINDOWS ? "win32-x86-64" :
 				SystemUtils.IS_OS_MAC ? "darwin-x86-64" :
 				"linux-x86-64";
+		
+		Assert.assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testLegacy() throws IOException {
+		String actual = Capture.output(JNAInfo.class, "--libName", "--problem", "TestProblem").toString().trim();
+		String expected = SystemUtils.IS_OS_WINDOWS ? "TestProblem.dll" :
+			SystemUtils.IS_OS_MAC ? "libTestProblem.dylib" :
+			"libTestProblem.so";
 		
 		Assert.assertEquals(expected, actual);
 	}
