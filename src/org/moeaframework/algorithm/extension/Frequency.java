@@ -20,7 +20,7 @@ package org.moeaframework.algorithm.extension;
 import org.moeaframework.util.validate.Validate;
 
 /**
- * Defines a frequency at which some action, operation, or even toccurs.
+ * Defines a frequency at which some action, operation, or event occurs.
  */
 public class Frequency {
 
