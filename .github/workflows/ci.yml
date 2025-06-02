@@ -113,7 +113,7 @@ jobs:
         name: maven-test-results-ubuntu-${{ env.JAVA_VERSION }}
         path: build/target/surefire-reports
 
-native-image-tests:
+  native-image-tests:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -139,7 +139,7 @@ native-image-tests:
       with:
         name: native-image-${{ matrix.os }}
         path: cli.exe
-
+        
   content-tests:
     runs-on: ubuntu-latest
     steps:
