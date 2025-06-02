@@ -63,19 +63,24 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		</sequential>
 	</macrodef>
 	
-	<!-- Run native-image command, assumes env and classpath properties are defined -->
+	<!-- Verifies native-image exists and runs it using preconfigured options -->
 	<macrodef name="native-image">
 		<attribute name="dir" />
 		<attribute name="main" />
 		<attribute name="output" />
 		
 		<sequential>
-			<echo>${env.PATH}</echo>
+			<exec executable="native-image" failifexecutionfails="false" discardError="true" discardOutput="true" resultproperty="native-image.result">
+				<arg value="--version" />
+			</exec>
 			
-			<fail message="native-image command not found, please ensure GraalVM or Liberica Native Image Kit (NIK) is installed">
+			<fail message="native-image command not found or not configured on the system path">
 				<condition>
 					<not>
-						<available file="native-image" filepath="${env.PATH}" />
+						<and>
+							<isset property="native-image.result" />
+							<equals arg1="${native-image.result}" arg2="0" />
+						</and>
 					</not>
 				</condition>
 			</fail>
@@ -84,10 +89,10 @@ Use of these build scripts requires Apache Ant to be installed.  See
 				<path refid="classpath" />
 				<pathelement location="${dist}/${shortname}-${version}.jar" />
 			</path>
-
+			
 			<pathconvert property="lib.path.local" refid="lib.path" />
 			
-			<exec executable="native-image" dir="@{dir}">
+			<exec executable="native-image" dir="@{dir}" failonerror="true">
 				<arg value="--no-fallback" />
 				<arg value="-classpath" />
 				<arg value="${lib.path.local}" />
