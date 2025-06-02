@@ -121,18 +121,13 @@ jobs:
         os: [ ubuntu-latest, windows-latest ]
     steps:
     - uses: actions/checkout@v4
-    - uses: sdkman/sdkman-action@b1f9b696c79148b66d3d3a06f7ea801820318d0f
-      id: sdkman
-      with:
-        candidate: java
-        version: 24.2.1.r24-nik
-    - uses: actions/setup-java@v4
-      id: setup-java
-      with:
-        distribution: 'jdkfile'
-        java-version: 24.2.1
-        jdkFile: ${{ steps.sdkman.outputs.file }}
+    - name: Install dependencies
+      shell: bash
+      run: |
+        curl -s "https://get.sdkman.io" | bash
+        sdk install java 24.2.1.r24-nik
     - name: Build native image
+      shell: bash
       run: |
         ant update-reachability
         ant build-binary
