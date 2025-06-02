@@ -1,0 +1,487 @@
+{
+  "reflection": [
+    {
+      "type": "org.moeaframework.analysis.tools.Main",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.builder.BuildProblem",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.CalculateIndicator",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.DataStoreTool",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.DataStoreTool.DataStoreTypeCommand",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.DataStoreTool.DataStoreListCommand",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.DataStoreTool.DataStoreDetailsCommand",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.DataStoreTool.DataStoreDeleteCommand",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.DataStoreTool.DataStoreExistsCommand",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.DataStoreTool.DataStoreCreateCommand",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.DataStoreTool.DataStoreGetCommand",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.DataStoreTool.DataStoreSetCommand",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.DataStoreTool.DataStoreCopyCommand",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.DataStoreTool.DataStoreServerCommand",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.DataStoreTool.DataStoreLockCommand",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.DataStoreTool.DataStoreUnlockCommand",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.EndOfRunEvaluator",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.Initialize",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.MetricsAnalysis",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.MetricsEvaluator",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.MetricsValidator",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.ReferenceSetGenerator",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.ResultFileConverter",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.ResultFileMerger",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.ResultFileMetadata",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.ResultFileSeedMerger",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.ResultFileValidator",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.ResultFileViewer",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.RuntimeEvaluator",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.SampleGenerator",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.SobolAnalysis",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.Solve",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.analysis.tools.WeightGenerator",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.util.cli.GeneratePlots",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.util.cli.TestExamples",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true
+    },
+    {
+      "type": "org.moeaframework.algorithm.extension.ProgressExtension$ProgressListener[]",
+      "unsafeAllocated": true
+    },
+    {
+      "type": {
+        "proxy": ["org.moeaframework.algorithm.extension.ProgressExtension$ProgressListener"]
+      }
+    }
+  ],
+  "resources": [
+    {
+      "glob": "META-INF/build.properties"
+    },
+    {
+      "glob": "META-INF/GPL-LICENSE"
+    },
+    {
+      "glob": "META-INF/BSD-LICENSE"
+    },
+    {
+      "glob": "META-INF/LGPL-LICENSE"
+    },
+    {
+      "glob": "META-INF/ZHANG-LICENSE"
+    },
+    {
+      "glob": "META-INF/APACHE-LICENSE"
+    },
+    {
+      "glob": "META-INF/services/org.moeaframework.analysis.store.DataStoreProvider"
+    },
+    {
+      "glob": "META-INF/services/org.moeaframework.core.spi.AlgorithmProvider"
+    },
+    {
+      "glob": "META-INF/services/org.moeaframework.core.spi.ProblemProvider"
+    },
+    {
+      "glob": "META-INF/services/org.moeaframework.core.spi.OperatorProvider"
+    },
+    {
+      "glob": "org/moeaframework/core/logo16.png"
+    },
+    {
+      "glob": "org/moeaframework/core/logo48.png"
+    },
+    {
+      "glob": "org/moeaframework/core/logo128.png"
+    },
+    {
+      "glob": "org/moeaframework/core/logo64.png"
+    },
+    {
+      "glob": "org/moeaframework/core/logo256.png"
+    },
+    {
+      "glob": "org/moeaframework/core/logo24.png"
+    },
+    {
+      "glob": "org/moeaframework/core/operator/real/doc-files/SBX.png"
+    },
+    {
+      "glob": "org/moeaframework/core/operator/real/doc-files/DifferentialEvolution.png"
+    },
+    {
+      "glob": "org/moeaframework/core/operator/real/doc-files/PCX.png"
+    },
+    {
+      "glob": "org/moeaframework/core/operator/real/doc-files/SPX.png"
+    },
+    {
+      "glob": "org/moeaframework/core/operator/real/doc-files/UNDX.png"
+    },
+    {
+      "glob": "org/moeaframework/core/operator/real/doc-files/UM.png"
+    },
+    {
+      "glob": "org/moeaframework/core/logo32.png"
+    },
+    {
+      "glob": "org/moeaframework/analysis/tools/LocalStrings.properties"
+    },
+    {
+      "glob": "org/moeaframework/analysis/tools/gd.py"
+    },
+    {
+      "glob": "org/moeaframework/analysis/viewer/transparency.png"
+    },
+    {
+      "glob": "org/moeaframework/analysis/viewer/stop.png"
+    },
+    {
+      "glob": "org/moeaframework/analysis/viewer/decrease-font-size.png"
+    },
+    {
+      "glob": "org/moeaframework/analysis/viewer/fit.png"
+    },
+    {
+      "glob": "org/moeaframework/analysis/viewer/LocalStrings.properties"
+    },
+    {
+      "glob": "org/moeaframework/analysis/viewer/folder.png"
+    },
+    {
+      "glob": "org/moeaframework/analysis/viewer/forward.png"
+    },
+    {
+      "glob": "org/moeaframework/analysis/viewer/increase-font-size.png"
+    },
+    {
+      "glob": "org/moeaframework/analysis/viewer/resize.png"
+    },
+    {
+      "glob": "org/moeaframework/analysis/viewer/camera.png"
+    },
+    {
+      "glob": "org/moeaframework/analysis/viewer/play.png"
+    },
+    {
+      "glob": "org/moeaframework/analysis/viewer/back.png"
+    },
+    {
+      "glob": "org/moeaframework/analysis/viewer/save.png"
+    },
+    {
+      "glob": "org/moeaframework/analysis/diagnostics/LocalStrings.properties"
+    },
+    {
+      "glob": "org/moeaframework/util/cli/LocalStrings.properties"
+    },
+    {
+      "glob": "org/moeaframework/util/sequence/joe-kuo-6.21000"
+    },
+    {
+      "glob": "org/moeaframework/builder/python/Problem.template"
+    },
+    {
+      "glob": "org/moeaframework/builder/python/Makefile.template"
+    },
+    {
+      "glob": "org/moeaframework/builder/python/Manifest"
+    },
+    {
+      "glob": "org/moeaframework/builder/python/Python.template"
+    },
+    {
+      "glob": "org/moeaframework/builder/java/Problem.template"
+    },
+    {
+      "glob": "org/moeaframework/builder/java/Makefile.template"
+    },
+    {
+      "glob": "org/moeaframework/builder/java/Manifest"
+    },
+    {
+      "glob": "org/moeaframework/builder/shared/Example.template"
+    },
+    {
+      "glob": "org/moeaframework/builder/shared/Service.template"
+    },
+    {
+      "glob": "org/moeaframework/builder/shared/ProblemProvider.template"
+    },
+    {
+      "glob": "org/moeaframework/builder/shared/NativeProblem.template"
+    },
+    {
+      "glob": "org/moeaframework/builder/LocalStrings.properties"
+    },
+    {
+      "glob": "org/moeaframework/builder/cpp/Makefile.template"
+    },
+    {
+      "glob": "org/moeaframework/builder/cpp/Manifest"
+    },
+    {
+      "glob": "org/moeaframework/builder/cpp/Header.template"
+    },
+    {
+      "glob": "org/moeaframework/builder/cpp/CPP.template"
+    },
+    {
+      "glob": "org/moeaframework/builder/matlab/Problem.template"
+    },
+    {
+      "glob": "org/moeaframework/builder/matlab/Makefile.template"
+    },
+    {
+      "glob": "org/moeaframework/builder/matlab/Manifest"
+    },
+    {
+      "glob": "org/moeaframework/builder/matlab/Matlab.template"
+    },
+    {
+      "glob": "org/moeaframework/builder/fortran/Makefile.template"
+    },
+    {
+      "glob": "org/moeaframework/builder/fortran/Manifest"
+    },
+    {
+      "glob": "org/moeaframework/builder/fortran/NativeFortran.template"
+    },
+    {
+      "glob": "org/moeaframework/builder/external/Problem.template"
+    },
+    {
+      "glob": "org/moeaframework/builder/external/Makefile.template"
+    },
+    {
+      "glob": "org/moeaframework/builder/external/Manifest"
+    },
+    {
+      "glob": "org/moeaframework/builder/external/moeaframework.c"
+    },
+    {
+      "glob": "org/moeaframework/builder/external/C.template"
+    },
+    {
+      "glob": "org/moeaframework/builder/external/moeaframework.h"
+    },
+    {
+      "glob": "org/moeaframework/builder/c/Makefile.template"
+    },
+    {
+      "glob": "org/moeaframework/builder/c/Manifest"
+    },
+    {
+      "glob": "org/moeaframework/builder/c/C.template"
+    }
+  ],
+  "bundles": []
+}

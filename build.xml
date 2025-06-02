@@ -223,6 +223,14 @@ done < <(git diff --cached --name-only --diff-filter=ACM)
 			<classpath path="examples" />
 		</java>
 	</target>
+	
+	<target name="update-reachability" depends="build-binary">
+		<java classname="org.moeaframework.util.cli.UpdateReachabilityMetadata" fork="true" failonerror="true">
+			<classpath refid="classpath" />
+			<classpath path="${build}" />
+			<classpath path="examples" />
+		</java>
+	</target>
 
 	<target name="package-binary" depends="build-binary, build-javadoc"
 			description="Creates the binary distribution file">
