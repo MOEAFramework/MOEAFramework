@@ -58,7 +58,9 @@ public class UpdateReachabilityMetadata extends CommandLineUtility {
 	public void run(CommandLine commandLine) throws Exception {
 		List<Class<?>> reflections = scanReflections(commandLine.hasOption("exclude-gui"));
 		List<Path> resources = scanResources();
-		
+
+		Files.createDirectories(Path.of("META-INF/native-image"));
+
 		try (PrintWriter writer = new PrintWriter("META-INF/native-image/reachability-metadata.json")) {
 			writer.println("{");
 			writer.println("  \"reflection\": [");
