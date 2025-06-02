@@ -120,11 +120,18 @@ jobs:
       matrix:
         os: [ ubuntu-latest, windows-latest ]
     steps:
-    - name: Setup build
-      uses: MOEAFramework/.github/actions/setup-build@main
+    - uses: actions/checkout@v4
+    - uses: sdkman/sdkman-action@v1
+      id: sdkman
       with:
-        java-version: ${{ inputs.java-version || '21' }}
-        java-distribution: ${{ inputs.java-distribution }}
+        candidate: java
+        version: 24.2.1.r24-nik
+    - uses: actions/setup-java@v4
+      id: setup-java
+      with:
+        distribution: 'jdkfile'
+        java-version: 15.0.0
+        jdkFile: ${{ steps.sdkman.outputs.file }}
     - name: Build native image
       run: |
         sdk install java 24.2.1.r24-nik
