@@ -85,7 +85,7 @@ jobs:
       if: always()
       with:
         name: ant-test-results-${{ matrix.os }}-${{ matrix.java }}
-        path: test-results     
+        path: test-results
 
   maven-tests:
     runs-on: ubuntu-latest
@@ -112,6 +112,33 @@ jobs:
       with:
         name: maven-test-results-ubuntu-${{ env.JAVA_VERSION }}
         path: build/target/surefire-reports
+
+native-image-tests:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, windows-latest ]
+    steps:
+    - name: Setup build
+      uses: MOEAFramework/.github/actions/setup-build@main
+      with:
+        java-version: ${{ inputs.java-version || '21' }}
+        java-distribution: ${{ inputs.java-distribution }}
+    - name: Build native image
+      run: |
+        sdk install java 24.2.1.r24-nik
+        ant update-reachability
+        ant build-binary
+        native-image --no-fallback -classpath "dist/*:lib/*" org.moeaframework.analysis.tools.Main -o cli.exe
+    - name: Test native image
+      run: |
+        ./cli.exe Solve --algorithm NSGAII --problem UF1 --numberOfEvaluations 10000 --output output.txt
+    - name: Upload native image
+      uses: actions/upload-artifact@v4
+      with:
+        name: native-image-${{ matrix.os }}
+        path: cli.exe
 
   content-tests:
     runs-on: ubuntu-latest
