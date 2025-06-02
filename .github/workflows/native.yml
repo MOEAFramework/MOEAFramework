@@ -16,22 +16,21 @@ jobs:
         sdk install java 24.2.1.r24-nik
         ant update-reachability
         ant build-binary
-        native-image --no-fallback -classpath "dist/*:lib/*" org.moeaframework.analysis.tools.Main -o cli
-        native-image --no-fallback -classpath "dist/*:lib/*" org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool -o diagnosticTool
-        native-image --no-fallback -classpath "dist/*:lib/*" --shared -o moeaframework.so
-    - name: Test native image
+        mkdir bin
+        cp META-INF/native-image/reachability-metadata.json bin
+        cd bin
+        native-image --no-fallback -classpath "../dist/*:../lib/*" org.moeaframework.analysis.tools.Main -o cli
+        native-image --no-fallback -classpath "../dist/*:../lib/*" org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool -o diagnosticTool
+    - name: Test CLI
       run: |
+        cd bin
         ./cli Solve --algorithm NSGAII --problem UF1 --numberOfEvaluations 10000 --output output.txt
     - name: Upload native image
       uses: actions/upload-artifact@v4
       if: always()
       with:
         name: native-image-ubuntu
-        path: |
-          cli
-          diagnosticTool
-          *.so
-          META-INF/native-image/reachability-metadata.json
+        path: bin/
         
   native-image-windows:
     runs-on: windows-latest
@@ -51,18 +50,18 @@ jobs:
       run: |
         ant update-reachability
         ant build-binary
-        native-image --no-fallback -classpath "dist/*;lib/*" org.moeaframework.analysis.tools.Main -o cli
-        native-image --no-fallback -classpath "dist/*;lib/*" org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool -o diagnosticTool
-        native-image --no-fallback -classpath "dist/*;lib/*" --shared -o moeaframework.dll
+        mkdir bin
+        copy META-INF/native-image/reachability-metadata.json bin
+        cd bin
+        native-image --no-fallback -classpath "../dist/*;../lib/*" org.moeaframework.analysis.tools.Main -o cli
+        native-image --no-fallback -classpath "../dist/*;../lib/*" org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool -o diagnosticTool
     - name: Test native image
       run: |
+        cd bin
         cli.exe Solve --algorithm NSGAII --problem UF1 --numberOfEvaluations 10000 --output output.txt
     - name: Upload native image
       uses: actions/upload-artifact@v4
       if: always()
       with:
         name: native-image-windows
-        path: |
-          *.exe
-          *.dll
-          META-INF/native-image/reachability-metadata.json
+        path: bin/
