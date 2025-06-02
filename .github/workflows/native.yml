@@ -38,12 +38,12 @@ jobs:
       shell: bash
       run: |
         uname
-        curl -L -o java-24.2.1.r24-nik.zip https://api.sdkman.io/2/broker/download/java/24.2.1.r24-nik/$(uname)
+        curl -L -o java-24.2.1.zip https://api.sdkman.io/2/broker/download/java/24.2.1.r24-nik/$(uname)
     - uses: actions/setup-java@v4
       with:
         distribution: 'jdkfile'
-        java-version: 24.2.1.r24-nik
-        jdkFile: java-24.2.1.r24-nik.zip
+        java-version: 24.2.1
+        jdkFile: java-24.2.1.zip
     - name: Build native image
       run: |
         ant update-reachability
