@@ -9,11 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Build native image
+    - name: Download Java Native Image Kit
       run: |
         curl -s "https://get.sdkman.io" | bash
         source ~/.sdkman/bin/sdkman-init.sh
         sdk install java 24.2.1.r24-nik
+    - name: Build native image
+      run: |
         ant update-reachability
         ant build-binary
         native-image --no-fallback -classpath "dist/*:lib/*" org.moeaframework.analysis.tools.Main -o cli
@@ -24,7 +26,9 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: native-image-ubuntu
-        path: cli
+        path: |
+          cli
+          META-INF/native-image/reachability-metadata.json
         
   native-image-windows:
     runs-on: windows-latest
@@ -34,12 +38,12 @@ jobs:
       shell: bash
       run: |
         uname
-        curl -L -o java-24.2.1.zip https://api.sdkman.io/2/broker/download/java/24.2.1.r24-nik/$(uname)
+        curl -L -o java-24.2.1.r24-nik.zip https://api.sdkman.io/2/broker/download/java/24.2.1.r24-nik/$(uname)
     - uses: actions/setup-java@v4
       with:
         distribution: 'jdkfile'
-        java-version: 24.2.1
-        jdkFile: java-24.2.1.zip
+        java-version: 24.2.1.r24-nik
+        jdkFile: java-24.2.1.r24-nik.zip
     - name: Build native image
       run: |
         ant update-reachability
@@ -52,4 +56,6 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: native-image-windows
-        path: cli.exe
+        path: |
+          cli.exe
+          META-INF/native-image/reachability-metadata.json
