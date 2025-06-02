@@ -5,63 +5,45 @@ on:
   workflow_dispatch:
 
 jobs:
-  native-image-ubuntu:
-    runs-on: ubuntu-latest
+  native-image:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, windows-latest ]
     steps:
     - uses: actions/checkout@v4
-    - name: Build native image
+    - name: Download and Install Java Native Image Kit (Linux)
+      if: runner.os == 'Linux'
       run: |
         curl -s "https://get.sdkman.io" | bash
         source ~/.sdkman/bin/sdkman-init.sh
         sdk install java 24.2.1.r24-nik
-        ant update-reachability
-        ant build-binary
-        mkdir bin
-        cp META-INF/native-image/reachability-metadata.json bin
-        cd bin
-        native-image --no-fallback -classpath "../dist/*:../lib/*" org.moeaframework.analysis.tools.Main -o cli
-        native-image --no-fallback -classpath "../dist/*:../lib/*" org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool -o diagnosticTool
-    - name: Test CLI
-      run: |
-        cd bin
-        ./cli Solve --algorithm NSGAII --problem UF1 --numberOfEvaluations 10000 --output output.txt
-    - name: Upload native image
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: native-image-ubuntu
-        path: bin/
-        
-  native-image-windows:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v4
-    - name: Download Java Native Image Kit
+        for child_dir in $(find "$HOME/.sdkman/candidates" -mindepth 1 -maxdepth 1 -type d); do
+          echo "$child_dir/current/bin" >> $GITHUB_PATH
+        done
+    - name: Download Java Native Image Kit (Windows)
       shell: bash
+      if: runner.os == 'Windows'
       run: |
-        uname
         curl -L -o java-24.2.1.zip https://api.sdkman.io/2/broker/download/java/24.2.1.r24-nik/$(uname)
-    - uses: actions/setup-java@v4
+    - name: Install Java Native Image Kit (Windows)
+      uses: actions/setup-java@v4
+      if: runner.os == 'Windows'
       with:
         distribution: 'jdkfile'
         java-version: 24.2.1
         jdkFile: java-24.2.1.zip
     - name: Build native image
       run: |
-        ant update-reachability
-        ant build-binary
-        mkdir bin
-        copy META-INF/native-image/reachability-metadata.json bin
-        cd bin
-        native-image --no-fallback -classpath "../dist/*;../lib/*" org.moeaframework.analysis.tools.Main -o cli
-        native-image --no-fallback -classpath "../dist/*;../lib/*" org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool -o diagnosticTool
-    - name: Test native image
+        ant build-native
+    - name: Test CLI
       run: |
-        cd bin
-        cli.exe Solve --algorithm NSGAII --problem UF1 --numberOfEvaluations 10000 --output output.txt
+        cd build
+        ./cli Solve --algorithm NSGAII --problem UF1 --numberOfEvaluations 10000 --output output.txt
     - name: Upload native image
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: native-image-windows
-        path: bin/
+        name: native-image-${{ matrix.os }}
+        path: build/

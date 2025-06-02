@@ -228,8 +228,18 @@ done < <(git diff --cached --name-only --diff-filter=ACM)
 		<java classname="org.moeaframework.util.cli.UpdateReachabilityMetadata" fork="true" failonerror="true">
 			<classpath refid="classpath" />
 			<classpath path="${build}" />
-			<classpath path="examples" />
 		</java>
+	</target>
+	
+	<target name="build-native" depends="update-reachability, build-binary"
+			description="Builds native executables">
+		<delete dir="${build}" />
+		<mkdir dir="${build}" />
+		
+		<copy file="META-INF/native-image/reachability-metadata.json" todir="${build}" />
+		
+		<native-image dir="${build}" main="org.moeaframework.analysis.tools.Main" output="cli" />
+		<native-image dir="${build}" main="org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool" output="diagnosticTool" />
 	</target>
 
 	<target name="package-binary" depends="build-binary, build-javadoc"
