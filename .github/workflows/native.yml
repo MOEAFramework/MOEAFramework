@@ -9,13 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Download Java Native Image Kit
+    - name: Build native image
       run: |
         curl -s "https://get.sdkman.io" | bash
         source ~/.sdkman/bin/sdkman-init.sh
         sdk install java 24.2.1.r24-nik
-    - name: Build native image
-      run: |
         ant update-reachability
         ant build-binary
         native-image --no-fallback -classpath "dist/*:lib/*" org.moeaframework.analysis.tools.Main -o cli
@@ -24,6 +22,7 @@ jobs:
         ./cli Solve --algorithm NSGAII --problem UF1 --numberOfEvaluations 10000 --output output.txt
     - name: Upload native image
       uses: actions/upload-artifact@v4
+      if: always()
       with:
         name: native-image-ubuntu
         path: |
@@ -54,6 +53,7 @@ jobs:
         cli.exe Solve --algorithm NSGAII --problem UF1 --numberOfEvaluations 10000 --output output.txt
     - name: Upload native image
       uses: actions/upload-artifact@v4
+      if: always()
       with:
         name: native-image-windows
         path: |
