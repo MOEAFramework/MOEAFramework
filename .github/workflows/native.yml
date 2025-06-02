@@ -27,6 +27,7 @@ jobs:
         name: native-image-ubuntu
         path: |
           cli
+          *.so
           META-INF/native-image/reachability-metadata.json
         
   native-image-windows:
@@ -47,7 +48,7 @@ jobs:
       run: |
         ant update-reachability
         ant build-binary
-        native-image --no-fallback -classpath "dist/*;lib/*" org.moeaframework.analysis.tools.Main -o cli.exe
+        native-image --no-fallback -classpath "dist/*;lib/*" org.moeaframework.analysis.tools.Main -o cli
     - name: Test native image
       run: |
         cli.exe Solve --algorithm NSGAII --problem UF1 --numberOfEvaluations 10000 --output output.txt
@@ -58,4 +59,5 @@ jobs:
         name: native-image-windows
         path: |
           cli.exe
+          *.dll
           META-INF/native-image/reachability-metadata.json
