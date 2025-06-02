@@ -92,7 +92,7 @@ public class UpdateReachabilityMetadata extends CommandLineUtility {
 			for (int i = 0; i < resources.size(); i++) {
 				writer.println("    {");
 				writer.print("      \"glob\": \"");
-				writer.print(resources.get(i).toString());
+				writer.print(resources.get(i).toString().replace('\\', '/'));
 				writer.println("\"");
 				writer.print("    }");
 				
