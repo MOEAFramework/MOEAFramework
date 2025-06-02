@@ -121,7 +121,7 @@ jobs:
         os: [ ubuntu-latest, windows-latest ]
     steps:
     - uses: actions/checkout@v4
-    - uses: sdkman/sdkman-action@v1
+    - uses: sdkman/sdkman-action@b1f9b696c79148b66d3d3a06f7ea801820318d0f
       id: sdkman
       with:
         candidate: java
@@ -130,11 +130,10 @@ jobs:
       id: setup-java
       with:
         distribution: 'jdkfile'
-        java-version: 15.0.0
+        java-version: 24.2.1
         jdkFile: ${{ steps.sdkman.outputs.file }}
     - name: Build native image
       run: |
-        sdk install java 24.2.1.r24-nik
         ant update-reachability
         ant build-binary
         native-image --no-fallback -classpath "dist/*:lib/*" org.moeaframework.analysis.tools.Main -o cli.exe
