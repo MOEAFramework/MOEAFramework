@@ -92,20 +92,20 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<mkdir dir="${build}" />
 		
 		<fail message="Missing or invalid version of JAR file">
-		    <condition>
-		    	<not>
-		    		<and>
-		    			<available file="lib/commons-cli-${commons-cli.version}.jar" />
-		    			<available file="lib/commons-io-${commons-io.version}.jar" />
-		    			<available file="lib/commons-text-${commons-text.version}.jar" />
-		    			<available file="lib/commons-lang3-${commons-lang3.version}.jar" />
-		    			<available file="lib/commons-math3-${commons-math3.version}.jar" />
-		    			<available file="lib/jcommon-${jcommon.version}.jar" />
-		    			<available file="lib/jfreechart-${jfreechart.version}.jar" />
-		    			<available file="lib/jna-${jna.version}.jar" />
-		    		</and>
-		    	</not>
-		    </condition>
+			<condition>
+				<not>
+					<and>
+						<available file="lib/commons-cli-${commons-cli.version}.jar" />
+						<available file="lib/commons-io-${commons-io.version}.jar" />
+						<available file="lib/commons-text-${commons-text.version}.jar" />
+						<available file="lib/commons-lang3-${commons-lang3.version}.jar" />
+						<available file="lib/commons-math3-${commons-math3.version}.jar" />
+						<available file="lib/jcommon-${jcommon.version}.jar" />
+						<available file="lib/jfreechart-${jfreechart.version}.jar" />
+						<available file="lib/jna-${jna.version}.jar" />
+					</and>
+				</not>
+			</condition>
 		</fail>
 
 		<javac destdir="${build}" srcdir="src" debug="${java.debug}" release="${java.major}"
@@ -189,6 +189,11 @@ while read file; do
 
 	if [[ "$file" =~ (.yml|.yaml)$ ]] && grep -EHn '^[ ]*\t+[^ ]' "$file"; then
 		echo "Found YAML file with incorrect indentation (must use spaces)"
+		exit -1
+	fi
+
+	if [[ "$file" =~ .xml$ ]] && grep -EHn '^\t*[ ]{4,}[^ ]' "$file"; then
+		echo "Found XML file with incorrect indentation (must use tabs)"
 		exit -1
 	fi
 done < <(git diff --cached --name-only --diff-filter=ACM)
@@ -399,7 +404,7 @@ done < <(git diff --cached --name-only --diff-filter=ACM)
 		<delete dir="dist" quiet="true" />
 		<delete dir="javadoc" quiet="true" />
 		<delete>
-		  	<fileset dir="examples" includes="**/*.class"/>
+			<fileset dir="examples" includes="**/*.class"/>
 			<fileset dir="src" includes="**/*.class"/>
 			<fileset dir="test" includes="**/*.class"/>
 		</delete>
