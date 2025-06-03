@@ -250,9 +250,6 @@
   ],
   "resources": [
     {
-      "glob": "META-INF/native-image/README.md"
-    },
-    {
       "glob": "META-INF/build.properties"
     },
     {

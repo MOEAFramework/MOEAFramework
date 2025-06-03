@@ -250,6 +250,8 @@ public class ProgressExtension implements Extension {
 		
 		private static final int PROGRESS_WIDTH = 40;
 		
+		private String lastLine;
+		
 		/**
 		 * Constructs the default progress listener.
 		 */
@@ -259,36 +261,49 @@ public class ProgressExtension implements Extension {
 		
 		@Override
 		public void progressUpdate(ProgressEvent event) {
-			System.out.print("E: ");
-			System.out.print(DurationUtils.format(event.getElapsedTime()));
-			System.out.print(", R: ");
-			System.out.print(DurationUtils.format(event.getRemainingTime()));
-			System.out.print(" [");
+			String currentLine = render(event);
+			
+			if (lastLine == null || !currentLine.equals(lastLine)) {
+				System.out.print(currentLine);
+				
+				if (event.getAlgorithm().isTerminated()) {
+					System.out.println();
+				} else {
+					System.out.print("\r");
+				}
+				
+				System.out.flush();
+				lastLine = currentLine;
+			}
+		}
+		
+		private String render(ProgressEvent event) {
+			StringBuilder sb = new StringBuilder();
+			
+			sb.append("E: ");
+			sb.append(DurationUtils.format(event.getElapsedTime()));
+			sb.append(", R: ");
+			sb.append(DurationUtils.format(event.getRemainingTime()));
+			sb.append(" [");
 			
 			double percentComplete = Math.floor(event.getPercentComplete()) / 100.0;
 			
 			if (percentComplete <= 0.0) {
-				System.out.print(" ".repeat(PROGRESS_WIDTH));
+				sb.append(" ".repeat(PROGRESS_WIDTH));
 			} else if (percentComplete >= 1.0) {
-				System.out.print("=".repeat(PROGRESS_WIDTH));
+				sb.append("=".repeat(PROGRESS_WIDTH));
 			} else {
 				int n = Math.max(0, (int)Math.round(percentComplete * PROGRESS_WIDTH) - 1);
 				
-				System.out.print("=".repeat(n));
-				System.out.print(">");
-				System.out.print(" ".repeat(PROGRESS_WIDTH - n - 1));
+				sb.append("=".repeat(n));
+				sb.append(">");
+				sb.append(" ".repeat(PROGRESS_WIDTH - n - 1));
 			}
 			
-			System.out.print("] ");
-			System.out.print(NumberFormat.getPercentInstance().format(percentComplete));
+			sb.append("] ");
+			sb.append(NumberFormat.getPercentInstance().format(percentComplete));
 			
-			if (event.getAlgorithm().isTerminated()) {
-				System.out.println();
-			} else {
-				System.out.print("\r");
-			}
-			
-			System.out.flush();
+			return sb.toString();
 		}
 
 	}

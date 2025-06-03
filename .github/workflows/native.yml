@@ -41,10 +41,15 @@ jobs:
     - name: Timing
       shell: bash
       run: |
+        ifeq ($(OS),Windows_NT)
+          SEPARATOR := ;
+        else
+          SEPARATOR := :
+        endif
         echo "Compiled:"
         time build/cli Solve --algorithm NSGAII --problem UF1 --numberOfEvaluations 1000000 --output output.txt
         echo "Java:"
-        time java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.Main Solve --algorithm NSGAII --problem UF1 --numberOfEvaluations 1000000 --output output.txt
+        time java -classpath "lib/*${SEPARATOR}dist/*" org.moeaframework.analysis.tools.Main Solve --algorithm NSGAII --problem UF1 --numberOfEvaluations 1000000 --output output.txt
     - name: Upload native image
       uses: actions/upload-artifact@v4
       if: always()
