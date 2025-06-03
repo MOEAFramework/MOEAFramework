@@ -35,9 +35,11 @@ jobs:
         java-version: 24.2.1
         jdkFile: java-24.2.1.zip
     - name: Build native image
+      shell: bash
       run: |
         ant build-native
     - name: Test CLI
+      shell: bash
       run: |
         cd build
         ./cli Solve --algorithm NSGAII --problem UF1 --numberOfEvaluations 10000 --output output.txt
