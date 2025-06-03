@@ -227,10 +227,10 @@ done < <(git diff --cached --name-only --diff-filter=ACM)
 	<target name="build-native" depends="build-binary" description="Updates reachability metadata and compiles native image">
 		<copy file="META-INF/native-image/reachability-metadata.json" todir="${build}" />
 
-		<!--
 		<java classname="org.moeaframework.util.cli.UpdateReachabilityMetadata" fork="true" failonerror="true">
 			<classpath refid="classpath" />
 			<classpath path="${build}" />
+			<arg value="--exclude-gui" />
 		</java>
 		
 		<condition property="reachability-metadata.changed">
@@ -241,13 +241,11 @@ done < <(git diff --cached --name-only --diff-filter=ACM)
 		
 		<antcaall if:true="reachability-metadata.changed" target="build-binary" />
 		<copy if:true="reachability-metadata.changed" file="META-INF/native-image/reachability-metadata.json" todir="${build}" />
-		-->
 		
 		<delete dir="${build}" />
 		<mkdir dir="${build}" />
 		
 		<native-image dir="${build}" main="org.moeaframework.analysis.tools.Main" output="cli" />
-		<native-image dir="${build}" main="org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool" output="diagnosticTool" />
 	</target>
 
 	<target name="package-binary" depends="build-binary, build-javadoc"

@@ -127,13 +127,6 @@
       "allPublicMethods": true
     },
     {
-      "type": "org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool",
-      "allDeclaredConstructors": true,
-      "allPublicConstructors": true,
-      "allDeclaredMethods": true,
-      "allPublicMethods": true
-    },
-    {
       "type": "org.moeaframework.analysis.tools.MetricsAnalysis",
       "allDeclaredConstructors": true,
       "allPublicConstructors": true,
@@ -191,13 +184,6 @@
     },
     {
       "type": "org.moeaframework.analysis.tools.ResultFileValidator",
-      "allDeclaredConstructors": true,
-      "allPublicConstructors": true,
-      "allDeclaredMethods": true,
-      "allPublicMethods": true
-    },
-    {
-      "type": "org.moeaframework.analysis.tools.ResultFileViewer",
       "allDeclaredConstructors": true,
       "allPublicConstructors": true,
       "allDeclaredMethods": true,
@@ -263,6 +249,9 @@
     }
   ],
   "resources": [
+    {
+      "glob": "META-INF/native-image/README.md"
+    },
     {
       "glob": "META-INF/build.properties"
     },
