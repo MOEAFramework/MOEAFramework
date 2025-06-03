@@ -13,8 +13,8 @@ jobs:
         os: [ ubuntu-latest, windows-latest, macos-13 ]
     steps:
     - uses: actions/checkout@v4
-    - name: Download and Install Java Native Image Kit (Linux)
-      if: runner.os == 'Linux'
+    - name: Download and Install Java Native Image Kit (Linux/Mac)
+      if: runner.os != 'Windows'
       run: |
         curl -s "https://get.sdkman.io" | bash
         source ~/.sdkman/bin/sdkman-init.sh
