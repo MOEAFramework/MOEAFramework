@@ -38,11 +38,13 @@ jobs:
       shell: bash
       run: |
         ant build-native
-    - name: Test CLI
+    - name: Timing
       shell: bash
       run: |
-        cd build
-        ./cli Solve --algorithm NSGAII --problem UF1 --numberOfEvaluations 10000 --output output.txt
+        echo "Compiled:"
+        time build/cli Solve --algorithm NSGAII --problem UF1 --numberOfEvaluations 1000000 --output output.txt
+        echo "Java:"
+        time java -classpath "lib/*:dist/*" org.moeaframework.analysis.tools.Main Solve --algorithm NSGAII --problem UF1 --numberOfEvaluations 1000000 --output output.txt
     - name: Upload native image
       uses: actions/upload-artifact@v4
       if: always()
