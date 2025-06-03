@@ -76,7 +76,7 @@ public class UpdateReachabilityMetadata extends CommandLineUtility {
 				writer.println("      \"allPublicMethods\": true");
 				writer.println("    },");
 			}
-			
+
 			writer.println("    {");
 			writer.println("      \"type\": \"org.moeaframework.algorithm.extension.ProgressExtension$ProgressListener[]\",");
 			writer.println("      \"unsafeAllocated\": true");

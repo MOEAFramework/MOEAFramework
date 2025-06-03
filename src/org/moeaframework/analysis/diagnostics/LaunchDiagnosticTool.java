@@ -25,7 +25,7 @@ import org.moeaframework.util.mvc.UI;
  * Command line utility for launching the diagnostic tool.
  */
 public class LaunchDiagnosticTool extends CommandLineUtility {
-	
+
 	/**
 	 * Constructs the command line utility for launching the diagnostic tool.
 	 */

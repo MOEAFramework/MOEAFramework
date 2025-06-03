@@ -77,6 +77,7 @@ Use of these build scripts requires Apache Ant to be installed.  See
 			
 			<exec executable="native-image" dir="@{dir}" failonerror="true" vmlauncher="false">
 				<arg value="--no-fallback" />
+				<arg value="-Djava.awt.headless=false" />
 				<arg value="-classpath" />
 				<arg pathref="full.classpath" />
 				<arg value="@{main}" />

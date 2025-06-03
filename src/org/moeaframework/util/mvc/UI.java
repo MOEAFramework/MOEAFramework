@@ -80,6 +80,10 @@ public class UI {
 	 * called automatically when this class is first loaded.
 	 */
 	public static void configureLookAndFeel() {
+		if (System.getProperty("swing.defaultlaf") != null) {
+			return;
+		}
+		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {

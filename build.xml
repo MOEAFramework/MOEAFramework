@@ -224,19 +224,27 @@ done < <(git diff --cached --name-only --diff-filter=ACM)
 		</java>
 	</target>
 	
-	<target name="update-reachability" depends="build-binary">
+	<target name="build-native" depends="build-binary" description="Updates reachability metadata and compiles native image">
+		<copy file="META-INF/native-image/reachability-metadata.json" todir="${build}" />
+
+		<!--
 		<java classname="org.moeaframework.util.cli.UpdateReachabilityMetadata" fork="true" failonerror="true">
 			<classpath refid="classpath" />
 			<classpath path="${build}" />
 		</java>
-	</target>
-	
-	<target name="build-native" depends="update-reachability, build-binary"
-			description="Builds native executables">
+		
+		<condition property="reachability-metadata.changed">
+			<not>
+				<filesmatch file1="META-INF/native-image/reachability-metadata.json" file2="${build}/reachability-metaadata.json" />
+			</not>
+		</condition>
+		
+		<antcaall if:true="reachability-metadata.changed" target="build-binary" />
+		<copy if:true="reachability-metadata.changed" file="META-INF/native-image/reachability-metadata.json" todir="${build}" />
+		-->
+		
 		<delete dir="${build}" />
 		<mkdir dir="${build}" />
-		
-		<copy file="META-INF/native-image/reachability-metadata.json" todir="${build}" />
 		
 		<native-image dir="${build}" main="org.moeaframework.analysis.tools.Main" output="cli" />
 		<native-image dir="${build}" main="org.moeaframework.analysis.diagnostics.LaunchDiagnosticTool" output="diagnosticTool" />
