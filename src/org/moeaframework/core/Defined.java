@@ -146,7 +146,8 @@ public interface Defined {
 					sb.append(tokenizer.getDelimiter());
 				}
 				
-				if (MethodUtils.getMatchingMethod(arguments[i].getClass(), "toString").getDeclaringClass() == Object.class) {
+				if (Settings.isVerbose() &&
+						MethodUtils.getMatchingMethod(arguments[i].getClass(), "toString").getDeclaringClass() == Object.class) {
 					System.err.println("WARNING: " + arguments[i].getClass() + " does not override toString()");
 				}
 				
