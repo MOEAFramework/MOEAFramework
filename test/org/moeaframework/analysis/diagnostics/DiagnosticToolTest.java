@@ -147,7 +147,7 @@ public class DiagnosticToolTest {
 		Assert.assertEquals(2, controllerStateCounter.get("stateChanged"));
 		Assert.assertGreaterThanOrEqual(controllerStateCounter.get("modelChanged"), expectedSeeds);
 		Assert.assertGreaterThanOrEqual(controllerStateCounter.get("viewChanged"), expectedSeeds);
-		Assert.assertEquals(11 * expectedSeeds + 1, controllerStateCounter.get("progressChanged"));
+		Assert.assertEquals(13 * expectedSeeds + 1, controllerStateCounter.get("progressChanged"));
 	}
 	
 	private void assertResult(DiagnosticTool tool, String algorithmName, String problemName, int expectedSeeds) {
