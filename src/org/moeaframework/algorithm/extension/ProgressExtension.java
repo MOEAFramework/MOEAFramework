@@ -149,7 +149,7 @@ public class ProgressExtension implements Extension {
 		double splitPercent = percentComplete - lastPercentComplete;
 		long splitNanoseconds = DurationUtils.toNanoseconds(duration.minus(lastDuration));
 		
-		if (splitPercent >= 0.01 || splitNanoseconds >= 10000) {
+		if (splitPercent >= 0.01 && splitNanoseconds >= 10000) {
 			statistics.addValue(splitNanoseconds / splitPercent);
 			
 			lastPercentComplete = percentComplete;

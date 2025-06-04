@@ -61,7 +61,7 @@ public class ProgressExtensionTest {
 		
 		Assert.assertEquals(0.0, events.get(0).getPercentComplete());
 		Assert.assertGreaterThanOrEqual(events.get(0).getElapsedTime().toMillis(), 0L);
-		Assert.assertGreaterThanOrEqual(events.get(0).getRemainingTime().toMillis(), 0L);
+		Assert.assertNull(events.get(0).getRemainingTime());
 		
 		Assert.assertEquals(25.0, events.get(1).getPercentComplete());
 		Assert.assertGreaterThan(events.get(1).getElapsedTime().toMillis(), events.get(0).getElapsedTime().toMillis());
@@ -94,7 +94,6 @@ public class ProgressExtensionTest {
 		ProgressEvent event3 = new ProgressEvent(algorithm, 25.0, Duration.ofSeconds(15), Duration.ofSeconds(90));		
 		Assert.assertEquals("E: 00:00:15, R: 00:01:30 [=========>                              ] 25%", event3.toString());
 		
-
 		ProgressEvent event4 = new ProgressEvent(algorithm, 100.0, Duration.ofSeconds(105), Duration.ofSeconds(00));		
 		Assert.assertEquals("E: 00:01:45, R: 00:00:00 [========================================] 100%", event4.toString());
 	}
