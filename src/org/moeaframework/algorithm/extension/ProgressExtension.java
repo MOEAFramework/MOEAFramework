@@ -32,7 +32,7 @@ import org.moeaframework.util.DurationUtils;
  * Extends an algorithm to track and report progress.
  */
 public class ProgressExtension implements Extension {
-	
+		
 	/**
 	 * The listeners to receive progress reports.
 	 */
@@ -40,7 +40,7 @@ public class ProgressExtension implements Extension {
 	
 	/**
 	 * Calculates the moving average processing speed for estimating remaining time.  The value is the measured
-	 * milliseconds to complete one percent progress.
+	 * nanoseconds to complete one percent progress.
 	 */
 	private final DescriptiveStatistics statistics;
 
@@ -58,6 +58,11 @@ public class ProgressExtension implements Extension {
 	 * The last recorded percent complete.
 	 */
 	private double lastPercentComplete;
+	
+	/**
+	 * The last recorded duration.
+	 */
+	private Duration lastDuration;
 
 	/**
 	 * Constructs a new extension for tracking progress.
@@ -65,8 +70,9 @@ public class ProgressExtension implements Extension {
 	public ProgressExtension() {
 		super();
 		listeners = EventListenerSupport.create(ProgressListener.class);
-		statistics = new DescriptiveStatistics(25);
+		statistics = new DescriptiveStatistics(100);
 		timer = new StopWatch();
+		lastDuration = Duration.ZERO;
 	}
 	
 	@Override
@@ -134,28 +140,30 @@ public class ProgressExtension implements Extension {
 		}
 		
 		double percentComplete = terminationCondition.getPercentComplete(algorithm);
+		Duration duration = timer.getDuration();
 		
 		if (Double.isNaN(percentComplete)) {
 			return;
 		}
 		
-		double percentChange = percentComplete - lastPercentComplete;
+		double splitPercent = percentComplete - lastPercentComplete;
+		long splitNanoseconds = DurationUtils.toNanoseconds(duration.minus(lastDuration));
+		
+		if (splitPercent >= 0.01 || splitNanoseconds >= 10000) {
+			statistics.addValue(splitNanoseconds / splitPercent);
 			
-		// only update if a change in percent complete was detected
-		if (percentChange >= 0.0001) {
-			timer.split();
-				
-			statistics.addValue(DurationUtils.toMilliseconds(timer.getSplitDuration()) / percentChange);
-			lastPercentComplete = percentChange;
-			
-			percentComplete = Math.min(Math.max(percentComplete, 0.0), 100.0);
-
-			listeners.fire().progressUpdate(new ProgressEvent(
-					algorithm,
-					percentComplete,
-					timer.getDuration(),
-					Duration.ofMillis(Math.round(statistics.getMean() * (100.0 - percentComplete)))));
+			lastPercentComplete = percentComplete;
+			lastDuration = duration;
 		}
+			
+		percentComplete = Math.min(Math.max(percentComplete, 0.0), 100.0);
+
+		listeners.fire().progressUpdate(new ProgressEvent(
+				algorithm,
+				percentComplete,
+				duration,
+				statistics.getN() == 0 ? null :
+					Duration.ofNanos(Math.round(statistics.getMean() * (100.0 - percentComplete)))));
 	}
 	
 	/**
@@ -176,6 +184,8 @@ public class ProgressExtension implements Extension {
 	 * A progress event, including the percent complete, elapsed time, and estimated remaining time.
 	 */
 	public static class ProgressEvent {
+		
+		private static final int DEFAULT_WIDTH = 40;
 
 		/**
 		 * The algorithm being run.
@@ -188,12 +198,12 @@ public class ProgressExtension implements Extension {
 		private final double percentComplete;
 		
 		/**
-		 * The elapsed time in seconds.
+		 * The elapsed time.
 		 */
 		private final Duration elapsedTime;
 		
 		/**
-		 * The estimated remaining time in seconds.
+		 * The estimated remaining time or {@code null}.
 		 */
 		private final Duration remainingTime;
 
@@ -233,12 +243,57 @@ public class ProgressExtension implements Extension {
 		}
 
 		/**
-		 * Returns the estimated remaining time.
+		 * Returns the estimated remaining time.  A value of {@code null} indicates the remaining time could not be
+		 * determined.
 		 * 
-		 * @return the estimated remaining time
+		 * @return the estimated remaining time or {@code null}
 		 */
 		public Duration getRemainingTime() {
 			return remainingTime;
+		}
+		
+		@Override
+		public String toString() {
+			return toString(DEFAULT_WIDTH);
+		}
+		
+		/**
+		 * Returns a string representation of this progress event including a progress bar.
+		 * 
+		 * @param progressWidth the width of the progress bar in characters
+		 * @return the string representation
+		 */
+		public String toString(int progressWidth) {
+			StringBuilder sb = new StringBuilder();
+			
+			sb.append("E: ");
+			sb.append(DurationUtils.format(elapsedTime));
+			sb.append(", R: ");
+			
+			if (remainingTime == null) {
+				sb.append("??:??:??");
+			} else {
+			sb.append(DurationUtils.format(remainingTime));
+			}
+			
+			sb.append(" [");
+						
+			if (percentComplete <= 0.0) {
+				sb.append(" ".repeat(progressWidth));
+			} else if (percentComplete >= 100.0) {
+				sb.append("=".repeat(progressWidth));
+			} else {
+				int n = Math.max(0, (int)Math.round(percentComplete * progressWidth / 100.0) - 1);
+				
+				sb.append("=".repeat(n));
+				sb.append(">");
+				sb.append(" ".repeat(progressWidth - n - 1));
+			}
+			
+			sb.append("] ");
+			sb.append(NumberFormat.getPercentInstance().format(percentComplete / 100.0));
+			
+			return sb.toString();
 		}
 
 	}
@@ -247,8 +302,8 @@ public class ProgressExtension implements Extension {
 	 * Default progress listener that displays information to standard output.
 	 */
 	public static class DefaultProgressListener implements ProgressListener {
-		
-		private static final int PROGRESS_WIDTH = 40;
+				
+		private String lastLine;
 		
 		/**
 		 * Constructs the default progress listener.
@@ -259,36 +314,15 @@ public class ProgressExtension implements Extension {
 		
 		@Override
 		public void progressUpdate(ProgressEvent event) {
-			System.out.print("E: ");
-			System.out.print(DurationUtils.format(event.getElapsedTime()));
-			System.out.print(", R: ");
-			System.out.print(DurationUtils.format(event.getRemainingTime()));
-			System.out.print(" [");
+			String currentLine = event.toString();
 			
-			double percentComplete = Math.floor(event.getPercentComplete()) / 100.0;
-			
-			if (percentComplete <= 0.0) {
-				System.out.print(" ".repeat(PROGRESS_WIDTH));
-			} else if (percentComplete >= 1.0) {
-				System.out.print("=".repeat(PROGRESS_WIDTH));
-			} else {
-				int n = Math.max(0, (int)Math.round(percentComplete * PROGRESS_WIDTH) - 1);
+			if (lastLine == null || !currentLine.equals(lastLine) || event.getAlgorithm().isTerminated()) {
+				System.out.print(currentLine);
+				System.out.print(event.getAlgorithm().isTerminated() ? System.lineSeparator() : "\r");
+				System.out.flush();
 				
-				System.out.print("=".repeat(n));
-				System.out.print(">");
-				System.out.print(" ".repeat(PROGRESS_WIDTH - n - 1));
+				lastLine = currentLine;
 			}
-			
-			System.out.print("] ");
-			System.out.print(NumberFormat.getPercentInstance().format(percentComplete));
-			
-			if (event.getAlgorithm().isTerminated()) {
-				System.out.println();
-			} else {
-				System.out.print("\r");
-			}
-			
-			System.out.flush();
 		}
 
 	}

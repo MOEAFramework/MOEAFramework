@@ -54,23 +54,49 @@ public class ProgressExtensionTest {
 		Wait.spinFor(Duration.ofMillis(50));
 		algorithm.step();
 		extension.onStep(algorithm);
+		Wait.spinFor(Duration.ofMillis(50));
 		extension.onTerminate(algorithm);
 		
-		Assert.assertSize(5, events);
+		Assert.assertSize(6, events);
 		
-		Assert.assertEquals(25.0, events.get(0).getPercentComplete());
-		Assert.assertGreaterThan(events.get(0).getElapsedTime().toMillis(), 0L);
-		Assert.assertGreaterThan(events.get(0).getRemainingTime().toMillis(), 0L);
+		Assert.assertEquals(0.0, events.get(0).getPercentComplete());
+		Assert.assertGreaterThanOrEqual(events.get(0).getElapsedTime().toMillis(), 0L);
+		Assert.assertGreaterThanOrEqual(events.get(0).getRemainingTime().toMillis(), 0L);
 		
-		Assert.assertEquals(50.0, events.get(1).getPercentComplete());
+		Assert.assertEquals(25.0, events.get(1).getPercentComplete());
 		Assert.assertGreaterThan(events.get(1).getElapsedTime().toMillis(), events.get(0).getElapsedTime().toMillis());
 		
-		Assert.assertEquals(75.0, events.get(2).getPercentComplete());
+		Assert.assertEquals(50.0, events.get(2).getPercentComplete());
 		Assert.assertGreaterThan(events.get(2).getElapsedTime().toMillis(), events.get(1).getElapsedTime().toMillis());
 		
-		Assert.assertEquals(100.0, events.get(3).getPercentComplete());
+		Assert.assertEquals(75.0, events.get(3).getPercentComplete());
 		Assert.assertGreaterThan(events.get(3).getElapsedTime().toMillis(), events.get(2).getElapsedTime().toMillis());
-		Assert.assertEquals(0L, events.get(3).getRemainingTime().toMillis());
+		
+		Assert.assertEquals(100.0, events.get(4).getPercentComplete());
+		Assert.assertGreaterThan(events.get(4).getElapsedTime().toMillis(), events.get(3).getElapsedTime().toMillis());
+		Assert.assertEquals(0L, events.get(4).getRemainingTime().toMillis());
+		
+		Assert.assertEquals(100.0, events.get(5).getPercentComplete());
+		Assert.assertGreaterThan(events.get(5).getElapsedTime().toMillis(), events.get(4).getElapsedTime().toMillis());
+		Assert.assertEquals(0L, events.get(5).getRemainingTime().toMillis());
+	}
+	
+	@Test
+	public void eventToString() {
+		Algorithm algorithm = new MockAlgorithm();
+		
+		ProgressEvent event1 = new ProgressEvent(algorithm, 0.0, Duration.ofSeconds(0), null);		
+		Assert.assertEquals("E: 00:00:00, R: ??:??:?? [                                        ] 0%", event1.toString());
+		
+		ProgressEvent event2 = new ProgressEvent(algorithm, 0.0, Duration.ofSeconds(0), Duration.ofSeconds(105));		
+		Assert.assertEquals("E: 00:00:00, R: 00:01:45 [                                        ] 0%", event2.toString());
+		
+		ProgressEvent event3 = new ProgressEvent(algorithm, 25.0, Duration.ofSeconds(15), Duration.ofSeconds(90));		
+		Assert.assertEquals("E: 00:00:15, R: 00:01:30 [=========>                              ] 25%", event3.toString());
+		
+
+		ProgressEvent event4 = new ProgressEvent(algorithm, 100.0, Duration.ofSeconds(105), Duration.ofSeconds(00));		
+		Assert.assertEquals("E: 00:01:45, R: 00:00:00 [========================================] 100%", event4.toString());
 	}
 
 }
