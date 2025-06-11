@@ -49,7 +49,7 @@ public class BoxAndWhiskerPlotBuilder extends PlotBuilder<BoxAndWhiskerPlotBuild
 		plot.setRenderer(renderer);
 		plot.setDataset(dataset);
 		
-		legend(false);
+		noLegend();
 	}
 	
 	@Override

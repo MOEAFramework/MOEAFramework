@@ -23,11 +23,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
 import org.jfree.chart.LegendItem;
 import org.jfree.chart.LegendItemCollection;
-import org.jfree.chart.LegendItemSource;
 import org.jfree.chart.block.LineBorder;
 import org.jfree.chart.title.LegendTitle;
 import org.jfree.chart.ui.RectangleEdge;
@@ -93,37 +90,35 @@ public class LinePlot extends ResultPlot {
 		builder.title(metric);
 		builder.xLabel(LOCALIZATION.getString("text.NFE"));
 		builder.yLabel(LOCALIZATION.getString("text.value"));
-		builder.legend(false);
-
-		JFreeChart chart = builder.build();
-		
+				
 		// custom legend to eliminate duplicates
-		LegendItemCollection items = chart.getPlot().getLegendItems();
-		Iterator<?> iterator = items.iterator();
-		Set<Comparable<?>> uniqueKeys = new HashSet<>();
-		
-		while (iterator.hasNext()) {
-			LegendItem item = (LegendItem)iterator.next();
+		builder.legend((plot) -> {
+			LegendItemCollection items = plot.getLegendItems();
+			Iterator<?> iterator = items.iterator();
+			Set<Comparable<?>> uniqueKeys = new HashSet<>();
 			
-			if (uniqueKeys.contains(item.getSeriesKey())) {
-				iterator.remove();
-			} else {
-				uniqueKeys.add(item.getSeriesKey());
+			while (iterator.hasNext()) {
+				LegendItem item = (LegendItem)iterator.next();
+				
+				if (uniqueKeys.contains(item.getSeriesKey())) {
+					iterator.remove();
+				} else {
+					uniqueKeys.add(item.getSeriesKey());
+				}
 			}
-		}
-		
-		LegendItemSource source = () -> items;
-		
-		LegendTitle legend = new LegendTitle(source);
-		legend.setMargin(new RectangleInsets(1.0, 1.0, 1.0, 1.0));
-		legend.setFrame(new LineBorder());
-		legend.setBackgroundPaint(Color.WHITE);
-		legend.setPosition(RectangleEdge.BOTTOM);
-		chart.addLegend(legend);
-		
+						
+			LegendTitle legend = new LegendTitle(() -> items);
+			legend.setMargin(new RectangleInsets(1.0, 1.0, 1.0, 1.0));
+			legend.setFrame(new LineBorder());
+			legend.setBackgroundPaint(Color.WHITE);
+			legend.setPosition(RectangleEdge.BOTTOM);
+			
+			return legend;
+		});
+				
 		//update the chart in the GUI
 		removeAll();
-		add(new ChartPanel(chart), BorderLayout.CENTER);
+		add(builder.buildPanel(), BorderLayout.CENTER);
 		revalidate();
 		repaint();
 	}

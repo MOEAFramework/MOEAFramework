@@ -7,6 +7,7 @@ import java.awt.Dialog.ModalityType;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.function.Function;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -16,6 +17,7 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartTheme;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.Plot;
+import org.jfree.chart.title.LegendTitle;
 import org.moeaframework.analysis.diagnostics.PaintHelper;
 import org.moeaframework.util.mvc.UI;
 import org.moeaframework.util.validate.Validate;
@@ -34,8 +36,11 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 	private static final String WINDOW_TITLE = "MOEA Framework Plot";
 	
 	private String title;
-		
-	private boolean showLegend;
+	
+	/**
+	 * Function used to generate a custom legend for the plot.  If {@code null}, the default legend is generated.
+	 */
+	private Function<Plot, LegendTitle> legendBuilder;
 		
 	private ChartTheme theme;
 	
@@ -51,7 +56,6 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 	public PlotBuilder() {
 		super();
 		this.paintHelper = new PaintHelper();
-		this.showLegend = true;
 		this.theme = ChartFactory.getChartTheme();
 	}
 	
@@ -70,7 +74,15 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 	}
 	
 	protected JFreeChart build(Plot plot) {
-		JFreeChart chart = new JFreeChart(title, JFreeChart.DEFAULT_TITLE_FONT, plot, showLegend);
+		JFreeChart chart = new JFreeChart(title, JFreeChart.DEFAULT_TITLE_FONT, plot, legendBuilder == null);
+		
+		if (legendBuilder != null) {
+			LegendTitle legend = legendBuilder.apply(plot);
+			
+			if (legend != null) {
+				chart.addLegend(legend);
+			}
+		}
 		
 		if (theme != null) {
 			theme.apply(chart);
@@ -90,8 +102,16 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 		return getInstance();
 	}
 	
-	public T legend(boolean showLegend) {
-		this.showLegend = showLegend;
+	public T defaultLegend() {
+		return legend(null);
+	}
+	
+	public T noLegend() {
+		return legend((plot) -> null);
+	}
+	
+	public T legend(Function<Plot, LegendTitle> legendBuilder) {
+		this.legendBuilder = legendBuilder;
 		return getInstance();
 	}
 	
