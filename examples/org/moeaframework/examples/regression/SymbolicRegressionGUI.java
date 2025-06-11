@@ -25,15 +25,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.data.xy.DefaultTableXYDataset;
-import org.jfree.data.xy.XYSeries;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
+import org.moeaframework.analysis.plot.PlotBuilder;
+import org.moeaframework.analysis.plot.XYPlotBuilder;
 import org.moeaframework.core.Solution;
 import org.moeaframework.util.mvc.ExampleUI;
 import org.moeaframework.util.mvc.UI;
@@ -111,24 +105,13 @@ public class SymbolicRegressionGUI extends ExampleUI<GeneticAlgorithm> {
 		Solution solution = algorithm.getResult().get(0);
 		double[] approximatedY = problem.eval(solution);
 
-		// generate the line series
-		XYSeries actualSeries = new XYSeries("Target Function", false, false);
-		XYSeries approximatedSeries = new XYSeries("Estimated Function", false, false);
-
-		for (int i = 0; i < x.length; i++) {
-			actualSeries.add(x[i], y[i]);
-			approximatedSeries.add(x[i], approximatedY[i]);
-		}
-
-		DefaultTableXYDataset dataset = new DefaultTableXYDataset();
-		dataset.addSeries(actualSeries);
-		dataset.addSeries(approximatedSeries);
-
 		// generate the plot
-		JFreeChart chart = ChartFactory.createXYLineChart("Symbolic Regression Demo", "x", "f(x)", dataset,
-				PlotOrientation.VERTICAL, true, true, false);
-		XYPlot plot = chart.getXYPlot();
-		plot.setRenderer(new XYLineAndShapeRenderer());
+		PlotBuilder builder = new XYPlotBuilder()
+			.line("Target Function", x, y)
+			.line("Estimated Function", x, approximatedY)
+			.setXLabel("x")
+			.setYLabel("f(x)")
+			.setTitle("Symbolic Regression Demo");
 
 		// update the details
 		details.setText("Iteration: " + iteration + System.lineSeparator() +
@@ -136,7 +119,7 @@ public class SymbolicRegressionGUI extends ExampleUI<GeneticAlgorithm> {
 				problem.getExpression(solution));
 
 		container.removeAll();
-		container.add(new ChartPanel(chart), BorderLayout.CENTER);
+		container.add(builder.buildPanel(), BorderLayout.CENTER);
 		container.revalidate();
 		container.repaint();
 	}

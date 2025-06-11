@@ -10,6 +10,10 @@ This page documents notable changes introduced in each chronological release of 
   
   * Redesigns the data store interfaces to avoid "ambiguous method" errors, simplify the available methods, and wraps
     errors in `DataStoreException`.  Also adds a CLI tool for managing data stores.
+  
+  * Redesigns plot generation by introducing `PlotBuilder` and its subtypes (`XYPlotBuilder`, `HeatMapBuilder`, etc.).
+    This provides compile-time checking and improves IDE auto-completion by only allowing valid operations on each
+    plot type.  The `Plot` class will be deprecated and removed in a future release.
 
 
 ## Version 5.0 (17 Jan 2025)

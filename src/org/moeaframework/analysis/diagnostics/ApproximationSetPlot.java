@@ -17,22 +17,11 @@
  */
 package org.moeaframework.analysis.diagnostics;
 
-import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Paint;
 
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.DatasetRenderingOrder;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
+import org.moeaframework.analysis.plot.XYPlotBuilder;
 import org.moeaframework.analysis.series.ResultSeries;
-import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.util.Localization;
@@ -67,83 +56,37 @@ public class ApproximationSetPlot extends ResultPlot {
 	
 	@Override
 	protected void update() {
-		XYSeriesCollection dataset = new XYSeriesCollection();
-		
+		XYPlotBuilder builder = new XYPlotBuilder();
+
+		// generate the plot data
 		for (ResultKey key : frame.getSelectedResults()) {
 			NondominatedPopulation population = new EpsilonBoxDominanceArchive(EPSILON);
 			
 			for (ResultSeries series : controller.get(key)) {
-				for (Solution solution : series.last().getPopulation()) {
-					population.add(solution);
-				}
+				population.addAll(series.last().getPopulation());
 			}
 			
 			if (!population.isEmpty()) {
-				XYSeries series = new XYSeries(key, false, true);
-				
-				for (Solution solution : population) {
-					if (solution.getNumberOfObjectives() == 1) {
-						series.add(solution.getObjectiveValue(0), solution.getObjectiveValue(0));
-					} else if (solution.getNumberOfObjectives() > 1) {
-						series.add(solution.getObjectiveValue(0), solution.getObjectiveValue(1));
-					}
-				}
-				
-				dataset.addSeries(series);
+				builder.scatter(key.toString(), population).withPaint(frame.getPaintHelper().get(key));
 			}
 		}
 		
-		JFreeChart chart = ChartFactory.createScatterPlot(metric,
-				LOCALIZATION.getString("text.objective", 1),
-				LOCALIZATION.getString("text.objective", 2),
-				dataset,
-				PlotOrientation.VERTICAL,
-				true,
-				true,
-				false);
-		
-		XYPlot plot = chart.getXYPlot();
-		XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(false, true);
-		
-		for (int i=0; i<dataset.getSeriesCount(); i++) {
-			Paint paint = frame.getPaintHelper().get(dataset.getSeriesKey(i));
-
-			renderer.setSeriesStroke(i, new BasicStroke(3f, 1, 1));
-			renderer.setSeriesPaint(i, paint);
-			renderer.setSeriesFillPaint(i, paint);
-		}
-		
-		plot.setRenderer(renderer);
-		
-		//add overlay
+		// add last trace overlay
 		if (controller.showLastTrace().get() && (controller.getLastSeries() != null)) {
-			XYSeriesCollection dataset2 = new XYSeriesCollection();
 			NondominatedPopulation population = new EpsilonBoxDominanceArchive(EPSILON);
-			
-			for (Solution solution : controller.getLastSeries().last().getPopulation()) {
-				population.add(solution);
-			}
+			population.addAll(controller.getLastSeries().last().getPopulation());
 			
 			if (!population.isEmpty()) {
-				XYSeries series = new XYSeries(LOCALIZATION.getString("text.last"), false, true);
-				
-				for (Solution solution : population) {
-					series.add(solution.getObjectiveValue(0), solution.getObjectiveValue(1));
-				}
-				
-				dataset2.addSeries(series);
+				builder.scatter(LOCALIZATION.getString("text.last"), population).withPaint(Color.BLACK);
 			}
-			
-			XYLineAndShapeRenderer renderer2 = new XYLineAndShapeRenderer(false, true);
-			renderer2.setSeriesPaint(0, Color.BLACK);
-			
-			plot.setDataset(1, dataset2);
-			plot.setRenderer(1, renderer2);
-			plot.setDatasetRenderingOrder(DatasetRenderingOrder.FORWARD);
 		}
+		
+		builder.setTitle(metric);
+		builder.setXLabel(LOCALIZATION.getString("text.objective", 1));
+		builder.setYLabel(LOCALIZATION.getString("text.objective", 2));
 
 		removeAll();
-		add(new ChartPanel(chart), BorderLayout.CENTER);
+		add(builder.buildPanel(), BorderLayout.CENTER);
 		revalidate();
 		repaint();
 	}
