@@ -17,8 +17,14 @@
  */
 package org.moeaframework.analysis.plot;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+
+import org.apache.commons.lang3.reflect.ConstructorUtils;
+import org.apache.commons.lang3.reflect.MethodUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 import org.moeaframework.Assume;
 import org.moeaframework.util.mvc.UI;
 
@@ -36,6 +42,15 @@ public abstract class AbstractPlotTest {
 	public void tearDown() {
 		if (isJUnitTest()) {
 			UI.disposeAll();
+		}
+	}
+	
+	public void runAll() throws Exception  {
+		Constructor<? extends AbstractPlotTest> constructor = ConstructorUtils.getAccessibleConstructor(getClass());
+		AbstractPlotTest instance = constructor.newInstance();
+		
+		for (Method method : MethodUtils.getMethodsWithAnnotation(getClass(), Test.class)) {
+			method.invoke(instance);
 		}
 	}
 

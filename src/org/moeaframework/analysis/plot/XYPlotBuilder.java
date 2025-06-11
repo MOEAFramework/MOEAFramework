@@ -1,3 +1,20 @@
+/* Copyright 2009-2025 David Hadka
+ *
+ * This file is part of the MOEA Framework.
+ *
+ * The MOEA Framework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * The MOEA Framework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+ * License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.moeaframework.analysis.plot;
 
 import java.awt.BasicStroke;
@@ -36,7 +53,7 @@ import org.moeaframework.core.population.Population;
 import org.moeaframework.util.validate.Validate;
 
 /**
- * Builds 2D plots with numeric X and Y axes, including line, scatter, area, stacked, and deviation plots.
+ * Builds 2D plots with numeric X and Y axes, including line, scatter, area, stacked area, and deviation plots.
  */
 public class XYPlotBuilder extends PlotBuilder<XYPlotBuilder> {
 	
@@ -46,6 +63,9 @@ public class XYPlotBuilder extends PlotBuilder<XYPlotBuilder> {
 	
 	private final XYPlot plot;
 	
+	/**
+	 * Constructs a new, empty XY plot.
+	 */
 	public XYPlotBuilder() {
 		super();
 		
@@ -97,8 +117,8 @@ public class XYPlotBuilder extends PlotBuilder<XYPlotBuilder> {
 	/**
 	 * Sets the X axis limits.
 	 * 
-	 * @param min the minimum bound for the X axis
-	 * @param max the maximum bound for the X axis
+	 * @param min the minimum bound
+	 * @param max the maximum bound
 	 * @return a reference to this builder
 	 */
 	public XYPlotBuilder xLim(double min, double max) {
@@ -109,7 +129,7 @@ public class XYPlotBuilder extends PlotBuilder<XYPlotBuilder> {
 	/**
 	 * Sets the X axis limits.
 	 * 
-	 * @param range the minimum and maximum bounds for the X axis
+	 * @param range the minimum and maximum bounds
 	 * @return a reference to this builder
 	 */
 	public XYPlotBuilder xLim(Range range) {
@@ -120,8 +140,8 @@ public class XYPlotBuilder extends PlotBuilder<XYPlotBuilder> {
 	/**
 	 * Sets the Y axis limits.
 	 * 
-	 * @param min the minimum bound for the Y axis
-	 * @param max the maximum bound for the Y axis
+	 * @param min the minimum bound
+	 * @param max the maximum bound
 	 * @return a reference to this builder
 	 */
 	public XYPlotBuilder yLim(double min, double max) {
@@ -132,7 +152,7 @@ public class XYPlotBuilder extends PlotBuilder<XYPlotBuilder> {
 	/**
 	 * Sets the Y axis limits.
 	 * 
-	 * @param range the minimum and maximum bounds for the Y axis
+	 * @param range the minimum and maximum bounds
 	 * @return a reference to this builder
 	 */
 	public XYPlotBuilder yLim(Range range) {
@@ -199,8 +219,7 @@ public class XYPlotBuilder extends PlotBuilder<XYPlotBuilder> {
 	}
 	
 	/**
-	 * Displays the feasible solutions in the given population in a 2D scatter plot.  Only the first two objectives
-	 * will be displayed.
+	 * Creates a scatter plot representation of the feasible solutions in a population.
 	 * 
 	 * @param label the label for the series
 	 * @param population the population
@@ -218,7 +237,7 @@ public class XYPlotBuilder extends PlotBuilder<XYPlotBuilder> {
 	}
 
 	/**
-	 * Displays the feasible solutions in the given population in a 2D scatter plot.
+	 * Creates a scatter plot representation of the feasible solutions in a population.
 	 * 
 	 * @param label the label for the series
 	 * @param population the population
@@ -322,44 +341,6 @@ public class XYPlotBuilder extends PlotBuilder<XYPlotBuilder> {
 	public XYPlotBuilder line(String label, List<? extends Number> x, List<? extends Number> y, StyleAttribute... style) {
 		return line(label, toArray(x), toArray(y), style);
 	}
-
-	/**
-	 * Displays the runtime data for the given property as a line plot.  If the series does not define the property,
-	 * this method no-ops.
-	 * 
-	 * @param label the label for the series
-	 * @param series the result series
-	 * @param property the name of the property to plot
-	 * @param style the style attributes
-	 * @return a reference to this builder
-	 */
-	public XYPlotBuilder line(String label, ResultSeries series, String property, StyleAttribute... style) {
-		if (!series.getDefinedProperties().contains(property)) {
-			System.err.println("WARNING: Unable to plot '" + property + "' with label '" + label + "', no data provided");
-			return getInstance();
-		}
-		
-		XYSeries xySeries = new XYSeries(label, false, false);
-
-		try {
-			for (IndexedResult result : series) {
-				xySeries.add(result.getIndex(), result.getProperties().getDouble(property));
-			}
-		} catch (NumberFormatException e) {
-			System.err.println("WARNING: Unable to plot '" + property + "' with label '" + label + "', not a numeric type");
-			return getInstance();
-		}
-		
-		if (xAxis.getLabel() == null || xAxis.getLabel().isBlank()) {
-			xAxis.setLabel("NFE");
-		}
-		
-		if (yAxis.getLabel() == null || yAxis.getLabel().isBlank()) {
-			yAxis.setLabel("Value");
-		}
-
-		return line(xySeries, style);
-	}
 	
 	/**
 	 * Creates a new line plot series.
@@ -400,10 +381,49 @@ public class XYPlotBuilder extends PlotBuilder<XYPlotBuilder> {
 	}
 	
 	/**
+	 * Creates a new line plot series of NFE versus the property value.
 	 * 
-	 * @param series
+	 * @param label the label for the series
+	 * @param series the result series
+	 * @param property the name of the property to plot
 	 * @param style the style attributes
-	 * @return
+	 * @return a reference to this builder
+	 */
+	public XYPlotBuilder line(String label, ResultSeries series, String property, StyleAttribute... style) {
+		if (!series.getDefinedProperties().contains(property)) {
+			System.err.println("WARNING: Unable to plot '" + property + "' with label '" + label + "', no data provided");
+			return getInstance();
+		}
+		
+		XYSeries xySeries = new XYSeries(label, false, false);
+
+		try {
+			for (IndexedResult result : series) {
+				xySeries.add(result.getIndex(), result.getProperties().getDouble(property));
+			}
+		} catch (NumberFormatException e) {
+			System.err.println("WARNING: Unable to plot '" + property + "' with label '" + label + "', not a numeric type");
+			return getInstance();
+		}
+		
+		if (xAxis.getLabel() == null || xAxis.getLabel().isBlank()) {
+			xAxis.setLabel("NFE");
+		}
+		
+		if (yAxis.getLabel() == null || yAxis.getLabel().isBlank()) {
+			yAxis.setLabel("Value");
+		}
+
+		return line(xySeries, style);
+	}
+	
+	/**
+	 * Creates a new line plot series of NFE versus the property value.  Each property is rendered as a separate line
+	 * series.
+	 * 
+	 * @param series the result series
+	 * @param style the style attributes
+	 * @return a reference to this builder
 	 */
 	public XYPlotBuilder lines(ResultSeries series, StyleAttribute... style) {
 		for (String key : series.getDefinedProperties()) {
@@ -417,33 +437,58 @@ public class XYPlotBuilder extends PlotBuilder<XYPlotBuilder> {
 		return getInstance();
 	}
 	
-	public XYPlotBuilder histogram(String label, double[] x, StyleAttribute... style) {
-		return histogram(label, x, 100, style);
+	/**
+	 * Creates a new histogram showing the number of times each value occurs in the input.
+	 * 
+	 * @param label the label for the series
+	 * @param values the values
+	 * @param style the style attributes
+	 * @return a reference to this builder
+	 */
+	public XYPlotBuilder histogram(String label, double[] values, StyleAttribute... style) {
+		return histogram(label, values, 100, style);
 	}
 	
-	public XYPlotBuilder histogram(String label, List<? extends Number> x, StyleAttribute... style) {
-		return histogram(label, toArray(x), style);
+	/**
+	 * Creates a new histogram showing the number of times each value occurs in the input.
+	 * 
+	 * @param label the label for the series
+	 * @param values the values
+	 * @param style the style attributes
+	 * @return a reference to this builder
+	 */
+	public XYPlotBuilder histogram(String label, List<? extends Number> values, StyleAttribute... style) {
+		return histogram(label, toArray(values), style);
 	}
 	
-	public XYPlotBuilder histogram(String label, double[] x, int steps, StyleAttribute... style) {
-		x = x.clone();
-		Arrays.sort(x);
+	/**
+	 * Creates a new histogram showing the number of times each value occurs in the input.
+	 * 
+	 * @param label the label for the series
+	 * @param values the values
+	 * @param steps the number of discrete values shown in the final plot
+	 * @param style the style attributes
+	 * @return a reference to this builder
+	 */
+	public XYPlotBuilder histogram(String label, double[] values, int steps, StyleAttribute... style) {
+		values = values.clone();
+		Arrays.sort(values);
 		
-		double minX = x[0];
-		double maxX = x[x.length - 1];
-		double stepSize = (maxX - minX) / steps;
+		double min = values[0];
+		double max = values[values.length - 1];
+		double stepSize = (max - min) / steps;
 		int index = 0;
 		XYSeries series = new XYSeries(label, false, false);
 		
 		for (int i = 0; i < steps; i++) {
 			int count = 0;
 			
-			while (index < x.length && x[index] < minX + (i + 1.0) * stepSize) {
+			while (index < values.length && values[index] < min + (i + 1.0) * stepSize) {
 				count++;
 				index++;
 			}
 						
-			series.add(minX + ((i + 0.5) * stepSize), count);
+			series.add(min + ((i + 0.5) * stepSize), count);
 		}
 		
 		return line(series, style);
@@ -567,7 +612,7 @@ public class XYPlotBuilder extends PlotBuilder<XYPlotBuilder> {
 	}
 
 	/**
-	 * Creates a new area plot series.
+	 * Creates a new stacked area plot series.
 	 * 
 	 * @param label the label for the series
 	 * @param x the x values
@@ -580,10 +625,11 @@ public class XYPlotBuilder extends PlotBuilder<XYPlotBuilder> {
 	}
 	
 	/**
+	 * Creates a new stacked area plot series.
 	 * 
-	 * @param series
+	 * @param series the series containing the XY data
 	 * @param style the style attributes
-	 * @return
+	 * @return a reference to this builder
 	 */
 	public XYPlotBuilder stacked(XYSeries series, StyleAttribute... style) {
 		int index = plot.getDatasetCount() - 1;
@@ -629,7 +675,7 @@ public class XYPlotBuilder extends PlotBuilder<XYPlotBuilder> {
 	}
 	
 	/**
-	 * Adds a deviation series to the plot displaying the 25-, 50-, and 75-th percentiles.
+	 * Creates a new deviation series, showing the area between the 25-th and 75-th percentiles.
 	 * 
 	 * @param label the label for the series
 	 * @param data a collection of the {@link ResultSeries} to display
@@ -642,8 +688,8 @@ public class XYPlotBuilder extends PlotBuilder<XYPlotBuilder> {
 	}
 	
 	/**
-	 * Adds a deviation series to the plot, with a solid line indicating the median (50-th percentile) and a shaded
-	 * area denoting the bounds between the low and high percentiles.
+	 * Creates a new deviation series, with a solid line indicating the median (50-th percentile) and a shaded
+	 * area denoting the lower and upper percentiles.
 	 * 
 	 * @param label the label for the series
 	 * @param data a collection of the {@link ResultSeries} to display
@@ -710,6 +756,17 @@ public class XYPlotBuilder extends PlotBuilder<XYPlotBuilder> {
 		return deviation(ySeries, style);
 	}
 	
+	/**
+	 * Creates a new deviation series.
+	 * 
+	 * @param label the label for the series
+	 * @param x the x values
+	 * @param yLow the y values defining the lower bound of the shaded area
+	 * @param y the y values defining the solid line
+	 * @param yHigh the y values defining the upper bound of the shaded area
+	 * @param style the style attributes
+	 * @return a reference to this builder
+	 */
 	public XYPlotBuilder deviation(String label, double[] x, double[] yLow, double[] y, double[] yHigh, StyleAttribute... style) {
 		Validate.that("x.length", x.length).isEqualTo("y.length", y.length);
 		Validate.that("x.length", x.length).isEqualTo("yLow.length", yLow.length);
@@ -724,11 +781,29 @@ public class XYPlotBuilder extends PlotBuilder<XYPlotBuilder> {
 		return deviation(series, style);
 	}
 	
+	/**
+	 * Creates a new deviation series.
+	 * 
+	 * @param label the label for the series
+	 * @param x the x values
+	 * @param yLow the y values defining the lower bound of the shaded area
+	 * @param y the y values defining the solid line
+	 * @param yHigh the y values defining the upper bound of the shaded area
+	 * @param style the style attributes
+	 * @return a reference to this builder
+	 */
 	public XYPlotBuilder deviation(String label, List<? extends Number> x, List<? extends Number> yLow,
 			List<? extends Number> y, List<? extends Number> yHigh, StyleAttribute... style) {
 		return deviation(label, toArray(x), toArray(yLow), toArray(y), toArray(yHigh), style);
 	}
 	
+	/**
+	 * Creates a new deviation series.
+	 * 
+	 * @param series the series containing the deviation data
+	 * @param style the style attributes
+	 * @return a reference to this builder
+	 */
 	public XYPlotBuilder deviation(YIntervalSeries series, StyleAttribute... style) {
 		int index = plot.getDatasetCount();
 		
@@ -787,20 +862,22 @@ public class XYPlotBuilder extends PlotBuilder<XYPlotBuilder> {
 		return getInstance();
 	}
 	
+	/**
+	 * Returns the default stroke used when rendering lines.
+	 * 
+	 * @return the default stroke
+	 */
 	protected Stroke getDefaultStroke() {
-		return new BasicStroke(3f, 1, 1);
+		return new BasicStroke(3f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 	}
 	
+	/**
+	 * Returns the default shape used when rendering points.
+	 * 
+	 * @return the default shape
+	 */
 	protected RectangularShape getDefaultShape() {
 		return new Ellipse2D.Double(-3.0, -3.0, 6.0, 6.0);
-	}
-	
-	public static void main(String[] args) {		
-		new XYPlotBuilder()
-				.scatter("Test", new double[] { 0.0, 1.0, 2.0 }, new double[] { 0.0, 1.0, 2.0 }, SeriesPaint.red(), SeriesSize.medium())
-				.xLabel("X")
-				.yLabel("Count")
-				.show();
 	}
 	
 }

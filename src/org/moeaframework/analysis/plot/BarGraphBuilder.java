@@ -1,3 +1,20 @@
+/* Copyright 2009-2025 David Hadka
+ *
+ * This file is part of the MOEA Framework.
+ *
+ * The MOEA Framework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * The MOEA Framework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+ * License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.moeaframework.analysis.plot;
 
 import java.awt.Paint;
@@ -12,6 +29,9 @@ import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.moeaframework.util.validate.Validate;
 
+/**
+ * Constructs a bar graph.
+ */
 public class BarGraphBuilder extends PlotBuilder<BarGraphBuilder> {
 	
 	private final CategoryAxis xAxis;
@@ -23,7 +43,10 @@ public class BarGraphBuilder extends PlotBuilder<BarGraphBuilder> {
 	private final BarRenderer renderer;
 	
 	private final DefaultCategoryDataset dataset;
-			
+	
+	/**
+	 * Constructs a new, empty bar graph.
+	 */
 	public BarGraphBuilder() {
 		super();
 		
@@ -61,9 +84,9 @@ public class BarGraphBuilder extends PlotBuilder<BarGraphBuilder> {
 	}
 	
 	/**
-	 * Sets the x-axis label.
+	 * Sets the X axis label.
 	 * 
-	 * @param label the label for the x-axis
+	 * @param label the label for the X axis
 	 * @return a reference to this builder
 	 */
 	public BarGraphBuilder xLabel(String label) {
@@ -72,9 +95,9 @@ public class BarGraphBuilder extends PlotBuilder<BarGraphBuilder> {
 	}
 
 	/**
-	 * Sets the y-axis label.
+	 * Sets the Y axis label.
 	 * 
-	 * @param label the label for the y-axis
+	 * @param label the label for the Y axis
 	 * @return a reference to this builder
 	 */
 	public BarGraphBuilder yLabel(String label) {
@@ -82,6 +105,15 @@ public class BarGraphBuilder extends PlotBuilder<BarGraphBuilder> {
 		return getInstance();
 	}
 	
+	/**
+	 * Adds a new series of bars to the plot, one for each X and Y pair.
+	 * 
+	 * @param label the label for the series
+	 * @param x the X values
+	 * @param y the Y values
+	 * @param style the style attributes
+	 * @return a reference to this builder
+	 */
 	public BarGraphBuilder bars(String label, double[] x, double[] y, StyleAttribute... style) {
 		Validate.that("x.length", x.length).isEqualTo("y.length", y.length);
 		
@@ -103,6 +135,15 @@ public class BarGraphBuilder extends PlotBuilder<BarGraphBuilder> {
 		return getInstance();
 	}
 	
+	/**
+	 * Adds a new series of bars to the plot, one for each X and Y pair.
+	 * 
+	 * @param label the label for the series
+	 * @param x the X values
+	 * @param y the Y values
+	 * @param style the style attributes
+	 * @return a reference to this builder
+	 */
 	public BarGraphBuilder bars(String label, List<? extends Number> x, List<? extends Number> y, StyleAttribute... style) {
 		return bars(label, toArray(x), toArray(y), style);
 	}

@@ -22,24 +22,47 @@ import java.util.stream.IntStream;
 import org.junit.Test;
 import org.moeaframework.core.PRNG;
 
-public class BoxAndWhiskerPlotBuilderTest extends AbstractPlotTest {
+public class BarGraphBuilderTest extends AbstractPlotTest {
 	
 	@Test
 	public void testEmpty() {
-		new BoxAndWhiskerPlotBuilder().show();
+		new BarGraphBuilder().show();
 	}
 
 	@Test
-	public void test() {
-		new BoxAndWhiskerPlotBuilder()
-				.add("Set 1", IntStream.range(0, 10).mapToDouble(i -> PRNG.nextDouble()).toArray())
-				.add("Set 2", IntStream.range(0, 50).mapToDouble(i -> 2 * PRNG.nextDouble()).toArray())
-				.add("Set 3", IntStream.range(0, 100).mapToDouble(i -> PRNG.nextDouble()).toArray())
+	public void testSingleSeries() {
+		double[] x = IntStream.range(0, 10).mapToDouble(i -> (double)i).toArray();
+		double[] y = IntStream.range(0, 10).mapToDouble(i -> PRNG.nextDouble()).toArray();
+		
+		new BarGraphBuilder()
+				.bars("Test", x, y)
+				.show();
+	}
+	
+	@Test
+	public void testTwoSeries() {
+		double[] x = IntStream.range(0, 10).mapToDouble(i -> (double)i).toArray();
+		double[] y1 = IntStream.range(0, 10).mapToDouble(i -> PRNG.nextDouble()).toArray();
+		double[] y2 = IntStream.range(0, 10).mapToDouble(i -> PRNG.nextDouble()).toArray();
+		
+		new BarGraphBuilder()
+				.bars("Set 1", x, y1)
+				.bars("Set 2", x, y2)
+				.show();
+	}
+	
+	@Test
+	public void testStyle() {
+		double[] x = IntStream.range(0, 10).mapToDouble(i -> (double)i).toArray();
+		double[] y = IntStream.range(0, 10).mapToDouble(i -> PRNG.nextDouble()).toArray();
+		
+		new BarGraphBuilder()
+				.bars("Test", x, y, SeriesPaint.black())
 				.show();
 	}
 	
 	public static void main(String[] args) throws Exception {
-		new BoxAndWhiskerPlotBuilderTest().runAll();
+		new BarGraphBuilderTest().runAll();
 	}
 
 }

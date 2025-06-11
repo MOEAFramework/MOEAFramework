@@ -105,13 +105,8 @@ public class XYPlotBuilderTest extends AbstractPlotTest {
 				.show();
 	}
 	
-	public static void main(String[] args) throws IOException {
-		new XYPlotBuilderTest().testEmpty();
-		new XYPlotBuilderTest().testBasicShapes();
-		new XYPlotBuilderTest().testOutOfOrder();
-		new XYPlotBuilderTest().testParetoFront();
-		new XYPlotBuilderTest().testHistogram();
-		new XYPlotBuilderTest().testResultSeries();
+	public static void main(String[] args) throws Exception {
+		new XYPlotBuilderTest().runAll();
 	}
 
 }

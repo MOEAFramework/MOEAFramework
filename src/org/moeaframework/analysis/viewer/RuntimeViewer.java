@@ -124,12 +124,12 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 	private JLabel sliderLabel;
 
 	/**
-	 * The x-axis bounds for zooming; or {@code null} if the user has not yet set zoom bounds.
+	 * The X axis bounds for zooming; or {@code null} if the user has not yet set zoom bounds.
 	 */
 	private Range zoomRangeBounds;
 
 	/**
-	 * The y-axis bounds for zooming; or {@code null} if the user has not yet set zoom bounds.
+	 * The Y axis bounds for zooming; or {@code null} if the user has not yet set zoom bounds.
 	 */
 	private Range zoomDomainBounds;
 
@@ -164,12 +164,12 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 	private RunnableAction stop;
 
 	/**
-	 * The control for selecting which objective, constraint or decision variable will be displayed on the x-axis.
+	 * The control for selecting which objective, constraint or decision variable will be displayed on the X axis.
 	 */
 	private JComboBox<AxisSelector<Solution, Number>> xAxisSelection;
 
 	/**
-	 * The control for selecting which objective, constraint or decision variable will be displayed on the y-axis.
+	 * The control for selecting which objective, constraint or decision variable will be displayed on the Y axis.
 	 */
 	private JComboBox<AxisSelector<Solution, Number>> yAxisSelection;
 

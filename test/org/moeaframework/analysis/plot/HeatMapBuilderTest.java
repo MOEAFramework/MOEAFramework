@@ -17,10 +17,12 @@
  */
 package org.moeaframework.analysis.plot;
 
-import java.io.IOException;
+import java.awt.Color;
 import java.util.stream.IntStream;
 
+import org.jfree.chart.renderer.PaintScale;
 import org.junit.Test;
+import org.moeaframework.Assert;
 
 public class HeatMapBuilderTest extends AbstractPlotTest {
 	
@@ -51,9 +53,15 @@ public class HeatMapBuilderTest extends AbstractPlotTest {
 				.show();
 	}
 	
-	public static void main(String[] args) throws IOException {
-		new HeatMapBuilderTest().testEmpty();
-		new HeatMapBuilderTest().test();
+	@Test
+	public void testColorPaintScale() {
+		PaintScale scale = new HeatMapBuilder.ColorPaintScale(0.0, 10.0, Color.RED);
+		Assert.assertEquals(Color.BLACK, scale.getPaint(0.0));
+		Assert.assertEquals(Color.RED, scale.getPaint(10.0));
+	}
+	
+	public static void main(String[] args) throws Exception {
+		new HeatMapBuilderTest().runAll();
 	}
 
 }

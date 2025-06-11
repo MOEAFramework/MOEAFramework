@@ -1,3 +1,20 @@
+/* Copyright 2009-2025 David Hadka
+ *
+ * This file is part of the MOEA Framework.
+ *
+ * The MOEA Framework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * The MOEA Framework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+ * License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.moeaframework.analysis.plot;
 
 import java.util.List;
@@ -13,6 +30,9 @@ import org.jfree.data.statistics.DefaultBoxAndWhiskerCategoryDataset;
 import org.moeaframework.analysis.IndicatorStatistics;
 import org.moeaframework.analysis.stream.DataStream;
 
+/**
+ * Constructs a box-and-whisker plot.
+ */
 public class BoxAndWhiskerPlotBuilder extends PlotBuilder<BoxAndWhiskerPlotBuilder> {
 	
 	private final CategoryAxis xAxis;
@@ -23,6 +43,9 @@ public class BoxAndWhiskerPlotBuilder extends PlotBuilder<BoxAndWhiskerPlotBuild
 	
 	private final DefaultBoxAndWhiskerCategoryDataset dataset;
 	
+	/**
+	 * Constructs a new, empty box-and-whisker plot.
+	 */
 	public BoxAndWhiskerPlotBuilder() {
 		super();
 		
@@ -62,19 +85,46 @@ public class BoxAndWhiskerPlotBuilder extends PlotBuilder<BoxAndWhiskerPlotBuild
 		return build(plot);
 	}
 	
+	/**
+	 * Adds a new box-and-whisker entry to this plot.
+	 * 
+	 * @param label the label for the series
+	 * @param values the values
+	 * @return a reference to this builder
+	 */
 	public BoxAndWhiskerPlotBuilder add(String label, double[] values) {
 		return add(label, DoubleStream.of(values).boxed().toList());
 	}
 	
+	/**
+	 * Adds a new box-and-whisker entry to this plot.
+	 * 
+	 * @param label the label for the series
+	 * @param stream the data stream containing the values
+	 * @return a reference to this builder
+	 */
 	public BoxAndWhiskerPlotBuilder add(String label, DataStream<? extends Number> stream) {
 		return add(label, stream.values());
 	}
 	
+	/**
+	 * Adds a new box-and-whisker entry to this plot.
+	 * 
+	 * @param label the label for the series
+	 * @param values the values
+	 * @return a reference to this builder
+	 */
 	public BoxAndWhiskerPlotBuilder add(String label, List<? extends Number> values) {
 		dataset.add(values, label, label);
 		return getInstance();
 	}
 	
+	/**
+	 * Adds a new box-and-whisker entry for each indicator in the given statistics.
+	 * 
+	 * @param statistics the indicator statistics
+	 * @return a reference to this builder
+	 */
 	public BoxAndWhiskerPlotBuilder add(IndicatorStatistics statistics) {
 		for (String name : statistics.getGroupNames()) {
 			add(name, statistics.getValues(name));

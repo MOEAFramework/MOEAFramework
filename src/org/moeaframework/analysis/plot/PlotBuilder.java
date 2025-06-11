@@ -1,3 +1,20 @@
+/* Copyright 2009-2025 David Hadka
+ *
+ * This file is part of the MOEA Framework.
+ *
+ * The MOEA Framework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * The MOEA Framework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+ * License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.moeaframework.analysis.plot;
 
 import java.awt.BorderLayout;
@@ -36,10 +53,7 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 	private static final String WINDOW_TITLE = "MOEA Framework Plot";
 	
 	private String title;
-	
-	/**
-	 * Function used to generate a custom legend for the plot.  If {@code null}, the default legend is generated.
-	 */
+
 	private Function<Plot, LegendTitle> legendBuilder;
 		
 	private ChartTheme theme;
@@ -67,28 +81,20 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 	 */
 	protected abstract T getInstance();
 	
+	/**
+	 * Builds and returns the configured plot.
+	 * 
+	 * @return the resulting plot
+	 */
 	public abstract JFreeChart build();
 	
+	/**
+	 * Builds and returns a panel that can be added to a Swing UI.
+	 * 
+	 * @return the panel
+	 */
 	public ChartPanel buildPanel() {
 		return new ChartPanel(build());
-	}
-	
-	protected JFreeChart build(Plot plot) {
-		JFreeChart chart = new JFreeChart(title, JFreeChart.DEFAULT_TITLE_FONT, plot, legendBuilder == null);
-		
-		if (legendBuilder != null) {
-			LegendTitle legend = legendBuilder.apply(plot);
-			
-			if (legend != null) {
-				chart.addLegend(legend);
-			}
-		}
-		
-		if (theme != null) {
-			theme.apply(chart);
-		}
-								
-		return chart;
 	}
 	
 	/**
@@ -102,24 +108,60 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 		return getInstance();
 	}
 	
+	/**
+	 * Configures the plot with the default legend, if any, for the chart type.
+	 * 
+	 * @return a reference to this builder
+	 */
 	public T defaultLegend() {
 		return legend(null);
 	}
 	
+	/**
+	 * Configures the plot to not display a legend.
+	 * 
+	 * @return a reference to this builder
+	 */
 	public T noLegend() {
 		return legend((plot) -> null);
 	}
 	
+	/**
+	 * Provides a function to generate a custom legend for the plot.
+	 * <ol>
+	 *   <li>If the function is {@code null}, the default plot is generated for the plot type.
+	 *   <li>If the function returns {@code null}, no legend is displayed in the plot.
+	 *   <li>Otherwise, the returned legend is displayed in the plot.
+	 * </ol>
+	 * 
+	 * @param legendBuilder the function to create the legend
+	 * @return a reference to this builder
+	 */
 	public T legend(Function<Plot, LegendTitle> legendBuilder) {
 		this.legendBuilder = legendBuilder;
 		return getInstance();
 	}
 	
+	/**
+	 * Sets the overall style for plots.  However, please note that styles affecting individual series (size, shape,
+	 * color) are ignored since we provide our own defaults.  Instead, use {@link #paintHelper(PaintHelper)} or
+	 * {@link StyleAttribute} to customize the rendering of individual series.
+	 * 
+	 * @param theme the theme, or {@code null} to use the default theme
+	 * @return a reference to this builder
+	 */
 	public T theme(ChartTheme theme) {
 		this.theme = theme;
 		return getInstance();
 	}
 	
+	/**
+	 * Sets the {@link PaintHelper} for assigning paints / colors to individual series.  The paint helper instance is
+	 * updated with any new mappings.
+	 * 
+	 * @param paintHelper the paint helper
+	 * @return a reference to this builder
+	 */
 	public T paintHelper(PaintHelper paintHelper) {
 		Validate.that("paintHelper", paintHelper).isNotNull();
 		this.paintHelper = paintHelper;
@@ -228,6 +270,36 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 		});
 	}
 	
+	/**
+	 * Wraps the plot in a {@link JFreeChart}, which includes the title, legend, and the theme.
+	 * 
+	 * @param plot the plot
+	 * @return the chart
+	 */
+	protected JFreeChart build(Plot plot) {
+		JFreeChart chart = new JFreeChart(title, JFreeChart.DEFAULT_TITLE_FONT, plot, legendBuilder == null);
+		
+		if (legendBuilder != null) {
+			LegendTitle legend = legendBuilder.apply(plot);
+			
+			if (legend != null) {
+				chart.addLegend(legend);
+			}
+		}
+		
+		if (theme != null) {
+			theme.apply(chart);
+		}
+								
+		return chart;
+	}
+	
+	/**
+	 * Converts a list of numbers into a double array.  Any null values are translated into {@value Double#NaN}.
+	 * 
+	 * @param values the list of numbers
+	 * @return the double array
+	 */
 	protected double[] toArray(List<? extends Number> values) {
 		double[] result = new double[values.size()];
 		
@@ -244,6 +316,12 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 		return result;
 	}
 	
+	/**
+	 * Converts a 2D list of numbers into a 2D double array.  Any null values are translated into {@value Double#NaN}.
+	 * 
+	 * @param values the 2D list of numbers
+	 * @return the 2D double array
+	 */
 	protected double[][] to2DArray(List<? extends List<? extends Number>> values) {
 		double[][] result = new double[values.size()][];
 		
@@ -254,29 +332,31 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 		return result;
 	}
 	
+	/**
+	 * Applies the given style attributes to all series in a dataset.
+	 * 
+	 * @param plot the plot
+	 * @param dataset the index of the dataset
+	 * @param attributes the style attributes
+	 */
 	protected void applyStyle(Plot plot, int dataset, StyleAttribute[] attributes) {
 		for (StyleAttribute attribute : attributes) {
 			attribute.apply(plot, dataset);
 		}
 	}
 	
+	/**
+	 * Applies the given style attributes to the specified series in a dataset.
+	 * 
+	 * @param plot the plot
+	 * @param dataset the index of the dataset
+	 * @param series the index of the series
+	 * @param attributes the style attributes
+	 */
 	protected void applyStyle(Plot plot, int dataset, int series, StyleAttribute[] attributes) {
 		for (StyleAttribute attribute : attributes) {
 			attribute.apply(plot, dataset, series);
 		}
-	}
-	
-	public static void main(String[] args) {
-		new XYPlotBuilder()
-			.scatter("Points", new double[] { 0, 1, 2 }, new double[] { 0, 1, 2 })
-			.line("Line", new double[] { 0, 1, 2 }, new double[] { 0, 1, 2 })
-			.stacked("Stacked 1", new double[] { 0.5, 1.5 }, new double[] { 0.5, 0.6 })
-			.stacked("Stacked 2", new double[] { 0.5, 1.5 }, new double[] { 0.3, 0.2 })
-			.area("Area", new double[] { 0, 1, 2 }, new double[] { 0, 0.5, 0 })
-			.title("Basic Shapes")
-			.xLabel("X")
-			.yLabel("Y")
-			.show();
 	}
 	
 }

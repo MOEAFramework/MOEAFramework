@@ -1,10 +1,26 @@
+/* Copyright 2009-2025 David Hadka
+ *
+ * This file is part of the MOEA Framework.
+ *
+ * The MOEA Framework is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ *
+ * The MOEA Framework is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+ * License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.moeaframework.analysis.plot;
 
 import java.awt.Color;
 import java.awt.Paint;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.math3.stat.StatUtils;
@@ -22,6 +38,10 @@ import org.jfree.data.xy.DefaultXYZDataset;
 import org.moeaframework.analysis.stream.Partition;
 import org.moeaframework.util.validate.Validate;
 
+/**
+ * Constructs a 2D heat map.  The map is a raster produced from a 2D grid, defined by the X and Y coordinates, and a
+ * paint scale that maps values to colors.
+ */
 public class HeatMapBuilder extends PlotBuilder<HeatMapBuilder> {
 
 	private final NumberAxis xAxis;
@@ -38,6 +58,9 @@ public class HeatMapBuilder extends PlotBuilder<HeatMapBuilder> {
 	
 	private PaintScale paintScale;
 
+	/**
+	 * Constructs a new, empty heat map builder.
+	 */
 	public HeatMapBuilder() {
 		super();
 
@@ -121,9 +144,9 @@ public class HeatMapBuilder extends PlotBuilder<HeatMapBuilder> {
 	}
 
 	/**
-	 * Sets the x-axis label.
+	 * Sets the X axis label.
 	 * 
-	 * @param label the label for the x-axis
+	 * @param label the label for the X axis
 	 * @return a reference to this builder
 	 */
 	public HeatMapBuilder xLabel(String label) {
@@ -132,9 +155,9 @@ public class HeatMapBuilder extends PlotBuilder<HeatMapBuilder> {
 	}
 
 	/**
-	 * Sets the y-axis label.
+	 * Sets the Y axis label.
 	 * 
-	 * @param label the label for the y-axis
+	 * @param label the label for the Y axis
 	 * @return a reference to this builder
 	 */
 	public HeatMapBuilder yLabel(String label) {
@@ -143,9 +166,9 @@ public class HeatMapBuilder extends PlotBuilder<HeatMapBuilder> {
 	}
 
 	/**
-	 * Sets the z-axis label.
+	 * Sets the Z axis label.
 	 * 
-	 * @param label the label for the z-axis
+	 * @param label the label for the Z axis
 	 * @return a reference to this builder
 	 */
 	public HeatMapBuilder zLabel(String label) {
@@ -153,24 +176,54 @@ public class HeatMapBuilder extends PlotBuilder<HeatMapBuilder> {
 		return getInstance();
 	}
 	
+	/**
+	 * Sets the X coordinates defining the grid.
+	 * 
+	 * @param x the X coordinates
+	 * @return a reference to this builder
+	 */
 	public HeatMapBuilder xCoords(double[] x) {
 		this.x = x.clone();
 		return getInstance();
 	}
 	
+	/**
+	 * Sets the X coordinates defining the grid.
+	 * 
+	 * @param x the X coordinates
+	 * @return a reference to this builder
+	 */
 	public HeatMapBuilder xCoords(List<? extends Number> x) {
 		return xCoords(toArray(x));
 	}
 	
+	/**
+	 * Sets the Y coordinates defining the grid.
+	 * 
+	 * @param y the Y coordinates
+	 * @return a reference to this builder
+	 */
 	public HeatMapBuilder yCoords(double[] y) {
 		this.y = y.clone();
 		return getInstance();
 	}
 	
+	/**
+	 * Sets the Y coordinates defining the grid.
+	 * 
+	 * @param y the Y coordinates
+	 * @return a reference to this builder
+	 */
 	public HeatMapBuilder yCoords(List<? extends Number> y) {
 		return yCoords(toArray(y));
 	}
 	
+	/**
+	 * Sets the Z data that define the color of each grid coordinate.
+	 * 
+	 * @param z the Z values
+	 * @return a reference to this builder
+	 */
 	public HeatMapBuilder zData(double[][] z) {
 		this.z = new double[z.length][];
 		
@@ -181,17 +234,30 @@ public class HeatMapBuilder extends PlotBuilder<HeatMapBuilder> {
 		return getInstance();
 	}
 	
+	/**
+	 * Sets the Z data that define the color of each grid coordinate.
+	 * 
+	 * @param z the Z values
+	 * @return a reference to this builder
+	 */
 	public HeatMapBuilder zData(List<? extends List<? extends Number>> z) {
 		return zData(to2DArray(z));
 	}
 	
+	/**
+	 * Sets the paint scale that maps Z values into colors.
+	 * 
+	 * @param paintScale the paint scale
+	 * @return a reference to this builder
+	 */
 	public HeatMapBuilder paintScale(PaintScale paintScale) {
+		Validate.that("paintScale", paintScale).isNotNull();
 		this.paintScale = paintScale;
 		return getInstance();
 	}
 
 	/**
-	 * Creates a new heat map series using the keys and values from a {@link Partition}.
+	 * Sets the X, Y, and Z values based on a {@link Partition}.
 	 * 
 	 * @param partition the data stream partition
 	 * @return a reference to this instance
@@ -218,11 +284,20 @@ public class HeatMapBuilder extends PlotBuilder<HeatMapBuilder> {
 		return getInstance();
 	}
 	
+	/**
+	 * Abstract class for defining paint scales that are automatically scaled based on the range of Z values.
+	 */
 	private abstract static class AutoScaledPaintScale implements PaintScale {
 		
 		private final double lowerBound;
 		private final double upperBound;
 
+		/**
+		 * Constructs an auto-scaled paint scale with initial bounds.
+		 * 
+		 * @param lowerBound the lower bound
+		 * @param upperBound the upper bound
+		 */
 		public AutoScaledPaintScale(double lowerBound, double upperBound) {
 			super();
 			this.lowerBound = lowerBound;
@@ -250,8 +325,8 @@ public class HeatMapBuilder extends PlotBuilder<HeatMapBuilder> {
 		/**
 		 * Returns a new paint scale with new lower and upper bounds.
 		 * 
-		 * @param lowerBound the new lower bounds
-		 * @param upperBound the new upper bounds
+		 * @param lowerBound the new lower bound
+		 * @param upperBound the new upper bound
 		 * @return the new paint scale
 		 */
 		public abstract AutoScaledPaintScale scale(double lowerBound, double upperBound);
@@ -264,37 +339,57 @@ public class HeatMapBuilder extends PlotBuilder<HeatMapBuilder> {
 		
 	}
 	
+	/**
+	 * Paint scale that maps Z values to a list of colors.
+	 */
 	private static class IndexedPaintScale extends AutoScaledPaintScale {
 		
-		private final Color[] colors;
+		private final Paint[] paints;
 		
-		public IndexedPaintScale(double lowerBound, double upperBound, Color... colors) {
+		/**
+		 * Constructs an indexed paint scale.
+		 * 
+		 * @param lowerBound the lower bound
+		 * @param upperBound the upper bound
+		 * @param paints the array of paints
+		 */
+		public IndexedPaintScale(double lowerBound, double upperBound, Paint... paints) {
 			super(lowerBound, upperBound);
-			this.colors = colors;
+			this.paints = paints;
 		}
 		
 		@Override
 		public Paint getScaledPaint(double value) {
-			int index = (int)(value * colors.length);
+			int index = (int)(value * paints.length);
 			
 			if (index < 0) {
 				index = 0;
-			} else if (index >= colors.length) {
-				index = colors.length - 1;
+			} else if (index >= paints.length) {
+				index = paints.length - 1;
 			}
 			
-			return colors[index];
+			return paints[index];
 		}
 		
 		@Override
 		public IndexedPaintScale scale(double lowerBound, double upperBound) {
-			return new IndexedPaintScale(lowerBound, upperBound, colors);
+			return new IndexedPaintScale(lowerBound, upperBound, paints);
 		}
 		
 	}
 
+	/**
+	 * Paint scale producing a gradient of some base color by adjusting its brightness.
+	 */
 	public static class ColorPaintScale extends IndexedPaintScale {
 		
+		/**
+		 * Constructs a color gradient paint scale.
+		 * 
+		 * @param lowerBound the lower bound
+		 * @param upperBound the upper bound
+		 * @param baseColor the base color
+		 */
 		public ColorPaintScale(double lowerBound, double upperBound, Color baseColor) {
 			super(lowerBound, upperBound, generateColors(baseColor, 256));
         }
@@ -314,8 +409,17 @@ public class HeatMapBuilder extends PlotBuilder<HeatMapBuilder> {
 		
 	}
 
+	/**
+	 * Paint scale producing a rainbow of colors by adjusting the hue component.
+	 */
 	public static class RainbowPaintScale extends AutoScaledPaintScale {
 
+		/**
+		 * Constructs a rainbow paint scale.
+		 * 
+		 * @param lowerBound the lower bound
+		 * @param upperBound the upper bound
+		 */
 		public RainbowPaintScale(double lowerBound, double upperBound) {
 			super(lowerBound, upperBound);
 		}
@@ -330,26 +434,6 @@ public class HeatMapBuilder extends PlotBuilder<HeatMapBuilder> {
 			return new RainbowPaintScale(lowerBound, upperBound);
 		}
 		
-	}
-	
-	public static void main(String[] args) {
-		double[] x = IntStream.range(0, 10).mapToDouble(i -> (double)i).toArray();
-		double[] y = IntStream.range(0, 20).mapToDouble(i -> (double)i).toArray();
-		double[][] z = new double[x.length][y.length];
-		
-		for (int i = 0; i < x.length; i++) {
-			for (int j = 0; j < y.length; j++) {
-				z[i][j] = i*j;
-			}
-		}
-		
-		new HeatMapBuilder()
-				.xCoords(x)
-				.yCoords(y)
-				.zData(z)
-				.xLabel("X")
-				.yLabel("Y")
-				.show();
 	}
 
 }
