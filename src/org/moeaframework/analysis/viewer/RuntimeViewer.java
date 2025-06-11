@@ -58,6 +58,9 @@ import org.jfree.data.xy.XYSeries;
 import org.moeaframework.analysis.diagnostics.PaintHelper;
 import org.moeaframework.analysis.plot.ImageFileType;
 import org.moeaframework.analysis.plot.ImageUtils;
+import org.moeaframework.analysis.plot.SeriesPaint;
+import org.moeaframework.analysis.plot.SeriesSize;
+import org.moeaframework.analysis.plot.StyleAttribute;
 import org.moeaframework.analysis.plot.XYPlotBuilder;
 import org.moeaframework.analysis.series.IndexType;
 import org.moeaframework.analysis.series.IndexedResult;
@@ -426,7 +429,7 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		return controller;
 	}
 	
-	private Paint getSeriesPaint(PlotSeries series) {
+	private StyleAttribute[] getStyle(PlotSeries series) {
 		Paint paint = paintHelper.get(series.getName());
 		
 		if (paint instanceof Color color) {
@@ -438,9 +441,9 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 			}
 		}
 				
-		return paint;
+		return new StyleAttribute[] { SeriesPaint.of(paint), SeriesSize.of(controller.getPointSize().get()) };
 	}
-
+	
 	private void updateModel() {
 		int xAxisIndex = xAxisSelection.getSelectedIndex();
 		int yAxisIndex = yAxisSelection.getSelectedIndex();
@@ -544,27 +547,23 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 
 		//generate approximation set
 		for (PlotSeries series : getSelectedSeries()) {
-			builder.scatter(series.toXYSeries(currentIndex, xAxis, yAxis))
-				.withPaint(getSeriesPaint(series))
-				.withSize(controller.getPointSize().get());
+			builder.scatter(series.toXYSeries(currentIndex, xAxis, yAxis), getStyle(series));
 		}
 
 		//generate reference set
 		PlotSeries referenceSet = controller.getReferenceSet();
 
 		if (referenceSet != null && controller.getShowReferenceSet().get()) {
-			builder.scatter(referenceSet.toXYSeries(currentIndex, xAxis, yAxis))
-				.withPaint(getSeriesPaint(referenceSet))
-				.withSize(controller.getPointSize().get());
+			builder.scatter(referenceSet.toXYSeries(currentIndex, xAxis, yAxis), getStyle(referenceSet));
 		}
 		
-		builder.setTitle((title == null ? "" : title + " @ ") +
+		builder.title((title == null ? "" : title + " @ ") +
 				(controller.getIndexType() == IndexType.NFE ?
 						LOCALIZATION.getString("text.NFE") :
 						LOCALIZATION.getString("text.Index")) +
 				" " + slider.getValue());
-		builder.setXLabel(xAxisSelection.getSelectedItem().toString());
-		builder.setYLabel(yAxisSelection.getSelectedItem().toString());
+		builder.xLabel(xAxisSelection.getSelectedItem().toString());
+		builder.yLabel(yAxisSelection.getSelectedItem().toString());
 		
 		updateBounds(builder);
 		
@@ -604,8 +603,8 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 			Pair<Range, Range> bounds = getBoundsAt(controller.getStartingIndex());
 
 			if (bounds.getLeft() != null && bounds.getRight() != null) {
-				builder.setXLim(bounds.getLeft());
-				builder.setYLim(bounds.getRight());
+				builder.xLim(bounds.getLeft());
+				builder.yLim(bounds.getRight());
 			}
 		}
 		case Zoom -> {
@@ -617,8 +616,8 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 			}
 
 			if (zoomDomainBounds != null && zoomRangeBounds != null) {
-				builder.setXLim(zoomDomainBounds);
-				builder.setYLim(zoomRangeBounds);
+				builder.xLim(zoomDomainBounds);
+				builder.yLim(zoomRangeBounds);
 			}
 		}
 		case ReferenceSetBounds -> {
@@ -628,8 +627,8 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 			Pair<Range, Range> bounds = controller.getReferenceSet().getBoundsAt(0, xAxis, yAxis);
 
 			if (bounds.getLeft() != null && bounds.getRight() != null) {
-				builder.setXLim(bounds.getLeft());
-				builder.setYLim(bounds.getRight());
+				builder.xLim(bounds.getLeft());
+				builder.yLim(bounds.getRight());
 			}
 		}
 		default -> {

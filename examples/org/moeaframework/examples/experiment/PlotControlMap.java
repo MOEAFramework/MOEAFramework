@@ -22,7 +22,7 @@ import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.analysis.parameter.Enumeration;
 import org.moeaframework.analysis.parameter.Parameter;
 import org.moeaframework.analysis.parameter.ParameterSet;
-import org.moeaframework.analysis.plot.Plot;
+import org.moeaframework.analysis.plot.HeatMapBuilder;
 import org.moeaframework.analysis.sample.SampledResults;
 import org.moeaframework.analysis.sample.Samples;
 import org.moeaframework.analysis.stream.Groupings;
@@ -70,10 +70,11 @@ public class PlotControlMap {
 			.groupBy(Groupings.pair(Groupings.bucket(populationSize, 10), Groupings.bucket(maxEvaluations, 1000)))
 			.measureEach(Measures.average());
 		
-		new Plot()
-			.heatMap("Hypervolume", controlMap)
-			.setXLabel(populationSize.getName())
-			.setYLabel(maxEvaluations.getName())
+		new HeatMapBuilder()
+			.set(controlMap)
+			.xLabel(populationSize.getName())
+			.yLabel(maxEvaluations.getName())
+			.zLabel("Hypervolume")
 			.show();
 	}
 

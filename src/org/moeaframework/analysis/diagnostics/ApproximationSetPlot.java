@@ -18,8 +18,8 @@
 package org.moeaframework.analysis.diagnostics;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 
+import org.moeaframework.analysis.plot.SeriesPaint;
 import org.moeaframework.analysis.plot.XYPlotBuilder;
 import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
@@ -57,6 +57,7 @@ public class ApproximationSetPlot extends ResultPlot {
 	@Override
 	protected void update() {
 		XYPlotBuilder builder = new XYPlotBuilder();
+		builder.paintHelper(frame.getPaintHelper());
 
 		// generate the plot data
 		for (ResultKey key : frame.getSelectedResults()) {
@@ -67,7 +68,7 @@ public class ApproximationSetPlot extends ResultPlot {
 			}
 			
 			if (!population.isEmpty()) {
-				builder.scatter(key.toString(), population).withPaint(frame.getPaintHelper().get(key));
+				builder.scatter(key.toString(), population);
 			}
 		}
 		
@@ -77,13 +78,13 @@ public class ApproximationSetPlot extends ResultPlot {
 			population.addAll(controller.getLastSeries().last().getPopulation());
 			
 			if (!population.isEmpty()) {
-				builder.scatter(LOCALIZATION.getString("text.last"), population).withPaint(Color.BLACK);
+				builder.scatter(LOCALIZATION.getString("text.last"), population, SeriesPaint.black());
 			}
 		}
 		
-		builder.setTitle(metric);
-		builder.setXLabel(LOCALIZATION.getString("text.objective", 1));
-		builder.setYLabel(LOCALIZATION.getString("text.objective", 2));
+		builder.title(metric);
+		builder.xLabel(LOCALIZATION.getString("text.objective", 1));
+		builder.yLabel(LOCALIZATION.getString("text.objective", 2));
 
 		removeAll();
 		add(builder.buildPanel(), BorderLayout.CENTER);

@@ -22,7 +22,7 @@ import org.jfree.data.xy.DefaultXYZDataset;
 import org.moeaframework.analysis.stream.Partition;
 import org.moeaframework.util.validate.Validate;
 
-public class HeatMapBuilder extends PlotBuilder {
+public class HeatMapBuilder extends PlotBuilder<HeatMapBuilder> {
 
 	private final NumberAxis xAxis;
 
@@ -58,6 +58,11 @@ public class HeatMapBuilder extends PlotBuilder {
 		zAxis.setVisible(false);
 		
 		paintScale = new ColorPaintScale(0.0, 1.0, Color.BLACK);
+	}
+	
+	@Override
+	protected HeatMapBuilder getInstance() {
+		return this;
 	}
 
 	@Override
@@ -121,9 +126,9 @@ public class HeatMapBuilder extends PlotBuilder {
 	 * @param label the label for the x-axis
 	 * @return a reference to this builder
 	 */
-	public HeatMapBuilder setXLabel(String label) {
+	public HeatMapBuilder xLabel(String label) {
 		xAxis.setLabel(label);
-		return this;
+		return getInstance();
 	}
 
 	/**
@@ -132,9 +137,9 @@ public class HeatMapBuilder extends PlotBuilder {
 	 * @param label the label for the y-axis
 	 * @return a reference to this builder
 	 */
-	public HeatMapBuilder setYLabel(String label) {
+	public HeatMapBuilder yLabel(String label) {
 		yAxis.setLabel(label);
-		return this;
+		return getInstance();
 	}
 
 	/**
@@ -143,46 +148,46 @@ public class HeatMapBuilder extends PlotBuilder {
 	 * @param label the label for the z-axis
 	 * @return a reference to this builder
 	 */
-	public HeatMapBuilder setZLabel(String label) {
+	public HeatMapBuilder zLabel(String label) {
 		zAxis.setLabel(label);
-		return this;
+		return getInstance();
 	}
 	
-	public HeatMapBuilder setX(double[] x) {
+	public HeatMapBuilder xCoords(double[] x) {
 		this.x = x.clone();
-		return this;
+		return getInstance();
 	}
 	
-	public HeatMapBuilder setX(List<? extends Number> x) {
-		return setX(toArray(x));
+	public HeatMapBuilder xCoords(List<? extends Number> x) {
+		return xCoords(toArray(x));
 	}
 	
-	public HeatMapBuilder setY(double[] y) {
+	public HeatMapBuilder yCoords(double[] y) {
 		this.y = y.clone();
-		return this;
+		return getInstance();
 	}
 	
-	public HeatMapBuilder setY(List<? extends Number> y) {
-		return setY(toArray(y));
+	public HeatMapBuilder yCoords(List<? extends Number> y) {
+		return yCoords(toArray(y));
 	}
 	
-	public HeatMapBuilder setZ(double[][] z) {
+	public HeatMapBuilder zData(double[][] z) {
 		this.z = new double[z.length][];
 		
 		for (int i = 0; i < z.length; i++) {
 			this.z[i] = z[i].clone();
 		}
 		
-		return this;
+		return getInstance();
 	}
 	
-	public HeatMapBuilder setZ(List<? extends List<? extends Number>> z) {
-		return setZ(to2DArray(z));
+	public HeatMapBuilder zData(List<? extends List<? extends Number>> z) {
+		return zData(to2DArray(z));
 	}
 	
-	public HeatMapBuilder withPaintScale(PaintScale paintScale) {
+	public HeatMapBuilder paintScale(PaintScale paintScale) {
 		this.paintScale = paintScale;
-		return this;
+		return getInstance();
 	}
 
 	/**
@@ -206,11 +211,11 @@ public class HeatMapBuilder extends PlotBuilder {
 			zs.add(row);
 		}
 		
-		setX(xs);
-		setY(ys);
-		setZ(zs);
+		xCoords(xs);
+		yCoords(ys);
+		zData(zs);
 		
-		return this;
+		return getInstance();
 	}
 	
 	private abstract static class AutoScaledPaintScale implements PaintScale {
@@ -339,11 +344,11 @@ public class HeatMapBuilder extends PlotBuilder {
 		}
 		
 		new HeatMapBuilder()
-				.setX(x)
-				.setY(y)
-				.setZ(z)
-				.setXLabel("X")
-				.setYLabel("Y")
+				.xCoords(x)
+				.yCoords(y)
+				.zData(z)
+				.xLabel("X")
+				.yLabel("Y")
 				.show();
 	}
 

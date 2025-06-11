@@ -12,7 +12,7 @@ import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.moeaframework.util.validate.Validate;
 
-public class BarGraphBuilder extends PlotBuilder {
+public class BarGraphBuilder extends PlotBuilder<BarGraphBuilder> {
 	
 	private final CategoryAxis xAxis;
 	
@@ -50,26 +50,61 @@ public class BarGraphBuilder extends PlotBuilder {
 		plot.setRenderer(renderer);
 	}
 	
+	@Override
+	public BarGraphBuilder getInstance() {
+		return this;
+	}
+	
+	@Override
 	public JFreeChart build() {
 		return build(plot);
 	}
 	
-	public BarGraphBuilder add(String label, double[] x, double[] y) {
+	/**
+	 * Sets the x-axis label.
+	 * 
+	 * @param label the label for the x-axis
+	 * @return a reference to this builder
+	 */
+	public BarGraphBuilder xLabel(String label) {
+		xAxis.setLabel(label);
+		return getInstance();
+	}
+
+	/**
+	 * Sets the y-axis label.
+	 * 
+	 * @param label the label for the y-axis
+	 * @return a reference to this builder
+	 */
+	public BarGraphBuilder yLabel(String label) {
+		yAxis.setLabel(label);
+		return getInstance();
+	}
+	
+	public BarGraphBuilder bars(String label, double[] x, double[] y, StyleAttribute... style) {
 		Validate.that("x.length", x.length).isEqualTo("y.length", y.length);
 		
 		for (int i = 0; i < x.length; i++) {
 			dataset.addValue((Number)y[i], label, x[i]);
 		}
-				
+		
+		int seriesIndex = dataset.getRowCount() - 1;
 		Paint paint = paintHelper.get(label);
-		renderer.setSeriesPaint(dataset.getRowCount() - 1, paint);
-		renderer.setSeriesFillPaint(dataset.getRowCount() - 1, paint);
+		renderer.setSeriesPaint(seriesIndex, paint);
+		renderer.setSeriesFillPaint(seriesIndex, paint);
+		
+		applyStyle(plot, 0, seriesIndex, style);
+		
+		if (!renderer.getSeriesPaint(seriesIndex).equals(paint)) {
+			paintHelper.set(label, renderer.getSeriesPaint(seriesIndex));
+		}
 				
-		return this;
+		return getInstance();
 	}
 	
-	public BarGraphBuilder add(String label, List<? extends Number> x, List<? extends Number> y) {
-		return add(label, toArray(x), toArray(y));
+	public BarGraphBuilder bars(String label, List<? extends Number> x, List<? extends Number> y, StyleAttribute... style) {
+		return bars(label, toArray(x), toArray(y), style);
 	}
 	
 }

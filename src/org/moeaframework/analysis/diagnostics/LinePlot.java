@@ -32,6 +32,7 @@ import org.jfree.chart.block.LineBorder;
 import org.jfree.chart.title.LegendTitle;
 import org.jfree.chart.ui.RectangleEdge;
 import org.jfree.chart.ui.RectangleInsets;
+import org.moeaframework.analysis.plot.SeriesPaint;
 import org.moeaframework.analysis.plot.XYPlotBuilder;
 import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.util.Localization;
@@ -63,6 +64,7 @@ public class LinePlot extends ResultPlot {
 	@Override
 	protected void update() {
 		XYPlotBuilder builder = new XYPlotBuilder();
+		builder.paintHelper(frame.getPaintHelper());
 		
 		// generate the plot data
 		if (controller.showIndividualTraces().get()) {
@@ -72,12 +74,12 @@ public class LinePlot extends ResultPlot {
 						continue;
 					}
 				
-					builder.line(key.toString(), series, metric).withPaint(frame.getPaintHelper().get(key));
+					builder.line(key.toString(), series, metric);
 				}
 			}
 		} else {
 			for (ResultKey key : frame.getSelectedResults()) {				
-				builder.deviation(key.toString(), controller.get(key), metric).withPaint(frame.getPaintHelper().get(key));
+				builder.deviation(key.toString(), controller.get(key), metric);
 			}
 		}
 		
@@ -85,13 +87,13 @@ public class LinePlot extends ResultPlot {
 		if (controller.showLastTrace().get() &&
 				(controller.getLastSeries() != null) &&
 				controller.getLastSeries().getDefinedProperties().contains(metric)) {
-			builder.line(LOCALIZATION.getString("text.last"), controller.getLastSeries(), metric).withPaint(Color.BLACK);
+			builder.line(LOCALIZATION.getString("text.last"), controller.getLastSeries(), metric, SeriesPaint.black());
 		}
 		
-		builder.setTitle(metric);
-		builder.setXLabel(LOCALIZATION.getString("text.NFE"));
-		builder.setYLabel(LOCALIZATION.getString("text.value"));
-		builder.withLegend(false);
+		builder.title(metric);
+		builder.xLabel(LOCALIZATION.getString("text.NFE"));
+		builder.yLabel(LOCALIZATION.getString("text.value"));
+		builder.legend(false);
 
 		JFreeChart chart = builder.build();
 		

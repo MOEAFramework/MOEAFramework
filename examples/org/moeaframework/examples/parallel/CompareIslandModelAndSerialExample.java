@@ -21,7 +21,7 @@ import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.algorithm.extension.Frequency;
-import org.moeaframework.analysis.plot.Plot;
+import org.moeaframework.analysis.plot.XYPlotBuilder;
 import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.CrowdingComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
@@ -59,17 +59,17 @@ public class CompareIslandModelAndSerialExample {
 			model.addIsland(new Island(algorithm, algorithm.getPopulation()));
 		}
 		
-		Plot plot = new Plot();
+		XYPlotBuilder plot = new XYPlotBuilder();
 		
 		// run island-model version
 		try (ThreadedIslandExecutor executor = new ThreadedIslandExecutor(model)) {
-			plot.add("Island Model", executor.run(100000));
+			plot.scatter("Island Model", executor.run(100000));
 		}
 		
 		// run serial version
 		NSGAII serialAlgorithm = new NSGAII(problem);
 		serialAlgorithm.run(100000);
-		plot.add("Serial", serialAlgorithm.getResult());
+		plot.scatter("Serial", serialAlgorithm.getResult());
 		
 		plot.show();
 	}

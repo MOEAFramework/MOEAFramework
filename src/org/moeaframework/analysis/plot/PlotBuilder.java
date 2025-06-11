@@ -18,6 +18,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.Plot;
 import org.moeaframework.analysis.diagnostics.PaintHelper;
 import org.moeaframework.util.mvc.UI;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Base class for constructing plots using a builder pattern.
@@ -25,16 +26,10 @@ import org.moeaframework.util.mvc.UI;
  * These plot builders are intended for quickly generating plots from common data structures produced by this library.
  * The ability to customize the plot style is therefore limited.  If different plotting options or styles is required,
  * you will need to utilize the underlying graphing library, JFreeChart, or a different library of your choice.
- * <p>
- * When implementing a new subclass, consider the following design guidelines:
- * <ol>
- *   <li>The subclass should override any public methods returning a reference to the builder in order to specify the
- *       appropriate type.
- *   <li>Plotting routines should accept the primitive data type (e.g., {@code double[]}), the boxed collection (e.g.,
- *       {@code List<? extends Number>}), and any data structures commonly used by this library.
- * </ol>
+ * 
+ * @param <T> the specific plot builder type
  */
-public abstract class PlotBuilder {
+public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 	
 	private static final String WINDOW_TITLE = "MOEA Framework Plot";
 	
@@ -45,9 +40,10 @@ public abstract class PlotBuilder {
 	private ChartTheme theme;
 	
 	/**
-	 * Maps labels to their assigned color.
+	 * Maps labels to their assigned color.  This can be assigned an externally managed paint helper to keep colors
+	 * synchronized.
 	 */
-	protected final PaintHelper paintHelper;
+	protected PaintHelper paintHelper;
 	
 	/**
 	 * Constructs a new plot builder with default settings.
@@ -58,6 +54,14 @@ public abstract class PlotBuilder {
 		this.showLegend = true;
 		this.theme = ChartFactory.getChartTheme();
 	}
+	
+	/**
+	 * Returns an instance of this builder cast to the concrete implementation type {@link T}.  This is used by any
+	 * intermediate classes to returns the concrete implementation.
+	 * 
+	 * @return a reference to this builder instance
+	 */
+	protected abstract T getInstance();
 	
 	public abstract JFreeChart build();
 	
@@ -81,19 +85,25 @@ public abstract class PlotBuilder {
 	 * @param title the title
 	 * @return a reference to this builder
 	 */
-	public PlotBuilder setTitle(String title) {
+	public T title(String title) {
 		this.title = title;
-		return this;
+		return getInstance();
 	}
 	
-	public PlotBuilder withLegend(boolean showLegend) {
+	public T legend(boolean showLegend) {
 		this.showLegend = showLegend;
-		return this;
+		return getInstance();
 	}
 	
-	public PlotBuilder withTheme(ChartTheme theme) {
+	public T theme(ChartTheme theme) {
 		this.theme = theme;
-		return this;
+		return getInstance();
+	}
+	
+	public T paintHelper(PaintHelper paintHelper) {
+		Validate.that("paintHelper", paintHelper).isNotNull();
+		this.paintHelper = paintHelper;
+		return getInstance();
 	}
 
 	/**
@@ -104,9 +114,9 @@ public abstract class PlotBuilder {
 	 * @return a reference to this builder
 	 * @throws IOException if an I/O error occurred
 	 */
-	public PlotBuilder save(String filename) throws IOException {
+	public T save(String filename) throws IOException {
 		ImageUtils.save(build(), filename);
-		return this;
+		return getInstance();
 	}
 
 	/**
@@ -117,9 +127,9 @@ public abstract class PlotBuilder {
 	 * @return a reference to this builder
 	 * @throws IOException if an I/O error occurred
 	 */
-	public PlotBuilder save(File file) throws IOException {
+	public T save(File file) throws IOException {
 		ImageUtils.save(build(), file);
-		return this;
+		return getInstance();
 	}
 
 	/**
@@ -132,9 +142,9 @@ public abstract class PlotBuilder {
 	 * @return a reference to this builder
 	 * @throws IOException if an I/O error occurred
 	 */
-	public PlotBuilder save(File file, ImageFileType fileType, int width, int height) throws IOException {
+	public T save(File file, ImageFileType fileType, int width, int height) throws IOException {
 		ImageUtils.save(build(), file, fileType, width, height);
-		return this;
+		return getInstance();
 	}
 
 	/**
@@ -224,6 +234,18 @@ public abstract class PlotBuilder {
 		return result;
 	}
 	
+	protected void applyStyle(Plot plot, int dataset, StyleAttribute[] attributes) {
+		for (StyleAttribute attribute : attributes) {
+			attribute.apply(plot, dataset);
+		}
+	}
+	
+	protected void applyStyle(Plot plot, int dataset, int series, StyleAttribute[] attributes) {
+		for (StyleAttribute attribute : attributes) {
+			attribute.apply(plot, dataset, series);
+		}
+	}
+	
 	public static void main(String[] args) {
 		new XYPlotBuilder()
 			.scatter("Points", new double[] { 0, 1, 2 }, new double[] { 0, 1, 2 })
@@ -231,9 +253,9 @@ public abstract class PlotBuilder {
 			.stacked("Stacked 1", new double[] { 0.5, 1.5 }, new double[] { 0.5, 0.6 })
 			.stacked("Stacked 2", new double[] { 0.5, 1.5 }, new double[] { 0.3, 0.2 })
 			.area("Area", new double[] { 0, 1, 2 }, new double[] { 0, 0.5, 0 })
-			.setTitle("Basic Shapes")
-//			.setXLabel("X")
-//			.setYLabel("Y")
+			.title("Basic Shapes")
+			.xLabel("X")
+			.yLabel("Y")
 			.show();
 	}
 	

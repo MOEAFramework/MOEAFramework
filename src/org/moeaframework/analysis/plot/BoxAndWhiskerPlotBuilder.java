@@ -13,7 +13,7 @@ import org.jfree.data.statistics.DefaultBoxAndWhiskerCategoryDataset;
 import org.moeaframework.analysis.IndicatorStatistics;
 import org.moeaframework.analysis.stream.DataStream;
 
-public class BoxAndWhiskerPlotBuilder extends PlotBuilder {
+public class BoxAndWhiskerPlotBuilder extends PlotBuilder<BoxAndWhiskerPlotBuilder> {
 	
 	private final CategoryAxis xAxis;
 	
@@ -48,8 +48,16 @@ public class BoxAndWhiskerPlotBuilder extends PlotBuilder {
 		plot.setRangeAxis(yAxis);
 		plot.setRenderer(renderer);
 		plot.setDataset(dataset);
+		
+		legend(false);
 	}
 	
+	@Override
+	protected BoxAndWhiskerPlotBuilder getInstance() {
+		return this;
+	}
+	
+	@Override
 	public JFreeChart build() {
 		return build(plot);
 	}
@@ -63,8 +71,8 @@ public class BoxAndWhiskerPlotBuilder extends PlotBuilder {
 	}
 	
 	public BoxAndWhiskerPlotBuilder add(String label, List<? extends Number> values) {
-		dataset.add(values, label, "");
-		return this;
+		dataset.add(values, label, label);
+		return getInstance();
 	}
 	
 	public BoxAndWhiskerPlotBuilder add(IndicatorStatistics statistics) {
@@ -72,7 +80,7 @@ public class BoxAndWhiskerPlotBuilder extends PlotBuilder {
 			add(name, statistics.getValues(name));
 		}
 
-		return this;
+		return getInstance();
 	}
 	
 }

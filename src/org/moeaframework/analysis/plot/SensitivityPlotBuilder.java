@@ -24,7 +24,7 @@ import org.moeaframework.analysis.sensitivity.Sensitivity;
 import org.moeaframework.analysis.sensitivity.SensitivityResult;
 import org.moeaframework.analysis.sensitivity.TotalOrderSensitivity;
 
-public class SensitivityPlotBuilder extends PlotBuilder {
+public class SensitivityPlotBuilder extends PlotBuilder<SensitivityPlotBuilder> {
 	
 	private final SensitivityResult result;
 	
@@ -48,15 +48,20 @@ public class SensitivityPlotBuilder extends PlotBuilder {
 		this.labelOffset = 1.3;
 	}
 	
+	@Override
+	protected SensitivityPlotBuilder getInstance() {
+		return this;
+	}
+	
 	/**
 	 * Sets the shape fill color.
 	 * 
 	 * @param shapeFill the shape fill
 	 * @return a reference to this builder
 	 */
-	public SensitivityPlotBuilder withShapeFill(Paint shapeFill) {
+	public SensitivityPlotBuilder shapeFill(Paint shapeFill) {
 		this.shapeFill = shapeFill;
-		return this;
+		return getInstance();
 	}
 	
 	/**
@@ -65,9 +70,9 @@ public class SensitivityPlotBuilder extends PlotBuilder {
 	 * @param lineFill the line fill
 	 * @return a reference to this builder
 	 */
-	public SensitivityPlotBuilder withLineFill(Paint lineFill) {
+	public SensitivityPlotBuilder lineFill(Paint lineFill) {
 		this.lineFill = lineFill;
-		return this;
+		return getInstance();
 	}
 	
 	/**
@@ -76,9 +81,9 @@ public class SensitivityPlotBuilder extends PlotBuilder {
 	 * @param sensitivityScaling the scaling factor
 	 * @return a reference to this builder
 	 */
-	public SensitivityPlotBuilder withSensitivityScalingFactor(double sensitivityScaling) {
+	public SensitivityPlotBuilder sensitivityScalingFactor(double sensitivityScaling) {
 		this.sensitivityScaling = sensitivityScaling;
-		return this;
+		return getInstance();
 	}
 	
 	/**
@@ -87,9 +92,9 @@ public class SensitivityPlotBuilder extends PlotBuilder {
 	 * @param sizeScaling the scaling factor
 	 * @return a reference to this builder
 	 */
-	public SensitivityPlotBuilder withSizeScalingFactor(double sizeScaling) {
+	public SensitivityPlotBuilder sizeScalingFactor(double sizeScaling) {
 		this.sizeScaling = sizeScaling;
-		return this;
+		return getInstance();
 	}
 	
 	/**
@@ -98,9 +103,9 @@ public class SensitivityPlotBuilder extends PlotBuilder {
 	 * @param labelOffset the offset
 	 * @return a reference to this builder
 	 */
-	public SensitivityPlotBuilder withLabelOffset(double labelOffset) {
+	public SensitivityPlotBuilder labelOffset(double labelOffset) {
 		this.labelOffset = labelOffset;
-		return this;
+		return getInstance();
 	}
 	
 	@Override

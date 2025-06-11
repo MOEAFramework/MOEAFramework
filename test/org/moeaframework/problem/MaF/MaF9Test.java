@@ -27,7 +27,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.algorithm.MOEAD;
-import org.moeaframework.analysis.plot.Plot;
+import org.moeaframework.analysis.plot.XYPlotBuilder;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.mock.MockSolution;
@@ -115,14 +115,14 @@ public class MaF9Test extends ProblemTest {
 		
 		List<Solution> solutions = algorithm.getResult().asList();
 
-		Plot plot = new Plot();
-		plot.scatter("Solutions",
+		new XYPlotBuilder()
+			.scatter("Solutions",
 				solutions.stream().mapToDouble(x -> RealVariable.getReal(x.getVariable(0))).toArray(),
-				solutions.stream().mapToDouble(x -> RealVariable.getReal(x.getVariable(1))).toArray());
-		plot.scatter("Vertices",
+				solutions.stream().mapToDouble(x -> RealVariable.getReal(x.getVariable(1))).toArray())
+			.scatter("Vertices",
 				problem.polygon.getVertices().stream().mapToDouble(Vector2D::getX).toArray(),
-				problem.polygon.getVertices().stream().mapToDouble(Vector2D::getY).toArray());
-		plot.show();
+				problem.polygon.getVertices().stream().mapToDouble(Vector2D::getY).toArray())
+			.show();
 	}
 
 }

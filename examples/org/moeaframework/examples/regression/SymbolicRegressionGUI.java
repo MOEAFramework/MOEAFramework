@@ -26,7 +26,6 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
-import org.moeaframework.analysis.plot.PlotBuilder;
 import org.moeaframework.analysis.plot.XYPlotBuilder;
 import org.moeaframework.core.Solution;
 import org.moeaframework.util.mvc.ExampleUI;
@@ -106,12 +105,12 @@ public class SymbolicRegressionGUI extends ExampleUI<GeneticAlgorithm> {
 		double[] approximatedY = problem.eval(solution);
 
 		// generate the plot
-		PlotBuilder builder = new XYPlotBuilder()
+		XYPlotBuilder builder = new XYPlotBuilder()
 			.line("Target Function", x, y)
 			.line("Estimated Function", x, approximatedY)
-			.setXLabel("x")
-			.setYLabel("f(x)")
-			.setTitle("Symbolic Regression Demo");
+			.xLabel("x")
+			.yLabel("f(x)")
+			.title("Symbolic Regression Demo");
 
 		// update the details
 		details.setText("Iteration: " + iteration + System.lineSeparator() +

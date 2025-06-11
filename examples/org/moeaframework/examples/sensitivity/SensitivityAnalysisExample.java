@@ -20,7 +20,6 @@ package org.moeaframework.examples.sensitivity;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.analysis.parameter.Parameter;
 import org.moeaframework.analysis.parameter.ParameterSet;
-import org.moeaframework.analysis.plot.Plot;
 import org.moeaframework.analysis.plot.SensitivityPlotBuilder;
 import org.moeaframework.analysis.sample.SampledResults;
 import org.moeaframework.analysis.sample.Samples;
@@ -68,12 +67,7 @@ public class SensitivityAnalysisExample {
 		
 		sensitivityResults.display();
 		
-		new Plot()
-			.add(sensitivityResults)
-			.show();
-		
-		new SensitivityPlotBuilder(sensitivityResults)
-			.show();
+		new SensitivityPlotBuilder(sensitivityResults).show();
 	}
 
 }
