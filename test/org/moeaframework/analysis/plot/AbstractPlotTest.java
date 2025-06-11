@@ -24,6 +24,7 @@ import org.apache.commons.lang3.reflect.ConstructorUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.Assume;
 import org.moeaframework.util.mvc.UI;
@@ -31,6 +32,7 @@ import org.moeaframework.util.mvc.UI;
 /**
  * Abstract test class for plotting, which skips tests when no UI is available and closes any open plot windows.
  */
+@Ignore("Abstract test class")
 public abstract class AbstractPlotTest {
 	
 	@Before

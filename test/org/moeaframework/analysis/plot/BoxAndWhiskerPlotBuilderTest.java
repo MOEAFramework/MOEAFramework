@@ -38,6 +38,13 @@ public class BoxAndWhiskerPlotBuilderTest extends AbstractPlotTest {
 				.show();
 	}
 	
+	@Test
+	public void testStyle() {
+		new BoxAndWhiskerPlotBuilder()
+				.add("Set 1", IntStream.range(0, 10).mapToDouble(i -> PRNG.nextDouble()).toArray(), SeriesPaint.green())
+				.show();
+	}
+	
 	public static void main(String[] args) throws Exception {
 		new BoxAndWhiskerPlotBuilderTest().runAll();
 	}

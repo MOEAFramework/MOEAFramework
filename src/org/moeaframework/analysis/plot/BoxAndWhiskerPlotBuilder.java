@@ -90,10 +90,11 @@ public class BoxAndWhiskerPlotBuilder extends PlotBuilder<BoxAndWhiskerPlotBuild
 	 * 
 	 * @param label the label for the series
 	 * @param values the values
+	 * @param style the style attributes
 	 * @return a reference to this builder
 	 */
-	public BoxAndWhiskerPlotBuilder add(String label, double[] values) {
-		return add(label, DoubleStream.of(values).boxed().toList());
+	public BoxAndWhiskerPlotBuilder add(String label, double[] values, StyleAttribute... style) {
+		return add(label, DoubleStream.of(values).boxed().toList(), style);
 	}
 	
 	/**
@@ -101,10 +102,11 @@ public class BoxAndWhiskerPlotBuilder extends PlotBuilder<BoxAndWhiskerPlotBuild
 	 * 
 	 * @param label the label for the series
 	 * @param stream the data stream containing the values
+	 * @param style the style attributes
 	 * @return a reference to this builder
 	 */
-	public BoxAndWhiskerPlotBuilder add(String label, DataStream<? extends Number> stream) {
-		return add(label, stream.values());
+	public BoxAndWhiskerPlotBuilder add(String label, DataStream<? extends Number> stream, StyleAttribute... style) {
+		return add(label, stream.values(), style);
 	}
 	
 	/**
@@ -112,10 +114,14 @@ public class BoxAndWhiskerPlotBuilder extends PlotBuilder<BoxAndWhiskerPlotBuild
 	 * 
 	 * @param label the label for the series
 	 * @param values the values
+	 * @param style the style attributes
 	 * @return a reference to this builder
 	 */
-	public BoxAndWhiskerPlotBuilder add(String label, List<? extends Number> values) {
-		dataset.add(values, label, label);
+	public BoxAndWhiskerPlotBuilder add(String label, List<? extends Number> values, StyleAttribute... style) {
+		dataset.add(values, "", label);
+		
+		applyStyle(plot, 0, dataset.getColumnCount() - 1, style);
+		
 		return getInstance();
 	}
 	
@@ -123,11 +129,12 @@ public class BoxAndWhiskerPlotBuilder extends PlotBuilder<BoxAndWhiskerPlotBuild
 	 * Adds a new box-and-whisker entry for each indicator in the given statistics.
 	 * 
 	 * @param statistics the indicator statistics
+	 * @param style the style attributes
 	 * @return a reference to this builder
 	 */
-	public BoxAndWhiskerPlotBuilder add(IndicatorStatistics statistics) {
+	public BoxAndWhiskerPlotBuilder add(IndicatorStatistics statistics, StyleAttribute... style) {
 		for (String name : statistics.getGroupNames()) {
-			add(name, statistics.getValues(name));
+			add(name, statistics.getValues(name), style);
 		}
 
 		return getInstance();
