@@ -37,7 +37,7 @@ dependency to their `pom.xml` file:
 
 Check out our [examples](https://github.com/MOEAFramework/MOEAFramework/tree/master/examples),
 [online documentation](https://github.com/MOEAFramework/MOEAFramework/blob/master/docs/README.md), and
-[API Specification (Javadoc)](https://moeaframework.org//javadoc/index.html) to get started.
+[API Specification (Javadoc)](https://moeaframework.org/javadoc/index.html) to get started.
 
 
 ### Example

@@ -33,8 +33,8 @@ Alternatively, we can create a 2D plot showing the results:
 <!-- java:examples/Example2.java [36:38] -->
 
 ```java
-new Plot()
-    .add("NSGA-II", algorithm.getResult())
+new XYPlotBuilder()
+    .scatter("NSGA-II", algorithm.getResult())
     .show();
 ```
 
