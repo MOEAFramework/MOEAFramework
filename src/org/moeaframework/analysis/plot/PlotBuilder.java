@@ -1,14 +1,11 @@
 package org.moeaframework.analysis.plot;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Paint;
 import java.awt.Window;
 import java.awt.Dialog.ModalityType;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JDialog;
@@ -24,6 +21,18 @@ import org.moeaframework.util.mvc.UI;
 
 /**
  * Base class for constructing plots using a builder pattern.
+ * <p>
+ * These plot builders are intended for quickly generating plots from common data structures produced by this library.
+ * The ability to customize the plot style is therefore limited.  If different plotting options or styles is required,
+ * you will need to utilize the underlying graphing library, JFreeChart, or a different library of your choice.
+ * <p>
+ * When implementing a new subclass, consider the following design guidelines:
+ * <ol>
+ *   <li>The subclass should override any public methods returning a reference to the builder in order to specify the
+ *       appropriate type.
+ *   <li>Plotting routines should accept the primitive data type (e.g., {@code double[]}), the boxed collection (e.g.,
+ *       {@code List<? extends Number>}), and any data structures commonly used by this library.
+ * </ol>
  */
 public abstract class PlotBuilder {
 	
@@ -189,41 +198,29 @@ public abstract class PlotBuilder {
 		});
 	}
 	
-	/**
-	 * Converts a double array to a list.
-	 * 
-	 * @param x the double array
-	 * @return the list of doubles
-	 */
-	protected List<Double> toList(double[] x) {
-		List<Double> result = new ArrayList<>();
-
-		for (int i = 0; i < x.length; i++) {
-			result.add(x[i]);
+	protected double[] toArray(List<? extends Number> values) {
+		double[] result = new double[values.size()];
+		
+		for (int i = 0; i < values.size(); i++) {
+			Number value = values.get(i);
+			
+			if (value == null) {
+				result[i] = Double.NaN;
+			} else {
+				result[i] = value.doubleValue();
+			}
 		}
-
+		
 		return result;
 	}
 	
-	/**
-	 * Converts a 2D double array to a list of lists.
-	 * 
-	 * @param x the 2D double array
-	 * @return the list of lists of doubles
-	 */
-	protected List<List<Double>> toList(double[][] x) {
-		List<List<Double>> result = new ArrayList<>();
-
-		for (int i = 0; i < x.length; i++) {
-			List<Double> row = new ArrayList<>();
-
-			for (int j = 0; j < x[i].length; j++) {
-				row.add(x[i][j]);
-			}
-
-			result.add(row);
+	protected double[][] to2DArray(List<? extends List<? extends Number>> values) {
+		double[][] result = new double[values.size()][];
+		
+		for (int i = 0; i < values.size(); i++) {
+			result[i] = toArray(values.get(i));
 		}
-
+		
 		return result;
 	}
 	

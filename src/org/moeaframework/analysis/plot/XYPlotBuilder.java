@@ -5,7 +5,9 @@ import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.RectangularShape;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.jfree.chart.JFreeChart;
@@ -31,10 +33,14 @@ import org.jfree.data.xy.YIntervalSeriesCollection;
 import org.moeaframework.analysis.series.IndexedResult;
 import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.analysis.stream.Partition;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.util.validate.Validate;
 
+/**
+ * Builds 2D plots with numeric X and Y axes, including line, scatter, area, stacked, and deviation plots.
+ */
 public class XYPlotBuilder extends PlotBuilder {
 	
 	private final NumberAxis xAxis;
@@ -225,11 +231,19 @@ public class XYPlotBuilder extends PlotBuilder {
 	 * @return a reference to this builder
 	 */
 	public XYPlotBuilder scatter(String label, double[] x, double[] y) {
-		return scatter(label, toList(x), toList(y));
+		Validate.that("x.length", x.length).isEqualTo("y.length", y.length);
+		
+		XYSeries series = new XYSeries(label, false, true);
+
+		for (int i = 0; i < x.length; i++) {
+			series.add(x[i], y[i]);
+		}
+		
+		return scatter(series);
 	}
 
 	/**
-	 * Creates a new scatter plot series using the keys and values from a {@link Partition}.
+	 * Creates a new scatter plot series.
 	 * 
 	 * @param label the label for the series
 	 * @param partition the data stream partition
@@ -248,15 +262,7 @@ public class XYPlotBuilder extends PlotBuilder {
 	 * @return a reference to this builder
 	 */
 	public XYPlotBuilder scatter(String label, List<? extends Number> x, List<? extends Number> y) {
-		Validate.that("x.size()", x.size()).isEqualTo("y.size()", y.size());
-				
-		XYSeries series = new XYSeries(label, false, true);
-
-		for (int i = 0; i < x.size(); i++) {
-			series.add(x.get(i), y.get(i));
-		}
-		
-		return scatter(series);
+		return scatter(label, toArray(x), toArray(y));
 	}
 	
 	/**
@@ -298,6 +304,12 @@ public class XYPlotBuilder extends PlotBuilder {
 		return scatter(series);
 	}
 	
+	/**
+	 * Creates a new scatter plot series.
+	 * 
+	 * @param series the XY series of points
+	 * @return a reference to this builder
+	 */
 	public XYPlotBuilder scatter(XYSeries series) {
 		int index = plot.getDatasetCount();
 
@@ -333,11 +345,19 @@ public class XYPlotBuilder extends PlotBuilder {
 	 * @return a reference to this builder
 	 */
 	public XYPlotBuilder line(String label, double[] x, double[] y) {
-		return line(label, toList(x), toList(y));
+		Validate.that("x.length", x.length).isEqualTo("y.length", y.length);
+		
+		XYSeries series = new XYSeries(label, false, true);
+
+		for (int i = 0; i < x.length; i++) {
+			series.add(x[i], y[i]);
+		}
+		
+		return line(series);
 	}
 
 	/**
-	 * Creates a new line plot series using the keys and values from a {@link Partition}.
+	 * Creates a new line plot series.
 	 * 
 	 * @param label the label for the series
 	 * @param partition the data stream partition
@@ -356,15 +376,7 @@ public class XYPlotBuilder extends PlotBuilder {
 	 * @return a reference to this builder
 	 */
 	public XYPlotBuilder line(String label, List<? extends Number> x, List<? extends Number> y) {
-		Validate.that("x.size()", x.size()).isEqualTo("y.size()", y.size());
-				
-		XYSeries series = new XYSeries(label, false, true);
-
-		for (int i = 0; i < x.size(); i++) {
-			series.add(x.get(i), y.get(i));
-		}
-		
-		return line(series);
+		return line(label, toArray(x), toArray(y));
 	}
 
 	/**
@@ -404,6 +416,12 @@ public class XYPlotBuilder extends PlotBuilder {
 		return line(xySeries);
 	}
 	
+	/**
+	 * Creates a new line plot series.
+	 * 
+	 * @param series the XY series containing the data
+	 * @return a reference to this builder
+	 */
 	public XYPlotBuilder line(XYSeries series) {
 		int index = plot.getDatasetCount();
 
@@ -436,6 +454,38 @@ public class XYPlotBuilder extends PlotBuilder {
 		
 		return this;
 	}
+	
+	public XYPlotBuilder histogram(String label, double[] x) {
+		return histogram(label, x, 100);
+	}
+	
+	public XYPlotBuilder histogram(String label, List<? extends Number> x) {
+		return histogram(label, toArray(x));
+	}
+	
+	public XYPlotBuilder histogram(String label, double[] x, int steps) {
+		x = x.clone();
+		Arrays.sort(x);
+		
+		double minX = x[0];
+		double maxX = x[x.length - 1];
+		double stepSize = (maxX - minX) / steps;
+		int index = 0;
+		XYSeries series = new XYSeries(label, false, false);
+		
+		for (int i = 0; i < steps; i++) {
+			int count = 0;
+			
+			while (index < x.length && x[index] < minX + (i + 1.0) * stepSize) {
+				count++;
+				index++;
+			}
+						
+			series.add(minX + ((i + 0.5) * stepSize), count);
+		}
+		
+		return line(series);
+	}
 
 	/**
 	 * Creates a new area plot series.
@@ -446,11 +496,19 @@ public class XYPlotBuilder extends PlotBuilder {
 	 * @return a reference to this builder
 	 */
 	public XYPlotBuilder area(String label, double[] x, double[] y) {
-		return area(label, toList(x), toList(y));
+		Validate.that("x.length", x.length).isEqualTo("y.length", y.length);
+		
+		XYSeries series = new XYSeries(label, false, true);
+		
+		for (int i = 0; i < x.length; i++) {
+			series.add(x[i], y[i]);
+		}
+
+		return area(series);
 	}
 
 	/**
-	 * Creates a new area plot series using the keys and values from a {@link Partition}.
+	 * Creates a new area plot series.
 	 * 
 	 * @param label the label for the series
 	 * @param partition the data stream partition
@@ -469,18 +527,15 @@ public class XYPlotBuilder extends PlotBuilder {
 	 * @return a reference to this builder
 	 */
 	public XYPlotBuilder area(String label, List<? extends Number> x, List<? extends Number> y) {
-		Validate.that("x.size()", x.size()).isEqualTo("y.size()", y.size());
-		
-		// generate the dataset
-		XYSeries series = new XYSeries(label, false, true);
-		
-		for (int i = 0; i < x.size(); i++) {
-			series.add(x.get(i), y.get(i));
-		}
-
-		return area(series);
+		return area(label, toArray(x), toArray(y));
 	}
 	
+	/**
+	 * Creates a new area plot series.
+	 * 
+	 * @param series the series containing the XY data
+	 * @return a reference to this builder
+	 */
 	public XYPlotBuilder area(XYSeries series) {
 		int index = plot.getDatasetCount();
 		
@@ -515,7 +570,15 @@ public class XYPlotBuilder extends PlotBuilder {
 	 * @return a reference to this builder
 	 */
 	public XYPlotBuilder stacked(String label, double[] x, double[] y) {
-		return stacked(label, toList(x), toList(y));
+		Validate.that("x.length", x.length).isEqualTo("y.length", y.length);
+		
+		XYSeries series = new XYSeries(label, true, false);
+
+		for (int i = 0; i < x.length; i++) {
+			series.add(x[i], y[i]);
+		}
+
+		return stacked(series);
 	}
 
 	/**
@@ -538,45 +601,42 @@ public class XYPlotBuilder extends PlotBuilder {
 	 * @return a reference to this builder
 	 */
 	public XYPlotBuilder stacked(String label, List<? extends Number> x, List<? extends Number> y) {
-		Validate.that("x.size()", x.size()).isEqualTo("y.size()", y.size());
-		
-		XYSeries series = new XYSeries(label, true, false);
-
-		for (int i = 0; i < x.size(); i++) {
-			series.add(x.get(i), y.get(i));
-		}
-
-		return stacked(series);
+		return stacked(label, toArray(x), toArray(y));
 	}
 	
 	public XYPlotBuilder stacked(XYSeries series) {
 		int index = plot.getDatasetCount() - 1;
 		DefaultTableXYDataset dataset = null;
+		StackedXYAreaRenderer renderer = null;
 		
-		if (index >= 0 && plot.getDataset(index) instanceof DefaultTableXYDataset xyDataset) {
+		if (index >= 0 &&
+				plot.getDataset(index) instanceof DefaultTableXYDataset xyDataset &&
+				plot.getRenderer(index) instanceof StackedXYAreaRenderer stackedXYAreaRenderer) {
 			dataset = xyDataset;
+			renderer = stackedXYAreaRenderer;
 		} else {
 			index = plot.getDatasetCount();
 			dataset = new DefaultTableXYDataset();
+			
+			renderer = new StackedXYAreaRenderer();
+			renderer.setDefaultStroke(new BasicStroke(3f, 1, 1));
+			renderer.setAutoPopulateSeriesFillPaint(false);
+			renderer.setAutoPopulateSeriesOutlinePaint(false);
+			renderer.setAutoPopulateSeriesOutlineStroke(false);
+			renderer.setAutoPopulateSeriesPaint(false);
+			renderer.setAutoPopulateSeriesShape(false);
+			renderer.setAutoPopulateSeriesStroke(false);
+			
+			plot.setDataset(index, dataset);
+			plot.setRenderer(index, renderer);
 		}
 		
+		int seriesIndex = dataset.getSeriesCount();
 		dataset.addSeries(series);
 
 		Paint paint = paintHelper.get(series.getKey());
-		
-		StackedXYAreaRenderer renderer = new StackedXYAreaRenderer();
-		renderer.setDefaultStroke(new BasicStroke(3f, 1, 1));
-		renderer.setDefaultPaint(paint);
-		renderer.setDefaultFillPaint(paint);
-		renderer.setAutoPopulateSeriesFillPaint(false);
-		renderer.setAutoPopulateSeriesOutlinePaint(false);
-		renderer.setAutoPopulateSeriesOutlineStroke(false);
-		renderer.setAutoPopulateSeriesPaint(false);
-		renderer.setAutoPopulateSeriesShape(false);
-		renderer.setAutoPopulateSeriesStroke(false);
-
-		plot.setDataset(index, dataset);
-		plot.setRenderer(index, renderer);
+		renderer.setSeriesPaint(seriesIndex, paint);
+		renderer.setSeriesFillPaint(seriesIndex, paint);
 
 		return this;
 	}
@@ -662,22 +722,22 @@ public class XYPlotBuilder extends PlotBuilder {
 	}
 	
 	public XYPlotBuilder deviation(String label, double[] x, double[] yLow, double[] y, double[] yHigh) {
-		return deviation(label, toList(x), toList(yLow), toList(y), toList(yHigh));
+		Validate.that("x.length", x.length).isEqualTo("y.length", y.length);
+		Validate.that("x.length", x.length).isEqualTo("yLow.length", yLow.length);
+		Validate.that("x.length", x.length).isEqualTo("yHigh.length", yHigh.length);
+				
+		YIntervalSeries series = new YIntervalSeries(label, false, true);
+
+		for (int i = 0; i < x.length; i++) {
+			series.add(x[i], y[i], yLow[i], yHigh[i]);
+		}
+		
+		return deviation(series);
 	}
 	
 	public XYPlotBuilder deviation(String label, List<? extends Number> x, List<? extends Number> yLow,
 			List<? extends Number> y, List<? extends Number> yHigh) {
-		Validate.that("x.size()", x.size()).isEqualTo("y.size()", y.size());
-		Validate.that("x.size()", x.size()).isEqualTo("yLow.size()", yLow.size());
-		Validate.that("x.size()", x.size()).isEqualTo("yHigh.size()", yHigh.size());
-				
-		YIntervalSeries series = new YIntervalSeries(label, false, true);
-
-		for (int i = 0; i < x.size(); i++) {
-			series.add(x.get(i).doubleValue(), y.get(i).doubleValue(), yLow.get(i).doubleValue(), yHigh.get(i).doubleValue());
-		}
-		
-		return deviation(series);
+		return deviation(label, toArray(x), toArray(yLow), toArray(y), toArray(yHigh));
 	}
 	
 	public XYPlotBuilder deviation(YIntervalSeries series) {
@@ -730,6 +790,16 @@ public class XYPlotBuilder extends PlotBuilder {
 	public XYPlotBuilder pointer(String text, double x, double y, double angle) {
 		plot.addAnnotation(new XYPointerAnnotation(text, x, y, angle));
 		return this;
+	}
+	
+	public static void main(String[] args) {
+		double[] x = IntStream.range(0, 100000).mapToDouble(i -> PRNG.nextDouble()).toArray();
+		
+		new XYPlotBuilder()
+				.histogram("Test", x, 25)
+				.setXLabel("X")
+				.setYLabel("Count")
+				.show();
 	}
 	
 }

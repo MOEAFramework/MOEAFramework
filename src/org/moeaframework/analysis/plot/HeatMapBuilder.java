@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Paint;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.math3.stat.StatUtils;
@@ -29,13 +30,13 @@ public class HeatMapBuilder extends PlotBuilder {
 
 	private final NumberAxis zAxis;
 	
-	private double[] xValues;
+	private double[] x;
 	
-	private double[] yValues;
+	private double[] y;
 	
-	private double[][] zValues;
+	private double[][] z;
 	
-	private Color baseColor;
+	private PaintScale paintScale;
 
 	public HeatMapBuilder() {
 		super();
@@ -56,25 +57,24 @@ public class HeatMapBuilder extends PlotBuilder {
 		zAxis.setUpperMargin(0.0);
 		zAxis.setVisible(false);
 		
-		baseColor = Color.BLACK;
+		paintScale = new ColorPaintScale(0.0, 1.0, Color.BLACK);
 	}
 
 	@Override
 	public JFreeChart build() {
-		Validate.that("xValues", xValues).isNotNull();
-		Validate.that("yValues", yValues).isNotNull();
-		Validate.that("zValues", zValues).isNotNull();
-		Validate.that("xValues.length", xValues.length).isEqualTo("yValues.length", yValues.length);
+		Validate.that("x", x).isNotNull();
+		Validate.that("y", y).isNotNull();
+		Validate.that("z", z).isNotNull();
 				
-		double[] xExpanded = new double[xValues.length * yValues.length];
-		double[] yExpanded = new double[xValues.length * yValues.length];
-		double[] zExpanded = new double[xValues.length * yValues.length];
+		double[] xExpanded = new double[x.length * y.length];
+		double[] yExpanded = new double[x.length * y.length];
+		double[] zExpanded = new double[x.length * y.length];
 
-		for (int i = 0; i < xValues.length; i++) {
-			for (int j = 0; j < yValues.length; j++) {
-				xExpanded[i * yValues.length + j] = xValues[i];
-				yExpanded[i * yValues.length + j] = yValues[j];
-				zExpanded[i * yValues.length + j] = zValues[i][j];
+		for (int i = 0; i < x.length; i++) {
+			for (int j = 0; j < y.length; j++) {
+				xExpanded[i * y.length + j] = x[i];
+				yExpanded[i * y.length + j] = y[j];
+				zExpanded[i * y.length + j] = z[i][j];
 			}
 		}
 
@@ -82,12 +82,15 @@ public class HeatMapBuilder extends PlotBuilder {
 		dataset.addSeries("HeatMap", new double[][] { xExpanded, yExpanded, zExpanded });
 		
 		XYBlockRenderer renderer = new XYBlockRenderer();
-		renderer.setBlockWidth((StatUtils.max(xValues) - StatUtils.min(xValues)) / (xValues.length - 1));
-		renderer.setBlockHeight((StatUtils.max(yValues) - StatUtils.min(yValues)) / (yValues.length - 1));
+		renderer.setBlockWidth((StatUtils.max(x) - StatUtils.min(x)) / (x.length - 1));
+		renderer.setBlockHeight((StatUtils.max(y) - StatUtils.min(y)) / (y.length - 1));
 		renderer.setDefaultToolTipGenerator(new StandardXYZToolTipGenerator());
-
-		PaintScale paintScale = new ColorPaintScale(StatUtils.min(zExpanded), StatUtils.max(zExpanded), baseColor);
-		renderer.setPaintScale(paintScale);
+		
+		if (paintScale instanceof AutoScaledPaintScale autoScaledPaintScale) {
+			renderer.setPaintScale(autoScaledPaintScale.scale(StatUtils.min(zExpanded), StatUtils.max(zExpanded)));
+		} else {
+			renderer.setPaintScale(paintScale);
+		}
 		
 		XYPlot plot = new XYPlot();
 		plot.setDomainAxis(xAxis);
@@ -146,56 +149,39 @@ public class HeatMapBuilder extends PlotBuilder {
 	}
 	
 	public HeatMapBuilder setX(double[] x) {
-		this.xValues = x;
+		this.x = x.clone();
 		return this;
 	}
 	
 	public HeatMapBuilder setX(List<? extends Number> x) {
-		double[] xValues = new double[x.size()];
-		
-		for (int i = 0; i < x.size(); i++) {
-			xValues[i] = x.get(i).doubleValue();
-		}
-		
-		return setX(xValues);
+		return setX(toArray(x));
 	}
 	
 	public HeatMapBuilder setY(double[] y) {
-		this.yValues = y;
+		this.y = y.clone();
 		return this;
 	}
 	
 	public HeatMapBuilder setY(List<? extends Number> y) {
-		double[] yValues = new double[y.size()];
-		
-		for (int i = 0; i < y.size(); i++) {
-			yValues[i] = y.get(i).doubleValue();
-		}
-		
-		return setY(yValues);
+		return setY(toArray(y));
 	}
 	
 	public HeatMapBuilder setZ(double[][] z) {
-		this.zValues = z;
+		this.z = new double[z.length][];
+		
+		for (int i = 0; i < z.length; i++) {
+			this.z[i] = z[i].clone();
+		}
+		
 		return this;
 	}
 	
 	public HeatMapBuilder setZ(List<? extends List<? extends Number>> z) {
-		double[][] zValues = new double[z.size()][];
-		
-		for (int i = 0; i < z.size(); i++) {
-			zValues[i] = new double[z.get(i).size()];
-			
-			for (int j = 0; j < z.get(i).size(); j++) {
-				zValues[i][j] = z.get(i).get(j).doubleValue();
-			}
-		}
-		
-		return setZ(zValues);
+		return setZ(to2DArray(z));
 	}
 	
-	public HeatMapBuilder withBaseColor(Color baseColor) {
-		this.baseColor = baseColor;
+	public HeatMapBuilder withPaintScale(PaintScale paintScale) {
+		this.paintScale = paintScale;
 		return this;
 	}
 
@@ -227,12 +213,12 @@ public class HeatMapBuilder extends PlotBuilder {
 		return this;
 	}
 	
-	private abstract static class AbstractPaintScale implements PaintScale {
+	private abstract static class AutoScaledPaintScale implements PaintScale {
 		
 		private final double lowerBound;
 		private final double upperBound;
 
-		public AbstractPaintScale(double lowerBound, double upperBound) {
+		public AutoScaledPaintScale(double lowerBound, double upperBound) {
 			super();
 			this.lowerBound = lowerBound;
 			this.upperBound = upperBound;
@@ -255,6 +241,15 @@ public class HeatMapBuilder extends PlotBuilder {
 		 * @return the paint
 		 */
 		public abstract Paint getScaledPaint(double value);
+		
+		/**
+		 * Returns a new paint scale with new lower and upper bounds.
+		 * 
+		 * @param lowerBound the new lower bounds
+		 * @param upperBound the new upper bounds
+		 * @return the new paint scale
+		 */
+		public abstract AutoScaledPaintScale scale(double lowerBound, double upperBound);
 
 		@Override
 		public Paint getPaint(double value) {
@@ -264,7 +259,7 @@ public class HeatMapBuilder extends PlotBuilder {
 		
 	}
 	
-	private static class IndexedPaintScale extends AbstractPaintScale {
+	private static class IndexedPaintScale extends AutoScaledPaintScale {
 		
 		private final Color[] colors;
 		
@@ -284,6 +279,11 @@ public class HeatMapBuilder extends PlotBuilder {
 			}
 			
 			return colors[index];
+		}
+		
+		@Override
+		public IndexedPaintScale scale(double lowerBound, double upperBound) {
+			return new IndexedPaintScale(lowerBound, upperBound, colors);
 		}
 		
 	}
@@ -306,9 +306,10 @@ public class HeatMapBuilder extends PlotBuilder {
 			
 			return colors;
 		}
+		
 	}
 
-	public static class RainbowPaintScale extends AbstractPaintScale {
+	public static class RainbowPaintScale extends AutoScaledPaintScale {
 
 		public RainbowPaintScale(double lowerBound, double upperBound) {
 			super(lowerBound, upperBound);
@@ -318,6 +319,32 @@ public class HeatMapBuilder extends PlotBuilder {
 		public Paint getScaledPaint(double value) {
 			return Color.getHSBColor((float)value, 1f, 1f);
 		}
+		
+		@Override
+		public RainbowPaintScale scale(double lowerBound, double upperBound) {
+			return new RainbowPaintScale(lowerBound, upperBound);
+		}
+		
+	}
+	
+	public static void main(String[] args) {
+		double[] x = IntStream.range(0, 10).mapToDouble(i -> (double)i).toArray();
+		double[] y = IntStream.range(0, 20).mapToDouble(i -> (double)i).toArray();
+		double[][] z = new double[x.length][y.length];
+		
+		for (int i = 0; i < x.length; i++) {
+			for (int j = 0; j < y.length; j++) {
+				z[i][j] = i*j;
+			}
+		}
+		
+		new HeatMapBuilder()
+				.setX(x)
+				.setY(y)
+				.setZ(z)
+				.setXLabel("X")
+				.setYLabel("Y")
+				.show();
 	}
 
 }

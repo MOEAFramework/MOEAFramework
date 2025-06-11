@@ -10,6 +10,7 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.moeaframework.util.validate.Validate;
 
 public class BarGraphBuilder extends PlotBuilder {
 	
@@ -54,12 +55,10 @@ public class BarGraphBuilder extends PlotBuilder {
 	}
 	
 	public BarGraphBuilder add(String label, double[] x, double[] y) {
-		return add(label, toList(x), toList(y));
-	}
-	
-	public BarGraphBuilder add(String label, List<? extends Number> x, List<? extends Number> y) {
-		for (int i = 0; i < x.size(); i++) {
-			dataset.addValue(y.get(i), label, x.get(i).doubleValue());
+		Validate.that("x.length", x.length).isEqualTo("y.length", y.length);
+		
+		for (int i = 0; i < x.length; i++) {
+			dataset.addValue((Number)y[i], label, x[i]);
 		}
 				
 		Paint paint = paintHelper.get(label);
@@ -67,6 +66,10 @@ public class BarGraphBuilder extends PlotBuilder {
 		renderer.setSeriesFillPaint(dataset.getRowCount() - 1, paint);
 				
 		return this;
+	}
+	
+	public BarGraphBuilder add(String label, List<? extends Number> x, List<? extends Number> y) {
+		return add(label, toArray(x), toArray(y));
 	}
 	
 }

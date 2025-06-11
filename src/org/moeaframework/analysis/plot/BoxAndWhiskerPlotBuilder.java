@@ -1,6 +1,7 @@
 package org.moeaframework.analysis.plot;
 
 import java.util.List;
+import java.util.stream.DoubleStream;
 
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
@@ -54,7 +55,7 @@ public class BoxAndWhiskerPlotBuilder extends PlotBuilder {
 	}
 	
 	public BoxAndWhiskerPlotBuilder add(String label, double[] values) {
-		return add(label, toList(values));
+		return add(label, DoubleStream.of(values).boxed().toList());
 	}
 	
 	public BoxAndWhiskerPlotBuilder add(String label, DataStream<? extends Number> stream) {
