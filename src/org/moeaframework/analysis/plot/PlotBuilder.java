@@ -18,9 +18,9 @@
 package org.moeaframework.analysis.plot;
 
 import java.awt.BorderLayout;
+import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
 import java.awt.Window;
-import java.awt.Dialog.ModalityType;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
