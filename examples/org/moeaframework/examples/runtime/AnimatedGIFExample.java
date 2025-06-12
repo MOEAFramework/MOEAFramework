@@ -29,6 +29,7 @@ import org.moeaframework.analysis.plot.Style;
 import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
 import org.moeaframework.analysis.runtime.Instrumenter;
 import org.moeaframework.analysis.series.IndexedResult;
+import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.problem.DTLZ.DTLZ2;
 import org.moeaframework.problem.Problem;
 
@@ -56,7 +57,9 @@ public class AnimatedGIFExample {
 		File imageList = new File(tempDirectory, "imageList.txt");
 		
 		try (PrintWriter writer = new PrintWriter(imageList)) {
-			for (IndexedResult result : instrumentedAlgorithm.getSeries()) {
+			ResultSeries series = instrumentedAlgorithm.getSeries();
+			
+			for (IndexedResult result : series) {
 				File imgFile = new File(tempDirectory, "img" + result.getIndex() + ".png");
 				
 				PlotBuilder.xy()
@@ -65,7 +68,7 @@ public class AnimatedGIFExample {
 						.xLim(0.0, 1.5)
 						.yLim(0.0, 1.5)
 						.title("NSGAII on DTLZ2")
-						.subtitle(result.getIndex() + " NFE")
+						.subtitle(result.getIndex() + " / " + series.last().getIndex() + " NFE")
 						.save(imgFile);
 				
 				writer.println(imgFile.getAbsolutePath());
@@ -75,7 +78,7 @@ public class AnimatedGIFExample {
 		// Invoke ImageMagik to combine the images into an animated GIF
 		try {
 			new ProcessBuilder()
-					.command("magick", "convert", "-delay", "10", "-loop", "0", "@" + imageList.getAbsolutePath(), "combined.gif")
+					.command("magick", "-delay", "10", "-loop", "0", "@" + imageList.getAbsolutePath(), "combined.gif")
 					.inheritIO()
 					.start()
 					.waitFor();
