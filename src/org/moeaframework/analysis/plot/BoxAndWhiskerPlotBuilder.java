@@ -28,6 +28,7 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.renderer.category.BoxAndWhiskerRenderer;
 import org.jfree.data.statistics.DefaultBoxAndWhiskerCategoryDataset;
 import org.moeaframework.analysis.IndicatorStatistics;
+import org.moeaframework.analysis.plot.style.StyleAttribute;
 import org.moeaframework.analysis.stream.DataStream;
 
 /**

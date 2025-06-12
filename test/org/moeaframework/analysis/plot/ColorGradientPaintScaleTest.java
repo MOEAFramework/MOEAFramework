@@ -22,6 +22,7 @@ import java.awt.Color;
 import org.jfree.chart.renderer.PaintScale;
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.analysis.plot.style.ColorGradientPaintScale;
 
 public class ColorGradientPaintScaleTest {
 	

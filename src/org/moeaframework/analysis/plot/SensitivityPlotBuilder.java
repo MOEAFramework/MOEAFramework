@@ -39,6 +39,7 @@ import org.moeaframework.analysis.sensitivity.SecondOrderSensitivity;
 import org.moeaframework.analysis.sensitivity.Sensitivity;
 import org.moeaframework.analysis.sensitivity.SensitivityResult;
 import org.moeaframework.analysis.sensitivity.TotalOrderSensitivity;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Displays sensitivity analysis results in a "spider web" plot, where:
@@ -51,7 +52,7 @@ import org.moeaframework.analysis.sensitivity.TotalOrderSensitivity;
  */
 public class SensitivityPlotBuilder extends PlotBuilder<SensitivityPlotBuilder> {
 	
-	private final SensitivityResult result;
+	private SensitivityResult data;
 	
 	private Paint shapeFill;
 	
@@ -65,12 +66,9 @@ public class SensitivityPlotBuilder extends PlotBuilder<SensitivityPlotBuilder> 
 
 	/**
 	 * Constructs a new sensitivity plot builder with the given sensitivity analysis result.
-	 * 
-	 * @param result the sensitivity analysis result
 	 */
-	public SensitivityPlotBuilder(SensitivityResult result) {
+	public SensitivityPlotBuilder() {
 		super();
-		this.result = result;
 		this.shapeFill = Color.BLACK;
 		this.lineFill = Color.GRAY;
 		this.sensitivityScaling = 0.5;
@@ -81,6 +79,17 @@ public class SensitivityPlotBuilder extends PlotBuilder<SensitivityPlotBuilder> 
 	@Override
 	protected SensitivityPlotBuilder getInstance() {
 		return this;
+	}
+	
+	/**
+	 * Sets the sensitivity analysis result.
+	 * 
+	 * @param data the sensitivity analysis result
+	 * @return a reference to this builder
+	 */
+	public SensitivityPlotBuilder data(SensitivityResult data) {
+		this.data = data;
+		return getInstance();
 	}
 	
 	/**
@@ -140,6 +149,8 @@ public class SensitivityPlotBuilder extends PlotBuilder<SensitivityPlotBuilder> 
 	
 	@Override
 	public JFreeChart build() {
+		Validate.that("data", data).isNotNull();
+		
 		NumberAxis xAxis = new NumberAxis("");
 		xAxis.setAutoRangeIncludesZero(false);
 		
@@ -154,13 +165,13 @@ public class SensitivityPlotBuilder extends PlotBuilder<SensitivityPlotBuilder> 
 		plot.setRenderer(renderer);
 		plot.setOrientation(PlotOrientation.VERTICAL);
 		
-		ParameterSet parameterSet = result.getParameterSet();
+		ParameterSet parameterSet = data.getParameterSet();
 		int n = parameterSet.size();
 		double[] angles = IntStream.range(0, n).mapToDouble(x -> 2.0 * Math.PI * x / n).toArray();
 		double[] xs = DoubleStream.of(angles).map(Math::cos).toArray();
 		double[] ys = DoubleStream.of(angles).map(Math::sin).toArray();
 
-		if (result instanceof SecondOrderSensitivity secondOrder) {
+		if (data instanceof SecondOrderSensitivity secondOrder) {
 			for (int i = 0; i < n; i++) {
 				for (int j = i + 1; j < n; j++) {
 					Sensitivity<?> value = secondOrder.getSecondOrder(parameterSet.get(i), parameterSet.get(j));
@@ -189,7 +200,7 @@ public class SensitivityPlotBuilder extends PlotBuilder<SensitivityPlotBuilder> 
 			}
 		}
 
-		if (result instanceof FirstOrderSensitivity firstOrder) {
+		if (data instanceof FirstOrderSensitivity firstOrder) {
 			for (int i = 0; i < n; i++) {
 				Sensitivity<?> value = firstOrder.getFirstOrder(parameterSet.get(i));
 				double size = sizeScaling * Math.pow(value.getSensitivity(), sensitivityScaling) / 2.0;
@@ -204,7 +215,7 @@ public class SensitivityPlotBuilder extends PlotBuilder<SensitivityPlotBuilder> 
 			}
 		}
 
-		if (result instanceof TotalOrderSensitivity totalOrder) {
+		if (data instanceof TotalOrderSensitivity totalOrder) {
 			for (int i = 0; i < n; i++) {
 				Sensitivity<?> value = totalOrder.getTotalOrder(parameterSet.get(i));
 				double size = sizeScaling * Math.pow(value.getSensitivity(), sensitivityScaling) / 2.0;

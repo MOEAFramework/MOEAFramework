@@ -15,45 +15,37 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis.plot;
+package org.moeaframework.analysis.plot.style;
 
-import java.awt.Paint;
+import java.awt.Color;
 
 /**
- * Paint scale that maps Z values to a list of colors.
+ * Paint scale producing a gradient of some base color by adjusting its brightness.
  */
-class IndexedPaintScale extends AutoScaledPaintScale {
-	
-	private final Paint[] paints;
+public class ColorGradientPaintScale extends IndexedPaintScale {
 	
 	/**
-	 * Constructs an indexed paint scale.
+	 * Constructs a color gradient paint scale.
 	 * 
 	 * @param lowerBound the lower bound
 	 * @param upperBound the upper bound
-	 * @param paints the array of paints
+	 * @param baseColor the base color
 	 */
-	public IndexedPaintScale(double lowerBound, double upperBound, Paint... paints) {
-		super(lowerBound, upperBound);
-		this.paints = paints;
-	}
+	public ColorGradientPaintScale(double lowerBound, double upperBound, Color baseColor) {
+		super(lowerBound, upperBound, generateColors(baseColor, 256));
+    }
 	
-	@Override
-	public Paint getScaledPaint(double value) {
-		int index = (int)(value * paints.length);
+	private static final Color[] generateColors(Color baseColor, int numberOfColors) {
+		Color[] colors = new Color[numberOfColors];
+		float[] hsb = new float[3];
 		
-		if (index < 0) {
-			index = 0;
-		} else if (index >= paints.length) {
-			index = paints.length - 1;
+		Color.RGBtoHSB(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), hsb);
+		
+		for (int i = 0; i < numberOfColors; i++) {
+			colors[i] = Color.getHSBColor(hsb[0], hsb[1], (float)i / (numberOfColors - 1));
 		}
 		
-		return paints[index];
-	}
-	
-	@Override
-	public IndexedPaintScale scale(double lowerBound, double upperBound) {
-		return new IndexedPaintScale(lowerBound, upperBound, paints);
+		return colors;
 	}
 	
 }

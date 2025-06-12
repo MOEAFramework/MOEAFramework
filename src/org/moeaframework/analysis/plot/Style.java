@@ -21,6 +21,15 @@ import java.awt.Color;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
+import org.moeaframework.analysis.plot.style.ColorGradientPaintScale;
+import org.moeaframework.analysis.plot.style.LabelAttribute;
+import org.moeaframework.analysis.plot.style.PaintAttribute;
+import org.moeaframework.analysis.plot.style.PaintScaleAttribute;
+import org.moeaframework.analysis.plot.style.RainbowPaintScale;
+import org.moeaframework.analysis.plot.style.ShapeAttribute;
+import org.moeaframework.analysis.plot.style.SizeAttribute;
+import org.moeaframework.analysis.plot.style.TooltipAttribute;
+
 /**
  * Collection of style constants.
  */

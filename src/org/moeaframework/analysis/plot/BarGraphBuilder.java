@@ -27,6 +27,7 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.moeaframework.analysis.plot.style.StyleAttribute;
 import org.moeaframework.util.validate.Validate;
 
 /**

@@ -15,34 +15,33 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis.plot;
+package org.moeaframework.analysis.plot.style;
 
-import java.awt.Color;
-import java.awt.Paint;
+import org.jfree.chart.plot.Plot;
 
 /**
- * Paint scale producing a rainbow of colors by adjusting the hue component.
+ * Interface for customizing the style of series plotted in a graph.  Style attributes are best-effort, meaning if a
+ * style is applied to a plot not supporting that style, it is silently ignored.
  */
-public class RainbowPaintScale extends AutoScaledPaintScale {
-
+public interface StyleAttribute {
+	
 	/**
-	 * Constructs a rainbow paint scale.
+	 * Applies the style to a specific dataset and series.
 	 * 
-	 * @param lowerBound the lower bound
-	 * @param upperBound the upper bound
+	 * @param plot the plot
+	 * @param dataset the index of the dataset
+	 * @param series the index of the series
 	 */
-	public RainbowPaintScale(double lowerBound, double upperBound) {
-		super(lowerBound, upperBound);
+	public void apply(Plot plot, int dataset, int series);
+	
+	/**
+	 * Applies the style to all series within the specified dataset.
+	 * 
+	 * @param plot the plot
+	 * @param dataset the index of the dataset
+	 */
+	public default void apply(Plot plot, int dataset) {
+		apply(plot, dataset, -1);
 	}
 
-	@Override
-	public Paint getScaledPaint(double value) {
-		return Color.getHSBColor((float)value, 1f, 1f);
-	}
-	
-	@Override
-	public RainbowPaintScale scale(double lowerBound, double upperBound) {
-		return new RainbowPaintScale(lowerBound, upperBound);
-	}
-	
 }

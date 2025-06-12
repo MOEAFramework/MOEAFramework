@@ -44,6 +44,7 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.data.xy.YIntervalSeries;
 import org.jfree.data.xy.YIntervalSeriesCollection;
+import org.moeaframework.analysis.plot.style.StyleAttribute;
 import org.moeaframework.analysis.series.IndexType;
 import org.moeaframework.analysis.series.IndexedResult;
 import org.moeaframework.analysis.series.ResultEntry;

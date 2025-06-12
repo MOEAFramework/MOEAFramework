@@ -33,6 +33,9 @@ import org.jfree.chart.renderer.xy.XYBlockRenderer;
 import org.jfree.chart.title.PaintScaleLegend;
 import org.jfree.chart.ui.RectangleEdge;
 import org.jfree.data.xy.DefaultXYZDataset;
+import org.moeaframework.analysis.plot.style.PaintAttribute;
+import org.moeaframework.analysis.plot.style.PaintScaleAttribute;
+import org.moeaframework.analysis.plot.style.StyleAttribute;
 import org.moeaframework.analysis.stream.Partition;
 import org.moeaframework.util.validate.Validate;
 

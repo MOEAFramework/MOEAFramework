@@ -23,6 +23,7 @@ import java.util.stream.IntStream;
 import org.junit.Test;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.algorithm.extension.Frequency;
+import org.moeaframework.analysis.plot.style.SizeAttribute;
 import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
 import org.moeaframework.analysis.runtime.Instrumenter;
 import org.moeaframework.analysis.series.ResultSeries;

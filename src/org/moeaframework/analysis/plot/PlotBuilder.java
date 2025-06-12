@@ -36,6 +36,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.Plot;
 import org.jfree.chart.title.LegendTitle;
 import org.moeaframework.analysis.diagnostics.PaintHelper;
+import org.moeaframework.analysis.plot.style.StyleAttribute;
 import org.moeaframework.util.mvc.UI;
 import org.moeaframework.util.validate.Validate;
 
@@ -374,6 +375,51 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * Returns a new XY plot builder.
+	 * 
+	 * @return the plot builder
+	 */
+	public static XYPlotBuilder xy() {
+		return new XYPlotBuilder();
+	}
+	
+	/**
+	 * Returns a new bar graph plot builder.
+	 * 
+	 * @return the plot builder
+	 */
+	public static BarGraphBuilder barGraph() {
+		return new BarGraphBuilder();
+	}
+	
+	/**
+	 * Returns a new box-and-whisker plot builder.
+	 * 
+	 * @return the plot builder
+	 */
+	public static BoxAndWhiskerPlotBuilder boxAndWhisker() {
+		return new BoxAndWhiskerPlotBuilder();
+	}
+	
+	/**
+	 * Returns a new heat map plot builder.
+	 * 
+	 * @return the plot builder
+	 */
+	public static HeatMapBuilder heatMap() {
+		return new HeatMapBuilder();
+	}
+	
+	/**
+	 * Returns a new sensitivity analysis result plot builder.
+	 * 
+	 * @return the plot builder
+	 */
+	public static SensitivityPlotBuilder sensitivity() {
+		return new SensitivityPlotBuilder();
 	}
 	
 }

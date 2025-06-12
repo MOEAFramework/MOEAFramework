@@ -15,37 +15,34 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.analysis.plot;
+package org.moeaframework.analysis.plot.style;
 
 import java.awt.Color;
+import java.awt.Paint;
 
 /**
- * Paint scale producing a gradient of some base color by adjusting its brightness.
+ * Paint scale producing a rainbow of colors by adjusting the hue component.
  */
-public class ColorGradientPaintScale extends IndexedPaintScale {
-	
+public class RainbowPaintScale extends AutoScaledPaintScale {
+
 	/**
-	 * Constructs a color gradient paint scale.
+	 * Constructs a rainbow paint scale.
 	 * 
 	 * @param lowerBound the lower bound
 	 * @param upperBound the upper bound
-	 * @param baseColor the base color
 	 */
-	public ColorGradientPaintScale(double lowerBound, double upperBound, Color baseColor) {
-		super(lowerBound, upperBound, generateColors(baseColor, 256));
-    }
+	public RainbowPaintScale(double lowerBound, double upperBound) {
+		super(lowerBound, upperBound);
+	}
+
+	@Override
+	public Paint getScaledPaint(double value) {
+		return Color.getHSBColor((float)value, 1f, 1f);
+	}
 	
-	private static final Color[] generateColors(Color baseColor, int numberOfColors) {
-		Color[] colors = new Color[numberOfColors];
-		float[] hsb = new float[3];
-		
-		Color.RGBtoHSB(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), hsb);
-		
-		for (int i = 0; i < numberOfColors; i++) {
-			colors[i] = Color.getHSBColor(hsb[0], hsb[1], (float)i / (numberOfColors - 1));
-		}
-		
-		return colors;
+	@Override
+	public RainbowPaintScale scale(double lowerBound, double upperBound) {
+		return new RainbowPaintScale(lowerBound, upperBound);
 	}
 	
 }
