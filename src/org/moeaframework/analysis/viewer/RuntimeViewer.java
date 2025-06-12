@@ -71,6 +71,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.constraint.Constraint;
 import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.core.population.Population;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.core.variable.Variable;
 import org.moeaframework.util.Localization;
@@ -196,7 +197,9 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		UI.show(() -> {
 			RuntimeViewer viewer = new RuntimeViewer(null, title);
 
-			viewer.getController().setReferenceSet(referenceSet);
+			if (referenceSet != null) {
+				viewer.getController().setReferenceSet(referenceSet);
+			}
 
 			for (int i = 0; i < series.length; i++) {
 				viewer.getController().addSeries(LOCALIZATION.getString("text.series") + " " + (i + 1), series[i]);
@@ -464,9 +467,12 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 
 		if (controller.getReferenceSet() != null) {
 			prototypeSolution = controller.getReferenceSet().getPrototypeSolution();
-			numberOfVariables = Math.min(numberOfVariables, prototypeSolution.getNumberOfVariables());
-			numberOfObjectives = Math.min(numberOfObjectives, prototypeSolution.getNumberOfObjectives());
-			numberOfConstraints = Math.min(numberOfConstraints, prototypeSolution.getNumberOfConstraints());
+			
+			if (prototypeSolution != null) {
+				numberOfVariables = Math.min(numberOfVariables, prototypeSolution.getNumberOfVariables());
+				numberOfObjectives = Math.min(numberOfObjectives, prototypeSolution.getNumberOfObjectives());
+				numberOfConstraints = Math.min(numberOfConstraints, prototypeSolution.getNumberOfConstraints());
+			}
 		}
 
 		for (PlotSeries series : controller.getSeries()) {
@@ -621,14 +627,16 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 			}
 		}
 		case ReferenceSetBounds -> {
-			AxisSelector<Solution, Number> xAxis = xAxisSelection.getItemAt(xAxisSelection.getSelectedIndex());
-			AxisSelector<Solution, Number> yAxis = yAxisSelection.getItemAt(yAxisSelection.getSelectedIndex());
-
-			Pair<Range, Range> bounds = controller.getReferenceSet().getBoundsAt(0, xAxis, yAxis);
-
-			if (bounds.getLeft() != null && bounds.getRight() != null) {
-				builder.xLim(bounds.getLeft());
-				builder.yLim(bounds.getRight());
+			if (controller.getReferenceSet() != null) {
+				AxisSelector<Solution, Number> xAxis = xAxisSelection.getItemAt(xAxisSelection.getSelectedIndex());
+				AxisSelector<Solution, Number> yAxis = yAxisSelection.getItemAt(yAxisSelection.getSelectedIndex());
+	
+				Pair<Range, Range> bounds = controller.getReferenceSet().getBoundsAt(0, xAxis, yAxis);
+	
+				if (bounds.getLeft() != null && bounds.getRight() != null) {
+					builder.xLim(bounds.getLeft());
+					builder.yLim(bounds.getRight());
+				}
 			}
 		}
 		default -> {
@@ -753,6 +761,12 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		}
 
 		public Solution getPrototypeSolution() {
+			Population population = series.first().getPopulation();
+			
+			if (population == null || population.isEmpty()) {
+				return null;
+			}
+			
 			return series.first().getPopulation().get(0);
 		}
 
