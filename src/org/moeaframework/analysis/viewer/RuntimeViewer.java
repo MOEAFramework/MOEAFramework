@@ -563,11 +563,9 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 			builder.scatter(referenceSet.toXYSeries(currentIndex, xAxis, yAxis), getStyle(referenceSet));
 		}
 		
-		builder.title((title == null ? "" : title + " @ ") +
-				(controller.getIndexType() == IndexType.NFE ?
-						LOCALIZATION.getString("text.NFE") :
-						LOCALIZATION.getString("text.Index")) +
-				" " + slider.getValue());
+		builder.title(title);
+		builder.subtitle(slider.getValue() + " " + (controller.getIndexType() == IndexType.NFE ?
+				LOCALIZATION.getString("text.NFE") : LOCALIZATION.getString("text.Index")));
 		builder.xLabel(xAxisSelection.getSelectedItem().toString());
 		builder.yLabel(yAxisSelection.getSelectedItem().toString());
 		
