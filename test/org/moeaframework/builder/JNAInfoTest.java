@@ -19,8 +19,8 @@ package org.moeaframework.builder;
 
 import java.io.IOException;
 
-import org.apache.commons.cli.MissingOptionException;
 import org.apache.commons.cli.MissingArgumentException;
+import org.apache.commons.cli.MissingOptionException;
 import org.apache.commons.lang3.SystemUtils;
 import org.junit.Test;
 import org.moeaframework.Assert;

@@ -31,7 +31,7 @@ public class BarGraphBuilderTest extends AbstractPlotTest {
 
 	@Test
 	public void testSingleSeries() {
-		double[] x = IntStream.range(0, 10).mapToDouble(i -> (double)i).toArray();
+		double[] x = IntStream.range(0, 10).mapToDouble(i -> i).toArray();
 		double[] y = IntStream.range(0, 10).mapToDouble(i -> PRNG.nextDouble()).toArray();
 		
 		new BarGraphBuilder()
@@ -41,7 +41,7 @@ public class BarGraphBuilderTest extends AbstractPlotTest {
 	
 	@Test
 	public void testTwoSeries() {
-		double[] x = IntStream.range(0, 10).mapToDouble(i -> (double)i).toArray();
+		double[] x = IntStream.range(0, 10).mapToDouble(i -> i).toArray();
 		double[] y1 = IntStream.range(0, 10).mapToDouble(i -> PRNG.nextDouble()).toArray();
 		double[] y2 = IntStream.range(0, 10).mapToDouble(i -> PRNG.nextDouble()).toArray();
 		
@@ -53,7 +53,7 @@ public class BarGraphBuilderTest extends AbstractPlotTest {
 	
 	@Test
 	public void testStyle() {
-		double[] x = IntStream.range(0, 10).mapToDouble(i -> (double)i).toArray();
+		double[] x = IntStream.range(0, 10).mapToDouble(i -> i).toArray();
 		double[] y = IntStream.range(0, 10).mapToDouble(i -> PRNG.nextDouble()).toArray();
 		
 		new BarGraphBuilder()

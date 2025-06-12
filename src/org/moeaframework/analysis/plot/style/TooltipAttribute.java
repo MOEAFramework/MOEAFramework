@@ -44,7 +44,9 @@ public class TooltipAttribute implements StyleAttribute {
 	@Override
 	public void apply(Plot plot, int dataset, int series) {
 		if (plot instanceof XYPlot xyPlot) {
-			XYItemRenderer renderer = xyPlot.getRenderer(dataset);			
+			XYItemRenderer renderer = xyPlot.getRenderer(dataset);	
+			
+			System.out.println(xyPlot.getDataset(dataset).getClass());
 			
 			if (xyPlot.getDataset(dataset) instanceof XYZDataset) {
 				if (series >= 0) {

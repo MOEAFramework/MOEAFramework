@@ -30,8 +30,8 @@ public class HeatMapBuilderTest extends AbstractPlotTest {
 
 	@Test
 	public void test() {
-		double[] x = IntStream.range(0, 10).mapToDouble(i -> (double)i).toArray();
-		double[] y = IntStream.range(0, 20).mapToDouble(i -> (double)i).toArray();
+		double[] x = IntStream.range(0, 10).mapToDouble(i -> i).toArray();
+		double[] y = IntStream.range(0, 20).mapToDouble(i -> i).toArray();
 		double[][] z = new double[x.length][y.length];
 		
 		for (int i = 0; i < x.length; i++) {

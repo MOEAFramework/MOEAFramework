@@ -154,7 +154,7 @@ public class RuntimeController extends Controller implements SettingChangedListe
 	/**
 	 * Sets or updates the reference set displayed in the plot.
 	 * 
-	 * @param population the reference set population
+	 * @param referenceSet the reference set
 	 */
 	public void setReferenceSet(NondominatedPopulation referenceSet) {
 		Validate.that("referenceSet", referenceSet).isNotNull();
