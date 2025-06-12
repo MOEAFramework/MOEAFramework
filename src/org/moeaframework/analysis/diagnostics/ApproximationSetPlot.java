@@ -19,7 +19,7 @@ package org.moeaframework.analysis.diagnostics;
 
 import java.awt.BorderLayout;
 
-import org.moeaframework.analysis.plot.SeriesPaint;
+import org.moeaframework.analysis.plot.Style;
 import org.moeaframework.analysis.plot.XYPlotBuilder;
 import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
@@ -78,7 +78,7 @@ public class ApproximationSetPlot extends ResultPlot {
 			population.addAll(controller.getLastSeries().last().getPopulation());
 			
 			if (!population.isEmpty()) {
-				builder.scatter(LOCALIZATION.getString("text.last"), population, SeriesPaint.black());
+				builder.scatter(LOCALIZATION.getString("text.last"), population, Style.black());
 			}
 		}
 		

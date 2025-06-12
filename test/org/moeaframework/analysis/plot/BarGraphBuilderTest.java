@@ -57,7 +57,7 @@ public class BarGraphBuilderTest extends AbstractPlotTest {
 		double[] y = IntStream.range(0, 10).mapToDouble(i -> PRNG.nextDouble()).toArray();
 		
 		new BarGraphBuilder()
-				.bars("Test", x, y, SeriesPaint.black())
+				.bars("Test", x, y, Style.black())
 				.show();
 	}
 	

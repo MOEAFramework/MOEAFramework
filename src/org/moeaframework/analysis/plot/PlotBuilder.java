@@ -359,4 +359,21 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 		}
 	}
 	
+	/**
+	 * Returns {@code true} if a style attribute exists of the specified type.
+	 * 
+	 * @param attributes the style attributes
+	 * @param type the style attribute type
+	 * @return {@code true} if a style attribute exists, {@code false} otherwise
+	 */
+	protected boolean hasStyleAttribute(StyleAttribute[] attributes, Class<? extends StyleAttribute> type) {
+		for (StyleAttribute attribute : attributes) {
+			if (type.isInstance(attribute)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 }

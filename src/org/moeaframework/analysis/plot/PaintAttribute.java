@@ -24,23 +24,41 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.Plot;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
+import org.jfree.chart.renderer.xy.XYBlockRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 
 /**
  * Styles the paint / color of a plotted series.
  */
-public class SeriesPaint implements StyleAttribute {
+public class PaintAttribute implements StyleAttribute {
 	
 	private final Paint paint;
+	
+	private final Paint outlinePaint;
+	
+	private final Paint fillPaint;
 	
 	/**
 	 * Constructs a new paint style attribute.
 	 * 
 	 * @param paint the paint
 	 */
-	public SeriesPaint(Paint paint) {
+	public PaintAttribute(Paint paint) {
+		this(paint, paint, paint);
+	}
+	
+	/**
+	 * Constructs a new paint style attribute.
+	 * 
+	 * @param paint the paint
+	 * @param outlinePaint the outline paint
+	 * @param fillPaint the fill paint
+	 */
+	public PaintAttribute(Paint paint, Paint outlinePaint, Paint fillPaint) {
 		super();
 		this.paint = paint;
+		this.outlinePaint = outlinePaint;
+		this.fillPaint = fillPaint;
 	}
 	
 	@Override
@@ -48,22 +66,30 @@ public class SeriesPaint implements StyleAttribute {
 		if (plot instanceof XYPlot xyPlot) {
 			XYItemRenderer renderer = xyPlot.getRenderer(dataset);
 			
-			if (series >= 0) {
-				renderer.setSeriesPaint(series, paint);
-				renderer.setSeriesFillPaint(series, paint);
+			if (renderer instanceof XYBlockRenderer && paint instanceof Color color) {
+				new PaintScaleAttribute(new ColorGradientPaintScale(0.0, 1.0, color)).apply(plot, dataset, series);
 			} else {
-				renderer.setDefaultPaint(paint);
-				renderer.setDefaultFillPaint(paint);
+				if (series >= 0) {
+					renderer.setSeriesPaint(series, paint);
+					renderer.setSeriesOutlinePaint(series, outlinePaint);
+					renderer.setSeriesFillPaint(series, fillPaint);
+				} else {
+					renderer.setDefaultPaint(paint);
+					renderer.setDefaultOutlinePaint(outlinePaint);
+					renderer.setDefaultFillPaint(fillPaint);
+				}
 			}
 		} else if (plot instanceof CategoryPlot categoryPlot) {
 			CategoryItemRenderer renderer = categoryPlot.getRenderer(dataset);
 			
 			if (series >= 0) {
 				renderer.setSeriesPaint(series, paint);
-				renderer.setSeriesFillPaint(series, paint);
+				renderer.setSeriesOutlinePaint(series, outlinePaint);
+				renderer.setSeriesFillPaint(series, fillPaint);
 			} else {
 				renderer.setDefaultPaint(paint);
-				renderer.setDefaultFillPaint(paint);
+				renderer.setDefaultOutlinePaint(outlinePaint);
+				renderer.setDefaultFillPaint(fillPaint);
 			}
 		}
 	}
@@ -74,70 +100,8 @@ public class SeriesPaint implements StyleAttribute {
 	 * @param paint the paint
 	 * @return the resulting style attribute
 	 */
-	public static SeriesPaint of(Paint paint) {
-		return new SeriesPaint(paint);
-	}
-	
-	/**
-	 * Returns a black paint style attribute.
-	 * 
-	 * @return the resulting style attribute
-	 */
-	public static SeriesPaint black() {
-		return of(Color.BLACK);
-	}
-	
-	/**
-	 * Returns a red paint style attribute.
-	 * 
-	 * @return the resulting style attribute
-	 */
-	public static SeriesPaint red() {
-		return of(Color.RED);
-	}
-	
-	/**
-	 * Returns a green paint style attribute.
-	 * 
-	 * @return the resulting style attribute
-	 */
-	public static SeriesPaint green() {
-		return of(Color.GREEN);
-	}
-	
-	/**
-	 * Returns a blue paint style attribute.
-	 * 
-	 * @return the resulting style attribute
-	 */
-	public static SeriesPaint blue() {
-		return of(Color.BLUE);
-	}
-	
-	/**
-	 * Returns a paint style attribute using an RGB color model.
-	 * 
-	 * @param r the red component ({@code 0 - 255})
-	 * @param g the green component ({@code 0 - 255})
-	 * @param b the blue component ({@code 0 - 255})
-	 * @return the resulting style attribute
-	 * @see Color#Color(int, int, int)
-	 */
-	public static SeriesPaint rgb(int r, int g, int b) {
-		return of(new Color(r, g, b));
-	}
-	
-	/**
-	 * Returns a paint style attribute using an HSB color model.
-	 * 
-	 * @param h the hue
-	 * @param s the saturation
-	 * @param b the brightness
-	 * @return the resulting style attribute
-	 * @see Color#getHSBColor(float, float, float)
-	 */
-	public static SeriesPaint hsb(float h, float s, float b) {
-		return of(Color.getHSBColor(h, s, b));
+	public static PaintAttribute of(Paint paint) {
+		return new PaintAttribute(paint);
 	}
 
 }

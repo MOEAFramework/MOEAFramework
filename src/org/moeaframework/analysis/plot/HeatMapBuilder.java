@@ -18,7 +18,6 @@
 package org.moeaframework.analysis.plot;
 
 import java.awt.Color;
-import java.awt.Paint;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +29,6 @@ import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.labels.StandardXYZToolTipGenerator;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.PaintScale;
 import org.jfree.chart.renderer.xy.XYBlockRenderer;
 import org.jfree.chart.title.PaintScaleLegend;
 import org.jfree.chart.ui.RectangleEdge;
@@ -56,8 +54,8 @@ public class HeatMapBuilder extends PlotBuilder<HeatMapBuilder> {
 	
 	private double[][] z;
 	
-	private PaintScale paintScale;
-
+	private StyleAttribute[] style;
+	
 	/**
 	 * Constructs a new, empty heat map builder.
 	 */
@@ -79,8 +77,6 @@ public class HeatMapBuilder extends PlotBuilder<HeatMapBuilder> {
 		zAxis.setLowerMargin(0.0);
 		zAxis.setUpperMargin(0.0);
 		zAxis.setVisible(false);
-		
-		paintScale = new ColorPaintScale(0.0, 1.0, Color.BLACK);
 	}
 	
 	@Override
@@ -107,19 +103,13 @@ public class HeatMapBuilder extends PlotBuilder<HeatMapBuilder> {
 		}
 
 		DefaultXYZDataset dataset = new DefaultXYZDataset();
-		dataset.addSeries("HeatMap", new double[][] { xExpanded, yExpanded, zExpanded });
+		dataset.addSeries("Value", new double[][] { xExpanded, yExpanded, zExpanded });
 		
 		XYBlockRenderer renderer = new XYBlockRenderer();
 		renderer.setBlockWidth((StatUtils.max(x) - StatUtils.min(x)) / (x.length - 1));
 		renderer.setBlockHeight((StatUtils.max(y) - StatUtils.min(y)) / (y.length - 1));
 		renderer.setDefaultToolTipGenerator(new StandardXYZToolTipGenerator());
-		
-		if (paintScale instanceof AutoScaledPaintScale autoScaledPaintScale) {
-			renderer.setPaintScale(autoScaledPaintScale.scale(StatUtils.min(zExpanded), StatUtils.max(zExpanded)));
-		} else {
-			renderer.setPaintScale(paintScale);
-		}
-		
+
 		XYPlot plot = new XYPlot();
 		plot.setDomainAxis(xAxis);
 		plot.setRangeAxis(yAxis);
@@ -128,6 +118,12 @@ public class HeatMapBuilder extends PlotBuilder<HeatMapBuilder> {
 		plot.setDataset(dataset);
 		plot.setRenderer(renderer);
 		
+		applyStyle(plot, 0, style);
+		
+		if (!hasStyleAttribute(style, PaintScaleAttribute.class) && !hasStyleAttribute(style, PaintAttribute.class)) {
+			Style.gradient(Color.BLACK).apply(plot, 0);
+		}
+				
 		JFreeChart chart = build(plot);
 
 		if (chart.getLegend() != null) {
@@ -245,14 +241,13 @@ public class HeatMapBuilder extends PlotBuilder<HeatMapBuilder> {
 	}
 	
 	/**
-	 * Sets the paint scale that maps Z values into colors.
+	 * Sets the style of the heat map.
 	 * 
-	 * @param paintScale the paint scale
+	 * @param style the style attributes
 	 * @return a reference to this builder
 	 */
-	public HeatMapBuilder paintScale(PaintScale paintScale) {
-		Validate.that("paintScale", paintScale).isNotNull();
-		this.paintScale = paintScale;
+	public HeatMapBuilder style(StyleAttribute... style) {
+		this.style = style;
 		return getInstance();
 	}
 
@@ -260,9 +255,11 @@ public class HeatMapBuilder extends PlotBuilder<HeatMapBuilder> {
 	 * Sets the X, Y, and Z values based on a {@link Partition}.
 	 * 
 	 * @param partition the data stream partition
+	 * @param style the style attributes
 	 * @return a reference to this instance
 	 */
-	public HeatMapBuilder set(Partition<? extends Pair<? extends Number, ? extends Number>, ? extends Number> partition) {
+	public HeatMapBuilder data(Partition<? extends Pair<? extends Number, ? extends Number>, ? extends Number> partition,
+			StyleAttribute... style) {
 		List<? extends Number> xs = partition.keys().stream().map(Pair::getLeft).distinct().sorted().toList();
 		List<? extends Number> ys = partition.keys().stream().map(Pair::getRight).distinct().sorted().toList();
 		List<List<Number>> zs = new ArrayList<>();
@@ -280,160 +277,9 @@ public class HeatMapBuilder extends PlotBuilder<HeatMapBuilder> {
 		xCoords(xs);
 		yCoords(ys);
 		zData(zs);
+		style(style);
 		
 		return getInstance();
-	}
-	
-	/**
-	 * Abstract class for defining paint scales that are automatically scaled based on the range of Z values.
-	 */
-	private abstract static class AutoScaledPaintScale implements PaintScale {
-		
-		private final double lowerBound;
-		private final double upperBound;
-
-		/**
-		 * Constructs an auto-scaled paint scale with initial bounds.
-		 * 
-		 * @param lowerBound the lower bound
-		 * @param upperBound the upper bound
-		 */
-		public AutoScaledPaintScale(double lowerBound, double upperBound) {
-			super();
-			this.lowerBound = lowerBound;
-			this.upperBound = upperBound;
-		}
-
-		@Override
-		public double getLowerBound() {
-			return lowerBound;
-		}
-
-		@Override
-		public double getUpperBound() {
-			return upperBound;
-		}
-		
-		/**
-		 * Returns the paint for a value scaled by the lower and upper bounds.
-		 * 
-		 * @param value the scaled value, between {@code 0.0} and {@code 1.0}
-		 * @return the paint
-		 */
-		public abstract Paint getScaledPaint(double value);
-		
-		/**
-		 * Returns a new paint scale with new lower and upper bounds.
-		 * 
-		 * @param lowerBound the new lower bound
-		 * @param upperBound the new upper bound
-		 * @return the new paint scale
-		 */
-		public abstract AutoScaledPaintScale scale(double lowerBound, double upperBound);
-
-		@Override
-		public Paint getPaint(double value) {
-			double boundedValue = Math.min(Math.max(value, lowerBound), upperBound);
-			return getScaledPaint((boundedValue - lowerBound) / (upperBound - lowerBound));
-		}
-		
-	}
-	
-	/**
-	 * Paint scale that maps Z values to a list of colors.
-	 */
-	private static class IndexedPaintScale extends AutoScaledPaintScale {
-		
-		private final Paint[] paints;
-		
-		/**
-		 * Constructs an indexed paint scale.
-		 * 
-		 * @param lowerBound the lower bound
-		 * @param upperBound the upper bound
-		 * @param paints the array of paints
-		 */
-		public IndexedPaintScale(double lowerBound, double upperBound, Paint... paints) {
-			super(lowerBound, upperBound);
-			this.paints = paints;
-		}
-		
-		@Override
-		public Paint getScaledPaint(double value) {
-			int index = (int)(value * paints.length);
-			
-			if (index < 0) {
-				index = 0;
-			} else if (index >= paints.length) {
-				index = paints.length - 1;
-			}
-			
-			return paints[index];
-		}
-		
-		@Override
-		public IndexedPaintScale scale(double lowerBound, double upperBound) {
-			return new IndexedPaintScale(lowerBound, upperBound, paints);
-		}
-		
-	}
-
-	/**
-	 * Paint scale producing a gradient of some base color by adjusting its brightness.
-	 */
-	public static class ColorPaintScale extends IndexedPaintScale {
-		
-		/**
-		 * Constructs a color gradient paint scale.
-		 * 
-		 * @param lowerBound the lower bound
-		 * @param upperBound the upper bound
-		 * @param baseColor the base color
-		 */
-		public ColorPaintScale(double lowerBound, double upperBound, Color baseColor) {
-			super(lowerBound, upperBound, generateColors(baseColor, 256));
-        }
-		
-		private static final Color[] generateColors(Color baseColor, int numberOfColors) {
-			Color[] colors = new Color[numberOfColors];
-			float[] hsb = new float[3];
-			
-			Color.RGBtoHSB(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), hsb);
-			
-			for (int i = 0; i < numberOfColors; i++) {
-				colors[i] = Color.getHSBColor(hsb[0], hsb[1], (float)i / (numberOfColors - 1));
-			}
-			
-			return colors;
-		}
-		
-	}
-
-	/**
-	 * Paint scale producing a rainbow of colors by adjusting the hue component.
-	 */
-	public static class RainbowPaintScale extends AutoScaledPaintScale {
-
-		/**
-		 * Constructs a rainbow paint scale.
-		 * 
-		 * @param lowerBound the lower bound
-		 * @param upperBound the upper bound
-		 */
-		public RainbowPaintScale(double lowerBound, double upperBound) {
-			super(lowerBound, upperBound);
-		}
-
-		@Override
-		public Paint getScaledPaint(double value) {
-			return Color.getHSBColor((float)value, 1f, 1f);
-		}
-		
-		@Override
-		public RainbowPaintScale scale(double lowerBound, double upperBound) {
-			return new RainbowPaintScale(lowerBound, upperBound);
-		}
-		
 	}
 
 }

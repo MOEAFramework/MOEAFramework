@@ -58,8 +58,8 @@ import org.jfree.data.xy.XYSeries;
 import org.moeaframework.analysis.diagnostics.PaintHelper;
 import org.moeaframework.analysis.plot.ImageFileType;
 import org.moeaframework.analysis.plot.ImageUtils;
-import org.moeaframework.analysis.plot.SeriesPaint;
-import org.moeaframework.analysis.plot.SeriesSize;
+import org.moeaframework.analysis.plot.PaintAttribute;
+import org.moeaframework.analysis.plot.SizeAttribute;
 import org.moeaframework.analysis.plot.StyleAttribute;
 import org.moeaframework.analysis.plot.XYPlotBuilder;
 import org.moeaframework.analysis.series.IndexType;
@@ -441,7 +441,7 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 			}
 		}
 				
-		return new StyleAttribute[] { SeriesPaint.of(paint), SeriesSize.of(controller.getPointSize().get()) };
+		return new StyleAttribute[] { PaintAttribute.of(paint), SizeAttribute.of(controller.getPointSize().get()) };
 	}
 	
 	private void updateModel() {

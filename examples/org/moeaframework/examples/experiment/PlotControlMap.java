@@ -65,13 +65,13 @@ public class PlotControlMap {
 		// Calculate the hypervolume and create a 2D grouping of the average value
 		Hypervolume hypervolume = new Hypervolume(problem, NondominatedPopulation.load("./pf/DTLZ2.2D.pf"));
 		
-		Partition<Pair<Integer, Integer>, Double> controlMap = results
+		Partition<Pair<Integer, Integer>, Double> averageHypervolume = results
 			.map(hypervolume::evaluate)
 			.groupBy(Groupings.pair(Groupings.bucket(populationSize, 10), Groupings.bucket(maxEvaluations, 1000)))
 			.measureEach(Measures.average());
 		
 		new HeatMapBuilder()
-			.set(controlMap)
+			.data(averageHypervolume)
 			.xLabel(populationSize.getName())
 			.yLabel(maxEvaluations.getName())
 			.zLabel("Hypervolume")

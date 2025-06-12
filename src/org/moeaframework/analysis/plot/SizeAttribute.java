@@ -27,16 +27,16 @@ import org.jfree.chart.renderer.xy.XYItemRenderer;
 /**
  * Styles the line thickness or shape size of a plotted series.
  */
-public class SeriesSize implements StyleAttribute {
+public class SizeAttribute implements StyleAttribute {
 	
-	private final float size;
+	private final double size;
 	
 	/**
 	 * Constructs a new size style attribute.
 	 * 
 	 * @param size the size
 	 */
-	public SeriesSize(float size) {
+	public SizeAttribute(double size) {
 		super();
 		this.size = size;
 	}
@@ -54,31 +54,33 @@ public class SeriesSize implements StyleAttribute {
 				
 				if (renderer.getSeriesStroke(series) instanceof BasicStroke stroke) {
 					renderer.setSeriesStroke(series, new BasicStroke(
-							size,
+							(float)size,
 							stroke.getEndCap(),
 							stroke.getLineJoin(),
 							stroke.getMiterLimit(),
 							stroke.getDashArray(),
 							stroke.getDashPhase()));
 				} else {
-					renderer.setSeriesStroke(series, new BasicStroke(size, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+					renderer.setSeriesStroke(series, new BasicStroke((float)size, BasicStroke.CAP_ROUND,
+							BasicStroke.JOIN_ROUND));
 				}
 			} else {
 				if (renderer.getDefaultShape() instanceof RectangularShape shape) {
-					shape.setFrame(-size / 2.0f, -size / 2.0f, size, size);
+					shape.setFrame(-size / 2.0, -size / 2.0, size, size);
 					renderer.setDefaultShape(shape);
 				}
 				
 				if (renderer.getDefaultStroke() instanceof BasicStroke stroke) {
 					renderer.setDefaultStroke(new BasicStroke(
-							size,
+							(float)size,
 							stroke.getEndCap(),
 							stroke.getLineJoin(),
 							stroke.getMiterLimit(),
 							stroke.getDashArray(),
 							stroke.getDashPhase()));
 				} else {
-					renderer.setDefaultStroke(new BasicStroke(size, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+					renderer.setDefaultStroke(new BasicStroke((float)size, BasicStroke.CAP_ROUND,
+							BasicStroke.JOIN_ROUND));
 				}
 			}
 		}
@@ -90,35 +92,8 @@ public class SeriesSize implements StyleAttribute {
 	 * @param size the size
 	 * @return the resulting style attribute
 	 */
-	public static SeriesSize of(float size) {
-		return new SeriesSize(size);
-	}
-	
-	/**
-	 * Returns a small size style.
-	 * 
-	 * @return the resulting style attribute
-	 */
-	public static SeriesSize small() {
-		return of(3f);
-	}
-	
-	/**
-	 * Returns a medium size style.
-	 * 
-	 * @return the resulting style attribute
-	 */
-	public static SeriesSize medium() {
-		return of(6f);
-	}
-	
-	/**
-	 * Returns a large size style.
-	 * 
-	 * @return the resulting style attribute
-	 */
-	public static SeriesSize large() {
-		return of(9f);
+	public static SizeAttribute of(double size) {
+		return new SizeAttribute(size);
 	}
 
 }

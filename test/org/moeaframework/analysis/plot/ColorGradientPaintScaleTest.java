@@ -17,42 +17,19 @@
  */
 package org.moeaframework.analysis.plot;
 
-import java.util.stream.IntStream;
+import java.awt.Color;
 
+import org.jfree.chart.renderer.PaintScale;
 import org.junit.Test;
+import org.moeaframework.Assert;
 
-public class HeatMapBuilderTest extends AbstractPlotTest {
+public class ColorGradientPaintScaleTest {
 	
-	@Test(expected = IllegalArgumentException.class)
-	public void testEmpty() {
-		new HeatMapBuilder().show();
-	}
-
 	@Test
-	public void test() {
-		double[] x = IntStream.range(0, 10).mapToDouble(i -> (double)i).toArray();
-		double[] y = IntStream.range(0, 20).mapToDouble(i -> (double)i).toArray();
-		double[][] z = new double[x.length][y.length];
-		
-		for (int i = 0; i < x.length; i++) {
-			for (int j = 0; j < y.length; j++) {
-				z[i][j] = i*j;
-			}
-		}
-		
-		new HeatMapBuilder()
-				.xCoords(x)
-				.yCoords(y)
-				.zData(z)
-				.style(Style.showToolTips(), Style.rainbow())
-				.xLabel("X")
-				.yLabel("Y")
-				.zLabel("Value")
-				.show();
-	}
-	
-	public static void main(String[] args) throws Exception {
-		new HeatMapBuilderTest().runAll();
+	public void testColorPaintScale() {
+		PaintScale scale = new ColorGradientPaintScale(0.0, 10.0, Color.RED);
+		Assert.assertEquals(Color.BLACK, scale.getPaint(0.0));
+		Assert.assertEquals(Color.RED, scale.getPaint(10.0));
 	}
 
 }

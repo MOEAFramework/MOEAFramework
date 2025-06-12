@@ -20,6 +20,7 @@ package org.moeaframework.analysis.plot;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.reflect.ConstructorUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.junit.After;
@@ -52,6 +53,10 @@ public abstract class AbstractPlotTest {
 		AbstractPlotTest instance = constructor.newInstance();
 		
 		for (Method method : MethodUtils.getMethodsWithAnnotation(getClass(), Test.class)) {
+			if (!ClassUtils.isAssignable(method.getAnnotation(Test.class).expected(), Test.None.class)) {
+				continue;
+			}
+			
 			method.invoke(instance);
 		}
 	}

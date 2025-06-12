@@ -41,11 +41,24 @@ public class XYPlotBuilderTest extends AbstractPlotTest {
 	public void testBasicShapes() {
 		new XYPlotBuilder()
 				.scatter("Points", new double[] { 0, 1, 2 }, new double[] { 0, 1, 2 })
-				.line("Line", new double[] { 0, 1, 2 }, new double[] { 0, 1, 2 })
+				.line("Line", new double[] { 0, 1, 2 }, new double[] { 0, 2, 0 })
 				.stacked("Stacked 1", new double[] { 0.5, 1.5 }, new double[] { 0.5, 0.6 })
 				.stacked("Stacked 2", new double[] { 0.5, 1.5 }, new double[] { 0.3, 0.2 })
 				.area("Area", new double[] { 0, 1, 2 }, new double[] { 0, 0.5, 0 })
 				.title("Basic Shapes")
+				.xLabel("X")
+				.yLabel("Y")
+				.show();
+	}
+	
+	@Test
+	public void testStyle() {
+		new XYPlotBuilder()
+				.scatter("Points", new double[] { 0, 1, 2 }, new double[] { 0, 1, 2 }, Style.green(), Style.large(),
+						Style.square(), Style.showLabels(), Style.showToolTips())
+				.line("Line", new double[] { 0, 1, 2 }, new double[] { 1, 2, 0 }, Style.red(), Style.large(),
+						Style.showLabels(), Style.showToolTips())
+				.title("Style")
 				.xLabel("X")
 				.yLabel("Y")
 				.show();
@@ -68,7 +81,7 @@ public class XYPlotBuilderTest extends AbstractPlotTest {
 		algorithm.run(20);
 		
 		new XYPlotBuilder()
-				.scatter("NSGAII", algorithm.getResult(), SeriesSize.of(5f), SeriesPaint.black())
+				.scatter("NSGAII", algorithm.getResult(), SizeAttribute.of(5f), Style.black())
 				.show();
 	}
 	

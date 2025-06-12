@@ -17,27 +17,25 @@
  */
 package org.moeaframework.analysis.plot;
 
-import java.awt.Shape;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Rectangle2D;
+import java.awt.geom.RectangularShape;
 
 import org.jfree.chart.plot.Plot;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 
 /**
- * Styles the shape of a plotted series
+ * Styles the shape of a plotted series.
  */
-public class SeriesShape implements StyleAttribute {
+public class ShapeAttribute implements StyleAttribute {
 	
-	private final Shape shape;
+	private final RectangularShape shape;
 	
 	/**
 	 * Creates a new shape style attribute.
 	 * 
 	 * @param shape the shape
 	 */
-	public SeriesShape(Shape shape) {
+	public ShapeAttribute(RectangularShape shape) {
 		super();
 		this.shape = shape;
 	}
@@ -45,11 +43,19 @@ public class SeriesShape implements StyleAttribute {
 	@Override
 	public void apply(Plot plot, int dataset, int series) {
 		if (plot instanceof XYPlot xyPlot) {
-			XYItemRenderer renderer = xyPlot.getRenderer(dataset);			
+			XYItemRenderer renderer = xyPlot.getRenderer(dataset);	
 			
 			if (series >= 0) {
+				if (renderer.getSeriesShape(series) instanceof RectangularShape oldShape) {
+					shape.setFrame(oldShape.getFrame());
+				}
+				
 				renderer.setSeriesShape(series, shape);
 			} else {
+				if (renderer.getDefaultShape() instanceof RectangularShape oldShape) {
+					shape.setFrame(oldShape.getFrame());
+				}
+				
 				renderer.setDefaultShape(shape);
 			}
 		}
@@ -61,26 +67,8 @@ public class SeriesShape implements StyleAttribute {
 	 * @param shape the shape
 	 * @return the resulting shape style attribute
 	 */
-	public static SeriesShape of(Shape shape) {
-		return new SeriesShape(shape);
-	}
-	
-	/**
-	 * Returns a circle shape style attribute.
-	 * 
-	 * @return the resulting shape style attribute
-	 */
-	public static SeriesShape circle() {
-		return of(new Ellipse2D.Double(-3.0, -3.0, 6.0, 6.0));
-	}
-	
-	/**
-	 * Returns a square shape style attribute.
-	 * 
-	 * @return the resulting shape style attribute
-	 */
-	public static SeriesShape square() {
-		return of(new Rectangle2D.Double(-3.0, -3.0, 6.0, 6.0));
+	public static ShapeAttribute of(RectangularShape shape) {
+		return new ShapeAttribute(shape);
 	}
 
 }

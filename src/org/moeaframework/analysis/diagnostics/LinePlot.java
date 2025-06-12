@@ -29,7 +29,7 @@ import org.jfree.chart.block.LineBorder;
 import org.jfree.chart.title.LegendTitle;
 import org.jfree.chart.ui.RectangleEdge;
 import org.jfree.chart.ui.RectangleInsets;
-import org.moeaframework.analysis.plot.SeriesPaint;
+import org.moeaframework.analysis.plot.Style;
 import org.moeaframework.analysis.plot.XYPlotBuilder;
 import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.util.Localization;
@@ -84,7 +84,7 @@ public class LinePlot extends ResultPlot {
 		if (controller.showLastTrace().get() &&
 				(controller.getLastSeries() != null) &&
 				controller.getLastSeries().getDefinedProperties().contains(metric)) {
-			builder.line(LOCALIZATION.getString("text.last"), controller.getLastSeries(), metric, SeriesPaint.black());
+			builder.line(LOCALIZATION.getString("text.last"), controller.getLastSeries(), metric, Style.black());
 		}
 		
 		builder.title(metric);

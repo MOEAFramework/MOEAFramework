@@ -41,7 +41,7 @@ public class BoxAndWhiskerPlotBuilderTest extends AbstractPlotTest {
 	@Test
 	public void testStyle() {
 		new BoxAndWhiskerPlotBuilder()
-				.add("Set 1", IntStream.range(0, 10).mapToDouble(i -> PRNG.nextDouble()).toArray(), SeriesPaint.green())
+				.add("Set 1", IntStream.range(0, 10).mapToDouble(i -> PRNG.nextDouble()).toArray(), Style.green(), Style.showToolTips())
 				.show();
 	}
 	

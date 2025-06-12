@@ -17,31 +17,32 @@
  */
 package org.moeaframework.analysis.plot;
 
-import org.jfree.chart.plot.Plot;
+import java.awt.Color;
+import java.awt.Paint;
 
 /**
- * Interface for customizing the style of series plotted in a graph.  Style attributes are best-effort, meaning if a
- * style is applied to a plot not supporting that style, it is silently ignored.
+ * Paint scale producing a rainbow of colors by adjusting the hue component.
  */
-public interface StyleAttribute {
-	
+public class RainbowPaintScale extends AutoScaledPaintScale {
+
 	/**
-	 * Applies the style to a specific dataset and series.
+	 * Constructs a rainbow paint scale.
 	 * 
-	 * @param plot the plot
-	 * @param dataset the index of the dataset
-	 * @param series the index of the series
+	 * @param lowerBound the lower bound
+	 * @param upperBound the upper bound
 	 */
-	public void apply(Plot plot, int dataset, int series);
-	
-	/**
-	 * Applies the style to all series within the specified dataset.
-	 * 
-	 * @param plot the plot
-	 * @param dataset the index of the dataset
-	 */
-	public default void apply(Plot plot, int dataset) {
-		apply(plot, dataset, -1);
+	public RainbowPaintScale(double lowerBound, double upperBound) {
+		super(lowerBound, upperBound);
 	}
 
+	@Override
+	public Paint getScaledPaint(double value) {
+		return Color.getHSBColor((float)value, 1f, 1f);
+	}
+	
+	@Override
+	public RainbowPaintScale scale(double lowerBound, double upperBound) {
+		return new RainbowPaintScale(lowerBound, upperBound);
+	}
+	
 }

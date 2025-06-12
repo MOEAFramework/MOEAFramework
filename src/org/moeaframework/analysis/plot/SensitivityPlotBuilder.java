@@ -28,7 +28,6 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.annotations.XYShapeAnnotation;
 import org.jfree.chart.annotations.XYTextAnnotation;
 import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
@@ -148,7 +147,6 @@ public class SensitivityPlotBuilder extends PlotBuilder<SensitivityPlotBuilder> 
 		yAxis.setAutoRangeIncludesZero(false);
 
 		XYItemRenderer renderer = new XYLineAndShapeRenderer(false, true);
-		renderer.setDefaultToolTipGenerator(new StandardXYToolTipGenerator());
 		
 		XYPlot plot = new XYPlot();
 		plot.setDomainAxis(xAxis);
