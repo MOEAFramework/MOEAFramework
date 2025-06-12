@@ -868,7 +868,7 @@ public class XYPlotBuilder extends PlotBuilder<XYPlotBuilder> {
 	 * @return the default stroke
 	 */
 	protected Stroke getDefaultStroke() {
-		return new BasicStroke(3f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+		return new BasicStroke((float)(Style.DEFAULT_SIZE / 2.0), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 	}
 	
 	/**
@@ -877,7 +877,8 @@ public class XYPlotBuilder extends PlotBuilder<XYPlotBuilder> {
 	 * @return the default shape
 	 */
 	protected RectangularShape getDefaultShape() {
-		return new Ellipse2D.Double(-3.0, -3.0, 6.0, 6.0);
+		return new Ellipse2D.Double(-Style.DEFAULT_SIZE / 2.0, -Style.DEFAULT_SIZE / 2.0, Style.DEFAULT_SIZE,
+				Style.DEFAULT_SIZE);
 	}
 	
 }

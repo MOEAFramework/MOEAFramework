@@ -48,20 +48,22 @@ public class SizeAttribute implements StyleAttribute {
 			
 			if (series >= 0) {
 				if (renderer.getSeriesShape(series) instanceof RectangularShape shape) {
-					shape.setFrame(-size / 2.0f, -size / 2.0f, size, size);
+					shape.setFrame(-size / 2.0, -size / 2.0, size, size);
 					renderer.setSeriesShape(series, shape);
 				}
 				
 				if (renderer.getSeriesStroke(series) instanceof BasicStroke stroke) {
 					renderer.setSeriesStroke(series, new BasicStroke(
-							(float)size,
+							(float)(size / 2.0),
 							stroke.getEndCap(),
 							stroke.getLineJoin(),
 							stroke.getMiterLimit(),
 							stroke.getDashArray(),
 							stroke.getDashPhase()));
 				} else {
-					renderer.setSeriesStroke(series, new BasicStroke((float)size, BasicStroke.CAP_ROUND,
+					renderer.setSeriesStroke(series, new BasicStroke(
+							(float)(size / 2.0),
+							BasicStroke.CAP_ROUND,
 							BasicStroke.JOIN_ROUND));
 				}
 			} else {
@@ -72,14 +74,15 @@ public class SizeAttribute implements StyleAttribute {
 				
 				if (renderer.getDefaultStroke() instanceof BasicStroke stroke) {
 					renderer.setDefaultStroke(new BasicStroke(
-							(float)size,
+							(float)(size / 2.0),
 							stroke.getEndCap(),
 							stroke.getLineJoin(),
 							stroke.getMiterLimit(),
 							stroke.getDashArray(),
 							stroke.getDashPhase()));
 				} else {
-					renderer.setDefaultStroke(new BasicStroke((float)size, BasicStroke.CAP_ROUND,
+					renderer.setDefaultStroke(new BasicStroke((float)(size / 2.0),
+							BasicStroke.CAP_ROUND,
 							BasicStroke.JOIN_ROUND));
 				}
 			}

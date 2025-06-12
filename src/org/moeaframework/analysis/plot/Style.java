@@ -52,6 +52,16 @@ public class Style {
 	public static ShapeAttribute square() {
 		return ShapeAttribute.of(new Rectangle2D.Double(-DEFAULT_SIZE / 2.0, -DEFAULT_SIZE / 2.0, DEFAULT_SIZE, DEFAULT_SIZE));
 	}
+	
+	/**
+	 * Returns a style attribute to render the series line and/or shape in a custom size.
+	 * 
+	 * @param size the size
+	 * @return the resulting style attribute
+	 */
+	public static SizeAttribute size(double size) {
+		return SizeAttribute.of(size);
+	}
 
 	/**
 	 * Returns a style attribute to render the series line and/or shape in a small size.
@@ -78,6 +88,16 @@ public class Style {
 	 */
 	public static SizeAttribute large() {
 		return SizeAttribute.of(1.5 * DEFAULT_SIZE);
+	}
+	
+	/**
+	 * Returns a style attribute to render the series in a custom color.
+	 * 
+	 * @param color the color
+	 * @return the resulting style attribute
+	 */
+	public static PaintAttribute color(Color color) {
+		return PaintAttribute.of(color);
 	}
 	
 	/**
