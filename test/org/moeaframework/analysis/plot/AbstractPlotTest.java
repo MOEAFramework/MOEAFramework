@@ -18,12 +18,13 @@
 package org.moeaframework.analysis.plot;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.reflect.ConstructorUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.junit.After;
+import org.junit.AssumptionViolatedException;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -53,11 +54,18 @@ public abstract class AbstractPlotTest {
 		AbstractPlotTest instance = constructor.newInstance();
 		
 		for (Method method : MethodUtils.getMethodsWithAnnotation(getClass(), Test.class)) {
-			if (!ClassUtils.isAssignable(method.getAnnotation(Test.class).expected(), Test.None.class)) {
+			if (method.getAnnotation(Test.class).expected() != Test.None.class) {
+				// ignore tests that are expected to throw exceptions
 				continue;
 			}
 			
-			method.invoke(instance);
+			try {
+				method.invoke(instance);
+			} catch (InvocationTargetException e) {
+				if (e.getTargetException() instanceof AssumptionViolatedException) {
+					// ignore tests that are skipped due to failed assumptions
+				}
+			}
 		}
 	}
 

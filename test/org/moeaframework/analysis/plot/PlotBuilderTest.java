@@ -20,6 +20,7 @@ package org.moeaframework.analysis.plot;
 import java.io.File;
 import java.io.IOException;
 
+import org.jfree.chart.StandardChartTheme;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
@@ -49,6 +50,18 @@ public class PlotBuilderTest extends AbstractPlotTest {
 			.save(tempFile);
 			
 		Assert.assertFileWithContent(tempFile);
+	}
+	
+	@Test
+	public void testTheme() throws IOException {
+		new XYPlotBuilder()
+			.scatter("Points", new double[] { 0, 1, 2 }, new double[] { 0, 1, 2 })
+			.theme(StandardChartTheme.createDarknessTheme())
+			.show();
+	}
+	
+	public static void main(String[] args) throws Exception {
+		new PlotBuilderTest().runAll();
 	}
 
 }

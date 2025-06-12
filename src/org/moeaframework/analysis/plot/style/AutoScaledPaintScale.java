@@ -24,7 +24,7 @@ import org.jfree.chart.renderer.PaintScale;
 /**
  * Abstract class for defining paint scales that are automatically scaled based on the range of Z values.
  */
-abstract class AutoScaledPaintScale implements PaintScale {
+public abstract class AutoScaledPaintScale implements PaintScale {
 	
 	private final double lowerBound;
 	private final double upperBound;

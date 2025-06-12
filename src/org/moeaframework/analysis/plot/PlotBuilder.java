@@ -35,6 +35,7 @@ import org.jfree.chart.ChartTheme;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.Plot;
 import org.jfree.chart.title.LegendTitle;
+import org.jfree.chart.title.TextTitle;
 import org.moeaframework.analysis.diagnostics.PaintHelper;
 import org.moeaframework.analysis.plot.style.StyleAttribute;
 import org.moeaframework.util.mvc.UI;
@@ -54,6 +55,8 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 	private static final String WINDOW_TITLE = "MOEA Framework Plot";
 	
 	private String title;
+	
+	private String subtitle;
 
 	private Function<Plot, LegendTitle> legendBuilder;
 		
@@ -110,6 +113,17 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 	}
 	
 	/**
+	 * Sets the chart subtitle.
+	 * 
+	 * @param subtitle the subtitle
+	 * @return a reference to this builder
+	 */
+	public T subtitle(String subtitle) {
+		this.subtitle = subtitle;
+		return getInstance();
+	}
+	
+	/**
 	 * Configures the plot with the default legend, if any, for the chart type.  This is the default behavior.
 	 * 
 	 * @return a reference to this builder
@@ -144,9 +158,7 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 	}
 	
 	/**
-	 * Sets the overall style for plots.  However, please note that styles affecting individual series (size, shape,
-	 * color) are ignored since we provide our own defaults.  Instead, use {@link #paintHelper(PaintHelper)} or
-	 * {@link StyleAttribute} to customize the rendering of individual series.
+	 * Sets the overall theme for the chart, specifying styles for titles, labels, axes, etc.
 	 * 
 	 * @param theme the theme, or {@code null} to use the default theme
 	 * @return a reference to this builder
@@ -280,6 +292,10 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 	protected JFreeChart build(Plot plot) {
 		JFreeChart chart = new JFreeChart(title, JFreeChart.DEFAULT_TITLE_FONT, plot, legendBuilder == null);
 		
+		if (subtitle != null) {
+			chart.addSubtitle(new TextTitle(subtitle));
+		}
+		
 		if (legendBuilder != null) {
 			LegendTitle legend = legendBuilder.apply(plot);
 			
@@ -291,7 +307,7 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 		if (theme != null) {
 			theme.apply(chart);
 		}
-								
+						
 		return chart;
 	}
 	

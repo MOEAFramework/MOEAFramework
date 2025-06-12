@@ -37,7 +37,7 @@ import org.jfree.chart.renderer.xy.DeviationRenderer;
 import org.jfree.chart.renderer.xy.StackedXYAreaRenderer;
 import org.jfree.chart.renderer.xy.XYAreaRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.chart.renderer.xy.XYStepRenderer;
+import org.jfree.chart.renderer.xy.XYStepAreaRenderer;
 import org.jfree.data.Range;
 import org.jfree.data.xy.DefaultTableXYDataset;
 import org.jfree.data.xy.XYSeries;
@@ -511,7 +511,7 @@ public class XYPlotBuilder extends PlotBuilder<XYPlotBuilder> {
 
 		Paint paint = paintHelper.get(series.getKey());
 		
-		XYStepRenderer renderer = new XYStepRenderer();
+		XYStepAreaRenderer renderer = new XYStepAreaRenderer();
 		renderer.setStepPoint(0.5); // draw step halfway between two points
 		renderer.setDefaultStroke(getDefaultStroke());
 		renderer.setDefaultPaint(paint);

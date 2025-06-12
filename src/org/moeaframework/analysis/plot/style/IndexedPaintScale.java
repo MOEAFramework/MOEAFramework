@@ -22,7 +22,7 @@ import java.awt.Paint;
 /**
  * Paint scale that maps Z values to a list of colors.
  */
-class IndexedPaintScale extends AutoScaledPaintScale {
+public class IndexedPaintScale extends AutoScaledPaintScale {
 	
 	private final Paint[] paints;
 	
