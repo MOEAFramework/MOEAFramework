@@ -34,9 +34,7 @@ import org.moeaframework.problem.Problem;
 
 /**
  * Uses ImageMagick (must be installed separately) to produce an animated GIF showing the population convergence.
- * <p>
- * Linux: sudo apt install imagemagick
- * MacOS: brew install imagemagick
+ * Find download and installation instructions at https://imagemagick.org/.
  */
 public class AnimatedGIFExample {
 
@@ -75,11 +73,16 @@ public class AnimatedGIFExample {
 		}
 				
 		// Invoke ImageMagik to combine the images into an animated GIF
-		new ProcessBuilder()
-				.command("convert", "-delay", "10", "-loop", "0", "@" + imageList.getAbsolutePath(), "combined.gif")
-				.inheritIO()
-				.start()
-				.waitFor();
+		try {
+			new ProcessBuilder()
+					.command("magick", "convert", "-delay", "10", "-loop", "0", "@" + imageList.getAbsolutePath(), "combined.gif")
+					.inheritIO()
+					.start()
+					.waitFor();
+		} catch (IOException e) {
+			System.err.println("ERROR: " + e.getMessage());
+			System.err.println("Failed to start ImageMagick, please ensure it is installed on your system!");
+		}
 	}
 
 }
