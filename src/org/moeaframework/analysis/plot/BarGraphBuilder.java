@@ -123,6 +123,7 @@ public class BarGraphBuilder extends PlotBuilder<BarGraphBuilder> {
 		
 		int seriesIndex = dataset.getRowCount() - 1;
 		Paint paint = paintHelper.get(label);
+		
 		renderer.setSeriesPaint(seriesIndex, paint);
 		renderer.setSeriesFillPaint(seriesIndex, paint);
 		

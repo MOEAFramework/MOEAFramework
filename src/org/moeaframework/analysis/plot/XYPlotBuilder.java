@@ -37,6 +37,7 @@ import org.jfree.chart.renderer.xy.DeviationRenderer;
 import org.jfree.chart.renderer.xy.StackedXYAreaRenderer;
 import org.jfree.chart.renderer.xy.XYAreaRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.renderer.xy.XYStepRenderer;
 import org.jfree.data.Range;
 import org.jfree.data.xy.DefaultTableXYDataset;
 import org.jfree.data.xy.XYSeries;
@@ -487,11 +488,50 @@ public class XYPlotBuilder extends PlotBuilder<XYPlotBuilder> {
 				count++;
 				index++;
 			}
-						
+				
 			series.add(min + ((i + 0.5) * stepSize), count);
 		}
 		
-		return line(series, style);
+		return histogram(series, style);
+	}
+	
+	/**
+	 * Creates a new histogram.
+	 * 
+	 * @param series the XY series containing the data
+	 * @param style the style attributes
+	 * @return a reference to this builder
+	 */
+	private XYPlotBuilder histogram(XYSeries series, StyleAttribute... style) {
+		int index = plot.getDatasetCount();
+
+		XYSeriesCollection dataset = new XYSeriesCollection();
+		dataset.addSeries(series);
+
+		Paint paint = paintHelper.get(series.getKey());
+		
+		XYStepRenderer renderer = new XYStepRenderer();
+		renderer.setStepPoint(0.5); // draw step halfway between two points
+		renderer.setDefaultStroke(getDefaultStroke());
+		renderer.setDefaultPaint(paint);
+		renderer.setDefaultFillPaint(paint);
+		renderer.setAutoPopulateSeriesFillPaint(false);
+		renderer.setAutoPopulateSeriesOutlinePaint(false);
+		renderer.setAutoPopulateSeriesOutlineStroke(false);
+		renderer.setAutoPopulateSeriesPaint(false);
+		renderer.setAutoPopulateSeriesShape(false);
+		renderer.setAutoPopulateSeriesStroke(false);
+
+		plot.setDataset(index, dataset);
+		plot.setRenderer(index, renderer);
+		
+		applyStyle(plot, index, style);
+		
+		if (!renderer.getDefaultPaint().equals(paint)) {
+			paintHelper.set(series.getKey(), renderer.getDefaultPaint());
+		}
+
+		return getInstance();
 	}
 
 	/**

@@ -109,7 +109,7 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 	}
 	
 	/**
-	 * Configures the plot with the default legend, if any, for the chart type.
+	 * Configures the plot with the default legend, if any, for the chart type.  This is the default behavior.
 	 * 
 	 * @return a reference to this builder
 	 */
