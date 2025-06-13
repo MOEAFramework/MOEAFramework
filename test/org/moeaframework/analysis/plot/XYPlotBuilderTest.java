@@ -17,7 +17,6 @@
  */
 package org.moeaframework.analysis.plot;
 
-import java.awt.Color;
 import java.io.IOException;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
@@ -42,46 +41,44 @@ public class XYPlotBuilderTest extends AbstractPlotTest {
 		new XYPlotBuilder().show();
 	}
 	
+	@Test
+	public void testBasic() {
+		double[] x = IntStream.range(0, 100).mapToDouble(i -> i - 50).toArray();
+		double[] y = DoubleStream.of(x).map(d -> Math.pow(d, 2)).toArray();
+		
+		new XYPlotBuilder()
+				.line("Data", x, y)
+				.show();
+	}
 
 	@Test
-	public void testLineSeries() {
-		// begin-example: lineSeries
+	public void testLinePlot() {
+		// begin-example: linePlot
 		double[] x = IntStream.range(0, 100).mapToDouble(i -> i - 50).toArray();
 		double[] y = DoubleStream.of(x).map(d -> Math.pow(d, 2)).toArray();
 		
-		new XYPlotBuilder()
-				.line("Series", x, y)
-				.title("Line Series")
-				.show();
-		// end-example: lineSeries
-	}
-	
-	@Test
-	public void testStyledLineSeries() {
-		double[] x = IntStream.range(0, 100).mapToDouble(i -> i - 50).toArray();
-		double[] y = DoubleStream.of(x).map(d -> Math.pow(d, 2)).toArray();
-		
-		// begin-example: styledLineSeries
-		new XYPlotBuilder()
-				.line("Series", x, y, Style.color(Color.BLUE), Style.size(20))
-				.title("Styled Line Series")
-				.show();
-		// end-example: styledLineSeries
-	}
-	
-	@Test
-	public void testTitleAndLabels() {
-		double[] x = IntStream.range(0, 100).mapToDouble(i -> i - 50).toArray();
-		double[] y = DoubleStream.of(x).map(d -> Math.pow(d, 2)).toArray();
-		
-		// begin-example: titleAndLabels
 		new XYPlotBuilder()
 				.line("Series", x, y)
 				.title("Line Plot")
-				.xLabel("x")
-				.yLabel("f(x)")
+				.xLabel("X")
+				.yLabel("Y")
 				.show();
-		// end-example: titleAndLabels
+		// end-example: linePlot
+	}
+	
+	@Test
+	public void testStyledLinePlot() {
+		double[] x = IntStream.range(0, 100).mapToDouble(i -> i - 50).toArray();
+		double[] y = DoubleStream.of(x).map(d -> Math.pow(d, 2)).toArray();
+		
+		// begin-example: styledLinePlot
+		new XYPlotBuilder()
+				.line("Series", x, y)
+				.title("Styled Line Plot")
+				.xLabel("X")
+				.yLabel("Y")
+				.show();
+		// end-example: styledLinePlot
 	}
 	
 	@Test
@@ -93,8 +90,8 @@ public class XYPlotBuilderTest extends AbstractPlotTest {
 		new XYPlotBuilder()
 				.scatter("Series", x, y)
 				.title("Scatter Plot")
-				.xLabel("x")
-				.yLabel("f(x)")
+				.xLabel("X")
+				.yLabel("Y")
 				.show();
 		// end-example: scatterPlot
 	}
@@ -108,10 +105,40 @@ public class XYPlotBuilderTest extends AbstractPlotTest {
 		new XYPlotBuilder()
 				.scatter("Series", x, y, Style.blue(), Style.square(), Style.large())
 				.title("Styled Scatter Plot")
-				.xLabel("x")
-				.yLabel("f(x)")
+				.xLabel("X")
+				.yLabel("Y")
 				.show();
 		// end-example: styledScatterPlot
+	}
+	
+	@Test
+	public void testAreaPlot() {
+		double[] x = IntStream.range(0, 100).mapToDouble(i -> i - 50).toArray();
+		double[] y = DoubleStream.of(x).map(d -> Math.pow(d, 2)).toArray();
+		
+		// begin-example: areaPlot
+		new XYPlotBuilder()
+				.area("Series", x, y)
+				.title("Area Plot")
+				.xLabel("X")
+				.yLabel("Y")
+				.show();
+		// end-example: areaPlot
+	}
+	
+	@Test
+	public void testStyledAreaPlot() {
+		double[] x = IntStream.range(0, 100).mapToDouble(i -> i - 50).toArray();
+		double[] y = DoubleStream.of(x).map(d -> Math.pow(d, 2)).toArray();
+		
+		// begin-example: styledAreaPlot
+		new XYPlotBuilder()
+				.area("Series", x, y, Style.blue())
+				.title("Styled Area Plot")
+				.xLabel("X")
+				.yLabel("Y")
+				.show();
+		// end-example: styledAreaPlot
 	}
 	
 	@Test
@@ -151,8 +178,8 @@ public class XYPlotBuilderTest extends AbstractPlotTest {
 		new XYPlotBuilder()
 				.deviation("Series", x, y)
 				.title("Deviation Plot")
-				.xLabel("x")
-				.yLabel("f(x)")
+				.xLabel("X")
+				.yLabel("Y")
 				.show();
 		// end-example: deviationPlot
 	}
@@ -166,8 +193,8 @@ public class XYPlotBuilderTest extends AbstractPlotTest {
 		new XYPlotBuilder()
 				.deviation("Series", x, y, Style.blue(), LowPercentileAttribute.of(0.0), HighPercentileAttribute.of(100.0))
 				.title("Styled Deviation Plot")
-				.xLabel("x")
-				.yLabel("f(x)")
+				.xLabel("X")
+				.yLabel("Y")
 				.show();
 		// end-example: styledDeviationPlot
 	}
