@@ -27,7 +27,7 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.moeaframework.analysis.plot.style.StyleAttribute;
+import org.moeaframework.analysis.plot.style.PlotAttribute;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -112,10 +112,10 @@ public class BarGraphBuilder extends PlotBuilder<BarGraphBuilder> {
 	 * @param label the label for the series
 	 * @param x the X values
 	 * @param y the Y values
-	 * @param style the style attributes
+	 * @param attributes the attributes configuring the plot
 	 * @return a reference to this builder
 	 */
-	public BarGraphBuilder bars(String label, double[] x, double[] y, StyleAttribute... style) {
+	public BarGraphBuilder bars(String label, double[] x, double[] y, PlotAttribute... attributes) {
 		Validate.that("x.length", x.length).isEqualTo("y.length", y.length);
 		
 		for (int i = 0; i < x.length; i++) {
@@ -128,7 +128,7 @@ public class BarGraphBuilder extends PlotBuilder<BarGraphBuilder> {
 		renderer.setSeriesPaint(seriesIndex, paint);
 		renderer.setSeriesFillPaint(seriesIndex, paint);
 		
-		applyStyle(plot, 0, seriesIndex, style);
+		applyStyle(plot, 0, seriesIndex, attributes);
 		
 		if (!renderer.getSeriesPaint(seriesIndex).equals(paint)) {
 			paintHelper.set(label, renderer.getSeriesPaint(seriesIndex));
@@ -143,11 +143,12 @@ public class BarGraphBuilder extends PlotBuilder<BarGraphBuilder> {
 	 * @param label the label for the series
 	 * @param x the X values
 	 * @param y the Y values
-	 * @param style the style attributes
+	 * @param attributes the attributes configuring the plot
 	 * @return a reference to this builder
 	 */
-	public BarGraphBuilder bars(String label, List<? extends Number> x, List<? extends Number> y, StyleAttribute... style) {
-		return bars(label, toArray(x), toArray(y), style);
+	public BarGraphBuilder bars(String label, List<? extends Number> x, List<? extends Number> y,
+			PlotAttribute... attributes) {
+		return bars(label, toArray(x), toArray(y), attributes);
 	}
 	
 }

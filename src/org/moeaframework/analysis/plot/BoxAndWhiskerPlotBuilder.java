@@ -28,7 +28,7 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.renderer.category.BoxAndWhiskerRenderer;
 import org.jfree.data.statistics.DefaultBoxAndWhiskerCategoryDataset;
 import org.moeaframework.analysis.IndicatorStatistics;
-import org.moeaframework.analysis.plot.style.StyleAttribute;
+import org.moeaframework.analysis.plot.style.PlotAttribute;
 import org.moeaframework.analysis.stream.DataStream;
 
 /**
@@ -91,11 +91,11 @@ public class BoxAndWhiskerPlotBuilder extends PlotBuilder<BoxAndWhiskerPlotBuild
 	 * 
 	 * @param label the label for the series
 	 * @param values the values
-	 * @param style the style attributes
+	 * @param attributes the attributes configuring the plot
 	 * @return a reference to this builder
 	 */
-	public BoxAndWhiskerPlotBuilder add(String label, double[] values, StyleAttribute... style) {
-		return add(label, DoubleStream.of(values).boxed().toList(), style);
+	public BoxAndWhiskerPlotBuilder add(String label, double[] values, PlotAttribute... attributes) {
+		return add(label, DoubleStream.of(values).boxed().toList(), attributes);
 	}
 	
 	/**
@@ -103,11 +103,11 @@ public class BoxAndWhiskerPlotBuilder extends PlotBuilder<BoxAndWhiskerPlotBuild
 	 * 
 	 * @param label the label for the series
 	 * @param stream the data stream containing the values
-	 * @param style the style attributes
+	 * @param attributes the attributes configuring the plot
 	 * @return a reference to this builder
 	 */
-	public BoxAndWhiskerPlotBuilder add(String label, DataStream<? extends Number> stream, StyleAttribute... style) {
-		return add(label, stream.values(), style);
+	public BoxAndWhiskerPlotBuilder add(String label, DataStream<? extends Number> stream, PlotAttribute... attributes) {
+		return add(label, stream.values(), attributes);
 	}
 	
 	/**
@@ -115,13 +115,13 @@ public class BoxAndWhiskerPlotBuilder extends PlotBuilder<BoxAndWhiskerPlotBuild
 	 * 
 	 * @param label the label for the series
 	 * @param values the values
-	 * @param style the style attributes
+	 * @param attributes the attributes configuring the plot
 	 * @return a reference to this builder
 	 */
-	public BoxAndWhiskerPlotBuilder add(String label, List<? extends Number> values, StyleAttribute... style) {
+	public BoxAndWhiskerPlotBuilder add(String label, List<? extends Number> values, PlotAttribute... attributes) {
 		dataset.add(values, "", label);
 		
-		applyStyle(plot, 0, dataset.getColumnCount() - 1, style);
+		applyStyle(plot, 0, dataset.getColumnCount() - 1, attributes);
 		
 		return getInstance();
 	}
@@ -130,12 +130,12 @@ public class BoxAndWhiskerPlotBuilder extends PlotBuilder<BoxAndWhiskerPlotBuild
 	 * Adds a new box-and-whisker entry for each indicator in the given statistics.
 	 * 
 	 * @param statistics the indicator statistics
-	 * @param style the style attributes
+	 * @param attributes the attributes configuring the plot
 	 * @return a reference to this builder
 	 */
-	public BoxAndWhiskerPlotBuilder add(IndicatorStatistics statistics, StyleAttribute... style) {
+	public BoxAndWhiskerPlotBuilder add(IndicatorStatistics statistics, PlotAttribute... attributes) {
 		for (String name : statistics.getGroupNames()) {
-			add(name, statistics.getValues(name), style);
+			add(name, statistics.getValues(name), attributes);
 		}
 
 		return getInstance();

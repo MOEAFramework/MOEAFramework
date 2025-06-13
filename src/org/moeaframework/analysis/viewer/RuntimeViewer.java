@@ -54,7 +54,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.Range;
-import org.jfree.data.xy.XYSeries;
 import org.moeaframework.analysis.diagnostics.PaintHelper;
 import org.moeaframework.analysis.plot.ImageFileType;
 import org.moeaframework.analysis.plot.ImageUtils;
@@ -553,14 +552,19 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 
 		//generate approximation set
 		for (PlotSeries series : getSelectedSeries()) {
-			builder.scatter(series.toXYSeries(currentIndex, xAxis, yAxis), getStyle(series));
+			IndexedResult result = series.getResultAt(currentIndex);
+			
+			if (result != null) {
+				builder.scatter(series.getName(), result.getPopulation().asList(), xAxis, yAxis, getStyle(series));
+			}
 		}
 
 		//generate reference set
 		PlotSeries referenceSet = controller.getReferenceSet();
 
 		if (referenceSet != null && controller.getShowReferenceSet().get()) {
-			builder.scatter(referenceSet.toXYSeries(currentIndex, xAxis, yAxis), getStyle(referenceSet));
+			builder.scatter(referenceSet.getName(), referenceSet.getResultAt(currentIndex).getPopulation().asList(),
+					xAxis, yAxis, getStyle(referenceSet));
 		}
 		
 		builder.title(title);
@@ -700,6 +704,10 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		public ResultSeries getSeries() {
 			return series;
 		}
+		
+		public IndexedResult getResultAt(int index) {
+			return series.at(index);
+		}
 
 		@Override
 		public String toString() {
@@ -735,20 +743,6 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 			return Pair.of(
 					new Range(domainMin - domainMargin, domainMax + domainMargin),
 					new Range(rangeMin - rangeMargin, rangeMax + rangeMargin));
-		}
-
-		public XYSeries toXYSeries(int index, AxisSelector<Solution, Number> xAxis,
-				AxisSelector<Solution, Number> yAxis) {
-			IndexedResult result = series.at(index);
-			XYSeries xySeries = new XYSeries(name, false, true);
-
-			if (result != null) {
-				for (Solution solution : result.getPopulation()) {
-					xySeries.add(xAxis.apply(solution), yAxis.apply(solution));
-				}
-			}
-
-			return xySeries;
 		}
 
 		public int getStepSize() {

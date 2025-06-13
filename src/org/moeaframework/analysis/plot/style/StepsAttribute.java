@@ -17,31 +17,37 @@
  */
 package org.moeaframework.analysis.plot.style;
 
-import org.jfree.chart.plot.Plot;
+import org.moeaframework.util.validate.Validate;
 
 /**
- * Interface for customizing the style of series plotted in a graph.  Style attributes are best-effort, meaning if a
- * style is applied to a plot not supporting that style, it is silently ignored.
+ * Defines the number of steps used when rendering histogram or deviation plots.  That is, when aggregating the data,
+ * the width of each step is {@code (xMax - xMin) / steps}.
  */
-public interface StyleAttribute extends PlotAttribute {
+public class StepsAttribute extends ValueAttribute<Integer> {
 	
 	/**
-	 * Applies the style to a specific dataset and series.
-	 * 
-	 * @param plot the plot
-	 * @param dataset the index of the dataset
-	 * @param series the index of the series
+	 * The default value.
 	 */
-	public void apply(Plot plot, int dataset, int series);
-	
+	public static final StepsAttribute DEFAULT_VALUE = StepsAttribute.of(100);
+
 	/**
-	 * Applies the style to all series within the specified dataset.
+	 * Constructs a new step attribute.
 	 * 
-	 * @param plot the plot
-	 * @param dataset the index of the dataset
+	 * @param steps the number of steps
 	 */
-	public default void apply(Plot plot, int dataset) {
-		apply(plot, dataset, -1);
+	public StepsAttribute(int steps) {
+		super(steps);
+		Validate.that("steps", steps).isGreaterThan(0);
+	}
+
+	/**
+	 * Returns an attribute defining the number of steps used when rendering histogram or deviation plots.
+	 * 
+	 * @param steps the number of steps
+	 * @return the resulting attribute
+	 */
+	public static StepsAttribute of(int steps) {
+		return new StepsAttribute(steps);
 	}
 
 }

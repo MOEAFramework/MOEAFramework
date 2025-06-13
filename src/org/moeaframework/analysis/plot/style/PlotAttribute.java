@@ -17,31 +17,10 @@
  */
 package org.moeaframework.analysis.plot.style;
 
-import org.jfree.chart.plot.Plot;
-
 /**
- * Interface for customizing the style of series plotted in a graph.  Style attributes are best-effort, meaning if a
- * style is applied to a plot not supporting that style, it is silently ignored.
+ * Interface used to pass attributes to plotting methods.  Attributes are considered best-effort, meaning plotting
+ * methods will simply ignore attributes that are not relevant.
  */
-public interface StyleAttribute extends PlotAttribute {
+public interface PlotAttribute {
 	
-	/**
-	 * Applies the style to a specific dataset and series.
-	 * 
-	 * @param plot the plot
-	 * @param dataset the index of the dataset
-	 * @param series the index of the series
-	 */
-	public void apply(Plot plot, int dataset, int series);
-	
-	/**
-	 * Applies the style to all series within the specified dataset.
-	 * 
-	 * @param plot the plot
-	 * @param dataset the index of the dataset
-	 */
-	public default void apply(Plot plot, int dataset) {
-		apply(plot, dataset, -1);
-	}
-
 }

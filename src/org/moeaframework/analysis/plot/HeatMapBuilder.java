@@ -35,6 +35,7 @@ import org.jfree.chart.ui.RectangleEdge;
 import org.jfree.data.xy.DefaultXYZDataset;
 import org.moeaframework.analysis.plot.style.PaintAttribute;
 import org.moeaframework.analysis.plot.style.PaintScaleAttribute;
+import org.moeaframework.analysis.plot.style.PlotAttribute;
 import org.moeaframework.analysis.plot.style.StyleAttribute;
 import org.moeaframework.analysis.stream.Partition;
 import org.moeaframework.util.validate.Validate;
@@ -57,7 +58,7 @@ public class HeatMapBuilder extends PlotBuilder<HeatMapBuilder> {
 	
 	private double[][] z;
 	
-	private StyleAttribute[] style;
+	private PlotAttribute[] attributes;
 	
 	/**
 	 * Constructs a new, empty heat map builder.
@@ -121,9 +122,9 @@ public class HeatMapBuilder extends PlotBuilder<HeatMapBuilder> {
 		plot.setDataset(dataset);
 		plot.setRenderer(renderer);
 		
-		applyStyle(plot, 0, style);
+		applyStyle(plot, 0, attributes);
 		
-		if (!hasStyleAttribute(style, PaintScaleAttribute.class) && !hasStyleAttribute(style, PaintAttribute.class)) {
+		if (!hasAttribute(PaintScaleAttribute.class, attributes) && !hasAttribute(PaintAttribute.class, attributes)) {
 			Style.gradient(Color.BLACK).apply(plot, 0);
 		}
 				
@@ -246,11 +247,11 @@ public class HeatMapBuilder extends PlotBuilder<HeatMapBuilder> {
 	/**
 	 * Sets the style of the heat map.
 	 * 
-	 * @param style the style attributes
+	 * attributes the attributes configuring the plot
 	 * @return a reference to this builder
 	 */
-	public HeatMapBuilder style(StyleAttribute... style) {
-		this.style = style;
+	public HeatMapBuilder style(PlotAttribute... attributes) {
+		this.attributes = attributes;
 		return getInstance();
 	}
 

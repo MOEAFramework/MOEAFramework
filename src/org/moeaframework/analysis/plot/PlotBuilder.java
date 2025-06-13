@@ -23,6 +23,7 @@ import java.awt.Dimension;
 import java.awt.Window;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
@@ -37,7 +38,9 @@ import org.jfree.chart.plot.Plot;
 import org.jfree.chart.title.LegendTitle;
 import org.jfree.chart.title.TextTitle;
 import org.moeaframework.analysis.diagnostics.PaintHelper;
+import org.moeaframework.analysis.plot.style.PlotAttribute;
 import org.moeaframework.analysis.plot.style.StyleAttribute;
+import org.moeaframework.analysis.plot.style.ValueAttribute;
 import org.moeaframework.util.mvc.UI;
 import org.moeaframework.util.validate.Validate;
 
@@ -334,6 +337,25 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 	}
 	
 	/**
+	 * Converts a list of objects into a double array.
+	 * 
+	 * @param <D> the type of each object
+	 * @param <V> type numeric type returned by the getter
+	 * @param data the list of objects
+	 * @param getter a function converting each object into a numeric value
+	 * @return the double array
+	 */
+	protected <D, V extends Number> double[] toArray(List<D> data, Function<D, V> getter) {
+		List<V> values = new ArrayList<>();
+		
+		for (D obj : data) {
+			values.add(getter.apply(obj));
+		}
+		
+		return toArray(values);
+	}
+	
+	/**
 	 * Converts a 2D list of numbers into a 2D double array.  Any null values are translated into {@value Double#NaN}.
 	 * 
 	 * @param values the 2D list of numbers
@@ -350,47 +372,91 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 	}
 	
 	/**
-	 * Applies the given style attributes to all series in a dataset.
+	 * Applies the style attributes to all series in a dataset.
 	 * 
 	 * @param plot the plot
 	 * @param dataset the index of the dataset
-	 * @param attributes the style attributes
+	 * @param attributes the attributes configuring the plot
 	 */
-	protected void applyStyle(Plot plot, int dataset, StyleAttribute[] attributes) {
-		for (StyleAttribute attribute : attributes) {
-			attribute.apply(plot, dataset);
+	protected void applyStyle(Plot plot, int dataset, PlotAttribute... attributes) {
+		for (PlotAttribute attribute : attributes) {
+			if (attribute instanceof StyleAttribute styleAttribute) {
+				styleAttribute.apply(plot, dataset);
+			}
 		}
 	}
 	
 	/**
-	 * Applies the given style attributes to the specified series in a dataset.
+	 * Applies the style attributes to the specified series in a dataset.
 	 * 
 	 * @param plot the plot
 	 * @param dataset the index of the dataset
 	 * @param series the index of the series
-	 * @param attributes the style attributes
+	 * @param attributes the attributes configuring the plot
 	 */
-	protected void applyStyle(Plot plot, int dataset, int series, StyleAttribute[] attributes) {
-		for (StyleAttribute attribute : attributes) {
-			attribute.apply(plot, dataset, series);
+	protected void applyStyle(Plot plot, int dataset, int series, PlotAttribute... attributes) {
+		for (PlotAttribute attribute : attributes) {
+			if (attribute instanceof StyleAttribute styleAttribute) {
+				styleAttribute.apply(plot, dataset, series);
+			}
 		}
 	}
 	
 	/**
-	 * Returns {@code true} if a style attribute exists of the specified type.
+	 * Returns the first attribute matching the specified type.
 	 * 
-	 * @param attributes the style attributes
-	 * @param type the style attribute type
-	 * @return {@code true} if a style attribute exists, {@code false} otherwise
+	 * @param <A> the type of the attribute
+	 * @param type the class of the attribute
+	 * @param attributes the attributes configuring the plot
+	 * @return the matching attribute, or {@code null} if no such attribute was found
 	 */
-	protected boolean hasStyleAttribute(StyleAttribute[] attributes, Class<? extends StyleAttribute> type) {
-		for (StyleAttribute attribute : attributes) {
+	protected <A extends PlotAttribute> A getAttribute(Class<A> type, PlotAttribute... attributes) {
+		for (PlotAttribute attribute : attributes) {
 			if (type.isInstance(attribute)) {
-				return true;
+				return type.cast(attribute);
 			}
 		}
 		
-		return false;
+		return null;
+	}
+	
+	/**
+	 * Returns the value stored in a {@link ValueAttribute} or the default value.
+	 * 
+	 * @param <A> the type of the attribute
+	 * @param <V> the type of the value
+	 * @param type the class of the value attribute
+	 * @param attributes the attributes configuring the plot
+	 * @return the value from the matching attribute, or the default value if no match was found
+	 */
+	protected <V, A extends ValueAttribute<V>> V getValueOrDefault(Class<A> type, V defaultValue, PlotAttribute... attributes) {
+		ValueAttribute<V> attribute = getAttribute(type, attributes);
+		return attribute != null ? attribute.get() : defaultValue;
+	}
+	
+	/**
+	 * Returns the value stored in a {@link ValueAttribute} or the default value.
+	 * 
+	 * @param <A> the type of the attribute
+	 * @param <V> the type of the value
+	 * @param type the class of the value attribute
+	 * @param attributes the attributes configuring the plot
+	 * @return the value from the matching attribute, or the default value if no match was found
+	 */
+	protected <V, A extends ValueAttribute<V>> V getValueOrDefault(Class<A> type, A defaultValue, PlotAttribute... attributes) {
+		ValueAttribute<V> attribute = getAttribute(type, attributes);
+		return attribute != null ? attribute.get() : defaultValue.get();
+	}
+	
+	/**
+	 * Returns {@code true} if an attribute exists matching the specified type.
+	 * 
+	 * @param type class of the attribute
+	 * @param attributes the attributes configuring the plot
+	 * @return {@code true} if a matching attribute exists, {@code false} otherwise
+	 */
+	protected boolean hasAttribute(Class<? extends PlotAttribute> type, PlotAttribute... attributes) {
+		return getAttribute(type, attributes) != null;
 	}
 	
 	/**
