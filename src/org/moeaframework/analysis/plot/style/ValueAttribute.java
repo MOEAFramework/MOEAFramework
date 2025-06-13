@@ -15,27 +15,34 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-import java.io.IOException;
-
-import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.analysis.plot.XYPlotBuilder;
-import org.moeaframework.problem.DTLZ.DTLZ2;
-import org.moeaframework.problem.Problem;
+package org.moeaframework.analysis.plot.style;
 
 /**
- * Demonstrates displaying the end-of-run approximation set in a plot.
+ * Attribute for passing a value to plotting methods.
+ * 
+ * @param <T> the type of the value
  */
-public class Example2 {
-
-	public static void main(String[] args) throws IOException {
-		Problem problem = new DTLZ2(2);
-		
-		NSGAII algorithm = new NSGAII(problem);
-		algorithm.run(10000);
-		
-		new XYPlotBuilder()
-			.scatter("NSGA-II", algorithm.getResult())
-			.show();
+public class ValueAttribute<T> implements PlotAttribute {
+	
+	private final T value;
+	
+	/**
+	 * Constructs a new value attribute.
+	 * 
+	 * @param value the value
+	 */
+	public ValueAttribute(T value) {
+		super();
+		this.value = value;
+	}
+	
+	/**
+	 * Returns the value stored in this attribute.
+	 * 
+	 * @return the value
+	 */
+	public T get() {
+		return value;
 	}
 
 }

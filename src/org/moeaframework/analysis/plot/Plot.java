@@ -121,7 +121,10 @@ import org.moeaframework.util.mvc.UI;
  * <p>
  * This class is not intended to be a fully featured plotting library.  To generate more sophisticated plots or
  * customize their appearance, one must instead use JFreeChart, JZY3D, or another plotting library.
+ * 
+ * @deprecated Use {@link PlotBuilder} instead
  */
+@Deprecated
 public class Plot {
 
 	private static final String WINDOW_TITLE = "MOEA Framework Plot";

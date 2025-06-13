@@ -15,27 +15,34 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-import java.io.IOException;
+package org.moeaframework.analysis.plot.style;
 
-import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.analysis.plot.XYPlotBuilder;
-import org.moeaframework.problem.DTLZ.DTLZ2;
-import org.moeaframework.problem.Problem;
+import java.awt.Color;
+import java.awt.Paint;
 
 /**
- * Demonstrates displaying the end-of-run approximation set in a plot.
+ * Paint scale producing a rainbow of colors by adjusting the hue component.
  */
-public class Example2 {
+public class RainbowPaintScale extends AutoScaledPaintScale {
 
-	public static void main(String[] args) throws IOException {
-		Problem problem = new DTLZ2(2);
-		
-		NSGAII algorithm = new NSGAII(problem);
-		algorithm.run(10000);
-		
-		new XYPlotBuilder()
-			.scatter("NSGA-II", algorithm.getResult())
-			.show();
+	/**
+	 * Constructs a rainbow paint scale.
+	 * 
+	 * @param lowerBound the lower bound
+	 * @param upperBound the upper bound
+	 */
+	public RainbowPaintScale(double lowerBound, double upperBound) {
+		super(lowerBound, upperBound);
 	}
 
+	@Override
+	public Paint getScaledPaint(double value) {
+		return Color.getHSBColor((float)value, 1f, 1f);
+	}
+	
+	@Override
+	public RainbowPaintScale scale(double lowerBound, double upperBound) {
+		return new RainbowPaintScale(lowerBound, upperBound);
+	}
+	
 }

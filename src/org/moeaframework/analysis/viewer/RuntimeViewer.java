@@ -24,10 +24,8 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Paint;
-import java.awt.Shape;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -53,18 +51,16 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.Range;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
 import org.moeaframework.analysis.diagnostics.PaintHelper;
 import org.moeaframework.analysis.plot.ImageFileType;
 import org.moeaframework.analysis.plot.ImageUtils;
+import org.moeaframework.analysis.plot.XYPlotBuilder;
+import org.moeaframework.analysis.plot.style.PaintAttribute;
+import org.moeaframework.analysis.plot.style.SizeAttribute;
+import org.moeaframework.analysis.plot.style.StyleAttribute;
 import org.moeaframework.analysis.series.IndexType;
 import org.moeaframework.analysis.series.IndexedResult;
 import org.moeaframework.analysis.series.ResultSeries;
@@ -74,6 +70,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.constraint.Constraint;
 import org.moeaframework.core.objective.Objective;
 import org.moeaframework.core.population.NondominatedPopulation;
+import org.moeaframework.core.population.Population;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.core.variable.Variable;
 import org.moeaframework.util.Localization;
@@ -127,12 +124,12 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 	private JLabel sliderLabel;
 
 	/**
-	 * The x-axis bounds for zooming; or {@code null} if the user has not yet set zoom bounds.
+	 * The X axis bounds for zooming; or {@code null} if the user has not yet set zoom bounds.
 	 */
 	private Range zoomRangeBounds;
 
 	/**
-	 * The y-axis bounds for zooming; or {@code null} if the user has not yet set zoom bounds.
+	 * The Y axis bounds for zooming; or {@code null} if the user has not yet set zoom bounds.
 	 */
 	private Range zoomDomainBounds;
 
@@ -167,12 +164,12 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 	private RunnableAction stop;
 
 	/**
-	 * The control for selecting which objective, constraint or decision variable will be displayed on the x-axis.
+	 * The control for selecting which objective, constraint or decision variable will be displayed on the X axis.
 	 */
 	private JComboBox<AxisSelector<Solution, Number>> xAxisSelection;
 
 	/**
-	 * The control for selecting which objective, constraint or decision variable will be displayed on the y-axis.
+	 * The control for selecting which objective, constraint or decision variable will be displayed on the Y axis.
 	 */
 	private JComboBox<AxisSelector<Solution, Number>> yAxisSelection;
 
@@ -199,7 +196,9 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		UI.show(() -> {
 			RuntimeViewer viewer = new RuntimeViewer(null, title);
 
-			viewer.getController().setReferenceSet(referenceSet);
+			if (referenceSet != null) {
+				viewer.getController().setReferenceSet(referenceSet);
+			}
 
 			for (int i = 0; i < series.length; i++) {
 				viewer.getController().addSeries(LOCALIZATION.getString("text.series") + " " + (i + 1), series[i]);
@@ -431,12 +430,22 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 	public RuntimeController getController() {
 		return controller;
 	}
+	
+	private StyleAttribute[] getStyle(PlotSeries series) {
+		Paint paint = paintHelper.get(series.getName());
+		
+		if (paint instanceof Color color) {
+			int transparency = controller.getPointTransparency().get();
 
-	private Shape getPointShape() {
-		double shapeSize = controller.getPointSize().get();
-		return new Ellipse2D.Double(-shapeSize/2.0, -shapeSize/2.0, shapeSize, shapeSize);
+			if (transparency > 0) {
+				paint = new Color(color.getRed(), color.getGreen(), color.getBlue(),
+						Math.round(255 * (100 - transparency) / 100.0f));
+			}
+		}
+				
+		return new StyleAttribute[] { PaintAttribute.of(paint), SizeAttribute.of(controller.getPointSize().get()) };
 	}
-
+	
 	private void updateModel() {
 		int xAxisIndex = xAxisSelection.getSelectedIndex();
 		int yAxisIndex = yAxisSelection.getSelectedIndex();
@@ -457,9 +466,12 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 
 		if (controller.getReferenceSet() != null) {
 			prototypeSolution = controller.getReferenceSet().getPrototypeSolution();
-			numberOfVariables = Math.min(numberOfVariables, prototypeSolution.getNumberOfVariables());
-			numberOfObjectives = Math.min(numberOfObjectives, prototypeSolution.getNumberOfObjectives());
-			numberOfConstraints = Math.min(numberOfConstraints, prototypeSolution.getNumberOfConstraints());
+			
+			if (prototypeSolution != null) {
+				numberOfVariables = Math.min(numberOfVariables, prototypeSolution.getNumberOfVariables());
+				numberOfObjectives = Math.min(numberOfObjectives, prototypeSolution.getNumberOfObjectives());
+				numberOfConstraints = Math.min(numberOfConstraints, prototypeSolution.getNumberOfConstraints());
+			}
 		}
 
 		for (PlotSeries series : controller.getSeries()) {
@@ -536,55 +548,34 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		int currentIndex = controller.getCurrentIndex();
 		slider.setValue(currentIndex);
 
-		XYSeriesCollection dataset = new XYSeriesCollection();
+		XYPlotBuilder builder = new XYPlotBuilder();
 
 		//generate approximation set
 		for (PlotSeries series : getSelectedSeries()) {
-			dataset.addSeries(series.toXYSeries(currentIndex, xAxis, yAxis));
+			IndexedResult result = series.getResultAt(currentIndex);
+			
+			if (result != null) {
+				builder.scatter(series.getName(), result.getPopulation().asList(), xAxis, yAxis, getStyle(series));
+			}
 		}
 
 		//generate reference set
 		PlotSeries referenceSet = controller.getReferenceSet();
 
 		if (referenceSet != null && controller.getShowReferenceSet().get()) {
-			dataset.addSeries(referenceSet.toXYSeries(currentIndex, xAxis, yAxis));
+			builder.scatter(referenceSet.getName(), referenceSet.getResultAt(currentIndex).getPopulation().asList(),
+					xAxis, yAxis, getStyle(referenceSet));
 		}
-
-		chart = ChartFactory.createScatterPlot(
-				(title == null ? "" : title + " @ ") + (controller.getIndexType() == IndexType.NFE ?
-						LOCALIZATION.getString("text.NFE") : LOCALIZATION.getString("text.Index")) +
-				" " + slider.getValue(),
-				xAxisSelection.getSelectedItem().toString(),
-				yAxisSelection.getSelectedItem().toString(),
-				dataset,
-				PlotOrientation.VERTICAL,
-				true,
-				true,
-				false);
-
-		//set the renderer to only display shapes
-		XYPlot plot = chart.getXYPlot();
-		XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(false, true);
-
-		for (int i=0; i<dataset.getSeriesCount(); i++) {
-			Paint paint = paintHelper.get(dataset.getSeriesKey(i));
-
-			if (paint instanceof Color color) {
-				int transparency = controller.getPointTransparency().get();
-
-				if (transparency > 0) {
-					paint = new Color(color.getRed(), color.getGreen(), color.getBlue(),
-							Math.round(255 * (100 - transparency) / 100.0f));
-				}
-			}
-
-			renderer.setSeriesPaint(i, paint);
-			renderer.setSeriesShape(i, getPointShape());
-		}
-
-		plot.setRenderer(renderer);
-
-		updateBounds(plot);
+		
+		builder.title(title);
+		builder.subtitle(slider.getValue() + " " + (controller.getIndexType() == IndexType.NFE ?
+				LOCALIZATION.getString("text.NFE") : LOCALIZATION.getString("text.Index")));
+		builder.xLabel(xAxisSelection.getSelectedItem().toString());
+		builder.yLabel(yAxisSelection.getSelectedItem().toString());
+		
+		updateBounds(builder);
+		
+		chart = builder.build();
 
 		//register with the chart to receive zoom events
 		chart.addChangeListener(e -> {
@@ -614,14 +605,14 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		return result;
 	}
 
-	private void updateBounds(XYPlot plot) {
+	private void updateBounds(XYPlotBuilder builder) {
 		switch (controller.getFitMode().get()) {
 		case InitialBounds -> {
 			Pair<Range, Range> bounds = getBoundsAt(controller.getStartingIndex());
 
 			if (bounds.getLeft() != null && bounds.getRight() != null) {
-				plot.getDomainAxis().setRange(bounds.getLeft());
-				plot.getRangeAxis().setRange(bounds.getRight());
+				builder.xLim(bounds.getLeft());
+				builder.yLim(bounds.getRight());
 			}
 		}
 		case Zoom -> {
@@ -633,19 +624,21 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 			}
 
 			if (zoomDomainBounds != null && zoomRangeBounds != null) {
-				plot.getDomainAxis().setRange(zoomDomainBounds);
-				plot.getRangeAxis().setRange(zoomRangeBounds);
+				builder.xLim(zoomDomainBounds);
+				builder.yLim(zoomRangeBounds);
 			}
 		}
 		case ReferenceSetBounds -> {
-			AxisSelector<Solution, Number> xAxis = xAxisSelection.getItemAt(xAxisSelection.getSelectedIndex());
-			AxisSelector<Solution, Number> yAxis = yAxisSelection.getItemAt(yAxisSelection.getSelectedIndex());
-
-			Pair<Range, Range> bounds = controller.getReferenceSet().getBoundsAt(0, xAxis, yAxis);
-
-			if (bounds.getLeft() != null && bounds.getRight() != null) {
-				plot.getDomainAxis().setRange(bounds.getLeft());
-				plot.getRangeAxis().setRange(bounds.getRight());
+			if (controller.getReferenceSet() != null) {
+				AxisSelector<Solution, Number> xAxis = xAxisSelection.getItemAt(xAxisSelection.getSelectedIndex());
+				AxisSelector<Solution, Number> yAxis = yAxisSelection.getItemAt(yAxisSelection.getSelectedIndex());
+	
+				Pair<Range, Range> bounds = controller.getReferenceSet().getBoundsAt(0, xAxis, yAxis);
+	
+				if (bounds.getLeft() != null && bounds.getRight() != null) {
+					builder.xLim(bounds.getLeft());
+					builder.yLim(bounds.getRight());
+				}
 			}
 		}
 		default -> {
@@ -711,6 +704,10 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		public ResultSeries getSeries() {
 			return series;
 		}
+		
+		public IndexedResult getResultAt(int index) {
+			return series.at(index);
+		}
 
 		@Override
 		public String toString() {
@@ -748,20 +745,6 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 					new Range(rangeMin - rangeMargin, rangeMax + rangeMargin));
 		}
 
-		public XYSeries toXYSeries(int index, AxisSelector<Solution, Number> xAxis,
-				AxisSelector<Solution, Number> yAxis) {
-			IndexedResult result = series.at(index);
-			XYSeries xySeries = new XYSeries(name, false, true);
-
-			if (result != null) {
-				for (Solution solution : result.getPopulation()) {
-					xySeries.add(xAxis.apply(solution), yAxis.apply(solution));
-				}
-			}
-
-			return xySeries;
-		}
-
 		public int getStepSize() {
 			return switch (series.getIndexType()) {
 			case NFE -> (series.getEndingIndex() - series.getStartingIndex()) / series.size();
@@ -770,6 +753,12 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 		}
 
 		public Solution getPrototypeSolution() {
+			Population population = series.first().getPopulation();
+			
+			if (population == null || population.isEmpty()) {
+				return null;
+			}
+			
 			return series.first().getPopulation().get(0);
 		}
 

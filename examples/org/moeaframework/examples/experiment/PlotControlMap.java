@@ -22,7 +22,7 @@ import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.analysis.parameter.Enumeration;
 import org.moeaframework.analysis.parameter.Parameter;
 import org.moeaframework.analysis.parameter.ParameterSet;
-import org.moeaframework.analysis.plot.Plot;
+import org.moeaframework.analysis.plot.HeatMapBuilder;
 import org.moeaframework.analysis.sample.SampledResults;
 import org.moeaframework.analysis.sample.Samples;
 import org.moeaframework.analysis.stream.Groupings;
@@ -65,15 +65,16 @@ public class PlotControlMap {
 		// Calculate the hypervolume and create a 2D grouping of the average value
 		Hypervolume hypervolume = new Hypervolume(problem, NondominatedPopulation.load("./pf/DTLZ2.2D.pf"));
 		
-		Partition<Pair<Integer, Integer>, Double> controlMap = results
+		Partition<Pair<Integer, Integer>, Double> averageHypervolume = results
 			.map(hypervolume::evaluate)
 			.groupBy(Groupings.pair(Groupings.bucket(populationSize, 10), Groupings.bucket(maxEvaluations, 1000)))
 			.measureEach(Measures.average());
 		
-		new Plot()
-			.heatMap("Hypervolume", controlMap)
-			.setXLabel(populationSize.getName())
-			.setYLabel(maxEvaluations.getName())
+		new HeatMapBuilder()
+			.data(averageHypervolume)
+			.xLabel(populationSize.getName())
+			.yLabel(maxEvaluations.getName())
+			.zLabel("Hypervolume")
 			.show();
 	}
 

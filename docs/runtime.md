@@ -49,13 +49,13 @@ NFE   GenerationalDistance Hypervolume
 ...
 ```
 
-Alternatively, we can pass the series to the `Plot` class to produce a line graph of the runtime data:
+Alternatively, we can pass the series to the `XYPlotBuilder` class to produce a line graph of the runtime data:
 
 <!-- java:examples/org/moeaframework/examples/runtime/PlotRuntimeDynamics.java [51:54] -->
 
 ```java
-new Plot()
-    .add(instrumentedAlgorithm.getSeries())
+new XYPlotBuilder()
+    .lines(instrumentedAlgorithm.getSeries())
     .show();
 ```
 
