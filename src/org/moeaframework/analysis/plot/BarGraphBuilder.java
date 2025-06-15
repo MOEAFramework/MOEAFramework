@@ -106,6 +106,8 @@ public class BarGraphBuilder extends PlotBuilder<BarGraphBuilder> {
 		return getInstance();
 	}
 	
+	// TODO: Allow this to use any Comparable as the key, add function interface
+	
 	/**
 	 * Adds a new series of bars to the plot, one for each X and Y pair.
 	 * 

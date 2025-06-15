@@ -17,6 +17,6 @@
  */
 
 /**
- * Collection of style options for plots.
+ * Collection of style options for series rendered in plots.
  */
 package org.moeaframework.analysis.plot.style;
