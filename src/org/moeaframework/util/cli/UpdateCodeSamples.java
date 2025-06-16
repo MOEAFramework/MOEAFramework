@@ -17,6 +17,7 @@
  */
 package org.moeaframework.util.cli;
 
+import java.awt.HeadlessException;
 import java.awt.Window;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -398,7 +399,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		public void setClean(boolean clean) {
 			options.setBoolean("clean", clean);
 		}
-		
+
 		public File getTemplateFile() {
 			return new File(options.getString("templateFile"));
 		}
@@ -425,10 +426,23 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			this.lineSeparator = lineSeparator;
 		}
 		
+		/**
+		 * Returns the options supplied with this instruction.
+		 * 
+		 * @return the options
+		 */
 		public TypedProperties getOptions() {
 			return options;
 		}
 		
+		/**
+		 * Runs this processor instruction.
+		 * 
+		 * @param reader the reader for the original file
+		 * @param writer the writer for the modified file
+		 * @return {@code true} if the contents were changed; {@code false} otherwise
+		 * @throws IOException if an I/O error occurred
+		 */
 		public boolean run(LineReader reader, PrintWriter writer) throws IOException {
 			return processor.run(reader, writer, this);
 		}
@@ -890,8 +904,13 @@ public class UpdateCodeSamples extends CommandLineUtility {
 				newOut.close();
 				return baos.toString();
 			} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException |
-					InvocationTargetException | InstantiationException | IllegalArgumentException e) {
-				throw new IOException("Failed to execute method " + methodName + " from " + getClassName(source), e);
+					 InstantiationException | IllegalArgumentException e) {
+				throw new IOException("Failed to execute method " + methodName + " in " + getClassName(source), e);
+			} catch (InvocationTargetException e) {
+				if (e.getCause() instanceof RuntimeException re) {
+					throw re;
+				}
+				throw new IOException("Failed during execution of method " + methodName + " in " + getClassName(source), e.getCause());
 			} finally {
 				System.setOut(oldOut);
 			}
@@ -922,9 +941,14 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 		@Override
 		public boolean run(LineReader reader, PrintWriter writer, ProcessorInstruction instruction) throws IOException {
-			compile(instruction);
-			execute(instruction);
-			return replace(reader, writer, instruction.formatImage(capturePlot(instruction)), instruction);
+			try {
+				compile(instruction);
+				execute(instruction);
+				return replace(reader, writer, instruction.formatImage(capturePlot(instruction)), instruction);
+			} catch (HeadlessException e) {
+				System.out.println("    > Skipping, requires graphical display");
+				return false;
+			}
 		}
 		
 		@Override
@@ -933,11 +957,11 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 		
 		private String capturePlot(ProcessorInstruction instruction) throws IOException {
+			File baseDirectory = instruction.getTemplateFile().getParentFile();
+			String dest = instruction.getOptions().getString("dest");
+			File file = new File(baseDirectory, dest);
+			
 			try {
-				File baseDirectory = instruction.getTemplateFile().getParentFile();
-				String dest = instruction.getOptions().getString("dest");
-				File file = new File(baseDirectory, dest);
-				
 				SwingUtilities.invokeAndWait(() -> {
 					for (Window window : Window.getWindows()) {
 						if (window.isShowing() &&
@@ -953,11 +977,11 @@ public class UpdateCodeSamples extends CommandLineUtility {
 						}
 					}
 				});
-				
-				return dest;
 			} catch (InvocationTargetException | InterruptedException e) {
 				throw new IOException("Failed to capture plot", e);
 			}
+			
+			return dest;
 		}
 		
 	}
