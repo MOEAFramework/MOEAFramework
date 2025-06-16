@@ -10,7 +10,7 @@ For this example, we're going to create a simple algorithm that just randomly mu
 using the Polynomial Mutation (PM) operator.  We'll call this the `RandomWalker` algorithm.  Since this algorithm
 will maintain a population of solutions, we can build this from the `AbstractEvolutionaryAlgorithm`:
 
-<!-- java:examples/org/moeaframework/examples/algorithm/RandomWalker.java [33:67] -->
+<!-- :code: src=examples/org/moeaframework/examples/algorithm/RandomWalker.java lines=33:67 -->
 
 ```java
 public class RandomWalker extends AbstractEvolutionaryAlgorithm {
@@ -58,7 +58,7 @@ The two key components are:
 
 Then, to use this algorithm, we simply construct it like we would any other:
 
-<!-- java:examples/org/moeaframework/examples/algorithm/RandomWalkerExample.java [28:30] -->
+<!-- :code: src=examples/org/moeaframework/examples/algorithm/RandomWalkerExample.java lines=28:30 -->
 
 ```java
 RandomWalker algorithm = new RandomWalker(new Srinivas());
@@ -72,7 +72,7 @@ Like all algorithms defined in the MOEA Framework, we initialized the default se
 these settings can not be changed unless we make them configurable.  We accomplish this by adding setter methods for
 each property:
 
-<!-- java:examples/org/moeaframework/examples/algorithm/ConfigurableRandomWalker.java [34:44] -->
+<!-- :code: src=examples/org/moeaframework/examples/algorithm/ConfigurableRandomWalker.java lines=34:44 -->
 
 ```java
 @Override
@@ -91,13 +91,13 @@ public void setVariation(Variation variation) {
 Also note the `@Property` annotations.  The MOEA Framework provides a Configuration API for inspecting and configuring
 these properties.  We can get the current configuration as follows:
 
-<!-- java:examples/org/moeaframework/examples/algorithm/ConfigurableRandomWalkerExample.java [29:29] -->
+<!-- :code: src=examples/org/moeaframework/examples/algorithm/ConfigurableRandomWalkerExample.java lines=29 -->
 
 ```java
 algorithm.getConfiguration().display();
 ```
 
-<!-- output:examples/org/moeaframework/examples/algorithm/ConfigurableRandomWalkerExample.java -->
+<!-- :exec: src=examples/org/moeaframework/examples/algorithm/ConfigurableRandomWalkerExample.java -->
 
 ```
 Property             Value

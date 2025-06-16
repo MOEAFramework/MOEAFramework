@@ -10,7 +10,7 @@ To assist in running these command line tools, we provide an "all in one" script
 
 where `[command]` is one of the tool names.  To view the available commands, run:
 
-<!-- bash:.github/workflows/ci.yml [cli-help] -->
+<!-- :code: src=.github/workflows/ci.yml id=cli-help language=bash -->
 
 ```bash
 ./cli --help
@@ -19,7 +19,7 @@ where `[command]` is one of the tool names.  To view the available commands, run
 For example, here we run `solve` on the 2-objective DTLZ2 problem using NSGA-II, followed by `calc` (abbreviation of
 `CalculateIndicators`) to compute the hypervolume metric:
 
-<!-- bash:.github/workflows/ci.yml [cli-solve] -->
+<!-- :code: src=.github/workflows/ci.yml id=cli-solve language=bash -->
 
 ```bash
 ./cli solve --problem DTLZ2 --algorithm NSGAII --numberOfEvaluations 10000 --output NSGAII_DTLZ2_Runtime.txt
@@ -39,7 +39,7 @@ is always available.  To see the recommended commands needed to register the too
 
 ### BuildProblem
 
-<!-- help:src/org/moeaframework/builder/BuildProblem.java [:-2] -->
+<!-- :exec: src=src/org/moeaframework/builder/BuildProblem.java args="--help" lines=:-2 -->
 
 ```
 Constructs the scaffolding for a natively-compiled problem in a target language.
@@ -66,7 +66,7 @@ The following options are available:
 
 ### CalculateIndicator
 
-<!-- help:src/org/moeaframework/analysis/tools/CalculateIndicator.java [:-2] -->
+<!-- :exec: src=src/org/moeaframework/analysis/tools/CalculateIndicator.java args="--help" lines=:-2 -->
 
 ```
 Calculates the indicator value for an approximation set.
@@ -85,7 +85,7 @@ The following options are available:
 
 ### DataStoreTool
 
-<!-- help:src/org/moeaframework/analysis/tools/DataStoreTool.java [:-2] -->
+<!-- :exec: src=src/org/moeaframework/analysis/tools/DataStoreTool.java args="--help" lines=:-2 -->
 
 ```
 Access and manage the content of a data store.
@@ -114,7 +114,7 @@ The following options are available:
 
 ### EndOfRunEvaluator
 
-<!-- help:src/org/moeaframework/analysis/tools/EndOfRunEvaluator.java [:-2] -->
+<!-- :exec: src=src/org/moeaframework/analysis/tools/EndOfRunEvaluator.java args="--help" lines=:-2 -->
 
 ```
 Evaluates an optimization algorithm on the specified problem, storing end-of-run approximation sets.
@@ -138,7 +138,7 @@ The following options are available:
 
 ### LaunchDiagnosticTool
 
-<!-- help:src/org/moeaframework/analysis/diagnostics/LaunchDiagnosticTool.java [:-2] -->
+<!-- :exec: src=src/org/moeaframework/analysis/diagnostics/LaunchDiagnosticTool.java args="--help" lines=:-2 -->
 
 ```
 Launches the diagnostic tool GUI.
@@ -152,7 +152,7 @@ The following options are available:
 
 ### MetricsAnalysis
 
-<!-- help:src/org/moeaframework/analysis/tools/MetricsAnalysis.java [:-2] -->
+<!-- :exec: src=src/org/moeaframework/analysis/tools/MetricsAnalysis.java args="--help" lines=:-2 -->
 
 ```
 Calculates the best, attainment, efficiency and controllability metrics.
@@ -174,7 +174,7 @@ The following options are available:
 
 ### MetricsEvaluator
 
-<!-- help:src/org/moeaframework/analysis/tools/MetricsEvaluator.java [:-2] -->
+<!-- :exec: src=src/org/moeaframework/analysis/tools/MetricsEvaluator.java args="--help" lines=:-2 -->
 
 ```
 Evaluates the approximation sets stored in a result file.
@@ -198,7 +198,7 @@ The following options are available:
 
 ### MetricsValidator
 
-<!-- help:src/org/moeaframework/analysis/tools/MetricsValidator.java [:-2] -->
+<!-- :exec: src=src/org/moeaframework/analysis/tools/MetricsValidator.java args="--help" lines=:-2 -->
 
 ```
 Validates the number of rows stored in a metrics file.
@@ -214,7 +214,7 @@ The following options are available:
 
 ### ReferenceSetGenerator
 
-<!-- help:src/org/moeaframework/analysis/tools/ReferenceSetGenerator.java [:-2] -->
+<!-- :exec: src=src/org/moeaframework/analysis/tools/ReferenceSetGenerator.java args="--help" lines=:-2 -->
 
 ```
 Generates a reference set for any problem whose analytical solution is known.
@@ -233,7 +233,7 @@ The following options are available:
 
 ### ResultFileConverter
 
-<!-- help:src/org/moeaframework/analysis/tools/ResultFileConverter.java [:-2] -->
+<!-- :exec: src=src/org/moeaframework/analysis/tools/ResultFileConverter.java args="--help" lines=:-2 -->
 
 ```
 Converts a result file into a different file format.
@@ -251,7 +251,7 @@ The following options are available:
 
 ### ResultFileMerger
 
-<!-- help:src/org/moeaframework/analysis/tools/ResultFileMerger.java [:-2] -->
+<!-- :exec: src=src/org/moeaframework/analysis/tools/ResultFileMerger.java args="--help" lines=:-2 -->
 
 ```
 Merges the approximation sets contained in one or more result files to produce the combined reference set.
@@ -268,7 +268,7 @@ The following options are available:
 
 ### ResultFileMetadata
 
-<!-- help:src/org/moeaframework/analysis/tools/ResultFileMetadata.java [:-2] -->
+<!-- :exec: src=src/org/moeaframework/analysis/tools/ResultFileMetadata.java args="--help" lines=:-2 -->
 
 ```
 Extracts metadata and/or performance metrics from a result file.
@@ -288,7 +288,7 @@ The following options are available:
 
 ### ResultFileSeedMerger
 
-<!-- help:src/org/moeaframework/analysis/tools/ResultFileSeedMerger.java [:-2] -->
+<!-- :exec: src=src/org/moeaframework/analysis/tools/ResultFileSeedMerger.java args="--help" lines=:-2 -->
 
 ```
 Merges the approximation sets contained in one or more result files across each seed.
@@ -308,7 +308,7 @@ The following options are available:
 
 ### ResultFileValidator
 
-<!-- help:src/org/moeaframework/analysis/tools/ResultFileValidator.java [:-2] -->
+<!-- :exec: src=src/org/moeaframework/analysis/tools/ResultFileValidator.java args="--help" lines=:-2 -->
 
 ```
 Validates the number of approximation sets stored in a result file.
@@ -325,7 +325,7 @@ The following options are available:
 
 ### ResultFileViewer
 
-<!-- help:src/org/moeaframework/analysis/tools/ResultFileViewer.java [:-2] -->
+<!-- :exec: src=src/org/moeaframework/analysis/tools/ResultFileViewer.java args="--help" lines=:-2 -->
 
 ```
 Visualizes the contents of a result file.
@@ -341,7 +341,7 @@ The following options are available:
 
 ### RuntimeEvaluator
 
-<!-- help:src/org/moeaframework/analysis/tools/RuntimeEvaluator.java [:-2] -->
+<!-- :exec: src=src/org/moeaframework/analysis/tools/RuntimeEvaluator.java args="--help" lines=:-2 -->
 
 ```
 Records the approximation set at a fixed sampling frequency from each parameterization.
@@ -364,7 +364,7 @@ The following options are available:
 
 ### SampleGenerator
 
-<!-- help:src/org/moeaframework/analysis/tools/SampleGenerator.java [:-2] -->
+<!-- :exec: src=src/org/moeaframework/analysis/tools/SampleGenerator.java args="--help" lines=:-2 -->
 
 ```
 Generates parameter samples for running the Evaluator.
@@ -384,7 +384,7 @@ The following options are available:
 
 ### SobolAnalysis
 
-<!-- help:src/org/moeaframework/analysis/tools/SobolAnalysis.java [:-2] -->
+<!-- :exec: src=src/org/moeaframework/analysis/tools/SobolAnalysis.java args="--help" lines=:-2 -->
 
 ```
 Performs Sobol' global variance analysis.
@@ -403,7 +403,7 @@ The following options are available:
 
 ### Solve
 
-<!-- help:src/org/moeaframework/analysis/tools/Solve.java [:-2] -->
+<!-- :exec: src=src/org/moeaframework/analysis/tools/Solve.java args="--help" lines=:-2 -->
 
 ```
 Solves an optimization problem.
@@ -439,7 +439,7 @@ The following options are available:
 
 ### WeightGenerator
 
-<!-- help:src/org/moeaframework/analysis/tools/WeightGenerator.java [:-2] -->
+<!-- :exec: src=src/org/moeaframework/analysis/tools/WeightGenerator.java args="--help" lines=:-2 -->
 
 ```
 Outputs randomly-generated weights.

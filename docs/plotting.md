@@ -12,7 +12,7 @@ the data is rendered.
 
 ### Line Plot
 
-<!-- java:test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java [linePlot] -->
+<!-- :code: src=test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java id=linePlot -->
 
 ```java
 double[] x = IntStream.range(0, 100).mapToDouble(i -> i - 50).toArray();
@@ -32,7 +32,7 @@ new XYPlotBuilder()
 
 ### Scatter Plot
 
-<!-- java:test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java [scatterPlot] -->
+<!-- :code: src=test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java id=scatterPlot -->
 
 ```java
 new XYPlotBuilder()
@@ -49,7 +49,7 @@ new XYPlotBuilder()
 
 ### Area Plot
 
-<!-- java:test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java [areaPlot] -->
+<!-- :code: src=test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java id=areaPlot -->
 
 ```java
 new XYPlotBuilder()
@@ -66,7 +66,7 @@ new XYPlotBuilder()
 
 ### Deviation
 
-<!-- java:test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java [deviationPlot] -->
+<!-- :code: src=test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java id=deviationPlot -->
 
 ```java
 new XYPlotBuilder()
@@ -86,7 +86,7 @@ new XYPlotBuilder()
 Unlike the previous plots, a histogram is generated from a single array of values.  The Y axis measures the number of
 times each value appears in the input.
 
-<!-- java:test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java [histogram] -->
+<!-- :code: src=test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java id=histogram -->
 
 ```java
 double[] values = IntStream.range(0, 10000).mapToDouble(i -> PRNG.nextGaussian()).toArray();

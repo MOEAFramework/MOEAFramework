@@ -10,7 +10,7 @@ For example, let's write an extension that displays the current NFE and the numb
 iteration.  We define the extension by implementing the `Extension` interface and overriding one or more of its methods.
 Here, we override `onStep` to run after each iteration.
 
-<!-- java:examples/org/moeaframework/examples/extensions/CustomExtensionExample.java [32:40] -->
+<!-- :code: src=examples/org/moeaframework/examples/extensions/CustomExtensionExample.java lines=32:40 -->
 
 ```java
 public static class CustomExtension implements Extension {
@@ -26,7 +26,7 @@ public static class CustomExtension implements Extension {
 
 Then, we simply register the extension with the algorithm:
 
-<!-- java:examples/org/moeaframework/examples/extensions/CustomExtensionExample.java [43:45] -->
+<!-- :code: src=examples/org/moeaframework/examples/extensions/CustomExtensionExample.java lines=43:45 -->
 
 ```java
 NSGAII algorithm = new NSGAII(new Srinivas());
@@ -36,7 +36,7 @@ algorithm.run(10000);
 
 Running this code produces the following output:
 
-<!-- output:examples/org/moeaframework/examples/extensions/CustomExtensionExample.java [:10] {Truncated} -->
+<!-- :exec: src=examples/org/moeaframework/examples/extensions/CustomExtensionExample.java lines=:10 showEllipsis -->
 
 ```
 NFE: 100, Nondominated Solutions: 11
@@ -58,7 +58,7 @@ NFE: 1000, Nondominated Solutions: 100
 
 The logging extension periodically displays the NFE and elapsed time:
 
-<!-- java:examples/org/moeaframework/examples/extensions/LoggingExample.java [32:34] -->
+<!-- :code: src=examples/org/moeaframework/examples/extensions/LoggingExample.java lines=32:34 -->
 
 ```java
 NSGAII algorithm = new NSGAII(new Srinivas());
@@ -71,7 +71,7 @@ algorithm.run(100000);
 The progress extension allows for tracking the progress of a run, including the elapsed time and estimated time
 remaining.
 
-<!-- java:examples/org/moeaframework/examples/extensions/ProgressExtensionExample.java [33:35] -->
+<!-- :code: src=examples/org/moeaframework/examples/extensions/ProgressExtensionExample.java lines=33:35 -->
 
 ```java
 NSGAII algorithm = new NSGAII(new Srinivas());
@@ -91,7 +91,7 @@ E: 00:01:25, R: 00:00:18 [===============================>        ] 81%
 The callback extension allows running arbitrary commands after each step.  Observe in this example how we can write
 custom log messages:
 
-<!-- java:examples/org/moeaframework/examples/extensions/CallbackExtensionExample.java [33:41] -->
+<!-- :code: src=examples/org/moeaframework/examples/extensions/CallbackExtensionExample.java lines=33:41 -->
 
 ```java
 NSGAII algorithm = new NSGAII(new Srinivas());
@@ -110,7 +110,7 @@ algorithm.run(10000);
 Checkpoints are useful when performing expensive or long-running optimizations.  This will periodically save
 the state of the optimization to a file, which can be resumed at a later point if the run is interrupted.
 
-<!-- java:examples/org/moeaframework/examples/extensions/CheckpointExample.java [36:49] -->
+<!-- :code: src=examples/org/moeaframework/examples/extensions/CheckpointExample.java lines=36:49 -->
 
 ```java
 File checkpointFile = new File("checkpoint.dat");
@@ -133,7 +133,7 @@ algorithm.run(1000000 - algorithm.getNumberOfEvaluations());
 
 Records the intermediate approximation sets as an algorithm runs, saving them to a result file.
 
-<!-- java:examples/org/moeaframework/examples/extensions/RuntimeCollectorExample.java [36:43] -->
+<!-- :code: src=examples/org/moeaframework/examples/extensions/RuntimeCollectorExample.java lines=36:43 -->
 
 ```java
 Problem problem = new Srinivas();
@@ -152,7 +152,7 @@ Adaptive time continuation (along with epsilon-progress continuation) adds dynam
 resize and inject random solutions into the population to avoid or escape local optima.  The epsilon-progress version
 also triggers restarts if no improvements are detected after some time.
 
-<!-- java:examples/org/moeaframework/examples/extensions/AdaptiveTimeContinuationExample.java [36:42] -->
+<!-- :code: src=examples/org/moeaframework/examples/extensions/AdaptiveTimeContinuationExample.java lines=36:42 -->
 
 ```java
 NSGAII algorithm = new NSGAII(new DTLZ2(2));

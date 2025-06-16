@@ -25,7 +25,7 @@ graph TD
 For this demonstration, we will create a data store backed by the file system.  Here, the content will be stored in the
 `results/` directory.
 
-<!-- java:test/org/moeaframework/snippet/DataStoreSnippet.java [datastore-create] -->
+<!-- :code: src=test/org/moeaframework/snippet/DataStoreSnippet.java id=datastore-create -->
 
 ```java
 DataStore dataStore = new FileSystemDataStore(new File("results"));
@@ -34,7 +34,7 @@ DataStore dataStore = new FileSystemDataStore(new File("results"));
 We access a container using a reference.  A reference contains one or more key-value pairs.  For example, below we
 create a reference for `"populationSize"` set to `100`.
 
-<!-- java:test/org/moeaframework/snippet/DataStoreSnippet.java [datastore-container] -->
+<!-- :code: src=test/org/moeaframework/snippet/DataStoreSnippet.java id=datastore-container -->
 
 ```java
 Reference reference = Reference.of("populationSize", 100);
@@ -44,7 +44,7 @@ Container container = dataStore.getContainer(reference);
 Next, we can access blobs within the container by name.  Below, we create a blob named `"greeting"` and store the text
 `"Hello world!"`.
 
-<!-- java:test/org/moeaframework/snippet/DataStoreSnippet.java [datastore-blob] -->
+<!-- :code: src=test/org/moeaframework/snippet/DataStoreSnippet.java id=datastore-blob -->
 
 ```java
 Blob blob = container.getBlob("greeting");
@@ -66,7 +66,7 @@ Under the covers, the file system data store structures the content as folders a
 Observe how the keys and values, in this case `populationSize` and `100`, form the folder hierarchy.  Suppose we
 change the value to `200` and write the same blob:
 
-<!-- java:test/org/moeaframework/snippet/DataStoreSnippet.java [datastore-layout] -->
+<!-- :code: src=test/org/moeaframework/snippet/DataStoreSnippet.java id=datastore-layout -->
 
 ```java
 Reference reference = Reference.of("populationSize", 200);
@@ -89,7 +89,7 @@ This layout also works with multiple key-value pairs, with each additional key-v
 Now let's look how the data store can integrate with the MOEA Framework by storing the results from an algorithm.
 Here, we create a container based on the algorithm's unique configuration.
 
-<!-- java:test/org/moeaframework/snippet/DataStoreSnippet.java [datastore-algorithm] -->
+<!-- :code: src=test/org/moeaframework/snippet/DataStoreSnippet.java id=datastore-algorithm -->
 
 ```java
 Problem problem = new UF1();
@@ -107,7 +107,7 @@ blob.storePopulation(algorithm.getResult());
 But what happens if we run this code multiple times?  Each time, we will re-run the algorithm and overwrite the result
 file.  We can improve upon this by first checking if the results exist before performing any expensive operations:
 
-<!-- java:test/org/moeaframework/snippet/DataStoreSnippet.java [datastore-exists] -->
+<!-- :code: src=test/org/moeaframework/snippet/DataStoreSnippet.java id=datastore-exists -->
 
 ```java
 if (!blob.exists()) {
@@ -120,7 +120,7 @@ One last point: while all of the properties defined by the algorithm's configura
 its container, some run parameters including `seed` and `maxEvaluations` are not included in the configuration.  Instead,
 we must modify the reference as follows:
 
-<!-- java:test/org/moeaframework/snippet/DataStoreSnippet.java [datastore-seeds] -->
+<!-- :code: src=test/org/moeaframework/snippet/DataStoreSnippet.java id=datastore-seeds -->
 
 ```java
 for (int seed = 0; seed < 10; seed++) {
@@ -162,7 +162,7 @@ file://results?populationSize=100&seed=1#greeting
 The `datastore` CLI tools provide a number of operations that can be performed, including listing contents, reading or
 writing to blobs, etc.
 
-<!-- bash:.github/workflows/ci.yml [datastore] -->
+<!-- :code: src=.github/workflows/ci.yml id=datastore language=bash -->
 
 ```bash
 # List contents of a container

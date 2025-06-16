@@ -3,7 +3,7 @@
 By default, the MOEA Framework is single-threaded.  Solving a problem in the manner below will use a single core on
 your computer:
 
-<!-- java:examples/org/moeaframework/examples/parallel/ParallelizationExample.java [43:44] -->
+<!-- :code: src=examples/org/moeaframework/examples/parallel/ParallelizationExample.java lines=43:44 -->
 
 ```java
 NSGAII serialAlgorithm = new NSGAII(problem);
@@ -19,7 +19,7 @@ Perhaps the most straightforward approach to speeding up evaluations is to distr
 evaluations across multiple cores.  Most consumer CPUs today have multiple cores (and even multiple threads per core!).
 We can distribute function evaluations using the `DistributedProblem` class:
 
-<!-- java:examples/org/moeaframework/examples/parallel/ParallelizationExample.java [53:56] -->
+<!-- :code: src=examples/org/moeaframework/examples/parallel/ParallelizationExample.java lines=53:56 -->
 
 ```java
 try (Problem distributedProblem = DistributedProblem.from(problem)) {
@@ -61,7 +61,7 @@ public class MyDistributedProblem extends AbstractProblem implements Serializabl
 Then, use the `ExecutorService` provided by your library with the `DistributedProblem`.  For Apache Ignite,
 it would look something like:
 
-<!-- java:https://raw.githubusercontent.com/MOEAFramework/ApacheIgniteExample/main/src/main/java/org/moeaframework/ignite/IgniteMasterSlaveExample.java [31:39] -->
+<!-- :code: src=https://raw.githubusercontent.com/MOEAFramework/ApacheIgniteExample/main/src/main/java/org/moeaframework/ignite/IgniteMasterSlaveExample.java lines=31:39 -->
 
 ```java
 try (Ignite ignite = Ignition.start("config/ignite-config.xml")) {
@@ -82,7 +82,7 @@ island-model parallelization runs multiple algorithm instances in parallel.  The
 island-model using NSGA-II.  More advanced configurations can be used, altering the island topology and migration
 strategy, or even using different optimization algorithms on each island.
 
-<!-- java:examples/org/moeaframework/examples/parallel/IslandModelExample.java [45:61] -->
+<!-- :code: src=examples/org/moeaframework/examples/parallel/IslandModelExample.java lines=45:61 -->
 
 ```java
 Problem problem = new UF1();

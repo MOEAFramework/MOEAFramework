@@ -44,7 +44,7 @@ Check out our [examples](https://github.com/MOEAFramework/MOEAFramework/tree/mas
 
 Below we solve the 2-objective DTLZ2 problem using NSGA-II:
 
-<!-- java:examples/Example1.java [29:34] -->
+<!-- :code: src=examples/Example1.java lines=29:34 -->
 
 ```java
 Problem problem = new DTLZ2(2);

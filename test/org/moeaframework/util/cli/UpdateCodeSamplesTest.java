@@ -23,14 +23,12 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.util.cli.UpdateCodeSamples.FileType;
-import org.moeaframework.util.cli.UpdateCodeSamples.FormatFlag;
+import org.moeaframework.util.cli.UpdateCodeSamples.TemplateFileType;
 import org.moeaframework.util.cli.UpdateCodeSamples.FormattingOptions;
 import org.moeaframework.util.cli.UpdateCodeSamples.Language;
 
@@ -42,19 +40,10 @@ public class UpdateCodeSamplesTest {
 		Assert.assertEquals(Language.Java, Language.fromString("java"));
 	}
 	
-	
-	@Test
-	public void testFormatFlag() {
-		EnumSet<FormatFlag> flags = FormatFlag.fromFormatString("{KeepIndentation,KeepTabs}");
-		Assert.assertTrue(flags.contains(FormatFlag.KeepIndentation));
-		Assert.assertTrue(flags.contains(FormatFlag.KeepTabs));
-		Assert.assertFalse(flags.contains(FormatFlag.KeepComments));
-	}
-	
 	@Test
 	public void testFileType() {
-		Assert.assertEquals(FileType.Markdown, FileType.fromExtension("md"));
-		Assert.assertEquals(FileType.Html, FileType.fromExtension("HTML"));
+		Assert.assertEquals(TemplateFileType.Markdown, TemplateFileType.fromExtension("md"));
+		Assert.assertEquals(TemplateFileType.Html, TemplateFileType.fromExtension("HTML"));
 	}
 
 	@Test
@@ -97,7 +86,7 @@ public class UpdateCodeSamplesTest {
 				```
 				""";
 		
-		Assert.assertEqualsNormalized(expected, format(Language.Java, FileType.Markdown, null, input));
+		Assert.assertEqualsNormalized(expected, format(Language.Java, TemplateFileType.Markdown, "", input));
 	}
 	
 	@Test
@@ -116,7 +105,7 @@ public class UpdateCodeSamplesTest {
 				```
 				""";
 		
-		Assert.assertEqualsNormalized(expected, format(Language.Java, FileType.Markdown, null, input));
+		Assert.assertEqualsNormalized(expected, format(Language.Java, TemplateFileType.Markdown, "", input));
 	}
 	
 	@Test
@@ -135,7 +124,7 @@ public class UpdateCodeSamplesTest {
 				```
 				""";
 		
-		Assert.assertEqualsNormalized(expected, format(Language.Java, FileType.Markdown, null, input));
+		Assert.assertEqualsNormalized(expected, format(Language.Java, TemplateFileType.Markdown, "", input));
 	}
 	
 	@Test
@@ -174,12 +163,13 @@ public class UpdateCodeSamplesTest {
 				```
 				""";
 		
-		Assert.assertEqualsNormalized(allLines, format(Language.Java, FileType.Markdown, "[:]", input));
-		Assert.assertEqualsNormalized(allLines, format(Language.Java, FileType.Markdown, "[1:3]", input));
-		Assert.assertEqualsNormalized(secondLine, format(Language.Java, FileType.Markdown, "[2:2]", input));
-		Assert.assertEqualsNormalized(firstTwoLines, format(Language.Java, FileType.Markdown, "[:2]", input));
-		Assert.assertEqualsNormalized(lastTwoLines, format(Language.Java, FileType.Markdown, "[-2:]", input));
-		Assert.assertEqualsNormalized(firstTwoLines, format(Language.Java, FileType.Markdown, "[:-1]", input));
+		Assert.assertEqualsNormalized(allLines, format(Language.Java, TemplateFileType.Markdown, "", input));
+		Assert.assertEqualsNormalized(allLines, format(Language.Java, TemplateFileType.Markdown, "lines=:", input));
+		Assert.assertEqualsNormalized(allLines, format(Language.Java, TemplateFileType.Markdown, "lines=1:3", input));
+		Assert.assertEqualsNormalized(secondLine, format(Language.Java, TemplateFileType.Markdown, "lines=2", input));
+		Assert.assertEqualsNormalized(firstTwoLines, format(Language.Java, TemplateFileType.Markdown, "lines=:2", input));
+		Assert.assertEqualsNormalized(lastTwoLines, format(Language.Java, TemplateFileType.Markdown, "lines=-2:", input));
+		Assert.assertEqualsNormalized(firstTwoLines, format(Language.Java, TemplateFileType.Markdown, "lines=:-1", input));
 	}
 	
 	@Test
@@ -202,7 +192,7 @@ public class UpdateCodeSamplesTest {
 				```
 				""";
 		
-		Assert.assertEqualsNormalized(expected, format(Language.Java, FileType.Markdown, "[foo]", input));
+		Assert.assertEqualsNormalized(expected, format(Language.Java, TemplateFileType.Markdown, "id=foo", input));
 	}
 	
 	@Test(expected = IOException.class)
@@ -217,7 +207,7 @@ public class UpdateCodeSamplesTest {
 				}
 				""";
 		
-		format(Language.Java, FileType.Markdown, "[bar]", input);
+		format(Language.Java, TemplateFileType.Markdown, "id=bar", input);
 	}
 	
 	@Test
@@ -238,7 +228,7 @@ public class UpdateCodeSamplesTest {
 				</pre>
 				""";
 		
-		Assert.assertEqualsNormalized(expected, format(Language.Java, FileType.Html, null, input));
+		Assert.assertEqualsNormalized(expected, format(Language.Java, TemplateFileType.Html, "", input));
 	}
 	
 	@Test
@@ -263,7 +253,7 @@ public class UpdateCodeSamplesTest {
 				This is a test.
 				
 				""" +
-				"<!-- java:" + codeFile.getAbsolutePath() + " [:] -->" +
+				"<!-- :code: src=" + codeFile.getAbsolutePath() + " -->" +
 				"""
 
 
@@ -277,7 +267,7 @@ public class UpdateCodeSamplesTest {
 				This is a test.
 				
 				""" +
-				"<!-- java:" + codeFile.getAbsolutePath() + " [:] -->" +
+				"<!-- :code: src=" + codeFile.getAbsolutePath() + " -->" +
 				"""
 
 
@@ -301,15 +291,11 @@ public class UpdateCodeSamplesTest {
 		Assert.assertEqualsNormalized(expected, Files.readString(markdownFile.toPath()));
 	}
 	
-	private String format(Language language, FileType fileType, String lineNumbers, String input) throws IOException {
-		FormattingOptions options = new FormattingOptions(language);
-		
-		if (lineNumbers != null) {
-			options.parseLineNumbers(lineNumbers);
-		}
-		
-		List<String> lines = options.format(input, fileType);
-		return lines.stream().collect(Collectors.joining(System.lineSeparator()));
+	private String format(Language language, TemplateFileType fileType, String arguments, String input) throws IOException {
+		FormattingOptions options = new FormattingOptions(fileType);
+		options.parseOptions(arguments);
+		options.getProperties().setEnum("language", language);
+		return options.formatCode(input);
 	}
 
 }

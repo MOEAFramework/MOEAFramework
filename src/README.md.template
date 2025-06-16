@@ -44,7 +44,7 @@ Check out our [examples](${repository}/tree/master/examples),
 
 Below we solve the 2-objective DTLZ2 problem using NSGA-II:
 
-<!-- java:examples/Example1.java [29:34] -->
+<!-- :code: src=examples/Example1.java lines=29:34 -->
 
 ```java
 Problem problem = new DTLZ2(2);

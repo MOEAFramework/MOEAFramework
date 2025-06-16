@@ -10,7 +10,7 @@ objective.  Here, we create a class for the Rosenbrock problem:
 
 $$ \text{Minimize } f(x,y) = 100(y-x^2)^2 + (1-x)^2 $$
 
-<!-- java:examples/org/moeaframework/examples/singleObjective/Rosenbrock.java [27:49] -->
+<!-- :code: src=examples/org/moeaframework/examples/singleObjective/Rosenbrock.java lines=27:49 -->
 
 ```java
 public class Rosenbrock extends AbstractProblem {
@@ -42,7 +42,7 @@ public class Rosenbrock extends AbstractProblem {
 
 Next, we can solve the Rosenbrock problem using a genetic algorithm:
 
-<!-- java:examples/org/moeaframework/examples/singleObjective/SingleObjectiveExample.java [31:36] -->
+<!-- :code: src=examples/org/moeaframework/examples/singleObjective/SingleObjectiveExample.java lines=31:36 -->
 
 ```java
 Problem problem = new Rosenbrock();
@@ -55,7 +55,7 @@ algorithm.getResult().display();
 
 This should produce a solution near the optimum of $(x, y) = (1, 1)$ with a fitness value of $f(x, y) = 0$:
 
-<!-- output:examples/org/moeaframework/examples/singleObjective/SingleObjectiveExample.java -->
+<!-- :exec: src=examples/org/moeaframework/examples/singleObjective/SingleObjectiveExample.java -->
 
 ```
 Var1     Var2     Obj1
@@ -69,7 +69,7 @@ We can also use these single-objective optimizers to solve multi-objective probl
 weighted aggregate fitness value.  Two supported approaches are "linear" and "min-max".  Here, we solve the 2-objective
 DTLZ2 problem:
 
-<!-- java:examples/org/moeaframework/examples/singleObjective/MultiObjectiveWithWeightsExample.java [36:50] -->
+<!-- :code: src=examples/org/moeaframework/examples/singleObjective/MultiObjectiveWithWeightsExample.java lines=36:50 -->
 
 ```java
 Problem problem = new DTLZ2(2);
@@ -92,7 +92,7 @@ algorithm2.getResult().display();
 Note how linear weights tend to find solutions near the boundaries, whereas min-max weights are often
 better at finding intermediate solutions:
 
-<!-- output:examples/org/moeaframework/examples/singleObjective/MultiObjectiveWithWeightsExample.java -->
+<!-- :exec: src=examples/org/moeaframework/examples/singleObjective/MultiObjectiveWithWeightsExample.java -->
 
 ```
 Linear weights:
@@ -111,7 +111,7 @@ Var1     Var2     Var3     Var4     Var5     Var6     Var7     Var8     Var9    
 Observe above that each weight vector will typically produce a single solution.  The Repeated Single Objective (RSO)
 algorithm extends this idea to produce a Pareto front by solving the problems with multiple weights.
 
-<!-- java:examples/org/moeaframework/examples/singleObjective/RepeatedSingleObjectiveExample.java [36:46] -->
+<!-- :code: src=examples/org/moeaframework/examples/singleObjective/RepeatedSingleObjectiveExample.java lines=36:46 -->
 
 ```java
 Problem problem = new DTLZ2(2);
@@ -130,7 +130,7 @@ algorithm.getResult().display();
 Since this essentially is solving the problem using `50` genetic algorithms with different weights, we expect to
 get `50` Pareto optimal solutions:
 
-<!-- output:examples/org/moeaframework/examples/singleObjective/RepeatedSingleObjectiveExample.java [:7] {Truncated} -->
+<!-- :exec: src=examples/org/moeaframework/examples/singleObjective/RepeatedSingleObjectiveExample.java lines=:7 showEllipsis -->
 
 ```
 Var1     Var2     Var3     Var4     Var5     Var6     Var7     Var8     Var9     Var10    Var11    Obj1     Obj2
