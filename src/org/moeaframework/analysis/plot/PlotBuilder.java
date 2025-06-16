@@ -18,16 +18,13 @@
 package org.moeaframework.analysis.plot;
 
 import java.awt.BorderLayout;
-import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
-import java.awt.Window;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 import org.jfree.chart.ChartFactory;
@@ -56,6 +53,43 @@ import org.moeaframework.util.validate.Validate;
 public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 	
 	private static final String WINDOW_TITLE = "MOEA Framework Plot";
+	
+	@FunctionalInterface
+	public static interface DisplayDriver {
+		
+		public void show(PlotBuilder<?> builder, int width, int height);
+		
+	}
+	
+	private static DisplayDriver DISPLAY_DRIVER;
+	
+	public static synchronized void setDisplayDriver(DisplayDriver displayDriver) {
+		Validate.that("displayDriver", displayDriver).isNotNull();
+		DISPLAY_DRIVER = displayDriver;
+	}
+	
+	public static synchronized DisplayDriver getDisplayDriver() {
+		return DISPLAY_DRIVER;
+	}
+	
+	static {
+		DISPLAY_DRIVER = new DisplayDriver() {
+			
+			@Override
+			public void show(PlotBuilder<?> builder, int width, int height) {
+				UI.show(() -> {
+					JFrame frame = new JFrame(WINDOW_TITLE);
+			
+					frame.getContentPane().setLayout(new BorderLayout());
+					frame.getContentPane().add(builder.buildPanel(), BorderLayout.CENTER);
+					frame.setPreferredSize(new Dimension(width, height));
+			
+					return frame;
+				});
+			}
+			
+		};
+	}
 	
 	private String title;
 	
@@ -214,14 +248,13 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 	 * Saves the plot to an image file.
 	 * 
 	 * @param file the file
-	 * @param fileType the image file format
 	 * @param width the image width
 	 * @param height the image height
 	 * @return a reference to this builder
 	 * @throws IOException if an I/O error occurred
 	 */
-	public T save(File file, ImageFileType fileType, int width, int height) throws IOException {
-		ImageUtils.save(build(), file, fileType, width, height);
+	public T save(File file, int width, int height) throws IOException {
+		ImageUtils.save(build(), file, width, height);
 		return getInstance();
 	}
 
@@ -230,8 +263,8 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 	 * 
 	 * @return the window that was created
 	 */
-	public JFrame show() {
-		return show(800, 600);
+	public void show() {
+		show(800, 600);
 	}
 
 	/**
@@ -241,51 +274,10 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 	 * @param height the height of the chart
 	 * @return the window that was created
 	 */
-	public JFrame show(int width, int height) {
-		return UI.showAndWait(() -> {
-			JFrame frame = new JFrame(WINDOW_TITLE);
-	
-			frame.getContentPane().setLayout(new BorderLayout());
-			frame.getContentPane().add(buildPanel(), BorderLayout.CENTER);
-			frame.setPreferredSize(new Dimension(width, height));
-	
-			return frame;
-		});
+	public void show(int width, int height) {
+		getDisplayDriver().show(getInstance(), width, height);
 	}
 
-	/**
-	 * Displays the chart in a blocking JDialog.
-	 * 
-	 * @param owner the owner of this dialog, which will be blocked until this dialog is closed
-	 * @return the window that was created
-	 */
-	public JDialog showDialog(Window owner) {
-		return showDialog(owner, 800, 600);
-	}
-
-	/**
-	 * Displays the chart in a blocking JDialog.
-	 * 
-	 * @param owner the owner of this dialog, which will be blocked until this dialog is closed
-	 * @param width the width of the chart
-	 * @param height the height of the chart
-	 * @return the window that was created
-	 */
-	public JDialog showDialog(Window owner, int width, int height) {
-		return UI.showAndWait(() -> {
-			JDialog dialog = new JDialog(owner, WINDOW_TITLE);
-	
-			dialog.getContentPane().setLayout(new BorderLayout());
-			dialog.getContentPane().add(buildPanel(), BorderLayout.CENTER);
-	
-			dialog.setPreferredSize(new Dimension(width, height));
-			dialog.pack();
-	
-			dialog.setModalityType(ModalityType.APPLICATION_MODAL);	
-			return dialog;
-		});
-	}
-	
 	/**
 	 * Wraps the plot in a {@link JFreeChart}, which includes the title, legend, and the theme.
 	 * 

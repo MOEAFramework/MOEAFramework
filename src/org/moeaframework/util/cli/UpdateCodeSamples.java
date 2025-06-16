@@ -17,8 +17,6 @@
  */
 package org.moeaframework.util.cli;
 
-import java.awt.HeadlessException;
-import java.awt.Window;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
@@ -52,8 +50,6 @@ import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
@@ -64,8 +60,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.jfree.chart.ChartPanel;
-import org.moeaframework.analysis.plot.ImageUtils;
+import org.moeaframework.analysis.plot.PlotBuilder;
+import org.moeaframework.analysis.plot.PlotBuilder.DisplayDriver;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Settings;
@@ -907,9 +903,6 @@ public class UpdateCodeSamples extends CommandLineUtility {
 					 InstantiationException | IllegalArgumentException e) {
 				throw new IOException("Failed to execute method " + methodName + " in " + getClassName(source), e);
 			} catch (InvocationTargetException e) {
-				if (e.getCause() instanceof RuntimeException re) {
-					throw re;
-				}
 				throw new IOException("Failed during execution of method " + methodName + " in " + getClassName(source), e.getCause());
 			} finally {
 				System.setOut(oldOut);
@@ -941,14 +934,8 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 		@Override
 		public boolean run(LineReader reader, PrintWriter writer, ProcessorInstruction instruction) throws IOException {
-			try {
-				compile(instruction);
-				execute(instruction);
-				return replace(reader, writer, instruction.formatImage(capturePlot(instruction)), instruction);
-			} catch (HeadlessException e) {
-				System.out.println("    > Skipping, requires graphical display");
-				return false;
-			}
+			compile(instruction);
+			return replace(reader, writer, instruction.formatImage(execute(instruction)), instruction);
 		}
 		
 		@Override
@@ -956,30 +943,30 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			return instruction.getFileType().getImageMatcher();
 		}
 		
-		private String capturePlot(ProcessorInstruction instruction) throws IOException {
+		@Override
+		protected String execute(ProcessorInstruction instruction) throws IOException {
+			DisplayDriver oldDisplayDriver = PlotBuilder.getDisplayDriver();
+			
 			File baseDirectory = instruction.getTemplateFile().getParentFile();
 			String dest = instruction.getOptions().getString("dest");
 			File file = new File(baseDirectory, dest);
 			
-			try {
-				SwingUtilities.invokeAndWait(() -> {
-					for (Window window : Window.getWindows()) {
-						if (window.isShowing() &&
-								window instanceof JFrame frame &&
-								frame.getContentPane().getComponent(0) instanceof ChartPanel chartPanel) {
-							try {
-								ImageUtils.save(chartPanel.getChart(), file);
-							} catch (IOException e) {
-								throw new UncheckedIOException(e);
-							}
-							
-							window.dispose();
-						}
+			PlotBuilder.setDisplayDriver(new DisplayDriver() {
+
+				@Override
+				public void show(PlotBuilder<?> builder, int width, int height) {
+					try {
+						builder.save(file, width, height);
+					} catch (IOException e) {
+						throw new UncheckedIOException(e);
 					}
-				});
-			} catch (InvocationTargetException | InterruptedException e) {
-				throw new IOException("Failed to capture plot", e);
-			}
+				}
+				
+			});
+			
+			super.execute(instruction);
+			
+			PlotBuilder.setDisplayDriver(oldDisplayDriver);
 			
 			return dest;
 		}
