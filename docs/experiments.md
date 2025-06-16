@@ -37,7 +37,7 @@ Enumeration<Long> seed = Parameter.named("seed").asLong().random(0, Long.MAX_VAL
 We then create a `ParameterSet` with the parameters we have defined.  We can optionally save this data to a file so we
 have a record of how the experiment was configured.
 
-<!-- :code: src=examples/org/moeaframework/examples/experiment/ParameterSampleExample.java lines=51-52 -->
+<!-- :code: src=examples/org/moeaframework/examples/experiment/ParameterSampleExample.java lines=51:52 -->
 
 ```java
 ParameterSet parameters = new ParameterSet(populationSize, seed);
@@ -50,7 +50,7 @@ With the parameters defined, we can now generate the samples.  You might have no
 parameter was an `Enumeration`.  This simply means the parameter has a fixed set of possible values.  Consequently, when
 we enumerate the samples, we create the "cross product" containing all possible combinations of these values.
 
-<!-- :code: src=examples/org/moeaframework/examples/experiment/ParameterSampleExample.java lines=54-55 -->
+<!-- :code: src=examples/org/moeaframework/examples/experiment/ParameterSampleExample.java lines=54:55 -->
 
 ```java
 Samples samples = parameters.enumerate();
@@ -63,7 +63,7 @@ Finally, we use the `evaluateAll` method to configure each run, collect the resu
 object.  Observe how we call `applyConfiguration` to configure the algorithm, but must also set up the PRNG seed
 separately.
 
-<!-- :code: src=examples/org/moeaframework/examples/experiment/ParameterSampleExample.java lines=57-66 -->
+<!-- :code: src=examples/org/moeaframework/examples/experiment/ParameterSampleExample.java lines=57:66 -->
 
 ```java
 SampledResults<NondominatedPopulation> results = samples.evaluateAll(sample -> {
@@ -84,7 +84,7 @@ SampledResults<NondominatedPopulation> results = samples.evaluateAll(sample -> {
 With the data collected, we turn to analyzing the data.  Here, we measure the average hypervolume for each population
 size and display the results:
 
-<!-- :code: src=examples/org/moeaframework/examples/experiment/ParameterSampleExample.java lines=68-77 -->
+<!-- :code: src=examples/org/moeaframework/examples/experiment/ParameterSampleExample.java lines=68:77 -->
 
 ```java
 Hypervolume hypervolume = new Hypervolume(problem, NondominatedPopulation.load("./pf/DTLZ2.2D.pf"));

@@ -91,6 +91,15 @@ import org.moeaframework.util.validate.Validate;
  *   key="quoted value"    // Quoted value
  *   key                   // Equivalent to key=true
  * }</pre>
+ * The option {@code "lines"} is used to specify the line numbers to copy.  The format is similar to Python string
+ * splices:
+ * <pre>{@code
+ *   lines=5:10       // Copies lines 5-10
+ *   lines=5          // Copies only line 5
+ *   lines=:10        // Copies first 10 lines
+ *   lines=-10:       // Copies last 10 lines
+ *   lines=:-1        // Copies everything except the last line
+ * }</pre>
  * This utility can be run in validate-only mode or update mode.  In validate mode, any changes to the files will
  * result in an error.  This is useful in CI to validate the docs are up-to-date.  In update mode, the files are
  * updated with any changes.
@@ -104,12 +113,6 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	private static final File[] DEFAULT_PATHS = new File[] { new File("docs/"), new File("website/"), new File("src/README.md.template") };
 	
 	private static final Pattern REGEX = Pattern.compile("<!--\\s+\\:([a-zA-Z]+)\\:\\s+(.*)\\s+-->");
-		
-	private static final Pattern LINES_REGEX = Pattern.compile("(\\-?[0-9]+)?([:\\\\-])?(\\-?[0-9]+)?");
-	
-	private static final Pattern BEGIN_EXAMPLE_REGEX = Pattern.compile("^\\s+(//|#)\\s*begin-example:\\s*([a-zA-Z][a-zA-Z0-9\\-_]*)\\s*$");
-
-	private static final Pattern END_EXAMPLE_REGEX = Pattern.compile("^\\s+(//|#)\\s*end-example:\\s*([a-zA-Z][a-zA-Z0-9\\-_]*)\\s*$");
 	
 	/**
 	 * {@code true} if compiled files should be cleaned and rebuilt.
@@ -316,6 +319,10 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	 */
 	static class FormattingOptions {
 		
+		private static final Pattern BEGIN_EXAMPLE_REGEX = Pattern.compile("^\\s+(//|#)\\s*begin-example:\\s*([a-zA-Z][a-zA-Z0-9\\-_]*)\\s*$");
+
+		private static final Pattern END_EXAMPLE_REGEX = Pattern.compile("^\\s+(//|#)\\s*end-example:\\s*([a-zA-Z][a-zA-Z0-9\\-_]*)\\s*$");
+		
 		/**
 		 * Constant representing the first line in the file.
 		 */
@@ -330,21 +337,6 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * The type of the file.
 		 */
 		private final TemplateFileType fileType;
-		
-		/**
-		 * The starting line number.
-		 */
-		private int startingLine;
-		
-		/**
-		 * The ending line number.
-		 */
-		private int endingLine;
-		
-		/**
-		 * Identifier for the code block, as an alternative to line numbers.
-		 */
-		private String identifier;
 		
 		/**
 		 * The line separator of the original file.
@@ -362,8 +354,6 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			super();
 			this.fileType = fileType;
 			
-			startingLine = FIRST_LINE;
-			endingLine = LAST_LINE;
 			lineSeparator = System.lineSeparator();
 			properties = new TypedProperties();
 		}
@@ -384,16 +374,11 @@ public class UpdateCodeSamples extends CommandLineUtility {
 
 				while (tokenizer.nextToken() != StreamTokenizer.TT_EOF) {
 					if (tokenizer.ttype != StreamTokenizer.TT_WORD) {
-						throw new IOException("Failed to parse comment, encountered unexpected character '" +
+						throw new IOException("Failed to parse options, encountered unexpected character '" +
 								(char)tokenizer.ttype + "'");
 					}
 					
 					String key = tokenizer.sval;
-					
-					if (key.startsWith("[") && key.endsWith("]")) {
-						properties.setString("lines", key.substring(1, key.length() - 1));
-						continue;
-					}
 					
 					tokenizer.nextToken();
 									
@@ -402,7 +387,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 						tokenizer.pushBack();
 						continue;
 					} else if (tokenizer.ttype != '=') {
-						throw new IOException("Failed to parse comment, expected '=' after key");
+						throw new IOException("Failed to parse options, expected '=' after key");
 					}
 									
 					tokenizer.nextToken();
@@ -410,56 +395,9 @@ public class UpdateCodeSamples extends CommandLineUtility {
 					if (tokenizer.ttype == StreamTokenizer.TT_WORD || tokenizer.ttype == '"' || tokenizer.ttype == '\'') {
 						properties.setString(key, tokenizer.sval);
 					} else {
-						throw new IOException("Failed to parse comment, expected value after '='");
+						throw new IOException("Failed to parse options, expected value after '='");
 					}
 				}
-			}
-			
-			// TODO: MOve?
-			parseLineNumbers(properties.getString("lines", null));
-		}
-		
-		/**
-		 * Parses the line numbers in the format {@code [<startingLine>:<endingLine>]}.  The format is analogous
-		 * to Python string splices.
-		 * <pre>{@code
-		 *   [5:10]       // Copies lines 5-10
-		 *   [5:5]        // Copies only line 5
-		 *   [:10]        // Copies first 10 lines
-		 *   [-10:]       // Copies last 10 lines
-		 *   [:-1]        // Copies everything except the last line
-		 *   [:]          // Copies entire file
-		 * }</pre>
-		 * <p>
-		 * A string identifier can also be given, in which case we locate the code block between the comments
-		 * <pre>{@code
-		 *   // begin-example:<id>
-		 *   ... code block
-		 *   // end-example:<id>
-		 * }</pre>
-		 * 
-		 * @param str the string representation of the line numbers
-		 * @throws IOException 
-		 */
-		public void parseLineNumbers(String str) throws IOException {
-			if (str == null) {
-				startingLine = FIRST_LINE;
-				endingLine = LAST_LINE;
-				return;
-			}
-			
-			if (str.startsWith("[") && str.endsWith("]")) {
-				str = str.substring(1, str.length()-1);
-			}
-			
-			Matcher matcher = LINES_REGEX.matcher(str);
-			
-			if (matcher.matches()) {				
-				startingLine = matcher.group(1) != null ? Integer.parseInt(matcher.group(1)) : FIRST_LINE;
-				endingLine = matcher.group(3) != null ? Integer.parseInt(matcher.group(3)) :
-					matcher.group(2) != null ? LAST_LINE : startingLine;
-			} else {
-				throw new IOException("Malformed line range: " + str);
 			}
 		}
 		
@@ -495,7 +433,14 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @return the starting line number
 		 */
 		public int getStartingLine() {
-			return startingLine;
+			String lines = properties.getString("lines", ":");
+			String[] tokens = lines.split(":", 2);
+			
+			if (tokens[0].isBlank()) {
+				return FIRST_LINE;
+			} else {
+				return Integer.parseInt(tokens[0]);
+			}
 		}
 		
 		/**
@@ -506,7 +451,18 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @return the ending line number
 		 */
 		public int getEndingLine() {
-			return endingLine;
+			String lines = properties.getString("lines", ":");
+			String[] tokens = lines.split(":", 2);
+			
+			if (tokens.length > 1 && tokens[1].isBlank()) {
+				return LAST_LINE;
+			} else if (tokens.length > 1) {
+				return Integer.parseInt(tokens[1]);
+			} else if (tokens[0].isBlank()) {
+				return LAST_LINE;
+			} else {
+				return Integer.parseInt(tokens[0]);
+			}
 		}
 		
 		/**

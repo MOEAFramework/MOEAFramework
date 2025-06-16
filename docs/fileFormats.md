@@ -130,7 +130,7 @@ try (ResultFileReader reader = ResultFileReader.open(problem, resultFile)) {
 This section provides a brief overview of the structure of a result file.  The file starts with a header section
 followed by the body.  Each header line starts with `#` and defines the problem:
 
-<!-- :code: src=pf/Schaffer.pf lines=1-8 -->
+<!-- :code: src=pf/Schaffer.pf lines=1:8 -->
 
 ```
 # Version=5
