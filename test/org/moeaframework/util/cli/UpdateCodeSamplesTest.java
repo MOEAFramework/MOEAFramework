@@ -28,8 +28,9 @@ import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.cli.UpdateCodeSamples.TemplateFileType;
-import org.moeaframework.util.cli.UpdateCodeSamples.FormattingOptions;
+import org.moeaframework.util.cli.UpdateCodeSamples.ProcessorInstruction;
 import org.moeaframework.util.cli.UpdateCodeSamples.Language;
+import org.moeaframework.util.cli.UpdateCodeSamples.Processor;
 
 public class UpdateCodeSamplesTest {
 	
@@ -175,11 +176,11 @@ public class UpdateCodeSamplesTest {
 	public void testIdentifier() throws IOException {
 		String input = """
 				public class Foo {
-				    //begin-example:foo
+				    // begin-example: foo
 					public void test() {
 					    int x = 5;
 					}
-					//end-example:foo
+					// end-example: foo
 				}
 				""";
 		
@@ -198,11 +199,11 @@ public class UpdateCodeSamplesTest {
 	public void testMissingIdentifier() throws IOException {
 		String input = """
 				public class Foo {
-				    //begin-example:foo
+				    // begin-example: foo
 					public void test() {
 					    int x = 5;
 					}
-					//end-example:foo
+					// end-example: foo
 				}
 				""";
 		
@@ -291,9 +292,10 @@ public class UpdateCodeSamplesTest {
 	}
 	
 	private String format(Language language, TemplateFileType fileType, String arguments, String input) throws IOException {
-		FormattingOptions options = new FormattingOptions(fileType);
+		ProcessorInstruction options = new ProcessorInstruction(Processor.fromString("code"), fileType);
 		options.parseOptions(arguments);
-		options.getProperties().setEnum("language", language);
+		options.getOptions().setString("src", "example." + language.extensions[0]);
+		options.getOptions().setEnum("language", language);
 		return options.formatCode(input);
 	}
 

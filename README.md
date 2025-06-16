@@ -14,12 +14,10 @@ evolutionary algorithms (MOEAs) and other metaheuristics.
 * Permissive open source license (LGPL)
 
 
-<!-- begin-section:github -->
 ### :warning: Upgrading to V5 :warning:
 
 Version 5.0 was recently released, which includes breaking changes that will likely requiring code modifications if
 upgrading from a previous version.  Refer to the [Release Notes](docs/releaseNotes.md) for details.
-<!-- end-section:github -->
 
 
 ### Getting Started
@@ -44,7 +42,6 @@ Check out our [examples](https://github.com/MOEAFramework/MOEAFramework/tree/mas
 
 Below we solve the 2-objective DTLZ2 problem using NSGA-II:
 
-<!-- :code: src=examples/Example1.java lines=29:34 -->
 
 ```java
 Problem problem = new DTLZ2(2);

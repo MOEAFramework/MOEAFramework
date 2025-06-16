@@ -133,9 +133,9 @@ Rather than using line numbers, we can also identify blocks of code using an ide
 the code with these comments:
 
 ```
-// begin-example:foo
+// begin-example: foo
 ...
-// end-example:foo
+// end-example: foo
 ```
 
 then reference this block by its identifier in the Markdown docs with `<!-- :code: src=examples/Example1.java id=foo -->`.

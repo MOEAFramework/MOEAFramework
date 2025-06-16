@@ -12,7 +12,7 @@ the data is rendered.
 
 ### Line Plot
 
-<!-- :code: src=test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java id=linePlot -->
+<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java id=linePlot -->
 
 ```java
 double[] x = IntStream.range(0, 100).mapToDouble(i -> i - 50).toArray();
@@ -26,13 +26,15 @@ new XYPlotBuilder()
         .show();
 ```
 
+<!-- :plot: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=linePlot dest=imgs/plot-line.png width=70% -->
+
 <p align="center">
 	<img src="imgs/plot-line.png" width="70%" />
 </p>
 
 ### Scatter Plot
 
-<!-- :code: src=test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java id=scatterPlot -->
+<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java id=scatterPlot -->
 
 ```java
 new XYPlotBuilder()
@@ -43,13 +45,15 @@ new XYPlotBuilder()
         .show();
 ```
 
+<!-- :plot: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=scatterPlot dest=imgs/plot-scatter.png width=70% -->
+
 <p align="center">
 	<img src="imgs/plot-scatter.png" width="70%" />
 </p>
 
 ### Area Plot
 
-<!-- :code: src=test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java id=areaPlot -->
+<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java id=areaPlot -->
 
 ```java
 new XYPlotBuilder()
@@ -60,13 +64,15 @@ new XYPlotBuilder()
         .show();
 ```
 
+<!-- :plot: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=areaPlot dest=imgs/plot-area.png width=70% -->
+
 <p align="center">
 	<img src="imgs/plot-area.png" width="70%" />
 </p>
 
 ### Deviation
 
-<!-- :code: src=test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java id=deviationPlot -->
+<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java id=deviationPlot -->
 
 ```java
 new XYPlotBuilder()
@@ -77,6 +83,8 @@ new XYPlotBuilder()
         .show();
 ```
 
+<!-- :plot: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=deviationPlot dest=imgs/plot-deviation.png width=70% -->
+
 <p align="center">
 	<img src="imgs/plot-deviation.png" width="70%" />
 </p>
@@ -86,7 +94,7 @@ new XYPlotBuilder()
 Unlike the previous plots, a histogram is generated from a single array of values.  The Y axis measures the number of
 times each value appears in the input.
 
-<!-- :code: src=test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java id=histogram -->
+<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java id=histogram -->
 
 ```java
 double[] values = IntStream.range(0, 10000).mapToDouble(i -> PRNG.nextGaussian()).toArray();
@@ -98,6 +106,8 @@ new XYPlotBuilder()
         .yLabel("Count")
         .show();
 ```
+
+<!-- :plot: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=histogram dest=imgs/plot-histogram.png width=70% -->
 
 <p align="center">
 	<img src="imgs/plot-histogram.png" width="70%" />

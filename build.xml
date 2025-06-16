@@ -205,9 +205,11 @@ done < <(git diff --cached --name-only --diff-filter=ACM)
 	<target name="update-readme">
 		<copy file="src/README.md.template" tofile="README.md" overwrite="true" />
 		
-		<replaceregexp file="README.md"
-			match="\s*&lt;!-- begin-section:website --&gt;.*&lt;!-- end-section:website --&gt;"
-			replace="" flags="gis" />
+		<replaceregexp file="README.md" replace="" flags="gis"
+			match="\s*&lt;!-- begin-section: website --&gt;.*&lt;!-- end-section: website --&gt;" />
+		
+		<replaceregexp file="README.md" replace="" flags="gi"
+			match="\s?&lt;!--.*--&gt;" />
 		
 		<replace-properties file="README.md" />
 	</target>
@@ -335,9 +337,11 @@ done < <(git diff --cached --name-only --diff-filter=ACM)
 		
 		<copy file="src/README.md.template" tofile="${build}/index.md" />
 		
-		<replaceregexp file="${build}/index.md"
-			match="\s*&lt;!-- begin-section:github --&gt;.*&lt;!-- end-section:github --&gt;"
-			replace="" flags="gis" />
+		<replaceregexp file="${build}/index.md" replace="" flags="gis"
+			match="\s*&lt;!-- begin-section: github --&gt;.*&lt;!-- end-section: github --&gt;" />
+		
+		<replaceregexp file="${build}/index.md" replace="" flags="gi"
+			match="\s?&lt;!--.*--&gt;" />
 		
 		<copy todir="${build}/assets/images">
 			<fileset file="docs/imgs/runtime-viewer.png" />
