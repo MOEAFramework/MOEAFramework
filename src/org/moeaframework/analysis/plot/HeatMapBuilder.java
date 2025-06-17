@@ -247,7 +247,7 @@ public class HeatMapBuilder extends PlotBuilder<HeatMapBuilder> {
 	/**
 	 * Sets the style of the heat map.
 	 * 
-	 * attributes the attributes configuring the plot
+	 * @param attributes the attributes configuring the plot
 	 * @return a reference to this builder
 	 */
 	public HeatMapBuilder style(PlotAttribute... attributes) {

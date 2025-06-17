@@ -255,9 +255,9 @@ public class UpdateCodeSamples extends CommandLineUtility {
 								
 				if (instruction != null) {
 					instruction.setLineSeparator(lineSeparator);
+					instruction.setTemplateFile(file);
 					instruction.setClean(clean);
 					instruction.setSeed(seed);
-					instruction.setTemplateFile(file);
 					
 					System.out.println("    > Running " + instruction);
 					
@@ -587,7 +587,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	/**
 	 * Base class for defining a processor that responds to a particular instruction.
 	 */
-	abstract static class Processor {
+	static abstract class Processor {
 		
 		private static final Map<String, Processor> INSTANCES;
 		
@@ -689,7 +689,8 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @return the old content that is being replaced
 		 * @throws IOException if an I/O error occurred
 		 */
-		private String scanContentToReplace(LineReader reader, PrintWriter writer, ProcessorInstruction instruction) throws IOException {
+		private String scanContentToReplace(LineReader reader, PrintWriter writer, ProcessorInstruction instruction)
+				throws IOException {
 			StringBuilder sb = new StringBuilder();
 			TextMatcher matcher = getReplaceMatcher(instruction);
 			boolean inBlock = false;
@@ -957,42 +958,60 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	static class PlotProcessor extends ExecProcessor {
 		
 		@Override
-		public boolean run(LineReader reader, PrintWriter writer, ProcessorInstruction instruction) throws IOException {
-			compile(instruction);
-			return replace(reader, writer, instruction.formatImage(execute(instruction)), instruction);
+		public boolean run(LineReader reader, PrintWriter writer, ProcessorInstruction instruction) throws IOException {			
+			DisplayDriver oldDisplayDriver = PlotBuilder.getDisplayDriver();
+			
+			try {
+				// Set up a display driver to save the plot to an image file
+				String dest = instruction.getOptions().getString("dest");				
+				File tempFile = File.createTempFile("temp", "." + FilenameUtils.getExtension(dest));
+								
+				PlotBuilder.setDisplayDriver(new DisplayDriver() {
+	
+					@Override
+					public void show(PlotBuilder<?> builder, int width, int height) {
+						try {
+							builder.save(tempFile, width, height);
+						} catch (IOException e) {
+							throw new UncheckedIOException(e);
+						}
+					}
+					
+				});
+				
+				// Compile and execute the plotting code
+				compile(instruction);
+				execute(instruction);
+				
+				// Detect if the plot changed
+				File baseDirectory = instruction.getTemplateFile().getParentFile();
+				File destFile = new File(baseDirectory, dest);
+				
+				long position = Files.mismatch(tempFile.toPath(), destFile.toPath());
+				boolean contentChanged = false;
+				
+				if (position >= 0) {
+					System.out.println("      ! Plot '" + dest + "' changed!");
+					
+					if (update) {
+						Files.move(tempFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+					} else {
+						Files.deleteIfExists(tempFile.toPath());
+					}
+					
+					contentChanged = true;
+				}
+				
+				contentChanged |= replace(reader, writer, instruction.formatImage(dest), instruction);
+				return contentChanged;
+			} finally {
+				PlotBuilder.setDisplayDriver(oldDisplayDriver);
+			}
 		}
 		
 		@Override
 		protected TextMatcher getReplaceMatcher(ProcessorInstruction instruction) {
 			return instruction.getFileType().getImageMatcher();
-		}
-		
-		@Override
-		protected String execute(ProcessorInstruction instruction) throws IOException {
-			DisplayDriver oldDisplayDriver = PlotBuilder.getDisplayDriver();
-			
-			File baseDirectory = instruction.getTemplateFile().getParentFile();
-			String dest = instruction.getOptions().getString("dest");
-			File file = new File(baseDirectory, dest);
-			
-			PlotBuilder.setDisplayDriver(new DisplayDriver() {
-
-				@Override
-				public void show(PlotBuilder<?> builder, int width, int height) {
-					try {
-						builder.save(file, width, height);
-					} catch (IOException e) {
-						throw new UncheckedIOException(e);
-					}
-				}
-				
-			});
-			
-			super.execute(instruction);
-			
-			PlotBuilder.setDisplayDriver(oldDisplayDriver);
-			
-			return dest;
 		}
 		
 	}
