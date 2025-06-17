@@ -985,20 +985,6 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 	}
 	
-	class IfProcessor extends ExecProcessor {
-		
-		@Override
-		public boolean run(LineReader reader, PrintWriter writer, ProcessorInstruction instruction) throws IOException {			
-			return replace(reader, writer, "", instruction);
-		}
-		
-		@Override
-		protected TextMatcher getReplaceMatcher(ProcessorInstruction instruction) {
-			return new TextMatcher(s -> true, s -> s.startsWith("<!-- :end-if: -->"), true);
-		}
-		
-	}
-	
 	abstract class Language {
 		
 		Language() {
