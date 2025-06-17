@@ -54,26 +54,17 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 	
 	private static final String WINDOW_TITLE = "MOEA Framework Plot";
 	
+	/**
+	 * Interface for display drivers, which are responsible for displaying the resulting plot to the user, typically
+	 * in some windowing system.
+	 */
 	@FunctionalInterface
 	public static interface DisplayDriver {
 		
-		public void show(PlotBuilder<?> builder, int width, int height);
-		
-	}
-	
-	private static DisplayDriver DISPLAY_DRIVER;
-	
-	public static synchronized void setDisplayDriver(DisplayDriver displayDriver) {
-		Validate.that("displayDriver", displayDriver).isNotNull();
-		DISPLAY_DRIVER = displayDriver;
-	}
-	
-	public static synchronized DisplayDriver getDisplayDriver() {
-		return DISPLAY_DRIVER;
-	}
-	
-	static {
-		DISPLAY_DRIVER = new DisplayDriver() {
+		/**
+		 * The default display driver that wraps the plot in a non-blocking window.
+		 */
+		public static final DisplayDriver DEFAULT = new DisplayDriver() {
 			
 			@Override
 			public void show(PlotBuilder<?> builder, int width, int height) {
@@ -89,6 +80,45 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 			}
 			
 		};
+		
+		/**
+		 * Shows the given plot.
+		 * 
+		 * @param builder the plot builder
+		 * @param width the requested display width
+		 * @param height the requested display height
+		 */
+		public void show(PlotBuilder<?> builder, int width, int height);
+		
+	}
+	
+	/**
+	 * The current display driver.
+	 */
+	private static DisplayDriver DISPLAY_DRIVER;
+	
+	/**
+	 * Sets the display driver, which will be used by subsequent calls to {@link #show(int, int)} when displaying this
+	 * plot.
+	 * 
+	 * @param displayDriver
+	 */
+	public static synchronized void setDisplayDriver(DisplayDriver displayDriver) {
+		Validate.that("displayDriver", displayDriver).isNotNull();
+		DISPLAY_DRIVER = displayDriver;
+	}
+	
+	/**
+	 * Returns the current display driver.
+	 * 
+	 * @return the current display driver
+	 */
+	public static synchronized DisplayDriver getDisplayDriver() {
+		return DISPLAY_DRIVER;
+	}
+	
+	static {
+		setDisplayDriver(DisplayDriver.DEFAULT);
 	}
 	
 	private String title;

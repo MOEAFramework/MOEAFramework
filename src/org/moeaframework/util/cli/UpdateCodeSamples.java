@@ -70,31 +70,39 @@ import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.validate.Validate;
 
 /**
- * Utility to update code samples and output found in various documentation files, including Markdown and HTML files.
- * This syncs the examples with actual code that is compiled and tested to ensure its correctness.
- * <p>
- * Special comments, called "processor instructions", are embedded within the documentation with the following format:
+ * Utility to update code samples and output found in various documentation files, including Markdown and HTML files,
+ * by embedding special instructions within the files that are processed by this utility.  These instructions are
+ * embedded as comments in the document, allowing the instruction to remain hidden when the document is rendered.  For
+ * both Markdown and HTML, these comments are structured as follows:
  * <pre>{@code
  *   <!-- :<processor>: arg1 arg2 ... -->
  * }</pre>
- * The following processors are available:
+ * The processor type, which is surrounded by colons (:), determines the kind of processing performed when the
+ * instruction is encountered.  The following processors are available:
  * <ul>
- *   <li>{@code code} - Copies all or part of a source code file into a code block in the template
+ *   <li>{@code code} - Copies all or part of a source code file into a code block in the output
  *   <li>{@code exec} - Compiles and executes a Java file, copying all or part of the output to a code block
- *   <li>{@code plot} - Compiles and executes a Java file, then snapshots the resulting plot to an image file
+ *   <li>{@code plot} - Compiles and executes a Java file that creates plots using {@link PlotBuilder}, saving the
+ *       rendered plot to an image file.
  * </ul>
- * Processors have required and optional arguments.  For instance, the {@code code} processor requires {@code src}
- * with optional {@code lines} and style options.  Options are key-value pairs written in the form {@code key=value}.
- * The value can be quoted ({@code key="quoted value"}) or excluded for boolean arguments.
- * <p>
- * The option {@code "lines"} is used to specify which line numbers are copied to the output.  The format is similar to
- * Python string splices:
+ * The processor type is followed by some number of arguments.  These arguments are formatted as {@code key=value}
+ * pairs.  Some useful arguments include:
+ * <ul>
+ *   <li>{@code src} - The source code file containing the code being displayed or executed.
+ *   <li>{@code lines} - The line number ({@code lines=5}), range ({@code lines=5:10}), or splice ({@code lines=:-1})
+ *       of the code being referenced.
+ *   <li>{@code id} - Alternative to line numbers, referencing a block of code between {@code // begin-example: <id>}
+ *       and {@code // end-example: <id>} comments.
+ *   <li>{@code preserveComments}, {@code preserveIndentation}, {@code preserveTabs}, etc. - Formatting flags that
+ *       determine how source code is displayed.  Since these are boolean-valued, the value can be omitted.
+ * </ul>
+ * These instructions are placed immediately before the block of text they will be updating.  For example:
  * <pre>{@code
- *   lines=5:10       // Copies lines 5-10
- *   lines=5          // Copies only line 5
- *   lines=:10        // Copies first 10 lines
- *   lines=-10:       // Copies last 10 lines
- *   lines=:-1        // Copies everything except the last line
+ *   <!-- :code: src=examples/Example1.java lines=5:10 preserveComments -->
+ *   
+ *   ```java
+ *   // The code block being synced by the instruction above
+ *   ```
  * }</pre>
  * This utility can be run in validate-only mode or update mode.  In validate mode, any changes to the files will
  * result in an error.  This is useful in CI to validate the docs are up-to-date.  In update mode, the files are
@@ -288,6 +296,9 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 	}
 	
+	/**
+	 * Class representing a processor instruction, which defines the type of processor and any arguments.
+	 */
 	static class ProcessorInstruction {
 		
 		private static final TreeSet<String> INTERNAL_KEYS;
@@ -396,10 +407,20 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			options.setBoolean("clean", clean);
 		}
 
+		/**
+		 * Returns the template file, which is the file currently being processed and contained this instruction.
+		 * 
+		 * @return the template file
+		 */
 		public File getTemplateFile() {
 			return new File(options.getString("templateFile"));
 		}
 		
+		/**
+		 * Sets the template file.
+		 * 
+		 * @param templateFile the template file
+		 */
 		public void setTemplateFile(File templateFile) {
 			options.setString("templateFile", templateFile.toString());
 		}
@@ -444,7 +465,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 
 		/**
-		 * Formats the given code block based on the options and target file type.
+		 * Formats the given code block in the style required by the template file type.
 		 * 
 		 * @param content the content to format
 		 * @return the formatted content
@@ -455,7 +476,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			
 			if (options.contains("id")) {
 				String identifier = options.getString("id");
-				TextMatcher matcher = processor.getSourceLanguage(this).getSnippetMatcher(identifier);
+				TextMatcher matcher = processor.getSourceFileLanguage(this).getSnippetMatcher(identifier);
 				
 				boolean inSnippet = false;
 				Iterator<String> iterator = lines.iterator();
@@ -511,7 +532,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			}
 			
 			// Apply any formatting specific to the output source code language
-			Language language = processor.getOutputLanguage(this);
+			Language language = processor.getLanguage(this);
 			
 			if (!options.getBoolean("preserveComments", false)) {
 				lines = language.stripComments(lines);
@@ -533,7 +554,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 		
 		/**
-		 * Formats the image on the options and target file type.
+		 * Formats the given image path or URL in the style required by the template file type.
 		 * 
 		 * @param path the image path
 		 * @return the formatted image
@@ -563,6 +584,9 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 	}
 	
+	/**
+	 * Base class for defining a processor that responds to a particular instruction.
+	 */
 	abstract static class Processor {
 		
 		private static final Map<String, Processor> INSTANCES;
@@ -575,9 +599,9 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 		
 		/**
-		 * Determine the processor from its string representation using case-insensitive matching.
+		 * Determine the processor from its name using case-insensitive matching.
 		 * 
-		 * @param value the string representation of the processor
+		 * @param value the name of the processor
 		 * @return the processor
 		 * @throws IllegalArgumentException if the processor is not supported
 		 */
@@ -591,7 +615,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			return instance;
 		}
 
-		public Processor() {
+		Processor() {
 			super();
 		}
 		
@@ -616,21 +640,21 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		protected abstract TextMatcher getReplaceMatcher(ProcessorInstruction instruction);
 		
 		/**
-		 * Returns the {@link Language} of the new code block output.
+		 * Returns the {@link Language} of the generated code.  This typically matches
+		 * {@link #getSourceFileLanguage(ProcessorInstruction)} but can be overridden by the {@code language} argument.
 		 * 
 		 * @param instruction the processor instruction being executed
-		 * @return the language of the code block
+		 * @return the language of the generated code
 		 */
-		protected abstract Language getOutputLanguage(ProcessorInstruction instruction);
+		protected abstract Language getLanguage(ProcessorInstruction instruction);
 		
 		/**
-		 * Returns the {@link Language} of the referenced source file.  This is used to auto-detect the language based
-		 * on the source file.
+		 * Returns the {@link Language} of the source file, as determined by the file extension.
 		 * 
 		 * @param instruction the processor instruction being executed
 		 * @return the language of the source file
 		 */
-		protected Language getSourceLanguage(ProcessorInstruction instruction) {
+		protected Language getSourceFileLanguage(ProcessorInstruction instruction) {
 			return Language.fromExtension(FilenameUtils.getExtension(instruction.getOptions().getString("src")));
 		}
 		
@@ -759,11 +783,11 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 		
 		@Override
-		protected Language getOutputLanguage(ProcessorInstruction instruction) {
+		protected Language getLanguage(ProcessorInstruction instruction) {
 			if (instruction.getOptions().contains("language")) {
 				return instruction.getOptions().getEnum("language", Language.class);
 			} else {
-				return getSourceLanguage(instruction);
+				return getSourceFileLanguage(instruction);
 			}
 		}
 		
@@ -826,7 +850,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 		
 		@Override
-		protected Language getOutputLanguage(ProcessorInstruction instruction) {
+		protected Language getLanguage(ProcessorInstruction instruction) {
 			return instruction.getOptions().getEnum("language", Language.class, Language.Text);
 		}
 		
@@ -1144,8 +1168,8 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	}
 	
 	/**
-	 * Supported file types that are processed by this utility.  This defines how code blocks are identified and
-	 * formatted for a particular input file type.
+	 * Supported template file types that are processed by this utility.  This defines how content is rendered within
+	 * the document.
 	 */
 	enum TemplateFileType {
 				
@@ -1159,6 +1183,9 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 */
 		Html("html", "xml");
 		
+		/**
+		 * The regular expression used to match processor instructions.
+		 */
 		private static final Pattern REGEX = Pattern.compile("<!--\\s+\\:([a-zA-Z]+)\\:\\s+(.*)\\s+-->");
 		
 		/**
@@ -1167,19 +1194,19 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		final String[] extensions;
 		
 		/**
-		 * Constructs a new file type with the given extensions.
+		 * Constructs a new template file type with the given extensions.
 		 * 
 		 * @param extensions the extensions
 		 */
-		private TemplateFileType(String... extensions) {
+		TemplateFileType(String... extensions) {
 			this.extensions = extensions;
 		}
 		
 		/**
-		 * Determine the file type from the file extension.
+		 * Determine the template file type from the file extension.
 		 * 
 		 * @param extension the file extension, excluding the {@code "."}
-		 * @return the file type, or {@code null} if the file type is not recognized
+		 * @return the template file type, or {@code null} if the file type is not recognized
 		 */
 		public static TemplateFileType fromExtension(String extension) {
 			for (TemplateFileType fileType : values()) {
@@ -1261,7 +1288,8 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 		
 		/**
-		 * Wraps the code block in the starting / ending lines appropriate for the file type.
+		 * Renders the code block in the format required by this template file type.  The returned content must match
+		 * the pattern defined by {@link #getCodeBlockMatcher()}.
 		 * 
 		 * @param lines the code block
 		 * @param instruction the instruction being executed
@@ -1298,7 +1326,8 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 		
 		/**
-		 * Wraps the image path with any image tags and formatting options.
+		 * Wraps the image path or URL with any image tags and formatting options.  The returned content must match
+		 * the pattern defined by {@link #getImageMatcher()}.
 		 * 
 		 * @param path the image path, either relative to the source document or an absolute URL
 		 * @param instruction the instruction being executed
