@@ -37,15 +37,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -114,7 +110,10 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	
 	private static final String DEFAULT_LINE_SEPARATOR = "\n";
 	
-	private static final File[] DEFAULT_PATHS = new File[] { new File("docs/"), new File("website/"), new File("src/README.md.template") };
+	private static final File[] DEFAULT_PATHS = new File[] {
+			new File("docs/"),
+			new File("website/"),
+			new File("src/README.md.template") };
 	
 	/**
 	 * If {@code true}, the files are updated with any changes.  Otherwise, this runs in validation mode wherein any
@@ -134,10 +133,39 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	private long seed;
 	
 	/**
+	 * The registered template file formatters.  The key is the file extension excluding any leading {@code "."}.
+	 */
+	private Map<String, FileFormatter> fileFormatters;
+	
+	/**
+	 * The registered source code languages.  The key is the file extension excluding any leading {@code "."}.
+	 */
+	private Map<String, Language> languages;
+	
+	/**
+	 * The registered processors.  The key is the name of the processor.
+	 */
+	private Map<String, Processor> processors;
+	
+	/**
 	 * Creates a new instance of the command line utility to update code examples.
 	 */
 	public UpdateCodeSamples() {
 		super();
+		
+		fileFormatters = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		fileFormatters.put("md", new MarkdownFormatter());
+		fileFormatters.put("html", new HtmlFormatter());
+		fileFormatters.put("xslt", new HtmlFormatter());
+		
+		languages = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		languages.put("sh", new ShellScript());
+		languages.put("java", new Java());
+		
+		processors = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		processors.put("code", new CodeProcessor());
+		processors.put("exec", new ExecProcessor());
+		processors.put("plot", new PlotProcessor());
 	}
 	
 	@Override
@@ -226,23 +254,17 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	 */
 	public boolean process(File file) throws IOException {
 		boolean fileChanged = false;
-		String extension = FilenameUtils.getExtension(file.getName());
 		
-		if (extension.equalsIgnoreCase("template")) {
-			extension = FilenameUtils.getExtension(file.getName().substring(0,
-					file.getName().length() - extension.length() - 1));
-		}
+		FileFormatter fileFormatter = getFileFormatter(file);
 		
-		TemplateFileType fileType = TemplateFileType.fromExtension(extension);
-		
-		if (fileType == null) {
-			System.out.println("Skipping " + file + ", not a recognized extension");
+		if (fileFormatter == null) {
+			System.out.println("Skipping " + file + ", not a supported extension");
 			return fileChanged;
 		}
 				
 		System.out.println("Processing " + file);
-		File tempFile = File.createTempFile("temp", null);
 		
+		File tempFile = File.createTempFile("temp", null);
 		String lineSeparator = determineLineSeparator(file);
 		
 		try (LineReader reader = LineReader.wrap(new FileReader(file));
@@ -251,13 +273,11 @@ public class UpdateCodeSamples extends CommandLineUtility {
 				writer.write(line);
 				writer.write(lineSeparator);
 				
-				ProcessorInstruction instruction = fileType.tryParseProcessorInstruction(line);
+				ProcessorInstruction instruction = fileFormatter.tryParseProcessorInstruction(line);
 								
 				if (instruction != null) {
 					instruction.setLineSeparator(lineSeparator);
 					instruction.setTemplateFile(file);
-					instruction.setClean(clean);
-					instruction.setSeed(seed);
 					
 					System.out.println("    > Running " + instruction);
 					
@@ -273,6 +293,66 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 		
 		return fileChanged;
+	}
+	
+	/**
+	 * Returns the matching file formatter from the given file based on its extension.
+	 * 
+	 * @param file the file
+	 * @return the matching file formatter, or {@code null} if no match found
+	 */
+	protected FileFormatter getFileFormatter(File file) {
+		String fileExtension = FilenameUtils.getExtension(file.getName());
+			
+		if (fileExtension.equalsIgnoreCase("template")) {
+			fileExtension = FilenameUtils.getExtension(
+					file.getName().substring(0, file.getName().length() - fileExtension.length() - 1));
+		}
+		
+		return fileFormatters.get(fileExtension);
+	}
+	
+	/**
+	 * Returns the matching source language from the given file based on its extension.
+	 * 
+	 * @param file the file
+	 * @return the matching source language
+	 */
+	protected Language getLanguage(File file) {
+		return getLanguageForExtension(FilenameUtils.getExtension(file.getName()));
+	}
+	
+	/**
+	 * Returns the matching source language from the given file extension.
+	 * 
+	 * @param extension the file extension
+	 * @return the matching source language
+	 */
+	protected Language getLanguageForExtension(String extension) {
+		Language language = languages.get(extension);
+		
+		if (language == null) {
+			language = new Plaintext();
+		}
+		
+		return language;
+	}
+	
+	/**
+	 * Returns the matching processor from its name.
+	 * 
+	 * @param value the name of the processor
+	 * @return the matching processor
+	 * @throws IllegalArgumentException if the processor is not supported
+	 */
+	protected Processor getProcessor(String value) {
+		Processor processor = processors.get(value);
+		
+		if (processor == null) {
+			return Validate.that("value", value).failUnsupportedOption(processors.keySet());
+		}
+		
+		return processor;
 	}
 	
 	/**
@@ -299,16 +379,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	/**
 	 * Class representing a processor instruction, which defines the type of processor and any arguments.
 	 */
-	static class ProcessorInstruction {
-		
-		private static final TreeSet<String> INTERNAL_KEYS;
-		
-		static {
-			INTERNAL_KEYS = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-			INTERNAL_KEYS.add("templateFile");
-			INTERNAL_KEYS.add("clean");
-			INTERNAL_KEYS.add("seed");
-		}
+	class ProcessorInstruction {
 		
 		/**
 		 * The configured processor.
@@ -316,9 +387,14 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		private final Processor processor;
 
 		/**
-		 * The type of the template file that determines how the generated output is formatted.
+		 * The file formatter that specifies how content is searched and rendered in the template file.
 		 */
-		private final TemplateFileType fileType;
+		private final FileFormatter fileFormatter;
+		
+		/**
+		 * The path of the template file.
+		 */
+		private File templateFile;
 		
 		/**
 		 * The line separator of the original file.
@@ -335,10 +411,10 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * 
 		 * @param processor the processor
 		 */
-		public ProcessorInstruction(Processor processor, TemplateFileType fileType) {
+		public ProcessorInstruction(Processor processor, FileFormatter fileFormatter) {
 			super();
 			this.processor = processor;
-			this.fileType = fileType;
+			this.fileFormatter = fileFormatter;
 			
 			lineSeparator = System.lineSeparator();
 			options = new TypedProperties();
@@ -387,24 +463,22 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			}
 		}
 		
-		public TemplateFileType getFileType() {
-			return fileType;
+		/**
+		 * Returns the template file formatter.
+		 * 
+		 * @return the template file formatter
+		 */
+		public FileFormatter getFileFormatter() {
+			return fileFormatter;
 		}
 		
+		/**
+		 * Returns the seed configured with this instruction or, if unset, the default seed.
+		 * 
+		 * @return the seed
+		 */
 		public long getSeed() {
-			return options.getLong("seed", DEFAULT_SEED);
-		}
-		
-		public void setSeed(long seed) {
-			options.setLong("seed", seed);
-		}
-		
-		public boolean isClean() {
-			return options.getBoolean("clean", false);
-		}
-		
-		public void setClean(boolean clean) {
-			options.setBoolean("clean", clean);
+			return options.getLong("seed", seed);
 		}
 
 		/**
@@ -413,7 +487,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @return the template file
 		 */
 		public File getTemplateFile() {
-			return new File(options.getString("templateFile"));
+			return templateFile;
 		}
 		
 		/**
@@ -422,7 +496,8 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @param templateFile the template file
 		 */
 		public void setTemplateFile(File templateFile) {
-			options.setString("templateFile", templateFile.toString());
+			Validate.that("templateFile", templateFile).isNotNull();
+			this.templateFile = templateFile;
 		}
 		
 		/**
@@ -440,6 +515,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @param lineSeparator the line separator
 		 */
 		public void setLineSeparator(String lineSeparator) {
+			Validate.that("lineSeparator", lineSeparator).isNotNull();
 			this.lineSeparator = lineSeparator;
 		}
 		
@@ -450,6 +526,24 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 */
 		public TypedProperties getOptions() {
 			return options;
+		}
+		
+		/**
+		 * Returns the source file.
+		 * 
+		 * @return the source file
+		 */
+		protected File getSourceFile() {
+			return new File(options.getString("src"));
+		}
+		
+		/**
+		 * Returns the {@link Language} of the source file, as determined by the file extension.
+		 * 
+		 * @return the language of the source file
+		 */
+		protected Language getSourceFileLanguage() {
+			return getLanguage(getSourceFile());
 		}
 		
 		/**
@@ -476,7 +570,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			
 			if (options.contains("id")) {
 				String identifier = options.getString("id");
-				TextMatcher matcher = processor.getSourceFileLanguage(this).getSnippetMatcher(identifier);
+				TextMatcher matcher = getSourceFileLanguage().getSnippetMatcher(identifier);
 				
 				boolean inSnippet = false;
 				Iterator<String> iterator = lines.iterator();
@@ -532,7 +626,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			}
 			
 			// Apply any formatting specific to the output source code language
-			Language language = processor.getLanguage(this);
+			Language language = processor.getOutputLanguage(this);
 			
 			if (!options.getBoolean("preserveComments", false)) {
 				lines = language.stripComments(lines);
@@ -550,7 +644,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 				lines.add("...");
 			}
 			
-			return fileType.formatCodeBlock(lines, language, this);
+			return fileFormatter.formatCodeBlock(lines, language, this);
 		}
 		
 		/**
@@ -560,7 +654,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @return the formatted image
 		 */
 		public String formatImage(String path) {
-			return fileType.formatImage(path, this);
+			return fileFormatter.formatImage(path, this);
 		}
 
 		@Override
@@ -571,10 +665,6 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			sb.append(":");
 			
 			for (String key : options.keySet()) {
-				if (INTERNAL_KEYS.contains(key)) {
-					continue;
-				}
-				
 				sb.append(" ");
 				sb.append(key + "=" + options.getString(key));
 			}
@@ -587,33 +677,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	/**
 	 * Base class for defining a processor that responds to a particular instruction.
 	 */
-	static abstract class Processor {
-		
-		private static final Map<String, Processor> INSTANCES;
-		
-		static {
-			INSTANCES = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-			INSTANCES.put("code", new CodeProcessor());
-			INSTANCES.put("exec", new ExecProcessor());
-			INSTANCES.put("plot", new PlotProcessor());
-		}
-		
-		/**
-		 * Determine the processor from its name using case-insensitive matching.
-		 * 
-		 * @param value the name of the processor
-		 * @return the processor
-		 * @throws IllegalArgumentException if the processor is not supported
-		 */
-		public static Processor fromString(String value) {
-			Processor instance = INSTANCES.get(value);
-			
-			if (instance == null) {
-				return Validate.that("value", value).failUnsupportedOption(INSTANCES.keySet());
-			}
-			
-			return instance;
-		}
+	abstract class Processor {
 
 		Processor() {
 			super();
@@ -641,22 +705,12 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 		/**
 		 * Returns the {@link Language} of the generated code.  This typically matches
-		 * {@link #getSourceFileLanguage(ProcessorInstruction)} but can be overridden by the {@code language} argument.
+		 * {@link #getSourceFileLanguage(ProcessorInstruction)} but can be overridden.
 		 * 
 		 * @param instruction the processor instruction being executed
 		 * @return the language of the generated code
 		 */
-		protected abstract Language getLanguage(ProcessorInstruction instruction);
-		
-		/**
-		 * Returns the {@link Language} of the source file, as determined by the file extension.
-		 * 
-		 * @param instruction the processor instruction being executed
-		 * @return the language of the source file
-		 */
-		protected Language getSourceFileLanguage(ProcessorInstruction instruction) {
-			return Language.fromExtension(FilenameUtils.getExtension(instruction.getOptions().getString("src")));
-		}
+		protected abstract Language getOutputLanguage(ProcessorInstruction instruction);
 		
 		/**
 		 * Replaces the content.
@@ -761,7 +815,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	/**
 	 * Processor that copies and formats source code.
 	 */
-	static class CodeProcessor extends Processor {
+	class CodeProcessor extends Processor {
 		
 		/**
 		 * Caches the content of the files / resources that are accessed by this tool.
@@ -780,15 +834,15 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 		@Override
 		protected TextMatcher getReplaceMatcher(ProcessorInstruction instruction) {
-			return instruction.getFileType().getCodeBlockMatcher();
+			return instruction.getFileFormatter().getCodeBlockMatcher();
 		}
 		
 		@Override
-		protected Language getLanguage(ProcessorInstruction instruction) {
+		protected Language getOutputLanguage(ProcessorInstruction instruction) {
 			if (instruction.getOptions().contains("language")) {
-				return instruction.getOptions().getEnum("language", Language.class);
+				return getLanguageForExtension(instruction.getOptions().getString("language"));
 			} else {
-				return getSourceFileLanguage(instruction);
+				return instruction.getSourceFileLanguage();
 			}
 		}
 		
@@ -837,117 +891,33 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	/**
 	 * Processor that compiles and executes a Java file.
 	 */
-	static class ExecProcessor extends Processor {
+	class ExecProcessor extends Processor {
 		
 		@Override
 		public boolean run(LineReader reader, PrintWriter writer, ProcessorInstruction instruction) throws IOException {
-			compile(instruction);
 			return replace(reader, writer, instruction.formatCode(execute(instruction)), instruction);
 		}
 		
 		@Override
 		protected TextMatcher getReplaceMatcher(ProcessorInstruction instruction) {
-			return instruction.getFileType().getCodeBlockMatcher();
+			return instruction.getFileFormatter().getCodeBlockMatcher();
 		}
 		
 		@Override
-		protected Language getLanguage(ProcessorInstruction instruction) {
-			return instruction.getOptions().getEnum("language", Language.class, Language.Text);
+		protected Language getOutputLanguage(ProcessorInstruction instruction) {
+			return new Plaintext();
 		}
 		
 		/**
-		 * Compiles the Java class in the context of the current Java VM.
+		 * Compiles and executes the source file.
 		 * 
-		 * @param instruction the instruction being processed
-		 * @throws IOException if an I/O error occurred
-		 */
-		protected void compile(ProcessorInstruction instruction) throws IOException {
-			String source = instruction.getOptions().getString("src");
-			String extension = FilenameUtils.getExtension(source);
-			
-			if (!extension.equalsIgnoreCase("java")) {
-				Validate.that("file extension", extension).failUnsupportedOption("java");
-			}
-			
-			Path javaPath = Path.of(source);
-			Path classPath = javaPath.getParent().resolve(
-					FilenameUtils.removeExtension(javaPath.getFileName().toString()) + ".class");
-
-			if (instruction.isClean() || !Files.exists(classPath) || FileUtils.isFileNewer(javaPath.toFile(), classPath.toFile())) {
-				FileUtils.deleteQuietly(classPath.toFile());
-
-				JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-								
-				if (compiler.run(null, null, null, javaPath.toAbsolutePath().toString()) != 0) {
-					throw new IOException("Failed to compile " + javaPath);
-				}
-			}
-		}
-		
-		/**
-		 * Executes a Java program and captures the output.  An optional method can be provided referencing a static
-		 * or instance method that is compatible with the {@link Runnable} functional interface.  An instance of the
-		 * class will be created using its no-arg constructor if required.
-		 * 
-		 * @param instruction the instruction being processed
-		 * @return the standard output produced by the program
+		 * @param instruction the processor instruction defining the execution
+		 * @return the output from the execution
 		 * @throws IOException if an I/O error occurred
 		 */
 		protected String execute(ProcessorInstruction instruction) throws IOException {
-			PrintStream oldOut = System.out;
-			String source = instruction.getOptions().getString("src");
-			String methodName = instruction.getOptions().getString("method", "main");
-			
-			PRNG.setSeed(instruction.getSeed());
-						
-			try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
-					PrintStream newOut = new PrintStream(baos)) {
-				System.setOut(newOut);
-					
-				Class<?> cls = Class.forName(getClassName(source), true, Thread.currentThread().getContextClassLoader());
-				
-				if (methodName.equals("main")) {
-					Method method = cls.getDeclaredMethod(methodName, String[].class);
-					String[] args = instruction.getOptions().getStringArray("args", new String[0]);
-
-					if (CommandLineUtility.class.isAssignableFrom(cls)) {
-						Settings.PROPERTIES.setString(Settings.KEY_CLI_EXECUTABALE, "./cli " + cls.getSimpleName());
-					}
-					
-					method.invoke(null, (Object)args);
-				} else {
-					Method method = cls.getDeclaredMethod(methodName);
-					Object instance = Modifier.isStatic(method.getModifiers()) ? null : cls.getConstructor().newInstance();
-					
-					method.invoke(instance);
-				}				
-
-				newOut.close();
-				return baos.toString();
-			} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException |
-					 InstantiationException | IllegalArgumentException e) {
-				throw new IOException("Failed to execute method " + methodName + " in " + getClassName(source), e);
-			} catch (InvocationTargetException e) {
-				throw new IOException("Failed during execution of method " + methodName + " in " + getClassName(source), e.getCause());
-			} finally {
-				System.setOut(oldOut);
-			}
-		}
-		
-		/**
-		 * Returns the fully-qualified Java class name derived from the file name.
-		 * 
-		 * @param filename the Java file name
-		 * @return the fully-qualified Java class name
-		 */
-		private String getClassName(String filename) {
-			Path path = Paths.get(FilenameUtils.removeExtension(filename));
-			
-			if (path.startsWith("examples") || path.startsWith("src") || path.startsWith("test")) {
-				path = path.subpath(1, path.getNameCount());
-			}
-			
-			return path.toString().replaceAll("[\\\\/]", ".");
+			Language language = instruction.getSourceFileLanguage();
+			return language.execute(instruction);
 		}
 		
 	}
@@ -955,7 +925,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	/**
 	 * Processor that compiles and executes a Java program that produces a plot, saving the plot as an image.
 	 */
-	static class PlotProcessor extends ExecProcessor {
+	class PlotProcessor extends ExecProcessor {
 		
 		@Override
 		public boolean run(LineReader reader, PrintWriter writer, ProcessorInstruction instruction) throws IOException {			
@@ -980,7 +950,6 @@ public class UpdateCodeSamples extends CommandLineUtility {
 				});
 				
 				// Compile and execute the plotting code
-				compile(instruction);
 				execute(instruction);
 				
 				// Detect if the plot changed
@@ -1011,72 +980,56 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 		@Override
 		protected TextMatcher getReplaceMatcher(ProcessorInstruction instruction) {
-			return instruction.getFileType().getImageMatcher();
+			return instruction.getFileFormatter().getImageMatcher();
 		}
 		
 	}
 	
-	/**
-	 * The language of the source code.
-	 */
-	enum Language {
+	class IfProcessor extends ExecProcessor {
 		
-		/**
-		 * Java source code.
-		 */
-		Java("java"),
+		@Override
+		public boolean run(LineReader reader, PrintWriter writer, ProcessorInstruction instruction) throws IOException {			
+			return replace(reader, writer, "", instruction);
+		}
 		
-		/**
-		 * C/C++ source code.
-		 */
-		C("c", "cpp"),
+		@Override
+		protected TextMatcher getReplaceMatcher(ProcessorInstruction instruction) {
+			return new TextMatcher(s -> true, s -> s.startsWith("<!-- :end-if: -->"), true);
+		}
 		
-		/**
-		 * Bash or terminal commands.
-		 */
-		Bash("sh"),
+	}
+	
+	abstract class Language {
 		
-		/**
-		 * Plain text.
-		 */
-		Text;
-		
-		/**
-		 * The file extensions for the file type.
-		 */
-		final String[] extensions;
-		
-		Language(String... extensions) {
-			this.extensions = extensions;
+		Language() {
+			super();
 		}
 		
 		/**
-		 * Determine the language from its string representation using case-insensitive matching.
+		 * Strips comments out of the code block.  This also removes any duplicate blank lines that may result
+		 * when removing the comments.
 		 * 
-		 * @param value the string representation of the language
-		 * @return the language
-		 * @throws IllegalArgumentException if the language is not supported
+		 * @param content the code block
+		 * @return the updated code block
 		 */
-		public static Language fromString(String value) {
-			return TypedProperties.getEnumFromString(Language.class, value);
+		public abstract String stripComments(String content);
+		
+		public abstract TextMatcher getSnippetMatcher(String id);
+		
+		public abstract String getBrush();
+		
+		public String execute(ProcessorInstruction instruction) throws IOException {
+			return Validate.fail("Execution not supported for " + getClass().getSimpleName());
 		}
 		
 		/**
-		 * Determine the language from the file extension.
+		 * Splits the content in a list of lines.  The resulting list is mutable.
 		 * 
-		 * @param extension the file extension, excluding the {@code "."}
-		 * @return the language, or {@code Text} if the extension is not recognized
+		 * @param content the content
+		 * @return the lines
 		 */
-		public static Language fromExtension(String extension) {
-			for (Language language : values()) {
-				for (String fileExtension : language.extensions) {
-					if (extension.equalsIgnoreCase(fileExtension)) {
-						return language;
-					}
-				}
-			}
-						
-			return Text;
+		public List<String> split(String content) {
+			return new ArrayList<>(content.lines().toList());
 		}
 		
 		/**
@@ -1089,8 +1042,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			String content = String.join(DEFAULT_LINE_SEPARATOR, lines);
 			content = stripComments(content);
 			
-			List<String> result = new ArrayList<>(content.lines().toList());
-			return stripLeadingAndTrailingBlankLines(result);
+			return stripLeadingAndTrailingBlankLines(split(content));
 		}
 		
 		/**
@@ -1102,7 +1054,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		public List<String> stripIndentation(List<String> lines) {
 			String content = String.join(DEFAULT_LINE_SEPARATOR, lines);
 			content = content.stripIndent();
-			return new ArrayList<>(content.lines().toList());
+			return split(content);
 		}
 		
 		/**
@@ -1141,102 +1093,156 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			return result;
 		}
 		
-		/**
-		 * Strips comments out of the code block.  This also removes any duplicate blank lines that may result
-		 * when removing the comments.
-		 * 
-		 * @param content the code block
-		 * @return the updated code block
-		 */
+	}
+	
+	class Plaintext extends Language {
+		
+		@Override
+		public String getBrush() {
+			return "";
+		}
+		
+		@Override
 		public String stripComments(String content) {
-			return switch (this) {
-				case Java, C -> {
-					// Remove C-style // comments
-					content = content.replaceAll("(?<=[\\r\\n])[\\t ]*\\/\\/[^\\n]*\\r?\\n", "");
-					content = content.replaceAll("[\\t ]*\\/\\/[^\\n]*", "");
-					
-					// Remove C-style /* */ and Javadoc /** */ comments
-					content = content.replaceAll("(?<=[\\r\\n])[\\t ]*\\/\\*[^*]*\\*+(?:[^\\/*][^*]*\\*+)*\\/[\\t ]*\\r?\\n", "");
-					content = content.replaceAll("[\\t ]*\\/\\*[^*]*\\*+(?:[^\\/*][^*]*\\*+)*\\/", "");
-					
-					yield content;
+			return content;
+		}
+		
+		@Override
+		public TextMatcher getSnippetMatcher(String id) {
+			return new TextMatcher(
+					s -> StringUtils.containsIgnoreCase(s, "# begin-example: " + id),
+					s -> StringUtils.containsIgnoreCase(s, "# end-example: " + id),
+					true);
+		}
+		
+	}
+	
+	class ShellScript extends Plaintext {
+		
+		@Override
+		public String getBrush() {
+			return "sh";
+		}
+		
+	}
+	
+	class Java extends Language {
+		
+		@Override
+		public String getBrush() {
+			return "java";
+		}
+		
+		public String execute(ProcessorInstruction instruction) throws IOException {
+			File sourceFile = instruction.getSourceFile();
+			File classFile = new File(sourceFile.getParent(), FilenameUtils.removeExtension(sourceFile.getName()) + ".class");
+			String className = getClassName(sourceFile.getPath());
+
+			if (clean || !classFile.exists() || FileUtils.isFileNewer(sourceFile, classFile)) {
+				FileUtils.deleteQuietly(classFile);
+
+				JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+								
+				if (compiler.run(null, null, null, sourceFile.getAbsolutePath()) != 0) {
+					throw new IOException("Failed to compile " + sourceFile);
 				}
-				case Text, Bash -> content;
-			};
+			}
+			
+			PrintStream oldOut = System.out;
+			String methodName = instruction.getOptions().getString("method", "main");
+			
+			PRNG.setSeed(instruction.getSeed());
+						
+			try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+					PrintStream newOut = new PrintStream(baos)) {
+				System.setOut(newOut);
+					
+				Class<?> cls = Class.forName(className, true, Thread.currentThread().getContextClassLoader());
+				
+				if (methodName.equals("main")) {
+					Method method = cls.getDeclaredMethod(methodName, String[].class);
+					String[] args = instruction.getOptions().getStringArray("args", new String[0]);
+
+					if (CommandLineUtility.class.isAssignableFrom(cls)) {
+						Settings.PROPERTIES.setString(Settings.KEY_CLI_EXECUTABALE, "./cli " + cls.getSimpleName());
+					}
+					
+					method.invoke(null, (Object)args);
+				} else {
+					Method method = cls.getDeclaredMethod(methodName);
+					Object instance = Modifier.isStatic(method.getModifiers()) ? null : cls.getConstructor().newInstance();
+					
+					method.invoke(instance);
+				}				
+
+				newOut.close();
+				return baos.toString();
+			} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException |
+					 InstantiationException | IllegalArgumentException e) {
+				throw new IOException("Failed to execute method " + methodName + " in " + className, e);
+			} catch (InvocationTargetException e) {
+				throw new IOException("Failed during execution of method " + methodName + " in " + className, e.getCause());
+			} finally {
+				System.setOut(oldOut);
+			}
+		}
+		
+		@Override
+		public String stripComments(String content) {
+			// Remove C-style // comments
+			content = content.replaceAll("(?<=[\\r\\n])[\\t ]*\\/\\/[^\\n]*\\r?\\n", "");
+			content = content.replaceAll("[\\t ]*\\/\\/[^\\n]*", "");
+			
+			// Remove C-style /* */ and Javadoc /** */ comments
+			content = content.replaceAll("(?<=[\\r\\n])[\\t ]*\\/\\*[^*]*\\*+(?:[^\\/*][^*]*\\*+)*\\/[\\t ]*\\r?\\n", "");
+			content = content.replaceAll("[\\t ]*\\/\\*[^*]*\\*+(?:[^\\/*][^*]*\\*+)*\\/", "");
+			
+			return content;
+		}
+		
+		@Override
+		public TextMatcher getSnippetMatcher(String id) {
+			return new TextMatcher(
+					s -> StringUtils.containsIgnoreCase(s, "// begin-example: " + id),
+					s -> StringUtils.containsIgnoreCase(s, "// end-example: " + id),
+					true);
 		}
 		
 		/**
-		 * Returns a text matcher that identifies code snippets by their id.
+		 * Returns the fully-qualified Java class name derived from the file name.
 		 * 
-		 * @param id the identifier
-		 * @return the text matcher
+		 * @param filename the Java file name
+		 * @return the fully-qualified Java class name
 		 */
-		public TextMatcher getSnippetMatcher(String id) {
-			return switch (this) {
-				case Java, C -> new TextMatcher(
-						s -> StringUtils.containsIgnoreCase(s, "// begin-example: " + id),
-						s -> StringUtils.containsIgnoreCase(s, "// end-example: " + id),
-						true);
-				case Text, Bash -> new TextMatcher(
-						s -> StringUtils.containsIgnoreCase(s, "# begin-example: " + id),
-						s -> StringUtils.containsIgnoreCase(s, "# end-example: " + id),
-						true);
-			};
+		private String getClassName(String filename) {
+			Path path = Paths.get(FilenameUtils.removeExtension(filename));
+			
+			if (path.startsWith("examples") || path.startsWith("src") || path.startsWith("test")) {
+				path = path.subpath(1, path.getNameCount());
+			}
+			
+			return path.toString().replaceAll("[\\\\/]", ".");
 		}
 		
 	}
 	
 	/**
-	 * Supported template file types that are processed by this utility.  This defines how content is rendered within
-	 * the document.
+	 * Formatter for a specific file type that determines how content is searched and rendered.
 	 */
-	enum TemplateFileType {
-				
-		/**
-		 * Markdown files.
-		 */
-		Markdown("md"),
-		
-		/**
-		 * HTML or XSLT files.
-		 */
-		Html("html", "xml");
-		
+	abstract class FileFormatter {
+
 		/**
 		 * The regular expression used to match processor instructions.
 		 */
 		private static final Pattern REGEX = Pattern.compile("<!--\\s+\\:([a-zA-Z]+)\\:\\s+(.*)\\s+-->");
 		
 		/**
-		 * The file extensions for the file type.
-		 */
-		final String[] extensions;
-		
-		/**
 		 * Constructs a new template file type with the given extensions.
 		 * 
 		 * @param extensions the extensions
 		 */
-		TemplateFileType(String... extensions) {
-			this.extensions = extensions;
-		}
-		
-		/**
-		 * Determine the template file type from the file extension.
-		 * 
-		 * @param extension the file extension, excluding the {@code "."}
-		 * @return the template file type, or {@code null} if the file type is not recognized
-		 */
-		public static TemplateFileType fromExtension(String extension) {
-			for (TemplateFileType fileType : values()) {
-				for (String fileExtension : fileType.extensions) {
-					if (extension.equalsIgnoreCase(fileExtension)) {
-						return fileType;
-					}
-				}
-			}
-						
-			return null;
+		FileFormatter() {
+			super();
 		}
 
 		/**
@@ -1250,7 +1256,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			Matcher matcher = REGEX.matcher(line);
 			
 			if (matcher.matches()) {
-				Processor processor = Processor.fromString(matcher.group(1));
+				Processor processor = getProcessor(matcher.group(1));
 				
 				ProcessorInstruction instruction = new ProcessorInstruction(processor, this);
 				instruction.parseOptions(matcher.group(2));
@@ -1266,12 +1272,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * 
 		 * @return the text matcher
 		 */
-		public TextMatcher getCodeBlockMatcher() {
-			return switch (this) {
-				case Markdown -> new TextMatcher(s -> s.startsWith("```"), s -> s.endsWith("```"), true);
-				case Html -> new TextMatcher(s -> s.startsWith("<pre"), s -> s.endsWith("</pre>"), true);
-			};
-		}
+		public abstract TextMatcher getCodeBlockMatcher();
 		
 		/**
 		 * Returns the text matcher for images.  Note that for Markdown, we prefer using embedded HTML tags instead of
@@ -1279,32 +1280,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * 
 		 * @return the text matcher
 		 */
-		public TextMatcher getImageMatcher() {
-			return switch (this) {
-				case Markdown -> new TextMatcher(s -> s.startsWith("<p align=\"center\">"), s -> s.endsWith("</p>"), false);
-				case Html -> new TextMatcher(s -> s.startsWith("<img"), s -> s.endsWith("/>"), false);
-			};
-		}
-		
-		/**
-		 * Returns the name of the "brush" that provides the appropriate syntax highlighting for the language.
-		 * Defaults to plain text if the language is not recognized.
-		 * 
-		 * @param language the language displayed in the code block
-		 * @return the name of the "brush"
-		 */
-		public String getBrush(Language language) {
-			// TODO: Use TreeSet?
-			final Set<String> markdownBrush = new HashSet<>(Arrays.asList("java", "c", "bash"));
-			final Set<String> htmlBrush = new HashSet<>(Arrays.asList("java"));
-			
-			String brushName = language.name().toLowerCase();
-						
-			return switch (this) {
-				case Markdown -> markdownBrush.contains(brushName) ? brushName : "";
-				case Html -> htmlBrush.contains(brushName) ? brushName : "plain";
-			};
-		}
+		public abstract TextMatcher getImageMatcher();
 		
 		/**
 		 * Renders the code block in the format required by this template file type.  The returned content must match
@@ -1314,35 +1290,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @param instruction the instruction being executed
 		 * @return the formatted code block
 		 */
-		public String formatCodeBlock(List<String> lines, Language language, ProcessorInstruction instruction) {
-			StringBuilder sb = new StringBuilder();
-			
-			switch (this) {
-				case Markdown -> {
-					sb.append("```" + getBrush(language));
-					sb.append(instruction.getLineSeparator());
-					sb.append(String.join(instruction.getLineSeparator(), lines));
-					sb.append(instruction.getLineSeparator());
-					sb.append("```");
-				}
-				case Html -> {
-					sb.append("<pre class=\"brush: " + getBrush(language) + "; toolbar: false;\">");
-					sb.append(instruction.getLineSeparator());
-					sb.append("<![CDATA[");
-					sb.append(instruction.getLineSeparator());
-					sb.append(String.join(instruction.getLineSeparator(), lines));
-					sb.append(instruction.getLineSeparator());
-					sb.append("]]>");
-					sb.append(instruction.getLineSeparator());
-					sb.append("</pre>");
-				}
-				default -> {
-					sb.append(String.join(instruction.getLineSeparator(), lines));
-				}
-			}
-			
-			return sb.toString();
-		}
+		public abstract String formatCodeBlock(List<String> lines, Language language, ProcessorInstruction instruction);
 		
 		/**
 		 * Wraps the image path or URL with any image tags and formatting options.  The returned content must match
@@ -1352,24 +1300,109 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @param instruction the instruction being executed
 		 * @return the formatted image
 		 */
+		public abstract String formatImage(String path, ProcessorInstruction instruction);
+	}
+	
+	/**
+	 * Formatter for markdown files.
+	 */
+	class MarkdownFormatter extends FileFormatter {
+
+		MarkdownFormatter() {
+			super();
+		}
+		
+		public TextMatcher getCodeBlockMatcher() {
+			return new TextMatcher(s -> s.startsWith("```"), s -> s.endsWith("```"), true);
+		}
+		
+		public TextMatcher getImageMatcher() {
+			return new TextMatcher(s -> s.startsWith("<p align=\"center\">"), s -> s.endsWith("</p>"), false);
+		}
+		
+		@Override
+		public String formatCodeBlock(List<String> lines, Language language, ProcessorInstruction instruction) {
+			StringBuilder sb = new StringBuilder();
+			
+			sb.append("```");
+			sb.append(language.getBrush());
+			sb.append(instruction.getLineSeparator());
+			sb.append(String.join(instruction.getLineSeparator(), lines));
+			sb.append(instruction.getLineSeparator());
+			sb.append("```");
+
+			return sb.toString();
+		}
+		
+		@Override
 		public String formatImage(String path, ProcessorInstruction instruction) {
 			StringBuilder sb = new StringBuilder();
-			String width = instruction.getOptions().getString("width", "100%");
 			
-			switch (this) {
-				case Markdown -> {
-					sb.append("<p align=\"center\">");
-					sb.append(instruction.getLineSeparator());
-					sb.append("\t<img src=\"" + path + "\" width=\"" + width + "\" />");
-					sb.append(instruction.getLineSeparator());
-					sb.append("</p>");
-				}
-				case Html -> {
-					sb.append("<img src=\"" + path + "\" width=\"" + width + "\" />");
-				}
-				default -> {}
+			sb.append("<p align=\"center\">");
+			sb.append(instruction.getLineSeparator());
+			sb.append("\t<img src=\"" + path + "\"");
+			
+			if (instruction.getOptions().contains("width")) {
+				sb.append(" width=\"" + instruction.getOptions().getString("width") + "\"");
 			}
 			
+			sb.append(" />");
+			sb.append(instruction.getLineSeparator());
+			sb.append("</p>");
+
+			return sb.toString();
+		}
+		
+	}
+	
+	/**
+	 * HTML or XSLT files.
+	 */
+	class HtmlFormatter extends FileFormatter {
+
+		HtmlFormatter() {
+			super();
+		}
+
+		@Override
+		public TextMatcher getCodeBlockMatcher() {
+			return new TextMatcher(s -> s.startsWith("<pre"), s -> s.endsWith("</pre>"), true);
+		}
+		
+		@Override
+		public TextMatcher getImageMatcher() {
+			return new TextMatcher(s -> s.startsWith("<img"), s -> s.endsWith("/>"), false);
+		}
+		
+		@Override
+		public String formatCodeBlock(List<String> lines, Language language, ProcessorInstruction instruction) {
+			StringBuilder sb = new StringBuilder();
+			
+			sb.append("<pre class=\"brush: ");
+			sb.append(language.getBrush().isEmpty() ? "plain" : language.getBrush());
+			sb.append("; toolbar: false;\">");
+			sb.append(instruction.getLineSeparator());
+			sb.append("<![CDATA[");
+			sb.append(instruction.getLineSeparator());
+			sb.append(String.join(instruction.getLineSeparator(), lines));
+			sb.append(instruction.getLineSeparator());
+			sb.append("]]>");
+			sb.append(instruction.getLineSeparator());
+			sb.append("</pre>");
+			
+			return sb.toString();
+		}
+		
+		@Override
+		public String formatImage(String path, ProcessorInstruction instruction) {
+			StringBuilder sb = new StringBuilder();
+			sb.append("<img src=\"" + path + "\"");
+			
+			if (instruction.getOptions().contains("width")) {
+				sb.append(" width=\"" + instruction.getOptions().getString("width") + "\"");
+			}
+			
+			sb.append(" />");	
 			return sb.toString();
 		}
 	}

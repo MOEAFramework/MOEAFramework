@@ -23,27 +23,65 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.util.cli.UpdateCodeSamples.TemplateFileType;
 import org.moeaframework.util.cli.UpdateCodeSamples.ProcessorInstruction;
-import org.moeaframework.util.cli.UpdateCodeSamples.Language;
-import org.moeaframework.util.cli.UpdateCodeSamples.Processor;
+import org.moeaframework.util.cli.UpdateCodeSamples.ShellScript;
+import org.moeaframework.util.cli.UpdateCodeSamples.CodeProcessor;
+import org.moeaframework.util.cli.UpdateCodeSamples.ExecProcessor;
+import org.moeaframework.util.cli.UpdateCodeSamples.FileFormatter;
+import org.moeaframework.util.cli.UpdateCodeSamples.HtmlFormatter;
+import org.moeaframework.util.cli.UpdateCodeSamples.Java;
+import org.moeaframework.util.cli.UpdateCodeSamples.MarkdownFormatter;
+import org.moeaframework.util.cli.UpdateCodeSamples.Plaintext;
+import org.moeaframework.util.cli.UpdateCodeSamples.PlotProcessor;
 
 public class UpdateCodeSamplesTest {
 	
-	@Test
-	public void testLanguage() {
-		Assert.assertEquals(Language.Java, Language.fromString("Java"));
-		Assert.assertEquals(Language.Java, Language.fromString("java"));
+	private UpdateCodeSamples utility;
+	
+	@Before
+	public void setUp() {
+		utility = new UpdateCodeSamples();
+	}
+	
+	@After
+	public void tearDown() {
+		utility = null;
 	}
 	
 	@Test
-	public void testFileType() {
-		Assert.assertEquals(TemplateFileType.Markdown, TemplateFileType.fromExtension("md"));
-		Assert.assertEquals(TemplateFileType.Html, TemplateFileType.fromExtension("HTML"));
+	public void testGetLanguage() {
+		Assert.assertInstanceOf(Java.class, utility.getLanguage(new File("Example1.java")));
+		Assert.assertInstanceOf(ShellScript.class, utility.getLanguage(new File("Example1.sh")));
+		Assert.assertInstanceOf(Plaintext.class, utility.getLanguage(new File("Example1.foo")));
+	}
+	
+	@Test
+	public void testGetLanguageForExtension() {
+		Assert.assertInstanceOf(Java.class, utility.getLanguageForExtension("java"));
+		Assert.assertInstanceOf(Java.class, utility.getLanguageForExtension("JAVA"));
+		Assert.assertInstanceOf(Plaintext.class, utility.getLanguageForExtension("foo"));
+	}
+	
+	@Test
+	public void testGetFileFormatter() {
+		Assert.assertInstanceOf(MarkdownFormatter.class, utility.getFileFormatter(new File("intro.md")));
+		Assert.assertInstanceOf(HtmlFormatter.class, utility.getFileFormatter(new File("intro.xslt")));
+		Assert.assertInstanceOf(HtmlFormatter.class, utility.getFileFormatter(new File("intro.html")));
+		Assert.assertNull(utility.getFileFormatter(new File("intro.foo")));
+	}
+	
+	@Test
+	public void testGetProcesssor() {
+		Assert.assertInstanceOf(CodeProcessor.class, utility.getProcessor("code"));
+		Assert.assertInstanceOf(ExecProcessor.class, utility.getProcessor("exec"));
+		Assert.assertInstanceOf(PlotProcessor.class, utility.getProcessor("plot"));
+		Assert.assertThrows(IllegalArgumentException.class, () -> utility.getProcessor("foo"));
 	}
 
 	@Test
@@ -86,7 +124,7 @@ public class UpdateCodeSamplesTest {
 				```
 				""";
 		
-		Assert.assertEqualsNormalized(expected, format(Language.Java, TemplateFileType.Markdown, "", input));
+		Assert.assertEqualsNormalized(expected, format("<!-- :code: src=Example.java -->", input));
 	}
 	
 	@Test
@@ -105,7 +143,7 @@ public class UpdateCodeSamplesTest {
 				```
 				""";
 		
-		Assert.assertEqualsNormalized(expected, format(Language.Java, TemplateFileType.Markdown, "", input));
+		Assert.assertEqualsNormalized(expected, format("<!-- :code: src=Example.java -->", input));
 	}
 	
 	@Test
@@ -124,7 +162,7 @@ public class UpdateCodeSamplesTest {
 				```
 				""";
 		
-		Assert.assertEqualsNormalized(expected, format(Language.Java, TemplateFileType.Markdown, "", input));
+		Assert.assertEqualsNormalized(expected, format("<!-- :code: src=Example.java -->", input));
 	}
 	
 	@Test
@@ -163,13 +201,13 @@ public class UpdateCodeSamplesTest {
 				```
 				""";
 		
-		Assert.assertEqualsNormalized(allLines, format(Language.Java, TemplateFileType.Markdown, "", input));
-		Assert.assertEqualsNormalized(allLines, format(Language.Java, TemplateFileType.Markdown, "lines=:", input));
-		Assert.assertEqualsNormalized(allLines, format(Language.Java, TemplateFileType.Markdown, "lines=1:3", input));
-		Assert.assertEqualsNormalized(secondLine, format(Language.Java, TemplateFileType.Markdown, "lines=2", input));
-		Assert.assertEqualsNormalized(firstTwoLines, format(Language.Java, TemplateFileType.Markdown, "lines=:2", input));
-		Assert.assertEqualsNormalized(lastTwoLines, format(Language.Java, TemplateFileType.Markdown, "lines=-2:", input));
-		Assert.assertEqualsNormalized(firstTwoLines, format(Language.Java, TemplateFileType.Markdown, "lines=:-1", input));
+		Assert.assertEqualsNormalized(allLines, format("<!-- :code: src=Example.java -->", input));
+		Assert.assertEqualsNormalized(allLines, format("<!-- :code: src=Example.java lines=: -->", input));
+		Assert.assertEqualsNormalized(allLines, format("<!-- :code: src=Example.java lines=1:3 -->", input));
+		Assert.assertEqualsNormalized(secondLine, format("<!-- :code: src=Example.java lines=2 -->", input));
+		Assert.assertEqualsNormalized(firstTwoLines, format("<!-- :code: src=Example.java lines=:2 -->", input));
+		Assert.assertEqualsNormalized(lastTwoLines, format("<!-- :code: src=Example.java lines=-2: -->", input));
+		Assert.assertEqualsNormalized(firstTwoLines, format("<!-- :code: src=Example.java lines=:-1 -->", input));
 	}
 	
 	@Test
@@ -192,7 +230,7 @@ public class UpdateCodeSamplesTest {
 				```
 				""";
 		
-		Assert.assertEqualsNormalized(expected, format(Language.Java, TemplateFileType.Markdown, "id=foo", input));
+		Assert.assertEqualsNormalized(expected, format("<!-- :code: src=Example.java id=foo -->", input));
 	}
 	
 	@Test(expected = IOException.class)
@@ -207,7 +245,7 @@ public class UpdateCodeSamplesTest {
 				}
 				""";
 		
-		format(Language.Java, TemplateFileType.Markdown, "id=bar", input);
+		format("<!-- :code: src=Example.java id=bar -->", input);
 	}
 	
 	@Test
@@ -228,9 +266,9 @@ public class UpdateCodeSamplesTest {
 				</pre>
 				""";
 		
-		Assert.assertEqualsNormalized(expected, format(Language.Java, TemplateFileType.Html, "", input));
+		Assert.assertEqualsNormalized(expected, format("test.html", "<!-- :code: src=Example.java -->", input));
 	}
-	
+		
 	@Test
 	public void fullTestWithUpdate() throws Exception {
 		fullTest(true);
@@ -285,18 +323,22 @@ public class UpdateCodeSamplesTest {
 			args.add(0, "--update");
 		}
 		
-		UpdateCodeSamples updater = new UpdateCodeSamples();
-		updater.start(args.toArray(new String[0]));
+		utility.start(args.toArray(new String[0]));
 		
 		Assert.assertEqualsNormalized(expected, Files.readString(markdownFile.toPath()));
 	}
 	
-	private String format(Language language, TemplateFileType fileType, String arguments, String input) throws IOException {
-		ProcessorInstruction options = new ProcessorInstruction(Processor.fromString("code"), fileType);
-		options.parseOptions(arguments);
-		options.getOptions().setString("src", "example." + language.extensions[0]);
-		options.getOptions().setEnum("language", language);
-		return options.formatCode(input);
+	private String format(String instruction, String content) throws IOException {
+		return format("test.md", instruction, content);
+	}
+	
+	private String format(String templateFilename, String instruction, String content) throws IOException {
+		FileFormatter formatter = utility.getFileFormatter(new File(templateFilename));
+		
+		ProcessorInstruction options = formatter.tryParseProcessorInstruction(instruction);
+		Assert.assertNotNull(options);
+		
+		return options.formatCode(content);
 	}
 
 }

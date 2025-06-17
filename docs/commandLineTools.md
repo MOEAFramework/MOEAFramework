@@ -10,18 +10,18 @@ To assist in running these command line tools, we provide an "all in one" script
 
 where `[command]` is one of the tool names.  To view the available commands, run:
 
-<!-- :code: src=.github/workflows/ci.yml id=cli-help language=bash -->
+<!-- :code: src=.github/workflows/ci.yml id=cli-help language=sh -->
 
-```bash
+```sh
 ./cli --help
 ```
 
 For example, here we run `solve` on the 2-objective DTLZ2 problem using NSGA-II, followed by `calc` (abbreviation of
 `CalculateIndicators`) to compute the hypervolume metric:
 
-<!-- :code: src=.github/workflows/ci.yml id=cli-solve language=bash -->
+<!-- :code: src=.github/workflows/ci.yml id=cli-solve language=sh -->
 
-```bash
+```sh
 ./cli solve --problem DTLZ2 --algorithm NSGAII --numberOfEvaluations 10000 --output NSGAII_DTLZ2_Runtime.txt
 ./cli calc --problem DTLZ2 --indicator hypervolume NSGAII_DTLZ2_Runtime.txt
 ```

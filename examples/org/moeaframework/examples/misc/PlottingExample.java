@@ -36,8 +36,8 @@ import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
 import org.moeaframework.analysis.runtime.Instrumenter;
 import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.CEC2009.UF1;
+import org.moeaframework.problem.Problem;
 
 /**
  * Demonstrates various plotting capabilities.

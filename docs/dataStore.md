@@ -162,9 +162,9 @@ file://results?populationSize=100&seed=1#greeting
 The `datastore` CLI tools provide a number of operations that can be performed, including listing contents, reading or
 writing to blobs, etc.
 
-<!-- :code: src=.github/workflows/ci.yml id=datastore language=bash -->
+<!-- :code: src=.github/workflows/ci.yml id=datastore language=sh -->
 
-```bash
+```sh
 # List contents of a container
 ./cli datastore list "file://results?populationSize=100&seed=1"
 

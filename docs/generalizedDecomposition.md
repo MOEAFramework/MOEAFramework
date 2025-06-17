@@ -64,7 +64,7 @@ the GD weights are derived from the NBI weights.
 
 <!-- :code: src=examples/org/moeaframework/examples/generalizedDecomposition/generateWeights.sh lines=3:4 -->
 
-```bash
+```sh
 ./cli WeightGenerator --method normalboundary --dimension 3 --divisions 20 > nbi_weights.txt
 ./cli WeightGenerator --method normalboundary --dimension 3 --divisions 20 --generalized > gd_weights.txt
 ```

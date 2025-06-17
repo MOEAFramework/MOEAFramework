@@ -20,6 +20,7 @@ package org.moeaframework.analysis.plot;
 import java.awt.Paint;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.SpiderWebPlot;
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -28,8 +29,8 @@ import org.moeaframework.analysis.plot.style.PlotAttribute;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.core.variable.RealVariable;
-import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.CEC2009.UF1;
+import org.moeaframework.problem.Problem;
 import org.moeaframework.util.validate.Validate;
 
 /**

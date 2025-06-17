@@ -49,7 +49,7 @@ parameters using Sobol sensitivity analysis, use the `saltelli` method.
 
 <!-- :code: src=examples/org/moeaframework/examples/sensitivity/sensitivity.sh lines=5:9 -->
 
-```bash
+```sh
 ./cli SampleGenerator \
     --parameterFile examples/org/moeaframework/examples/sensitivity/NSGAII_Params.txt \
     --method saltelli \
@@ -64,7 +64,7 @@ the Pareto approximation sets produced by each parameterization.
 
 <!-- :code: src=examples/org/moeaframework/examples/sensitivity/sensitivity.sh lines=11:17 -->
 
-```bash
+```sh
 ./cli EndOfRunEvaluator \
     --parameterFile examples/org/moeaframework/examples/sensitivity/NSGAII_Params.txt \
     --input NSGAII_Samples.txt \
@@ -81,7 +81,7 @@ Here, we take the result file produced in the previous step and compute the metr
 
 <!-- :code: src=examples/org/moeaframework/examples/sensitivity/sensitivity.sh lines=19:23 -->
 
-```bash
+```sh
 ./cli MetricsEvaluator \
     --input NSGAII_DTLZ2_Results.txt \
     --output NSGAII_DTLZ2_Metrics.txt \
@@ -96,7 +96,7 @@ controllability.  These values are computed using the `MetricsAnalysis` tool.
 
 <!-- :code: src=examples/org/moeaframework/examples/sensitivity/sensitivity.sh lines=25:32 -->
 
-```bash
+```sh
 ./cli MetricsAnalysis \
     --controllability \
     --efficiency \
@@ -115,7 +115,7 @@ algorithm.
 
 <!-- :code: src=examples/org/moeaframework/examples/sensitivity/sensitivity.sh lines=34:37 -->
 
-```bash
+```sh
 ./cli SobolAnalysis \
     --parameterFile examples/org/moeaframework/examples/sensitivity/NSGAII_Params.txt \
     --input NSGAII_DTLZ2_Metrics.txt \
