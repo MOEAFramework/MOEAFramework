@@ -120,9 +120,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        include:
-          - os: macos-${{ inputs.macos-version || '13' }}
+        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
     - name: Setup build
       uses: MOEAFramework/.github/actions/setup-build@main
