@@ -19,6 +19,7 @@ package org.moeaframework.analysis.plot;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartTheme;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.plot.Plot;
 import org.jfree.chart.title.LegendTitle;
 import org.jfree.chart.title.TextTitle;
@@ -141,7 +143,16 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 	public PlotBuilder() {
 		super();
 		this.paintHelper = new PaintHelper();
-		this.theme = ChartFactory.getChartTheme();
+		this.theme = createDefaultTheme();
+	}
+	
+	private static final StandardChartTheme createDefaultTheme() {
+		StandardChartTheme theme = new StandardChartTheme("Default", false);
+		theme.setExtraLargeFont(new Font("Lucida Sans", Font.BOLD, 20));
+        theme.setLargeFont(new Font("Lucida Sans", Font.BOLD, 14));
+        theme.setRegularFont(new Font("Lucida Sans", Font.PLAIN, 12));
+        theme.setSmallFont(new Font("Lucida Sans", Font.PLAIN, 10));
+        return theme;
 	}
 	
 	/**

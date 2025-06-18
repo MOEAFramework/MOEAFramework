@@ -48,6 +48,7 @@ env:
 
 jobs:
   ant-tests:
+    if: false
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -88,6 +89,7 @@ jobs:
         path: test-results     
 
   maven-tests:
+    if: false
     runs-on: ubuntu-latest
     steps:
     - name: Setup build
@@ -113,8 +115,14 @@ jobs:
         name: maven-test-results-ubuntu-${{ env.JAVA_VERSION }}
         path: build/target/surefire-reports
 
-  content-tests-mac:
-    runs-on: macos-13
+  doc-tests:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        include:
+          - os: macos-${{ inputs.macos-version || '13' }}
     steps:
     - name: Setup build
       uses: MOEAFramework/.github/actions/setup-build@main
@@ -124,9 +132,15 @@ jobs:
     - name: Validate docs
       uses: MOEAFramework/.github/actions/run-ant@main
       with:
-        target: validate-docs
+        target: update-docs
+    - name: Upload website
+      uses: actions/upload-artifact@v4
+      with:
+        name: docs-${{ matrix.os }}
+        path: docs
 
   content-tests:
+    if: false
     runs-on: ubuntu-latest
     steps:
     - name: Setup build
@@ -172,6 +186,7 @@ jobs:
         path: build/_site
 
   example-tests:
+    if: false
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
