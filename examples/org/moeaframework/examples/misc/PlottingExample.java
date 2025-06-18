@@ -29,12 +29,11 @@ import org.moeaframework.analysis.plot.BoxAndWhiskerPlotBuilder;
 import org.moeaframework.analysis.plot.HeatMapBuilder;
 import org.moeaframework.analysis.plot.Style;
 import org.moeaframework.analysis.plot.XYPlotBuilder;
-import org.moeaframework.analysis.plot.style.HighPercentileAttribute;
-import org.moeaframework.analysis.plot.style.LowPercentileAttribute;
-import org.moeaframework.analysis.plot.style.StepsAttribute;
 import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
 import org.moeaframework.analysis.runtime.Instrumenter;
 import org.moeaframework.analysis.series.ResultSeries;
+import org.moeaframework.analysis.stream.DataStream;
+import org.moeaframework.analysis.stream.Partition;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.problem.CEC2009.UF1;
 import org.moeaframework.problem.Problem;
@@ -45,38 +44,36 @@ import org.moeaframework.problem.Problem;
 public class PlottingExample {
 
 	public static void main(String[] args) throws IOException {
-		linePlot();
-		styledLinePlot();
+		linePlotXYData();
+		linePlotPartition();
 		
 		scatterPlot();
-		styledScatterPlot();
+		
+		combinedPlot();
 		
 		areaPlot();
-		styledAreaPlot();
-		
+		stackedAreaPlot();
 		histogram();
-		styledHistogram();
-		
 		deviationPlot();
-		styledDeviationPlot();
-		
 		paretoFront();
-		
 		resultSeries();
-		
 		heatMap();
-		
 		boxAndWhiskerPlot();
-		
 		barGraph();
-		
+
 		darkTheme();
 	}
 	
-	public static void linePlot() {
-		// begin-example: linePlot
-		double[] x = IntStream.range(0, 100).mapToDouble(i -> i - 50).toArray();
-		double[] y = DoubleStream.of(x).map(d -> Math.pow(d, 2)).toArray();
+	public static void linePlotXYData() {
+		// begin-example: linePlotXYData
+		int N = 100;
+		double[] x = new double[N];
+		double[] y = new double[N];
+		
+		for (int i = 0; i < N; i++) {
+			x[i] = -1.0 + 2.0 * i / (N - 1);
+			y[i] = Math.pow(x[i], 2.0);
+		}
 		
 		new XYPlotBuilder()
 				.line("Series", x, y)
@@ -84,25 +81,24 @@ public class PlottingExample {
 				.xLabel("X")
 				.yLabel("Y")
 				.show();
-		// end-example: linePlot
+		// end-example: linePlotXYData
 	}
 	
-	public static void styledLinePlot() {
-		double[] x = IntStream.range(0, 100).mapToDouble(i -> i - 50).toArray();
-		double[] y = DoubleStream.of(x).map(d -> Math.pow(d, 2)).toArray();
+	public static void linePlotPartition() {
+		// begin-example: linePlotPartition
+		Partition<Double, Double> data = DataStream.range(-1.0, 1.0, 100).map(d -> Math.pow(d, 2));
 		
-		// begin-example: styledLinePlot
 		new XYPlotBuilder()
-				.line("Series", x, y, Style.blue(), Style.large())
-				.title("Styled Line Plot")
+				.line("Series", data)
+				.title("Line Plot")
 				.xLabel("X")
 				.yLabel("Y")
 				.show();
-		// end-example: styledLinePlot
+		// end-example: linePlotPartition
 	}
 	
 	public static void scatterPlot() {
-		double[] x = IntStream.range(0, 100).mapToDouble(i -> i - 50).toArray();
+		double[] x = IntStream.range(0, 100).mapToDouble(i -> -1.0 + 2.0 * i / 99).toArray();
 		double[] y = DoubleStream.of(x).map(d -> Math.pow(d, 2)).toArray();
 		
 		// begin-example: scatterPlot
@@ -115,23 +111,25 @@ public class PlottingExample {
 		// end-example: scatterPlot
 	}
 	
-	public static void styledScatterPlot() {
-		double[] x = IntStream.range(0, 100).mapToDouble(i -> i - 50).toArray();
-		double[] y = DoubleStream.of(x).map(d -> Math.pow(d, 2)).toArray();
+	public static void combinedPlot() {
+		double[] x = IntStream.range(0, 100).mapToDouble(i -> -1.0 + 2.0 * i / 99).toArray();
+		double[] y1 = DoubleStream.of(x).map(d -> Math.pow(d, 2)).toArray();
+		double[] y2 = DoubleStream.of(x).map(d -> Math.pow(d, 2) + PRNG.nextGaussian(0.0, 0.05)).toArray();
 		
-		// begin-example: styledScatterPlot
+		// begin-example: combinedPlot
 		new XYPlotBuilder()
-				.scatter("Series", x, y, Style.blue(), Style.square(), Style.large())
-				.title("Styled Scatter Plot")
+				.line("Series1", x, y1, Style.blue(), Style.large())
+				.scatter("Series2", x, y2, Style.red(), Style.circle())
+				.title("Combined Plot")
 				.xLabel("X")
 				.yLabel("Y")
 				.show();
-		// end-example: styledScatterPlot
+		// end-example: combinedPlot
 	}
 	
 	public static void areaPlot() {
-		double[] x = IntStream.range(0, 100).mapToDouble(i -> i - 50).toArray();
-		double[] y = DoubleStream.of(x).map(d -> Math.pow(d, 2)).toArray();
+		double[] x = IntStream.range(0, 100).mapToDouble(i -> -1.0 + 2.0 * i / 99).toArray();
+		double[] y = DoubleStream.of(x).map(d -> 1.0 - Math.pow(d, 2)).toArray();
 		
 		// begin-example: areaPlot
 		new XYPlotBuilder()
@@ -143,18 +141,20 @@ public class PlottingExample {
 		// end-example: areaPlot
 	}
 	
-	public static void styledAreaPlot() {
-		double[] x = IntStream.range(0, 100).mapToDouble(i -> i - 50).toArray();
-		double[] y = DoubleStream.of(x).map(d -> Math.pow(d, 2)).toArray();
+	public static void stackedAreaPlot() {
+		double[] x = IntStream.range(0, 100).mapToDouble(i -> -1.0 + 2.0 * i / 99).toArray();
+		double[] y1 = DoubleStream.of(x).map(d -> 1.0 - Math.pow(d, 2)).toArray();
+		double[] y2 = DoubleStream.of(x).map(d -> Math.pow(d, 2)).toArray();
 		
-		// begin-example: styledAreaPlot
+		// begin-example: stackedAreaPlot
 		new XYPlotBuilder()
-				.area("Series", x, y, Style.blue())
-				.title("Styled Area Plot")
+				.stacked("Series1", x, y1)
+				.stacked("Series2", x, y2)
+				.title("Stacked Area Plot")
 				.xLabel("X")
 				.yLabel("Y")
 				.show();
-		// end-example: styledAreaPlot
+		// end-example: stackedAreaPlot
 	}
 	
 	public static void histogram() {
@@ -170,19 +170,6 @@ public class PlottingExample {
 		// end-example: histogram
 	}
 	
-	public static void styledHistogram() {
-		double[] values = IntStream.range(0, 10000).mapToDouble(i -> PRNG.nextGaussian()).toArray();
-		
-		// begin-example: styledHistogram
-		new XYPlotBuilder()
-				.histogram("Values", values, StepsAttribute.of(20))
-				.title("Styled Histogram")
-				.xLabel("Value")
-				.yLabel("Count")
-				.show();
-		// end-example: styledHistogram
-	}
-	
 	public static void deviationPlot() {
 		double[] x = IntStream.range(0, 10000).mapToDouble(i -> i / 1000.0).toArray();
 		double[] y = DoubleStream.of(x).map(d -> Math.pow(d, 2) + PRNG.nextGaussian(0.0, d)).toArray();
@@ -195,20 +182,6 @@ public class PlottingExample {
 				.yLabel("Y")
 				.show();
 		// end-example: deviationPlot
-	}
-	
-	public static void styledDeviationPlot() {
-		double[] x = IntStream.range(0, 10000).mapToDouble(i -> i / 1000.0).toArray();
-		double[] y = DoubleStream.of(x).map(d -> Math.pow(d, 2) + PRNG.nextGaussian(0.0, d)).toArray();
-		
-		// begin-example: styledDeviationPlot
-		new XYPlotBuilder()
-				.deviation("Series", x, y, Style.blue(), LowPercentileAttribute.of(0.0), HighPercentileAttribute.of(100.0))
-				.title("Styled Deviation Plot")
-				.xLabel("X")
-				.yLabel("Y")
-				.show();
-		// end-example: styledDeviationPlot
 	}
 	
 	public static void paretoFront() {
@@ -247,8 +220,9 @@ public class PlottingExample {
 	}
 	
 	public static void heatMap() {
-		double[] x = IntStream.range(0, 100).mapToDouble(i -> i).toArray();
-		double[] y = IntStream.range(0, 200).mapToDouble(i -> i).toArray();
+		// begin-example: heatMap
+		double[] x = IntStream.range(0, 100).mapToDouble(i -> i / 100.0).toArray();
+		double[] y = IntStream.range(0, 200).mapToDouble(i -> i / 100.0).toArray();
 		double[][] z = new double[x.length][y.length];
 		
 		for (int i = 0; i < x.length; i++) {
@@ -266,13 +240,14 @@ public class PlottingExample {
 				.yLabel("Y")
 				.zLabel("Value")
 				.show();
+		// end-example: heatMap
 	}
 	
 	public static void boxAndWhiskerPlot() {
 		new BoxAndWhiskerPlotBuilder()
-				.add("Set 1", IntStream.range(0, 10).mapToDouble(i -> PRNG.nextDouble()).toArray())
-				.add("Set 2", IntStream.range(0, 50).mapToDouble(i -> 2 * PRNG.nextDouble()).toArray())
-				.add("Set 3", IntStream.range(0, 100).mapToDouble(i -> PRNG.nextDouble()).toArray())
+				.add("Set1", IntStream.range(0, 10).mapToDouble(i -> PRNG.nextDouble()).toArray())
+				.add("Set2", IntStream.range(0, 50).mapToDouble(i -> 2 * PRNG.nextDouble()).toArray())
+				.add("Set3", IntStream.range(0, 100).mapToDouble(i -> PRNG.nextDouble()).toArray())
 				.show();
 	}
 	
@@ -282,14 +257,17 @@ public class PlottingExample {
 		double[] y2 = IntStream.range(0, 10).mapToDouble(i -> PRNG.nextDouble()).toArray();
 		
 		new BarGraphBuilder()
-				.bars("Set 1", x, y1)
-				.bars("Set 2", x, y2)
+				.bars("Set1", x, y1)
+				.bars("Set2", x, y2)
 				.show();
 	}
 	
 	public static void darkTheme() throws IOException {
+		double[] x = IntStream.range(0, 100).mapToDouble(i -> -1.0 + 2.0 * i / 99).toArray();
+		double[] y = DoubleStream.of(x).map(d -> 1.0 - Math.pow(d, 2)).toArray();
+		
 		new XYPlotBuilder()
-			.scatter("Points", new double[] { 0, 1, 2 }, new double[] { 0, 1, 2 })
+			.scatter("Points", x, y)
 			.theme(StandardChartTheme.createDarknessTheme())
 			.show();
 	}

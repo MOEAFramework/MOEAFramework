@@ -228,6 +228,7 @@ done < <(git diff --cached --name-only --diff-filter=ACM)
 			<classpath refid="classpath" />
 			<classpath path="${build}" />
 			<classpath path="examples" />
+			<arg if:true="${env.CI}" value="--disable=plot" />
 		</java>
 	</target>
 

@@ -19,7 +19,6 @@ package org.moeaframework.analysis.plot;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,7 +27,6 @@ import java.util.function.Function;
 
 import javax.swing.JFrame;
 
-import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartTheme;
 import org.jfree.chart.JFreeChart;
@@ -84,7 +82,7 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 		};
 		
 		/**
-		 * Shows the given plot.
+		 * Displays the given plot.
 		 * 
 		 * @param builder the plot builder
 		 * @param width the requested display width
@@ -143,16 +141,7 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 	public PlotBuilder() {
 		super();
 		this.paintHelper = new PaintHelper();
-		this.theme = createDefaultTheme();
-	}
-	
-	private static final StandardChartTheme createDefaultTheme() {
-		StandardChartTheme theme = new StandardChartTheme("Default", false);
-		theme.setExtraLargeFont(new Font("Lucida Sans", Font.BOLD, 20));
-        theme.setLargeFont(new Font("Lucida Sans", Font.BOLD, 14));
-        theme.setRegularFont(new Font("Lucida Sans", Font.PLAIN, 12));
-        theme.setSmallFont(new Font("Lucida Sans", Font.PLAIN, 10));
-        return theme;
+		this.theme = StandardChartTheme.createJFreeTheme();
 	}
 	
 	/**
@@ -340,7 +329,7 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 		if (theme != null) {
 			theme.apply(chart);
 		}
-						
+		
 		return chart;
 	}
 	

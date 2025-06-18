@@ -182,6 +182,10 @@ public class UpdateCodeSamples extends CommandLineUtility {
 				.longOpt("seed")
 				.hasArg()
 				.build());
+		options.addOption(Option.builder("d")
+				.longOpt("disable")
+				.hasArgs()
+				.build());
 
 		return options;
 	}
@@ -194,6 +198,13 @@ public class UpdateCodeSamples extends CommandLineUtility {
 						
 		System.out.println("Running in " + (update ? "update" : "validate") + " mode");
 		System.out.println("Seed: " + seed);
+		
+		if (commandLine.hasOption("disable")) {
+			for (String value : commandLine.getOptionValues("disable")) {
+				System.out.println("Disabling " + value);
+				processors.put(value, new DisabledProcessor());
+			}
+		}
 		
 		Settings.PROPERTIES.setInt(Settings.KEY_HELP_WIDTH, 120);
 		
@@ -956,19 +967,16 @@ public class UpdateCodeSamples extends CommandLineUtility {
 				File baseDirectory = instruction.getTemplateFile().getParentFile();
 				File destFile = new File(baseDirectory, dest);
 				
-				long position = Files.mismatch(tempFile.toPath(), destFile.toPath());
-				boolean contentChanged = false;
+				boolean contentChanged = !destFile.exists() || Files.mismatch(tempFile.toPath(), destFile.toPath()) >= 0;
 				
-				if (position >= 0) {
+				if (contentChanged) {
 					System.out.println("      ! Plot '" + dest + "' changed!");
 					
 					if (update) {
 						Files.move(tempFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 					} else {
 						Files.deleteIfExists(tempFile.toPath());
-					}
-					
-					contentChanged = true;
+					}					
 				}
 				
 				contentChanged |= replace(reader, writer, instruction.formatImage(dest), instruction);
@@ -985,6 +993,31 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 	}
 	
+	/**
+	 * Processor that no-ops.
+	 */
+	class DisabledProcessor extends Processor {
+
+		@Override
+		public boolean run(LineReader reader, PrintWriter writer, ProcessorInstruction instruction) throws IOException {
+			return false;
+		}
+
+		@Override
+		protected TextMatcher getReplaceMatcher(ProcessorInstruction instruction) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		protected Language getOutputLanguage(ProcessorInstruction instruction) {
+			throw new UnsupportedOperationException();
+		}
+		
+	}
+	
+	/**
+	 * Base class for implementing different programming languages.
+	 */
 	abstract class Language {
 		
 		Language() {
@@ -1000,10 +1033,21 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 */
 		public abstract String stripComments(String content);
 		
+		/**
+		 * Returns a text matcher that locates code examples referenced by id.
+		 * 
+		 * @param id the code example id
+		 * @return the text matcher
+		 */
 		public abstract TextMatcher getSnippetMatcher(String id);
 		
-		public abstract String getBrush();
-		
+		/**
+		 * Attempts to compile and execute the referenced code.
+		 * 
+		 * @param instruction the processor instruction
+		 * @return the output from executing the code
+		 * @throws IOException if an I/O error occurred
+		 */
 		public String execute(ProcessorInstruction instruction) throws IOException {
 			return Validate.fail("Execution not supported for " + getClass().getSimpleName());
 		}
@@ -1081,13 +1125,11 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 	}
 	
+	/**
+	 * Handles plain text or content without a defined programming language.
+	 */
 	class Plaintext extends Language {
-		
-		@Override
-		public String getBrush() {
-			return "";
-		}
-		
+
 		@Override
 		public String stripComments(String content) {
 			return content;
@@ -1103,22 +1145,19 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 	}
 	
+	/**
+	 * Handles shell scripts.
+	 */
 	class ShellScript extends Plaintext {
-		
-		@Override
-		public String getBrush() {
-			return "sh";
-		}
 		
 	}
 	
+	/**
+	 * Handles Java source code.
+	 */
 	class Java extends Language {
 		
 		@Override
-		public String getBrush() {
-			return "java";
-		}
-		
 		public String execute(ProcessorInstruction instruction) throws IOException {
 			File sourceFile = instruction.getSourceFile();
 			File classFile = new File(sourceFile.getParent(), FilenameUtils.removeExtension(sourceFile.getName()) + ".class");
@@ -1189,8 +1228,8 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		@Override
 		public TextMatcher getSnippetMatcher(String id) {
 			return new TextMatcher(
-					s -> StringUtils.containsIgnoreCase(s, "// begin-example: " + id),
-					s -> StringUtils.containsIgnoreCase(s, "// end-example: " + id),
+					s -> s.equalsIgnoreCase("// begin-example: " + id),
+					s -> s.equalsIgnoreCase("// end-example: " + id),
 					true);
 		}
 		
@@ -1261,12 +1300,19 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		public abstract TextMatcher getCodeBlockMatcher();
 		
 		/**
-		 * Returns the text matcher for images.  Note that for Markdown, we prefer using embedded HTML tags instead of
-		 * {@code ![alt_text](image_url)} as it provides better control over the image scale and alignment.
+		 * Returns the text matcher for images.
 		 * 
 		 * @return the text matcher
 		 */
 		public abstract TextMatcher getImageMatcher();
+		
+		/**
+		 * Returns the name of the brush used for syntax highlighting the given source language.
+		 * 
+		 * @param language the source language
+		 * @return the brush name
+		 */
+		public abstract String getBrush(Language language);
 		
 		/**
 		 * Renders the code block in the format required by this template file type.  The returned content must match
@@ -1290,7 +1336,10 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	}
 	
 	/**
-	 * Formatter for markdown files.
+	 * Formatter for Markdown files.
+	 * <p>
+	 * Note that we prefer using embedded HTML tags instead of {@code ![alt_text](image_url)} as it provides better
+	 * control over the image scale and alignment.
 	 */
 	class MarkdownFormatter extends FileFormatter {
 
@@ -1307,11 +1356,22 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 		
 		@Override
+		public String getBrush(Language language) {
+			if (language instanceof Java) {
+				return "java";
+			} else if (language instanceof ShellScript) {
+				return "sh";
+			} else {
+				return "";
+			}
+		}
+		
+		@Override
 		public String formatCodeBlock(List<String> lines, Language language, ProcessorInstruction instruction) {
 			StringBuilder sb = new StringBuilder();
 			
 			sb.append("```");
-			sb.append(language.getBrush());
+			sb.append(getBrush(language));
 			sb.append(instruction.getLineSeparator());
 			sb.append(String.join(instruction.getLineSeparator(), lines));
 			sb.append(instruction.getLineSeparator());
@@ -1342,7 +1402,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	}
 	
 	/**
-	 * HTML or XSLT files.
+	 * Formatter for HTML or XSLT files.
 	 */
 	class HtmlFormatter extends FileFormatter {
 
@@ -1361,11 +1421,20 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 		
 		@Override
+		public String getBrush(Language language) {
+			if (language instanceof Java) {
+				return "java";
+			} else {
+				return "plain";
+			}
+		}
+		
+		@Override
 		public String formatCodeBlock(List<String> lines, Language language, ProcessorInstruction instruction) {
 			StringBuilder sb = new StringBuilder();
 			
 			sb.append("<pre class=\"brush: ");
-			sb.append(language.getBrush().isEmpty() ? "plain" : language.getBrush());
+			sb.append(getBrush(language));
 			sb.append("; toolbar: false;\">");
 			sb.append(instruction.getLineSeparator());
 			sb.append("<![CDATA[");
@@ -1412,11 +1481,11 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 		
 		public boolean isStart(String line) {
-			return startMatcher.test(line);
+			return startMatcher.test(line.trim());
 		}
 
 		public boolean isEnd(String line) {
-			return endMatcher.test(line);
+			return endMatcher.test(line.trim());
 		}
 
 		public boolean isBlock() {

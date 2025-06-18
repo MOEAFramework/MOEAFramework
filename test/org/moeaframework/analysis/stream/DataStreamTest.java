@@ -113,6 +113,9 @@ public class DataStreamTest {
 		Assert.assertEquals(List.of(1, 2), DataStream.range(1, 3).values());
 		Assert.assertEquals(List.of(1, 1), DataStream.repeat(2, () -> 1).values());
 		Assert.assertEquals(List.of(1, 2), DataStream.enumerate(2, x -> x + 1).values());
+		
+		Assert.assertEquals(List.of(-1.0, 1.0), DataStream.range(-1.0, 1.0, 2).values());
+		Assert.assertEquals(List.of(-1.0, 0.0, 1.0), DataStream.range(-1.0, 1.0, 3).values());
 	}
 
 }

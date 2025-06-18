@@ -37,6 +37,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.Formattable;
 import org.moeaframework.util.format.TabularData;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * A stream of values.
@@ -358,6 +359,23 @@ public interface DataStream<V> extends Formattable<V>, Iterable<V> {
 	 */
 	public static DataStream<Integer> range(int startInclusive, int endExclusive) {
 		return new ImmutableDataStream<>(IntStream.range(startInclusive, endExclusive).boxed());
+	}
+	
+	/**
+	 * Constructs a data stream consisting of double values evenly-spaced between the given start (inclusive) and end
+	 * (inclusive) values.
+	 * 
+	 * @param startInclusive the starting value
+	 * @param endInclusive the ending value
+	 * @param count the number of items to return, which must be {@code > 1}
+	 * @return the constructed data stream
+	 */
+	public static DataStream<Double> range(double startInclusive, double endInclusive, int count) {
+		Validate.that("count", count).isGreaterThan(1);
+		
+		return new ImmutableDataStream<>(IntStream.range(0, count)
+				.mapToDouble(i -> startInclusive + i * (endInclusive - startInclusive) / (count - 1))
+				.boxed());
 	}
 	
 	/**
