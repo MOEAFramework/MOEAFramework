@@ -95,7 +95,7 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 	/**
 	 * The current display driver.
 	 */
-	private static DisplayDriver DISPLAY_DRIVER;
+	private static DisplayDriver displayDriver;
 	
 	/**
 	 * Sets the display driver, which will be used by subsequent calls to {@link #show(int, int)} when displaying this
@@ -105,7 +105,7 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 	 */
 	public static synchronized void setDisplayDriver(DisplayDriver displayDriver) {
 		Validate.that("displayDriver", displayDriver).isNotNull();
-		DISPLAY_DRIVER = displayDriver;
+		PlotBuilder.displayDriver = displayDriver;
 	}
 	
 	/**
@@ -114,7 +114,7 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 	 * @return the current display driver
 	 */
 	public static synchronized DisplayDriver getDisplayDriver() {
-		return DISPLAY_DRIVER;
+		return displayDriver;
 	}
 	
 	static {
@@ -445,7 +445,7 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 	 * @param <A> the type of the attribute
 	 * @param <V> the type of the value
 	 * @param type the class of the value attribute
-	 * @param defaultVaalue the default value if the attribute is not set
+	 * @param defaultValue the default value if the attribute is not set
 	 * @param attributes the attributes configuring the plot
 	 * @return the value from the matching attribute, or the default value if no match was found
 	 */
@@ -460,7 +460,7 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 	 * @param <A> the type of the attribute
 	 * @param <V> the type of the value
 	 * @param type the class of the value attribute
-	 * @param defaultVaalue the default value if the attribute is not set
+	 * @param defaultValue the default value if the attribute is not set
 	 * @param attributes the attributes configuring the plot
 	 * @return the value from the matching attribute, or the default value if no match was found
 	 */

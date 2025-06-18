@@ -1194,6 +1194,10 @@ public class UpdateCodeSamples extends CommandLineUtility {
 					
 					method.invoke(null, (Object)args);
 				} else {
+					if (instruction.getOptions().contains("args")) {
+						Validate.fail("Arguments are only supported on main methods");
+					}
+					
 					Method method = cls.getDeclaredMethod(methodName);
 					Object instance = Modifier.isStatic(method.getModifiers()) ? null : cls.getConstructor().newInstance();
 					

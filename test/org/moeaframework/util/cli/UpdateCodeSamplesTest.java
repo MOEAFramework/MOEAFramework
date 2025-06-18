@@ -29,8 +29,6 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.util.cli.UpdateCodeSamples.ProcessorInstruction;
-import org.moeaframework.util.cli.UpdateCodeSamples.ShellScript;
 import org.moeaframework.util.cli.UpdateCodeSamples.CodeProcessor;
 import org.moeaframework.util.cli.UpdateCodeSamples.ExecProcessor;
 import org.moeaframework.util.cli.UpdateCodeSamples.FileFormatter;
@@ -39,6 +37,8 @@ import org.moeaframework.util.cli.UpdateCodeSamples.Java;
 import org.moeaframework.util.cli.UpdateCodeSamples.MarkdownFormatter;
 import org.moeaframework.util.cli.UpdateCodeSamples.Plaintext;
 import org.moeaframework.util.cli.UpdateCodeSamples.PlotProcessor;
+import org.moeaframework.util.cli.UpdateCodeSamples.ProcessorInstruction;
+import org.moeaframework.util.cli.UpdateCodeSamples.ShellScript;
 
 public class UpdateCodeSamplesTest {
 	
