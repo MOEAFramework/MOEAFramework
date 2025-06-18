@@ -113,6 +113,19 @@ jobs:
         name: maven-test-results-ubuntu-${{ env.JAVA_VERSION }}
         path: build/target/surefire-reports
 
+  content-tests-mac:
+    runs-on: macos-13
+    steps:
+    - name: Setup build
+      uses: MOEAFramework/.github/actions/setup-build@main
+      with:
+        java-version: ${{ inputs.java-version }}
+        java-distribution: ${{ inputs.java-distribution }}
+    - name: Validate docs
+      uses: MOEAFramework/.github/actions/run-ant@main
+      with:
+        target: validate-docs
+
   content-tests:
     runs-on: ubuntu-latest
     steps:
