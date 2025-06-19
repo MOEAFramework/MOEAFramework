@@ -39,8 +39,10 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.TreeMap;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
@@ -58,10 +60,12 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.moeaframework.analysis.plot.PlotBuilder;
 import org.moeaframework.analysis.plot.PlotBuilder.DisplayDriver;
+import org.moeaframework.core.Copyable;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
+import org.moeaframework.util.format.Displayable;
 import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.validate.Validate;
 
@@ -155,8 +159,8 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 		fileFormatters = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 		fileFormatters.put("md", new MarkdownFormatter());
-		fileFormatters.put("html", new HtmlFormatter());
-		fileFormatters.put("xslt", new HtmlFormatter());
+//		fileFormatters.put("html", new HtmlFormatter());
+//		fileFormatters.put("xslt", new HtmlFormatter());
 		
 		languages = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 		languages.put("sh", new ShellScript());
@@ -165,7 +169,8 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		processors = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 		processors.put("code", new CodeProcessor());
 		processors.put("exec", new ExecProcessor());
-		processors.put("plot", new PlotProcessor());
+//		processors.put("plot", new PlotProcessor());
+		processors.put("plot", new DisabledProcessor());
 	}
 	
 	@Override
@@ -228,7 +233,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			}
 		}
 	}
-	
+
 	/**
 	 * Recursively processes all files and directories.
 	 * 
@@ -275,32 +280,25 @@ public class UpdateCodeSamples extends CommandLineUtility {
 				
 		System.out.println("Processing " + file);
 		
-		File tempFile = File.createTempFile("temp", null);
-		String lineSeparator = determineLineSeparator(file);
+		Document document = new Document(file);
 		
-		try (LineReader reader = LineReader.wrap(new FileReader(file));
-			 PrintWriter writer = new PrintWriter(new FileWriter(tempFile))) {
-			for (String line : reader) {
-				writer.write(line);
-				writer.write(lineSeparator);
+		while (!document.isEnd()) {
+			String line = document.next();
+			ProcessorInstruction instruction = fileFormatter.tryParseProcessorInstruction(line);
+			
+			if (instruction != null) {
+				System.out.println("    > Running " + instruction);
 				
-				ProcessorInstruction instruction = fileFormatter.tryParseProcessorInstruction(line);
-								
-				if (instruction != null) {
-					instruction.setLineSeparator(lineSeparator);
-					instruction.setTemplateFile(file);
-					
-					System.out.println("    > Running " + instruction);
-					
-					fileChanged |= instruction.run(reader, writer);
-				}
+				// TODO: Handle EOF?
+				document.next();
+
+				instruction.setTemplateFile(file);
+				fileChanged |= instruction.run(document);
 			}
 		}
 		
-		if (update) {
-			Files.move(tempFile.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-		} else {
-			Files.deleteIfExists(tempFile.toPath());
+		if (fileChanged && update) {
+			document.save(file);
 		}
 		
 		return fileChanged;
@@ -367,27 +365,6 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	}
 	
 	/**
-	 * Determines the line separator in use by the source file.
-	 * 
-	 * @param file the file
-	 * @return the line separator
-	 * @throws IOException if an I/O error occurred while reading the file
-	 */
-	private static String determineLineSeparator(File file) throws IOException {
-		String content = Files.readString(file.toPath());
-
-		if (content.matches("(?s).*(\\r\\n).*")) {
-			return "\r\n";
-		} else if (content.matches("(?s).*(\\n).*")) {
-			return "\n";
-		} else if (content.matches("(?s).*(\\r).*")) {
-			return "\r";
-		} else {
-			return DEFAULT_LINE_SEPARATOR;
-		}
-	}
-	
-	/**
 	 * Class representing a processor instruction, which defines the type of processor and any arguments.
 	 */
 	class ProcessorInstruction {
@@ -406,11 +383,6 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * The path of the template file.
 		 */
 		private File templateFile;
-		
-		/**
-		 * The line separator of the original file.
-		 */
-		private String lineSeparator;
 
 		/**
 		 * The options supplied to this instruction.
@@ -427,7 +399,6 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			this.processor = processor;
 			this.fileFormatter = fileFormatter;
 			
-			lineSeparator = System.lineSeparator();
 			options = new TypedProperties();
 		}
 		
@@ -512,25 +483,6 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 		
 		/**
-		 * Returns the line separator of the original file.
-		 * 
-		 * @return the line separator
-		 */
-		public String getLineSeparator() {
-			return lineSeparator;
-		}
-		
-		/**
-		 * Sets the line separator for the original file.
-		 * 
-		 * @param lineSeparator the line separator
-		 */
-		public void setLineSeparator(String lineSeparator) {
-			Validate.that("lineSeparator", lineSeparator).isNotNull();
-			this.lineSeparator = lineSeparator;
-		}
-		
-		/**
 		 * Returns the options supplied with this instruction.
 		 * 
 		 * @return the options
@@ -560,13 +512,12 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		/**
 		 * Runs this processor instruction.
 		 * 
-		 * @param reader the reader for the original file
-		 * @param writer the writer for the modified file
+		 * @param document the document being processed
 		 * @return {@code true} if the contents were changed; {@code false} otherwise
 		 * @throws IOException if an I/O error occurred
 		 */
-		public boolean run(LineReader reader, PrintWriter writer) throws IOException {
-			return processor.run(reader, writer, this);
+		public boolean run(Document document) throws IOException {
+			return processor.run(document, this);
 		}
 
 		/**
@@ -576,86 +527,46 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @return the formatted content
 		 * @throws IOException if an I/O error occurred
 		 */
-		public String formatCode(String content) throws IOException {
-			List<String> lines = new ArrayList<>(content.lines().toList());
-			
+		public void format(Document document) throws IOException {
 			if (options.contains("id")) {
-				String identifier = options.getString("id");
-				TextMatcher matcher = getSourceFileLanguage().getSnippetMatcher(identifier);
-				
-				boolean inSnippet = false;
-				Iterator<String> iterator = lines.iterator();
-				
-				while (iterator.hasNext()) {
-					String line = iterator.next();
-					
-					if (matcher.isStart(line)) {
-						inSnippet = true;
-						iterator.remove();
-					} else if (matcher.isEnd(line)) {
-						inSnippet = false;
-						iterator.remove();
-					} else if (!inSnippet) {
-						iterator.remove();
-					}
-				}
-				
-				if (lines.isEmpty()) {
-					throw new IOException("Failed to find start of code snippet with id '" + identifier + "'");
-				}
-				
-				if (inSnippet) {
-					throw new IOException("Failed to find end of code snippet with id '" + identifier + "'");
-				}
+				TextMatcher matcher = getSourceFileLanguage().getSnippetMatcher(options.getString("id"));
+				Splice splice = matcher.scan(document);
+				document.keep(new Splice(splice.getStart() + 1, splice.getEnd() - 1));
+			} else if (options.contains("method")) {
+				TextMatcher matcher = getSourceFileLanguage().getMethodMatcher(options.getString("method"));
+				Splice splice = matcher.scan(document);
+				document.keep(new Splice(splice.getStart() + 1, splice.getEnd() - 1));
 			} else {
-				String lineRange = options.getString("lines", ":");
-				String[] tokens = lineRange.split(":", 2);
-				int startingLine = 1;
-				int endingLine = Integer.MAX_VALUE;
-				
-				if (!tokens[0].isBlank()) {
-					startingLine = Integer.parseInt(tokens[0]);
-				}
-
-				if (tokens.length > 1 && !tokens[1].isBlank()) {
-					endingLine = Integer.parseInt(tokens[1]);
-				} else if (tokens.length == 1 && !tokens[0].isBlank()) {
-					endingLine = Integer.parseInt(tokens[0]);
-				}
-				
-				if (startingLine < 0) {
-					startingLine += lines.size() + 1;
-				} else if (startingLine == 0) {
-					startingLine = 1;
-				}
-					
-				if (endingLine < 0) {
-					endingLine += lines.size();
-				}
-									
-				lines = lines.subList(Math.max(0, startingLine - 1), Math.min(lines.size(), endingLine));
+				Splice splice = Splice.fromString(options.getString("lines", ":"));
+				document.keep(splice);
 			}
 			
 			// Apply any formatting specific to the output source code language
 			Language language = processor.getOutputLanguage(this);
 			
-			if (!options.getBoolean("preserveComments", false)) {
-				lines = language.stripComments(lines);
-			}
+			document.removeTrailingWhitespace();
 			
+			if (!options.getBoolean("preserveComments", false)) {
+				// TODO: Clean this up
+				String content = language.stripComments(document.toString());
+				document.lines.clear();
+				document.lines.addAll(content.lines().toList());
+				document.removeLeadingAndTrailingBlankLines();
+			}
+
 			if (!options.getBoolean("preserveIndentation", false)) {
-				lines = language.stripIndentation(lines);
+				document.removeIndentation();
 			}
 			
 			if (!options.getBoolean("preserveTabs", false)) {
-				lines = language.replaceTabsWithSpaces(lines);
+				document.replaceTabsWithSpaces();
 			}
 			
 			if (options.getBoolean("showEllipsis", false)) {
-				lines.add("...");
+				document.insert(document.getLineCount() + 1, "...");
 			}
 			
-			return fileFormatter.formatCodeBlock(lines, language, this);
+			fileFormatter.formatCodeBlock(document, language, this);
 		}
 		
 		/**
@@ -664,9 +575,9 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @param path the image path
 		 * @return the formatted image
 		 */
-		public String formatImage(String path) {
-			return fileFormatter.formatImage(path, this);
-		}
+//		public String formatImage(String path) {
+//			return fileFormatter.formatImage(path, this);
+//		}
 
 		@Override
 		public String toString() {
@@ -688,31 +599,18 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	/**
 	 * Base class for defining a processor that responds to a particular instruction.
 	 */
-	abstract class Processor {
-
-		Processor() {
-			super();
-		}
+	interface Processor {
 		
 		/**
 		 * Runs the processor.  Typically, a processor should generate the new output and call
 		 * {@link #replace(LineReader, PrintWriter, String, ProcessorInstruction)}.
 		 * 
-		 * @param reader the reader for the original file
-		 * @param writer the writer for the modified file
+		 * @param document the document being processed
 		 * @param instruction the processor instruction being executed
-		 * @return {@code true} if the contents were changed; {@code false} otherwise
+		 * @return {@code true} if the content changed
 		 * @throws IOException if an I/O error occurred
 		 */
-		public abstract boolean run(LineReader reader, PrintWriter writer, ProcessorInstruction instruction) throws IOException;
-		
-		/**
-		 * Returns a {@link TextMatcher} used to identify the lines to replace.
-		 * 
-		 * @param instruction the processor instruction being executed
-		 * @return the text matcher
-		 */
-		protected abstract TextMatcher getReplaceMatcher(ProcessorInstruction instruction);
+		public boolean run(Document document, ProcessorInstruction instruction) throws IOException;
 		
 		/**
 		 * Returns the {@link Language} of the generated code.  This typically matches
@@ -721,117 +619,19 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @param instruction the processor instruction being executed
 		 * @return the language of the generated code
 		 */
-		protected abstract Language getOutputLanguage(ProcessorInstruction instruction);
-		
-		/**
-		 * Replaces the content.
-		 * 
-		 * @param reader the reader for the original file
-		 * @param writer the writer for the modified file
-		 * @param newContent the new content
-		 * @param instruction the processor instruction being executed
-		 * @return {@code true} if the contents were changed; {@code false} otherwise
-		 * @throws IOException if an I/O error occurred
-		 */
-		protected boolean replace(LineReader reader, PrintWriter writer, String newContent, ProcessorInstruction instruction) throws IOException {
-			String oldContent = scanContentToReplace(reader, writer, instruction);
-			
-			boolean contentChanged = diff(oldContent, newContent);
-			
-			writer.write(newContent);
-			writer.write(instruction.getLineSeparator());
-			
-			return contentChanged;
-		}
-		
-		/**
-		 * Locates a section of the file immediately following the current position that matches the pattern defined by
-		 * {@link #getReplaceMatcher(ProcessorInstruction)}.  Any empty lines are ignored for matching but are written
-		 * to the output to preserve whitespace.
-		 * 
-		 * @param reader the reader for the original file
-		 * @param writer the writer for the modified file
-		 * @return the old content that is being replaced
-		 * @throws IOException if an I/O error occurred
-		 */
-		private String scanContentToReplace(LineReader reader, PrintWriter writer, ProcessorInstruction instruction)
-				throws IOException {
-			StringBuilder sb = new StringBuilder();
-			TextMatcher matcher = getReplaceMatcher(instruction);
-			boolean inBlock = false;
-			
-			for (String line : reader) {
-				if (!inBlock) {
-					if (matcher.isStart(line)) {
-						sb.append(line);
-						sb.append(instruction.getLineSeparator());
-						
-						if (!matcher.isBlock() && matcher.isEnd(line)) {
-							return sb.toString();
-						}
-						
-						inBlock = true;
-					} else if (line.isBlank()) {
-						writer.write(line);
-						writer.write(instruction.getLineSeparator());
-					} else {
-						throw new IOException("Found non-empty line '" + line + "' when scanning for matching content");
-					}
-				} else {
-					sb.append(line);
-					sb.append(instruction.getLineSeparator());
-					
-					if (matcher.isEnd(line)) {
-						return sb.toString();
-					}
-				}
-			}
-			
-			throw new IOException("Reached end of file before finding matching content");
-		}
-		
-		/**
-		 * Determines if any differences exist between the two strings, displaying any differences in the terminal.
-		 * This will flag whitespace differences, but excludes the end of line characters.
-		 * 
-		 * @param first the first code block
-		 * @param second the second code block
-		 * @return {@code true} if any differences were detected
-		 */
-		private boolean diff(String first, String second) {
-			List<String> firstLines = first.lines().toList();
-			List<String> secondLines = second.lines().toList();
-			
-			boolean result = false;
-			
-			for (int i = 0; i < Math.max(firstLines.size(), secondLines.size()); i++) {
-				if (i >= firstLines.size()) {
-					System.out.println("      ! ++ " + secondLines.get(i));
-					result = true;
-				} else if (i >= secondLines.size()) {
-					System.out.println("      ! -- " + firstLines.get(i));
-					result = true;
-				} else if (!firstLines.get(i).equals(secondLines.get(i))) {
-					System.out.println("      ! -- " + firstLines.get(i));
-					System.out.println("      ! ++ " + secondLines.get(i));
-					result = true;
-				}
-			}
-			
-			return result;
-		}
+		public Language getOutputLanguage(ProcessorInstruction instruction);
 		
 	}
 	
 	/**
 	 * Processor that copies and formats source code.
 	 */
-	class CodeProcessor extends Processor {
+	class CodeProcessor implements Processor {
 		
 		/**
 		 * Caches the content of the files / resources that are accessed by this tool.
 		 */
-		private final Map<String, String> cache;
+		private final Map<String, Document> cache;
 		
 		public CodeProcessor() {
 			super();
@@ -839,17 +639,24 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 		
 		@Override
-		public boolean run(LineReader reader, PrintWriter writer, ProcessorInstruction instruction) throws IOException {
-			return replace(reader, writer, instruction.formatCode(loadContent(instruction)), instruction);
+		public boolean run(Document document, ProcessorInstruction instruction) throws IOException {
+			Document newContent = loadSource(instruction);
+			instruction.format(newContent);
+			
+			TextMatcher matcher = instruction.getFileFormatter().getCodeBlockMatcher();
+			Splice splice = matcher.scan(document);
+			
+			// TODO: Check for non-blank lines between instruction and code block
+			
+			Document oldContent = document.extract(splice);
+			boolean changed = oldContent.diff(newContent);
+			
+			document.replace(splice, newContent);			
+			return changed;
 		}
 		
 		@Override
-		protected TextMatcher getReplaceMatcher(ProcessorInstruction instruction) {
-			return instruction.getFileFormatter().getCodeBlockMatcher();
-		}
-		
-		@Override
-		protected Language getOutputLanguage(ProcessorInstruction instruction) {
+		public Language getOutputLanguage(ProcessorInstruction instruction) {
 			if (instruction.getOptions().contains("language")) {
 				return getLanguageForExtension(instruction.getOptions().getString("language"));
 			} else {
@@ -861,14 +668,14 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * Loads content from a file or URL (restricted to GitHub).
 		 * 
 		 * @param instructions the processor instruction
-		 * @return the content
+		 * @return the document
 		 * @throws IOException if an error occurred loading the file or URL
 		 */
-		private String loadContent(ProcessorInstruction instruction) throws IOException {
+		private Document loadSource(ProcessorInstruction instruction) throws IOException {
 			String source = instruction.getOptions().getString("src");
 			
 			if (cache.containsKey(source)) {
-				return cache.get(source);
+				return cache.get(source).copy();
 			}
 			
 			URI uri = null;
@@ -880,18 +687,18 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			}
 			
 			if (uri == null || uri.getScheme() == null || uri.getScheme().equalsIgnoreCase("file")) {
-				String content = Files.readString(Path.of(source), StandardCharsets.UTF_8);
-				cache.put(source, content);
-				return content;
+				Document document = new Document(Files.readString(Path.of(source), StandardCharsets.UTF_8));
+				cache.put(source, document);
+				return document.copy();
 			} else if (uri.getScheme().equalsIgnoreCase("http") || uri.getScheme().equalsIgnoreCase("https")) {
 				if (!uri.getHost().equalsIgnoreCase("raw.githubusercontent.com") ||
 						!uri.getPath().startsWith("/MOEAFramework/")) {
 					throw new IOException("Invalid path '" + source + "', unsupport host or path");
 				}
 				
-				String content = IOUtils.toString(uri.toURL(), StandardCharsets.UTF_8);
-				cache.put(source, content);
-				return content;
+				Document document = new Document(IOUtils.toString(uri.toURL(), StandardCharsets.UTF_8));
+				cache.put(source, document);
+				return document.copy();
 			} else {
 				throw new IOException("Invalid path '" + source + "', unsupported scheme");
 			}
@@ -902,20 +709,27 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	/**
 	 * Processor that compiles and executes a Java file.
 	 */
-	class ExecProcessor extends Processor {
+	class ExecProcessor implements Processor {
 		
 		@Override
-		public boolean run(LineReader reader, PrintWriter writer, ProcessorInstruction instruction) throws IOException {
-			return replace(reader, writer, instruction.formatCode(execute(instruction)), instruction);
+		public boolean run(Document document, ProcessorInstruction instruction) throws IOException {
+			Document newContent = new Document(execute(instruction));
+			instruction.format(newContent);
+			
+			TextMatcher matcher = instruction.getFileFormatter().getCodeBlockMatcher();
+			Splice splice = matcher.scan(document);
+			
+			// TODO: Check for non-blank lines between instruction and code block
+			
+			Document oldContent = document.extract(splice);
+			boolean changed = oldContent.diff(newContent);
+			
+			document.replace(splice, newContent);			
+			return changed;
 		}
 		
 		@Override
-		protected TextMatcher getReplaceMatcher(ProcessorInstruction instruction) {
-			return instruction.getFileFormatter().getCodeBlockMatcher();
-		}
-		
-		@Override
-		protected Language getOutputLanguage(ProcessorInstruction instruction) {
+		public Language getOutputLanguage(ProcessorInstruction instruction) {
 			return new Plaintext();
 		}
 		
@@ -933,83 +747,78 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 	}
 	
-	/**
-	 * Processor that compiles and executes a Java program that produces a plot, saving the plot as an image.
-	 */
-	class PlotProcessor extends ExecProcessor {
-		
-		@Override
-		public boolean run(LineReader reader, PrintWriter writer, ProcessorInstruction instruction) throws IOException {			
-			DisplayDriver oldDisplayDriver = PlotBuilder.getDisplayDriver();
-			
-			try {
-				// Set up a display driver to save the plot to an image file
-				String dest = instruction.getOptions().getString("dest");				
-				File tempFile = File.createTempFile("temp", "." + FilenameUtils.getExtension(dest));
-								
-				PlotBuilder.setDisplayDriver(new DisplayDriver() {
-	
-					@Override
-					public void show(PlotBuilder<?> builder, int width, int height) {
-						try {
-							builder.save(tempFile, width, height);
-						} catch (IOException e) {
-							throw new UncheckedIOException(e);
-						}
-					}
-					
-				});
-				
-				// Compile and execute the plotting code
-				execute(instruction);
-				
-				// Detect if the plot changed
-				File baseDirectory = instruction.getTemplateFile().getParentFile();
-				File destFile = new File(baseDirectory, dest);
-				
-				boolean contentChanged = !destFile.exists() || Files.mismatch(tempFile.toPath(), destFile.toPath()) >= 0;
-				
-				if (contentChanged) {
-					System.out.println("      ! Plot '" + dest + "' changed!");
-					
-					if (update) {
-						Files.move(tempFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-					} else {
-						Files.deleteIfExists(tempFile.toPath());
-					}					
-				}
-				
-				contentChanged |= replace(reader, writer, instruction.formatImage(dest), instruction);
-				return contentChanged;
-			} finally {
-				PlotBuilder.setDisplayDriver(oldDisplayDriver);
-			}
-		}
-		
-		@Override
-		protected TextMatcher getReplaceMatcher(ProcessorInstruction instruction) {
-			return instruction.getFileFormatter().getImageMatcher();
-		}
-		
-	}
+//	/**
+//	 * Processor that compiles and executes a Java program that produces a plot, saving the plot as an image.
+//	 */
+//	class PlotProcessor extends ExecProcessor {
+//		
+//		@Override
+//		public boolean run(LineReader reader, PrintWriter writer, ProcessorInstruction instruction) throws IOException {			
+//			DisplayDriver oldDisplayDriver = PlotBuilder.getDisplayDriver();
+//			
+//			try {
+//				// Set up a display driver to save the plot to an image file
+//				String dest = instruction.getOptions().getString("dest");				
+//				File tempFile = File.createTempFile("temp", "." + FilenameUtils.getExtension(dest));
+//								
+//				PlotBuilder.setDisplayDriver(new DisplayDriver() {
+//	
+//					@Override
+//					public void show(PlotBuilder<?> builder, int width, int height) {
+//						try {
+//							builder.save(tempFile, width, height);
+//						} catch (IOException e) {
+//							throw new UncheckedIOException(e);
+//						}
+//					}
+//					
+//				});
+//				
+//				// Compile and execute the plotting code
+//				execute(instruction);
+//				
+//				// Detect if the plot changed
+//				File baseDirectory = instruction.getTemplateFile().getParentFile();
+//				File destFile = new File(baseDirectory, dest);
+//				
+//				boolean contentChanged = !destFile.exists() || Files.mismatch(tempFile.toPath(), destFile.toPath()) >= 0;
+//				
+//				if (contentChanged) {
+//					System.out.println("      ! Plot '" + dest + "' changed!");
+//					
+//					if (update) {
+//						Files.move(tempFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+//					} else {
+//						Files.deleteIfExists(tempFile.toPath());
+//					}					
+//				}
+//				
+//				contentChanged |= replace(reader, writer, instruction.formatImage(dest), instruction);
+//				return contentChanged;
+//			} finally {
+//				PlotBuilder.setDisplayDriver(oldDisplayDriver);
+//			}
+//		}
+//		
+//		@Override
+//		protected TextMatcher getReplaceMatcher(ProcessorInstruction instruction) {
+//			return instruction.getFileFormatter().getImageMatcher();
+//		}
+//		
+//	}
 	
 	/**
 	 * Processor that no-ops.
 	 */
-	class DisabledProcessor extends Processor {
+	class DisabledProcessor implements Processor {
 
 		@Override
-		public boolean run(LineReader reader, PrintWriter writer, ProcessorInstruction instruction) throws IOException {
+		public boolean run(Document document, ProcessorInstruction instruction) throws IOException {
 			return false;
 		}
 
 		@Override
-		protected TextMatcher getReplaceMatcher(ProcessorInstruction instruction) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		protected Language getOutputLanguage(ProcessorInstruction instruction) {
+		public Language getOutputLanguage(ProcessorInstruction instruction) {
 			throw new UnsupportedOperationException();
 		}
 		
@@ -1031,7 +840,9 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @param content the code block
 		 * @return the updated code block
 		 */
-		public abstract String stripComments(String content);
+		public String stripComments(String content) {
+			return content;
+		}
 		
 		/**
 		 * Returns a text matcher that locates code examples referenced by id.
@@ -1039,7 +850,13 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @param id the code example id
 		 * @return the text matcher
 		 */
-		public abstract TextMatcher getSnippetMatcher(String id);
+		public TextMatcher getSnippetMatcher(String id) {
+			throw new UnsupportedOperationException("Matching code snippets is not supported by " + getClass().getSimpleName());
+		}
+		
+		public TextMatcher getMethodMatcher(String methodName) {
+			throw new UnsupportedOperationException("Matching methods is not supported by " + getClass().getSimpleName());
+		}
 		
 		/**
 		 * Attempts to compile and execute the referenced code.
@@ -1049,78 +866,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @throws IOException if an I/O error occurred
 		 */
 		public String execute(ProcessorInstruction instruction) throws IOException {
-			return Validate.fail("Execution not supported for " + getClass().getSimpleName());
-		}
-		
-		/**
-		 * Splits the content in a list of lines.  The resulting list is mutable.
-		 * 
-		 * @param content the content
-		 * @return the lines
-		 */
-		public List<String> split(String content) {
-			return new ArrayList<>(content.lines().toList());
-		}
-		
-		/**
-		 * Strips comments out of the code block.
-		 * 
-		 * @param lines the code block
-		 * @return the updated code block
-		 */
-		public List<String> stripComments(List<String> lines) {
-			String content = String.join(DEFAULT_LINE_SEPARATOR, lines);
-			content = stripComments(content);
-			
-			return stripLeadingAndTrailingBlankLines(split(content));
-		}
-		
-		/**
-		 * Removes any leading indentation from the code block.
-		 * 
-		 * @param lines the code block
-		 * @return the updated code block
-		 */
-		public List<String> stripIndentation(List<String> lines) {
-			String content = String.join(DEFAULT_LINE_SEPARATOR, lines);
-			content = content.stripIndent();
-			return split(content);
-		}
-		
-		/**
-		 * Replaces tabs with four spaces.
-		 * 
-		 * @param lines the code block
-		 * @return the updated code block
-		 */
-		public List<String> replaceTabsWithSpaces(List<String> lines) {
-			List<String> result = new ArrayList<>();
-			
-			for (String line : lines) {
-				result.add(line.replaceAll("[\\t]", "    "));
-			}
-
-			return result;
-		}
-		
-		/**
-		 * Removes any leading or trailing blank lines, which are empty or contain only whitespace.
-		 * 
-		 * @param lines the code block
-		 * @return the updated code block
-		 */
-		public List<String> stripLeadingAndTrailingBlankLines(List<String> lines) {
-			List<String> result = new ArrayList<>(lines);
-			
-			while (result.get(0).isBlank()) {
-				result.remove(0);
-			}
-			
-			while (result.get(result.size()-1).isBlank()) {
-				result.remove(result.size()-1);
-			}
-			
-			return result;
+			throw new UnsupportedOperationException("Executing source code is not supported by " + getClass().getSimpleName());
 		}
 		
 	}
@@ -1137,10 +883,9 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 		@Override
 		public TextMatcher getSnippetMatcher(String id) {
-			return new TextMatcher(
-					s -> StringUtils.containsIgnoreCase(s, "# begin-example: " + id),
-					s -> StringUtils.containsIgnoreCase(s, "# end-example: " + id),
-					true);
+			return new BlockMatcher(
+					s -> s.equalsIgnoreCase("# begin-example: " + id),
+					s -> s.equalsIgnoreCase("# end-example: " + id));
 		}
 		
 	}
@@ -1231,10 +976,9 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 		@Override
 		public TextMatcher getSnippetMatcher(String id) {
-			return new TextMatcher(
+			return new BlockMatcher(
 					s -> s.equalsIgnoreCase("// begin-example: " + id),
-					s -> s.equalsIgnoreCase("// end-example: " + id),
-					true);
+					s -> s.equalsIgnoreCase("// end-example: " + id));
 		}
 		
 		/**
@@ -1319,14 +1063,12 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		public abstract String getBrush(Language language);
 		
 		/**
-		 * Renders the code block in the format required by this template file type.  The returned content must match
-		 * the pattern defined by {@link #getCodeBlockMatcher()}.
+		 * Renders the code block in the format required by this template file type.
 		 * 
-		 * @param lines the code block
+		 * @param document the document representing the code block
 		 * @param instruction the instruction being executed
-		 * @return the formatted code block
 		 */
-		public abstract String formatCodeBlock(List<String> lines, Language language, ProcessorInstruction instruction);
+		public abstract void formatCodeBlock(Document document, Language language, ProcessorInstruction instruction);
 		
 		/**
 		 * Wraps the image path or URL with any image tags and formatting options.  The returned content must match
@@ -1336,7 +1078,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @param instruction the instruction being executed
 		 * @return the formatted image
 		 */
-		public abstract String formatImage(String path, ProcessorInstruction instruction);
+//		public abstract List<String> formatImage(String path, ProcessorInstruction instruction);
 	}
 	
 	/**
@@ -1352,11 +1094,11 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 		
 		public TextMatcher getCodeBlockMatcher() {
-			return new TextMatcher(s -> s.startsWith("```"), s -> s.endsWith("```"), true);
+			return new BlockMatcher(s -> s.startsWith("```"), s -> s.endsWith("```"));
 		}
 		
 		public TextMatcher getImageMatcher() {
-			return new TextMatcher(s -> s.startsWith("<p align=\"center\">"), s -> s.endsWith("</p>"), false);
+			return new BlockMatcher(s -> s.startsWith("<p align=\"center\">"), s -> s.endsWith("</p>"));
 		}
 		
 		@Override
@@ -1371,131 +1113,556 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 		
 		@Override
-		public String formatCodeBlock(List<String> lines, Language language, ProcessorInstruction instruction) {
-			StringBuilder sb = new StringBuilder();
-			
-			sb.append("```");
-			sb.append(getBrush(language));
-			sb.append(instruction.getLineSeparator());
-			sb.append(String.join(instruction.getLineSeparator(), lines));
-			sb.append(instruction.getLineSeparator());
-			sb.append("```");
-
-			return sb.toString();
+		public void formatCodeBlock(Document document, Language language, ProcessorInstruction instruction) {
+			document.insert(1, "```" + getBrush(language));
+			document.insert(document.getLineCount() + 1, "```");
+		}
+		
+//		@Override
+//		public String formatImage(String path, ProcessorInstruction instruction) {
+//			StringBuilder sb = new StringBuilder();
+//			
+//			sb.append("<p align=\"center\">");
+//			sb.append(instruction.getLineSeparator());
+//			sb.append("\t<img src=\"" + path + "\"");
+//			
+//			if (instruction.getOptions().contains("width")) {
+//				sb.append(" width=\"" + instruction.getOptions().getString("width") + "\"");
+//			}
+//			
+//			sb.append(" />");
+//			sb.append(instruction.getLineSeparator());
+//			sb.append("</p>");
+//
+//			return sb.toString();
+//		}
+		
+	}
+	
+//	/**
+//	 * Formatter for HTML or XSLT files.
+//	 */
+//	class HtmlFormatter extends FileFormatter {
+//
+//		HtmlFormatter() {
+//			super();
+//		}
+//
+//		@Override
+//		public TextMatcher getCodeBlockMatcher() {
+//			return new TextMatcher(s -> s.startsWith("<pre"), s -> s.endsWith("</pre>"), true);
+//		}
+//		
+//		@Override
+//		public TextMatcher getImageMatcher() {
+//			return new TextMatcher(s -> s.startsWith("<img"), s -> s.endsWith("/>"), false);
+//		}
+//		
+//		@Override
+//		public String getBrush(Language language) {
+//			if (language instanceof Java) {
+//				return "java";
+//			} else {
+//				return "plain";
+//			}
+//		}
+//		
+//		@Override
+//		public String formatCodeBlock(List<String> lines, Language language, ProcessorInstruction instruction) {
+//			StringBuilder sb = new StringBuilder();
+//			
+//			sb.append("<pre class=\"brush: ");
+//			sb.append(getBrush(language));
+//			sb.append("; toolbar: false;\">");
+//			sb.append(instruction.getLineSeparator());
+//			sb.append("<![CDATA[");
+//			sb.append(instruction.getLineSeparator());
+//			sb.append(String.join(instruction.getLineSeparator(), lines));
+//			sb.append(instruction.getLineSeparator());
+//			sb.append("]]>");
+//			sb.append(instruction.getLineSeparator());
+//			sb.append("</pre>");
+//			
+//			return sb.toString();
+//		}
+//		
+//		@Override
+//		public String formatImage(String path, ProcessorInstruction instruction) {
+//			StringBuilder sb = new StringBuilder();
+//			sb.append("<img src=\"" + path + "\"");
+//			
+//			if (instruction.getOptions().contains("width")) {
+//				sb.append(" width=\"" + instruction.getOptions().getString("width") + "\"");
+//			}
+//			
+//			sb.append(" />");	
+//			return sb.toString();
+//		}
+//	}
+	
+	private interface TextMatcher {
+		
+		public Splice scan(Document document);
+		
+	}
+	
+	private static class LineMatcher implements TextMatcher {
+		
+		private final Predicate<String> predicate;
+		
+		public LineMatcher(Predicate<String> predicate) {
+			super();
+			this.predicate = predicate;
 		}
 		
 		@Override
-		public String formatImage(String path, ProcessorInstruction instruction) {
-			StringBuilder sb = new StringBuilder();
-			
-			sb.append("<p align=\"center\">");
-			sb.append(instruction.getLineSeparator());
-			sb.append("\t<img src=\"" + path + "\"");
-			
-			if (instruction.getOptions().contains("width")) {
-				sb.append(" width=\"" + instruction.getOptions().getString("width") + "\"");
-			}
-			
-			sb.append(" />");
-			sb.append(instruction.getLineSeparator());
-			sb.append("</p>");
+		public Splice scan(Document document) {
+			while (true) {
+				String line = document.getLine().trim();
+				
+				if (predicate.test(line)) {
+					return new Splice(document.getLineNumber(), document.getLineNumber());
+				}
 
-			return sb.toString();
+				if (document.isEnd()) {
+					throw new RuntimeException("Reached end of file before finding matching line");
+				}
+				
+				document.next();
+			}
 		}
 		
 	}
 	
 	/**
-	 * Formatter for HTML or XSLT files.
+	 * Matches a block of text identified by starting and ending lines.
 	 */
-	class HtmlFormatter extends FileFormatter {
-
-		HtmlFormatter() {
+	private static class BlockMatcher implements TextMatcher {
+		
+		private final Predicate<String> startPredicate;
+		
+		private final Predicate<String> endPredicate;
+				
+		public BlockMatcher(Predicate<String> startPredicate, Predicate<String> endPredicate) {
 			super();
+			this.startPredicate = startPredicate;
+			this.endPredicate = endPredicate;
 		}
 
 		@Override
-		public TextMatcher getCodeBlockMatcher() {
-			return new TextMatcher(s -> s.startsWith("<pre"), s -> s.endsWith("</pre>"), true);
+		public Splice scan(Document document) {
+			int start = 0;
+			
+			while (true) {
+				String line = document.getLine().trim();
+								
+				if (start > 0) {					
+					if (endPredicate.test(line)) {
+						return new Splice(start, document.getLineNumber());
+					}
+
+					if (document.isEnd()) {
+						throw new RuntimeException("Reached end of file scanning for end of block");
+					}
+				} else {					
+					if (startPredicate.test(line)) {
+						start = document.getLineNumber();
+					}
+
+					if (document.isEnd()) {
+						throw new RuntimeException("Reached end of file before finding start of block");
+					}
+				}
+				
+				document.next();
+			}
+		}
+		
+	}
+
+	/**
+	 * Matches the entire body of a method.
+	 * <p>
+	 * Implementation note: For the sake of simplicity, this makes some shortcuts and could get confused if, for
+	 * example, opening or closing braces are quoted.
+	 */
+	private static class MethodMatcher implements TextMatcher {
+		
+		private static final Pattern FUNCTION_REGEX = Pattern.compile("[\\w\\<\\>\\[\\]]+(?<!new)\\s+(\\w+)\\s*\\([^\\)]*\\)\\s*(\\{?|[^;])");
+		
+		private final String methodName;
+				
+		public MethodMatcher(String methodName) {
+			super();
+			this.methodName = methodName;
 		}
 		
 		@Override
-		public TextMatcher getImageMatcher() {
-			return new TextMatcher(s -> s.startsWith("<img"), s -> s.endsWith("/>"), false);
+		public Splice scan(Document document) {
+			int bracesLevel = 0;
+			int start = 0;
+			
+			while (true) {
+				String line = document.getLine();
+				
+				if (start > 0) {
+					for (int i = 0; i < line.length(); i++) {
+						if (line.charAt(i) == '{') {
+							bracesLevel += 1;
+						} else if (line.charAt(i) == '}') {
+							bracesLevel -= 1;
+						}
+						
+						if (bracesLevel == 0) {
+							return new Splice(start, document.getLineNumber() - 1);
+						}
+					}
+					
+					if (document.isEnd()) {
+						throw new RuntimeException("Reached end of file scanning for end of method");
+					}
+				} else {
+					Matcher matcher = FUNCTION_REGEX.matcher(line);
+					
+					if (matcher.find() && matcher.group(1).equals(methodName)) {
+						start = document.getLineNumber() + 1;
+						
+						if (matcher.group(2).equals("{")) {
+							bracesLevel += 1;
+						}
+					}
+					
+					if (document.isEnd()) {
+						throw new RuntimeException("Reached end of file before finding matching method");
+					}
+				}
+				
+				document.next();
+			}
+		}
+		
+	}
+	
+	private static class Splice {
+		
+		private static final int UNDEFINED_START = 0;
+		
+		private static final int UNDEFINED_END = Integer.MAX_VALUE;
+		
+		private final int start;
+		
+		private final int end;
+		
+		public Splice(int start, int end) {
+			super();
+			this.start = start;
+			this.end = end;
+		}
+		
+		public int getStart() {
+			return start;
+		}
+		
+		public int getEnd() {
+			return end;
+		}
+		
+		public Splice resolve(Document document) {
+			int resolvedStart = start;
+			int resolvedEnd = end;
+			
+			if (resolvedStart == 0) {
+				resolvedStart = 1;
+			} else if (resolvedStart < 0) {
+				resolvedStart += document.getLineCount() + 1;
+			} else if (resolvedStart > document.getLineCount()) {
+				resolvedStart = document.getLineCount();
+			}
+			
+			if (resolvedEnd < 0) {
+				resolvedEnd += document.getLineCount();
+			} else if (resolvedEnd > document.getLineCount()) {
+				resolvedEnd = document.getLineCount();
+			}
+			
+			return new Splice(resolvedStart, resolvedEnd);
 		}
 		
 		@Override
-		public String getBrush(Language language) {
-			if (language instanceof Java) {
-				return "java";
+		public String toString() {
+			return (start == UNDEFINED_START ? "" : start) + ":" + (end == UNDEFINED_END ? "" : end);
+		}
+		
+		public static Splice fromString(String str) {
+			String[] tokens = str.split(":", 2);
+			int start = UNDEFINED_START;
+			int end = UNDEFINED_END;
+			
+			if (!tokens[0].isBlank()) {
+				start = Integer.parseInt(tokens[0]);
+			}
+
+			if (tokens.length > 1 && !tokens[1].isBlank()) {
+				end = Integer.parseInt(tokens[1]);
+			} else if (tokens.length == 1 && !tokens[0].isBlank()) {
+				end = Integer.parseInt(tokens[0]);
+			}
+			
+			return new Splice(start, end);
+		}
+		
+	}
+	
+	private static class Document implements Iterator<String>, Copyable<Document>, Displayable {
+		
+		private final LinkedList<String> lines;
+		
+		private final String lineSeparator;
+		
+		private int currentLine;
+		
+		public Document(File file) throws IOException {
+			this(Files.readString(file.toPath()));
+		}
+		
+		public Document(String content) {
+			this(content.lines().toList(), determineLineSeparator(content));
+		}
+		
+		protected Document(List<String> lines, String lineSeparator) {
+			super();
+			this.lines = new LinkedList<>(lines);
+			this.lineSeparator = lineSeparator;
+			
+			// add an empty string if the content was empty
+			if (lines.isEmpty()) {
+				lines.add("");
+			}
+						
+			currentLine = 1;
+		}
+		
+		public int getLineCount() {
+			return lines.size();
+		}
+		
+		public int getLineNumber() {
+			return currentLine;
+		}
+		
+		public String getLine() {
+			return lines.get(currentLine - 1);
+		}
+		
+		public boolean isEnd() {
+			return currentLine >= lines.size();
+		}
+		
+		@Override
+		public boolean hasNext() {
+			return !isEnd();
+		}
+		
+		@Override
+		public String next() {
+			if (currentLine > lines.size()) {
+				throw new NoSuchElementException();
+			}
+			
+			currentLine += 1;
+			return getLine();
+		}
+		
+		@Override
+		public void remove() {
+			lines.remove(currentLine - 1);
+		}
+		
+		@Override
+		public String toString() {
+			return String.join(lineSeparator, lines) + lineSeparator;
+		}
+		
+		public void display(PrintStream out) {
+			for (int i = 0; i < lines.size(); i++) {
+				out.print(String.format("%1$4s", i + 1));
+				out.print(" ");
+				out.print(lines.get(i));
+				out.print(lineSeparator);
+			}
+		}
+		
+		@Override
+		public Document copy() {
+			return new Document(lines, lineSeparator);
+		}
+		
+		// TODO: Need to adjust current line when removing content?
+		
+		public void insert(int lineNumber, String line) {
+			lines.add(lineNumber - 1, line);
+		}
+		
+		public void remove(Splice splice) {
+			Splice resolvedSplice = splice.resolve(this);
+			int size = resolvedSplice.getEnd() - resolvedSplice.getStart() + 1;
+			
+			while (size > 0) {
+				lines.remove(resolvedSplice.getStart() - 1);
+				size -= 1;
+			}
+		}
+		
+		public void replace(Splice splice, Document document) {
+			replace(splice, document.lines);
+		}
+		
+		public void replace(Splice splice, List<String> replacement) {
+			Splice resolvedSplice = splice.resolve(this);
+			remove(resolvedSplice);
+			lines.addAll(resolvedSplice.getStart() - 1, replacement);
+		}
+		
+		public void keep(Splice splice) {
+			Splice resolvedSplice = splice.resolve(this);
+			int start = resolvedSplice.getStart();
+			int end = resolvedSplice.getEnd();
+			
+			while (end < lines.size()) {
+				lines.remove(lines.size() - 1);
+			}
+			
+			while (start > 1) {
+				lines.remove(0);
+				start -= 1;
+			}
+		}
+		
+		public Document extract(Splice splice) {
+			Splice resolvedSplice = splice.resolve(this);
+			return new Document(lines.subList(resolvedSplice.getStart()-1, resolvedSplice.getEnd()), lineSeparator);
+		}
+		
+		/**
+		 * Removes any leading or trailing blank lines, which are empty or contain only whitespace.
+		 * 
+		 * @param lines the code block
+		 * @return the updated code block
+		 */
+		public void removeLeadingAndTrailingBlankLines() {
+			while (lines.peekLast().isBlank()) {
+				lines.removeLast();
+			}
+			
+			while (lines.peekFirst().isBlank()) {
+				lines.removeFirst();
+			}
+		}
+		
+		public void removeTrailingWhitespace() {
+			for (int i = 0; i < lines.size(); i++) {
+				lines.set(i, lines.get(i).stripTrailing());
+			}
+		}
+		
+		// TODO: Switch back to string.stripIndent()?
+		public void removeIndentation() {
+			String line0 = lines.get(0);
+			int index = 0;
+			
+			outer: while (index < line0.length()) {
+				char c = line0.charAt(index);
+				
+				if (!Character.isWhitespace(c)) {
+					break;
+				}
+				
+				for (int i = 1; i < lines.size(); i++) {
+					String linei = lines.get(i);
+					
+					if (!linei.isBlank() && (linei.length() <= index || linei.charAt(index) != c)) {
+						break outer;
+					}
+				}
+				
+				index += 1;
+			}
+			
+			if (index > 0) {
+				for (int i = 0; i < lines.size(); i++) {
+					lines.set(i, lines.get(i).substring(Math.min(index, lines.get(i).length())));
+				}
+			}
+			
+			for (int i = 0; i < lines.size(); i++) {
+				if (lines.get(i).isBlank()) {
+					lines.set(i, "");
+				}
+			}
+		}
+		
+		/**
+		 * Replaces tabs with four spaces.
+		 * 
+		 * @param lines the code block
+		 * @return the updated code block
+		 */
+		public void replaceTabsWithSpaces() {
+			for (int i = 0; i < lines.size(); i++) {
+				lines.set(i, lines.get(i).replaceAll("[\\t]", "    "));
+			}
+		}
+		
+		public void save(File file) throws IOException {
+			Files.writeString(file.toPath(), toString());
+		}
+		
+		/**
+		 * Determines if any differences exist between the two strings, displaying any differences in the terminal.
+		 * This will flag whitespace differences, but excludes the end of line characters.
+		 * 
+		 * @param first the first code block
+		 * @param second the second code block
+		 * @return {@code true} if any differences were detected
+		 */
+		public boolean diff(Document other) {
+			boolean result = false;
+						
+			for (int i = 0; i < Math.max(lines.size(), other.lines.size()); i++) {
+				if (i >= lines.size()) {
+					System.out.println("      ! ++ " + other.lines.get(i));
+					result = true;
+				} else if (i >= other.lines.size()) {
+					System.out.println("      ! -- " + lines.get(i));
+					result = true;
+				} else if (!lines.get(i).equals(other.lines.get(i))) {
+					System.out.println("      ! -- " + lines.get(i));
+					System.out.println("      ! ++ " + other.lines.get(i));
+					result = true;
+				}
+			}
+			
+			return result;
+		}
+		
+		/**
+		 * Determines the line separator in use by the source file.
+		 * 
+		 * @param content the file content
+		 * @return the line separator
+		 */
+		private static String determineLineSeparator(String content) {
+			if (content.matches("(?s).*(\\r\\n).*")) {
+				return "\r\n";
+			} else if (content.matches("(?s).*(\\n).*")) {
+				return "\n";
+			} else if (content.matches("(?s).*(\\r).*")) {
+				return "\r";
 			} else {
-				return "plain";
+				return DEFAULT_LINE_SEPARATOR;
 			}
 		}
-		
-		@Override
-		public String formatCodeBlock(List<String> lines, Language language, ProcessorInstruction instruction) {
-			StringBuilder sb = new StringBuilder();
-			
-			sb.append("<pre class=\"brush: ");
-			sb.append(getBrush(language));
-			sb.append("; toolbar: false;\">");
-			sb.append(instruction.getLineSeparator());
-			sb.append("<![CDATA[");
-			sb.append(instruction.getLineSeparator());
-			sb.append(String.join(instruction.getLineSeparator(), lines));
-			sb.append(instruction.getLineSeparator());
-			sb.append("]]>");
-			sb.append(instruction.getLineSeparator());
-			sb.append("</pre>");
-			
-			return sb.toString();
-		}
-		
-		@Override
-		public String formatImage(String path, ProcessorInstruction instruction) {
-			StringBuilder sb = new StringBuilder();
-			sb.append("<img src=\"" + path + "\"");
-			
-			if (instruction.getOptions().contains("width")) {
-				sb.append(" width=\"" + instruction.getOptions().getString("width") + "\"");
-			}
-			
-			sb.append(" />");	
-			return sb.toString();
-		}
-	}
-	
-	/**
-	 * Text matcher used to identify tags or code blocks.
-	 */
-	private static class TextMatcher {
-		
-		private final Predicate<String> startMatcher;
-		
-		private final Predicate<String> endMatcher;
-		
-		private final boolean block;
-		
-		public TextMatcher(Predicate<String> startMatcher, Predicate<String> endMatcher, boolean block) {
-			super();
-			this.startMatcher = startMatcher;
-			this.endMatcher = endMatcher;
-			this.block = block;
-		}
-		
-		public boolean isStart(String line) {
-			return startMatcher.test(line.trim());
-		}
-
-		public boolean isEnd(String line) {
-			return endMatcher.test(line.trim());
-		}
-
-		public boolean isBlock() {
-			return block;
-		}
-		
+				
 	}
 	
 	/**
