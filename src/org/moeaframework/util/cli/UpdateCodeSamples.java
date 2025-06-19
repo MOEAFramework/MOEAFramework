@@ -1388,7 +1388,8 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 		
 		public boolean diff(Document other, PrintStream output) {
-			// TODO: Could be improved by using Myers algorithm
+			// This is a simple line-by-line comparison that's sufficient for this purpose.  Could be improved using
+			// an LCS algorithm (e.g. Myers).
 			boolean result = false;
 						
 			for (int i = 0; i < Math.max(lines.size(), other.lines.size()); i++) {
