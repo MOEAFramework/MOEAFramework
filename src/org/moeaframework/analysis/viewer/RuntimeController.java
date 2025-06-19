@@ -32,6 +32,7 @@ import org.moeaframework.util.mvc.Setting;
 import org.moeaframework.util.mvc.SettingChangedEvent;
 import org.moeaframework.util.mvc.SettingChangedListener;
 import org.moeaframework.util.mvc.Toggle;
+import org.moeaframework.util.validate.Validate;
 
 /**
  * Controller for the {@link RuntimeViewer}.
@@ -153,10 +154,11 @@ public class RuntimeController extends Controller implements SettingChangedListe
 	/**
 	 * Sets or updates the reference set displayed in the plot.
 	 * 
-	 * @param population the reference set population
+	 * @param referenceSet the reference set
 	 */
-	public void setReferenceSet(NondominatedPopulation population) {
-		referenceSet = new PlotSeries(LOCALIZATION.getString("text.referenceSet"), ResultSeries.of(population));
+	public void setReferenceSet(NondominatedPopulation referenceSet) {
+		Validate.that("referenceSet", referenceSet).isNotNull();
+		this.referenceSet = new PlotSeries(LOCALIZATION.getString("text.referenceSet"), ResultSeries.of(referenceSet));
 		updateModel();
 	}
 	

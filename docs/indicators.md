@@ -8,7 +8,7 @@ The MOEA Framework supports commonly-used performance indicators, including hype
 inverted generational distance (IGD), epsilon-indicator, and the R-indicators.  We can construct the specific indicator
 we are evaluating:
 
-<!-- java:examples/org/moeaframework/examples/indicators/HypervolumeExample.java [34:45] -->
+<!-- :code: src=examples/org/moeaframework/examples/indicators/HypervolumeExample.java lines=34:45 -->
 
 ```java
 Problem problem = new DTLZ2(2);
@@ -23,7 +23,7 @@ Hypervolume hypervolume = new Hypervolume(problem, referenceSet);
 System.out.println("Hypervolume: " + hypervolume.evaluate(approximationSet));
 ```
 
-<!-- output:examples/org/moeaframework/examples/indicators/HypervolumeExample.java -->
+<!-- :exec: src=examples/org/moeaframework/examples/indicators/HypervolumeExample.java -->
 
 ```
 Hypervolume: 0.20925613786919467
@@ -31,7 +31,7 @@ Hypervolume: 0.20925613786919467
 
 Or use the `Indicators` class as a way to compute multiple performance indicators at the same time.  
 
-<!-- java:examples/Example3.java [41:46] -->
+<!-- :code: src=examples/Example3.java lines=41:46 -->
 
 ```java
 NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/DTLZ2.2D.pf");
@@ -41,7 +41,7 @@ IndicatorValues indicatorValues = indicators.apply(algorithm.getResult());
 indicatorValues.display();
 ```
 
-<!-- output:examples/Example3.java -->
+<!-- :exec: src=examples/Example3.java -->
 
 ```
 Indicator                        Value
@@ -66,7 +66,7 @@ The `IndicatorStatistics` class assists in collecting performance indicators fro
 and comparing results.  Below we configure `IndicatorStatistics` with the hypervolume metric, adding the results from
 three algorithms (NSGA-II, MOEA/D, and OMOPSO) across 10 seeds:
 
-<!-- java:examples/org/moeaframework/examples/indicators/IndicatorStatisticsExample.java [39:64] -->
+<!-- :code: src=examples/org/moeaframework/examples/indicators/IndicatorStatisticsExample.java lines=39:64 -->
 
 ```java
 Problem problem = new UF1();
@@ -100,7 +100,7 @@ Kruskal-Wallis and Mann-Whitney U-test to determine if the results are statistic
 of 95% (`a=0.05`).  Here, we see, according to the tests, that NSGA-II and MOEA/D produce similar results on this
 problem.
 
-<!-- output:examples/org/moeaframework/examples/indicators/IndicatorStatisticsExample.java -->
+<!-- :exec: src=examples/org/moeaframework/examples/indicators/IndicatorStatisticsExample.java -->
 
 ```
 Name    Min      Median   Max      IQR (+/-) Count Statistically Similar (a=0.05)
@@ -117,7 +117,7 @@ the reference set is known analytically.  That is, there exists a mathematical f
 set.  Within the MOEA Framework, such problems implement the `AnalyticalProblem` interface.  As shown below, we can
 generate reference sets for such problems by calling their `generate()` method:
 
-<!-- java:examples/org/moeaframework/examples/indicators/GenerateReferenceSetExample.java [37:44] -->
+<!-- :code: src=examples/org/moeaframework/examples/indicators/GenerateReferenceSetExample.java lines=37:44 -->
 
 ```java
 AnalyticalProblem problem = new DTLZ2(3);
@@ -143,8 +143,7 @@ of course the same reference set is used.
 The standard and recommended practice is using a reference set, either a known reference set or one produced by
 combining results from multiple algorithms and seeds:
 
-<!-- java:examples/org/moeaframework/examples/indicators/NormalizationExample.java [43:46] -->
-
+<!-- :code: src=examples/org/moeaframework/examples/indicators/NormalizationExample.java lines=43:46 -->
 
 ```java
 NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/UF1.pf");
@@ -155,7 +154,7 @@ System.out.println("Normalized by reference set (default): " + defaultHypervolum
 
 We can alternatively specify the lower and upper bounds explicitly:
 
-<!-- java:examples/org/moeaframework/examples/indicators/NormalizationExample.java [49:50] -->
+<!-- :code: src=examples/org/moeaframework/examples/indicators/NormalizationExample.java lines=49:50 -->
 
 ```java
 Hypervolume explicitHypervolume = new Hypervolume(problem, new double[] { 0.0, 0.0 }, new double[] { 2.0, 2.0 });
@@ -164,7 +163,7 @@ System.out.println("Normalized with explicit bounds: " + explicitHypervolume.eva
 
 Or disable normalization entirely:
 
-<!-- java:examples/org/moeaframework/examples/indicators/NormalizationExample.java [53:54] -->
+<!-- :code: src=examples/org/moeaframework/examples/indicators/NormalizationExample.java lines=53:54 -->
 
 ```java
 Hypervolume disabledHypervolume = new Hypervolume(problem, Normalizer.none());

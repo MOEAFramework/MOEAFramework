@@ -29,9 +29,9 @@ For more information about any of the commands being run, see the [Command Line 
 We start with a parameter file that defines the parameters being investigated along with the minimum and maximum bounds
 for sampling.  Note the parameter names must match the configurable properties for the algorithm being studied.
 
-<!-- text:examples/org/moeaframework/examples/sensitivity/NSGAII_Params.txt -->
+<!-- :code: src=examples/org/moeaframework/examples/sensitivity/NSGAII_Params.txt -->
 
-```text
+```
 maxEvaluations        int     1000 10000
 populationSize        int     10   500
 sbx.rate              decimal 0.0  1.0
@@ -47,9 +47,9 @@ file contains the parameters for a single execution.  Also note that the choice 
 the type of analyses that can be performed.  For example, to compute the first, second, and total-order effects of the
 parameters using Sobol sensitivity analysis, use the `saltelli` method. 
 
-<!-- bash:examples/org/moeaframework/examples/sensitivity/sensitivity.sh [5:9] -->
+<!-- :code: src=examples/org/moeaframework/examples/sensitivity/sensitivity.sh lines=5:9 -->
 
-```bash
+```sh
 ./cli SampleGenerator \
     --parameterFile examples/org/moeaframework/examples/sensitivity/NSGAII_Params.txt \
     --method saltelli \
@@ -62,9 +62,9 @@ parameters using Sobol sensitivity analysis, use the `saltelli` method.
 Next, we evaluate the algorithm against each of the parameter samples.  This produces a Result File that contains
 the Pareto approximation sets produced by each parameterization.
 
-<!-- bash:examples/org/moeaframework/examples/sensitivity/sensitivity.sh [11:17] -->
+<!-- :code: src=examples/org/moeaframework/examples/sensitivity/sensitivity.sh lines=11:17 -->
 
-```bash
+```sh
 ./cli EndOfRunEvaluator \
     --parameterFile examples/org/moeaframework/examples/sensitivity/NSGAII_Params.txt \
     --input NSGAII_Samples.txt \
@@ -79,9 +79,9 @@ the Pareto approximation sets produced by each parameterization.
 We typically evaluate the performance of an algorithm using one of the performance indicators (e.g., hypervolume).
 Here, we take the result file produced in the previous step and compute the metrics.
 
-<!-- bash:examples/org/moeaframework/examples/sensitivity/sensitivity.sh [19:23] -->
+<!-- :code: src=examples/org/moeaframework/examples/sensitivity/sensitivity.sh lines=19:23 -->
 
-```bash
+```sh
 ./cli MetricsEvaluator \
     --input NSGAII_DTLZ2_Results.txt \
     --output NSGAII_DTLZ2_Metrics.txt \
@@ -94,9 +94,9 @@ Here, we take the result file produced in the previous step and compute the metr
 In our original sensitivity analysis study, we compared algorithms based on their attainment, efficiency, and
 controllability.  These values are computed using the `MetricsAnalysis` tool.
 
-<!-- bash:examples/org/moeaframework/examples/sensitivity/sensitivity.sh [25:32] -->
+<!-- :code: src=examples/org/moeaframework/examples/sensitivity/sensitivity.sh lines=25:32 -->
 
-```bash
+```sh
 ./cli MetricsAnalysis \
     --controllability \
     --efficiency \
@@ -113,9 +113,9 @@ If using the `saltelli` sampling method, we can also compute the first-, second-
 parameters.  This measures how much influence each parameter, or pair, contributes to the performance of the
 algorithm.
 
-<!-- bash:examples/org/moeaframework/examples/sensitivity/sensitivity.sh [34:37] -->
+<!-- :code: src=examples/org/moeaframework/examples/sensitivity/sensitivity.sh lines=34:37 -->
 
-```bash
+```sh
 ./cli SobolAnalysis \
     --parameterFile examples/org/moeaframework/examples/sensitivity/NSGAII_Params.txt \
     --input NSGAII_DTLZ2_Metrics.txt \

@@ -10,6 +10,9 @@ This page documents notable changes introduced in each chronological release of 
   
   * Redesigns the data store interfaces to avoid "ambiguous method" errors, simplify the available methods, and wraps
     errors in `DataStoreException`.  Also adds a CLI tool for managing data stores.
+  
+  * Deprecates the `Plot` class and splits its functionality into builder classes, including `XYPlotBuilder`,
+    `HeatMapBuilder`, `SensitivityPlotBuilder`, etc.  
 
 
 ## Version 5.0 (17 Jan 2025)

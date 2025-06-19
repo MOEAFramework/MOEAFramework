@@ -182,24 +182,24 @@ jobs:
       run: |
         cd build/MOEAFramework-*
         
-        # begin-example:cli-help
+        # begin-example: cli-help
         ./cli --help
-        # end-example:cli-help
+        # end-example: cli-help
 
-        # begin-example:cli-version
+        # begin-example: cli-version
         ./cli --version
-        # end-example:cli-version
+        # end-example: cli-version
 
-        # begin-example:cli-solve
+        # begin-example: cli-solve
         ./cli solve --problem DTLZ2 --algorithm NSGAII --numberOfEvaluations 10000 --output NSGAII_DTLZ2_Runtime.txt
         ./cli calc --problem DTLZ2 --indicator hypervolume NSGAII_DTLZ2_Runtime.txt
-        # end-example:cli-solve
+        # end-example: cli-solve
     - name: Test CLI DataStore
       if: runner.os == 'Linux'
       run: |
         cd build/MOEAFramework-*
 
-        # begin-example:datastore
+        # begin-example: datastore
         # List contents of a container
         ./cli datastore list "file://results?populationSize=100&seed=1"
 
@@ -208,7 +208,7 @@ jobs:
 
         # Read from blob
         ./cli datastore get "file://results?populationSize=100&seed=1#greeting"
-        # end-example:datastore
+        # end-example: datastore
     - name: Test CLI (init --shell bash)
       if: runner.os == 'Linux'
       run: |

@@ -21,7 +21,7 @@ import java.io.IOException;
 
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.algorithm.extension.Frequency;
-import org.moeaframework.analysis.plot.Plot;
+import org.moeaframework.analysis.plot.XYPlotBuilder;
 import org.moeaframework.analysis.runtime.InstrumentedAlgorithm;
 import org.moeaframework.analysis.runtime.Instrumenter;
 import org.moeaframework.problem.CEC2009.UF1;
@@ -49,8 +49,8 @@ public class PlotRuntimeDynamics {
 		instrumentedAlgorithm.run(10000);
 		
 		// Render a plot of the runtime dynamics series
-		new Plot()
-			.add(instrumentedAlgorithm.getSeries())
+		new XYPlotBuilder()
+			.lines(instrumentedAlgorithm.getSeries())
 			.show();
 	}
 

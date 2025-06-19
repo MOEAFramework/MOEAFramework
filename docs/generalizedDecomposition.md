@@ -62,16 +62,16 @@ Next, we generate the weights we will use with MOEA/D.  For comparison, we will 
 first using the Normal Boundary Intersection (NBI) method, and (2) the second using Generalized Decomposition.  Note
 the GD weights are derived from the NBI weights.
 
-<!-- bash:examples/org/moeaframework/examples/generalizedDecomposition/generateWeights.sh [3:4] -->
+<!-- :code: src=examples/org/moeaframework/examples/generalizedDecomposition/generateWeights.sh lines=3:4 -->
 
-```bash
+```sh
 ./cli WeightGenerator --method normalboundary --dimension 3 --divisions 20 > nbi_weights.txt
 ./cli WeightGenerator --method normalboundary --dimension 3 --divisions 20 --generalized > gd_weights.txt
 ```
 
 Finally, we can configure MOEA/D to use these weights loaded from the files:
 
-<!-- java:examples/org/moeaframework/examples/generalizedDecomposition/GeneralizedDecompositionExample.java [59:64] -->
+<!-- :code: src=examples/org/moeaframework/examples/generalizedDecomposition/GeneralizedDecompositionExample.java lines=59:64 -->
 
 ```java
 FixedWeights weights = FixedWeights.load(new File("gd_weights.txt"));

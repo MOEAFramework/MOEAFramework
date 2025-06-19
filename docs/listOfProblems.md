@@ -4,7 +4,7 @@
 
 We can create an instance of any problem by calling its constructor:
 
-<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [problem-no-args] -->
+<!-- :code: src=test/org/moeaframework/snippet/ProblemSnippet.java id=problem-no-args -->
 
 ```java
 Problem problem = new UF1();
@@ -13,7 +13,7 @@ Problem problem = new UF1();
 Several of these problems can be scaled in terms of the number of decision variables or objectives.  We can call the
 relevant constructor to configure the problem.  For example, here we create the three-objective DTLZ2 problem:
 
-<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [problem-with-args] -->
+<!-- :code: src=test/org/moeaframework/snippet/ProblemSnippet.java id=problem-with-args -->
 
 ```java
 Problem problem = new DTLZ2(3);
@@ -250,7 +250,7 @@ For example, `bbob_f1_i2_d5` would use function `1` (Sphere), instance `2`, and 
 to construct the two-objective version, we simply combine two of these single-objective functions with a comma.
 Here's an example:
 
-<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [bbob-2016-problem] -->
+<!-- :code: src=test/org/moeaframework/snippet/ProblemSnippet.java id=bbob-2016-problem -->
 
 ```java
 Problem problem = ProblemFactory.getInstance().getProblem("bbob-biobj(bbob_f1_i2_d5,bbob_f21_i2_d5)");
@@ -269,7 +269,7 @@ The `ScaledProblem` wrapper applies a scaling factor to each objective by multip
 value by $b^i$, where $b=2$ in the example below.  This helps avoid any bias caused by assuming all objectives
 have similar ranges.
 
-<!-- java:examples/org/moeaframework/examples/misc/ScaledProblemExample.java [31:31] -->
+<!-- :code: src=examples/org/moeaframework/examples/misc/ScaledProblemExample.java lines=31 -->
 
 ```java
 Problem problem = new ScaledProblem(new DTLZ2(2), 2.0);
@@ -282,7 +282,7 @@ would be independent decision variables (which is typically easier to optimize) 
 between the variables.  We can customize the rotation matrix, selecting all or a subset of decision variables, by
 constructing the `RotationMatrixBuilder`.  The example below demonstrates applying a 45 degree rotation to each axis.
 
-<!-- java:examples/org/moeaframework/examples/misc/RotatedProblemExample.java [32:35] -->
+<!-- :code: src=examples/org/moeaframework/examples/misc/RotatedProblemExample.java lines=32:35 -->
 
 ```java
 RotationMatrixBuilder builder = new RotationMatrixBuilder(11);

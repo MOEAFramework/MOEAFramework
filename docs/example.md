@@ -2,7 +2,7 @@
 
 Let's create and solve the 2-dimension DTLZ2 test problem using NSGA-II:
 
-<!-- java:examples/Example1.java [29:34] -->
+<!-- :code: src=examples/Example1.java lines=29:34 -->
 
 ```java
 Problem problem = new DTLZ2(2);
@@ -15,7 +15,7 @@ algorithm.getResult().display();
 
 The last line gets the Pareto non-dominated solutions to the problem and displays them in the terminal.
 
-<!-- output:examples/Example1.java [:7] {Truncated} -->
+<!-- :exec: src=examples/Example1.java lines=:7 showEllipsis -->
 
 ```
 Var1     Var2     Var3     Var4     Var5     Var6     Var7     Var8     Var9     Var10    Var11    Obj1     Obj2
@@ -30,13 +30,15 @@ Var1     Var2     Var3     Var4     Var5     Var6     Var7     Var8     Var9    
 
 Alternatively, we can create a 2D plot showing the results:
 
-<!-- java:examples/Example2.java [36:38] -->
+<!-- :code: src=examples/Example2.java lines=36:38 -->
 
 ```java
-new Plot()
-    .add("NSGA-II", algorithm.getResult())
+new XYPlotBuilder()
+    .scatter("NSGA-II", algorithm.getResult())
     .show();
 ```
+
+<!-- :plot: src=examples/Example2.java dest=imgs/plot-approximationSet.png width=70% -->
 
 <p align="center">
 	<img src="imgs/plot-approximationSet.png" width="70%" />
@@ -49,7 +51,7 @@ indicators.  While we can construct and evaluate each indicator separately, the 
 convenient way to calculate multiple indicators simultaneously.  Below we load the reference set for the DTLZ2
 problem and calculate all indicator values:
 
-<!-- java:examples/Example3.java [42:46] -->
+<!-- :code: src=examples/Example3.java lines=42:46 -->
 
 ```java
 NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/DTLZ2.2D.pf");
@@ -59,7 +61,7 @@ IndicatorValues indicatorValues = indicators.apply(algorithm.getResult());
 indicatorValues.display();
 ```
 
-<!-- output:examples/Example3.java -->
+<!-- :exec: src=examples/Example3.java -->
 
 ```
 Indicator                        Value
@@ -85,13 +87,13 @@ algorithm, it inspects the problem to determine its type and supplies the recomm
 parameters.  In this example, since the problem is real-valued, it will use Simulated Binary Crossover (SBX) and
 Polynomial Mutation (PM).  We can confirm this by viewing the configuration:
 
-<!-- java:examples/Example4.java [34:34] -->
+<!-- :code: src=examples/Example4.java lines=34 -->
 
 ```java
 algorithm.getConfiguration().display();
 ```
 
-<!-- output:examples/Example4.java -->
+<!-- :exec: src=examples/Example4.java -->
 
 ```
 Property              Value
@@ -111,7 +113,7 @@ sbx.symmetric         false
 What if we want to run this algorithm with a different configuration?  We can simply call the setter methods.
 Here we change the initial population size and set the variation operator to Parent Centric Crossover (PCX):
 
-<!-- java:examples/Example5.java [34:36] -->
+<!-- :code: src=examples/Example5.java lines=34:36 -->
 
 ```java
 NSGAII algorithm = new NSGAII(problem);
@@ -123,7 +125,7 @@ Alternatively, similar to how we read the current configuration with `getConfigu
 different settings with `applyConfiguration`.  For example, the following results in the same setup
 as the previous example:
 
-<!-- java:examples/Example6.java [36:42] -->
+<!-- :code: src=examples/Example6.java lines=36:42 -->
 
 ```java
 TypedProperties properties = new TypedProperties();

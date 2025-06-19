@@ -12,7 +12,7 @@ defines static methods for reading and writing the values, as demonstrated in th
 Real-valued decision variables store numbers between some lower and upper bounds.  Internally these are represented as
 double precision (64-bit) floating point values.
 
-<!-- java:test/org/moeaframework/snippet/VariableSnippet.java [real-variable] {KeepComments} -->
+<!-- :code: src=test/org/moeaframework/snippet/VariableSnippet.java id=real-variable preserveComments -->
 
 ```java
 // Creating a real-valued variable:
@@ -32,7 +32,7 @@ RealVariable.setReal(solution, values);
 Binary decision variables represent a bit string of a fixed length.  Each bit has the value `0` or `1` (or `false`
 and `true`).  In Java, you can read the value either as a `boolean[]` or using a `BitSet`.
 
-<!-- java:test/org/moeaframework/snippet/VariableSnippet.java [binary-variable] {KeepComments} -->
+<!-- :code: src=test/org/moeaframework/snippet/VariableSnippet.java id=binary-variable preserveComments -->
 
 ```java
 // Creating a binary variable:
@@ -54,7 +54,7 @@ operators are available.  We generally recommend using binary.  By default, the 
 [Gray code](https://en.wikipedia.org/wiki/Gray_code) to ensure a single bit flip can produce an adjacent integer
 (`X-1` or `X+1`).
 
-<!-- java:test/org/moeaframework/snippet/VariableSnippet.java [integer-variable] {KeepComments} -->
+<!-- :code: src=test/org/moeaframework/snippet/VariableSnippet.java id=integer-variable preserveComments -->
 
 ```java
 // Creating an integer variable:
@@ -75,7 +75,7 @@ A permutation is a fixed-length array of numbers $N$ numbers, from $0, ..., N-1$
 is important.  Additionally, each value can appear in the permutation exactly once.  For example, permutations are
 used by the Traveling Salesman Problem to specify the order that cities are visited.
 
-<!-- java:test/org/moeaframework/snippet/VariableSnippet.java [permutation-variable] {KeepComments} -->
+<!-- :code: src=test/org/moeaframework/snippet/VariableSnippet.java id=permutation-variable preserveComments -->
 
 ```java
 // Creating a permutation:
@@ -97,7 +97,7 @@ membership in the set.  A binary string of length $N$ is equivalent to a variabl
 and $N$ elements.  However, the primary difference is a subset can specify the minimum, $L$, and maximum, $U$, number
 of elements in a valid subset.
 
-<!-- java:test/org/moeaframework/snippet/VariableSnippet.java [subset-variable] {KeepComments} -->
+<!-- :code: src=test/org/moeaframework/snippet/VariableSnippet.java id=subset-variable preserveComments -->
 
 ```java
 // Creating a fixed and variable-length subset:
@@ -118,7 +118,7 @@ We begin by defining the rules used to construct the program.  Each rule defines
 a constant value, an operator, or other type of function.  Custom nodes can be defined for domain-specific programs.
 For example, here we define rules for constructing mathematical expressions:
 
-<!-- java:test/org/moeaframework/snippet/VariableSnippet.java [program-definition] -->
+<!-- :code: src=test/org/moeaframework/snippet/VariableSnippet.java id=program-definition -->
 
 ```java
 Rules rules = new Rules();
@@ -151,7 +151,7 @@ graph TD;
 
 We then construct a `Program` decision variable with these rules:
 
-<!-- java:test/org/moeaframework/snippet/VariableSnippet.java [program-variable] -->
+<!-- :code: src=test/org/moeaframework/snippet/VariableSnippet.java id=program-variable -->
 
 ```java
 solution.setVariable(i, new Program(rules));
@@ -159,7 +159,7 @@ solution.setVariable(i, new Program(rules));
 
 To evaluate a program, we must supply an `Environment` that defines the values of each variable:
 
-<!-- java:test/org/moeaframework/snippet/VariableSnippet.java [program-evaluate] -->
+<!-- :code: src=test/org/moeaframework/snippet/VariableSnippet.java id=program-evaluate -->
 
 ```java
 Environment environment = new Environment();
@@ -178,9 +178,9 @@ The grammar type facilitates grammatical evolution.  This is similar in function
 context-free grammar given in [Backus-Naur form](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form).  For example,
 the following grammar specification:
 
-<!-- text:test/org/moeaframework/snippet/VariableSnippet.java [grammar-definition] -->
+<!-- :code: src=test/org/moeaframework/snippet/VariableSnippet.java id=grammar-definition language=text -->
 
-```text
+```
 ContextFreeGrammar cfg = ContextFreeGrammar.load("""
         <expr> ::= '(' <expr> <op> <expr> ')' | <val>
         <val> ::= x | y
@@ -194,7 +194,7 @@ arbitrary statements, not necessarily just executable programs.
 The `Grammar` decision variable stores a "codon array", which is simply an array of integers.  This array determines
 which rules are applied when constructing the expression.  
 
-<!-- java:test/org/moeaframework/snippet/VariableSnippet.java [grammar-variable] {KeepComments} -->
+<!-- :code: src=test/org/moeaframework/snippet/VariableSnippet.java id=grammar-variable preserveComments -->
 
 ```java
 // Creating a grammar with a codon length of 10

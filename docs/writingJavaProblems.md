@@ -20,7 +20,7 @@ $$ \begin{align} \text{Minimize } &f_1 = (x - 2)^2 + (y - 1)^2 + 2 \\\ &f_2 = 9x
 which has two decision variables, `x` and `y`, two objectives, `f1` and `f2`, and two constraints, `c1` and `c2`.
 Programming this using the MOEA Framework would look something like:
 
-<!-- java:examples/org/moeaframework/examples/srinivas/Srinivas.java [29:78] -->
+<!-- :code: src=examples/org/moeaframework/examples/srinivas/Srinivas.java lines=29:78 -->
 
 ```java
 public class Srinivas extends AbstractProblem {
@@ -67,7 +67,7 @@ public class Srinivas extends AbstractProblem {
 
 We can solve this problem by passing it directly to the constructor of an optimization algorithm, such as NSGA-II:
 
-<!-- java:examples/org/moeaframework/examples/srinivas/SrinivasExample.java [29:34] -->
+<!-- :code: src=examples/org/moeaframework/examples/srinivas/SrinivasExample.java lines=29:34 -->
 
 ```java
 Problem problem = new Srinivas();
@@ -93,7 +93,7 @@ their usage.
 Objectives derive from the `Objective` interface.  We can define the objective direction, potentially mixing the two
 types, as demonstrated below:
 
-<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [objective-definition] {KeepComments} -->
+<!-- :code: src=test/org/moeaframework/snippet/ProblemSnippet.java id=objective-definition preserveComments -->
 
 ```java
 solution.setObjective(0, new Minimize());
@@ -102,7 +102,7 @@ solution.setObjective(1, new Maximize());
 
 Then, in the `evaluate` method, we would assign a value to each objective:
 
-<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [objective-values] {KeepComments} -->
+<!-- :code: src=test/org/moeaframework/snippet/ProblemSnippet.java id=objective-values preserveComments -->
 
 ```java
 // Get or set the objective value directly
@@ -122,7 +122,7 @@ the different directions.
 Constraints derive from the `Constraint` interface.  Below we demonstrate constructing each of the constraint types,
 which defines the range of values that are considered feasible or in violation.
 
-<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [constraint-definition] {KeepComments} -->
+<!-- :code: src=test/org/moeaframework/snippet/ProblemSnippet.java id=constraint-definition preserveComments -->
 
 ```java
 // Require the constraint to be less than (or equal) to a given value
@@ -144,7 +144,7 @@ solution.setConstraint(1, Outside.values(-10.0, 10.0));
 
 We then typically would set the value of a constraint in the `evaluate` method of our problem:
 
-<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [constraint-values] {KeepComments} -->
+<!-- :code: src=test/org/moeaframework/snippet/ProblemSnippet.java id=constraint-values preserveComments -->
 
 ```java
 // Get or set the constraint value directly
@@ -159,7 +159,7 @@ solution.getConstraintValue(0);
 Lastly, we can check if a constraint is feasible or in violation, or measure the magnitude of said violation, as
 follows:
 
-<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [constraint-violation] {KeepComments} -->
+<!-- :code: src=test/org/moeaframework/snippet/ProblemSnippet.java id=constraint-violation preserveComments -->
 
 ```java
 // Checking if a single constraint is feasible or violated
@@ -177,7 +177,7 @@ When displaying results or storing to files, default names are used for variable
 instance, you'll see `Var1`, `Var2`, `Obj1`, `Obj2`, `Constr1`, etc.  We can alternatively assign custom names, as a
 form of self-documentation:
 
-<!-- java:test/org/moeaframework/snippet/ProblemSnippet.java [custom-names] -->
+<!-- :code: src=test/org/moeaframework/snippet/ProblemSnippet.java id=custom-names -->
 
 ```java
 solution.setVariable(0, new RealVariable("x", 0.0, 1.0));

@@ -37,14 +37,14 @@ public class RuntimeViewerExample {
 		Problem problem = new UF1();
 		NSGAII algorithm = new NSGAII(problem);
 		
-		// Instrument the algorithm to collect the hypervolume and generational distance
+		// Instrument the algorithm to collect the populations
 		Instrumenter instrumenter = new Instrumenter()
 				.withReferenceSet("pf/UF1.pf")
 				.withFrequency(Frequency.ofEvaluations(100));
 		
 		InstrumentedAlgorithm<NSGAII> instrumentedAlgorithm = instrumenter.instrument(algorithm);
 		instrumentedAlgorithm.run(10000);
-		
+				
 		// Use the RuntimeViewer to show the approximation sets
 		RuntimeViewer.show("NSGAII on UF1",
 				instrumenter.getReferenceSet(),

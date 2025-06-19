@@ -18,47 +18,72 @@
 package org.moeaframework.util.cli;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.util.cli.UpdateCodeSamples.FileType;
-import org.moeaframework.util.cli.UpdateCodeSamples.FormatFlag;
-import org.moeaframework.util.cli.UpdateCodeSamples.FormattingOptions;
-import org.moeaframework.util.cli.UpdateCodeSamples.Language;
+import org.moeaframework.util.cli.UpdateCodeSamples.CodeProcessor;
+import org.moeaframework.util.cli.UpdateCodeSamples.Document;
+import org.moeaframework.util.cli.UpdateCodeSamples.ExecProcessor;
+import org.moeaframework.util.cli.UpdateCodeSamples.FileFormatter;
+import org.moeaframework.util.cli.UpdateCodeSamples.Java;
+import org.moeaframework.util.cli.UpdateCodeSamples.MarkdownFormatter;
+import org.moeaframework.util.cli.UpdateCodeSamples.ParsingException;
+import org.moeaframework.util.cli.UpdateCodeSamples.Plaintext;
+import org.moeaframework.util.cli.UpdateCodeSamples.PlotProcessor;
+import org.moeaframework.util.cli.UpdateCodeSamples.ProcessorInstruction;
+import org.moeaframework.util.cli.UpdateCodeSamples.ShellScript;
 
 public class UpdateCodeSamplesTest {
 	
-	@Test
-	public void testLanguage() {
-		Assert.assertEquals(Language.Java, Language.fromString("Java"));
-		Assert.assertEquals(Language.Java, Language.fromString("java"));
+	private UpdateCodeSamples utility;
+	
+	@Before
+	public void setUp() {
+		utility = new UpdateCodeSamples();
 	}
 	
-	
-	@Test
-	public void testFormatFlag() {
-		EnumSet<FormatFlag> flags = FormatFlag.fromFormatString("{KeepIndentation,KeepTabs}");
-		Assert.assertTrue(flags.contains(FormatFlag.KeepIndentation));
-		Assert.assertTrue(flags.contains(FormatFlag.KeepTabs));
-		Assert.assertFalse(flags.contains(FormatFlag.KeepComments));
+	@After
+	public void tearDown() {
+		utility = null;
 	}
 	
 	@Test
-	public void testFileType() {
-		Assert.assertEquals(FileType.Markdown, FileType.fromExtension("md"));
-		Assert.assertEquals(FileType.Html, FileType.fromExtension("HTML"));
+	public void testGetLanguage() {
+		Assert.assertInstanceOf(Java.class, utility.getLanguage(new File("Example1.java")));
+		Assert.assertInstanceOf(ShellScript.class, utility.getLanguage(new File("Example1.sh")));
+		Assert.assertInstanceOf(Plaintext.class, utility.getLanguage(new File("Example1.foo")));
+	}
+	
+	@Test
+	public void testGetLanguageForExtension() {
+		Assert.assertInstanceOf(Java.class, utility.getLanguageForExtension("java"));
+		Assert.assertInstanceOf(Java.class, utility.getLanguageForExtension("JAVA"));
+		Assert.assertInstanceOf(Plaintext.class, utility.getLanguageForExtension("foo"));
+	}
+	
+	@Test
+	public void testGetFileFormatter() {
+		Assert.assertInstanceOf(MarkdownFormatter.class, utility.getFileFormatter(new File("intro.md")));
+		Assert.assertNull(utility.getFileFormatter(new File("intro.foo")));
+	}
+	
+	@Test
+	public void testGetProcesssor() {
+		Assert.assertInstanceOf(CodeProcessor.class, utility.getProcessor("code"));
+		Assert.assertInstanceOf(ExecProcessor.class, utility.getProcessor("exec"));
+		Assert.assertInstanceOf(PlotProcessor.class, utility.getProcessor("plot"));
+		Assert.assertThrows(IllegalArgumentException.class, () -> utility.getProcessor("foo"));
 	}
 
 	@Test
-	public void testStripCommentsAndLines() throws IOException {
+	public void testStripCommentsAndLines() {
 		String input = """
 				/**
 				 * Test multi-line Javadoc comment.
@@ -97,11 +122,11 @@ public class UpdateCodeSamplesTest {
 				```
 				""";
 		
-		Assert.assertEqualsNormalized(expected, format(Language.Java, FileType.Markdown, null, input));
+		Assert.assertEqualsNormalized(expected, format("<!-- :code: src=Example.java -->", input));
 	}
 	
 	@Test
-	public void testReplaceTabsWithSpaces() throws IOException {
+	public void testReplaceTabsWithSpaces() {
 		String input = """
 				public void test() {
 				\tint x = 5;
@@ -116,11 +141,11 @@ public class UpdateCodeSamplesTest {
 				```
 				""";
 		
-		Assert.assertEqualsNormalized(expected, format(Language.Java, FileType.Markdown, null, input));
+		Assert.assertEqualsNormalized(expected, format("<!-- :code: src=Example.java -->", input));
 	}
 	
 	@Test
-	public void testStripIndentation() throws IOException {
+	public void testStripIndentation() {
 		String input = """
 				\t    public void test() {
 				\t        int x = 5;
@@ -135,11 +160,11 @@ public class UpdateCodeSamplesTest {
 				```
 				""";
 		
-		Assert.assertEqualsNormalized(expected, format(Language.Java, FileType.Markdown, null, input));
+		Assert.assertEqualsNormalized(expected, format("<!-- :code: src=Example.java -->", input));
 	}
 	
 	@Test
-	public void testLineNumbers() throws IOException {
+	public void testLineNumbers() {
 		String input = """
 				public void test() {
 				    int x = 5;
@@ -174,23 +199,24 @@ public class UpdateCodeSamplesTest {
 				```
 				""";
 		
-		Assert.assertEqualsNormalized(allLines, format(Language.Java, FileType.Markdown, "[:]", input));
-		Assert.assertEqualsNormalized(allLines, format(Language.Java, FileType.Markdown, "[1:3]", input));
-		Assert.assertEqualsNormalized(secondLine, format(Language.Java, FileType.Markdown, "[2:2]", input));
-		Assert.assertEqualsNormalized(firstTwoLines, format(Language.Java, FileType.Markdown, "[:2]", input));
-		Assert.assertEqualsNormalized(lastTwoLines, format(Language.Java, FileType.Markdown, "[-2:]", input));
-		Assert.assertEqualsNormalized(firstTwoLines, format(Language.Java, FileType.Markdown, "[:-1]", input));
+		Assert.assertEqualsNormalized(allLines, format("<!-- :code: src=Example.java -->", input));
+		Assert.assertEqualsNormalized(allLines, format("<!-- :code: src=Example.java lines=: -->", input));
+		Assert.assertEqualsNormalized(allLines, format("<!-- :code: src=Example.java lines=1:3 -->", input));
+		Assert.assertEqualsNormalized(secondLine, format("<!-- :code: src=Example.java lines=2 -->", input));
+		Assert.assertEqualsNormalized(firstTwoLines, format("<!-- :code: src=Example.java lines=:2 -->", input));
+		Assert.assertEqualsNormalized(lastTwoLines, format("<!-- :code: src=Example.java lines=-2: -->", input));
+		Assert.assertEqualsNormalized(firstTwoLines, format("<!-- :code: src=Example.java lines=:-1 -->", input));
 	}
 	
 	@Test
-	public void testIdentifier() throws IOException {
+	public void testIdentifier() {
 		String input = """
 				public class Foo {
-				    //begin-example:foo
+				    // begin-example: foo
 					public void test() {
 					    int x = 5;
 					}
-					//end-example:foo
+					// end-example: foo
 				}
 				""";
 		
@@ -202,43 +228,32 @@ public class UpdateCodeSamplesTest {
 				```
 				""";
 		
-		Assert.assertEqualsNormalized(expected, format(Language.Java, FileType.Markdown, "[foo]", input));
+		Assert.assertEqualsNormalized(expected, format("<!-- :code: src=Example.java id=foo -->", input));
 	}
 	
-	@Test(expected = IOException.class)
-	public void testMissingIdentifier() throws IOException {
+	@Test(expected = ParsingException.class)
+	public void testMissingIdentifier() {
 		String input = """
 				public class Foo {
-				    //begin-example:foo
+				    // begin-example: foo
 					public void test() {
 					    int x = 5;
 					}
-					//end-example:foo
+					// end-example: foo
 				}
 				""";
 		
-		format(Language.Java, FileType.Markdown, "[bar]", input);
+		format("<!-- :code: src=Example.java id=bar -->", input);
 	}
 	
-	@Test
-	public void testHtml() throws IOException {
-		String input = """
-				public void test() {
-				    int x = 5;
-				}
-				""";
-		
-		String expected = """
-				<pre class="brush: java; toolbar: false;">
-				<![CDATA[
-				public void test() {
-				    int x = 5;
-				}
-				]]>
-				</pre>
-				""";
-		
-		Assert.assertEqualsNormalized(expected, format(Language.Java, FileType.Html, null, input));
+	@Test(expected = ParsingException.class)
+	public void testMalformedInstruction() {
+		format("<!-- :code: src=Example.java id= -->", "");
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testInvalidInstructionType() {
+		format("<!-- :foo: src=Example.java id= -->", "");
 	}
 	
 	@Test
@@ -263,7 +278,7 @@ public class UpdateCodeSamplesTest {
 				This is a test.
 				
 				""" +
-				"<!-- java:" + codeFile.getAbsolutePath() + " [:] -->" +
+				"<!-- :code: src=" + codeFile.getAbsolutePath() + " -->" +
 				"""
 
 
@@ -277,7 +292,7 @@ public class UpdateCodeSamplesTest {
 				This is a test.
 				
 				""" +
-				"<!-- java:" + codeFile.getAbsolutePath() + " [:] -->" +
+				"<!-- :code: src=" + codeFile.getAbsolutePath() + " -->" +
 				"""
 
 
@@ -295,21 +310,25 @@ public class UpdateCodeSamplesTest {
 			args.add(0, "--update");
 		}
 		
-		UpdateCodeSamples updater = new UpdateCodeSamples();
-		updater.start(args.toArray(new String[0]));
+		utility.start(args.toArray(new String[0]));
 		
 		Assert.assertEqualsNormalized(expected, Files.readString(markdownFile.toPath()));
 	}
 	
-	private String format(Language language, FileType fileType, String lineNumbers, String input) throws IOException {
-		FormattingOptions options = new FormattingOptions(language);
+	private String format(String instruction, String content) {
+		return format("test.md", instruction, content);
+	}
+	
+	private String format(String templateFilename, String instruction, String content) {
+		File templateFile = new File(templateFilename);
+		FileFormatter formatter = utility.getFileFormatter(templateFile);
 		
-		if (lineNumbers != null) {
-			options.parseLineNumbers(lineNumbers);
-		}
+		ProcessorInstruction options = formatter.tryParseProcessorInstruction(templateFile, new Document(instruction), 1);
+		Assert.assertNotNull(options);
 		
-		List<String> lines = options.format(input, fileType);
-		return lines.stream().collect(Collectors.joining(System.lineSeparator()));
+		Document document = new Document(content);
+		options.formatCode(document);
+		return document.toString();
 	}
 
 }

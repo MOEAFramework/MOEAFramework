@@ -20,7 +20,7 @@ pattern, which exposes methods appropriate to that parameter as it's constructed
 parameter `populationSize` to be an integer with values between `10` and `100` with a step size of `10`.  This results
 in the values `10, 20, ..., 100`.
 
-<!-- java:examples/org/moeaframework/examples/experiment/ParameterSampleExample.java [47-47] -->
+<!-- :code: src=examples/org/moeaframework/examples/experiment/ParameterSampleExample.java lines=47 -->
 
 ```java
 Enumeration<Integer> populationSize = Parameter.named("populationSize").asInt().range(10, 100, 10);
@@ -28,7 +28,7 @@ Enumeration<Integer> populationSize = Parameter.named("populationSize").asInt().
 
 Next, we define a parameter for the PRNG seed and select 10 random values:
 
-<!-- java:examples/org/moeaframework/examples/experiment/ParameterSampleExample.java [48-48] -->
+<!-- :code: src=examples/org/moeaframework/examples/experiment/ParameterSampleExample.java lines=48 -->
 
 ```java
 Enumeration<Long> seed = Parameter.named("seed").asLong().random(0, Long.MAX_VALUE, 10);
@@ -37,7 +37,7 @@ Enumeration<Long> seed = Parameter.named("seed").asLong().random(0, Long.MAX_VAL
 We then create a `ParameterSet` with the parameters we have defined.  We can optionally save this data to a file so we
 have a record of how the experiment was configured.
 
-<!-- java:examples/org/moeaframework/examples/experiment/ParameterSampleExample.java [51-52] -->
+<!-- :code: src=examples/org/moeaframework/examples/experiment/ParameterSampleExample.java lines=51:52 -->
 
 ```java
 ParameterSet parameters = new ParameterSet(populationSize, seed);
@@ -50,7 +50,7 @@ With the parameters defined, we can now generate the samples.  You might have no
 parameter was an `Enumeration`.  This simply means the parameter has a fixed set of possible values.  Consequently, when
 we enumerate the samples, we create the "cross product" containing all possible combinations of these values.
 
-<!-- java:examples/org/moeaframework/examples/experiment/ParameterSampleExample.java [54-55] -->
+<!-- :code: src=examples/org/moeaframework/examples/experiment/ParameterSampleExample.java lines=54:55 -->
 
 ```java
 Samples samples = parameters.enumerate();
@@ -63,7 +63,7 @@ Finally, we use the `evaluateAll` method to configure each run, collect the resu
 object.  Observe how we call `applyConfiguration` to configure the algorithm, but must also set up the PRNG seed
 separately.
 
-<!-- java:examples/org/moeaframework/examples/experiment/ParameterSampleExample.java [57-66] -->
+<!-- :code: src=examples/org/moeaframework/examples/experiment/ParameterSampleExample.java lines=57:66 -->
 
 ```java
 SampledResults<NondominatedPopulation> results = samples.evaluateAll(sample -> {
@@ -84,7 +84,7 @@ SampledResults<NondominatedPopulation> results = samples.evaluateAll(sample -> {
 With the data collected, we turn to analyzing the data.  Here, we measure the average hypervolume for each population
 size and display the results:
 
-<!-- java:examples/org/moeaframework/examples/experiment/ParameterSampleExample.java [68-77] -->
+<!-- :code: src=examples/org/moeaframework/examples/experiment/ParameterSampleExample.java lines=68:77 -->
 
 ```java
 Hypervolume hypervolume = new Hypervolume(problem, NondominatedPopulation.load("./pf/DTLZ2.2D.pf"));
@@ -101,7 +101,7 @@ avgHypervolume.display();
 We can see below how the hypervolume value increases as we increase the population size (indicated by the `Key` column),
 but there are diminishing returns as we get above `50+`:
 
-<!-- output:examples/org/moeaframework/examples/experiment/ParameterSampleExample.java -->
+<!-- :exec: src=examples/org/moeaframework/examples/experiment/ParameterSampleExample.java -->
 
 ```
 Key Value

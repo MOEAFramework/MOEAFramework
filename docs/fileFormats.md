@@ -11,7 +11,7 @@ columns.  These classes all implement the `Formattable` interface, which defines
 
 For instance, calling `display()` will print the data to standard output:
 
-<!-- java:examples/Example1.java [34:34] -->
+<!-- :code: src=examples/Example1.java lines=34 -->
 
 ```java
 algorithm.getResult().display();
@@ -19,7 +19,7 @@ algorithm.getResult().display();
 
 Or we can save to a file as CSV, Markdown, Latex, Json, or ARFF:
 
-<!-- java:examples/org/moeaframework/examples/io/SaveLoadPopulationExample.java [41:45] -->
+<!-- :code: src=examples/org/moeaframework/examples/io/SaveLoadPopulationExample.java lines=41:45 -->
 
 ```java
 algorithm.getResult().save(TableFormat.CSV, new File("NSGAII_DTLZ2.csv"));
@@ -36,7 +36,7 @@ Framework.  Prefer using one of the other options documented below for storage p
 
 Populations define `save` and `load` methods for reading and writing the contents of a population:
 
-<!-- java:examples/org/moeaframework/examples/io/SaveLoadPopulationExample.java [47:51] {KeepComments} -->
+<!-- :code: src=examples/org/moeaframework/examples/io/SaveLoadPopulationExample.java lines=47:51 preserveComments-->
 
 ```java
 // Save the population to a result file
@@ -49,7 +49,7 @@ Population result = Population.load(new File("NSGAII_DTLZ2.res"));
 Reference sets, including those defined in the `pf/` folder, are also stored in this manner.  Since reference sets
 contain non-dominated solutions, use the `NondominatedPopulation` class to load the set:
 
-<!-- java:examples/org/moeaframework/examples/io/LoadAndEvaluateReferenceSet.java [34:34] {KeepComments} -->
+<!-- :code: src=examples/org/moeaframework/examples/io/LoadAndEvaluateReferenceSet.java lines=34 preserveComments -->
 
 ```java
 NondominatedPopulation referenceSet = NondominatedPopulation.load("pf/DTLZ2.2D.pf");
@@ -61,7 +61,7 @@ This section details the format of the "result file".  This is the format used b
 to store individual populations, but the file format also allows storing a collection of populations.  This is
 especially useful when storing the result from multiple samples or runtime data:
 
-<!-- java:examples/org/moeaframework/examples/io/ResultFileExample.java [54:64] -->
+<!-- :code: src=examples/org/moeaframework/examples/io/ResultFileExample.java lines=54:64 -->
 
 ```java
 try (ResultFileWriter writer = ResultFileWriter.open(problem, resultFile)) {
@@ -81,7 +81,7 @@ One of the design considerations with result files is having the ability to resu
 When opening a result file in append mode, as demonstrated below, we automatically validate and repair any invalid
 or incomplete entries.  Observe how we can query the number of entries to determine where to resume a previous run:
 
-<!-- java:examples/org/moeaframework/examples/io/AppendingResultFileExample.java [52:68] -->
+<!-- :code: src=examples/org/moeaframework/examples/io/AppendingResultFileExample.java lines=52:68 -->
 
 ```java
 try (ResultFileWriter writer = ResultFileWriter.append(problem, resultFile)) {
@@ -105,7 +105,7 @@ try (ResultFileWriter writer = ResultFileWriter.append(problem, resultFile)) {
 
 Use the reader to validate and load the contents of a results file:
 
-<!-- java:examples/org/moeaframework/examples/io/ResultFileExample.java [67:77] -->
+<!-- :code: src=examples/org/moeaframework/examples/io/ResultFileExample.java lines=67:77 -->
 
 ```java
 try (ResultFileReader reader = ResultFileReader.open(problem, resultFile)) {
@@ -130,9 +130,9 @@ try (ResultFileReader reader = ResultFileReader.open(problem, resultFile)) {
 This section provides a brief overview of the structure of a result file.  The file starts with a header section
 followed by the body.  Each header line starts with `#` and defines the problem:
 
-<!-- text:pf/Schaffer.pf [1-8] -->
+<!-- :code: src=pf/Schaffer.pf lines=1:8 -->
 
-```text
+```
 # Version=5
 # Problem=Schaffer
 # NumberOfVariables=1
