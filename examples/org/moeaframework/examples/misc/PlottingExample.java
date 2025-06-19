@@ -65,7 +65,6 @@ public class PlottingExample {
 	}
 	
 	public static void linePlotXYData() {
-		// begin-example: linePlotXYData
 		int N = 100;
 		double[] x = new double[N];
 		double[] y = new double[N];
@@ -81,11 +80,9 @@ public class PlottingExample {
 				.xLabel("X")
 				.yLabel("Y")
 				.show();
-		// end-example: linePlotXYData
 	}
 	
 	public static void linePlotPartition() {
-		// begin-example: linePlotPartition
 		Partition<Double, Double> data = DataStream.range(-1.0, 1.0, 100).map(d -> Math.pow(d, 2));
 		
 		new XYPlotBuilder()
@@ -94,21 +91,18 @@ public class PlottingExample {
 				.xLabel("X")
 				.yLabel("Y")
 				.show();
-		// end-example: linePlotPartition
 	}
 	
 	public static void scatterPlot() {
 		double[] x = IntStream.range(0, 100).mapToDouble(i -> -1.0 + 2.0 * i / 99).toArray();
 		double[] y = DoubleStream.of(x).map(d -> Math.pow(d, 2)).toArray();
 		
-		// begin-example: scatterPlot
 		new XYPlotBuilder()
 				.scatter("Series", x, y)
 				.title("Scatter Plot")
 				.xLabel("X")
 				.yLabel("Y")
 				.show();
-		// end-example: scatterPlot
 	}
 	
 	public static void combinedPlot() {
@@ -116,7 +110,6 @@ public class PlottingExample {
 		double[] y1 = DoubleStream.of(x).map(d -> Math.pow(d, 2)).toArray();
 		double[] y2 = DoubleStream.of(x).map(d -> Math.pow(d, 2) + PRNG.nextGaussian(0.0, 0.05)).toArray();
 		
-		// begin-example: combinedPlot
 		new XYPlotBuilder()
 				.line("Series1", x, y1, Style.blue(), Style.large())
 				.scatter("Series2", x, y2, Style.red(), Style.circle())
@@ -124,21 +117,18 @@ public class PlottingExample {
 				.xLabel("X")
 				.yLabel("Y")
 				.show();
-		// end-example: combinedPlot
 	}
 	
 	public static void areaPlot() {
 		double[] x = IntStream.range(0, 100).mapToDouble(i -> -1.0 + 2.0 * i / 99).toArray();
 		double[] y = DoubleStream.of(x).map(d -> 1.0 - Math.pow(d, 2)).toArray();
 		
-		// begin-example: areaPlot
 		new XYPlotBuilder()
 				.area("Series", x, y)
 				.title("Area Plot")
 				.xLabel("X")
 				.yLabel("Y")
 				.show();
-		// end-example: areaPlot
 	}
 	
 	public static void stackedAreaPlot() {
@@ -146,7 +136,6 @@ public class PlottingExample {
 		double[] y1 = DoubleStream.of(x).map(d -> 1.0 - Math.pow(d, 2)).toArray();
 		double[] y2 = DoubleStream.of(x).map(d -> Math.pow(d, 2)).toArray();
 		
-		// begin-example: stackedAreaPlot
 		new XYPlotBuilder()
 				.stacked("Series1", x, y1)
 				.stacked("Series2", x, y2)
@@ -154,11 +143,9 @@ public class PlottingExample {
 				.xLabel("X")
 				.yLabel("Y")
 				.show();
-		// end-example: stackedAreaPlot
 	}
 	
 	public static void histogram() {
-		// begin-example: histogram
 		double[] values = IntStream.range(0, 10000).mapToDouble(i -> PRNG.nextGaussian()).toArray();
 		
 		new XYPlotBuilder()
@@ -167,21 +154,18 @@ public class PlottingExample {
 				.xLabel("Value")
 				.yLabel("Count")
 				.show();
-		// end-example: histogram
 	}
 	
 	public static void deviationPlot() {
 		double[] x = IntStream.range(0, 10000).mapToDouble(i -> i / 1000.0).toArray();
 		double[] y = DoubleStream.of(x).map(d -> Math.pow(d, 2) + PRNG.nextGaussian(0.0, d)).toArray();
 		
-		// begin-example: deviationPlot
 		new XYPlotBuilder()
 				.deviation("Series", x, y)
 				.title("Deviation Plot")
 				.xLabel("X")
 				.yLabel("Y")
 				.show();
-		// end-example: deviationPlot
 	}
 	
 	public static void paretoFront() {
@@ -220,7 +204,6 @@ public class PlottingExample {
 	}
 	
 	public static void heatMap() {
-		// begin-example: heatMap
 		double[] x = IntStream.range(0, 100).mapToDouble(i -> i / 100.0).toArray();
 		double[] y = IntStream.range(0, 200).mapToDouble(i -> i / 100.0).toArray();
 		double[][] z = new double[x.length][y.length];
@@ -240,7 +223,6 @@ public class PlottingExample {
 				.yLabel("Y")
 				.zLabel("Value")
 				.show();
-		// end-example: heatMap
 	}
 	
 	public static void boxAndWhiskerPlot() {

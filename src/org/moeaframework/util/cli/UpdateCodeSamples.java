@@ -65,10 +65,9 @@ import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.validate.Validate;
 
 /**
- * Utility to update code samples and output found in various documentation files, including Markdown and HTML files,
- * by embedding special instructions within the files that are processed by this utility.  These instructions are
- * embedded as comments in the document, allowing the instruction to remain hidden when the document is rendered.  For
- * both Markdown and HTML, these comments are structured as follows:
+ * Utility to update code samples and output found in various documentation files, in particular Markdown, by embedding
+ * special instructions within the files that are processed by this utility.  These instructions are embedded as
+ * comments in the document, allowing the instruction to remain hidden when the document is rendered:
  * <pre>{@code
  *   <!-- :<processor>: arg1 arg2 ... -->
  * }</pre>
@@ -274,14 +273,10 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		int currentLine = 1;
 		
 		while (currentLine <= document.size()) {
-			String line = document.get(currentLine);
-			ProcessorInstruction instruction = fileFormatter.tryParseProcessorInstruction(line);
+			ProcessorInstruction instruction = fileFormatter.tryParseProcessorInstruction(file, document, currentLine);
 						
 			if (instruction != null) {
 				System.out.println("    > Running " + instruction);
-
-				instruction.setTemplateFile(file);
-				instruction.setLineNumber(currentLine);
 				fileChanged |= instruction.run(document);
 			}
 			
@@ -360,40 +355,22 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	 */
 	class ProcessorInstruction {
 		
-		/**
-		 * The configured processor.
-		 */
 		private final Processor processor;
 
-		/**
-		 * The file formatter that specifies how content is searched and rendered in the template file.
-		 */
 		private final FileFormatter fileFormatter;
-		
-		/**
-		 * The path of the template file.
-		 */
-		private File templateFile;
-		
-		/**
-		 * The line number in the template file that contained this instruction.
-		 */
-		private int lineNumber;
 
-		/**
-		 * The options supplied to this instruction.
-		 */
+		private final File templateFile;
+
+		private final int lineNumber;
+
 		private final TypedProperties options;
-				
-		/**
-		 * Constructs default options for the given processor.
-		 * 
-		 * @param processor the processor
-		 */
-		public ProcessorInstruction(Processor processor, FileFormatter fileFormatter) {
+
+		public ProcessorInstruction(Processor processor, FileFormatter fileFormatter, File templateFile, int lineNumber) {
 			super();
 			this.processor = processor;
 			this.fileFormatter = fileFormatter;
+			this.templateFile = templateFile;
+			this.lineNumber = lineNumber;
 			
 			options = new TypedProperties();
 		}
@@ -414,7 +391,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 
 				while (tokenizer.nextToken() != StreamTokenizer.TT_EOF) {
 					if (tokenizer.ttype != StreamTokenizer.TT_WORD) {
-						throw new IOException("Failed to parse instruction, encountered unexpected character '" +
+						throw new ParsingException(lineNumber, "Failed to parse instruction, encountered unexpected character '" +
 								(char)tokenizer.ttype + "'");
 					}
 					
@@ -427,7 +404,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 						tokenizer.pushBack();
 						continue;
 					} else if (tokenizer.ttype != '=') {
-						throw new IOException("Failed to parse instruction, expected '=' after key");
+						throw new ParsingException(lineNumber, "Failed to parse instruction, expected '=' after key");
 					}
 									
 					tokenizer.nextToken();
@@ -435,110 +412,64 @@ public class UpdateCodeSamples extends CommandLineUtility {
 					if (tokenizer.ttype == StreamTokenizer.TT_WORD || tokenizer.ttype == '"' || tokenizer.ttype == '\'') {
 						options.setString(key, tokenizer.sval);
 					} else {
-						throw new IOException("Failed to parse instruction, expected value after '='");
+						throw new ParsingException(lineNumber, "Failed to parse instruction, expected value after '='");
 					}
 				}
 			}
 		}
 		
-		/**
-		 * Returns the template file formatter.
-		 * 
-		 * @return the template file formatter
-		 */
 		public FileFormatter getFileFormatter() {
 			return fileFormatter;
 		}
 		
-		/**
-		 * Returns the seed configured with this instruction or, if unset, the default seed.
-		 * 
-		 * @return the seed
-		 */
 		public long getSeed() {
 			return options.getLong("seed", seed);
 		}
 
-		/**
-		 * Returns the template file, which is the file currently being processed and contained this instruction.
-		 * 
-		 * @return the template file
-		 */
 		public File getTemplateFile() {
 			return templateFile;
-		}
-		
-		/**
-		 * Sets the template file.
-		 * 
-		 * @param templateFile the template file
-		 */
-		public void setTemplateFile(File templateFile) {
-			Validate.that("templateFile", templateFile).isNotNull();
-			this.templateFile = templateFile;
 		}
 		
 		public int getLineNumber() {
 			return lineNumber;
 		}
 		
-		public void setLineNumber(int lineNumber) {
-			this.lineNumber = lineNumber;
-		}
-		
-		/**
-		 * Returns the options supplied with this instruction.
-		 * 
-		 * @return the options
-		 */
 		public TypedProperties getOptions() {
 			return options;
 		}
 		
-		/**
-		 * Returns the source file.
-		 * 
-		 * @return the source file
-		 */
 		protected File getSourceFile() {
 			return new File(options.getString("src"));
 		}
 		
-		/**
-		 * Returns the {@link Language} of the source file, as determined by the file extension.
-		 * 
-		 * @return the language of the source file
-		 */
 		protected Language getSourceFileLanguage() {
 			return getLanguage(getSourceFile());
 		}
 		
-		/**
-		 * Runs this processor instruction.
-		 * 
-		 * @param document the document being processed
-		 * @return {@code true} if the contents were changed; {@code false} otherwise
-		 * @throws IOException if an I/O error occurred
-		 */
 		public boolean run(Document document) throws IOException {
 			return processor.run(document, this);
 		}
 
-		/**
-		 * Formats the given code block in the style required by the template file type.
-		 * 
-		 * @param content the content to format
-		 * @return the formatted content
-		 * @throws IOException if an I/O error occurred
-		 */
 		public void formatCode(Document document) throws IOException {
 			if (options.contains("id")) {
-				TextMatcher matcher = getSourceFileLanguage().getSnippetMatcher(options.getString("id"));
+				String identifier = options.getString("id");
+				TextMatcher matcher = getSourceFileLanguage().getSnippetMatcher(identifier);
 				Splice splice = matcher.scan(1, document);
+				
+				if (splice == null) {
+					throw new ParsingException(lineNumber, "Failed to find code snippet with id '" + identifier + "'");
+				}
+				
 				document.retain(new Splice(splice.getStart() + 1, splice.getEnd() - 1));
 			} else if (options.contains("method")) {
-				TextMatcher matcher = getSourceFileLanguage().getMethodMatcher(options.getString("method"));
+				String methodName = options.getString("method");
+				TextMatcher matcher = getSourceFileLanguage().getMethodMatcher(methodName);
 				Splice splice = matcher.scan(1, document);
+				
+				if (splice == null) {
+					throw new ParsingException(lineNumber, "Failed to find method named '" + methodName + "'");
+				}
+				
 				document.retain(new Splice(splice.getStart() + 1, splice.getEnd() - 1));
 			} else {
 				Splice splice = Splice.fromString(options.getString("lines", ":"));
@@ -567,13 +498,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			
 			fileFormatter.formatCodeBlock(document, language, this);
 		}
-		
-		/**
-		 * Formats the given image path or URL in the style required by the template file type.
-		 * 
-		 * @param path the image path
-		 * @return the formatted image
-		 */
+
 		public Document formatImage(String path) {
 			return fileFormatter.formatImage(path, this);
 		}
@@ -627,9 +552,6 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	 */
 	class CodeProcessor implements Processor {
 		
-		/**
-		 * Caches the content of the files / resources that are accessed by this tool.
-		 */
 		private final Map<String, Document> cache;
 		
 		public CodeProcessor() {
@@ -671,13 +593,6 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			}
 		}
 		
-		/**
-		 * Loads content from a file or URL (restricted to GitHub).
-		 * 
-		 * @param instructions the processor instruction
-		 * @return the document
-		 * @throws IOException if an error occurred loading the file or URL
-		 */
 		private Document loadSource(ProcessorInstruction instruction) throws IOException {
 			String source = instruction.getOptions().getString("src");
 			
@@ -748,13 +663,6 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			return new Plaintext();
 		}
 		
-		/**
-		 * Compiles and executes the source file.
-		 * 
-		 * @param instruction the processor instruction defining the execution
-		 * @return the output from the execution
-		 * @throws IOException if an I/O error occurred
-		 */
 		protected String execute(ProcessorInstruction instruction) throws IOException {
 			Language language = instruction.getSourceFileLanguage();
 			return language.execute(instruction);
@@ -1038,16 +946,8 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	 */
 	abstract class FileFormatter {
 
-		/**
-		 * The regular expression used to match processor instructions.
-		 */
 		private static final Pattern REGEX = Pattern.compile("<!--\\s+\\:([a-zA-Z]+)\\:\\s+(.*)\\s+-->");
 		
-		/**
-		 * Constructs a new template file type with the given extensions.
-		 * 
-		 * @param extensions the extensions
-		 */
 		FileFormatter() {
 			super();
 		}
@@ -1055,17 +955,19 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		/**
 		 * Determines if the current line represents a processor instruction and, if so, parses it.
 		 * 
-		 * @param line the current line
+		 * @param file the file currently being processed
+		 * @param document the content of the file
+		 * @param lineNumber the current line number
 		 * @return the processor instruction, or {@code null} if the line is not an instruction
 		 * @throws IOException if an I/O error occurred
 		 */
-		public ProcessorInstruction tryParseProcessorInstruction(String line) throws IOException {
-			Matcher matcher = REGEX.matcher(line);
+		public ProcessorInstruction tryParseProcessorInstruction(File file, Document document, int lineNumber) throws IOException {
+			Matcher matcher = REGEX.matcher(document.get(lineNumber));
 			
 			if (matcher.matches()) {
 				Processor processor = getProcessor(matcher.group(1));
 				
-				ProcessorInstruction instruction = new ProcessorInstruction(processor, this);
+				ProcessorInstruction instruction = new ProcessorInstruction(processor, this, file, lineNumber);
 				instruction.parseOptions(matcher.group(2));
 				
 				return instruction;
@@ -1164,7 +1066,10 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 	}
 	
-	private interface TextMatcher {
+	/**
+	 * Matches a section of a document.
+	 */
+	interface TextMatcher {
 		
 		public Splice scan(int lineNumber, Document document);
 		
@@ -1173,7 +1078,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	/**
 	 * Matches a block of text identified by starting and ending lines.
 	 */
-	private static class BlockMatcher implements TextMatcher {
+	static class BlockMatcher implements TextMatcher {
 		
 		private final Predicate<String> startPredicate;
 		
@@ -1218,7 +1123,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	 * Matches a C or Java method, with some simplifying assumptions regarding how the method is formatted, especially
 	 * with respect to opening and closing braces.
 	 */
-	private static class MethodMatcher implements TextMatcher {
+	static class MethodMatcher implements TextMatcher {
 		
 		private static final Pattern FUNCTION_REGEX = Pattern.compile("[\\w\\<\\>\\[\\]]+(?<!new)\\s+(\\w+)\\s*\\([^\\)]*\\)\\s*(\\{?|[^;])");
 		
@@ -1276,7 +1181,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	/**
 	 * Represents a slice of an array, similar to the Python notation.
 	 */
-	private static class Splice {
+	static class Splice {
 		
 		private static final int UNDEFINED_START = 0;
 		
@@ -1346,7 +1251,10 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 	}
 	
-	private static class Document implements Copyable<Document>, Displayable {
+	/**
+	 * Encapsulates a document that is being modified by this code.  Line numbers are 1-based.
+	 */
+	static class Document implements Copyable<Document>, Displayable {
 		
 		private static final String DEFAULT_LINE_SEPARATOR = "\n";
 		
@@ -1412,10 +1320,6 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 		public void insert(int lineNumber, String newLine) {
 			insert(lineNumber, List.of(newLine));
-		}
-		
-		public void insert(int lineNumber, Document document) {
-			insert(lineNumber, document.lines);
 		}
 		
 		public void prepend(String newLine) {
@@ -1543,7 +1447,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 				
 	}
 	
-	private static class ParsingException extends FrameworkException {
+	static class ParsingException extends FrameworkException {
 		
 		private static final long serialVersionUID = 5588701884639018328L;
 

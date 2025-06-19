@@ -30,11 +30,12 @@ import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.cli.UpdateCodeSamples.CodeProcessor;
+import org.moeaframework.util.cli.UpdateCodeSamples.Document;
 import org.moeaframework.util.cli.UpdateCodeSamples.ExecProcessor;
 import org.moeaframework.util.cli.UpdateCodeSamples.FileFormatter;
-import org.moeaframework.util.cli.UpdateCodeSamples.HtmlFormatter;
 import org.moeaframework.util.cli.UpdateCodeSamples.Java;
 import org.moeaframework.util.cli.UpdateCodeSamples.MarkdownFormatter;
+import org.moeaframework.util.cli.UpdateCodeSamples.ParsingException;
 import org.moeaframework.util.cli.UpdateCodeSamples.Plaintext;
 import org.moeaframework.util.cli.UpdateCodeSamples.PlotProcessor;
 import org.moeaframework.util.cli.UpdateCodeSamples.ProcessorInstruction;
@@ -71,8 +72,6 @@ public class UpdateCodeSamplesTest {
 	@Test
 	public void testGetFileFormatter() {
 		Assert.assertInstanceOf(MarkdownFormatter.class, utility.getFileFormatter(new File("intro.md")));
-		Assert.assertInstanceOf(HtmlFormatter.class, utility.getFileFormatter(new File("intro.xslt")));
-		Assert.assertInstanceOf(HtmlFormatter.class, utility.getFileFormatter(new File("intro.html")));
 		Assert.assertNull(utility.getFileFormatter(new File("intro.foo")));
 	}
 	
@@ -233,7 +232,7 @@ public class UpdateCodeSamplesTest {
 		Assert.assertEqualsNormalized(expected, format("<!-- :code: src=Example.java id=foo -->", input));
 	}
 	
-	@Test(expected = IOException.class)
+	@Test(expected = ParsingException.class)
 	public void testMissingIdentifier() throws IOException {
 		String input = """
 				public class Foo {
@@ -248,26 +247,26 @@ public class UpdateCodeSamplesTest {
 		format("<!-- :code: src=Example.java id=bar -->", input);
 	}
 	
-	@Test
-	public void testHtml() throws IOException {
-		String input = """
-				public void test() {
-				    int x = 5;
-				}
-				""";
-		
-		String expected = """
-				<pre class="brush: java; toolbar: false;">
-				<![CDATA[
-				public void test() {
-				    int x = 5;
-				}
-				]]>
-				</pre>
-				""";
-		
-		Assert.assertEqualsNormalized(expected, format("test.html", "<!-- :code: src=Example.java -->", input));
-	}
+//	@Test
+//	public void testHtml() throws IOException {
+//		String input = """
+//				public void test() {
+//				    int x = 5;
+//				}
+//				""";
+//		
+//		String expected = """
+//				<pre class="brush: java; toolbar: false;">
+//				<![CDATA[
+//				public void test() {
+//				    int x = 5;
+//				}
+//				]]>
+//				</pre>
+//				""";
+//		
+//		Assert.assertEqualsNormalized(expected, format("test.html", "<!-- :code: src=Example.java -->", input));
+//	}
 		
 	@Test
 	public void fullTestWithUpdate() throws Exception {
@@ -333,12 +332,15 @@ public class UpdateCodeSamplesTest {
 	}
 	
 	private String format(String templateFilename, String instruction, String content) throws IOException {
-		FileFormatter formatter = utility.getFileFormatter(new File(templateFilename));
+		File templateFile = new File(templateFilename);
+		FileFormatter formatter = utility.getFileFormatter(templateFile);
 		
-		ProcessorInstruction options = formatter.tryParseProcessorInstruction(instruction);
+		ProcessorInstruction options = formatter.tryParseProcessorInstruction(templateFile, new Document(instruction), 1);
 		Assert.assertNotNull(options);
 		
-		return options.formatCode(content);
+		Document document = new Document(content);
+		options.formatCode(document);
+		return document.toString();
 	}
 
 }

@@ -15,7 +15,7 @@ the data is rendered.
 Here we plot a line graph of $$f(x) = x^2$$ for $$x \in [-1, 1]$$.  We can provide arrays directly to the plotting
 methods:
 
-<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java id=linePlotXYData -->
+<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=linePlotXYData -->
 
 ```java
 int N = 100;
@@ -44,7 +44,7 @@ new XYPlotBuilder()
 Plots can also be generated directly from our stream classes.  The data, stored as a `Partition` (which is just a
 collection of key-value pairs, is identical to the previous example, but expressed in a more compact and readable style.
 
-<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java id=linePlotPartition -->
+<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=linePlotPartition -->
 
 ```java
 Partition<Double, Double> data = DataStream.range(-1.0, 1.0, 100).map(d -> Math.pow(d, 2));
@@ -59,9 +59,12 @@ new XYPlotBuilder()
 
 ### Scatter Plot
 
-<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java id=scatterPlot -->
+<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=scatterPlot -->
 
 ```java
+double[] x = IntStream.range(0, 100).mapToDouble(i -> -1.0 + 2.0 * i / 99).toArray();
+double[] y = DoubleStream.of(x).map(d -> Math.pow(d, 2)).toArray();
+
 new XYPlotBuilder()
         .scatter("Series", x, y)
         .title("Scatter Plot")
@@ -78,9 +81,13 @@ new XYPlotBuilder()
 
 ### Combined Plots / Multiple Series
 
-<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java id=combinedPlot -->
+<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=combinedPlot -->
 
 ```java
+double[] x = IntStream.range(0, 100).mapToDouble(i -> -1.0 + 2.0 * i / 99).toArray();
+double[] y1 = DoubleStream.of(x).map(d -> Math.pow(d, 2)).toArray();
+double[] y2 = DoubleStream.of(x).map(d -> Math.pow(d, 2) + PRNG.nextGaussian(0.0, 0.05)).toArray();
+
 new XYPlotBuilder()
         .line("Series1", x, y1, Style.blue(), Style.large())
         .scatter("Series2", x, y2, Style.red(), Style.circle())
@@ -98,9 +105,12 @@ new XYPlotBuilder()
 
 ### Area Plot
 
-<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java id=areaPlot -->
+<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=areaPlot -->
 
 ```java
+double[] x = IntStream.range(0, 100).mapToDouble(i -> -1.0 + 2.0 * i / 99).toArray();
+double[] y = DoubleStream.of(x).map(d -> 1.0 - Math.pow(d, 2)).toArray();
+
 new XYPlotBuilder()
         .area("Series", x, y)
         .title("Area Plot")
@@ -117,9 +127,13 @@ new XYPlotBuilder()
 
 ### Stacked Area Plot
 
-<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java id=stackedAreaPlot -->
+<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=stackedAreaPlot -->
 
 ```java
+double[] x = IntStream.range(0, 100).mapToDouble(i -> -1.0 + 2.0 * i / 99).toArray();
+double[] y1 = DoubleStream.of(x).map(d -> 1.0 - Math.pow(d, 2)).toArray();
+double[] y2 = DoubleStream.of(x).map(d -> Math.pow(d, 2)).toArray();
+
 new XYPlotBuilder()
         .stacked("Series1", x, y1)
         .stacked("Series2", x, y2)
@@ -137,9 +151,12 @@ new XYPlotBuilder()
 
 ### Deviation
 
-<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java id=deviationPlot -->
+<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=deviationPlot -->
 
 ```java
+double[] x = IntStream.range(0, 10000).mapToDouble(i -> i / 1000.0).toArray();
+double[] y = DoubleStream.of(x).map(d -> Math.pow(d, 2) + PRNG.nextGaussian(0.0, d)).toArray();
+
 new XYPlotBuilder()
         .deviation("Series", x, y)
         .title("Deviation Plot")
@@ -159,7 +176,7 @@ new XYPlotBuilder()
 Unlike the previous plots, a histogram is generated from a single array of values.  The Y axis measures the number of
 times each value appears in the input.
 
-<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java id=histogram -->
+<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=histogram -->
 
 ```java
 double[] values = IntStream.range(0, 10000).mapToDouble(i -> PRNG.nextGaussian()).toArray();
@@ -183,7 +200,7 @@ new XYPlotBuilder()
 Unlike the previous plots, a histogram is generated from a single array of values.  The Y axis measures the number of
 times each value appears in the input.
 
-<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java id=heatMap -->
+<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=heatMap -->
 
 ```java
 double[] x = IntStream.range(0, 100).mapToDouble(i -> i / 100.0).toArray();
