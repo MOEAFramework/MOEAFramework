@@ -18,7 +18,6 @@
 package org.moeaframework.util.cli;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +83,7 @@ public class UpdateCodeSamplesTest {
 	}
 
 	@Test
-	public void testStripCommentsAndLines() throws IOException {
+	public void testStripCommentsAndLines() {
 		String input = """
 				/**
 				 * Test multi-line Javadoc comment.
@@ -127,7 +126,7 @@ public class UpdateCodeSamplesTest {
 	}
 	
 	@Test
-	public void testReplaceTabsWithSpaces() throws IOException {
+	public void testReplaceTabsWithSpaces() {
 		String input = """
 				public void test() {
 				\tint x = 5;
@@ -146,7 +145,7 @@ public class UpdateCodeSamplesTest {
 	}
 	
 	@Test
-	public void testStripIndentation() throws IOException {
+	public void testStripIndentation() {
 		String input = """
 				\t    public void test() {
 				\t        int x = 5;
@@ -165,7 +164,7 @@ public class UpdateCodeSamplesTest {
 	}
 	
 	@Test
-	public void testLineNumbers() throws IOException {
+	public void testLineNumbers() {
 		String input = """
 				public void test() {
 				    int x = 5;
@@ -210,7 +209,7 @@ public class UpdateCodeSamplesTest {
 	}
 	
 	@Test
-	public void testIdentifier() throws IOException {
+	public void testIdentifier() {
 		String input = """
 				public class Foo {
 				    // begin-example: foo
@@ -233,7 +232,7 @@ public class UpdateCodeSamplesTest {
 	}
 	
 	@Test(expected = ParsingException.class)
-	public void testMissingIdentifier() throws IOException {
+	public void testMissingIdentifier() {
 		String input = """
 				public class Foo {
 				    // begin-example: foo
@@ -327,11 +326,11 @@ public class UpdateCodeSamplesTest {
 		Assert.assertEqualsNormalized(expected, Files.readString(markdownFile.toPath()));
 	}
 	
-	private String format(String instruction, String content) throws IOException {
+	private String format(String instruction, String content) {
 		return format("test.md", instruction, content);
 	}
 	
-	private String format(String templateFilename, String instruction, String content) throws IOException {
+	private String format(String templateFilename, String instruction, String content) {
 		File templateFile = new File(templateFilename);
 		FileFormatter formatter = utility.getFileFormatter(templateFile);
 		

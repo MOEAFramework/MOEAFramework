@@ -21,7 +21,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.io.StreamTokenizer;
 import java.io.StringReader;
 import java.io.UncheckedIOException;
@@ -61,7 +60,6 @@ import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.util.format.Displayable;
-import org.moeaframework.util.io.LineReader;
 import org.moeaframework.util.validate.Validate;
 
 /**
@@ -375,7 +373,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			options = new TypedProperties();
 		}
 		
-		protected void parseOptions(String str) throws IOException {
+		protected void parseOptions(String str) {
 			try (StringReader argumentsReader = new StringReader(str)) {
 				StreamTokenizer tokenizer = new StreamTokenizer(argumentsReader);
 				tokenizer.resetSyntax();
@@ -415,6 +413,8 @@ public class UpdateCodeSamples extends CommandLineUtility {
 						throw new ParsingException(lineNumber, "Failed to parse instruction, expected value after '='");
 					}
 				}
+			} catch (IOException e) {
+				throw new ParsingException(lineNumber, "Failed to parse instruction", e);
 			}
 		}
 		
@@ -450,7 +450,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			return processor.run(document, this);
 		}
 
-		public void formatCode(Document document) throws IOException {
+		public void formatCode(Document document) {
 			if (options.contains("id")) {
 				String identifier = options.getString("id");
 				TextMatcher matcher = getSourceFileLanguage().getSnippetMatcher(identifier);
@@ -526,8 +526,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	interface Processor {
 		
 		/**
-		 * Runs the processor.  Typically, a processor should generate the new output and call
-		 * {@link #replace(LineReader, PrintWriter, String, ProcessorInstruction)}.
+		 * Runs the processor.
 		 * 
 		 * @param document the document being processed
 		 * @param instruction the processor instruction being executed
@@ -769,41 +768,24 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		Language() {
 			super();
 		}
-		
-		/**
-		 * Strips comments out of the code block.  This also removes any duplicate blank lines that may result
-		 * when removing the comments.
-		 * 
-		 * @param content the code block
-		 * @return the updated code block
-		 */
+				
 		public String stripComments(String content) {
 			return content;
 		}
-		
-		/**
-		 * Returns a text matcher that locates code examples referenced by id.
-		 * 
-		 * @param id the code example id
-		 * @return the text matcher
-		 */
+
 		public TextMatcher getSnippetMatcher(String id) {
-			throw new UnsupportedOperationException("Matching code snippets is not supported by " + getClass().getSimpleName());
+			throw new UnsupportedOperationException("Matching code snippets is not supported by " +
+					getClass().getSimpleName());
 		}
 		
 		public TextMatcher getMethodMatcher(String methodName) {
-			throw new UnsupportedOperationException("Matching methods is not supported by " + getClass().getSimpleName());
+			throw new UnsupportedOperationException("Matching methods is not supported by " +
+					getClass().getSimpleName());
 		}
 		
-		/**
-		 * Attempts to compile and execute the referenced code.
-		 * 
-		 * @param instruction the processor instruction
-		 * @return the output from executing the code
-		 * @throws IOException if an I/O error occurred
-		 */
 		public String execute(ProcessorInstruction instruction) throws IOException {
-			throw new UnsupportedOperationException("Executing source code is not supported by " + getClass().getSimpleName());
+			throw new UnsupportedOperationException("Executing source code is not supported by " +
+					getClass().getSimpleName());
 		}
 		
 	}
@@ -813,11 +795,6 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	 */
 	class Plaintext extends Language {
 
-		@Override
-		public String stripComments(String content) {
-			return content;
-		}
-		
 		@Override
 		public TextMatcher getSnippetMatcher(String id) {
 			return new BlockMatcher(
@@ -959,9 +936,8 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @param document the content of the file
 		 * @param lineNumber the current line number
 		 * @return the processor instruction, or {@code null} if the line is not an instruction
-		 * @throws IOException if an I/O error occurred
 		 */
-		public ProcessorInstruction tryParseProcessorInstruction(File file, Document document, int lineNumber) throws IOException {
+		public ProcessorInstruction tryParseProcessorInstruction(File file, Document document, int lineNumber) {
 			Matcher matcher = REGEX.matcher(document.get(lineNumber));
 			
 			if (matcher.matches()) {
@@ -999,7 +975,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		public abstract String getBrush(Language language);
 		
 		/**
-		 * Renders the code block in the format required by this template file type.
+		 * Renders the code block in the format required by this file type.
 		 * 
 		 * @param document the document representing the code block
 		 * @param instruction the instruction being executed
@@ -1007,8 +983,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		public abstract void formatCodeBlock(Document document, Language language, ProcessorInstruction instruction);
 		
 		/**
-		 * Wraps the image path or URL with any image tags and formatting options.  The returned content must match
-		 * the pattern defined by {@link #getImageMatcher()}.
+		 * Renders the image path or URL in the format required by this file type.
 		 * 
 		 * @param path the image path, either relative to the source document or an absolute URL
 		 * @param instruction the instruction being executed
@@ -1453,6 +1428,10 @@ public class UpdateCodeSamples extends CommandLineUtility {
 
 		public ParsingException(int lineNumber, String message) {
 			super("Line " + lineNumber + ": " + message);
+		}
+		
+		public ParsingException(int lineNumber, String message, Throwable cause) {
+			super("Line " + lineNumber + ": " + message, cause);
 		}
 		
 	}
