@@ -246,27 +246,16 @@ public class UpdateCodeSamplesTest {
 		format("<!-- :code: src=Example.java id=bar -->", input);
 	}
 	
-//	@Test
-//	public void testHtml() throws IOException {
-//		String input = """
-//				public void test() {
-//				    int x = 5;
-//				}
-//				""";
-//		
-//		String expected = """
-//				<pre class="brush: java; toolbar: false;">
-//				<![CDATA[
-//				public void test() {
-//				    int x = 5;
-//				}
-//				]]>
-//				</pre>
-//				""";
-//		
-//		Assert.assertEqualsNormalized(expected, format("test.html", "<!-- :code: src=Example.java -->", input));
-//	}
-		
+	@Test(expected = ParsingException.class)
+	public void testMalformedInstruction() {
+		format("<!-- :code: src=Example.java id= -->", "");
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testInvalidInstructionType() {
+		format("<!-- :foo: src=Example.java id= -->", "");
+	}
+	
 	@Test
 	public void fullTestWithUpdate() throws Exception {
 		fullTest(true);
