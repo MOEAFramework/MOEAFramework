@@ -28,10 +28,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URI;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -636,7 +637,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		public boolean run(Document document, ProcessorInstruction instruction) throws IOException {
 			Document newContent = new Document(execute(instruction));
 			instruction.formatCode(newContent);
-			
+						
 			TextMatcher matcher = instruction.getFileFormatter().getCodeBlockMatcher();
 			Slice slice = matcher.scan(instruction.getLineNumber() + 1, document);
 			
@@ -819,8 +820,8 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		@Override
 		public String execute(ProcessorInstruction instruction) throws IOException {
 			File sourceFile = instruction.getSourceFile();
-			File classFile = new File(sourceFile.getParent(), FilenameUtils.removeExtension(sourceFile.getName()) + ".class");
-			String className = getClassName(sourceFile.getPath());
+			File classFile = new File(sourceFile.getParent(),
+					FilenameUtils.removeExtension(sourceFile.getName()) + ".class");
 
 			if (clean || !classFile.exists() || FileUtils.isFileNewer(sourceFile, classFile)) {
 				FileUtils.deleteQuietly(classFile);
@@ -840,8 +841,8 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
 					PrintStream newOut = new PrintStream(baos)) {
 				System.setOut(newOut);
-					
-				Class<?> cls = Class.forName(className, true, Thread.currentThread().getContextClassLoader());
+
+				Class<?> cls = loadClass(sourceFile);
 				
 				if (methodName.equals("main")) {
 					Method method = cls.getDeclaredMethod(methodName, String[].class);
@@ -867,9 +868,9 @@ public class UpdateCodeSamples extends CommandLineUtility {
 				return baos.toString();
 			} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException |
 					 InstantiationException | IllegalArgumentException e) {
-				throw new IOException("Failed to execute method " + methodName + " in " + className, e);
+				throw new IOException("Failed to execute method " + methodName + " in " + sourceFile, e);
 			} catch (InvocationTargetException e) {
-				throw new IOException("Failed during execution of method " + methodName + " in " + className, e.getCause());
+				throw new IOException("Failed during execution of method " + methodName + " in " + sourceFile, e.getCause());
 			} finally {
 				System.setOut(oldOut);
 			}
@@ -900,20 +901,43 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			return new MethodMatcher(methodName);
 		}
 		
-		/**
-		 * Returns the fully-qualified Java class name derived from the file name.
-		 * 
-		 * @param filename the Java file name
-		 * @return the fully-qualified Java class name
-		 */
-		private String getClassName(String filename) {
-			Path path = Paths.get(FilenameUtils.removeExtension(filename));
+		private Class<?> loadClass(File sourceFile) throws IOException, ClassNotFoundException {
+			Pattern packageRegex = Pattern.compile("package\\s+((?:[a-zA-Z0-9_]+\\.)*(?:[a-zA-Z0-9_]+))\\s*;");
+
+			Document source = new Document(sourceFile);
+			String packageName = null;
 			
-			if (path.startsWith("examples") || path.startsWith("src") || path.startsWith("test")) {
-				path = path.subpath(1, path.getNameCount());
+			for (int i = 1; i <= source.size(); i++) {
+				Matcher matcher = packageRegex.matcher(source.get(i));
+				
+				if (matcher.matches()) {
+					packageName = matcher.group(1);
+					break;
+				}
 			}
 			
-			return path.toString().replaceAll("[\\\\/]", ".");
+			String className = FilenameUtils.getBaseName(sourceFile.getName());
+			File baseDirectory = sourceFile.getParentFile();
+			
+			if (packageName != null) {
+				className = packageName + "." + className;
+				
+				// walk up the directories to find the base directory needed for the class loader
+				String[] packageSegments = packageName.split(Pattern.quote("."));
+				
+				for (int i = packageSegments.length - 1; i >= 0; i--) {
+					if (baseDirectory.getName().equals(packageSegments[i])) {
+						baseDirectory = baseDirectory.getParentFile();
+					} else {
+						throw new IOException("Class not located in directory matching package name");
+					}
+				}
+			}
+						
+			URLClassLoader classLoader = new URLClassLoader(new URL[] { baseDirectory.toURI().toURL() },
+					Thread.currentThread().getContextClassLoader());
+
+			return Class.forName(className, true, classLoader);
 		}
 		
 	}
@@ -923,7 +947,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	 */
 	abstract class FileFormatter {
 
-		private static final Pattern REGEX = Pattern.compile("<!--\\s+\\:([a-zA-Z]+)\\:\\s+(.*)\\s+-->");
+		private static final Pattern INSTRUCTION_REGEX = Pattern.compile("<!--\\s+\\:([a-zA-Z]+)\\:\\s+(.*)\\s+-->");
 		
 		FileFormatter() {
 			super();
@@ -938,7 +962,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		 * @return the processor instruction, or {@code null} if the line is not an instruction
 		 */
 		public ProcessorInstruction tryParseProcessorInstruction(File file, Document document, int lineNumber) {
-			Matcher matcher = REGEX.matcher(document.get(lineNumber));
+			Matcher matcher = INSTRUCTION_REGEX.matcher(document.get(lineNumber));
 			
 			if (matcher.matches()) {
 				Processor processor = getProcessor(matcher.group(1));

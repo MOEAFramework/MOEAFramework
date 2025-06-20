@@ -218,7 +218,6 @@ done < <(git diff --cached --name-only --diff-filter=ACM)
 		<java classname="org.moeaframework.util.cli.UpdateCodeSamples" fork="true" failonerror="true">
 			<classpath refid="classpath" />
 			<classpath path="${build}" />
-			<classpath path="examples" />
 			<arg value="--update" />
 		</java>
 		
@@ -229,7 +228,6 @@ done < <(git diff --cached --name-only --diff-filter=ACM)
 		<java classname="org.moeaframework.util.cli.UpdateCodeSamples" fork="true" failonerror="true">
 			<classpath refid="classpath" />
 			<classpath path="${build}" />
-			<classpath path="examples" />
 			<arg if:true="${env.CI}" value="--disable=plot" />
 		</java>
 	</target>
