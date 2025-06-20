@@ -214,13 +214,15 @@ done < <(git diff --cached --name-only --diff-filter=ACM)
 		<replace-properties file="README.md" />
 	</target>
 	
-	<target name="update-docs" depends="build-binary,update-readme">
+	<target name="update-docs" depends="build-binary">
 		<java classname="org.moeaframework.util.cli.UpdateCodeSamples" fork="true" failonerror="true">
 			<classpath refid="classpath" />
 			<classpath path="${build}" />
 			<classpath path="examples" />
 			<arg value="--update" />
 		</java>
+		
+		<antcall target="update-readme" />
 	</target>
 	
 	<target name="validate-docs" depends="build-binary">
