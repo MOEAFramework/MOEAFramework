@@ -81,7 +81,7 @@ import org.moeaframework.util.validate.Validate;
  * pairs.  Some useful arguments include:
  * <ul>
  *   <li>{@code src} - The source code file containing the code being displayed or executed.
- *   <li>{@code lines} - The line number ({@code lines=5}), range ({@code lines=5:10}), or splice ({@code lines=:-1})
+ *   <li>{@code lines} - The line number ({@code lines=5}), range ({@code lines=5:10}), or slice ({@code lines=:-1})
  *       of the code being referenced.
  *   <li>{@code id} - Alternative to line numbers, referencing a block of code between {@code // begin-example: <id>}
  *       and {@code // end-example: <id>} comments.
@@ -454,26 +454,26 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			if (options.contains("id")) {
 				String identifier = options.getString("id");
 				TextMatcher matcher = getSourceFileLanguage().getSnippetMatcher(identifier);
-				Splice splice = matcher.scan(1, document);
+				Slice slice = matcher.scan(1, document);
 				
-				if (splice == null) {
+				if (slice == null) {
 					throw new ParsingException(lineNumber, "Failed to find code snippet with id '" + identifier + "'");
 				}
 				
-				document.retain(new Splice(splice.getStart() + 1, splice.getEnd() - 1));
+				document.retain(new Slice(slice.getStart() + 1, slice.getEnd() - 1));
 			} else if (options.contains("method")) {
 				String methodName = options.getString("method");
 				TextMatcher matcher = getSourceFileLanguage().getMethodMatcher(methodName);
-				Splice splice = matcher.scan(1, document);
+				Slice slice = matcher.scan(1, document);
 				
-				if (splice == null) {
+				if (slice == null) {
 					throw new ParsingException(lineNumber, "Failed to find method named '" + methodName + "'");
 				}
 				
-				document.retain(new Splice(splice.getStart() + 1, splice.getEnd() - 1));
+				document.retain(new Slice(slice.getStart() + 1, slice.getEnd() - 1));
 			} else {
-				Splice splice = Splice.fromString(options.getString("lines", ":"));
-				document.retain(splice);
+				Slice slice = Slice.fromString(options.getString("lines", ":"));
+				document.retain(slice);
 			}
 			
 			// Apply any formatting specific to the output source code language
@@ -564,22 +564,22 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			instruction.formatCode(newContent);
 			
 			TextMatcher matcher = instruction.getFileFormatter().getCodeBlockMatcher();
-			Splice splice = matcher.scan(instruction.getLineNumber() + 1, document);
+			Slice slice = matcher.scan(instruction.getLineNumber() + 1, document);
 			
-			if (splice == null) {
+			if (slice == null) {
 				throw new ParsingException(instruction.getLineNumber(), "No code block found following the instruction");
 			}
 			
-			for (int i = instruction.getLineNumber() + 1; i < splice.getStart(); i++) {
+			for (int i = instruction.getLineNumber() + 1; i < slice.getStart(); i++) {
 				if (!document.get(i).isBlank()) {
 					throw new ParsingException(i, "Found non-empty line when code block expected");
 				}
 			}
 
-			Document oldContent = document.extract(splice);
+			Document oldContent = document.extract(slice);
 			boolean changed = oldContent.diff(newContent, System.out);
 			
-			document.replace(splice, newContent);			
+			document.replace(slice, newContent);			
 			return changed;
 		}
 		
@@ -638,22 +638,22 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			instruction.formatCode(newContent);
 			
 			TextMatcher matcher = instruction.getFileFormatter().getCodeBlockMatcher();
-			Splice splice = matcher.scan(instruction.getLineNumber() + 1, document);
+			Slice slice = matcher.scan(instruction.getLineNumber() + 1, document);
 			
-			if (splice == null) {
+			if (slice == null) {
 				throw new ParsingException(instruction.getLineNumber(), "No code block found following the instruction");
 			}
 			
-			for (int i = instruction.getLineNumber() + 1; i < splice.getStart(); i++) {
+			for (int i = instruction.getLineNumber() + 1; i < slice.getStart(); i++) {
 				if (!document.get(i).isBlank()) {
 					throw new ParsingException(i, "Found non-empty line when code block expected");
 				}
 			}
 			
-			Document oldContent = document.extract(splice);
+			Document oldContent = document.extract(slice);
 			boolean changed = oldContent.diff(newContent, System.out);
 			
-			document.replace(splice, newContent);			
+			document.replace(slice, newContent);			
 			return changed;
 		}
 		
@@ -719,22 +719,22 @@ public class UpdateCodeSamples extends CommandLineUtility {
 				Document newContent = instruction.getFileFormatter().formatImage(dest, instruction);
 				
 				TextMatcher matcher = instruction.getFileFormatter().getImageMatcher();
-				Splice splice = matcher.scan(instruction.getLineNumber() + 1, document);
+				Slice slice = matcher.scan(instruction.getLineNumber() + 1, document);
 				
-				if (splice == null) {
+				if (slice == null) {
 					throw new ParsingException(instruction.getLineNumber(), "No image found following the instruction");
 				}
 				
-				for (int i = instruction.getLineNumber() + 1; i < splice.getStart(); i++) {
+				for (int i = instruction.getLineNumber() + 1; i < slice.getStart(); i++) {
 					if (!document.get(i).isBlank()) {
 						throw new ParsingException(i, "Found non-empty line when image expected");
 					}
 				}
 				
-				Document oldContent = document.extract(splice);
+				Document oldContent = document.extract(slice);
 				boolean contentChanged = oldContent.diff(newContent, System.out);
 				
-				document.replace(splice, newContent);			
+				document.replace(slice, newContent);			
 				return contentChanged || imageChanged;
 			} finally {
 				PlotBuilder.setDisplayDriver(oldDisplayDriver);
@@ -1046,7 +1046,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	 */
 	interface TextMatcher {
 		
-		public Splice scan(int lineNumber, Document document);
+		public Slice scan(int lineNumber, Document document);
 		
 	}
 	
@@ -1066,7 +1066,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 
 		@Override
-		public Splice scan(int lineNumber, Document document) {
+		public Slice scan(int lineNumber, Document document) {
 			int matchStart = -1;
 			
 			while (lineNumber <= document.size()) {
@@ -1074,7 +1074,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 								
 				if (matchStart > 0) {	
 					if (endPredicate.test(line)) {
-						return new Splice(matchStart, lineNumber);
+						return new Slice(matchStart, lineNumber);
 					}
 				} else {		
 					if (startPredicate.test(line)) {
@@ -1110,7 +1110,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 
 		@Override
-		public Splice scan(int lineNumber, Document document) {
+		public Slice scan(int lineNumber, Document document) {
 			int matchStart = -1;
 			int bracesLevel = 0;
 			
@@ -1126,7 +1126,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 						}
 						
 						if (bracesLevel == 0) {
-							return new Splice(matchStart, lineNumber);
+							return new Slice(matchStart, lineNumber);
 						}
 					}
 				} else {
@@ -1154,9 +1154,10 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	}
 
 	/**
-	 * Represents a slice of an array, similar to the Python notation.
+	 * Represents a slice of an array, similar to the Python notation.  The two main differences are (1) the end index
+	 * is inclusive, and (2) steps are not supported.
 	 */
-	static class Splice {
+	static class Slice {
 		
 		private static final int UNDEFINED_START = 0;
 		
@@ -1166,7 +1167,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		
 		private final int end;
 		
-		public Splice(int start, int end) {
+		public Slice(int start, int end) {
 			super();
 			this.start = start;
 			this.end = end;
@@ -1180,7 +1181,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			return end;
 		}
 		
-		public Splice resolve(Document document) {
+		public Slice resolve(Document document) {
 			int resolvedStart = start;
 			int resolvedEnd = end;
 			
@@ -1192,25 +1193,41 @@ public class UpdateCodeSamples extends CommandLineUtility {
 				resolvedStart = document.size();
 			}
 			
-			if (resolvedEnd < 0) {
+			if (start == end) {
+				resolvedEnd = resolvedStart;
+			} else if (resolvedEnd < 0) {
 				resolvedEnd += document.size();
 			} else if (resolvedEnd > document.size()) {
 				resolvedEnd = document.size();
 			}
 			
-			return new Splice(resolvedStart, resolvedEnd);
+			return new Slice(resolvedStart, resolvedEnd);
 		}
 		
 		@Override
 		public String toString() {
-			return (start == UNDEFINED_START ? "" : start) + ":" + (end == UNDEFINED_END ? "" : end);
+			StringBuilder sb = new StringBuilder();
+			
+			if (start != UNDEFINED_START) {
+				sb.append(start);
+			}
+			
+			if (start != end) {
+				sb.append(":");
+				
+				if (end != UNDEFINED_END) {
+					sb.append(end);
+				}
+			}
+			
+			return sb.toString();
 		}
 		
-		public static Splice fromString(String str) {
+		public static Slice fromString(String str) {
 			String[] tokens = str.split(":", 2);
 			int start = UNDEFINED_START;
 			int end = UNDEFINED_END;
-			
+						
 			if (!tokens[0].isBlank()) {
 				start = Integer.parseInt(tokens[0]);
 			}
@@ -1220,8 +1237,8 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			} else if (tokens.length == 1 && !tokens[0].isBlank()) {
 				end = Integer.parseInt(tokens[0]);
 			}
-			
-			return new Splice(start, end);
+						
+			return new Slice(start, end);
 		}
 		
 	}
@@ -1309,30 +1326,30 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			lines.remove(lineNumber - 1);
 		}
 		
-		public void remove(Splice splice) {
-			Splice resolvedSplice = splice.resolve(this);
-			int size = resolvedSplice.getEnd() - resolvedSplice.getStart() + 1;
+		public void remove(Slice slice) {
+			Slice resolvedSlice = slice.resolve(this);
+			int size = resolvedSlice.getEnd() - resolvedSlice.getStart() + 1;
 			
 			while (size > 0) {
-				remove(resolvedSplice.getStart());
+				remove(resolvedSlice.getStart());
 				size -= 1;
 			}
 		}
 		
-		public void replace(Splice splice, Document document) {
-			replace(splice, document.lines);
+		public void replace(Slice slice, Document document) {
+			replace(slice, document.lines);
 		}
 		
-		public void replace(Splice splice, List<String> replacementLines) {
-			Splice resolvedSplice = splice.resolve(this);
-			remove(resolvedSplice);
-			insert(resolvedSplice.getStart(), replacementLines);
+		public void replace(Slice slice, List<String> replacementLines) {
+			Slice resolvedSlice = slice.resolve(this);
+			remove(resolvedSlice);
+			insert(resolvedSlice.getStart(), replacementLines);
 		}
 		
-		public void retain(Splice splice) {
-			Splice resolvedSplice = splice.resolve(this);
-			int removeStart = resolvedSplice.getStart() - 1;
-			int removeEnd = size() - resolvedSplice.getEnd();
+		public void retain(Slice slice) {
+			Slice resolvedSlice = slice.resolve(this);
+			int removeStart = resolvedSlice.getStart() - 1;
+			int removeEnd = size() - resolvedSlice.getEnd();
 			
 			while (removeStart > 0) {
 				lines.removeFirst();
@@ -1345,9 +1362,9 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			}
 		}
 		
-		public Document extract(Splice splice) {
-			Splice resolvedSplice = splice.resolve(this);
-			List<String> subList = lines.subList(resolvedSplice.getStart() - 1, resolvedSplice.getEnd());
+		public Document extract(Slice slice) {
+			Slice resolvedSlice = slice.resolve(this);
+			List<String> subList = lines.subList(resolvedSlice.getStart() - 1, resolvedSlice.getEnd());
 			return new Document(subList, lineSeparator);
 		}
 		
