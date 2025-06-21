@@ -33,6 +33,7 @@ import java.net.URLClassLoader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -43,6 +44,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
@@ -104,6 +107,13 @@ import org.moeaframework.util.validate.Validate;
 public class UpdateCodeSamples extends CommandLineUtility {
 	
 	private static final long DEFAULT_SEED = 123456;
+	
+	private static final File BUILD_PATH = new File("build");
+	
+	private static final File[] SOURCE_PATHS = new File[] {
+			new File("src/"),
+			new File("test/"),
+			new File("examples/") };
 		
 	private static final File[] DEFAULT_PATHS = new File[] {
 			new File("docs/"),
@@ -828,7 +838,9 @@ public class UpdateCodeSamples extends CommandLineUtility {
 
 				JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 								
-				if (compiler.run(null, null, null, sourceFile.getAbsolutePath()) != 0) {
+				if (compiler.run(null, null, null, sourceFile.getAbsolutePath(),
+						"-d", BUILD_PATH.getPath(),
+						"-sourcepath", Stream.of(SOURCE_PATHS).map(f -> f.getPath()).collect(Collectors.joining(File.pathSeparator))) != 0) {
 					throw new IOException("Failed to compile " + sourceFile);
 				}
 			}
@@ -902,42 +914,25 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 		
 		private Class<?> loadClass(File sourceFile) throws IOException, ClassNotFoundException {
-			Pattern packageRegex = Pattern.compile("package\\s+((?:[a-zA-Z0-9_]+\\.)*(?:[a-zA-Z0-9_]+))\\s*;");
-
-			Document source = new Document(sourceFile);
-			String packageName = null;
+			String className = getClassName(sourceFile);
 			
-			for (int i = 1; i <= source.size(); i++) {
-				Matcher matcher = packageRegex.matcher(source.get(i));
-				
-				if (matcher.matches()) {
-					packageName = matcher.group(1);
+			URLClassLoader classLoader = new URLClassLoader(new URL[] { BUILD_PATH.toURI().toURL() },
+					Thread.currentThread().getContextClassLoader());
+
+			return Class.forName(className, true, classLoader);
+		}
+		
+		private String getClassName(File sourceFile) {
+			Path path = Paths.get(FilenameUtils.removeExtension(sourceFile.getPath()));
+			
+			for (File sourcePath : SOURCE_PATHS) {
+				if (path.startsWith(sourcePath.toPath())) {
+					path = path.subpath(1, path.getNameCount());
 					break;
 				}
 			}
 			
-			String className = FilenameUtils.getBaseName(sourceFile.getName());
-			File baseDirectory = sourceFile.getParentFile();
-			
-			if (packageName != null) {
-				className = packageName + "." + className;
-				
-				// walk up the directories to find the base directory needed for the class loader
-				String[] packageSegments = packageName.split(Pattern.quote("."));
-				
-				for (int i = packageSegments.length - 1; i >= 0; i--) {
-					if (baseDirectory.getName().equals(packageSegments[i])) {
-						baseDirectory = baseDirectory.getParentFile();
-					} else {
-						throw new IOException("Class not located in directory matching package name");
-					}
-				}
-			}
-						
-			URLClassLoader classLoader = new URLClassLoader(new URL[] { baseDirectory.toURI().toURL() },
-					Thread.currentThread().getContextClassLoader());
-
-			return Class.forName(className, true, classLoader);
+			return path.toString().replaceAll("[\\\\/]", ".");
 		}
 		
 	}
