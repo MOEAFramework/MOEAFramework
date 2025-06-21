@@ -33,7 +33,6 @@ import java.net.URLClassLoader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -923,7 +922,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		}
 		
 		private String getClassName(File sourceFile) {
-			Path path = Paths.get(FilenameUtils.removeExtension(sourceFile.getPath()));
+			Path path = Path.of(FilenameUtils.removeExtension(sourceFile.getPath()));
 			
 			for (File sourcePath : SOURCE_PATHS) {
 				if (path.startsWith(sourcePath.toPath())) {
