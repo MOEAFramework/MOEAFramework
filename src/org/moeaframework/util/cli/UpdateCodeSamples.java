@@ -34,6 +34,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -107,14 +108,14 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	
 	private static final long DEFAULT_SEED = 123456;
 	
-	private static final File BUILD_PATH = new File("build");
+	private static final File DEFAULT_BUILD_PATH = new File("build/");
 	
-	private static final File[] SOURCE_PATHS = new File[] {
+	private static final File[] DEFAULT_SOURCE_PATHS = new File[] {
 			new File("src/"),
 			new File("test/"),
 			new File("examples/") };
 		
-	private static final File[] DEFAULT_PATHS = new File[] {
+	private static final File[] DEFAULT_ARGUMENTS = new File[] {
 			new File("docs/"),
 			new File("website/"),
 			new File("src/README.md.template") };
@@ -135,6 +136,16 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	 * The random number generator seed supplied when executing code to keep results consistent.
 	 */
 	private long seed;
+	
+	/**
+	 * The destination path for compiled files (i.e., class files for Java).
+	 */
+	private File buildPath;
+	
+	/**
+	 * List of source paths that are included when compiling Java files.
+	 */
+	private List<File> sourcePath;
 	
 	/**
 	 * The registered template file formatters.  The key is the file extension excluding any leading {@code "."}.
@@ -188,6 +199,14 @@ public class UpdateCodeSamples extends CommandLineUtility {
 				.longOpt("disable")
 				.hasArgs()
 				.build());
+		options.addOption(Option.builder()
+				.longOpt("buildPath")
+				.hasArg()
+				.build());
+		options.addOption(Option.builder()
+				.longOpt("sourcePath")
+				.hasArg()
+				.build());
 
 		return options;
 	}
@@ -208,12 +227,26 @@ public class UpdateCodeSamples extends CommandLineUtility {
 			}
 		}
 		
+		if (commandLine.hasOption("buildPath")) {
+			buildPath = new File(commandLine.getOptionValue("buildPath"));
+		} else {
+			buildPath = DEFAULT_BUILD_PATH;
+		}
+		
+		sourcePath = new ArrayList<>(List.of(DEFAULT_SOURCE_PATHS));
+		
+		if (commandLine.hasOption("sourcePath")) {
+			for (String arg : commandLine.getOptionValue("sourcePath").split(Pattern.quote(File.pathSeparator))) {
+				sourcePath.add(new File(arg));
+			}
+		}
+		
 		Settings.PROPERTIES.setInt(Settings.KEY_HELP_WIDTH, 120);
 		
 		boolean fileChanged = false;
 
 		if (commandLine.getArgs().length == 0) {
-			for (File path : DEFAULT_PATHS) {
+			for (File path : DEFAULT_ARGUMENTS) {
 				fileChanged |= scan(path);
 			}
 		} else {
@@ -306,10 +339,9 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	 */
 	protected FileFormatter getFileFormatter(File file) {
 		String fileExtension = FilenameUtils.getExtension(file.getName());
-			
+		
 		if (fileExtension.equalsIgnoreCase("template")) {
-			fileExtension = FilenameUtils.getExtension(
-					file.getName().substring(0, file.getName().length() - fileExtension.length() - 1));
+			fileExtension = FilenameUtils.getExtension(FilenameUtils.removeExtension(file.getName()));
 		}
 		
 		return fileFormatters.get(fileExtension);
@@ -833,13 +865,14 @@ public class UpdateCodeSamples extends CommandLineUtility {
 					FilenameUtils.removeExtension(sourceFile.getName()) + ".class");
 
 			if (clean || !classFile.exists() || FileUtils.isFileNewer(sourceFile, classFile)) {
+				FileUtils.forceMkdir(buildPath);
 				FileUtils.deleteQuietly(classFile);
 
 				JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 								
 				if (compiler.run(null, null, null, sourceFile.getAbsolutePath(),
-						"-d", BUILD_PATH.getPath(),
-						"-sourcepath", Stream.of(SOURCE_PATHS).map(f -> f.getPath()).collect(Collectors.joining(File.pathSeparator))) != 0) {
+						"-d", buildPath.toString(),
+						"-sourcepath", getSourcePath()) != 0) {
 					throw new IOException("Failed to compile " + sourceFile);
 				}
 			}
@@ -915,7 +948,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		private Class<?> loadClass(File sourceFile) throws IOException, ClassNotFoundException {
 			String className = getClassName(sourceFile);
 			
-			URLClassLoader classLoader = new URLClassLoader(new URL[] { BUILD_PATH.toURI().toURL() },
+			URLClassLoader classLoader = new URLClassLoader(new URL[] { buildPath.toURI().toURL() },
 					Thread.currentThread().getContextClassLoader());
 
 			return Class.forName(className, true, classLoader);
@@ -924,14 +957,18 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		private String getClassName(File sourceFile) {
 			Path path = Path.of(FilenameUtils.removeExtension(sourceFile.getPath()));
 			
-			for (File sourcePath : SOURCE_PATHS) {
-				if (path.startsWith(sourcePath.toPath())) {
-					path = path.subpath(1, path.getNameCount());
+			for (File source : sourcePath) {
+				if (source.isDirectory() && path.startsWith(source.toPath())) {
+					path = path.subpath(source.toPath().getNameCount(), path.getNameCount());
 					break;
 				}
 			}
 			
 			return path.toString().replaceAll("[\\\\/]", ".");
+		}
+		
+		private String getSourcePath() {
+			return sourcePath.stream().map(Object::toString).collect(Collectors.joining(File.pathSeparator));
 		}
 		
 	}
