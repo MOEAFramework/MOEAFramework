@@ -195,10 +195,7 @@ new XYPlotBuilder()
 	<img src="imgs/plot-histogram.png" width="70%" />
 </p>
 
-### Heat Map
-
-Unlike the previous plots, a histogram is generated from a single array of values.  The Y axis measures the number of
-times each value appears in the input.
+## Heat Map
 
 <!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=heatMap -->
 

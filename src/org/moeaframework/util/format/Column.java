@@ -105,7 +105,7 @@ public class Column<T, V> {
 	 */
 	void updateWidth(int width) {
 		if (width < 0) {
-			width = UNSPECIFIED_WIDTH;
+			this.width = UNSPECIFIED_WIDTH;
 		} else {
 			this.width = Math.max(this.width, width);
 		}
