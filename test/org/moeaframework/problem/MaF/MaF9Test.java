@@ -106,7 +106,7 @@ public class MaF9Test extends ProblemTest {
 	}
 	
 	@Test
-	@Ignore("graphical test")
+	@Ignore("Graphical test, run manually")
 	public void testSolve() {
 		MaF9 problem = new MaF9(10);
 		

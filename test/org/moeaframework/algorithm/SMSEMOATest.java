@@ -19,11 +19,11 @@ package org.moeaframework.algorithm;
 
 import java.io.IOException;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
+import org.moeaframework.Slow;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.core.fitness.AdditiveEpsilonIndicatorFitnessEvaluator;
@@ -36,25 +36,25 @@ import org.moeaframework.problem.Problem;
 public class SMSEMOATest extends AlgorithmTest {
 	
 	@Test
-	@Ignore("slow test - run manually")
+	@Slow
 	public void testDTLZ1() throws IOException {
 		test("DTLZ1_2", "SMSEMOA", "SMSEMOA-JMetal");
 	}
 	
 	@Test
-	@Ignore("slow test - run manually")
+	@Slow
 	public void testDTLZ2() throws IOException {
 		test("DTLZ2_2", "SMSEMOA", "SMSEMOA-JMetal");
 	}
 	
 	@Test
-	@Ignore("slow test - run manually")
+	@Slow
 	public void testDTLZ7() throws IOException {
 		test("DTLZ7_2", "SMSEMOA", "SMSEMOA-JMetal");
 	}
 	
 	@Test
-	@Ignore("slow test - run manually")
+	@Slow
 	public void testUF1() throws IOException {
 		test("UF1", "SMSEMOA", "SMSEMOA-JMetal");
 	}

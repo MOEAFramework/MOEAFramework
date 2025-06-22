@@ -23,14 +23,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation for ignoring unit tests on CI builds.  This can be used to ignore tests that frequently fail due to their
- * stochastic nature or are not configured to run correctly in a CI build environment.
+ * Annotation for indicating a test is slow and should be skipped by default.
  * <p>
- * Test classes using this annotation must also specify {@code @RunWith(CIRunner.class)}..
+ * Test classes using this annotation must also specify {@code @RunWith(CIRunner.class)}.
  */
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface IgnoreOnCI {
+public @interface Slow {
 	
 	String value() default "No comment";
 

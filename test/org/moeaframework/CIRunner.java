@@ -61,7 +61,7 @@ public class CIRunner extends BlockJUnit4ClassRunner {
 	}
 	
 	/**
-	 * Returns {@code true} when all tests, including those ignored on CI, should be run.
+	 * Returns {@code true} when all tests, including those ignored on CI or slow, should be run.
 	 * 
 	 * @return {@code true} when all tests should be run; {@code false} otherwise
 	 */
@@ -107,10 +107,18 @@ public class CIRunner extends BlockJUnit4ClassRunner {
 			return;
 		}
 		
-		if (hasAnnotation(method, IgnoreOnCI.class) && isRunningOnCI && !isIncludingAllTests()) {
-			System.out.println("Ignoring " + description.getDisplayName() + " on CI build");
-			notifier.fireTestIgnored(description);
-			return;
+		if (!isIncludingAllTests()) {
+			if (hasAnnotation(method, IgnoreOnCI.class) && isRunningOnCI) {
+				System.out.println("Ignoring " + description.getDisplayName() + " on CI build");
+				notifier.fireTestIgnored(description);
+				return;
+			}
+			
+			if (hasAnnotation(method, Slow.class)) {
+				System.out.println("Ignoring " + description.getDisplayName() + ", indicated as slow");
+				notifier.fireTestIgnored(description);
+				return;
+			}
 		}
 			
 		int retries = 0;

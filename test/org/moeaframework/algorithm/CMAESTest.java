@@ -21,7 +21,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
-import org.moeaframework.IgnoreOnCI;
+import org.moeaframework.Slow;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.configuration.ConfigurationException;
@@ -65,7 +65,7 @@ public class CMAESTest extends AlgorithmTest {
 	}
 	
 	@Test
-	@IgnoreOnCI("5 minute runtime")
+	@Slow
 	public void testCheckConsistency() {
 		test("DTLZ2_2",
 				"CMA-ES", new TypedProperties(),
