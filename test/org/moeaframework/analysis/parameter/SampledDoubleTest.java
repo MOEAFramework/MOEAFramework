@@ -84,6 +84,16 @@ public class SampledDoubleTest {
 	@Test
 	public void testDecode() {
 		Tokenizer tokenizer = new Tokenizer();
+		SampledDouble parameter = SampledDouble.decode(tokenizer, "foo double 100.0 1000.0");
+		
+		Assert.assertEquals("foo", parameter.getName());
+		Assert.assertEquals(100.0, parameter.getLowerBound());
+		Assert.assertEquals(1000.0, parameter.getUpperBound());
+	}
+	
+	@Test
+	public void testDecodeDecimal() {
+		Tokenizer tokenizer = new Tokenizer();
 		SampledDouble parameter = SampledDouble.decode(tokenizer, "foo decimal 100.0 1000.0");
 		
 		Assert.assertEquals("foo", parameter.getName());
@@ -96,9 +106,9 @@ public class SampledDoubleTest {
 		Tokenizer tokenizer = new Tokenizer();
 		
 		Assert.assertThrows(InvalidParameterException.class, () -> SampledDouble.decode(tokenizer, "foo"));
-		Assert.assertThrows(InvalidParameterException.class, () -> SampledDouble.decode(tokenizer, "foo decimal"));
-		Assert.assertThrows(InvalidParameterException.class, () -> SampledDouble.decode(tokenizer, "foo decimal 100.0"));
-		Assert.assertThrows(InvalidParameterException.class, () -> SampledDouble.decode(tokenizer, "foo decimal 100.0 1000.0 10.0"));
+		Assert.assertThrows(InvalidParameterException.class, () -> SampledDouble.decode(tokenizer, "foo double"));
+		Assert.assertThrows(InvalidParameterException.class, () -> SampledDouble.decode(tokenizer, "foo double 100.0"));
+		Assert.assertThrows(InvalidParameterException.class, () -> SampledDouble.decode(tokenizer, "foo double 100.0 1000.0 10.0"));
 		Assert.assertThrows(InvalidParameterException.class, () -> SampledDouble.decode(tokenizer, "foo unexpected 100.0 1000.0"));
 	}
 	
@@ -107,7 +117,7 @@ public class SampledDoubleTest {
 		Tokenizer tokenizer = new Tokenizer();
 		SampledDouble parameter = new SampledDouble("foo", 100.0, 1000.0);
 		
-		Assert.assertEquals("foo decimal 100.0 1000.0", parameter.encode(tokenizer));
+		Assert.assertEquals("foo double 100.0 1000.0", parameter.encode(tokenizer));
 	}
 	
 	@Test

@@ -43,7 +43,7 @@ NumericParameter<Double> {
 	private final double upperBound;
 
 	/**
-	 * Constructs a new decimal parameter with the given sampling bounds.
+	 * Constructs a new double parameter with the given sampling bounds.
 	 * 
 	 * @param name the parameter name
 	 * @param lowerBound the lower bound
@@ -71,13 +71,13 @@ NumericParameter<Double> {
 			double value = Double.parseDouble(str);
 			
 			if (value < lowerBound || value > upperBound) {
-				throw new InvalidParameterException(getName(), "decimal value expected in range [" + lowerBound +
+				throw new InvalidParameterException(getName(), "double value expected in range [" + lowerBound +
 						", " + upperBound + "], but given " + value);
 			}
 			
 			return value;
 		} catch (NumberFormatException e) {
-			throw new InvalidParameterException(getName(), "value is not an decimal, given '" + str + "'");
+			throw new InvalidParameterException(getName(), "value is not a double, given '" + str + "'");
 		}
 	}
 	
@@ -89,7 +89,7 @@ NumericParameter<Double> {
 	
 	@Override
 	public String encode(Tokenizer tokenizer) {
-		return tokenizer.encode(List.of(getName(), "decimal", Double.toString(getLowerBound()),
+		return tokenizer.encode(List.of(getName(), "double", Double.toString(getLowerBound()),
 				Double.toString(getUpperBound())));
 	}
 	
@@ -108,8 +108,8 @@ NumericParameter<Double> {
 			throw new InvalidParameterException(tokens[0], "missing type");
 		}
 		
-		if (!tokens[1].equalsIgnoreCase("decimal")) {
-			throw new InvalidParameterException(tokens[0], "type does not match 'decimal'");
+		if (!tokens[1].equalsIgnoreCase("double") && !tokens[1].equalsIgnoreCase("decimal")) {
+			throw new InvalidParameterException(tokens[0], "type does not match 'double' or 'decimal'");
 		}
 		
 		if (tokens.length != 4) {
@@ -120,11 +120,11 @@ NumericParameter<Double> {
 	}
 	
 	/**
-	 * Rounds the decimal value using the same precision as {@link Settings#EPS}.  This prevents small errors in the
+	 * Rounds the value using the same precision as {@link Settings#EPS}.  This prevents small errors in the
 	 * floating-point representation / arithmetic from manifesting as different parameter values.
 	 * 
-	 * @param value the original decimal value
-	 * @return the rounded decimal value stored as a string
+	 * @param value the original value
+	 * @return the rounded value stored as a string
 	 */
 	public static String applyPrecision(double value) {
 		return PRECISION_FORMAT.format(value);

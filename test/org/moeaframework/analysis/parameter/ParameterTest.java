@@ -28,6 +28,7 @@ public class ParameterTest {
 		Assert.assertInstanceOf(Enumeration.class, Parameter.decode("foo enum 1 2 3"));
 		Assert.assertInstanceOf(SampledInteger.class, Parameter.decode("foo int 1 2"));
 		Assert.assertInstanceOf(SampledLong.class, Parameter.decode("foo long 1 2"));
+		Assert.assertInstanceOf(SampledDouble.class, Parameter.decode("foo double 1.0 2.0"));
 		Assert.assertInstanceOf(SampledDouble.class, Parameter.decode("foo decimal 1.0 2.0"));
 	}
 	

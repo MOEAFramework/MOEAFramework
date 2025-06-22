@@ -32,12 +32,12 @@ for sampling.  Note the parameter names must match the configurable properties f
 <!-- :code: src=examples/org/moeaframework/examples/sensitivity/NSGAII_Params.txt -->
 
 ```
-maxEvaluations        int     1000 10000
-populationSize        int     10   500
-sbx.rate              decimal 0.0  1.0
-sbx.distributionIndex decimal 1.0  50.0
-pm.rate               decimal 0.0  1.0
-pm.distributionIndex  decimal 1.0  50.0
+maxEvaluations        int    1000 10000
+populationSize        int    10   500
+sbx.rate              double 0.0  1.0
+sbx.distributionIndex double 1.0  50.0
+pm.rate               double 0.0  1.0
+pm.distributionIndex  double 1.0  50.0
 ```
 
 ## Generate Samples

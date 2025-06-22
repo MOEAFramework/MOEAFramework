@@ -118,6 +118,7 @@ public interface Parameter<T> extends Named {
 		types.put("int", SampledInteger::decode);
 		types.put("long", SampledLong::decode);
 		types.put("decimal", SampledDouble::decode);
+		types.put("double", SampledDouble::decode);
 		
 		BiFunction<Tokenizer, String, Parameter<?>> decoder = types.get(tokens[1]);
 		

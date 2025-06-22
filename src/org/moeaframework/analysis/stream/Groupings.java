@@ -91,9 +91,9 @@ public class Groupings{
 	}
 	
 	/**
-	 * Buckets an decimal-valued parameter into groups with similar values.
+	 * Buckets an double-valued parameter into groups with similar values.
 	 * 
-	 * @param parameter the decimal-valued parameter
+	 * @param parameter the double-valued parameter
 	 * @param width the width of the bucket
 	 * @return the grouping function
 	 */
@@ -122,7 +122,7 @@ public class Groupings{
 	}
 	
 	/**
-	 * Buckets a decimal stream into groups with similar values.
+	 * Buckets a double stream into groups with similar values.
 	 * 
 	 * @param width the width of the bucket
 	 * @return the grouping function
