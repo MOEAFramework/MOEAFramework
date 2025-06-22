@@ -35,12 +35,16 @@ public class MaximizeTest {
 	@Test
 	public void testEquals() {
 		Maximize expected = Maximize.value();
-		Maximize actual = expected.copy();
+		Assert.assertEquals(expected, expected);
 		
-		Assert.assertEquals(expected, actual);
+		Maximize copy = expected.copy();
+		Assert.assertEquals(expected, copy);
 		
-		actual.setValue(5.0);
-		Assert.assertNotEquals(expected, actual);
+		copy.setValue(5.0);
+		Assert.assertNotEquals(expected, copy);
+		
+		Assert.assertEquals(Maximize.value("foo"), Maximize.value("foo"));
+		Assert.assertNotEquals(Maximize.value("foo"), Maximize.value("bar"));
 	}
 	
 	@Test

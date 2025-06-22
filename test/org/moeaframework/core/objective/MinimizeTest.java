@@ -35,12 +35,16 @@ public class MinimizeTest {
 	@Test
 	public void testEquals() {
 		Minimize expected = Minimize.value();
-		Minimize actual = expected.copy();
+		Assert.assertEquals(expected, expected);
+
+		Minimize copy = expected.copy();
+		Assert.assertEquals(expected, copy);
 		
-		Assert.assertEquals(expected, actual);
+		copy.setValue(5.0);
+		Assert.assertNotEquals(expected, copy);
 		
-		actual.setValue(5.0);
-		Assert.assertNotEquals(expected, actual);
+		Assert.assertEquals(Minimize.value("foo"), Minimize.value("foo"));
+		Assert.assertNotEquals(Minimize.value("foo"), Minimize.value("bar"));
 	}
 	
 	@Test

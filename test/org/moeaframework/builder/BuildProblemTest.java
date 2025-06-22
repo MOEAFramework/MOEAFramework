@@ -69,7 +69,7 @@ public class BuildProblemTest {
 		
 		if (Assume.isGitHubActions()) {
 			// Note: The licenses imported by the setup-matlab action does not enable MatlabEngine.  We can compile
-			// the example but can't run to end-to-end.  See https://github.com/matlab-actions/setup-matlab/issues/13.
+			// the example but can't run end-to-end.  See https://github.com/matlab-actions/setup-matlab/issues/13.
 			File directory = test("matlab", null, null, null, false);
 			
 			CaptureResult result = Capture.output(new ProcessBuilder()

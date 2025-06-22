@@ -24,8 +24,14 @@ import org.moeaframework.core.TypeMismatchException;
 public class ObjectiveTest {
 	
 	@Test(expected = TypeMismatchException.class)
-	public void testCompareTo() {
+	public void testCompareToWrongType() {
 		Minimize.value().compareTo(Maximize.value());
+	}
+	
+	@SuppressWarnings("unlikely-arg-type")
+	@Test
+	public void testEqualsWrongType() {
+		Assert.assertFalse(Minimize.value().equals(Maximize.value()));
 	}
 	
 	@Test

@@ -61,7 +61,7 @@ public class TypedPropertiesTest {
 		
 		Assert.assertEquals("value", TypedProperties.of("key", "value").getString("key"));
 		Assert.assertEquals(2.71, TypedProperties.of("key", 2.71).getDouble("key"), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(2.71f, TypedProperties.of("key", 2.71).getFloat("key"), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(2.71f, TypedProperties.of("key", 2.71f).getFloat("key"), TestThresholds.HIGH_PRECISION);
 		Assert.assertEquals(42, TypedProperties.of("key", 42).getInt("key"));
 		Assert.assertEquals(42, TypedProperties.of("key", 42L).getLong("key"));
 		Assert.assertEquals(42, TypedProperties.of("key", (short)42).getShort("key"));
@@ -176,7 +176,12 @@ public class TypedPropertiesTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testInvalidEnum() {
 		properties.setString("enum_invalid", "baz");
-		Assert.assertEquals(TestEnum.BAR, properties.getEnum("enum_invalid", TestEnum.class));
+		properties.getEnum("enum_invalid", TestEnum.class);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testInvalidEnumFromString() {
+		TypedProperties.getEnumFromString(TestEnum.class, "baz");
 	}
 	
 	@Test(expected = NullPointerException.class)

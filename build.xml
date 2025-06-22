@@ -408,6 +408,7 @@ done < <(git diff --cached --name-only --diff-filter=ACM)
 		<delete dir="build" quiet="true" />
 		<delete dir="dist" quiet="true" />
 		<delete dir="javadoc" quiet="true" />
+		<delete dir="test-results" quiet="true" />
 		<delete>
 			<fileset dir="examples" includes="**/*.class"/>
 			<fileset dir="src" includes="**/*.class"/>
