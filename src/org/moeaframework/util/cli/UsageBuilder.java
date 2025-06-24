@@ -36,7 +36,7 @@ class UsageBuilder {
 
 	private String executable;
 
-	private Class<? extends CommandLineUtility> utility;
+	private Class<?> mainClass;
 
 	private List<String> commands;
 
@@ -60,19 +60,20 @@ class UsageBuilder {
 	 * @param executable the executable string
 	 * @return this usage builder
 	 */
-	public UsageBuilder withExecutable(String executable) {
+	public UsageBuilder executable(String executable) {
 		this.executable = executable;
 		return this;
 	}
 
 	/**
-	 * Sets the command line utility that was invoked.
+	 * Sets the Java class defining the main method, typically extending from {@link CommandLineUtility}, that is being
+	 * invoked.
 	 * 
-	 * @param utility the command line utility
+	 * @param mainClass the class defining the main method being invoked
 	 * @return this usage builder
 	 */
-	public UsageBuilder withUtility(Class<? extends CommandLineUtility> utility) {
-		this.utility = utility;
+	public UsageBuilder mainClass(Class<?> mainClass) {
+		this.mainClass = mainClass;
 		return this;
 	}
 
@@ -82,9 +83,19 @@ class UsageBuilder {
 	 * @param command the command name
 	 * @return this usage builder
 	 */
-	public UsageBuilder withCommand(String command) {
+	public UsageBuilder command(String command) {
 		commands.add(command);
 		return this;
+	}
+	
+	/**
+	 * Sets the commands, if supported, that were called.  Each command is appended to any previously-added commands.
+	 * 
+	 * @param command the command name
+	 * @return this usage builder
+	 */
+	public UsageBuilder command(Command command) {
+		return command(command.getName());
 	}
 
 	/**
@@ -93,8 +104,19 @@ class UsageBuilder {
 	 * @param options the options
 	 * @return this usage builder
 	 */
-	public UsageBuilder withOptions(Options options) {
+	public UsageBuilder options(Options options) {
 		this.options = options;
+		return this;
+	}
+	
+	/**
+	 * Sets the style for formatting options.
+	 * 
+	 * @param optionStyle the style for formatting options
+	 * @return this usage builder
+	 */
+	public UsageBuilder optionStyle(OptionStyle optionStyle) {
+		this.optionStyle = optionStyle;
 		return this;
 	}
 
@@ -105,20 +127,9 @@ class UsageBuilder {
 	 * @param args the positional argument names
 	 * @return this usage builder
 	 */
-	public UsageBuilder withPositionalArgs(String... args) {
+	public UsageBuilder positionalArgs(String... args) {
 		positionalArgs.clear();
 		positionalArgs.addAll(List.of(args));
-		return this;
-	}
-
-	/**
-	 * Sets the style for formatting options.
-	 * 
-	 * @param optionStyle the style for formatting options
-	 * @return this usage builder
-	 */
-	public UsageBuilder withOptionStyle(OptionStyle optionStyle) {
-		this.optionStyle = optionStyle;
 		return this;
 	}
 
@@ -133,9 +144,9 @@ class UsageBuilder {
 
 		sb.append(executable != null ? executable.trim() : "");
 
-		if (utility != null) {
+		if (mainClass != null) {
 			sb.append(" ");
-			sb.append(utility.getEnclosingClass() == null ? utility.getName() : utility.getEnclosingClass().getName());
+			sb.append(mainClass.getName());
 		}
 
 		for (String command : commands) {
@@ -156,7 +167,7 @@ class UsageBuilder {
 					OptionGroup group = options.getOptionGroup(option);
 					
 					if (optionStyle.equals(OptionStyle.REQUIRED_ONLY) &&
-							!option.isRequired() || (group != null && !group.isRequired())) {
+							(!option.isRequired() || (group != null && !group.isRequired()))) {
 						continue;
 					}
 

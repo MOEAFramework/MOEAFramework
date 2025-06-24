@@ -245,7 +245,7 @@ public abstract class CommandLineUtility {
 		constructor.setAccessible(true);
 			
 		CommandLineUtility commandInstance = constructor.newInstance();
-		commandInstance.setUsageBuilder(usageBuilder.withCommand(command.getName()));
+		commandInstance.setUsageBuilder(usageBuilder.command(command));
 		commandInstance.start(commandArgs);
 	}
 	
@@ -340,21 +340,21 @@ public abstract class CommandLineUtility {
 	 * @return the formatted usage string
 	 */
 	protected String getUsageString() {
-		usageBuilder.withExecutable(Settings.getCLIExecutable());
+		usageBuilder.executable(Settings.getCLIExecutable());
+		usageBuilder.optionStyle(Settings.getCLIOptionStyle());
 		
 		if (!Settings.PROPERTIES.contains(Settings.KEY_CLI_EXECUTABALE)) {
-			usageBuilder.withUtility(getClass());
+			usageBuilder.mainClass(getClass());
 		}
 		
-		usageBuilder.withOptions(getOptions());
-		usageBuilder.withOptionStyle(Settings.getCLIOptionStyle());
+		usageBuilder.options(getOptions());
 		
 		if (Localization.containsKey(getClass(), "args")) {
 			String args = Localization.getString(getClass(), "args");
 			
 			Tokenizer tokenizer = new Tokenizer();
 			tokenizer.setDelimiter(',');
-			usageBuilder.withPositionalArgs(tokenizer.decodeToArray(args));
+			usageBuilder.positionalArgs(tokenizer.decodeToArray(args));
 		}
 		
 		return usageBuilder.build();

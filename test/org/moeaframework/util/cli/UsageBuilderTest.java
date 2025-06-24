@@ -18,6 +18,7 @@
 package org.moeaframework.util.cli;
 
 import org.apache.commons.cli.Option;
+import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.junit.Test;
 import org.moeaframework.Assert;
@@ -28,9 +29,9 @@ public class UsageBuilderTest {
 	@Test
 	public void testUtility() throws Exception {
 		String usage = new UsageBuilder()
-			.withExecutable(Settings.getCLIExecutable())
-			.withUtility(TestExamples.class)
-			.withPositionalArgs("src", "dest")
+			.executable(Settings.getCLIExecutable())
+			.mainClass(TestExamples.class)
+			.positionalArgs("src", "dest")
 			.build();
 		
 		Assert.assertEquals("java -classpath \"lib/*\" " + TestExamples.class.getName() + " <src> <dest>", usage);
@@ -39,10 +40,10 @@ public class UsageBuilderTest {
 	@Test
 	public void testCommand() throws Exception {
 		String usage = new UsageBuilder()
-			.withExecutable("./cli")
-			.withCommand("TestExamples")
-			.withCommand("command")
-			.withPositionalArgs("src", "dest")
+			.executable("./cli")
+			.command("TestExamples")
+			.command("command")
+			.positionalArgs("src", "dest")
 			.build();
 		
 		Assert.assertEquals("./cli TestExamples command <src> <dest>", usage);
@@ -56,11 +57,11 @@ public class UsageBuilderTest {
 		options.addOption(Option.builder("r").hasArg().argName("val").required().build());
 		
 		String usage = new UsageBuilder()
-			.withExecutable("./cli")
-			.withCommand("TestExamples")
-			.withOptions(options)
-			.withPositionalArgs("src", "dest")
-			.withOptionStyle(OptionStyle.ALL)
+			.executable("./cli")
+			.command("TestExamples")
+			.options(options)
+			.positionalArgs("src", "dest")
+			.optionStyle(OptionStyle.ALL)
 			.build();
 		
 		Assert.assertEquals("./cli TestExamples [-b <val>] [-f] -r <val> <src> <dest>", usage);
@@ -74,11 +75,11 @@ public class UsageBuilderTest {
 		options.addOption(Option.builder("r").hasArg().argName("val").required().build());
 		
 		String usage = new UsageBuilder()
-			.withExecutable("./cli")
-			.withCommand("TestExamples")
-			.withOptions(options)
-			.withPositionalArgs("src", "dest")
-			.withOptionStyle(OptionStyle.REQUIRED_ONLY)
+			.executable("./cli")
+			.command("TestExamples")
+			.options(options)
+			.positionalArgs("src", "dest")
+			.optionStyle(OptionStyle.REQUIRED_ONLY)
 			.build();
 		
 		Assert.assertEquals("./cli TestExamples -r <val> <src> <dest>", usage);
@@ -92,13 +93,35 @@ public class UsageBuilderTest {
 		options.addOption(Option.builder("r").hasArg().argName("val").required().build());
 		
 		String usage = new UsageBuilder()
-			.withExecutable("./cli")
-			.withCommand("TestExamples")
-			.withOptions(options)
-			.withPositionalArgs("src", "dest")
+			.executable("./cli")
+			.command("TestExamples")
+			.options(options)
+			.positionalArgs("src", "dest")
 			.build();
 		
 		Assert.assertEquals("./cli TestExamples [options] <src> <dest>", usage);
+	}
+	
+	@Test
+	public void testGroup() throws Exception {
+		Options options = new Options();
+		
+		OptionGroup group = new OptionGroup();
+		group.addOption(Option.builder("f").build());
+		group.addOption(Option.builder("b").hasArg().argName("val").build());
+		group.addOption(Option.builder("r").hasArg().argName("val").required().build());
+		
+		options.addOptionGroup(group);
+		
+		String usage = new UsageBuilder()
+			.executable("./cli")
+			.command("TestExamples")
+			.options(options)
+			.positionalArgs("src", "dest")
+			.optionStyle(OptionStyle.ALL)
+			.build();
+		
+		Assert.assertEquals("./cli TestExamples [-f | -b <val> | -r <val>] <src> <dest>", usage);
 	}
 
 }
