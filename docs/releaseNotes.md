@@ -2,7 +2,7 @@
 
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
-## Version 5.1 (In Development)
+## Version 5.1 (24 June 2025)
 
   * Fixes `ResultFileViewer` tool, which wasn't starting the viewer when invoking the CLI.
   
@@ -15,7 +15,7 @@ This page documents notable changes introduced in each chronological release of 
     `HeatMapBuilder`, `SensitivityPlotBuilder`, etc.  
 
 
-## Version 5.0 (17 Jan 2025)
+## Version 5.0 (17 January 2025)
 
 Version 5.0 includes substantial changes over previous versions.  While we encourage users to upgrade to this new
 version to access the latest features, please be aware you will likely need to update your code.
