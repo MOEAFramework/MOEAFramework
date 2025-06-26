@@ -103,8 +103,8 @@ public class Timer implements Formattable<StatisticalSummary>, Named {
 	 */
 	public void start() {
 		if (startTime != NOT_STARTED) {
-			throw new IllegalStateException(name == null ? "timer already started" :
-				"timer '" + name + "'already started");
+			throw new IllegalStateException(name == null ? "Timer already started" :
+				"Timer '" + name + "'already started");
 		}
 		
 		startTime = System.nanoTime();
@@ -119,8 +119,8 @@ public class Timer implements Formattable<StatisticalSummary>, Named {
 		long stopTime = System.nanoTime();
 		
 		if (startTime == NOT_STARTED) {
-			throw new IllegalStateException(name == null ? "timer not started" :
-				"timer '" + name + "' not started");
+			throw new IllegalStateException(name == null ? "Timer not started" :
+				"Timer '" + name + "' not started");
 		}
 		
 		double result = toSeconds(stopTime - startTime);
