@@ -100,7 +100,7 @@ public class CheckpointExtension extends PeriodicExtension {
 			try {
 				loadFromStateFile(algorithm);
 			} catch (IOException | ClassNotFoundException e) {
-				System.err.println("WARNING Unable to read state file, continuing without checkpoints!");
+				System.err.println("WARNING: Unable to read state file, continuing without checkpoints!");
 				e.printStackTrace();
 			}
 		}

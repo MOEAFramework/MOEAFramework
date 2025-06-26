@@ -85,7 +85,7 @@ jobs:
       if: always()
       with:
         name: ant-test-results-${{ matrix.os }}-${{ matrix.java }}
-        path: test-results     
+        path: test-results
 
   maven-tests:
     runs-on: ubuntu-latest

@@ -597,7 +597,7 @@ public abstract class ExternalProblem implements Problem {
 			try {
 				instance.start();
 			} catch (IOException e) {
-				throw new ProblemException(this, "error while starting external problem", e);
+				throw new ProblemException(this, "Error while starting external problem", e);
 			}
 		}
 
@@ -625,7 +625,7 @@ public abstract class ExternalProblem implements Problem {
 			writer.write(sb.toString());
 			writer.flush();
 		} catch (IOException e) {
-			throw new ProblemException(this, "error sending variables to external problem", e);
+			throw new ProblemException(this, "Error sending variables to external problem", e);
 		}
 
 		// receive objectives from external process
@@ -638,7 +638,7 @@ public abstract class ExternalProblem implements Problem {
 					instance.close();
 				}
 
-				throw new ProblemException(this, "end of stream reached when response expected");
+				throw new ProblemException(this, "End of stream reached when response expected");
 			}
 
 			debug.print(">> ");
@@ -647,7 +647,7 @@ public abstract class ExternalProblem implements Problem {
 			String[] tokens = tokenizer.decodeToArray(line);
 
 			if (tokens.length != (solution.getNumberOfObjectives() + solution.getNumberOfConstraints())) {
-				throw new ProblemException(this, "response contained fewer tokens than expected");
+				throw new ProblemException(this, "Response contained fewer tokens than expected");
 			}
 
 			int index = 0;
@@ -662,7 +662,7 @@ public abstract class ExternalProblem implements Problem {
 				index++;
 			}
 		} catch (IOException | NumberFormatException e) {
-			throw new ProblemException(this, "error receiving variables from external problem", e);
+			throw new ProblemException(this, "Error receiving variables from external problem", e);
 		}
 	}
 
@@ -677,7 +677,7 @@ public abstract class ExternalProblem implements Problem {
 				variable instanceof BinaryVariable ||
 				variable instanceof Permutation ||
 				variable instanceof Subset)) {
-			throw new ProblemException(this, "encoding " + variable.getClass().getSimpleName() + " not supported");
+			throw new ProblemException(this, "Encoding " + variable.getClass().getSimpleName() + " not supported");
 		}
 
 		// use toString() instead of encode() as we want to send the value
