@@ -17,27 +17,21 @@
  */
 package org.moeaframework.analysis.store;
 
-import java.io.PrintStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.moeaframework.core.TypedProperties;
-import org.moeaframework.util.format.Column;
-import org.moeaframework.util.format.Displayable;
-import org.moeaframework.util.format.TabularData;
 
 /**
  * URI referencing a {@link DataStore} or its contents.
  */
-public class DataStoreURI implements Displayable {
+public class DataStoreURI {
 	
 	/**
 	 * The query parameter used to identify the blob name.
@@ -169,26 +163,6 @@ public class DataStoreURI implements Displayable {
 	 */
 	public String getName() {
 		return name;
-	}
-
-	public void display(PrintStream out) {
-		Map<String, String> parts = new LinkedHashMap<>();
-		parts.put("IsAbsolute", Boolean.toString(uri.isAbsolute()));
-		parts.put("IsOpaque", Boolean.toString(uri.isOpaque()));
-		parts.put("Scheme", uri.getScheme());
-		parts.put("Scheme Specific Part", uri.getSchemeSpecificPart());
-		parts.put("Authority", uri.getAuthority());
-		parts.put("User Info", uri.getUserInfo());
-		parts.put("Host", uri.getHost());
-		parts.put("Port", Integer.toString(uri.getPort()));
-		parts.put("Path", uri.getPath());
-		parts.put("Query", uri.getQuery());
-		parts.put("Fragment", uri.getFragment());
-		
-		TabularData<Map.Entry<String, String>> data = new TabularData<>(parts.entrySet());
-		data.addColumn(new Column<Map.Entry<String, String>, String>("Field", x -> x.getKey()));
-		data.addColumn(new Column<Map.Entry<String, String>, String>("Value", x -> x.getValue() == null ? "<null>" : x.getValue()));
-		data.display(out);
 	}
 	
 	@Override
