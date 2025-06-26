@@ -33,7 +33,6 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.output.CloseShieldOutputStream;
 import org.apache.commons.io.output.CloseShieldWriter;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.reflect.TypeUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.text.translate.AggregateTranslator;
@@ -154,7 +153,7 @@ public class TabularData<T> implements Displayable {
 	 */
 	protected String formatValue(Object value) {
 		for (Formatter<?> formatter : formatters) {
-			if (TypeUtils.isInstance(value, formatter.getType())) {
+			if (formatter.getType().isInstance(value)) {
 				return formatter.format(value);
 			}
 		}

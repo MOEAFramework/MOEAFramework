@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-import org.apache.commons.lang3.reflect.TypeUtils;
+import org.apache.commons.lang3.ClassUtils;
 import org.moeaframework.Assert;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Settings;
@@ -192,7 +192,7 @@ public class MockSolution extends Solution {
 			}
 
 			for (int i = 0; i < solution.get().getNumberOfVariables(); i++) {
-				if (!TypeUtils.isAssignable(variables[i].getClass(), solution.get().getVariable(i).getClass())) {
+				if (!ClassUtils.isAssignable(variables[i].getClass(), solution.get().getVariable(i).getClass())) {
 					Assert.fail("Invalid mock usage: attempted to set " + variables[i].getClass().getSimpleName() +
 							" when expecting " + solution.get().getVariable(i).getClass());
 				}

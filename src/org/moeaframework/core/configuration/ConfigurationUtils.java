@@ -20,8 +20,8 @@ package org.moeaframework.core.configuration;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
-import org.apache.commons.lang3.reflect.TypeUtils;
 import org.apache.commons.text.WordUtils;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.core.Settings;
@@ -177,34 +177,34 @@ public class ConfigurationUtils {
 		Object value = null;
 		
 		// order widest to shortest
-		if (TypeUtils.isAssignable(double.class, parameterType)) {
+		if (ClassUtils.isAssignable(double.class, parameterType)) {
 			value = properties.getDouble(propertyName);
-		} else if (TypeUtils.isAssignable(float.class, parameterType)) {
+		} else if (ClassUtils.isAssignable(float.class, parameterType)) {
 			value = properties.getFloat(propertyName);
-		} else if (TypeUtils.isAssignable(long.class, parameterType)) {
+		} else if (ClassUtils.isAssignable(long.class, parameterType)) {
 			value = properties.getLong(propertyName);
-		} else if (TypeUtils.isAssignable(int.class, parameterType)) {
+		} else if (ClassUtils.isAssignable(int.class, parameterType)) {
 			value = properties.getTruncatedInt(propertyName);
-		} else if (TypeUtils.isAssignable(short.class, parameterType)) {
+		} else if (ClassUtils.isAssignable(short.class, parameterType)) {
 			value = properties.getShort(propertyName);
-		} else if (TypeUtils.isAssignable(byte.class, parameterType)) {
+		} else if (ClassUtils.isAssignable(byte.class, parameterType)) {
 			value = properties.getByte(propertyName);
-		} else if (TypeUtils.isAssignable(boolean.class, parameterType)) {
+		} else if (ClassUtils.isAssignable(boolean.class, parameterType)) {
 			value = properties.getBoolean(propertyName);
-		} else if (TypeUtils.isAssignable(parameterType, Enum.class)) {
+		} else if (ClassUtils.isAssignable(parameterType, Enum.class)) {
 			value = properties.getEnum(propertyName, (Class<? extends Enum<?>>)parameterType);
-		} else if (TypeUtils.isAssignable(String.class, parameterType)) {
+		} else if (ClassUtils.isAssignable(String.class, parameterType)) {
 			value = properties.getString(propertyName);
-		} else if (TypeUtils.isAssignable(Variation.class, parameterType) ||
-				TypeUtils.isAssignable(DifferentialEvolutionVariation.class, parameterType)) {
+		} else if (ClassUtils.isAssignable(Variation.class, parameterType) ||
+				ClassUtils.isAssignable(DifferentialEvolutionVariation.class, parameterType)) {
 			if (problem == null) {
 				throw new ConfigurationException("Must provide problem if setting variation operator");
 			}
 						
 			String operator = properties.getString(propertyName);
 			value = OperatorFactory.getInstance().getVariation(operator, properties, problem);
-		} else if (TypeUtils.isAssignable(Mutation.class, parameterType) ||
-				TypeUtils.isAssignable(SelfAdaptiveNormalVariation.class, parameterType)) {
+		} else if (ClassUtils.isAssignable(Mutation.class, parameterType) ||
+				ClassUtils.isAssignable(SelfAdaptiveNormalVariation.class, parameterType)) {
 			if (problem == null) {
 				throw new ConfigurationException("Must provide problem if setting mutation operator");
 			}
@@ -242,27 +242,27 @@ public class ConfigurationUtils {
 			}
 
 			// order shortest to widest
-			if (TypeUtils.isAssignable(parameterType, boolean.class)) {
+			if (ClassUtils.isAssignable(parameterType, boolean.class)) {
 				properties.setBoolean(propertyName, (boolean)value);
-			} else if (TypeUtils.isAssignable(parameterType, byte.class)) {
+			} else if (ClassUtils.isAssignable(parameterType, byte.class)) {
 				properties.setByte(propertyName, (byte)value);
-			} else if (TypeUtils.isAssignable(parameterType, short.class)) {
+			} else if (ClassUtils.isAssignable(parameterType, short.class)) {
 				properties.setShort(propertyName, (short)value);
-			} else if (TypeUtils.isAssignable(parameterType, int.class)) {
+			} else if (ClassUtils.isAssignable(parameterType, int.class)) {
 				properties.setInt(propertyName, (int)value);
-			} else if (TypeUtils.isAssignable(parameterType, long.class)) {
+			} else if (ClassUtils.isAssignable(parameterType, long.class)) {
 				properties.setLong(propertyName, (long)value);
-			} else if (TypeUtils.isAssignable(parameterType, float.class)) {
+			} else if (ClassUtils.isAssignable(parameterType, float.class)) {
 				properties.setDouble(propertyName, (float)value);
-			} else if (TypeUtils.isAssignable(parameterType, double.class)) {
+			} else if (ClassUtils.isAssignable(parameterType, double.class)) {
 				properties.setDouble(propertyName, (double)value);
-			} else if (TypeUtils.isAssignable(parameterType, Enum.class)) {
+			} else if (ClassUtils.isAssignable(parameterType, Enum.class)) {
 				properties.setEnum(propertyName, (Enum<?>)value);
-			} else if (TypeUtils.isAssignable(parameterType, String.class)) {
+			} else if (ClassUtils.isAssignable(parameterType, String.class)) {
 				properties.setString(propertyName, (String)value);
-			} else if (TypeUtils.isAssignable(parameterType, Variation.class)) {
+			} else if (ClassUtils.isAssignable(parameterType, Variation.class)) {
 				properties.setString(propertyName, ((Variation)value).getName());
-			} else if (TypeUtils.isAssignable(parameterType, Problem.class)) {
+			} else if (ClassUtils.isAssignable(parameterType, Problem.class)) {
 				properties.setString(propertyName, ((Problem)value).getName());
 			} else {
 				throw ConfigurationException.unsupportedType(parameterType, propertyName);
@@ -330,7 +330,7 @@ public class ConfigurationUtils {
 	 */
 	private static boolean isGetter(Method method, Class<?> returnType) {
 		return method.getName().startsWith("get") && method.getParameterCount() == 0 &&
-				TypeUtils.isAssignable(method.getReturnType(), returnType);
+				ClassUtils.isAssignable(method.getReturnType(), returnType);
 	}
 	
 	/**
