@@ -49,7 +49,7 @@ public class DefinedTest {
 		Assert.assertEquals(0.000001, constraint.getEpsilon(), TestThresholds.HIGH_PRECISION);
 	}
 	
-	@Test(expected = FrameworkException.class)
+	@Test
 	public void testUnquotedString() {
 		Defined.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(foo, 2, 0.000001)");
 	}

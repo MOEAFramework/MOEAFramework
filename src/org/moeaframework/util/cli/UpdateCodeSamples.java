@@ -25,11 +25,7 @@ import java.io.StreamTokenizer;
 import java.io.StringReader;
 import java.io.UncheckedIOException;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.net.URI;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -44,15 +40,10 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
-import javax.tools.JavaCompiler;
-import javax.tools.ToolProvider;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.moeaframework.analysis.plot.PlotBuilder;
@@ -62,6 +53,8 @@ import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
+import org.moeaframework.util.JavaBuilder;
+import org.moeaframework.util.ReflectionUtils;
 import org.moeaframework.util.format.Displayable;
 import org.moeaframework.util.validate.Validate;
 
@@ -860,20 +853,14 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		@Override
 		public String execute(ProcessorInstruction instruction) throws IOException {
 			File sourceFile = instruction.getSourceFile();
-			File classFile = new File(sourceFile.getParent(),
-					FilenameUtils.removeExtension(sourceFile.getName()) + ".class");
-
-			if (clean || !classFile.exists() || FileUtils.isFileNewer(sourceFile, classFile)) {
-				FileUtils.forceMkdir(buildPath);
-				FileUtils.deleteQuietly(classFile);
-
-				JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-								
-				if (compiler.run(null, null, null, sourceFile.getAbsolutePath(),
-						"-d", buildPath.toString(),
-						"-sourcepath", getSourcePath()) != 0) {
-					throw new IOException("Failed to compile " + sourceFile);
-				}
+			
+			JavaBuilder builder = new JavaBuilder();
+			builder.clean(clean);
+			builder.buildPath(buildPath);
+			builder.sourcePath(sourcePath.toArray(File[]::new));
+			
+			if (!builder.compile(sourceFile)) {
+				throw new IOException("Failed to compile " + sourceFile);
 			}
 			
 			PrintStream oldOut = System.out;
@@ -885,32 +872,24 @@ public class UpdateCodeSamples extends CommandLineUtility {
 					PrintStream newOut = new PrintStream(baos)) {
 				System.setOut(newOut);
 
-				Class<?> cls = loadClass(sourceFile);
+				String className = builder.getFullyQualifiedClassName(sourceFile);
+				Class<?> cls = Class.forName(className, true, builder.getClassLoader());
+				
+				String[] args = instruction.getOptions().getStringArray("args", new String[0]);
 				
 				if (methodName.equals("main")) {
-					Method method = cls.getDeclaredMethod(methodName, String[].class);
-					String[] args = instruction.getOptions().getStringArray("args", new String[0]);
-
 					if (CommandLineUtility.class.isAssignableFrom(cls)) {
 						Settings.PROPERTIES.setString(Settings.KEY_CLI_EXECUTABALE, "./cli " + cls.getSimpleName());
 					}
 					
-					method.invoke(null, (Object)args);
+					ReflectionUtils.invokeStaticMethod(cls, methodName, (Object)args);
 				} else {
-					if (instruction.getOptions().contains("args")) {
-						Validate.fail("Arguments are only supported on main methods");
-					}
-					
-					Method method = cls.getDeclaredMethod(methodName);
-					Object instance = Modifier.isStatic(method.getModifiers()) ? null : cls.getConstructor().newInstance();
-					
-					method.invoke(instance);
-				}				
+					ReflectionUtils.invokeStaticMethod(cls, methodName, (Object[])args);
+				}
 
 				newOut.close();
 				return baos.toString();
-			} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException |
-					 InstantiationException | IllegalArgumentException e) {
+			} catch (ClassNotFoundException | NoSuchMethodException | IllegalArgumentException e) {
 				throw new IOException("Failed to execute method " + methodName + " in " + sourceFile, e);
 			} catch (InvocationTargetException e) {
 				throw new IOException("Failed during execution of method " + methodName + " in " + sourceFile, e.getCause());
@@ -943,33 +922,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		public TextMatcher getMethodMatcher(String methodName) {
 			return new MethodMatcher(methodName);
 		}
-		
-		private Class<?> loadClass(File sourceFile) throws IOException, ClassNotFoundException {
-			String className = getClassName(sourceFile);
-			
-			URLClassLoader classLoader = new URLClassLoader(new URL[] { buildPath.toURI().toURL() },
-					Thread.currentThread().getContextClassLoader());
 
-			return Class.forName(className, true, classLoader);
-		}
-		
-		private String getClassName(File sourceFile) {
-			Path path = Path.of(FilenameUtils.removeExtension(sourceFile.getPath()));
-			
-			for (File source : sourcePath) {
-				if (source.isDirectory() && path.startsWith(source.toPath())) {
-					path = path.subpath(source.toPath().getNameCount(), path.getNameCount());
-					break;
-				}
-			}
-			
-			return path.toString().replaceAll("[\\\\/]", ".");
-		}
-		
-		private String getSourcePath() {
-			return sourcePath.stream().map(Object::toString).collect(Collectors.joining(File.pathSeparator));
-		}
-		
 	}
 	
 	/**

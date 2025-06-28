@@ -17,23 +17,10 @@
  */
 package org.moeaframework.core;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import org.apache.commons.lang3.ClassUtils;
-import org.apache.commons.lang3.reflect.ConstructorUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
-import org.apache.commons.lang3.tuple.Pair;
-import org.moeaframework.util.FixedOrderComparator;
-import org.moeaframework.util.Iterators;
+import org.moeaframework.util.ReflectionUtils;
 import org.moeaframework.util.io.Tokenizer;
 
 /**
@@ -196,119 +183,21 @@ public interface Defined {
 		if (!definition.contains(".")) {
 			definition = returnType.getPackageName() + "." + definition;
 		}
+		
+		// strip off any quotes
+		for (int i = 0; i < arguments.length; i++) {
+			if (arguments[i].startsWith("\"") && arguments[i].endsWith("\"")) {
+				arguments[i] = arguments[i].substring(1, arguments[i].length() - 1);
+			}
+		}
 
-		// locate the class
+		// locate and instantiate the class
 		try {
 			Class<?> definitionClass = Class.forName(definition);
-
-			outer: for (Constructor<?> constructor : getOrderedConstructors(definitionClass)) {
-				if (constructor.getParameterCount() != arguments.length) {
-					continue;
-				}
-				
-				Parameter[] parameters = constructor.getParameters();
-				Object[] castArguments = new Object[arguments.length];
-
-				for (int i = 0; i < arguments.length; i++) {
-					Class<?> parameterType = parameters[i].getType();
-					
-					if (parameterType.isPrimitive()) {
-						parameterType = ClassUtils.primitiveToWrapper(parameterType);
-					}
-					
-					if (parameterType.equals(String.class)) {
-						if (arguments[i].startsWith("\"") && arguments[i].endsWith("\"")) {
-							arguments[i] = arguments[i].substring(1, arguments[i].length() - 1);
-						} else {
-							continue outer;
-						}
-					}
-
-					try {
-						castArguments[i] = MethodUtils.invokeStaticMethod(parameterType, "valueOf", arguments[i]);
-					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException |
-							NoSuchMethodException | SecurityException e) {
-						continue outer;
-					}
-				}
-				
-				try {
-					return returnType.cast(ConstructorUtils.invokeConstructor(definitionClass, castArguments));
-				} catch (IllegalAccessException | IllegalArgumentException | InstantiationException |
-						InvocationTargetException | NoSuchMethodException e) {
-					continue;
-				}
-			}
-		} catch (ClassNotFoundException | SecurityException e) {
-			throw new FrameworkException("Unable to create " + definition + ", not a valid or accessible class", e);
+			return returnType.cast(ReflectionUtils.invokeConstructor(definitionClass, (Object[])arguments));
+		} catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | InvocationTargetException e) {
+			throw new FrameworkException("Failed to create " + definition, e);
 		}
-		
-		throw new FrameworkException("Unable to create " + definition + ", no constructor found matching arguments " +
-				Arrays.toString(arguments));
-	}
-	
-	/**
-	 * Returns the constructors for the given class in the order they should be matched.
-	 * 
-	 * @param type the class
-	 * @return the constructors
-	 */
-	private static List<Constructor<?>> getOrderedConstructors(Class<?> type) {
-		List<Constructor<?>> result = new ArrayList<>();
-		Collections.addAll(result, type.getConstructors());
-		result.sort(new ConstructorComparator());
-		return result;
-	}
-	
-	/**
-	 * Comparator that sorts constructors based on the number of parameters and the types of each parameter.
-	 */
-	static class ConstructorComparator implements Comparator<Constructor<?>> {
-		
-		private static final FixedOrderComparator<Class<?>> TYPE_COMPARATOR;
-		
-		/**
-		 * Constructs a new comparator for sorting constructors.
-		 */
-		public ConstructorComparator() {
-			super();
-		}
-		
-		static {
-			Map<Class<?>, Integer> order = new HashMap<>();
-			order.put(byte.class, 0);
-			order.put(Byte.class, 0);
-			order.put(char.class, 1);
-			order.put(Character.class, 1);
-			order.put(short.class, 2);
-			order.put(Short.class, 2);
-			order.put(int.class, 3);
-			order.put(Integer.class, 3);
-			order.put(long.class, 4);
-			order.put(Long.class, 4);
-			order.put(float.class, 5);
-			order.put(Float.class, 5);
-			order.put(double.class, 6);
-			order.put(Double.class, 6);
-			order.put(String.class, 7);
-			order.put(Object.class, FixedOrderComparator.LAST);
-			
-			TYPE_COMPARATOR = new FixedOrderComparator<>(order);
-		}
-
-		@Override
-		public int compare(Constructor<?> c1, Constructor<?> c2) {
-			if (c1.getParameterCount() != c2.getParameterCount()) {
-				return Integer.compare(c1.getParameterCount(), c2.getParameterCount());
-			}
-			
-			for (Pair<Parameter, Parameter> pair : Iterators.zip(c1.getParameters(), c2.getParameters())) {
-				return TYPE_COMPARATOR.compare(pair.getLeft().getType(), pair.getRight().getType());
-			}
-			
-			return 0;
-		}
-		
 	}
 
 }

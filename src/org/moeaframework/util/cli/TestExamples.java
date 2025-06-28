@@ -19,29 +19,26 @@ package org.moeaframework.util.cli;
 
 import java.awt.HeadlessException;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.io.UncheckedIOException;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.stream.Stream;
 
-import javax.tools.JavaCompiler;
-import javax.tools.ToolProvider;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Settings;
 import org.moeaframework.util.DurationUtils;
+import org.moeaframework.util.JavaBuilder;
+import org.moeaframework.util.ReflectionUtils;
 import org.moeaframework.util.Timer;
 
 /**
@@ -77,9 +74,10 @@ public class TestExamples extends CommandLineUtility {
 	public void run(CommandLine commandLine) throws Exception {
 		Settings.PROPERTIES.setBoolean(Settings.KEY_VERBOSE, true);
 
-		Path examplesPath = Path.of("examples");
+		File buildDirectory = new File("build/");
+		File examplesDirectory = new File("examples/");
 
-		if (!Files.exists(examplesPath)) {
+		if (!examplesDirectory.exists()) {
 			System.out.println("No examples directory!");
 			return;
 		}
@@ -93,59 +91,49 @@ public class TestExamples extends CommandLineUtility {
 			System.setProperty("java.awt.headless", "true");
 		}
 		
-		try (Stream<Path> stream = Files.walk(examplesPath)) {
+		JavaBuilder builder = new JavaBuilder();
+		builder.buildPath(buildDirectory);
+		builder.sourcePath(examplesDirectory);
+		
+		try (Stream<Path> stream = Files.walk(examplesDirectory.toPath())) {
 			stream.filter(p -> FilenameUtils.getExtension(p.getFileName().toString()).equalsIgnoreCase("java"))
-			.sorted()
-			.forEach(p -> {
-				Timer timer = Timer.startNew();
-				System.out.print("Compiling ");
-				System.out.print(p);
-				System.out.print("...");
-
-				Path classPath = p.getParent().resolve(FilenameUtils.removeExtension(p.getFileName().toString()) + ".class");
-
-				if (commandLine.hasOption("clean") ||
-						!Files.exists(classPath) ||
-						FileUtils.isFileNewer(p.toFile(), classPath.toFile())) {
-					FileUtils.deleteQuietly(classPath.toFile());
-
-					JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-					compiler.run(null, null, null, p.toAbsolutePath().toString());
-
-					System.out.print("done!");
-				} else {
-					System.out.print("skipped!");
-				}
-
-				Duration elapsedTime = Duration.ofMillis(Math.round(1000 * timer.stop()));
-				System.out.print(" (");
-				System.out.print(DurationUtils.formatHighResolution(elapsedTime));
-				System.out.println(")");
-			});
+				.sorted()
+				.forEach(p -> compile(p, builder));
 		}
 
-		try (Stream<Path> stream = Files.walk(examplesPath)) {
+		try (Stream<Path> stream = Files.walk(examplesDirectory.toPath())) {
 			stream.filter(p -> FilenameUtils.getExtension(p.getFileName().toString()).equalsIgnoreCase("java"))
-			.sorted()
-			.map(p -> p.getName(0).equals(examplesPath) ? p.subpath(1, p.getNameCount()) : p)
-			.map(p -> FilenameUtils.removeExtension(p.toString()).replaceAll("[\\\\/]", "."))
-			.forEach(p -> runExample(p, examplesPath));
+				.sorted()
+				.forEach(p -> test(p, builder));
 		}
 	}
 	
-	private static ClassLoader createClassLoader(Path... classpath) throws MalformedURLException {
-		URL[] urls = new URL[classpath.length];
-		
-		for (int i = 0; i < classpath.length; i++) {
-			urls[i] = classpath[i].toUri().toURL();
+	private void compile(Path path, JavaBuilder builder) {
+		try {
+			Timer timer = Timer.startNew();
+			System.out.print("Compiling ");
+			System.out.print(path);
+			System.out.print("...");
+			
+			if (!builder.compile(path.toFile())) {
+				throw new FrameworkException("Failed to compile " + path);
+			}
+	
+			System.out.print("done!");
+	
+			Duration elapsedTime = Duration.ofMillis(Math.round(1000 * timer.stop()));
+			System.out.print(" (");
+			System.out.print(DurationUtils.formatHighResolution(elapsedTime));
+			System.out.println(")");
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
 		}
-		
-		return URLClassLoader.newInstance(urls);
 	}
 	
-	private static void runExample(String example, Path... classpath) {
+	private void test(Path path, JavaBuilder builder) {
 		Timer timer = Timer.startNew();
 		
+		String className = builder.getFullyQualifiedClassName(path.toFile());
 		PrintStream systemOut = System.out;
 		PrintStream systemErr = System.err;
 		
@@ -155,16 +143,15 @@ public class TestExamples extends CommandLineUtility {
 				PrintStream captureErr = new PrintStream(errStorage)) {
 			System.setOut(captureOut);
 			System.setErr(captureErr);
-			
+						
 			systemOut.print("Testing ");
-			systemOut.print(example);
+			systemOut.print(className);
 			systemOut.print("...");
 			
 			try {
-				Class<?> cls = Class.forName(example, true, createClassLoader(classpath));
-				Method mainMethod = cls.getDeclaredMethod("main", String[].class);
-				mainMethod.invoke(null, (Object)new String[0]);
-				
+				Class<?> cls = Class.forName(className, true, builder.getClassLoader());
+				ReflectionUtils.invokeStaticMethod(cls, "main", (Object)new String[0]);
+
 				systemOut.print("done!");
 			} catch (NoSuchMethodException e) {
 				systemOut.print("skipped (no main method)");
@@ -200,7 +187,7 @@ public class TestExamples extends CommandLineUtility {
 			
 			systemOut.println();
 		} catch (Exception e) {
-			throw new FrameworkException("Failure caught while running " + example, e);
+			throw new FrameworkException("Failed during test of " + className, e);
 		} finally {
 			System.setOut(systemOut);
 			System.setErr(systemErr);
