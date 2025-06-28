@@ -85,6 +85,21 @@ public class ReflectionUtilsTest {
 		
 	}
 	
+	@Test(expected = NoSuchMethodException.class)
+	public void testInvokeConstructorMissing() throws NoSuchMethodException, InvocationTargetException, InstantiationException {
+		ReflectionUtils.invokeConstructor(ReflectedClass.class, 1, 2, 3);
+	}
+	
+	@Test(expected = NoSuchMethodException.class)
+	public void testInvokeMethodMissing() throws NoSuchMethodException, InvocationTargetException {
+		ReflectionUtils.invokeMethod(new ReflectedClass(), "missing");
+	}
+	
+	@Test(expected = NoSuchMethodException.class)
+	public void testInvokeStaticMethodMissing() throws NoSuchMethodException, InvocationTargetException {
+		ReflectionUtils.invokeStaticMethod(ReflectedClass.class, "missing");
+	}
+	
 	public static class MatchedConstructorTest {
 		
 		@Test

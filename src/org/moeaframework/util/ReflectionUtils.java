@@ -39,7 +39,8 @@ import org.moeaframework.util.validate.Validate;
  * Collection of utility methods using Java's reflection API to provide dynamic type conversion and method invocation.
  * <p>
  * <strong>Caution:</strong> this provides broader type conversions beyond what is defined in the Java Language
- * Specification, which has limited widening and autoboxing rules.
+ * Specification, which has limited widening and autoboxing rules.  Use the reflection utilities provided by Java or
+ * Apache Commons Lang if these stricter rules are required.
  * <p>
  * Specifically, this allows:
  * <ol>
