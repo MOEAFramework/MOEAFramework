@@ -59,6 +59,18 @@ public class ReflectionUtils {
 	private ReflectionUtils() {
 		super();
 	}
+	
+	/**
+	 * Checks if a method is defined outside of the {@link Object} class, by the class or any superclass overriding the
+	 * method.
+	 * 
+	 * @param cls the class
+	 * @param methodName the method name
+	 * @return {@code true} if the method is implemented; {@code false} otherwise
+	 */
+	public static boolean isImplemented(Class<?> cls, String methodName) {
+		return MethodUtils.getMatchingMethod(cls, methodName).getDeclaringClass() != Object.class;
+	}
 
 	/**
 	 * Invokes the class constructor matching the given arguments.

@@ -19,7 +19,6 @@ package org.moeaframework.core;
 
 import java.lang.reflect.InvocationTargetException;
 
-import org.apache.commons.lang3.reflect.MethodUtils;
 import org.moeaframework.util.ReflectionUtils;
 import org.moeaframework.util.io.Tokenizer;
 
@@ -133,9 +132,8 @@ public interface Defined {
 					sb.append(tokenizer.getDelimiter());
 				}
 				
-				if (Settings.isVerbose() &&
-						MethodUtils.getMatchingMethod(arguments[i].getClass(), "toString").getDeclaringClass() == Object.class) {
-					System.err.println("WARNING: " + arguments[i].getClass() + " does not override toString()");
+				if (Settings.isVerbose() && !ReflectionUtils.isImplemented(arguments[i].getClass(), "toString")) {
+					System.err.println("WARNING: " + arguments[i].getClass() + " does not implement toString()");
 				}
 				
 				String token = tokenizer.escape(arguments[i].toString());

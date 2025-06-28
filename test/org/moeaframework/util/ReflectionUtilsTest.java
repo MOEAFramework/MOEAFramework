@@ -85,6 +85,21 @@ public class ReflectionUtilsTest {
 		
 	}
 	
+	public static class OverridesClass {
+		
+		@Override
+		public String toString() {
+			return "overridden";
+		}
+		
+	}
+	
+	@Test
+	public void testIsImplemented() {
+		Assert.assertFalse(ReflectionUtils.isImplemented(ReflectedClass.class, "toString"));
+		Assert.assertTrue(ReflectionUtils.isImplemented(OverridesClass.class, "toString"));
+	}
+	
 	@Test(expected = NoSuchMethodException.class)
 	public void testInvokeConstructorMissing() throws NoSuchMethodException, InvocationTargetException, InstantiationException {
 		ReflectionUtils.invokeConstructor(ReflectedClass.class, 1, 2, 3);
