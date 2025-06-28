@@ -33,6 +33,9 @@ public class ToggleAction extends LocalizedAction implements SettingChangedListe
 	
 	private static final long serialVersionUID = -992336279525967638L;
 
+	/**
+	 * The underlying toggle setting.
+	 */
 	private final Toggle toggle;
 	
 	/**

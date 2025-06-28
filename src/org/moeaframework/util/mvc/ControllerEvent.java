@@ -27,6 +27,9 @@ public class ControllerEvent extends EventObject {
 
 	private static final long serialVersionUID = 3854145085028582532L;
 	
+	/**
+	 * The type of this event.
+	 */
 	private final String eventType;
 	
 	/**

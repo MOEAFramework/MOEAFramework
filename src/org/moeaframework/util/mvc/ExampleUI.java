@@ -34,6 +34,9 @@ public abstract class ExampleUI<T extends Algorithm> extends JFrame implements C
 	
 	private static final long serialVersionUID = 5771940090079596225L;
 	
+	/**
+	 * Controller that runs the example until cancelled.
+	 */
 	private final ExampleController<T> controller;
 	
 	/**

@@ -34,6 +34,9 @@ public class PopupAction extends LocalizedAction {
 		
 	private static final long serialVersionUID = 4516883983249801132L;
 	
+	/**
+	 * The callback that generates the popup menu when triggered.
+	 */
 	private final Supplier<JPopupMenu> menuSupplier;
 	
 	/**
@@ -41,7 +44,7 @@ public class PopupAction extends LocalizedAction {
 	 * 
 	 * @param id the id for localization
 	 * @param localization the source for localization strings
-	 * @param menuSupplier callback that generates the menu
+	 * @param menuSupplier callback that generates the popup menu when triggered
 	 */
 	public PopupAction(String id, Localization localization, Supplier<JPopupMenu> menuSupplier) {
 		super(id, localization);

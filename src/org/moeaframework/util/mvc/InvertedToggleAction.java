@@ -33,6 +33,9 @@ public class InvertedToggleAction extends LocalizedAction implements SettingChan
 	
 	private static final long serialVersionUID = -3694809042542129384L;
 	
+	/**
+	 * The original toggle setting.
+	 */
 	private final Toggle toggle;
 	
 	/**
@@ -40,7 +43,7 @@ public class InvertedToggleAction extends LocalizedAction implements SettingChan
 	 * 
 	 * @param id the id for localization
 	 * @param localization the source for localization strings
-	 * @param toggle the underlying toggle setting
+	 * @param toggle the original toggle setting
 	 */
 	public InvertedToggleAction(String id, Localization localization, Toggle toggle) {
 		super(id, localization);

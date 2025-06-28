@@ -32,6 +32,9 @@ public class RunnableAction extends LocalizedAction {
 	
 	private static final long serialVersionUID = 3633238192124429111L;
 	
+	/**
+	 * The callback function invoked when this action is triggered.
+	 */
 	private final Runnable runnable;
 	
 	/**

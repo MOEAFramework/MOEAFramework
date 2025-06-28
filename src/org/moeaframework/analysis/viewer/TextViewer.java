@@ -49,6 +49,9 @@ public class TextViewer extends JDialog {
 	 */
 	private static final Localization LOCALIZATION = Localization.getLocalization(TextViewer.class);
 	
+	/**
+	 * The text area component.
+	 */
 	private JTextArea textArea;
 	
 	/**

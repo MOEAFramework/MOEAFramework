@@ -35,8 +35,14 @@ public class SelectValueAction<T> extends LocalizedAction implements SettingChan
 	
 	private static final long serialVersionUID = 3472097803101404661L;
 
+	/**
+	 * The setting to be assigned the value.
+	 */
 	private final Setting<T> setting;
 	
+	/**
+	 * The fixed value.
+	 */
 	private final T value;
 	
 	/**
@@ -44,7 +50,7 @@ public class SelectValueAction<T> extends LocalizedAction implements SettingChan
 	 * 
 	 * @param id the id for localization
 	 * @param localization the source of localization strings
-	 * @param setting the underlying setting
+	 * @param setting the setting to be assigned the value
 	 * @param value the fixed value
 	 */
 	public SelectValueAction(String id, Localization localization, Setting<T> setting, T value) {
