@@ -427,8 +427,8 @@ public class ReflectionUtils {
 								// exceeds range of float
 								return null;
 							} else if (Math.abs(doubleValue - floatValue) > Settings.EPS && Settings.isVerbose()) {
-								System.err.println("Conversion from " + Double.class.getSimpleName() + " to " +
-										Float.class.getSimpleName() + " results in a loss of precision (" +
+								System.err.println("WARNING: Conversion from " + Double.class.getSimpleName() +
+										" to " + Float.class.getSimpleName() + " results in a loss of precision (+/- " +
 										Math.abs(doubleValue - floatValue) + ")");
 							}
 						}
