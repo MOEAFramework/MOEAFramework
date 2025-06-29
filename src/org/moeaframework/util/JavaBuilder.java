@@ -43,9 +43,8 @@ import org.moeaframework.util.io.LineReader;
  * Utility for compiling Java source files.  The compiler runs within the context of the current Java environment, thus
  * the classpath and other properties are inherited.
  * <p>
- * <strong>Caution:</strong> The compiler is likely only available with the Java Development Kit (JDK) and not the Java
- * Runtime Environment (JRE).  Thus, only use this class when use of the JDK is guaranteed, such as for testing or
- * document generation.
+ * <strong>Caution:</strong> The compiler is not available on all systems.  Code relying on compilation should either
+ * require the JDK (e.g., testing or document generation) or handle the case when the compiler is unavailable.
  */
 public class JavaBuilder {
 	
@@ -172,31 +171,41 @@ public class JavaBuilder {
 	 * Compiles the Java source file.
 	 * 
 	 * @param file the Java source file
-	 * @return {@code true} if compilation succeeded; {@code false} otherwise
+	 * @return {@code true} if compilation succeeded; {@code false} if an error occurred
 	 * @throws IOException if an I/O error occurred during compilation
 	 */
 	public boolean compile(File file) throws IOException {
 		JavaFileObject sourceFile = Iterators.materialize(fileManager.getJavaFileObjects(file)).get(0);
+		JavaFileObject classFile = fileManager.getJavaFileForOutput(StandardLocation.CLASS_OUTPUT,
+				getFullyQualifiedClassName(file), JavaFileObject.Kind.CLASS, sourceFile);
 		
-		return compile(sourceFile, fileManager.getJavaFileForOutput(StandardLocation.CLASS_OUTPUT,
-				getFullyQualifiedClassName(file), JavaFileObject.Kind.CLASS, sourceFile));
+		return compile(sourceFile, classFile);
 	}
 	
 	/**
 	 * Compiles the named Java class.
 	 * 
 	 * @param className the class name
-	 * @return {@code true} if compilation succeeded; {@code false} otherwise
+	 * @return {@code true} if compilation succeeded; {@code false} if an error occurred
 	 * @throws IOException if an I/O error occurred during compilation
 	 */
 	public boolean compile(String className) throws IOException {
 		JavaFileObject sourceFile = fileManager.getJavaFileForInput(StandardLocation.SOURCE_PATH, className,
 				JavaFileObject.Kind.SOURCE);
+		JavaFileObject classFile = fileManager.getJavaFileForOutput(StandardLocation.CLASS_OUTPUT, className,
+				JavaFileObject.Kind.CLASS, sourceFile);
 		
-		return compile(sourceFile, fileManager.getJavaFileForOutput(StandardLocation.CLASS_OUTPUT, className,
-				JavaFileObject.Kind.CLASS, sourceFile));
+		return compile(sourceFile, classFile);
 	}
 	
+	/**
+	 * Conditionally compiles the Java class based on the file timestamps.
+	 * 
+	 * @param sourceFile the Java source file
+	 * @param classFile the destination for the compiled class
+	 * @return {@code true} if compilation succeeded or not necessary; {@code false} if an error occurred
+	 * @throws IOException if an I/O error occurred during compilation
+	 */
 	private boolean compile(JavaFileObject sourceFile, JavaFileObject classFile) throws IOException {
 		if (classFile.getLastModified() >= sourceFile.getLastModified() && !clean) {
 			return true;

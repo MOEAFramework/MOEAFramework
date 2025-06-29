@@ -52,11 +52,6 @@ import org.moeaframework.util.validate.Validate;
  *   <li>ValueOf conversion for classes implementing a static {@code valueOf} method
  * </ol>
  * <p>
- * Variable arguments, or varargs, are supported.  When calling a method or constructor ending in a varargs parameter,
- * the trailing arguments are converted into an array.  For convenience, methods declaring a single parameter that is
- * an array type can be called using the same varargs style.  That is, {@code call(int... x)} and {@code call(int[] x)}
- * are handled identically.
- * 
  * This can result in ambiguity regarding which method or constructor matches a given set of arguments.  For instance,
  * the string {@code "5"} can be converted into any numeric type.  Therefore, a heuristic in the form of a "conversion
  * distance" is calculated, whereby candidates with smaller distances are preferred.
@@ -68,8 +63,8 @@ public class ReflectionUtils {
 	}
 	
 	/**
-	 * Checks if a method is defined outside of the {@link Object} class, by the class or any superclass overriding the
-	 * method.
+	 * Checks if a method is defined outside of the {@link Object} class, either declared in the referenced class or
+	 * any superclass.
 	 * 
 	 * @param cls the class
 	 * @param methodName the method name
