@@ -39,6 +39,10 @@ import org.apache.commons.io.FilenameUtils;
 /**
  * Utility for compiling Java source files.  The compiler runs within the context of the current Java environment, thus
  * the classpath and other properties are inherited.
+ * <p>
+ * <strong>Caution:</strong> The compiler is likely only available with the Java Development Kit (JDK) and not the Java
+ * Runtime Environment (JRE).  Thus, only use this class when use of the JDK is guaranteed, such as for testing or
+ * document generation.
  */
 public class JavaBuilder {
 	

@@ -94,6 +94,25 @@ public class ReflectionUtilsTest {
 		
 	}
 	
+	public static class ValueOfClass {
+		
+		private final String value;
+		
+		public ValueOfClass(String value) {
+			super();
+			this.value = value;
+		}
+		
+		public String getValue() {
+			return value;
+		}
+		
+		public static ValueOfClass valueOf(String value) {
+			return new ValueOfClass(value);
+		}
+		
+	}
+	
 	@Test
 	public void testIsImplemented() {
 		Assert.assertFalse(ReflectionUtils.isImplemented(ReflectedClass.class, "toString"));
@@ -361,6 +380,14 @@ public class ReflectionUtilsTest {
 				Assert.assertEquals(expectedValue, match.getCastValue());
 				Assert.assertEquals(expectedDistance, match.getDistance());
 			}
+		}
+		
+		@Test
+		public void testValueOf() {
+			MatchedParameter<String, ValueOfClass> match = MatchedParameter.of("test", ValueOfClass.class); 
+			
+			Assert.assertNotNull(match);
+			Assert.assertEquals("test", match.getCastValue().getValue());
 		}
 		
 	}
