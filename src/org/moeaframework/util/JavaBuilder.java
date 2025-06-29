@@ -18,14 +18,16 @@
 package org.moeaframework.util;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.tools.JavaCompiler;
 import javax.tools.JavaFileObject;
@@ -35,6 +37,7 @@ import javax.tools.ToolProvider;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.moeaframework.util.io.LineReader;
 
 /**
  * Utility for compiling Java source files.  The compiler runs within the context of the current Java environment, thus
@@ -96,7 +99,7 @@ public class JavaBuilder {
 	}
 	
 	/**
-	 * Provides a writer for any messages or errors emitted by the compiler.  If unset or {@code null},
+	 * Provides a writer for logging any messages or errors emitted by the compiler.  If unset or {@code null},
 	 * {@link System#err} is used.
 	 * 
 	 * @param output the output writer
@@ -109,7 +112,7 @@ public class JavaBuilder {
 	
 	/**
 	 * Sets the directory where compiled class files are created.  If unset or {@code null}, the class files are
-	 * typically stored alongside the originating source files.
+	 * typically stored in the same directory as the source file.
 	 * <p>
 	 * As a side-effect, this method will create the build directory if it does not exist.
 	 * 
@@ -173,10 +176,10 @@ public class JavaBuilder {
 	 * @throws IOException if an I/O error occurred during compilation
 	 */
 	public boolean compile(File file) throws IOException {
-		return compile(
-				Iterators.materialize(fileManager.getJavaFileObjects(file)).get(0),
-				fileManager.getJavaFileForOutput(StandardLocation.CLASS_OUTPUT, getFullyQualifiedClassName(file),
-						JavaFileObject.Kind.CLASS, null));
+		JavaFileObject sourceFile = Iterators.materialize(fileManager.getJavaFileObjects(file)).get(0);
+		
+		return compile(sourceFile, fileManager.getJavaFileForOutput(StandardLocation.CLASS_OUTPUT,
+				getFullyQualifiedClassName(file), JavaFileObject.Kind.CLASS, sourceFile));
 	}
 	
 	/**
@@ -187,13 +190,15 @@ public class JavaBuilder {
 	 * @throws IOException if an I/O error occurred during compilation
 	 */
 	public boolean compile(String className) throws IOException {
-		return compile(
-				fileManager.getJavaFileForInput(StandardLocation.SOURCE_PATH, className, JavaFileObject.Kind.SOURCE),
-				fileManager.getJavaFileForOutput(StandardLocation.CLASS_OUTPUT, className, JavaFileObject.Kind.CLASS, null));
+		JavaFileObject sourceFile = fileManager.getJavaFileForInput(StandardLocation.SOURCE_PATH, className,
+				JavaFileObject.Kind.SOURCE);
+		
+		return compile(sourceFile, fileManager.getJavaFileForOutput(StandardLocation.CLASS_OUTPUT, className,
+				JavaFileObject.Kind.CLASS, sourceFile));
 	}
 	
-	private boolean compile(JavaFileObject sourceFile, JavaFileObject classFile) {
-		if (classFile.getLastModified() > sourceFile.getLastModified() && !clean) {
+	private boolean compile(JavaFileObject sourceFile, JavaFileObject classFile) throws IOException {
+		if (classFile.getLastModified() >= sourceFile.getLastModified() && !clean) {
 			return true;
 		}
 		
@@ -201,27 +206,30 @@ public class JavaBuilder {
 	}
 	
 	/**
-	 * Returns the fully-qualified class name for the Java source file.  The class name is derived from the path and
-	 * file name only, avoiding any parsing of the source file itself.  Any leading path segments matching a source
-	 * path are excluded.
+	 * Returns the fully-qualified class name for the Java source file.
 	 * 
 	 * @param sourceFile the source file
 	 * @return the fully-qualified class name
+	 * @throws IOException if an I/O error occurred
+	 * @throws FileNotFoundException if the source file does not exist
 	 */
-	public String getFullyQualifiedClassName(File sourceFile) {
-		Path path = Path.of(FilenameUtils.removeExtension(sourceFile.getPath()));
-		Iterable<? extends Path> sourcePaths = fileManager.getLocationAsPaths(StandardLocation.SOURCE_PATH);
+	public String getFullyQualifiedClassName(File sourceFile) throws FileNotFoundException, IOException {
+		final Pattern pattern = Pattern.compile("(?:package)\s+((?:[a-zA-Z0-9_]+)(?:\\.[a-zA-Z0-9_]+)*);");
+		String fqcn = FilenameUtils.getBaseName(sourceFile.getName());
 		
-		if (sourcePaths != null) {
-			for (Path sourcePath : sourcePaths) {
-				if (Files.isDirectory(sourcePath) && path.startsWith(sourcePath)) {
-					path = path.subpath(sourcePath.getNameCount(), path.getNameCount());
+		try (LineReader reader = new LineReader(new FileReader(sourceFile))) {
+			while (reader.hasNext()) {
+				String line = reader.next();
+				Matcher matcher = pattern.matcher(line);
+				
+				if (matcher.matches()) {
+					fqcn = matcher.group(1) + "." + fqcn;
 					break;
 				}
 			}
 		}
 		
-		return path.toString().replaceAll("[\\\\/]", ".");
+		return fqcn;
 	}
 
 }

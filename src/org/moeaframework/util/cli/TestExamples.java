@@ -133,7 +133,6 @@ public class TestExamples extends CommandLineUtility {
 	private void test(Path path, JavaBuilder builder) {
 		Timer timer = Timer.startNew();
 		
-		String className = builder.getFullyQualifiedClassName(path.toFile());
 		PrintStream systemOut = System.out;
 		PrintStream systemErr = System.err;
 		
@@ -143,6 +142,8 @@ public class TestExamples extends CommandLineUtility {
 				PrintStream captureErr = new PrintStream(errStorage)) {
 			System.setOut(captureOut);
 			System.setErr(captureErr);
+			
+			String className = builder.getFullyQualifiedClassName(path.toFile());
 						
 			systemOut.print("Testing ");
 			systemOut.print(className);
@@ -187,7 +188,7 @@ public class TestExamples extends CommandLineUtility {
 			
 			systemOut.println();
 		} catch (Exception e) {
-			throw new FrameworkException("Failed during test of " + className, e);
+			throw new FrameworkException("Failed during test of " + path, e);
 		} finally {
 			System.setOut(systemOut);
 			System.setErr(systemErr);
