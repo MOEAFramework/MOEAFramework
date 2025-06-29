@@ -19,6 +19,7 @@ package org.moeaframework.util;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -50,6 +51,12 @@ import org.moeaframework.util.validate.Validate;
  *   <li>String conversion for numeric types (e.g., "5.0" => Double)
  *   <li>ValueOf conversion for classes implementing a static {@code valueOf} method
  * </ol>
+ * <p>
+ * Variable arguments, or varargs, are supported.  When calling a method or constructor ending in a varargs parameter,
+ * the trailing arguments are converted into an array.  For convenience, methods declaring a single parameter that is
+ * an array type can be called using the same varargs style.  That is, {@code call(int... x)} and {@code call(int[] x)}
+ * are handled identically.
+ * 
  * This can result in ambiguity regarding which method or constructor matches a given set of arguments.  For instance,
  * the string {@code "5"} can be converted into any numeric type.  Therefore, a heuristic in the form of a "conversion
  * distance" is calculated, whereby candidates with smaller distances are preferred.
@@ -172,25 +179,8 @@ public class ReflectionUtils {
 		}
 		
 		private static <T> MatchedConstructor<T> tryMatch(Class<T> cls, Constructor<?> constructor, Object... args) {
-			Parameter[] parameters = constructor.getParameters();
-			MatchedParameter<?, ?>[] matchedParameters = new MatchedParameter<?, ?>[parameters.length];
-			
-			if (parameters.length != args.length) {
-				return null;
-			}
-			
-			for (int i = 0; i < parameters.length; i++) {
-				MatchedParameter<?, ?> matchedParameter = MatchedParameter.of(args[i],
-						ClassUtils.primitiveToWrapper(parameters[i].getType()));
-						
-				if (matchedParameter == null) {
-					return null;
-				}
-						
-				matchedParameters[i] = matchedParameter;
-			}
-					
-			return new MatchedConstructor<>(cls, constructor, matchedParameters);
+			MatchedParameter<?, ?>[] matchedParameters = MatchedParameter.tryMatchParameters(constructor, args);
+			return matchedParameters != null ? new MatchedConstructor<>(cls, constructor, matchedParameters) : null;
 		}
 		
 		public static <T> MatchedConstructor<T> of(Class<T> cls, Object... args) {
@@ -249,48 +239,8 @@ public class ReflectionUtils {
 		}
 		
 		private static <T> MatchedMethod<T> tryMatch(T instance, Method method, Object... args) {
-			Parameter[] parameters = method.getParameters();
-			MatchedParameter<?, ?>[] matchedParameters = new MatchedParameter<?, ?>[parameters.length];
-			
-			if (args.length < parameters.length) {
-				return null;
-			}
-			
-			if (!method.isVarArgs() && args.length > parameters.length) {
-				return null;
-			}
-			
-			for (int i = 0; i < parameters.length; i++) {
-				Parameter parameter = parameters[i];
-				
-				if (parameter.isVarArgs()) {
-					Object array = Array.newInstance(parameters[i].getType().getComponentType(), args.length - i);
-					
-					for (int j = i; j < args.length; j++) {
-						MatchedParameter<?, ?> matchedVarArgsParameter = MatchedParameter.of(args[j],
-								ClassUtils.primitiveToWrapper(parameter.getType().getComponentType()));
-						
-						if (matchedVarArgsParameter == null) {
-							return null;
-						}
-						
-						Array.set(array, j - i, matchedVarArgsParameter.getCastValue());
-					}
-					
-					matchedParameters[i] = MatchedParameter.of(array, parameter.getType());
-				} else {
-					MatchedParameter<?, ?> matchedParameter = MatchedParameter.of(args[i],
-							ClassUtils.primitiveToWrapper(parameter.getType()));
-							
-					if (matchedParameter == null) {
-						return null;
-					}
-							
-					matchedParameters[i] = matchedParameter;
-				}
-			}
-					
-			return new MatchedMethod<>(instance, method, matchedParameters);
+			MatchedParameter<?, ?>[] matchedParameters = MatchedParameter.tryMatchParameters(method, args);
+			return matchedParameters != null ? new MatchedMethod<>(instance, method, matchedParameters) : null;
 		}
 		
 		public static <T> MatchedMethod<T> of(Class<?> cls, T instance, String methodName, Object... args) {
@@ -319,14 +269,19 @@ public class ReflectionUtils {
 	static class MatchedParameter<T, R> {
 		
 		/**
+		 * Penalty applied when converting a whole number into a floating-point number.
+		 */
+		private static final int FLOATING_POINT_EXPANSION = 5;
+		
+		/**
 		 * Penalty applied when calling the {@code valueOf} method to convert or parse a value.
 		 */
 		private static final int VALUEOF_CONVERSION = 10;
 		
 		/**
-		 * Penalty applied when converting a whole number into a floating-point number.
+		 * Penalty applied when converting trailing arguments into a varargs array.
 		 */
-		private static final int FLOATING_POINT_EXPANSION = 5;
+		private static final int VARARGS_CONVERSION = 100;
 		
 		private final T originalValue;
 		
@@ -378,6 +333,50 @@ public class ReflectionUtils {
 
 			sb.append(")");
 			return sb.toString();
+		}
+		
+		public static MatchedParameter<?, ?>[] tryMatchParameters(Executable executable, Object... args) {
+			Parameter[] parameters = executable.getParameters();
+			MatchedParameter<?, ?>[] matchedParameters = new MatchedParameter<?, ?>[parameters.length];
+			boolean isVarArgs = executable.isVarArgs();
+			
+			if ((isVarArgs && args.length < parameters.length - 1) || (!isVarArgs && args.length != parameters.length)) {
+				return null;
+			}
+			
+			for (int i = 0; i < parameters.length; i++) {
+				Parameter parameter = parameters[i];
+				
+				if (isVarArgs && i == parameters.length - 1) {
+					Object array = Array.newInstance(parameters[i].getType().getComponentType(), args.length - i);
+					int distance = VARARGS_CONVERSION;
+					
+					for (int j = i; j < args.length; j++) {
+						MatchedParameter<?, ?> matchedVarArgsParameter = of(args[j],
+								ClassUtils.primitiveToWrapper(parameter.getType().getComponentType()));
+						
+						if (matchedVarArgsParameter == null) {
+							return null;
+						}
+						
+						Array.set(array, j - i, matchedVarArgsParameter.getCastValue());
+						distance += matchedVarArgsParameter.getDistance();
+					}
+					
+					matchedParameters[i] = new MatchedParameter<>(array, array, distance);
+				} else {
+					MatchedParameter<?, ?> matchedParameter = of(args[i],
+							ClassUtils.primitiveToWrapper(parameter.getType()));
+							
+					if (matchedParameter == null) {
+						return null;
+					}
+							
+					matchedParameters[i] = matchedParameter;
+				}
+			}
+			
+			return matchedParameters;
 		}
 		
 		public static <T, R> MatchedParameter<T, R> of(T originalValue, Class<R> toClass) {

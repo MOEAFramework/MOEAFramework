@@ -278,8 +278,21 @@ public class ReflectionUtilsTest {
 		public void testVarArgs() throws InvocationTargetException {
 			MatchedMethod<?> match = MatchedMethod.of(ReflectedClass.class, new ReflectedClass(), "varArgs", 1, 2, 3);
 			Assert.assertNotNull(match);
-			Assert.assertEquals(0, match.getDistance());
+			Assert.assertEquals(100, match.getDistance());
 			Assert.assertEquals(6, match.invoke());
+			
+			match = MatchedMethod.of(ReflectedClass.class, new ReflectedClass(), "varArgs");
+			Assert.assertNotNull(match);
+			Assert.assertEquals(100, match.getDistance());
+			Assert.assertEquals(0, match.invoke());
+			
+			match = MatchedMethod.of(ReflectedClass.class, new ReflectedClass(), "varArgs", "1", "2", "3");
+			Assert.assertNotNull(match);
+			Assert.assertEquals(130, match.getDistance());
+			Assert.assertEquals(6, match.invoke());
+			
+			match = MatchedMethod.of(ReflectedClass.class, new ReflectedClass(), "varArgs", "1", "2.5", "3");
+			Assert.assertNull(match);
 		}
 		
 	}
