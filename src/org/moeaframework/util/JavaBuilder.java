@@ -175,7 +175,7 @@ public class JavaBuilder {
 	 * @throws IOException if an I/O error occurred during compilation
 	 */
 	public boolean compile(File file) throws IOException {
-		JavaFileObject sourceFile = Iterators.materialize(fileManager.getJavaFileObjects(file)).get(0);
+		JavaFileObject sourceFile = fileManager.getJavaFileObjects(file).iterator().next();
 		JavaFileObject classFile = fileManager.getJavaFileForOutput(StandardLocation.CLASS_OUTPUT,
 				getFullyQualifiedClassName(file), JavaFileObject.Kind.CLASS, sourceFile);
 		
