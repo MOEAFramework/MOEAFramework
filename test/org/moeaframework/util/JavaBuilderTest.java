@@ -121,9 +121,9 @@ public class JavaBuilderTest {
 		File classFile = new File(sourceDirectory, "Test.class");
 		
 		Files.writeString(sourceFile.toPath(), PROGRAM);
-		Wait.spinFor(Duration.ofMillis(1));
+		Wait.spinFor(Duration.ofMillis(100));
 		classFile.createNewFile();
-		Wait.spinFor(Duration.ofMillis(1));
+		Wait.spinFor(Duration.ofMillis(100));
 		
 		long lastModified = classFile.lastModified();
 		
@@ -145,9 +145,9 @@ public class JavaBuilderTest {
 		File classFile = new File(sourceDirectory, "Test.class");
 		
 		Files.writeString(sourceFile.toPath(), PROGRAM);
-		Wait.spinFor(Duration.ofMillis(1));
+		Wait.spinFor(Duration.ofMillis(100));
 		classFile.createNewFile();
-		Wait.spinFor(Duration.ofMillis(1));
+		Wait.spinFor(Duration.ofMillis(100));
 		
 		long lastModified = classFile.lastModified();
 		
