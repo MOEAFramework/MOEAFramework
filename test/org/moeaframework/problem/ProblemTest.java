@@ -49,14 +49,6 @@ import org.moeaframework.mock.MockSolution;
 public abstract class ProblemTest {
 	
 	/**
-	 * Call from any test to skip if JMetal does not exist.
-	 */
-	public void assumeJMetalExists() {
-		Assume.assumeTrue("JMetal-Plugin required to run test",
-				ProblemFactory.getInstance().hasProvider("org.moeaframework.problem.jmetal.JMetalProblems"));
-	}
-	
-	/**
 	 * Assume that the given problem exists, and if not skip the test.
 	 * 
 	 * @param problemName the problem name
@@ -204,7 +196,7 @@ public abstract class ProblemTest {
 	 * @param exactConstraints if {@code true}, require identical constraint values
 	 */
 	public void testAgainstJMetal(String problemName, boolean exactConstraints) {
-		assumeJMetalExists();
+		Assume.assumeJMetalExists();
 		
 		Problem problemA = ProblemFactory.getInstance().getProblem(problemName);
 		Problem problemB = ProblemFactory.getInstance().getProblem(problemName + "-JMetal");
