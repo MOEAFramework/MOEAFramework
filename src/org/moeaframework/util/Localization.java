@@ -66,7 +66,7 @@ public class Localization {
 	 * {@code null}, then the {@code getString} methods return the {@code key}.
 	 * 
 	 * @param bundle the resource bundle storing the key-value resource mappings used by this localization object
-	 * @param owner the class that owns this localalization instance, which is ued to locate relative resources
+	 * @param owner the class that owns this localalization instance, which is used to locate relative resources
 	 */
 	private Localization(ResourceBundle bundle, Class<?> owner) {
 		super();
@@ -149,7 +149,6 @@ public class Localization {
 	 */
 	public String getString(String key, Object... arguments) {
 		MessageFormat format = new MessageFormat(getString(key), getLocale());
-
 		return format.format(arguments, new StringBuffer(), null).toString();
 	}
 	
