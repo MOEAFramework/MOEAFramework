@@ -18,7 +18,7 @@
 package org.moeaframework.util.cli;
 
 /**
- * Defines a command for use by a command line utility.  CLIs designed around commands require one position argument,
+ * Defines a command for use by a command line utility.  CLIs designed around commands require one positional argument,
  * the command name to invoke.
  */
 public class Command {
