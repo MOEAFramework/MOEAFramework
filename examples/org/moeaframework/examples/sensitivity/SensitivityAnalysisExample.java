@@ -67,7 +67,9 @@ public class SensitivityAnalysisExample {
 		
 		sensitivityResults.display();
 		
-		new SensitivityPlotBuilder().data(sensitivityResults).show();
+		new SensitivityPlotBuilder()
+			.data(sensitivityResults)
+			.show();
 	}
 
 }
