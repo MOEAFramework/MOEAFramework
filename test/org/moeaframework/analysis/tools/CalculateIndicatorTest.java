@@ -41,7 +41,7 @@ public class CalculateIndicatorTest extends AbstractToolTest {
 			referenceSetFile.getPath() });
 		
 		try (LineReader reader = new LineReader(new FileReader(outputFile))) {
-			Assert.assertEquals("pf/DTLZ2.2D.pf 0.210671", reader.readLine());
+			Assert.assertEquals(referenceSetFile.getPath() + " 0.210671", reader.readLine());
 			Assert.assertNull(reader.readLine());
 		}
 	}
@@ -58,7 +58,7 @@ public class CalculateIndicatorTest extends AbstractToolTest {
 			referenceSetFile.getPath() });
 		
 		try (LineReader reader = new LineReader(new FileReader(outputFile))) {
-			Assert.assertEquals("pf/DTLZ2.2D.pf 0.000000", reader.readLine());
+			Assert.assertEquals(referenceSetFile.getPath() + " 0.000000", reader.readLine());
 			Assert.assertNull(reader.readLine());
 		}
 	}

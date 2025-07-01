@@ -94,7 +94,7 @@ public class ResultFileMetadata extends CommandLineUtility {
 
 		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true);
 				ResultFileReader input = ResultFileReader.open(problem, new File(commandLine.getOptionValue("input")))) {
-			// load the data into an indexed series
+			// load the data into an indexed series, since output from sensitivity analysis can contain duplicate NFE
 			ResultSeries series = new ResultSeries(IndexType.Index);
 			
 			for (ResultEntry entry : input) {
