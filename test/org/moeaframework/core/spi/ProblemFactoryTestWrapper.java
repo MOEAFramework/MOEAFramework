@@ -28,18 +28,20 @@ import org.moeaframework.problem.ProblemWrapper;
  */
 public class ProblemFactoryTestWrapper extends ProblemFactory {
 	
+	private int createCount;
+	
 	private int closeCount;
 
 	@Override
 	public synchronized Problem getProblem(String name) {
+		createCount++;
 		return new CloseWrapper(super.getProblem(name));
 	}
 	
-	/**
-	 * Returns the number of times the {@code close} method has been invoked.
-	 * 
-	 * @return the number of times the {@code close} method has been invoked
-	 */
+	public int getCreateCount() {
+		return createCount;
+	}
+	
 	public int getCloseCount() {
 		return closeCount;
 	}

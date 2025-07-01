@@ -282,6 +282,7 @@ The following options are available:
   -f,--format <fmt>          The output file format (Plaintext, Markdown, Latex, CSV, ARFF)
   -h,--help                  Display help information
   -i,--input <file>          Input file
+     --includeIndex          The first column in the output will show the index of the record in the result file
   -o,--output <file>         Output file
   -r,--reference <file>      Reference set file
 ```

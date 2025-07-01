@@ -23,6 +23,8 @@ package org.moeaframework.core;
 public class PropertyNotFoundException extends IllegalArgumentException {
 
 	private static final long serialVersionUID = 2355313923356588354L;
+	
+	private final String propertyName;
 
 	/**
 	 * Creates an exception indicating the given property was not found.
@@ -31,6 +33,16 @@ public class PropertyNotFoundException extends IllegalArgumentException {
 	 */
 	public PropertyNotFoundException(String propertyName) {
 		super("Property '" + propertyName + "' is not set and no default given");
+		this.propertyName = propertyName;
+	}
+	
+	/**
+	 * Returns the name of the missing property.
+	 * 
+	 * @return the name of the property
+	 */
+	public String getProperty() {
+		return propertyName;
 	}
 
 }

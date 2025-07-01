@@ -23,29 +23,11 @@ import java.io.FileReader;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
-import org.moeaframework.core.spi.ProblemFactory;
-import org.moeaframework.core.spi.ProblemFactoryTestWrapper;
 import org.moeaframework.util.io.LineReader;
 
-public class ResultFileMetadataTest {
+public class ResultFileMetadataTest extends AbstractToolTest {
 	
-	public static final String COMPLETE = """
-		# Problem = DTLZ2_2
-		# Variables = 11
-		# Objectives = 2
-		//NFE=100
-		//ElapsedTime=0.214
-		0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.25 0.75
-		0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.75 0.25
-		#
-		//NFE=200
-		//ElapsedTime=0.209186
-		0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.25 0.75
-		0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.75 0.25
-		#
-		""";
-	
-	public static final String MISSING_PROPERTY = """
+	public static final String MISSING_PROPERTY_RESULT_FILE = """
 		# Problem = DTLZ2_2
 		# Variables = 11
 		# Objectives = 2
@@ -62,7 +44,7 @@ public class ResultFileMetadataTest {
 	
 	@Test
 	public void testComplete() throws Exception {
-		File input = TempFiles.createFile().withContent(COMPLETE);
+		File input = TempFiles.createFile().withContent(COMPLETE_RESULT_FILE);
 		File output = TempFiles.createFile();
 		
 		ResultFileMetadata.main(new String[] {
@@ -80,9 +62,9 @@ public class ResultFileMetadataTest {
 		}
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
-	public void testMissingProperty() throws Exception {
-		File input = TempFiles.createFile().withContent(MISSING_PROPERTY);
+	@Test
+	public void testEmpty() throws Exception {
+		File input = TempFiles.createFile().withContent(EMPTY_RESULT_FILE);
 		File output = TempFiles.createFile();
 		
 		ResultFileMetadata.main(new String[] {
@@ -90,14 +72,38 @@ public class ResultFileMetadataTest {
 			"--input", input.getPath(),
 			"--output", output.getPath(),
 			"NFE", "ElapsedTime"});
+		
+		try (LineReader reader = LineReader.wrap(new FileReader(output))) {
+			Assert.assertEqualsNormalized("NFE ElapsedTime", reader.readLine());
+			Assert.assertStringMatches(reader.readLine(), "[ \\-]+");
+			Assert.assertNull(reader.readLine());
+		}
 	}
 	
 	@Test
-	public void testClose() throws Exception {
-		ProblemFactoryTestWrapper problemFactory = new ProblemFactoryTestWrapper();
-		ProblemFactory.setInstance(problemFactory);
+	public void testIncludeIndex() throws Exception {
+		File input = TempFiles.createFile().withContent(COMPLETE_RESULT_FILE);
+		File output = TempFiles.createFile();
 		
-		File input = TempFiles.createFile().withContent(COMPLETE);
+		ResultFileMetadata.main(new String[] {
+			"--problem", "DTLZ2_2",
+			"--input", input.getPath(),
+			"--output", output.getPath(),
+			"--includeIndex",
+			"NFE", "ElapsedTime"});
+		
+		try (LineReader reader = LineReader.wrap(new FileReader(output))) {
+			Assert.assertEqualsNormalized("Index NFE ElapsedTime", reader.readLine());
+			Assert.assertStringMatches(reader.readLine(), "[ \\-]+");
+			Assert.assertEqualsNormalized("0 100 0.214", reader.readLine());
+			Assert.assertEqualsNormalized("1 200 0.209186", reader.readLine());
+			Assert.assertNull(reader.readLine());
+		}
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testMissingProperty() throws Exception {
+		File input = TempFiles.createFile().withContent(MISSING_PROPERTY_RESULT_FILE);
 		File output = TempFiles.createFile();
 		
 		ResultFileMetadata.main(new String[] {
@@ -105,14 +111,11 @@ public class ResultFileMetadataTest {
 			"--input", input.getPath(),
 			"--output", output.getPath(),
 			"NFE", "ElapsedTime"});
-		
-		Assert.assertEquals(1, problemFactory.getCloseCount());
-		ProblemFactory.setInstance(new ProblemFactory());
 	}
 	
 	@Test
 	public void testMetrics() throws Exception {
-		File input = TempFiles.createFile().withContent(COMPLETE);
+		File input = TempFiles.createFile().withContent(COMPLETE_RESULT_FILE);
 		File output = TempFiles.createFile();
 		
 		ResultFileMetadata.main(new String[] {
@@ -122,10 +125,10 @@ public class ResultFileMetadataTest {
 			"GenerationalDistance", "Hypervolume", "Spacing" });
 				
 		try (LineReader reader = LineReader.wrap(new FileReader(output))) {
-			Assert.assertEqualsNormalized("NFE GenerationalDistance Hypervolume Spacing", reader.readLine());
+			Assert.assertEqualsNormalized("GenerationalDistance Hypervolume Spacing", reader.readLine());
 			Assert.assertStringMatches(reader.readLine(), "[ \\-]+");
-			Assert.assertStringMatches(reader.readLine(), Assert.getSpaceSeparatedNumericPattern(4));
-			Assert.assertStringMatches(reader.readLine(), Assert.getSpaceSeparatedNumericPattern(4));
+			Assert.assertStringMatches(reader.readLine(), Assert.getSpaceSeparatedNumericPattern(3));
+			Assert.assertStringMatches(reader.readLine(), Assert.getSpaceSeparatedNumericPattern(3));
 			Assert.assertNull(reader.readLine());
 		}
 	}

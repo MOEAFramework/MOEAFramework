@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -208,7 +209,7 @@ public abstract class CommandLineUtility {
 				run(commandLine);
 			}
 		} catch (ParseException e) {
-			if (args.length > 0 && (args[0].equalsIgnoreCase("-h") || args[0].equalsIgnoreCase("--help"))) {
+			if (Stream.of(args).anyMatch(s -> s.equalsIgnoreCase("-h") || s.equalsIgnoreCase("--help"))) {
 				showHelp();
 			} else {
 				throw e;

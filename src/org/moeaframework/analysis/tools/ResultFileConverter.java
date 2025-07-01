@@ -24,7 +24,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.analysis.io.ResultFileReader;
-import org.moeaframework.core.population.Population;
+import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.Iterators;
 import org.moeaframework.util.cli.CommandLineUtility;
@@ -69,13 +69,13 @@ public class ResultFileConverter extends CommandLineUtility {
 		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true);
 				ResultFileReader input = ResultFileReader.openLegacy(problem, new File(commandLine.getOptionValue("input")));
 				PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
-			Population population = Iterators.last(input.iterator()).getPopulation();
+			ResultEntry entry = Iterators.last(input.iterator());
 			
-			if (population == null || population.isEmpty()) {
+			if (entry == null || entry.getPopulation().isEmpty()) {
 				fail("ERROR: Result file is empty");
 			}
 			
-			population.save(format, output);
+			entry.getPopulation().save(format, output);
 		}
 	}
 	

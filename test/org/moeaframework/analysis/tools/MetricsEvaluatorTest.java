@@ -23,31 +23,13 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.TestResources;
-import org.moeaframework.analysis.io.MetricFileReader;
+import org.moeaframework.analysis.io.MetricFileWriter.Metric;
 
-public class MetricsEvaluatorTest {
-	
-	public static final String COMPLETE = """
-			# Problem = DTLZ2_2
-			# Variables = 0
-			# Objectives = 2
-			0.0 1.0
-			1.0 0.0
-			#
-			0.0 1.0
-			1.0 0.0
-			#
-			""";
-	
-	public static final String EMPTY = """
-			# Problem = DTLZ2_2
-			# Variables = 0
-			# Objectives = 2
-			""";
+public class MetricsEvaluatorTest extends AbstractToolTest {
 	
 	@Test
 	public void testComplete() throws Exception {
-		File input = TempFiles.createFile().withContent(COMPLETE);
+		File input = TempFiles.createFile().withContent(COMPLETE_RESULT_FILE);
 		File output = TempFiles.createFile();
 		
 		File referenceSetFile = TestResources.asFile("pf/DTLZ2.2D.pf");
@@ -58,18 +40,13 @@ public class MetricsEvaluatorTest {
 			"--input", input.getAbsolutePath(),
 			"--output", output.getAbsolutePath()});
 		
-		try (MetricFileReader reader = new MetricFileReader(output)) {
-			Assert.assertTrue(reader.hasNext());
-			Assert.assertNotNull(reader.next());
-			Assert.assertTrue(reader.hasNext());
-			Assert.assertNotNull(reader.next());
-			Assert.assertFalse(reader.hasNext());
-		}
+		Assert.assertLineCount(3, output);
+		Assert.assertLinePattern(output, Assert.getSpaceSeparatedNumericPattern(Metric.getNumberOfMetrics()));
 	}
 	
 	@Test
 	public void testEmpty() throws Exception {
-		File input = TempFiles.createFile().withContent(EMPTY);
+		File input = TempFiles.createFile().withContent(EMPTY_RESULT_FILE);
 		File output = TempFiles.createFile();
 		
 		File referenceSetFile = TestResources.asFile("pf/DTLZ2.2D.pf");
@@ -80,14 +57,13 @@ public class MetricsEvaluatorTest {
 			"--input", input.getAbsolutePath(),
 			"--output", output.getAbsolutePath()});
 		
-		try (MetricFileReader reader = new MetricFileReader(output)) {
-			Assert.assertFalse(reader.hasNext());
-		}
+		Assert.assertLineCount(1, output);
+		Assert.assertLinePattern(output, "^#");
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testIncorrectNumberOfObjectives() throws Exception {
-		File input = TempFiles.createFile().withContent(COMPLETE);
+		File input = TempFiles.createFile().withContent(COMPLETE_RESULT_FILE);
 		File output = TempFiles.createFile();
 		
 		File referenceSetFile = TestResources.asFile("pf/DTLZ2.3D.pf");

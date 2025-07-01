@@ -22,26 +22,46 @@ import java.io.File;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
+import org.moeaframework.core.FrameworkException;
 
-public class ResultFileConverterTest {
+public class ResultFileConverterTest extends AbstractToolTest {
 	
 	@Test
-	public void test() throws Exception {
-		File resultFile = TempFiles.createFile();
-		File arffFile = TempFiles.createFile();
+	public void testPlaintext() throws Exception {
+		File resultFile = TempFiles.createFile().withContent(COMPLETE_RESULT_FILE);
+		File outputFile = TempFiles.createFile();
 		
-		Solve.main(new String[] {
-				"-a", "NSGAII",
-				"-b", "DTLZ2_2",
-				"-n", "1000",
-				"-f", resultFile.getPath() });
+		ResultFileConverter.main(new String[] {
+				"-f", "Plaintext",
+				"-i", resultFile.getPath(),
+				"-o", outputFile.getPath() });
+		
+		Assert.assertLineCount(4, outputFile);
+		Assert.assertLinePattern(outputFile, "^([V-].*)|(" + Assert.getSpaceSeparatedNumericPattern(13) + ")$");
+	}
+	
+	@Test(expected = FrameworkException.class)
+	public void testEmpty() throws Exception {
+		File resultFile = TempFiles.createFile().withContent(EMPTY_RESULT_FILE);
+		File outputFile = TempFiles.createFile();
+		
+		ResultFileConverter.main(new String[] {
+				"-i", resultFile.getPath(),
+				"-o", outputFile.getPath() });
+	}
+	
+	@Test
+	public void testArff() throws Exception {
+		File resultFile = TempFiles.createFile().withContent(COMPLETE_RESULT_FILE);
+		File outputFile = TempFiles.createFile();
 		
 		ResultFileConverter.main(new String[] {
 				"-f", "ARFF",
 				"-i", resultFile.getPath(),
-				"-o", arffFile.getPath() });
-		
-		Assert.assertLinePattern(arffFile, "^([@%].*)|(" + Assert.getCommaSeparatedNumericPattern(13) + ")$");
+				"-o", outputFile.getPath() });
+				
+		Assert.assertLineCount(17, outputFile);
+		Assert.assertLinePattern(outputFile, "^([@%].*)|(" + Assert.getCommaSeparatedNumericPattern(13) + ")$");
 	}
 
 }

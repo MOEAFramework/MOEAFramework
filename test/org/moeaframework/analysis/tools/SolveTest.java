@@ -60,7 +60,7 @@ import org.moeaframework.core.variable.Subset;
 import org.moeaframework.core.variable.Variable;
 import org.moeaframework.problem.Problem;
 
-public class SolveTest {
+public class SolveTest extends AbstractToolTest {
 	
 	private static final File SCRIPT = new File("examples/org/moeaframework/examples/solve/dtlz2.py");
 	
@@ -68,16 +68,17 @@ public class SolveTest {
 	
 	@Before
 	public void setUp() {
-		if (!SCRIPT.exists()) {
-			Assert.fail("Missing script " + SCRIPT);
-		}
+		super.setUp();
 		
+		Assert.assertFileExists(SCRIPT);
 		solve = new Solve();
 	}
 	
 	@After
 	public void tearDown() {
 		solve = null;
+		
+		super.tearDown();
 	}
 
 	@Test
@@ -388,10 +389,10 @@ public class SolveTest {
 	
 	private void checkOutput(CommandLine commandLine, int expectedEntries) throws IOException {
 		int count = 0;
-		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		File outputFile = new File(commandLine.getOptionValue("output"));
-		
-		try (ResultFileReader reader = ResultFileReader.open(problem, outputFile)) {
+
+		try (Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
+				ResultFileReader reader = ResultFileReader.open(problem, outputFile)) {
 			while (reader.hasNext()) {
 				Assert.assertNotEmpty(reader.next().getPopulation());
 				count++;

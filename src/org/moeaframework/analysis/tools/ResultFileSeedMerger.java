@@ -25,6 +25,7 @@ import java.util.List;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.analysis.series.ResultEntry;
@@ -97,7 +98,7 @@ public class ResultFileSeedMerger extends CommandLineUtility {
 
 			// validate the inputs
 			if (entries.isEmpty()) {
-				throw new IOException("Requires at least one file");
+				throw new ParseException("Requires at least one result file");
 			}
 
 			int numberOfEntries = -1;

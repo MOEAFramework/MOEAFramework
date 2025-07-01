@@ -24,7 +24,7 @@ import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.core.FrameworkException;
 
-public class MetricsValidatorTest {
+public class MetricsValidatorTest extends AbstractToolTest {
 	
 	@Test
 	public void testPass() throws Exception {
@@ -40,15 +40,29 @@ public class MetricsValidatorTest {
 		Assert.assertLinePattern(outputFile, "^(.*)\\s+PASS$");
 	}
 	
-	@Test(expected = FrameworkException.class)
+	@Test
 	public void testFail() throws Exception {
 		File inputFile = TempFiles.createFile().withContent("0 0 0 0\n1 1 1 1\n");
 		File outputFile = TempFiles.createFile();
 		
-		MetricsValidator.main(new String[] {
+		Assert.assertThrows(FrameworkException.class, () -> MetricsValidator.main(new String[] {
 				"-c", "2",
 				"-o", outputFile.getPath(),
-				inputFile.getPath() });
+				inputFile.getPath() }));
+				
+		Assert.assertLineCount(1, outputFile);
+		Assert.assertLinePattern(outputFile, "^(.*)\\s+FAIL.*$");
+	}
+	
+	@Test
+	public void testEmpty() throws Exception {
+		File inputFile = TempFiles.createFile().withContent("");
+		File outputFile = TempFiles.createFile();
+		
+		Assert.assertThrows(FrameworkException.class, () -> MetricsValidator.main(new String[] {
+				"-c", "2",
+				"-o", outputFile.getPath(),
+				inputFile.getPath() }));
 				
 		Assert.assertLineCount(1, outputFile);
 		Assert.assertLinePattern(outputFile, "^(.*)\\s+FAIL.*$");

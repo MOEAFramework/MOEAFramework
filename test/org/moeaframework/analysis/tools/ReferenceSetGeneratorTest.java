@@ -25,7 +25,7 @@ import org.moeaframework.TempFiles;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.population.Population;
 
-public class ReferenceSetGeneratorTest {
+public class ReferenceSetGeneratorTest extends AbstractToolTest {
 	
 	@Test
 	public void test() throws Exception {

@@ -262,7 +262,7 @@ public class MetricsAnalysis extends CommandLineUtility {
 		}
 		
 		if (evalIndex == -1) {
-			throw new FrameworkException("Missing maxEvaluations parameter");
+			throw new FrameworkException("Missing the 'maxEvaluations' parameter required for efficiency calculation");
 		}
 
 		//find lowest band reaching attainment

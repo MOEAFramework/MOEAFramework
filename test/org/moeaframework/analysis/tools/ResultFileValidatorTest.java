@@ -24,7 +24,7 @@ import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
 import org.moeaframework.core.FrameworkException;
 
-public class ResultFileValidatorTest {
+public class ResultFileValidatorTest extends AbstractToolTest {
 	
 	@Test
 	public void testLegacy() throws Exception {
@@ -42,17 +42,11 @@ public class ResultFileValidatorTest {
 	
 	@Test
 	public void testPass() throws Exception {
-		File resultFile = TempFiles.createFile();
+		File resultFile = TempFiles.createFile().withContent(COMPLETE_RESULT_FILE);
 		File outputFile = TempFiles.createFile();
 		
-		Solve.main(new String[] {
-				"-a", "NSGAII",
-				"-b", "DTLZ2_2",
-				"-n", "1000",
-				"-f", resultFile.getPath() });
-		
 		ResultFileValidator.main(new String[] {
-				"-c", "10",
+				"-c", "2",
 				"-o", outputFile.getPath(),
 				resultFile.getPath() });
 				
@@ -60,21 +54,29 @@ public class ResultFileValidatorTest {
 		Assert.assertLinePattern(outputFile, "^(.*)\\s+PASS$");
 	}
 	
-	@Test(expected = FrameworkException.class)
+	@Test
 	public void testFail() throws Exception {
-		File resultFile = TempFiles.createFile();
+		File resultFile = TempFiles.createFile().withContent(COMPLETE_RESULT_FILE);
 		File outputFile = TempFiles.createFile();
 		
-		Solve.main(new String[] {
-				"-a", "NSGAII",
-				"-b", "DTLZ2_2",
-				"-n", "1000",
-				"-f", resultFile.getPath() });
-		
-		ResultFileValidator.main(new String[] {
+		Assert.assertThrows(FrameworkException.class, () -> ResultFileValidator.main(new String[] {
 				"-c", "5",
 				"-o", outputFile.getPath(),
-				resultFile.getPath() });
+				resultFile.getPath() }));
+				
+		Assert.assertLineCount(1, outputFile);
+		Assert.assertLinePattern(outputFile, "^(.*)\\s+FAIL.*$");
+	}
+	
+	@Test
+	public void testEmpty() throws Exception {
+		File resultFile = TempFiles.createFile().withContent(EMPTY_RESULT_FILE);
+		File outputFile = TempFiles.createFile();
+		
+		Assert.assertThrows(FrameworkException.class, () -> ResultFileValidator.main(new String[] {
+				"-c", "5",
+				"-o", outputFile.getPath(),
+				resultFile.getPath() }));
 				
 		Assert.assertLineCount(1, outputFile);
 		Assert.assertLinePattern(outputFile, "^(.*)\\s+FAIL.*$");

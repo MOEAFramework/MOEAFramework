@@ -24,16 +24,19 @@ import java.util.EnumSet;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.analysis.series.IndexType;
 import org.moeaframework.analysis.series.IndexedResult;
 import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.core.Epsilons;
+import org.moeaframework.core.PropertyNotFoundException;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.indicator.Indicators;
 import org.moeaframework.core.indicator.Indicators.IndicatorValues;
 import org.moeaframework.core.indicator.StandardIndicator;
+import org.moeaframework.core.population.EpsilonBoxDominanceArchive;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.cli.CommandLineUtility;
@@ -72,6 +75,9 @@ public class ResultFileMetadata extends CommandLineUtility {
 				.hasArg()
 				.argName("file")
 				.build());
+		options.addOption(Option.builder()
+				.longOpt("includeIndex")
+				.build());
 		
 		return options;
 	}
@@ -81,16 +87,25 @@ public class ResultFileMetadata extends CommandLineUtility {
 		Epsilons epsilons = OptionUtils.getEpsilons(commandLine);
 		TableFormat format = OptionUtils.getFormat(commandLine);
 		String[] fields = commandLine.getArgs();
+		
+		if (fields.length == 0) {
+			throw new ParseException("No fields specified, please provide one or more properties or indicators");
+		}
 
 		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true);
 				ResultFileReader input = ResultFileReader.open(problem, new File(commandLine.getOptionValue("input")))) {
-			ResultSeries series = ResultSeries.of(input);
+			// load the data into an indexed series
+			ResultSeries series = new ResultSeries(IndexType.Index);
 			
+			for (ResultEntry entry : input) {
+				series.add(entry);
+			}
+
 			// compute any indicators and merge into the properties
 			EnumSet<StandardIndicator> selectedIndicators = getSelectedIndicators(fields);
 			
 			if (!selectedIndicators.isEmpty()) {
-				Indicators indicators = Indicators.of(problem, OptionUtils.getReferenceSet(commandLine, false));
+				Indicators indicators = Indicators.of(input.getProblem(), OptionUtils.getReferenceSet(commandLine, false));
 				indicators.include(selectedIndicators);
 
 				if (epsilons != null) {
@@ -98,7 +113,13 @@ public class ResultFileMetadata extends CommandLineUtility {
 				}
 				
 				series.forEach(x -> {
-					IndicatorValues values = indicators.apply(new NondominatedPopulation(x.getPopulation()));
+					NondominatedPopulation approximationSet = new NondominatedPopulation(x.getPopulation());
+					
+					if (epsilons != null) {
+						approximationSet = new EpsilonBoxDominanceArchive(epsilons, approximationSet);
+					}
+					
+					IndicatorValues values = indicators.apply(approximationSet);
 					x.getProperties().addAll(values.asProperties());
 				});
 			}
@@ -106,21 +127,19 @@ public class ResultFileMetadata extends CommandLineUtility {
 			// create a table with the selected fields
 			TabularData<IndexedResult> table = new TabularData<>(series);
 			
-			if (!series.getIndexType().equals(IndexType.Singleton)) {
+			if (commandLine.hasOption("includeIndex")) {
 				table.addColumn(new Column<>(series.getIndexType().name(), IndexedResult::getIndex));
 			}
-			
+
 			for (String field : fields) {
-				if (series.getIndexType().equals(IndexType.NFE) && field.equals(ResultEntry.NFE)) {
-					continue;
-				}
-				
 				table.addColumn(new Column<>(field, x -> x.getProperties().getString(field)));
 			}
 			
 			// output the table
 			try (PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
 				table.save(format, output);
+			} catch (PropertyNotFoundException e) {
+				throw new IllegalArgumentException("Field '" + e.getProperty() + "' was not found in the result file");
 			}
 		}
 	}

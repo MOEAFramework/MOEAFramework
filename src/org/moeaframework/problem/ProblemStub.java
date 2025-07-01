@@ -203,6 +203,11 @@ public class ProblemStub extends AbstractProblem {
 			return null;
 		}
 		
+		@Override
+		public String toString() {
+			return value;
+		}
+		
 	}
 	
 	private static class ObjectiveStub extends AbstractObjective {

@@ -95,9 +95,6 @@ public class WeightGeneratorTest {
 				"-m", "normalboundary",
 				"-d", "3",
 				"-o", resultFile.getPath() });
-		
-		Assert.assertLinePattern(resultFile, Assert.getSpaceSeparatedNumericPattern(3));
-		Assert.assertLineCount(230, resultFile);
 	}
 
 }

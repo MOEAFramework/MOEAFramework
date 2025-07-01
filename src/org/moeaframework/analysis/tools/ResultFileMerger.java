@@ -22,6 +22,7 @@ import java.io.File;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.analysis.io.ResultFileWriter;
 import org.moeaframework.analysis.series.ResultEntry;
@@ -58,6 +59,10 @@ public class ResultFileMerger extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
+		if (commandLine.getArgs().length == 0) {
+			throw new ParseException("Requires at least one result file");
+		}
+		
 		File output = new File(commandLine.getOptionValue("output"));
 		NondominatedPopulation mergedSet = OptionUtils.getArchive(commandLine);
 

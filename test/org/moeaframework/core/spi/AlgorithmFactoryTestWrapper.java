@@ -27,14 +27,15 @@ import org.moeaframework.problem.Problem;
  */
 public class AlgorithmFactoryTestWrapper extends AlgorithmFactory {
 	
-	/**
-	 * The number of times the {@code terminate} method has been invoked.
-	 */
+	private int createCount;
+	
 	private int terminateCount;
 
 	@Override
 	public synchronized Algorithm getAlgorithm(String name, TypedProperties properties, Problem problem) {
 		final Algorithm algorithm = super.getAlgorithm(name, properties, problem);
+		
+		createCount++;
 		
 		return new AlgorithmWrapper<>(algorithm) {
 
@@ -46,12 +47,11 @@ public class AlgorithmFactoryTestWrapper extends AlgorithmFactory {
 			
 		};
 	}
+	
+	public int getCreateCount() {
+		return createCount;
+	}
 
-	/**
-	 * Returns the number of times the {@code terminate} method has been invoked.
-	 * 
-	 * @return the number of times the {@code terminate} method has been invoked
-	 */
 	public int getTerminateCount() {
 		return terminateCount;
 	}
