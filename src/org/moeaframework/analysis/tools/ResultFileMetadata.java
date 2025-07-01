@@ -19,14 +19,16 @@ package org.moeaframework.analysis.tools;
 
 import java.io.File;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.EnumSet;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.moeaframework.analysis.io.ResultFileReader;
+import org.moeaframework.analysis.series.IndexType;
+import org.moeaframework.analysis.series.IndexedResult;
 import org.moeaframework.analysis.series.ResultEntry;
+import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.core.Epsilons;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.indicator.Indicators;
@@ -38,7 +40,6 @@ import org.moeaframework.util.cli.CommandLineUtility;
 import org.moeaframework.util.format.Column;
 import org.moeaframework.util.format.TableFormat;
 import org.moeaframework.util.format.TabularData;
-import org.moeaframework.util.validate.Validate;
 
 /**
  * Command line utility for extracting metadata from a result file.  The metadata that can be extracted includes any
@@ -81,81 +82,61 @@ public class ResultFileMetadata extends CommandLineUtility {
 		TableFormat format = OptionUtils.getFormat(commandLine);
 		String[] fields = commandLine.getArgs();
 
-		// indicators are prepared, run the data extraction routine
 		try (Problem problem = OptionUtils.getProblemInstance(commandLine, true);
 				ResultFileReader input = ResultFileReader.open(problem, new File(commandLine.getOptionValue("input")))) {
-			NondominatedPopulation referenceSet = OptionUtils.getReferenceSet(commandLine, false);
-			Indicators indicators = getIndicators(input.getProblem(), referenceSet, fields);
-
-			if (epsilons != null) {
-				indicators.withEpsilons(epsilons);
-			}
+			ResultSeries series = ResultSeries.of(input);
 			
-			// collect the metadata
-			List<Object[]> metadata = new ArrayList<>();
+			// compute any indicators and merge into the properties
+			EnumSet<StandardIndicator> selectedIndicators = getSelectedIndicators(fields);
 			
-			while (input.hasNext()) {
-				ResultEntry entry = input.next();
-				TypedProperties properties = entry.getProperties();
-				IndicatorValues values = indicators.apply(new NondominatedPopulation(entry.getPopulation()));
-				
-				Object[] row = new Object[fields.length];
+			if (!selectedIndicators.isEmpty()) {
+				Indicators indicators = Indicators.of(problem, OptionUtils.getReferenceSet(commandLine, false));
+				indicators.include(selectedIndicators);
 
-				for (int i = 0; i < fields.length; i++) {
-					if (properties.contains(fields[i])) {
-						row[i] = properties.getString(fields[i]);
-						continue;
-					}
-					
-					double value = getIndicatorValue(values, fields[i]);
-					
-					if (!Double.isNaN(value)) {
-						row[i] = value;
-						continue;
-					}
-					
-					Validate.that("field", fields[i]).fails("Field name not found in data");
+				if (epsilons != null) {
+					indicators.withEpsilons(epsilons);
 				}
-
-				metadata.add(row);
+				
+				series.forEach(x -> {
+					IndicatorValues values = indicators.apply(new NondominatedPopulation(x.getPopulation()));
+					x.getProperties().addAll(values.asProperties());
+				});
 			}
 			
-			// format the output
-			TabularData<Object[]> table = new TabularData<>(metadata);
+			// create a table with the selected fields
+			TabularData<IndexedResult> table = new TabularData<>(series);
 			
-			for (int i = 0; i < fields.length; i++) {
-				final int fieldIndex = i;
-				table.addColumn(new Column<>(fields[i], x -> x[fieldIndex]));
+			if (!series.getIndexType().equals(IndexType.Singleton)) {
+				table.addColumn(new Column<>(series.getIndexType().name(), IndexedResult::getIndex));
 			}
 			
+			for (String field : fields) {
+				if (series.getIndexType().equals(IndexType.NFE) && field.equals(ResultEntry.NFE)) {
+					continue;
+				}
+				
+				table.addColumn(new Column<>(field, x -> x.getProperties().getString(field)));
+			}
+			
+			// output the table
 			try (PrintWriter output = createOutputWriter(commandLine.getOptionValue("output"))) {
 				table.save(format, output);
 			}
 		}
 	}
 	
-	private Indicators getIndicators(Problem problem, NondominatedPopulation referenceSet, String[] fields) {
-		Indicators indicators = Indicators.of(problem, referenceSet);
+	private EnumSet<StandardIndicator> getSelectedIndicators(String[] fields) {
+		EnumSet<StandardIndicator> selection = EnumSet.noneOf(StandardIndicator.class);
 		
 		for (String field : fields) {
 			try {
-				StandardIndicator indicator = TypedProperties.getEnumFromPartialString(StandardIndicator.class, field);
-				indicators.include(indicator);
+				selection.add(TypedProperties.getEnumFromString(StandardIndicator.class, field));
 			} catch (IllegalArgumentException e) {
 				// skip as no matching indicator found
 			}
 		}
-
-		return indicators;
-	}
-	
-	private double getIndicatorValue(IndicatorValues values, String name) {
-		try {
-			StandardIndicator indicator = TypedProperties.getEnumFromPartialString(StandardIndicator.class, name);
-			return values.get(indicator);
-		} catch (IllegalArgumentException e) {
-			return Double.NaN;
-		}
+		
+		return selection;
 	}
 	
 	/**

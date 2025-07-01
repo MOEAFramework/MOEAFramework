@@ -122,10 +122,10 @@ public class ResultFileMetadataTest {
 			"GenerationalDistance", "Hypervolume", "Spacing" });
 				
 		try (LineReader reader = LineReader.wrap(new FileReader(output))) {
-			Assert.assertEqualsNormalized("GenerationalDistance Hypervolume Spacing", reader.readLine());
+			Assert.assertEqualsNormalized("NFE GenerationalDistance Hypervolume Spacing", reader.readLine());
 			Assert.assertStringMatches(reader.readLine(), "[ \\-]+");
-			Assert.assertStringMatches(reader.readLine(), Assert.getSpaceSeparatedNumericPattern(3));
-			Assert.assertStringMatches(reader.readLine(), Assert.getSpaceSeparatedNumericPattern(3));
+			Assert.assertStringMatches(reader.readLine(), Assert.getSpaceSeparatedNumericPattern(4));
+			Assert.assertStringMatches(reader.readLine(), Assert.getSpaceSeparatedNumericPattern(4));
 			Assert.assertNull(reader.readLine());
 		}
 	}
