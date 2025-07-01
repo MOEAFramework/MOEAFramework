@@ -32,7 +32,6 @@ import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.OptionCompleter;
 import org.moeaframework.util.format.TableFormat;
-import org.moeaframework.util.validate.Validate;
 
 /**
  * Create and parse command line options shared by multiple tools.
@@ -223,14 +222,8 @@ class OptionUtils {
 	 */
 	public static TableFormat getFormat(CommandLine commandLine) {
 		OptionCompleter completer = new OptionCompleter(TableFormat.class);
-		String format = completer.lookup(commandLine.hasOption("format") ? commandLine.getOptionValue("format") :
-			TableFormat.Plaintext.name());
-		
-		if (format == null) {
-			Validate.that("format", commandLine.getOptionValue("format")).failUnsupportedOption(completer.getOptions());
-		}
-		
-		return TableFormat.valueOf(format);
+		return TableFormat.valueOf(completer.getOrThrow("format", 
+				commandLine.hasOption("format") ? commandLine.getOptionValue("format") : TableFormat.Plaintext.name()));
 	}
 
 }

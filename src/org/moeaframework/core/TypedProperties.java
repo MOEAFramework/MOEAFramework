@@ -641,14 +641,7 @@ public class TypedProperties implements Formattable<Entry<String, String>>, Copy
 	 * @throws IllegalArgumentException if the value does not match any enumeration constant
 	 */
 	public static <T extends Enum<?>> T getEnumFromPartialString(Class<T> enumType, String value) {
-		OptionCompleter completer = new OptionCompleter(enumType);
-		String completedValue = completer.lookup(value);
-		
-		if (completedValue == null) {
-			return Validate.that("value", value).failUnsupportedOption(enumType);
-		}
-		
-		return getEnumFromString(enumType, completedValue);
+		return getEnumFromString(enumType, new OptionCompleter(enumType).getOrThrow("value", value));
 	}
 	
 	/**

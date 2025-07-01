@@ -101,11 +101,7 @@ public class SampleGenerator extends CommandLineUtility {
 
 		if (commandLine.hasOption("method")) {
 			OptionCompleter completer = new OptionCompleter("uniform", "latin", "sobol", "saltelli");
-			String method = completer.lookup(commandLine.getOptionValue("method"));
-			
-			if (method == null) {
-				Validate.that("method", commandLine.getOptionValue("method")).failUnsupportedOption(completer.getOptions());
-			}
+			String method = completer.getOrThrow("method", commandLine.getOptionValue("method"));
 			
 			switch (method) {
 				case "uniform" -> sequence = new Uniform();

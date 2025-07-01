@@ -26,17 +26,34 @@ import org.moeaframework.Assert;
 public class OptionCompleterTest {
 
 	@Test
-	public void testNormalUsage() {
+	public void testLookup() {
 		OptionCompleter completer = new OptionCompleter("subset", "superset");
 
 		Assert.assertEquals("subset", completer.lookup("subset"));
 		Assert.assertEquals("superset", completer.lookup("superset"));
 		Assert.assertEquals("subset", completer.lookup("SUB"));
 		Assert.assertEquals("superset", completer.lookup("SUP"));
+		Assert.assertNull(completer.lookup(null));
 		Assert.assertNull(completer.lookup("su"));
 		Assert.assertNull(completer.lookup("k"));
 		Assert.assertNull(completer.lookup(""));
 	}
+	
+	
+	@Test
+	public void testGetOrThrow() {
+		OptionCompleter completer = new OptionCompleter("subset", "superset");
+
+		Assert.assertEquals("subset", completer.getOrThrow("input", "subset"));
+		Assert.assertEquals("superset", completer.getOrThrow("input", "superset"));
+		Assert.assertEquals("subset", completer.getOrThrow("input", "SUB"));
+		Assert.assertEquals("superset", completer.getOrThrow("input", "SUP"));
+		Assert.assertThrows(IllegalArgumentException.class, () -> completer.getOrThrow("input", null));
+		Assert.assertThrows(IllegalArgumentException.class, () -> completer.getOrThrow("input", "su"));
+		Assert.assertThrows(IllegalArgumentException.class, () -> completer.getOrThrow("input", "k"));
+		Assert.assertThrows(IllegalArgumentException.class, () -> completer.getOrThrow("input", ""));
+	}
+
 
 	@Test
 	public void testDuplicateOption() {
@@ -53,13 +70,13 @@ public class OptionCompleterTest {
 	@Test
 	public void testEmptyStringWithMultipleOptions() {
 		OptionCompleter completer = new OptionCompleter("subset", "superset");
-		Assert.assertEquals(null, completer.lookup(""));
+		Assert.assertNull(completer.lookup(""));
 	}
 	
 	@Test
 	public void testOverlappingOption() {
 		OptionCompleter completer = new OptionCompleter("sub", "subset");
-		Assert.assertEquals(null, completer.lookup("su"));
+		Assert.assertNull(completer.lookup("su"));
 		Assert.assertEquals("sub", completer.lookup("sub"));
 		Assert.assertEquals("subset", completer.lookup("subs"));
 	}
@@ -92,5 +109,4 @@ public class OptionCompleterTest {
 		Assert.assertEquals("\u0130", completer.lookup("\u0069"));
 		Assert.assertEquals("\u0130", completer.lookup("\u0131"));
 	}
-
 }

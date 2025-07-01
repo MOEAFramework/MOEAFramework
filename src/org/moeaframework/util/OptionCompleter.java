@@ -22,6 +22,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
 
+import org.moeaframework.util.validate.Validate;
+
 /**
  * Utility for auto-completion, finding the closest matching unique option from a set of options.  For instance,
  * <pre>{@code
@@ -125,6 +127,10 @@ public class OptionCompleter {
 		String result = null;
 		Comparator<? super String> comparator = options.comparator();
 		
+		if (partial == null) {
+			return null;
+		}
+		
 		for (String option : options) {
 			String optionPrefix = option.substring(0, Math.min(option.length(), partial.length()));
 			
@@ -142,6 +148,24 @@ public class OptionCompleter {
 			}
 		}
 
+		return result;
+	}
+	
+	/**
+	 * Returns the matching option or throws an {@link IllegalArgumentException}.
+	 * 
+	 * @param displayName the name of the parameter or argument to display in the error message
+	 * @param partial the partial/complete option
+	 * @return the closest matching option, or {@code null} if no options matched or more than one option matched
+	 * @throws IllegalArgumentException if the provided option did not match a valid selection
+	 */
+	public String getOrThrow(String displayName, String partial) {
+		String result = lookup(partial);
+		
+		if (result == null) {
+			return Validate.that(displayName, partial).failUnsupportedOption(options);
+		}
+		
 		return result;
 	}
 

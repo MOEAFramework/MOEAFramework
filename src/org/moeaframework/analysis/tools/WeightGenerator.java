@@ -114,11 +114,7 @@ public class WeightGenerator extends CommandLineUtility {
 		}
 
 		OptionCompleter options = new OptionCompleter("random", "uniformdesign", "normalboundaryintersection");
-		String method = options.lookup(commandLine.getOptionValue("method"));
-
-		if (method == null) {
-			Validate.that("method", commandLine.getOptionValue("method")).failUnsupportedOption(options.getOptions());
-		}
+		String method = options.getOrThrow("method", commandLine.getOptionValue("method"));
 
 		int D = Integer.parseInt(commandLine.getOptionValue("dimension"));
 		Validate.that("dimension", D).isGreaterThan(0);

@@ -35,7 +35,6 @@ import org.moeaframework.util.Iterators;
 import org.moeaframework.util.OptionCompleter;
 import org.moeaframework.util.cli.CommandLineUtility;
 import org.moeaframework.util.format.NumberFormatter;
-import org.moeaframework.util.validate.Validate;
 
 /**
  * Command line utility for calculating an indicator on approximation sets.
@@ -76,11 +75,7 @@ public class CalculateIndicator extends CommandLineUtility {
 		NondominatedPopulation referenceSet = OptionUtils.getReferenceSet(commandLine, false);
 		
 		OptionCompleter completer = new OptionCompleter(StandardIndicator.class);
-		String indicatorName = completer.lookup(commandLine.getOptionValue("indicator"));
-		
-		if (indicatorName == null) {
-			Validate.that("indicator", commandLine.getOptionValue("indicator")).failUnsupportedOption(completer.getOptions());
-		}
+		String indicatorName = completer.getOrThrow("indicator", commandLine.getOptionValue("indicator"));
 		
 		StandardIndicator indicator = StandardIndicator.valueOf(indicatorName);
 
