@@ -12,7 +12,8 @@ fi
 
 if [ -z "${MOEAFRAMEWORK_LIB}" ]; then
 	if [ -d "${ROOT}/dist" ]; then
-		MOEAFRAMEWORK_LIB="$(find "${ROOT}/dist" -type f -name "MOEAFramework-*.jar" | grep -v "MOEAFramework-.*-Test.jar" | sort --version-sort --reverse | head -n 1)"
+		MOEAFRAMEWORK_LIB="$(find "${ROOT}/dist" -type f -name "MOEAFramework-*.jar" | \
+			grep -v "MOEAFramework-.*-Test.jar" | sort --version-sort --reverse | head -n 1)"
 	fi
 	
 	if [ -n "${MOEAFRAMEWORK_LIB}" ]; then
