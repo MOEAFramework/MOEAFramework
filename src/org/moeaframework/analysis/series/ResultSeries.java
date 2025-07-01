@@ -81,6 +81,7 @@ Streamable<IndexedResult> {
 	 * Adds a new result entry to this series.
 	 * 
 	 * @param result the result to add
+	 * @throws IllegalArgumentException if the entry is not compatible with the selected index type
 	 */
 	public void add(ResultEntry result) {
 		switch (indexType) {
@@ -325,8 +326,9 @@ Streamable<IndexedResult> {
 	}
 	
 	/**
-	 * Creates a series containing the populations contained in a result file.  The result file should contain the
-	 * property {@value ResultEntry#NFE} on each entry in order to use NFE as the ordering.
+	 * Creates a series containing the populations contained in a result file.  If the first entry contains the
+	 * property {@value ResultEntry#NFE}, then the index type {@link IndexType#NFE} is assumed and all remaining
+	 * entries are expected to include the {@value ResultEntry#NFE} property.
 	 * 
 	 * @param reader the result file reader
 	 * @return the series

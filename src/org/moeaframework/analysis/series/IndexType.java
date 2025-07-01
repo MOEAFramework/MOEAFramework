@@ -24,7 +24,8 @@ public enum IndexType {
 	
 	/**
 	 * The index represents the number of function evaluations (NFE).  When finding the entry with a given NFE,
-	 * we typically find the nearest match.
+	 * we typically find the nearest match.  This requires each entry to include the {@value ResultEntry#NFE} property
+	 * and duplicates will result in an error.
 	 */
 	NFE,
 	

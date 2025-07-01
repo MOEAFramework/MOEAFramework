@@ -24,12 +24,15 @@ public class PropertyNotFoundException extends IllegalArgumentException {
 
 	private static final long serialVersionUID = 2355313923356588354L;
 	
+	/**
+	 * The name of the missing property.
+	 */
 	private final String propertyName;
 
 	/**
 	 * Creates an exception indicating the given property was not found.
 	 * 
-	 * @param propertyName the name of the property
+	 * @param propertyName the name of the missing property
 	 */
 	public PropertyNotFoundException(String propertyName) {
 		super("Property '" + propertyName + "' is not set and no default given");
@@ -39,7 +42,7 @@ public class PropertyNotFoundException extends IllegalArgumentException {
 	/**
 	 * Returns the name of the missing property.
 	 * 
-	 * @return the name of the property
+	 * @return the name of the missing property
 	 */
 	public String getProperty() {
 		return propertyName;
