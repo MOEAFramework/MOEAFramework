@@ -36,9 +36,11 @@ public class Assume extends org.junit.Assume {
 		assumeTrue(message, false);
 	}
 	
-	public static void assumeInstanceOf(Class<?> type, Object object) {
-		assumeTrue("Expected object of type " + type + " but found " + object.getClass().getName() + ", skipping test",
-				type.isInstance(object));
+	public static <T> T assumeInstanceOf(Class<T> cls, Object object) {
+		assumeTrue("Expected object of type " + cls + " but found " + object.getClass().getName() + ", skipping test",
+				cls.isInstance(object));
+		
+		return cls.cast(object);
 	}
 	
 	public static void assumeFileExists(File file) {

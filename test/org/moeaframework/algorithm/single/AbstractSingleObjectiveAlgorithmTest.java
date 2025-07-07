@@ -49,21 +49,19 @@ public abstract class AbstractSingleObjectiveAlgorithmTest<T extends Algorithm &
 		T algorithm = createInstance(new MockRealProblem());
 		TypedProperties properties = algorithm.getConfiguration();
 		
-		Assume.assumeInstanceOf(SingleObjectiveEvolutionaryAlgorithm.class, algorithm);
+		SingleObjectiveEvolutionaryAlgorithm typedAlgorithm = Assume.assumeInstanceOf(
+				SingleObjectiveEvolutionaryAlgorithm.class, algorithm);
 		
 		Assert.assertEquals("linear", properties.getString("method"));
-		Assert.assertInstanceOf(LinearDominanceComparator.class,
-				((SingleObjectiveEvolutionaryAlgorithm)algorithm).getComparator());
+		Assert.assertInstanceOf(LinearDominanceComparator.class, typedAlgorithm.getComparator());
 			
 		properties.setString("method", "min-max");
 		algorithm.applyConfiguration(properties);
-		Assert.assertInstanceOf(MinMaxDominanceComparator.class,
-				((SingleObjectiveEvolutionaryAlgorithm)algorithm).getComparator());
+		Assert.assertInstanceOf(MinMaxDominanceComparator.class, typedAlgorithm.getComparator());
 			
 		properties.setString("method", "angle");
 		algorithm.applyConfiguration(properties);
-		Assert.assertInstanceOf(VectorAngleDistanceScalingComparator.class,
-				((SingleObjectiveEvolutionaryAlgorithm)algorithm).getComparator());
+		Assert.assertInstanceOf(VectorAngleDistanceScalingComparator.class, typedAlgorithm.getComparator());
 	}
 	
 	@Test(expected = ConfigurationException.class)

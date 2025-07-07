@@ -19,6 +19,7 @@ package org.moeaframework.util.cli;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -680,7 +681,7 @@ public class UpdateCodeSamplesTest {
 			thrownException = e;
 		}
 		
-		//Assert.assertEqualsNormalized(expected, Files.readString(templateFile.toPath()));
+		Assert.assertEqualsNormalized(expected, Files.readString(templateFile.toPath()));
 		
 		if (thrownException != null) {
 			throw thrownException;
