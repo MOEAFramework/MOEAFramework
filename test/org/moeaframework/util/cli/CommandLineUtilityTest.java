@@ -17,6 +17,11 @@
  */
 package org.moeaframework.util.cli;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.apache.commons.cli.CommandLine;
@@ -24,6 +29,8 @@ import org.apache.commons.cli.MissingOptionException;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.apache.commons.io.IOUtils;
+import org.junit.Assert;
 import org.junit.Test;
 import org.moeaframework.Capture;
 import org.moeaframework.Capture.CaptureResult;
@@ -142,6 +149,38 @@ public class CommandLineUtilityTest {
 		CaptureResult result = Capture.output(MockCommandBasedUtility.class, "mock");
 		result.assertSuccessful();
 		result.assertContains("Run Mock Command");
+	}
+	
+	@Test
+	public void testPrompt() throws IOException {
+		InputStream oldIn = System.in;
+		
+		try (PipedOutputStream out = new PipedOutputStream(); PipedInputStream in = new PipedInputStream(out)) {
+			System.setIn(in);
+			
+			IOUtils.write("y\n", out, StandardCharsets.UTF_8);
+			Assert.assertTrue(new MockStandardUtility().prompt("Respond"));
+			
+			IOUtils.write("Y\n", out, StandardCharsets.UTF_8);
+			Assert.assertTrue(new MockStandardUtility().prompt("Respond"));
+			
+			IOUtils.write("Yes\n", out, StandardCharsets.UTF_8);
+			Assert.assertTrue(new MockStandardUtility().prompt("Respond"));
+			
+			IOUtils.write("n\n", out, StandardCharsets.UTF_8);
+			Assert.assertFalse(new MockStandardUtility().prompt("Respond"));
+			
+			IOUtils.write("N\n", out, StandardCharsets.UTF_8);
+			Assert.assertFalse(new MockStandardUtility().prompt("Respond"));
+			
+			IOUtils.write("No\n", out, StandardCharsets.UTF_8);
+			Assert.assertFalse(new MockStandardUtility().prompt("Respond"));
+			
+			IOUtils.write("yy\n", out, StandardCharsets.UTF_8);
+			Assert.assertFalse(new MockStandardUtility().prompt("Respond"));
+		} finally {
+			System.setIn(oldIn);
+		}
 	}
 
 }

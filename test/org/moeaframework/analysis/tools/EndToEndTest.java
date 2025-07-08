@@ -18,6 +18,7 @@
 package org.moeaframework.analysis.tools;
 
 import java.io.File;
+
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Capture;

@@ -36,6 +36,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.apache.commons.io.input.CloseShieldInputStream;
 import org.apache.commons.io.output.CloseShieldOutputStream;
 import org.apache.commons.lang3.SystemUtils;
 import org.moeaframework.core.FrameworkException;
@@ -390,7 +391,7 @@ public abstract class CommandLineUtility {
 			return true;
 		}
 		
-		try (Scanner scanner = new Scanner(System.in)) {
+		try (Scanner scanner = new Scanner(CloseShieldInputStream.wrap(System.in))) {
 			System.out.print(prompt + " [y/N] ");
 			String response = scanner.nextLine();
 			return response.equalsIgnoreCase("y") || response.equalsIgnoreCase("yes");

@@ -869,7 +869,7 @@ public class XYPlotBuilder extends PlotBuilder<XYPlotBuilder> {
 		double deltaX = (maxX - minX) / steps;
 		
 		// TODO: The current implementation makes multiple passes of the data since the inputs are not sorted.  While
-		// performance isn't necessarily a concern here, we could make this more efficient put sorting the values
+		// performance isn't necessarily a concern here, we could make this more efficient by sorting the values
 		// and performing a single scan.
 		double currentX = minX;
 
