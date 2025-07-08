@@ -27,6 +27,7 @@ fi
 
 if [ "$(uname -s)" == "Darwin" ]; then
 	ARGS+=("-Xdock:name=MOEA Framework")
+	#ARGS+=("-Dapple.laf.useScreenMenuBar=true")
 fi
 
 if ! java -classpath "${CLASSPATH}" "${ARGS[@]}" org.moeaframework.analysis.tools.Main --version >/dev/null 2>&1; then

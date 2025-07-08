@@ -131,7 +131,7 @@ public abstract class PlotBuilder<T extends PlotBuilder<?>> {
 	
 	/**
 	 * Maps labels to their assigned color.  This can be assigned an externally managed paint helper to keep colors
-	 * synchronized.
+	 * synchronized between plots.
 	 */
 	protected PaintHelper paintHelper;
 	

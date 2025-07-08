@@ -59,20 +59,6 @@ public class UI {
 	}
 	
 	/**
-	 * Optionally configure all windows to display their menu in Mac's system menu instead of within the window itself.
-	 * This has no effect and is safe to call on other operating systems.
-	 * <p>
-	 * <strong>Must be called before displaying any UI components!</strong>
-	 * 
-	 * @param value if {@code true}, place menus in the system menu
-	 */
-	public static void setUseScreenMenuBar(boolean value) {
-		if (SystemUtils.IS_OS_MAC) {
-			System.setProperty("apple.laf.useScreenMenuBar", Boolean.toString(value));
-		}
-	}
-	
-	/**
 	 * Configures the system look and feel.
 	 * <p>
 	 * <strong>Must be called before displaying any UI components!</strong>  Note that it is not necessary to call this
@@ -187,19 +173,6 @@ public class UI {
 				// ignore
 			}
 		}
-	}
-	
-	/**
-	 * Disposes all dialogs and windows.
-	 */
-	public static void disposeAll() {
-		SwingUtilities.invokeLater(() -> {
-			for (Window window : Window.getWindows()) {
-				if (window.isShowing()) {
-					window.dispose();
-				}
-			}
-		});
 	}
 
 }
