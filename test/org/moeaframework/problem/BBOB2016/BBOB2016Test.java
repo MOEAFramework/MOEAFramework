@@ -19,19 +19,23 @@ package org.moeaframework.problem.BBOB2016;
 
 import java.util.Arrays;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
+import org.junit.Assume;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.Assume;
+import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.Problem;
+import org.moeaframework.util.io.LineReader;
+import org.moeaframework.util.io.Resources;
 
 public class BBOB2016Test {
 
 	@Test
-	public void test() {
+	public void testSuite() {
 		int[] functions = new int[] { 1, 2, 6, 8, 13, 14, 15, 17, 20, 21 };
 		int[] dimensions = new int[] { 2, 3, 5, 10, 20, 40 };
 		int[] instances = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
@@ -58,71 +62,67 @@ public class BBOB2016Test {
 		Assert.assertNotNull(ProblemFactory.getInstance().getProblem("bbob-biobj(bbob_f1_i1_d2__bbob_f21_i15_d40)"));
 	}
 
-	/**
-	 * This test runs against the <a href="https://github.com/numbbo/coco">Coco Framework</a>.  See
-	 * {@code setup-coco.sh} for instructions on compiling Coco.
-	 */
-	@SuppressWarnings("resource")
 	@Test
-	public void testCoco() throws Exception {
-		try {
-			System.loadLibrary("CocoJNI");
-		} catch (UnsatisfiedLinkError e) {
-			Assume.assumeNoException("CocoJNI not found, please compile and place on the Java library path", e);
-		}
-
-		CocoJNI.cocoSetLogLevel("error");
-
-		String observerOptions = String.join(" ",
-				"result_folder: Testing_on_bbob-biobj",
-				"algorithm_name: Testing",
-				"algorithm_info: \"MOEA Framework Testing\"");
-
-		Suite suite = new Suite("bbob-biobj", "year: 2016", "dimensions: 2,3,5,10,20,40");
-		Observer observer = new Observer("bbob-biobj", observerOptions);
-		Benchmark benchmark = new Benchmark(suite, observer);
-		org.moeaframework.problem.BBOB2016.Problem rawProblem = null;
-
-		while ((rawProblem = benchmark.getNextProblem()) != null) {
-			CocoProblemWrapper cocoProblem = new CocoProblemWrapper(rawProblem);
-			Problem moeaProblem = ProblemFactory.getInstance().getProblem(cocoProblem.getName());
-
-			System.out.println("Testing COCO problem instance " + cocoProblem.getName());
-
-			Assert.assertEquals(cocoProblem.getNumberOfVariables(), moeaProblem.getNumberOfVariables());
-			Assert.assertEquals(cocoProblem.getNumberOfObjectives(), moeaProblem.getNumberOfObjectives());
-			Assert.assertEquals(cocoProblem.getNumberOfConstraints(), moeaProblem.getNumberOfConstraints());
-			
-			Solution[] solutions = new RandomInitialization(moeaProblem).initialize(100);
-
-			for (Solution solution : solutions) {
-				Solution cocoSolution = solution.copy();
-
-				moeaProblem.evaluate(solution);
-				cocoProblem.evaluate(cocoSolution);
+	public void testEvaluation() throws Exception {
+		try (LineReader reader = Resources.asLineReader(getClass(), "BBOB2016.Test.dat")) {
+			for (String line : reader) {
+				String[] tokens = line.split("\s+");
+				int index = 0;
 				
-				Assert.assertNoNaN(solution);
-				Assert.assertNoNaN(cocoSolution);
-
+				Problem problem = ProblemFactory.getInstance().getProblem(tokens[index++]);
+				
+				Assert.assertEquals(Integer.parseInt(tokens[index++]), problem.getNumberOfVariables());
+				Assert.assertEquals(Integer.parseInt(tokens[index++]), problem.getNumberOfObjectives());
+				Assert.assertEquals(Integer.parseInt(tokens[index++]), problem.getNumberOfConstraints());
+				
+				// load sample from input
+				double[] x = new double[problem.getNumberOfVariables()];
+				double[] fx = new double[problem.getNumberOfObjectives()];
+				double[] cx = new double[problem.getNumberOfConstraints()];
+				
+				for (int i = 0; i < problem.getNumberOfVariables(); i++) {
+					x[i] = Double.parseDouble(tokens[index++]);
+				}
+				
+				for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
+					fx[i] = Double.parseDouble(tokens[index++]);
+				}
+				
+				for (int i = 0; i < problem.getNumberOfConstraints(); i++) {
+					cx[i] = Double.parseDouble(tokens[index++]);
+				}
+				
+				// evaluate sample
+				Solution solution = problem.newSolution();
+				RealVariable.setReal(solution, x);
+				problem.evaluate(solution);
+				
+				// compare output
 				try {
-					Assert.assertEquals(solution, cocoSolution);
+					Assert.assertArrayEquals(fx, solution.getObjectiveValues(), TestThresholds.LOW_PRECISION);
+					Assert.assertArrayEquals(cx, solution.getConstraintValues(), TestThresholds.LOW_PRECISION);
 				} catch (AssertionError e) {
-					System.out.println("Detected difference (MOEA Framework / Coco):");
-					System.out.println("  > Variables: " + Arrays.toString(RealVariable.getReal(solution)) + " / " +
-							Arrays.toString(RealVariable.getReal(cocoSolution)));
-					System.out.println("  > Objectives: " + Arrays.toString(solution.getObjectiveValues()) + " / " +
-							Arrays.toString(cocoSolution.getObjectiveValues()));
-					System.out.println("  > Constraints: " + Arrays.toString(solution.getConstraintValues()) + " / " +
-							Arrays.toString(cocoSolution.getConstraintValues()));
+					System.out.println("Detected difference in " + problem.getName() + " (Expected / Actual):");
+					System.out.println("  > Variables: " + Arrays.toString(x) + " / " + Arrays.toString(RealVariable.getReal(solution)));
+					System.out.println("  > Objectives: " + Arrays.toString(fx) + " / " + Arrays.toString(solution.getObjectiveValues()));
+					System.out.println("  > Constraints: " + Arrays.toString(cx) + " / " + Arrays.toString(solution.getConstraintValues()));
 					
 					throw e;
 				}
 			}
 		}
-
-		benchmark.finalizeBenchmark();
-		//observer.finalizeObserver(); // This causes a "free(): double free detected in tcache 2" error
-		//suite.finalizeSuite(); // This ends up terminating the JVM and interrupting the tests
+	}
+	
+	@Test
+	public void testGenerator() throws Exception {
+		BBOB2016TestGenerator generator = new BBOB2016TestGenerator();
+		CommandLine commandLine = new DefaultParser().parse(generator.getOptions(), new String[0]);
+		
+		try {
+			generator.run(commandLine);
+		} catch (UnsatisfiedLinkError e) {
+			Assume.assumeNoException("CocoJNI is not available or configured correctly", e);
+		}
 	}
 
 }
