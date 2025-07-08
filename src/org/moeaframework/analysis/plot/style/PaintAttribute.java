@@ -66,23 +66,25 @@ public class PaintAttribute implements StyleAttribute {
 		if (plot instanceof XYPlot xyPlot) {
 			XYItemRenderer renderer = xyPlot.getRenderer(dataset);
 			
-			if (renderer instanceof XYBlockRenderer && paint instanceof Color color) {
+			if (renderer == null) {
+				// do nothing
+			} else if (renderer instanceof XYBlockRenderer && paint instanceof Color color) {
 				new PaintScaleAttribute(new ColorGradientPaintScale(0.0, 1.0, color)).apply(plot, dataset, series);
+			} else if (series >= 0) {
+				renderer.setSeriesPaint(series, paint);
+				renderer.setSeriesOutlinePaint(series, outlinePaint);
+				renderer.setSeriesFillPaint(series, fillPaint);
 			} else {
-				if (series >= 0) {
-					renderer.setSeriesPaint(series, paint);
-					renderer.setSeriesOutlinePaint(series, outlinePaint);
-					renderer.setSeriesFillPaint(series, fillPaint);
-				} else {
-					renderer.setDefaultPaint(paint);
-					renderer.setDefaultOutlinePaint(outlinePaint);
-					renderer.setDefaultFillPaint(fillPaint);
-				}
+				renderer.setDefaultPaint(paint);
+				renderer.setDefaultOutlinePaint(outlinePaint);
+				renderer.setDefaultFillPaint(fillPaint);
 			}
 		} else if (plot instanceof CategoryPlot categoryPlot) {
 			CategoryItemRenderer renderer = categoryPlot.getRenderer(dataset);
 			
-			if (series >= 0) {
+			if (renderer == null) {
+				// do nothing
+			} else if (series >= 0) {
 				renderer.setSeriesPaint(series, paint);
 				renderer.setSeriesOutlinePaint(series, outlinePaint);
 				renderer.setSeriesFillPaint(series, fillPaint);

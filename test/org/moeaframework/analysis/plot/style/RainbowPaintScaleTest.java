@@ -23,22 +23,22 @@ import org.jfree.chart.renderer.PaintScale;
 import org.junit.Test;
 import org.moeaframework.Assert;
 
-public class ColorGradientPaintScaleTest {
+public class RainbowPaintScaleTest {
 	
 	@Test
 	public void test() {
-		PaintScale scale = new ColorGradientPaintScale(0.0, 10.0, Color.RED);
-		Assert.assertEquals(Color.BLACK, scale.getPaint(0.0));
-		Assert.assertEquals(new Color(128, 0, 0), scale.getPaint(5.0));
-		Assert.assertEquals(Color.RED, scale.getPaint(10.0));
+		PaintScale scale = new RainbowPaintScale(0.0, 10.0);
+		Assert.assertEquals(Color.getHSBColor(0f, 1f, 1f), scale.getPaint(0.0));
+		Assert.assertEquals(Color.getHSBColor(0.5f, 1f, 1f), scale.getPaint(5.0));
+		Assert.assertEquals(Color.getHSBColor(1f, 1f, 1f), scale.getPaint(10.0));
 	}
 	
 	@Test
 	public void testScale() {
-		PaintScale scale = new ColorGradientPaintScale(0.0, 10.0, Color.RED).scale(-10.0, 10.0);
-		Assert.assertEquals(Color.BLACK, scale.getPaint(-10.0));
-		Assert.assertEquals(new Color(128, 0, 0), scale.getPaint(0.0));
-		Assert.assertEquals(Color.RED, scale.getPaint(10.0));
+		PaintScale scale = new RainbowPaintScale(0.0, 10.0).scale(-10.0, 10.0);
+		Assert.assertEquals(Color.getHSBColor(0f, 1f, 1f), scale.getPaint(-10.0));
+		Assert.assertEquals(Color.getHSBColor(0.5f, 1f, 1f), scale.getPaint(0.0));
+		Assert.assertEquals(Color.getHSBColor(1f, 1f, 1f), scale.getPaint(10.0));
 	}
 
 }

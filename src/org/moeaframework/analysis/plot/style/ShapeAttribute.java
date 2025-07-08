@@ -45,11 +45,13 @@ public class ShapeAttribute implements StyleAttribute {
 		if (plot instanceof XYPlot xyPlot) {
 			XYItemRenderer renderer = xyPlot.getRenderer(dataset);	
 			
-			if (series >= 0) {
+			if (renderer == null) {
+				// do nothing
+			} else if (series >= 0) {
 				if (renderer.getSeriesShape(series) instanceof RectangularShape oldShape) {
 					shape.setFrame(oldShape.getFrame());
 				}
-				
+								
 				renderer.setSeriesShape(series, shape);
 			} else {
 				if (renderer.getDefaultShape() instanceof RectangularShape oldShape) {

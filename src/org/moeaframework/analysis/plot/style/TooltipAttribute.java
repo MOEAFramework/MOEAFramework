@@ -45,8 +45,10 @@ public class TooltipAttribute implements StyleAttribute {
 	public void apply(Plot plot, int dataset, int series) {
 		if (plot instanceof XYPlot xyPlot) {
 			XYItemRenderer renderer = xyPlot.getRenderer(dataset);	
-						
-			if (xyPlot.getDataset(dataset) instanceof XYZDataset) {
+			
+			if (renderer == null) {
+				// do nothing
+			} else if (xyPlot.getDataset(dataset) instanceof XYZDataset) {
 				if (series >= 0) {
 					renderer.setSeriesToolTipGenerator(series, new StandardXYZToolTipGenerator());
 				} else {
@@ -62,7 +64,9 @@ public class TooltipAttribute implements StyleAttribute {
 		} else if (plot instanceof CategoryPlot categoryPlot) {
 			CategoryItemRenderer renderer = categoryPlot.getRenderer(dataset);
 			
-			if (categoryPlot.getDataset(dataset) instanceof BoxAndWhiskerCategoryDataset) {
+			if (renderer == null) {
+				// do nothing
+			} else if (categoryPlot.getDataset(dataset) instanceof BoxAndWhiskerCategoryDataset) {
 				if (series >= 0) {
 					renderer.setSeriesToolTipGenerator(series, new BoxAndWhiskerToolTipGenerator());
 				} else {

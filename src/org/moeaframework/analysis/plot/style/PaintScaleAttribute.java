@@ -46,7 +46,7 @@ public class PaintScaleAttribute implements StyleAttribute {
 				xyPlot.getDataset(dataset) instanceof DefaultXYZDataset xyzDataset &&
 				xyPlot.getRenderer(dataset) instanceof XYBlockRenderer blockRenderer) {
 			series = series >= 0 ? series : 0;
-			
+						
 			if (paintScale instanceof AutoScaledPaintScale autoScaledPaintScale) {
 				double zMin = Double.POSITIVE_INFINITY;
 				double zMax = Double.NEGATIVE_INFINITY;
@@ -55,7 +55,7 @@ public class PaintScaleAttribute implements StyleAttribute {
 					zMin = Math.min(zMin, xyzDataset.getZValue(series, i));
 					zMax = Math.max(zMax, xyzDataset.getZValue(series, i));
 				}
-				
+								
 				blockRenderer.setPaintScale(autoScaledPaintScale.scale(zMin, zMax));
 			} else {
 				blockRenderer.setPaintScale(paintScale);

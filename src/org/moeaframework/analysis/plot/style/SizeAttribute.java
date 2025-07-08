@@ -44,9 +44,11 @@ public class SizeAttribute implements StyleAttribute {
 	@Override
 	public void apply(Plot plot, int dataset, int series) {
 		if (plot instanceof XYPlot xyPlot) {
-			XYItemRenderer renderer = xyPlot.getRenderer(dataset);			
+			XYItemRenderer renderer = xyPlot.getRenderer(dataset);
 			
-			if (series >= 0) {
+			if (renderer == null) {
+				// do nothing
+			} else if (series >= 0) {
 				if (renderer.getSeriesShape(series) instanceof RectangularShape shape) {
 					shape.setFrame(-size / 2.0, -size / 2.0, size, size);
 					renderer.setSeriesShape(series, shape);
@@ -88,6 +90,8 @@ public class SizeAttribute implements StyleAttribute {
 			}
 		}
 	}
+	
+	
 	
 	/**
 	 * Returns a custom size style attribute.

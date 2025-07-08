@@ -51,7 +51,9 @@ public class LabelAttribute implements StyleAttribute {
 			StandardXYItemLabelGenerator labelGenerator = new StandardXYItemLabelGenerator(
 					formatString == null ? StandardXYItemLabelGenerator.DEFAULT_ITEM_LABEL_FORMAT : formatString);
 			
-			if (series >= 0) {
+			if (renderer == null) {
+				// do nothing
+			} else if (series >= 0) {
 				renderer.setSeriesItemLabelGenerator(series, labelGenerator);
 				renderer.setSeriesItemLabelsVisible(series, true);
 			} else {
@@ -64,7 +66,9 @@ public class LabelAttribute implements StyleAttribute {
 					formatString == null ? StandardCategoryItemLabelGenerator.DEFAULT_LABEL_FORMAT_STRING : formatString,
 					NumberFormat.getInstance());
 			
-			if (series >= 0) {
+			if (renderer == null) {
+				// do nothing
+			} else if (series >= 0) {
 				renderer.setSeriesItemLabelGenerator(series, labelGenerator);
 				renderer.setSeriesItemLabelsVisible(series, true);
 			} else {

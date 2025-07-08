@@ -17,28 +17,10 @@
  */
 package org.moeaframework.analysis.plot.style;
 
-import java.awt.Color;
-
-import org.jfree.chart.renderer.PaintScale;
-import org.junit.Test;
-import org.moeaframework.Assert;
-
-public class ColorGradientPaintScaleTest {
+public class TooltipAttributeTest extends AbstractStyleAttributeTest<TooltipAttribute> {
 	
-	@Test
-	public void test() {
-		PaintScale scale = new ColorGradientPaintScale(0.0, 10.0, Color.RED);
-		Assert.assertEquals(Color.BLACK, scale.getPaint(0.0));
-		Assert.assertEquals(new Color(128, 0, 0), scale.getPaint(5.0));
-		Assert.assertEquals(Color.RED, scale.getPaint(10.0));
-	}
-	
-	@Test
-	public void testScale() {
-		PaintScale scale = new ColorGradientPaintScale(0.0, 10.0, Color.RED).scale(-10.0, 10.0);
-		Assert.assertEquals(Color.BLACK, scale.getPaint(-10.0));
-		Assert.assertEquals(new Color(128, 0, 0), scale.getPaint(0.0));
-		Assert.assertEquals(Color.RED, scale.getPaint(10.0));
+	public TooltipAttribute createInstance() {
+		return TooltipAttribute.of();
 	}
 
 }

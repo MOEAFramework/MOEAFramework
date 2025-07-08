@@ -521,9 +521,11 @@ public class Assert extends org.junit.Assert {
 		assertEquals(message, expected, actual);
 	}
 	
-	public static void assertInstanceOf(Class<?> type, Object object) {
-		assertTrue("Expected object of type " + type.getName() + " but was " + object.getClass().getName(),
-				type.isInstance(object));
+	public static <T> T assertInstanceOf(Class<T> cls, Object object) {
+		assertTrue("Expected object of type " + cls.getName() + " but was " + object.getClass().getName(),
+				cls.isInstance(object));
+		
+		return cls.cast(object);
 	}
 	
 	public static void assertEmpty(Collection<?> collection) {

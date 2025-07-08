@@ -81,6 +81,8 @@ public class HeatMapBuilder extends PlotBuilder<HeatMapBuilder> {
 		zAxis.setLowerMargin(0.0);
 		zAxis.setUpperMargin(0.0);
 		zAxis.setVisible(false);
+		
+		attributes = new PlotAttribute[0];
 	}
 	
 	@Override
@@ -129,7 +131,7 @@ public class HeatMapBuilder extends PlotBuilder<HeatMapBuilder> {
 		}
 				
 		JFreeChart chart = build(plot);
-
+		
 		if (chart.getLegend() != null) {
 			PaintScaleLegend paintScaleLegend = new PaintScaleLegend(renderer.getPaintScale(), new NumberAxis(zAxis.getLabel()));
 			paintScaleLegend.setPosition(RectangleEdge.RIGHT);

@@ -19,26 +19,22 @@ package org.moeaframework.analysis.plot.style;
 
 import java.awt.Color;
 
-import org.jfree.chart.renderer.PaintScale;
-import org.junit.Test;
+import org.jfree.chart.plot.Plot;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYBlockRenderer;
 import org.moeaframework.Assert;
 
-public class ColorGradientPaintScaleTest {
+public class PaintScaleAttributeTest extends AbstractStyleAttributeTest<PaintScaleAttribute> {
 	
-	@Test
-	public void test() {
-		PaintScale scale = new ColorGradientPaintScale(0.0, 10.0, Color.RED);
-		Assert.assertEquals(Color.BLACK, scale.getPaint(0.0));
-		Assert.assertEquals(new Color(128, 0, 0), scale.getPaint(5.0));
-		Assert.assertEquals(Color.RED, scale.getPaint(10.0));
+	public PaintScaleAttribute createInstance() {
+		return PaintScaleAttribute.of(new ColorGradientPaintScale(0.0, 1.0, Color.RED));
 	}
 	
-	@Test
-	public void testScale() {
-		PaintScale scale = new ColorGradientPaintScale(0.0, 10.0, Color.RED).scale(-10.0, 10.0);
-		Assert.assertEquals(Color.BLACK, scale.getPaint(-10.0));
-		Assert.assertEquals(new Color(128, 0, 0), scale.getPaint(0.0));
-		Assert.assertEquals(Color.RED, scale.getPaint(10.0));
+	@Override
+	public void assertStyle(Plot plot) {
+		if (plot instanceof XYPlot xyPlot && xyPlot.getRenderer() instanceof XYBlockRenderer renderer) {
+			Assert.assertInstanceOf(IndexedPaintScale.class, renderer.getPaintScale());
+		}
 	}
 
 }
