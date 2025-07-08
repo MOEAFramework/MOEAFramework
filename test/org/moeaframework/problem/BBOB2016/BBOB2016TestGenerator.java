@@ -88,8 +88,10 @@ public class BBOB2016TestGenerator extends CommandLineUtility {
 		}
 		
 		benchmark.finalizeBenchmark();
-		observer.finalizeObserver();
-		suite.finalizeSuite();
+		
+		// These cause issues when running in JUnit, since it kills the running process
+		// observer.finalizeObserver();
+		// suite.finalizeSuite();
 	}
 	
 	private double[] generateLowerBounds(Problem problem) {
