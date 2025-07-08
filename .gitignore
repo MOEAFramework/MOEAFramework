@@ -1,5 +1,4 @@
 /build/
-/coco/
 /dist/
 /javadoc/
 /native/
@@ -31,6 +30,11 @@ lib/junit-*.jar
 lib/nashorn-*.jar
 lib/pisa-plugin-*.jar
 test/checkstyle/checkstyle-*.jar
+
+# Coco Framework
+/coco/
+/exdata/
+*CocoJNI.*
 
 # Eclipse
 /.settings/
