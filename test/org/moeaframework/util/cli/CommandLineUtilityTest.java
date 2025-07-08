@@ -178,6 +178,12 @@ public class CommandLineUtilityTest {
 			
 			IOUtils.write("yy\n", out, StandardCharsets.UTF_8);
 			Assert.assertFalse(new MockStandardUtility().prompt("Respond"));
+			
+			IOUtils.write(" \n", out, StandardCharsets.UTF_8);
+			Assert.assertFalse(new MockStandardUtility().prompt("Respond"));
+			
+			IOUtils.write("\n", out, StandardCharsets.UTF_8);
+			Assert.assertFalse(new MockStandardUtility().prompt("Respond"));
 		} finally {
 			System.setIn(oldIn);
 		}
