@@ -3,6 +3,21 @@
 set -e
 
 COCO_VERSION=${1:-v2.6.3}
+JDK_INCLUDE=${JAVA_HOME}/include
+
+if [ "$(uname -s)" == "Darwin" ]; then
+	JDK_OS_INCLUDE=${JDK_INCLUDE}/darwin
+	LIBNAME=libCocoJNI.dylib
+	CFLAGS=( -fPIC )
+elif [ "$(uname -s)" == "Linux" ]; then
+	JDK_OS_INCLUDE=${JDK_INCLUDE}/linux
+	LIBNAME=libCocoJNI.so
+	CFLAGS=( -fPIC )
+else
+	JDK_OS_INCLUDE=${JDK_INCLUDE}/win32
+	LIBNAME=CocoJNI.dll
+	CFLAGS=( -fPIC -Wl,--kill-at )
+fi
 
 if [ ! -d "coco" ]; then
 	git clone --branch ${COCO_VERSION} --single-branch https://github.com/numbbo/coco
@@ -34,11 +49,4 @@ python3 do.py build-java
 cd code-experiments/build/java
 sed 's/Java_CocoJNI_/Java_org_moeaframework_problem_BBOB2016_CocoJNI_/g' CocoJNI.c > org_moeaframework_problem_BBOB2016_CocoJNI.c
 sed 's/Java_CocoJNI_/Java_org_moeaframework_problem_BBOB2016_CocoJNI_/g' CocoJNI.h > org_moeaframework_problem_BBOB2016_CocoJNI.h
-
-if [ "$(uname -s)" == "Darwin" ]; then
-	gcc -I ${JAVA_HOME}/include -I ${JAVA_HOME}/include/darwin -o ../../../../libCocoJNI.dylib -fPIC -shared org_moeaframework_problem_BBOB2016_CocoJNI.c
-elif [ "$(uname -s)" == "Linux" ]; then
-	gcc -I ${JAVA_HOME}/include -I ${JAVA_HOME}/include/linux -o ../../../../libCocoJNI.so -fPIC -shared org_moeaframework_problem_BBOB2016_CocoJNI.c
-else
-	gcc "-Wl,--kill-at" -I $env:JAVA_HOME/include -I $env:JAVA_HOME/include/win32 -shared -o ../../../../CocoJNI.dll org_moeaframework_problem_BBOB2016_CocoJNI.c
-fi
+gcc "${CFLAGS[@]}" -I "${JDK_INCLUDE}" -I "${JDK_OS_INCLUDE}" -o "../../../../${LIBNAME}" -shared org_moeaframework_problem_BBOB2016_CocoJNI.c
