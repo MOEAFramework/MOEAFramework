@@ -32,7 +32,6 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.chart.ui.TextAnchor;
 import org.moeaframework.analysis.parameter.ParameterSet;
 import org.moeaframework.analysis.sensitivity.FirstOrderSensitivity;
 import org.moeaframework.analysis.sensitivity.SecondOrderSensitivity;
@@ -129,7 +128,8 @@ public class SensitivityPlotBuilder extends PlotBuilder<SensitivityPlotBuilder> 
 	}
 	
 	/**
-	 * Sets the scaling factor applied to the line thickness.
+	 * Sets the scaling factor applied to the line thickness.  Setting this to half of the shape scaling factor should
+	 * render lines with approximately the same thickness as the shape diameter.
 	 * 
 	 * @param lineScaling the scaling factor
 	 * @return a reference to this builder
@@ -246,8 +246,6 @@ public class SensitivityPlotBuilder extends PlotBuilder<SensitivityPlotBuilder> 
 		for (int i = 0; i < n; i++) {
 			XYTextAnnotation annotation = new XYTextAnnotation(parameterSet.get(i).getName(),
 					labelOffset * xs[i], labelOffset * ys[i]);
-			annotation.setTextAnchor(TextAnchor.CENTER);
-			annotation.setFont(plot.getRenderer().getDefaultItemLabelFont());
 			plot.addAnnotation(annotation);
 		}
 
