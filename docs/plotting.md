@@ -15,7 +15,7 @@ the data is rendered.
 Here we plot a line graph of $$f(x) = x^2$$ for $$x \in [-1, 1]$$.  We can provide arrays directly to the plotting
 methods:
 
-<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=linePlotXYData -->
+<!-- :code: src=test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java method=linePlotXYData -->
 
 ```java
 int N = 100;
@@ -35,7 +35,7 @@ new XYPlotBuilder()
         .show();
 ```
 
-<!-- :plot: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=linePlotXYData dest=imgs/plot-line.png width=70% -->
+<!-- :plot: src=test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java method=linePlotXYData dest=imgs/plot-line.png width=70% -->
 
 <p align="center">
 	<img src="imgs/plot-line.png" width="70%" />
@@ -44,7 +44,7 @@ new XYPlotBuilder()
 Plots can also be generated directly from our stream classes.  The data, stored as a `Partition` (which is just a
 collection of key-value pairs, is identical to the previous example, but expressed in a more compact and readable style.
 
-<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=linePlotPartition -->
+<!-- :code: src=test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java method=linePlotPartition -->
 
 ```java
 Partition<Double, Double> data = DataStream.range(-1.0, 1.0, 100).map(d -> Math.pow(d, 2));
@@ -59,7 +59,7 @@ new XYPlotBuilder()
 
 ### Scatter Plot
 
-<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=scatterPlot -->
+<!-- :code: src=test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java method=scatterPlot -->
 
 ```java
 double[] x = IntStream.range(0, 100).mapToDouble(i -> -1.0 + 2.0 * i / 99).toArray();
@@ -73,7 +73,7 @@ new XYPlotBuilder()
         .show();
 ```
 
-<!-- :plot: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=scatterPlot dest=imgs/plot-scatter.png width=70% -->
+<!-- :plot: src=test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java method=scatterPlot dest=imgs/plot-scatter.png width=70% -->
 
 <p align="center">
 	<img src="imgs/plot-scatter.png" width="70%" />
@@ -81,7 +81,7 @@ new XYPlotBuilder()
 
 ### Combined Plots / Multiple Series
 
-<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=combinedPlot -->
+<!-- :code: src=test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java method=combinedPlot -->
 
 ```java
 double[] x = IntStream.range(0, 100).mapToDouble(i -> -1.0 + 2.0 * i / 99).toArray();
@@ -97,7 +97,7 @@ new XYPlotBuilder()
         .show();
 ```
 
-<!-- :plot: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=combinedPlot dest=imgs/plot-combined.png width=70% -->
+<!-- :plot: src=test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java method=combinedPlot dest=imgs/plot-combined.png width=70% -->
 
 <p align="center">
 	<img src="imgs/plot-combined.png" width="70%" />
@@ -105,7 +105,7 @@ new XYPlotBuilder()
 
 ### Area Plot
 
-<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=areaPlot -->
+<!-- :code: src=test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java method=areaPlot -->
 
 ```java
 double[] x = IntStream.range(0, 100).mapToDouble(i -> -1.0 + 2.0 * i / 99).toArray();
@@ -119,7 +119,7 @@ new XYPlotBuilder()
         .show();
 ```
 
-<!-- :plot: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=areaPlot dest=imgs/plot-area.png width=70% -->
+<!-- :plot: src=test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java method=areaPlot dest=imgs/plot-area.png width=70% -->
 
 <p align="center">
 	<img src="imgs/plot-area.png" width="70%" />
@@ -127,7 +127,7 @@ new XYPlotBuilder()
 
 ### Stacked Area Plot
 
-<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=stackedAreaPlot -->
+<!-- :code: src=test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java method=stackedAreaPlot -->
 
 ```java
 double[] x = IntStream.range(0, 100).mapToDouble(i -> -1.0 + 2.0 * i / 99).toArray();
@@ -143,7 +143,7 @@ new XYPlotBuilder()
         .show();
 ```
 
-<!-- :plot: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=stackedAreaPlot dest=imgs/plot-stackedArea.png width=70% -->
+<!-- :plot: src=test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java method=stackedAreaPlot dest=imgs/plot-stackedArea.png width=70% -->
 
 <p align="center">
 	<img src="imgs/plot-stackedArea.png" width="70%" />
@@ -151,7 +151,7 @@ new XYPlotBuilder()
 
 ### Deviation
 
-<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=deviationPlot -->
+<!-- :code: src=test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java method=deviationPlot -->
 
 ```java
 double[] x = IntStream.range(0, 10000).mapToDouble(i -> i / 1000.0).toArray();
@@ -165,7 +165,7 @@ new XYPlotBuilder()
         .show();
 ```
 
-<!-- :plot: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=deviationPlot dest=imgs/plot-deviation.png width=70% -->
+<!-- :plot: src=test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java method=deviationPlot dest=imgs/plot-deviation.png width=70% -->
 
 <p align="center">
 	<img src="imgs/plot-deviation.png" width="70%" />
@@ -176,7 +176,7 @@ new XYPlotBuilder()
 Unlike the previous plots, a histogram is generated from a single array of values.  The Y axis measures the number of
 times each value appears in the input.
 
-<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=histogram -->
+<!-- :code: src=test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java method=histogram -->
 
 ```java
 double[] values = IntStream.range(0, 10000).mapToDouble(i -> PRNG.nextGaussian()).toArray();
@@ -189,7 +189,7 @@ new XYPlotBuilder()
         .show();
 ```
 
-<!-- :plot: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=histogram dest=imgs/plot-histogram.png width=70% -->
+<!-- :plot: src=test/org/moeaframework/analysis/plot/XYPlotBuilderTest.java method=histogram dest=imgs/plot-histogram.png width=70% -->
 
 <p align="center">
 	<img src="imgs/plot-histogram.png" width="70%" />
@@ -197,7 +197,7 @@ new XYPlotBuilder()
 
 ## Heat Map
 
-<!-- :code: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=heatMap -->
+<!-- :code: src=test/org/moeaframework/analysis/plot/HeatMapBuilderTest.java method=heatMap -->
 
 ```java
 double[] x = IntStream.range(0, 100).mapToDouble(i -> i / 100.0).toArray();
@@ -221,8 +221,69 @@ new HeatMapBuilder()
         .show();
 ```
 
-<!-- :plot: src=examples/org/moeaframework/examples/misc/PlottingExample.java method=heatMap dest=imgs/plot-heatMap.png width=70% -->
+<!-- :plot: src=test/org/moeaframework/analysis/plot/HeatMapBuilderTest.java method=heatMap dest=imgs/plot-heatMap.png width=70% -->
 
 <p align="center">
 	<img src="imgs/plot-heatMap.png" width="70%" />
+</p>
+
+## Bar Graph
+
+<!-- :code: src=test/org/moeaframework/analysis/plot/BarGraphBuilderTest.java method=barGraph -->
+
+```java
+double[] x = IntStream.range(0, 10).mapToDouble(i -> i).toArray();
+double[] y1 = IntStream.range(0, 10).mapToDouble(i -> PRNG.nextDouble()).toArray();
+double[] y2 = IntStream.range(0, 10).mapToDouble(i -> PRNG.nextDouble()).toArray();
+
+new BarGraphBuilder()
+        .bars("Set1", x, y1)
+        .bars("Set2", x, y2)
+        .show();
+```
+
+<!-- :plot: src=test/org/moeaframework/analysis/plot/BarGraphBuilderTest.java method=barGraph dest=imgs/plot-barGraph.png width=70% -->
+
+<p align="center">
+	<img src="imgs/plot-barGraph.png" width="70%" />
+</p>
+
+## Box-and-Whisker Plot
+
+<!-- :code: src=test/org/moeaframework/analysis/plot/BoxAndWhiskerPlotBuilderTest.java method=boxAndWhiskerPlot -->
+
+```java
+new BoxAndWhiskerPlotBuilder()
+        .add("Set1", IntStream.range(0, 10).mapToDouble(i -> PRNG.nextDouble()).toArray())
+        .add("Set2", IntStream.range(0, 50).mapToDouble(i -> 2 * PRNG.nextDouble()).toArray())
+        .add("Set3", IntStream.range(0, 100).mapToDouble(i -> PRNG.nextDouble()).toArray())
+        .show();
+```
+
+<!-- :plot: src=test/org/moeaframework/analysis/plot/BoxAndWhiskerPlotBuilderTest.java method=boxAndWhiskerPlot dest=imgs/plot-boxAndWhisker.png width=70% -->
+
+<p align="center">
+	<img src="imgs/plot-boxAndWhisker.png" width="70%" />
+</p>
+
+## Sensitivity Plot
+
+<!-- :code: src=test/org/moeaframework/analysis/plot/SensitivityPlotBuilderTest.java method=sensitivityPlot -->
+
+```java
+StandardChartTheme theme = new StandardChartTheme("Sensitivity");
+theme.setPlotBackgroundPaint(Color.WHITE);
+
+SensitivityResult sensitivityResult = getSensitivityResult();
+
+new SensitivityPlotBuilder()
+        .data(sensitivityResult)
+        .theme(theme)
+        .show();
+```
+
+<!-- :plot: src=test/org/moeaframework/analysis/plot/SensitivityPlotBuilderTest.java method=sensitivityPlot dest=imgs/plot-sensitivity.png width=70% -->
+
+<p align="center">
+	<img src="imgs/plot-sensitivity.png" width="70%" />
 </p>

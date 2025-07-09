@@ -60,7 +60,9 @@ public class SensitivityPlotBuilder extends PlotBuilder<SensitivityPlotBuilder> 
 	
 	private double sensitivityScaling;
 	
-	private double sizeScaling;
+	private double shapeScaling;
+	
+	private double lineScaling;
 	
 	private double labelOffset;
 
@@ -71,8 +73,9 @@ public class SensitivityPlotBuilder extends PlotBuilder<SensitivityPlotBuilder> 
 		super();
 		this.shapeFill = Color.BLACK;
 		this.lineFill = Color.GRAY;
-		this.sensitivityScaling = 0.5;
-		this.sizeScaling = 1.0;
+		this.sensitivityScaling = 1.0;
+		this.shapeScaling = 0.5;
+		this.lineScaling = 0.25;
 		this.labelOffset = 1.3;
 	}
 	
@@ -126,13 +129,24 @@ public class SensitivityPlotBuilder extends PlotBuilder<SensitivityPlotBuilder> 
 	}
 	
 	/**
-	 * Sets the scaling factor applied to the shape size / thickness.
+	 * Sets the scaling factor applied to the line thickness.
 	 * 
-	 * @param sizeScaling the scaling factor
+	 * @param lineScaling the scaling factor
 	 * @return a reference to this builder
 	 */
-	public SensitivityPlotBuilder sizeScalingFactor(double sizeScaling) {
-		this.sizeScaling = sizeScaling;
+	public SensitivityPlotBuilder lineScalingFactor(double lineScaling) {
+		this.lineScaling = lineScaling;
+		return getInstance();
+	}
+	
+	/**
+	 * Sets the scaling factor applied to the shape size.
+	 * 
+	 * @param shapeScaling the scaling factor
+	 * @return a reference to this builder
+	 */
+	public SensitivityPlotBuilder shapeScalingFactor(double shapeScaling) {
+		this.shapeScaling = shapeScaling;
 		return getInstance();
 	}
 	
@@ -175,7 +189,7 @@ public class SensitivityPlotBuilder extends PlotBuilder<SensitivityPlotBuilder> 
 			for (int i = 0; i < n; i++) {
 				for (int j = i + 1; j < n; j++) {
 					Sensitivity<?> value = secondOrder.getSecondOrder(parameterSet.get(i), parameterSet.get(j));
-					double size = sizeScaling * Math.pow(value.getSensitivity(), sensitivityScaling) / 2.0;
+					double size = lineScaling * Math.pow(value.getSensitivity(), sensitivityScaling);
 
 					double angle = Math.atan((ys[j] - ys[i]) / (xs[j] - xs[i]));
 
@@ -203,7 +217,7 @@ public class SensitivityPlotBuilder extends PlotBuilder<SensitivityPlotBuilder> 
 		if (data instanceof FirstOrderSensitivity firstOrder) {
 			for (int i = 0; i < n; i++) {
 				Sensitivity<?> value = firstOrder.getFirstOrder(parameterSet.get(i));
-				double size = sizeScaling * Math.pow(value.getSensitivity(), sensitivityScaling) / 2.0;
+				double size = shapeScaling * Math.pow(value.getSensitivity(), sensitivityScaling);
 
 				XYShapeAnnotation annotation = new XYShapeAnnotation(
 						new Ellipse2D.Double(xs[i] - size / 2.0, ys[i] - size / 2.0, size, size),
@@ -218,7 +232,7 @@ public class SensitivityPlotBuilder extends PlotBuilder<SensitivityPlotBuilder> 
 		if (data instanceof TotalOrderSensitivity totalOrder) {
 			for (int i = 0; i < n; i++) {
 				Sensitivity<?> value = totalOrder.getTotalOrder(parameterSet.get(i));
-				double size = sizeScaling * Math.pow(value.getSensitivity(), sensitivityScaling) / 2.0;
+				double size = shapeScaling * Math.pow(value.getSensitivity(), sensitivityScaling);
 
 				XYShapeAnnotation annotation = new XYShapeAnnotation(
 						new Ellipse2D.Double(xs[i] - size / 2.0, ys[i] - size / 2.0, size, size),

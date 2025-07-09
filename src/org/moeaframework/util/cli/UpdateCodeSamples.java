@@ -863,32 +863,38 @@ public class UpdateCodeSamples extends CommandLineUtility {
 				throw new IOException("Failed to compile " + sourceFile);
 			}
 			
-			PrintStream oldOut = System.out;
+			String className = builder.getFullyQualifiedClassName(sourceFile);
 			String methodName = instruction.getOptions().getString("method", "main");
+			boolean isMain = methodName.equals("main");
+			boolean isStatic = instruction.getOptions().getBoolean("static", isMain);
 			
+			PrintStream oldOut = System.out;
 			PRNG.setSeed(instruction.getSeed());
 						
 			try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
 					PrintStream newOut = new PrintStream(baos)) {
 				System.setOut(newOut);
 
-				String className = builder.getFullyQualifiedClassName(sourceFile);
 				Class<?> cls = Class.forName(className, true, builder.getClassLoader());
 				
 				String[] args = instruction.getOptions().getStringArray("args", new String[0]);
 				
-				if (methodName.equals("main")) {
-					if (CommandLineUtility.class.isAssignableFrom(cls)) {
-						Settings.PROPERTIES.setString(Settings.KEY_CLI_EXECUTABALE, "./cli " + cls.getSimpleName());
-					}
-					
+				if (CommandLineUtility.class.isAssignableFrom(cls)) {
+					Settings.PROPERTIES.setString(Settings.KEY_CLI_EXECUTABALE, "./cli " + cls.getSimpleName());
+				}
+				
+				if (isMain) {
 					ReflectionUtils.invokeStaticMethod(cls, methodName, (Object)args);
-				} else {
+				} else if (isStatic) {
 					ReflectionUtils.invokeStaticMethod(cls, methodName, (Object[])args);
+				} else {
+					ReflectionUtils.invokeMethod(cls.getConstructor().newInstance(), methodName, (Object[])args);
 				}
 
 				newOut.close();
 				return baos.toString();
+			} catch (IllegalAccessException | InstantiationException e) {
+				throw new IOException("Failed to create instance of class " + className + " in " + sourceFile, e);
 			} catch (ClassNotFoundException | NoSuchMethodException | IllegalArgumentException e) {
 				throw new IOException("Failed to execute method " + methodName + " in " + sourceFile, e);
 			} catch (InvocationTargetException e) {
