@@ -34,7 +34,11 @@ public class DataStoreToolTest {
 		File outputFile = TempFiles.createFile();
 		File inputFile = TempFiles.createFile().withContent("foo");
 		
-		CaptureResult result = Capture.output(DataStoreTool.class, "list", tempDirectory.toURI().toString());
+		CaptureResult result = Capture.output(DataStoreTool.class, "exists", tempDirectory.toURI().toString());
+		result.assertSuccessful();
+		result.assertContains("false");
+		
+		result = Capture.output(DataStoreTool.class, "list", tempDirectory.toURI().toString());
 		result.assertSuccessful();
 		Assert.assertLineCount(0, result.toString());
 		
@@ -77,6 +81,21 @@ public class DataStoreToolTest {
 		result.assertSuccessful();
 		result.assertContains("blob");
 		
+		result = Capture.output(DataStoreTool.class, "details", tempDirectory.toURI().toString());
+		result.assertSuccessful();
+		Assert.assertStringContains(result.toString(), "\"type\":\"datastore\"");
+		Assert.assertStringMatches(result.toString(), "^\\{.*\\}\\s*$");
+		
+		result = Capture.output(DataStoreTool.class, "details", tempDirectory.toURI().toString() + "?a=b");
+		result.assertSuccessful();
+		Assert.assertStringContains(result.toString(), "\"type\":\"container\"");
+		Assert.assertStringMatches(result.toString(), "^\\{.*\\}\\s*$");
+		
+		result = Capture.output(DataStoreTool.class, "details", tempDirectory.toURI().toString() + "?a=b#foo");
+		result.assertSuccessful();
+		Assert.assertStringContains(result.toString(), "\"type\":\"blob\"");
+		Assert.assertStringMatches(result.toString(), "^\\{.*\\}\\s*$");
+		
 		result = Capture.output(DataStoreTool.class, "lock", tempDirectory.toURI().toString());
 		result.assertSuccessful();
 		
@@ -96,6 +115,10 @@ public class DataStoreToolTest {
 		result = Capture.output(DataStoreTool.class, "exists", tempDirectory.toURI().toString() + "?a=b");
 		result.assertSuccessful();
 		result.assertContains("false");
+		
+		result = Capture.output(DataStoreTool.class, "exists", tempDirectory.toURI().toString());
+		result.assertSuccessful();
+		result.assertContains("true");
 	}
 	
 	@Test

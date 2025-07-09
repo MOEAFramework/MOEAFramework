@@ -31,6 +31,7 @@ import org.apache.commons.cli.ParseException;
 import org.moeaframework.analysis.store.Blob;
 import org.moeaframework.analysis.store.Container;
 import org.moeaframework.analysis.store.DataStore;
+import org.moeaframework.analysis.store.DataStoreException;
 import org.moeaframework.analysis.store.DataStoreFactory;
 import org.moeaframework.analysis.store.DataStoreURI;
 import org.moeaframework.analysis.store.Intent;
@@ -438,14 +439,21 @@ public class DataStoreTool extends CommandLineUtility {
 		@Override
 		public void onDataStore(DataStore dataStore, CommandLine commandLine) throws Exception {
 			DataStoreURI uri = DataStoreURI.parse(commandLine.getArgs()[0]);
+			String path = commandLine.getOptionValue("path", "");
+			
+			if (path.isBlank()) {
+				try {
+					path = Path.of(".").relativize(uri.getPath()).toString();
+				} catch (IllegalArgumentException e) {
+					throw new DataStoreException("Unable to determine path, please specify with --path");
+				}
+			}
 			
 			DataStoreHttpServer server = new DataStoreHttpServer(new InetSocketAddress(
 					commandLine.getOptionValue("hostname", "localhost"),
 					Integer.parseInt(commandLine.getOptionValue("port", "8080"))));
 			server.registerShutdownHook();
-			server.configure(
-					commandLine.getOptionValue("path", Path.of(".").relativize(uri.getPath()).toString()),
-					dataStore);
+			server.configure(path, dataStore);
 		}
 		
 	}
