@@ -3,7 +3,6 @@
 /javadoc/
 /native/
 /results/
-/temp/
 /test-results/
 /*.arff
 /*.csv
@@ -18,9 +17,10 @@
 /*.txt
 /cli
 *~
-*.class
 *.state
 *.exe
+
+# Optional / Uncommitted Dependencies
 lib/asm-*.jar
 lib/gd-*.jar
 lib/hamcrest-*.jar

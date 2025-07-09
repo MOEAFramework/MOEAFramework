@@ -34,48 +34,48 @@ import org.moeaframework.analysis.store.DataStoreURI;
 import org.moeaframework.analysis.store.Reference;
 
 public class FileSystemDataStoreProviderTest {
-
+	
 	@Test
 	public void testGetDataStore() throws IOException {
-		assertDataStore("file://temp/dataStore", Path.of("temp/dataStore"));
-		assertDataStore("file:temp/dataStore", Path.of("temp/dataStore"));
-		assertDataStore("temp/dataStore", Path.of("temp/dataStore"));
+		assertDataStore("file://build/dataStore", Path.of("build/dataStore"));
+		assertDataStore("file:build/dataStore", Path.of("build/dataStore"));
+		assertDataStore("build/dataStore", Path.of("build/dataStore"));
 		
-		assertDataStore("file://./temp/dataStore", Path.of("temp/dataStore"));
-		assertDataStore("file:./temp/dataStore", Path.of("temp/dataStore"));
-		assertDataStore("./temp/dataStore", Path.of("temp/dataStore"));
+		assertDataStore("file://./build/dataStore", Path.of("build/dataStore"));
+		assertDataStore("file:./build/dataStore", Path.of("build/dataStore"));
+		assertDataStore("./build/dataStore", Path.of("build/dataStore"));
 	}
 	
 	@Test
 	public void testGetDataStoreAbsolutePaths() throws IOException {
 		Assume.assumeFalse("Absolute paths fail with drive letter on Windows, skipping.", SystemUtils.IS_OS_WINDOWS);
 		
-		assertDataStore("file://" + Path.of("./temp/dataStore").toAbsolutePath().toString(), Path.of("temp/dataStore"));
-		assertDataStore("file:" + Path.of("./temp/dataStore").toAbsolutePath().toString(), Path.of("temp/dataStore"));
-		assertDataStore(Path.of("./temp/dataStore").toAbsolutePath().toString(), Path.of("temp/dataStore"));
+		assertDataStore("file://" + Path.of("./build/dataStore").toAbsolutePath().toString(), Path.of("build/dataStore"));
+		assertDataStore("file:" + Path.of("./build/dataStore").toAbsolutePath().toString(), Path.of("build/dataStore"));
+		assertDataStore(Path.of("./build/dataStore").toAbsolutePath().toString(), Path.of("build/dataStore"));
 	}
 	
 	@Test
 	public void testGetContainer() {
-		assertContainer("file://temp/dataStore?a=b", Reference.of("a", "b"));
-		assertContainer("file:temp/dataStore?a=b", Reference.of("a", "b"));
-		assertContainer("temp/dataStore?a=b", Reference.of("a", "b"));
-		assertContainer("file://temp/dataStore", Reference.root());
-		assertContainer("file:temp/dataStore", Reference.root());
-		assertContainer("temp/dataStore", Reference.root());
+		assertContainer("file://build/dataStore?a=b", Reference.of("a", "b"));
+		assertContainer("file:build/dataStore?a=b", Reference.of("a", "b"));
+		assertContainer("build/dataStore?a=b", Reference.of("a", "b"));
+		assertContainer("file://build/dataStore", Reference.root());
+		assertContainer("file:build/dataStore", Reference.root());
+		assertContainer("build/dataStore", Reference.root());
 	}
 	
 	@Test
 	public void testGetBlob() {
-		assertBlob("file://temp/dataStore?a=b#info", Reference.of("a", "b"), "info");
-		assertBlob("temp/dataStore?a=b#info", Reference.of("a", "b"), "info");
-		assertBlob("file://temp/dataStore#info", Reference.root(), "info");
-		assertBlob("temp/dataStore#info", Reference.root(), "info");
+		assertBlob("file://build/dataStore?a=b#info", Reference.of("a", "b"), "info");
+		assertBlob("build/dataStore?a=b#info", Reference.of("a", "b"), "info");
+		assertBlob("file://build/dataStore#info", Reference.root(), "info");
+		assertBlob("build/dataStore#info", Reference.root(), "info");
 	}
 	
 	@Test(expected = DataStoreException.class)
 	public void testResolveBlobNoFragment() {
-		Assert.assertNotNull(DataStoreFactory.getInstance().resolveBlob(URI.create("file:temp/dataStore?a=b")));
+		Assert.assertNotNull(DataStoreFactory.getInstance().resolveBlob(URI.create("file:build/dataStore?a=b")));
 	}
 	
 	private void assertDataStore(String uri, Path expectedPath) throws IOException {
