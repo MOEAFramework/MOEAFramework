@@ -31,8 +31,8 @@ import org.moeaframework.analysis.series.ResultSeries;
 import org.moeaframework.analysis.stream.DataStream;
 import org.moeaframework.analysis.stream.Partition;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.CEC2009.UF1;
+import org.moeaframework.problem.Problem;
 
 public class XYPlotBuilderTest extends AbstractPlotBuilderTest {
 

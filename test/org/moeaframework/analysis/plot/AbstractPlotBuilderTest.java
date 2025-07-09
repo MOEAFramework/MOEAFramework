@@ -18,6 +18,7 @@
 package org.moeaframework.analysis.plot;
 
 import java.awt.Window;
+
 import javax.swing.SwingUtilities;
 
 import org.junit.After;
