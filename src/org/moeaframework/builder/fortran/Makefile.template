@@ -16,7 +16,6 @@ LIBNAME := $(shell java -classpath "$(CLASSPATH)" org.moeaframework.builder.JNAI
 
 # Compile the shared library
 build:
-	mkdir -p bin/
 	mkdir -p bin/$(SYSARCH)
 	$(FORTRAN) $(FFLAGS) -c -fPIC -o bin/${problemName}.o ${problemName}.f90 $(LIBS)
 	$(FORTRAN) -shared -o bin/$(SYSARCH)/$(LIBNAME) bin/${problemName}.o
