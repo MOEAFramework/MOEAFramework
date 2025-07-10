@@ -17,14 +17,17 @@
  */
 package org.moeaframework.util.mvc;
 
-import java.time.Duration;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
 import org.moeaframework.Wait;
 import org.moeaframework.algorithm.NSGAII;
-import org.moeaframework.core.Settings;
 import org.moeaframework.problem.CEC2009.UF1;
 import org.moeaframework.problem.Problem;
 
@@ -35,13 +38,21 @@ public class ExampleUITest {
 		private static final long serialVersionUID = 9061186330605849493L;
 		
 		private int updateCalls;
+		
+		private final JLabel label;
 
 		public TestExampleUI(String title, NSGAII algorithm) {
 			super(title, algorithm);
+			label = new JLabel("Iteration: <Not Started>", SwingConstants.CENTER);
+			
+			setMinimumSize(new Dimension(100, 100));
+			getContentPane().setLayout(new BorderLayout());
+			getContentPane().add(label, BorderLayout.CENTER);
 		}
 
 		@Override
 		public void update(NSGAII algorithm, int iteration) {
+			label.setText("Iteration: " + iteration);
 			updateCalls++;
 		}
 		
@@ -58,18 +69,20 @@ public class ExampleUITest {
 		Problem problem = new UF1();
 		NSGAII algorithm = new NSGAII(problem);
 		
-		TestExampleUI example = new TestExampleUI("Test", algorithm);
+		TestExampleUI example = UI.showAndWait(() -> new TestExampleUI("Test", algorithm));
+		Assert.assertTrue(example.isVisible());
+		
 		example.start();
 		
-		while (algorithm.getNumberOfEvaluations() < 1000) {
-			System.out.println(algorithm.getNumberOfEvaluations());
-			Wait.sleepFor(Duration.ofMillis(10));
-		}
+		Wait.sleepUntil(() -> algorithm.getNumberOfEvaluations() >= 1000);
 		
 		example.stop();
+		example.dispose();
 		
-		Assert.assertGreaterThan(example.getUpdateCalls(), 0);
-		Assert.assertEquals(algorithm.getNumberOfEvaluations(), Settings.DEFAULT_POPULATION_SIZE * example.getUpdateCalls());
+		Wait.sleepUntil(() -> algorithm.isTerminated());
+		
+		UI.clearEventQueue();
+		Assert.assertEquals(algorithm.getNumberOfEvaluations() / algorithm.getInitialPopulationSize() , example.getUpdateCalls());
 	}
 	
 }

@@ -50,5 +50,11 @@ public class Wait {
 			Assert.fail("sleep was interrupted which may produce invalid test results");
 		}
 	}
+	
+	public static void sleepUntil(BooleanSupplier condition) {
+		while (!condition.getAsBoolean()) {
+			sleepFor(Duration.ofMillis(100));
+		}
+	}
 
 }
