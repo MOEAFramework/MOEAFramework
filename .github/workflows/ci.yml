@@ -125,13 +125,23 @@ jobs:
       uses: MOEAFramework/.github/actions/run-ant@main
       with:
         target: validate-docs
-    - name: Extract Java hyperlinks
+    - name: Extract hyperlinks from source code
       run: |
         find . -type f -name "*.java" \
           -exec grep -ioP '\bhttp[s]?://[^\b"><}\s]+\b' {} \; \
           | sort | uniq > hyperlinks.md
         cat hyperlinks.md
-    - name: Validate links
+    - name: Write Markdown link checker config
+      run: |
+        cat <<- EOF > mlc_config.json
+        {
+          "timeout": "20s",
+          "retryOn429": true,
+          "retryCount": 5,
+          "fallbackRetryDelay": "30s"
+        }
+        EOF
+    - name: Run Markdown link checker
       uses: gaurav-nelson/github-action-markdown-link-check@v1
       with:
         folder-path: docs/
