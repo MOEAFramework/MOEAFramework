@@ -17,6 +17,8 @@
  */
 package org.moeaframework.util.mvc;
 
+import java.time.Duration;
+
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
@@ -59,7 +61,10 @@ public class ExampleUITest {
 		TestExampleUI example = new TestExampleUI("Test", algorithm);
 		example.start();
 		
-		Wait.spinUntil(() -> algorithm.getNumberOfEvaluations() >= 1000);
+		while (algorithm.getNumberOfEvaluations() < 1000) {
+			System.out.println(algorithm.getNumberOfEvaluations());
+			Wait.sleepFor(Duration.ofMillis(10));
+		}
 		
 		example.stop();
 		
