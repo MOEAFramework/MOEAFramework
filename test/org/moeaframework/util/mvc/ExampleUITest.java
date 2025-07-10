@@ -21,6 +21,7 @@ import java.time.Duration;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.Assume;
 import org.moeaframework.Wait;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.Settings;
@@ -52,6 +53,8 @@ public class ExampleUITest {
 	
 	@Test
 	public void test() throws InterruptedException {
+		Assume.assumeHasDisplay();
+		
 		Problem problem = new UF1();
 		NSGAII algorithm = new NSGAII(problem);
 		
