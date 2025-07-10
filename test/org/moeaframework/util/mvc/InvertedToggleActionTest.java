@@ -25,31 +25,12 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.util.Localization;
 
-public class ToggleTest {
+public class InvertedToggleActionTest {
 	
 	@Test
 	public void test() {
 		Toggle toggle = new Toggle(false);
-		ToggleAction action = new ToggleAction("foo", Localization.getLocalization(ToggleTest.class), toggle);
-
-		Assert.assertEquals(false, toggle.get());
-		Assert.assertEquals(false, action.getValue(Action.SELECTED_KEY));
-		
-		toggle.set(true);
-		Assert.assertEquals(true, action.getValue(Action.SELECTED_KEY));
-		
-		action.putValue(Action.SELECTED_KEY, false);
-		action.actionPerformed(new ActionEvent(action, 0, "clicked"));
-		Assert.assertEquals(false, toggle.get());
-		
-		toggle.flip();
-		Assert.assertEquals(true, action.getValue(Action.SELECTED_KEY));
-	}
-	
-	@Test
-	public void testInverted() {
-		Toggle toggle = new Toggle(false);
-		InvertedToggleAction action = new InvertedToggleAction("foo", Localization.getLocalization(ToggleTest.class), toggle);
+		InvertedToggleAction action = new InvertedToggleAction("foo", Localization.getLocalization(InvertedToggleActionTest.class), toggle);
 
 		Assert.assertEquals(false, toggle.get());
 		Assert.assertEquals(true, action.getValue(Action.SELECTED_KEY));
@@ -68,7 +49,7 @@ public class ToggleTest {
 	@Test
 	public void testLocalization() {
 		Toggle toggle = new Toggle(false);
-		ToggleAction action = new ToggleAction("foo", Localization.getLocalization(ToggleTest.class), toggle);
+		InvertedToggleAction action = new InvertedToggleAction("foo", Localization.getLocalization(InvertedToggleActionTest.class), toggle);
 		
 		Assert.assertEquals("Localized name", action.getValue(Action.NAME));
 		Assert.assertEquals("Localized description", action.getValue(Action.SHORT_DESCRIPTION));

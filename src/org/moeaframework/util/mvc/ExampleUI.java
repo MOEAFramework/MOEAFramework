@@ -58,6 +58,13 @@ public abstract class ExampleUI<T extends Algorithm> extends JFrame implements C
 	public void start() {
 		controller.start();
 	}
+	
+	/**
+	 * Stops the example.
+	 */
+	public void stop() {
+		controller.stop();
+	}
 
 	/**
 	 * Invoked on the event dispatch thread to update the GUI after each iteration.

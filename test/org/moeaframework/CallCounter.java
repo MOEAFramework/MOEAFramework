@@ -134,6 +134,17 @@ public class CallCounter<T> {
 		return new CallCounter<>(proxy, handler);
 	}
 	
+	public static CallCounter<Runnable> mockRunnable() {
+		Runnable mock = () -> {
+			// do nothing
+		};
+		
+		ProxyInvocationHandler<Runnable> handler = new ProxyInvocationHandler<>(mock);
+		Runnable proxy = (Runnable)Proxy.newProxyInstance(
+				Thread.currentThread().getContextClassLoader(), mock.getClass().getInterfaces(), handler);
+		return new CallCounter<>(proxy, handler);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public static <T> CallCounter<Consumer<T>> mockConsumer() {
 		Consumer<T> mock = t -> {

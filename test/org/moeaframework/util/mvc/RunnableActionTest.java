@@ -23,32 +23,24 @@ import javax.swing.Action;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.CallCounter;
 import org.moeaframework.util.Localization;
 
-public class SelectValueTest {
+public class RunnableActionTest {
 	
 	@Test
 	public void test() {
-		Setting<Integer> setting = new Setting<>(5);
-		SelectValueAction<Integer> action = new SelectValueAction<>("foo", Localization.getLocalization(SelectValueTest.class), setting, 10);
+		CallCounter<Runnable> counter = CallCounter.mockRunnable();
+		RunnableAction action = new RunnableAction("foo", Localization.getLocalization(RunnableActionTest.class), counter.getProxy());
 
-		Assert.assertEquals(5, setting.get());
-		Assert.assertEquals(false, action.getValue(Action.SELECTED_KEY));
-		
-		setting.set(10);
-		Assert.assertEquals(true, action.getValue(Action.SELECTED_KEY));
-		
-		setting.set(5);
-		Assert.assertEquals(false, action.getValue(Action.SELECTED_KEY));
-		
+		Assert.assertEquals(0, counter.getTotalCallCount());
 		action.actionPerformed(new ActionEvent(action, 0, "clicked"));
-		Assert.assertEquals(10, setting.get());
+		Assert.assertEquals(1, counter.getTotalCallCount());
 	}
 	
 	@Test
 	public void testLocalization() {
-		Setting<Integer> setting = new Setting<>(5);
-		SelectValueAction<Integer> action = new SelectValueAction<>("foo", Localization.getLocalization(SelectValueTest.class), setting, 10);
+		RunnableAction action = new RunnableAction("foo", Localization.getLocalization(RunnableActionTest.class), () -> {});
 		
 		Assert.assertEquals("Localized name", action.getValue(Action.NAME));
 		Assert.assertEquals("Localized description", action.getValue(Action.SHORT_DESCRIPTION));
