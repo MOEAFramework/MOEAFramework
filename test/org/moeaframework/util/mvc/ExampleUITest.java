@@ -21,6 +21,7 @@ import java.time.Duration;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
+import org.moeaframework.Wait;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.Settings;
 import org.moeaframework.problem.CEC2009.UF1;
@@ -57,7 +58,7 @@ public class ExampleUITest {
 		TestExampleUI example = new TestExampleUI("Test", algorithm);
 		example.start();
 		
-		Thread.sleep(Duration.ofMillis(100));
+		Wait.sleepFor(Duration.ofMillis(100));
 		
 		example.stop();
 		
