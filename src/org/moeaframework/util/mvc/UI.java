@@ -165,7 +165,9 @@ public class UI {
 	 */
 	public static void clearEventQueue() {
 		if (SwingUtilities.isEventDispatchThread()) {
-			System.err.println("WARNING: Unable to clear event queue, already running on event dispatch thread");
+			if (Settings.isVerbose()) {
+				System.err.println("WARNING: Unable to clear event queue, already running on event dispatch thread");
+			}
 		} else {
 			try {
 				SwingUtilities.invokeAndWait(() -> {});
