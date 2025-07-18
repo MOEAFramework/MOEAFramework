@@ -215,7 +215,7 @@ done < <(git diff --cached --name-only --diff-filter=ACM)
 	</target>
 	
 	<target name="update-docs" depends="build-binary">
-		<java classname="org.moeaframework.util.cli.UpdateCodeSamples" fork="true" failonerror="true">
+		<java sourcefile="test/org/moeaframework/tools/UpdateCodeSamples.java" fork="true" failonerror="true">
 			<classpath refid="classpath" />
 			<classpath path="${build}" />
 			<arg value="--update" />
@@ -225,7 +225,7 @@ done < <(git diff --cached --name-only --diff-filter=ACM)
 	</target>
 	
 	<target name="validate-docs" depends="build-binary">
-		<java classname="org.moeaframework.util.cli.UpdateCodeSamples" fork="true" failonerror="true">
+		<java sourcefile="test/org/moeaframework/tools/UpdateCodeSamples.java" fork="true" failonerror="true">
 			<classpath refid="classpath" />
 			<classpath path="${build}" />
 			<arg if:true="${env.CI}" value="--disable=plot" />

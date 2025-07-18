@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework.util.cli;
+package org.moeaframework.tools;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,19 +33,19 @@ import org.moeaframework.Assert;
 import org.moeaframework.Capture;
 import org.moeaframework.TempFiles;
 import org.moeaframework.core.FrameworkException;
-import org.moeaframework.util.cli.UpdateCodeSamples.BlockMatcher;
-import org.moeaframework.util.cli.UpdateCodeSamples.CodeProcessor;
-import org.moeaframework.util.cli.UpdateCodeSamples.Document;
-import org.moeaframework.util.cli.UpdateCodeSamples.ExecProcessor;
-import org.moeaframework.util.cli.UpdateCodeSamples.Java;
-import org.moeaframework.util.cli.UpdateCodeSamples.Language;
-import org.moeaframework.util.cli.UpdateCodeSamples.MarkdownFormatter;
-import org.moeaframework.util.cli.UpdateCodeSamples.MethodMatcher;
-import org.moeaframework.util.cli.UpdateCodeSamples.ParsingException;
-import org.moeaframework.util.cli.UpdateCodeSamples.Plaintext;
-import org.moeaframework.util.cli.UpdateCodeSamples.PlotProcessor;
-import org.moeaframework.util.cli.UpdateCodeSamples.ShellScript;
-import org.moeaframework.util.cli.UpdateCodeSamples.Slice;
+import org.moeaframework.tools.UpdateCodeSamples.BlockMatcher;
+import org.moeaframework.tools.UpdateCodeSamples.CodeProcessor;
+import org.moeaframework.tools.UpdateCodeSamples.Document;
+import org.moeaframework.tools.UpdateCodeSamples.ExecProcessor;
+import org.moeaframework.tools.UpdateCodeSamples.Java;
+import org.moeaframework.tools.UpdateCodeSamples.Language;
+import org.moeaframework.tools.UpdateCodeSamples.MarkdownFormatter;
+import org.moeaframework.tools.UpdateCodeSamples.MethodMatcher;
+import org.moeaframework.tools.UpdateCodeSamples.ParsingException;
+import org.moeaframework.tools.UpdateCodeSamples.Plaintext;
+import org.moeaframework.tools.UpdateCodeSamples.PlotProcessor;
+import org.moeaframework.tools.UpdateCodeSamples.ShellScript;
+import org.moeaframework.tools.UpdateCodeSamples.Slice;
 
 public class UpdateCodeSamplesTest {
 	
