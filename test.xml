@@ -120,15 +120,14 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<javac destdir="${build}" debug="${java.debug}" release="${java.major}" includeantruntime="false"
 				encoding="UTF-8">
 			<src path="test" />
-			<src path="examples" />
 			<classpath>
 				<path refid="classpath" />
 				<pathelement location="${dist}/${shortname}-${version}.jar" />
 			</classpath>
 		</javac>
 
-		<copy todir="${build}">
-			<fileset excludes="**/*.java" dir="test" />
+		<copy todir="${build}" includeEmptyDirs="false">
+			<fileset dir="test" excludes="**/*.java,**/*.class" />
 		</copy>
 
 		<copy todir="${build}/META-INF">
@@ -136,6 +135,19 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		</copy>
 
 		<jar basedir="${build}" jarfile="${dist}/${shortname}-${version}-Test.jar" />
+	</target>
+	
+	<target name="test-examples" description="Run and test all examples">
+		<available file="dist" type="dir" property="dist.present"/>
+		<java classname="org.moeaframework.tools.TestExamples" fork="true" failonerror="true">
+			<classpath>
+				<path refid="classpath" />
+				<pathelement location="examples" />
+				<pathelement if:set="dist.present" location="${dist}/${shortname}-${version}.jar" />
+				<pathelement if:set="dist.present" location="${dist}/${shortname}-${version}-Test.jar" />
+			</classpath>
+			<arg if:true="${env.CI}" value="--headless" />
+		</java>
 	</target>
 
 	<!-- The main test target, running all JUnit tests and displaying the results -->

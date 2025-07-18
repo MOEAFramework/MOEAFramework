@@ -184,10 +184,31 @@ jobs:
         java-distribution: ${{ inputs.java-distribution }}
         setup-python: true
         python-dependencies: cvxopt
-    - name: Package binary
+    - name: Download Java test dependencies
+      uses: MOEAFramework/.github/actions/run-ant@main
+      with:
+        file: test.xml
+        target: download-all
+    - name: Build tests
+      uses: MOEAFramework/.github/actions/run-ant@main
+      with:
+        target: build-tests
+        file: test.xml
+    - name: Setup testing directory
       uses: MOEAFramework/.github/actions/run-ant@main
       with:
         target: package-binary
+    - name: Test examples
+      run: |
+        cd build/MOEAFramework-*
+        mkdir -p src
+        
+        cp ../../test.xml .
+        cp ../../src/macros.xml src/
+        cp ../../dist/MOEAFramework-*.jar lib/
+        
+        . examples/org/moeaframework/examples/generalizedDecomposition/generateWeights.sh
+        ant -f test.xml test-examples
     - name: Test CLI
       run: |
         cd build/MOEAFramework-*
@@ -275,11 +296,6 @@ jobs:
           Write-Warning "FAILED: Incorrect system path: '$($actual)', expected '$($expected)'"
           exit -1
         }
-    - name: Test examples
-      run: |
-        cd build/MOEAFramework-*
-        . examples/org/moeaframework/examples/generalizedDecomposition/generateWeights.sh
-        java -classpath "dist/*:lib/*" org.moeaframework.tools.TestExamples --headless
     - name: Test solve.sh
       run: |
         cd build/MOEAFramework-*
