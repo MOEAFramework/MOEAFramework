@@ -305,9 +305,7 @@ public abstract class CommandLineUtility {
 				Options commandOptions = new Options();
 
 				for (Command command : commands) {
-					if (command.isVisible()) {
-						commandOptions.addOption(command.getName(), Localization.getString(command.getImplementation(), "title"));
-					}
+					commandOptions.addOption(command.getName(), Localization.getString(command.getImplementation(), "title"));
 				}
 				
 				helpFormatter.setOptPrefix("");

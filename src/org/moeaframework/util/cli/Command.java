@@ -26,14 +26,11 @@ public class Command {
 	private final String name;
 	
 	private final Class<? extends CommandLineUtility> implementation;
-	
-	private final boolean isVisible;
-	
-	private Command(String name, Class<? extends CommandLineUtility> implementation, boolean isVisible) {
+		
+	private Command(String name, Class<? extends CommandLineUtility> implementation) {
 		super();
 		this.name = name;
 		this.implementation = implementation;
-		this.isVisible = isVisible;
 	}
 
 	/**
@@ -55,15 +52,6 @@ public class Command {
 	}
 	
 	/**
-	 * Returns {@code true} if this command is visible to users; {@code false} otherwise.
-	 * 
-	 * @return {@code true} if this command is visible to users; {@code false} otherwise
-	 */
-	public boolean isVisible() {
-		return isVisible;
-	}
-	
-	/**
 	 * Creates a command with the given implementation.  The command name is derived from the class name.
 	 * 
 	 * @param implementation the command implementation
@@ -81,30 +69,7 @@ public class Command {
 	 * @return the command
 	 */
 	public static Command of(String name, Class<? extends CommandLineUtility> implementation) {
-		return new Command(name, implementation, true);
-	}
-	
-	/**
-	 * Creates a hidden command with the given implementation.  The command name is derived from the class name.
-	 * Hidden commands are not displayed in help messages but can still be invoked.
-	 * 
-	 * @param implementation the command implementation
-	 * @return the command
-	 */
-	public static Command hidden(Class<? extends CommandLineUtility> implementation) {
-		return hidden(implementation.getSimpleName(), implementation);
-	}
-	
-	/**
-	 * Creates a hidden command with the given name and implementation.  Hidden commands are not displayed in
-	 * help messages but can still be invoked.
-	 * 
-	 * @param name the name of the command
-	 * @param implementation the command implementation
-	 * @return the command
-	 */
-	public static Command hidden(String name, Class<? extends CommandLineUtility> implementation) {
-		return new Command(name, implementation, false);
+		return new Command(name, implementation);
 	}
 	
 }

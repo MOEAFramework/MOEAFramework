@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.moeaframework;
+package org.moeaframework.tools;
 
 import java.io.File;
 import java.io.FileWriter;

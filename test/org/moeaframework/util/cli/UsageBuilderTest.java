@@ -23,6 +23,7 @@ import org.apache.commons.cli.Options;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.core.Settings;
+import org.moeaframework.tools.TestExamples;
 
 public class UsageBuilderTest {
 

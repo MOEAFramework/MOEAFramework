@@ -31,7 +31,6 @@ import org.moeaframework.core.Settings;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.util.cli.Command;
 import org.moeaframework.util.cli.CommandLineUtility;
-import org.moeaframework.util.cli.TestExamples;
 import org.moeaframework.util.format.TabularData;
 
 /**
@@ -106,8 +105,6 @@ public class Main extends CommandLineUtility {
 		commands.add(Command.of(SobolAnalysis.class));
 		commands.add(Command.of(Solve.class));
 		commands.add(Command.of(WeightGenerator.class));
-		
-		commands.add(Command.hidden(TestExamples.class));
 		
 		return commands;
 	}

@@ -279,7 +279,7 @@ jobs:
       run: |
         cd build/MOEAFramework-*
         . examples/org/moeaframework/examples/generalizedDecomposition/generateWeights.sh
-        ./cli TestExamples --headless
+        java -classpath "dist/*:lib/*" org.moeaframework.tools.TestExamples --headless
     - name: Test solve.sh
       run: |
         cd build/MOEAFramework-*
