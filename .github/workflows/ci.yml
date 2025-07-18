@@ -202,9 +202,11 @@ jobs:
       run: |
         cd build/MOEAFramework-*
         mkdir -p src
+        mkdir -p test/org/moeaframework/tools
         
         cp ../../test.xml .
         cp ../../src/macros.xml src/
+        cp ../../test/org/moeaframework/tools/TestExamples.java test/org/moeaframework/tools/
         cp ../../dist/MOEAFramework-*.jar lib/
         
         . examples/org/moeaframework/examples/generalizedDecomposition/generateWeights.sh
