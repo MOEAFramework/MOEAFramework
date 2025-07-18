@@ -184,16 +184,6 @@ jobs:
         java-distribution: ${{ inputs.java-distribution }}
         setup-python: true
         python-dependencies: cvxopt
-    - name: Download Java test dependencies
-      uses: MOEAFramework/.github/actions/run-ant@main
-      with:
-        file: test.xml
-        target: download-all
-    - name: Build tests
-      uses: MOEAFramework/.github/actions/run-ant@main
-      with:
-        target: build-tests
-        file: test.xml
     - name: Setup testing directory
       uses: MOEAFramework/.github/actions/run-ant@main
       with:
