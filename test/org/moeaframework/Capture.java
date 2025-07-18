@@ -29,6 +29,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 
+import org.apache.commons.lang3.function.FailableConsumer;
+import org.apache.commons.lang3.function.FailableRunnable;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.util.cli.CommandLineUtility;
 import org.moeaframework.util.io.RedirectStream;
@@ -43,14 +45,14 @@ public class Capture {
 		super();
 	}
 	
-	public static CaptureResult output(Invocable invocable) throws IOException {
+	public static CaptureResult output(FailableRunnable<Exception> runnable) throws IOException {
 		PrintStream oldOut = System.out;
 		
 		try (ByteArrayOutputStream baos = new ByteArrayOutputStream(); PrintStream newOut = new PrintStream(baos)) {
 			System.setOut(newOut);
 			
 			try {
-				invocable.invoke();
+				runnable.run();
 				return new CaptureResult(baos);
 			} catch (Exception e) {
 				return new CaptureResult(baos, e instanceof InvocationTargetException ite ? ite.getCause() : e);
@@ -78,7 +80,7 @@ public class Capture {
 		}
 	}
 	
-	public static CaptureResult stream(ThrowingConsumer<PrintStream> consumer) throws IOException {
+	public static CaptureResult stream(FailableConsumer<PrintStream, Exception> consumer) throws IOException {
 		try (ByteArrayOutputStream baos = new ByteArrayOutputStream(); PrintStream out = new PrintStream(baos)) {
 			try {
 				consumer.accept(out);
@@ -123,7 +125,7 @@ public class Capture {
 		}
 	}
 	
-	public static CaptureResult file(ThrowingConsumer<File> consumer) throws IOException {
+	public static CaptureResult file(FailableConsumer<File, Exception> consumer) throws IOException {
 		try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
 			try {
 				File tempFile = TempFiles.createFile();
@@ -186,7 +188,7 @@ public class Capture {
 			Assert.assertStringNotContains(toString(), exepcted);
 		}
 		
-		public void assertThat(ThrowingConsumer<CaptureResult> condition) {
+		public void assertThat(FailableConsumer<CaptureResult, Exception> condition) {
 			assertSuccessful();
 			
 			try {

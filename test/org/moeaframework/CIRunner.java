@@ -109,13 +109,15 @@ public class CIRunner extends BlockJUnit4ClassRunner {
 		
 		if (!isIncludingAllTests()) {
 			if (hasAnnotation(method, IgnoreOnCI.class) && isRunningOnCI) {
-				System.out.println("Ignoring " + description.getDisplayName() + " on CI build");
+				System.out.println("Ignoring " + description.getDisplayName() + ", annotated with @" +
+						IgnoreOnCI.class.getSimpleName());
 				notifier.fireTestIgnored(description);
 				return;
 			}
 			
 			if (hasAnnotation(method, Slow.class)) {
-				System.out.println("Ignoring " + description.getDisplayName() + ", indicated as slow");
+				System.out.println("Ignoring " + description.getDisplayName() + ", annotated with @" +
+						Slow.class.getSimpleName());
 				notifier.fireTestIgnored(description);
 				return;
 			}

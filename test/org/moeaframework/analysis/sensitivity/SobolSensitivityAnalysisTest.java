@@ -17,6 +17,7 @@
  */
 package org.moeaframework.analysis.sensitivity;
 
+import org.apache.commons.lang3.function.TriFunction;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
@@ -113,7 +114,7 @@ public class SobolSensitivityAnalysisTest {
 		Assert.assertEquals(0.081, result.getSecondOrder("y", "z").getSensitivity(), TestThresholds.LOW_PRECISION);
 	}
 	
-	protected SobolSensitivityResult test(int N, TestFunction function) {
+	protected SobolSensitivityResult test(int N, TriFunction<Double, Double, Double, Double> function) {
 		Parameter<Double> x = Parameter.named("x").asDouble().sampledBetween(0.0, 1.0);
 		Parameter<Double> y = Parameter.named("y").asDouble().sampledBetween(0.0, 1.0);
 		Parameter<Double> z = Parameter.named("z").asDouble().sampledBetween(0.0, 1.0);
@@ -129,18 +130,11 @@ public class SobolSensitivityAnalysisTest {
 		
 		for (int i = 0; i < samples.size(); i++) {
 			Sample sample = samples.get(i);
-			responses[i] = function.eval(x.readValue(sample), y.readValue(sample), z.readValue(sample));
+			responses[i] = function.apply(x.readValue(sample), y.readValue(sample), z.readValue(sample));
 		}
 		
 		// assign the responses and return the result for testing
 		return analysis.evaluate(responses);
-	}
-	
-	@FunctionalInterface
-	public interface TestFunction {
-		
-		public double eval(double x, double y, double z);
-		
 	}
 
 }
