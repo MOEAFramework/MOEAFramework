@@ -32,13 +32,16 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
@@ -580,38 +583,26 @@ public class Assert extends org.junit.Assert {
 		assertTrue("Solution is not feasible", solution.isFeasible());
 	}
 	
-	public static void assertLocalized(Component component, Predicate<String> isLocalized) {
+	public static void assertLocalized(Component component) {
 		if (component instanceof JComponent jComponent) {
-			Assert.assertTrue("Tooltip is not localized", isLocalized.test(jComponent.getToolTipText()));
+			Assert.assertTrue("Tooltip is not localized", isLocalized(jComponent.getToolTipText()));
 		}
 		
 		if (component instanceof JFrame jFrame) {
-			Assert.assertTrue("Frame title is not localized", isLocalized.test(jFrame.getTitle()));
+			Assert.assertTrue("Frame title is not localized", isLocalized(jFrame.getTitle()));
 		} else if (component instanceof JDialog jDialog) {
-			Assert.assertTrue("Dialog title is not localized", isLocalized.test(jDialog.getTitle()));
+			Assert.assertTrue("Dialog title is not localized", isLocalized(jDialog.getTitle()));
 		} else if (component instanceof AbstractButton button) {
-			Assert.assertTrue("Button text is not localized", isLocalized.test(button.getText()));
+			Assert.assertTrue("Button text is not localized", isLocalized(button.getText()));
 			
 			Action action = button.getAction();
 			
 			if (action != null) {
-				Assert.assertTrue("Action name is not localized", isLocalized.test((String)action.getValue(Action.NAME)));
-				Assert.assertTrue("Action description is not localized", isLocalized.test((String)action.getValue(Action.SHORT_DESCRIPTION)));
+				Assert.assertTrue("Action name is not localized", isLocalized((String)action.getValue(Action.NAME)));
+				Assert.assertTrue("Action description is not localized", isLocalized((String)action.getValue(Action.SHORT_DESCRIPTION)));
 			}
 		} else if (component instanceof JLabel label) {
-			Assert.assertTrue("Label text is not localized", isLocalized.test(label.getText()));
-		}
-		
-		if (component instanceof MenuElement menuElement) {
-			for (MenuElement nestedMenuElement : menuElement.getSubElements()) {
-				assertLocalized(nestedMenuElement.getComponent(), isLocalized);
-			}
-		}
-		
-		if (component instanceof Container container) {
-			for (Component nestedComponent : container.getComponents()) {
-				assertLocalized(nestedComponent, isLocalized);
-			}
+			Assert.assertTrue("Label text is not localized", isLocalized(label.getText()));
 		}
 	}
 	
@@ -619,6 +610,42 @@ public class Assert extends org.junit.Assert {
 		return text == null || text.contains(" ") || text.endsWith("...") || !text.contains(".");
 	}
 	
+	public static void walkUI(Component component, Consumer<Component> assertion) {
+		assertion.accept(component);
+		
+		if (component instanceof MenuElement menuElement) {
+			for (MenuElement nestedMenuElement : menuElement.getSubElements()) {
+				walkUI(nestedMenuElement.getComponent(), assertion);
+			}
+		}
+		
+		if (component instanceof Container container) {
+			for (Component nestedComponent : container.getComponents()) {
+				walkUI(nestedComponent, assertion);
+			}
+		}
+	}
+	
+	public static Component findComponent(Component component, Predicate<Component> matcher) {
+		List<Component> matches = new ArrayList<>();
+		
+		walkUI(component, (c) -> {
+			if (matcher.test(c)) {
+				matches.add(c);
+			}
+		});
+		
+		if (matches.isEmpty()) {
+			Assert.fail("Failed to find matching component");
+		}
+		
+		if (matches.size() > 1) {
+			Assert.fail("Found multiple components matching the predicate");
+		}
+		
+		return matches.get(0);
+	}
+
 	public static void any(Runnable... assertions) {
 		AssertionError error = null;
 		

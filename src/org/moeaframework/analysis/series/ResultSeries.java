@@ -90,7 +90,7 @@ Streamable<IndexedResult> {
 				
 				if (index < 0) {
 					throw new IllegalArgumentException("Entry must define property '" + ResultEntry.NFE +
-							" to be added to series with index " + IndexType.NFE.name());
+							"' to be added to series with index " + IndexType.NFE.name());
 				}
 				
 				if (data.containsKey(index)) {

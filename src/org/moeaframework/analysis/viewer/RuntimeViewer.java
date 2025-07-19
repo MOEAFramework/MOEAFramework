@@ -191,9 +191,10 @@ public class RuntimeViewer extends JDialog implements ListSelectionListener, Con
 	 * @param title the name or title for the data
 	 * @param referenceSet the reference set for the problem
 	 * @param series the series containing approximation set data to display
+	 * @return the viewer
 	 */
-	public static void show(String title, NondominatedPopulation referenceSet, ResultSeries... series) {
-		UI.show(() -> {
+	public static RuntimeViewer show(String title, NondominatedPopulation referenceSet, ResultSeries... series) {
+		return UI.showAndWait(() -> {
 			RuntimeViewer viewer = new RuntimeViewer(null, title);
 
 			if (referenceSet != null) {

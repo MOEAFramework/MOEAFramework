@@ -19,7 +19,6 @@ package org.moeaframework.analysis.viewer;
 
 import java.util.List;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
@@ -27,63 +26,83 @@ import org.moeaframework.Assume;
 import org.moeaframework.analysis.series.IndexType;
 import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.analysis.series.ResultSeries;
+import org.moeaframework.core.TypedProperties;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.mock.MockSolution;
-import org.moeaframework.util.mvc.UI;
 
 /**
  * GUI tests have limited scope and, in general, do not validate the content being displayed.
  */
 public class RuntimeViewerTest {
 	
-	private ResultSeries series;
-	private NondominatedPopulation referenceSet;
-	
 	@Before
 	public void setUp() {
 		Assume.assumeHasDisplay();
-		
-		series = new ResultSeries(IndexType.Index);
+	}
+	
+	private void test(IndexType indexType, boolean includeReferenceSet) {
+		ResultSeries series = new ResultSeries(indexType);
 		
 		for (int i = 0; i < 10; i++) {
 			Population population = new Population(List.of(MockSolution.of().withObjectives(0.5, 0.5)));
-			series.add(new ResultEntry(population));
+			TypedProperties properties = new TypedProperties();
+			
+			if (indexType.equals(IndexType.NFE)) {
+				properties.setInt(ResultEntry.NFE, 100 * (i + 1));
+			}
+			
+			series.add(new ResultEntry(population, properties));
 		}
 		
-		referenceSet = new NondominatedPopulation();
-		referenceSet.add(MockSolution.of().withObjectives(0.0, 1.0));
-		referenceSet.add(MockSolution.of().withObjectives(1.0, 0.0));
+		NondominatedPopulation referenceSet = null;
+		
+		if (includeReferenceSet) {
+			referenceSet = new NondominatedPopulation();
+			referenceSet.add(MockSolution.of().withObjectives(0.0, 1.0));
+			referenceSet.add(MockSolution.of().withObjectives(1.0, 0.0));
+		}
+		
+		RuntimeViewer viewer = RuntimeViewer.show("Test", referenceSet, series);
+		Assert.assertNotNull(viewer);
+		Assert.assertTrue(viewer.isVisible());
+		
+		Assert.assertEquals(indexType, viewer.getController().getIndexType());
+		Assert.assertEquals(0, viewer.getController().getCurrentIndex());
+		Assert.assertEquals(0, viewer.getController().getStartingIndex());
+		Assert.assertEquals(indexType.equals(IndexType.NFE) ? 1000 : 9, viewer.getController().getEndingIndex());
+		Assert.assertEquals(indexType.equals(IndexType.NFE) ? 100 : 1, viewer.getController().getStepSize());
+		
+		if (includeReferenceSet) {
+			Assert.assertNotNull(viewer.getController().getReferenceSet());
+			Assert.assertEquals(referenceSet, viewer.getController().getReferenceSet().getSeries().at(0).getPopulation());
+		} else {
+			Assert.assertNull(viewer.getController().getReferenceSet());
+		}
+		
+		Assert.assertSize(1, viewer.getController().getSeries());
+		Assert.assertSize(10, viewer.getController().getSeries().get(0).getSeries());
+		viewer.dispose();
 	}
 	
-	@After
-	public void tearDown() {
-		series = null;
-		referenceSet = null;
+	@Test
+	public void testIndex() {
+		test(IndexType.Index, true);
 	}
 	
 	@Test
 	public void testWithReferenceSet() {
-		UI.showAndWait(() -> {
-			RuntimeViewer viewer = new RuntimeViewer("Viewer");
-			viewer.getController().setReferenceSet(referenceSet);
-			viewer.getController().addSeries("Test", series);
-			return viewer;
-		}).dispose();
+		test(IndexType.NFE, true);
 	}
 	
 	@Test
 	public void testNoReferenceSet() {
-		UI.showAndWait(() -> {
-			RuntimeViewer viewer = new RuntimeViewer("Viewer");
-			viewer.getController().addSeries("Test", series);
-			return viewer;
-		}).dispose();
+		test(IndexType.NFE, false);
 	}
 	
 	@Test
 	public void testLocalization() {
-		Assert.assertLocalized(new RuntimeViewer("Viewer"), Assert::isLocalized);
+		Assert.walkUI(new RuntimeViewer("Viewer"), Assert::assertLocalized);
 	}
 
 }

@@ -168,7 +168,7 @@ public class DiagnosticToolTest {
 	
 	@Test
 	public void testLocalization() {
-		Assert.assertLocalized(new DiagnosticTool(), Assert::isLocalized);
+		Assert.walkUI(new DiagnosticTool(), Assert::assertLocalized);
 	}
 
 }

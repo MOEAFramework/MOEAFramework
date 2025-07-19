@@ -17,6 +17,8 @@
  */
 package org.moeaframework.analysis.viewer;
 
+import javax.swing.JTextArea;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
@@ -35,16 +37,20 @@ public class TextViewerTest {
 	
 	@Test
 	public void test() {
-		UI.showAndWait(() -> {
-			TextViewer viewer = new TextViewer();
-			viewer.setText("foo");
-			return viewer;
-		}).dispose();
+		TextViewer viewer = new TextViewer();
+		viewer.setText("foo");
+		
+		UI.showAndWait(() -> viewer);
+		
+		Assert.assertTrue(viewer.isVisible());
+		Assert.assertEquals("foo", ((JTextArea)Assert.findComponent(viewer, (c) -> c instanceof JTextArea)).getText());
+		
+		viewer.dispose();
 	}
 	
 	@Test
 	public void testLocalization() {
-		Assert.assertLocalized(new TextViewer(), Assert::isLocalized);
+		Assert.walkUI(new TextViewer(), Assert::assertLocalized);
 	}
 
 }
