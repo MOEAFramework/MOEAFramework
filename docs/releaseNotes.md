@@ -2,6 +2,15 @@
 
 This page documents notable changes introduced in each chronological release of the MOEA Framework.
 
+
+## Version 5.2 (TBD)
+
+  * Removes the `Plot` class that was deprecated in the previous release (5.1).  Switch to one of the new plot builder
+    classes, such as `XYPlotBuilder`.
+  
+  * Cleanup code used for testing, including moving some internal tools out of the `src/` folder.
+
+
 ## Version 5.1 (24 June 2025)
 
   * Fixes `ResultFileViewer` tool, which wasn't starting the viewer when invoking the CLI.

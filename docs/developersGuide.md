@@ -20,22 +20,17 @@ our GitHub repository at http://github.com/MOEAFramework/MOEAFramework.  Before 
 
 ## Setting up a Development Environment
 
-We recommend using [Eclipse](http://eclipse.org/) when working with the MOEA Framework as all dependencies are included
-in Eclipse.  If you choose to use a different IDE, you might need to install the following dependencies separately:
+We recommend using [Eclipse](http://eclipse.org/) when working with the MOEA Framework as all dependencies are included.
+Otherwise, you will need to install the following:
 
-> **Java 17**, or any newer version, is required to use the MOEA Framework. Today, due to licensing concerns with
-> Oracle, a number of third-party Java distributions are available.  We recommend using either
-> [Eclipse Temurin](https://adoptium.net/) or [Azul Zulu](https://www.azul.com/downloads/?package=jdk).
-> 
-> **Apache Ant** is used to compile, test, and package distributions of the MOEA Framework.  Apache Ant can be
-> downloaded from http://ant.apache.org/.
-> 
-> **JUnit 4** for running tests.  Due to licensing differences, JUnit is not provided alongside the MOEA Framework and
-> must be downloaded separately.  Run `ant -f test.xml download-junit` to install JUnit.
+* **Java Development Kit (JDK) 17+**: Recommend using either [Eclipse Temurin](https://adoptium.net/) or
+  [Azul Zulu](https://www.azul.com/downloads/?package=jdk).
 
-### Codespaces
+* **Apache Ant**: Download from http://ant.apache.org/.
 
-If using GitHub Codespaces (or other compatible system), the following steps can be used to set up the environment:
+* **JUnit 4**: Run `ant -f test.xml download-junit` to download JUnit 4 into the `lib/` folder.
+
+Using SDKMAN!, for example, we can install these required dependencies and run tests with:
 
 ```
 sdk install java 17-zulu
@@ -69,24 +64,20 @@ To determine if and when to update which Java version we target, we generally lo
 
 ## Building, Testing, and Packaging
 
-Apache Ant is used to compile, test, and package the code.  When using Eclipse, drag-and-drop `build.xml` and `test.xml`
-into the Ant window, then double-click on any of the targets.  For example, the `package-binary` target will create the
-binary distributions.  Alternatively, from the terminal, we can run:
+Apache Ant is used to compile, test, and package the code.  When using Eclipse, simply drag-and-drop `build.xml` and
+`test.xml` into the Ant panel, then run any of the targets.  Individual test classes or methods can be run
+by selecting `Run As > JUnit Test` from the menu.  Alternatively, we can run Ant targets from the terminal:
 
 ```
 ant -f build.xml package-binary
-```
-
-Tests are powered by JUnit 4.  Individual tests or test classes can be evaluated within Eclipse by right-clicking on
-the test or class and selecting `Run As > JUnit Test`.  To run all tests using Ant, run the `test` target from `test.xml`,
-or from the terminal run:
-
-```
 ant -f test.xml test
 ```
 
-We strongly recommend installing all test dependencies beforehand as some tests are skipped if the dependency is
-missing.  Run the following Ant target to download all test dependencies:
+### Optional Tests
+
+Some tests utilize dependencies that are not redistributed with the MOEA Framework due to licensing restrictions or
+other reasons.  While these tests are skipped when the dependency is missing, the full test suite can be run by first
+downloading all test dependencies:
 
 ```
 ant -f test.xml download-all
@@ -94,8 +85,7 @@ ant -f test.xml download-all
 
 ### Maven
 
-The MOEA Framework source code is not structured for Maven, but we can produce a Maven-compatible release using the
-`build-maven` target.  Below demonstrates running all tests through Maven:
+While we do not use Maven directly, a Maven-compatible release can be generated using the `build-maven` target:
 
 ```
 ant -f build.xml build-maven
@@ -105,13 +95,12 @@ mvn test
 
 ### Continuous Integration
 
-When code changes are pushed to the GitHub repository, our CI tests are automatically run.  These are powered by the
-`ci.yml` workflow, and run all tests against the supported versions of Java, Maven, etc.
+All changes pushed to the GitHub repository will trigger the `ci.yml` workflow running on GitHub Actions.  Please
+verify these tests are passing, otherwise this may delay the review or approval of a PR.
 
 ### Releases
 
-New releases are published by the `staging.yml` workflow file running on GitHub Actions.  The process to create a new
-release is:
+New releases are published by the `staging.yml` workflow.  The process to create a new release is:
 
 1. Merge a PR to increment the version number in `META-INF/build.properties`.  Append `-SNAPSHOT` to the version to create
    a snapshot release.
@@ -123,33 +112,32 @@ Please note that it can take several hours for the new release to be available f
 
 ## Documentation
 
-We publish Markdown documentation under the `docs/` folder along with generated Javadocs from the comments in the
-source code.  To ensure code samples shown in documentation is consistent, we have a custom tool that syncs code
-snippets in documentation with working Java code.  This works by placing a special comment immediately before a code
-block that identifys the language, source file, and section.  For example, this will extract lines 33 to 40 from
-`Example1.java` with `<!-- :code: src=examples/Example1.java lines=33:40 -->`.
+We publish Markdown documentation under the `docs/` folder.  To ensure code samples shown in documentation are both
+up-to-date and working, we have a custom tool that syncs code snippets found in documentation with working Java code.
+This works by placing a special directive, in the form of a comment, in the Markdown file immediately before the code
+block:
 
-Rather than using line numbers, we can also identify blocks of code using an identifier.  In the Java code, surround
-the code with these comments:
+````
+<!-- :code: src=examples/Example1.java lines=33:40 -->
 
+```java
+... copied source code ...
 ```
-// begin-example: foo
-...
-// end-example: foo
-```
+````
 
-then reference this block by its identifier in the Markdown docs with `<!-- :code: src=examples/Example1.java id=foo -->`.
-Then, we can either validate the docs, alerting if any changes are detected, or update the docs to match the code
-samples:
+Then, we can either validate or update the content of the code block by running:
 
 ```
 ant validate-docs
 ant update-docs
 ```
 
+In addition to `:code:` which copies source code, the `:exec:` and `:plot:` directives can compile and run a Java
+class or method, updating the Markdown file with either the output text or rendered plot.
+
 ## Errors, Exceptions, and Warnings
 
-The following guidance should be used when emitting any kind of error or warning:
+The following guidance should be used when displaying any kind of error or warning:
 
 1. All errors and warnings should be written to the standard error stream (`System.err`).  Informational messages may
    also be written to standard error to keep these messages separate from output.
@@ -163,7 +151,7 @@ For exceptions:
 1. Throw the most appropriate exception type for the problem, preferring existing Java exception types.  For example,
    `IllegalArgumentException` for invalid inputs, `IOException` for any errors related to I/O, files, parsing, etc.
 2. If no existing exception types are appropriate to represent an error, create a new type extending from
-   `FrameworkException`.
+   `FrameworkException`.  `FrameworkException` is also used as a catch-all when rethrowing checked exceptions.
 
 ## Service Providers
 
