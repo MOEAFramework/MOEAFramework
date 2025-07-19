@@ -293,6 +293,7 @@ public class UpdateCodeSamples extends CommandLineUtility {
 	 */
 	public boolean process(File file) throws IOException {
 		boolean fileChanged = false;
+		boolean inBlock = false;
 		
 		FileFormatter fileFormatter = getFileFormatter(file);
 		
@@ -307,9 +308,13 @@ public class UpdateCodeSamples extends CommandLineUtility {
 		int currentLine = 1;
 		
 		while (currentLine <= document.size()) {
+			if (document.get(currentLine).startsWith("```")) {
+				inBlock = !inBlock;
+			}
+			
 			ProcessorInstruction instruction = fileFormatter.tryParseProcessorInstruction(file, document, currentLine);
 						
-			if (instruction != null) {
+			if (instruction != null && !inBlock) {
 				System.out.println("    > Running " + instruction);
 				fileChanged |= instruction.run(document);
 			}
