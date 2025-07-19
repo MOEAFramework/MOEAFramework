@@ -20,8 +20,10 @@ our GitHub repository at http://github.com/MOEAFramework/MOEAFramework.  Before 
 
 ## Setting up a Development Environment
 
-We recommend using [Eclipse](http://eclipse.org/) when working with the MOEA Framework as all dependencies are included.
-Otherwise, you will need to install the following:
+We recommend using [Eclipse](http://eclipse.org/) when working on this code.  Simply import the MOEA Framework
+project using the `Open Projects from File System...` command.
+
+When using a different IDE, you may need to install the following:
 
 * **Java Development Kit (JDK) 17+**: Recommend using either [Eclipse Temurin](https://adoptium.net/) or
   [Azul Zulu](https://www.azul.com/downloads/?package=jdk).
@@ -30,7 +32,7 @@ Otherwise, you will need to install the following:
 
 * **JUnit 4**: Run `ant -f test.xml download-junit` to download JUnit 4 into the `lib/` folder.
 
-Using SDKMAN!, for example, we can install these required dependencies and run tests with:
+For example, using SDKMAN! we can install these dependencies and run tests with:
 
 ```
 sdk install java 17-zulu
@@ -76,8 +78,8 @@ ant -f test.xml test
 ### Optional Tests
 
 Some tests utilize dependencies that are not redistributed with the MOEA Framework due to licensing restrictions or
-other reasons.  While these tests are skipped when the dependency is missing, the full test suite can be run by first
-downloading all test dependencies:
+other reasons.  While these tests are skipped when the dependency is missing, consider running the full test suite by
+first downloading all test dependencies:
 
 ```
 ant -f test.xml download-all
@@ -102,11 +104,11 @@ verify these tests are passing, otherwise this may delay the review or approval 
 
 New releases are published by the `staging.yml` workflow.  The process to create a new release is:
 
-1. Merge a PR to increment the version number in `META-INF/build.properties`.  Append `-SNAPSHOT` to the version to create
-   a snapshot release.
+1. Merge a PR to increment the version number in `META-INF/build.properties`.  Optionally append `-SNAPSHOT` to the
+   version to publish a pre-release.
 2. After CI passes, manually trigger the Staging workflow (`staging.yml`).
 3. Verify the [integration tests](https://github.com/MOEAFramework/IntegrationTests) are passing with the new release.
-4. Publish the Maven artifacts, GitHub release, and Website update.
+4. Publish the Maven artifacts, GitHub release, and updated website.
 
 Please note that it can take several hours for the new release to be available for download using Maven.
 
