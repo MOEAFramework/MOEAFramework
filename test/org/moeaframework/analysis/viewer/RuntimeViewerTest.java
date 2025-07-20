@@ -73,6 +73,9 @@ public class RuntimeViewerTest {
 		Assert.assertEquals(indexType.equals(IndexType.NFE) ? 1000 : 9, viewer.getController().getEndingIndex());
 		Assert.assertEquals(indexType.equals(IndexType.NFE) ? 100 : 1, viewer.getController().getStepSize());
 		
+		viewer.getController().setCurrentIndex(indexType.equals(IndexType.NFE) ? 1000 : 9);
+		Assert.assertEquals(indexType.equals(IndexType.NFE) ? 1000 : 9, viewer.getController().getCurrentIndex());
+		
 		if (includeReferenceSet) {
 			Assert.assertNotNull(viewer.getController().getReferenceSet());
 			Assert.assertEquals(referenceSet, viewer.getController().getReferenceSet().getSeries().at(0).getPopulation());
@@ -101,8 +104,23 @@ public class RuntimeViewerTest {
 	}
 	
 	@Test
+	public void testAnimation() {
+		RuntimeViewer viewer = new RuntimeViewer("Test");
+		Assert.assertFalse(viewer.getController().isRunning());
+		
+		viewer.getController().play();
+		Assert.assertTrue(viewer.getController().isRunning());
+		
+		viewer.getController().play();
+		Assert.assertTrue(viewer.getController().isRunning());
+		
+		viewer.getController().stop();
+		Assert.assertFalse(viewer.getController().isRunning());
+	}
+	
+	@Test
 	public void testLocalization() {
-		Assert.walkUI(new RuntimeViewer("Viewer"), Assert::assertLocalized);
+		Assert.walkUI(new RuntimeViewer("Test"), Assert::assertLocalized);
 	}
 
 }
