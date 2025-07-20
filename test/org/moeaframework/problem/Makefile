@@ -1,11 +1,7 @@
-# This make file compiles the C/C++ executables used for unit testing.
-#
-# This make file assumes it is being run on a Unix-like environment.  Windows
-# users can install MinGW/MSYS or Cygwin.
+# This make file compiles the C/C++ executables used for unit testing.  Use MinGW/MSYS or Cygwin to build on Windows.
+# The relative path changes when built using Ant vs Maven, hence the need to locate the root directory.
 #
 # Run 'make' to build all files
-
-# Find the examples/ folder, which changes if using Ant or Maven
 ROOT := ../../../..
 CC := gcc
 CPP := g++

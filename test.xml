@@ -97,7 +97,7 @@ along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 		</javac>
 
 		<copy todir="${build}" includeEmptyDirs="false">
-			<fileset dir="test" excludes="**/*.java,**/*.class" />
+			<fileset dir="test" excludes="**/*.java,**/*.class,**/*.exe" />
 		</copy>
 
 		<copy todir="${build}/META-INF">
