@@ -16,18 +16,46 @@ License for more details.
 
 You should have received a copy of the GNU Lesser General Public License 
 along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
-
-
-
-Use of these build scripts requires Apache Ant to be installed.  See
-<http://ant.apache.org/> for instructions on installing Apache Ant.
 -->
-<project name="MOEA Framework Macros" basedir="." xmlns:if="ant:if" xmlns:unless="ant:unless">
+<project name="MOEA Framework Build Macros" basedir="." xmlns:if="ant:if" xmlns:unless="ant:unless">
+
+	<!-- Loads properties from properties file and environment -->
+	<property file="META-INF/build.properties" />
+	<property environment="env" />
+	<property runtime="runtime" />
+
+	<!-- The working folder for these Ant build targets -->
+	<property name="build" value="build" />
+
+	<!-- The folder where compiled files ready for distribution are saved -->
+	<property name="dist" value="dist" />
+
+	<!-- The folder where generated javadoc files are saved -->
+	<property name="javadoc" value="javadoc" />
+
+	<!-- The base/root folder for organizing distributions -->
+	<property name="base" value="${build}/${shortname}-${version}" />
+
+	<!-- Classpath of third-party libraries used by the MOEA Framework -->
+	<path id="classpath">
+		<fileset dir="lib" includes="*.jar" />
+	</path>
+
+	<!-- List of files required in every distribution -->
+	<path id="requiredfiles">
+		<fileset file="README.md" />
+		<fileset file="COPYING" />
+	</path>
+
+	<!-- List of libraries included in every distribution -->
+	<path id="libraries">
+		<fileset dir="lib" excludes="junit-*.jar,hamcrest-*.jar,jfreesvg-*.jar,checkstyle-*.jar,nashorn-*.jar,asm-*.jar,jmetal-plugin-*.jar,pisa-plugin-*.jar,gd-*.jar" />
+	</path>
 
 	<!-- Replace tokens in a given file with their property values -->
 	<macrodef name="replace-properties">
 		<attribute name="file" />
-		
+
 		<sequential>
 			<dirname property="replace.dir" file="@{file}" />
 			<tempfile property="temp.file" prefix="filter" suffix=".properties" destDir="${replace.dir}" />
@@ -43,24 +71,24 @@ Use of these build scripts requires Apache Ant to be installed.  See
 		<attribute name="src" />
 		<attribute name="dest" />
 		<attribute name="sha1" />
-		
+
 		<sequential>
 			<get src="@{src}" dest="@{dest}" />
-			
+
 			<condition property="@{src}.sha1" value="@{sha1}">
 				<matches string="@{sha1}" pattern="^[a-zA-Z0-9]+$" />
 			</condition>
-			
+
 			<sequential if:set="@{src}.sha1">
 				<checksum file="@{dest}" property="@{sha1}" algorithm="SHA-1" verifyProperty="@{src}.checksum.valid"/>
 				<delete unless:true="${@{src}.checksum.valid}" file="@{dest}" />
 				<fail unless:true="${@{src}.checksum.valid}" message="Invalid checksum for @{dest}" />
 			</sequential>
-			
+
 			<sequential unless:set="@{src}.sha1">
 				<echo>Skipping checksum validation for @{dest}, no SHA1 set</echo>
 			</sequential>
 		</sequential>
 	</macrodef>
-	
+
 </project>

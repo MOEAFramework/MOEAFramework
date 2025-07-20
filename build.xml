@@ -16,47 +16,10 @@ License for more details.
 
 You should have received a copy of the GNU Lesser General Public License 
 along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
-
-
-
-Use of these build scripts requires Apache Ant to be installed.  See
-<http://ant.apache.org/> for instructions on installing Apache Ant.
 -->
 <project name="MOEA Framework" basedir="." xmlns:if="ant:if" xmlns:unless="ant:unless">
 	
 	<import file="src/macros.xml" />
-
-	<!-- Loads properties from properties file and environment -->
-	<property file="META-INF/build.properties" />
-	<property environment="env" />
-	
-	<!-- The working folder for these Ant build targets -->
-	<property name="build" value="build" />
-	
-	<!-- The folder where compiled files ready for distribution are saved -->
-	<property name="dist" value="dist" />
-	
-	<!-- The folder where generated javadoc files are saved -->
-	<property name="javadoc" value="javadoc" />
-	
-	<!-- The base/root folder for organizing distributions -->
-	<property name="base" value="${build}/${shortname}-${version}" />
-
-	<!-- Classpath of third-party libraries used by the MOEA Framework -->
-	<path id="classpath">
-		<fileset dir="lib" includes="*.jar" />
-	</path>
-
-	<!-- List of files required in every distribution -->
-	<path id="requiredfiles">
-		<fileset file="README.md" />
-		<fileset file="COPYING" />
-	</path>
-	
-	<!-- List of libraries included in every distribution -->
-	<path id="libraries">
-		<fileset dir="lib" excludes="junit-*.jar,hamcrest-*.jar,jfreesvg-*.jar,checkstyle-*.jar,nashorn-*.jar,asm-*.jar,jmetal-plugin-*.jar,pisa-plugin-*.jar,gd-*.jar" />
-	</path>
 	
 	<path id="resources">
 		<fileset dir="src" excludes="**/*.java,**/*.class,overview.html,cli.cmd,cli.sh,macros.xml,pom.xml.template,README.md.template" />

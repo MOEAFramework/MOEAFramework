@@ -16,24 +16,10 @@ License for more details.
 
 You should have received a copy of the GNU Lesser General Public License 
 along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
-
-
-
-Use of these build scripts requires Apache Ant to be installed.  See
-<http://ant.apache.org/> for instructions on installing Apache Ant.
 -->
 <project name="MOEA Framework Checkstyle" basedir="../../" default="check-style" xmlns:if="ant:if" xmlns:unless="ant:unless">
 	
 	<import file="../../src/macros.xml" />
-
-	<!-- Loads properties from properties file and environment -->
-	<property file="META-INF/build.properties" />
-	<property environment="env" />
-
-	<!-- The working folder for these Ant build targets -->
-	<property name="build" value="build" />
-
-	<!-- The location of the checkstyle library and configuration files -->
 	<property name="checkstyle.path" value="test/checkstyle" />
 
 	<path id="classpath">
