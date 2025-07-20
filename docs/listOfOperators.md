@@ -12,7 +12,7 @@ any parameters into the constructor.
 <!-- :code: src=examples/Example5.java lines=36:36 -->
 
 ```java
-algorithm.setVariation(new PCX(5, 2));
+algorithm.setVariation(new PCX(10, 2));
 ```
 
 Alternatively, we can apply a configuration using the properties:

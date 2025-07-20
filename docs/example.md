@@ -118,7 +118,7 @@ Here we change the initial population size and set the variation operator to Par
 ```java
 NSGAII algorithm = new NSGAII(problem);
 algorithm.setInitialPopulationSize(250);
-algorithm.setVariation(new PCX(5, 2));
+algorithm.setVariation(new PCX(10, 2));
 ```
 
 Alternatively, similar to how we read the current configuration with `getConfiguration`, we can apply

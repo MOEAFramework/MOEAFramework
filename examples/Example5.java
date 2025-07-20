@@ -33,7 +33,7 @@ public class Example5 {
 		
 		NSGAII algorithm = new NSGAII(problem);
 		algorithm.setInitialPopulationSize(250);
-		algorithm.setVariation(new PCX(5, 2));
+		algorithm.setVariation(new PCX(10, 2));
 		
 		algorithm.run(10000);
 
