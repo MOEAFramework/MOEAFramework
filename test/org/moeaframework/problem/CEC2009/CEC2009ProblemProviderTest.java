@@ -30,6 +30,12 @@ public class CEC2009ProblemProviderTest extends ProblemTest {
 	
 	@Test
 	public void testUnrecognizedProblem() {
+		Assert.assertNull(new CEC2009ProblemProvider().getProblem(""));
+		Assert.assertNull(new CEC2009ProblemProvider().getProblem("Foo"));
+		Assert.assertNull(new CEC2009ProblemProvider().getProblem("UF"));
+		Assert.assertNull(new CEC2009ProblemProvider().getProblem("CF"));
+		Assert.assertNull(new CEC2009ProblemProvider().getProblem("UFFoo"));
+		Assert.assertNull(new CEC2009ProblemProvider().getProblem("CFFoo"));
 		Assert.assertNull(new CEC2009ProblemProvider().getProblem("UF14"));
 		Assert.assertNull(new CEC2009ProblemProvider().getProblem("CF11"));
 	}

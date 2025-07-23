@@ -30,7 +30,11 @@ public class ZDTProblemProviderTest extends ProblemTest {
 
 	@Test
 	public void testUnrecognizedProblem() {
+		Assert.assertNull(new ZDTProblemProvider().getProblem(""));
+		Assert.assertNull(new ZDTProblemProvider().getProblem("Foo"));
+		Assert.assertNull(new ZDTProblemProvider().getProblem("ZDT"));
 		Assert.assertNull(new ZDTProblemProvider().getProblem("ZDT7"));
+		Assert.assertNull(new ZDTProblemProvider().getProblem("ZDTFoo"));
 	}
 
 }

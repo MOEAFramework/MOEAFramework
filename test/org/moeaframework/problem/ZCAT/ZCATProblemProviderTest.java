@@ -54,6 +54,12 @@ public class ZCATProblemProviderTest extends ProblemTest {
 	
 	@Test
 	public void testUnrecognizedProblem() {
+		Assert.assertNull(new ZCATProblemProvider().getProblem(""));
+		Assert.assertNull(new ZCATProblemProvider().getProblem("Foo"));
+		Assert.assertNull(new ZCATProblemProvider().getProblem("ZCAT"));
+		Assert.assertNull(new ZCATProblemProvider().getProblem("ZCAT21"));
+		Assert.assertNull(new ZCATProblemProvider().getProblem("ZCAT21_2"));
+		Assert.assertNull(new ZCATProblemProvider().getProblem("ZCATFoo"));
 		Assert.assertNull(new ZCATProblemProvider().getProblem("ZCATFoo_2"));
 		Assert.assertNull(new ZCATProblemProvider().getProblem("ZCAT1_Foo"));
 	}

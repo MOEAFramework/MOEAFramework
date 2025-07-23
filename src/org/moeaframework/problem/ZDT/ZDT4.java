@@ -29,7 +29,7 @@ public class ZDT4 extends ZDT {
 	 * Constructs a ZDT4 test problem with 10 decision variables.
 	 */
 	public ZDT4() {
-		super(10);
+		this(10);
 	}
 
 	/**

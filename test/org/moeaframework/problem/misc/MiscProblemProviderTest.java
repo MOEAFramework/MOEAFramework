@@ -30,7 +30,8 @@ public class MiscProblemProviderTest extends ProblemTest {
 
 	@Test
 	public void testUnrecognizedProblem() {
-		Assert.assertNull(new MiscProblemProvider().getProblem("foo"));
+		Assert.assertNull(new MiscProblemProvider().getProblem(""));
+		Assert.assertNull(new MiscProblemProvider().getProblem("Foo"));
 	}
 
 }

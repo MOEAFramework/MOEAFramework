@@ -26,7 +26,6 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TestThresholds;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.util.io.LineReader;
@@ -44,7 +43,7 @@ public class BBOB2016Test {
 			for (int j = i; j < functions.length; j++) {
 				for (int instance : instances) {
 					for (int dimension : dimensions) {
-						Problem problem = ProblemFactory.getInstance().getProblem(String.format(
+						Problem problem = new BBOB2016Problems().getProblem(String.format(
 								"bbob_f%d_i%d_d%d,bbob_f%d_i%d_d%d",
 								functions[i], instance, dimension, functions[j], instance, dimension));
 
@@ -57,9 +56,25 @@ public class BBOB2016Test {
 
 	@Test
 	public void testNameFormat() {
-		Assert.assertNotNull(ProblemFactory.getInstance().getProblem("bbob_f1_i1_d2,bbob_f21_i15_d40"));
-		Assert.assertNotNull(ProblemFactory.getInstance().getProblem("bbob_f1_i1_d2__bbob_f21_i15_d40"));
-		Assert.assertNotNull(ProblemFactory.getInstance().getProblem("bbob-biobj(bbob_f1_i1_d2__bbob_f21_i15_d40)"));
+		Assert.assertNotNull(new BBOB2016Problems().getProblem("bbob_f1_i1_d2,bbob_f21_i15_d40"));
+		Assert.assertNotNull(new BBOB2016Problems().getProblem("bbob_f1_i1_d2__bbob_f21_i15_d40"));
+		Assert.assertNotNull(new BBOB2016Problems().getProblem("bbob-biobj(bbob_f1_i1_d2__bbob_f21_i15_d40)"));
+	}
+	
+	@Test
+	public void testUnrecognizedProblem() {
+		Assert.assertNull(new BBOB2016Problems().getProblem(""));
+		Assert.assertNull(new BBOB2016Problems().getProblem("Foo"));
+		Assert.assertNull(new BBOB2016Problems().getProblem("bbob-biobj()"));
+		Assert.assertNull(new BBOB2016Problems().getProblem("bbob-biobj(Foo)"));
+		Assert.assertNull(new BBOB2016Problems().getProblem("bbob-biobj(bbob_f1_i1_d2__Foo)"));
+		Assert.assertNull(new BBOB2016Problems().getProblem("bbob-biobj(Foo_bbob_f1_i1_d2)"));
+		Assert.assertNull(new BBOB2016Problems().getProblem("bbob-biobj(bbob_fFoo_i1_d2__bbob_f21_i15_d40)"));
+		Assert.assertNull(new BBOB2016Problems().getProblem("bbob-biobj(bbob_f1_iFoo_d2__bbob_f21_i15_d40)"));
+		Assert.assertNull(new BBOB2016Problems().getProblem("bbob-biobj(bbob_f1_i1_dFoo__bbob_f21_i15_d40)"));
+		Assert.assertNull(new BBOB2016Problems().getProblem("bbob-biobj(bbob_f1_i1_d2__bbob_fFoo_i15_d40)"));
+		Assert.assertNull(new BBOB2016Problems().getProblem("bbob-biobj(bbob_f1_i1_d2__bbob_f21_iFoo_d40)"));
+		Assert.assertNull(new BBOB2016Problems().getProblem("bbob-biobj(bbob_f1_i1_d2__bbob_f21_i15_dFoo)"));
 	}
 
 	@Test
@@ -69,7 +84,7 @@ public class BBOB2016Test {
 				String[] tokens = line.split("\s+");
 				int index = 0;
 				
-				Problem problem = ProblemFactory.getInstance().getProblem(tokens[index++]);
+				Problem problem = new BBOB2016Problems().getProblem(tokens[index++]);
 				
 				Assert.assertEquals(Integer.parseInt(tokens[index++]), problem.getNumberOfVariables());
 				Assert.assertEquals(Integer.parseInt(tokens[index++]), problem.getNumberOfObjectives());

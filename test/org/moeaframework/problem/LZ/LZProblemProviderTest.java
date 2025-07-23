@@ -30,7 +30,11 @@ public class LZProblemProviderTest extends ProblemTest {
 
 	@Test
 	public void testUnrecognizedProblem() {
+		Assert.assertNull(new LZProblemProvider().getProblem(""));
+		Assert.assertNull(new LZProblemProvider().getProblem("Foo"));
+		Assert.assertNull(new LZProblemProvider().getProblem("LZ"));
 		Assert.assertNull(new LZProblemProvider().getProblem("LZ10"));
+		Assert.assertNull(new LZProblemProvider().getProblem("LZFoo"));
 	}
 
 }
