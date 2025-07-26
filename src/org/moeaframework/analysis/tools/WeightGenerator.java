@@ -168,7 +168,7 @@ public class WeightGenerator extends CommandLineUtility {
 						
 						divisions = new NormalBoundaryDivisions(N);
 					} else {
-						throw new MissingOptionException("Missing --divisions");
+						throw new MissingOptionException("Number of divisions not specified");
 					}
 				}
 	

@@ -25,15 +25,18 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.MissingOptionException;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.io.IOUtils;
-import org.junit.Assert;
 import org.junit.Test;
+import org.moeaframework.Assert;
 import org.moeaframework.Capture;
 import org.moeaframework.Capture.CaptureResult;
+import org.moeaframework.core.PropertyScope;
+import org.moeaframework.core.Settings;
 
 public class CommandLineUtilityTest {
 		
@@ -91,6 +94,13 @@ public class CommandLineUtilityTest {
 			System.out.println("Run Mock Command");
 		}
 				
+	}
+	
+	@Test
+	public void testConsoleWidth() {
+		try (PropertyScope scope = Settings.createScope().with(Settings.KEY_VERBOSE, true)) {
+			Assert.assertGreaterThanOrEqual(new MockStandardUtility().getConsoleWidth(), HelpFormatter.DEFAULT_WIDTH);
+		}
 	}
 
 	@Test

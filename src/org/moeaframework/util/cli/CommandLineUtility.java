@@ -114,7 +114,7 @@ public abstract class CommandLineUtility {
 	 * 
 	 * @return the console width
 	 */
-	private int getConsoleWidth() {
+	int getConsoleWidth() {
 		int width = Settings.PROPERTIES.getInt(Settings.KEY_HELP_WIDTH, -1);
 		
 		if (width <= 0) {
@@ -122,14 +122,14 @@ public abstract class CommandLineUtility {
 				try {
 					ProcessBuilder processBuilder = new ProcessBuilder("stty", "size");
 					processBuilder.redirectInput(Redirect.INHERIT);
-					processBuilder.redirectError(Redirect.DISCARD);
+					processBuilder.redirectError(Settings.isVerbose() ? Redirect.INHERIT : Redirect.DISCARD);
 
 					String output = RedirectStream.capture(processBuilder);
 					Tokenizer tokenizer = new Tokenizer();
 					width = Integer.parseInt(tokenizer.decodeToArray(output.trim())[1]);
 				} catch (Exception e) {
 					if (Settings.isVerbose()) {
-						System.err.println("Unable to detect console width!");
+						System.err.println("Unable to detect console width, using default!");
 						e.printStackTrace();
 					}
 				}
