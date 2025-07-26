@@ -48,7 +48,8 @@ public class Assume extends org.junit.Assume {
 	}
 	
 	public static void assumePOSIX() {
-		assumeTrue("System is not POSIX-compliant, skipping test", SystemUtils.IS_OS_UNIX);
+		assumeTrue("System is not POSIX-compliant, skipping test",
+				SystemUtils.IS_OS_UNIX || SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC);
 	}
 	
 	public static void assumeCommand(String... args) {
