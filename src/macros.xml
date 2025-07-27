@@ -32,6 +32,9 @@ along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 
 	<!-- The folder where generated javadoc files are saved -->
 	<property name="javadoc" value="javadoc" />
+	
+	<!-- The folder where JUnit test results are saved -->
+	<property name="results" value="test-results" />
 
 	<!-- The base/root folder for organizing distributions -->
 	<property name="base" value="${build}/${shortname}-${version}" />
