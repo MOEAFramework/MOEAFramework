@@ -240,6 +240,8 @@ jobs:
         eval "$(./cli init --shell bash)"
         [ "$MOEAFRAMEWORK_ROOT" = "$(pwd)" ]
         [ "$(which cli)" = "$(pwd)/cli" ]
+        
+        cli --info
     - name: Test CLI (init --shell bash --permanent)
       if: runner.os == 'Linux'
       run: |
@@ -250,10 +252,19 @@ jobs:
         EXPECTED="$(./cli init --shell bash)"
         ACTUAL="$(diff ~/.bash_profile ~/.bash_profile.bkup | grep "<" | cut -c 3-)"
         [ "$EXPECTED" = "$ACTUAL" ]
+        
+        source ~/.bash_profile
+        cli --info
     - name: Test CLI (init --shell cmd)
       if: runner.os == 'Windows'
       shell: cmd
-      run: cd build/MOEAFramework-* && cli init --shell cmd > commands.cmd && commands && where cli
+      run: |
+        cd build/MOEAFramework-*
+        
+        cli init --shell cmd > commands.cmd
+        commands.cmd
+        
+        cli --info
     - name: Test CLI (init --shell pwsh)
       if: runner.os == 'Windows'
       shell: pwsh
@@ -272,6 +283,8 @@ jobs:
           Write-Warning "FAILED: Incorrect local path: '$($actual)', expected '$($expected)'"
           exit -1
         }
+        
+        cli --info
     - name: Test CLI (init --shell pwsh --permanent)
       if: runner.os == 'Windows'
       shell: pwsh
@@ -288,6 +301,8 @@ jobs:
           Write-Warning "FAILED: Incorrect system path: '$($actual)', expected '$($expected)'"
           exit -1
         }
+        
+        cli --info
     - name: Test solve.sh
       run: |
         cd build/MOEAFramework-*
