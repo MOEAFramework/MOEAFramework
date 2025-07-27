@@ -258,13 +258,7 @@ jobs:
     - name: Test CLI (init --shell cmd)
       if: runner.os == 'Windows'
       shell: cmd
-      run: |
-        cd build/MOEAFramework-*
-        
-        cli init --shell cmd > commands.cmd
-        commands.cmd
-        
-        cli --info
+      run: cd build/MOEAFramework-* && cli init --shell cmd > commands.cmd && commands && cli --info
     - name: Test CLI (init --shell pwsh)
       if: runner.os == 'Windows'
       shell: pwsh
@@ -290,7 +284,10 @@ jobs:
       shell: pwsh
       run: |
         cd build/MOEAFramework-*
-      
+        
+        # TODO: Temporary fix - removing Clear-Item alias that conflicts with name
+                Remove-Alias cli -Force
+        
         $oldPath = [Environment]::GetEnvironmentVariable("PATH", [EnvironmentVariableTarget]::Machine)
         $commands = ./cli init --permanent | Out-String
         Invoke-Expression $commands
