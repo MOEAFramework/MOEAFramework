@@ -49,7 +49,7 @@ public abstract class AbstractOperatorTest<T extends Variation, V extends Variab
 	
 	@Test
 	public void testTypeSafety() {
-		Assume.assumeTrue("Operator is not type safe, skipping test", isTypeSafe());
+		Assume.assumeTrue("Operator is not type safe", isTypeSafe());
 		
 		T variation = createInstance();
 		

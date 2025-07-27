@@ -37,18 +37,19 @@ public class Assume extends org.junit.Assume {
 	}
 	
 	public static <T> T assumeInstanceOf(Class<T> cls, Object object) {
-		assumeTrue("Expected object of type " + cls + " but found " + object.getClass().getName() + ", skipping test",
+		assumeTrue("Expected object of type " + cls.getName() + " but found " + object.getClass().getName(),
 				cls.isInstance(object));
 		
 		return cls.cast(object);
 	}
 	
 	public static void assumeFileExists(File file) {
-		assumeTrue(file + " does not exist, skipping test", file.exists());
+		assumeTrue(file + " does not exist", file.exists());
 	}
 	
 	public static void assumePOSIX() {
-		assumeTrue("System is not POSIX-compliant, skipping test", SystemUtils.IS_OS_UNIX);
+		assumeTrue("System is not POSIX-compliant",
+				SystemUtils.IS_OS_UNIX || SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_MAC);
 	}
 	
 	public static void assumeCommand(String... args) {
@@ -56,12 +57,12 @@ public class Assume extends org.junit.Assume {
 			ProcessBuilder processBuilder = new ProcessBuilder(args);
 			RedirectStream.pipe(processBuilder, System.out);
 		} catch (Exception e) {
-			assumeNoException(args[0] + " is not available on this system, skipping test", e);
+			assumeNoException(args[0] + " is not available", e);
 		}
 	}
 	
 	public static void assumeMakeExists() {
-		assumeTrue("Make is not available on this system, skipping test", Make.isMakeAvailable());
+		assumeTrue("Make is not available", Make.isMakeAvailable());
 	}
 	
 	public static void assumeFortranExists() {
@@ -86,16 +87,16 @@ public class Assume extends org.junit.Assume {
 	}
 	
 	public static void assumeGitHubActions() {
-		assumeTrue("Expected to run on GitHub Actions, skipping test", isGitHubActions());
+		assumeTrue("Must run on GitHub Actions", isGitHubActions());
 	}
 	
 	public static void assumeHasDisplay() {
-		assumeTrue("Skipping test as the system has no display", !GraphicsEnvironment.isHeadless() &&
+		assumeTrue("No display available or running headless", !GraphicsEnvironment.isHeadless() &&
 				GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length > 0);
 	}
 	
 	public static void assumeJMetalExists() {
-		Assume.assumeTrue("JMetal-Plugin required to run test",
+		Assume.assumeTrue("JMetal-Plugin not available on classpath",
 				AlgorithmFactory.getInstance().hasProvider("org.moeaframework.algorithm.jmetal.JMetalAlgorithms"));
 	}
 	

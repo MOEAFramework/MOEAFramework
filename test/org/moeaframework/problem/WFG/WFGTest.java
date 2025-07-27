@@ -38,7 +38,7 @@ public abstract class WFGTest extends ProblemTest {
 		}
 		
 		if (problem instanceof WFG2) {
-			Assume.skip("WFG2 is disjoint and can generate dominated solutions, skipping test");
+			Assume.skip("WFG2 is disjoint and can generate dominated solutions");
 		} else if (problem instanceof WFG4) {
 			// WFG4 can occasionally produce dominated solutions, perhaps 1 in a million generated solutions.  In the
 			// example shown below, note the position parameters (l) are identical up to the displayed precision:

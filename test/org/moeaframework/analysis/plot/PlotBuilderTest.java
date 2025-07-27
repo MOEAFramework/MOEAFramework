@@ -60,7 +60,7 @@ public class PlotBuilderTest {
 	
 	@Test
 	public void testSaveSVG() throws IOException {
-		Assume.assumeTrue("Skipping test as JFreeSVG library is not found", ImageUtils.supportsSVG());
+		Assume.assumeTrue("JFreeSVG is not available on classpath", ImageUtils.supportsSVG());
 		
 		File tempFile = TempFiles.createFileWithExtension(".svg");
 			

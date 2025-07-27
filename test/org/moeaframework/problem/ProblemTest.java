@@ -57,7 +57,7 @@ public abstract class ProblemTest {
 		try {
 			ProblemFactory.getInstance().getProblem(problemName);
 		} catch (ProviderNotFoundException e) {
-			Assume.assumeNoException("Problem " + problemName + " not found, skipping test", e);
+			Assume.assumeNoException("Problem " + problemName + " not found", e);
 		}
 	}
 	
