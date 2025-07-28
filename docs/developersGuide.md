@@ -75,15 +75,22 @@ ant -f build.xml package-binary
 ant -f test.xml test
 ```
 
-### Optional Tests
+### Optional Test Dependencies
 
 Some tests utilize dependencies that are not redistributed with the MOEA Framework due to licensing restrictions or
 other reasons.  While these tests are skipped when the dependency is missing, consider running the full test suite by
 first downloading all test dependencies:
 
 ```
+# Install optional Java dependencies
 ant -f test.xml download-all
+
+# Install optional Python dependencies
+pip install pandas cvxopt
 ```
+
+> [!TIP]
+> When running tests through Eclipse, be sure to add the downloaded JAR files in the `lib/` directory to the build path.
 
 ### Maven
 

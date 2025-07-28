@@ -20,14 +20,9 @@ package org.moeaframework.analysis.tools;
 import java.io.File;
 import java.nio.file.Path;
 
-import org.apache.commons.cli.ParseException;
 import org.junit.Test;
-import org.moeaframework.Assert;
 import org.moeaframework.Capture;
 import org.moeaframework.Capture.CaptureResult;
-import org.moeaframework.core.PropertyScope;
-import org.moeaframework.core.Settings;
-import org.moeaframework.core.TypedProperties;
 
 public class InitializeTest {
 
@@ -66,9 +61,24 @@ public class InitializeTest {
 	@Test
 	public void testCmd() throws Exception {
 		CaptureResult result = Capture.output(Initialize.class, "--shell", "cmd");
-		System.out.println(result.toString());
 		result.assertContains("set MOEAFRAMEWORK_ROOT=" + Path.of("").toAbsolutePath().toString());
 		result.assertContains("set PATH=" + Path.of("").toAbsolutePath().toString() + File.pathSeparator + "%PATH%");
+	}
+	
+	@Test
+	public void testPowershell() throws Exception {
+		CaptureResult result = Capture.output(Initialize.class, "--shell", "pwsh");
+		result.assertContains("$env:MOEAFRAMEWORK_ROOT=\"" + Path.of("").toAbsolutePath().toString() + "\"");
+		result.assertContains("$env:PATH=\"$($env:MOEAFRAMEWORK_ROOT)" + File.pathSeparator + "$($env:PATH)\"");
+	}
+	
+	@Test
+	public void testPowershellPermanent() throws Exception {
+		CaptureResult result = Capture.output(Initialize.class, "--shell", "pwsh", "--permanent");
+		result.assertContains("[Environment]::SetEnvironmentVariable(\"MOEAFRAMEWORK_ROOT\", \"" +
+				Path.of("").toAbsolutePath().toString() + "\"");
+		result.assertContains("[Environment]::SetEnvironmentVariable(\"PATH\", \"" +
+				Path.of("").toAbsolutePath().toString() + File.pathSeparator + "$($MachinePath)\"");
 	}
 	
 }
