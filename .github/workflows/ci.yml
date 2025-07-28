@@ -184,26 +184,28 @@ jobs:
         java-distribution: ${{ inputs.java-distribution }}
         setup-python: true
         python-dependencies: cvxopt
+    - name: Get project info
+      uses: MOEAFramework/.github/actions/get-project-info@main
     - name: Setup testing directory
       uses: MOEAFramework/.github/actions/run-ant@main
       with:
         target: package-binary
     - name: Test examples
       run: |
-        cd build/MOEAFramework-*
+        cd build/MOEAFramework-${{ env.BUILD_VERSION }}
         mkdir -p src
         mkdir -p test/org/moeaframework/tools
         
         cp ../../test.xml .
         cp ../../src/macros.xml src/
         cp ../../test/org/moeaframework/tools/TestExamples.java test/org/moeaframework/tools/
-        cp ../../dist/MOEAFramework-*.jar lib/
+        cp ../../dist/MOEAFramework-${{ env.BUILD_VERSION }}.jar lib/
         
         . examples/org/moeaframework/examples/generalizedDecomposition/generateWeights.sh
         ant -f test.xml test-examples
     - name: Test CLI
       run: |
-        cd build/MOEAFramework-*
+        cd build/MOEAFramework-${{ env.BUILD_VERSION }}
         
         # begin-example: cli-help
         ./cli --help
@@ -220,7 +222,7 @@ jobs:
     - name: Test CLI DataStore
       if: runner.os == 'Linux'
       run: |
-        cd build/MOEAFramework-*
+        cd build/MOEAFramework-${{ env.BUILD_VERSION }}
 
         # begin-example: datastore
         # List contents of a container
@@ -235,7 +237,7 @@ jobs:
     - name: Test CLI (init --shell bash)
       if: runner.os == 'Linux'
       run: |
-        cd build/MOEAFramework-*
+        cd build/MOEAFramework-${{ env.BUILD_VERSION }}
         
         eval "$(./cli init --shell bash)"
         [ "$MOEAFRAMEWORK_ROOT" = "$(pwd)" ]
@@ -245,7 +247,7 @@ jobs:
     - name: Test CLI (init --shell bash --permanent)
       if: runner.os == 'Linux'
       run: |
-        cd build/MOEAFramework-*
+        cd build/MOEAFramework-${{ env.BUILD_VERSION }}
       
         cp ~/.bash_profile ~/.bash_profile.bkup
         eval "$(./cli init --shell bash --permanent)"
@@ -258,12 +260,12 @@ jobs:
     - name: Test CLI (init --shell cmd)
       if: runner.os == 'Windows'
       shell: cmd
-      run: cd build/MOEAFramework-* && cli init --shell cmd > commands.cmd && commands && cli --info
+      run: cd build/MOEAFramework-${{ env.BUILD_VERSION }} && cli init --shell cmd > commands.cmd && commands && cli --info
     - name: Test CLI (init --shell pwsh)
       if: runner.os == 'Windows'
       shell: pwsh
       run: |
-        cd build/MOEAFramework-*
+        cd build/MOEAFramework-${{ env.BUILD_VERSION }}
         
         # TODO: Temporary fix - removing Clear-Item alias that conflicts with name
         Remove-Alias cli -Force
@@ -283,7 +285,7 @@ jobs:
       if: runner.os == 'Windows'
       shell: pwsh
       run: |
-        cd build/MOEAFramework-*
+        cd build/MOEAFramework-${{ env.BUILD_VERSION }}
         
         $oldPath = [Environment]::GetEnvironmentVariable("PATH", [EnvironmentVariableTarget]::Machine)
         $commands = ./cli init --permanent | Out-String
@@ -297,9 +299,9 @@ jobs:
         }
     - name: Test solve.sh
       run: |
-        cd build/MOEAFramework-*
+        cd build/MOEAFramework-${{ env.BUILD_VERSION }}
         . examples/org/moeaframework/examples/solve/solve.sh
     - name: Test sensitivity.sh
       run: |
-        cd build/MOEAFramework-*
+        cd build/MOEAFramework-${{ env.BUILD_VERSION }}
         . examples/org/moeaframework/examples/sensitivity/sensitivity.sh

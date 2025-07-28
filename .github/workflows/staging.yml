@@ -42,6 +42,8 @@ jobs:
           gpg-signing-key: ${{ secrets.GPG_SIGNING_KEY }}
       - name: Get project info
         uses: MOEAFramework/.github/actions/get-project-info@main
+      - name: Validate project info
+        uses: MOEAFramework/.github/actions/validate-project-info@main
         with:
           expected-version: ${{ inputs.version }}
           skip-validation: ${{ inputs.skip-validation }}
