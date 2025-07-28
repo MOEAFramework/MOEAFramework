@@ -285,9 +285,6 @@ jobs:
       run: |
         cd build/MOEAFramework-*
         
-        # TODO: Temporary fix - removing Clear-Item alias that conflicts with name
-                Remove-Alias cli -Force
-        
         $oldPath = [Environment]::GetEnvironmentVariable("PATH", [EnvironmentVariableTarget]::Machine)
         $commands = ./cli init --permanent | Out-String
         Invoke-Expression $commands
@@ -298,8 +295,6 @@ jobs:
           Write-Warning "FAILED: Incorrect system path: '$($actual)', expected '$($expected)'"
           exit -1
         }
-        
-        cli --info
     - name: Test solve.sh
       run: |
         cd build/MOEAFramework-*
