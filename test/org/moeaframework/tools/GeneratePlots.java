@@ -30,7 +30,7 @@ import java.util.stream.Stream;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.io.FilenameUtils;
-import org.moeaframework.TestEnvironment;
+import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.util.cli.CommandLineUtility;
@@ -49,7 +49,7 @@ public class GeneratePlots extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
-		TestEnvironment.setVerbose(true);
+		Settings.PROPERTIES.setBoolean(Settings.KEY_VERBOSE, true);
 		
 		try (Stream<Path> stream = Files.walk(PF_PATH)) {
 			stream

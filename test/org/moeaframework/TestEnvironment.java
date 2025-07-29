@@ -117,13 +117,5 @@ public class TestEnvironment {
 		return GraphicsEnvironment.isHeadless() ||
 				GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length == 0;
 	}
-	
-	public static void setHeadless(boolean value) {
-		System.setProperty("java.awt.headless", Boolean.toString(value));
-	}
-	
-	public static void setVerbose(boolean value) {
-		Settings.PROPERTIES.setBoolean(Settings.KEY_VERBOSE, value);
-	}
 
 }

@@ -115,7 +115,7 @@ along with the MOEA Framework.  If not, see <http://www.gnu.org/licenses/>.
 				<pathelement location="examples" />
 				<pathelement if:set="dist.present" location="${dist}/${shortname}-${version}.jar" />
 			</classpath>
-			<arg if:true="${env.CI}" value="--headless" />
+			<jvmarg if:true="${env.CI}" value="-Djava.awt.headless=true" />
 		</java>
 	</target>
 
