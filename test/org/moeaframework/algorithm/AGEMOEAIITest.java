@@ -24,7 +24,7 @@ import org.junit.runner.RunWith;
 import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.algorithm.AGEMOEAII.AGEMOEAIIPopulation;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.attribute.Fitness;
@@ -67,7 +67,7 @@ public class AGEMOEAIITest extends JMetalAlgorithmTest {
 
 		double[] intercepts = population.calculateIntercepts(extremePoints);
 
-		Assert.assertArrayEquals(new double[] { 1.0, 1.0 }, intercepts, TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 1.0, 1.0 }, intercepts, TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -82,7 +82,7 @@ public class AGEMOEAIITest extends JMetalAlgorithmTest {
 
 		double[] intercepts = population.calculateIntercepts(extremePoints);
 
-		Assert.assertArrayEquals(new double[] { 1.0, 1.0 }, intercepts, TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 1.0, 1.0 }, intercepts, TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -97,7 +97,7 @@ public class AGEMOEAIITest extends JMetalAlgorithmTest {
 
 		double[] intercepts = population.calculateIntercepts(extremePoints);
 
-		Assert.assertArrayEquals(new double[] { 0.9, 0.1 }, intercepts, TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 0.9, 0.1 }, intercepts, TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test

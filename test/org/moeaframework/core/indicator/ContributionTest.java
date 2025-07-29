@@ -19,7 +19,7 @@ package org.moeaframework.core.indicator;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.mock.MockSolution;
@@ -46,21 +46,21 @@ public class ContributionTest extends AbstractIndicatorTest<Contribution> {
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
 
 		approximationSet.add(MockSolution.of(problem).withObjectives(0.0, 1.0));
-		Assert.assertEquals(0.5, indicator.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.5, indicator.evaluate(approximationSet), TestEnvironment.HIGH_PRECISION);
 		
 		approximationSet.clear();
 		approximationSet.add(MockSolution.of(problem).withObjectives(1.0, 1.0));
-		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), TestEnvironment.HIGH_PRECISION);
 		
 		approximationSet.clear();
 		approximationSet.add(MockSolution.of(problem).withObjectives(0.1, 0.9));
 		approximationSet.add(MockSolution.of(problem).withObjectives(0.0, 1.1));
-		Assert.assertEquals(0.5, indicator.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.5, indicator.evaluate(approximationSet), TestEnvironment.HIGH_PRECISION);
 
 		approximationSet.clear();
 		approximationSet.add(MockSolution.of(problem).withObjectives(1.1, 0.0));
 		approximationSet.add(MockSolution.of(problem).withObjectives(0.0, 1.1));
-		Assert.assertEquals(1.0, indicator.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, indicator.evaluate(approximationSet), TestEnvironment.HIGH_PRECISION);
 	}
 
 }

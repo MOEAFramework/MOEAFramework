@@ -21,7 +21,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.MeanCentricVariationTest;
 
@@ -30,7 +30,7 @@ public class UNDXTest extends MeanCentricVariationTest<UNDX> {
 	
 	@Override
 	public UNDX createInstance() {
-		return new UNDX(3, TestThresholds.SAMPLES);
+		return new UNDX(3, TestEnvironment.SAMPLES);
 	}
 
 	@Test

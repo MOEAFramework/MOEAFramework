@@ -26,7 +26,7 @@ import org.junit.runner.RunWith;
 import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.algorithm.single.GeneticAlgorithm;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.population.Population;
@@ -163,8 +163,8 @@ public class DistributedProblemTest {
 		double bestSingle = getResultFromStochasticRun(1);
 		double bestQuad = getResultFromStochasticRun(4);
 		double bestSixteen = getResultFromStochasticRun(16);
-		Assert.assertEquals(bestSingle, bestQuad, TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(bestQuad, bestSixteen, TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(bestSingle, bestQuad, TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(bestQuad, bestSixteen, TestEnvironment.HIGH_PRECISION);
 	}
 	
 	private double getResultFromStochasticRun(int numThreads) {

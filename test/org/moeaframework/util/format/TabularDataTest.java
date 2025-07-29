@@ -203,7 +203,7 @@ public class TabularDataTest {
 	
 	@Test
 	public void testJsonUsingPython() throws IOException {
-		Assume.assumePythonExists();
+		Assume.assumePython();
 		
 		File tempFile = TempFiles.createFile();
 		data.save(TableFormat.Json, tempFile);
@@ -220,7 +220,7 @@ public class TabularDataTest {
 	
 	@Test
 	public void testJsonUsingPandas() throws IOException, InterruptedException {
-		Assume.assumePythonExists();
+		Assume.assumePython();
 		Assume.assumePythonModule("pandas");
 		
 		File tempFile = TempFiles.createFile();

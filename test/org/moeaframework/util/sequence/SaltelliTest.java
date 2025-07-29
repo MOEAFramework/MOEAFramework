@@ -22,7 +22,7 @@ import org.junit.runner.RunWith;
 import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 
 @RunWith(CIRunner.class)
 @Retryable
@@ -35,7 +35,7 @@ public class SaltelliTest extends AbstractSequenceTest<Saltelli> {
 
 	@Override
 	protected void test(Sequence sequence, int D) {
-		int N = (2 * D + 2) * (TestThresholds.SAMPLES / 10);
+		int N = (2 * D + 2) * (TestEnvironment.SAMPLES / 10);
 
 		double[][] points = sequence.generate(N, D);
 

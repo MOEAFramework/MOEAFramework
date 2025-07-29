@@ -25,7 +25,7 @@ import org.junit.runner.RunWith;
 import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 
 @RunWith(CIRunner.class)
 public class GrammarTest {
@@ -251,7 +251,7 @@ public class GrammarTest {
 			valueStats[j] = new DescriptiveStatistics();
 		}
 		
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			grammar.randomize();
 			
 			for (int j = 0; j < grammar.size(); j++) {

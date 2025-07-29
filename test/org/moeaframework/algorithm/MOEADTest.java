@@ -66,28 +66,28 @@ public class MOEADTest extends JMetalAlgorithmTest {
 	
 	@Test
 	public void testDTLZ1_MOEADDRA() throws IOException {
-		Assume.assumeJMetalExists();
+		Assume.assumeJMetalPlugin();
 		testDRA = true;
 		test("DTLZ1_2", algorithmName, algorithmName + "-JMetal", allowBetterPerformance);
 	}
 	
 	@Test
 	public void testDTLZ2_MOEADDRA() throws IOException {
-		Assume.assumeJMetalExists();
+		Assume.assumeJMetalPlugin();
 		testDRA = true;
 		test("DTLZ2_2", algorithmName, algorithmName + "-JMetal", allowBetterPerformance);
 	}
 	
 	@Test
 	public void testDTLZ7_MOEADDRA() throws IOException {
-		Assume.assumeJMetalExists();
+		Assume.assumeJMetalPlugin();
 		testDRA = true;
 		test("DTLZ7_2", algorithmName, algorithmName + "-JMetal", allowBetterPerformance);
 	}
 	
 	@Test
 	public void testUF1_MOEADDRA() throws IOException {
-		Assume.assumeJMetalExists();
+		Assume.assumeJMetalPlugin();
 		testDRA = true;
 		test("UF1", algorithmName, algorithmName + "-JMetal", allowBetterPerformance);
 	}

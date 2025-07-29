@@ -22,7 +22,7 @@ import org.junit.runner.RunWith;
 import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.DistributionVariationTest;
 import org.moeaframework.core.variable.RealVariable;
@@ -45,9 +45,9 @@ public class UMTest extends DistributionVariationTest<UM> {
 		parent.setVariable(1, new RealVariable(-2.0, 5.0).withValue(-2.0));
 
 		Solution[] parents = new Solution[] { parent };
-		Solution[] offspring = new Solution[TestThresholds.SAMPLES];
+		Solution[] offspring = new Solution[TestEnvironment.SAMPLES];
 
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			offspring[i] = um.evolve(parents)[0];
 		}
 
@@ -63,7 +63,7 @@ public class UMTest extends DistributionVariationTest<UM> {
 		for (int i = 0; i < parent.getNumberOfVariables(); i++) {
 			RealVariable v = (RealVariable)parent.getVariable(i);
 			Assert.assertEquals((v.getLowerBound() + v.getUpperBound()) / 2.0, average[i],
-					TestThresholds.LOW_PRECISION);
+					TestEnvironment.LOW_PRECISION);
 		}
 	}
 

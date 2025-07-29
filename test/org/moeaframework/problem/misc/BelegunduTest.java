@@ -19,7 +19,7 @@ package org.moeaframework.problem.misc;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.ProblemTest;
 
@@ -31,21 +31,21 @@ public class BelegunduTest extends ProblemTest {
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 0.0 },
 				evaluateAt(problem, 0.0, 0.0).getObjectiveValues(),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { -1.0, -7.0 },
 				evaluateAt(problem, 0.0, 0.0).getConstraintValues(),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 		
 		Assert.assertTrue(evaluateAt(problem, 0.0, 0.0).isFeasible());
 		
 		Assert.assertArrayEquals(new double[] { -7.0, 13.0 },
 				evaluateAt(problem, 5.0, 3.0).getObjectiveValues(),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { -3.0, 1.0 },
 				evaluateAt(problem, 5.0, 3.0).getConstraintValues(),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 		
 		Assert.assertFalse(evaluateAt(problem, 5.0, 3.0).isFeasible());
 	}

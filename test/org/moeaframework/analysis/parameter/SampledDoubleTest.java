@@ -20,7 +20,7 @@ package org.moeaframework.analysis.parameter;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.analysis.sample.Sample;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.util.io.Tokenizer;
@@ -64,7 +64,7 @@ public class SampledDoubleTest {
 		Sample sample = new Sample();
 		SampledDouble parameter = new SampledDouble("foo", 0.0, 10.0);
 		
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			parameter.sample(sample, PRNG.nextDouble());
 			statistics.addValue(parameter.readValue(sample));
 		}

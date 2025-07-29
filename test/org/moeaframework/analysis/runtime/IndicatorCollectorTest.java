@@ -18,7 +18,7 @@
 package org.moeaframework.analysis.runtime;
 
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.algorithm.Algorithm;
 import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.core.indicator.Indicator;
@@ -28,7 +28,7 @@ public class IndicatorCollectorTest extends AbstractCollectorTest<IndicatorColle
 	
 	@Override
 	public void validate(Algorithm algorithm, ResultEntry result) {
-		Assert.assertEquals(1.0, IndicatorCollector.getIndicatorValue(result, MockIndicator.class), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, IndicatorCollector.getIndicatorValue(result, MockIndicator.class), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Override

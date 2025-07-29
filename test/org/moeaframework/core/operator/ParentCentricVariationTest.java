@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.junit.Ignore;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.util.clustering.Cluster;
@@ -47,7 +47,7 @@ public abstract class ParentCentricVariationTest<T extends Variation> extends Di
 				double[] parent = RealVariable.getReal(solution);
 
 				for (int j = 0; j < parent.length; j++) {
-					if (Math.abs(parent[j] - centroid[j]) > TestThresholds.LOW_PRECISION) {
+					if (Math.abs(parent[j] - centroid[j]) > TestEnvironment.LOW_PRECISION) {
 						allEqual = false;
 					}
 				}

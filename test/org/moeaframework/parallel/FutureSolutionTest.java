@@ -25,7 +25,7 @@ import java.util.concurrent.Future;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
 import org.moeaframework.problem.Problem;
@@ -166,10 +166,10 @@ public class FutureSolutionTest {
 		TestableFutureSolution solution = new TestableFutureSolution(unevaluatedSolution);
 		
 		// Expect non-zero result since the unevaluated solution has an objective value of 0
-		Assert.assertNotEquals(0.0, solution.euclideanDistance(evaluatedSolution), TestThresholds.HIGH_PRECISION);
+		Assert.assertNotEquals(0.0, solution.euclideanDistance(evaluatedSolution), TestEnvironment.HIGH_PRECISION);
 		
 		solution.setFuture(completedFuture);
-		Assert.assertEquals(0.0, solution.euclideanDistance(evaluatedSolution), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, solution.euclideanDistance(evaluatedSolution), TestEnvironment.HIGH_PRECISION);
 	}
 
 }

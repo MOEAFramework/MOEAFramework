@@ -19,7 +19,7 @@ package org.moeaframework.problem;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
@@ -64,7 +64,7 @@ public class IntegerProblemTest {
 		
 		Solution solution = algorithm.getResult().get(0);
 		Assert.assertArrayEquals(new int[] { 1, 1 }, BinaryIntegerVariable.getInt(solution));
-		Assert.assertEquals(0, solution.getObjectiveValue(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0, solution.getObjectiveValue(0), TestEnvironment.HIGH_PRECISION);
 	}
 
 }

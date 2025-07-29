@@ -19,7 +19,7 @@ package org.moeaframework.core.operator.binary;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.operator.AbstractBinaryOperatorTest;
 import org.moeaframework.core.variable.BinaryVariable;
 
@@ -46,7 +46,7 @@ public class BitFlipTest extends AbstractBinaryOperatorTest<BitFlip> {
 	private void testProbability(double probability) {
 		double sum = 0.0;
 
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			BinaryVariable original = new BinaryVariable(100);
 			BinaryVariable mutated = original.copy();
 			BitFlip.mutate(mutated, probability);
@@ -54,7 +54,7 @@ public class BitFlipTest extends AbstractBinaryOperatorTest<BitFlip> {
 			sum += original.hammingDistance(mutated);
 		}
 
-		Assert.assertEquals((sum / TestThresholds.SAMPLES) / 100, probability, TestThresholds.LOW_PRECISION);
+		Assert.assertEquals((sum / TestEnvironment.SAMPLES) / 100, probability, TestEnvironment.LOW_PRECISION);
 	}
 
 }

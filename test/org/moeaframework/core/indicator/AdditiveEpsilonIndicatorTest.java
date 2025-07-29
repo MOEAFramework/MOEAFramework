@@ -19,7 +19,7 @@ package org.moeaframework.core.indicator;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.mock.MockRealProblem;
@@ -47,29 +47,29 @@ public class AdditiveEpsilonIndicatorTest extends AbstractIndicatorTest<Additive
 		NondominatedPopulation approximationSet = new NondominatedPopulation();
 		
 		approximationSet.add(MockSolution.of(problem).withObjectives(0.0, 1.0));
-		Assert.assertEquals(1.0, indicator.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, indicator.evaluate(approximationSet), TestEnvironment.HIGH_PRECISION);
 		
 		approximationSet.clear();
 		approximationSet.add(MockSolution.of(problem).withObjectives(1.0, 1.0));
-		Assert.assertEquals(1.0, indicator.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, indicator.evaluate(approximationSet), TestEnvironment.HIGH_PRECISION);
 		
 		approximationSet.clear();
 		approximationSet.add(MockSolution.of(problem).withObjectives(2.0, 2.0));
-		Assert.assertEquals(2.0, indicator.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(2.0, indicator.evaluate(approximationSet), TestEnvironment.HIGH_PRECISION);
 		
 		approximationSet.clear();
 		approximationSet.add(MockSolution.of(problem).withObjectives(0.0, 0.0));
-		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), TestEnvironment.HIGH_PRECISION);
 		
 		approximationSet.clear();
 		approximationSet.add(MockSolution.of(problem).withObjectives(0.0, 1.0));
 		approximationSet.add(MockSolution.of(problem).withObjectives(1.0, 0.0));
-		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), TestEnvironment.HIGH_PRECISION);
 
 		approximationSet.clear();
 		approximationSet.add(MockSolution.of(problem).withObjectives(2.0, 0.0));
 		approximationSet.add(MockSolution.of(problem).withObjectives(0.0, 2.0));
-		Assert.assertEquals(1.0, indicator.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, indicator.evaluate(approximationSet), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -79,7 +79,7 @@ public class AdditiveEpsilonIndicatorTest extends AbstractIndicatorTest<Additive
 		NondominatedPopulation approximationSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
 		
 		Indicator indicator = createInstance(problem, referenceSet);
-		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, indicator.evaluate(approximationSet), TestEnvironment.HIGH_PRECISION);
 	}
 
 }

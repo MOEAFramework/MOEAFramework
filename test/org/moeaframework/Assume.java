@@ -17,7 +17,6 @@
  */
 package org.moeaframework;
 
-import java.awt.GraphicsEnvironment;
 import java.io.File;
 
 import org.apache.commons.lang3.SystemUtils;
@@ -43,7 +42,7 @@ public class Assume extends org.junit.Assume {
 		return cls.cast(object);
 	}
 	
-	public static void assumeFileExists(File file) {
+	public static void assumeFile(File file) {
 		assumeTrue(file + " does not exist", file.exists());
 	}
 	
@@ -61,15 +60,15 @@ public class Assume extends org.junit.Assume {
 		}
 	}
 	
-	public static void assumeMakeExists() {
+	public static void assumeMake() {
 		assumeTrue("Make is not available", Make.isMakeAvailable());
 	}
 	
-	public static void assumeFortranExists() {
+	public static void assumeFortran() {
 		assumeCommand("gfortran", "--version");
 	}
 	
-	public static void assumePythonExists() {
+	public static void assumePython() {
 		assumeCommand(Settings.getPythonCommand(), "--version");
 	}
 	
@@ -82,26 +81,21 @@ public class Assume extends org.junit.Assume {
 		}
 	}
 	
-	public static void assumeMatlabExists() {
+	public static void assumeMatlab() {
 		assumeCommand("matlab", "-batch", "version");
 	}
 	
 	public static void assumeGitHubActions() {
-		assumeTrue("Must run on GitHub Actions", isGitHubActions());
+		assumeTrue("Must run on GitHub Actions", TestEnvironment.isGitHubActions());
 	}
 	
 	public static void assumeHasDisplay() {
-		assumeTrue("No display available or running headless", !GraphicsEnvironment.isHeadless() &&
-				GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices().length > 0);
+		assumeTrue("No display available or running headless", !TestEnvironment.isHeadless());
 	}
 	
-	public static void assumeJMetalExists() {
+	public static void assumeJMetalPlugin() {
 		Assume.assumeTrue("JMetal-Plugin not available on classpath",
 				AlgorithmFactory.getInstance().hasProvider("org.moeaframework.algorithm.jmetal.JMetalAlgorithms"));
-	}
-	
-	public static boolean isGitHubActions() {
-		return System.getenv("GITHUB_ACTIONS") != null;
 	}
 
 }

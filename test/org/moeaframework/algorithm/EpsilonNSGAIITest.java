@@ -19,7 +19,7 @@ package org.moeaframework.algorithm;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.TypedProperties;
 import org.moeaframework.mock.MockRealProblem;
 import org.moeaframework.problem.Problem;
@@ -33,25 +33,25 @@ public class EpsilonNSGAIITest {
 		
 		Assert.assertArrayEquals(algorithm.getArchive().getComparator().getEpsilons().toArray(),
 				algorithm.getConfiguration().getDoubleArray("epsilon"),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 		
 		algorithm.applyConfiguration(TypedProperties.of("epsilon", 0.1));
 		Assert.assertArrayEquals(new double[] { 0.1 },
 				algorithm.getArchive().getComparator().getEpsilons().toArray(),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 0.1 },
 				algorithm.getConfiguration().getDoubleArray("epsilon"),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 
 		algorithm.applyConfiguration(TypedProperties.of("epsilon", 0.1, 0.2));
 		Assert.assertArrayEquals(new double[] { 0.1, 0.2 },
 				algorithm.getArchive().getComparator().getEpsilons().toArray(),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 0.1, 0.2 },
 				algorithm.getConfiguration().getDoubleArray("epsilon"),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 	}
 
 }

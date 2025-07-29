@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.algorithm.NSGAIII;
 import org.moeaframework.core.TypedProperties;
@@ -57,8 +57,8 @@ public class ConfigurationTest {
 		
 		Assert.assertEquals("hux+bf", actualProperties.getString("operator"));
 		Assert.assertEquals(expectedProperties.getInt("populationSize"), actualProperties.getInt("populationSize"));
-		Assert.assertEquals(expectedProperties.getDouble("hux.rate"), actualProperties.getDouble("hux.rate"), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(expectedProperties.getDouble("bf.rate"), actualProperties.getDouble("bf.rate"), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(expectedProperties.getDouble("hux.rate"), actualProperties.getDouble("hux.rate"), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(expectedProperties.getDouble("bf.rate"), actualProperties.getDouble("bf.rate"), TestEnvironment.HIGH_PRECISION);
 		Assert.assertEquals(expectedProperties.getString("problem"), actualProperties.getString("problem"));
 		Assert.assertEquals(expectedProperties.getString("algorithm"), actualProperties.getString("algorithm"));
 
@@ -71,9 +71,9 @@ public class ConfigurationTest {
 		
 		List<Variation> operators = ((CompoundVariation)variation).getOperators();
 		Assert.assertInstanceOf(HUX.class, operators.get(0));
-		Assert.assertEquals(expectedProperties.getDouble("hux.rate"), ((HUX)operators.get(0)).getProbability(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(expectedProperties.getDouble("hux.rate"), ((HUX)operators.get(0)).getProbability(), TestEnvironment.HIGH_PRECISION);
 		Assert.assertInstanceOf(BitFlip.class, operators.get(1));
-		Assert.assertEquals(expectedProperties.getDouble("bf.rate"), ((BitFlip)operators.get(1)).getProbability(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(expectedProperties.getDouble("bf.rate"), ((BitFlip)operators.get(1)).getProbability(), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -154,8 +154,8 @@ public class ConfigurationTest {
 		Assert.assertEquals((short)5, newProperties.getShort("shortValue", (short)0));
 		Assert.assertEquals(5, newProperties.getInt("intValue", 0));
 		Assert.assertEquals(5L, newProperties.getLong("longValue", 0L));
-		Assert.assertEquals(5.0f, newProperties.getFloat("floatValue", 0.0f), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(5.0, newProperties.getDouble("doubleValue", 0.0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(5.0f, newProperties.getFloat("floatValue", 0.0f), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(5.0, newProperties.getDouble("doubleValue", 0.0), TestEnvironment.HIGH_PRECISION);
 		Assert.assertEquals(true, newProperties.getBoolean("booleanValue", false));
 		Assert.assertEquals(FooBar.BAR, newProperties.getEnum("enumValue", FooBar.class));
 		Assert.assertEquals("foo", newProperties.getString("stringValue", null));

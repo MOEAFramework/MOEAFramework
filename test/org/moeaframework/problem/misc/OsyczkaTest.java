@@ -19,7 +19,7 @@ package org.moeaframework.problem.misc;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.ProblemTest;
 
@@ -31,21 +31,21 @@ public class OsyczkaTest extends ProblemTest {
 		
 		Assert.assertArrayEquals(new double[] { 27.0, 9.0 },
 				evaluateAt(problem, 2.0, 5.0).getObjectiveValues(),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 5.0, -1.0 },
 				evaluateAt(problem, 2.0, 5.0).getConstraintValues(),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 		
 		Assert.assertFalse(evaluateAt(problem, 2.0, 5.0).isFeasible());
 		
 		Assert.assertArrayEquals(new double[] { 107.0, 59.0 },
 				evaluateAt(problem, 7.0, 10.0).getObjectiveValues(),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { -5.0, 99.0 },
 				evaluateAt(problem, 7.0, 10.0).getConstraintValues(),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 		
 		Assert.assertFalse(evaluateAt(problem, 7.0, 10.0).isFeasible());
 	}

@@ -71,7 +71,7 @@ public class WeightGeneratorTest {
 	
 	@Test
 	public void testGeneralized() throws Exception {
-		Assume.assumePythonExists();
+		Assume.assumePython();
 		Assume.assumePythonModule("cvxopt");
 		
 		File resultFile = TempFiles.createFile();

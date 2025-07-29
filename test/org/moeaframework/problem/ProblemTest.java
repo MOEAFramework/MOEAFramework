@@ -22,7 +22,7 @@ import java.util.function.Consumer;
 import org.junit.Ignore;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.constraint.Constraint;
 import org.moeaframework.core.objective.Objective;
@@ -174,7 +174,7 @@ public abstract class ProblemTest {
 	 */
 	public void testGenerate(String problemName, Consumer<Solution> assertion) {
 		try (AnalyticalProblem problem = (AnalyticalProblem)ProblemFactory.getInstance().getProblem(problemName)) {
-			for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+			for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 				assertion.accept(problem.generate());
 			}
 		}
@@ -196,7 +196,7 @@ public abstract class ProblemTest {
 	 * @param exactConstraints if {@code true}, require identical constraint values
 	 */
 	public void testAgainstJMetal(String problemName, boolean exactConstraints) {
-		Assume.assumeJMetalExists();
+		Assume.assumeJMetalPlugin();
 		
 		Problem problemA = ProblemFactory.getInstance().getProblem(problemName);
 		Problem problemB = ProblemFactory.getInstance().getProblem(problemName + "-JMetal");
@@ -212,7 +212,7 @@ public abstract class ProblemTest {
 	 * @param exactConstraints if {@code true}, require identical constraint values
 	 */
 	protected void testAgainstJMetal(Problem problemA, Problem problemB, boolean exactConstraints) {
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			Solution solutionA = problemA.newSolution();
 			Solution solutionB = problemB.newSolution();
 			
@@ -267,12 +267,12 @@ public abstract class ProblemTest {
 	 */
 	protected void compare(Solution solutionA, Solution solutionB, boolean exactConstraints) {
 		for (int i = 0; i < solutionA.getNumberOfObjectives(); i++) {
-			Assert.assertEquals(solutionA.getObjective(i), solutionB.getObjective(i), TestThresholds.LOW_PRECISION);
+			Assert.assertEquals(solutionA.getObjective(i), solutionB.getObjective(i), TestEnvironment.LOW_PRECISION);
 		}
 		
 		for (int i = 0; i < solutionA.getNumberOfConstraints(); i++) {
 			if (exactConstraints) {
-				Assert.assertEquals(solutionA.getConstraint(i).getValue(), solutionB.getConstraint(i).getValue(), TestThresholds.LOW_PRECISION);
+				Assert.assertEquals(solutionA.getConstraint(i).getValue(), solutionB.getConstraint(i).getValue(), TestEnvironment.LOW_PRECISION);
 			} else {
 				// only check if constraints are feasible or not
 				Assert.assertEquals(solutionA.getConstraint(i).isViolation(), solutionB.getConstraint(i).isViolation());

@@ -23,59 +23,59 @@ import java.util.List;
 import org.apache.commons.math3.stat.StatUtils;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Settings;
 
 public class VectorTest {
 
 	@Test
 	public void testSubtract() {
-		Assert.assertArrayEquals(new double[0], Vector.subtract(new double[0], new double[0]), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[0], Vector.subtract(new double[0], new double[0]), TestEnvironment.HIGH_PRECISION);
 
 		Assert.assertArrayEquals(new double[] { 0.0, -1.0, 1.0 },
 				Vector.subtract(new double[] { 1.0, 0.0, 2.0 }, new double[] { 1.0, 1.0, 1.0 }),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 	}
 
 	@Test
 	public void testAdd() {
-		Assert.assertArrayEquals(new double[0], Vector.add(new double[0], new double[0]), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[0], Vector.add(new double[0], new double[0]), TestEnvironment.HIGH_PRECISION);
 
 		Assert.assertArrayEquals(new double[] { 2.0, 0.0, -1.0 },
 				Vector.add(new double[] { 1.0, 0.0, -2.0 }, new double[] { 1.0, 0.0, 1.0 }),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 	}
 
 	@Test
 	public void testMultiply() {
-		Assert.assertArrayEquals(new double[0], Vector.multiply(2.0, new double[0]), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[0], Vector.multiply(2.0, new double[0]), TestEnvironment.HIGH_PRECISION);
 
 		Assert.assertArrayEquals(new double[] { 2.0, 0.0, -2.0 },
 				Vector.multiply(2.0, new double[] { 1.0, 0.0, -1.0 }),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 	}
 
 	@Test
 	public void testDivide() {
-		Assert.assertArrayEquals(new double[0], Vector.divide(new double[0], 2.0), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[0], Vector.divide(new double[0], 2.0), TestEnvironment.HIGH_PRECISION);
 
 		Assert.assertArrayEquals(new double[] { 0.5, 0.0, -0.5 }, Vector.divide(new double[] { 1.0, 0.0, -1.0 }, 2.0),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 	}
 
 	@Test
 	public void testDot() {
-		Assert.assertEquals(0.0, Vector.dot(new double[0], new double[0]), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Vector.dot(new double[0], new double[0]), TestEnvironment.HIGH_PRECISION);
 
 		Assert.assertEquals(3.0, Vector.dot(new double[] { 1.0, 0.0, -1.0 }, new double[] { 2.0, 1.0, -1.0 }),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 	}
 
 	@Test
 	public void testMagnitude() {
-		Assert.assertEquals(0.0, Vector.magnitude(new double[0]), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Vector.magnitude(new double[0]), TestEnvironment.HIGH_PRECISION);
 
-		Assert.assertEquals(Math.sqrt(2.0), Vector.magnitude(new double[] { 1.0, 0.0, -1.0 }), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(Math.sqrt(2.0), Vector.magnitude(new double[] { 1.0, 0.0, -1.0 }), TestEnvironment.HIGH_PRECISION);
 	}
 
 	@Test
@@ -83,7 +83,7 @@ public class VectorTest {
 		Assert.assertArrayEquals(
 				new double[] { 1.0 / Math.sqrt(2.0), 0.0, -1.0 / Math.sqrt(2.0) },
 				Vector.normalize(new double[] { 1.0, 0.0, -1.0 }),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -102,7 +102,7 @@ public class VectorTest {
 	public void testMean() {
 		Assert.assertArrayEquals(new double[] { 2.0 / 3.0, 0.0, -2.0 / 3.0 },
 				Vector.mean(new double[][] { { 0.0, 1.0, -1.0 }, { 1.0, -1.0, 0.0 }, { 1.0, 0.0, -1.0 } }),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -117,7 +117,7 @@ public class VectorTest {
 		double[][] output = Vector.orthogonalize(input);
 
 		for (int i = 0; i < expected.length; i++) {
-			Assert.assertArrayEquals(expected[i], output[i], TestThresholds.HIGH_PRECISION);
+			Assert.assertArrayEquals(expected[i], output[i], TestEnvironment.HIGH_PRECISION);
 		}
 	}
 
@@ -128,11 +128,11 @@ public class VectorTest {
 
 		List<double[]> basis = new ArrayList<>();
 
-		Assert.assertArrayEquals(expected[0], Vector.orthogonalize(input[0], basis), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(expected[0], Vector.orthogonalize(input[0], basis), TestEnvironment.HIGH_PRECISION);
 
 		basis.add(input[0]);
 
-		Assert.assertArrayEquals(expected[1], Vector.orthogonalize(input[1], basis), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(expected[1], Vector.orthogonalize(input[1], basis), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -148,13 +148,13 @@ public class VectorTest {
 	
 	@Test
 	public void testOf() {
-		Assert.assertArrayEquals(new double[0], Vector.of(0, 5.0), TestThresholds.HIGH_PRECISION);
-		Assert.assertArrayEquals(new double[] { 5.0, 5.0 }, Vector.of(2, 5.0), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[0], Vector.of(0, 5.0), TestEnvironment.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 5.0, 5.0 }, Vector.of(2, 5.0), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
 	public void testUniform() {
-		Assert.assertEquals(1.0, StatUtils.sum(Vector.uniform(3)), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, StatUtils.sum(Vector.uniform(3)), TestEnvironment.HIGH_PRECISION);
 		Assert.assertGreaterThan(Vector.magnitude(Vector.subtract(Vector.uniform(3), Vector.uniform(3))), 0.0);
 	}
 	

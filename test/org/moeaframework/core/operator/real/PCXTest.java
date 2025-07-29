@@ -21,7 +21,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.ParentCentricVariationTest;
 
@@ -30,7 +30,7 @@ public class PCXTest extends ParentCentricVariationTest<PCX> {
 	
 	@Override
 	public PCX createInstance() {
-		return new PCX(3, TestThresholds.SAMPLES);
+		return new PCX(3, TestEnvironment.SAMPLES);
 	}
 
 	@Test

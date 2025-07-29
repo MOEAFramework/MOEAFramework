@@ -35,7 +35,7 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
 import org.moeaframework.TempFiles;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.analysis.io.ResultFileReader;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Settings;
@@ -95,8 +95,8 @@ public class SolveTest extends AbstractToolTest {
 		
 		for (int i = 0; i < 3; i++) {
 			RealVariable realVariable = (RealVariable)variables.get(i);
-			Assert.assertEquals(lowerBounds[i], realVariable.getLowerBound(), TestThresholds.HIGH_PRECISION);
-			Assert.assertEquals(upperBounds[i], realVariable.getUpperBound(), TestThresholds.HIGH_PRECISION);
+			Assert.assertEquals(lowerBounds[i], realVariable.getLowerBound(), TestEnvironment.HIGH_PRECISION);
+			Assert.assertEquals(upperBounds[i], realVariable.getUpperBound(), TestEnvironment.HIGH_PRECISION);
 		}
 	}
 	
@@ -109,8 +109,8 @@ public class SolveTest extends AbstractToolTest {
 		Assert.assertEquals(5, variables.size());
 		
 		RealVariable realVariable = (RealVariable)variables.get(0);
-		Assert.assertEquals(0.0, realVariable.getLowerBound(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(1.0, realVariable.getUpperBound(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, realVariable.getLowerBound(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(1.0, realVariable.getUpperBound(), TestEnvironment.HIGH_PRECISION);
 		
 		BinaryVariable binaryVariable = (BinaryVariable)variables.get(1);
 		Assert.assertEquals(2, binaryVariable.getNumberOfBits());
@@ -137,8 +137,8 @@ public class SolveTest extends AbstractToolTest {
 		Assert.assertEquals(5, variables.size());
 		
 		RealVariable realVariable = (RealVariable)variables.get(0);
-		Assert.assertEquals(0.0, realVariable.getLowerBound(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(1.0, realVariable.getUpperBound(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, realVariable.getLowerBound(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(1.0, realVariable.getUpperBound(), TestEnvironment.HIGH_PRECISION);
 		
 		BinaryVariable binaryVariable = (BinaryVariable)variables.get(1);
 		Assert.assertEquals(2, binaryVariable.getNumberOfBits());
@@ -295,7 +295,7 @@ public class SolveTest extends AbstractToolTest {
 
 	@Test
 	public void testExternalProblem() throws Exception {
-		Assume.assumePythonExists();
+		Assume.assumePython();
 		
 		CommandLine commandLine = createCommandLine(
 				"--numberOfEvaluations", "1000",
@@ -322,7 +322,7 @@ public class SolveTest extends AbstractToolTest {
 	
 	@Test
 	public void testExternalProblemWithSockets() throws Exception {
-		Assume.assumePythonExists();
+		Assume.assumePython();
 		
 		CommandLine commandLine = createCommandLine(
 				"--numberOfEvaluations", "1000",

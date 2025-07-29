@@ -19,7 +19,7 @@ package org.moeaframework.problem.CDTLZ;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.DTLZ.DTLZ2;
@@ -77,7 +77,7 @@ public class C2_DTLZ2Test extends ProblemTest {
 	public void testGenerate(int numberOfObjectives, double r) {
 		try (C2_DTLZ2 problem = new C2_DTLZ2(numberOfObjectives);
 				DTLZ2 originalProblem = new DTLZ2(numberOfObjectives)) {
-			for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+			for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 				Solution originalSolution = originalProblem.generate();
 				Solution solution = problem.newSolution();
 				

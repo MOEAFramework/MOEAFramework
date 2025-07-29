@@ -19,7 +19,7 @@ package org.moeaframework.analysis;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.mock.MockRealProblem;
@@ -30,7 +30,7 @@ public class FeasibilityRatioTest {
 	
 	@Test
 	public void testNoConstraints() {
-		Assert.assertEquals(1.0, FeasibilityRatio.calculate(new MockRealProblem(2), 10), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, FeasibilityRatio.calculate(new MockRealProblem(2), 10), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -51,7 +51,7 @@ public class FeasibilityRatioTest {
 			
 		};
 		
-		Assert.assertEquals(1.0, FeasibilityRatio.calculate(problem, 10), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, FeasibilityRatio.calculate(problem, 10), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -72,7 +72,7 @@ public class FeasibilityRatioTest {
 			
 		};
 		
-		Assert.assertEquals(0.0, FeasibilityRatio.calculate(problem, 10), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, FeasibilityRatio.calculate(problem, 10), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test

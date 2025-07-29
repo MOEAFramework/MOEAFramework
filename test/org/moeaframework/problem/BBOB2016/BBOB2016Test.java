@@ -24,7 +24,7 @@ import org.apache.commons.cli.DefaultParser;
 import org.junit.Assume;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.problem.Problem;
@@ -114,8 +114,8 @@ public class BBOB2016Test {
 				
 				// compare output
 				try {
-					Assert.assertArrayEquals(fx, solution.getObjectiveValues(), TestThresholds.LOW_PRECISION);
-					Assert.assertArrayEquals(cx, solution.getConstraintValues(), TestThresholds.LOW_PRECISION);
+					Assert.assertArrayEquals(fx, solution.getObjectiveValues(), TestEnvironment.LOW_PRECISION);
+					Assert.assertArrayEquals(cx, solution.getConstraintValues(), TestEnvironment.LOW_PRECISION);
 				} catch (AssertionError e) {
 					System.out.println("Detected difference in " + problem.getName() + " (Expected / Actual):");
 					System.out.println("  > Variables: " + Arrays.toString(x) + " / " + Arrays.toString(RealVariable.getReal(solution)));

@@ -22,7 +22,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
@@ -117,7 +117,7 @@ public class EpsilonMOEATest {
 		
 		DescriptiveStatistics statistics = new DescriptiveStatistics();
 
-		for (int i=0; i<TestThresholds.SAMPLES; i++) {
+		for (int i=0; i<TestEnvironment.SAMPLES; i++) {
 			double value = PRNG.nextDouble();
 			algorithm.addToPopulation(MockSolution.of(problem).withObjectives(value, 1.0-value));
 			statistics.addValue(population.lastRemovedIndex);
@@ -133,25 +133,25 @@ public class EpsilonMOEATest {
 		
 		Assert.assertArrayEquals(algorithm.getArchive().getComparator().getEpsilons().toArray(),
 				algorithm.getConfiguration().getDoubleArray("epsilon"),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 		
 		algorithm.applyConfiguration(TypedProperties.of("epsilon", 0.1));
 		Assert.assertArrayEquals(new double[] { 0.1 },
 				algorithm.getArchive().getComparator().getEpsilons().toArray(),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 0.1 },
 				algorithm.getConfiguration().getDoubleArray("epsilon"),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 
 		algorithm.applyConfiguration(TypedProperties.of("epsilon", 0.1, 0.2));
 		Assert.assertArrayEquals(new double[] { 0.1, 0.2 },
 				algorithm.getArchive().getComparator().getEpsilons().toArray(),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 0.1, 0.2 },
 				algorithm.getConfiguration().getDoubleArray("epsilon"),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 	}
 
 }

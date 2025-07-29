@@ -25,7 +25,7 @@ import org.junit.runner.RunWith;
 import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 
 @RunWith(CIRunner.class)
 public class PermutationTest {
@@ -225,7 +225,7 @@ public class PermutationTest {
 			positionStats[j] = new DescriptiveStatistics();
 		}
 		
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			permutation.randomize();
 			
 			Assert.assertTrue(Permutation.isPermutation(permutation.toArray()));

@@ -31,6 +31,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Retryable {
 
-	int value() default 5;
+	int value() default TestEnvironment.RETRIES;
 
 }

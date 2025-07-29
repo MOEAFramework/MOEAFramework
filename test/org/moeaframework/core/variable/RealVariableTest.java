@@ -24,7 +24,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.Solution;
 
@@ -55,15 +55,15 @@ public class RealVariableTest {
 	
 	@Test
 	public void testGetValue() {
-		Assert.assertEquals(0.5, variable.getValue(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.0, variable.getLowerBound(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(1.0, variable.getUpperBound(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.5, variable.getValue(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.0, variable.getLowerBound(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(1.0, variable.getUpperBound(), TestEnvironment.HIGH_PRECISION);
 	}
 
 	@Test
 	public void testSetValue() {
 		variable.setValue(0.75);
-		Assert.assertEquals(0.75, variable.getValue(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.75, variable.getValue(), TestEnvironment.HIGH_PRECISION);
 	}
 
 	@Test
@@ -89,7 +89,7 @@ public class RealVariableTest {
 		Assert.assertEquals(variable, copy);
 
 		copy.setValue(0.75);
-		Assert.assertEquals(0.5, variable.getValue(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.5, variable.getValue(), TestEnvironment.HIGH_PRECISION);
 		Assert.assertNotEquals(variable, copy);
 	}
 
@@ -117,7 +117,7 @@ public class RealVariableTest {
 	public void testEncodeDecode() {
 		RealVariable newVariable = new RealVariable(0.0, 1.0);
 		newVariable.decode(variable.encode());
-		Assert.assertEquals(variable.getValue(), newVariable.getValue(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(variable.getValue(), newVariable.getValue(), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test(expected = NumberFormatException.class)
@@ -130,7 +130,7 @@ public class RealVariableTest {
 	public void testRandomize() {
 		DescriptiveStatistics stats = new DescriptiveStatistics();
 		
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			variable.randomize();
 			stats.addValue(variable.getValue());
 		}
@@ -146,25 +146,25 @@ public class RealVariableTest {
 		solution.setVariable(2, new RealVariable(-1.0, 1.0));
 		
 		RealVariable.setReal(solution, new double[] { 0.5, 3.0, 0.0 });
-		Assert.assertArrayEquals(new double[] { 0.5, 3.0, 0.0 }, RealVariable.getReal(solution), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 0.5, 3.0, 0.0 }, RealVariable.getReal(solution), TestEnvironment.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { 3.0, 0.0 }, RealVariable.getReal(solution, 1, 3), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 3.0, 0.0 }, RealVariable.getReal(solution, 1, 3), TestEnvironment.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[] { 3.0 }, RealVariable.getReal(solution, 1, 2), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 3.0 }, RealVariable.getReal(solution, 1, 2), TestEnvironment.HIGH_PRECISION);
 		
-		Assert.assertArrayEquals(new double[0], RealVariable.getReal(solution, 1, 1), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[0], RealVariable.getReal(solution, 1, 1), TestEnvironment.HIGH_PRECISION);
 		
 		RealVariable.setReal(solution, 1, 3, new double[] { 2.0, -1.0 });
 		
-		Assert.assertArrayEquals(new double[] { 0.5, 2.0, -1.0 }, RealVariable.getReal(solution), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 0.5, 2.0, -1.0 }, RealVariable.getReal(solution), TestEnvironment.HIGH_PRECISION);
 		
 		RealVariable.setReal(solution, 2, 3, new double[] { 1.0 });
 		
-		Assert.assertArrayEquals(new double[] { 0.5, 2.0, 1.0 }, RealVariable.getReal(solution), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 0.5, 2.0, 1.0 }, RealVariable.getReal(solution), TestEnvironment.HIGH_PRECISION);
 		
 		RealVariable.setReal(solution, 2, 2, new double[0]);
 		
-		Assert.assertArrayEquals(new double[] { 0.5, 2.0, 1.0 }, RealVariable.getReal(solution), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 0.5, 2.0, 1.0 }, RealVariable.getReal(solution), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)

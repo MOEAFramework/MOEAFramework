@@ -19,7 +19,7 @@ package org.moeaframework.core.constraint;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 
 public class GreaterThanTest {
 	
@@ -29,9 +29,9 @@ public class GreaterThanTest {
 		GreaterThan actual = expected.copy();
 		
 		Assert.assertNotSame(expected, actual);
-		Assert.assertEquals(expected.getValue(), actual.getValue(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(expected.getThreshold(), actual.getThreshold(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(expected.getEpsilon(), actual.getEpsilon(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(expected.getValue(), actual.getValue(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(expected.getThreshold(), actual.getThreshold(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(expected.getEpsilon(), actual.getEpsilon(), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -47,18 +47,18 @@ public class GreaterThanTest {
 	
 	@Test
 	public void test() {
-		Assert.assertEquals(Math.nextDown(0.0), GreaterThan.value(5.0).withValue(5.0).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.0, GreaterThan.value(5.0).withValue(5.1).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.1, GreaterThan.value(5.0).withValue(4.9).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(Math.nextDown(0.0), GreaterThan.value(5.0).withValue(5.0).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.0, GreaterThan.value(5.0).withValue(5.1).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.1, GreaterThan.value(5.0).withValue(4.9).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
 	public void testWithEpsilon() {
-		Assert.assertEquals(Math.nextDown(0.0), GreaterThan.value(5.0, 0.1).withValue(5.0).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.1, GreaterThan.value(5.0, 0.1).withValue(5.1).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.1, GreaterThan.value(5.0, 0.1).withValue(4.9).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.0, GreaterThan.value(5.0, 0.1).withValue(5.2).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.2, GreaterThan.value(5.0, 0.1).withValue(4.8).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(Math.nextDown(0.0), GreaterThan.value(5.0, 0.1).withValue(5.0).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.1, GreaterThan.value(5.0, 0.1).withValue(5.1).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.1, GreaterThan.value(5.0, 0.1).withValue(4.9).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.0, GreaterThan.value(5.0, 0.1).withValue(5.2).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.2, GreaterThan.value(5.0, 0.1).withValue(4.8).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test

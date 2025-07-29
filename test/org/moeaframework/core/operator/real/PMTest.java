@@ -21,7 +21,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.MeanCentricVariationTest;
 import org.moeaframework.core.variable.RealVariable;
@@ -45,9 +45,9 @@ public class PMTest extends MeanCentricVariationTest<PM> {
 
 		Solution[] parents = new Solution[] { solution };
 
-		Solution[] offspring = new Solution[TestThresholds.SAMPLES];
+		Solution[] offspring = new Solution[TestEnvironment.SAMPLES];
 
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			offspring[i] = pm.evolve(parents)[0];
 		}
 

@@ -19,7 +19,7 @@ package org.moeaframework.util.clustering;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.Permutation;
@@ -34,7 +34,7 @@ public class ClusterableSolutionTest {
 		ClusterableSolution clusterableSolution = ClusterableSolution.withObjectives(solution);
 		
 		Assert.assertSame(solution, clusterableSolution.getSolution());
-		Assert.assertArrayEquals(new double[] { 0.0, 1.0 }, clusterableSolution.getPoint(), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 0.0, 1.0 }, clusterableSolution.getPoint(), TestEnvironment.HIGH_PRECISION);
 	}
 
 	@Test
@@ -43,7 +43,7 @@ public class ClusterableSolutionTest {
 		ClusterableSolution clusterableSolution = ClusterableSolution.withVariables(solution);
 		
 		Assert.assertSame(solution, clusterableSolution.getSolution());
-		Assert.assertArrayEquals(new double[] { 0.25, 2.0 }, clusterableSolution.getPoint(), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 0.25, 2.0 }, clusterableSolution.getPoint(), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)

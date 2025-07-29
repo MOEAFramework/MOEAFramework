@@ -19,7 +19,7 @@ package org.moeaframework.core;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 
 public class EpsilonsTest {
 	
@@ -56,10 +56,10 @@ public class EpsilonsTest {
 	public void testEpsilonExtension() {
 		Epsilons epsilons = new Epsilons(new double[] { 0.1, 0.2 });
 
-		Assert.assertEquals(0.1, epsilons.get(0), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.2, epsilons.get(1), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.2, epsilons.get(2), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.2, epsilons.get(Integer.MAX_VALUE), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.1, epsilons.get(0), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.2, epsilons.get(1), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.2, epsilons.get(2), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.2, epsilons.get(Integer.MAX_VALUE), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -89,13 +89,13 @@ public class EpsilonsTest {
 		double[] array = epsilons.toArray();
 		
 		Assert.assertEquals(2, array.length);
-		Assert.assertArrayEquals(original, array, TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(original, array, TestEnvironment.HIGH_PRECISION);
 		
 		array[0] = 0.5;
-		Assert.assertEquals(0.1, epsilons.get(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.1, epsilons.get(0), TestEnvironment.HIGH_PRECISION);
 		
 		original[0] = 0.5;
-		Assert.assertEquals(0.1, epsilons.get(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.1, epsilons.get(0), TestEnvironment.HIGH_PRECISION);
 	}
 
 }

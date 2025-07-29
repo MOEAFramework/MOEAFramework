@@ -23,7 +23,7 @@ import java.util.Set;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.operator.AbstractSubsetOperatorTest;
 import org.moeaframework.core.variable.Subset;
@@ -40,7 +40,7 @@ public class SSXTest extends AbstractSubsetOperatorTest<SSX> {
 		DescriptiveStatistics stats1 = new DescriptiveStatistics();
 		DescriptiveStatistics stats2 = new DescriptiveStatistics();
 		
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			int n = PRNG.nextInt(1, 20);
 			int k = PRNG.nextInt(0, n);
 			Subset s1 = new Subset(k, n);
@@ -60,8 +60,8 @@ public class SSXTest extends AbstractSubsetOperatorTest<SSX> {
 			countSwapped(s1, s2, s1copy, s2copy, stats1, stats2);
 		}
 		
-		Assert.assertEquals(0.5, stats1.getMean(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.5, stats1.getMean(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(0.5, stats1.getMean(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.5, stats1.getMean(), TestEnvironment.LOW_PRECISION);
 	}
 	
 	@Test
@@ -69,7 +69,7 @@ public class SSXTest extends AbstractSubsetOperatorTest<SSX> {
 		DescriptiveStatistics stats1 = new DescriptiveStatistics();
 		DescriptiveStatistics stats2 = new DescriptiveStatistics();
 		
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			int n = PRNG.nextInt(1, 20);
 			int l = PRNG.nextInt(0, n-1);
 			int u = PRNG.nextInt(l+1, n);
@@ -97,8 +97,8 @@ public class SSXTest extends AbstractSubsetOperatorTest<SSX> {
 			countSwapped(s1, s2, s1copy, s2copy, stats1, stats2);
 		}
 		
-		Assert.assertEquals(0.5, stats1.getMean(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.5, stats1.getMean(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(0.5, stats1.getMean(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.5, stats1.getMean(), TestEnvironment.LOW_PRECISION);
 	}
 	
 	/**

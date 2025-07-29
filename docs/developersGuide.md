@@ -79,11 +79,14 @@ ant -f test.xml test
 
 Some tests utilize dependencies that are not redistributed with the MOEA Framework due to licensing restrictions or
 other reasons.  While these tests are skipped when the dependency is missing, consider running the full test suite by
-first downloading all test dependencies:
+first downloading all optional test dependencies:
 
 ```
 # Install optional Java dependencies
 ant -f test.xml download-all
+
+# Install optional compilers
+apt install build-essential gfortran python3
 
 # Install optional Python dependencies
 pip install pandas cvxopt

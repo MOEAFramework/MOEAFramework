@@ -22,8 +22,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestResources;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.mock.MockProblem;
@@ -35,7 +34,7 @@ public class ScaledProblemTest {
 	
 	@Test
 	public void testReferenceSetStaysNondominated() throws IOException {
-		File file = TestResources.asFile("pf/DTLZ2.2D.pf");
+		File file = TestEnvironment.getResourceAsFile("pf/DTLZ2.2D.pf");
 		
 		NondominatedPopulation original = NondominatedPopulation.load(file);
 		
@@ -55,8 +54,8 @@ public class ScaledProblemTest {
 		ScaledProblem problem = new ScaledProblem(MockProblem.of(solution), 2.0);
 		problem.evaluate(solution);
 		
-		Assert.assertArrayEquals(new double[] { 2.0, 6.0, 16.0 }, solution.getObjectiveValues(), TestThresholds.HIGH_PRECISION);
-		Assert.assertArrayEquals(new double[] { 2.0, 3.0 }, solution.getConstraintValues(), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 2.0, 6.0, 16.0 }, solution.getObjectiveValues(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 2.0, 3.0 }, solution.getConstraintValues(), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -69,8 +68,8 @@ public class ScaledProblemTest {
 		ScaledProblem problem = new ScaledProblem(MockProblem.of(solution), 1.0);
 		problem.evaluate(solution);
 		
-		Assert.assertArrayEquals(new double[] { 2.0, 3.0, 4.0 }, solution.getObjectiveValues(), TestThresholds.HIGH_PRECISION);
-		Assert.assertArrayEquals(new double[] { 2.0, 3.0 }, solution.getConstraintValues(), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 2.0, 3.0, 4.0 }, solution.getObjectiveValues(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 2.0, 3.0 }, solution.getConstraintValues(), TestEnvironment.HIGH_PRECISION);
 	}
 
 }

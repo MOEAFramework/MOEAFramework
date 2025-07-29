@@ -23,7 +23,7 @@ import java.util.List;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.analysis.sample.Sample;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.util.io.Tokenizer;
@@ -81,7 +81,7 @@ public class EnumerationTest {
 		Sample sample = new Sample();
 		Enumeration<Integer> parameter = new Enumeration<>("foo", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 		
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			parameter.sample(sample, PRNG.nextDouble());
 			statistics.addValue(parameter.readValue(sample));
 		}

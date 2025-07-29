@@ -19,7 +19,7 @@ package org.moeaframework.problem.DTLZ;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.Problem;
@@ -86,7 +86,7 @@ public class DTLZ5Test extends ProblemTest {
 			sum += Math.pow(solution.getObjectiveValue(j), 2.0);
 		}
 
-		Assert.assertEquals(1.0, Math.sqrt(sum), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(1.0, Math.sqrt(sum), TestEnvironment.LOW_PRECISION);
 	}
 
 }

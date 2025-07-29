@@ -21,7 +21,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.attribute.Penalty;
 import org.moeaframework.mock.MockSolution;
@@ -49,44 +49,44 @@ public class SumOfConstraintsPenaltyFunctionTest {
 	public void testNoConstraints() {
 		Solution solution = MockSolution.of();
 		
-		Assert.assertEquals(0.0, penaltyFunction.calculate(solution), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.0, Penalty.getAttribute(solution), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, penaltyFunction.calculate(solution), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Penalty.getAttribute(solution), TestEnvironment.HIGH_PRECISION);
 		
 		penaltyFunction.setOffset(100.0);
 		
-		Assert.assertEquals(0.0, penaltyFunction.calculate(solution), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.0, Penalty.getAttribute(solution), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, penaltyFunction.calculate(solution), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Penalty.getAttribute(solution), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
 	public void testFeasible() {
 		Solution solution = MockSolution.of().withConstraints(0.0);
 		
-		Assert.assertEquals(0.0, penaltyFunction.calculate(solution), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.0, Penalty.getAttribute(solution), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, penaltyFunction.calculate(solution), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Penalty.getAttribute(solution), TestEnvironment.HIGH_PRECISION);
 		
 		penaltyFunction.setOffset(100.0);
 		
-		Assert.assertEquals(0.0, penaltyFunction.calculate(solution), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.0, Penalty.getAttribute(solution), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, penaltyFunction.calculate(solution), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Penalty.getAttribute(solution), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
 	public void testInfeasible() {
 		Solution solution = MockSolution.of().withConstraints(1.0);
 		
-		Assert.assertEquals(1.0, penaltyFunction.calculate(solution), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(1.0, Penalty.getAttribute(solution), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, penaltyFunction.calculate(solution), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(1.0, Penalty.getAttribute(solution), TestEnvironment.HIGH_PRECISION);
 		
 		solution = MockSolution.of().withConstraints(1.0, 0.0, -2.0);
 		
-		Assert.assertEquals(3.0, penaltyFunction.calculate(solution), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(3.0, Penalty.getAttribute(solution), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(3.0, penaltyFunction.calculate(solution), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(3.0, Penalty.getAttribute(solution), TestEnvironment.HIGH_PRECISION);
 		
 		penaltyFunction.setOffset(100.0);
 		
-		Assert.assertEquals(103.0, penaltyFunction.calculate(solution), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(103.0, Penalty.getAttribute(solution), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(103.0, penaltyFunction.calculate(solution), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(103.0, Penalty.getAttribute(solution), TestEnvironment.HIGH_PRECISION);
 	}
 
 }

@@ -23,14 +23,14 @@ import java.io.FileReader;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
-import org.moeaframework.TestResources;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.util.io.LineReader;
 
 public class CalculateIndicatorTest extends AbstractToolTest {
 	
 	@Test
 	public void testHypervolume() throws Exception {
-		File referenceSetFile = TestResources.asFile("pf/DTLZ2.2D.pf");
+		File referenceSetFile = TestEnvironment.getResourceAsFile("pf/DTLZ2.2D.pf");
 		File outputFile = TempFiles.createFile();
 		
 		CalculateIndicator.main(new String[] {
@@ -48,7 +48,7 @@ public class CalculateIndicatorTest extends AbstractToolTest {
 	
 	@Test
 	public void testGenerationalDistance() throws Exception {
-		File referenceSetFile = TestResources.asFile("pf/DTLZ2.2D.pf");
+		File referenceSetFile = TestEnvironment.getResourceAsFile("pf/DTLZ2.2D.pf");
 		File outputFile = TempFiles.createFile();
 		
 		CalculateIndicator.main(new String[] {

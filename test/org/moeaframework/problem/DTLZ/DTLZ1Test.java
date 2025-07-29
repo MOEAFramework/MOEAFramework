@@ -20,7 +20,7 @@ package org.moeaframework.problem.DTLZ;
 import org.apache.commons.math3.stat.StatUtils;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.spi.ProblemFactory;
 import org.moeaframework.problem.Problem;
@@ -82,7 +82,7 @@ public class DTLZ1Test extends ProblemTest {
 	
 	protected static void assertParetoFrontSolution(Solution solution) {
 		double sum = StatUtils.sum(solution.getObjectiveValues());
-		Assert.assertEquals(0.5, sum, TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(0.5, sum, TestEnvironment.LOW_PRECISION);
 	}
 
 }

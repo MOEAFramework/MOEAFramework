@@ -84,7 +84,7 @@ public class DiagnosticToolTest {
 	
 	@Test
 	public void testJMetal() throws InterruptedException, InvocationTargetException {
-		Assume.assumeJMetalExists();
+		Assume.assumeJMetalPlugin();
 		DiagnosticTool tool = runTest("NSGAII-JMetal", "DTLZ2_2", 1000, 5);
 		assertResult(tool, "NSGAII-JMetal", "DTLZ2_2", 5);
 	}

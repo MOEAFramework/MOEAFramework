@@ -19,7 +19,7 @@ package org.moeaframework.core;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.constraint.Constraint;
 import org.moeaframework.core.constraint.LessThan;
 import org.moeaframework.core.constraint.ThresholdConstraint;
@@ -45,8 +45,8 @@ public class DefinedTest {
 		
 		LessThan constraint = (LessThan)Defined.createInstance(Constraint.class, "org.moeaframework.core.constraint.LessThan(\"foo\", 2, 0.000001)");
 		Assert.assertEquals("foo", constraint.getName());
-		Assert.assertEquals(2.0, constraint.getThreshold(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.000001, constraint.getEpsilon(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(2.0, constraint.getThreshold(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.000001, constraint.getEpsilon(), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test

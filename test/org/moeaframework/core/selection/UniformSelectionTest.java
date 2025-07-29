@@ -23,7 +23,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.mock.MockSolution;
@@ -59,13 +59,13 @@ public class UniformSelectionTest {
 
 		UniformSelection selection = new UniformSelection();
 
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			Solution solution = selection.select(1, population)[0];
 			counts[(int)solution.getObjectiveValue(0)]++;
 		}
 
 		for (int i = 0; i < 3; i++) {
-			Assert.assertEquals(0.333, counts[i] / (double)TestThresholds.SAMPLES, TestThresholds.LOW_PRECISION);
+			Assert.assertEquals(0.333, counts[i] / (double)TestEnvironment.SAMPLES, TestEnvironment.LOW_PRECISION);
 		}
 	}
 

@@ -20,7 +20,7 @@ package org.moeaframework.analysis.sensitivity;
 import org.apache.commons.lang3.function.TriFunction;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.analysis.parameter.Parameter;
 import org.moeaframework.analysis.parameter.ParameterSet;
 import org.moeaframework.analysis.sample.Sample;
@@ -33,85 +33,85 @@ public class SobolSensitivityAnalysisTest {
 	public void testX() {
 		SobolSensitivityResult result = test(1000, (x, y, z) -> x);
 		
-		Assert.assertEquals(1.0, result.getFirstOrder("x").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.0, result.getFirstOrder("y").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.0, result.getFirstOrder("z").getSensitivity(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(1.0, result.getFirstOrder("x").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.0, result.getFirstOrder("y").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.0, result.getFirstOrder("z").getSensitivity(), TestEnvironment.LOW_PRECISION);
 		
-		Assert.assertEquals(1.0, result.getTotalOrder("x").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.0, result.getTotalOrder("y").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.0, result.getTotalOrder("z").getSensitivity(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(1.0, result.getTotalOrder("x").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.0, result.getTotalOrder("y").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.0, result.getTotalOrder("z").getSensitivity(), TestEnvironment.LOW_PRECISION);
 		
-		Assert.assertEquals(0.0, result.getSecondOrder("x", "y").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.0, result.getSecondOrder("x", "z").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.0, result.getSecondOrder("y", "z").getSensitivity(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(0.0, result.getSecondOrder("x", "y").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.0, result.getSecondOrder("x", "z").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.0, result.getSecondOrder("y", "z").getSensitivity(), TestEnvironment.LOW_PRECISION);
 	}
 	
 	@Test
 	public void testXplusY() {
 		SobolSensitivityResult result = test(1000, (x, y, z) -> x + y);
 		
-		Assert.assertEquals(0.5, result.getFirstOrder("x").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.5, result.getFirstOrder("y").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.0, result.getFirstOrder("z").getSensitivity(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(0.5, result.getFirstOrder("x").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.5, result.getFirstOrder("y").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.0, result.getFirstOrder("z").getSensitivity(), TestEnvironment.LOW_PRECISION);
 		
-		Assert.assertEquals(0.5, result.getTotalOrder("x").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.5, result.getTotalOrder("y").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.0, result.getTotalOrder("z").getSensitivity(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(0.5, result.getTotalOrder("x").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.5, result.getTotalOrder("y").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.0, result.getTotalOrder("z").getSensitivity(), TestEnvironment.LOW_PRECISION);
 		
-		Assert.assertEquals(0.0, result.getSecondOrder("x", "y").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.0, result.getSecondOrder("x", "z").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.0, result.getSecondOrder("y", "z").getSensitivity(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(0.0, result.getSecondOrder("x", "y").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.0, result.getSecondOrder("x", "z").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.0, result.getSecondOrder("y", "z").getSensitivity(), TestEnvironment.LOW_PRECISION);
 	}
 	
 	@Test
 	public void testXplusYplusZ() {
 		SobolSensitivityResult result = test(1000, (x, y, z) -> x + y + z);
 		
-		Assert.assertEquals(0.333, result.getFirstOrder("x").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.333, result.getFirstOrder("y").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.333, result.getFirstOrder("z").getSensitivity(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(0.333, result.getFirstOrder("x").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.333, result.getFirstOrder("y").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.333, result.getFirstOrder("z").getSensitivity(), TestEnvironment.LOW_PRECISION);
 		
-		Assert.assertEquals(0.333, result.getTotalOrder("x").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.333, result.getTotalOrder("y").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.333, result.getTotalOrder("z").getSensitivity(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(0.333, result.getTotalOrder("x").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.333, result.getTotalOrder("y").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.333, result.getTotalOrder("z").getSensitivity(), TestEnvironment.LOW_PRECISION);
 		
-		Assert.assertEquals(0.0, result.getSecondOrder("x", "y").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.0, result.getSecondOrder("x", "z").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.0, result.getSecondOrder("y", "z").getSensitivity(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(0.0, result.getSecondOrder("x", "y").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.0, result.getSecondOrder("x", "z").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.0, result.getSecondOrder("y", "z").getSensitivity(), TestEnvironment.LOW_PRECISION);
 	}
 	
 	@Test
 	public void testXtimesYplusZ() {
 		SobolSensitivityResult result = test(1000, (x, y, z) -> x * y + z);
 		
-		Assert.assertEquals(0.159, result.getFirstOrder("x").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.159, result.getFirstOrder("y").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.634, result.getFirstOrder("z").getSensitivity(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(0.159, result.getFirstOrder("x").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.159, result.getFirstOrder("y").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.634, result.getFirstOrder("z").getSensitivity(), TestEnvironment.LOW_PRECISION);
 		
-		Assert.assertEquals(0.211, result.getTotalOrder("x").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.211, result.getTotalOrder("y").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.634, result.getTotalOrder("z").getSensitivity(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(0.211, result.getTotalOrder("x").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.211, result.getTotalOrder("y").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.634, result.getTotalOrder("z").getSensitivity(), TestEnvironment.LOW_PRECISION);
 		
-		Assert.assertEquals(0.052, result.getSecondOrder("x", "y").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.0, result.getSecondOrder("x", "z").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.0, result.getSecondOrder("y", "z").getSensitivity(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(0.052, result.getSecondOrder("x", "y").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.0, result.getSecondOrder("x", "z").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.0, result.getSecondOrder("y", "z").getSensitivity(), TestEnvironment.LOW_PRECISION);
 	}
 	
 	@Test
 	public void testXtimesYtimesZ() {
 		SobolSensitivityResult result = test(1000, (x, y, z) -> x * y * z);
 		
-		Assert.assertEquals(0.246, result.getFirstOrder("x").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.246, result.getFirstOrder("y").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.246, result.getFirstOrder("z").getSensitivity(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(0.246, result.getFirstOrder("x").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.246, result.getFirstOrder("y").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.246, result.getFirstOrder("z").getSensitivity(), TestEnvironment.LOW_PRECISION);
 		
-		Assert.assertEquals(0.408, result.getTotalOrder("x").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.408, result.getTotalOrder("y").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.408, result.getTotalOrder("z").getSensitivity(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(0.408, result.getTotalOrder("x").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.408, result.getTotalOrder("y").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.408, result.getTotalOrder("z").getSensitivity(), TestEnvironment.LOW_PRECISION);
 		
-		Assert.assertEquals(0.081, result.getSecondOrder("x", "y").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.081, result.getSecondOrder("x", "z").getSensitivity(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.081, result.getSecondOrder("y", "z").getSensitivity(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(0.081, result.getSecondOrder("x", "y").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.081, result.getSecondOrder("x", "z").getSensitivity(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.081, result.getSecondOrder("y", "z").getSensitivity(), TestEnvironment.LOW_PRECISION);
 	}
 	
 	protected SobolSensitivityResult test(int N, TriFunction<Double, Double, Double, Double> function) {

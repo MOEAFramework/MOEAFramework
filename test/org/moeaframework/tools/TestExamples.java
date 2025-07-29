@@ -33,9 +33,9 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.io.FilenameUtils;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.PRNG;
-import org.moeaframework.core.Settings;
 import org.moeaframework.util.DurationUtils;
 import org.moeaframework.util.JavaBuilder;
 import org.moeaframework.util.ReflectionUtils;
@@ -73,7 +73,7 @@ public class TestExamples extends CommandLineUtility {
 
 	@Override
 	public void run(CommandLine commandLine) throws Exception {
-		Settings.PROPERTIES.setBoolean(Settings.KEY_VERBOSE, true);
+		TestEnvironment.setVerbose(true);
 
 		File buildDirectory = new File("build/");
 		File examplesDirectory = new File("examples/");
@@ -89,7 +89,7 @@ public class TestExamples extends CommandLineUtility {
 		
 		if (commandLine.hasOption("headless")) {
 			// Must be set before instantiating Toolkit or any UI components
-			System.setProperty("java.awt.headless", "true");
+			TestEnvironment.setHeadless(true);
 		}
 		
 		JavaBuilder builder = new JavaBuilder();

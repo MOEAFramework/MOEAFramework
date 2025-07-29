@@ -19,7 +19,7 @@ package org.moeaframework.problem.misc;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.ProblemTest;
 
@@ -36,15 +36,15 @@ public class Viennet2Test extends ProblemTest {
 		
 		Assert.assertArrayEquals(new double[] { 66.0 / 13.0, -65.0 / 4.0, -2274.0 / 175.0 },
 				evaluateAt(problem, 0.0, 0.0).getObjectiveValues(),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 282.0 / 13.0, -473.0 / 36.0, -33002.0 / 2975.0 },
 				evaluateAt(problem, -4.0, -4.0).getObjectiveValues(),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 90.0 / 13.0, -569.0 / 36.0, -33818.0 / 2975.0 },
 				evaluateAt(problem, 4.0, 4.0).getObjectiveValues(),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 	}
 
 }

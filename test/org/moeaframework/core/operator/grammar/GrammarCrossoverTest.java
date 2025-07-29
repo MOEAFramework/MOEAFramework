@@ -19,7 +19,7 @@ package org.moeaframework.core.operator.grammar;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.AbstractGrammarOperatorTest;
 import org.moeaframework.core.variable.Grammar;
@@ -47,7 +47,7 @@ public class GrammarCrossoverTest extends AbstractGrammarOperatorTest<GrammarCro
 		GrammarCrossover crossover = new GrammarCrossover(probability);
 		int count = 0;
 
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			Grammar g1 = new Grammar(5);
 			g1.fromArray(new int[] { 0, 1, 2, 3, 4 });
 			
@@ -68,8 +68,8 @@ public class GrammarCrossoverTest extends AbstractGrammarOperatorTest<GrammarCro
 			}
 		}
 
-		Assert.assertEquals((double)count / TestThresholds.SAMPLES,
-				probability, TestThresholds.LOW_PRECISION);
+		Assert.assertEquals((double)count / TestEnvironment.SAMPLES,
+				probability, TestEnvironment.LOW_PRECISION);
 	}
 
 	/**

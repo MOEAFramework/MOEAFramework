@@ -19,7 +19,7 @@ package org.moeaframework.core.constraint;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 
 public class BetweenTest {
 	
@@ -29,10 +29,10 @@ public class BetweenTest {
 		Between actual = expected.copy();
 		
 		Assert.assertNotSame(expected, actual);
-		Assert.assertEquals(expected.getValue(), actual.getValue(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(expected.getLower(), actual.getLower(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(expected.getUpper(), actual.getUpper(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(expected.getEpsilon(), actual.getEpsilon(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(expected.getValue(), actual.getValue(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(expected.getLower(), actual.getLower(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(expected.getUpper(), actual.getUpper(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(expected.getEpsilon(), actual.getEpsilon(), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -48,19 +48,19 @@ public class BetweenTest {
 	
 	@Test
 	public void test() {
-		Assert.assertEquals(0.0, Between.values(5.0, 5.0).withValue(5.0).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.0, Between.values(4.0, 6.0).withValue(5.0).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.1, Between.values(4.0, 6.0).withValue(3.9).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.1, Between.values(4.0, 6.0).withValue(6.1).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Between.values(5.0, 5.0).withValue(5.0).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Between.values(4.0, 6.0).withValue(5.0).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.1, Between.values(4.0, 6.0).withValue(3.9).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.1, Between.values(4.0, 6.0).withValue(6.1).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
 	public void testWithEpsilon() {
-		Assert.assertEquals(0.0, Between.values(5.0, 5.0, 0.1).withValue(5.0).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.0, Between.values(4.0, 6.0, 0.1).withValue(3.91).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.0, Between.values(4.0, 6.0, 0.1).withValue(6.09).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.2, Between.values(4.0, 6.0, 0.1).withValue(3.8).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.2, Between.values(4.0, 6.0, 0.1).withValue(6.2).getMagnitudeOfViolation(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Between.values(5.0, 5.0, 0.1).withValue(5.0).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Between.values(4.0, 6.0, 0.1).withValue(3.91).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Between.values(4.0, 6.0, 0.1).withValue(6.09).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.2, Between.values(4.0, 6.0, 0.1).withValue(3.8).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.2, Between.values(4.0, 6.0, 0.1).withValue(6.2).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test

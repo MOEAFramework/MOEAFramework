@@ -30,7 +30,7 @@ import org.moeaframework.Assert;
 import org.moeaframework.Capture;
 import org.moeaframework.Capture.CaptureResult;
 import org.moeaframework.TempFiles;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.analysis.io.EmptyResultFileException;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
@@ -186,7 +186,7 @@ public class PopulationTest {
 		population.truncate(1, (o1, o2) -> Double.compare(o1.getObjectiveValue(0), o2.getObjectiveValue(0)));
 
 		Assert.assertSize(1, population);
-		Assert.assertEquals(1.0, population.get(0).getObjectiveValue(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, population.get(0).getObjectiveValue(0), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -227,7 +227,7 @@ public class PopulationTest {
 
 		for (int i = 0; i < population.size(); i++) {
 			Assert.assertArrayEquals(population.get(i).getObjectiveValues(), population2.get(i).getObjectiveValues(),
-					TestThresholds.LOW_PRECISION);
+					TestEnvironment.LOW_PRECISION);
 		}
 	}
 
@@ -261,8 +261,8 @@ public class PopulationTest {
 		Population population = Population.load(file);
 		
 		Assert.assertSize(2, population);
-		Assert.assertArrayEquals(new double[] {0.0, 1.0, 2.0}, population.get(0).getObjectiveValues(), TestThresholds.HIGH_PRECISION);
-		Assert.assertArrayEquals(new double[] {3.0, 4.0, 5.0}, population.get(1).getObjectiveValues(), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] {0.0, 1.0, 2.0}, population.get(0).getObjectiveValues(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] {3.0, 4.0, 5.0}, population.get(1).getObjectiveValues(), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -313,13 +313,13 @@ public class PopulationTest {
 	@Test
 	public void testGetLowerBounds() {
 		double[] lowerBounds = constrainedPopulation.getLowerBounds();
-		Assert.assertArrayEquals(new double[] { 1.0, 2.0, 2.0 }, lowerBounds, TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 1.0, 2.0, 2.0 }, lowerBounds, TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
 	public void testGetUpperBounds() {
 		double[] upperBounds = constrainedPopulation.getUpperBounds();
-		Assert.assertArrayEquals(new double[] { 4.0, 3.0, 3.0 }, upperBounds, TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 4.0, 3.0, 3.0 }, upperBounds, TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test

@@ -26,7 +26,7 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.CallCounter;
 import org.moeaframework.Counter;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.attribute.OperatorIndex;
 import org.moeaframework.core.population.Population;
@@ -88,8 +88,8 @@ public class AdaptiveMultimethodVariationTest {
 	
 	@Test
 	public void testProbabilities() {
-		Assert.assertEquals(3.0/5.0, variation.getOperatorProbability(0), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(2.0/5.0, variation.getOperatorProbability(1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(3.0/5.0, variation.getOperatorProbability(0), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(2.0/5.0, variation.getOperatorProbability(1), TestEnvironment.HIGH_PRECISION);
 		
 		assertActualSelectionProbabilities(variation, 3.0/5.0, 2.0/5.0);
 	}
@@ -100,8 +100,8 @@ public class AdaptiveMultimethodVariationTest {
 			OperatorIndex.removeAttribute(solution);
 		}
 		
-		Assert.assertEquals(0.5, variation.getOperatorProbability(0), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.5, variation.getOperatorProbability(1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.5, variation.getOperatorProbability(0), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.5, variation.getOperatorProbability(1), TestEnvironment.HIGH_PRECISION);
 		
 		assertActualSelectionProbabilities(variation, 0.5, 0.5);
 	}
@@ -115,7 +115,7 @@ public class AdaptiveMultimethodVariationTest {
 	private void assertActualSelectionProbabilities(AdaptiveMultimethodVariation variation, double... probabilities) {
 		UniformSelection selection = new UniformSelection();
 		
-		for (int i=0; i<TestThresholds.SAMPLES; i++) {
+		for (int i=0; i<TestEnvironment.SAMPLES; i++) {
 			variation.evolve(selection.select(variation.getArity(), population));
 		}
 		
@@ -124,8 +124,8 @@ public class AdaptiveMultimethodVariationTest {
 		for (int i=0; i<variation.getNumberOfOperators(); i++) {
 			int count = counters.get(i).getTotalCallCount("evolve");
 			
-			Assert.assertEquals(probabilities[i], count / (double)TestThresholds.SAMPLES,
-					TestThresholds.LOW_PRECISION);
+			Assert.assertEquals(probabilities[i], count / (double)TestEnvironment.SAMPLES,
+					TestEnvironment.LOW_PRECISION);
 		}
 	}
 	

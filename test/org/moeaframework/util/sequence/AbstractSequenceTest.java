@@ -24,7 +24,7 @@ import org.junit.runner.RunWith;
 import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 
 /**
  * Abstract class for testing implementation of {@link Sequence}.
@@ -64,9 +64,9 @@ public abstract class AbstractSequenceTest<T extends Sequence> {
 	 * @param D the dimension of the samples
 	 */
 	protected void test(Sequence sequence, int D) {
-		double[][] points = sequence.generate(TestThresholds.SAMPLES, D);
+		double[][] points = sequence.generate(TestEnvironment.SAMPLES, D);
 
-		Assert.assertEquals(TestThresholds.SAMPLES, points.length);
+		Assert.assertEquals(TestEnvironment.SAMPLES, points.length);
 
 		checkRange(points, D);
 		checkStatistics(points, D);
@@ -114,12 +114,12 @@ public abstract class AbstractSequenceTest<T extends Sequence> {
 	 * @param statistics the collected statistics
 	 */
 	public void testUniformDistribution(double min, double max, DescriptiveStatistics statistics) {
-		Assert.assertEquals((min + max) / 2.0, statistics.getMean(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(Math.pow(max - min, 2.0) / 12.0, statistics.getVariance(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(0.0, statistics.getSkewness(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(-6.0 / 5.0, statistics.getKurtosis(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(min, statistics.getMin(), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(max, statistics.getMax(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals((min + max) / 2.0, statistics.getMean(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(Math.pow(max - min, 2.0) / 12.0, statistics.getVariance(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(0.0, statistics.getSkewness(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(-6.0 / 5.0, statistics.getKurtosis(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(min, statistics.getMin(), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(max, statistics.getMax(), TestEnvironment.LOW_PRECISION);
 	}
 
 }

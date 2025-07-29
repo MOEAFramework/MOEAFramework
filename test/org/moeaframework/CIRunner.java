@@ -33,54 +33,11 @@ import org.junit.runners.model.Statement;
  * Custom JUnit runner that enables some custom annotations on tests, including {@link Retryable}, {@link Flaky}, and
  * {@link IgnoreOnCI}, when running in an automated continuous integration (CI) environment, including GitHub Actions
  * and Travis CI.
- * <p>
- * The following properties control the behavior of this runner:
- * <ul>
- *   <li>{@value CI} - Indicates tests are running in a CI environment and the custom retry, flakiness, and ignore
- *       rules should apply.
- *   <li>{@value ALL_TESTS} - Overrides the {@link IgnoreOnCI} attribute and runs these tests.
- * </ul>
  */
 public class CIRunner extends BlockJUnit4ClassRunner {
-	
-	private static final String CI = "CI";
-	
-	private static final String ALL_TESTS = "ALL_TESTS";
 
 	public CIRunner(Class<?> type) throws InitializationError {
 		super(type);
-	}
-
-	/**
-	 * Returns {@code true} when running in a CI environment.
-	 * 
-	 * @return {@code true} when running in a CI environment; {@code false} otherwise
-	 */
-	public boolean isRunningOnCI() {
-		return getProperty(CI, false);
-	}
-	
-	/**
-	 * Returns {@code true} when all tests, including those ignored on CI or slow, should be run.
-	 * 
-	 * @return {@code true} when all tests should be run; {@code false} otherwise
-	 */
-	public boolean isIncludingAllTests() {
-		return getProperty(ALL_TESTS, false);
-	}
-	
-	private boolean getProperty(String propertyName, boolean defaultValue) {
-		String rawValue = System.getProperty(propertyName);
-		
-		if (rawValue == null) {
-			rawValue = System.getenv(propertyName);
-		}
-		
-		if (rawValue == null) {
-			return defaultValue;
-		}
-		
-		return Boolean.parseBoolean(rawValue);
 	}
 
 	private <T extends Annotation> T getAnnotation(final FrameworkMethod method, Class<T> annotationType) {
@@ -100,14 +57,14 @@ public class CIRunner extends BlockJUnit4ClassRunner {
 	@Override
 	protected void runChild(final FrameworkMethod method, RunNotifier notifier) {
 		Description description = describeChild(method);
-		boolean isRunningOnCI = isRunningOnCI();
+		boolean isRunningOnCI = TestEnvironment.isCI();
 
 		if (hasAnnotation(method, Ignore.class)) {
 			notifier.fireTestIgnored(description);
 			return;
 		}
 		
-		if (!isIncludingAllTests()) {
+		if (!TestEnvironment.getProperty("ALL_TESTS", false)) {
 			if (hasAnnotation(method, IgnoreOnCI.class) && isRunningOnCI) {
 				System.out.println("Ignoring " + description.getDisplayName() + ", annotated with @" +
 						IgnoreOnCI.class.getSimpleName());

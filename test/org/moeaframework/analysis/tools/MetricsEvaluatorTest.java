@@ -22,7 +22,7 @@ import java.io.File;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
-import org.moeaframework.TestResources;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.analysis.io.MetricFileWriter.Metric;
 
 public class MetricsEvaluatorTest extends AbstractToolTest {
@@ -32,7 +32,7 @@ public class MetricsEvaluatorTest extends AbstractToolTest {
 		File input = TempFiles.createFile().withContent(COMPLETE_RESULT_FILE);
 		File output = TempFiles.createFile();
 		
-		File referenceSetFile = TestResources.asFile("pf/DTLZ2.2D.pf");
+		File referenceSetFile = TestEnvironment.getResourceAsFile("pf/DTLZ2.2D.pf");
 		
 		MetricsEvaluator.main(new String[] {
 			"--problem", "DTLZ2_2",
@@ -49,7 +49,7 @@ public class MetricsEvaluatorTest extends AbstractToolTest {
 		File input = TempFiles.createFile().withContent(EMPTY_RESULT_FILE);
 		File output = TempFiles.createFile();
 		
-		File referenceSetFile = TestResources.asFile("pf/DTLZ2.2D.pf");
+		File referenceSetFile = TestEnvironment.getResourceAsFile("pf/DTLZ2.2D.pf");
 		
 		MetricsEvaluator.main(new String[] {
 			"--problem", "DTLZ2_2",
@@ -66,7 +66,7 @@ public class MetricsEvaluatorTest extends AbstractToolTest {
 		File input = TempFiles.createFile().withContent(COMPLETE_RESULT_FILE);
 		File output = TempFiles.createFile();
 		
-		File referenceSetFile = TestResources.asFile("pf/DTLZ2.3D.pf");
+		File referenceSetFile = TestEnvironment.getResourceAsFile("pf/DTLZ2.3D.pf");
 		
 		MetricsEvaluator.main(new String[] {
 			"--problem", "DTLZ2_2",

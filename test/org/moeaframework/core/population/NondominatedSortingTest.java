@@ -23,7 +23,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.attribute.CrowdingDistance;
 import org.moeaframework.core.attribute.Rank;
@@ -76,9 +76,9 @@ public class NondominatedSortingTest {
 		Assert.assertEquals(0, Rank.getAttribute(solution1));
 		Assert.assertEquals(0, Rank.getAttribute(solution2));
 		Assert.assertEquals(0, Rank.getAttribute(solution3));
-		Assert.assertEquals(Double.POSITIVE_INFINITY, CrowdingDistance.getAttribute(solution1), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(2.0, CrowdingDistance.getAttribute(solution2), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(Double.POSITIVE_INFINITY, CrowdingDistance.getAttribute(solution3), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(Double.POSITIVE_INFINITY, CrowdingDistance.getAttribute(solution1), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(2.0, CrowdingDistance.getAttribute(solution2), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(Double.POSITIVE_INFINITY, CrowdingDistance.getAttribute(solution3), TestEnvironment.HIGH_PRECISION);
 	}
 
 	@Test
@@ -97,7 +97,7 @@ public class NondominatedSortingTest {
 		Assert.assertEquals(0, Rank.getAttribute(solution3));
 		
 		Assert.assertTrue(Double.isInfinite(CrowdingDistance.getAttribute(solution1)));
-		Assert.assertEquals(0.0, CrowdingDistance.getAttribute(solution3), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, CrowdingDistance.getAttribute(solution3), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test

@@ -20,7 +20,7 @@ package org.moeaframework.problem;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.CallCounter;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.mock.MockProblem;
@@ -43,7 +43,7 @@ public class RotatedProblemTest {
 				Assert.assertEquals(2, solution.getNumberOfVariables());
 				Assert.assertEquals(3, solution.getNumberOfObjectives());
 				Assert.assertEquals(2, solution.getNumberOfConstraints());
-				Assert.assertArrayEquals(new double[] { 0.25, 0.75 }, RealVariable.getReal(solution), TestThresholds.HIGH_PRECISION);
+				Assert.assertArrayEquals(new double[] { 0.25, 0.75 }, RealVariable.getReal(solution), TestEnvironment.HIGH_PRECISION);
 			}
 			
 		};
@@ -77,7 +77,7 @@ public class RotatedProblemTest {
 				Assert.assertEquals(2, solution.getNumberOfVariables());
 				Assert.assertEquals(3, solution.getNumberOfObjectives());
 				Assert.assertEquals(2, solution.getNumberOfConstraints());
-				Assert.assertArrayEquals(expected, RealVariable.getReal(solution), TestThresholds.HIGH_PRECISION);
+				Assert.assertArrayEquals(expected, RealVariable.getReal(solution), TestEnvironment.HIGH_PRECISION);
 			}
 			
 		};

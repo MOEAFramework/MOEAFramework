@@ -19,7 +19,7 @@ package org.moeaframework.mock;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.BinaryIntegerVariable;
 import org.moeaframework.core.variable.BinaryVariable;
@@ -41,8 +41,8 @@ public class MockSolutionTest {
 		Assert.assertEquals(0, mockSolution.getNumberOfVariables());
 		Assert.assertEquals(2, mockSolution.getNumberOfObjectives());
 		Assert.assertEquals(1, mockSolution.getNumberOfConstraints());
-		Assert.assertArrayEquals(new double[] { 0.0, 1.0 }, mockSolution.getObjectiveValues(), TestThresholds.HIGH_PRECISION);
-		Assert.assertArrayEquals(new double[] { 1.0 }, mockSolution.getConstraintValues(), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 0.0, 1.0 }, mockSolution.getObjectiveValues(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 1.0 }, mockSolution.getConstraintValues(), TestEnvironment.HIGH_PRECISION);
 		
 		Assert.assertEquals(mockSolution, mockSolution.build());
 		Assert.assertEquals(mockSolution, mockSolution.copy());
@@ -60,9 +60,9 @@ public class MockSolutionTest {
 		mockSolution.setObjectiveValue(0, 1.0);
 		mockSolution.setConstraintValue(0, 1.0);
 		
-		Assert.assertEquals(0.5, RealVariable.getReal(mockSolution.getVariable(0)), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(1.0, mockSolution.getObjectiveValue(0), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(1.0, mockSolution.getConstraintValue(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.5, RealVariable.getReal(mockSolution.getVariable(0)), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(1.0, mockSolution.getObjectiveValue(0), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(1.0, mockSolution.getConstraintValue(0), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -88,7 +88,7 @@ public class MockSolutionTest {
 		Assert.assertEquals(2, mockSolution.getNumberOfObjectives());
 		Assert.assertEquals(0, mockSolution.getNumberOfConstraints());
 		
-		Assert.assertArrayEquals(new double[] { 1.0, 0.0 }, mockSolution.getObjectiveValues(), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 1.0, 0.0 }, mockSolution.getObjectiveValues(), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test(expected = AssertionError.class)
@@ -103,7 +103,7 @@ public class MockSolutionTest {
 	public void testAtLowerBound() {
 		Assert.assertEquals(-1.0,
 				RealVariable.getReal(MockSolution.of().withVariables(new RealVariable(-1.0, 1.0)).atLowerBounds().getVariables()[0]),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 		
 		Assert.assertEquals(5,
 				BinaryIntegerVariable.getInt(MockSolution.of().withVariables(new BinaryIntegerVariable(5, 10)).atLowerBounds().getVariables()[0]));
@@ -122,7 +122,7 @@ public class MockSolutionTest {
 	public void testAtUpperBound() {
 		Assert.assertEquals(1.0,
 				RealVariable.getReal(MockSolution.of().withVariables(new RealVariable(-1.0, 1.0)).atUpperBounds().getVariables()[0]),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 		
 		Assert.assertEquals(10,
 				BinaryIntegerVariable.getInt(MockSolution.of().withVariables(new BinaryIntegerVariable(5, 10)).atUpperBounds().getVariables()[0]));

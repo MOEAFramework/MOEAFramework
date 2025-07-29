@@ -21,7 +21,7 @@ import java.util.Set;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.AbstractSubsetOperatorTest;
@@ -51,7 +51,7 @@ public class AddTest extends AbstractSubsetOperatorTest<Add> {
 		int count = 0;
 		int skipped = 0;
 
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			int n = PRNG.nextInt(1, 20);
 			int l = PRNG.nextInt(0, n);
 			int u = PRNG.nextInt(l, n);
@@ -72,8 +72,8 @@ public class AddTest extends AbstractSubsetOperatorTest<Add> {
 			}
 		}
 
-		Assert.assertEquals(probability, (double)count / (TestThresholds.SAMPLES - skipped),
-				TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(probability, (double)count / (TestEnvironment.SAMPLES - skipped),
+				TestEnvironment.LOW_PRECISION);
 	}
 
 	/**

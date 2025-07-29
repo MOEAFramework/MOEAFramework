@@ -21,7 +21,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.FrameworkException;
 import org.moeaframework.core.Solution;
 import org.moeaframework.mock.MockProblem;
@@ -100,8 +100,8 @@ public class AdaptiveGridArchiveTest {
 		Assert.assertEquals(1, archive.getDensity(2));
 		Assert.assertEquals(0, archive.getDensity(3));
 
-		Assert.assertArrayEquals(new double[] { 0.0, 0.1 }, archive.minimum, TestThresholds.HIGH_PRECISION);
-		Assert.assertArrayEquals(new double[] { 0.8, 1.0 }, archive.maximum, TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 0.0, 0.1 }, archive.minimum, TestEnvironment.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 0.8, 1.0 }, archive.maximum, TestEnvironment.HIGH_PRECISION);
 	}
 
 	@Test

@@ -19,7 +19,7 @@ package org.moeaframework.core.operator.binary;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.operator.AbstractBinaryOperatorTest;
 import org.moeaframework.core.variable.BinaryVariable;
 
@@ -32,7 +32,7 @@ public class HUXTest extends AbstractBinaryOperatorTest<HUX> {
 
 	@Test
 	public void testMatchingBitsUnchanged() {
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			BinaryVariable parent1 = createTestVariable();
 			BinaryVariable parent2 = createTestVariable();
 
@@ -53,7 +53,7 @@ public class HUXTest extends AbstractBinaryOperatorTest<HUX> {
 	public void testBitSwapProbability() {
 		double sum = 0.0;
 
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			BinaryVariable parent1 = createTestVariable();
 			BinaryVariable parent2 = createTestVariable();
 
@@ -71,7 +71,7 @@ public class HUXTest extends AbstractBinaryOperatorTest<HUX> {
 			sum += (double)changedBits1 / differingBits;
 		}
 
-		Assert.assertEquals(sum / TestThresholds.SAMPLES, 0.5, TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(sum / TestEnvironment.SAMPLES, 0.5, TestEnvironment.LOW_PRECISION);
 	}
 
 }

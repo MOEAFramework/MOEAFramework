@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.mock.MockSolution;
 
@@ -45,7 +45,7 @@ public class ClusterTest {
 		Assert.assertSame(s1, cluster.get(0).getSolution());
 		Assert.assertSame(s2, cluster.get(1).getSolution());
 		Assert.assertSame(s3, cluster.get(2).getSolution());
-		Assert.assertArrayEquals(new double[] { 0.0, 0.0 }, cluster.getCenter(), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 0.0, 0.0 }, cluster.getCenter(), TestEnvironment.HIGH_PRECISION);
 		Assert.assertSame(s3, cluster.getRepresentativeMember().getSolution());
 	}
 	

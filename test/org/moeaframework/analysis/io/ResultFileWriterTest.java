@@ -26,7 +26,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.Wait;
 import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.core.Solution;
@@ -337,7 +337,7 @@ public class ResultFileWriterTest {
 			ResultEntry entry = reader.next();
 			Assert.assertEquals(1, entry.getPopulation().size());
 			Assert.assertArrayEquals(solution.getObjectiveValues(), entry.getPopulation().get(0).getObjectiveValues(),
-					TestThresholds.HIGH_PRECISION);
+					TestEnvironment.HIGH_PRECISION);
 			Assert.assertEquals(solution.getVariable(0), entry.getPopulation().get(0).getVariable(0));
 		}
 	}

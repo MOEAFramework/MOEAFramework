@@ -21,7 +21,7 @@ import java.util.Set;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.AbstractSubsetOperatorTest;
@@ -50,7 +50,7 @@ public class ReplaceTest extends AbstractSubsetOperatorTest<Replace> {
 		Replace replace = new Replace(probability);
 		int count = 0;
 
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			// These values are randomly chosen in ranges to ensure replacement can always occur
 			int n = PRNG.nextInt(2, 20);
 			int l = PRNG.nextInt(1, n-1);
@@ -69,7 +69,7 @@ public class ReplaceTest extends AbstractSubsetOperatorTest<Replace> {
 			}
 		}
 
-		Assert.assertEquals(probability, (double)count / TestThresholds.SAMPLES, TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(probability, (double)count / TestEnvironment.SAMPLES, TestEnvironment.LOW_PRECISION);
 	}
 
 	/**

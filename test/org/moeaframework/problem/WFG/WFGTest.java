@@ -20,7 +20,7 @@ package org.moeaframework.problem.WFG;
 import org.junit.Ignore;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.population.NondominatedPopulation;
 import org.moeaframework.core.population.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.spi.ProblemFactory;
@@ -33,7 +33,7 @@ public abstract class WFGTest extends ProblemTest {
 		WFG problem = (WFG)ProblemFactory.getInstance().getProblem(problemName);
 		NondominatedPopulation result = new NondominatedPopulation(DuplicateMode.ALLOW_DUPLICATES);
 
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			result.add(problem.generate());
 		}
 		
@@ -50,9 +50,9 @@ public abstract class WFGTest extends ProblemTest {
 			//     Solution 2 (dominating):
 			//         Variables: [0.6999996015780581, 0.4680639184448179, 2.0999999999999996, 2.8, 3.5, 4.199999999999999, 4.8999999999999995, 5.6, 6.3, 7.0, 7.699999999999999, 8.399999999999999]
 			//         Objectives: [1.0662790015989127E-9, 2.2724923884704508E-9, 6.0]
-			Assert.assertGreaterThanOrEqual(result.size(), TestThresholds.SAMPLES - 1);
+			Assert.assertGreaterThanOrEqual(result.size(), TestEnvironment.SAMPLES - 1);
 		} else {
-			Assert.assertEquals(result.size(), TestThresholds.SAMPLES);
+			Assert.assertEquals(result.size(), TestEnvironment.SAMPLES);
 		}
 	}
 

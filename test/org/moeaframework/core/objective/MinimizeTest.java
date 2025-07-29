@@ -19,7 +19,7 @@ package org.moeaframework.core.objective;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 
 public class MinimizeTest {
 	
@@ -29,7 +29,7 @@ public class MinimizeTest {
 		Minimize actual = expected.copy();
 		
 		Assert.assertNotSame(expected, actual);
-		Assert.assertEquals(expected.getValue(), actual.getValue(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(expected.getValue(), actual.getValue(), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test

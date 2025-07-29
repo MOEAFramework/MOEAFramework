@@ -19,7 +19,7 @@ package org.moeaframework.core.comparator;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.mock.MockSolution;
 
@@ -33,13 +33,13 @@ public class MinMaxObjectiveComparatorTest {
 	public void testCalculate() {
 		double[] weights = new double[] { 1.0, 1.0 };
 		
-		Assert.assertEquals(calculate(MockSolution.of().withObjectives(0.0, 1.0), weights), 1.0, TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(calculate(MockSolution.of().withObjectives(1.0, 0.0), weights), 1.0, TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(calculate(MockSolution.of().withObjectives(-1.0, 0.0), weights), 0.0, TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(calculate(MockSolution.of().withObjectives(0.0, -1.0), weights), 0.0, TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(calculate(MockSolution.of().withObjectives(1.0, 1.0), weights), 1.0, TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(calculate(MockSolution.of().withObjectives(1.0, -1.0), weights), 1.0, TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(calculate(MockSolution.of().withObjectives(0.0, 0.0), weights), 0.0, TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(calculate(MockSolution.of().withObjectives(0.0, 1.0), weights), 1.0, TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(calculate(MockSolution.of().withObjectives(1.0, 0.0), weights), 1.0, TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(calculate(MockSolution.of().withObjectives(-1.0, 0.0), weights), 0.0, TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(calculate(MockSolution.of().withObjectives(0.0, -1.0), weights), 0.0, TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(calculate(MockSolution.of().withObjectives(1.0, 1.0), weights), 1.0, TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(calculate(MockSolution.of().withObjectives(1.0, -1.0), weights), 1.0, TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(calculate(MockSolution.of().withObjectives(0.0, 0.0), weights), 0.0, TestEnvironment.LOW_PRECISION);
 	}
 	
 	@Test

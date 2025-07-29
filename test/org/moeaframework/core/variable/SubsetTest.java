@@ -26,7 +26,7 @@ import org.junit.runner.RunWith;
 import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.FrameworkException;
 
 @RunWith(CIRunner.class)
@@ -205,7 +205,7 @@ public class SubsetTest {
 	public void testRandomNonmember() {
 		Subset subset = new Subset(5, 10);
 		
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			int nonmember = subset.randomNonmember();
 			Assert.assertFalse(subset.getSet().contains(nonmember));
 		}
@@ -221,7 +221,7 @@ public class SubsetTest {
 	public void testRandomMember() {
 		Subset subset = new Subset(5, 10);
 		
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			int member = subset.randomMember();
 			Assert.assertContains(subset.getSet(), member);
 		}
@@ -271,7 +271,7 @@ public class SubsetTest {
 			valueStats[j] = new DescriptiveStatistics();
 		}
 		
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			subset.randomize();
 			Assert.assertTrue(subset.isValid());
 						
@@ -281,7 +281,7 @@ public class SubsetTest {
 		}
 		
 		for (int j = 0; j < subset.getL(); j++) {
-			Assert.assertEquals(0.2, valueStats[j].getMean(), TestThresholds.LOW_PRECISION);
+			Assert.assertEquals(0.2, valueStats[j].getMean(), TestEnvironment.LOW_PRECISION);
 		}
 	}
 	

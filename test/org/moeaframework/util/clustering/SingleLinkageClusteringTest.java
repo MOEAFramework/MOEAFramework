@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.Population;
 import org.moeaframework.mock.MockSolution;
@@ -46,7 +46,7 @@ public class SingleLinkageClusteringTest {
 		List<Cluster> clusters = Clustering.singleLinkage().cluster(1, solutions);
 
 		Assert.assertEquals(1, clusters.size());
-		Assert.assertArrayEquals(new double[] { 0.0, 0.0 }, clusters.get(0).getCenter(), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 0.0, 0.0 }, clusters.get(0).getCenter(), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -54,8 +54,8 @@ public class SingleLinkageClusteringTest {
 		List<Cluster> clusters = Clustering.singleLinkage().cluster(2, solutions);
 
 		Assert.assertEquals(2, clusters.size());
-		Assert.assertArrayEquals(new double[] { -1.0, 0.0 }, clusters.get(0).getCenter(), TestThresholds.HIGH_PRECISION);
-		Assert.assertArrayEquals(new double[] { 1.0, 0.0 }, clusters.get(1).getCenter(), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { -1.0, 0.0 }, clusters.get(0).getCenter(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 1.0, 0.0 }, clusters.get(1).getCenter(), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test

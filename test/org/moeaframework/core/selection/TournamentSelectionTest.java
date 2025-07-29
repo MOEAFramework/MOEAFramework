@@ -23,7 +23,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.LinearDominanceComparator;
 import org.moeaframework.core.comparator.ParetoDominanceComparator;
@@ -84,14 +84,14 @@ public class TournamentSelectionTest {
 
 		TournamentSelection selection = new TournamentSelection(3);
 
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			Solution solution = selection.select(1, population)[0];
 			counts[(int)solution.getObjectiveValue(0)]++;
 		}
 
 		for (int i = 0; i < 3; i++) {
-			Assert.assertEquals(getPressure(3, 3, i + 1), counts[i] / (double)TestThresholds.SAMPLES,
-					TestThresholds.LOW_PRECISION);
+			Assert.assertEquals(getPressure(3, 3, i + 1), counts[i] / (double)TestEnvironment.SAMPLES,
+					TestEnvironment.LOW_PRECISION);
 		}
 	}
 
@@ -101,14 +101,14 @@ public class TournamentSelectionTest {
 
 		TournamentSelection selection = new TournamentSelection();
 
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			Solution solution = selection.select(1, population)[0];
 			counts[(int)solution.getObjectiveValue(0)]++;
 		}
 
 		for (int i = 0; i < 3; i++) {
-			Assert.assertEquals(getPressure(3, 2, i + 1), counts[i] / (double)TestThresholds.SAMPLES,
-					TestThresholds.LOW_PRECISION);
+			Assert.assertEquals(getPressure(3, 2, i + 1), counts[i] / (double)TestEnvironment.SAMPLES,
+					TestEnvironment.LOW_PRECISION);
 		}
 	}
 
@@ -118,14 +118,14 @@ public class TournamentSelectionTest {
 
 		TournamentSelection selection = new TournamentSelection(1);
 
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			Solution solution = selection.select(1, population)[0];
 			counts[(int)solution.getObjectiveValue(0)]++;
 		}
 
 		for (int i = 0; i < 3; i++) {
-			Assert.assertEquals(getPressure(3, 1, i + 1), counts[i] / (double)TestThresholds.SAMPLES,
-					TestThresholds.LOW_PRECISION);
+			Assert.assertEquals(getPressure(3, 1, i + 1), counts[i] / (double)TestEnvironment.SAMPLES,
+					TestEnvironment.LOW_PRECISION);
 		}
 	}
 
@@ -147,14 +147,14 @@ public class TournamentSelectionTest {
 
 		TournamentSelection selection = new TournamentSelection(tournamentSize);
 
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			Solution solution = selection.select(1, population)[0];
 			counts[(int)solution.getObjectiveValue(0)]++;
 		}
 
 		for (int i = 0; i < populationSize; i++) {
 			Assert.assertEquals(getPressure(populationSize, tournamentSize, i + 1),
-					counts[i] / (double)TestThresholds.SAMPLES, TestThresholds.LOW_PRECISION);
+					counts[i] / (double)TestEnvironment.SAMPLES, TestEnvironment.LOW_PRECISION);
 		}
 	}
 

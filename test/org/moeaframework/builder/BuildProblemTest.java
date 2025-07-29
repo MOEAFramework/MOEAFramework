@@ -33,6 +33,7 @@ import org.moeaframework.Capture;
 import org.moeaframework.Capture.CaptureResult;
 import org.moeaframework.Make;
 import org.moeaframework.TempFiles;
+import org.moeaframework.TestEnvironment;
 
 public class BuildProblemTest {
 
@@ -48,7 +49,7 @@ public class BuildProblemTest {
 
 	@Test
 	public void testFortran() throws Exception {
-		Assume.assumeFortranExists();
+		Assume.assumeFortran();
 		test("fortran");
 	}
 
@@ -59,15 +60,15 @@ public class BuildProblemTest {
 	
 	@Test
 	public void testPython() throws Exception {
-		Assume.assumePythonExists();
+		Assume.assumePython();
 		test("python");
 	}
 	
 	@Test
 	public void testMatlab() throws Exception {
-		Assume.assumeMatlabExists();
+		Assume.assumeMatlab();
 		
-		if (Assume.isGitHubActions()) {
+		if (TestEnvironment.isGitHubActions()) {
 			// Note: The licenses imported by the setup-matlab action does not enable MatlabEngine.  We can compile
 			// the example but can't run end-to-end.  See https://github.com/matlab-actions/setup-matlab/issues/13.
 			File directory = test("matlab", null, null, null, false);
@@ -153,7 +154,7 @@ public class BuildProblemTest {
 
 		BuildProblem.main(args.toArray(String[]::new));
 
-		Assume.assumeMakeExists();
+		Assume.assumeMake();
 		Make.runMake(testDirectory);
 		
 		if (run) {

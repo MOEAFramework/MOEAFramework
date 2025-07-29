@@ -20,7 +20,7 @@ package org.moeaframework.core.operator;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.RealVariable;
 import org.moeaframework.core.variable.Variable;
@@ -57,7 +57,7 @@ public abstract class AbstractPointCrossoverTest<T extends Variation> extends Ab
 	 * @param variation the crossover operator
 	 */
 	protected void test(Variation variation, int numberOfVariables) {
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			Solution[] parents = createParents(numberOfVariables);
 			Solution[] offspring = variation.evolve(parents);
 			testPointCrossover(parents, offspring);

@@ -88,7 +88,7 @@ public class WFG1Test extends WFGTest {
 	
 	@Test(expected = AssertionError.class)
 	public void testJMetalOnKnownGoodSolution() {
-		Assume.assumeJMetalExists();
+		Assume.assumeJMetalPlugin();
 		
 		Problem problem = ProblemFactory.getInstance().getProblem("WFG1_2-JMetal");
 		Solution solution = MockSolution.of(problem).at(1.8389005583162747, 3.6362558539762473, 0.12275000703991479, 1.3456684852354126, 3.4999999596260922, 2.1963726044829377, 6.692140537740539, 1.5934349970960149, 3.0573993595302524, 17.46985254359542, 19.95946267739649);

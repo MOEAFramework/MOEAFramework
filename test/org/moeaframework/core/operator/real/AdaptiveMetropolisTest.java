@@ -28,7 +28,7 @@ import org.junit.runner.RunWith;
 import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.ParentCentricVariationTest;
 import org.moeaframework.core.variable.RealVariable;
@@ -40,7 +40,7 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest<AdaptiveM
 	
 	@Override
 	public AdaptiveMetropolis createInstance() {
-		return new AdaptiveMetropolis(3, TestThresholds.SAMPLES, 1.0);
+		return new AdaptiveMetropolis(3, TestEnvironment.SAMPLES, 1.0);
 	}
 	
 	/**
@@ -146,7 +146,7 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest<AdaptiveM
 		//the smaller jump rate is used to ensure separation between clusters
 		double jumpRateCoefficient = 0.5;
 		
-		AdaptiveMetropolis am = new AdaptiveMetropolis(3, TestThresholds.SAMPLES, jumpRateCoefficient);
+		AdaptiveMetropolis am = new AdaptiveMetropolis(3, TestEnvironment.SAMPLES, jumpRateCoefficient);
 
 		Solution[] parents = new Solution[] { newSolution(0.0, 0.0), newSolution(0.0, 5.0), newSolution(2.0, 0.0) };
 		Solution[] offspring = am.evolve(parents);
@@ -155,7 +155,7 @@ public class AdaptiveMetropolisTest extends ParentCentricVariationTest<AdaptiveM
 
 		for (Cluster cluster : clusters) {
 			Assert.assertEquals(getCovariance(cluster), getCovariance(parents, jumpRateCoefficient),
-					TestThresholds.LOW_PRECISION);
+					TestEnvironment.LOW_PRECISION);
 		}
 	}
 

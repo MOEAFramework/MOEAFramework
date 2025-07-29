@@ -21,7 +21,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.PropertyScope;
 import org.moeaframework.core.Settings;
 import org.moeaframework.core.population.NondominatedPopulation;
@@ -62,7 +62,7 @@ public class DefaultNormalizerTest {
 		Normalizer normalizer = DefaultNormalizer.getInstance().getNormalizer(problem, referenceSet);
 		population = normalizer.normalize(population);
 		
-		Assert.assertArrayEquals(new double[] { 0.5, 0.5 }, population.get(0).getObjectiveValues(), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 0.5, 0.5 }, population.get(0).getObjectiveValues(), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -77,7 +77,7 @@ public class DefaultNormalizerTest {
 		Normalizer normalizer = DefaultNormalizer.getInstance().getNormalizer(problem, referenceSet);
 		population = normalizer.normalize(population);
 		
-		Assert.assertArrayEquals(new double[] { 0.25, 0.25 }, population.get(0).getObjectiveValues(), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 0.25, 0.25 }, population.get(0).getObjectiveValues(), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -88,7 +88,7 @@ public class DefaultNormalizerTest {
 			Normalizer normalizer = DefaultNormalizer.getInstance().getNormalizer(problem, referenceSet);
 			population = normalizer.normalize(population);
 			
-			Assert.assertArrayEquals(new double[] { 0.25, 0.25 }, population.get(0).getObjectiveValues(), TestThresholds.HIGH_PRECISION);
+			Assert.assertArrayEquals(new double[] { 0.25, 0.25 }, population.get(0).getObjectiveValues(), TestEnvironment.HIGH_PRECISION);
 		}
 	}
 	
@@ -100,7 +100,7 @@ public class DefaultNormalizerTest {
 			Normalizer normalizer = DefaultNormalizer.getInstance().getHypervolumeNormalizer(problem, referenceSet);
 			population = normalizer.normalize(population);
 			
-			Assert.assertArrayEquals(new double[] { 0.25, 0.25 }, population.get(0).getObjectiveValues(), TestThresholds.HIGH_PRECISION);
+			Assert.assertArrayEquals(new double[] { 0.25, 0.25 }, population.get(0).getObjectiveValues(), TestEnvironment.HIGH_PRECISION);
 		}
 	}
 	
@@ -111,7 +111,7 @@ public class DefaultNormalizerTest {
 			Normalizer normalizer = DefaultNormalizer.getInstance().getHypervolumeNormalizer(problem, referenceSet);
 			population = normalizer.normalize(population);
 			
-			Assert.assertArrayEquals(new double[] { 0.25, 0.25 }, population.get(0).getObjectiveValues(), TestThresholds.HIGH_PRECISION);
+			Assert.assertArrayEquals(new double[] { 0.25, 0.25 }, population.get(0).getObjectiveValues(), TestEnvironment.HIGH_PRECISION);
 		}
 	}
 	
@@ -125,7 +125,7 @@ public class DefaultNormalizerTest {
 		Normalizer normalizer = DefaultNormalizer.getInstance().getNormalizer(problem, referenceSet);
 		population = normalizer.normalize(population);
 		
-		Assert.assertArrayEquals(new double[] { 0.5, 0.5 }, population.get(0).getObjectiveValues(), TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 0.5, 0.5 }, population.get(0).getObjectiveValues(), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -138,7 +138,7 @@ public class DefaultNormalizerTest {
 			Normalizer normalizer = DefaultNormalizer.getInstance().getNormalizer(problem, referenceSet);
 			population = normalizer.normalize(population);
 			
-			Assert.assertArrayEquals(new double[] { 0.5, 0.5 }, population.get(0).getObjectiveValues(), TestThresholds.HIGH_PRECISION);
+			Assert.assertArrayEquals(new double[] { 0.5, 0.5 }, population.get(0).getObjectiveValues(), TestEnvironment.HIGH_PRECISION);
 		}
 	}
 	

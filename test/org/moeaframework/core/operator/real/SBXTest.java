@@ -23,7 +23,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.CIRunner;
 import org.moeaframework.Retryable;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.ParentCentricVariationTest;
@@ -52,9 +52,9 @@ public class SBXTest extends ParentCentricVariationTest<SBX> {
 
 		Solution[] parents = new Solution[] { s1, s2 };
 
-		Solution[] offspring = new Solution[TestThresholds.SAMPLES];
+		Solution[] offspring = new Solution[TestEnvironment.SAMPLES];
 
-		for (int i = 0; i < TestThresholds.SAMPLES; i += 2) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i += 2) {
 			Solution[] children = sbx.evolve(parents);
 			offspring[i] = children[0];
 			offspring[i + 1] = children[1];
@@ -80,9 +80,9 @@ public class SBXTest extends ParentCentricVariationTest<SBX> {
 
 		Solution[] parents = new Solution[] { s1, s2 };
 
-		Solution[] offspring = new Solution[TestThresholds.SAMPLES];
+		Solution[] offspring = new Solution[TestEnvironment.SAMPLES];
 
-		for (int i = 0; i < TestThresholds.SAMPLES; i += 2) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i += 2) {
 			Solution[] children = sbx.evolve(parents);
 			offspring[i] = children[0];
 			offspring[i + 1] = children[1];
@@ -108,9 +108,9 @@ public class SBXTest extends ParentCentricVariationTest<SBX> {
 
 		Solution[] parents = new Solution[] { s1, s2 };
 
-		Solution[] offspring = new Solution[TestThresholds.SAMPLES];
+		Solution[] offspring = new Solution[TestEnvironment.SAMPLES];
 
-		for (int i = 0; i < TestThresholds.SAMPLES; i += 2) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i += 2) {
 			Solution[] children = sbx.evolve(parents);
 			offspring[i] = children[0];
 			offspring[i + 1] = children[1];

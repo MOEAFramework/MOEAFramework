@@ -19,7 +19,7 @@ package org.moeaframework.core.operator;
 
 import org.junit.Ignore;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 
 /**
@@ -30,7 +30,7 @@ public abstract class MeanCentricVariationTest<T extends Variation> extends Dist
 
 	@Override
 	protected void checkDistribution(Solution[] parents, Solution[] offspring) {
-		Assert.assertArrayEquals(average(parents), average(offspring), TestThresholds.LOW_PRECISION);
+		Assert.assertArrayEquals(average(parents), average(offspring), TestEnvironment.LOW_PRECISION);
 	}
 
 }

@@ -21,7 +21,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.moeaframework.Assert;
 import org.moeaframework.CIRunner;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.MeanCentricVariationTest;
 import org.moeaframework.core.variable.RealVariable;
@@ -59,8 +59,8 @@ public class DifferentialEvolutionVariationTest extends MeanCentricVariationTest
 		Solution offspring = de.evolve(parents)[0];
 		
 		// the offspring will be centered at s4 and offset in the direction (s2 - s3), resulting in the point (6, 5)
-		Assert.assertEquals(6.0, RealVariable.getReal(offspring.getVariable(0)), TestThresholds.LOW_PRECISION);
-		Assert.assertEquals(5.0, RealVariable.getReal(offspring.getVariable(1)), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(6.0, RealVariable.getReal(offspring.getVariable(0)), TestEnvironment.LOW_PRECISION);
+		Assert.assertEquals(5.0, RealVariable.getReal(offspring.getVariable(1)), TestEnvironment.LOW_PRECISION);
 	}
 
 }

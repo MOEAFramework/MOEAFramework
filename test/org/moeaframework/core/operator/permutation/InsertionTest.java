@@ -19,7 +19,7 @@ package org.moeaframework.core.operator.permutation;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.AbstractPermutationOperatorTest;
 import org.moeaframework.core.variable.Permutation;
@@ -47,7 +47,7 @@ public class InsertionTest extends AbstractPermutationOperatorTest<Insertion> {
 		Insertion insertion = new Insertion(probability);
 		int count = 0;
 
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			Solution original = new Solution(1, 0);
 			original.setVariable(0, new Permutation(100));
 
@@ -58,7 +58,7 @@ public class InsertionTest extends AbstractPermutationOperatorTest<Insertion> {
 			}
 		}
 
-		Assert.assertEquals((double)count / TestThresholds.SAMPLES, probability, TestThresholds.LOW_PRECISION);
+		Assert.assertEquals((double)count / TestEnvironment.SAMPLES, probability, TestEnvironment.LOW_PRECISION);
 	}
 
 	/**

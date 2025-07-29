@@ -47,25 +47,25 @@ public abstract class JMetalAlgorithmTest extends AlgorithmTest {
 	
 	@Test
 	public void testDTLZ1() throws IOException {
-		Assume.assumeJMetalExists();
+		Assume.assumeJMetalPlugin();
 		test("DTLZ1_2", algorithmName, algorithmName + "-JMetal", allowBetterPerformance);
 	}
 	
 	@Test
 	public void testDTLZ2() throws IOException {
-		Assume.assumeJMetalExists();
+		Assume.assumeJMetalPlugin();
 		test("DTLZ2_2", algorithmName, algorithmName + "-JMetal", allowBetterPerformance);
 	}
 	
 	@Test
 	public void testDTLZ7() throws IOException {
-		Assume.assumeJMetalExists();
+		Assume.assumeJMetalPlugin();
 		test("DTLZ7_2", algorithmName, algorithmName + "-JMetal", allowBetterPerformance);
 	}
 	
 	@Test
 	public void testUF1() throws IOException {
-		Assume.assumeJMetalExists();
+		Assume.assumeJMetalPlugin();
 		test("UF1", algorithmName, algorithmName + "-JMetal", allowBetterPerformance);
 	}
 

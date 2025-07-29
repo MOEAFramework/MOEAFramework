@@ -23,7 +23,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.constraint.Equal;
 import org.moeaframework.core.constraint.LessThanOrEqual;
 import org.moeaframework.core.objective.Maximize;
@@ -82,39 +82,39 @@ public class SolutionTest {
 	@Test
 	public void testGetVariable() {
 		Assert.assertEquals(1, solution.getNumberOfVariables());
-		Assert.assertEquals(0.5, RealVariable.getReal(solution.getVariable(0)), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.5, RealVariable.getReal(solution.getVariable(0)), TestEnvironment.HIGH_PRECISION);
 	}
 
 	@Test
 	public void testGetObjectiveValue() {
 		Assert.assertEquals(2, solution.getNumberOfObjectives());
-		Assert.assertEquals(1.0, solution.getObjectiveValue(0), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(2.0, solution.getObjectiveValue(1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, solution.getObjectiveValue(0), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(2.0, solution.getObjectiveValue(1), TestEnvironment.HIGH_PRECISION);
 	}
 
 	@Test
 	public void testGetConstraintValue() {
 		Assert.assertEquals(2, solution.getNumberOfConstraints());
-		Assert.assertEquals(0.0, solution.getConstraintValue(0), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(1.0, solution.getConstraintValue(1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, solution.getConstraintValue(0), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(1.0, solution.getConstraintValue(1), TestEnvironment.HIGH_PRECISION);
 	}
 
 	@Test
 	public void testSetVariable() {
 		solution.setVariable(0, new RealVariable(0.0, 1.0).withValue(0.75));
-		Assert.assertEquals(0.75, RealVariable.getReal(solution.getVariable(0)), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.75, RealVariable.getReal(solution.getVariable(0)), TestEnvironment.HIGH_PRECISION);
 	}
 
 	@Test
 	public void testSetObjectiveValue() {
 		solution.setObjectiveValue(1, 1.5);
-		Assert.assertEquals(1.5, solution.getObjectiveValue(1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.5, solution.getObjectiveValue(1), TestEnvironment.HIGH_PRECISION);
 	}
 
 	@Test
 	public void testSetConstraintValue() {
 		solution.setConstraintValue(1, 2.0);
-		Assert.assertEquals(2.0, solution.getConstraintValue(1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(2.0, solution.getConstraintValue(1), TestEnvironment.HIGH_PRECISION);
 	}
 
 	@Test
@@ -123,12 +123,12 @@ public class SolutionTest {
 
 		// returned array contains correct data
 		Assert.assertEquals(2, objectives.length);
-		Assert.assertEquals(1.0, objectives[0], TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(2.0, objectives[1], TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, objectives[0], TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(2.0, objectives[1], TestEnvironment.HIGH_PRECISION);
 
 		// returned array is independent from internal state
 		objectives[0] = 0.0;
-		Assert.assertEquals(1.0, solution.getObjectiveValue(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, solution.getObjectiveValue(0), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -137,12 +137,12 @@ public class SolutionTest {
 
 		// returned array contains correct data
 		Assert.assertEquals(2, constraints.length);
-		Assert.assertEquals(0.0, constraints[0], TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(1.0, constraints[1], TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, constraints[0], TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(1.0, constraints[1], TestEnvironment.HIGH_PRECISION);
 
 		// returned array is independent from internal state
 		constraints[0] = 1.0;
-		Assert.assertEquals(0.0, solution.getConstraintValue(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, solution.getConstraintValue(0), TestEnvironment.HIGH_PRECISION);
 	}
 
 	@Test
@@ -152,12 +152,12 @@ public class SolutionTest {
 
 		// stored array contains correct data
 		Assert.assertEquals(2, solution.getNumberOfObjectives());
-		Assert.assertEquals(3.0, solution.getObjectiveValue(0), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(4.0, solution.getObjectiveValue(1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(3.0, solution.getObjectiveValue(0), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(4.0, solution.getObjectiveValue(1), TestEnvironment.HIGH_PRECISION);
 
 		// stored array is independent from external state
 		objectives[0] = 0.0;
-		Assert.assertEquals(3.0, solution.getObjectiveValue(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(3.0, solution.getObjectiveValue(0), TestEnvironment.HIGH_PRECISION);
 	}
 
 	@Test
@@ -167,12 +167,12 @@ public class SolutionTest {
 
 		// stored array contains correct data
 		Assert.assertEquals(2, solution.getNumberOfConstraints());
-		Assert.assertEquals(3.0, solution.getConstraintValue(0), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(4.0, solution.getConstraintValue(1), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(3.0, solution.getConstraintValue(0), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(4.0, solution.getConstraintValue(1), TestEnvironment.HIGH_PRECISION);
 
 		// stored array is independent from external state
 		constraints[0] = 0.0;
-		Assert.assertEquals(3.0, solution.getConstraintValue(0), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(3.0, solution.getConstraintValue(0), TestEnvironment.HIGH_PRECISION);
 	}
 
 	@Test
@@ -316,20 +316,20 @@ public class SolutionTest {
 		// copy has the same objectives
 		Assert.assertEquals(solution.getNumberOfObjectives(), copy.getNumberOfObjectives());
 		for (int i = 0; i < copy.getNumberOfObjectives(); i++) {
-			Assert.assertEquals(solution.getObjective(i), copy.getObjective(i), TestThresholds.HIGH_PRECISION);
+			Assert.assertEquals(solution.getObjective(i), copy.getObjective(i), TestEnvironment.HIGH_PRECISION);
 			Assert.assertNotSame(solution.getObjective(i), copy.getObjective(i));
 		}
 
 		// copy has the same constraints
 		Assert.assertEquals(solution.getNumberOfConstraints(), copy.getNumberOfConstraints());
 		for (int i = 0; i < copy.getNumberOfConstraints(); i++) {
-			Assert.assertEquals(solution.getConstraint(i), copy.getConstraint(i), TestThresholds.HIGH_PRECISION);
+			Assert.assertEquals(solution.getConstraint(i), copy.getConstraint(i), TestEnvironment.HIGH_PRECISION);
 			Assert.assertNotSame(solution.getConstraint(i), copy.getConstraint(i));
 		}
 
 		// the copy's variables are independent from the original
 		RealVariable.setReal(copy.getVariable(0), 1.0);
-		Assert.assertEquals(0.5, RealVariable.getReal(solution.getVariable(0)), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.5, RealVariable.getReal(solution.getVariable(0)), TestEnvironment.HIGH_PRECISION);
 
 		// the equals method works to detect the change
 		Assert.assertFalse(solution.equals(copy));
@@ -360,16 +360,16 @@ public class SolutionTest {
 	
 	@Test
 	public void testSumOfConstraintViolations() {
-		Assert.assertEquals(1.0, solution.getSumOfConstraintViolations(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, solution.getSumOfConstraintViolations(), TestEnvironment.HIGH_PRECISION);
 		
 		solution.setConstraintValue(0, -1.0);
-		Assert.assertEquals(2.0, solution.getSumOfConstraintViolations(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(2.0, solution.getSumOfConstraintViolations(), TestEnvironment.HIGH_PRECISION);
 
 		solution.setConstraintValues(new double[] { 0.0, 0.0 });
-		Assert.assertEquals(0.0, solution.getSumOfConstraintViolations(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, solution.getSumOfConstraintViolations(), TestEnvironment.HIGH_PRECISION);
 
 		// solution with no constraints
-		Assert.assertEquals(0.0, new Solution(0, 0, 0).getSumOfConstraintViolations(), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, new Solution(0, 0, 0).getSumOfConstraintViolations(), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -377,10 +377,10 @@ public class SolutionTest {
 		Solution s1 = MockSolution.of().withObjectives(0.0, 1.0, 0.0);
 		Solution s2 = MockSolution.of().withObjectives(0.0, 0.0, -1.0);
 
-		Assert.assertEquals(Math.sqrt(2.0), s1.euclideanDistance(s2), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(Math.sqrt(2.0), s2.euclideanDistance(s1), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.0, s1.euclideanDistance(s1), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.0, s2.euclideanDistance(s2), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(Math.sqrt(2.0), s1.euclideanDistance(s2), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(Math.sqrt(2.0), s2.euclideanDistance(s1), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.0, s1.euclideanDistance(s1), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.0, s2.euclideanDistance(s2), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -388,10 +388,10 @@ public class SolutionTest {
 		Solution s1 = MockSolution.of().withObjectives(0.0, 1.0, 0.0);
 		Solution s2 = MockSolution.of().withObjectives(0.0, 0.0, -1.0);
 
-		Assert.assertEquals(2.0, s1.manhattanDistance(s2), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(2.0, s2.manhattanDistance(s1), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.0, s1.manhattanDistance(s1), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.0, s2.manhattanDistance(s2), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(2.0, s1.manhattanDistance(s2), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(2.0, s2.manhattanDistance(s1), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.0, s1.manhattanDistance(s1), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.0, s2.manhattanDistance(s2), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -399,10 +399,10 @@ public class SolutionTest {
 		Solution s1 = MockSolution.of().withObjectives(0.0, 1.0, 0.0);
 		Solution s2 = MockSolution.of().withObjectives(0.0, 0.0, -1.0);
 
-		Assert.assertEquals(1.0, s1.chebyshevDistance(s2), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(1.0, s2.chebyshevDistance(s1), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.0, s1.chebyshevDistance(s1), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(0.0, s2.chebyshevDistance(s2), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(1.0, s1.chebyshevDistance(s2), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(1.0, s2.chebyshevDistance(s1), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.0, s1.chebyshevDistance(s1), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.0, s2.chebyshevDistance(s2), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -434,19 +434,19 @@ public class SolutionTest {
 		
 		Assert.assertEquals(0.0,
 				MockSolution.of().withObjectives(0.0, 1.0).distanceToNearestSolution(population),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 		
 		Assert.assertEquals(0.0,
 				MockSolution.of().withObjectives(1.0, 0.0).distanceToNearestSolution(population),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 		
 		Assert.assertEquals(Math.sqrt(0.5),
 				MockSolution.of().withObjectives(0.5, 0.5).distanceToNearestSolution(population),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 		
 		Assert.assertEquals(Math.sqrt(0.125),
 				MockSolution.of().withObjectives(0.25, 0.75).distanceToNearestSolution(population),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)

@@ -19,7 +19,7 @@ package org.moeaframework.core.operator.grammar;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.operator.AbstractGrammarOperatorTest;
 import org.moeaframework.core.variable.Grammar;
@@ -47,7 +47,7 @@ public class GrammarMutationTest extends AbstractGrammarOperatorTest<GrammarMuta
 		GrammarMutation mutation = new GrammarMutation(probability);
 		int count = 0;
 
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			Solution original = new Solution(1, 0);
 			
 			Grammar grammar = new Grammar(5);
@@ -60,7 +60,7 @@ public class GrammarMutationTest extends AbstractGrammarOperatorTest<GrammarMuta
 			count += check((Grammar)original.getVariable(0), (Grammar)mutated.getVariable(0));
 		}
 
-		Assert.assertEquals((double)count / (5 * TestThresholds.SAMPLES), probability, TestThresholds.LOW_PRECISION);
+		Assert.assertEquals((double)count / (5 * TestEnvironment.SAMPLES), probability, TestEnvironment.LOW_PRECISION);
 	}
 
 	/**

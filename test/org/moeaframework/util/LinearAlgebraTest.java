@@ -21,7 +21,7 @@ import org.apache.commons.math3.exception.DimensionMismatchException;
 import org.apache.commons.math3.linear.SingularMatrixException;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 
 public class LinearAlgebraTest {
 
@@ -35,7 +35,7 @@ public class LinearAlgebraTest {
 		double[] b = new double[] { 9, 0, -1 };
 		double[] x = LinearAlgebra.lsolve(A, b);
 
-		Assert.assertArrayEquals(new double[] { 1.0, -1.0, 2.0 }, x, TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 1.0, -1.0, 2.0 }, x, TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test(expected = SingularMatrixException.class)

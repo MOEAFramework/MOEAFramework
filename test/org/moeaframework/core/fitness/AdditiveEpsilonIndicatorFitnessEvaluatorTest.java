@@ -21,7 +21,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.mock.MockProblem;
 import org.moeaframework.mock.MockSolution;
@@ -45,7 +45,7 @@ public class AdditiveEpsilonIndicatorFitnessEvaluatorTest {
 		Solution solution1 = MockSolution.of().withObjectives(0.0, 0.5, 1.0);
 		Solution solution2 = MockSolution.of().withObjectives(0.0, 0.5, 1.0);
 		
-		Assert.assertEquals(0.0, fitness.calculateIndicator(solution1, solution2), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, fitness.calculateIndicator(solution1, solution2), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -53,7 +53,7 @@ public class AdditiveEpsilonIndicatorFitnessEvaluatorTest {
 		Solution solution1 = MockSolution.of().withObjectives(0.0, 0.5, 1.0);
 		Solution solution2 = MockSolution.of().withObjectives(0.0, 0.75, 1.0);
 		
-		Assert.assertEquals(0.0, fitness.calculateIndicator(solution1, solution2), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.0, fitness.calculateIndicator(solution1, solution2), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -61,7 +61,7 @@ public class AdditiveEpsilonIndicatorFitnessEvaluatorTest {
 		Solution solution1 = MockSolution.of().withObjectives(0.5, 0.75, 0.75);
 		Solution solution2 = MockSolution.of().withObjectives(0.0, 0.5, 1.0);
 		
-		Assert.assertEquals(0.5, fitness.calculateIndicator(solution1, solution2), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(0.5, fitness.calculateIndicator(solution1, solution2), TestEnvironment.HIGH_PRECISION);
 	}
 	
 }

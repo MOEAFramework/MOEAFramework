@@ -26,7 +26,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 
 public class BinaryIntegerVariableTest {
@@ -123,7 +123,7 @@ public class BinaryIntegerVariableTest {
 	public void testRandomize() {
 		DescriptiveStatistics stats = new DescriptiveStatistics();
 		
-		for (int i = 0; i < TestThresholds.SAMPLES; i++) {
+		for (int i = 0; i < TestEnvironment.SAMPLES; i++) {
 			variable.randomize();
 			stats.addValue(variable.getValue());
 		}

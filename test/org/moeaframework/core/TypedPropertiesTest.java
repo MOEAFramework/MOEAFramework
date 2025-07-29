@@ -27,7 +27,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.configuration.ConfigurationException;
 import org.moeaframework.util.io.LineReader;
 
@@ -54,14 +54,14 @@ public class TypedPropertiesTest {
 	@Test
 	public void testStaticConstructor() {
 		Assert.assertArrayEquals(new double[] { 0.01, 0.01 },
-				TypedProperties.of("key", "0.01,0.01").getDoubleArray("key", null), TestThresholds.HIGH_PRECISION);
+				TypedProperties.of("key", "0.01,0.01").getDoubleArray("key", null), TestEnvironment.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 0.01, 0.01 },
-				TypedProperties.of("key", 0.01, 0.01).getDoubleArray("key"), TestThresholds.HIGH_PRECISION);
+				TypedProperties.of("key", 0.01, 0.01).getDoubleArray("key"), TestEnvironment.HIGH_PRECISION);
 		
 		Assert.assertEquals("value", TypedProperties.of("key", "value").getString("key"));
-		Assert.assertEquals(2.71, TypedProperties.of("key", 2.71).getDouble("key"), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(2.71f, TypedProperties.of("key", 2.71f).getFloat("key"), TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(2.71, TypedProperties.of("key", 2.71).getDouble("key"), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(2.71f, TypedProperties.of("key", 2.71f).getFloat("key"), TestEnvironment.HIGH_PRECISION);
 		Assert.assertEquals(42, TypedProperties.of("key", 42).getInt("key"));
 		Assert.assertEquals(42, TypedProperties.of("key", 42L).getLong("key"));
 		Assert.assertEquals(42, TypedProperties.of("key", (short)42).getShort("key"));
@@ -73,8 +73,8 @@ public class TypedPropertiesTest {
 	@Test
 	public void testPrimitivesDefaultValue() {
 		Assert.assertEquals("foo", properties.getString("-", "foo"));
-		Assert.assertEquals(2.71, properties.getDouble("-", 2.71), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(2.71f, properties.getFloat("-", 2.71f), (float)TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(2.71, properties.getDouble("-", 2.71), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(2.71f, properties.getFloat("-", 2.71f), (float)TestEnvironment.HIGH_PRECISION);
 		Assert.assertEquals(42, properties.getInt("-", 42));
 		Assert.assertEquals(42, properties.getLong("-", 42));
 		Assert.assertEquals(42, properties.getShort("-", (short)42));
@@ -93,8 +93,8 @@ public class TypedPropertiesTest {
 	@Test
 	public void testArraysDefaultValue() {
 		Assert.assertArrayEquals(new String[] { "hello", "world!" }, properties.getStringArray("-", new String[] { "hello", "world!" }));
-		Assert.assertArrayEquals(new double[] { 2.71 }, properties.getDoubleArray("-", new double[] { 2.71 }), TestThresholds.HIGH_PRECISION);
-		Assert.assertArrayEquals(new float[] { 2.71f }, properties.getFloatArray("-", new float[] { 2.71f }), (float)TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 2.71 }, properties.getDoubleArray("-", new double[] { 2.71 }), TestEnvironment.HIGH_PRECISION);
+		Assert.assertArrayEquals(new float[] { 2.71f }, properties.getFloatArray("-", new float[] { 2.71f }), (float)TestEnvironment.HIGH_PRECISION);
 		Assert.assertArrayEquals(new int[] { 42, 12 }, properties.getIntArray("-", new int[] { 42, 12 }));
 		Assert.assertArrayEquals(new long[] { 42, 12 }, properties.getLongArray("-", new long[] { 42, 12 }));
 		Assert.assertArrayEquals(new short[] { 42, 12 }, properties.getShortArray("-", new short[] { 42, 12 }));
@@ -215,8 +215,8 @@ public class TypedPropertiesTest {
 		properties.setBoolean("boolean_false", false);
 		
 		Assert.assertEquals("foo,bar", properties.getString("string"));
-		Assert.assertEquals(2.71, properties.getDouble("double", 0.0), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(2.71f, properties.getFloat("float", 0.0f), (float)TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(2.71, properties.getDouble("double", 0.0), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(2.71f, properties.getFloat("float", 0.0f), (float)TestEnvironment.HIGH_PRECISION);
 		Assert.assertEquals(42, properties.getInt("int", 0));
 		Assert.assertEquals(42, properties.getLong("long", 0));
 		Assert.assertEquals(42, properties.getShort("short", (short)0));
@@ -236,8 +236,8 @@ public class TypedPropertiesTest {
 		properties.setByteArray("byte_array", new byte[] { 42, 12 });
 		
 		Assert.assertArrayEquals(new String[] { "foo", "bar" }, properties.getStringArray("string_array"));
-		Assert.assertArrayEquals(new double[] { 2.71, 1.44 }, properties.getDoubleArray("double_array"), TestThresholds.HIGH_PRECISION);
-		Assert.assertArrayEquals(new float[] { 2.71f, 1.44f }, properties.getFloatArray("float_array"), (float)TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 2.71, 1.44 }, properties.getDoubleArray("double_array"), TestEnvironment.HIGH_PRECISION);
+		Assert.assertArrayEquals(new float[] { 2.71f, 1.44f }, properties.getFloatArray("float_array"), (float)TestEnvironment.HIGH_PRECISION);
 		Assert.assertArrayEquals(new int[] { 42, 12 }, properties.getIntArray("int_array"));
 		Assert.assertArrayEquals(new long[] { 42, 12 }, properties.getLongArray("long_array"));
 		Assert.assertArrayEquals(new short[] { 42, 12 }, properties.getShortArray("short_array"));
@@ -255,8 +255,8 @@ public class TypedPropertiesTest {
 		properties.setByteArray("byte_array_empty", new byte[0]);
 
 		Assert.assertArrayEquals(new String[0], properties.getStringArray("string_array_empty"));
-		Assert.assertArrayEquals(new double[0], properties.getDoubleArray("double_array_empty"), TestThresholds.HIGH_PRECISION);
-		Assert.assertArrayEquals(new float[0], properties.getFloatArray("float_array_empty"), (float)TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[0], properties.getDoubleArray("double_array_empty"), TestEnvironment.HIGH_PRECISION);
+		Assert.assertArrayEquals(new float[0], properties.getFloatArray("float_array_empty"), (float)TestEnvironment.HIGH_PRECISION);
 		Assert.assertArrayEquals(new int[0], properties.getIntArray("int_array_empty"));
 		Assert.assertArrayEquals(new long[0], properties.getLongArray("long_array_empty"));
 		Assert.assertArrayEquals(new short[0], properties.getShortArray("short_array_empty"));

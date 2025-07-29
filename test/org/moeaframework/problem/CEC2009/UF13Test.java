@@ -19,7 +19,7 @@ package org.moeaframework.problem.CEC2009;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.RandomInitialization;
 import org.moeaframework.core.variable.RealVariable;
@@ -32,7 +32,7 @@ public class UF13Test extends ProblemTest {
 		UF13 problem = new UF13();
 		RandomInitialization initialization = new RandomInitialization(problem);
 		
-		for (Solution solution : initialization.initialize(TestThresholds.SAMPLES)) {
+		for (Solution solution : initialization.initialize(TestEnvironment.SAMPLES)) {
 			double[] x = RealVariable.getReal(solution);
 			double[] f = new double[problem.getNumberOfObjectives()];
 			
@@ -40,7 +40,7 @@ public class UF13Test extends ProblemTest {
 			
 			problem.evaluate(solution);
 			
-			Assert.assertArrayEquals(f, solution.getObjectiveValues(), TestThresholds.LOW_PRECISION);
+			Assert.assertArrayEquals(f, solution.getObjectiveValues(), TestEnvironment.LOW_PRECISION);
 		}
 	}
 	

@@ -26,7 +26,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.TempFiles;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.analysis.series.ResultEntry;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.TypedProperties;
@@ -424,7 +424,7 @@ public class ResultFileReaderTest {
 		try (ResultFileReader reader = new ResultFileReader(problem, file)) {
 			RealVariable rv = new RealVariable(0.0, 1.0);
 			reader.decode(rv, "0.5");
-			Assert.assertEquals(0.5, rv.getValue(), TestThresholds.HIGH_PRECISION);
+			Assert.assertEquals(0.5, rv.getValue(), TestEnvironment.HIGH_PRECISION);
 			
 			BinaryVariable bv = new BinaryVariable(5);
 			reader.decode(bv, "00100");

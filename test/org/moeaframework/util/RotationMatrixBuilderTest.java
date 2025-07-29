@@ -22,7 +22,7 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.util.CombinatoricsUtils;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 
 public class RotationMatrixBuilderTest {
 	
@@ -34,17 +34,17 @@ public class RotationMatrixBuilderTest {
 	public void assertRotationMatrix(RealMatrix rm) {
 		LUDecomposition lu = new LUDecomposition(rm);
 		
-		Assert.assertEquals(1.0, lu.getDeterminant(), TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(rm.transpose(), lu.getSolver().getInverse(), TestThresholds.LOW_PRECISION);
+		Assert.assertEquals(1.0, lu.getDeterminant(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(rm.transpose(), lu.getSolver().getInverse(), TestEnvironment.LOW_PRECISION);
 	}
 	
 	public void assertIdentityMatrix(RealMatrix rm) {
 		for (int i=0; i<rm.getRowDimension(); i++) {
 			for (int j=0; j<rm.getColumnDimension(); j++) {
 				if (i == j) {
-					Assert.assertEquals(1.0, rm.getEntry(i, j), TestThresholds.HIGH_PRECISION);
+					Assert.assertEquals(1.0, rm.getEntry(i, j), TestEnvironment.HIGH_PRECISION);
 				} else {
-					Assert.assertEquals(0.0, rm.getEntry(i, j), TestThresholds.HIGH_PRECISION);
+					Assert.assertEquals(0.0, rm.getEntry(i, j), TestEnvironment.HIGH_PRECISION);
 				}
 			}
 		}

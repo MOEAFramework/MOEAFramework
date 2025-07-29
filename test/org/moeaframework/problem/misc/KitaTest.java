@@ -19,7 +19,7 @@ package org.moeaframework.problem.misc;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.problem.Problem;
 import org.moeaframework.problem.ProblemTest;
 
@@ -31,21 +31,21 @@ public class KitaTest extends ProblemTest {
 		
 		Assert.assertArrayEquals(new double[] { 0.0, 1.0 },
 				evaluateAtLowerBounds(problem).getObjectiveValues(),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { -6.5, -7.5, -30.0 },
 				evaluateAtLowerBounds(problem).getConstraintValues(),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 		
 		Assert.assertTrue(evaluateAtLowerBounds(problem).isFeasible());
 		
 		Assert.assertArrayEquals(new double[] { -42.0, 11.5 },
 				evaluateAtUpperBounds(problem).getObjectiveValues(),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 		
 		Assert.assertArrayEquals(new double[] { 5.0/3.0, 3.0, 12.0 },
 				evaluateAtUpperBounds(problem).getConstraintValues(),
-				TestThresholds.HIGH_PRECISION);
+				TestEnvironment.HIGH_PRECISION);
 		
 		Assert.assertFalse(evaluateAtUpperBounds(problem).isFeasible());
 	}

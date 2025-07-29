@@ -29,8 +29,7 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Assume;
 import org.moeaframework.Make;
-import org.moeaframework.TestResources;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.initialization.Initialization;
 import org.moeaframework.core.initialization.RandomInitialization;
@@ -47,14 +46,14 @@ public class ExternalProblemWithCStdioTest {
 
 	protected File getExecutable(String filename) {
 		try {
-			File file = TestResources.getLocalTestResource("org/moeaframework/problem/" + filename);
+			File file = TestEnvironment.getResourceAsFile("test/org/moeaframework/problem/" + filename);
 			
 			if (!file.exists()) {
-				Assume.assumeMakeExists();
+				Assume.assumeMake();
 				Make.runMake(file.getParentFile());
 			}
 	
-			Assume.assumeFileExists(file);
+			Assume.assumeFile(file);
 			return file;
 		} catch (IOException e) {
 			Assume.assumeNoException(e);
@@ -88,8 +87,8 @@ public class ExternalProblemWithCStdioTest {
 					problem.evaluate(solution);
 					
 					//check objectives and constraints
-					Assert.assertArrayEquals(new double[] { i+1, 1e-10/(i+1) }, solution.getObjectiveValues(), TestThresholds.HIGH_PRECISION);
-					Assert.assertArrayEquals(new double[] { 1e10*(i+1) }, solution.getConstraintValues(), TestThresholds.HIGH_PRECISION);
+					Assert.assertArrayEquals(new double[] { i+1, 1e-10/(i+1) }, solution.getObjectiveValues(), TestEnvironment.HIGH_PRECISION);
+					Assert.assertArrayEquals(new double[] { 1e10*(i+1) }, solution.getConstraintValues(), TestEnvironment.HIGH_PRECISION);
 					
 					//check the debug stream
 					String debugLine = debugReader.readLine();
@@ -102,7 +101,7 @@ public class ExternalProblemWithCStdioTest {
 					
 					for (int j=0; j<2; j++) {
 						Assert.assertEquals(((RealVariable)solution.getVariable(j)).getValue(),
-								Double.parseDouble(debugTokens[tokenIndex++]), TestThresholds.HIGH_PRECISION);
+								Double.parseDouble(debugTokens[tokenIndex++]), TestEnvironment.HIGH_PRECISION);
 					}
 					
 					BinaryVariable bv = ((BinaryVariable)solution.getVariable(2));

@@ -130,7 +130,7 @@ public class Assert extends org.junit.Assert {
 	}
 	
 	public static void assertEquals(double expected, double actual) {
-		assertEquals(expected, actual, TestThresholds.HIGH_PRECISION);
+		assertEquals(expected, actual, TestEnvironment.HIGH_PRECISION);
 	}
 	
 	public static void assertEquals(Integer expected, Integer actual) {
@@ -207,7 +207,7 @@ public class Assert extends org.junit.Assert {
 	}
 	
 	public static void assertEquals(RealMatrix expected, RealMatrix actual) {
-		assertEquals(expected, actual, TestThresholds.HIGH_PRECISION);
+		assertEquals(expected, actual, TestEnvironment.HIGH_PRECISION);
 	}
 
 	public static void assertEquals(RealMatrix expected, RealMatrix actual, double epsilon) {
@@ -303,12 +303,12 @@ public class Assert extends org.junit.Assert {
 
 		for (int i = 0; i < expected.getNumberOfObjectives(); i++) {
 			assertEquals("Solutions have different objective values at index " + i + ":",
-					expected.getObjective(i), actual.getObjective(i), TestThresholds.LOW_PRECISION);
+					expected.getObjective(i), actual.getObjective(i), TestEnvironment.LOW_PRECISION);
 		}
 
 		for (int i = 0; i < expected.getNumberOfConstraints(); i++) {
 			assertEquals("Solutions have different constraint values at index " + i + ":",
-					expected.getConstraint(i), actual.getConstraint(i), TestThresholds.LOW_PRECISION);
+					expected.getConstraint(i), actual.getConstraint(i), TestEnvironment.LOW_PRECISION);
 		}
 		
 		if (includeAttributes) {
@@ -448,7 +448,7 @@ public class Assert extends org.junit.Assert {
 	}
 	
 	public static void assertUniformDistribution(double min, double max, DescriptiveStatistics statistics) {
-		double epsilon = (max - min) * TestThresholds.LOW_PRECISION;
+		double epsilon = (max - min) * TestEnvironment.LOW_PRECISION;
 		
 		assertEquals((min + max) / 2.0, statistics.getMean(), epsilon);
 		assertEquals(Math.pow(max - min, 2.0) / 12.0, statistics.getVariance(), epsilon);
@@ -460,7 +460,7 @@ public class Assert extends org.junit.Assert {
 
 	// Note: It's important to use the integer version for discrete values to ensure we offset the range by 1.
 	public static void assertUniformDistribution(int min, int max, DescriptiveStatistics statistics) {
-		double epsilon = (max - min) * TestThresholds.LOW_PRECISION;
+		double epsilon = (max - min) * TestEnvironment.LOW_PRECISION;
 		int n = max - min + 1;
 		int nn = n * n;
 

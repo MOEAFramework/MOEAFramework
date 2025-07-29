@@ -23,7 +23,7 @@ import java.io.StringWriter;
 
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.TestThresholds;
+import org.moeaframework.TestEnvironment;
 
 public class MatrixIOTest {
 		
@@ -33,8 +33,8 @@ public class MatrixIOTest {
 		
 		Assert.assertNotNull(data);
 		Assert.assertEquals(2, data.length);
-		Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1 }, data[0], TestThresholds.HIGH_PRECISION);
-		Assert.assertArrayEquals(new double[] { 0, 10, 100 }, data[1], TestThresholds.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 0.0, 0.1, -0.1 }, data[0], TestEnvironment.HIGH_PRECISION);
+		Assert.assertArrayEquals(new double[] { 0, 10, 100 }, data[1], TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
@@ -43,8 +43,8 @@ public class MatrixIOTest {
 			
 		Assert.assertNotNull(data);
 		Assert.assertEquals(2, data.length);
-		Assert.assertEquals(-0.1, data[0], TestThresholds.HIGH_PRECISION);
-		Assert.assertEquals(100.0, data[1], TestThresholds.HIGH_PRECISION);
+		Assert.assertEquals(-0.1, data[0], TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(100.0, data[1], TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
