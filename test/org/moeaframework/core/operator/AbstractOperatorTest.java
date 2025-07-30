@@ -20,7 +20,6 @@ package org.moeaframework.core.operator;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.moeaframework.Assert;
-import org.moeaframework.Assume;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.Variable;
 import org.moeaframework.mock.MockUnsupportedVariable;
@@ -49,7 +48,10 @@ public abstract class AbstractOperatorTest<T extends Variation, V extends Variab
 	
 	@Test
 	public void testTypeSafety() {
-		Assume.assumeTrue("Operator is not type safe", isTypeSafe());
+		if (!isTypeSafe()) {
+			System.out.println("Operator is not type safe, test not applicable");
+			return;
+		}
 		
 		T variation = createInstance();
 		
