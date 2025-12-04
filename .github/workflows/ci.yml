@@ -81,7 +81,7 @@ jobs:
       with:
         file: test.xml
     - name: Upload test results
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       if: always()
       with:
         name: ant-test-results-${{ matrix.os }}-${{ matrix.java }}
@@ -107,7 +107,7 @@ jobs:
         cd build
         mvn test
     - name: Upload test results
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       if: always()
       with:
         name: maven-test-results-ubuntu-${{ env.JAVA_VERSION }}
@@ -163,7 +163,7 @@ jobs:
         sudo bundle install
         bundle exec jekyll build
     - name: Upload website
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: Website
         path: build/_site
