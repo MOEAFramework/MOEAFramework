@@ -54,9 +54,9 @@ jobs:
         java: [ 17, 19, 21, 25 ]
         include:
           - os: windows-latest
-            java: 21
+            java: 25
           - os: macos-${{ inputs.macos-version || '13' }}
-            java: 21
+            java: 25
     steps:
     - name: Setup build
       uses: MOEAFramework/.github/actions/setup-build@main
