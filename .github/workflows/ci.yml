@@ -27,11 +27,9 @@ on:
         description: Java version
         options:
           - '17'
-          - '18'
           - '19'
-          - '20'
           - '21'
-          - '22'
+          - '25'
         default: '19'
       macos-version:
         type: choice
@@ -53,12 +51,12 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-latest ]
-        java: [ 17, 18, 19, 20, 21 ]
+        java: [ 17, 19, 21, 25 ]
         include:
           - os: windows-latest
-            java: 21
+            java: 25
           - os: macos-${{ inputs.macos-version || '13' }}
-            java: 21
+            java: 25
     steps:
     - name: Setup build
       uses: MOEAFramework/.github/actions/setup-build@main
