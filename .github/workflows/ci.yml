@@ -36,10 +36,9 @@ on:
         required: true
         description: MacOS version
         options:
-          - '14'
           - '15'
-          - '26'
-        default: '15'
+          - '15-intel'
+        default: '15-intel'
         
 env:
   ALL_TESTS: ${{ inputs.all-tests || 'false' }}
@@ -55,7 +54,7 @@ jobs:
         include:
           - os: windows-latest
             java: 25
-          - os: macos-${{ inputs.macos-version || '15' }}
+          - os: macos-${{ inputs.macos-version || '15-intel' }}
             java: 25
     steps:
     - name: Setup build
@@ -173,7 +172,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
         include:
-          - os: macos-${{ inputs.macos-version || '15' }}
+          - os: macos-${{ inputs.macos-version || '15-intel' }}
     steps:
     - name: Setup build
       uses: MOEAFramework/.github/actions/setup-build@main
