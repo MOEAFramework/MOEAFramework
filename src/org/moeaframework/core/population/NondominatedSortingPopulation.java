@@ -48,12 +48,12 @@ public class NondominatedSortingPopulation extends Population {
 	 * {@code true} if the population has been modified but fast non-dominated sorting has not yet been invoked;
 	 * {@code false} otherwise.
 	 */
-	private boolean modified;
+	protected boolean modified;
 
 	/**
 	 * The fast non-dominated sorting implementation.
 	 */
-	private final NondominatedSorting nondominatedSorting;
+	protected final NondominatedSorting nondominatedSorting;
 
 	/**
 	 * Constructs an empty population that maintains the {@code rank} and {@code crowdingDistance} attributes for
@@ -261,3 +261,4 @@ public class NondominatedSortingPopulation extends Population {
 	}
 
 }
+
