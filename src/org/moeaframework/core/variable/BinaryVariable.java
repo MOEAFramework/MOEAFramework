@@ -163,7 +163,7 @@ public class BinaryVariable extends AbstractVariable {
 
 	@Override
 	public BinaryVariable copy() {
-		BinaryVariable copy = new BinaryVariable(numberOfBits);
+		BinaryVariable copy = new BinaryVariable(name, numberOfBits);
 		copy.bitSet.or(bitSet);
 		return copy;
 	}

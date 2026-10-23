@@ -130,6 +130,17 @@ public class BinaryVariableTest {
 		Assert.assertTrue(variable.get(1));
 		Assert.assertNotEquals(variable, copy);
 	}
+	
+	@Test
+	public void testCopyWithName() {
+		variable = new BinaryVariable("foo", 2);
+		variable.set(1, true);
+		
+		BinaryVariable copy = variable.copy();
+		Assert.assertNotSame(variable, copy);
+		Assert.assertEquals(variable, copy);
+		Assert.assertEquals("foo", copy.getName());
+	}
 
 	@Test
 	public void testClear() {

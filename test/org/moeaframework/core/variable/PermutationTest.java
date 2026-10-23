@@ -135,6 +135,16 @@ public class PermutationTest {
 		copy.swap(2, 3);
 		Assert.assertNotEquals(permutation, copy);
 	}
+	
+	@Test
+	public void testCopyWithName() {
+		permutation = new Permutation("foo", 5);
+		
+		Permutation copy = permutation.copy();
+		Assert.assertNotSame(permutation, copy);
+		Assert.assertEquals(permutation, copy);
+		Assert.assertEquals("foo", copy.getName());
+	}
 
 	@Test
 	public void testSwap() {

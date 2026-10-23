@@ -202,6 +202,15 @@ public class SubsetTest {
 	}
 	
 	@Test
+	public void testCopyWithName() {
+		Subset subset = new Subset("foo", 5, 10);
+		Subset copy = subset.copy();
+		Assert.assertNotSame(subset, copy);
+		Assert.assertEquals(subset, copy);
+		Assert.assertEquals("foo", copy.getName());
+	}
+	
+	@Test
 	public void testRandomNonmember() {
 		Subset subset = new Subset(5, 10);
 		
