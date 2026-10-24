@@ -91,6 +91,16 @@ public class BinaryIntegerVariableTest {
 		Assert.assertEquals(7, variable.getValue());
 		Assert.assertNotEquals(variable, copy);
 	}
+	
+	@Test
+	public void testCopyWithName() {
+		variable = new BinaryIntegerVariable("foo", 5, 10).withValue(7);
+		
+		BinaryVariable copy = variable.copy();
+		Assert.assertNotSame(variable, copy);
+		Assert.assertEquals(variable, copy);
+		Assert.assertEquals("foo", copy.getName());
+	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testInvalidBounds() {

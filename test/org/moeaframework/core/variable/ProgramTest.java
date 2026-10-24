@@ -75,6 +75,16 @@ public class ProgramTest {
 	}
 	
 	@Test
+	public void testCopyWithName() {
+		program = new Program("foo", rules);
+		program.randomize();
+		
+		Program copy = program.copy();
+		Assert.assertNotSame(copy, program);
+		Assert.assertEquals("foo", copy.getName());
+	}
+	
+	@Test
 	public void testEncodeDecode() {
 		String encoding = program.encode();
 		

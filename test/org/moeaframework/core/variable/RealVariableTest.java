@@ -92,6 +92,16 @@ public class RealVariableTest {
 		Assert.assertEquals(0.5, variable.getValue(), TestEnvironment.HIGH_PRECISION);
 		Assert.assertNotEquals(variable, copy);
 	}
+	
+	@Test
+	public void testCopyWithName() {
+		variable = new RealVariable("foo", 0.0, 1.0).withValue(0.5);
+		
+		RealVariable copy = variable.copy();
+		Assert.assertNotSame(variable, copy);
+		Assert.assertEquals(variable, copy);
+		Assert.assertEquals("foo", copy.getName());
+	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testInvalidBounds() {

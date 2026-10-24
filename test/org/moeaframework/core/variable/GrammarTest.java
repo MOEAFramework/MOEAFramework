@@ -115,6 +115,17 @@ public class GrammarTest {
 		Assert.assertFalse(copy.equals(grammar));
 		Assert.assertNotEquals(grammar, copy);
 	}
+	
+	@Test
+	public void testCopyWithName() {
+		grammar = new Grammar("foo", 5);
+		grammar.fromArray(new int[] { 0, 1, 2, 3, 4 });
+		
+		Grammar copy = grammar.copy();
+		Assert.assertNotSame(grammar, copy);
+		Assert.assertEquals(grammar, copy);
+		Assert.assertEquals("foo", copy.getName());
+	}
 
 	@Test
 	public void testToArray() {
