@@ -5,6 +5,8 @@ This page documents notable changes introduced in each chronological release of 
 
 ## Version 5.2 (TBD)
 
+  * Fixes `BinaryVariable#copy()` not copying the variable name.
+
   * Removes the `Plot` class that was deprecated in the previous release (5.1).  Switch to one of the new plot builder
     classes, such as `XYPlotBuilder`.
   
