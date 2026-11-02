@@ -233,7 +233,7 @@ public class NondominatedPopulation extends Population {
 	
 	@Override
 	public NondominatedPopulation copy() {
-		NondominatedPopulation result = new NondominatedPopulation(getComparator());
+		NondominatedPopulation result = new NondominatedPopulation(getComparator(), getDuplicateMode());
 		
 		for (Solution solution : this) {
 			result.forceAddWithoutCheck(solution.copy());

@@ -26,6 +26,7 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.population.NondominatedPopulation.DuplicateMode;
 import org.moeaframework.core.variable.BinaryVariable;
 import org.moeaframework.mock.MockBinaryProblem;
+import org.moeaframework.mock.MockDominanceComparator;
 import org.moeaframework.mock.MockSolution;
 
 public class NondominatedPopulationTest {
@@ -142,13 +143,16 @@ public class NondominatedPopulationTest {
 
 	@Test
 	public void testCopy() {
-		NondominatedPopulation population = new NondominatedPopulation();
+		NondominatedPopulation population = new NondominatedPopulation(new MockDominanceComparator(),
+				DuplicateMode.ALLOW_DUPLICATES);
+		
 		population.add(MockSolution.of().withObjectives(0.0, 1.0));
 
 		NondominatedPopulation copy = population.copy();
 
 		Assert.assertNotSame(population, copy);
 		Assert.assertSame(population.getComparator(), copy.getComparator());
+		Assert.assertSame(population.getDuplicateMode(), copy.getDuplicateMode());
 		Assert.assertEquals(population, copy, true);
 	}
 
