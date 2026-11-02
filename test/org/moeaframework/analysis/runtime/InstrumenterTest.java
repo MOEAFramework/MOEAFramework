@@ -167,7 +167,6 @@ public class InstrumenterTest {
 		new Instrumenter().addExcludedPackage("org.moeaframework").attach(collector).instrument(algorithm);
 		
 		Set<Object> instrumentedObjects = collector.getInstrumentedObjects();
-		
 		Assert.assertSize(0, instrumentedObjects);
 	}
 	

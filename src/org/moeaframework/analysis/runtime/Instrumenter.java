@@ -163,7 +163,7 @@ public class Instrumenter {
 	 * @return a reference to this instrumenter
 	 */
 	public Instrumenter removeExcludedPackage(String packageName) {
-		excludedPackages.add(packageName);
+		excludedPackages.remove(packageName);
 		return this;
 	}
 
