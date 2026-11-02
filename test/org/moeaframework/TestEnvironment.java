@@ -57,6 +57,12 @@ public class TestEnvironment {
 	public static final double HIGH_PRECISION = Settings.EPS;
 	
 	/**
+	 * The floating-point threshold for exact comparisons. This should only be used when the expected value is a
+	 * well-defined floating-point number.
+	 */
+	public static final double EXACT_PRECISION = 0.0;
+	
+	/**
 	 * Locates the resource while handling different file structures and, if necessary, extracting the resource to a
 	 * file on disk.
 	 * 

@@ -48,8 +48,8 @@ public class NotEqualTest {
 	@Test
 	public void test() {
 		Assert.assertEquals(1.0, NotEqual.to(5.0).withValue(5.0).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
-		Assert.assertEquals(0.0, NotEqual.to(5.0).withValue(5.1).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
-		Assert.assertEquals(0.0, NotEqual.to(5.0).withValue(4.9).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.0, NotEqual.to(5.0).withValue(5.1).getMagnitudeOfViolation(), TestEnvironment.EXACT_PRECISION);
+		Assert.assertEquals(0.0, NotEqual.to(5.0).withValue(4.9).getMagnitudeOfViolation(), TestEnvironment.EXACT_PRECISION);
 	}
 	
 	@Test
@@ -57,8 +57,8 @@ public class NotEqualTest {
 		Assert.assertEquals(1.0, NotEqual.to(5.0, 0.1).withValue(5.0).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
 		Assert.assertEquals(1.0, NotEqual.to(5.0, 0.1).withValue(5.1).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
 		Assert.assertEquals(1.0, NotEqual.to(5.0, 0.1).withValue(4.9).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
-		Assert.assertEquals(0.0, NotEqual.to(5.0, 0.1).withValue(5.2).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
-		Assert.assertEquals(0.0, NotEqual.to(5.0, 0.1).withValue(4.8).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.0, NotEqual.to(5.0, 0.1).withValue(5.2).getMagnitudeOfViolation(), TestEnvironment.EXACT_PRECISION);
+		Assert.assertEquals(0.0, NotEqual.to(5.0, 0.1).withValue(4.8).getMagnitudeOfViolation(), TestEnvironment.EXACT_PRECISION);
 	}
 	
 	@Test

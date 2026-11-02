@@ -8,6 +8,9 @@ This page documents notable changes introduced in each chronological release of 
   * Fixes `BinaryVariable#copy()` not copying the variable name.
   
   * Fixes `NondominatedPopulation#copy()` not retaining the duplicate mode setting.  The copy would revert to the default.
+  
+  * Fixes constraints falling exactly on the boundary of `Outside` returning a constraint violation magnitude of `0.0`,
+    whereas a non-zero value is expected on the boundary.
 
   * Removes the `Plot` class that was deprecated in the previous release (5.1).  Switch to one of the new plot builder
     classes, such as `XYPlotBuilder`.

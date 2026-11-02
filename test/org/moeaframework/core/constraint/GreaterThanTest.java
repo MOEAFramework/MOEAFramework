@@ -47,17 +47,17 @@ public class GreaterThanTest {
 	
 	@Test
 	public void test() {
-		Assert.assertEquals(Math.nextDown(0.0), GreaterThan.value(5.0).withValue(5.0).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
-		Assert.assertEquals(0.0, GreaterThan.value(5.0).withValue(5.1).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(Math.nextUp(0.0), GreaterThan.value(5.0).withValue(5.0).getMagnitudeOfViolation(), TestEnvironment.EXACT_PRECISION);
+		Assert.assertEquals(0.0, GreaterThan.value(5.0).withValue(5.1).getMagnitudeOfViolation(), TestEnvironment.EXACT_PRECISION);
 		Assert.assertEquals(0.1, GreaterThan.value(5.0).withValue(4.9).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
 	}
 	
 	@Test
 	public void testWithEpsilon() {
-		Assert.assertEquals(Math.nextDown(0.0), GreaterThan.value(5.0, 0.1).withValue(5.0).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(Math.nextUp(0.0), GreaterThan.value(5.0, 0.1).withValue(5.0).getMagnitudeOfViolation(), TestEnvironment.EXACT_PRECISION);
 		Assert.assertEquals(0.1, GreaterThan.value(5.0, 0.1).withValue(5.1).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
 		Assert.assertEquals(0.1, GreaterThan.value(5.0, 0.1).withValue(4.9).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
-		Assert.assertEquals(0.0, GreaterThan.value(5.0, 0.1).withValue(5.2).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.0, GreaterThan.value(5.0, 0.1).withValue(5.2).getMagnitudeOfViolation(), TestEnvironment.EXACT_PRECISION);
 		Assert.assertEquals(0.2, GreaterThan.value(5.0, 0.1).withValue(4.8).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
 	}
 	

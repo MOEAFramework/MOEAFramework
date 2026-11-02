@@ -85,7 +85,7 @@ public class Outside extends BoundedConstraint {
 		
 		double diffLower = Math.abs(lower - value);
 		double diffUpper = Math.abs(upper - value);
-		
+				
 		if (value < lower) {
 			return diffLower > epsilon ? 0.0 : Math.nextUp(diffLower);
 		}
@@ -94,11 +94,7 @@ public class Outside extends BoundedConstraint {
 			return diffUpper > epsilon ? 0.0 : Math.nextUp(diffUpper);
 		}
 		
-		if (diffLower < diffUpper) {
-			return diffLower;
-		} else {
-			return diffUpper;
-		}
+		return Math.nextUp(Math.min(diffLower, diffUpper));
 	}
 
 	@Override

@@ -99,7 +99,7 @@ public class AMOSA extends AbstractSimulatedAnnealingAlgorithm {
 		setNumberOfIterationsPerTemperature(numberOfIterationsPerTemperature);
 		setNumberOfHillClimbingIterationsForRefinement(numberOfHillClimbingIterationsForRefinement);
 		setArchive(new NondominatedPopulation());
-		setTerminationCondition(new TemperatureBasedTerminationCondition());
+		setTerminationCondition(new TemperatureBasedTerminationCondition(stoppingTemperature));
 		
 		comparator = new ParetoDominanceComparator();
 	}

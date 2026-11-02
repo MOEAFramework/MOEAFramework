@@ -48,20 +48,22 @@ public class OutsideTest {
 	
 	@Test
 	public void test() {
-		Assert.assertEquals(Math.nextUp(0.0), Outside.values(5.0, 5.0).withValue(5.0).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(Math.nextUp(0.0), Outside.values(5.0, 5.0).withValue(5.0).getMagnitudeOfViolation(), TestEnvironment.EXACT_PRECISION);
+		Assert.assertEquals(Math.nextUp(0.0), Outside.values(4.0, 6.0).withValue(4.0).getMagnitudeOfViolation(), TestEnvironment.EXACT_PRECISION);
+		Assert.assertEquals(Math.nextUp(0.0), Outside.values(4.0, 6.0).withValue(6.0).getMagnitudeOfViolation(), TestEnvironment.EXACT_PRECISION);
 		Assert.assertEquals(0.5, Outside.values(4.0, 6.0).withValue(4.5).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
 		Assert.assertEquals(0.5, Outside.values(4.0, 6.0).withValue(5.5).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
-		Assert.assertEquals(0.0, Outside.values(4.0, 6.0).withValue(3.9).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
-		Assert.assertEquals(0.0, Outside.values(4.0, 6.0).withValue(6.1).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Outside.values(4.0, 6.0).withValue(3.9).getMagnitudeOfViolation(), TestEnvironment.EXACT_PRECISION);
+		Assert.assertEquals(0.0, Outside.values(4.0, 6.0).withValue(6.1).getMagnitudeOfViolation(), TestEnvironment.EXACT_PRECISION);
 	}
 	
 	@Test
 	public void testWithEpsilon() {
-		Assert.assertEquals(Math.nextUp(0.0), Outside.values(5.0, 5.0, 0.1).withValue(5.0).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(Math.nextUp(0.0), Outside.values(5.0, 5.0, 0.1).withValue(5.0).getMagnitudeOfViolation(), TestEnvironment.EXACT_PRECISION);
 		Assert.assertEquals(0.09, Outside.values(4.0, 6.0, 0.1).withValue(3.91).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
 		Assert.assertEquals(0.09, Outside.values(4.0, 6.0, 0.1).withValue(6.09).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
-		Assert.assertEquals(0.0, Outside.values(4.0, 6.0, 0.1).withValue(3.8).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
-		Assert.assertEquals(0.0, Outside.values(4.0, 6.0, 0.1).withValue(6.2).getMagnitudeOfViolation(), TestEnvironment.HIGH_PRECISION);
+		Assert.assertEquals(0.0, Outside.values(4.0, 6.0, 0.1).withValue(3.8).getMagnitudeOfViolation(), TestEnvironment.EXACT_PRECISION);
+		Assert.assertEquals(0.0, Outside.values(4.0, 6.0, 0.1).withValue(6.2).getMagnitudeOfViolation(), TestEnvironment.EXACT_PRECISION);
 	}
 	
 	@Test
