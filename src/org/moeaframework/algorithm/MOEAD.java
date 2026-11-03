@@ -348,6 +348,7 @@ public class MOEAD extends AbstractAlgorithm implements Configurable {
 	 */
 	@Property
 	public void setUpdateUtility(int updateUtility) {
+		Validate.that("updateUtility", updateUtility).isNotEqualTo(0);
 		this.updateUtility = updateUtility;
 	}
 

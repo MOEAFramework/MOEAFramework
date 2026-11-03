@@ -55,7 +55,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		register(fromProblem(EpsilonNSGAII::new), "e-NSGA-II", "eNSGAII", "eNSGA2", "EpsilonNSGAII");
 		register(fromProblem(GDE3::new), "GDE3");
 		register(fromProblem(IBEA::new), "IBEA");
-		register(fromProblem(MOEAD::new), "MOEA/D", "MOEAD", "MOEA/D-DRA");
+		register(fromProblem(MOEAD::new), "MOEA/D", "MOEAD");
 		register(fromProblem(MSOPS::new), "MSOPS");
 		register(fromProblem(NSGAII::new), "NSGA-II", "NSGAII", "NSGA2");
 		register(fromProblem(NSGAIII::new), "NSGA-III", "NSGAIII", "NSGA3");
@@ -77,6 +77,7 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 		register(fromProblem(SimulatedAnnealing::new), "SimulatedAnnealing", "SA");
 		
 		// special cases
+		register(this::newMOEAD_DRA, "MOEA/D-DRA", "MOEAD-DRA");
 		register(this::newRSO, "RSO");
 		
 		// register all to appear in the diagnostic tool
@@ -129,6 +130,14 @@ public class DefaultAlgorithms extends RegisteredAlgorithmProvider {
 						
 			return maxEvaluations / populationSize;
 		}
+	}
+	
+	private Algorithm newMOEAD_DRA(TypedProperties properties, Problem problem) {
+		if (!properties.contains("updateUtility")) {
+			properties.setInt("updateUtility", 50);
+		}
+		
+		return fromProblem(MOEAD::new).apply(properties, problem);
 	}
 
 	private Algorithm newRSO(TypedProperties properties, Problem problem) {

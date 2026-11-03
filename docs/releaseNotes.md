@@ -17,6 +17,9 @@ This page documents notable changes introduced in each chronological release of 
     
   * Fixes `Subset#decode` to handle empty sets.  It will either result in an empty subset or throw an
     `IllegalArgumentException` if below the subset's minimum size.
+    
+  * Constructing the algorithm `"MOEA/D-DRA"` now defaults `updateUtility = 50`; previously this required the user to
+    explicitly configure the property in order to construct the DRA variant.
 
   * Removes the `Plot` class that was deprecated in the previous release (5.1).  Switch to one of the new plot builder
     classes, such as `XYPlotBuilder`.

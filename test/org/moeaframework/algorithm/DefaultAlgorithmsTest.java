@@ -263,6 +263,28 @@ public class DefaultAlgorithmsTest {
 	}
 	
 	@Test
+	public void testMOEAD_DRA() {
+		MOEAD algorithm = (MOEAD)AlgorithmFactory.getInstance().getAlgorithm("MOEA/D", properties, real);
+		Assert.assertEquals(-1, algorithm.getUpdateUtility());
+		Assert.assertEquals("MOEA/D", algorithm.getName());
+		
+		algorithm = (MOEAD)AlgorithmFactory.getInstance().getAlgorithm("MOEA/D-DRA", properties, real);
+		Assert.assertEquals(50, algorithm.getUpdateUtility());
+		Assert.assertEquals("MOEA/D-DRA", algorithm.getName());
+		
+		properties.setInt("updateUtility", 100);
+		algorithm = (MOEAD)AlgorithmFactory.getInstance().getAlgorithm("MOEA/D-DRA", properties, real);
+		Assert.assertEquals(100, algorithm.getUpdateUtility());
+		Assert.assertEquals("MOEA/D-DRA", algorithm.getName());
+		
+		// this is permitted even though it disables the DRA aspect
+		properties.setInt("updateUtility", -1);
+		algorithm = (MOEAD)AlgorithmFactory.getInstance().getAlgorithm("MOEA/D-DRA", properties, real);
+		Assert.assertEquals(-1, algorithm.getUpdateUtility());
+		Assert.assertEquals("MOEA/D", algorithm.getName());
+	}
+	
+	@Test
 	public void testInstrumentedResumable() throws IOException {
 		testInstrumentedResumable("NSGAII");
 	}

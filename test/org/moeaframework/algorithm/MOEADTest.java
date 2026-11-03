@@ -111,5 +111,13 @@ public class MOEADTest extends JMetalAlgorithmTest {
 		moead = (MOEAD)AlgorithmFactory.getInstance().getAlgorithm("MOEA/D", properties, problem);
 		Assert.assertFalse(moead.useDE);
 	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testZeroUpdateUtility() {
+		Problem problem = new MockRealProblem();
+		
+		MOEAD moead = new MOEAD(problem);
+		moead.setUpdateUtility(0);
+	}
 
 }
