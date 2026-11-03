@@ -267,13 +267,14 @@ public class Subset extends AbstractVariable {
 	 * @throws IllegalArgumentException if the array is not a valid subset
 	 */
 	public void fromArray(int[] array) {
-		Validate.that("array.length", array.length).isBetween(l, u);
 		members.clear();
 
 		for (int i = 0; i < array.length; i++) {
 			Validate.that("array[" + i + "]", array[i]).isBetween(0, n-1);
 			members.add(array[i]);
 		}
+		
+		Validate.that("size", members.size()).isBetween(l, u);
 	}
 
 	@Override
@@ -428,7 +429,7 @@ public class Subset extends AbstractVariable {
 			value = value.substring(1, value.length()-1);
 		}
 		
-		String[] tokens = value.split(",");
+		String[] tokens = value.isBlank() ? new String[0] : value.split(",");
 		int[] array = new int[tokens.length];
 		
 		for (int i=0; i<tokens.length; i++) {

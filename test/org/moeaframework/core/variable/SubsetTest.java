@@ -263,11 +263,56 @@ public class SubsetTest {
 	}
 	
 	@Test
+	public void testEncodeDecodeEmptyArray() {
+		Subset subset = new Subset(0, 10, 10);
+		subset.fromArray(new int[0]);
+		Assert.assertEquals("{}", subset.encode());
+		
+		Subset newSubset = new Subset(0, 10, 10);
+		newSubset.decode(subset.encode());
+		Assert.assertArrayEquals(new int[0], newSubset.toArray());
+		Assert.assertTrue(newSubset.isValid());
+	}
+	
+	@Test
 	public void testDecodeWithoutBraces() {
 		Subset subset = new Subset(0, 10, 10);
 		subset.decode("3,5,9");
 		
 		Assert.assertArrayEquals(new int[] {3, 5, 9}, subset.toArray());
+	}
+	
+	@Test
+	public void testDecodeWithoutBracesEmptyArray() {
+		Subset subset = new Subset(0, 10, 10);
+		subset.decode("");
+		
+		Assert.assertArrayEquals(new int[0], subset.toArray());
+		Assert.assertTrue(subset.isValid());
+	}
+	
+	@Test
+	public void testDecodeEmptyClearsExistingMembers() {
+		Subset subset = new Subset(0, 10, 10);
+		subset.fromArray(new int[] { 1, 3 });
+		subset.decode("{}");
+		
+		Assert.assertArrayEquals(new int[0], subset.toArray());
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testDecodeEmptyBelowMinimumSize() {
+		new Subset(1, 3, 5).decode("{}");
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testFromArrayBelowMinimumSize() {
+		new Subset(2, 5).fromArray(new int[] { 1 });
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testFromArrayBelowMinimumSizeAfterDedupe() {
+		new Subset(2, 5).fromArray(new int[] { 1, 1, 1 });
 	}
 	
 	@Test
@@ -384,6 +429,12 @@ public class SubsetTest {
 		bitSet.set(10);
 		
 		Subset.setSubset(subset, bitSet);
+	}
+	
+	@Test(expected = NumberFormatException.class)
+	public void testDecodeMissingValue() {
+		Subset subset = new Subset(0, 10, 10);
+		subset.decode("{,2}");
 	}
 	
 	@Test
