@@ -133,6 +133,34 @@ public class PRNGTest {
 
 		Assert.assertUniformDistribution(15, 20, statistics);
 	}
+	
+	@Test
+	public void testNextIntInclusiveBounds() {
+		Assert.assertEquals(7, PRNG.nextInt(7, 7));
+		Assert.assertEquals(Integer.MIN_VALUE, PRNG.nextInt(Integer.MIN_VALUE, Integer.MIN_VALUE));
+		Assert.assertEquals(Integer.MAX_VALUE, PRNG.nextInt(Integer.MAX_VALUE, Integer.MAX_VALUE));
+		Assert.assertBetween(Integer.MIN_VALUE, Integer.MAX_VALUE, PRNG.nextInt(Integer.MIN_VALUE, Integer.MAX_VALUE));
+	}
+	
+	@Test
+	public void testNextIntInvalidBounds() {
+		Assert.assertThrows(IllegalArgumentException.class, () -> PRNG.nextInt(8, 7));
+		Assert.assertThrows(IllegalArgumentException.class, () -> PRNG.nextInt(Integer.MAX_VALUE, Integer.MIN_VALUE));
+	}
+	
+	@Test
+	public void testNextLongInclusiveBounds() {
+		Assert.assertEquals(7, PRNG.nextLong(7, 7));
+		Assert.assertEquals(Long.MIN_VALUE, PRNG.nextLong(Long.MIN_VALUE, Long.MIN_VALUE));
+		Assert.assertEquals(Long.MAX_VALUE, PRNG.nextLong(Long.MAX_VALUE, Long.MAX_VALUE));
+		Assert.assertBetween(Long.MIN_VALUE, Long.MAX_VALUE, PRNG.nextLong(Long.MIN_VALUE, Long.MAX_VALUE));
+	}
+	
+	@Test
+	public void testNextLongInvalidBounds() {
+		Assert.assertThrows(IllegalArgumentException.class, () -> PRNG.nextLong(8, 7));
+		Assert.assertThrows(IllegalArgumentException.class, () -> PRNG.nextLong(Long.MAX_VALUE, Long.MIN_VALUE));
+	}
 
 	@Test
 	public void testNextBoolean() {

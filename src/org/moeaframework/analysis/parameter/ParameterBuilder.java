@@ -365,7 +365,7 @@ public class ParameterBuilder {
 		 * @return the parameter
 		 */
 		public Enumeration<Long> random(long startInclusive, long endInclusive, int count) {
-			return of(LongStream.range(0, count).map(i -> PRNG.getRandom().nextLong(startInclusive, endInclusive)));
+			return of(LongStream.range(0, count).map(i -> PRNG.nextLong(startInclusive, endInclusive)));
 		}
 		
 		Enumeration<Long> of(LongStream stream) {

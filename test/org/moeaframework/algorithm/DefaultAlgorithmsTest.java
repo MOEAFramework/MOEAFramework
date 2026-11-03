@@ -356,7 +356,7 @@ public class DefaultAlgorithmsTest {
 	}
 	
 	private void testReproducibility(String name, Problem problem) {
-		long seed = PRNG.getRandom().nextLong();
+		long seed = PRNG.nextLong();
 		
 		// first trial
 		PRNG.setSeed(seed);
@@ -375,7 +375,7 @@ public class DefaultAlgorithmsTest {
 	}
 	
 	private void testResumable(String name, Problem problem) throws IOException {
-		long seed = PRNG.getRandom().nextLong();
+		long seed = PRNG.nextLong();
 		
 		// first, run the algorithm normally
 		PRNG.setSeed(seed);
@@ -406,7 +406,7 @@ public class DefaultAlgorithmsTest {
 	private void testInstrumentedResumable(String algorithmName) throws IOException {
 		Problem problem = ProblemFactory.getInstance().getProblem("DTLZ2_2");
 		NondominatedPopulation referenceSet = ProblemFactory.getInstance().getReferenceSet("DTLZ2_2");
-		long seed = PRNG.getRandom().nextLong();
+		long seed = PRNG.nextLong();
 		
 		// first, run the algorithm normally
 		PRNG.setSeed(seed);

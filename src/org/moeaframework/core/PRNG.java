@@ -126,7 +126,7 @@ public class PRNG {
 
 	/**
 	 * Returns the next random, uniformly distributed {@code int} value between {@code Integer.MIN_VALUE} and
-	 * {@code Integer.MAX_VALUE} .
+	 * {@code Integer.MAX_VALUE}.
 	 * 
 	 * @return the next random, uniformly distributed {@code int} value between {@code Integer.MIN_VALUE} and
 	 *         {@code Integer.MAX_VALUE}.
@@ -157,7 +157,46 @@ public class PRNG {
 	 *         (both inclusive).
 	 */
 	public static int nextInt(int min, int max) {
-		return min + random.nextInt(max - min + 1);
+		long range = (long)max - min + 1;
+		
+		// for backwards compatibility, since switching from Random#nextInt to Random#nextLong would produce different
+		// sequences for the same seed
+		if (range > 0 && range <= Integer.MAX_VALUE) {
+			return min + random.nextInt(max - min + 1);
+		}
+		
+		return (int)nextLong(min, max);
+	}
+	
+	/**
+	 * Returns the next random, uniformly distributed {@code long} value between {@code Long.MIN_VALUE} and
+	 * {@code Long.MAX_VALUE}.
+	 * 
+	 * @return the next random, uniformly distributed {@code long} value between {@code Long.MIN_VALUE} and
+	 *         {@code Long.MAX_VALUE}.
+	 */
+	public static long nextLong() {
+		return random.nextLong();
+	}
+	
+	/**
+	 * Returns the next random, uniformly distributed {@code long} value between {@code min} and {@code max}
+	 * (both inclusive).
+	 * 
+	 * @param min the minimum value (inclusive)
+	 * @param max the maximum value (inclusive)
+	 * @return the next random, uniformly distributed {@code long} value between {@code min} and {@code max}
+	 *         (both inclusive).
+	 * @throws IllegalArgumentException if {@code min > max}
+	 */
+	public static long nextLong(long min, long max) {
+		if (max != Long.MAX_VALUE) {
+			return random.nextLong(min, max + 1);
+		} else if (min == Long.MIN_VALUE) {
+			return random.nextLong();
+		} else {
+			return random.nextLong(min - 1, max) + 1;
+		}
 	}
 
 	/**
