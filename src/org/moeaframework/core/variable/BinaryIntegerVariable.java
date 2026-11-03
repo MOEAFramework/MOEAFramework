@@ -198,7 +198,7 @@ public class BinaryIntegerVariable extends BinaryVariable {
 	
 	@Override
 	public BinaryIntegerVariable copy() {
-		BinaryIntegerVariable result = new BinaryIntegerVariable(name, lowerBound, upperBound);
+		BinaryIntegerVariable result = new BinaryIntegerVariable(name, lowerBound, upperBound, gray);
 	
 		// copy the bits instead of the value to ensure the clone has the same internal representation
 		for (int i = 0; i < result.getNumberOfBits(); i++) {
@@ -211,9 +211,17 @@ public class BinaryIntegerVariable extends BinaryVariable {
 	@Override
 	public String getDefinition() {
 		if (name == null) {
-			return Defined.createDefinition(Variable.class, BinaryIntegerVariable.class, lowerBound, upperBound);
+			if (gray) {
+				return Defined.createDefinition(Variable.class, BinaryIntegerVariable.class, lowerBound, upperBound);
+			} else {
+				return Defined.createDefinition(Variable.class, BinaryIntegerVariable.class, lowerBound, upperBound, gray);
+			}
 		} else {
-			return Defined.createDefinition(Variable.class, BinaryIntegerVariable.class, name, lowerBound, upperBound);
+			if (gray) {
+				return Defined.createDefinition(Variable.class, BinaryIntegerVariable.class, name, lowerBound, upperBound);
+			} else {
+				return Defined.createDefinition(Variable.class, BinaryIntegerVariable.class, name, lowerBound, upperBound, gray);
+			}
 		}
 	}
 	
@@ -223,6 +231,7 @@ public class BinaryIntegerVariable extends BinaryVariable {
 				.appendSuper(super.hashCode())
 				.append(lowerBound)
 				.append(upperBound)
+				.append(gray)
 				.append(getValue())
 				.toHashCode();
 	}
@@ -235,11 +244,12 @@ public class BinaryIntegerVariable extends BinaryVariable {
 			return false;
 		} else {
 			BinaryIntegerVariable rhs = (BinaryIntegerVariable)obj;
-			
+
 			return new EqualsBuilder()
 					.appendSuper(super.equals(obj))
 					.append(lowerBound, rhs.lowerBound)
 					.append(upperBound, rhs.upperBound)
+					.append(gray, rhs.gray)
 					.append(getValue(), rhs.getValue())
 					.isEquals();
 		}

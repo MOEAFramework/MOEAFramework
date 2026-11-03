@@ -72,12 +72,17 @@ public class BinaryIntegerVariableTest {
 		Assert.assertFalse(variable.equals(new BinaryIntegerVariable(5, 10).withValue(9)));
 		Assert.assertFalse(variable.equals(new BinaryIntegerVariable(2, 10).withValue(7)));
 		Assert.assertFalse(variable.equals(new BinaryIntegerVariable(5, 9).withValue(7)));
+		Assert.assertFalse(variable.equals(new BinaryIntegerVariable(5, 10, false).withValue(7)));
 	}
 
 	@Test
 	public void testHashCode() {
 		Assert.assertEquals(variable.hashCode(), variable.hashCode());
 		Assert.assertEquals(variable.hashCode(), new BinaryIntegerVariable(5, 10).withValue(7).hashCode());
+		Assert.assertNotEquals(variable.hashCode(), new BinaryIntegerVariable(5, 10).withValue(9).hashCode());
+		Assert.assertNotEquals(variable.hashCode(), new BinaryIntegerVariable(2, 10).withValue(7).hashCode());
+		Assert.assertNotEquals(variable.hashCode(), new BinaryIntegerVariable(5, 9).withValue(7).hashCode());
+		Assert.assertNotEquals(variable.hashCode(), new BinaryIntegerVariable(5, 10, false).withValue(7).hashCode());
 	}
 
 	@Test
@@ -96,10 +101,21 @@ public class BinaryIntegerVariableTest {
 	public void testCopyWithName() {
 		variable = new BinaryIntegerVariable("foo", 5, 10).withValue(7);
 		
-		BinaryVariable copy = variable.copy();
+		BinaryIntegerVariable copy = variable.copy();
 		Assert.assertNotSame(variable, copy);
 		Assert.assertEquals(variable, copy);
 		Assert.assertEquals("foo", copy.getName());
+	}
+	
+	@Test
+	public void testCopyWithGraySetToFalse() {
+		variable = new BinaryIntegerVariable(5, 10, false).withValue(7);
+		
+		BinaryIntegerVariable copy = variable.copy();
+		Assert.assertNotSame(variable, copy);
+		Assert.assertEquals(variable, copy);
+		Assert.assertFalse(copy.isGray());
+		
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -126,7 +142,26 @@ public class BinaryIntegerVariableTest {
 	public void testEncodeDecode() {
 		BinaryIntegerVariable newVariable = new BinaryIntegerVariable(5, 10);
 		newVariable.decode(variable.encode());
-		Assert.assertEquals(variable.getValue(), newVariable.getValue());
+		
+		Assert.assertEquals(variable, newVariable);
+		Assert.assertEquals(5, newVariable.getLowerBound());
+		Assert.assertEquals(10, newVariable.getUpperBound());
+		Assert.assertTrue(newVariable.isGray());
+		Assert.assertEquals(7, newVariable.getValue());
+	}
+	
+	@Test
+	public void testEncodeDecodeWithGraySetToFalse() {
+		variable = new BinaryIntegerVariable(5, 10, false).withValue(7);
+		
+		BinaryIntegerVariable newVariable = new BinaryIntegerVariable(5, 10, false);
+		newVariable.decode(variable.encode());
+		
+		Assert.assertEquals(variable, newVariable);
+		Assert.assertEquals(5, newVariable.getLowerBound());
+		Assert.assertEquals(10, newVariable.getUpperBound());
+		Assert.assertFalse(newVariable.isGray());
+		Assert.assertEquals(7, newVariable.getValue());
 	}
 	
 	@Test
@@ -319,6 +354,8 @@ public class BinaryIntegerVariableTest {
 	public void testDefinition() {
 		Assert.assertEquals("BinaryIntegerVariable(0,1)", new BinaryIntegerVariable(0, 1).getDefinition());
 		Assert.assertEquals("BinaryIntegerVariable(\"foo\",0,1)", new BinaryIntegerVariable("foo", 0, 1).getDefinition());
+		Assert.assertEquals("BinaryIntegerVariable(0,1,false)", new BinaryIntegerVariable(0, 1, false).getDefinition());
+		Assert.assertEquals("BinaryIntegerVariable(\"foo\",0,1,false)", new BinaryIntegerVariable("foo", 0, 1, false).getDefinition());
 	}
 
 }
