@@ -29,6 +29,14 @@ import org.moeaframework.analysis.sensitivity.SobolSensitivityAnalysis.SobolSens
 
 public class SobolSensitivityAnalysisTest {
 	
+	@Test(expected = IllegalArgumentException.class)
+	public void testThrowIfConstant() {
+		Parameter<Double> x = Parameter.named("x").asDouble().sampledBetween(0.0, 1.0);
+		Parameter<Double> y = Parameter.named("y").asDouble().constant(1.0);
+		
+		new SobolSensitivityAnalysis(new ParameterSet(x, y), 100);
+	}
+	
 	@Test
 	public void testX() {
 		SobolSensitivityResult result = test(1000, (x, y, z) -> x);

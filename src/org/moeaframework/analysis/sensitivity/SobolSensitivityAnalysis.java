@@ -23,8 +23,10 @@ import java.io.PrintWriter;
 import org.apache.commons.io.output.CloseShieldOutputStream;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.math3.stat.StatUtils;
+import org.moeaframework.analysis.parameter.Constant;
 import org.moeaframework.analysis.parameter.Parameter;
 import org.moeaframework.analysis.parameter.ParameterSet;
+import org.moeaframework.analysis.parameter.SampledParameter;
 import org.moeaframework.analysis.sample.Samples;
 import org.moeaframework.core.PRNG;
 import org.moeaframework.util.sequence.Saltelli;
@@ -62,6 +64,7 @@ public class SobolSensitivityAnalysis implements SensitivityAnalysis<SobolSensit
 	 * 
 	 * @param parameterSet the parameters being analyzed
 	 * @param N the number of samples
+	 * @throws IllegalArgumentException if any parameters are not {@link SampledParameter}
 	 */
 	public SobolSensitivityAnalysis(ParameterSet parameterSet, int N) {
 		this(parameterSet, N, 1000);
@@ -73,12 +76,19 @@ public class SobolSensitivityAnalysis implements SensitivityAnalysis<SobolSensit
 	 * @param parameterSet the parameters being analyzed
 	 * @param N the number of samples
 	 * @param resamples the number of resamples used to bootstrap the 50% confidence intervals
+	 * @throws IllegalArgumentException if any parameters are not {@link SampledParameter}
 	 */
 	public SobolSensitivityAnalysis(ParameterSet parameterSet, int N, int resamples) {
 		super();
 		this.parameterSet = parameterSet;
 		this.N = N;
 		this.resamples = resamples;
+		
+		for (Parameter<?> parameter : parameterSet) {
+			if (parameter instanceof Constant<?>) {
+				throw new IllegalArgumentException(parameter.getName() + " is not valid, constants are not supported");
+			}
+		}
 	}
 	
 	@Override
