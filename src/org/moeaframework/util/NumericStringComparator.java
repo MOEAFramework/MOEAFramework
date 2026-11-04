@@ -65,9 +65,14 @@ public class NumericStringComparator implements Comparator<String> {
 				return cmp;
 			}
 			
-			int val1 = Integer.parseInt(matcher1.group());
-			int val2 = Integer.parseInt(matcher2.group());
-			cmp = Integer.compare(val1, val2);
+			String val1 = matcher1.group();
+			String val2 = matcher2.group();
+			
+			if (val1.length() == val2.length()) {
+				cmp = val1.compareTo(val2);
+			} else {
+				cmp = Integer.compare(val1.length(), val2.length());
+			}
 			
 			if (cmp != 0) {
 				return cmp;

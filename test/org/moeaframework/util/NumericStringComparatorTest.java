@@ -61,6 +61,28 @@ public class NumericStringComparatorTest {
 		Assert.assertEquals(0, comparator.compare("a1a1", "a1a1"));
 		Assert.assertEquals(-1, comparator.compare("a1a1", "a1a2"));
 		Assert.assertEquals(1, comparator.compare("a1a2", "a1a1"));
+		
+		Assert.assertEquals(0, comparator.compare("10", "10"));
+		Assert.assertEquals(-1, comparator.compare("2", "10"));
+		Assert.assertEquals(1, comparator.compare("10", "2"));
+		
+		Assert.assertEquals(0, comparator.compare("a10", "a10"));
+		Assert.assertEquals(-1, comparator.compare("a2", "a10"));
+		Assert.assertEquals(1, comparator.compare("a10", "a2"));
+		
+		Assert.assertEquals(0, comparator.compare("a10b2", "a10b2"));
+		Assert.assertEquals(-1, comparator.compare("a10b2", "a10b10"));
+		Assert.assertEquals(1, comparator.compare("a10b10", "a10b2"));
+
+	}
+	
+	@Test
+	public void testLargeNumbers() {
+		NumericStringComparator comparator = new NumericStringComparator();
+		
+		Assert.assertEquals(0, comparator.compare("seed2147483648", "seed2147483648"));
+		Assert.assertEquals(-1, comparator.compare("seed2147483648", "seed2147483649"));
+		Assert.assertEquals(1, comparator.compare("seed2147483649", "seed2147483648"));
 	}
 	
 }
