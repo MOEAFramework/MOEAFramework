@@ -108,7 +108,7 @@ public class Groupings{
 	 * @return the grouping function
 	 */
 	public static Function<Integer, Integer> bucket(int width) {
-		return x -> width * (x / width) + width / 2;
+		return x -> width * Math.floorDiv(x, width) + width / 2;
 	}
 	
 	/**
@@ -118,7 +118,7 @@ public class Groupings{
 	 * @return the grouping function
 	 */
 	public static Function<Long, Long> bucket(long width) {
-		return x -> width * (x / width) + width / 2;
+		return x -> width * Math.floorDiv(x, width) + width / 2;
 	}
 	
 	/**

@@ -29,7 +29,7 @@ public class GroupingsTest {
 	
 	@Test
 	public void testIntegerBucket() {
-		Parameter<Integer> parameter = Parameter.named("test").asInt().sampledBetween(0, 100);
+		Parameter<Integer> parameter = Parameter.named("test").asInt().sampledBetween(-100, 100);
 		Sample sample = new Sample();
 		
 		Function<Sample, Integer> bucket = Groupings.bucket(parameter, 10);
@@ -52,12 +52,24 @@ public class GroupingsTest {
 		sample.setInt("test", 19);
 		Assert.assertEquals(15, bucket.apply(sample));
 		
+		sample.setInt("test", -1);
+		Assert.assertEquals(-5, bucket.apply(sample));
+		
+		sample.setInt("test", -5);
+		Assert.assertEquals(-5, bucket.apply(sample));
+		
+		sample.setInt("test", -10);
+		Assert.assertEquals(-5, bucket.apply(sample));
+		
+		sample.setInt("test", -15);
+		Assert.assertEquals(-15, bucket.apply(sample));
+		
 		sample.throwIfUnaccessedProperties();
 	}
 	
 	@Test
 	public void testLongBucket() {
-		Parameter<Long> parameter = Parameter.named("test").asLong().sampledBetween(0L, 100L);
+		Parameter<Long> parameter = Parameter.named("test").asLong().sampledBetween(-100L, 100L);
 		Sample sample = new Sample();
 		
 		Function<Sample, Long> bucket = Groupings.bucket(parameter, 10L);
@@ -80,12 +92,24 @@ public class GroupingsTest {
 		sample.setLong("test", 19L);
 		Assert.assertEquals(15L, bucket.apply(sample));
 		
+		sample.setLong("test", -1L);
+		Assert.assertEquals(-5L, bucket.apply(sample));
+		
+		sample.setLong("test", -5L);
+		Assert.assertEquals(-5L, bucket.apply(sample));
+		
+		sample.setLong("test", -10L);
+		Assert.assertEquals(-5L, bucket.apply(sample));
+		
+		sample.setLong("test", -15L);
+		Assert.assertEquals(-15L, bucket.apply(sample));
+		
 		sample.throwIfUnaccessedProperties();
 	}
 	
 	@Test
 	public void testDoubleBucket() {
-		Parameter<Double> parameter = Parameter.named("test").asDouble().sampledBetween(0.0, 100.0);
+		Parameter<Double> parameter = Parameter.named("test").asDouble().sampledBetween(-100.0, 100.0);
 		Sample sample = new Sample();
 		
 		Function<Sample, Double> bucket = Groupings.bucket(parameter, 10.0);
@@ -107,6 +131,18 @@ public class GroupingsTest {
 		
 		sample.setDouble("test", 19.9);
 		Assert.assertEquals(15.0, bucket.apply(sample));
+		
+		sample.setDouble("test", -1.0);
+		Assert.assertEquals(-5.0, bucket.apply(sample));
+		
+		sample.setDouble("test", -5.0);
+		Assert.assertEquals(-5.0, bucket.apply(sample));
+		
+		sample.setDouble("test", -10.0);
+		Assert.assertEquals(-5.0, bucket.apply(sample));
+		
+		sample.setDouble("test", -15.0);
+		Assert.assertEquals(-15.0, bucket.apply(sample));
 		
 		sample.throwIfUnaccessedProperties();
 	}
