@@ -72,16 +72,24 @@ public class ProgressExtension implements Extension {
 		listeners = EventListenerSupport.create(ProgressListener.class);
 		statistics = new DescriptiveStatistics(100);
 		timer = new StopWatch();
+		
+		reset();
+	}
+	
+	private void reset() {
+		timer.reset();
+		statistics.clear();
+		lastPercentComplete = 0.0;
 		lastDuration = Duration.ZERO;
 	}
 	
 	@Override
 	public void onRun(Algorithm algorithm, TerminationCondition terminationCondition) {
-		if (!timer.isStarted()) {
-			timer.start();
-		}
-		
+		reset();
+
 		this.terminationCondition = terminationCondition;
+
+		timer.start();
 		updateProgress(algorithm);
 	}
 
@@ -97,8 +105,11 @@ public class ProgressExtension implements Extension {
 
 	@Override
 	public void onTerminate(Algorithm algorithm) {
+		if (timer.isStarted()) {
+			timer.stop();
+		}
+		
 		updateProgress(algorithm);
-		timer.stop();
 	}
 	
 	/**

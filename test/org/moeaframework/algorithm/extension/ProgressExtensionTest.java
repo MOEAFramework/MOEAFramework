@@ -25,18 +25,20 @@ import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.Wait;
 import org.moeaframework.algorithm.Algorithm;
+import org.moeaframework.algorithm.NSGAII;
 import org.moeaframework.algorithm.extension.ProgressExtension.ProgressEvent;
 import org.moeaframework.core.termination.MaxFunctionEvaluations;
 import org.moeaframework.mock.MockAlgorithm;
+import org.moeaframework.mock.MockRealProblem;
 
 public class ProgressExtensionTest {
 	
 	@Test
 	public void test() {
-		final List<ProgressEvent> events = new ArrayList<>();
+		List<ProgressEvent> events = new ArrayList<>();
 		
 		ProgressExtension extension = new ProgressExtension();
-		extension.addListener(event -> events.add(event));
+		extension.addListener(events::add);
 		
 		Algorithm algorithm = new MockAlgorithm();
 		
@@ -96,6 +98,42 @@ public class ProgressExtensionTest {
 		
 		ProgressEvent event4 = new ProgressEvent(algorithm, 100.0, Duration.ofSeconds(105), Duration.ofSeconds(00));		
 		Assert.assertEquals("E: 00:01:45, R: 00:00:00 [========================================] 100%", event4.toString());
+	}
+	
+	@Test
+	public void testRepeatedRuns() {
+		List<ProgressEvent> events = new ArrayList<>();
+		
+		ProgressExtension extension = new ProgressExtension();
+		extension.addListener(events::add);
+		
+		NSGAII algorithm = new NSGAII(new MockRealProblem(2));
+		algorithm.addExtension(extension);
+		algorithm.run(100);
+		
+		Assert.assertTrue(algorithm.isTerminated());
+		Assert.assertEquals(100.0, events.get(events.size() - 1).getPercentComplete());
+		
+		algorithm.run(200);
+
+		Assert.assertTrue(algorithm.isTerminated());
+		Assert.assertEquals(100.0, events.get(events.size() - 1).getPercentComplete());
+		Assert.assertGreaterThanOrEqual(algorithm.getNumberOfEvaluations(), 300);
+	}
+
+	@Test
+	public void testManualTerminationWithoutRun() {
+		List<ProgressEvent> events = new ArrayList<>();
+		
+		ProgressExtension extension = new ProgressExtension();
+		extension.addListener(events::add);
+		
+		NSGAII algorithm = new NSGAII(new MockRealProblem(2));
+		algorithm.addExtension(extension);
+
+		algorithm.terminate();
+
+		Assert.assertTrue(algorithm.isTerminated());
 	}
 
 }
