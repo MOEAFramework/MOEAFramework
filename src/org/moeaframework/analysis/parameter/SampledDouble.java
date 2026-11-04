@@ -18,7 +18,9 @@
 package org.moeaframework.analysis.parameter;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.List;
+import java.util.Locale;
 
 import org.moeaframework.analysis.sample.Sample;
 import org.moeaframework.core.Settings;
@@ -35,7 +37,8 @@ NumericParameter<Double> {
 	
 	static {
 		int digits = (int)-Math.log10(Settings.EPS);
-		PRECISION_FORMAT = new DecimalFormat("0.0" + (digits > 1 ? "#".repeat(digits-1) : ""));
+		PRECISION_FORMAT = new DecimalFormat("0.0" + (digits > 1 ? "#".repeat(digits-1) : ""),
+				DecimalFormatSymbols.getInstance(Locale.ROOT));
 	}
 	
 	private final double lowerBound;
