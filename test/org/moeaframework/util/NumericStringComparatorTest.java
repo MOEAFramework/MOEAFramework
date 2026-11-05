@@ -73,7 +73,30 @@ public class NumericStringComparatorTest {
 		Assert.assertEquals(0, comparator.compare("a10b2", "a10b2"));
 		Assert.assertEquals(-1, comparator.compare("a10b2", "a10b10"));
 		Assert.assertEquals(1, comparator.compare("a10b10", "a10b2"));
-
+		
+		Assert.assertEquals(0, comparator.compare("a10.2", "a10.2"));
+		Assert.assertEquals(-1, comparator.compare("a10.2", "a10.3"));
+		Assert.assertEquals(1, comparator.compare("a11.2", "a10.3"));
+	}
+	
+	@Test
+	public void testLeadingZeros() {
+		NumericStringComparator comparator = new NumericStringComparator();
+		
+		Assert.assertEquals(-1, comparator.compare("v02", "v3"));
+		Assert.assertEquals(1, comparator.compare("v3", "v02"));
+		Assert.assertEquals(-1, comparator.compare("v02a", "v2b"));
+		Assert.assertEquals(1, comparator.compare("0100", "0010"));
+		
+		Assert.assertEquals(0, comparator.compare("02", "02"));
+		Assert.assertEquals(0, comparator.compare("02", "2"));
+		Assert.assertEquals(0, comparator.compare("02", "002"));
+		Assert.assertEquals(0, comparator.compare("000", "0"));
+		
+		Assert.assertEquals(0, comparator.compare("v02", "v02"));
+		Assert.assertEquals(0, comparator.compare("v02", "v2"));
+		Assert.assertEquals(0, comparator.compare("v02", "v002"));
+		Assert.assertEquals(0, comparator.compare("v000", "v0"));
 	}
 	
 	@Test

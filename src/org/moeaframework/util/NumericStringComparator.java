@@ -40,7 +40,7 @@ import java.util.regex.Pattern;
  */
 public class NumericStringComparator implements Comparator<String> {
 	
-	private static final Pattern INTEGER_PATTERN = Pattern.compile("([0-9]+)");
+	private static final Pattern INTEGER_PATTERN = Pattern.compile("0*([0-9]+)");
 	
 	/**
 	 * Creates a new numeric string comparator.
@@ -65,8 +65,9 @@ public class NumericStringComparator implements Comparator<String> {
 				return cmp;
 			}
 			
-			String val1 = matcher1.group();
-			String val2 = matcher2.group();
+			// use lexicographical ordering of numbers excluding leading 0s
+			String val1 = matcher1.group(1);
+			String val2 = matcher2.group(1);
 			
 			if (val1.length() == val2.length()) {
 				cmp = val1.compareTo(val2);
