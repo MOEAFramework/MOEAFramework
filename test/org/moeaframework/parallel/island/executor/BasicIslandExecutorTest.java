@@ -20,6 +20,8 @@ package org.moeaframework.parallel.island.executor;
 import java.io.IOException;
 import java.util.concurrent.Executors;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.moeaframework.Assert;
 import org.moeaframework.CallCounter;
@@ -42,22 +44,36 @@ import org.moeaframework.parallel.island.topology.Topology;
 
 public class BasicIslandExecutorTest extends AbstractIslandModelTest {
 	
-	@Test
-	public void test() throws IOException {
+	private IslandModel model;
+	
+	private CallCounter<Migration> counter;
+	
+	@Before
+	public void setUp() {
 		Selection migrationSelection = new TournamentSelection(2,
 				new ChainedComparator(
 						new ParetoDominanceComparator(),
 						new CrowdingComparator()));
 		
-		CallCounter<Migration> counter = CallCounter.of(new SingleNeighborMigration(1, migrationSelection));
 		Topology topology = new FullyConnectedTopology();
-		IslandModel model = new IslandModel(Frequency.ofEvaluations(1000), counter.getProxy(), topology);
+		
+		counter = CallCounter.of(new SingleNeighborMigration(1, migrationSelection));
+		model = new IslandModel(Frequency.ofEvaluations(1000), counter.getProxy(), topology);
 				
 		for (int i = 0; i < 2; i++) {
 			NSGAII algorithm = new NSGAII(new MockRealProblem(2));
 			model.addIsland(new Island(algorithm, algorithm.getPopulation()));
 		}
-		
+	}
+	
+	@After
+	public void tearDown() {
+		model = null;
+		counter = null;
+	}
+	
+	@Test
+	public void test() throws IOException {
 		for (Island island : model.getIslands()) {
 			Assert.assertEquals(0 , island.getAlgorithm().getNumberOfEvaluations());
 		}
@@ -67,6 +83,7 @@ public class BasicIslandExecutorTest extends AbstractIslandModelTest {
 			Assert.assertNotNull(result);
 			
 			for (Island island : model.getIslands()) {
+				Assert.assertNotNull(island.getAlgorithm().getExtension(IslandMigrationExtension.class));
 				Assert.assertEquals(50000, island.getAlgorithm().getNumberOfEvaluations());
 			}
 			
@@ -82,5 +99,27 @@ public class BasicIslandExecutorTest extends AbstractIslandModelTest {
 			Assert.assertEquals(expectedResult, result);
 		}
 	}
+	
+	@Test
+	public void testMutlipleRuns() throws IOException {
+		for (Island island : model.getIslands()) {
+			Assert.assertEquals(0 , island.getAlgorithm().getNumberOfEvaluations());
+		}
+		
+		try (BasicIslandExecutor executor = new BasicIslandExecutor(model, Executors.newSingleThreadExecutor())) {
+			NondominatedPopulation result1 = executor.run(50000);
+			NondominatedPopulation result2 = executor.run(50000);
+			
+			Assert.assertNotSame(result1, result2);
+			
+			for (Island island : model.getIslands()) {
+				Assert.assertNotNull(island.getAlgorithm().getExtension(IslandMigrationExtension.class));
+				Assert.assertEquals(50000, island.getAlgorithm().getNumberOfEvaluations());
+			}
+			
+			Assert.assertEquals(100, counter.getTotalCallCount());
+		}
+	}
+	
 
 }

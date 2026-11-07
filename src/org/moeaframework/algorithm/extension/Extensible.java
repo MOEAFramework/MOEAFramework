@@ -30,6 +30,23 @@ public interface Extensible {
 	public Extensions getExtensions();
 	
 	/**
+	 * Returns the extension of the given type.  If more than one extension matches the type, the first match is
+	 * returned.
+	 * 
+	 * @param extensionType the type of extension
+	 * @return the extension of the given type, or {@code null} if no such extension is registered
+	 */
+	public default Extension getExtension(Class<? extends Extension> extensionType) {
+		for (Extension extension : getExtensions()) {
+			if (extensionType.isInstance(extension)) {
+				return extension;
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
 	 * Adds the given extension and invokes its {@link Extension#onRegister} method.
 	 * 
 	 * @param extension the extension to add

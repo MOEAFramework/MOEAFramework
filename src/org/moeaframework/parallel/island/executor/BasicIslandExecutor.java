@@ -65,7 +65,11 @@ public class BasicIslandExecutor implements IslandExecutor {
 		for (final Island island : islands) {
 			futures.add(executorService.submit(() -> {
 				Algorithm algorithm = island.getAlgorithm();
-				algorithm.addExtension(new IslandMigrationExtension(island, model));
+				
+				if (algorithm.getExtension(IslandMigrationExtension.class) == null) {
+					algorithm.addExtension(new IslandMigrationExtension(island, model));
+				}
+				
 				algorithm.run(evaluationsPerIsland);
 				return algorithm.getResult();
 			}));
